@@ -98,3 +98,35 @@
 * Arrow ↔ Polars ↔ Pandas: where zero-copy holds vs where conversion allocates
 * Rust engine + Python bindings: speed comes from staying out of Python
 * Hybrid strategy: parquet partitioning; DuckDB/SQL engines when they’re the better tool
+
+## Module 04: Time Series, Streaming, and Storage Systems
+
+### 01. Time-Series Primitives: group_by_dynamic and Resampling Patterns
+
+* Datetime parsing, time zones, and index requirements
+* `group_by_dynamic`: window definitions (every/period/offset), closed intervals, correctness traps
+* Resampling patterns and alignment with asof semantics
+
+### 02. Streaming Execution: Out-of-Core Pipelines
+
+* Streaming engine fundamentals: what enables streaming, what blocks it
+* Plan inspection for streamability; refactor recipes for >RAM datasets
+* Performance and memory trade-offs vs standard execution
+
+### 03. Streaming Sinks: Incremental and Safe Output
+
+* `sink_parquet`, `sink_csv`, `sink_ipc`: writing results larger than RAM
+* Incremental patterns, idempotency, and operational failure modes
+* Partitioned sinks and append/overwrite strategies
+
+### 04. Dataset and Lakehouse Scanning: Partitioned Sources
+
+* `scan_pyarrow_dataset`: partitioned datasets, predicate pushdown reality
+* `scan_delta`: Delta Lake integration, versioned tables, partition pruning
+* Small-file problems, row-group realities, and cost models
+
+### 05. SQL Interface and Hybrid Workflows
+
+* `SQLContext`, `pl.sql`, and `sql_expr`: bridging expressions and SQL
+* When to hand off to SQL engines vs stay in Polars expressions
+* Practical hybrid patterns for inherited SQL logic and portability
