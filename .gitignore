@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+.env/
+
+# MkDocs
+site/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Snakemake (root-level, if ever used here)
+.snakemake/
+
+# Capstone runtime outputs (keep inputs committed; ignore generated artifacts)
+snakemake-capstone/results/
+snakemake-capstone/logs/
+snakemake-capstone/benchmarks/
+snakemake-capstone/publish/
+snakemake-capstone/.snakemake/
+snakemake-capstone/.pytest_cache/
+snakemake-capstone/.hypothesis/
+snakemake-capstone/.benchmarks/
+snakemake-capstone/dag.png
+snakemake-capstone/rulegraph.png
+snakemake-capstone/artifacts/
