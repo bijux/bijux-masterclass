@@ -215,6 +215,23 @@ Displays planned jobs and commands without execution.
 
 ---
 
+## Workflow Tour
+
+Generate the learner-facing proof bundle:
+
+```bash
+make tour
+```
+
+This writes a stable bundle under `artifacts/workflow-tour/` containing the rule list,
+dry-run plan, execution log, summary, publish manifest, provenance record, and a copy
+of the file contract. Use it when you want to study the workflow as evidence rather than
+only as code.
+
+[Back to top](#top)
+
+---
+
 ## Execution via Profiles
 
 Profiles separate workflow logic from execution context.

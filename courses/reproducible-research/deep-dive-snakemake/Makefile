@@ -20,6 +20,9 @@ capstone-check: ## Run fast checks in capstone (format/lint/tests + lint workflo
 capstone-confirm: ## Full clean-room confirmation in capstone (runs workflow + verifies artifacts)
 	$(MAKE) -C capstone confirm
 
+capstone-tour: ## Build the learner-facing capstone proof bundle
+	$(MAKE) -C capstone tour
+
 check: capstone-check ## Run capstone fast checks
 
 test: check ## Run the course's default verification target

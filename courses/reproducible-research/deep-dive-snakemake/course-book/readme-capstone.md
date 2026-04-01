@@ -27,6 +27,7 @@ course’s strongest claims become runnable:
 make -C capstone wf-dryrun
 make -C capstone verify
 make -C capstone confirm
+make -C capstone tour
 ```
 
 ## Study questions

@@ -22,6 +22,7 @@ LINT_DIR      ?= $(ARTIFACTS_DIR)/lint
 TEST_DIR      ?= $(ARTIFACTS_DIR)/test
 WF_DIR        ?= $(ARTIFACTS_DIR)/workflow
 TMP_DIR       ?= $(ARTIFACTS_DIR)/tmp
+TOUR_DIR      ?= $(ARTIFACTS_DIR)/workflow-tour
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -33,6 +34,7 @@ LINT_DIR_ABS      := $(abspath $(LINT_DIR))
 TEST_DIR_ABS      := $(abspath $(TEST_DIR))
 WF_DIR_ABS        := $(abspath $(WF_DIR))
 TMP_DIR_ABS       := $(abspath $(TMP_DIR))
+TOUR_DIR_ABS      := $(abspath $(TOUR_DIR))
 MANIFEST_ABS      := $(abspath $(MANIFEST))
 PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 
@@ -41,7 +43,7 @@ PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 	clean purge-dsstore \
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
-	validate-config verify-artifacts \
+	validate-config verify-artifacts tour \
 	check ci validate verify confirm \
 	docker-build docker-run
 
@@ -163,6 +165,18 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
 confirm: clean purge-dsstore ci verify ## Clean-room confirmation (strict)
+
+tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bundle
+	@mkdir -p "$(TOUR_DIR_ABS)"
+	$(SNAKEMAKE) --list-rules > "$(TOUR_DIR_ABS)/list-rules.txt"
+	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(TOUR_DIR_ABS)/dryrun.txt"
+	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) 2>&1 | tee "$(TOUR_DIR_ABS)/run.txt"
+	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) --summary > "$(TOUR_DIR_ABS)/summary.txt"
+	cp FILE_API.md "$(TOUR_DIR_ABS)/FILE_API.md"
+	cp "$(MANIFEST_ABS)" "$(TOUR_DIR_ABS)/manifest.json"
+	cp "$(PUBLISH_DIR_ABS)/provenance.json" "$(TOUR_DIR_ABS)/provenance.json"
+	cp TOUR.md "$(TOUR_DIR_ABS)/TOUR.md"
+	@echo "✔ wrote workflow tour to $(TOUR_DIR_ABS)"
 
 # ---- docker ----
 docker-build: ## Build docker image

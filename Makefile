@@ -41,6 +41,10 @@ docs-serve: series-docs-install ## Serve docs for the selected course
 test: ## Run tests for the selected course
 	@$(RUN_COURSE) test
 
+.PHONY: capstone-tour
+capstone-tour: ## Run the selected course's learner-facing capstone tour
+	@$(RUN_COURSE) capstone-tour
+
 .PHONY: clean
 clean: ## Run clean for the selected course
 	@$(RUN_COURSE) clean
