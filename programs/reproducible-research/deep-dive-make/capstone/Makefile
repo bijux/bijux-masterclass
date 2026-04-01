@@ -40,7 +40,7 @@ DEPFLAGS := -MMD -MP
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist repro discovery-audit attest selftest \
         clean submake-demo perf trace-count hardened show-origins FORCE \
-        portability-audit eval-demo help
+        portability-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
 -include config.mk
@@ -116,6 +116,7 @@ help:
 >     '  all               build app + dynamic bins (also writes ./all sentinel)' \
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
+>     '  tour              print the recommended capstone walkthrough' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
 >     '  repro             show how to run the race repro pack' \
 >     '  attest            write build/attest.txt (not a dependency of all)' \
@@ -129,6 +130,20 @@ help:
 >     '  J=4               parallelism used by some commands' \
 >     '  TRACE_MAX=500     selftest trace-line heuristic threshold' \
 >     ''
+
+tour:
+>     @printf '%s\n' \
+>     'Capstone walkthrough:' \
+>     '  1. make help' \
+>     '  2. read Makefile for the public build API' \
+>     '  3. read tests/run.sh for the proof harness' \
+>     '  4. make selftest' \
+>     '  5. inspect one repro under repro/' \
+>     '' \
+>     'Focused routes:' \
+>     '  generators  -> make --trace dyn' \
+>     '  architecture -> make help && make -p > build/review.dump' \
+>     '  incidents    -> make trace-count && make -f repro/01-shared-log.mk -j2 all'
 
 # ---- CI-style entrypoints ----
 lint:

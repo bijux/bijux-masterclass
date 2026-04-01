@@ -12,8 +12,10 @@ The capstone is the executable reference build for **Deep Dive Make**: a compact
 
 ---
 ## Table of Contents
+- [Who should start here](#who-should-start-here)
 - [Purpose](#purpose)
 - [Quick start](#quick-start)
+- [Recommended first walkthrough](#recommended-first-walkthrough)
 - [Public targets](#public-targets)
 - [What it builds](#what-it-builds)
 - [Where it fits in the program](#where-it-fits-in-the-program)
@@ -23,6 +25,17 @@ The capstone is the executable reference build for **Deep Dive Make**: a compact
 - [Links into the program guide](#links-into-the-program-guide)
 - [Contributing](#contributing)
 - [License](#license)
+---
+## Who should start here
+Start here if you already understand the course concept you are studying and now want to
+see the same idea in a realistic reference build.
+
+Do **not** start here if you still need first exposure to the concept itself. In that
+case, use the smaller module exercises first and come back when you want confirmation and
+inspection.
+
+[Back to top](#top)
+
 ---
 ## Purpose
 This capstone exists to eliminate ambiguity. “Correct Makefiles” should not be a matter of taste; they should be a matter of **verifiable properties**.
@@ -50,12 +63,29 @@ A passing `selftest` is the signal that the contract holds: convergence, serial/
 [Back to top](#top)
 
 ---
+## Recommended first walkthrough
+Use this order the first time you enter the capstone:
+
+1. `make help`
+2. `make tour`
+3. read `Makefile`
+4. read `tests/run.sh`
+5. run `make selftest`
+6. inspect one file under `repro/`
+
+That route keeps the learner focused on public contract first, proof harness second, and
+failure teaching material third.
+
+[Back to top](#top)
+
+---
 ## Public targets
 These are the stable entrypoints you can rely on and extend:
 
 | Target | Meaning | Why you care |
 | ------------------- | --------------------------------------------------------------------- | ------------------------------------ |
 | `help` | Print available targets and key knobs. | Discoverability. |
+| `tour` | Print the recommended walkthrough order. | Faster onboarding into the capstone. |
 | `all` | Build primary artifacts. | Normal build. |
 | `test` | Run runtime checks on outputs. | Functional validation. |
 | `selftest` | Verify build-system invariants (convergence, equivalence, negatives). | Integrity gate. |
@@ -78,6 +108,13 @@ Core mechanics:
 * depfiles (`*.d`) are treated as true edges
 * publication is atomic (temp → rename)
 * tests assert behavior (not just “it compiled”)  
+
+### Why this capstone is small on purpose
+
+The capstone is intentionally compact so learners can still audit it end to end. The
+point is not repository size. The point is exposing real build-system failure classes in a
+surface area a human can still reason about.
+
 [Back to top](#top)
 
 ---
