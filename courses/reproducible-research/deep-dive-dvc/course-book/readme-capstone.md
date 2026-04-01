@@ -1,27 +1,48 @@
-# DVC Reference Capstone
+# DVC Capstone Guide
 
-The DVC course has a stable place for its executable reference project in `capstone/`.
+The DVC capstone is the course’s executable proof. It is where the course stops making
+claims in prose and starts exposing state that can be inspected, reproduced, compared,
+and restored.
 
-That reference project demonstrates the full contract taught in the course:
+## What this capstone is proving
 
-- immutable data identity
-- explicit stage dependencies
-- tracked parameters and metrics
-- experiment promotion rules
-- CI-backed recovery checks
-- remote and retention discipline
+The capstone is a small incident-escalation prediction repository with:
 
-The reference implementation is an incident-escalation pipeline with:
+- committed source data
+- a truthful four-stage `dvc.yaml` graph
+- declared parameters in `params.yaml`
+- tracked metrics and predictions
+- a stable `publish/v1/` boundary
+- a recovery drill that rebuilds the workspace from a DVC remote after cache loss
 
-- deterministic train and eval splits from a committed source dataset
-- a truthful four-stage `dvc.yaml` graph (`prepare`, `fit`, `evaluate`, `publish`)
-- a learned logistic model serialized into `models/model.json`
-- tracked metrics in `metrics/metrics.json`
-- a stable publish boundary at `publish/v1/` with a manifest and report
-- a recovery drill that pushes to a local remote, deletes cache and workspace state, then restores them through DVC
+Its size is deliberate. The repository is small enough to study completely and large
+enough to force real design choices about state.
 
-From the repository root, the course-level proof target is:
+## How to use it while reading
+
+- After Module 02, inspect which artifacts are identity-bearing state and which are projections.
+- After Module 04, inspect `dvc.yaml` and `dvc.lock` together and ask whether every meaningful edge is declared.
+- After Module 06, inspect `params.yaml`, metrics, and the publish bundle and ask what makes runs comparable.
+- After Module 07 and Module 08, inspect the push and recovery targets and ask which guarantees depend on remote durability.
+
+## Best entrypoints
+
+- Repository guide: [`capstone/README.md`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-dvc/capstone/README.md)
+- Pipeline graph: [`capstone/dvc.yaml`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-dvc/capstone/dvc.yaml)
+- Declared inputs: [`capstone/params.yaml`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-dvc/capstone/params.yaml)
+- Verification logic: [`capstone/src/incident_escalation_capstone/verify.py`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-dvc/capstone/src/incident_escalation_capstone/verify.py)
+
+## Core commands
 
 ```bash
-make COURSE=reproducible-research/deep-dive-dvc test
+make -C capstone repro
+make -C capstone verify
+make -C capstone confirm
 ```
+
+## What to inspect during review
+
+- Which state is authoritative and which state is derived?
+- Which parameter changes should invalidate comparisons?
+- Which artifacts are safe to promote to downstream consumers?
+- Which guarantees would disappear if the local cache were deleted today?
