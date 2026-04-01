@@ -12,6 +12,18 @@ A course-book and executable capstone that teaches **Snakemake as a workflow eng
 
 ---
 
+## Who this course is for
+
+- Engineers who already know basic Snakemake syntax and now need stronger workflow design judgment
+- Researchers and platform teams maintaining pipelines that must survive CI, shared filesystems, and long-lived change
+- Reviewers who want concrete criteria for deciding whether a workflow is robust or merely convenient
+
+## Who this course is not for
+
+- Absolute beginners looking for a first introduction to Snakemake syntax
+- Readers who only want isolated snippets without understanding workflow contracts
+- Teams trying to debug executor behavior before they understand their workflow semantics
+
 ## What this is
 
 Many Snakemake workflows function adequately in simple cases but encounter issues under scale: implicit dependencies, checkpoint misuse, non-atomic outputs, configuration drift, or reproducibility failures across environments.
@@ -26,6 +38,18 @@ Many Snakemake workflows function adequately in simple cases but encounter issue
 - **Self-validation**: wrapper-driven checks confirm correctness end-to-end.
 
 This repository offers practical guidance toward genuine mastery of Snakemake semantics: understanding its guarantees, limitations, and patterns that ensure workflows remain reliable as complexity increases.
+
+[Back to top](#top)
+
+---
+
+## What you should be able to do after this course
+
+- explain why a workflow re-runs using evidence instead of intuition
+- distinguish a truthful dynamic DAG from a workflow that only appears to work
+- separate workflow logic, profile policy, and published artifact contracts cleanly
+- extend a pipeline without weakening its publish boundary or provenance story
+- review a Snakemake repository for hidden coupling, poison artifacts, and reproducibility gaps
 
 [Back to top](#top)
 
@@ -61,6 +85,16 @@ Read on the website: https://bijux.io/deep-dive-series/reproducible-research/dee
 
 ---
 
+## Recommended background
+
+- Comfortable shell usage and basic Python workflow tooling
+- Basic Snakemake familiarity: rules, wildcards, `snakemake -n`, and dry-run interpretation
+- Willingness to treat workflow design as an engineering contract rather than as glue code
+
+[Back to top](#top)
+
+---
+
 ## Quick start
 
 Prerequisites:
@@ -91,6 +125,41 @@ Successful completion confirms the workflow's contract on your system.
 
 ---
 
+## How to study this course well
+
+1. Start with the orientation material before reading the deeper technical modules.
+2. Work through Modules 01 to 04 in order because later workflow patterns depend on earlier file-contract discipline.
+3. Treat each module as a design checkpoint: read the overview, then the detailed module body, then inspect the capstone for the same idea.
+4. Re-run the capstone proof targets regularly so the workflow stays executable in your head, not only in prose.
+5. Use dry-runs, summaries, and proof artifacts as learning tools, not only as debugging tools.
+
+[Back to top](#top)
+
+---
+
+## How to know you are succeeding
+
+- You can explain every published artifact and why it belongs at the publish boundary.
+- You can describe what a checkpoint is allowed to discover and what it must never hide.
+- You can distinguish executor policy from workflow semantics.
+- You can review a workflow and identify hidden coupling, poison artifacts, or provenance gaps quickly.
+
+[Back to top](#top)
+
+---
+
+## Module map
+
+- `00` Orientation and study map
+- `01` File contracts, rebuild truth, and safe rule design
+- `02` Dynamic DAGs, integrity, environments, and performance patterns
+- `03` Production operation, profiles, staging, retries, and governance
+- `04` Scaling boundaries, modularity, CI gates, and executor-proof semantics
+
+[Back to top](#top)
+
+---
+
 ## Repository layout
 
 ```mermaid
@@ -113,13 +182,15 @@ graph TD
 
 ---
 
-## Who this is for
+## Capstone promise
 
-- Engineers maintaining or inheriting complex bioinformatics workflows seeking reliability.
-- Users familiar with basic Snakemake but encountering issues with checkpoints, reproducibility, or scaling.
-- Teams requiring workflows that are trustworthy in CI/CD and production environments.
+The capstone is the course’s executable proof. It is not decorative. It exists so that
+the big claims in the course can always be located in runnable workflow behavior:
 
-This is not an introductory syntax tutorial. It focuses on **workflow semantics and correctness engineering** using Snakemake.
+- explicit discovery instead of hidden sample state
+- versioned publishing instead of informal results directories
+- profiles as policy instead of tribal command lines
+- verification gates instead of “it ran once” confidence
 
 [Back to top](#top)
 
