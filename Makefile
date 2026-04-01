@@ -7,7 +7,8 @@ COURSE ?= reproducible-research/deep-dive-make
 COURSE_DIR := $(COURSES_DIR)/$(COURSE)
 RUN_COURSE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(COURSE_DIR)
 PYTHON ?= python3
-VENV_DIR ?= .venv
+ARTIFACTS_DIR ?= artifacts
+VENV_DIR ?= $(ARTIFACTS_DIR)/venv/series-docs
 VENV_BIN := $(VENV_DIR)/bin
 PIP := $(VENV_BIN)/pip
 MKDOCS := $(VENV_BIN)/mkdocs

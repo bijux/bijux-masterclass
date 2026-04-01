@@ -4,6 +4,9 @@ SHELL := /bin/sh
 
 CAPSTONE_DIR := capstone
 RUN_CAPSTONE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(CAPSTONE_DIR)
+ARTIFACTS_DIR ?= ../../../artifacts
+SITE_DIR ?= $(ARTIFACTS_DIR)/site/reproducible-research/deep-dive-dvc
+COURSE_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-dvc
 
 .PHONY: help
 help: ## Show available targets
@@ -15,6 +18,6 @@ test: ## Run the capstone confirmation suite
 
 .PHONY: clean
 clean: ## Remove build artifacts
-	@rm -rf .venv site .pytest_cache .ruff_cache .mypy_cache
+	@rm -rf $(COURSE_VENV_DIR) $(SITE_DIR) .pytest_cache .ruff_cache .mypy_cache
 	@find . -type d -name "__pycache__" -prune -exec rm -rf {} +
 	@$(RUN_CAPSTONE) clean

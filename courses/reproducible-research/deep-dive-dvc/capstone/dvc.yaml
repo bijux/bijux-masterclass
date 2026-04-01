@@ -1,7 +1,7 @@
 stages:
   prepare:
     cmd: >-
-      .venv/bin/python -m incident_escalation_capstone.prepare
+      ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.prepare
       --params params.yaml
       --raw data/raw/service_incidents.csv
       --train data/derived/train.csv
@@ -22,7 +22,7 @@ stages:
 
   fit:
     cmd: >-
-      .venv/bin/python -m incident_escalation_capstone.fit
+      ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.fit
       --params params.yaml
       --train data/derived/train.csv
       --model models/model.json
@@ -39,7 +39,7 @@ stages:
 
   evaluate:
     cmd: >-
-      .venv/bin/python -m incident_escalation_capstone.evaluate
+      ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.evaluate
       --params params.yaml
       --eval data/derived/eval.csv
       --model models/model.json
@@ -60,7 +60,7 @@ stages:
 
   publish:
     cmd: >-
-      .venv/bin/python -m incident_escalation_capstone.publish
+      ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.publish
       --params params.yaml
       --profile state/data_profile.json
       --model models/model.json

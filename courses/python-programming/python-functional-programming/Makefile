@@ -4,6 +4,9 @@ SHELL := /bin/sh
 
 CAPSTONE_DIR := capstone
 RUN_CAPSTONE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(CAPSTONE_DIR)
+ARTIFACTS_DIR ?= ../../../artifacts
+SITE_DIR ?= $(ARTIFACTS_DIR)/site/python-programming/python-functional-programming
+COURSE_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-functional-programming
 
 .PHONY: help
 help: ## Show available targets
@@ -52,5 +55,5 @@ freeze-codebase: ## Export the current capstone codebase into markdown
 .PHONY: clean
 clean: ## Remove course and capstone build artifacts
 	@$(RUN_CAPSTONE) clean
-	@rm -rf .venv site .pytest_cache .ruff_cache .mypy_cache
+	@rm -rf $(COURSE_VENV_DIR) $(SITE_DIR) .pytest_cache .ruff_cache .mypy_cache
 	@find . -type d -name "__pycache__" -prune -exec rm -rf {} +

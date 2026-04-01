@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   prepare:
-    cmd: .venv/bin/python -m incident_escalation_capstone.prepare --params 
+    cmd: ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.prepare --params 
       params.yaml --raw data/raw/service_incidents.csv --train 
       data/derived/train.csv --eval data/derived/eval.csv --profile 
       state/data_profile.json
@@ -37,7 +37,7 @@ stages:
       md5: 268347f2691e6151025d2129cea2a208
       size: 397
   fit:
-    cmd: .venv/bin/python -m incident_escalation_capstone.fit --params 
+    cmd: ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.fit --params 
       params.yaml --train data/derived/train.csv --model models/model.json
     deps:
     - path: data/derived/train.csv
@@ -63,7 +63,7 @@ stages:
       md5: 0a1360d8f1af4c75d589982302028b1b
       size: 1155
   evaluate:
-    cmd: .venv/bin/python -m incident_escalation_capstone.evaluate --params 
+    cmd: ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.evaluate --params 
       params.yaml --eval data/derived/eval.csv --model models/model.json 
       --predictions state/predictions.csv --metrics metrics/metrics.json
     deps:
@@ -100,7 +100,7 @@ stages:
       md5: 0c407dc5f310268042d4a5f67d3ee4c7
       size: 250
   publish:
-    cmd: .venv/bin/python -m incident_escalation_capstone.publish --params 
+    cmd: ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.publish --params 
       params.yaml --profile state/data_profile.json --model models/model.json 
       --metrics metrics/metrics.json --predictions state/predictions.csv 
       --publish publish/v1

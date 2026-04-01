@@ -7,7 +7,8 @@
 
 .DEFAULT_GOAL := install
 
-VENV       ?= .venv
+ARTIFACTS_DIR ?= ../../../../artifacts
+VENV       ?= $(ARTIFACTS_DIR)/venv/python-programming/python-functional-programming/capstone
 PYTHON     ?= python3
 VENV_PY    := $(VENV)/bin/python
 VENV_PIP   := $(VENV)/bin/pip

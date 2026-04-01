@@ -3,7 +3,8 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 PYTHON ?= python3
-VENV_DIR ?= .venv
+ARTIFACTS_DIR ?= ../../../../artifacts
+VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-dvc/capstone
 VENV_BIN := $(VENV_DIR)/bin
 PIP := $(VENV_BIN)/pip
 PYTEST := $(VENV_BIN)/pytest

@@ -6,7 +6,9 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 PYTHON ?= python3
-VENV_DIR ?= .venv
+ARTIFACTS_DIR ?= ../../../artifacts
+SITE_DIR ?= $(ARTIFACTS_DIR)/site/reproducible-research/deep-dive-make
+VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-make
 VENV_BIN := $(VENV_DIR)/bin
 PY := $(VENV_BIN)/python
 PIP := $(VENV_BIN)/pip
@@ -69,7 +71,7 @@ test: capstone-selftest ## Run project tests (capstone selftest)
 .PHONY: clean-soft clean
 clean-soft: ## Remove build artifacts (keeps venv)
 > rm -rf .ruff_cache .mypy_cache
-> rm -rf site
+> rm -rf $(SITE_DIR)
 > find . -type d -name "__pycache__" -prune -exec rm -rf {} +
 
 clean: clean-soft capstone-clean ## clean-soft + capstone-clean + remove venv

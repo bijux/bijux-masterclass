@@ -4,7 +4,7 @@ site_name: Deep Dive Series
 site_description: Unified catalog for the Deep Dive course collection.
 
 docs_dir: docs
-site_dir: site
+site_dir: artifacts/site/deep-dive-series
 
 nav:
   - Home: index.md

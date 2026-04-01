@@ -11,7 +11,7 @@ repo_url: https://github.com/bijux/deep-dive-series
 edit_uri: edit/master/courses/reproducible-research/deep-dive-make/course-book/
 
 docs_dir: course-book
-site_dir: site
+site_dir: ../../../artifacts/site/reproducible-research/deep-dive-make
 
 plugins:
   - search

@@ -22,8 +22,8 @@ if [[ -f "${REPO_ROOT}/.env" ]]; then set -a; source "${REPO_ROOT}/.env"; set +a
 
 # --- Python interpreter (prefer repo venv) ---
 if [[ -z "${PYTHON_BIN:-}" ]]; then
-  if [[ -x "${REPO_ROOT}/.venv/bin/python" ]]; then
-    PYTHON_BIN="${REPO_ROOT}/.venv/bin/python"
+  if [[ -x "${REPO_ROOT}/artifacts/venv/python-programming/python-functional-programming/capstone/bin/python" ]]; then
+    PYTHON_BIN="${REPO_ROOT}/artifacts/venv/python-programming/python-functional-programming/capstone/bin/python"
   elif command -v python3 >/dev/null; then
     PYTHON_BIN="$(command -v python3)"
   elif command -v python >/dev/null; then
