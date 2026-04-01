@@ -18,6 +18,7 @@ graph TD
   courses --> python["python-programming/"]
   research --> make["deep-dive-make/"]
   research --> snakemake["deep-dive-snakemake/"]
+  research --> dvc["deep-dive-dvc/"]
   python --> functional["python-functional-programming/"]
   python --> meta["python-meta-programming/"]
 ```
@@ -27,6 +28,7 @@ graph TD
 - `reproducible-research`
   - `deep-dive-make`
   - `deep-dive-snakemake`
+  - `deep-dive-dvc`
 - `python-programming`
   - `python-functional-programming`
   - `python-meta-programming`

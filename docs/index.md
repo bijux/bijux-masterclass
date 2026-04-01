@@ -14,6 +14,7 @@ traceable, repeatable research and data-processing systems.
 
 - `deep-dive-make`
 - `deep-dive-snakemake`
+- `deep-dive-dvc`
 
 ### Python Programming
 
