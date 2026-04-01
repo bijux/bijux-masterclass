@@ -12,6 +12,39 @@ This module delineates the root causes of such inconsistencies and prescribes me
 
 **Prerequisites**: Proficiency in Modules 01–03 is indispensable. Familiarity with directed acyclic graphs (DAGs), basic DVC commands (e.g., `dvc add`), and YAML syntax is advantageous; consult DVC documentation if required.
 
+## Why this module matters in the course
+
+This is where the course turns state identity into executable truth. Once a team can name
+state correctly, the next question is whether its pipeline graph tells the truth about how
+that state changes.
+
+That matters because `dvc repro` is not magic. It can only make correct decisions from
+the dependencies, parameters, commands, and outputs that the repository declares. If the
+graph lies, DVC will behave consistently and still give the wrong operational result.
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- What makes a stage truthful rather than merely convenient?
+- Which inputs are strong enough to belong in `deps` or `params`?
+- What kinds of hidden reads or writes make a pipeline deceptive?
+- Why is `dvc.lock` evidence of a graph execution rather than just a generated file?
+
+Those answers are the bridge between "the repository runs" and "the repository is reviewable."
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- `dvc.yaml` as the declared graph
+- `params.yaml` as the control surface that should trigger meaningful change
+- `dvc.lock` as the recorded consequence of the declared graph
+- `publish/v1/` as the stable output boundary that downstream consumers should trust
+
+Ask a hard question while you inspect them: if one declared edge disappeared, which wrong
+result would become possible without an obvious crash?
+
 ---
 
 ## 4.1 The Core Issue: Implicit Dependencies in Scripts
