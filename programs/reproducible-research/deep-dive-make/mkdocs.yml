@@ -34,6 +34,7 @@ nav:
   - Capstone Map: capstone-map.md
   - Capstone File Guide: capstone-file-guide.md
   - Capstone Walkthrough: capstone-walkthrough.md
+  - Repro Catalog: repro-catalog.md
   - Modules:
       - "01 — Foundations": module-01.md
       - "02 — Scaling": module-02.md
