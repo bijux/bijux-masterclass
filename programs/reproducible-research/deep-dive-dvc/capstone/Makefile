@@ -6,9 +6,10 @@ PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../../artifacts
 VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-dvc/capstone
 VENV_BIN := $(VENV_DIR)/bin
-PIP := $(VENV_BIN)/pip
-PYTEST := $(VENV_BIN)/pytest
-DVC := $(VENV_BIN)/dvc
+VENV_PY := $(abspath $(VENV_BIN)/python)
+PIP := $(VENV_PY) -m pip
+PYTEST := $(VENV_PY) -m pytest
+DVC := $(VENV_PY) -m dvc
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
 
 .PHONY: help
@@ -39,7 +40,7 @@ test: install ## Run the Python test suite
 
 .PHONY: verify
 verify: repro ## Validate the published artifact contract
-	@$(VENV_BIN)/python -m incident_escalation_capstone.verify --publish publish/v1
+	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1
 
 .PHONY: tour
 tour: verify ## Build the learner-facing proof bundle
@@ -70,7 +71,7 @@ recovery-drill: push ## Rebuild the workspace from the remote after cache loss
 	@rm -rf data/derived metrics models publish state .dvc/cache
 	@$(DVC) pull
 	@$(DVC) checkout
-	@$(VENV_BIN)/python -m incident_escalation_capstone.verify --publish publish/v1
+	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1
 
 .PHONY: confirm
 confirm: verify test recovery-drill ## Run the full capstone verification suite
