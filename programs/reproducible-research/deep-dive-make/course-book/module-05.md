@@ -8,6 +8,14 @@ A hardened build system has two properties:
 1. it **degrades intentionally** (portability, feature gates, fallbacks), and
 2. it **proves itself** (convergence, equivalence, negative tests, and measurement).
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| portability contract | "What tool and shell assumptions are truly required?" | inspect capstone contract files after you write one locally |
+| modeled inputs | "Which environment facts change build meaning?" | compare with `mk/stamps.mk` after you understand one local stamp boundary |
+| performance guardrails | "Am I measuring cost or guessing?" | use capstone guardrails once you can interpret one local measurement |
+
 ---
 
 <a id="toc"></a>
@@ -94,6 +102,9 @@ A hardened build must satisfy all:
 * **Attestation doesn’t contaminate**: metadata is produced without injecting entropy into equivalence artifacts.
 * **Measured**: you can produce at least one trace-volume metric and one timed parse/decision metric.
 * **Proof harness exists**: convergence + equivalence + at least one negative test.
+
+This module should make the learner more disciplined, not more suspicious. The point is
+to declare assumptions precisely enough that surprises become diagnosable.
 
 [Back to top](#top)
 

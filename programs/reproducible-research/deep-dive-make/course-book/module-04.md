@@ -5,6 +5,14 @@ Modules 01–03 taught you to build truthful graphs, survive `-j`, and enforce d
 
 Capstone exists here as **corroboration**: a runnable place where these semantics are exercised. The module stands on its own.
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| CLI semantics | "Which flag isolates the defect instead of hiding it?" | use capstone after you can choose the right probe on a scratch file |
+| variable precedence | "Where did this value actually come from?" | inspect capstone origins only after you can prove `origin` and `flavor` locally |
+| rule edge-cases | "Which advanced feature preserves truth and which one breaks it?" | compare with capstone only after the semantics are already legible |
+
 ---
 
 <a id="toc"></a>
@@ -92,6 +100,9 @@ all:
 MK
 make --trace
 ```
+
+If you cannot yet reproduce the behavior in a tiny scratch file, the capstone is too much
+surface area for this module's goal.
 
 You will replace that Makefile per “Minimal repro” blocks below.
 

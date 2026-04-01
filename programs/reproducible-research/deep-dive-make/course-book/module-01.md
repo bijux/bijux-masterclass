@@ -11,7 +11,13 @@
 
 Module 01 establishes the core model: Make evaluates a dependency graph. Correct rebuild behavior requires explicit edges, safe publication, and convergence. This module is self-contained: you build a tiny project, deliberately break correctness, diagnose with Make’s own forensics, fix with canonical patterns, and **prove convergence**.
 
-This module is self-contained: you build a tiny project, deliberately break correctness, diagnose with Make’s own forensics, fix with canonical patterns, and **prove convergence**.
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| graph truth | "Why did this rebuild at all?" | keep the capstone secondary until small examples feel obvious |
+| hidden inputs | "What changed build meaning without being declared?" | enter only after you can explain one non-convergent local defect |
+| atomic publication | "How do I prevent half-written outputs from poisoning the graph?" | compare with the capstone after the local proof loop works |
 
 ---
 
@@ -90,6 +96,10 @@ int main(void) {
 ```
 
 Then paste the Makefile from **Core 5** into `project/Makefile`.
+
+If this is your first Make course, stay in this local project until `make --trace` feels
+more informative than mysterious. That is the right moment to use the capstone later as
+corroboration rather than as a substitute for the concept.
 
 ### 3.2 The five commands you must internalize
 

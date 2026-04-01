@@ -5,6 +5,14 @@ Modules 01–02 get you to “correct” and “parallel-safe.” Module 03 is w
 
 Capstone exists to **corroborate**. This module remains runnable and self-contained; capstone is the validation sidebar. (Capstone mappings/targets shown later mirror the existing repo surface.)
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| determinism | "Why does the same graph behave differently across runs or machines?" | use capstone once you can explain rooted discovery locally |
+| selftests | "What should the build prove about itself?" | compare local selftests to `capstone/tests/run.sh` after your harness works |
+| public API | "Which targets are contracts rather than conveniences?" | inspect capstone help after you define your own stable surface |
+
 ---
 
 <a id="toc"></a>
@@ -86,6 +94,9 @@ make -C project selftest
 # macOS (GNU Make):
 gmake -C project selftest
 ```
+
+Do not rush past the local simulator. This module teaches habits that only stick when the
+learner can connect each proof command to one specific invariant.
 
 #### `project/Makefile`
 

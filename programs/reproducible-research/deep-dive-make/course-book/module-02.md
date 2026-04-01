@@ -7,6 +7,14 @@ This module does **not** treat parallelism as a performance trick. It treats it 
 
 Capstone is **only** corroboration. This module remains complete and runnable even if `capstone/` didn’t exist.
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| parallel scheduling | "What can Make run at the same time?" | use capstone only after you can predict one race locally |
+| ordering tools | "Which edge changes staleness and which only changes sequencing?" | compare local choices to the capstone after the simulator works |
+| repo structure | "How do I scale one graph without hiding it behind recursion?" | inspect capstone layers after you understand the single top-level DAG idea |
+
 ---
 
 <a id="toc"></a>
@@ -71,6 +79,9 @@ m02/
 ```
 
 **Note:** the simulator uses `mk/rules.mk` as a teaching simplification. In the capstone repo, the same surface is split across the top-level `Makefile` and `mk/*.mk` (notably `mk/objects.mk` + `mk/stamps.mk`), so you won’t find a literal `mk/rules.mk` there. Capstone also ships `repro/01-shared-append.mk` as a backward-compatible alias for older text; in this module we treat `repro/01-shared-log.mk` as canonical.
+
+The module is working as intended only if you can look at one repro, predict the failure,
+and then explain which missing rule or unsafe recipe shape caused it.
 
 Use the source files below (same semantics every machine; output must be `50`):
 
