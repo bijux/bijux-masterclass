@@ -1,0 +1,12 @@
+split:
+  seed: 17
+  modulus: 5
+  eval_remainder: 0
+
+training:
+  learning_rate: 0.25
+  iterations: 900
+  l2: 0.02
+
+decision:
+  threshold: 0.52
