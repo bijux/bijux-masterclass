@@ -13,10 +13,6 @@ edit_uri: edit/main/
 docs_dir: course-book
 site_dir: site
 
-theme:
-  logo: assets/bijux_logo_hq.png
-  favicon: assets/bijux_icon.png
-
 plugins:
   - search
   - macros:
