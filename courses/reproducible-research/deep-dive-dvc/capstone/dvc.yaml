@@ -1,0 +1,79 @@
+stages:
+  prepare:
+    cmd: >-
+      .venv/bin/python -m incident_escalation_capstone.prepare
+      --params params.yaml
+      --raw data/raw/service_incidents.csv
+      --train data/derived/train.csv
+      --eval data/derived/eval.csv
+      --profile state/data_profile.json
+    deps:
+      - data/raw/service_incidents.csv
+      - src/incident_escalation_capstone/common.py
+      - src/incident_escalation_capstone/prepare.py
+    params:
+      - split.seed
+      - split.modulus
+      - split.eval_remainder
+    outs:
+      - data/derived/train.csv
+      - data/derived/eval.csv
+      - state/data_profile.json
+
+  fit:
+    cmd: >-
+      .venv/bin/python -m incident_escalation_capstone.fit
+      --params params.yaml
+      --train data/derived/train.csv
+      --model models/model.json
+    deps:
+      - data/derived/train.csv
+      - src/incident_escalation_capstone/common.py
+      - src/incident_escalation_capstone/fit.py
+    params:
+      - training.learning_rate
+      - training.iterations
+      - training.l2
+    outs:
+      - models/model.json
+
+  evaluate:
+    cmd: >-
+      .venv/bin/python -m incident_escalation_capstone.evaluate
+      --params params.yaml
+      --eval data/derived/eval.csv
+      --model models/model.json
+      --predictions state/predictions.csv
+      --metrics metrics/metrics.json
+    deps:
+      - data/derived/eval.csv
+      - models/model.json
+      - src/incident_escalation_capstone/common.py
+      - src/incident_escalation_capstone/evaluate.py
+      - src/incident_escalation_capstone/fit.py
+    params:
+      - decision.threshold
+    metrics:
+      - metrics/metrics.json
+    outs:
+      - state/predictions.csv
+
+  publish:
+    cmd: >-
+      .venv/bin/python -m incident_escalation_capstone.publish
+      --params params.yaml
+      --profile state/data_profile.json
+      --model models/model.json
+      --metrics metrics/metrics.json
+      --predictions state/predictions.csv
+      --publish publish/v1
+    deps:
+      - params.yaml
+      - state/data_profile.json
+      - models/model.json
+      - metrics/metrics.json
+      - state/predictions.csv
+      - src/incident_escalation_capstone/common.py
+      - src/incident_escalation_capstone/publish.py
+    outs:
+      - publish/v1

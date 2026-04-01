@@ -22,13 +22,36 @@ venv: ## Create the local virtual environment
 install: venv ## Install capstone dependencies
 	@$(PIP) install -e . pytest dvc
 
+.PHONY: dvc-init
+dvc-init: install ## Initialize DVC metadata and the local training remote
+	@if [ ! -d .dvc ]; then $(DVC) init --subdir -q; fi
+	@if ! $(DVC) remote list | grep -q '^training-local'; then $(DVC) remote add -d training-local .dvc-remote; fi
+
 .PHONY: repro
-repro: install ## Execute the DVC pipeline
+repro: dvc-init ## Execute the DVC pipeline
 	@$(DVC) repro
 
 .PHONY: test
 test: install ## Run the Python test suite
 	@$(PYTEST)
+
+.PHONY: verify
+verify: repro ## Validate the published artifact contract
+	@$(VENV_BIN)/python -m incident_escalation_capstone.verify --publish publish/v1
+
+.PHONY: push
+push: repro ## Push tracked artifacts to the local training remote
+	@$(DVC) push
+
+.PHONY: recovery-drill
+recovery-drill: push ## Rebuild the workspace from the remote after cache loss
+	@rm -rf data/derived metrics models publish state .dvc/cache
+	@$(DVC) pull
+	@$(DVC) checkout
+	@$(VENV_BIN)/python -m incident_escalation_capstone.verify --publish publish/v1
+
+.PHONY: confirm
+confirm: verify test recovery-drill ## Run the full capstone verification suite
 
 .PHONY: clean-generated
 clean-generated: ## Remove generated pipeline outputs
@@ -36,5 +59,5 @@ clean-generated: ## Remove generated pipeline outputs
 
 .PHONY: clean
 clean: clean-generated ## Remove local virtual environment and caches
-	@rm -rf $(VENV_DIR) .pytest_cache __pycache__
+	@rm -rf $(VENV_DIR) .pytest_cache .dvc/cache __pycache__
 	@find . -type d -name "__pycache__" -prune -exec rm -rf {} +

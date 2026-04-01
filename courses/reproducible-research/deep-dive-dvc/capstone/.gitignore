@@ -1,0 +1,5 @@
+.venv
+.pytest_cache
+.dvc-remote
+*.egg-info/
+__pycache__/

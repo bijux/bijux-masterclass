@@ -1,0 +1,141 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: .venv/bin/python -m incident_escalation_capstone.prepare --params 
+      params.yaml --raw data/raw/service_incidents.csv --train 
+      data/derived/train.csv --eval data/derived/eval.csv --profile 
+      state/data_profile.json
+    deps:
+    - path: data/raw/service_incidents.csv
+      hash: md5
+      md5: a7c8bf5c76e35b4a1e6d2cdfd9558da1
+      size: 1029
+    - path: src/incident_escalation_capstone/common.py
+      hash: md5
+      md5: 303f95e211e77071d60fc2374750cb81
+      size: 2189
+    - path: src/incident_escalation_capstone/prepare.py
+      hash: md5
+      md5: 769523adde4f2d2d8542a517ab66f7da
+      size: 3416
+    params:
+      params.yaml:
+        split.eval_remainder: 0
+        split.modulus: 5
+        split.seed: 17
+    outs:
+    - path: data/derived/eval.csv
+      hash: md5
+      md5: 737dd471851fec91f6c554c4c1d47e52
+      size: 355
+    - path: data/derived/train.csv
+      hash: md5
+      md5: c9717af1dff5a453008aeaeefdbce873
+      size: 824
+    - path: state/data_profile.json
+      hash: md5
+      md5: 268347f2691e6151025d2129cea2a208
+      size: 397
+  fit:
+    cmd: .venv/bin/python -m incident_escalation_capstone.fit --params 
+      params.yaml --train data/derived/train.csv --model models/model.json
+    deps:
+    - path: data/derived/train.csv
+      hash: md5
+      md5: c9717af1dff5a453008aeaeefdbce873
+      size: 824
+    - path: src/incident_escalation_capstone/common.py
+      hash: md5
+      md5: 303f95e211e77071d60fc2374750cb81
+      size: 2189
+    - path: src/incident_escalation_capstone/fit.py
+      hash: md5
+      md5: e5732427bf63e7bf807a393ae9cf783e
+      size: 4047
+    params:
+      params.yaml:
+        training.iterations: 900
+        training.l2: 0.02
+        training.learning_rate: 0.25
+    outs:
+    - path: models/model.json
+      hash: md5
+      md5: 0a1360d8f1af4c75d589982302028b1b
+      size: 1155
+  evaluate:
+    cmd: .venv/bin/python -m incident_escalation_capstone.evaluate --params 
+      params.yaml --eval data/derived/eval.csv --model models/model.json 
+      --predictions state/predictions.csv --metrics metrics/metrics.json
+    deps:
+    - path: data/derived/eval.csv
+      hash: md5
+      md5: 737dd471851fec91f6c554c4c1d47e52
+      size: 355
+    - path: models/model.json
+      hash: md5
+      md5: 0a1360d8f1af4c75d589982302028b1b
+      size: 1155
+    - path: src/incident_escalation_capstone/common.py
+      hash: md5
+      md5: 303f95e211e77071d60fc2374750cb81
+      size: 2189
+    - path: src/incident_escalation_capstone/evaluate.py
+      hash: md5
+      md5: 4eb3e147c4ef7ae4555425b4deeff3a1
+      size: 3037
+    - path: src/incident_escalation_capstone/fit.py
+      hash: md5
+      md5: e5732427bf63e7bf807a393ae9cf783e
+      size: 4047
+    params:
+      params.yaml:
+        decision.threshold: 0.52
+    outs:
+    - path: metrics/metrics.json
+      hash: md5
+      md5: 9db75da67a3a43457ac940857aef29e7
+      size: 270
+    - path: state/predictions.csv
+      hash: md5
+      md5: 0c407dc5f310268042d4a5f67d3ee4c7
+      size: 250
+  publish:
+    cmd: .venv/bin/python -m incident_escalation_capstone.publish --params 
+      params.yaml --profile state/data_profile.json --model models/model.json 
+      --metrics metrics/metrics.json --predictions state/predictions.csv 
+      --publish publish/v1
+    deps:
+    - path: metrics/metrics.json
+      hash: md5
+      md5: 9db75da67a3a43457ac940857aef29e7
+      size: 270
+    - path: models/model.json
+      hash: md5
+      md5: 0a1360d8f1af4c75d589982302028b1b
+      size: 1155
+    - path: params.yaml
+      hash: md5
+      md5: a53add48f0804dc52452ee2f55836162
+      size: 142
+    - path: src/incident_escalation_capstone/common.py
+      hash: md5
+      md5: 303f95e211e77071d60fc2374750cb81
+      size: 2189
+    - path: src/incident_escalation_capstone/publish.py
+      hash: md5
+      md5: a79b2d19cac6a66dcd963c3bccf59964
+      size: 4101
+    - path: state/data_profile.json
+      hash: md5
+      md5: 268347f2691e6151025d2129cea2a208
+      size: 397
+    - path: state/predictions.csv
+      hash: md5
+      md5: 0c407dc5f310268042d4a5f67d3ee4c7
+      size: 250
+    outs:
+    - path: publish/v1
+      hash: md5
+      md5: 98f1e1a41672e088a223a75e5f60ee44.dir
+      size: 3803
+      nfiles: 7

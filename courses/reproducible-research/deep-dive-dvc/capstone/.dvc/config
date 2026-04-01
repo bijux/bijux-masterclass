@@ -1,0 +1,4 @@
+[core]
+    remote = training-local
+['remote "training-local"']
+    url = ../.dvc-remote
