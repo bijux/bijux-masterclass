@@ -1,37 +1,43 @@
-# Capstone
+# Metaprogramming Capstone Guide
 
-The capstone is an executable plugin runtime for incident-delivery adapters. It is
-the course’s integration point for the ideas developed across introspection,
-decorators, descriptors, and metaclasses.
+The metaprogramming capstone is the course’s executable proof. It is where introspection,
+decorators, descriptors, and metaclasses stop being isolated topics and start interacting
+inside one runtime.
 
-## What it demonstrates
+## What this capstone is proving
 
-- `Field` descriptors that validate and coerce plugin configuration
-- an `@action` decorator that preserves signatures and records invocations
-- a `PluginMeta` metaclass that gathers fields, generates constructors, and registers plugins
-- manifest export driven by introspection rather than action execution
-- deterministic, resettable plugin registration suitable for testing
+The capstone is a plugin runtime for incident-delivery adapters with:
 
-## Run it
+- descriptor-backed configuration fields
+- action decorators that preserve signatures and record calls
+- a metaclass that gathers fields and registers plugins
+- introspection-driven manifest export that does not execute plugin behavior
 
-From the repository root:
+Its size is deliberate. The runtime is small enough to audit and large enough to force the mechanisms to coexist honestly.
+
+## How to use it while reading
+
+- After Module 04, inspect how action wrappers keep signatures and metadata visible.
+- After Module 07, inspect how `Field` descriptors own validation and per-instance storage.
+- After Module 09, inspect what `PluginMeta` enforces at class-definition time.
+- After Module 10, inspect how manifest export keeps the runtime observable instead of magical.
+
+## Best entrypoints
+
+- Repository guide: [`capstone/README.md`](https://github.com/bijux/deep-dive-series/blob/master/courses/python-programming/python-meta-programming/capstone/README.md)
+- Runtime framework: [`capstone/src/incident_plugins/`](https://github.com/bijux/deep-dive-series/tree/master/courses/python-programming/python-meta-programming/capstone/src/incident_plugins)
+- Tests: [`capstone/tests/`](https://github.com/bijux/deep-dive-series/tree/master/courses/python-programming/python-meta-programming/capstone/tests)
+
+## Core commands
 
 ```bash
 make COURSE=python-programming/python-meta-programming test
+make -C capstone confirm
 ```
 
-From the capstone directory:
+## What to inspect during review
 
-```bash
-make confirm
-```
-
-## Why it matters
-
-Metaprogramming is easiest to misunderstand when each mechanism is taught in
-isolation. The capstone forces the mechanisms to coexist:
-
-- descriptors own per-field behavior
-- decorators wrap behavior without destroying signatures
-- the metaclass owns class-creation invariants and registration
-- inspection exposes the system to tooling without triggering side effects
+- Which behavior happens at definition time and which happens at runtime?
+- Which wrappers preserve identity and which could damage tooling visibility?
+- Which invariants belong on fields, on classes, or in plain runtime code?
+- Which parts of the runtime stay observable without executing plugin actions?
