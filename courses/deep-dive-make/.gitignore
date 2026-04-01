@@ -1,0 +1,56 @@
+# OS / editor junk
+.DS_Store
+._*
+__MACOSX/
+.idea/
+.vscode/
+*.swp
+*~
+
+# Build artifacts (repo-wide, regardless of subdir)
+# Common build dirs
+build/
+stamps/
+dist/
+out/
+target/
+cmake-build-*/
+CMakeFiles/
+
+# Capstone explicit (kept even if build/ name changes elsewhere)
+make-capstone/build/
+make-capstone/stamps/
+make-capstone/app
+make-capstone/all
+make-capstone/dist.tar.gz
+
+# Generic build outputs
+app
+all
+dist.tar.gz
+*.a
+*.o
+*.so
+*.dylib
+*.dll
+*.exe
+*.obj
+*.lib
+
+# Make/clang dependency and temporary files
+*.d
+*.d.tmp
+*.tmp
+*.tmp.*
+*.tmp.d
+*.sum
+
+# Logs / traces
+*.log
+*.trace
+
+# MkDocs build output
+site/
+
+# python
+.venv
