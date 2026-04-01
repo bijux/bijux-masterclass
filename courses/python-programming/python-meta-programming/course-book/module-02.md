@@ -56,25 +56,15 @@ We defer full `inspect` to Module 3, with one deliberate preview: `inspect.getat
 <a id="visual"></a>
 ## Visual: The Real Risk Boundary
 
-```text
-Introspection Risk Ladder (practical, not moral)
-
-┌────────────────────────────────────────────────────────────────┐
-│ High risk: triggers attribute protocol → may execute code      │
-│   • getattr / hasattr                                          │
-│   • obj.attr (same thing)                                      │
-│   • setattr / delattr (mutating + hooks)                       │
-│                                                                │
-│ Medium risk: may invoke object-provided hooks                  │
-│   • dir (can call obj.__dir__)                                 │
-│                                                                │
-│ Low risk: direct storage views (when they exist)               │
-│   • vars / __dict__                                            │
-└────────────────────────────────────────────────────────────────┘
-
-Caption: The boundary is *value resolution* (attribute protocol),
-         not whether you used a builtin.
+```mermaid
+graph TD
+  high["High risk<br/>triggers attribute protocol and may execute code<br/>`getattr`, `hasattr`, `obj.attr`, `setattr`, `delattr`"]
+  medium["Medium risk<br/>may invoke object hooks<br/>`dir()` can call `obj.__dir__()`"]
+  low["Low risk<br/>direct storage views when present<br/>`vars()` and `__dict__`"]
+  high --> medium --> low
 ```
+
+Caption: The boundary is value resolution, not whether you used a builtin.
 
 The important takeaway: **“names” are usually cheaper than “values.”** Enumerating candidates is often safe-ish; resolving values can run code.
 
@@ -133,18 +123,14 @@ That separation prevents 90% of debugging/introspection mistakes.
 
 ### Diagram: “visible” vs “stored” vs “resolved”
 
-```text
-┌──────────────────────────────────────────────────────────────────────┐
-│ 1) Visible (candidate names)                                         │
-│    dir(obj) → names from instance + class + MRO (+ possibly __dir__) │
-│                                                                      │
-│ 2) Stored (physical state, if present)                               │
-│    vars(obj) / obj.__dict__ → what's actually stored on that object  │
-│                                                                      │
-│ 3) Resolved (semantic attribute access)                              │
-│    getattr(obj, "x") → full attribute protocol (may execute code)    │
-└──────────────────────────────────────────────────────────────────────┘
-Caption: Discovery ≠ storage ≠ resolution.
+```mermaid
+graph TD
+  visible["1. Visible<br/>`dir(obj)` returns candidate names from instance, class, MRO, and maybe `__dir__`"]
+  stored["2. Stored<br/>`vars(obj)` or `obj.__dict__` shows physical state when present"]
+  resolved["3. Resolved<br/>`getattr(obj, \"x\")` runs full attribute lookup and may execute code"]
+  visible --> stored --> resolved
+```
+Caption: Discovery is not storage, and storage is not resolution.
 ```
 
 ### Examples

@@ -85,39 +85,13 @@ If you’re writing a decorator, RPC layer, CLI wrapper, validator, tracer, or a
 
 #### Visual: how `signature()` and `bind()` relate
 
-```text
-Source callable
-───────────────
-def f(a, /, b, *, c=False, **kw): ...
-
-1) inspect.signature(f)
-──────────────────────
-┌──────────────────────────────────────────────────┐
-│ Signature                                        │
-│  parameters: Ordered[name → Parameter]           │
-│   a: POSITIONAL_ONLY                             │
-│   b: POSITIONAL_OR_KEYWORD                       │
-│   c: KEYWORD_ONLY (default False)                │
-│   kw: VAR_KEYWORD                                │
-└──────────────────────────────────────────────────┘
-
-2) sig.bind(*args, **kwargs)
-────────────────────────────
-Call: f(10, 20, d=1)
-args=(10, 20), kwargs={"d": 1}
-
-┌──────────────────────────────────────────────────┐
-│ BoundArguments                                   │
-│  arguments: Ordered                              │
-│   a  → 10                                        │
-│   b  → 20                                        │
-│   c  → <missing until apply_defaults()>          │
-│   kw → {"d": 1}                                  │
-└──────────────────────────────────────────────────┘
-
-3) ba.apply_defaults()
-──────────────────────
-fills c → False
+```mermaid
+graph TD
+  callable["Source callable<br/>`def f(a, /, b, *, c=False, **kw): ...`"]
+  signature["`inspect.signature(f)`<br/>parameters:<br/>`a`: POSITIONAL_ONLY<br/>`b`: POSITIONAL_OR_KEYWORD<br/>`c`: KEYWORD_ONLY, default `False`<br/>`kw`: VAR_KEYWORD"]
+  bound["`sig.bind(10, 20, d=1)`<br/>arguments:<br/>`a -> 10`<br/>`b -> 20`<br/>`c -> missing`<br/>`kw -> {\"d\": 1}`"]
+  defaults["`ba.apply_defaults()` fills `c -> False`"]
+  callable --> signature --> bound --> defaults
 ```
 
 ### Examples (all runnable)
@@ -255,15 +229,20 @@ These APIs depend on how code was loaded and whether source is available:
 
 #### Visual: provenance success/failure pipeline
 
-```text
-Object ──► code object / module metadata ──► filename ──► linecache ──► source slice
-           (may not exist)                  (may be fake) (may miss)   (may raise)
+```mermaid
+graph LR
+  object["Object"]
+  metadata["Code object or module metadata<br/>may not exist"]
+  filename["Filename<br/>may be fake"]
+  linecache["`linecache` lookup<br/>may miss"]
+  source["Source slice<br/>may raise"]
+  object --> metadata --> filename --> linecache --> source
+```
 
 Typical failures:
-• interactive: filename "<stdin>" / transient cells → linecache mismatch → OSError
-• exec/eval: filename "<string>" → no file → OSError
-• frozen/zipimport: file not present → OSError / TypeError
-```
+- interactive: filename `"<stdin>"` or transient cells cause `linecache` mismatches and `OSError`
+- `exec` or `eval`: filename `"<string>"` has no backing file and raises `OSError`
+- frozen or zipimport: file is unavailable and can raise `OSError` or `TypeError`
 
 ### Examples (always safe)
 
@@ -344,26 +323,18 @@ If you want *structure*, use static lookup. If you want *values*, accept side ef
 
 #### Visual: dynamic vs static attribute resolution
 
-```text
-Dynamic (normal Python attribute access)
-────────────────────────────────────────
-getattr(obj, "x") / obj.x
-  1) data descriptor on type(obj)?  -> __get__/__set__ involved
-  2) obj.__dict__?
-  3) non-data descriptor / class attr?
-  4) __getattr__ fallback?
-
-This can execute:
-  • property fget
-  • descriptor __get__
-  • custom __getattribute__/__getattr__
-
-Static (inspect.getattr_static)
-───────────────────────────────
-inspect.getattr_static(obj, "x")
-  • returns the raw attribute object
-  • does NOT invoke descriptors
-  • does NOT call __getattr__/__getattribute__
+```mermaid
+graph TD
+  dynamic["Dynamic lookup<br/>`getattr(obj, \"x\")` or `obj.x`"]
+  dataDesc["1. data descriptor on `type(obj)`?"]
+  dict["2. `obj.__dict__`?"]
+  nonData["3. non-data descriptor or class attribute?"]
+  fallback["4. `__getattr__` fallback?"]
+  sideEffects["May execute<br/>property getter<br/>descriptor `__get__`<br/>custom `__getattribute__` or `__getattr__`"]
+  static["Static lookup<br/>`inspect.getattr_static(obj, \"x\")`"]
+  raw["Returns raw attribute object without invoking descriptor hooks"]
+  dynamic --> dataDesc --> dict --> nonData --> fallback --> sideEffects
+  static --> raw
 ```
 
 ### Demonstration: `getmembers` can trigger side effects
@@ -445,14 +416,19 @@ Frames expose:
 
 #### Visual: frames keep things alive
 
-```text
-frame ──► f_locals (dict) ──► local objects
-   │
-   └──► f_back ──► previous frame ──► previous locals ──► ...
-
-If you store `frame` or `traceback` in a long-lived structure,
-you keep the entire chain alive until those references are released.
+```mermaid
+graph TD
+  frame["frame"]
+  locals["`f_locals` dictionary"]
+  objects["local objects"]
+  previous["`f_back` previous frame"]
+  previousLocals["previous locals"]
+  more["..."]
+  frame --> locals --> objects
+  frame --> previous --> previousLocals --> more
 ```
+
+If you store `frame` or `traceback` in a long-lived structure, you keep the entire chain alive until those references are released.
 
 ### Example: safe top-of-stack inspection without `inspect.stack()`
 
@@ -538,16 +514,16 @@ Key idea: only read state from:
 
 #### Visual: safe repr data flow (no properties)
 
-```text
-instance
-  │
-  ├─► __dict__ (if present)              (safe: raw storage)
-  │
-  ├─► __slots__ names from MRO           (safe: slot descriptors)
-  │        │
-  │        └─► object.__getattribute__   (avoids custom lookup)
-  │
-  └─► order fields using signature(__init__) when possible
+```mermaid
+graph TD
+  instance["instance"]
+  dict["`__dict__` when present<br/>safe raw storage"]
+  slots["`__slots__` names from the MRO<br/>safe slot descriptors"]
+  objectGet["`object.__getattribute__`<br/>avoids custom lookup hooks"]
+  order["Order fields with `signature(__init__)` when possible"]
+  instance --> dict
+  instance --> slots --> objectGet
+  instance --> order
 ```
 
 ```python

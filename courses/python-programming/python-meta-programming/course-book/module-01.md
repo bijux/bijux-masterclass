@@ -82,20 +82,16 @@ The key attributes of a function object form a metadata API for introspection an
 
 #### Function object structure
 
-```text
-Function Object Structure
-
-┌──────────────────────────────────────────────────────────┐
-│ Function object (types.FunctionType)                     │
-├──────────────────────────────────────────────────────────┤
-│ __code__     ──► code object (bytecode, varnames, etc.)  │
-│ __globals__  ──► defining module's namespace dict        │
-│ __closure__  ──► tuple of cell objects (free variables)  │
-│ __name__, __qualname__, __doc__, __annotations__, etc.   │
-└──────────────────────────────────────────────────────────┘
-
-Caption: Code describes execution; globals/closure provide the environment.
+```mermaid
+graph TD
+  fn["Function object (types.FunctionType)"]
+  fn --> code["__code__: code object"]
+  fn --> globals["__globals__: defining module namespace"]
+  fn --> closure["__closure__: tuple of cell objects"]
+  fn --> metadata["__name__, __qualname__, __doc__, __annotations__, ..."]
 ```
+
+Caption: Code describes execution; globals and closure provide the environment.
 
 #### Python vs built-in functions
 
@@ -194,20 +190,16 @@ print(add5(10))  # 15
 
 Here `base` is local to `outer`, but `inner` needs it after `outer` has finished. Python keeps `base` alive by placing it in a **closure cell**.
 
-```text
-Closure Capture (Cells)
-
-Outer function
-   │
-   └─► creates cell for captured variable (base)
-           │
-           ▼
-Inner function
-   │
-   └─► reads from cell (co_freevars includes "base")
-
-Caption: Closures capture references via cells, not “snapshots of values”.
+```mermaid
+graph TD
+  outer["Outer function"]
+  cell["Closure cell for `base`"]
+  inner["Inner function"]
+  outer -->|"creates"| cell
+  cell -->|"read via `co_freevars`"| inner
 ```
+
+Caption: Closures capture references via cells, not snapshots of values.
 
 The code objects describe this relationship from both sides:
 
@@ -288,68 +280,38 @@ Key attributes:
 
 ### Class creation pipeline (scan-first summary)
 
-```text
-Class Creation Pipeline (PEP 3115)
-
-Source: class C(Base1, Base2, metaclass=Meta): ...
-
-Pipeline (definition time):
-  1. Resolve metaclass M
-  2. ns = M.__prepare__("C", (Base1, Base2), **kw)   ← optional
-  3. Execute class body into ns
-  4. cls = M("C", (Base1, Base2), ns, **kw)
-        ├─ M.__new__(...)   ← create class object
-        └─ M.__init__(...)  ← post-creation init
-  5. Bind cls to name "C" in scope
+```mermaid
+graph TD
+  source["class C(Base1, Base2, metaclass=Meta): ..."]
+  resolve["1. Resolve metaclass `M`"]
+  prepare["2. `ns = M.__prepare__(...)` (optional)"]
+  execute["3. Execute class body into `ns`"]
+  construct["4. `cls = M(name, bases, ns, **kw)`"]
+  new["`M.__new__` creates class object"]
+  init["`M.__init__` finalizes class object"]
+  bind["5. Bind `cls` to name `C`"]
+  source --> resolve --> prepare --> execute --> construct
+  construct --> new
+  construct --> init
+  new --> bind
+  init --> bind
+```
 
 Caption: Metaclasses run before the class exists; this is definition-time work.
-```
 
 ### Class creation pipeline (expanded, step-by-step)
 
-```text
-Expanded: Class Creation Pipeline (definition time)
-
-┌──────────────────────────────────────────────────────────────┐
-│ Step 1: Determine metaclass M                                │
-│  • explicit metaclass= wins                                  │
-│  • else derived from bases (compatibility rules)             │
-│  • else default is built-in type                             │
-└──────────────────────────────────────────────────────────────┘
-                 │
-                 ▼
-┌──────────────────────────────────────────────────────────────┐
-│ Step 2: ns = M.__prepare__(name, bases, **kw)                │
-│  • must return a mapping                                     │
-│  • type.__prepare__ returns an empty dict                    │
-│  • custom prepare may enforce order / collect declarations   │
-└──────────────────────────────────────────────────────────────┘
-                 │
-                 ▼
-┌──────────────────────────────────────────────────────────────┐
-│ Step 3: Execute class body into ns                           │
-│  • assignments populate ns                                   │
-│  • def statements create function objects with qualnames     │
-│  • no class object exists yet                                │
-└──────────────────────────────────────────────────────────────┘
-                 │
-                 ▼
-┌──────────────────────────────────────────────────────────────┐
-│ Step 4: cls = M(name, bases, ns, **kw)                       │
-│  • M.__new__ creates class object                            │
-│  • M.__init__ finalizes it                                   │
-│  • MRO computed and stored as cls.__mro__                    │
-│  • cls.__dict__ is a read-only view (mappingproxy on CPython)│
-└──────────────────────────────────────────────────────────────┘
-                 │
-                 ▼
-┌──────────────────────────────────────────────────────────────┐
-│ Step 5: Bind cls into the surrounding scope                  │
-│  • e.g. module globals: globals()["C"] = cls                 │
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+  step1["Step 1: Determine metaclass `M`<br/>explicit metaclass wins<br/>else derive from bases<br/>else default to `type`"]
+  step2["Step 2: `ns = M.__prepare__(name, bases, **kw)`<br/>must return a mapping<br/>custom prepare can preserve order or collect declarations"]
+  step3["Step 3: Execute class body into `ns`<br/>assignments populate namespace<br/>`def` creates function objects<br/>no class object exists yet"]
+  step4["Step 4: `cls = M(name, bases, ns, **kw)`<br/>`M.__new__` creates class<br/>`M.__init__` finalizes class<br/>stores MRO and class dictionary view"]
+  step5["Step 5: Bind `cls` into surrounding scope<br/>for example `globals()[\"C\"] = cls`"]
+  step1 --> step2 --> step3 --> step4 --> step5
+```
 
 Caption: The class statement is executable code; it runs once at definition time.
-```
 
 ---
 
@@ -564,29 +526,20 @@ Slots are a targeted optimization. Use them when you have measured that memory f
 
 ### Instance layout: `__dict__` vs `__slots__`
 
-```text
-Instance Layout: __dict__ vs __slots__
+```mermaid
+graph LR
+  dictBacked["Dictionary-backed instance"]
+  dictBacked --> dictClass["__class__ -> Class"]
+  dictBacked --> dictStore["__dict__ -> {x: 10, y: 20, ...}"]
 
-Dictionary-backed (default)
-┌────────────────────────────────────┐
-│ Instance                           │
-├────────────────────────────────────┤
-│ __class__  ──► Class               │
-│ __dict__   ──► {x: 10, y: 20, ...} │
-└────────────────────────────────────┘
-
-Slotted (fixed layout)
-┌────────────────────────────────────┐
-│ Instance                           │
-├────────────────────────────────────┤
-│ __class__  ──► Class               │
-│ x = 10      (slot)                 │
-│ y = 20      (slot)                 │
-│ (no __dict__ unless requested)     │
-└────────────────────────────────────┘
-
-Caption: Slots trade flexibility for memory/speed; no dynamic attrs by default.
+  slotted["Slotted instance"]
+  slotted --> slotClass["__class__ -> Class"]
+  slotted --> slotX["slot `x = 10`"]
+  slotted --> slotY["slot `y = 20`"]
+  slotted --> noDict["no `__dict__` unless requested"]
 ```
+
+Caption: Slots trade flexibility for memory and speed; no dynamic attrs by default.
 
 ---
 
@@ -704,27 +657,21 @@ assert inst.__class__ is cls
 print(bound("abc"))  # Processed 3
 ```
 
-```text
-The Core Object Cycle
-
-Module object
-   │
-   ▼
-Class object (from module.__dict__)
-   │
-   ▼
-Instance (Class())
-   │
-   ▼
-Bound method (inst.method)
-   │
-   ├─► __func__ ──► Function object
-   │                 │
-   │                 └─► __globals__ ──► Module.__dict__
-   └─► __self__  ──► Instance
-
-Caption: Everything loops back: module → class → instance → method → function → module.
+```mermaid
+graph TD
+  module["Module object"]
+  cls["Class object (from `module.__dict__`)"]
+  instance["Instance (`Class()`)"]
+  method["Bound method (`inst.method`)"]
+  func["`__func__` -> function object"]
+  globals["`__globals__` -> `module.__dict__`"]
+  self["`__self__` -> instance"]
+  module --> cls --> instance --> method
+  method --> func --> globals
+  method --> self
 ```
+
+Caption: Everything loops back: module to class to instance to method to function to module.
 
 Key mental model:
 
