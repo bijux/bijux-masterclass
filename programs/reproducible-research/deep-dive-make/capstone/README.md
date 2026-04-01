@@ -174,10 +174,17 @@ Examples include:
 * incorrect stamp usage that hides inputs
 * incorrect modeling of generated headers
 * directory creation hazards
+* ambiguous rule-selection and ordering mistakes
 Run a repro directly:
 ```sh
 make -f repro/01-shared-append.mk -j4
 ```  
+
+List the available repro entrypoints:
+
+```sh
+make repro
+```
 
 [Back to top](#top)
 

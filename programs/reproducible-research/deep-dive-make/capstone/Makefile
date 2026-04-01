@@ -159,9 +159,16 @@ dist: all
 >     $(PYTHON) scripts/mkdist.py dist.tar.gz app $(BLD_DIR)/bin $(DYN_HDR)
 
 repro:
->     @echo "repro: run the race repro pack directly, e.g.:" >&2
->     @echo "  make -f $(REP_DIR)/01-shared-log.mk -j2 all" >&2
->     @echo "  make -f $(REP_DIR)/01-shared-append.mk -j2 all  # alias/back-compat" >&2
+>     @printf '%s\n' \
+>     'Repro pack:' \
+>     '  make -f repro/01-shared-log.mk -j2 all       shared mutable log output' \
+>     '  make -f repro/01-shared-append.mk -j2 all    alias for older material' \
+>     '  make -f repro/02-temp-collision.mk -j2 all   unsafe temp/publication pattern' \
+>     '  make -f repro/03-stamp-clobber.mk -j2 all    dishonest stamp boundary' \
+>     '  make -f repro/04-generated-header.mk all      generated-file modeling' \
+>     '  make -f repro/05-mkdir-race.mk -j2 all       directory creation race' \
+>     '  make -f repro/06-order-only-misuse.mk all    order-only prerequisite misuse' \
+>     '  make -f repro/07-pattern-ambiguity.mk all    ambiguous pattern rule selection'
 
 discovery-audit:
 >     printf '%s\n' $(DYN_SRCS) | LC_ALL=C sort -c
