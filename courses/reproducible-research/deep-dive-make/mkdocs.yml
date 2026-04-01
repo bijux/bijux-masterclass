@@ -1,3 +1,5 @@
+INHERIT: ../../../mkdocs.shared.yml
+
 site_name: Deep Dive Make
 site_description: >-
   Deep Dive Make is a five-module course-book that teaches GNU Make as a disciplined
@@ -12,55 +14,17 @@ docs_dir: course-book
 site_dir: site
 
 theme:
-  name: material
-  language: en
   logo: assets/bijux_logo_hq.png
   favicon: assets/bijux_icon.png
-  features:
-    - navigation.sections
-    - navigation.top
-    - toc.follow
-    - search.suggest
-    - search.highlight
-    - content.code.copy
-  palette:
-    - scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
-  icon:
-    repo: fontawesome/brands/github
-
-markdown_extensions:
-  - admonition
-  - attr_list
-  - md_in_html
-  - footnotes
-  - tables
-  - toc:
-      permalink: true
-  - pymdownx.details
-  - pymdownx.superfences
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 plugins:
   - search
   - macros:
       include_dir: .
+
+markdown_extensions:
+  - footnotes
+  - tables
 
 nav:
   - Home: index.md
@@ -72,11 +36,3 @@ nav:
       - "04 — Semantics Under Pressure": module-04.md
       - "05 — Hardening": module-05.md
   - Capstone Project: readme-capstone.md
-
-extra:
-  homepage: https://bijux.github.io/
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/bijux
-
-copyright: "© 2025 Bijan Mousavi"

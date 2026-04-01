@@ -1,3 +1,5 @@
+INHERIT: ../../../mkdocs.shared.yml
+
 site_name: Python Functional Programming
 site_description: >-
   Correctness-first deep dive into functional programming in Python: data-first pipelines,
@@ -10,51 +12,6 @@ edit_uri: edit/main/course-book/
 
 docs_dir: course-book
 site_dir: site
-
-theme:
-  name: material
-  language: en
-  icon:
-    repo: fontawesome/brands/github
-  features:
-    - navigation.sections
-    - navigation.top
-    - toc.follow
-    - search.suggest
-    - search.highlight
-    - content.code.copy
-  palette:
-    - scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
-
-plugins:
-  - search
-
-markdown_extensions:
-  - admonition
-  - attr_list
-  - md_in_html
-  - toc:
-      permalink: true
-  - pymdownx.details
-  - pymdownx.superfences
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 nav:
   - Home: index.md
@@ -187,11 +144,3 @@ nav:
       - Reference:
           - FP Standards: reference/fp-standards.md
           - Review Checklist: reference/review-checklist.md
-
-extra:
-  homepage: https://bijux.github.io/
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/bijux
-
-copyright: "© 2025 Bijan Mousavi"
