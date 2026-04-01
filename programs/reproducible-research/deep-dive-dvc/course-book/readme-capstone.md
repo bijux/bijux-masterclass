@@ -24,9 +24,15 @@ enough to force real design choices about state.
 - After Module 04, inspect `dvc.yaml` and `dvc.lock` together and ask whether every meaningful edge is declared.
 - After Module 06, inspect `params.yaml`, metrics, and the publish bundle and ask what makes runs comparable.
 - After Module 07 and Module 08, inspect the push and recovery targets and ask which guarantees depend on remote durability.
+- After Module 09, inspect `publish/v1/`, `manifest.json`, and promoted params or metrics as the release boundary.
+- In Module 10, use the repository as a review specimen for stewardship judgment rather than a first-contact example.
+
+If you want a module-by-module route through the repository, start with
+[Capstone Map](capstone-map.md).
 
 ## Best entrypoints
 
+- Capstone map: [capstone-map.md](capstone-map.md)
 - Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/README.md)
 - Pipeline graph: [`capstone/dvc.yaml`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/dvc.yaml)
 - Declared inputs: [`capstone/params.yaml`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/params.yaml)

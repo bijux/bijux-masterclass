@@ -33,7 +33,7 @@ administrative instead of necessary.
 
 ## What each module contributes
 
-- [Module 00](module-00.md) defines the study strategy, the family context, and the capstone map.
+- [Module 00](module-00.md) defines the study strategy, the family context, and the capstone route.
 - [Module 01](module-01.md) explains why common Git-and-script workflows still fail reproducibility.
 - [Module 02](module-02.md) defines stable data identity through content addressing and state layers.
 - [Module 03](module-03.md) explains why execution environments are part of the declared input surface.
@@ -44,7 +44,8 @@ administrative instead of necessary.
 - [Module 08](module-08.md) explains retention, recovery, and long-term survivability under time pressure.
 - [Module 09](module-09.md) defines promotion, release contracts, and the evidence needed for downstream trust.
 - [Module 10](module-10.md) finishes with migration, governance, anti-patterns, and DVC tool boundaries.
-- [Capstone](readme-capstone.md) provides the executable repository that keeps the program honest.
+- [Capstone Guide](readme-capstone.md) explains what the executable repository proves.
+- [Capstone Map](capstone-map.md) shows which repository surfaces to inspect for each module.
 
 ## How to use the capstone while reading
 
@@ -77,7 +78,8 @@ graph TD
   root --> mkdocs["mkdocs.yml"]
   root --> readme["README.md"]
   book --> orientation["module-00.md"]
-  book --> modules["module-01.md ... module-08.md"]
+  book --> modules["module-01.md ... module-10.md"]
+  book --> capmap["capstone-map.md"]
   capstone --> capreadme["README.md"]
 ```
 

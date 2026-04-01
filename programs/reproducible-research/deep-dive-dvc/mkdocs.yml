@@ -23,6 +23,7 @@ nav:
       - "Course Home": index.md
       - "Program Outline": module-00.md
       - "Capstone Guide": readme-capstone.md
+      - "Capstone Map": capstone-map.md
   - "Module 01: Why Reproducibility Fails": module-01.md
   - "Module 02: Data Identity and Content Addressing": module-02.md
   - "Module 03: Execution Environments as Inputs": module-03.md

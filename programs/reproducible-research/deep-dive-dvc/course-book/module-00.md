@@ -112,6 +112,9 @@ pipelines, metrics, experiments, promotion, remotes, and recovery become concret
 early modules still benefit from smaller mental and local examples first so the learner
 can understand state identity before the repository becomes the main teaching surface.
 
+Use [Capstone Map](capstone-map.md) when you want one clear route from a module concept
+to the exact repository files and proof command that demonstrate it.
+
 **Proof command:**
 
 ```bash
