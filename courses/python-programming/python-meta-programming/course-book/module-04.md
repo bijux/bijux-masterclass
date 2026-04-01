@@ -43,6 +43,37 @@ We also make the risk profile explicit:
 
 The goal is to make you fluent with decorator mechanics (nested functions, `@` syntax, wrapping, identity preservation) and disciplined about their use: you should be able to read and write decorators that are transparent, introspection-friendly, and honest about their costs, and to recognise immediately when a decorator has crossed the line from “thin wrapper” into “small framework” with semantic and concurrency implications.
 
+## Why this module matters in the course
+
+This is the first module where metaprogramming starts changing behavior instead of only
+observing it. That makes it the first place where runtime honesty can be lost fast:
+signatures disappear, stack traces get worse, metadata lies, and stateful wrappers start
+changing semantics without advertising the cost.
+
+The point of this module is to make decorator mechanics feel explicit enough that those
+failure modes become visible immediately.
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- What work happens once at definition time, and what work happens on each call?
+- Which wrappers preserve identity and which ones make tooling less trustworthy?
+- When is a decorator still a thin transformation and when has it become a small framework?
+- Why is `functools.wraps` part of correctness rather than just style?
+
+If those answers are weak, later descriptor and metaclass material will be much harder to judge responsibly.
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- the action decorator implementation under `capstone/src/incident_plugins/`
+- tests that assert signature preservation and invocation recording
+- places where wrapper transparency matters to manifest generation and debugging
+
+The capstone should make one point concrete here: a good decorator changes behavior without lying about what it wrapped.
+
 ```mermaid
 graph TD
   subgraph DefinitionTime["Definition time"]
