@@ -13,6 +13,32 @@
 
 ---
 
+## Why this module matters
+
+Production failures often get misdiagnosed as “Snakemake problems” when the real issue is a missing boundary:
+
+- workflow semantics and executor policy are mixed together
+- retries exist without a failure contract
+- staging and shared filesystem assumptions are implicit
+- CI checks prove too little to be trusted
+
+This module teaches how to encode operations as explicit policy and proof instead of tribal command history.
+
+## Reading path
+
+1. Start with the policy-plus-proofs framing.
+2. Read profiles and executors before retries and incomplete semantics.
+3. Read staging and data locality before CI and governance.
+4. Treat the production lab as the concrete thread that ties the module together.
+
+## Capstone connection
+
+The capstone’s profiles, confirm target, artifact verification, and workflow gates are direct embodiments
+of this module. If you want to know why the capstone is opinionated about proof artifacts and clean-room runs,
+this module is the reason.
+
+---
+
 ## Orientation: production is “policy + plugins + proofs”
 
 Production Snakemake means you stop relying on “tribal CLI invocations” and you make execution reproducible by encoding **policy in a profile**, **capabilities in plugins**, and **correctness via proof artifacts** (logs, change reports, tests). Profiles in 9.x are explicitly version-scoped (`config.vX+.yaml`) and can set any CLI option by YAML key. ([Snakemake][1])
