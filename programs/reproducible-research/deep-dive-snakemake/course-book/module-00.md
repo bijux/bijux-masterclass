@@ -1,67 +1,125 @@
-# Orientation
+<a id="top"></a>
 
-Deep Dive Snakemake is a course about workflow truthfulness under pressure. The goal is
-not to memorize more flags. The goal is to learn how to build workflows whose behavior
-you can defend when the data grows, the executor changes, or the team revisits the code
-months later.
+# Deep Dive Snakemake: Program Outline
 
-## What this course is not
+Deep Dive Snakemake is now a ten-module program that starts from first-contact workflow
+thinking and ends with long-lived workflow judgment. The through-line does not change:
 
-- It is not an introductory syntax guide to Snakemake rules and wildcards.
-- It is not a collection of bioinformatics recipes detached from workflow semantics.
-- It is not a catalog of executor flags without a model of what the workflow itself guarantees.
+- **Truthful file contracts**: every real input and output is declared.
+- **Safe publication**: trusted outputs appear only at a deliberate boundary.
+- **Dynamic discipline**: checkpoints and discovery stay explicit and reviewable.
+- **Operational clarity**: profiles, staging, and retries change policy, not meaning.
+- **Executable proof**: manifests, reports, tests, and verification surfaces back the claims.
 
-## What this course is
+This repository contains both the program guide in `course-book/` and the executable
+reference workflow in `capstone/`.
 
-- A semantics-first guide to file contracts, rebuild truth, and publish boundaries
-- A design guide for dynamic DAGs, checkpoints, and deterministic discovery
-- An operations guide for profiles, retries, staging, CI, and long-lived workflow governance
-- A capstone-backed course where the main claims are always visible in executable workflow behavior
+---
 
-## Readiness check
+## Program Arc
 
-You are ready for this course if you can already do most of the following without looking up syntax:
+### Module 01 — First Principles: The File-DAG Contract
 
-- read a simple Snakemake rule and identify its inputs and outputs
-- use `snakemake -n` and explain what the dry-run is planning
-- tell the difference between workflow code and shell code embedded in a rule
-- read a small YAML config and understand how a workflow consumes it
-- explain why an undeclared input is a correctness bug, not just a style issue
+Start from the essential Snakemake mental model: rules declare file contracts, targets
+drive the DAG, and dry-runs explain planned work before execution.
 
-If those are still shaky, you can continue, but you should move slowly and verify every example by running it.
+**Deliverable:** a tiny workflow whose outputs, reruns, and publish boundary can be explained with evidence.
 
-## Key terms used throughout the course
+### Module 02 — Dynamic DAGs, Integrity, and Deterministic Discovery
 
-- **file contract**: the explicit promise a rule makes through its declared inputs and outputs
-- **dynamic DAG**: a workflow whose full job graph is discovered in stages rather than all at parse time
-- **checkpoint**: a rule that allows downstream DAG construction to be re-evaluated after discovery
-- **publish boundary**: the stable versioned interface that downstream consumers are allowed to trust
-- **profile**: site or executor policy encoded separately from workflow semantics
-- **proof artifact**: logs, summaries, manifests, reports, or other outputs that let you verify what happened
+Learn how a workflow can discover work in stages without turning the plan into a moving
+target. This module introduces disciplined checkpoints, explicit discovery artifacts, and
+integrity evidence.
 
-## Study map
+**Deliverable:** a dynamic workflow whose discovered set is explicit and reproducible across runs.
 
-This sequence is deliberate:
+### Module 03 — Production Operation: Profiles, Retries, Staging, and Governance
 
-1. Module 01 teaches the semantic floor: truthful file contracts and rebuild behavior.
-2. Module 02 adds dynamic DAGs, integrity, environments, and performance patterns.
-3. Module 03 moves into production operation: profiles, retries, staging, and governance.
-4. Module 04 focuses on scaling boundaries: modularity, CI gates, and executor-proof semantics.
+Move from local workflow semantics to operational policy. Profiles, retries, incomplete
+handling, staging, and governance become deliberate contracts instead of tribal commands.
 
-If Module 02 feels unstable, the usual cause is that Module 01 has not become second nature yet.
+**Deliverable:** a workflow that can be run in different operating contexts without changing its meaning.
 
-## Capstone roadmap
+### Module 04 — Scaling Patterns: Modularity, Interfaces, CI Gates, and Executor-Proof Semantics
 
-The capstone evolves from “reference workflow” into “executable proof” as you move through the course:
+Learn how to grow a repository without losing its shape. Interfaces, file APIs, CI gates,
+and executor-proof semantics keep larger workflows reviewable.
 
-- Module 01 explains why its file contracts and publish boundary are structured the way they are.
-- Module 02 explains its checkpoint behavior, discovery discipline, and integrity artifacts.
-- Module 03 explains its profiles, retries, dry-runs, and verification targets.
-- Module 04 explains its module boundaries, file API, and CI-style gate structure.
+**Deliverable:** a modular workflow whose repository layout and review gates make change safer instead of harder.
 
-## How to use the course well
+### Module 05 — Software Stacks, Scripts, Wrappers, and Reproducible Rule Boundaries
 
-- Read each module overview before the deeper module body.
-- Treat diagrams as semantic claims, not decoration.
-- Keep the capstone open while reading so workflow design stays attached to real files.
-- Re-run proof-oriented targets frequently instead of only at the end.
+Define the boundary between Snakemake logic and the software it drives. Scripts,
+packages, wrappers, and environment files become explicit parts of the workflow contract.
+
+**Deliverable:** a workflow whose helper code and software stack can be reviewed without relying on local shell magic.
+
+### Module 06 — Versioned Publishing, Reports, and Downstream Workflow Contracts
+
+Separate internal execution state from stable published outputs. Versioned publish
+surfaces, manifests, checksums, and reports become deliberate downstream interfaces.
+
+**Deliverable:** a workflow that publishes a stable bundle another consumer can trust and validate.
+
+### Module 07 — Workflow Architecture, Modules, File APIs, and Reuse Without Confusion
+
+Scale the repository itself: reusable rule families, helper code boundaries, and file APIs
+that stay understandable as more people and more workflows touch the codebase.
+
+**Deliverable:** a repository layout that a newcomer can inspect without guessing where the real contract lives.
+
+### Module 08 — Operating Contexts: Profiles, Executors, Storage, and Staging Boundaries
+
+Go deeper on the difference between workflow semantics and execution context. Profiles,
+executors, storage, and staging become policy surfaces that can change without corrupting
+the workflow contract.
+
+**Deliverable:** a workflow whose local, CI, and scheduler-oriented runs share one stable meaning.
+
+### Module 09 — Performance, Observability, and Workflow Incident Response
+
+Learn how to measure workflow cost, inspect drift, read operational artifacts, and
+respond to slow or flaky behavior without hiding the truth.
+
+**Deliverable:** an evidence-first incident ladder for real workflow runs under pressure.
+
+### Module 10 — Mastery: Governance, Migration, Anti-Patterns, and Tool Boundaries
+
+Finish with workflow judgment: reviewing real repositories, planning migrations, setting
+governance rules, and deciding when Snakemake should remain the orchestrator or hand a
+concern to another tool.
+
+**Deliverable:** an evidence-based workflow review and a migration or stewardship plan for a real repository.
+
+---
+
+## Recommended Reading Path
+
+1. Read Modules 01 to 10 in order.
+2. Use the capstone as corroboration after every module, but rely on it most heavily from Modules 02 to 09.
+3. Re-run proof commands as you go instead of trusting prose summaries.
+4. Treat Module 10 as the finish of the program, not as optional reference material.
+
+If you are completely new to Snakemake, spend extra time in Module 01 before moving on.
+If you already run Snakemake in production, Modules 03, 04, 08, 09, and 10 are the
+fastest route to operational value.
+
+---
+
+## Capstone Relationship
+
+The capstone is strongest as the executable companion to Modules 02 to 09, where dynamic
+behavior, publish boundaries, profiles, modularity, and operational review become
+concrete. Module 01 still benefits from smaller local exercises first so the learner sees
+Snakemake semantics before the repository becomes larger.
+
+**Proof command:**
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-snakemake test
+```
+
+Use the capstone to answer this question repeatedly: if a workflow behavior changed
+tomorrow, which file or boundary should absorb that change, and why?
+
+[Back to top](#top)
