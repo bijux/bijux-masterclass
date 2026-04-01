@@ -46,6 +46,8 @@ feel arbitrary instead of principled.
 
 ## How to use the capstone while reading
 
+Guided route: [Capstone Map](capstone-map.md)
+
 - After Module 01, inspect its explicit file contracts and stable publish boundary.
 - After Module 02, inspect the checkpoint and the way discovery is stabilized.
 - After Module 03, inspect profiles, retries, artifact verification, and proof targets.

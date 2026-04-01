@@ -25,6 +25,7 @@ nav:
   - Start Here:
       - Course Home: index.md
       - Program Outline: module-00.md
+      - Capstone Map: capstone-map.md
       - Capstone Overview: readme-capstone.md
   - "Module 01: File Contracts":
       - Overview: module-01.md

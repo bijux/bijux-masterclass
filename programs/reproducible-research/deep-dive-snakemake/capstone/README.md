@@ -187,6 +187,16 @@ Internal directories (`results/`, `logs/`, `benchmarks/`, `.snakemake/`) are not
 
 ---
 
+## Links into the program guide
+
+- Program site: [https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-snakemake/](https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-snakemake/)
+- Source chapters: [`course-book/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-snakemake/course-book)
+- Guided route through this repository: [`capstone-map.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-snakemake/course-book/capstone-map.md)
+
+[Back to top](#top)
+
+---
+
 ## Repository Layout
 
 ```mermaid

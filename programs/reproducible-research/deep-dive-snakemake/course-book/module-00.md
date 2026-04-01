@@ -113,6 +113,9 @@ behavior, publish boundaries, profiles, modularity, and operational review becom
 concrete. Module 01 still benefits from smaller local exercises first so the learner sees
 Snakemake semantics before the repository becomes larger.
 
+Use [capstone-map.md](capstone-map.md) when you want a module-by-module route through the
+repository instead of jumping into the capstone cold.
+
 **Proof command:**
 
 ```bash
