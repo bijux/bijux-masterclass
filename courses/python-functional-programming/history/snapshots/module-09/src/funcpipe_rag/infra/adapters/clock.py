@@ -1,0 +1,28 @@
+"""Module 07 infra: clocks (real + deterministic test).
+
+End-of-Module-09 snapshot."""
+
+from __future__ import annotations
+
+from datetime import datetime, timedelta, timezone
+
+from funcpipe_rag.domain.capabilities import Clock
+
+
+class SystemClock(Clock):
+    def now(self) -> datetime:
+        return datetime.now(timezone.utc)
+
+
+class MonotonicTestClock(Clock):
+    def __init__(self, start: datetime | None = None) -> None:
+        base = start or datetime.now(timezone.utc)
+        self._now = base.replace(tzinfo=timezone.utc)
+
+    def now(self) -> datetime:
+        self._now += timedelta(microseconds=1)
+        return self._now
+
+
+__all__ = ["SystemClock", "MonotonicTestClock"]
+

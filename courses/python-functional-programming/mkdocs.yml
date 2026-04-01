@@ -1,0 +1,197 @@
+site_name: Python Functional Programming
+site_description: >-
+  Correctness-first deep dive into functional programming in Python: data-first pipelines,
+  composable effects, rigorous error handling, and production-grade async interop.
+site_url: https://bijux.github.io/python-functional-programming/
+
+repo_name: bijux/python-functional-programming
+repo_url: https://github.com/bijux/python-functional-programming
+edit_uri: edit/main/course-book/
+
+docs_dir: course-book
+site_dir: site
+
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.sections
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+
+  - Course Book:
+      - Module 00:
+          - Orientation Map: module-00/M00C00.md
+          - How to Use This Course: module-00/M00C01.md
+
+      - Module 01:
+          - Functional vs Imperative: module-01/M01C01.md
+          - Pure Functions & Contracts: module-01/M01C02.md
+          - Immutability & Value Semantics: module-01/M01C03.md
+          - Higher-Order Composition: module-01/M01C04.md
+          - Local FP Refactors: module-01/M01C05.md
+          - Mini Combinator Library: module-01/M01C06.md
+          - Typed Pipelines: module-01/M01C07.md
+          - Isolating Side Effects: module-01/M01C08.md
+          - Equational Reasoning: module-01/M01C09.md
+          - Idempotent Transforms: module-01/M01C10.md
+
+      - Module 02:
+          - Closures & Partial Application: module-02/M02C01.md
+          - Expression-Oriented Python: module-02/M02C02.md
+          - Intro to Laziness: module-02/M02C03.md
+          - FP-Friendly APIs: module-02/M02C04.md
+          - Effect Boundaries: module-02/M02C05.md
+          - Config-as-Data: module-02/M02C06.md
+          - Callbacks to Combinators: module-02/M02C07.md
+          - Tiny Function DSLs: module-02/M02C08.md
+          - Debugging Compositions: module-02/M02C09.md
+          - Imperative to FP Refactor: module-02/M02C10.md
+
+      - Module 03:
+          - Iterator Protocol: module-03/M03C01.md
+          - Generators vs Comprehensions: module-03/M03C02.md
+          - itertools Composition: module-03/M03C03.md
+          - Chunking & Windowing: module-03/M03C04.md
+          - Infinite Sequences Safely: module-03/M03C05.md
+          - Reusable Pipeline Stages: module-03/M03C06.md
+          - Fan-In and Fan-Out: module-03/M03C07.md
+          - Time-Aware Streaming: module-03/M03C08.md
+          - Custom Iterators: module-03/M03C09.md
+          - Streaming Observability: module-03/M03C10.md
+
+      - Module 04:
+          - Recursion vs Iteration: module-04/M04C01.md
+          - Folds & Reductions: module-04/M04C02.md
+          - Memoization: module-04/M04C03.md
+          - Result/Option Failures: module-04/M04C04.md
+          - Streaming Error Handling: module-04/M04C05.md
+          - Error Aggregation: module-04/M04C06.md
+          - Circuit Breakers: module-04/M04C07.md
+          - Resource-Aware Streams: module-04/M04C08.md
+          - Functional Retries: module-04/M04C09.md
+          - Structured Error Reports: module-04/M04C10.md
+
+      - Module 05:
+          - Product & Sum Types: module-05/M05C01.md
+          - Domain State ADTs: module-05/M05C02.md
+          - Functors: module-05/M05C03.md
+          - Applicative Validation: module-05/M05C04.md
+          - Monoids: module-05/M05C05.md
+          - Pydantic Smart Constructors: module-05/M05C06.md
+          - Pattern Matching: module-05/M05C07.md
+          - Serialization Beyond Pydantic: module-05/M05C08.md
+          - Compositional Domain Models: module-05/M05C09.md
+          - ADT Performance: module-05/M05C10.md
+
+      - Module 06:
+          - Bind and And-Then: module-06/M06C01.md
+          - Law-Guided Design: module-06/M06C02.md
+          - Lifting Plain Functions: module-06/M06C03.md
+          - Reader Pattern: module-06/M06C04.md
+          - Explicit State Threading: module-06/M06C05.md
+          - Error-Typed Flows: module-06/M06C06.md
+          - Layered Containers: module-06/M06C07.md
+          - Tracing in Monads: module-06/M06C08.md
+          - Refactoring try/except: module-06/M06C09.md
+          - Configurable Pipelines: module-06/M06C10.md
+
+      - Module 07:
+          - Ports & Adapters: module-07/M07C01.md
+          - Effect Interfaces: module-07/M07C02.md
+          - Capability Protocols: module-07/M07C03.md
+          - Context Managers & Safety: module-07/M07C04.md
+          - Functional Logging: module-07/M07C05.md
+          - Capability Typing: module-07/M07C06.md
+          - Composing Effects: module-07/M07C07.md
+          - Idempotent Effects: module-07/M07C08.md
+          - Sessions & Transactions: module-07/M07C09.md
+          - Incremental Migration: module-07/M07C10.md
+
+      - Module 08:
+          - Async as Descriptions: module-08/M08C01.md
+          - Async Generators: module-08/M08C02.md
+          - Backpressure: module-08/M08C03.md
+          - Retry/Timeout Policies: module-08/M08C04.md
+          - Deterministic Async Testing: module-08/M08C05.md
+          - Rate Limiting & Fairness: module-08/M08C06.md
+          - Async Adapters: module-08/M08C07.md
+          - Async Service Integrations: module-08/M08C08.md
+          - Async Chunking: module-08/M08C09.md
+          - Async Pipeline Laws: module-08/M08C10.md
+
+      - Module 09:
+          - Stdlib FP: module-09/M09C01.md
+          - Helper Libraries: module-09/M09C02.md
+          - Data Processing FP: module-09/M09C03.md
+          - Web & Services FP: module-09/M09C04.md
+          - Data/ML Pipelines: module-09/M09C05.md
+          - CLI & Config Pipelines: module-09/M09C06.md
+          - Distributed/Dataflow: module-09/M09C07.md
+          - Functional Facades: module-09/M09C08.md
+          - Cross-Process Composition: module-09/M09C09.md
+          - Team Adoption: module-09/M09C10.md
+
+      - Module 10:
+          - Systematic Refactor: module-10/M10C01.md
+          - Performance Budgeting: module-10/M10C02.md
+          - Observability: module-10/M10C03.md
+          - Property-Based Regression: module-10/M10C04.md
+          - Async Property Testing: module-10/M10C05.md
+          - Future Directions: module-10/M10C06.md
+          - DDD + FP: module-10/M10C07.md
+          - Versioning & Migration: module-10/M10C08.md
+          - Governance: module-10/M10C09.md
+          - Capstone: module-10/M10C10.md
+
+      - Reference:
+          - FP Standards: reference/fp-standards.md
+          - Review Checklist: reference/review-checklist.md
+
+extra:
+  homepage: https://bijux.github.io/
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/bijux
+
+copyright: "© 2025 Bijan Mousavi"
