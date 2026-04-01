@@ -106,7 +106,6 @@ graph LR
 ```
 
 Caption: Class decorators run after the metaclass; they see a fully formed class.
-```
 
 ### Example 1: Method injection
 
@@ -171,7 +170,6 @@ graph TD
 ```
 
 Caption: Decorators are applied bottom-up: inner first, outer last.
-```
 
 ### Exercise
 
@@ -184,8 +182,7 @@ Implement `@log_attributes` that wraps `__setattr__`:
 
 ---
 
-<a id="core27"></a>
-## Core 27: `@dataclass` Dissected — What It Generates (and What It Doesn’t)
+## Core 27: `@dataclass` Dissected — What It Generates (and What It Doesn’t) { #core27 }
 
 ### What `@dataclass` does
 
@@ -219,7 +216,6 @@ graph TD
 ```
 
 Caption: `@dataclass` generates boilerplate from declarative hints.
-```
 
 ### Example: Defaults and `default_factory`
 
@@ -362,7 +358,6 @@ Attribute Lookup Precedence (obj.x)
 5. __getattr__ fallback or AttributeError
 
 Caption: @property is a data descriptor even without a setter → cannot be shadowed by obj.x = value.
-```
 
 ### Example 1: Standard property with validation
 
@@ -482,9 +477,9 @@ x = x.setter(new_fset)
 
 Each decorator returns a new property object.
 Chaining builds the full descriptor.
+```
 
 Caption: Property chaining reuses and extends the original property instance.
-```
 
 ### Exercise
 
@@ -499,8 +494,7 @@ Implement a minimal cached-property-like descriptor:
 
 ---
 
-<a id="core29"></a>
-## Core 29: Runtime Type Hints as a Declarative Aid for Attribute Validation
+## Core 29: Runtime Type Hints as a Declarative Aid for Attribute Validation { #core29 }
 
 ### Key point
 
@@ -526,7 +520,6 @@ graph TD
 ```
 
 Caption: Hints are resolved once; descriptors enforce shallow runtime checks.
-```
 
 ### Minimal `_is_instance` (deliberately limited)
 
@@ -640,7 +633,6 @@ graph TD
 ```
 
 Caption: Minimal frozen dataclass-like behavior via a class decorator.
-```
 
 ### Implementation
 

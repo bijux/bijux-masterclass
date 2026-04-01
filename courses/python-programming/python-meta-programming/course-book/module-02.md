@@ -131,7 +131,6 @@ graph TD
   visible --> stored --> resolved
 ```
 Caption: Discovery is not storage, and storage is not resolution.
-```
 
 ### Examples
 

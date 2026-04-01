@@ -49,14 +49,12 @@ graph TD
 ```
 
 Caption: Choose the lowest-power tool that solves the problem, then add guardrails.
-```
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---
 
-<a id="visual-redlines"></a>
-## Visual: Non-Negotiables (Red Lines)
+## Visual: Non-Negotiables (Red Lines) { #visual-redlines }
 
 ```mermaid
 graph TD
@@ -459,7 +457,6 @@ Import hooks / AST transforms (blast radius)
 - Debuggers/profilers/IDEs need location preservation
 
 Caption: Use for tooling (coverage, tracing, macro systems), not typical app features.
-```
 
 ### 49.1 Minimal meta-path virtual module (reversible)
 

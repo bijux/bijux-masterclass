@@ -51,14 +51,12 @@ graph TD
 ```
 
 Caption: Always select the lowest viable level on the ladder.
-```
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---
 
-<a id="visual-pipeline"></a>
-## Visual: Class Creation Pipeline
+## Visual: Class Creation Pipeline { #visual-pipeline }
 
 ```mermaid
 graph TD
@@ -78,14 +76,12 @@ graph TD
 ```
 
 Caption: The entire pipeline runs before any instance of `C` can exist.
-```
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---
 
-<a id="core41"></a>
-## Core 41: `type(name, bases, namespace)` — Manual Class Creation
+## Core 41: `type(name, bases, namespace)` — Manual Class Creation { #core41 }
 
 ### Canonical idea
 
@@ -172,7 +168,6 @@ graph TD
 ```
 
 Caption: Conflicts are the most common metaclass surprise in multiple inheritance.
-```
 
 ### Example: a metaclass that injects a tag
 
@@ -250,7 +245,6 @@ graph TD
 ```
 
 Caption: Structural changes belong in `__new__`; bookkeeping and registration belong in `__init__`.
-```
 
 ### Example: enforce an interface + register classes
 
@@ -308,7 +302,6 @@ graph LR
 ```
 
 Caption: `__prepare__` enables declaration-time enforcement that is impossible otherwise.
-```
 
 ### Example: forbid duplicate assignment (except dunders)
 
@@ -383,7 +376,6 @@ graph TD
 All concrete subclasses register automatically.
 
 Caption: Registration is automatic and hierarchy-wide (infectious).
-```
 
 ### Implementation (runnable, testable)
 

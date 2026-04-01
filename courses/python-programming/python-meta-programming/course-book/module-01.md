@@ -343,7 +343,6 @@ Attribute Lookup Precedence (obj.x)
 5. AttributeError
 
 Caption: Data descriptors beat instance dict; non-data descriptors lose to it.
-```
 
 ---
 
@@ -559,7 +558,6 @@ Attribute Lookup Precedence (obj.x) — storage detail
 5. AttributeError
 
 Caption: Descriptors decide semantics; storage decides where instance state lives.
-```
 
 ---
 
