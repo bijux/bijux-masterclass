@@ -1,0 +1,63 @@
+site_name: Deep Dive Series
+site_description: Unified catalog for the Deep Dive course collection.
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.sections
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Reproducible Research:
+      - Overview: reproducible-research/index.md
+      - Deep Dive Make: reproducible-research/deep-dive-make.md
+      - Deep Dive Snakemake: reproducible-research/deep-dive-snakemake.md
+  - Python Programming:
+      - Overview: python-programming/index.md
+      - Python Functional Programming: python-programming/python-functional-programming.md
+      - Python Meta-Programming: python-programming/python-meta-programming.md
+
+copyright: "© 2025 Bijan Mousavi"

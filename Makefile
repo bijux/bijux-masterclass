@@ -6,6 +6,11 @@ COURSES_DIR := courses
 COURSE ?= reproducible-research/deep-dive-make
 COURSE_DIR := $(COURSES_DIR)/$(COURSE)
 RUN_COURSE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(COURSE_DIR)
+PYTHON ?= python3
+VENV_DIR ?= .venv
+VENV_BIN := $(VENV_DIR)/bin
+PIP := $(VENV_BIN)/pip
+MKDOCS := $(VENV_BIN)/mkdocs
 
 .PHONY: help
 help: ## Show available targets
@@ -38,3 +43,20 @@ test: ## Run tests for the selected course
 .PHONY: clean
 clean: ## Run clean for the selected course
 	@$(RUN_COURSE) clean
+
+.PHONY: series-docs-venv
+series-docs-venv: ## Create the virtual environment for the series site
+	@$(PYTHON) -m venv $(VENV_DIR)
+	@$(PIP) install -U pip
+
+.PHONY: series-docs-install
+series-docs-install: series-docs-venv ## Install series documentation dependencies
+	@$(PIP) install -r requirements-docs.txt
+
+.PHONY: series-docs-build
+series-docs-build: series-docs-install ## Build the series documentation site
+	@$(MKDOCS) build --strict
+
+.PHONY: series-docs-serve
+series-docs-serve: series-docs-install ## Serve the series documentation site locally
+	@$(MKDOCS) serve

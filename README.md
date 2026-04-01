@@ -56,3 +56,15 @@ Show a course's own Make targets:
 ```bash
 make COURSE=reproducible-research/deep-dive-snakemake course-help
 ```
+
+Build the series site:
+
+```bash
+make series-docs-build
+```
+
+Serve the series site locally:
+
+```bash
+make series-docs-serve
+```
