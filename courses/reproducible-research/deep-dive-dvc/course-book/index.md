@@ -28,7 +28,7 @@ make COURSE=reproducible-research/deep-dive-dvc test
 
 ```mermaid
 graph TD
-  root["deep-dive-dvc/"]
+  root["deep-dive-series/courses/reproducible-research/deep-dive-dvc/"]
   root --> book["course-book/"]
   root --> capstone["capstone/"]
   root --> makefile["Makefile"]

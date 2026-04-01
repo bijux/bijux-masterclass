@@ -1,12 +1,12 @@
 <a id="top"></a>
 # Deep Dive Make: The Course-Book Capstone
-The capstone is the executable reference build for **Deep Dive Make**: a compact C project whose Makefiles are written to **prove**, not merely claim, production-grade properties—**truthful DAGs, atomic publication, parallel safety, determinism, and self-testing invariants**. It is the practical companion to the course-book in [`course-book/`](https://github.com/bijux/deep-dive-make/tree/main/course-book): every major pattern in the text has a living implementation here, with repros for common failure modes and CI-enforced verification.
+The capstone is the executable reference build for **Deep Dive Make**: a compact C project whose Makefiles are written to **prove**, not merely claim, production-grade properties—**truthful DAGs, atomic publication, parallel safety, determinism, and self-testing invariants**. It is the practical companion to the course-book in [`course-book/`](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/course-book): every major pattern in the text has a living implementation here, with repros for common failure modes and CI-enforced verification.
 
-[![CI](https://github.com/bijux/deep-dive-make/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/bijux/deep-dive-make/actions/workflows/ci.yaml?query=branch%3Amain)
+[![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
-[![License](https://img.shields.io/github/license/bijux/deep-dive-make?style=flat-square)](https://github.com/bijux/deep-dive-make/blob/main/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-site-blue?style=flat-square)](https://bijux.github.io/deep-dive-make/)
-[![Capstone](https://img.shields.io/badge/capstone-make--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-make/tree/main/capstone)
+[![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/)
+[![Capstone](https://img.shields.io/badge/capstone-reference-green?style=flat-square)](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/capstone)
 
 > **In one line:** a small build that behaves like a serious build—correct under change, correct under `-j`, and instrumented to catch its own lies.
 
@@ -128,8 +128,8 @@ make -f repro/01-shared-append.mk -j4
 
 ---
 ## Links into the course-book
-* Course text: [https://bijux.github.io/deep-dive-make/](https://bijux.github.io/deep-dive-make/)
-* Source chapters: [`course-book/`](https://github.com/bijux/deep-dive-make/tree/main/course-book)
+* Course text: [https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/](https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/)
+* Source chapters: [`course-book/`](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/course-book)
 The capstone is referenced throughout the modules via “tie-ins.” The expectation is a tight loop:
 **read → reproduce → repair → verify**  
 [Back to top](#top)
@@ -147,5 +147,5 @@ Open a PR against `main` with a short “claim → proof” note (what you chang
 
 ---
 ## License
-MIT — see [`LICENSE`](https://github.com/bijux/deep-dive-make/blob/main/LICENSE). © 2025 Bijan Mousavi.  
+MIT — see [`LICENSE`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-make/LICENSE). © 2025 Bijan Mousavi.  
 [Back to top](#top)

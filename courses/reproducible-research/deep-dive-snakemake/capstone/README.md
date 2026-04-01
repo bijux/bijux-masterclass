@@ -4,10 +4,10 @@ A compact, end-to-end Snakemake workflow that demonstrates rigorous engineering 
 
 This project is designed to be **executed**, **studied**, and **extended** as a reference implementation.
 
-[![CI](https://github.com/bijux/deep-dive-snakemake/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bijux/deep-dive-snakemake/actions/workflows/ci.yml?query=branch%3Amain)
+[![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
 [![Snakemake](https://img.shields.io/badge/Snakemake-8.0%2B-blue?style=flat-square)](https://snakemake.readthedocs.io/en/stable/)
-[![License](https://img.shields.io/github/license/bijux/deep-dive-snakemake?style=flat-square)](https://github.com/bijux/deep-dive-snakemake/blob/main/LICENSE)
-[![Course Book](https://img.shields.io/badge/docs-course_book-blue?style=flat-square)](https://bijux.github.io/deep-dive-snakemake/)
+[![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
+[![Course Book](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-snakemake/)
 
 > The CI workflow executes full confirmation runs, including workflow execution and artifact validation.
 
@@ -219,6 +219,6 @@ To modify the published contract, increment the version directory (e.g., `v2`) a
 
 ## License
 
-MIT — see the top-level [LICENSE](https://github.com/bijux/deep-dive-snakemake/blob/main/LICENSE). © 2025 Bijan Mousavi.
+MIT — see the top-level [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-snakemake/LICENSE). © 2025 Bijan Mousavi.
 
 [Back to top](#top)

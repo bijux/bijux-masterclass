@@ -2,11 +2,11 @@
 # Deep Dive Make: The Course-Book
 A five-module course-book for learning **GNU Make as a declarative build-graph engine**—with an explicit correctness contract. The focus is not “Makefile tricks,” but **semantic discipline**: truthful dependency graphs, atomic outputs, parallel safety, deterministic results, and repeatable verification.  
 
-[![CI](https://github.com/bijux/deep-dive-make/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/bijux/deep-dive-make/actions/workflows/ci.yaml?query=branch%3Amain)
+[![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
-[![License](https://img.shields.io/github/license/bijux/deep-dive-make?style=flat-square)](https://github.com/bijux/deep-dive-make/blob/main/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-site-blue?style=flat-square)](https://bijux.github.io/deep-dive-make/)
-[![Capstone](https://img.shields.io/badge/capstone-make--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-make/tree/main/capstone)
+[![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/)
+[![Capstone](https://img.shields.io/badge/capstone-reference-green?style=flat-square)](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/capstone)
 
 > **At a glance**: progressive modules • minimal, reproducible examples • exercises with verification hooks • a runnable capstone that proves the claims.  
 > **Quality bar**: every core assertion is designed to be *testable* using `--trace`, `-p`, and serial/parallel equivalence checks. This course-book assumes **GNU Make 4.3+** and intentionally avoids “hand-wavy” build folklore.
@@ -94,7 +94,7 @@ If you are here for incident response or reference:
 [Back to top](#top)
 ---
 ## Verification via the capstone
-The course is paired with an executable reference build: [`capstone/`](https://github.com/bijux/deep-dive-make/tree/main/capstone). It exists for one reason: **proof**.
+The course is paired with an executable reference build: [`capstone/`](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/capstone). It exists for one reason: **proof**.
 
 From the repository root:
 ```sh
@@ -118,9 +118,9 @@ This course-book is designed to be both a curriculum and an operational referenc
 [Back to top](#top)
 ---
 ## Repository links
-* Project overview: [`README.md`](https://github.com/bijux/deep-dive-make/blob/main/README.md)
-* Capstone: [`capstone/`](https://github.com/bijux/deep-dive-make/tree/main/capstone)
-* CI workflow: [`.github/workflows/ci.yaml`](https://github.com/bijux/deep-dive-make/blob/main/.github/workflows/ci.yaml)  
+* Project overview: [`README.md`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-make/README.md)
+* Capstone: [`capstone/`](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/capstone)
+* Validation workflow: [`.github/workflows/course-validation.yml`](https://github.com/bijux/deep-dive-series/blob/master/.github/workflows/course-validation.yml)  
 [Back to top](#top)
 ---
 ## Contributing
@@ -137,6 +137,6 @@ Process:
 [Back to top](#top)
 ---
 ## License
-MIT — see [`LICENSE`](https://github.com/bijux/deep-dive-make/blob/main/LICENSE). © 2025 Bijan Mousavi.  
+MIT — see [`LICENSE`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-make/LICENSE). © 2025 Bijan Mousavi.  
 
 [Back to top](#top)
