@@ -1,70 +1,75 @@
 # Python Functional Programming
 
 This course teaches functional programming in Python as a discipline of explicit dataflow,
-controlled effects, and reviewable operational boundaries. The point is not to imitate a
-different language. The point is to make Python systems easier to reason about, refactor,
-test, and run in production.
+controlled effects, and reviewable operational boundaries. The goal is not to imitate a
+different language. The goal is to make ordinary Python systems easier to reason about,
+refactor, test, and run under production pressure.
 
-## Why this course exists
+## Who this course is for
 
-Many Python functional-programming resources stop in one of two bad places:
+- Python engineers building services, pipelines, automation, or data tooling
+- reviewers who want stronger criteria for purity, boundaries, and error handling
+- maintainers who need refactors and async work to become safer instead of riskier
 
-- they stay at toy examples and never reach logging, retries, async work, or real boundaries
-- they jump to abstractions quickly and leave learners unable to connect them to ordinary production code
+## Who this course is not for
 
-This course exists to close that gap.
+- readers looking for a beginner introduction to `lambda`, `map`, or list comprehensions
+- teams that want functional vocabulary without changing hidden state or effect design
+- learners who want abstractions before they understand the contracts those abstractions protect
 
-## Reading contract
+## What you will learn
 
-This is not a reference to skim in arbitrary order. The learner path is deliberate:
+By the end of the course, you should be able to:
 
-1. Start with purity, substitution, and data-first APIs.
-2. Learn streaming and typed failures before talking about infrastructure.
-3. Learn effect boundaries before async coordination and framework interop.
-4. Keep the capstone open so every abstraction stays attached to one evolving system.
+- separate pure transforms from effectful coordination in real Python code
+- design pipelines that stay configurable, lazy, and testable under growth
+- model expected failures and domain states as data instead of tangled control flow
+- move infrastructure behind explicit protocols, adapters, and async coordination layers
+- sustain a long-lived codebase with evidence, review standards, and migration discipline
 
-If you skip that order, later chapters will still be readable, but the architecture will
-feel stylistic instead of principled.
+## Start here
 
-## What each module contributes
+- Read the [Orientation overview](module-00-orientation/index.md).
+- Keep the [FuncPipe Capstone Guide](capstone.md) open from the beginning.
+- Work through the modules in order. The sequence is deliberate.
 
-- `Module 00` establishes the study strategy, module rhythm, and capstone map.
-- `Module 01` defines the semantic floor: purity, substitution, and local FP refactors.
-- `Module 02` turns functions into configurable, data-first building blocks.
-- `Module 03` introduces lazy iteration and streaming pipeline design.
-- `Module 04` adds typed failures, folds, retries, and structured error reports.
-- `Module 05` turns domain state into explicit algebraic models and validation contracts.
-- `Module 06` layers monadic flows and explicit context without losing readability.
-- `Module 07` isolates infrastructure behind ports, adapters, and capability boundaries.
-- `Module 08` adds async plans, bounded concurrency, and backpressure discipline.
-- `Module 09` shows how to interoperate with real libraries without giving up the core model.
-- `Module 10` focuses on long-lived refactoring, performance, and governance.
+## The module path
 
-## How to use FuncPipe while reading
+- [Module 01: Purity and Substitution](module-01-purity-and-substitution/index.md) establishes the semantic floor: purity, substitution, composition, and local refactoring discipline.
+- [Module 02: Data-First APIs and Expression Style](module-02-data-first-apis-and-expression-style/index.md) turns pure helpers into configurable, explicit, data-first building blocks.
+- [Module 03: Iterators and Lazy Dataflow](module-03-iterators-and-lazy-dataflow/index.md) introduces lazy pipelines, reusable stages, and deliberate materialization.
+- [Module 04: Resilience and Streaming Failures](module-04-resilience-and-streaming-failures/index.md) turns streaming into something survivable with typed failures, retries, and cleanup rules.
+- [Module 05: Algebraic Data Modelling](module-05-algebraic-data-modelling/index.md) makes domain states, validation, and aggregation explicit through richer value shapes.
+- [Module 06: Monadic Flow and Explicit Context](module-06-monadic-flow-and-explicit-context/index.md) shows how to chain dependent work lawfully without hiding configuration or failure handling.
+- [Module 07: Effect Boundaries and Resource Safety](module-07-effect-boundaries-and-resource-safety/index.md) moves files, clocks, logging, transactions, and adapters behind reviewable boundaries.
+- [Module 08: Async FuncPipe and Backpressure](module-08-async-funcpipe-and-backpressure/index.md) adds bounded async coordination, fairness, and deterministic testing.
+- [Module 09: Ecosystem Interop](module-09-ecosystem-interop/index.md) shows how to work with stdlib tools, frameworks, and external libraries without losing the core design.
+- [Module 10: Refactoring and Sustainment](module-10-refactoring-and-sustainment/index.md) focuses on performance, observability, migration, governance, and long-term survivability.
 
-The FuncPipe RAG capstone is the course’s executable proof:
+## How the capstone fits
 
-- After Module 01, inspect which parts of the pipeline are still pure transforms.
-- After Module 03, inspect where lazy iteration saves memory and where materialization is a boundary choice.
-- After Module 07, inspect which interfaces are capabilities and which remain concrete adapters.
-- After Module 08, inspect where async work is described as data and where it is actually driven.
+The FuncPipe RAG capstone is the course's executable proof. It is not a side project and
+not a graduation appendix. It is the repository the course keeps pointing to when it
+talks about purity, laziness, typed failures, effect boundaries, and async orchestration.
 
-The capstone should answer a standing question: "What does this idea look like in a real Python codebase?"
+Use it to answer practical questions:
 
-## Working locally
+- Where does the pure core stop?
+- Which abstractions are backed by tests instead of commentary?
+- Where is laziness preserved, and where is materialization deliberate?
+- Which effects are described as contracts, and which are driven by concrete adapters?
 
-From the repository root:
+## Study rhythm
 
-```bash
-make COURSE=python-programming/python-functional-programming install
-make COURSE=python-programming/python-functional-programming test
-make COURSE=python-programming/python-functional-programming docs-serve
-```
+- Read each module overview before touching its lessons.
+- Work through the lessons in order unless you are deliberately reviewing.
+- After every module, inspect the matching capstone surfaces before moving on.
+- Treat refactor, law, and review chapters as checkpoints rather than optional extras.
 
 ## Common failure modes this course is trying to prevent
 
 - treating FP as syntax instead of as a contract around state and effects
-- mixing pure transforms with logging, I/O, or retries until nothing is locally understandable
-- introducing laziness or async work without a clear boundary for when computation actually happens
-- adding abstractions that make the codebase harder to debug than the imperative version
-- bolting on "functional style" while leaving the production risks untouched
+- mixing pure transforms with logging, retries, or I/O until nothing is locally understandable
+- introducing laziness or async work without a clear boundary for when computation happens
+- adding abstractions that make the code harder to debug than the imperative version
+- adopting "functional style" while leaving the production risks untouched
