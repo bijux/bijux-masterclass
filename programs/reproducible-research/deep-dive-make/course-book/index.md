@@ -17,6 +17,7 @@ deterministic results, and repeatable verification.
 ---
 ## Table of Contents
 - [Why this program exists](#why-this-program-exists)
+- [Start here](start-here.md)
 - [How the guide is written](#how-the-guide-is-written)
 - [What you will learn](#what-you-will-learn)
 - [Prerequisites](#prerequisites)
@@ -37,6 +38,14 @@ This program treats Make as it is: an engine for evaluating a dependency graph. 
 - **Determinism**: serial and parallel builds converge to the same results.  
 - **Self-testing**: invariants are continuously verified, not assumed.  
 If you maintain a legacy Makefile or design a new build, the objective is the same: **correctness that survives scale and change**.  
+[Back to top](#top)
+
+---
+## Start here
+If you are not sure where to begin, use [`start-here.md`](start-here.md) before diving
+into the modules. It routes beginners, working maintainers, and build stewards to the
+right entry point so the capstone does not become an accidental first lesson.
+
 [Back to top](#top)
 
 ---
