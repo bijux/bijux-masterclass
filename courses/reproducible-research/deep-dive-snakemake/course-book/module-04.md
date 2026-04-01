@@ -15,6 +15,30 @@
 
 ---
 
+## Why this module matters
+
+Teams often say a workflow has “outgrown itself” when the real problem is that nobody
+defined its interfaces. Files, schemas, modules, CI gates, and resource claims become
+implicit, so every change starts to feel dangerous.
+
+This module is about restoring that safety by making boundaries explicit enough that
+workflows can scale in size, team count, and execution context without becoming fragile.
+
+## Reading path
+
+1. Start with module boundaries and file APIs.
+2. Read CI and drift control after the interface story is clear.
+3. Read resource semantics after you know what is being protected.
+4. Finish with workflow-as-product thinking so scaling is understood as a contract problem.
+
+## Capstone connection
+
+The capstone’s `FILE_API.md`, workflow module layout, and confirmation targets are the concrete
+expression of this module. If you want to see what “executor-proof semantics” means in one small
+repository, this is the module that explains that shape.
+
+---
+
 ## Orientation: scaling fails at boundaries
 
 When a workflow “doesn’t scale”, it’s usually not CPU. It’s:
