@@ -48,6 +48,7 @@ make tour
 
 ## Recommended review path
 
+- `ARCHITECTURE.md` for the package map
 - `tests/` for the proof surface
 - `src/funcpipe_rag/` for package boundaries
 - `TOUR.md` for the generated review bundle

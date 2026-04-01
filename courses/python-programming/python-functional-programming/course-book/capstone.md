@@ -38,6 +38,7 @@ Use the capstone as evidence, not just as a runnable project:
 ## Best entry surfaces
 
 - Repository guide: [`capstone/README.md`](../capstone/README.md)
+- Architecture map: [`capstone/ARCHITECTURE.md`](../capstone/ARCHITECTURE.md)
 - Tour guide: [`capstone/TOUR.md`](../capstone/TOUR.md)
 - Source tree: [`capstone/src/funcpipe_rag/`](../capstone/src/funcpipe_rag/)
 - Tests: [`capstone/tests/`](../capstone/tests/)

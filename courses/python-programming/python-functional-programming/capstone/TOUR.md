@@ -8,6 +8,7 @@ coordination live.
 ## What the tour produces
 
 - `pytest.txt`: the current test run for the capstone
+- `ARCHITECTURE.md`: the package map for the capstone
 - `package-tree.txt`: the package layout under `src/funcpipe_rag`
 - `test-tree.txt`: the test layout under `tests`
 - `focus-areas.txt`: the packages most relevant to course milestones
@@ -30,11 +31,12 @@ make COURSE=python-programming/python-functional-programming capstone-tour
 
 ## What to inspect first
 
-1. `pytest.txt`
-2. `focus-areas.txt`
-3. `package-tree.txt`
-4. `test-tree.txt`
-5. `README.md`
+1. `ARCHITECTURE.md`
+2. `pytest.txt`
+3. `focus-areas.txt`
+4. `package-tree.txt`
+5. `test-tree.txt`
+6. `README.md`
 
-That order mirrors the course: proof first, then architectural hotspots, then the wider
-codebase shape.
+That order mirrors the course: map first, proof second, then architectural hotspots, and
+finally the wider codebase shape.
