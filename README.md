@@ -9,22 +9,34 @@ so new courses can be added without duplicating repo-level setup.
 ```text
 .
 ├── courses/
-│   ├── deep-dive-make/
-│   ├── deep-dive-snakemake/
-│   ├── python-functional-programming/
-│   └── python-meta-programming/
+│   ├── reproducible-research/
+│   │   ├── deep-dive-make/
+│   │   └── deep-dive-snakemake/
+│   └── python-programming/
+│       ├── python-functional-programming/
+│       └── python-meta-programming/
+├── docs/
 ├── Makefile
+├── mkdocs.yml
 └── README.md
 ```
 
-## Included Courses
+## Course Families
 
-- `deep-dive-make`
-- `deep-dive-snakemake`
-- `python-functional-programming`
-- `python-meta-programming`
+- `reproducible-research`
+  - `deep-dive-make`
+  - `deep-dive-snakemake`
+- `python-programming`
+  - `python-functional-programming`
+  - `python-meta-programming`
 
 ## Working With Courses
+
+List the available families:
+
+```bash
+make families
+```
 
 List the available courses:
 
@@ -35,12 +47,12 @@ make courses
 Run a common target against a selected course:
 
 ```bash
-make COURSE=deep-dive-make docs-build
-make COURSE=python-functional-programming test
+make COURSE=reproducible-research/deep-dive-make docs-build
+make COURSE=python-programming/python-functional-programming test
 ```
 
 Show a course's own Make targets:
 
 ```bash
-make COURSE=deep-dive-snakemake course-help
+make COURSE=reproducible-research/deep-dive-snakemake course-help
 ```

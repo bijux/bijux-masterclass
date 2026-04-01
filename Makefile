@@ -3,7 +3,7 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 COURSES_DIR := courses
-COURSE ?= deep-dive-make
+COURSE ?= reproducible-research/deep-dive-make
 COURSE_DIR := $(COURSES_DIR)/$(COURSE)
 RUN_COURSE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(COURSE_DIR)
 
@@ -13,6 +13,10 @@ help: ## Show available targets
 
 .PHONY: courses
 courses: ## List available courses
+	@find $(COURSES_DIR) -mindepth 2 -maxdepth 2 -type d | sed 's#^$(COURSES_DIR)/##' | sort
+
+.PHONY: families
+families: ## List available course families
 	@find $(COURSES_DIR) -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort
 
 .PHONY: course-help
