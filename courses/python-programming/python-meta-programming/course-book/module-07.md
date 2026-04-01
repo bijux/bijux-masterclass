@@ -168,30 +168,22 @@ These rules refine the attribute lookup order from Module 1: they decide what ha
   
 #### Visual: Attribute Lookup with Descriptors
 
-```text
- obj.attr     # user code
-     │
-     ▼
- obj.__getattribute__("attr")   # always called first
-     │
-     ├─ 1. Look up "attr" on type(obj) and its MRO
-     │      (find class attribute A on some class C in the MRO)
-     │
-     ├─ 2. If A is a *data descriptor* (defines __set__ or __delete__):
-     │        → return A.__get__(obj, type(obj))
-     │
-     ├─ 3. Else, if "attr" is in obj.__dict__:
-     │        → return obj.__dict__["attr"]
-     │
-     ├─ 4. Else, if A is a *non-data descriptor* (defines only __get__):
-     │        → return A.__get__(obj, type(obj))
-     │
-     ├─ 5. Else:
-     │        → return A as a plain attribute
-     │
-     └─ 6. If nothing was found at all:
-              • call obj.__getattr__("attr") if it exists,
-              • otherwise raise AttributeError
+```mermaid
+graph TD
+  access["`obj.attr`"]
+  getattribute["`obj.__getattribute__(\"attr\")`"]
+  lookup["1. Look up `attr` on `type(obj)` and its MRO"]
+  dataDesc["2. Data descriptor?<br/>return `A.__get__(obj, type(obj))`"]
+  dict["3. In `obj.__dict__`?<br/>return stored value"]
+  nonData["4. Non-data descriptor?<br/>return `A.__get__(obj, type(obj))`"]
+  plain["5. Plain class attribute?<br/>return `A`"]
+  missing["6. Not found?<br/>call `obj.__getattr__(\"attr\")` or raise `AttributeError`"]
+  access --> getattribute --> lookup
+  lookup --> dataDesc
+  lookup --> dict
+  lookup --> nonData
+  lookup --> plain
+  lookup --> missing
 ```
 
 This diagram assumes the default `object.__getattribute__`. Overriding `__getattribute__` lets you short-circuit or post-process this pipeline, which is powerful but rarely needed.

@@ -41,15 +41,14 @@ All `python` fences are runnable. Any intentional failure is wrapped.
 <a id="visual-ladder"></a>
 ## Visual: Tooling Power Ladder
 
-```text
-Tooling Power Ladder (higher = more magic, higher risk)
-
-┌──────────────────────────────────────────────────────────┐
-│ 4  Metaclasses (this module)                             │ ← full class creation control
-│ 3  Class decorators (Module 6)                           │ ← post-creation transformation
-│ 2  Descriptors / @property (Modules 7–8)                 │ ← per-attribute access control
-│ 1  Plain code                                            │ ← explicit, predictable (prefer)
-└──────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+  four["4. Metaclasses<br/>full class creation control"]
+  three["3. Class decorators<br/>post-creation transformation"]
+  two["2. Descriptors or `@property`<br/>per-attribute access control"]
+  one["1. Plain code<br/>explicit and predictable"]
+  four --> three --> two --> one
+```
 
 Caption: Always select the lowest viable level on the ladder.
 ```
@@ -61,24 +60,24 @@ Caption: Always select the lowest viable level on the ladder.
 <a id="visual-pipeline"></a>
 ## Visual: Class Creation Pipeline
 
-```text
-Class Creation Pipeline (conceptual)
+```mermaid
+graph TD
+  source["`class C(Base1, Base2, metaclass=M): ...`"]
+  resolve["1. Resolve metaclass `M`"]
+  prepare["2. `ns = M.__prepare__(...)`<br/>optional custom mapping"]
+  execute["3. Execute class body into `ns`"]
+  construct["4. `cls = M(name, bases, ns, **kw)`"]
+  new["`M.__new__` creates class object"]
+  init["`M.__init__` performs post-creation init or registration"]
+  bind["5. Bind resulting class object to name `C`"]
+  source --> resolve --> prepare --> execute --> construct
+  construct --> new
+  construct --> init
+  new --> bind
+  init --> bind
+```
 
-Source code:
-    class C(Base1, Base2, metaclass=M):
-        x = 1
-        def f(self): ...
-
-Pipeline steps (executed at import/definition time):
-  1. Resolve metaclass M (explicit or derived from bases)
-  2. ns = M.__prepare__("C", (Base1, Base2), **kw)          ← optional custom mapping
-  3. Execute class body into ns                            ← assignments, defs, etc.
-  4. cls = M("C", (Base1, Base2), ns, **kw)
-        ├─ M.__new__(...)   ← create class object (mutable ns)
-        └─ M.__init__(...)  ← post-creation init/registration
-  5. Bind resulting class object to name C in scope
-
-Caption: Entire pipeline runs before any instance of C can exist.
+Caption: The entire pipeline runs before any instance of `C` can exist.
 ```
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
@@ -156,19 +155,21 @@ Everything in the metaclass pipeline runs at **definition time** (typically **im
 
 ### Visual: Metaclass Resolution
 
-```text
-Metaclass Resolution (high-level)
-
-Given: class C(Base1, Base2, ..., metaclass=Explicit?)
-
-Resolution rules:
-  ┌─ Explicit metaclass provided? ──► Use it (compatibility check)
-  │
-  └─ No explicit → derive from bases
-        ├─ All bases share a common “most-derived” metaclass?
-        │     → Use that
-        └─ No compatible common metaclass?
-              → TypeError: metaclass conflict
+```mermaid
+graph TD
+  start["`class C(..., metaclass=Explicit?)`"]
+  explicit["Explicit metaclass provided?"]
+  useExplicit["Use explicit metaclass after compatibility check"]
+  derive["Derive metaclass from bases"]
+  common["Common most-derived metaclass across bases?"]
+  useCommon["Use that shared metaclass"]
+  conflict["Raise `TypeError`: metaclass conflict"]
+  start --> explicit
+  explicit -->|yes| useExplicit
+  explicit -->|no| derive --> common
+  common -->|yes| useCommon
+  common -->|no| conflict
+```
 
 Caption: Conflicts are the most common metaclass surprise in multiple inheritance.
 ```
@@ -240,32 +241,15 @@ print(type(OK) is MetaAB)  # True
 
 ### Visual: the split
 
-```text
-Metaclass __new__ vs __init__ Split
+```mermaid
+graph TD
+  new["`Metaclass.__new__(mcs, name, bases, ns, **kw)`<br/>receives mutable namespace<br/>use for structural edits, base rewrites, and namespace validation"]
+  classObj["Creates and returns class object"]
+  init["`Metaclass.__init__(cls, name, bases, ns, **kw)`<br/>receives created class with read-only `__dict__` view<br/>use for registration, final validation, and bookkeeping"]
+  new --> classObj --> init
+```
 
-Metaclass.__new__(mcs, name, bases, ns, **kw)
-  ┌──────────────────────────────────────────────┐
-  │ Receives mutable namespace (ns)              │
-  │ Ideal for:                                   │
-  │   • structural edits (inject/rename attrs)   │
-  │   • rewriting bases                          │
-  │   • validation needing full namespace        │
-  └──────────────────────────────────────────────┘
-                         │
-                         ▼
-              Creates and returns class object
-
-Metaclass.__init__(cls, name, bases, ns, **kw)
-  ┌──────────────────────────────────────────────┐
-  │ Receives created class (cls)                 │
-  │ cls.__dict__ is now read-only mappingproxy    │
-  │ Ideal for:                                   │
-  │   • registration                             │
-  │   • post-creation validation (final MRO)     │
-  │   • bookkeeping (use setattr(cls, ...))      │
-  └──────────────────────────────────────────────┘
-
-Caption: Structural changes in __new__; bookkeeping/registration in __init__.
+Caption: Structural changes belong in `__new__`; bookkeeping and registration belong in `__init__`.
 ```
 
 ### Example: enforce an interface + register classes
@@ -317,25 +301,13 @@ Write `AutoReprMeta` that injects `__repr__` in `__new__` using `__annotations__
 
 ### Visual: why `__prepare__` is unique
 
-```text
-__prepare__ Timing (why it is unique)
+```mermaid
+graph LR
+  defaultNs["Without `__prepare__`<br/>class body executes into ordinary ordered dict<br/>metaclass only sees final namespace"]
+  customNs["With `__prepare__`<br/>custom mapping exists before body execution<br/>can intercept and validate assignments as they happen"]
+```
 
-Without __prepare__:
-  ┌──────────────────────────────┐
-  │ class body executes into      │
-  │ ordinary dict (order preserved)│
-  │ → metaclass sees final ns only│
-  └──────────────────────────────┘
-
-With __prepare__:
-  ┌──────────────────────────────┐
-  │ Custom mapping supplied       │
-  │ before any body statement     │
-  │ → can intercept/validate      │
-  │   each assignment as it happens│
-  └──────────────────────────────┘
-
-Caption: __prepare__ enables declaration-time enforcement impossible otherwise.
+Caption: `__prepare__` enables declaration-time enforcement that is impossible otherwise.
 ```
 
 ### Example: forbid duplicate assignment (except dunders)
@@ -393,20 +365,22 @@ Design goals:
 ### Visual: metaclass-driven registry
 
 ```text
-Metaclass-Driven Registry (import-time behavior)
+```mermaid
+graph TD
+  import["Module import"]
+  plugin["`class Plugin(..., metaclass=PluginMeta)`"]
+  body["Class body executes into namespace"]
+  new["`PluginMeta.__new__` runs"]
+  validate["Validate invariants such as duplicate names"]
+  register["Register class into `_registry[group]`"]
+  more["Subsequent imports add more registrations"]
+  import --> plugin
+  plugin --> body
+  plugin --> new
+  new --> validate --> register --> more
+```
 
-Module import
-   │
-   ▼
-class Plugin(... , metaclass=PluginMeta):
-   │
-   ├─ class body executes into namespace
-   └─ PluginMeta.__new__ runs
-          ├─ validate invariants (e.g., no duplicates)
-          └─ register class into _registry[group]
-
-Subsequent imports → additional registrations
-All concrete subclasses register automatically
+All concrete subclasses register automatically.
 
 Caption: Registration is automatic and hierarchy-wide (infectious).
 ```

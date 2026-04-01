@@ -38,16 +38,15 @@ All `python` fences are runnable as-is; any intentional failure is wrapped.
 <a id="visual-ladder"></a>
 ## Visual: Responsibility Ladder
 
-```text
-Responsibility Ladder (higher = more magic, higher blast radius)
-
-┌────────────────────────────────────────────────────────────────┐
-│ 5  Import hooks / AST transforms                               │ ← global semantics
-│ 4  Metaclasses                                                 │ ← class creation pipeline
-│ 3  Class decorators                                            │ ← post-creation rewrite
-│ 2  Descriptors / @property                                     │ ← per-attribute semantics
-│ 1  Plain code                                                  │ ← explicit, predictable (prefer)
-└────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+  five["5. Import hooks or AST transforms<br/>global semantics"]
+  four["4. Metaclasses<br/>class creation pipeline"]
+  three["3. Class decorators<br/>post-creation rewrite"]
+  two["2. Descriptors or `@property`<br/>per-attribute semantics"]
+  one["1. Plain code<br/>explicit and predictable"]
+  five --> four --> three --> two --> one
+```
 
 Caption: Choose the lowest-power tool that solves the problem, then add guardrails.
 ```
@@ -59,23 +58,12 @@ Caption: Choose the lowest-power tool that solves the problem, then add guardrai
 <a id="visual-redlines"></a>
 ## Visual: Non-Negotiables (Red Lines)
 
-```text
-Red Lines (professional defaults)
-
-1) Never eval/exec untrusted input in-process.
-   - “Restricted globals” is not a sandbox.
-   - AST filtering is not a sandbox.
-   - If untrusted → process isolation.
-
-2) Never monkey-patch builtins / stdlib types in production.
-   - Many core types are immutable at the type level.
-   - Patch your module’s symbol, or patch user-defined types, or patch in tests.
-
-3) Never introduce “magic” without:
-   - a kill switch / feature flag,
-   - deterministic behavior (no import-order roulette),
-   - tests proving cleanup/reset, and
-   - preserved tracebacks / introspection (wraps, chaining policy).
+```mermaid
+graph TD
+  untrusted["1. Never run `eval` or `exec` on untrusted input in-process<br/>restricted globals and AST filtering are not sandboxes<br/>use process isolation"]
+  patching["2. Never monkey-patch builtins or stdlib types in production<br/>patch your own symbols, user-defined types, or tests instead"]
+  guardrails["3. Never introduce magic without a kill switch, deterministic behavior, cleanup tests, and preserved introspection"]
+  untrusted --> patching --> guardrails
 ```
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
@@ -92,20 +80,18 @@ Red Lines (professional defaults)
 
 ### Visual: What actually happens
 
-```text
-Dynamic Execution Pipeline (in-process)
-
-source (str or AST)
-      │
-      ▼
-compile(..., mode="eval"/"exec")  →  code object
-      │
-      ├─ eval(code, globals, locals) → returns value (expressions only)
-      └─ exec(code, globals, locals) → returns None (statements; mutates mappings)
-
-Caption: You control *where* code executes only via globals/locals mappings.
-Security is not guaranteed by these mappings.
+```mermaid
+graph TD
+  source["Source string or AST"]
+  compile["`compile(..., mode=\"eval\" | \"exec\")` -> code object"]
+  eval["`eval(code, globals, locals)`<br/>returns value for expressions"]
+  exec["`exec(code, globals, locals)`<br/>returns `None` and mutates mappings"]
+  source --> compile
+  compile --> eval
+  compile --> exec
 ```
+
+Caption: You control where code executes only through the globals and locals mappings. Those mappings do not provide security.
 
 ### Canonical facts (precise)
 

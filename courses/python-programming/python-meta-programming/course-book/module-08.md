@@ -137,39 +137,28 @@ External descriptors read from and write to a backend via `__get__`/`__set__`, u
 
 This diagram shows how `obj.field` flows through the descriptor to an external store (here: a toy in-process “DB” or Redis-like key–value store).
 
-```text
-Client code                           Python attribute machinery
-──────────────────────────            ───────────────────────────────────────
+```mermaid
+graph TD
+  read["Read flow: `obj.field`"]
+  getattribute["`obj.__getattribute__(\"field\")`"]
+  lookup["Find `ExternalDesc` instance `D` on the class"]
+  descriptor["Call `D.__get__(obj, type(obj))`"]
+  derive["Derive primary key and backend key"]
+  cache["Check `obj.__dict__` cache"]
+  backend["On miss: `store.get(key)` then `json.loads(raw)`"]
+  storeCache["Cache decoded value in `obj.__dict__[cache_name]`"]
+  returnValue["Return value to caller"]
+  write["Write flow: `obj.field = v`"]
+  setattribute["`obj.__setattr__(\"field\", v)`"]
+  setDescriptor["Call `D.__set__(obj, v)`"]
+  validate["Validate or coerce `v`"]
+  persist["Write `json.dumps(v)` to backend and refresh cache"]
 
-    obj.field                          obj.__getattribute__("field")
-      │                                           │
-      │                                           ▼
-      │                               1. Look up "field" on type(obj)
-      │                                  → find ExternalDesc instance D
-      │                                           │
-      │                               2. D is a data descriptor
-      │                                  → call D.__get__(obj, type(obj))
-      │                                           │
-      │                                           ▼
-      │                               3. Inside D.__get__:
-      │                                  • derive primary key pk from obj
-      │                                  • derive backend key
-      │                                        key = f"{prefix}:{Model}:{pk}:{name}"
-      │                                  • check obj.__dict__ for cached value
-      │                                  • on miss:
-      │                                       - raw = store.get(key)
-      │                                       - value = json.loads(raw)
-      │                                       - cache in obj.__dict__[cache_name]
-      │                                           │
-      │                                           ▼
-      └─────────────────────────────── 4. Return value to caller
+  read --> getattribute --> lookup --> descriptor --> derive --> cache
+  cache --> backend --> storeCache --> returnValue
+  cache --> returnValue
 
-Write flow (`obj.field = v`) mirrors this:
-    • obj.__setattr__("field", v) → D.__set__(obj, v)
-    • D validates/coerces v
-    • D writes json.dumps(v) to the store under the derived key
-
-    • D updates obj.__dict__[cache_name] for read-through caching
+  write --> setattribute --> setDescriptor --> validate --> persist
 ```
 
 ### Example (in-process dict simulating Redis/DB – deliberately naive)
