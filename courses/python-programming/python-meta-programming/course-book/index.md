@@ -18,12 +18,13 @@ This repository contains the source material for the course, rendered as a stati
 1. [Purpose and scope](#purpose)
 2. [Target audience](#audience)
 3. [Course structure](#structure)
-4. [Methodology and standards](#methodology)
-5. [Prerequisites](#prerequisites)
-6. [Verification protocol](#verification)
-7. [Related projects](#related)
-8. [Contributing](#contributing)
-9. [License](#license)
+4. [Repository layout](#layout)
+5. [Methodology and standards](#methodology)
+6. [Prerequisites](#prerequisites)
+7. [Verification protocol](#verification)
+8. [Related projects](#related)
+9. [Contributing](#contributing)
+10. [License](#license)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -81,6 +82,20 @@ The course progresses incrementally through focused modules:
 - **11 – Outro**
 
 Each module includes runnable code examples, visual diagrams, precise definitions, and a dedicated glossary.
+
+<span style="font-size: 1em;">[Back to top](#top)</span>
+
+---
+
+<a id="layout"></a>
+## Repository layout
+
+This course follows the same stable structure as the rest of the series:
+
+- `course-book/` contains the published course content.
+- `capstone/` is reserved for synthesis exercises, runnable verification bundles, and future hands-on material.
+
+The repository root remains the stable entrypoint for the course `README.md`, `Makefile`, and `mkdocs.yml`.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

@@ -25,10 +25,11 @@ This is not a collection of clever tricks. It is a systematic exploration of Pyt
 2. [Target audience](#audience)
 3. [Course structure](#structure)
 4. [Key principles](#principles)
-5. [Running the docs locally](#local)
-6. [Related projects](#related)
-7. [Contributing](#contributing)
-8. [License](#license)
+5. [Repository layout](#layout)
+6. [Running the docs locally](#local)
+7. [Related projects](#related)
+8. [Contributing](#contributing)
+9. [License](#license)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -96,6 +97,20 @@ Each module includes runnable code examples, visual diagrams, precise definition
 - **Explicit contracts** – Every advanced feature is presented with its runtime invariants and failure modes.
 - **Tooling-friendly** – Patterns preserve introspection, signatures, tracebacks, and static typing where possible.
 - **Professional responsibility** – Clear red lines for production use (e.g., no monkey-patching stdlib types, no in-process eval of untrusted input).
+
+<span style="font-size: 1em;">[Back to top](#top)</span>
+
+---
+
+<a id="layout"></a>
+## Repository layout
+
+This course follows the same stable structure as the rest of the series:
+
+- `course-book/` contains the published course content.
+- `capstone/` is reserved for synthesis exercises, runnable verification bundles, and future hands-on material.
+
+The repository root remains the stable entrypoint for the course `README.md`, `Makefile`, and `mkdocs.yml`.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
