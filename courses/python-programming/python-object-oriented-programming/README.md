@@ -19,7 +19,8 @@ and evolvable under production change.
 ## Course structure
 
 - `course-book/` contains the published course material.
-- `capstone/` contains a runnable monitoring-system reference implementation.
+- `capstone/` contains a runnable monitoring-system reference implementation with
+  aggregates, evaluation strategies, read models, and a runtime facade.
 - `Makefile` exposes stable course-level entrypoints inside the monorepo.
 
 ## Quickstart
