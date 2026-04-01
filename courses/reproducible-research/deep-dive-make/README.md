@@ -138,6 +138,6 @@ Contributions that improve correctness, clarity, or reproducibility are welcome 
 
 ## License
 
-MIT — see the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE). © 2025 Bijan Mousavi.
+MIT — see the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE). © 2025 Bijan Mousavi <bijan@bijux.io>.
 
 [Back to top](#top)

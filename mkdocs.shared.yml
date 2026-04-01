@@ -58,4 +58,4 @@ extra:
 extra_javascript:
   - https://unpkg.com/mermaid@11/dist/mermaid.min.js
 
-copyright: "© 2025 Bijan Mousavi"
+copyright: "© 2025 Bijan Mousavi <bijan@bijux.io>"
