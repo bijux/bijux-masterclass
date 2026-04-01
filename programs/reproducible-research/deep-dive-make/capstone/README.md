@@ -15,6 +15,7 @@ The capstone is the executable reference build for **Deep Dive Make**: a compact
 - [Who should start here](#who-should-start-here)
 - [Purpose](#purpose)
 - [Quick start](#quick-start)
+- [What selftest proves](#what-selftest-proves)
 - [Recommended first walkthrough](#recommended-first-walkthrough)
 - [Public targets](#public-targets)
 - [What it builds](#what-it-builds)
@@ -60,6 +61,24 @@ brew install make
 gmake selftest
 ```
 A passing `selftest` is the signal that the contract holds: convergence, serial/parallel equivalence, and negative tests designed to detect common defects.
+[Back to top](#top)
+
+---
+## What selftest proves
+`selftest` is the most important target in this capstone because it verifies build-system
+behavior, not just program behavior.
+
+It checks three things:
+
+| Check | What it proves | Why it matters |
+| --- | --- | --- |
+| convergence | `make all` reaches an up-to-date state | the graph does not keep asking for more work after success |
+| serial/parallel equivalence | `-j1` and `-j2` produce the same artifact set | scheduling changes throughput, not meaning |
+| negative hidden-input case | an intentionally hidden input breaks convergence | the proof harness can detect lies instead of only happy paths |
+
+The selftest also includes a lightweight trace-volume guardrail so observability costs do
+not silently drift upward.
+
 [Back to top](#top)
 
 ---
