@@ -22,12 +22,15 @@ plugins:
       minify_html: true
 
 nav:
-  - Home: index.md
-  - Modules:
-      - "00 — Orientation": module-00.md
-      - "01 — Rules & Contracts": module-01.md
-      - "02 — Dynamic DAGs": module-02.md
-      - "03 — Publishing & Verification": module-03.md
-      - "04 — Profiles & Operations": module-04.md
-  - Capstone:
-      - "Reference Workflow": readme-capstone.md
+  - Start Here:
+      - Course Home: index.md
+      - Orientation: module-00.md
+      - Capstone Overview: readme-capstone.md
+  - "Module 01: File Contracts":
+      - Overview: module-01.md
+  - "Module 02: Dynamic DAGs":
+      - Overview: module-02.md
+  - "Module 03: Production Operation":
+      - Overview: module-03.md
+  - "Module 04: Scaling Boundaries":
+      - Overview: module-04.md
