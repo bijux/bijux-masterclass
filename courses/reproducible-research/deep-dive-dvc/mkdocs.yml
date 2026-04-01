@@ -1,0 +1,38 @@
+INHERIT: ../../../mkdocs.shared.yml
+
+site_name: Deep Dive DVC
+site_description: >-
+  Deep Dive DVC teaches reproducibility through content-addressed data, truthful
+  pipelines, declared experiments, and operational recovery discipline.
+site_author: Bijan Mousavi
+site_url: https://bijux.github.io/deep-dive-dvc/
+repo_name: bijux/deep-dive-dvc
+repo_url: https://github.com/bijux/deep-dive-dvc
+edit_uri: edit/main/
+
+docs_dir: course-book
+site_dir: site
+
+plugins:
+  - search
+  - macros:
+      include_dir: .
+
+markdown_extensions:
+  - footnotes
+  - tables
+
+nav:
+  - Home: index.md
+  - Modules:
+      - "00 — Orientation": module-00.md
+      - "01 — Why Reproducibility Fails": module-01.md
+      - "02 — Data Identity and Content Addressing": module-02.md
+      - "03 — Execution Environments as Inputs": module-03.md
+      - "04 — Pipelines as Truthful DAGs": module-04.md
+      - "05 — Metrics, Parameters, and Meaning": module-05.md
+      - "06 — Experiments Without Chaos": module-06.md
+      - "07 — Collaboration, CI, and Social Contracts": module-07.md
+      - "08 — Production, Scale, and Incident Survival": module-08.md
+  - Capstone:
+      - "Reference Project": readme-capstone.md
