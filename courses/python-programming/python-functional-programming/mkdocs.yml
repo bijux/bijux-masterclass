@@ -16,129 +16,129 @@ site_dir: ../../../artifacts/site/python-programming/python-functional-programmi
 nav:
   - Start Here:
       - Course Home: index.md
-      - Orientation Map: module-00/M00C00.md
-      - How to Study This Course: module-00/M00C01.md
+      - Course Orientation: module-00-orientation/course-orientation.md
+      - How to Study This Course: module-00-orientation/how-to-study-this-course.md
       - FuncPipe Capstone Guide: capstone.md
 
   - "Module 01: Purity and Substitution":
-      - Overview: module-01/M01C01.md
-      - Pure Functions & Contracts: module-01/M01C02.md
-      - Immutability & Value Semantics: module-01/M01C03.md
-      - Higher-Order Composition: module-01/M01C04.md
-      - Local FP Refactors: module-01/M01C05.md
-      - Mini Combinator Library: module-01/M01C06.md
-      - Typed Pipelines: module-01/M01C07.md
-      - Isolating Side Effects: module-01/M01C08.md
-      - Equational Reasoning: module-01/M01C09.md
-      - Idempotent Transforms: module-01/M01C10.md
+      - Imperative vs Functional: module-01-purity-and-substitution/imperative-vs-functional.md
+      - Pure Functions & Contracts: module-01-purity-and-substitution/pure-functions-and-contracts.md
+      - Immutability & Value Semantics: module-01-purity-and-substitution/immutability-and-value-semantics.md
+      - Higher-Order Composition: module-01-purity-and-substitution/higher-order-composition.md
+      - Local FP Refactors: module-01-purity-and-substitution/local-fp-refactors.md
+      - Small Combinator Library: module-01-purity-and-substitution/small-combinator-library.md
+      - Typed Pipelines: module-01-purity-and-substitution/typed-pipelines.md
+      - Isolating Side Effects: module-01-purity-and-substitution/isolating-side-effects.md
+      - Equational Reasoning: module-01-purity-and-substitution/equational-reasoning.md
+      - Idempotent Transforms: module-01-purity-and-substitution/idempotent-transforms.md
 
   - "Module 02: Data-First APIs and Expression Style":
-      - Overview: module-02/M02C01.md
-      - Expression-Oriented Python: module-02/M02C02.md
-      - Intro to Laziness: module-02/M02C03.md
-      - FP-Friendly APIs: module-02/M02C04.md
-      - Effect Boundaries: module-02/M02C05.md
-      - Config-as-Data: module-02/M02C06.md
-      - Callbacks to Combinators: module-02/M02C07.md
-      - Tiny Function DSLs: module-02/M02C08.md
-      - Debugging Compositions: module-02/M02C09.md
-      - Imperative to FP Refactor: module-02/M02C10.md
+      - Closures & Partials: module-02-data-first-apis-and-expression-style/closures-and-partials.md
+      - Expression-Oriented Python: module-02-data-first-apis-and-expression-style/expression-oriented-python.md
+      - Introducing Laziness: module-02-data-first-apis-and-expression-style/introducing-laziness.md
+      - FP-Friendly APIs: module-02-data-first-apis-and-expression-style/fp-friendly-apis.md
+      - Effect Boundaries: module-02-data-first-apis-and-expression-style/effect-boundaries.md
+      - Configuration as Data: module-02-data-first-apis-and-expression-style/configuration-as-data.md
+      - Callbacks to Combinators: module-02-data-first-apis-and-expression-style/callbacks-to-combinators.md
+      - Tiny Function DSLs: module-02-data-first-apis-and-expression-style/tiny-function-dsls.md
+      - Debugging Compositions: module-02-data-first-apis-and-expression-style/debugging-compositions.md
+      - Imperative to FP Refactor: module-02-data-first-apis-and-expression-style/imperative-to-fp-refactor.md
 
   - "Module 03: Iterators and Lazy Dataflow":
-      - Overview: module-03/M03C01.md
-      - Generators vs Comprehensions: module-03/M03C02.md
-      - itertools Composition: module-03/M03C03.md
-      - Chunking & Windowing: module-03/M03C04.md
-      - Infinite Sequences Safely: module-03/M03C05.md
-      - Reusable Pipeline Stages: module-03/M03C06.md
-      - Fan-In and Fan-Out: module-03/M03C07.md
-      - Time-Aware Streaming: module-03/M03C08.md
-      - Custom Iterators: module-03/M03C09.md
-      - Streaming Observability: module-03/M03C10.md
+      - Iterator Protocol and Generators: module-03-iterators-and-lazy-dataflow/iterator-protocol-and-generators.md
+      - Generators vs Comprehensions: module-03-iterators-and-lazy-dataflow/generators-vs-comprehensions.md
+      - itertools Composition: module-03-iterators-and-lazy-dataflow/itertools-composition.md
+      - Chunking and Windowing: module-03-iterators-and-lazy-dataflow/chunking-and-windowing.md
+      - Infinite Sequences Safely: module-03-iterators-and-lazy-dataflow/infinite-sequences-safely.md
+      - Reusable Pipeline Stages: module-03-iterators-and-lazy-dataflow/reusable-pipeline-stages.md
+      - Fan-In and Fan-Out: module-03-iterators-and-lazy-dataflow/fan-in-and-fan-out.md
+      - Time-Aware Streaming: module-03-iterators-and-lazy-dataflow/time-aware-streaming.md
+      - Custom Iterators: module-03-iterators-and-lazy-dataflow/custom-iterators.md
+      - Streaming Observability: module-03-iterators-and-lazy-dataflow/streaming-observability.md
 
   - "Module 04: Resilience and Streaming Failures":
-      - Overview: module-04/M04C01.md
-      - Folds & Reductions: module-04/M04C02.md
-      - Memoization: module-04/M04C03.md
-      - Result/Option Failures: module-04/M04C04.md
-      - Streaming Error Handling: module-04/M04C05.md
-      - Error Aggregation: module-04/M04C06.md
-      - Circuit Breakers: module-04/M04C07.md
-      - Resource-Aware Streams: module-04/M04C08.md
-      - Functional Retries: module-04/M04C09.md
-      - Structured Error Reports: module-04/M04C10.md
+      - Structural Recursion and Iteration: module-04-resilience-and-streaming-failures/structural-recursion-and-iteration.md
+      - Folds and Reductions: module-04-resilience-and-streaming-failures/folds-and-reductions.md
+      - Memoization: module-04-resilience-and-streaming-failures/memoization.md
+      - Result and Option Failures: module-04-resilience-and-streaming-failures/result-and-option-failures.md
+      - Streaming Error Handling: module-04-resilience-and-streaming-failures/streaming-error-handling.md
+      - Error Aggregation: module-04-resilience-and-streaming-failures/error-aggregation.md
+      - Circuit Breakers: module-04-resilience-and-streaming-failures/circuit-breakers.md
+      - Resource-Aware Streams: module-04-resilience-and-streaming-failures/resource-aware-streams.md
+      - Functional Retries: module-04-resilience-and-streaming-failures/functional-retries.md
+      - Structured Error Reports: module-04-resilience-and-streaming-failures/structured-error-reports.md
 
   - "Module 05: Algebraic Data Modelling":
-      - Overview: module-05/M05C01.md
-      - Domain State ADTs: module-05/M05C02.md
-      - Functors: module-05/M05C03.md
-      - Applicative Validation: module-05/M05C04.md
-      - Monoids: module-05/M05C05.md
-      - Pydantic Smart Constructors: module-05/M05C06.md
-      - Pattern Matching: module-05/M05C07.md
-      - Serialization Beyond Pydantic: module-05/M05C08.md
-      - Compositional Domain Models: module-05/M05C09.md
-      - ADT Performance: module-05/M05C10.md
+      - Product and Sum Types: module-05-algebraic-data-modelling/product-and-sum-types.md
+      - Domain State ADTs: module-05-algebraic-data-modelling/domain-state-adts.md
+      - Functors: module-05-algebraic-data-modelling/functors.md
+      - Applicative Validation: module-05-algebraic-data-modelling/applicative-validation.md
+      - Monoids: module-05-algebraic-data-modelling/monoids.md
+      - Pydantic Smart Constructors: module-05-algebraic-data-modelling/pydantic-smart-constructors.md
+      - Pattern Matching: module-05-algebraic-data-modelling/pattern-matching.md
+      - Serialization Beyond Pydantic: module-05-algebraic-data-modelling/serialization-beyond-pydantic.md
+      - Compositional Domain Models: module-05-algebraic-data-modelling/compositional-domain-models.md
+      - ADT Performance: module-05-algebraic-data-modelling/adt-performance.md
 
   - "Module 06: Monadic Flow and Explicit Context":
-      - Overview: module-06/M06C01.md
-      - Law-Guided Design: module-06/M06C02.md
-      - Lifting Plain Functions: module-06/M06C03.md
-      - Reader Pattern: module-06/M06C04.md
-      - Explicit State Threading: module-06/M06C05.md
-      - Error-Typed Flows: module-06/M06C06.md
-      - Layered Containers: module-06/M06C07.md
-      - Tracing in Monads: module-06/M06C08.md
-      - Refactoring try/except: module-06/M06C09.md
-      - Configurable Pipelines: module-06/M06C10.md
+      - and_then and bind: module-06-monadic-flow-and-explicit-context/and-then-and-bind.md
+      - Law-Guided Design: module-06-monadic-flow-and-explicit-context/law-guided-design.md
+      - Lifting Plain Functions: module-06-monadic-flow-and-explicit-context/lifting-plain-functions.md
+      - Reader Pattern: module-06-monadic-flow-and-explicit-context/reader-pattern.md
+      - Explicit State Threading: module-06-monadic-flow-and-explicit-context/explicit-state-threading.md
+      - Error-Typed Flows: module-06-monadic-flow-and-explicit-context/error-typed-flows.md
+      - Layered Containers: module-06-monadic-flow-and-explicit-context/layered-containers.md
+      - Writer Pattern: module-06-monadic-flow-and-explicit-context/writer-pattern.md
+      - Refactoring try/except: module-06-monadic-flow-and-explicit-context/refactoring-try-except.md
+      - Configurable Pipelines: module-06-monadic-flow-and-explicit-context/configurable-pipelines.md
 
   - "Module 07: Effect Boundaries and Resource Safety":
-      - Overview: module-07/M07C01.md
-      - Effect Interfaces: module-07/M07C02.md
-      - Capability Protocols: module-07/M07C03.md
-      - Context Managers & Safety: module-07/M07C04.md
-      - Functional Logging: module-07/M07C05.md
-      - Capability Typing: module-07/M07C06.md
-      - Composing Effects: module-07/M07C07.md
-      - Idempotent Effects: module-07/M07C08.md
-      - Sessions & Transactions: module-07/M07C09.md
-      - Incremental Migration: module-07/M07C10.md
+      - Ports and Adapters: module-07-effect-boundaries-and-resource-safety/ports-and-adapters.md
+      - Effect Interfaces: module-07-effect-boundaries-and-resource-safety/effect-interfaces.md
+      - Capability Protocols: module-07-effect-boundaries-and-resource-safety/capability-protocols.md
+      - Resource Safety: module-07-effect-boundaries-and-resource-safety/resource-safety.md
+      - Functional Logging: module-07-effect-boundaries-and-resource-safety/functional-logging.md
+      - Effect Capabilities and Static Checking: module-07-effect-boundaries-and-resource-safety/effect-capabilities-and-static-checking.md
+      - Composing Effects: module-07-effect-boundaries-and-resource-safety/composing-effects.md
+      - Idempotent Effects: module-07-effect-boundaries-and-resource-safety/idempotent-effects.md
+      - Sessions and Transactions: module-07-effect-boundaries-and-resource-safety/sessions-and-transactions.md
+      - Incremental Migration: module-07-effect-boundaries-and-resource-safety/incremental-migration.md
 
   - "Module 08: Async FuncPipe and Backpressure":
-      - Overview: module-08/M08C01.md
-      - Async Generators: module-08/M08C02.md
-      - Backpressure: module-08/M08C03.md
-      - Retry/Timeout Policies: module-08/M08C04.md
-      - Deterministic Async Testing: module-08/M08C05.md
-      - Rate Limiting & Fairness: module-08/M08C06.md
-      - Async Adapters: module-08/M08C07.md
-      - Async Service Integrations: module-08/M08C08.md
-      - Async Chunking: module-08/M08C09.md
-      - Async Pipeline Laws: module-08/M08C10.md
+      - async/await as Descriptions: module-08-async-funcpipe-and-backpressure/async-await-as-descriptions.md
+      - Async Generators: module-08-async-funcpipe-and-backpressure/async-generators.md
+      - Backpressure: module-08-async-funcpipe-and-backpressure/backpressure.md
+      - Retry and Timeout Policies: module-08-async-funcpipe-and-backpressure/retry-and-timeout-policies.md
+      - Deterministic Async Testing: module-08-async-funcpipe-and-backpressure/deterministic-async-testing.md
+      - Rate Limiting and Fairness: module-08-async-funcpipe-and-backpressure/rate-limiting-and-fairness.md
+      - Async Adapters: module-08-async-funcpipe-and-backpressure/async-adapters.md
+      - Async Service Integrations: module-08-async-funcpipe-and-backpressure/async-service-integrations.md
+      - Async Chunking: module-08-async-funcpipe-and-backpressure/async-chunking.md
+      - Async Pipeline Laws: module-08-async-funcpipe-and-backpressure/async-pipeline-laws.md
 
   - "Module 09: Ecosystem Interop":
-      - Overview: module-09/M09C01.md
-      - Helper Libraries: module-09/M09C02.md
-      - Data Processing FP: module-09/M09C03.md
-      - Web & Services FP: module-09/M09C04.md
-      - Data/ML Pipelines: module-09/M09C05.md
-      - CLI & Config Pipelines: module-09/M09C06.md
-      - Distributed/Dataflow: module-09/M09C07.md
-      - Functional Facades: module-09/M09C08.md
-      - Cross-Process Composition: module-09/M09C09.md
-      - Team Adoption: module-09/M09C10.md
+      - Standard Library Functional Tools: module-09-ecosystem-interop/stdlib-functional-tools.md
+      - Helper Libraries: module-09-ecosystem-interop/helper-libraries.md
+      - Data Processing: module-09-ecosystem-interop/data-processing.md
+      - Web and Services: module-09-ecosystem-interop/web-and-services.md
+      - Data and ML Pipelines: module-09-ecosystem-interop/data-and-ml-pipelines.md
+      - CLI and Config Pipelines: module-09-ecosystem-interop/cli-and-config-pipelines.md
+      - Distributed Dataflow: module-09-ecosystem-interop/distributed-dataflow.md
+      - Functional Facades: module-09-ecosystem-interop/functional-facades.md
+      - Cross-Process Composition: module-09-ecosystem-interop/cross-process-composition.md
+      - Team Adoption: module-09-ecosystem-interop/team-adoption.md
 
   - "Module 10: Refactoring and Sustainment":
-      - Overview: module-10/M10C01.md
-      - Performance Budgeting: module-10/M10C02.md
-      - Observability: module-10/M10C03.md
-      - Property-Based Regression: module-10/M10C04.md
-      - Async Property Testing: module-10/M10C05.md
-      - Future Directions: module-10/M10C06.md
-      - DDD + FP: module-10/M10C07.md
-      - Versioning & Migration: module-10/M10C08.md
-      - Governance: module-10/M10C09.md
-      - Capstone: module-10/M10C10.md
+      - Systematic Refactor: module-10-refactoring-and-sustainment/systematic-refactor.md
+      - Performance Budgeting: module-10-refactoring-and-sustainment/performance-budgeting.md
+      - Observability: module-10-refactoring-and-sustainment/observability.md
+      - Property-Based Regression: module-10-refactoring-and-sustainment/property-based-regression.md
+      - Async Property Testing: module-10-refactoring-and-sustainment/async-property-testing.md
+      - Advanced Patterns and Scaling: module-10-refactoring-and-sustainment/advanced-patterns-and-scaling.md
+      - DDD and FP: module-10-refactoring-and-sustainment/ddd-and-fp.md
+      - Versioning and Migration: module-10-refactoring-and-sustainment/versioning-and-migration.md
+      - Governance: module-10-refactoring-and-sustainment/governance.md
+      - Capstone Delivery: module-10-refactoring-and-sustainment/capstone-delivery.md
 
   - Reference:
       - FP Standards: reference/fp-standards.md
