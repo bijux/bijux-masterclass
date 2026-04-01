@@ -18,6 +18,7 @@ nav:
       - Course Home: index.md
       - Orientation Map: module-00/M00C00.md
       - How to Study This Course: module-00/M00C01.md
+      - FuncPipe Capstone Guide: capstone.md
 
   - "Module 01: Purity and Substitution":
       - Overview: module-01/M01C01.md
