@@ -39,5 +39,4 @@ By the end of the course, you should be able to:
 
 - Start with [Orientation](module-00-orientation/index.md).
 - Work through Modules 01 to 05 in order.
-- Use the capstone in `courses/python-programming/python-object-oriented-programming/capstone/`
-  to connect the prose to runnable code.
+- Use the [Capstone](capstone.md) to connect the prose to runnable code.

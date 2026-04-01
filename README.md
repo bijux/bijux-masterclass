@@ -20,6 +20,7 @@ graph TD
   research --> snakemake["deep-dive-snakemake/"]
   research --> dvc["deep-dive-dvc/"]
   python --> functional["python-functional-programming/"]
+  python --> oop["python-object-oriented-programming/"]
   python --> meta["python-meta-programming/"]
 ```
 
@@ -30,6 +31,7 @@ graph TD
   - `deep-dive-snakemake`
   - `deep-dive-dvc`
 - `python-programming`
+  - `python-object-oriented-programming`
   - `python-functional-programming`
   - `python-meta-programming`
 

@@ -5,6 +5,11 @@ models, explicit contracts, and maintainable abstractions.
 
 ## Included Courses
 
+### Python Object-Oriented Programming
+
+- Location: `courses/python-programming/python-object-oriented-programming`
+- Focus: object semantics, responsibilities, state design, aggregates, and system evolution
+
 ### Python Functional Programming
 
 - Location: `courses/python-programming/python-functional-programming`

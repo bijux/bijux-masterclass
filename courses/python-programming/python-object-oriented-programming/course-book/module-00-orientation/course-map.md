@@ -1,3 +1,13 @@
+# Course Map
+
+This map shows the full progression of the course. The sequence is deliberate:
+start with the Python object model, move into responsibility and layering, then
+into state design, collaboration boundaries, and finally operational survival.
+
+The running example is a monitoring system. Each module sharpens that system from
+ad hoc scripts into a design with explicit value types, aggregate roots, lifecycle
+controls, and compatibility boundaries.
+
 ## Module 1 – Python’s Object Model, Identity, and the Data Model
 
 **Theme:** Understand what Python objects *really* are: identity, layout, equality, collections, and the data model. No hand-holding.

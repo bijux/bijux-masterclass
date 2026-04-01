@@ -15,6 +15,7 @@ site_dir: site
 
 nav:
   - Home: index.md
+  - Capstone: capstone.md
 
   - Orientation:
       - Start Here: module-00-orientation/index.md

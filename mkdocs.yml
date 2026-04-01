@@ -15,5 +15,6 @@ nav:
       - Deep Dive DVC: reproducible-research/deep-dive-dvc.md
   - Python Programming:
       - Overview: python-programming/index.md
+      - Python Object-Oriented Programming: python-programming/python-object-oriented-programming.md
       - Python Functional Programming: python-programming/python-functional-programming.md
       - Python Meta-Programming: python-programming/python-meta-programming.md

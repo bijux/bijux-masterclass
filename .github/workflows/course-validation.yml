@@ -43,6 +43,12 @@ jobs:
             validate: |
               make COURSE=python-programming/python-functional-programming docs-build
               make COURSE=python-programming/python-functional-programming test
+          - name: python-object-oriented-programming
+            setup: |
+              python -m pip install -U pip
+            validate: |
+              make COURSE=python-programming/python-object-oriented-programming docs-build
+              make COURSE=python-programming/python-object-oriented-programming test
           - name: python-meta-programming
             setup: |
               python -m pip install -U pip

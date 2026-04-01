@@ -21,6 +21,7 @@ traceable, repeatable research and data-processing systems.
 Language-centric courses focused on how to write Python systems with explicit
 semantics, strong engineering contracts, and maintainable abstractions.
 
+- `python-object-oriented-programming`
 - `python-functional-programming`
 - `python-meta-programming`
 
