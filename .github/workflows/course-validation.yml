@@ -28,10 +28,15 @@ jobs:
           - name: deep-dive-snakemake
             setup: |
               python -m pip install -U pip
-              pip install -e "./courses/reproducible-research/deep-dive-snakemake/snakecapstone[dev]"
             validate: |
               make COURSE=reproducible-research/deep-dive-snakemake docs-build
-              make -C courses/reproducible-research/deep-dive-snakemake/snakecapstone confirm
+              make -C courses/reproducible-research/deep-dive-snakemake/capstone confirm
+          - name: deep-dive-dvc
+            setup: |
+              python -m pip install -U pip
+            validate: |
+              make COURSE=reproducible-research/deep-dive-dvc docs-build
+              make COURSE=reproducible-research/deep-dive-dvc test
           - name: python-functional-programming
             setup: |
               python -m pip install -U pip
