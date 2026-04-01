@@ -147,5 +147,5 @@ Open a PR against `main` with a short “claim → proof” note (what you chang
 
 ---
 ## License
-MIT — see [`LICENSE`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-make/LICENSE). © 2025 Bijan Mousavi.  
+MIT — see the repository root [`LICENSE`](https://github.com/bijux/deep-dive-series/blob/master/LICENSE). © 2025 Bijan Mousavi.  
 [Back to top](#top)

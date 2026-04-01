@@ -219,6 +219,6 @@ To modify the published contract, increment the version directory (e.g., `v2`) a
 
 ## License
 
-MIT — see the top-level [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-snakemake/LICENSE). © 2025 Bijan Mousavi.
+MIT — see the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE). © 2025 Bijan Mousavi.
 
 [Back to top](#top)

@@ -54,4 +54,4 @@ That confirmation suite performs `dvc repro`, runs the Python tests, pushes arti
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE).

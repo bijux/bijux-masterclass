@@ -198,6 +198,6 @@ All contributions must adhere to the course’s tone: precise, evidence-based, a
 <a id="license"></a>
 ## License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License**. See the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE) for details.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>

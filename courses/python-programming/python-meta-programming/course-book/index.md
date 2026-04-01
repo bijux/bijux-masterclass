@@ -185,6 +185,6 @@ Contributions that enhance clarity, correctness, or completeness are welcome. Re
 <a id="license"></a>
 ## License
 
-This project is licensed under the **MIT License**. See the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/courses/python-programming/python-meta-programming/LICENSE) file for details.
+This project is licensed under the **MIT License**. See the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE) for details.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>

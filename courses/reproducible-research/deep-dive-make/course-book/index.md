@@ -137,6 +137,6 @@ Process:
 [Back to top](#top)
 ---
 ## License
-MIT — see [`LICENSE`](https://github.com/bijux/deep-dive-series/blob/master/courses/reproducible-research/deep-dive-make/LICENSE). © 2025 Bijan Mousavi.  
+MIT — see the repository root [`LICENSE`](https://github.com/bijux/deep-dive-series/blob/master/LICENSE). © 2025 Bijan Mousavi.  
 
 [Back to top](#top)

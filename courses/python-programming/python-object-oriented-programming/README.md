@@ -54,4 +54,4 @@ make -C courses/python-programming/python-object-oriented-programming/capstone c
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE).
