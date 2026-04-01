@@ -38,6 +38,36 @@ The risk profile is clear:
 - **CPython-leaning**: exact behaviour of functions and properties as descriptors.
 - **Diagnostic / didactic only**: the `Quantity` capstone and slotted storage tricks—use them to understand the mechanism, not as drop-in framework code.
 
+## Why this module matters in the course
+
+This is where attribute access stops being intuitive and starts becoming mechanical. Many
+frameworks feel magical only because descriptor precedence and storage rules stay implicit.
+Once those rules are explicit, a large class of "why did Python do that?" bugs becomes explainable.
+
+This module matters because it reveals the attribute engine that powers properties, bound
+methods, many validators, and a large share of framework field abstractions.
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- What exactly makes an object a descriptor, and when does Python invoke it?
+- Why do data descriptors beat instance dictionaries while non-data descriptors can be shadowed?
+- Where should descriptor state live so instances stay independent?
+- When is a descriptor the right abstraction instead of a property, plain method, or manual validation?
+
+If those answers remain fuzzy, metaclasses will look more necessary than they really are.
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- `Field` descriptors under `capstone/src/incident_plugins/`
+- tests that assert coercion, validation, and per-instance storage behavior
+- places where descriptor behavior shapes what the runtime manifest can report
+
+The capstone should make one point concrete here: descriptors are the real attribute engine, not an exotic edge feature.
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---
