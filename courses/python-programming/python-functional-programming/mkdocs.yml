@@ -100,6 +100,7 @@ nav:
       - Configurable Pipelines: module-06-monadic-flow-and-explicit-context/configurable-pipelines.md
 
   - "Module 07: Effect Boundaries and Resource Safety":
+      - Overview: module-07-effect-boundaries-and-resource-safety/index.md
       - Ports and Adapters: module-07-effect-boundaries-and-resource-safety/ports-and-adapters.md
       - Effect Interfaces: module-07-effect-boundaries-and-resource-safety/effect-interfaces.md
       - Capability Protocols: module-07-effect-boundaries-and-resource-safety/capability-protocols.md
@@ -112,6 +113,7 @@ nav:
       - Incremental Migration: module-07-effect-boundaries-and-resource-safety/incremental-migration.md
 
   - "Module 08: Async FuncPipe and Backpressure":
+      - Overview: module-08-async-funcpipe-and-backpressure/index.md
       - async/await as Descriptions: module-08-async-funcpipe-and-backpressure/async-await-as-descriptions.md
       - Async Generators: module-08-async-funcpipe-and-backpressure/async-generators.md
       - Backpressure: module-08-async-funcpipe-and-backpressure/backpressure.md
@@ -124,6 +126,7 @@ nav:
       - Async Pipeline Laws: module-08-async-funcpipe-and-backpressure/async-pipeline-laws.md
 
   - "Module 09: Ecosystem Interop":
+      - Overview: module-09-ecosystem-interop/index.md
       - Standard Library Functional Tools: module-09-ecosystem-interop/stdlib-functional-tools.md
       - Helper Libraries: module-09-ecosystem-interop/helper-libraries.md
       - Data Processing: module-09-ecosystem-interop/data-processing.md
@@ -136,6 +139,7 @@ nav:
       - Team Adoption: module-09-ecosystem-interop/team-adoption.md
 
   - "Module 10: Refactoring and Sustainment":
+      - Overview: module-10-refactoring-and-sustainment/index.md
       - Systematic Refactor: module-10-refactoring-and-sustainment/systematic-refactor.md
       - Performance Budgeting: module-10-refactoring-and-sustainment/performance-budgeting.md
       - Observability: module-10-refactoring-and-sustainment/observability.md
