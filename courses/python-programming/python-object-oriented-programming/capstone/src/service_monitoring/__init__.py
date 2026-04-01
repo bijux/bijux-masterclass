@@ -20,12 +20,21 @@ from .policies import (
 from .projections import ActiveRuleIndex
 from .read_models import IncidentLedger, IncidentSnapshot
 from .repository import InMemoryPolicyRepository, InMemoryUnitOfWork
+from .runtime import (
+    CollectingIncidentSink,
+    CycleReport,
+    MetricSource,
+    MonitoringRuntime,
+    StaticMetricSource,
+)
 
 __all__ = [
     "ActiveRuleIndex",
     "Alert",
     "AlertTriggered",
     "ConsecutiveThresholdPolicy",
+    "CollectingIncidentSink",
+    "CycleReport",
     "DomainError",
     "EvaluationOutcome",
     "InMemoryPolicyRepository",
@@ -35,6 +44,8 @@ __all__ = [
     "ManagedRule",
     "MetricName",
     "MetricSample",
+    "MetricSource",
+    "MonitoringRuntime",
     "MonitoringPolicy",
     "RateOfChangePolicy",
     "RuleActivated",
@@ -43,6 +54,7 @@ __all__ = [
     "RuleRetired",
     "RuleState",
     "Severity",
+    "StaticMetricSource",
     "ThresholdPolicy",
     "ThresholdRule",
 ]
