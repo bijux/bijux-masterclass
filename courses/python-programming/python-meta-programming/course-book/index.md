@@ -5,8 +5,8 @@
 
 This repository contains the source material for the course, rendered as a static site using MkDocs Material.
 
-- **Live documentation**: https://bijux.github.io/python-meta-programming/
-- **Repository root**: https://github.com/bijux/python-meta-programming
+- **Live documentation**: https://bijux.github.io/deep-dive-series/python-programming/python-meta-programming/
+- **Repository root**: https://github.com/bijux/deep-dive-series/tree/master/courses/python-programming/python-meta-programming
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -147,7 +147,7 @@ This course aligns with other correctness-focused resources in the same style:
 
 - **bijux hub**: https://bijux.github.io/
 - **bijux-cli**: https://bijux.github.io/bijux-cli/
-- **Deep Dive Make**: https://bijux.github.io/deep-dive-make/
+- **Deep Dive Make**: https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -170,6 +170,6 @@ Contributions that enhance clarity, correctness, or completeness are welcome. Re
 <a id="license"></a>
 ## License
 
-This project is licensed under the **MIT License**. See the repository root [LICENSE](https://github.com/bijux/python-meta-programming/blob/main/LICENSE) file for details.
+This project is licensed under the **MIT License**. See the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/courses/python-programming/python-meta-programming/LICENSE) file for details.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>

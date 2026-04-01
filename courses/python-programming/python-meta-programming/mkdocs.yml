@@ -4,11 +4,11 @@ site_name: Python Meta-Programming
 site_description: >-
   A correctness-first course-book on Python metaprogramming: introspection, decorators,
   descriptors, and metaclasses—without magical handwaving.
-site_url: https://bijux.github.io/python-meta-programming/
+site_url: https://bijux.github.io/deep-dive-series/python-programming/python-meta-programming/
 
-repo_name: bijux/python-meta-programming
-repo_url: https://github.com/bijux/python-meta-programming
-edit_uri: edit/master/course-book/
+repo_name: bijux/deep-dive-series
+repo_url: https://github.com/bijux/deep-dive-series
+edit_uri: edit/master/courses/python-programming/python-meta-programming/course-book/
 
 docs_dir: course-book
 site_dir: site

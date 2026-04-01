@@ -1,12 +1,13 @@
 # Python Functional Programming — Correctness-First Course & FuncPipe RAG Build
 
-[![License](https://img.shields.io/github/license/bijux/python-functional-programming?style=flat-square)](https://github.com/bijux/python-functional-programming/blob/main/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-live-blue?style=flat-square)](https://bijux.github.io/python-functional-programming/)
+[![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
+[![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.github.io/deep-dive-series/python-programming/python-functional-programming/)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue?style=flat-square)](https://www.python.org/)
 
 **A production-minded deep dive into functional programming in Python**, grounded in a real running project (FuncPipe RAG).
 
-- **Live docs:** https://bijux.github.io/python-functional-programming/  
+- **Live docs:** https://bijux.github.io/deep-dive-series/python-programming/python-functional-programming/  
 - **Author hub:** https://bijux.github.io/
 
 ---
