@@ -1,81 +1,124 @@
-# Module 00 — Orientation
+<a id="top"></a>
 
-Deep Dive DVC is the reproducible-research course about **state**. Make and Snakemake
-teach how systems change. DVC teaches what those systems are changing, how that state
-acquires identity, and how teams recover it after time, drift, and failure.
+# Deep Dive DVC: Program Outline
 
-## The question this course owns
+Deep Dive DVC is now a ten-module program that starts from first-contact reproducibility
+thinking and ends with long-lived state stewardship. The through-line stays constant:
 
-Keep one question in view while reading:
+- **Stable identity**: data and artifacts are known by what they are, not only where they live.
+- **Truthful state transitions**: pipelines, params, and experiments declare the real change surface.
+- **Durable evidence**: metrics, manifests, locks, and publish bundles make claims reviewable.
+- **Operational survival**: remotes, retention, recovery, and promotion keep state trustworthy over time.
+- **Stewardship judgment**: teams know which state is authoritative and how to migrate it safely.
 
-> When a result is challenged six months later, which exact state can the team recover,
-> compare, and prove?
+This repository contains both the program guide in `course-book/` and the executable DVC
+reference repository in `capstone/`.
 
-If the answer is vague, reproducibility is still aspirational.
+---
 
-## Where this course fits
+## Program Arc
 
-The reproducible-research family is converging on a durable program map:
+### Module 01 — Why Reproducibility Fails
 
-1. **How systems change**: Make
-2. **How state transitions scale**: Snakemake and similar workflow engines
-3. **What state is**: DVC
-4. **Where state executes**: containers and runtime isolation
-5. **How state survives authority and time**: CI, retention, recovery, and auditability
+Start from the failure modes that push teams toward DVC in the first place: results that
+cannot be defended, datasets that drift silently, and metrics that stop meaning what they
+appear to mean.
 
-This course owns the third layer, but it necessarily touches the fourth and fifth
-because state only matters if it can survive real execution pressure.
+**Deliverable:** a precise explanation of what problem DVC solves and what it does not solve by itself.
 
-## What this course is trying to change in the learner
+### Module 02 — Data Identity and Content Addressing
 
-By the end of the course, you should stop treating these as side details:
+Learn why paths are only locators and why reproducibility starts with immutable,
+content-addressed identity across workspace, cache, Git, and remote layers.
 
-- dataset filenames
-- parameter files
-- metric reports
-- experiment branches
-- remotes and caches
-- recovery procedures
+**Deliverable:** a repository that can distinguish location from identity and explain how a datum is recovered.
 
-They are not administrative overhead. They are the state contract.
+### Module 03 — Execution Environments as Inputs
 
-## How to read the modules
+Move beyond code and data alone. Environments, runtime assumptions, and tool versions
+become part of the declared input surface rather than invisible luck.
 
-Read the modules in order. Each one establishes an invariant the next one depends on:
+**Deliverable:** a state story that includes the runtime boundary instead of hand-waving it away.
 
-1. **Why reproducibility fails**: identify the actual failure modes before reaching for tools.
-2. **Data identity and content addressing**: define stable identity before discussing pipeline behavior.
-3. **Execution environments as inputs**: treat runtimes as part of state, not external luck.
-4. **Pipelines as truthful DAGs**: make stage boundaries inspectable and enforceable.
-5. **Metrics, parameters, and meaning**: ensure comparisons remain semantically valid.
-6. **Experiments without chaos**: explore without corrupting baseline history.
-7. **Collaboration, CI, and social contracts**: make good behavior enforceable across people.
-8. **Production, scale, and incident survival**: design for retention, recovery, and time.
+### Module 04 — Pipelines as Truthful DAGs
 
-## What the capstone proves
+Turn DVC stages into honest state transitions. Dependencies, outputs, params, and lock
+state become a reviewable graph rather than a convenient script wrapper.
 
-[`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-dvc/capstone)
-is the course’s executable proof. It is a small but real DVC repository centered on an
-incident-escalation prediction workflow. It gives the course a concrete place to test:
+**Deliverable:** a `dvc.yaml` pipeline whose stage behavior can be explained and defended under review.
 
-- committed source data versus derived state
-- truthful pipeline declarations in `dvc.yaml`
-- declared parameters and tracked metrics
-- a stable `publish/v1/` output contract
-- experiment-ready inputs in `params.yaml`
-- recovery from remote after local cache loss
+### Module 05 — Metrics, Parameters, and Meaning
 
-If a module claim cannot be pointed to in the capstone, the claim should be treated with suspicion.
+Treat numbers as semantic contracts, not just logged values. Parameters and metrics become
+first-class state that preserve comparability across time.
 
-## Questions to keep asking while you read
+**Deliverable:** a repository whose comparisons remain meaningful instead of only mechanically repeatable.
 
-- Which state is authoritative, and which state is only a projection?
-- Which changes should invalidate a run, and which should not?
-- Which artifacts are safe to compare across time?
-- Which promotion or recovery rule would fail first under team pressure?
+### Module 06 — Experiments Without Chaos
 
-## What not to expect
+Formalize exploration as a controlled, reversible process. Experiments become comparable
+deviations from a baseline rather than local folklore.
 
-This course is not a catalog of DVC commands and not a generic machine-learning tutorial.
-It is a correctness-first course about making state durable enough that another person can
-trust it under review, CI, and recovery.
+**Deliverable:** an experiment workflow that allows change without corrupting baseline history.
+
+### Module 07 — Collaboration, CI, and Social Contracts
+
+Make good behavior enforceable across humans. Reviews, remotes, CI gates, and promotion
+habits become social contracts with technical backing.
+
+**Deliverable:** a repository where another person can verify trustworthy state without private context.
+
+### Module 08 — Production, Scale, and Incident Survival
+
+Design for time as an adversary. Retention, garbage collection, cache loss, remote
+migration, and recovery drills become part of the system instead of afterthoughts.
+
+**Deliverable:** a repository that can survive time pressure and still restore authoritative state.
+
+### Module 09 — Promotion, Registry Boundaries, Release Contracts, and Auditability
+
+Separate exploratory state from promoted state. Publish surfaces, manifests, params,
+metrics, and lock evidence become a defendable release contract for downstream users.
+
+**Deliverable:** a promoted state bundle another reviewer or consumer can validate without guesswork.
+
+### Module 10 — Mastery: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries
+
+Finish with stewardship judgment: reviewing real repositories, planning migrations,
+setting governance rules, rejecting recurring anti-patterns, and deciding where DVC
+should remain authoritative versus where another system should take over.
+
+**Deliverable:** an evidence-based review and stewardship plan for a real DVC repository.
+
+---
+
+## Recommended Reading Path
+
+1. Read Modules 01 to 10 in order.
+2. Use the capstone lightly at first, then heavily from Modules 04 to 09.
+3. Re-run proof commands as you go instead of trusting prose summaries.
+4. Treat Module 10 as the finish of the program, not as optional appendix material.
+
+If you are totally new to DVC, spend extra time in Modules 01 and 02 before rushing into
+pipelines or experiments. If you already use DVC in production, Modules 07 to 10 will be
+the fastest route to operational value.
+
+---
+
+## Capstone Relationship
+
+The capstone is strongest as the executable companion to Modules 04 to 09, where truthful
+pipelines, metrics, experiments, promotion, remotes, and recovery become concrete. The
+early modules still benefit from smaller mental and local examples first so the learner
+can understand state identity before the repository becomes the main teaching surface.
+
+**Proof command:**
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc test
+```
+
+Use the capstone to keep answering one question: when a result is challenged months later,
+which exact state can the repository recover, compare, and prove?
+
+[Back to top](#top)
