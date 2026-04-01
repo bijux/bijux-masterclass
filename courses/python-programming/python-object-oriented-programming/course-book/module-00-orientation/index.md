@@ -25,7 +25,41 @@ This course is a structured deep dive into those boundaries.
 - Prior exposure to `dataclasses`, type hints, and common container behavior
 - Willingness to treat design choices as contracts that must survive change
 
+## Readiness check
+
+You are ready for this course if you can already do most of the following without
+looking up syntax:
+
+- define a class with a meaningful constructor and instance methods
+- explain the difference between a class attribute and an instance attribute
+- write a small pytest test for object behavior
+- use `dataclass` for a simple value type
+- explain why mutating shared state can produce non-local bugs
+
+If some of those feel shaky, you can still continue, but you will need to slow down
+and verify the runtime behavior of the examples rather than relying on intuition.
+
+## Key terms used throughout the course
+
+- **value object**: an object defined primarily by its content rather than identity
+- **entity**: an object whose continuity and lifecycle matter over time
+- **aggregate**: a consistency boundary that centralizes cross-object invariants
+- **projection**: a downstream read model derived from authoritative events or state
+- **policy**: a replaceable object that captures a decision rule
+- **adapter**: an object that translates between the domain and an external system
+- **typestate**: a modeling approach where legal operations depend on lifecycle state
+
 ## Start here
 
 - Read the full [Course Map](course-map.md).
 - Then continue into [Module 01](../module-01-object-model/index.md).
+
+## Capstone roadmap
+
+The monitoring-system capstone matures with the course:
+
+- Module 01 gives you the object semantics needed to trust its value types and entity boundaries.
+- Module 02 explains why the code splits into domain objects, policies, runtime orchestration, and adapters.
+- Module 03 explains its lifecycle states, validation boundaries, and null-avoidance choices.
+- Module 04 explains its aggregate root, domain events, projections, and collaboration surfaces.
+- Module 05 explains its unit of work, cleanup obligations, and compatibility pressure under change.

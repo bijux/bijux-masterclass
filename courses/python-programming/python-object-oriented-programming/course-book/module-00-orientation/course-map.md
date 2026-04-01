@@ -8,6 +8,13 @@ The running example is a monitoring system. Each module sharpens that system fro
 ad hoc scripts into a design with explicit value types, aggregate roots, lifecycle
 controls, and compatibility boundaries.
 
+## How to read this map
+
+- Treat each module as answering a different class of design question.
+- Use the final refactor chapter in each module as the local synthesis checkpoint.
+- Return to the capstone after each module to locate the same ideas in executable code.
+- If a later module feels abstract, move backward until the missing earlier contract is clear.
+
 ## Module 1 – Python’s Object Model, Identity, and the Data Model
 
 **Theme:** Understand what Python objects *really* are: identity, layout, equality, collections, and the data model. No hand-holding.
