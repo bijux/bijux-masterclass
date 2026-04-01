@@ -22,6 +22,7 @@ nav:
       - FuncPipe Capstone Guide: capstone.md
 
   - "Module 01: Purity and Substitution":
+      - Overview: module-01-purity-and-substitution/index.md
       - Imperative vs Functional: module-01-purity-and-substitution/imperative-vs-functional.md
       - Pure Functions & Contracts: module-01-purity-and-substitution/pure-functions-and-contracts.md
       - Immutability & Value Semantics: module-01-purity-and-substitution/immutability-and-value-semantics.md
@@ -34,6 +35,7 @@ nav:
       - Idempotent Transforms: module-01-purity-and-substitution/idempotent-transforms.md
 
   - "Module 02: Data-First APIs and Expression Style":
+      - Overview: module-02-data-first-apis-and-expression-style/index.md
       - Closures & Partials: module-02-data-first-apis-and-expression-style/closures-and-partials.md
       - Expression-Oriented Python: module-02-data-first-apis-and-expression-style/expression-oriented-python.md
       - Introducing Laziness: module-02-data-first-apis-and-expression-style/introducing-laziness.md
@@ -46,6 +48,7 @@ nav:
       - Imperative to FP Refactor: module-02-data-first-apis-and-expression-style/imperative-to-fp-refactor.md
 
   - "Module 03: Iterators and Lazy Dataflow":
+      - Overview: module-03-iterators-and-lazy-dataflow/index.md
       - Iterator Protocol and Generators: module-03-iterators-and-lazy-dataflow/iterator-protocol-and-generators.md
       - Generators vs Comprehensions: module-03-iterators-and-lazy-dataflow/generators-vs-comprehensions.md
       - itertools Composition: module-03-iterators-and-lazy-dataflow/itertools-composition.md
