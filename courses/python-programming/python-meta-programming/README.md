@@ -1,203 +1,106 @@
-<a id="top"></a>
-# Python Metaprogramming: A Correctness-First Deep Dive
+# Python Metaprogramming
 
-[![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
-[![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/deep-dive-series/python-programming/python-meta-programming/)
-[![Pages](https://github.com/bijux/deep-dive-series/actions/workflows/pages.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/pages.yml?query=branch%3Amaster)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue?style=flat-square)](https://www.python.org/)
-[![MkDocs Material](https://img.shields.io/badge/mkdocs-material-informational?style=flat-square)](https://squidfunk.github.io/mkdocs-material/)
+Python Metaprogramming is the runtime-mechanics course in the `python-programming`
+family. It treats introspection, decorators, descriptors, and metaclasses as engineering
+tools with explicit contracts, clear limits, and real operational costs.
 
-**A rigorous, correctness-first course on Python metaprogramming** — covering introspection, decorators, descriptors, and metaclasses with a focus on traceable runtime behavior, engineering contracts, and professional responsibility.
+This course exists to answer one hard question clearly:
 
-This is not a collection of clever tricks. It is a systematic exploration of Python’s most powerful (and most dangerous) features, designed to help you reason confidently about what actually happens at runtime and avoid subtle bugs that arise from misunderstanding the language model.
+> What is Python actually doing at runtime when code starts inspecting, wrapping, or
+> rewriting other code and objects?
 
-- **Live documentation**: https://bijux.io/deep-dive-series/python-programming/python-meta-programming/
-- **Author hub**: https://bijux.io/
+## Who this course is for
 
-<span style="font-size: 1em;">[Back to top](#top)</span>
+- Python developers who already write solid application code and now need stronger runtime judgment
+- Library and framework authors who must preserve signatures, debugging, and tooling behavior
+- Reviewers inheriting meta-heavy codebases that feel magical and brittle
+- Engineers who want to know when decorators, descriptors, or metaclasses are justified and when they are not
 
----
+## Who this course is not for
 
-<a id="toc"></a>
-## Table of Contents
+- Readers looking for clever tricks without runtime semantics
+- Teams treating metaprogramming as a shortcut around clear design
+- People who want to start with metaclasses before understanding simpler tools
 
-1. [Why this course?](#why)
-2. [Target audience](#audience)
-3. [Course structure](#structure)
-4. [Key principles](#principles)
-5. [Repository layout](#layout)
-6. [Running the docs locally](#local)
-7. [Running the capstone](#capstone)
-8. [Related projects](#related)
-9. [Contributing](#contributing)
-10. [License](#license)
+## What you will be able to do
 
-<span style="font-size: 1em;">[Back to top](#top)</span>
+By the end of the course, you should be able to:
 
----
+- explain how Python resolves attributes, wraps callables, and creates classes
+- preserve signatures, metadata, and debuggability when using decorators
+- design descriptors and metaclasses with explicit invariants instead of folklore
+- choose the lowest-power runtime hook that solves the problem honestly
+- identify when metaprogramming has crossed the line from useful abstraction into liability
 
-<a id="why"></a>
-## Why this course?
+## Reading contract
 
-Python metaprogramming is where the language’s flexibility shines — and where reliability most often breaks down. Many resources present decorators, descriptors, and metaclasses as “magic” patterns without clearly delineating:
+This is not a browse-at-random reference. The reading path matters:
 
-- What is guaranteed by the language specification,
-- What is CPython-specific,
-- What invariants must hold for correctness,
-- What breaks under refactoring, typing tools, debugging, or concurrency.
+1. Learn the object model and safe introspection before transformation.
+2. Learn decorators before descriptors and descriptors before metaclasses.
+3. Learn the power tools before the responsibility rules that limit them.
+4. Keep the capstone open while reading so every mechanism stays attached to one executable system.
 
-This course treats every mechanism as an **engineering contract**. Every claim is backed by minimal, runnable examples that demonstrate the exact runtime behavior. The goal is not to teach the most advanced tricks, but to give you a mental model you can trust when building or maintaining complex systems.
+If you skip that order, later material will still be readable, but the trade-offs will
+feel arbitrary instead of principled.
 
-<span style="font-size: 1em;">[Back to top](#top)</span>
+## What this course covers
 
----
+- object identity, callability, and introspection
+- `inspect` as a diagnostic and verification tool
+- decorators as controlled callable transformation
+- descriptors as the real attribute engine
+- metaclasses as class-creation hooks of last resort
+- responsibility boundaries around dynamic execution, global hooks, and framework-grade magic
 
-<a id="audience"></a>
-## Target audience
+## How the capstone fits
 
-This material is intended for:
+[`capstone/`](https://github.com/bijux/deep-dive-series/tree/master/courses/python-programming/python-meta-programming/capstone)
+is the executable proof for the course. It is a plugin runtime for incident-delivery
+adapters that brings together:
 
-- Intermediate to advanced Python developers who already write clean, idiomatic code and now need to understand (or review) framework-level internals.
-- Library authors and framework maintainers who want to make informed trade-offs when using descriptors, metaclasses, or advanced decorators.
-- Engineers responsible for codebases that rely on heavy metaprogramming (ORMs, serialization libraries, plugin systems, etc.).
+- descriptor-backed configuration fields
+- decorator-based action instrumentation
+- metaclass-driven plugin registration
+- introspection-driven manifest export
 
-**Prerequisites**: Solid understanding of Python classes, functions, inheritance, and basic introspection (`dir`, `getattr`, etc.). Familiarity with type hints is helpful but not required.
+Use it to answer questions like:
 
-<span style="font-size: 1em;">[Back to top](#top)</span>
+- Which work happens at class-definition time versus instance time?
+- Which wrappers preserve runtime identity and which ones damage it?
+- Which registry or manifest behavior depends on introspection staying honest?
 
----
+## Working locally
 
-<a id="structure"></a>
-## Course structure
-
-The course is divided into focused modules that build progressively:
-
-- **00 – Overview and Introduction**
-- **01 – Everything Is an Object**
-- **02 – Basic Introspection**
-- **03 – The `inspect` Module**
-- **04 – Decorators: Fundamentals**
-- **05 – Decorators: Production Patterns & Typing**
-- **06 – Class Decorators, `@property`, and the Typing Bridge**
-- **07 – The Descriptor Protocol (Part 1)**
-- **08 – The Descriptor Protocol (Part 2 – Framework Grade)**
-- **09 – Metaclasses**
-- **10 – Professional Responsibility & the Outer Darkness**
-- **11 – Outro**
-
-Each module includes runnable code examples, visual diagrams, precise definitions, and a glossary of terms.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="principles"></a>
-## Key principles
-
-- **Correctness over cleverness** – Prefer the simplest tool (plain code → descriptors → decorators → metaclasses) that solves the problem reliably.
-- **Explicit contracts** – Every advanced feature is presented with its runtime invariants and failure modes.
-- **Tooling-friendly** – Patterns preserve introspection, signatures, tracebacks, and static typing where possible.
-- **Professional responsibility** – Clear red lines for production use (e.g., no monkey-patching stdlib types, no in-process eval of untrusted input).
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="layout"></a>
-## Repository layout
-
-This course follows the same stable structure as the rest of the series:
-
-- `course-book/` contains the published course content.
-- `capstone/` contains the executable plugin-runtime reference implementation for the course.
-
-The repository root remains the stable entrypoint for the course `README.md`, `Makefile`, and `mkdocs.yml`.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="local"></a>
-## Running the documentation locally
-
-The site is built with MkDocs Material. To preview locally:
+From the repository root:
 
 ```bash
 make COURSE=python-programming/python-meta-programming docs-serve
-```
-
-To validate the build exactly as CI does:
-
-```bash
 make COURSE=python-programming/python-meta-programming docs-build
-```
-
-To run the course capstone:
-
-```bash
 make COURSE=python-programming/python-meta-programming test
 ```
 
-<span style="font-size: 1em;">[Back to top](#top)</span>
+## Course shape
 
----
+- `course-book/` contains the published learning material.
+- `capstone/` contains the runnable plugin-runtime implementation and tests.
+- `Makefile` exposes stable course-level entrypoints from the monorepo root.
 
-<a id="capstone"></a>
-## Running the capstone
+## Module map
 
-The capstone is a plugin runtime for incident-delivery adapters. It ties together
-descriptors, decorators, metaclasses, and introspection in one executable system.
+- `00` Orientation
+- `01` Everything Is an Object
+- `02` Basic Introspection
+- `03` The `inspect` Module
+- `04` Decorators
+- `05` Decorator Patterns and Typing
+- `06` Class Decorators and the Property Bridge
+- `07` Descriptors
+- `08` Descriptors for Framework-Grade Patterns
+- `09` Metaclasses
+- `10` Responsibility and Runtime Boundaries
+- `11` Outro
 
-From the course directory:
-
-```bash
-make -C courses/python-programming/python-meta-programming/capstone confirm
-```
-
-What it demonstrates:
-
-- descriptor-backed configuration fields with coercion and validation
-- decorator-preserved action signatures plus invocation recording
-- metaclass-driven plugin registration and generated constructors
-- runtime manifest export without executing plugin actions
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="related"></a>
-## Related projects
-
-Other correctness-focused deep dives in the same style:
-
-- **bijux hub**: https://bijux.io/
-- **bijux-cli**: https://bijux.io/bijux-cli/
-- **Deep Dive Make**: https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="contributing"></a>
-## Contributing
-
-Contributions are welcome and encouraged. The bar is deliberately high to maintain rigor:
-
-- Include a minimal, self-contained example that demonstrates the change or fixes the issue.
-- Add or update verification code (runnable snippets) that proves the claim.
-- Specify tested Python versions.
-- Preserve or improve narrative clarity and consistency.
-
-All contributions must adhere to the course’s tone: precise, evidence-based, and tooling-aware.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="license"></a>
 ## License
 
-This project is licensed under the **MIT License**. See the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE) for details.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
+MIT — see the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE).
