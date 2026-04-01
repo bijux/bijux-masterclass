@@ -14,6 +14,39 @@ This module elucidates the ultimate verity: **Reproducibility transcends initial
 
 **Prerequisites**: Comprehensive assimilation of Modules 01–07 is mandatory. Familiarity with DVC commands (e.g., `dvc gc`, `dvc push`), CI/CD pipelines, and storage management (e.g., S3/GCS) is presumed; review operational DVC guides if required.
 
+## Why this module matters in the course
+
+This is the module that forces the learner to stop treating reproducibility as a setup
+achievement. A repository can be perfectly disciplined today and still become untrustworthy
+through normal time pressure: remote migration, retention mistakes, cache eviction, CI
+image drift, or simple maintainer turnover.
+
+The point here is not to scare the reader. It is to make time visible as part of the
+system design.
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- Which historical states are worth keeping reproducible, and for how long?
+- What must survive local cache loss for the system to remain trustworthy?
+- Which recovery drills are important enough to automate and rehearse?
+- When does garbage collection become safe maintenance instead of silent history damage?
+
+If those answers are missing, the repository may be tidy but it is not durable.
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- the configured DVC remote as the durability boundary beyond the local cache
+- the `recovery-drill` target as a rehearsal of cache loss and restoration
+- `publish/v1/` as the state that downstream consumers should recover intact
+- `manifest.json`, metrics, and params as the evidence that a restored workspace is the same state, not just a similar one
+
+The capstone should make the final course claim concrete: recovery is only real when it
+is practiced and checked, not when it is assumed.
+
 ---
 
 ## 8.1 The Unaddressed Adversary: Time
