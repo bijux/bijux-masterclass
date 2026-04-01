@@ -16,6 +16,42 @@ This module comprehensively addresses: *How does DVC delineate "the same data," 
 
 **Prerequisites**: Completion of Module 01 is essential. Basic familiarity with Git commands and cryptographic hashing concepts is recommended; if unfamiliar, consult relevant resources prior to proceeding.
 
+## Why this module matters in the course
+
+This is the first module where the course stops talking about failure symptoms and starts
+defining a repair boundary. If the learner leaves this module still thinking that
+`data/train.csv` is the identity of the data, every later practice will be brittle:
+
+- pipeline reruns will be hard to interpret
+- experiment comparisons will be weak
+- remote recovery will feel magical instead of mechanical
+
+The point of this module is not merely to explain DVC's cache layout. It is to replace
+"where the file lives" with "what bytes the system is claiming."
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- Why is a path only a locator and not an identity?
+- What is the difference between workspace state, Git state, cache state, and remote state?
+- Which layer is mutable, and which layer is authoritative?
+- Why does content addressing make collaboration and recovery possible?
+
+If those answers are still fuzzy, pause here before moving on to pipeline semantics.
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- `data/raw/service_incidents.csv` as committed source state
+- `dvc.lock` as the recorded state transition after execution
+- `.dvc/cache/` and the configured remote as content-addressed storage layers
+- `publish/v1/` as a versioned projection for downstream consumers
+
+That contrast matters. The course is trying to teach that these locations do different
+jobs even when they all contain "the data."
+
 ---
 
 ## 2.1 The Fundamental Error: Equating Paths with Identity
