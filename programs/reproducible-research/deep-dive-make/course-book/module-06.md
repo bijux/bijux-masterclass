@@ -10,6 +10,31 @@ files.
 The core question is simple: how do you keep code generation from becoming an excuse for
 lying to Make?
 
+### Before You Begin
+
+This module works best after Modules 01-05, especially the parts on convergence,
+determinism, and multi-output semantics.
+
+Use this module if you need to learn how to:
+
+* introduce generators without hiding truth from the graph
+* model one command that publishes several coupled outputs
+* decide when a manifest or stamp is a real boundary instead of a shortcut
+
+Proof loop for this module:
+
+```sh
+make --trace all
+make -j2 all
+make -q all
+```
+
+Capstone corroboration:
+
+* inspect generated-header flow in `capstone/Makefile`
+* inspect boundary modeling in `capstone/mk/stamps.mk`
+* run `make -C capstone selftest`
+
 ---
 
 <a id="toc"></a>

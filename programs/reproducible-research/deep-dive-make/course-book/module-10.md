@@ -9,6 +9,31 @@ another tool should own a different concern.
 
 Mastery is the ability to preserve correctness while making deliberate boundary decisions.
 
+### Before You Begin
+
+This module works best after the rest of the program. It is designed for review,
+migration, and governance work rather than first-contact syntax learning.
+
+Use this module if you need to learn how to:
+
+* audit a real Make system without collapsing into style debates
+* design a migration that keeps proof, not just intention
+* define long-term ownership and change rules for build infrastructure
+
+Proof loop for this module:
+
+```sh
+make -n all
+make --trace all
+make -p > build/review.dump
+```
+
+Capstone corroboration:
+
+* review public target promises in `capstone/Makefile`
+* review helper boundaries under `capstone/mk/`
+* use the capstone repros as migration-risk examples
+
 ---
 
 <a id="toc"></a>

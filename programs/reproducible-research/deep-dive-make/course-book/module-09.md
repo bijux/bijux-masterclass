@@ -9,6 +9,31 @@ hits.
 
 You are not optimizing Makefiles for sport. You are protecting engineering feedback loops.
 
+### Before You Begin
+
+This module works best after Modules 02-08, when the build is already truthful and the
+real question is how to keep it understandable under time pressure.
+
+Use this module if you need to learn how to:
+
+* tell parse cost from recipe cost and diagnostic noise
+* build an incident ladder another engineer can follow
+* tune the system without hiding correctness defects
+
+Proof loop for this module:
+
+```sh
+make trace-count
+make --trace -n all
+make -p > build/make.dump
+```
+
+Capstone corroboration:
+
+* run `make -C capstone trace-count`
+* run `make -C capstone discovery-audit`
+* inspect `capstone/tests/run.sh` for measurement guardrails
+
 ---
 
 <a id="toc"></a>

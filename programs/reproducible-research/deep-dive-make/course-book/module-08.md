@@ -9,6 +9,31 @@ trust.
 
 This is where “the build finished” becomes “the artifact is fit to publish.”
 
+### Before You Begin
+
+This module works best after Modules 03-07, when your build already converges and you are
+ready to separate build truth from release truth.
+
+Use this module if you need to learn how to:
+
+* define what a publishable artifact actually contains
+* separate release evidence from release identity
+* make `dist` and `install` behave like contracts instead of shell rituals
+
+Proof loop for this module:
+
+```sh
+make dist
+make install DESTDIR=/tmp/deep-dive-make-check
+make -q dist
+```
+
+Capstone corroboration:
+
+* inspect `dist` and `attest` in `capstone/Makefile`
+* inspect packaging helper flow under `capstone/scripts/`
+* compare release-oriented outputs after `make -C capstone hardened`
+
 ---
 
 <a id="toc"></a>

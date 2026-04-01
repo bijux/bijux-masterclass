@@ -8,6 +8,31 @@ audit. Module 07 is about reuse that preserves truth instead of diluting it.
 
 The point is not to make Make clever. The point is to make larger builds explainable.
 
+### Before You Begin
+
+This module works best after Modules 02-06, when you already trust the graph and now need
+to scale the build without turning it into a private language.
+
+Use this module if you need to learn how to:
+
+* define a stable public target surface for other humans and tools
+* split `mk/*.mk` files by responsibility instead of habit
+* reuse rule shapes without obscuring graph structure
+
+Proof loop for this module:
+
+```sh
+make -p | less
+make --trace all
+make help
+```
+
+Capstone corroboration:
+
+* inspect target boundaries in `capstone/Makefile`
+* inspect layer separation in `capstone/mk/*.mk`
+* use `make -C capstone help`
+
 ---
 
 <a id="toc"></a>
