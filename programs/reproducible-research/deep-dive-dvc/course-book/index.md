@@ -31,6 +31,12 @@ This is not a command reference. The learner path is deliberate:
 If you skip that order, later modules will still be readable, but their rules will feel
 administrative instead of necessary.
 
+## Start here
+
+If you are not sure where to begin, use [`start-here.md`](start-here.md) before diving
+into the modules. It routes beginners, working maintainers, and reproducibility stewards
+to the right entry path so the capstone does not become an accidental first lesson.
+
 ## What each module contributes
 
 - [Module 00](module-00.md) defines the study strategy, the family context, and the capstone route.
