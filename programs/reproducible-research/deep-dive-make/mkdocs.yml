@@ -22,6 +22,7 @@ plugins:
 nav:
   - Home: index.md
   - Program Outline: module-00.md
+  - Capstone Map: capstone-map.md
   - Modules:
       - "01 — Foundations": module-01.md
       - "02 — Scaling": module-02.md

@@ -148,6 +148,7 @@ make -f repro/01-shared-append.mk -j4
 ## Links into the program guide
 * Program site: [https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/](https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/)
 * Source chapters: [`course-book/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/course-book)
+* Guided route through this repository: [`capstone-map.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/course-book/capstone-map.md)
 The capstone is referenced throughout the modules via “tie-ins.” The expectation is a tight loop:
 **read → reproduce → repair → verify**  
 [Back to top](#top)

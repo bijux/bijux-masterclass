@@ -22,6 +22,7 @@ deterministic results, and repeatable verification.
 - [Prerequisites](#prerequisites)
 - [How to read it](#how-to-read-it)
 - [Verification via the capstone](#verification-via-the-capstone)
+- [Capstone map](capstone-map.md)
 - [Diagnostics playbook](#diagnostics-playbook)
 - [Repository links](#repository-links)
 - [Contributing](#contributing)
@@ -104,6 +105,8 @@ If you are here for incident response or reference:
 ---
 ## Verification via the capstone
 The program is paired with an executable reference build: [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone). It exists for one reason: **proof**.
+
+Recommended guide: [`capstone-map.md`](capstone-map.md)
 
 From the repository root:
 ```sh

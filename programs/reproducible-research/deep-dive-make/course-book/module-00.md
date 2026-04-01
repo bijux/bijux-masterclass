@@ -110,6 +110,9 @@ correctness, scaling, diagnostics, and hardening become concrete. The early modu
 smaller local teaching projects first so the learner can see the semantics without a large
 repository in the way.
 
+Use [`capstone-map.md`](capstone-map.md) when you want a module-by-module route through
+the capstone instead of jumping into its files cold.
+
 **Proof command:**
 
 ```sh
