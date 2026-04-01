@@ -44,18 +44,16 @@ Conventions in this book:
 <a id="visual"></a>
 ## Visual: Tooling Power Ladder
 
-```text
-Tooling Power Ladder (higher = more magic, higher risk)
-
-┌──────────────────────────────────────────────────────┐
-│ 4  Metaclasses (Module 9)                            │ ← class creation pipeline
-│ 3  Class decorators (this module)                    │ ← post-construction rewrite
-│ 2  Descriptors / @property                           │ ← per-attribute semantics
-│ 1  Plain code                                        │ ← prefer when possible
-└──────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+  four["4. Metaclasses<br/>class creation pipeline"]
+  three["3. Class decorators<br/>post-construction rewrite"]
+  two["2. Descriptors or `@property`<br/>per-attribute semantics"]
+  one["1. Plain code<br/>prefer when possible"]
+  four --> three --> two --> one
+```
 
 Caption: Choose the lowest-power tool that solves the problem.
-```
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -94,23 +92,20 @@ It runs **after** the metaclass has created the class: bases, MRO, and class nam
 
 ### Visual: Class Definition Pipeline (simplified)
 
-```text
-Class Definition Pipeline (simplified)
+```mermaid
+graph LR
+  plain["Plain class statement<br/>`class C: ...`"]
+  metaPlain["Metaclass creates class"]
+  bound["Class object bound to `C`"]
+  decorated["Decorated class statement<br/>`@decorator` then `class C: ...`"]
+  metaDecorated["Metaclass creates class"]
+  rewrite["`C = decorator(C)`"]
+  returned["Finished class returned"]
+  plain --> metaPlain --> bound
+  decorated --> metaDecorated --> rewrite --> returned
+```
 
-Plain class statement                  With class decorator
-┌──────────────────────┐             ┌──────────────────────┐
-│ class C:             │             │ @decorator           │
-│     ...              │             │ class C:             │
-└──────┬───────────────┘             │     ...              │
-       │                             └──────┬───────────────┘
-       ▼                                    │
-Metaclass creates class                     ▼
-       │                             C = decorator(C)
-       ▼                                    │
- Class object bound to C                    ▼
-                                     Finished class returned
-
-Caption: Class decorators run after the metaclass; they see a fully-formed class.
+Caption: Class decorators run after the metaclass; they see a fully formed class.
 ```
 
 ### Example 1: Method injection
@@ -166,25 +161,16 @@ Rule of thumb: returning a non-class breaks `isinstance` expectations and toolin
 
 ### Visual: Decorator stacking order
 
-```text
-Decorator Stacking Order
+```mermaid
+graph TD
+  d2["`@d2`"]
+  d1["`@d1`"]
+  klass["`class C: ...`"]
+  applied["`C = d2(d1(C))`"]
+  d2 --> d1 --> klass --> applied
+```
 
-┌──────┐
-│ @d2  │
-└──┬───┘
-   │
-┌──▼───┐
-│ @d1  │
-└──┬───┘
-   │
-┌──▼───────────────────────┐
-│ class C: ...             │
-└──────┬───────────────────┘
-       │
-       ▼
-C = d2(d1(C))    ← right-to-left application
-
-Caption: Decorators are applied bottom-up (inner first, outer last).
+Caption: Decorators are applied bottom-up: inner first, outer last.
 ```
 
 ### Exercise
@@ -215,21 +201,24 @@ Crucially: **it does not enforce types at runtime**.
 
 ### Visual: What `@dataclass` synthesizes
 
-```text
-What @dataclass Synthesizes
+```mermaid
+graph TD
+  annotations["Annotations and defaults"]
+  fields["Field discovery"]
+  init["`__init__`"]
+  repr["`__repr__`"]
+  eq["`__eq__` and optional ordering"]
+  hash["`__hash__` depending on `frozen`, `eq`, and `unsafe_hash`"]
+  post["Optional `__post_init__` hook"]
+  annotations --> fields
+  fields --> init
+  fields --> repr
+  fields --> eq
+  fields --> hash
+  fields --> post
+```
 
-Annotations + defaults
-       │
-       ▼
-   Field discovery
-       │
-       ├─► __init__ (bind + assign)
-       ├─► __repr__
-       ├─► __eq__ (and optional ordering)
-       ├─► __hash__ (rules depend on frozen/eq/unsafe_hash)
-       └─► optional __post_init__ hook (if defined)
-
-Caption: @dataclass generates boilerplate from declarative hints.
+Caption: `@dataclass` generates boilerplate from declarative hints.
 ```
 
 ### Example: Defaults and `default_factory`
@@ -525,21 +514,18 @@ We implement:
 
 ### Visual: Typing bridge data flow
 
-```text
-Typing Bridge Data Flow
+```mermaid
+graph TD
+  classDef["Class definition"]
+  annotations["Annotations"]
+  hints["`get_type_hints(Class)`"]
+  cache["Hints cached on class"]
+  validate["Descriptor `__set__` validates incoming value"]
+  store["Store into private slot or key"]
+  classDef --> annotations --> hints --> cache --> validate --> store
+```
 
-Class definition
-       │
-       ▼
-   Annotations ──► get_type_hints(Class) ──► cached on class
-                                           │
-                                           ▼
-                               descriptor __set__ validates value
-                                           │
-                                           ▼
-                                 store into private slot/key
-
-Caption: Hints resolved once; descriptors enforce shallow runtime checks.
+Caption: Hints are resolved once; descriptors enforce shallow runtime checks.
 ```
 
 ### Minimal `_is_instance` (deliberately limited)
@@ -636,23 +622,24 @@ A minimal frozen-class decorator that:
 
 ### Visual: `@frozen` synthesizes
 
-```text
-@frozen Synthesizes
+```mermaid
+graph TD
+  frozen["`@frozen(validate=?, eq=?)`"]
+  hints["1. `get_type_hints(cls)`"]
+  fields["2. collect fields and defaults"]
+  signature["3. build user signature"]
+  init["Generate `__init__` with optional validation and storage"]
+  repr["Generate `__repr__`"]
+  equality["Generate optional `__eq__` and `__hash__`"]
+  immutability["Generate frozen `__setattr__` and `__delattr__` that raise"]
+  frozen --> hints --> fields --> signature
+  signature --> init
+  signature --> repr
+  signature --> equality
+  signature --> immutability
+```
 
-@frozen(validate=?, eq=?)
-       │
-       ├─► 1. get_type_hints(cls)
-       ├─► 2. fields + defaults
-       ├─► 3. user signature
-       │
-       ▼
-   Generate:
-   • __init__ (bind + optional validate + store)
-   • __repr__
-   • __eq__ / __hash__ (optional)
-   • frozen __setattr__ / __delattr__ (raise)
-
-Caption: Minimal frozen dataclass-like behavior via class decorator.
+Caption: Minimal frozen dataclass-like behavior via a class decorator.
 ```
 
 ### Implementation

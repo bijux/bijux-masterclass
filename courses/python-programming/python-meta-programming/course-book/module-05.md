@@ -109,27 +109,19 @@ Definition time (module import, runs once):
 
 Closures (what each layer *remembers*):
 
-┌─────────────────────┐   ┌─────────────────────┐   ┌─────────────────────┐
-│ factory: timer      │   │ decorator           │   │ wrapper             │
-├─────────────────────┤   ├─────────────────────┤   ├─────────────────────┤
-│ closes over:        │   │ closes over:        │   │ closes over:        │
-│   prefix = "IO"     │   │   prefix = "IO"     │   │   prefix = "IO"     │
-│                     │   │   func = <original> │   │   func = <original> │
-└─────────────────────┘   └─────────────────────┘   └─────────────────────┘
-
-
-Call time (every func(...)):
-
-    caller → func(args, kw)   # actually calls wrapper
-               │
-               ▼
-           wrapper(*args, **kw)
-               │  uses prefix + func
-               ├─ pre-call logic
-               ├─ result = func(*args, **kw)
-               ├─ post-call logic (logs prefix, func.__name__, time)
-               ▼
-           return result to caller
+```mermaid
+graph TD
+  factory["Factory `timer`<br/>captures `prefix = \"IO\"`"]
+  decorator["Decorator<br/>captures `prefix` and `func`"]
+  wrapper["Wrapper<br/>captures `prefix` and `func`"]
+  caller["Caller"]
+  pre["Pre-call logic"]
+  invoke["Call original `func(*args, **kw)`"]
+  post["Post-call logic<br/>logs prefix, name, elapsed time"]
+  result["Return result to caller"]
+  factory --> decorator --> wrapper
+  caller --> wrapper --> pre --> invoke --> post --> result
+```
 
 
 4. Key points
@@ -422,15 +414,15 @@ Runtime validation pipeline with @validated
 
                  │
                  ▼
-        validated factory
-        ┌───────────────────────────────────────────────┐
-        │  1. Receive original func                     │
-        │  2. Compute once and cache for all calls:     │
-        │       sig   = inspect.signature(func)         │
-        │       hints = typing.get_type_hints(func)     │
-        │  3. Build wrapper(*args, **kwargs)            │
-        │  4. Return wrapper                            │
-        └───────────────────────────────────────────────┘
+```mermaid
+graph TD
+  factory["`validated(...)` factory"]
+  receive["Receive original `func`"]
+  cache["Compute once and cache<br/>`sig = inspect.signature(func)`<br/>`hints = typing.get_type_hints(func)`"]
+  build["Build `wrapper(*args, **kwargs)`"]
+  returnWrapper["Return wrapper"]
+  factory --> receive --> cache --> build --> returnWrapper
+```
 
     In the module’s namespace:  func  ←  wrapper  (original func is now wrapped)
 
@@ -438,48 +430,16 @@ Runtime validation pipeline with @validated
 2. Call time (runs on every invocation)
 ---------------------------------------
 
-┌────────────────────┐       ┌────────────────────────────┐       ┌────────────────────┐
-│   Call site        │       │   @validated wrapper       │       │  Original function │
-│   (user code)      │       │   (object now named func)  │       │  def func(...):    │
-└────────────────────┘       └────────────────────────────┘       └────────────────────┘
-          │                               │                                  │
-          │  func(*args, **kwargs)        │                                  │
-          ├──────────────────────────────►│                                  │
-          │                               │                                  │
-          │                               │  Step 1: Bind arguments          │
-          │                               │  -------------------------       │
-          │                               │  bound = sig.bind(*args, **kwargs)
-          │                               │  bound.apply_defaults()          │
-          │                               │                                  │
-          │                               │  Step 2: Validate arguments      │
-          │                               │  ---------------------------     │
-          │                               │  for name, value in bound.arguments:
-          │                               │      if name in hints:           │
-          │                               │          expected = hints[name]  │
-          │                               │          if not _is_instance(value, expected):
-          │                               │              ├─ raise TypeError  │
-          │                               │              └─ or warnings.warn │
-          │                               │                                  │
-          │                               │  Step 3: Call original function  │
-          │                               │  -----------------------------   │
-          │                               │  result = original_func(*args, **kwargs)
-          │                               ├─────────────────────────────────►│
-          │                               │                                  │
-          │                               │                                  │  executes body
-          │                               │                                  │  returns result
-          │                               ◄──────────────────────────────────┤
-          │                               │                                  │
-          │                               │  Step 4: Validate return (optional)
-          │                               │  ---------------------------------
-          │                               │  if 'return' in hints:           │
-          │                               │      expected = hints['return']  │
-          │                               │      if not _is_instance(result, expected):
-          │                               │          ├─ raise TypeError      │
-          │                               │          └─ or warnings.warn     │
-          │                               │
-          │          result (possibly validated / warned-about)
-          ◄───────────────────────────────┘
-   Call site receives result
+```mermaid
+graph TD
+  caller["Call site"]
+  bind["Step 1: bind arguments<br/>`bound = sig.bind(*args, **kwargs)`<br/>`bound.apply_defaults()`"]
+  validateArgs["Step 2: validate bound arguments against cached type hints"]
+  original["Step 3: call original function body"]
+  validateReturn["Step 4: validate return value when a return hint exists"]
+  result["Return validated result or raise or warn"]
+  caller --> bind --> validateArgs --> original --> validateReturn --> result
+```
 
 ```
 

@@ -43,92 +43,26 @@ We also make the risk profile explicit:
 
 The goal is to make you fluent with decorator mechanics (nested functions, `@` syntax, wrapping, identity preservation) and disciplined about their use: you should be able to read and write decorators that are transparent, introspection-friendly, and honest about their costs, and to recognise immediately when a decorator has crossed the line from “thin wrapper” into “small framework” with semantic and concurrency implications.
 
-```text
-Diagram: Decorator lifecycle – definition time vs call time
-===========================================================
+```mermaid
+graph TD
+  subgraph DefinitionTime["Definition time"]
+    decorated["`@decorator` or `@factory(config)` on `func`"]
+    build["`decorator(func)` builds `wrapper`"]
+    wraps["`@functools.wraps(original_func)` copies metadata and sets `__wrapped__`"]
+    closure["`wrapper` closes over `original_func` and decorator state"]
+    rebind["Module name `func` now points to `wrapper`"]
+    stack["Stacked decorators nest right-to-left: `func = d3(d2(d1(func)))`"]
+    decorated --> build --> wraps --> closure --> rebind --> stack
+  end
 
-1. Definition time (executed once, at import or function definition)
---------------------------------------------------------------------
-
-    @decorator                  # or @factory(config) where factory(config) → decorator
-    def func(...):
-        body
-
-               │
-               ▼
-    decorator(func)  →  builds wrapper that closes over func + any state
-    ┌────────────────────────────────────────────────────────────────────────────┐
-    │ import functools                                                           │
-    │                                                                            │
-    │ def decorator(original_func):                                              │
-    │     @functools.wraps(original_func)                                        │
-    │     def wrapper(*args, **kwargs):                                          │
-    │         # 1. Pre-call logic (optional)                                     │
-    │         #    timer start, cache lookup, warnings, validation…              │
-    │                                                                            │
-    │         result = original_func(*args, **kwargs)    ← closed over           │
-    │                                                                            │
-    │         # 2. Post-call logic (optional)                                    │
-    │         #    timer stop, cache store, logging, LRU update…                 │
-    │         return result                                                      │
-    │                                                                            │
-    │     # functools.wraps already copied __name__, __doc__, __annotations__,   │
-    │     # __qualname__, __module__, __dict__, and set                          │
-    │     #     wrapper.__wrapped__ = original_func                              │
-    │     return wrapper                                                         │
-    └────────────────────────────────────────────────────────────────────────────┘
-
-    After decoration the module namespace contains:
-
-        func  ───────────────────────►  wrapper object (now bound to name "func")
-                                         ▲
-                                         │
-                                    closure cells
-                                         │
-                                         └─► original_func (the decoratee)
-                                             + decorator-specific state
-                                               (cache dict, counters, timers, etc.)
-
-    Stacked decorators simply nest this process right-to-left:
-
-        @d3
-        @d2
-        @d1
-        def func(...):
-
-        expands to:  func = d3(d2(d1(func)))
-
-
-2. Call time (executed on every invocation)
--------------------------------------------
-
-┌────────────────────┐   ┌──────────────────────────────────┐   ┌────────────────────┐
-│   Call site        │   │           wrapper                │   │ Original function  │
-│   (user code)      │   │     (object now named func)      │   │  (closed over)     │
-└────────────────────┘   └──────────────────────────────────┘   └────────────────────┘
-          │                           │                                   │
-          │  func(*args, **kwargs)    │                                   │
-          ├──────────────────────────►│                                   │
-          │                           │                                   │
-          │                           │  1. Pre-call logic (if any)       │
-          │                           │     • start timer                 │
-          │                           │     • cache lookup / hit          │
-          │                           │     • deprecation warning         │
-          │                           │     • argument validation, etc.   │
-          │                           │                                   │
-          │                           │  2. Delegate to closed-over func  │
-          │                           │     result = original_func(*args, **kwargs)
-          │                           │◄──────────────────────────────────┤
-          │                           │                                   │
-          │                           │  3. Post-call logic (if any)      │
-          │                           │     • stop timer & log            │
-          │                           │     • store in cache / update LRU │
-          │                           │     • increment counters, etc.    │
-          │                           │                                   │
-          │                           └──────────────────────────────► result
-          ▼
-   Caller receives result
-   Behaviour is transformed; identity & introspection preserved via @functools.wraps
+  subgraph CallTime["Call time"]
+    caller["Caller executes `func(*args, **kwargs)`"]
+    pre["Pre-call logic<br/>timers, cache lookup, warnings, validation"]
+    original["Call closed-over `original_func(*args, **kwargs)`"]
+    post["Post-call logic<br/>logging, cache store, counters, LRU updates"]
+    result["Return transformed result to caller"]
+    caller --> pre --> original --> post --> result
+  end
 ```
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
@@ -490,15 +424,15 @@ Diagram: functools.wraps – Preserving Function Identity
 
 Result → wrapper overwrites everything:
 
-┌──────────────────────────────────────┐
-│ decorated function                   │
-├──────────────────────────────────────┤
-│ __name__       = "wrapper"      ✗    │
-│ __qualname__   = "wrapper"      ✗    │
-│ __doc__        = None           ✗    │
-│ __annotations__= {}             ✗    │
-│ __wrapped__    = missing        ✗    │
-└──────────────────────────────────────┘
+```mermaid
+graph TD
+  broken["Decorated function without `@wraps`"]
+  broken --> name["`__name__ = \"wrapper\"`"]
+  broken --> qualname["`__qualname__ = \"wrapper\"`"]
+  broken --> doc["`__doc__ = None`"]
+  broken --> annotations["`__annotations__ = {}`"]
+  broken --> wrapped["`__wrapped__` missing"]
+```
 
 Real-world breakage
 • help(), Sphinx, docstrings → empty or wrong
@@ -520,17 +454,17 @@ Real-world breakage
 
 Result → wrapper is indistinguishable from original:
 
-┌──────────────────────────────────────┐
-│ decorated function                   │
-├──────────────────────────────────────┤
-│ __name__       = "original"     ✓    │
-│ __qualname__   = "original"     ✓    │
-│ __doc__        = preserved      ✓    │
-│ __annotations__= preserved      ✓    │
-│ __module__     = preserved      ✓    │
-│ __dict__       ≈ original       ✓    │
-│ __wrapped__    = original func  ✓    │
-└──────────────────────────────────────┘
+```mermaid
+graph TD
+  preserved["Decorated function with `@functools.wraps`"]
+  preserved --> name["`__name__ = \"original\"`"]
+  preserved --> qualname["`__qualname__ = \"original\"`"]
+  preserved --> doc["`__doc__` preserved"]
+  preserved --> annotations["`__annotations__` preserved"]
+  preserved --> module["`__module__` preserved"]
+  preserved --> dict["`__dict__` mirrors original"]
+  preserved --> wrapped["`__wrapped__ = original func`"]
+```
 
 
 3. What @functools.wraps actually does
