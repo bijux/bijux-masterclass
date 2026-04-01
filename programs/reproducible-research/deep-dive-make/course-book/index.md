@@ -1,6 +1,9 @@
 <a id="top"></a>
-# Deep Dive Make: The Course-Book
-A five-module course-book for learning **GNU Make as a declarative build-graph engine**—with an explicit correctness contract. The focus is not “Makefile tricks,” but **semantic discipline**: truthful dependency graphs, atomic outputs, parallel safety, deterministic results, and repeatable verification.  
+# Deep Dive Make: The Program Guide
+A ten-module program for learning **GNU Make as a declarative build-graph engine**—from
+first-contact basics to build-system mastery. The focus is not “Makefile tricks,” but
+**semantic discipline**: truthful dependency graphs, atomic outputs, parallel safety,
+deterministic results, and repeatable verification.
 
 [![Series Validation](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml/badge.svg?branch=master)](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml?query=branch%3Amaster)
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
@@ -8,12 +11,13 @@ A five-module course-book for learning **GNU Make as a declarative build-graph e
 [![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/)
 [![Capstone](https://img.shields.io/badge/capstone-reference-green?style=flat-square)](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone)
 
-> **At a glance**: progressive modules • minimal, reproducible examples • exercises with verification hooks • a runnable capstone that proves the claims.  
-> **Quality bar**: every core assertion is designed to be *testable* using `--trace`, `-p`, and serial/parallel equivalence checks. This course-book assumes **GNU Make 4.3+** and intentionally avoids “hand-wavy” build folklore.
+> **At a glance**: beginner-to-mastery progression • minimal, reproducible examples •
+> exercises with verification hooks • a runnable capstone that proves the claims.
+> **Quality bar**: every core assertion is designed to be *testable* using `--trace`, `-p`, and serial/parallel equivalence checks. This program guide assumes **GNU Make 4.3+** and intentionally avoids “hand-wavy” build folklore.
 ---
 ## Table of Contents
-- [Why this course-book exists](#why-this-course-book-exists)
-- [How the course-book is written](#how-the-course-book-is-written)
+- [Why this program exists](#why-this-program-exists)
+- [How the guide is written](#how-the-guide-is-written)
 - [What you will learn](#what-you-will-learn)
 - [Prerequisites](#prerequisites)
 - [How to read it](#how-to-read-it)
@@ -23,9 +27,9 @@ A five-module course-book for learning **GNU Make as a declarative build-graph e
 - [Contributing](#contributing)
 - [License](#license)
 ---
-## Why this course-book exists
+## Why this program exists
 Many Make-based systems “work” by accident: undeclared inputs, ordering-by-phony targets, stamp files used as wishful thinking, and recipes that become unsafe the moment `-j` is enabled. These failures are costly because they are **intermittent**, **non-local**, and **hard to reproduce**.
-This course-book treats Make as it is: an engine for evaluating a dependency graph. It teaches a strict contract:  
+This program treats Make as it is: an engine for evaluating a dependency graph. It teaches a strict contract:  
 - **Truthful DAG**: all real edges are declared (depfiles, manifests, or principled stamps).  
 - **Atomic publication**: outputs appear only when their construction succeeds.  
 - **Parallel safety**: `-j` changes throughput, not meaning.  
@@ -35,10 +39,10 @@ If you maintain a legacy Makefile or design a new build, the objective is the sa
 [Back to top](#top)
 
 ---
-## How the course-book is written
+## How the guide is written
 Each module follows a consistent, engineering-first structure:
 > **Concept** → **Semantics** → **Failure signatures** → **Minimal repro** → **Repair pattern** → **Verification method**
-You are expected to distrust claims that cannot be checked. Where possible, the course-book provides direct verification via:
+You are expected to distrust claims that cannot be checked. Where possible, the guide provides direct verification via:
 - `make --trace` (why something rebuilt)
 - `make -p` (expanded database: targets/vars/rules)
 - serial vs parallel equivalence checks (hashes, manifests, outputs)  
@@ -50,11 +54,16 @@ You are expected to distrust claims that cannot be checked. Where possible, the 
 
 | Module | Title | What it gives you |
 |---:|---|---|
-| 01 | Foundations | Make semantics, correct rebuild triggers, depfiles, atomicity primitives. |
-| 02 | Scaling | Parallelism without races, discovery patterns, repository structure for growth. |
-| 03 | Production Practice | Determinism, CI discipline, selftests, constraints that prevent drift. |
-| 04 | Semantics Under Pressure | Edge cases that matter in real incidents: precedence, includes, multi-output modeling, rule subtleties. |
-| 05 | Hardening | Portability, jobserver correctness, “hermetic-ish” techniques, performance, failure isolation. |
+| 01 | Foundations | The graph model, rebuild truth, and the first dependable Makefiles. |
+| 02 | Scaling | Parallel safety, discovery patterns, and structure for growth. |
+| 03 | Production Practice | Determinism, CI discipline, selftests, and forensics that explain rebuilds. |
+| 04 | Semantics Under Pressure | CLI semantics, precedence, includes, and rule edge cases you need in incidents. |
+| 05 | Hardening | Portability, jobserver correctness, modeled inputs, and failure isolation. |
+| 06 | Generated Files and Pipeline Boundaries | Correct generators, multi-output producers, manifests, and publication boundaries. |
+| 07 | Reusable Build Architecture | Layered includes, build APIs, macros, and repository-scale structure. |
+| 08 | Release Engineering | Packaging, artifact publication, install contracts, and release manifests. |
+| 09 | Performance and Incident Response | Measurement, observability, build triage, and operational runbooks. |
+| 10 | Mastery | Migration strategy, governance, anti-pattern recognition, and tool-boundary judgment. |
 
 Syllabus: [`module-00.md`](module-00)  
 [Back to top](#top)
@@ -71,7 +80,7 @@ Required:
 brew install make
 ```  
 ### Required GNU Make Features (Minimum 4.3+)
-This course-book and capstone rely on GNU Make 4.3+ for full pattern fidelity:
+This program guide and capstone rely on GNU Make 4.3+ for full pattern fidelity:
 
 | Feature               | Introduced | Justification                                      |
 |-----------------------|------------|----------------------------------------------------|
@@ -86,15 +95,15 @@ Older versions may work for basic modules but lack key parallel-safe primitives.
 ## How to read it
 Recommended path (best learning outcomes):
 1. Start at the syllabus: [`module-00.md`](module-00)
-2. Read modules in order (01 → 05)
-3. After each module, apply at least one pattern in the capstone and re-run selftests
+2. Read modules in order (01 → 10)
+3. After each advanced module, apply at least one pattern in the capstone and re-run selftests
 If you are here for incident response or reference:
-* jump to Module 04 and Module 05
+* jump to Module 04, Module 05, Module 09, and Module 10
 * use the diagnostics playbook below  
 [Back to top](#top)
 ---
 ## Verification via the capstone
-The course is paired with an executable reference build: [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone). It exists for one reason: **proof**.
+The program is paired with an executable reference build: [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone). It exists for one reason: **proof**.
 
 From the repository root:
 ```sh
@@ -114,7 +123,7 @@ When builds misbehave, start here:
 * **Parallel-only failures**: suspect missing edges or non-atomic producers; compare serial/parallel outputs
 * **Generated headers / multi-output rules**: model producers explicitly; don’t rely on incidental order
 * **Portability / recursion / jobserver**: treat as correctness topics, not convenience features
-This course-book is designed to be both a curriculum and an operational reference.  
+This program guide is designed to be both a curriculum and an operational reference.  
 [Back to top](#top)
 ---
 ## Repository links

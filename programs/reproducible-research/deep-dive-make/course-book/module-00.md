@@ -1,144 +1,117 @@
 <a id="top"></a>
 
-# Deep Dive Make: The Course-Book Outline
+# Deep Dive Make: Program Outline
 
-A five-module course-book that treats **GNU Make as a build-graph engine** with a strict correctness contract:
+Deep Dive Make is now a ten-module program that starts with first-contact Make and ends
+with long-lived build-system judgment. The through-line never changes:
 
 - **Truthful DAG**: every real dependency edge is declared.
 - **Atomic outputs**: artifacts are published only on success.
-- **Parallel safety**: `-j` changes throughput, not semantics.
-- **Determinism**: serial and parallel runs converge to identical results.
-- **Testable invariants**: correctness is verified, not assumed.
+- **Parallel safety**: `-j` changes throughput, not meaning.
+- **Determinism**: serial and parallel runs converge to the same state.
+- **Operational proof**: diagnostics and selftests back the claims.
 
-This repository contains both the text (**`course-book/`**) and a runnable reference implementation (**`capstone/`**) that proves the claims.
-
----
-
-## Module 01 — Foundations: The Graph, the Truth, the Rules
-
-1. **Make’s execution model (DAG evaluation)**
-   Targets, prerequisites, recipes, default goals—and the central idea: Make executes what the graph declares runnable.
-
-2. **Rebuild semantics and convergence**
-   mtimes, existence checks, hidden inputs, and the practical invariant: a correct build *converges* (`make -q` eventually goes green).
-
-3. **Rule design that scales**
-   Explicit rules vs patterns vs static patterns; controlled fan-out; and why naïve multi-target rules lie unless you model single-invocation semantics.
-
-4. **Variables and expansion discipline**
-   Parse-time vs run-time; `:=` vs `=`; avoiding entropy via `$(shell ...)`; inspecting provenance with `origin` / `flavor` / `value`.
-
-5. **Correct publication and failure hygiene**
-   temp→rename publishing, `.DELETE_ON_ERROR`, depfiles (`.d`) as first-class edges, and eliminating “poison artifacts” after failures.
-
-**Deliverable:** A small Makefile that (1) converges, (2) rebuilds correctly on header edits via depfiles, (3) models at least one hidden input, (4) publishes atomically, and (5) remains correct after an induced failure.
-
-[Back to top](#top)
+This repository contains both the program guide in `course-book/` and the executable
+reference build in `capstone/`.
 
 ---
 
-## Module 02 — Scaling: Parallelism Without Accidents
+## Program Arc
 
-1. **What Make parallelizes**
-   `-j` parallelizes runnable *targets*; missing edges become illegal interleavings; diagnosing serial vs parallel behavior with `--trace`.
+### Module 01 — Foundations: The Build Graph and Truth
 
-2. **A parallel-safety contract**
-   One-writer-per-path, atomic publish, and a race taxonomy: shared appends/logs, temp collisions, mkdir hazards, partial writes.
+Start from the core idea of Make: targets, prerequisites, recipes, default goals, and the
+reason builds rebuild. This module is where a total beginner learns to read Make as a
+graph instead of as a shell script with extra punctuation.
 
-3. **Ordering tools that preserve truth**
-   Real prerequisites vs order-only (`|`) vs semantic stamps/manifests; boundaries and last-resort serialization (`.WAIT`, `.NOTPARALLEL`).
+**Deliverable:** a tiny build that converges and can explain its own rebuild behavior.
 
-4. **Large-project structure without recursive-make decay**
-   One public DAG, a stable top-level API, layered `mk/` includes, and configuration overrides that cannot mutate correctness.
+### Module 02 — Scaling: Parallelism, Safety, and Large-Project Structure
 
-5. **Selftests and a race repro pack**
-   Convergence and serial/parallel equivalence as gates; repros that train you to map failure signatures back to graph defects.
+Move from one small truthful build to a larger one that stays safe under `-j`. This is
+where “works locally” becomes “still works when the graph is stressed.”
 
-**Deliverable:** A parallel-safe build with selftests enforcing convergence + serial/parallel equivalence, plus a repro pack demonstrating and fixing at least three distinct race classes.
+**Deliverable:** a parallel-safe build plus a repro pack that demonstrates and fixes race classes.
 
-[Back to top](#top)
+### Module 03 — Production Practice: Determinism, Debugging, CI Contracts, Selftests, and Disciplined DSL
 
----
+Turn correctness into a production habit: deterministic discovery, stable public targets,
+selftests, and Make-native forensics.
 
-## Module 03 — Production Practice: Determinism, CI Contracts, and a Disciplined DSL
+**Deliverable:** a CI-ready build contract with selftests and deterministic behavior across runs.
 
-1. **Determinism under change**
-   Stable discovery (rooted + sorted), no parse-time randomness, single-writer generators, and modeling tool/flag/environment inputs.
+### Module 04 — Make Semantics Under Pressure: CLI, Precedence, Includes, and Rule Edge-Cases
 
-2. **A forensic debugging ladder**
-   `-n` (what), `--trace` (why), `-p` (what Make evaluated), and the canonical signatures: missing edges, stamp lies, non-atomic publish, unstable discovery.
+Learn the sharp edges you need when something breaks: CLI semantics, variable provenance,
+include restart behavior, and advanced rule semantics.
 
-3. **CI as a contract**
-   Public targets with behavior guarantees, strict failure semantics, and a separation between correctness artifacts and diagnostic/attestation outputs.
+**Deliverable:** a reproducible runbook for diagnosing tricky Make behavior without folklore.
 
-4. **Selftests for the build system**
-   Convergence, serial/parallel equivalence, meaningful negative tests (hidden-input injection), and sandboxing so local state cannot “help.”
+### Module 05 — Hardening: Portability, Jobserver, Hermeticity, Performance, and Failure Modes
 
-5. **A disciplined Make DSL**
-   Use macros (`define`/`call`) to enforce invariants; quarantine `eval` so it is bounded, auditable, and disable-able without correctness loss.
+Define platform and tooling boundaries, model semantically relevant non-file inputs, and
+make the build survive controlled recursion and environmental drift.
 
-**Deliverable:** A CI-ready contract (`all`/`test`/`selftest`), deterministic discovery, a selftest harness with a negative hidden-input test, and a quarantined `eval` demo.
+**Deliverable:** a hardened build contract with portability checks and failure-mode evidence.
 
-[Back to top](#top)
+### Module 06 — Generated Files, Multi-Output Rules, and Pipeline Boundaries
 
----
+Treat generators, manifests, generated headers, and coupled outputs as first-class graph
+citizens instead of incidental side effects.
 
-## Module 04 — Semantics Under Pressure: CLI, Precedence, Includes, Rule Edge Cases
+**Deliverable:** a generator pipeline that runs exactly when its declared inputs change.
 
-1. **CLI semantics for diagnosis**
-   Outcome-changing flags: `-n`, `--trace`, `-p`, `-q`, `-W`, `-B`, `-rR`, and controlled invocation (`-C`, `-f`)—used to reveal defects, not mask them.
+### Module 07 — Reusable Build Architecture, Layered Includes, and Build APIs
 
-2. **Variable precedence and provenance**
-   Practical precedence ladder (CLI/override/makefile/env/built-ins), export behavior, environment leakage, and inspecting `origin` / `flavor` / `value`.
+Scale the build into layered `mk/*.mk` files, reusable macros, and a stable public target
+surface without turning the system into a private language.
 
-3. **Conditionals and capability gates**
-   Capability-based gating (features/tools/platform), fail-fast policies, and the rule: if detection affects outputs, it must be modeled.
+**Deliverable:** a documented build API with layered includes and auditable reuse.
 
-4. **Includes and remake semantics**
-   `include` vs `-include`, remaking included makefiles (restart model), include order stability, avoiding loops, and safe overrides.
+### Module 08 — Release Engineering, Packaging, and Artifact Publication Contracts
 
-5. **Rule semantics and special targets**
-   Pattern ambiguity control, static patterns for bounded fan-out, correct multi-output modeling (grouped targets `&:` or stamp fallback), and last-resort parallel controls (`.WAIT`, `.NOTPARALLEL`, `.ONESHELL`, `.PHONY`).
+Define what it means to publish an artifact safely: bundle layout, manifests, checksums,
+install behavior, and atomic release boundaries.
 
-**Deliverable:** A practical runbook: reproducible CLI debugging steps, proven variable provenance, a fixed include/restart issue, and a multi-output generator proven to run exactly once per logical generation.
+**Deliverable:** a release surface that publishes trustworthy artifacts and supporting evidence.
 
-[Back to top](#top)
+### Module 09 — Performance, Observability, and Build Incident Response
 
----
+Measure parse-time costs, isolate slow or flaky behavior, and build a runbook that another
+engineer can actually use during an incident.
 
-## Module 05 — Hardening: Portability, Jobserver, Hermeticity, Performance, Failure Modes
+**Deliverable:** a measured build plus an operational triage ladder.
 
-1. **Portability boundary and version gates**
-   Declare what you support: GNU Make floor, feature gates via `$(MAKE_VERSION)`, POSIX shell assumptions, and documented fallbacks.
+### Module 10 — Mastery: Migration, Governance, and Knowing Make's Boundaries
 
-2. **Jobserver and controlled recursion**
-   Correct `$(MAKE)` propagation, `+` under `-n`, bounding recursion via `MAKELEVEL`, and recognizing deadlock/collapse signatures.
+Review legacy Make systems, plan migrations without losing proof, govern future changes,
+and decide when Make should remain the orchestrator or hand off responsibility.
 
-3. **Hermeticity by modeling inputs**
-   Stamps/manifests for tools/flags/env; order-only prerequisites for “must exist but mustn’t trigger rebuild”; attestations that do not contaminate artifact identity unless explicitly chosen.
-
-4. **Performance engineering**
-   Parse-time vs run-time costs, `--profile` discipline, trace volume as a signal, and eliminating avoidable shell-outs and churny discovery.
-
-5. **Failure modes and migration rubric**
-   Canonical failure signatures, an anti-pattern gallery, safe hybrid boundaries, and a decision rubric for when Make stops being the right core tool.
-
-**Deliverable:** A hardened capstone: portability audit + jobserver proof + modeled inputs + non-poisoning attestations + profiling guardrails + a migration drill demonstrating a clean hybrid boundary.
-
-[Back to top](#top)
+**Deliverable:** an evidence-based review and migration strategy for a real build system.
 
 ---
 
-## Reference Implementation — The Capstone
+## Recommended Reading Path
 
-The capstone is the executable realization of Modules 01–05:
+1. Read modules in order from 01 to 10.
+2. Use the capstone as corroboration after Modules 03 to 09.
+3. Re-run proof commands as you go instead of trusting prose summaries.
+4. Treat Module 10 as a judgment module, not as optional appendix material.
 
-- **Build system:** `capstone/Makefile` + `capstone/mk/*.mk`
-- **Selftests:** `capstone/tests/run.sh` (convergence, serial/parallel equivalence, negative tests)
-- **Repro pack:** `capstone/repro/*.mk` (intentional failures + fixes)
-- **Generators:** `capstone/scripts/` (single-output and multi-output stress cases)
+If you already maintain Make in production, Modules 04, 05, 09, and 10 are the fastest
+route to operational value. If you are new to Make, do not skip the early modules.
 
-**Truth command:**
+---
+
+## Capstone Relationship
+
+The capstone is strongest as the executable companion to Modules 03 to 09, where build
+correctness, scaling, diagnostics, and hardening become concrete. The early modules use
+smaller local teaching projects first so the learner can see the semantics without a large
+repository in the way.
+
+**Proof command:**
+
 ```sh
 make -C capstone selftest
 ```

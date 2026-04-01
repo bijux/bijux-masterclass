@@ -2,8 +2,9 @@ INHERIT: ../../../mkdocs.shared.yml
 
 site_name: Deep Dive Make
 site_description: >-
-  Deep Dive Make is a five-module course-book that teaches GNU Make as a disciplined
-  build-graph engine—focused on correctness, determinism, and parallel-safe design.
+  Deep Dive Make is a ten-module program guide that teaches GNU Make from first-contact
+  basics to build-system mastery, with a correctness-first focus on deterministic,
+  parallel-safe design.
 site_author: Bijan Mousavi <bijan@bijux.io>
 site_url: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/
 repo_name: bijux/bijux-masterclass
@@ -20,11 +21,16 @@ plugins:
 
 nav:
   - Home: index.md
-  - Course Outline: module-00.md
+  - Program Outline: module-00.md
   - Modules:
       - "01 — Foundations": module-01.md
       - "02 — Scaling": module-02.md
       - "03 — Production Practice": module-03.md
       - "04 — Semantics Under Pressure": module-04.md
       - "05 — Hardening": module-05.md
+      - "06 — Generated Files and Pipeline Boundaries": module-06.md
+      - "07 — Reusable Build Architecture": module-07.md
+      - "08 — Release Engineering": module-08.md
+      - "09 — Performance and Incident Response": module-09.md
+      - "10 — Mastery": module-10.md
   - Capstone Project: readme-capstone.md
