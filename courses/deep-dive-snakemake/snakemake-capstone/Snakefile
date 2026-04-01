@@ -1,0 +1,145 @@
+# Snakefile
+from __future__ import annotations
+
+from snakemake.utils import validate
+
+configfile: "config/config.yaml"
+validate(config, schema="config/schema.yaml")
+import os
+
+# Absolute env path so it resolves correctly from includes + modules.
+config["_env_python"] = os.path.join(workflow.basedir, "workflow", "envs", "python.yaml")
+
+
+# Shared helpers/constants only (no rules).
+include: "workflow/rules/common.smk"
+
+# -----------------------------
+# Top-level defaults
+# -----------------------------
+config.setdefault("results_dir", "results")
+config.setdefault("publish_dir", "publish")
+config.setdefault("logs_dir", "logs")
+config.setdefault("benchmarks_dir", "benchmarks")
+
+RESULTS_DIR = config["results_dir"]
+PUBLISH_DIR = config["publish_dir"]
+LOGS_DIR = config["logs_dir"]
+BENCH_DIR = config["benchmarks_dir"]
+
+# -----------------------------
+# Configuration defaults
+# -----------------------------
+setdefault_tree(
+    config,
+    "params",
+    {
+        "raw_dir": "data/raw",
+        "raw_glob": "*.fastq.gz",
+        "allow_paired_end": False,
+        "trim": {
+            "q": 20,
+            "min_len": 20,
+            "max_n_fraction": 0.05,
+            "adapters_fasta": "data/panel/adapters.fasta",
+            "adapter_min_overlap": 12,
+            "poly_run_min": 10,
+        },
+        "dedup": {"mode": "dedup"},
+        "kmer": {"k": 21, "signature_size": 1000, "top": 25},
+        "panel": {"fasta": "data/panel/panel.fasta"},
+        "publish": {"version": "v1"},
+    },
+)
+
+PUBLISH_VERSION = config["params"]["publish"]["version"]
+
+# -----------------------------
+# Workdir + constraints
+# -----------------------------
+workdir: config.get("workdir", ".")
+
+wildcard_constraints:
+    sample="[^/]+"
+
+# If you *want* this checkpoint to always run locally:
+localrules: discover_samples
+
+# -----------------------------
+# Checkpoint: discover samples
+# -----------------------------
+checkpoint discover_samples:
+    output:
+        json=f"{RESULTS_DIR}/discovered_samples.json"
+    log:
+        f"{LOGS_DIR}/discover_samples.log"
+    benchmark:
+        f"{BENCH_DIR}/discover_samples.txt"
+    conda:
+        config["_env_python"]
+    params:
+        raw_dir=config["params"]["raw_dir"],
+        raw_glob=config["params"]["raw_glob"],
+        allow_pe="--allow-paired-end" if config["params"]["allow_paired_end"] else "",
+        pythonpath=PYTHONPATH,
+        benchdir=BENCH_DIR,
+    shell:
+        r"""
+        set -euo pipefail
+
+        mkdir -p "$(dirname {output.json})" "$(dirname {log})" "{params.benchdir}"
+
+        PYTHONPATH="{params.pythonpath}" \
+        python3 -m capstone.discover_samples \
+            --raw-dir "{params.raw_dir}" \
+            --glob "{params.raw_glob}" \
+            {params.allow_pe} \
+            --out-json "{output.json}" 2> "{log}"
+        """
+
+# -----------------------------
+# Publish discovered samples
+# -----------------------------
+rule publish_discovered_samples:
+    input:
+        json=rules.discover_samples.output.json
+    output:
+        json=f"{PUBLISH_DIR}/{PUBLISH_VERSION}/discovered_samples.json"
+    log:
+        f"{LOGS_DIR}/publish_discovered_samples.log"
+    conda:
+        config["_env_python"]
+    shell:
+        r"""
+        set -euo pipefail
+        mkdir -p "$(dirname {output.json})" "$(dirname {log})"
+        cp "{input.json}" "{output.json}" 2> "{log}"
+        """
+
+# -----------------------------
+# Provenance
+# -----------------------------
+rule provenance:
+    output:
+        json=f"{PUBLISH_DIR}/{PUBLISH_VERSION}/provenance.json"
+    log:
+        f"{LOGS_DIR}/provenance.log"
+    conda:
+        config["_env_python"]
+    script:
+        "workflow/scripts/provenance.py"
+
+# -----------------------------
+# Includes (rules)
+# -----------------------------
+include: "workflow/rules/preprocess.smk"
+include: "workflow/rules/summarize_report.smk"
+include: "workflow/rules/publish.smk"
+
+# -----------------------------
+# Workflow entrypoint
+# -----------------------------
+rule all:
+    input:
+        f"{PUBLISH_DIR}/{PUBLISH_VERSION}/manifest.json"
+    default_target: True

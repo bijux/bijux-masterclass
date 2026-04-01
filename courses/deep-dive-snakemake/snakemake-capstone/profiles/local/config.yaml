@@ -1,0 +1,6 @@
+# Local defaults for interactive runs.
+# Usage: snakemake --profile profiles/local
+rerun-incomplete: true
+printshellcmds: true
+show-failed-logs: true
+latency-wait: 30

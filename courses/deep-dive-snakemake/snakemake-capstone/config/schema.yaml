@@ -1,0 +1,88 @@
+# config/schema.yaml
+# Updated $schema URL to a version natively supported by recent snakemake/jsonschema
+# to silence the validator warning (the schema itself is compatible).
+
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Snakemake Capstone Configuration
+type: object
+properties:
+  use_discovered_samples:
+    type: boolean
+    description: If true, automatically discover samples from data/raw using discover_samples.py (checkpoint).
+  samples:
+    type: object
+    additionalProperties:
+      type: string
+    description: Manual sample mapping (sample name → path to raw FASTQ.gz). Ignored if use_discovered_samples is true.
+  results_dir:
+    type: string
+    default: results
+  publish_dir:
+    type: string
+    default: publish
+  logs_dir:
+    type: string
+    default: logs
+  benchmarks_dir:
+    type: string
+    default: benchmarks
+  dedup:
+    type: object
+    properties:
+      enabled:
+        type: boolean
+        default: true
+    additionalProperties: false
+  trim:
+    type: object
+    properties:
+      q:
+        type: integer
+        minimum: 0
+        default: 20
+      min_len:
+        type: integer
+        minimum: 1
+        default: 20
+      max_n_fraction:
+        type: number
+        minimum: 0
+        maximum: 1
+        default: 0.05
+      adapters_fasta:
+        type: [string, "null"]
+        default: data/panel/adapters.fasta
+      adapter_min_overlap:
+        type: integer
+        minimum: 1
+        default: 12
+      poly_run_min:
+        type: integer
+        minimum: 0
+        default: 10
+    additionalProperties: false
+  kmer:
+    type: object
+    properties:
+      k:
+        type: integer
+        minimum: 1
+        default: 21
+      signature_size:
+        type: integer
+        minimum: 1
+        default: 1000
+      top:
+        type: integer
+        minimum: 1
+        default: 25
+    additionalProperties: false
+  panel:
+    type: object
+    properties:
+      fasta:
+        type: string
+        default: data/panel/panel.fasta
+    additionalProperties: false
+required: []
+additionalProperties: false

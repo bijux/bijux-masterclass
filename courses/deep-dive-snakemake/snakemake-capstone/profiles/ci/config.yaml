@@ -1,0 +1,5 @@
+# CI defaults: deterministic + minimal noise
+rerun-incomplete: true
+printshellcmds: true
+show-failed-logs: true
+latency-wait: 30

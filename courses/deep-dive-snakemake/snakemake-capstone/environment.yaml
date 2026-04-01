@@ -1,0 +1,9 @@
+name: capstone
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.11
+  - snakemake
+  # No external bioinformatics tools required (pure Python)

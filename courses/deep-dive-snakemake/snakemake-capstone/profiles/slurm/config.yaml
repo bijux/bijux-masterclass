@@ -1,0 +1,7 @@
+# Example SLURM profile (placeholder; adapt to your cluster).
+# Intentionally does NOT assume conda.
+# See module-03 for profile patterns.
+jobs: 200
+latency-wait: 60
+printshellcmds: true
+show-failed-logs: true
