@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Snakemake Capstone — Reference Workflow
+# Deep Dive Snakemake: Program Capstone
 
 A compact, end-to-end Snakemake workflow that demonstrates rigorous engineering practices on toy FASTQ inputs. The biological analysis is intentionally minimal; the emphasis is on workflow correctness, reproducibility, and maintainability: explicit contracts, safe dynamic DAGs, governed configuration, versioned publishing, artifact verification, and execution across contexts (local, CI, cluster, Docker).
 
@@ -40,7 +40,29 @@ Use this capstone to answer one question repeatedly:
 
 > If this workflow changed tomorrow, which file or boundary should absorb that change, and why?
 
-If the course is doing its job, the answer should get clearer after each module.
+If the program is doing its job, the answer should get clearer after each module.
+
+[Back to top](#top)
+
+---
+
+## Where it fits in the program
+
+The capstone is designed as corroboration, not as the learner's first exposure to every
+concept. It is most useful once a module has already made the idea legible in a smaller
+setting.
+
+| Program area | What the capstone lets you verify |
+| --- | --- |
+| Modules 01-02 | truthful file contracts, dynamic discovery, and durable discovery artifacts |
+| Modules 03-04 | profiles, CI-style gates, module boundaries, and executor-proof behavior |
+| Modules 05-06 | software boundaries, provenance, publish surfaces, and downstream contracts |
+| Modules 07-09 | repository architecture, operating-context drift, logs, benchmarks, and incident evidence |
+| Module 10 | workflow review, migration, governance, and tool-boundary judgment |
+
+If you are new to Snakemake, use this repository after you understand the module’s local
+exercise or mental model. The capstone should confirm understanding, not replace first
+contact teaching.
 
 [Back to top](#top)
 
@@ -85,7 +107,8 @@ Start in this order:
 7. `profiles/`
 8. `tests/`
 
-That order mirrors the course: file contracts first, dynamic behavior second, operational policy third, and publish governance last.
+That order mirrors the program: file contracts first, dynamic behavior second,
+operational policy third, and publish governance last.
 
 [Back to top](#top)
 
@@ -124,6 +147,12 @@ That order mirrors the course: file contracts first, dynamic behavior second, op
 - **Module 02** explains the checkpoint, deterministic discovery, provenance, and integrity artifacts.
 - **Module 03** explains profiles, retries, artifact verification, and clean-room confirmation.
 - **Module 04** explains module boundaries, file APIs, CI-style gates, and executor-proof semantics.
+- **Module 05** explains environment files, helper-code boundaries, and provenance collection.
+- **Module 06** explains `publish/v1/`, `manifest.json`, reports, and downstream-facing contracts.
+- **Module 07** explains repository architecture, `workflow/rules/`, `src/capstone/`, and `FILE_API.md`.
+- **Module 08** explains profiles, operating contexts, and how policy changes without changing workflow meaning.
+- **Module 09** explains logs, benchmarks, workflow-tour artifacts, and incident review evidence.
+- **Module 10** explains how to review the repository as a long-lived workflow product.
 
 [Back to top](#top)
 
