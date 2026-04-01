@@ -13,6 +13,21 @@ Use this page when you want one answer to three questions:
 
 ---
 
+## Before You Enter
+
+Check these first:
+
+* Can you already explain the concept on a smaller local graph?
+* Do you know which command should prove the behavior?
+* Are you looking for confirmation, not first exposure?
+
+If the answer to any of those is no, return to the module exercise before using the
+capstone.
+
+[Back to top](#top)
+
+---
+
 ## Recommended Entry Rule
 
 Use the capstone sparingly in Modules 01-02, heavily in Modules 03-09, and as a review
@@ -21,6 +36,39 @@ specimen in Module 10.
 If you are still learning basic syntax, keep working in the local module playgrounds
 first. The capstone is designed to confirm understanding, not replace first-contact
 teaching.
+
+---
+
+## Three Reliable Entry Routes
+
+### Route A: First serious capstone pass
+
+Use this after Module 02 or 03.
+
+1. `make -C capstone help`
+2. read `capstone/Makefile`
+3. read `capstone/tests/run.sh`
+4. run `make -C capstone selftest`
+
+### Route B: Generator and boundary study
+
+Use this during Module 06.
+
+1. read `capstone/scripts/gen_dynamic_h.py`
+2. trace `build/include/dynamic.h` from `capstone/Makefile`
+3. inspect `capstone/mk/stamps.mk`
+4. run `make -C capstone --trace dyn`
+
+### Route C: Architecture and stewardship review
+
+Use this during Modules 07-10.
+
+1. run `make -C capstone help`
+2. read `capstone/mk/*.mk` in dependency order
+3. inspect `capstone/repro/`
+4. run `make -C capstone -p > build/review.dump`
+
+[Back to top](#top)
 
 ---
 
@@ -38,6 +86,21 @@ teaching.
 | 08 Release Engineering | Inspect packaging and evidence surfaces without polluting identity | `capstone/Makefile`, `capstone/scripts/mkdist.py`, `capstone/build/attest.txt` | `make -C capstone dist attest` |
 | 09 Incident Response | Measure trace volume and operational diagnostics | `capstone/tests/run.sh`, `capstone/Makefile`, `capstone/repro/` | `make -C capstone trace-count` |
 | 10 Mastery | Review the whole build as a migration and governance specimen | `capstone/Makefile`, `capstone/mk/`, `capstone/repro/`, `capstone/tests/` | `make -C capstone help && make -C capstone -p > build/review.dump` |
+
+[Back to top](#top)
+
+---
+
+## What To Inspect First
+
+| Surface | Why it matters | When it matters most |
+| --- | --- | --- |
+| `capstone/Makefile` | public targets and rule boundaries | Modules 03, 07, 10 |
+| `capstone/tests/run.sh` | proof harness and invariants | Modules 03, 05, 09 |
+| `capstone/mk/objects.mk` | rooted discovery and object graph modeling | Modules 02, 03, 07 |
+| `capstone/mk/stamps.mk` | modeled hidden inputs and boundary files | Modules 05, 06 |
+| `capstone/repro/` | controlled demonstrations of failure classes | Modules 02, 09, 10 |
+| `capstone/scripts/` | generator and packaging boundaries | Modules 06, 08 |
 
 [Back to top](#top)
 
