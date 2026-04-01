@@ -5,7 +5,7 @@ The capstone is the executable reference build for **Deep Dive Make**: a compact
 [![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
 [![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/)
+[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/)
 [![Capstone](https://img.shields.io/badge/capstone-reference-green?style=flat-square)](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/capstone)
 
 > **In one line:** a small build that behaves like a serious build—correct under change, correct under `-j`, and instrumented to catch its own lies.
@@ -128,7 +128,7 @@ make -f repro/01-shared-append.mk -j4
 
 ---
 ## Links into the course-book
-* Course text: [https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/](https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/)
+* Course text: [https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/](https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/)
 * Source chapters: [`course-book/`](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/course-book)
 The capstone is referenced throughout the modules via “tie-ins.” The expectation is a tight loop:
 **read → reproduce → repair → verify**  

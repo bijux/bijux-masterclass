@@ -3,7 +3,7 @@ INHERIT: ../../../mkdocs.shared.yml
 site_name: Deep Dive Snakemake
 site_description: Course book and reference workflow patterns for Snakemake.
 site_author: Bijan Mousavi
-site_url: https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-snakemake/
+site_url: https://bijux.io/deep-dive-series/reproducible-research/deep-dive-snakemake/
 repo_name: bijux/deep-dive-series
 repo_url: https://github.com/bijux/deep-dive-series
 edit_uri: edit/master/courses/reproducible-research/deep-dive-snakemake/course-book/

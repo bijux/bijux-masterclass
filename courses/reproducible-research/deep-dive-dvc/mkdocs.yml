@@ -5,7 +5,7 @@ site_description: >-
   Deep Dive DVC teaches reproducibility through content-addressed data, truthful
   pipelines, declared experiments, and operational recovery discipline.
 site_author: Bijan Mousavi
-site_url: https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-dvc/
+site_url: https://bijux.io/deep-dive-series/reproducible-research/deep-dive-dvc/
 repo_name: bijux/deep-dive-series
 repo_url: https://github.com/bijux/deep-dive-series
 edit_uri: edit/master/courses/reproducible-research/deep-dive-dvc/course-book/

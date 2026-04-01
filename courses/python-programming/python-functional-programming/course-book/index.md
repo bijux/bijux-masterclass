@@ -3,8 +3,8 @@
 
 **A production-minded deep dive into functional programming in Python**, grounded in a real running project (FuncPipe RAG). 
 
-- **Live docs:** https://bijux.github.io/deep-dive-series/python-programming/python-functional-programming/  
-- **Author hub:** https://bijux.github.io/
+- **Live docs:** https://bijux.io/deep-dive-series/python-programming/python-functional-programming/  
+- **Author hub:** https://bijux.io/
 
 ---
 

@@ -4,7 +4,7 @@ site_name: Python Functional Programming
 site_description: >-
   Correctness-first deep dive into functional programming in Python: data-first pipelines,
   composable effects, rigorous error handling, and production-grade async interop.
-site_url: https://bijux.github.io/deep-dive-series/python-programming/python-functional-programming/
+site_url: https://bijux.io/deep-dive-series/python-programming/python-functional-programming/
 
 repo_name: bijux/deep-dive-series
 repo_url: https://github.com/bijux/deep-dive-series

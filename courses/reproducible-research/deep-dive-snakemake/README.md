@@ -5,7 +5,7 @@ A course-book and executable capstone that teaches **Snakemake as a workflow eng
 [![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
 [![Snakemake](https://img.shields.io/badge/Snakemake-8.0%2B-blue?style=flat-square)](https://snakemake.readthedocs.io/en/stable/)
 [![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-snakemake/)
+[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/deep-dive-series/reproducible-research/deep-dive-snakemake/)
 [![Capstone](https://img.shields.io/badge/capstone-reference-green?style=flat-square)](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-snakemake/capstone)
 
 > CI executes full confirmation runs including workflow execution and artifact validation.
@@ -44,7 +44,7 @@ A compact, focused handbook with practical patterns, anti-patterns, and guidance
 - publishing, manifests, and integrity checks
 - execution profiles and reproducible runs
 
-Read on the website: https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-snakemake/
+Read on the website: https://bijux.io/deep-dive-series/reproducible-research/deep-dive-snakemake/
 
 ### 2) The executable capstone
 

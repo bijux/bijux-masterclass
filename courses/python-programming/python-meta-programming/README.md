@@ -3,7 +3,7 @@
 
 [![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
 [![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.github.io/deep-dive-series/python-programming/python-meta-programming/)
+[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/deep-dive-series/python-programming/python-meta-programming/)
 [![Pages](https://github.com/bijux/deep-dive-series/actions/workflows/pages.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/pages.yml?query=branch%3Amaster)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue?style=flat-square)](https://www.python.org/)
 [![MkDocs Material](https://img.shields.io/badge/mkdocs-material-informational?style=flat-square)](https://squidfunk.github.io/mkdocs-material/)
@@ -12,8 +12,8 @@
 
 This is not a collection of clever tricks. It is a systematic exploration of Python’s most powerful (and most dangerous) features, designed to help you reason confidently about what actually happens at runtime and avoid subtle bugs that arise from misunderstanding the language model.
 
-- **Live documentation**: https://bijux.github.io/deep-dive-series/python-programming/python-meta-programming/
-- **Author hub**: https://bijux.github.io/
+- **Live documentation**: https://bijux.io/deep-dive-series/python-programming/python-meta-programming/
+- **Author hub**: https://bijux.io/
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -171,9 +171,9 @@ What it demonstrates:
 
 Other correctness-focused deep dives in the same style:
 
-- **bijux hub**: https://bijux.github.io/
-- **bijux-cli**: https://bijux.github.io/bijux-cli/
-- **Deep Dive Make**: https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/
+- **bijux hub**: https://bijux.io/
+- **bijux-cli**: https://bijux.io/bijux-cli/
+- **Deep Dive Make**: https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

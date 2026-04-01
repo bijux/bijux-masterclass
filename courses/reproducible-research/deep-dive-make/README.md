@@ -7,7 +7,7 @@ A course-book and executable capstone that teaches **GNU Make as a build-graph e
 [![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
 [![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/)
+[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/)
 [![Capstone](https://img.shields.io/badge/capstone-reference-green?style=flat-square)](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-make/capstone)
 > Validation runs from the monorepo root against the shared `course-validation.yml` workflow.
 ---
@@ -42,7 +42,7 @@ A compact, opinionated handbook with patterns, anti-patterns, and exercises:
 - **04 — Semantics Under Pressure**: edge cases and battle-tested rules you rely on when things break.
 - **05 — Hardening**: portability, jobserver correctness, hermetic-ish practices, performance, failure isolation.
 
-Read on the website: https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/
+Read on the website: https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/
 
 ### 2) The executable capstone
 

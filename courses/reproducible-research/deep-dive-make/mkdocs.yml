@@ -5,7 +5,7 @@ site_description: >-
   Deep Dive Make is a five-module course-book that teaches GNU Make as a disciplined
   build-graph engine—focused on correctness, determinism, and parallel-safe design.
 site_author: Bijan Mousavi
-site_url: https://bijux.github.io/deep-dive-series/reproducible-research/deep-dive-make/
+site_url: https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/
 repo_name: bijux/deep-dive-series
 repo_url: https://github.com/bijux/deep-dive-series
 edit_uri: edit/master/courses/reproducible-research/deep-dive-make/course-book/

@@ -4,7 +4,7 @@ site_name: Python Object-Oriented Programming
 site_description: >-
   Correctness-first deep dive into object-oriented Python: object semantics, explicit
   responsibilities, state design, aggregates, and evolvable collaboration boundaries.
-site_url: https://bijux.github.io/deep-dive-series/python-programming/python-object-oriented-programming/
+site_url: https://bijux.io/deep-dive-series/python-programming/python-object-oriented-programming/
 
 repo_name: bijux/deep-dive-series
 repo_url: https://github.com/bijux/deep-dive-series
