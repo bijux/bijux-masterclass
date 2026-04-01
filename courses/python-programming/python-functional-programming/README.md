@@ -1,94 +1,104 @@
-# Python Functional Programming — Correctness-First Course & FuncPipe RAG Build
+# Python Functional Programming
 
-[![Series Validation](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml/badge.svg?branch=master)](https://github.com/bijux/deep-dive-series/actions/workflows/course-validation.yml?query=branch%3Amaster)
-[![License](https://img.shields.io/github/license/bijux/deep-dive-series?style=flat-square)](https://github.com/bijux/deep-dive-series/blob/master/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/deep-dive-series/python-programming/python-functional-programming/)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue?style=flat-square)](https://www.python.org/)
+Python Functional Programming is the functional-design course in the
+`python-programming` family. It teaches purity, explicit effects, streaming,
+error-typed flows, and async coordination as engineering tools for building systems
+that remain understandable under growth and change.
 
-**A production-minded deep dive into functional programming in Python**, grounded in a real running project (FuncPipe RAG).
+This course exists to answer one practical question clearly:
 
-- **Live docs:** https://bijux.io/deep-dive-series/python-programming/python-functional-programming/  
-- **Author hub:** https://bijux.io/
+> How do you write Python systems that stay testable, composable, and operationally
+> predictable without pretending the real world has no effects?
 
----
+## Who this course is for
 
-## What This Project Is
+- Python developers who already ship services, pipelines, or tooling and want stronger design discipline
+- Engineers who need functional techniques without turning the codebase into theory theater
+- Reviewers who want concrete criteria for purity, effect boundaries, and data-first design
+- Maintainers who want refactors, async work, and production debugging to become safer instead of riskier
 
-- A 10-module course (Modules 01–10) that teaches FP the way you ship code: purity, explicit effects, streaming, async backpressure, algebraic data modelling, and interop with the Python ecosystem.
-- A working codebase at the **end of Module 09**: config-as-data pipelines, lazy iterators, Result/Option error handling, retries/breakers, structured logs, monadic helpers (Reader/State/Writer), async plans with bounded concurrency, and config-driven pipeline specs.
-- An evolving FuncPipe RAG builder you can refactor as you learn; earlier states are tagged (`module-01`, `module-02`, …) and exported under `capstone/history/`.
+## Who this course is not for
 
----
+- Readers looking for a syntax-level introduction to `lambda`, `map`, or list comprehensions
+- People treating functional programming as a catalog of clever tricks
+- Teams that want "FP style" while keeping hidden globals, shared mutation, and effect-heavy cores
 
-## Quickstart
+## What you will be able to do
+
+By the end of the course, you should be able to:
+
+- separate pure transforms from effectful boundaries in ordinary Python systems
+- model pipelines as explicit dataflow instead of hidden state transitions
+- use iterators, Result-like containers, and async plans without losing debuggability
+- structure code so retries, logging, backpressure, and integration boundaries remain reviewable
+- evolve a production codebase toward functional discipline without demanding a total rewrite
+
+## Reading contract
+
+This is not a browse-at-random reference. The reading path matters:
+
+1. Learn purity and substitution before laziness and error composition.
+2. Learn laziness and typed failures before effect boundaries and async work.
+3. Learn effect boundaries before framework interop and long-term sustainment.
+4. Keep the capstone open while reading so the abstractions remain attached to one codebase.
+
+If you skip that order, later modules will still be readable, but the trade-offs will
+feel ornamental instead of necessary.
+
+## What this course covers
+
+- purity, substitution, and local reasoning
+- closures, expression-oriented style, and data-first APIs
+- iterators, streaming, laziness, and bounded traversal
+- Result and Option style error handling, aggregation, and retries
+- algebraic data modelling, validation, and serialization boundaries
+- monadic flows, explicit context, and layered effect descriptions
+- ports, adapters, capability protocols, and async backpressure
+- ecosystem interop, refactoring, and governance for long-lived systems
+
+## How the capstone fits
+
+[`capstone/`](https://github.com/bijux/deep-dive-series/tree/master/courses/python-programming/python-functional-programming/capstone)
+is the executable proof for the course. It houses the FuncPipe RAG codebase that the
+modules keep referring to. It is not an optional side project. It is the place where
+the course’s claims become inspectable in code, tests, and command-line entrypoints.
+
+Use it to answer questions like:
+
+- Where does purity end and orchestration begin?
+- Which abstractions remain stable under refactoring?
+- Which async or effectful behaviors are described as data instead of hidden control flow?
+
+## Working locally
+
+From the repository root:
 
 ```bash
-# From the repository root, set up the capstone environment
 make COURSE=python-programming/python-functional-programming install
-
-# Run tests
 make COURSE=python-programming/python-functional-programming test
-
-# Preview the course book locally with the shared root MkDocs toolchain
 make COURSE=python-programming/python-functional-programming docs-serve
 ```
 
----
+## Course shape
 
-## How to Navigate
+- `course-book/` contains the published learning material.
+- `capstone/` contains the runnable FuncPipe RAG implementation, tests, and helper tooling.
+- `Makefile` exposes stable course-level entrypoints from the monorepo root.
 
-- **Course book:** `course-book/` (rendered by MkDocs). Start with Module 00 for orientation, then proceed through Modules 01–10 in order.
-- **Capstone:** `capstone/` contains the runnable FuncPipe RAG project used throughout the course.
-- **Code:** `capstone/src/funcpipe_rag/` and `capstone/tests/` evolve alongside the modules; each module’s themes map to concrete code.
-- **Standards:** `course-book/reference/` contains the FP standards and review checklist used throughout.
-- **Snapshots:** `capstone/history/` holds module-tag exports for comparison or rollback.
+## Module map
 
-The MkDocs landing page embeds this README, so repo and docs stay in sync.
+- `00` Orientation
+- `01` Purity and substitution
+- `02` Closures, expression style, and FP-friendly APIs
+- `03` Iterators, laziness, and streaming dataflow
+- `04` Recursion, folds, memoization, and streaming failures
+- `05` Algebraic data modelling
+- `06` Monadic flows as composable pipelines
+- `07` Effect boundaries and resource safety
+- `08` Async FuncPipe and backpressure
+- `09` FP across libraries and frameworks
+- `10` Refactoring, performance, and sustainment
 
----
+## License
 
-## Module Roadmap (High Level)
-
-| Module | Focus | What You Build |
-| --- | --- | --- |
-| 01 | Purity & substitution | Pure call graphs, refactors proven with Hypothesis |
-| 02 | Closures & expression style | Data-first APIs, partial application, config-as-data |
-| 03 | Iterators & laziness | Streaming pipelines, fan-in/out, observability taps |
-| 04 | Recursion & resilience | Memoization, Result/Option for per-record failures, error aggregation |
-| 05 | Algebraic data modelling | ADTs, applicative validation, monoids, Pydantic edges, serialization contracts |
-| 06 | Monadic flows | `bind`/`and_then`, Reader/State/Writer patterns, configurable pipelines |
-| 07 | Effect boundaries | Ports/adapters, idempotent effect design, resource safety, structured logs |
-| 08 | Async & backpressure | Async generators, bounded queues, retry/timeout policies as data, rate limiting |
-| 09 | Ecosystem interop | Stdlib/toolz/returns facades, dataframe-friendly FP, config-driven pipeline specs |
-| 10 | Refactoring & sustainment | Performance budgets, property-based regression, governance for FP systems |
-
----
-
-## FuncPipe RAG Snapshot (Module 09 State)
-
-- **Interop:** `capstone/src/funcpipe_rag/interop/stdlib_fp.py`, plus optional `toolz`/`returns` facades.
-- **Pipelines:** `capstone/src/funcpipe_rag/pipelines/` for config-driven, stateless pipeline specs and canonical hashing.
-- **Boundaries & CLI:** `funcpipe_rag.boundaries.shells` exposes CLI entrypoints for JSONL data, with allow-listed reconstruction of specs.
-- **Error handling & retries:** Result/Option streams, circuit breakers, structured reports, and retry policies as data.
-- **Async layer:** `AsyncPlan`/`AsyncGen` with bounded concurrency, backpressure, rate limiting, and deterministic fake-time hooks for tests.
-- **Standards:** `course-book/reference/fp-standards.md` and `course-book/reference/review-checklist.md` guide implementation and reviews.
-
----
-
-## Repository Layout
-
-```
-course-book/   # MkDocs content (Modules 00–10, reference)
-capstone/      # Runnable FuncPipe RAG project
-Makefile       # Course-level entrypoints for the capstone
-mkdocs.yml     # Course-book configuration
-```
-
----
-
-## Contributing and Learning Flow
-
-- Treat every claim as a contract: add or extend tests when you change behavior.
-- Keep effects at the edges; prefer pure helpers and explicit data for configuration.
-- Use `make COURSE=python-programming/python-functional-programming docs-serve` from the repository root while editing modules.
-- When in doubt, add a small property test before refactoring.
+MIT — see the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE).
