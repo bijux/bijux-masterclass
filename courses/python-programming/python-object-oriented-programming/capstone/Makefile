@@ -15,6 +15,10 @@ test: ## Run the capstone test suite
 .PHONY: confirm
 confirm: test ## Run the executable validation suite
 
+.PHONY: demo
+demo: ## Run the capstone scenario walkthrough
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo
+
 .PHONY: clean
 clean: ## Remove generated caches
 	@rm -rf .pytest_cache

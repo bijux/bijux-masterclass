@@ -41,12 +41,13 @@ make COURSE=python-programming/python-object-oriented-programming test
 
 Start in this order:
 
-1. `src/service_monitoring/model.py`
-2. `src/service_monitoring/policies.py`
-3. `src/service_monitoring/runtime.py`
-4. `src/service_monitoring/repository.py`
-5. `src/service_monitoring/read_models.py`
-6. `tests/`
+1. `src/service_monitoring/application.py`
+2. `src/service_monitoring/model.py`
+3. `src/service_monitoring/policies.py`
+4. `src/service_monitoring/runtime.py`
+5. `src/service_monitoring/repository.py`
+6. `src/service_monitoring/read_models.py`
+7. `tests/`
 
 That order mirrors the course: semantics first, then replaceable behavior, then orchestration.
 
@@ -68,6 +69,18 @@ goal is to demonstrate a Python object model that remains readable under change:
 - Where would a new rule mode belong?
 - Which behavior would be dangerous to move into the runtime?
 - Which pieces can change without forcing a rewrite of the aggregate?
+
+## Scenario walkthrough
+
+Run the learner-facing scenario:
+
+```bash
+make demo
+```
+
+That path exercises the application surface in `application.py`, which is the best
+place to start if you want to understand how a team would drive the capstone without
+reaching into its internals first.
 
 ## Architecture
 

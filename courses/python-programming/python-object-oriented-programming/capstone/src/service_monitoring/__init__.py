@@ -1,3 +1,10 @@
+from .application import (
+    MonitoringApplication,
+    MonitoringSnapshot,
+    ObservationResult,
+    PolicySummary,
+    RuleRegistration,
+)
 from .events import AlertTriggered, RuleActivated, RuleRegistered, RuleRetired
 from .model import (
     Alert,
@@ -45,10 +52,15 @@ __all__ = [
     "MetricName",
     "MetricSample",
     "MetricSource",
+    "MonitoringApplication",
+    "MonitoringSnapshot",
     "MonitoringRuntime",
     "MonitoringPolicy",
+    "ObservationResult",
+    "PolicySummary",
     "RateOfChangePolicy",
     "RuleActivated",
+    "RuleRegistration",
     "RuleEvaluator",
     "RuleRegistered",
     "RuleRetired",

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-from .model import MonitoringPolicy
+from .model import DomainError, MonitoringPolicy
 
 
 class InMemoryPolicyRepository:
@@ -10,10 +10,15 @@ class InMemoryPolicyRepository:
         self._items: dict[str, MonitoringPolicy] = {}
 
     def add(self, policy: MonitoringPolicy) -> None:
+        if policy.policy_id in self._items:
+            raise DomainError(f"policy {policy.policy_id!r} already exists")
         self._items[policy.policy_id] = policy.clone()
 
     def get(self, policy_id: str) -> MonitoringPolicy:
-        return self._items[policy_id].clone()
+        try:
+            return self._items[policy_id].clone()
+        except KeyError as exc:
+            raise DomainError(f"unknown policy: {policy_id!r}") from exc
 
     def save(self, policy: MonitoringPolicy) -> None:
         self._items[policy.policy_id] = policy.clone()

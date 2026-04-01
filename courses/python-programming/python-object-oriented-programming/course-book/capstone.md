@@ -50,6 +50,12 @@ From the capstone directory:
 make confirm
 ```
 
+Run the scenario walkthrough from the capstone directory:
+
+```bash
+make demo
+```
+
 ## Architecture map
 
 ```mermaid
@@ -80,6 +86,12 @@ graph TD
 - Which objects are authoritative, and which are derived views?
 - Which behavior is stable domain logic, and which is orchestration?
 - Where would a new rule mode, new sink, or new read model be added?
+
+## Where to start in code
+
+If you want the most human-friendly entrypoint into the implementation, start with
+`application.py`. It exposes the capstone as learner-facing use cases rather than as
+raw internals, which makes it easier to connect the design prose to the executable flow.
 
 ## Why it matters
 
