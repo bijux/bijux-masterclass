@@ -18,6 +18,38 @@ This module resolves a singular inquiry: **How can exploration proceed unencumbe
 
 **Prerequisites**: Thorough comprehension of Modules 01–05 is essential. Proficiency in DVC commands such as `dvc exp run`, `dvc exp diff`, and Git branching is recommended; consult DVC's experimentation documentation if clarification is required.
 
+## Why this module matters in the course
+
+This is where many teams destroy the discipline they built in earlier modules. Once the
+baseline becomes trustworthy, the urge to explore returns: new thresholds, new features,
+different preprocessing, maybe a changed split strategy. That pressure is normal.
+
+The pedagogical point of this module is that experimentation is not an exception to
+reproducibility. It is one of the places where reproducibility is most likely to fail.
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- What makes an experiment comparable to the baseline instead of merely different?
+- Which changes belong inside controlled experiment runs, and which require a new baseline?
+- Why is "I tried a few things locally" not an acceptable lineage story?
+- How do experiments stay reversible without cluttering or corrupting main history?
+
+If those answers are still weak, later promotion and governance rules will feel arbitrary.
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- `params.yaml` as the declared experiment surface
+- `metrics/metrics.json` as the comparison output
+- `publish/v1/params.yaml` as the promoted parameter contract
+- the recovery and verification targets as a reminder that experiments do not exempt the repository from proof
+
+The capstone is intentionally small, but it should still let you answer the question:
+"What changed, where was it declared, and why is this run still comparable?"
+
 ---
 
 ## 6.1 The Fundamental Conflict: Exploration Versus Provenance
