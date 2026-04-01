@@ -32,6 +32,30 @@ This module is a self-contained, evidence-first reference. You will build a tiny
   * cluster/cloud executors, remote storage
   * deep performance tuning
 
+## Why this module matters
+
+Most workflow failures that look “advanced” are still caused by Module 01 mistakes:
+
+- undeclared inputs
+- ambiguous or over-broad wildcards
+- outputs that publish partial state
+- reruns that nobody can explain with evidence
+
+If the file contract is not truthful, later scaling features only make the workflow fail faster and less predictably.
+
+## Reading path
+
+1. Read the mental model and debug commands before the deeper sections.
+2. Study file contracts and rebuild truth before touching wildcard discipline.
+3. Read configuration discipline before publishing discipline.
+4. Use the exercises only after you can explain the failure signatures in your own words.
+
+## Capstone connection
+
+This module is the reason the capstone has a stable publish boundary, explicit inputs and outputs,
+structured logs, and proof-oriented verification. When the capstone says `publish/v1/` is the
+contract and `results/` is not, that is a Module 01 design claim, not only an implementation detail.
+
 ---
 
 ## Orientation
