@@ -32,6 +32,7 @@ nav:
   - Incident Ladder: incident-ladder.md
   - Public Targets: public-targets.md
   - Capstone Map: capstone-map.md
+  - Capstone File Guide: capstone-file-guide.md
   - Capstone Walkthrough: capstone-walkthrough.md
   - Modules:
       - "01 — Foundations": module-01.md
