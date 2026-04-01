@@ -10,8 +10,9 @@ PYTHON ?= python3
 ARTIFACTS_DIR ?= artifacts
 VENV_DIR ?= $(ARTIFACTS_DIR)/venv/series-docs
 VENV_BIN := $(VENV_DIR)/bin
-PIP := $(VENV_BIN)/pip
-MKDOCS := $(VENV_BIN)/mkdocs
+VENV_PY := $(abspath $(VENV_BIN)/python)
+PIP := $(VENV_PY) -m pip
+MKDOCS := $(VENV_PY) -m mkdocs
 
 .PHONY: help
 help: ## Show available targets
@@ -31,11 +32,11 @@ program-help: ## Show the selected program's Make targets
 
 .PHONY: docs-build
 docs-build: series-docs-install ## Build docs for the selected program
-	@cd $(PROGRAM_DIR) && $(abspath $(MKDOCS)) build -f mkdocs.yml --strict
+	@cd $(PROGRAM_DIR) && $(MKDOCS) build -f mkdocs.yml --strict
 
 .PHONY: docs-serve
 docs-serve: series-docs-install ## Serve docs for the selected program
-	@cd $(PROGRAM_DIR) && $(abspath $(MKDOCS)) serve -f mkdocs.yml
+	@cd $(PROGRAM_DIR) && $(MKDOCS) serve -f mkdocs.yml
 
 .PHONY: test
 test: ## Run tests for the selected program

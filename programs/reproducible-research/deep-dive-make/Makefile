@@ -11,11 +11,11 @@ SITE_DIR ?= $(ARTIFACTS_DIR)/site/reproducible-research/deep-dive-make
 VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-make
 VENV_BIN := $(VENV_DIR)/bin
 PY := $(VENV_BIN)/python
-PIP := $(VENV_BIN)/pip
+PIP := $(PY) -m pip
 
 # Prefer tools from the venv when present, fallback to system.
-RUFF   := $(if $(wildcard $(VENV_BIN)/ruff),$(VENV_BIN)/ruff,ruff)
-MYPY   := $(if $(wildcard $(VENV_BIN)/mypy),$(VENV_BIN)/mypy,mypy)
+RUFF   := $(if $(wildcard $(PY)),$(PY) -m ruff,ruff)
+MYPY   := $(if $(wildcard $(PY)),$(PY) -m mypy,mypy)
 
 CAPSTONE_DIR := capstone
 PY_LINT_PATHS := $(CAPSTONE_DIR)/scripts
