@@ -19,16 +19,15 @@ plugins:
       include_dir: .
 
 nav:
-  - Home: index.md
-  - Modules:
-      - "00 — Orientation": module-00.md
-      - "01 — Why Reproducibility Fails": module-01.md
-      - "02 — Data Identity and Content Addressing": module-02.md
-      - "03 — Execution Environments as Inputs": module-03.md
-      - "04 — Pipelines as Truthful DAGs": module-04.md
-      - "05 — Metrics, Parameters, and Meaning": module-05.md
-      - "06 — Experiments Without Chaos": module-06.md
-      - "07 — Collaboration, CI, and Social Contracts": module-07.md
-      - "08 — Production, Scale, and Incident Survival": module-08.md
-  - Capstone:
-      - "Reference Project": readme-capstone.md
+  - Start Here:
+      - "Course Home": index.md
+      - "Orientation": module-00.md
+      - "Capstone Guide": readme-capstone.md
+  - "Module 01: Why Reproducibility Fails": module-01.md
+  - "Module 02: Data Identity and Content Addressing": module-02.md
+  - "Module 03: Execution Environments as Inputs": module-03.md
+  - "Module 04: Pipelines as Truthful DAGs": module-04.md
+  - "Module 05: Metrics, Parameters, and Meaning": module-05.md
+  - "Module 06: Experiments Without Chaos": module-06.md
+  - "Module 07: Collaboration, CI, and Social Contracts": module-07.md
+  - "Module 08: Production, Scale, and Incident Survival": module-08.md
