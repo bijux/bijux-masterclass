@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-object-oriented-programming-capstone"
+version = "0.1.0"
+description = "Executable monitoring-system capstone for the Python object-oriented programming course."
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-ra"
+testpaths = ["tests"]
