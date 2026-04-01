@@ -29,12 +29,12 @@ course-help: ## Show the selected course's Make targets
 	@$(RUN_COURSE) help
 
 .PHONY: docs-build
-docs-build: ## Build docs for the selected course
-	@$(RUN_COURSE) docs-build
+docs-build: series-docs-install ## Build docs for the selected course
+	@cd $(COURSE_DIR) && $(abspath $(MKDOCS)) build -f mkdocs.yml --strict
 
 .PHONY: docs-serve
-docs-serve: ## Serve docs for the selected course
-	@$(RUN_COURSE) docs-serve
+docs-serve: series-docs-install ## Serve docs for the selected course
+	@cd $(COURSE_DIR) && $(abspath $(MKDOCS)) serve -f mkdocs.yml
 
 .PHONY: test
 test: ## Run tests for the selected course

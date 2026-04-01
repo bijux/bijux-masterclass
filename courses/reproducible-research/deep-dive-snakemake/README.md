@@ -72,8 +72,7 @@ From the repository root:
 ### Preview the course book locally
 
 ```bash
-make venv
-make docs-serve
+make COURSE=reproducible-research/deep-dive-snakemake docs-serve
 ```
 
 Open the local URL displayed by MkDocs.

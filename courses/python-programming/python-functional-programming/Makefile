@@ -3,7 +3,7 @@
 # ===== Basics =====
 .PHONY: install test build lint clean clean-all venv \
         worktrees snapshots clean-history module-md module-funcpipe freeze-codebase \
-        docs docs-deps docs-serve docs-build help
+        help
 
 .DEFAULT_GOAL := install
 
@@ -15,7 +15,6 @@ RUFF       := $(VENV)/bin/ruff
 MYPY       := $(VENV)/bin/mypy
 PYTEST     := $(VENV)/bin/pytest
 HATCH      := $(VENV)/bin/hatch
-MKDOCS     := $(VENV)/bin/mkdocs
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"; printf "\nTargets:\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -39,17 +38,6 @@ build: venv ## Build distribution artifacts
 lint: venv ## Run linting and type checks
 	$(RUFF) check src tests
 	$(MYPY) --strict src/funcpipe_rag
-
-docs-deps: venv ## Install documentation dependencies
-	$(VENV_PIP) install -e '.[docs]'
-
-docs: docs-build ## Build documentation
-
-docs-build: docs-deps ## Build MkDocs documentation
-	$(MKDOCS) build --strict
-
-docs-serve: docs-deps ## Serve MkDocs locally
-	$(MKDOCS) serve
 
 clean: ## Remove build and virtualenv artifacts
 	rm -rf dist build *.egg-info \

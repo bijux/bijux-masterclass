@@ -107,17 +107,13 @@ Each module includes runnable code examples, visual diagrams, precise definition
 The site is built with MkDocs Material. To preview locally:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-python -m pip install -U pip
-pip install -r requirements-docs.txt
-mkdocs serve
+make COURSE=python-programming/python-meta-programming docs-serve
 ```
 
 To validate the build exactly as CI does:
 
 ```bash
-mkdocs build --strict
+make COURSE=python-programming/python-meta-programming docs-build
 ```
 
 <span style="font-size: 1em;">[Back to top](#top)</span>

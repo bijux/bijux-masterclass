@@ -21,17 +21,14 @@
 ```bash
 # Setup
 python3 -m venv .venv
-source .venv/bin/activate
-make install            # installs dev + docs extras
+make COURSE=python-programming/python-functional-programming install
 
 # Run tests
-make test
+make COURSE=python-programming/python-functional-programming test
 
-# Preview docs locally (Material theme, live reload)
-make docs-serve
+# Preview the course book locally with the shared root MkDocs toolchain
+make COURSE=python-programming/python-functional-programming docs-serve
 ```
-
-Prefer manual docs setup? `pip install -r requirements-docs.txt && mkdocs serve`.
 
 ---
 
@@ -82,9 +79,8 @@ src/           # FuncPipe RAG source (end-of-Module-09 state)
 tests/         # Property and regression tests
 history/       # Tagged snapshots per module (exports)
 all-cores/     # Concatenated module markdown helpers
-Makefile       # install/test/docs workflows
-mkdocs.yml     # Docs configuration (Material)
-requirements-docs.txt  # Lightweight docs stack
+Makefile       # install/test/build workflows
+mkdocs.yml     # Course-book configuration
 ```
 
 ---
@@ -93,5 +89,5 @@ requirements-docs.txt  # Lightweight docs stack
 
 - Treat every claim as a contract: add or extend tests when you change behavior.
 - Keep effects at the edges; prefer pure helpers and explicit data for configuration.
-- Use `make docs-serve` while editing modules to keep narrative and code aligned.
+- Use `make COURSE=python-programming/python-functional-programming docs-serve` from the repository root while editing modules.
 - When in doubt, add a small property test before refactoring.
