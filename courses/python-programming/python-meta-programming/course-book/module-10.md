@@ -31,6 +31,36 @@ You get **red lines**, **checklists**, and **drop-in patterns** that keep the ma
 
 All `python` fences are runnable as-is; any intentional failure is wrapped.
 
+## Why this module matters in the course
+
+This is the module that turns runtime power into engineering judgment. Without it, the
+course would teach mechanisms but not the boundaries that keep those mechanisms from
+damaging debuggability, observability, and team trust.
+
+It matters because metaprogramming becomes dangerous exactly when it starts working well
+enough to hide its own cost.
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- Which runtime hooks are too dangerous for ordinary application code?
+- Which red lines are about security, and which are about maintainability or team trust?
+- How do you add power without making failures harder to observe and reverse?
+- What should a reviewer ask before approving dynamic execution, monkey-patching, or import-hook work?
+
+If this module feels optional, the earlier modules have not been learned responsibly yet.
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- how manifest export avoids executing plugin actions
+- how registration stays deterministic and resettable in tests
+- where runtime behavior remains introspectable instead of hidden behind magic
+
+The capstone should make one final point concrete: metaprogramming is only defensible when the runtime stays observable.
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---
