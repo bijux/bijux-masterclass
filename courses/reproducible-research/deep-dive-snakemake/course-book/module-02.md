@@ -13,6 +13,29 @@
 
 ---
 
+## Why this module matters
+
+Dynamic behavior is where many workflows become impressive demos and unreliable systems.
+Checkpoints, metadata-driven expansion, and environment management can all be correct, but
+they can also hide moving targets, unstable discovery, and irreproducible plans.
+
+This module is about turning “the DAG depends on data” from a hand-wave into a disciplined contract.
+
+## Reading path
+
+1. Start with the predictive model and wildcard discipline.
+2. Read checkpoints only after the target-list story feels clear.
+3. Read integrity and environment sections before performance patterns.
+4. Treat the appendices as proof aids, not as optional filler.
+
+## Capstone connection
+
+The capstone’s discovery checkpoint, provenance artifacts, and versioned publish flow all
+depend on this module’s rules. If you want to know why discovery is recorded explicitly and
+why the workflow is opinionated about reproducibility evidence, this module provides that justification.
+
+---
+
 ## Table of Contents
 
 * [0. Orientation](#0-orientation)
