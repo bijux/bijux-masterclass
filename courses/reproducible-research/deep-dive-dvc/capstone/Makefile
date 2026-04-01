@@ -9,6 +9,7 @@ VENV_BIN := $(VENV_DIR)/bin
 PIP := $(VENV_BIN)/pip
 PYTEST := $(VENV_BIN)/pytest
 DVC := $(VENV_BIN)/dvc
+TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
 
 .PHONY: help
 help: ## Show available targets
@@ -39,6 +40,26 @@ test: install ## Run the Python test suite
 .PHONY: verify
 verify: repro ## Validate the published artifact contract
 	@$(VENV_BIN)/python -m incident_escalation_capstone.verify --publish publish/v1
+
+.PHONY: tour
+tour: verify ## Build the learner-facing proof bundle
+	@rm -rf $(TOUR_DIR)
+	@mkdir -p $(TOUR_DIR)/publish-v1
+	@$(DVC) status > $(TOUR_DIR)/status.txt
+	@$(DVC) dag --dot > $(TOUR_DIR)/pipeline.dot
+	@cp dvc.yaml $(TOUR_DIR)/dvc.yaml
+	@cp dvc.lock $(TOUR_DIR)/dvc.lock
+	@cp params.yaml $(TOUR_DIR)/params.yaml
+	@cp metrics/metrics.json $(TOUR_DIR)/metrics.json
+	@cp publish/v1/manifest.json $(TOUR_DIR)/publish-v1/manifest.json
+	@cp publish/v1/metrics.json $(TOUR_DIR)/publish-v1/metrics.json
+	@cp publish/v1/params.yaml $(TOUR_DIR)/publish-v1/params.yaml
+	@cp publish/v1/data-profile.json $(TOUR_DIR)/publish-v1/data-profile.json
+	@cp publish/v1/report.md $(TOUR_DIR)/publish-v1/report.md
+	@cp TOUR.md $(TOUR_DIR)/TOUR.md
+	@echo "tour_dir=$(TOUR_DIR)" > $(TOUR_DIR)/bundle.env
+	@echo "publish_dir=$(TOUR_DIR)/publish-v1" >> $(TOUR_DIR)/bundle.env
+	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
 .PHONY: push
 push: repro ## Push tracked artifacts to the local training remote

@@ -16,6 +16,10 @@ help: ## Show available targets
 test: ## Run the capstone confirmation suite
 	@$(RUN_CAPSTONE) confirm
 
+.PHONY: capstone-tour
+capstone-tour: ## Build the learner-facing capstone proof bundle
+	@$(RUN_CAPSTONE) tour
+
 .PHONY: clean
 clean: ## Remove build artifacts
 	@rm -rf $(COURSE_VENV_DIR) $(SITE_DIR) .pytest_cache .ruff_cache .mypy_cache

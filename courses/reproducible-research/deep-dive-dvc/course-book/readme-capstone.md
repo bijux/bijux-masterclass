@@ -38,6 +38,7 @@ enough to force real design choices about state.
 make -C capstone repro
 make -C capstone verify
 make -C capstone confirm
+make -C capstone tour
 ```
 
 ## What to inspect during review

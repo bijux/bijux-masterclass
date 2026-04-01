@@ -28,3 +28,16 @@ That pipeline will:
 4. publish a versioned artifact bundle with a manifest and report
 
 The capstone also exists to support `dvc exp run` on `params.yaml` so model and threshold experiments can be compared without mutating the baseline contract.
+
+## Workflow tour
+
+Build the learner-facing proof bundle:
+
+```bash
+make tour
+```
+
+That writes a stable bundle under `artifacts/tour/reproducible-research/deep-dive-dvc/`
+containing the declared graph, recorded lock state, current status, tracked metrics, and
+the promoted `publish/v1/` contract. Use it when you want to study the repository as
+evidence, not just rerun it.
