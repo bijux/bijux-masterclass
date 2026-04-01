@@ -28,11 +28,16 @@ These constructs function adequately in isolation but harbor inherent deceptions
 
 DVC pipelines mitigate this by rendering dependencies explicit and amenable to scrutiny, transforming ad-hoc executions into structured, auditable processes.
 
-**Illustration**: Contrast between script-based and DVC-managed dependencies (text-based):
+**Illustration**:
 
-```
-Script Omissions --> [Implicit Deps | Undeclared Inputs | Unregistered Outputs | Hidden Params]
-DVC Resolution   --> [Explicit Decls | Inspectable Graph | Auditable Execution]
+```mermaid
+graph LR
+  script["Script Execution"]
+  omissions["Implicit Dependencies<br/>Undeclared Inputs<br/>Unregistered Outputs<br/>Hidden Parameters"]
+  dvc["DVC Pipeline"]
+  declarations["Explicit Declarations<br/>Inspectable Graph<br/>Auditable Execution"]
+  script --> omissions
+  dvc --> declarations
 ```
 
 ---
@@ -71,12 +76,15 @@ Interconnected stages form a DAG in DVC, with nodes representing stages, edges d
 
 Discrepancies in the DAG precipitate erroneous yet consistent DVC behavior, underscoring the imperative for accuracy.
 
-**Illustration**: Simplified DAG structure (text-based):
+**Illustration**:
 
-```
-Nodes: [Preprocess | Train | Evaluate]
-Edges: Preprocess --> Train (deps: processed.csv)
-       Train      --> Evaluate (deps: model.pkl)
+```mermaid
+graph LR
+  preprocess["Preprocess"]
+  train["Train"]
+  evaluate["Evaluate"]
+  preprocess -- processed.csv --> train
+  train -- model.pkl --> evaluate
 ```
 
 ---

@@ -51,13 +51,19 @@ The environment encompasses all factors influencing execution that remain undecl
 
 These components can alter results without modifications to code or data.
 
-**Illustration**: A text-based categorization of environmental layers:
+**Illustration**:
 
-```
-Software Stack --> [OS | Python Ver. | Libs | Flags | BLAS/CUDA]
-Hardware       --> [CPU | GPU | Threads | Instr. Sets]
-Runtime        --> [Locale | Timezone | File Order | Scheduling | Kernels]
-Randomness     --> [Seeds | HW Entropy | Stochastic Algos]
+```mermaid
+graph TD
+  env["Execution Environment"]
+  software["Software Stack<br/>OS<br/>Python Version<br/>Libraries<br/>Compiler Flags<br/>BLAS or CUDA"]
+  hardware["Hardware<br/>CPU<br/>GPU<br/>Threads<br/>Instruction Sets"]
+  runtime["Runtime Context<br/>Locale<br/>Timezone<br/>File Order<br/>Scheduling<br/>Kernel Behavior"]
+  randomness["Randomness Sources<br/>Seeds<br/>Hardware Entropy<br/>Stochastic Algorithms"]
+  env --> software
+  env --> hardware
+  env --> runtime
+  env --> randomness
 ```
 
 ---

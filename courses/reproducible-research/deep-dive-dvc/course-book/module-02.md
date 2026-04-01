@@ -32,11 +32,14 @@ Paths exhibit mutability, context-dependence, machine specificity, and reliance 
 
 Path-dependent identity undermines refactoring, invalidates historical records, and complicates collaboration. Paths signify location, not essence; systems anchoring identity to location are inherently unstable.
 
-**Illustration**: A text-based representation of path fragility:
+**Illustration**:
 
-```
-Same Bytes --> Different Paths: [data/train.csv | data/final/train.csv | /mnt/datasets/train.csv]
-Implications --> Broken Provenance | Invalid History | Ambiguous Collaboration
+```mermaid
+graph TD
+  bytes["Same Bytes"]
+  paths["Different Paths<br/>data/train.csv<br/>data/final/train.csv<br/>/mnt/datasets/train.csv"]
+  impact["Broken Provenance<br/>Invalid History<br/>Ambiguous Collaboration"]
+  bytes --> paths --> impact
 ```
 
 ---
@@ -86,10 +89,15 @@ The remote constitutes the definitive recovery source, superseding Git.
 ### Layer Hierarchy
 Authority propagates downward: Remote → Cache → Git pointers → Workspace. Upward flows are precluded.
 
-**Illustration**: Hierarchical flow diagram (text-based):
+**Illustration**:
 
-```
-Remote (Durable) --> Cache (Local Authority) --> Git (References) --> Workspace (Mutable Projection)
+```mermaid
+graph LR
+  remote["Remote<br/>Durable"]
+  cache["Cache<br/>Local Authority"]
+  git["Git<br/>References"]
+  workspace["Workspace<br/>Mutable Projection"]
+  remote --> cache --> git --> workspace
 ```
 
 ---

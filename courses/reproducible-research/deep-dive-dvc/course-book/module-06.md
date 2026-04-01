@@ -28,12 +28,19 @@ Many machine learning (ML) teams implicitly favor exploration through informal m
 
 DVC experiments formalize this process, preserving contractual obligations without compromise.
 
-**Illustration**: Tension diagram (text-based):
+**Illustration**:
 
-```
-Exploration --> [Speed | Iteration | Freedom] --> Potential Lineage Loss
-Provenance  --> [Stability | Traceability | Discipline] --> Exploration Constraints
-DVC Balance --> Formalized, Contract-Preserving Experiments
+```mermaid
+graph LR
+  exploration["Exploration<br/>Speed<br/>Iteration<br/>Freedom"]
+  provenance["Provenance<br/>Stability<br/>Traceability<br/>Discipline"]
+  balance["DVC Experiments<br/>Formalized<br/>Contract-Preserving"]
+  loss["Potential Lineage Loss"]
+  constraints["Exploration Constraints"]
+  exploration --> loss
+  provenance --> constraints
+  exploration --> balance
+  provenance --> balance
 ```
 
 ---
@@ -127,10 +134,14 @@ Each experiment must culminate in one of three resolutions: promotion, archival,
 
 Undecided experiments accrue as liabilities.
 
-**Illustration**: Lifecycle flowchart (text-based):
+**Illustration**:
 
-```
-Creation --> [Input Changes | Run | Record] --> Evaluation --> [Compare | Inspect | Assess] --> Decision --> [Promote | Archive | Discard]
+```mermaid
+graph LR
+  creation["Creation<br/>Input Changes<br/>Run<br/>Record"]
+  evaluation["Evaluation<br/>Compare<br/>Inspect<br/>Assess"]
+  decision["Decision<br/>Promote<br/>Archive<br/>Discard"]
+  creation --> evaluation --> decision
 ```
 
 ---

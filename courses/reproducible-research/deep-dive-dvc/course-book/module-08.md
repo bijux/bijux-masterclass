@@ -24,11 +24,20 @@ These phenomena are normative, not anomalous, and inexorable.
 
 Systems disregarding temporal dynamics are inherently vulnerable.
 
-**Illustration**: Temporal failure cascade (text-based):
+**Illustration**:
 
-```
-Short-Term Success --> [Setup Complete] --> Time Factors --> [Growth | Migrations | Turnover | Incidents] --> Decay --> Fragility
-Mitigated System    --> Models Time as Adversary --> Proactive Maintenance --> Endurance
+```mermaid
+graph LR
+  success["Short-Term Success<br/>Setup Complete"]
+  time["Time Factors<br/>Growth<br/>Migrations<br/>Turnover<br/>Incidents"]
+  decay["Decay"]
+  fragility["Fragility"]
+  mitigated["Mitigated System"]
+  model["Models Time as Adversary"]
+  maintenance["Proactive Maintenance"]
+  endurance["Endurance"]
+  success --> time --> decay --> fragility
+  mitigated --> model --> maintenance --> endurance
 ```
 
 ---

@@ -33,11 +33,24 @@ Alterations in any dimension transform meaning, irrespective of numerical format
 
 **Example**: Accuracy on a binary classification task (0.85) appears stable across runs, but shifts from balanced to imbalanced test data invalidate comparability.
 
-**Illustration**: Semantic layers of a metric (text-based):
+**Illustration**:
 
-```
-Numerical Value (0.85) --> [Entity: Accuracy | Population: Test Set | Definition: TP+TN/Total | Assumptions: Balanced Classes]
-Change in Any Layer --> Meaning Drift (Even if Number Unchanged)
+```mermaid
+graph TD
+  metric["Metric Value<br/>0.85"]
+  entity["Entity<br/>Accuracy"]
+  population["Population<br/>Test Set"]
+  definition["Definition<br/>TP + TN / Total"]
+  assumptions["Assumptions<br/>Balanced Classes"]
+  drift["Meaning Drift<br/>Even if the number stays the same"]
+  metric --> entity
+  metric --> population
+  metric --> definition
+  metric --> assumptions
+  entity --> drift
+  population --> drift
+  definition --> drift
+  assumptions --> drift
 ```
 
 ---
@@ -151,15 +164,21 @@ Prior to metric adoption, interrogate:
 
 Unanswerable queries signal unreadiness for automation.
 
-**Illustration**: Contract checklist (text-based):
+**Illustration**:
 
-```
-Metric: F1-Score
-- Population: Imbalanced test set
-- Definition: 2*(P*R)/(P+R)
-- Invariants: Threshold=0.5, No label flip
-- Failures: Ignores class imbalance severity
-- Longevity: Stable if eval set fixed
+```mermaid
+graph TD
+  metric["Metric Contract<br/>F1-Score"]
+  population["Population<br/>Imbalanced test set"]
+  definition["Definition<br/>2 * (P * R) / (P + R)"]
+  invariants["Invariants<br/>Threshold = 0.5<br/>No label flip"]
+  failures["Failure Modes<br/>Ignores class-imbalance severity"]
+  longevity["Longevity<br/>Stable if the evaluation set stays fixed"]
+  metric --> population
+  metric --> definition
+  metric --> invariants
+  metric --> failures
+  metric --> longevity
 ```
 
 ---

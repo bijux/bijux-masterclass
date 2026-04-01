@@ -30,11 +30,19 @@ Frameworks predicated on recollection, benevolence, or informal protocols are de
 
 Robust systems presuppose errors, anticipate circumventions, and accommodate informational voids, incorporating these contingencies into their architecture.
 
-**Illustration**: Progression of team dynamics (text-based):
+**Illustration**:
 
-```
-Initial Belief --> [Small Team | Careful Practices] --> External Pressures --> [Deadlines | Turnover | Context Loss] --> System Failure
-Robust Design  --> Assumes Errors --> Builds Guardrails --> Sustains Integrity
+```mermaid
+graph LR
+  belief["Initial Belief<br/>Small Team<br/>Careful Practices"]
+  pressure["External Pressures<br/>Deadlines<br/>Turnover<br/>Context Loss"]
+  failure["System Failure"]
+  robust["Robust Design"]
+  assumptions["Assumes Errors"]
+  guardrails["Builds Guardrails"]
+  integrity["Sustains Integrity"]
+  belief --> pressure --> failure
+  robust --> assumptions --> guardrails --> integrity
 ```
 
 ---

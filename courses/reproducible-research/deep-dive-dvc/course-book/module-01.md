@@ -115,12 +115,17 @@ Inputs transcend explicit files and arguments, even in straightforward scripts.
 
 These elements impact results tracelessly unless documented. A reproducible framework must address: *What inputs were present, and how did they shape the output?* Few ML initiatives can respond comprehensively.
 
-**Illustration**: A text-based diagram of input layers:
+**Illustration**:
 
-```
-Obvious Inputs --> [Data Files | Configs | Flags]
-Hidden Inputs  --> [Libs | Hardware | OS | Seeds | FP Impl | FS Order]
-Combined       --> Execution --> Output
+```mermaid
+graph TD
+  obvious["Obvious Inputs<br/>Data Files<br/>Configs<br/>Flags"]
+  hidden["Hidden Inputs<br/>Libraries<br/>Hardware<br/>Operating System<br/>Seeds<br/>Floating-Point Implementation<br/>Filesystem Order"]
+  execution["Execution"]
+  output["Output"]
+  obvious --> execution
+  hidden --> execution
+  execution --> output
 ```
 
 ---
