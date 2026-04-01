@@ -1,59 +1,81 @@
 # Module 00 — Orientation
 
-Deep Dive DVC is the part of the reproducible-research sequence that answers a stubborn question:
+Deep Dive DVC is the reproducible-research course about **state**. Make and Snakemake
+teach how systems change. DVC teaches what those systems are changing, how that state
+acquires identity, and how teams recover it after time, drift, and failure.
 
-> When we claim a result is reproducible, what exact state are we claiming to recover?
+## The question this course owns
 
-Make and Snakemake teach how systems change. DVC teaches how the system names, stores, compares, promotes, and restores the states that those systems operate on.
+Keep one question in view while reading:
+
+> When a result is challenged six months later, which exact state can the team recover,
+> compare, and prove?
+
+If the answer is vague, reproducibility is still aspirational.
 
 ## Where this course fits
 
-The reproducible-research family is developing along a long-lived program map:
+The reproducible-research family is converging on a durable program map:
 
 1. **How systems change**: Make
-2. **How state transitions scale**: Snakemake, Nextflow
-3. **What states are**: DVC
-4. **Where states execute**: Containers
-5. **How states survive time and authority**: CI, retention, recovery
-6. **How systems explain themselves**: observability and tracing
+2. **How state transitions scale**: Snakemake and similar workflow engines
+3. **What state is**: DVC
+4. **Where state executes**: containers and runtime isolation
+5. **How state survives authority and time**: CI, retention, recovery, and auditability
 
-This course owns the third layer. Its concern is not just data versioning in the narrow sense, but the full mechanical contract around:
+This course owns the third layer, but it necessarily touches the fourth and fifth
+because state only matters if it can survive real execution pressure.
 
-- dataset identity
-- stage inputs and outputs
-- parameter scope
-- metric meaning
-- experiment lineage
-- remote durability
-- recovery under failure
+## What this course is trying to change in the learner
 
-## What this course is not
+By the end of the course, you should stop treating these as side details:
 
-This is not a generic DVC command reference and not an ML tutorial. It is a correctness-first course about using DVC to make state explicit enough that teams can reason about it, verify it, and recover it.
+- dataset filenames
+- parameter files
+- metric reports
+- experiment branches
+- remotes and caches
+- recovery procedures
+
+They are not administrative overhead. They are the state contract.
+
+## How to read the modules
+
+Read the modules in order. Each one establishes an invariant the next one depends on:
+
+1. **Why reproducibility fails**: identify the actual failure modes before reaching for tools.
+2. **Data identity and content addressing**: define stable identity before discussing pipeline behavior.
+3. **Execution environments as inputs**: treat runtimes as part of state, not external luck.
+4. **Pipelines as truthful DAGs**: make stage boundaries inspectable and enforceable.
+5. **Metrics, parameters, and meaning**: ensure comparisons remain semantically valid.
+6. **Experiments without chaos**: explore without corrupting baseline history.
+7. **Collaboration, CI, and social contracts**: make good behavior enforceable across people.
+8. **Production, scale, and incident survival**: design for retention, recovery, and time.
 
 ## What the capstone proves
 
-`capstone/` is the executable reference repository for this course. It is a small but real DVC-driven project with:
+[`capstone/`](https://github.com/bijux/deep-dive-series/tree/master/courses/reproducible-research/deep-dive-dvc/capstone)
+is the course’s executable proof. It is a small but real DVC repository centered on an
+incident-escalation prediction workflow. It gives the course a concrete place to test:
 
-- tracked datasets and remotes
-- a truthful `dvc.yaml` pipeline
-- declared params and metrics
-- experiment workflows
-- CI-backed recovery checks
+- committed source data versus derived state
+- truthful pipeline declarations in `dvc.yaml`
+- declared parameters and tracked metrics
+- a stable `publish/v1/` output contract
+- experiment-ready inputs in `params.yaml`
+- recovery from remote after local cache loss
 
-The concrete implementation models incident escalation risk, publishes a stable `publish/v1/` contract, and rehearses state recovery by restoring the workspace from a DVC remote after cache loss.
+If a module claim cannot be pointed to in the capstone, the claim should be treated with suspicion.
 
-## Reading path
+## Questions to keep asking while you read
 
-Read the modules in order:
+- Which state is authoritative, and which state is only a projection?
+- Which changes should invalidate a run, and which should not?
+- Which artifacts are safe to compare across time?
+- Which promotion or recovery rule would fail first under team pressure?
 
-1. Why reproducibility fails
-2. Data identity and content addressing
-3. Execution environments as inputs
-4. Pipelines as truthful DAGs
-5. Metrics, parameters, and meaning
-6. Experiments without chaos
-7. Collaboration, CI, and social contracts
-8. Production, scale, and incident survival
+## What not to expect
 
-The sequence is deliberate: each module adds one invariant that the next module depends on.
+This course is not a catalog of DVC commands and not a generic machine-learning tutorial.
+It is a correctness-first course about making state durable enough that another person can
+trust it under review, CI, and recovery.
