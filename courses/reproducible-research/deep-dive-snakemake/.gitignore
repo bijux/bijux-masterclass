@@ -26,14 +26,14 @@ Thumbs.db
 .snakemake/
 
 # Capstone runtime outputs (keep inputs committed; ignore generated artifacts)
-snakemake-capstone/results/
-snakemake-capstone/logs/
-snakemake-capstone/benchmarks/
-snakemake-capstone/publish/
-snakemake-capstone/.snakemake/
-snakemake-capstone/.pytest_cache/
-snakemake-capstone/.hypothesis/
-snakemake-capstone/.benchmarks/
-snakemake-capstone/dag.png
-snakemake-capstone/rulegraph.png
-snakemake-capstone/artifacts/
+capstone/results/
+capstone/logs/
+capstone/benchmarks/
+capstone/publish/
+capstone/.snakemake/
+capstone/.pytest_cache/
+capstone/.hypothesis/
+capstone/.benchmarks/
+capstone/dag.png
+capstone/rulegraph.png
+capstone/artifacts/
