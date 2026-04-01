@@ -1,4 +1,4 @@
-# mk/macros.mk — safe shell-snippet helpers (Module 03 discipline)
+# mk/macros.mk — safe shell-snippet helpers
 
 # require_tool(tool): exit 127 if missing
 define require_tool

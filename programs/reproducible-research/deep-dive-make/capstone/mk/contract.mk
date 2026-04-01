@@ -1,4 +1,4 @@
-# mk/contract.mk — feature gates, version checks (Module 05 discipline)
+# mk/contract.mk — feature gates and version checks
 
 # GNU Make ≥ 4.3 required (core contract for grouped targets and full patterns).
 # MAKE_VERSION is provided by GNU Make. If missing, this Make is unsupported.

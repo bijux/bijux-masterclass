@@ -1,4 +1,4 @@
-# mk/objects.mk — deterministic discovery + mapping (Modules 02–03)
+# mk/objects.mk — deterministic discovery and path mapping
 
 SRCS := $(sort \
 	$(wildcard $(SRC_DIR)/*.c) \
@@ -13,5 +13,5 @@ DYN_BINS := $(patsubst $(SRC_DIR)/dynamic/%.c,$(BLD_DIR)/bin/%,$(DYN_SRCS))
 
 DYN_HDR := $(BLD_DIR)/include/dynamic.h
 
-# Dynamic depfiles (for header staleness; Module 01)
+# Dynamic depfiles keep generated-header dependencies explicit
 DYN_DEPS := $(patsubst $(SRC_DIR)/dynamic/%.c,$(BLD_DIR)/bin/%.d,$(DYN_SRCS))

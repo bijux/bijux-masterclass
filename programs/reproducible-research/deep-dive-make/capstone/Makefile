@@ -1,5 +1,5 @@
-# Capstone Repository — Make & Makefiles Deep Dive
-# Final state after Modules 01–05 (GNU Make ≥ 4.3; POSIX /bin/sh)
+# Deep Dive Make Capstone — GNU Make Reference Build
+# Truthful, parallel-safe reference build (GNU Make >= 4.3; POSIX /bin/sh)
 
 MAKEFLAGS += -rR
 .SUFFIXES:
@@ -89,7 +89,7 @@ $(BLD_DIR)/:
 -include $(DEPS)
 -include $(DYN_DEPS)
 
-# ---- module 03: codegen + dynamic binaries ----
+# ---- generated header + dynamic binaries ----
 dyn: $(DYN_BINS)
 
 $(DYN_HDR): scripts/gen_dynamic_h.py | $(BLD_DIR)/include/
@@ -152,7 +152,7 @@ discovery-audit:
 >     printf '%s\n' $(DYN_SRCS) | LC_ALL=C sort -c
 >     printf '%s\n' $(SRCS) | LC_ALL=C sort -c
 
-# ---- hardening (module 05): attestations without contaminating outputs ----
+# ---- attestations without contaminating outputs ----
 attest: all | $(BLD_DIR)/
 >     $(call atomic_write,$(BLD_DIR)/attest.txt, \
 >       printf 'MAKE=%s\n' "$$($(MAKE) --version | head -1)"; \
@@ -171,7 +171,7 @@ attest: all | $(BLD_DIR)/
 selftest:
 >     MAKE="$(MAKE)" $(TST_DIR)/run.sh
 
-# ---- quarantined eval demo (Module 03B, optional) ----
+# ---- quarantined rule-generation demo (optional) ----
 USE_EVAL ?= no
 ifeq ($(USE_EVAL),yes)
 include $(MK_DIR)/rules_eval.mk
@@ -185,7 +185,7 @@ submake-demo:
 >     +@$(MAKE) -C thirdparty --no-print-directory
 >     @echo "MAKELEVEL=$(MAKELEVEL)"
 
-# ---- portability / feature audit (Module 05: explicit contract) ----
+# ---- portability and feature audit ----
 portability-audit:
 >     @printf 'GNU Make: %s\n' "$$($(MAKE) --version | head -1)"
 >     @printf 'OS: %s\n' "$(UNAME_S)"
@@ -205,12 +205,12 @@ perf:
 trace-count:
 >     @$(MAKE) --trace -n all 2>&1 | wc -l | awk '{print "trace-lines=" $$1}'
 
-# ---- module 05 checklist verification ----
+# ---- hardened build verification ----
 hardened: selftest discovery-audit attest test
 >     @$(MAKE) -q all || { echo "FAIL: non-convergent" >&2; exit 1; }
 >     @echo "PASS: hardened invariants"
 
-# ---- module 04: precedence introspection ----
+# ---- precedence introspection ----
 show-origins:
 >     @echo "CFLAGS origin=$(origin CFLAGS) flavor=$(flavor CFLAGS)"
 

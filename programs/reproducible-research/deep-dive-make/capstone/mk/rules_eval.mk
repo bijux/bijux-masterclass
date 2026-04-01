@@ -1,4 +1,4 @@
-# mk/rules_eval.mk — quarantined rule generation (Module 03B)
+# mk/rules_eval.mk — quarantined rule generation
 #
 # Contract:
 #   - This file is included ONLY when USE_EVAL=yes.

@@ -43,7 +43,7 @@ echo "Running serial/parallel equivalence check..."
 "$MAKE_BIN" clean >/dev/null
 "$MAKE_BIN" -j1 all >/dev/null
 echo "Computing serial hash..."
-# Hash all artifacts (intermediates + exes for full equivalence; Module 02)
+# Hash all artifacts (intermediates + executables for full equivalence)
 echo "  Listing files..."
 find build -type f \( -name '*.o' -o -name '*.d' -o -name 'flags.stamp' \) -print | sort > filelist.tmp
 echo "  Hashing files..."
@@ -59,7 +59,7 @@ echo "Serial hash complete."
 
 "$MAKE_BIN" clean >/dev/null
 echo "Running parallel build..."
-# Bounded parallelism + timeout (Module 02/05: safe concurrency, failure modes)
+# Bounded parallelism + timeout to expose concurrency defects safely
 if command -v timeout >/dev/null 2>&1; then
   timeout 30 "$MAKE_BIN" -j2 all >/dev/null || fail "parallel build timeout (consider reducing -j)"
 else
@@ -81,7 +81,7 @@ echo "Parallel hash complete."
 diff -u serial.sum parallel.sum >/dev/null || fail "serial/parallel: artifact mismatch"
 pass "serial-parallel equivalence"
 
-# Module 05: Performance baseline (trace expansions <500)
+# Performance baseline guardrail (trace expansions <500)
 echo "Running performance baseline check..."
 TRACE_LINES=$("$MAKE_BIN" --trace -n all 2>&1 | wc -l)
 if [ "$TRACE_MAX" -ne 0 ] && [ "$TRACE_LINES" -gt "$TRACE_MAX" ]; then
