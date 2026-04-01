@@ -6,7 +6,7 @@ A course-book and executable capstone that teaches **Snakemake as a workflow eng
 [![Snakemake](https://img.shields.io/badge/Snakemake-8.0%2B-blue?style=flat-square)](https://snakemake.readthedocs.io/en/stable/)
 [![License](https://img.shields.io/github/license/bijux/deep-dive-snakemake?style=flat-square)](https://github.com/bijux/deep-dive-snakemake/blob/main/LICENSE)
 [![Docs](https://img.shields.io/badge/docs-site-blue?style=flat-square)](https://bijux.github.io/deep-dive-snakemake/)
-[![Capstone](https://img.shields.io/badge/capstone-snakemake--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-snakemake/tree/main/snakemake-capstone)
+[![Capstone](https://img.shields.io/badge/capstone-snakemake--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-snakemake/tree/main/capstone)
 
 > CI executes full confirmation runs including workflow execution and artifact validation.
 
@@ -48,7 +48,7 @@ Read on the website: https://bijux.github.io/deep-dive-snakemake/
 
 ### 2) The executable capstone
 
-`snakemake-capstone/` is a complete end-to-end pipeline on toy FASTQ data that embodies the principles above, demonstrating:
+`capstone/` is a complete end-to-end pipeline on toy FASTQ data that embodies the principles above, demonstrating:
 
 - checkpoint-driven sample discovery
 - per-sample processing stages
@@ -98,7 +98,7 @@ graph TD
   root["deep-dive-snakemake/"]
   root --> book["course-book/"]
   root --> mkdocs["mkdocs.yml"]
-  root --> capstone["snakemake-capstone/"]
+  root --> capstone["capstone/"]
   root --> workflows[".github/workflows/"]
   root --> makefile["Makefile"]
   root --> license["LICENSE"]

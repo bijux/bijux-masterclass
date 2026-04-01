@@ -6,7 +6,7 @@ The capstone is the executable reference build for **Deep Dive Make**: a compact
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
 [![License](https://img.shields.io/github/license/bijux/deep-dive-make?style=flat-square)](https://github.com/bijux/deep-dive-make/blob/main/LICENSE)
 [![Docs](https://img.shields.io/badge/docs-site-blue?style=flat-square)](https://bijux.github.io/deep-dive-make/)
-[![Capstone](https://img.shields.io/badge/capstone-make--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-make/tree/main/make-capstone)
+[![Capstone](https://img.shields.io/badge/capstone-make--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-make/tree/main/capstone)
 
 > **In one line:** a small build that behaves like a serious build—correct under change, correct under `-j`, and instrumented to catch its own lies.
 
@@ -35,7 +35,7 @@ This build is designed to enforce:
 
 ---
 ## Quick start
-From this directory (`make-capstone/`):
+From this directory (`capstone/`):
 ```sh
 # Linux (GNU Make)
 make selftest
@@ -84,7 +84,7 @@ Core mechanics:
 The Makefiles are intentionally layered so the design stays readable under growth:
 ```mermaid
 graph TD
-  capstone["make-capstone/"]
+  capstone["capstone/"]
   capstone --> makefile["Makefile"]
   capstone --> mk["mk/"]
   capstone --> src["src/"]
@@ -139,9 +139,9 @@ The capstone is referenced throughout the modules via “tie-ins.” The expecta
 Contributions are welcome when they improve **correctness**, **clarity**, or **reproducibility** (new repros, sharper invariants, better diagnostics).
 Minimum bar for changes that touch the build (from repository root):
 ```sh
-make -C make-capstone selftest
+make -C capstone selftest
 ```
-(or `gmake -C make-capstone selftest` on macOS)
+(or `gmake -C capstone selftest` on macOS)
 Open a PR against `main` with a short “claim → proof” note (what you changed, why it’s correct, and how it’s verified).  
 [Back to top](#top)
 

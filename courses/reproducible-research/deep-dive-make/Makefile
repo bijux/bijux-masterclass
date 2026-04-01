@@ -15,7 +15,7 @@ PIP := $(VENV_BIN)/pip
 RUFF   := $(if $(wildcard $(VENV_BIN)/ruff),$(VENV_BIN)/ruff,ruff)
 MYPY   := $(if $(wildcard $(VENV_BIN)/mypy),$(VENV_BIN)/mypy,mypy)
 
-CAPSTONE_DIR := make-capstone
+CAPSTONE_DIR := capstone
 PY_LINT_PATHS := $(CAPSTONE_DIR)/scripts
 
 # UX
@@ -48,7 +48,7 @@ typecheck: install-dev ## Run mypy on Python helper scripts
 
 # Capstone (GNU Make repository)
 .PHONY: capstone capstone-selftest capstone-hardened capstone-clean
-capstone: ## Build the capstone (writes ./all sentinel inside make-capstone)
+capstone: ## Build the capstone (writes ./all sentinel inside capstone)
 > $(MAKE) -C $(CAPSTONE_DIR) all
 
 capstone-selftest: ## Capstone selftest (convergence + parallel determinism + negative test)

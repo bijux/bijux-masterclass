@@ -11,11 +11,11 @@ help: ## Show available targets
 docs-clean: ## Remove built site directory
 	rm -rf site
 
-capstone-check: ## Run fast checks in snakemake-capstone (format/lint/tests + lint workflow)
-	$(MAKE) -C snakemake-capstone check
+capstone-check: ## Run fast checks in capstone (format/lint/tests + lint workflow)
+	$(MAKE) -C capstone check
 
-capstone-confirm: ## Full clean-room confirmation in snakemake-capstone (runs workflow + verifies artifacts)
-	$(MAKE) -C snakemake-capstone confirm
+capstone-confirm: ## Full clean-room confirmation in capstone (runs workflow + verifies artifacts)
+	$(MAKE) -C capstone confirm
 
 check: capstone-check ## Run capstone fast checks
 

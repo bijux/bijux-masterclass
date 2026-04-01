@@ -10,7 +10,7 @@ A five-module course-book that treats **GNU Make as a build-graph engine** with 
 - **Determinism**: serial and parallel runs converge to identical results.
 - **Testable invariants**: correctness is verified, not assumed.
 
-This repository contains both the text (**`course-book/`**) and a runnable reference implementation (**`make-capstone/`**) that proves the claims.
+This repository contains both the text (**`course-book/`**) and a runnable reference implementation (**`capstone/`**) that proves the claims.
 
 ---
 
@@ -133,20 +133,20 @@ This repository contains both the text (**`course-book/`**) and a runnable refer
 
 The capstone is the executable realization of Modules 01–05:
 
-- **Build system:** `make-capstone/Makefile` + `make-capstone/mk/*.mk`
-- **Selftests:** `make-capstone/tests/run.sh` (convergence, serial/parallel equivalence, negative tests)
-- **Repro pack:** `make-capstone/repro/*.mk` (intentional failures + fixes)
-- **Generators:** `make-capstone/scripts/` (single-output and multi-output stress cases)
+- **Build system:** `capstone/Makefile` + `capstone/mk/*.mk`
+- **Selftests:** `capstone/tests/run.sh` (convergence, serial/parallel equivalence, negative tests)
+- **Repro pack:** `capstone/repro/*.mk` (intentional failures + fixes)
+- **Generators:** `capstone/scripts/` (single-output and multi-output stress cases)
 
 **Truth command:**
 ```sh
-make -C make-capstone selftest
+make -C capstone selftest
 ```
 
 macOS:
 
 ```sh
-gmake -C make-capstone selftest
+gmake -C capstone selftest
 ```
 
 [Back to top](#top)

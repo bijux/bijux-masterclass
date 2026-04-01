@@ -107,7 +107,7 @@ Internal directories (`results/`, `logs/`, `benchmarks/`, `.snakemake/`) are not
 
 ```mermaid
 graph TD
-  root["snakemake-capstone/"]
+  root["capstone/"]
   root --> snakefile["Snakefile"]
   root --> workflow["workflow/"]
   root --> src["src/"]

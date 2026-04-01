@@ -1,1 +1,1 @@
-{% include "make-capstone/README.md" %}
+{% include "capstone/README.md" %}

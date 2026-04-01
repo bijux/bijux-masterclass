@@ -610,22 +610,22 @@ Use capstone to validate, not to learn the basics.
 ### Runbook (repo root)
 
 ```sh
-make -C make-capstone portability-audit
-make -C make-capstone selftest
-make -C make-capstone attest
-make -C make-capstone trace-count
-make -C make-capstone perf
+make -C capstone portability-audit
+make -C capstone selftest
+make -C capstone attest
+make -C capstone trace-count
+make -C capstone perf
 ```
 
 ### Where to look (file map)
 
-* Contract gates + probes: `make-capstone/mk/contract.mk`
-* Atomic helpers and safe shell patterns: `make-capstone/mk/macros.mk`
-* Object rules + depfiles: `make-capstone/mk/objects.mk`
-* Convergent stamps/manifests: `make-capstone/mk/stamps.mk`
-* Proof harness (convergence/equivalence/negative/perf): `make-capstone/tests/run.sh`
-* Race repro pack: `make-capstone/repro/*.mk`
-* Codegen stressors: `make-capstone/scripts/*`
+* Contract gates + probes: `capstone/mk/contract.mk`
+* Atomic helpers and safe shell patterns: `capstone/mk/macros.mk`
+* Object rules + depfiles: `capstone/mk/objects.mk`
+* Convergent stamps/manifests: `capstone/mk/stamps.mk`
+* Proof harness (convergence/equivalence/negative/perf): `capstone/tests/run.sh`
+* Race repro pack: `capstone/repro/*.mk`
+* Codegen stressors: `capstone/scripts/*`
 
 [Back to top](#top)
 

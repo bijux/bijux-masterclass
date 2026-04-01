@@ -1,1 +1,1 @@
-{% include "snakemake-capstone/README.md" %}
+{% include "capstone/README.md" %}

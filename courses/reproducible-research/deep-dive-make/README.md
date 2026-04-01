@@ -10,7 +10,7 @@ A course-book and executable capstone that teaches **GNU Make as a build-graph e
 [![Docs](https://img.shields.io/badge/docs-site-blue?style=flat-square)](https://bijux.github.io/deep-dive-make/)
 [![CI Ubuntu](https://github.com/bijux/deep-dive-make/actions/workflows/ci.yaml/badge.svg?query=branch%3Amain+runner%3Aubuntu-latest)](https://github.com/bijux/deep-dive-make/actions/workflows/ci.yaml?query=branch%3Amain+runner%3Aubuntu-latest)
 [![CI macOS](https://github.com/bijux/deep-dive-make/actions/workflows/ci.yaml/badge.svg?query=branch%3Amain+runner%3Amacos-latest)](https://github.com/bijux/deep-dive-make/actions/workflows/ci.yaml?query=branch%3Amain+runner%3Amacos-latest)
-[![Capstone](https://img.shields.io/badge/capstone-make--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-make/tree/main/make-capstone)
+[![Capstone](https://img.shields.io/badge/capstone-make--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-make/tree/main/capstone)
 > CI runs selftest on Ubuntu and macOS. View runs for logs/artifacts.
 ---
 
@@ -48,7 +48,7 @@ Read on the website: https://bijux.github.io/deep-dive-make/
 
 ### 2) The executable capstone
 
-`make-capstone/` is a working build that embodies the rules above and provides a concrete reference for “what correct looks like” under pressure (including parallel builds).
+`capstone/` is a working build that embodies the rules above and provides a concrete reference for “what correct looks like” under pressure (including parallel builds).
 
 ### 3) A repro pack of failure modes
 
@@ -64,14 +64,14 @@ From the repository root:
 ### Linux (GNU Make)
 
 ```sh
-make -C make-capstone selftest
+make -C capstone selftest
 ```
 
 ### macOS (GNU Make via Homebrew)
 
 ```sh
 brew install make
-gmake -C make-capstone selftest
+gmake -C capstone selftest
 ```
 
 If `selftest` passes, you’ve validated the capstone’s contract on your machine.
@@ -86,7 +86,7 @@ If `selftest` passes, you’ve validated the capstone’s contract on your machi
 graph TD
   root["deep-dive-make/"]
   root --> book["course-book/"]
-  root --> capstone["make-capstone/"]
+  root --> capstone["capstone/"]
   root --> workflows[".github/workflows/"]
   root --> license["LICENSE"]
   root --> readme["README.md"]
@@ -130,9 +130,9 @@ Contributions that improve correctness, clarity, or reproducibility are welcome 
 2. Make a focused change (docs or capstone)
 3. From the repository root, verify:
    ```sh
-   make -C make-capstone selftest
+   make -C capstone selftest
    ```
-   (or `gmake -C make-capstone selftest` on macOS)
+   (or `gmake -C capstone selftest` on macOS)
 4. Open a PR against `main`
 
 [Back to top](#top)

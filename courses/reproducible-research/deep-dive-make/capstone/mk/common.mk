@@ -9,7 +9,7 @@ CPPFLAGS += -I$(INC_DIR) -I$(BLD_DIR)/include
 # ---- deterministic compilation (Clang non-determinism fix) ----
 # Seeds Clang's RNG for byte-identical objects across builds/machines.
 # (LLVM/Clang ≥9; aligns with reproducible-builds.org macOS guidance)
-CFLAGS += -frandom-seed=make-capstone
+CFLAGS += -frandom-seed=capstone
 
 # ---- debug symbols (gated for performance in selftests) ----
 # Enable via DEBUG=1; off by default to minimize .o size during hashing.

@@ -483,20 +483,20 @@ Use this to corroborate semantics with a real tree; don’t outsource understand
 
 ### Where to look
 
-* CLI/forensics patterns: `make-capstone/Makefile`
-* Variable probes / capability gates: `make-capstone/mk/contract.mk`
-* Includes/layering: `make-capstone/mk/common.mk` + `mk/*.mk`
-* Multi-output / eval demos: `make-capstone/mk/rules_eval.mk`
-* Selftest harness: `make-capstone/tests/run.sh`
+* CLI/forensics patterns: `capstone/Makefile`
+* Variable probes / capability gates: `capstone/mk/contract.mk`
+* Includes/layering: `capstone/mk/common.mk` + `mk/*.mk`
+* Multi-output / eval demos: `capstone/mk/rules_eval.mk`
+* Selftest harness: `capstone/tests/run.sh`
 
 ### Runbook
 
 ```sh
-make -C make-capstone selftest
-make -C make-capstone --trace all
-make -C make-capstone -p | less
-make -C make-capstone portability-audit
-make -C make-capstone USE_EVAL=yes eval-demo
+make -C capstone selftest
+make -C capstone --trace all
+make -C capstone -p | less
+make -C capstone portability-audit
+make -C capstone USE_EVAL=yes eval-demo
 ```
 
 What each proves:

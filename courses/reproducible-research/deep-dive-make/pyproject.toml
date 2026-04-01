@@ -24,7 +24,7 @@ docs = [
   "mkdocs-macros-plugin>=1,<2",
 ]
 
-# Python tooling for the small helper scripts under make-capstone/scripts/
+# Python tooling for the small helper scripts under capstone/scripts/
 dev = [
   "ruff>=0.5,<1",
   "mypy>=1.10,<2",
@@ -39,7 +39,7 @@ only-include = [
   "mkdocs.yml",
   "course-book",
   "docs",
-  "make-capstone",
+  "capstone",
 ]
 
 [tool.hatch.build.targets.sdist]
@@ -49,7 +49,7 @@ only-include = [
   "mkdocs.yml",
   "course-book",
   "docs",
-  "make-capstone",
+  "capstone",
   "pyproject.toml",
   "Makefile",
   ".gitignore",

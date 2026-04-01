@@ -5,7 +5,7 @@ Module 01 taught correctness on a small graph. Module 02 is where that correctne
 
 This module does **not** treat parallelism as a performance trick. It treats it as an adversarial test of whether your DAG is telling the truth.
 
-Capstone is **only** corroboration. This module remains complete and runnable even if `make-capstone/` didn’t exist.
+Capstone is **only** corroboration. This module remains complete and runnable even if `capstone/` didn’t exist.
 
 ---
 
@@ -763,19 +763,19 @@ Capstone is corroboration and an engineering-grade example—not the lesson itse
 ### Runbook (from repo root)
 
 ```sh
-make -C make-capstone selftest
-make -C make-capstone discovery-audit
-make -C make-capstone --trace all
+make -C capstone selftest
+make -C capstone discovery-audit
+make -C capstone --trace all
 ```
 
 ### Where to look (file map)
 
-* Parallel-safe primitives (atomic publish, assertions): `make-capstone/mk/macros.mk`
-* Discovery and mapping (rooted + sorted): `make-capstone/mk/objects.mk`
-* Hidden-input modeling (stamps/manifests): `make-capstone/mk/stamps.mk`
-* Orchestration/public API: `make-capstone/Makefile`
-* Selftest harness: `make-capstone/tests/run.sh`
-* Race teaching pack: `make-capstone/repro/*.mk`
+* Parallel-safe primitives (atomic publish, assertions): `capstone/mk/macros.mk`
+* Discovery and mapping (rooted + sorted): `capstone/mk/objects.mk`
+* Hidden-input modeling (stamps/manifests): `capstone/mk/stamps.mk`
+* Orchestration/public API: `capstone/Makefile`
+* Selftest harness: `capstone/tests/run.sh`
+* Race teaching pack: `capstone/repro/*.mk`
 
 [Back to top](#top)
 

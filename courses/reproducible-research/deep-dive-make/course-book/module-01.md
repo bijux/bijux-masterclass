@@ -480,17 +480,17 @@ Capstone is corroboration, not the lesson. After you finish Module 01 locally, u
 From repo root:
 
 ```sh
-make -C make-capstone selftest
-make -C make-capstone --trace all
+make -C capstone selftest
+make -C capstone --trace all
 ```
 
 ### Where to look (file map)
 
-* Flags/tool knobs stamp pattern: `make-capstone/mk/stamps.mk`
-* Atomic helpers and publish discipline: `make-capstone/mk/macros.mk`
-* Deterministic discovery and mapping: `make-capstone/mk/objects.mk`
-* Top-level orchestration and public targets: `make-capstone/Makefile`
-* Proof harness: `make-capstone/tests/run.sh`
+* Flags/tool knobs stamp pattern: `capstone/mk/stamps.mk`
+* Atomic helpers and publish discipline: `capstone/mk/macros.mk`
+* Deterministic discovery and mapping: `capstone/mk/objects.mk`
+* Top-level orchestration and public targets: `capstone/Makefile`
+* Proof harness: `capstone/tests/run.sh`
 
 [Back to top](#top)
 

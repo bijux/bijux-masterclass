@@ -10,7 +10,7 @@ than as an ad hoc scripting surface.
 ## What It Contains
 
 - A five-module course book in `course-book/`
-- An executable capstone in `make-capstone/`
+- An executable capstone in `capstone/`
 - Local development entrypoints in `Makefile`
 
 ## Local Commands

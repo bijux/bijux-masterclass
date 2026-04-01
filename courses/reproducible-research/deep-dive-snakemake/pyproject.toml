@@ -52,7 +52,7 @@ include = [
 [tool.hatch.build.targets.sdist]
 include = [
   "course-book/**",
-  "snakemake-capstone/**",
+  "capstone/**",
   ".github/**",
   "mkdocs.yml",
   "Makefile",

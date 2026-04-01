@@ -6,7 +6,7 @@ A five-module course-book for learning **GNU Make as a declarative build-graph e
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
 [![License](https://img.shields.io/github/license/bijux/deep-dive-make?style=flat-square)](https://github.com/bijux/deep-dive-make/blob/main/LICENSE)
 [![Docs](https://img.shields.io/badge/docs-site-blue?style=flat-square)](https://bijux.github.io/deep-dive-make/)
-[![Capstone](https://img.shields.io/badge/capstone-make--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-make/tree/main/make-capstone)
+[![Capstone](https://img.shields.io/badge/capstone-make--capstone-green?style=flat-square)](https://github.com/bijux/deep-dive-make/tree/main/capstone)
 
 > **At a glance**: progressive modules • minimal, reproducible examples • exercises with verification hooks • a runnable capstone that proves the claims.  
 > **Quality bar**: every core assertion is designed to be *testable* using `--trace`, `-p`, and serial/parallel equivalence checks. This course-book assumes **GNU Make 4.3+** and intentionally avoids “hand-wavy” build folklore.
@@ -94,15 +94,15 @@ If you are here for incident response or reference:
 [Back to top](#top)
 ---
 ## Verification via the capstone
-The course is paired with an executable reference build: [`make-capstone/`](https://github.com/bijux/deep-dive-make/tree/main/make-capstone). It exists for one reason: **proof**.
+The course is paired with an executable reference build: [`capstone/`](https://github.com/bijux/deep-dive-make/tree/main/capstone). It exists for one reason: **proof**.
 
 From the repository root:
 ```sh
 # Linux (GNU Make)
-make -C make-capstone selftest
+make -C capstone selftest
 
 # macOS (GNU Make)
-gmake -C make-capstone selftest
+gmake -C capstone selftest
 ```
 A passing run means the core invariants hold on your machine: convergence, serial/parallel equivalence, and negative tests that detect common lies (missing edges, unsafe stamps, non-atomic writes).    
 [Back to top](#top)
@@ -119,7 +119,7 @@ This course-book is designed to be both a curriculum and an operational referenc
 ---
 ## Repository links
 * Project overview: [`README.md`](https://github.com/bijux/deep-dive-make/blob/main/README.md)
-* Capstone: [`make-capstone/`](https://github.com/bijux/deep-dive-make/tree/main/make-capstone)
+* Capstone: [`capstone/`](https://github.com/bijux/deep-dive-make/tree/main/capstone)
 * CI workflow: [`.github/workflows/ci.yaml`](https://github.com/bijux/deep-dive-make/blob/main/.github/workflows/ci.yaml)  
 [Back to top](#top)
 ---
@@ -130,9 +130,9 @@ Process:
 2. Make a focused change
 3. From the repository root, verify:
    ```sh
-   make -C make-capstone selftest
+   make -C capstone selftest
    ```
-   (or `gmake -C make-capstone selftest` on macOS)
+   (or `gmake -C capstone selftest` on macOS)
 4. Open a PR against `main`, with a short “claim → proof” note  
 [Back to top](#top)
 ---

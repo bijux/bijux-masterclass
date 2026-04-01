@@ -10,7 +10,7 @@ safe dynamic behavior, publishable artifacts, and reproducible execution.
 ## What It Contains
 
 - A course book in `course-book/`
-- A reference workflow in `snakemake-capstone/`
+- A reference workflow in `capstone/`
 - Local development entrypoints in `Makefile`
 
 ## Local Commands
