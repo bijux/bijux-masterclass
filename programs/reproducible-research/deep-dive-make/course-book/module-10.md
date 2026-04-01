@@ -20,6 +20,14 @@ Use this module if you need to learn how to:
 * design a migration that keeps proof, not just intention
 * define long-term ownership and change rules for build infrastructure
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| legacy review | "Which contracts are broken today?" | use capstone as a review specimen after the rubric is clear |
+| migration | "How do I improve the system without losing proof?" | compare your migration plan to the reference build boundaries |
+| governance | "What should future maintainers be allowed to change freely?" | inspect public targets and helper layers once review categories are stable |
+
 Proof loop for this module:
 
 ```sh
@@ -33,6 +41,9 @@ Capstone corroboration:
 * review public target promises in `capstone/Makefile`
 * review helper boundaries under `capstone/mk/`
 * use the capstone repros as migration-risk examples
+
+The course ends well only if the learner leaves with a repeatable review method, not just
+with a list of anti-patterns.
 
 ---
 

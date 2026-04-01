@@ -20,6 +20,14 @@ Use this module if you need to learn how to:
 * build an incident ladder another engineer can follow
 * tune the system without hiding correctness defects
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| measurement | "Am I paying parse cost, recipe cost, or observability cost?" | inspect capstone after you can measure one local build clearly |
+| incident triage | "What is the next diagnostic move under pressure?" | use capstone selftests and repros once the ladder is familiar |
+| safe tuning | "Did I remove waste or just hide evidence?" | compare with capstone guardrails after local experiments |
+
 Proof loop for this module:
 
 ```sh
@@ -33,6 +41,9 @@ Capstone corroboration:
 * run `make -C capstone trace-count`
 * run `make -C capstone discovery-audit`
 * inspect `capstone/tests/run.sh` for measurement guardrails
+
+This module is successful when the learner can separate symptoms from causes before
+changing the build.
 
 ---
 

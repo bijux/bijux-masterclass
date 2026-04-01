@@ -19,6 +19,14 @@ Use this module if you need to learn how to:
 * split `mk/*.mk` files by responsibility instead of habit
 * reuse rule shapes without obscuring graph structure
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| public targets | "Which entrypoints can humans and CI rely on?" | use capstone help after you define your own API |
+| include layering | "Which file is allowed to set policy?" | inspect the reference layout once the local split feels clear |
+| reusable macros | "How do I reduce duplication without hiding behavior?" | compare your local choices to `capstone/mk/*.mk` |
+
 Proof loop for this module:
 
 ```sh
@@ -32,6 +40,9 @@ Capstone corroboration:
 * inspect target boundaries in `capstone/Makefile`
 * inspect layer separation in `capstone/mk/*.mk`
 * use `make -C capstone help`
+
+The module is doing its job only if you can point to a layer boundary and explain why it
+exists without appealing to habit.
 
 ---
 

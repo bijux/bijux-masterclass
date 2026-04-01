@@ -20,6 +20,14 @@ Use this module if you need to learn how to:
 * separate release evidence from release identity
 * make `dist` and `install` behave like contracts instead of shell rituals
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| release targets | "What promise does `dist` actually make?" | inspect capstone only after your local target names are stable |
+| publishable layout | "Which files belong in the artifact and why?" | compare bundle shape after you define your own release surface |
+| checksums and attestations | "How do I record evidence without changing identity?" | use capstone attest once you understand the separation locally |
+
 Proof loop for this module:
 
 ```sh
@@ -33,6 +41,9 @@ Capstone corroboration:
 * inspect `dist` and `attest` in `capstone/Makefile`
 * inspect packaging helper flow under `capstone/scripts/`
 * compare release-oriented outputs after `make -C capstone hardened`
+
+If `dist` still means "do a lot of shell stuff," stay in the local exercise until it
+means one clear contract.
 
 ---
 

@@ -21,6 +21,14 @@ Use this module if you need to learn how to:
 * model one command that publishes several coupled outputs
 * decide when a manifest or stamp is a real boundary instead of a shortcut
 
+### At a glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| generators and generated headers | "What exactly makes a generated file stale?" | start after you can already explain single-output rules |
+| multi-output producers | "How do I prevent one command from running twice?" | inspect after the local playground is working |
+| manifests and stamps | "When is a boundary honest instead of a shortcut?" | use capstone only to confirm, not discover, the idea |
+
 Proof loop for this module:
 
 ```sh
@@ -34,6 +42,9 @@ Capstone corroboration:
 * inspect generated-header flow in `capstone/Makefile`
 * inspect boundary modeling in `capstone/mk/stamps.mk`
 * run `make -C capstone selftest`
+
+If the capstone feels too large here, return to the small generator playground and make
+the stale-file story legible there first.
 
 ---
 
