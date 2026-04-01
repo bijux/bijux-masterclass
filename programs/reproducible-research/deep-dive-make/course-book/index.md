@@ -18,6 +18,7 @@ deterministic results, and repeatable verification.
 ## Table of Contents
 - [Why this program exists](#why-this-program-exists)
 - [Start here](start-here.md)
+- [Learning contract](learning-contract.md)
 - [How the guide is written](#how-the-guide-is-written)
 - [What you will learn](#what-you-will-learn)
 - [Prerequisites](#prerequisites)
@@ -45,6 +46,14 @@ If you maintain a legacy Makefile or design a new build, the objective is the sa
 If you are not sure where to begin, use [`start-here.md`](start-here.md) before diving
 into the modules. It routes beginners, working maintainers, and build stewards to the
 right entry point so the capstone does not become an accidental first lesson.
+
+[Back to top](#top)
+
+---
+## Learning contract
+Use [`learning-contract.md`](learning-contract.md) as the stable reference for how this
+course teaches: concept, failure mode, repair, and proof. It makes the pedagogical bar
+explicit instead of leaving it scattered across modules.
 
 [Back to top](#top)
 
