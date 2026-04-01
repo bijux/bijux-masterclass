@@ -1,0 +1,13 @@
+.DS_Store
+._*
+__MACOSX/
+.idea/
+.vscode/
+*.swp
+*~
+
+.venv/
+venv/
+env/
+site/
+
