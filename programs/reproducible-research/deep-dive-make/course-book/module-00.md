@@ -16,6 +16,17 @@ reference build in `capstone/`.
 
 ---
 
+## At a Glance
+
+| What this course optimizes for | What this course refuses to optimize for |
+| --- | --- |
+| truthful dependency modeling | clever Make tricks without proof |
+| reproducible local and CI behavior | fragile convenience shortcuts |
+| stable public build contracts | hidden behavior that only maintainers know |
+| pedagogy that moves from small exercises to real systems | throwing beginners into a large repository too early |
+
+---
+
 ## Program Arc
 
 ### Module 01 — Foundations: The Build Graph and Truth
@@ -91,6 +102,37 @@ and decide when Make should remain the orchestrator or hand off responsibility.
 
 ---
 
+## Study Paths
+
+### Full course path
+
+Use this if you are learning Make from the ground up.
+
+1. Modules 01-02 for graph truth and parallel safety
+2. Modules 03-05 for production discipline and hardening
+3. Modules 06-09 for generators, architecture, release, and operations
+4. Module 10 for review and long-term judgment
+
+### Working maintainer path
+
+Use this if you already own a Make-based repository.
+
+1. Module 04 for semantics under pressure
+2. Module 05 for hardening boundaries
+3. Module 09 for incident response
+4. Module 10 for review and migration decisions
+
+### Build steward path
+
+Use this if your primary concern is release, CI, and long-lived ownership.
+
+1. Module 03 for public build contracts
+2. Module 07 for build architecture
+3. Module 08 for release contracts
+4. Module 10 for governance and boundaries
+
+---
+
 ## Recommended Reading Path
 
 1. Read modules in order from 01 to 10.
@@ -124,5 +166,29 @@ macOS:
 ```sh
 gmake -C capstone selftest
 ```
+
+---
+
+## Milestones
+
+| Milestone | Modules | What you should be able to do |
+| --- | --- | --- |
+| Build graph literacy | 01-02 | explain rebuilds, fix missing edges, predict `-j` hazards |
+| Production discipline | 03-05 | define stable targets, debug with evidence, harden assumptions |
+| System design | 06-08 | model generators, split build layers, publish trustworthy artifacts |
+| Operational judgment | 09-10 | run incident triage, review legacy builds, plan safe migrations |
+
+---
+
+## Capstone Timing
+
+Enter the capstone at three distinct moments:
+
+* after Module 02 if you want to see the graph under moderate pressure
+* after Module 05 if you want to inspect a hardened reference build
+* after Module 10 if you want to review the entire system as a steward
+
+If the capstone ever feels larger than the concept you are trying to learn, that is the
+signal to return to the module playground rather than push through confusion.
 
 [Back to top](#top)
