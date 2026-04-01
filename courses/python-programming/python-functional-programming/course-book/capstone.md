@@ -34,6 +34,7 @@ Use the capstone to answer: "What would this module look like in a real Python r
 ```bash
 make COURSE=python-programming/python-functional-programming install
 make COURSE=python-programming/python-functional-programming test
+make COURSE=python-programming/python-functional-programming capstone-tour
 make -C capstone test
 ```
 

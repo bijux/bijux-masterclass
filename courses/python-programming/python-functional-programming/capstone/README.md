@@ -21,6 +21,12 @@ make install
 make test
 ```
 
+Build the learner-facing proof bundle:
+
+```bash
+make tour
+```
+
 ## How to study this capstone
 
 Use this repository as evidence, not just as a runnable project:

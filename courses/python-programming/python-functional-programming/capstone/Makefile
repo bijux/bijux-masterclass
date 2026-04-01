@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test build lint clean clean-all venv \
+.PHONY: install test build lint clean clean-all venv tour \
         worktrees snapshots clean-history module-md module-funcpipe freeze-codebase \
         help
 
@@ -16,6 +16,7 @@ RUFF       := $(VENV)/bin/ruff
 MYPY       := $(VENV)/bin/mypy
 PYTEST     := $(VENV)/bin/pytest
 HATCH      := $(VENV)/bin/hatch
+TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"; printf "\nTargets:\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -32,6 +33,24 @@ install: venv ## Install development dependencies
 
 test: install ## Run the test suite
 	$(PYTEST) -q
+
+tour: install ## Build the learner-facing proof bundle
+	rm -rf $(TOUR_DIR)
+	mkdir -p $(TOUR_DIR)
+	$(PYTEST) -q 2>&1 | tee $(TOUR_DIR)/pytest.txt
+	find src/funcpipe_rag -type d | sort > $(TOUR_DIR)/package-tree.txt
+	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
+	cp README.md $(TOUR_DIR)/README.md
+	cp pyproject.toml $(TOUR_DIR)/pyproject.toml
+	cp TOUR.md $(TOUR_DIR)/TOUR.md
+	printf '%s\n' \
+		"core=src/funcpipe_rag/core" \
+		"result=src/funcpipe_rag/result" \
+		"boundaries=src/funcpipe_rag/boundaries" \
+		"async_effects=src/funcpipe_rag/domain/effects/async_" \
+		"tests=tests/unit" \
+		> $(TOUR_DIR)/focus-areas.txt
+	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
 build: install ## Build distribution artifacts
 	$(HATCH) build
