@@ -56,6 +56,7 @@ class ThresholdRule:
     threshold: float
     severity: Severity
     window: int = 1
+    evaluation_mode: str = "threshold"
 
     def __post_init__(self) -> None:
         if not self.rule_id.strip():
@@ -64,6 +65,8 @@ class ThresholdRule:
             raise DomainError("threshold must be between 0 and 1")
         if self.window < 1:
             raise DomainError("window must be at least 1")
+        if not self.evaluation_mode.strip():
+            raise DomainError("evaluation_mode must not be empty")
 
 
 @dataclass(frozen=True, slots=True)
@@ -162,7 +165,15 @@ class MonitoringPolicy:
             )
         )
 
-    def evaluate(self, samples: Iterable[MetricSample]) -> list[Alert]:
+    def evaluate(
+        self,
+        samples: Iterable[MetricSample],
+        evaluator: "RuleEvaluator | None" = None,
+    ) -> list[Alert]:
+        if evaluator is None:
+            from .policies import RuleEvaluator
+
+            evaluator = RuleEvaluator()
         samples_by_metric: dict[MetricName, list[MetricSample]] = defaultdict(list)
         for sample in samples:
             samples_by_metric[sample.metric_name].append(sample)
@@ -173,11 +184,10 @@ class MonitoringPolicy:
             relevant = samples_by_metric.get(rule.metric_name, [])
             if not relevant:
                 continue
-            window_samples = sorted(relevant, key=lambda sample: sample.observed_at)[-rule.window :]
-            observed = max(sample.value for sample in window_samples)
-            if observed < rule.threshold:
+            outcome = evaluator.evaluate(rule, relevant)
+            if outcome is None:
                 continue
-            observed_at = window_samples[-1].observed_at
+            observed_at = outcome.observed_at
             incident_id = (
                 f"{self.policy_id}:{rule.rule_id}:{observed_at.isoformat(timespec='seconds')}"
             )
@@ -187,7 +197,7 @@ class MonitoringPolicy:
                 metric_name=rule.metric_name,
                 severity=rule.severity,
                 threshold=rule.threshold,
-                observed_value=observed,
+                observed_value=outcome.observed_value,
                 observed_at=observed_at,
             )
             alerts.append(alert)
@@ -198,7 +208,7 @@ class MonitoringPolicy:
                     metric_name=str(rule.metric_name),
                     severity=str(rule.severity),
                     threshold=rule.threshold,
-                    observed_value=observed,
+                    observed_value=outcome.observed_value,
                     incident_id=incident_id,
                     occurred_at=observed_at,
                 )
