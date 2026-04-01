@@ -1,10 +1,43 @@
 # Python Metaprogramming Capstone
 
-This directory is reserved for the synthesis work that accompanies the course book.
+This capstone is an executable plugin runtime for incident delivery adapters. It is
+small enough to audit line by line and large enough to exercise the core tools of
+the course in one place:
 
-The course layout is intentionally stable:
+- descriptor-backed configuration fields
+- decorator-based action instrumentation with preserved signatures
+- metaclass-driven registration and generated constructors
+- introspection-driven manifest export for tooling and debugging
 
-- `course-book/` contains the full narrative, diagrams, and module sequence.
-- `capstone/` is the home for cumulative exercises, runnable verification bundles, and future hands-on extensions.
+## What it models
 
-At the moment, the metaprogramming course is delivered primarily through the course book itself, so this directory starts as a documented placeholder instead of a packaged project.
+- a `PluginMeta` metaclass that registers concrete plugins by group and stable name
+- `Field` descriptors that validate and coerce plugin configuration
+- an `@action` decorator that records invocations while preserving signatures
+- concrete incident-delivery plugins such as console, webhook, and pager adapters
+- a runtime manifest that exposes field schemas and action signatures without
+  executing plugin methods
+
+## Run it
+
+From this directory:
+
+```bash
+make confirm
+```
+
+## Why this capstone exists
+
+The course book explains individual mechanisms in isolation. This capstone makes the
+integration pressure visible. Class creation, descriptors, wrappers, and inspection
+all interact here, so the implementation has to stay honest about:
+
+- which work happens at class-definition time
+- what gets validated on assignment versus on invocation
+- how signatures survive wrappers
+- how registries stay deterministic and resettable in tests
+
+## Layout
+
+- `src/incident_plugins/` contains the framework and built-in plugins.
+- `tests/` contains executable verification for descriptors, registration, and runtime manifests.
