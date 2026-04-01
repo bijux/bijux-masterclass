@@ -15,7 +15,7 @@
 
 - A 10-module course (Modules 01–10) that teaches FP the way you ship code: purity, explicit effects, streaming, async backpressure, algebraic data modelling, and interop with the Python ecosystem.
 - A working codebase at the **end of Module 09**: config-as-data pipelines, lazy iterators, Result/Option error handling, retries/breakers, structured logs, monadic helpers (Reader/State/Writer), async plans with bounded concurrency, and config-driven pipeline specs.
-- An evolving FuncPipe RAG builder you can refactor as you learn; earlier states are tagged (`module-01`, `module-02`, …) and exported under `history/`.
+- An evolving FuncPipe RAG builder you can refactor as you learn; earlier states are tagged (`module-01`, `module-02`, …) and exported under `capstone/history/`.
 
 ---
 
@@ -37,9 +37,10 @@ make COURSE=python-programming/python-functional-programming docs-serve
 ## How to Navigate
 
 - **Course book:** `course-book/` (rendered by MkDocs). Start with Module 00 for orientation, then proceed through Modules 01–10 in order.
-- **Code:** `src/funcpipe_rag/` and `tests/` evolve alongside the modules; each module’s themes map to concrete code.
+- **Capstone:** `capstone/` contains the runnable FuncPipe RAG project used throughout the course.
+- **Code:** `capstone/src/funcpipe_rag/` and `capstone/tests/` evolve alongside the modules; each module’s themes map to concrete code.
 - **Standards:** `course-book/reference/` contains the FP standards and review checklist used throughout.
-- **Snapshots:** `history/` holds module-tag exports for comparison or rollback.
+- **Snapshots:** `capstone/history/` holds module-tag exports for comparison or rollback.
 
 The MkDocs landing page embeds this README, so repo and docs stay in sync.
 
@@ -64,8 +65,8 @@ The MkDocs landing page embeds this README, so repo and docs stay in sync.
 
 ## FuncPipe RAG Snapshot (Module 09 State)
 
-- **Interop:** `src/funcpipe_rag/interop/stdlib_fp.py`, plus optional `toolz`/`returns` facades.
-- **Pipelines:** `src/funcpipe_rag/pipelines/` for config-driven, stateless pipeline specs and canonical hashing.
+- **Interop:** `capstone/src/funcpipe_rag/interop/stdlib_fp.py`, plus optional `toolz`/`returns` facades.
+- **Pipelines:** `capstone/src/funcpipe_rag/pipelines/` for config-driven, stateless pipeline specs and canonical hashing.
 - **Boundaries & CLI:** `funcpipe_rag.boundaries.shells` exposes CLI entrypoints for JSONL data, with allow-listed reconstruction of specs.
 - **Error handling & retries:** Result/Option streams, circuit breakers, structured reports, and retry policies as data.
 - **Async layer:** `AsyncPlan`/`AsyncGen` with bounded concurrency, backpressure, rate limiting, and deterministic fake-time hooks for tests.
@@ -77,11 +78,8 @@ The MkDocs landing page embeds this README, so repo and docs stay in sync.
 
 ```
 course-book/   # MkDocs content (Modules 00–10, reference)
-src/           # FuncPipe RAG source (end-of-Module-09 state)
-tests/         # Property and regression tests
-history/       # Tagged snapshots per module (exports)
-all-cores/     # Concatenated module markdown helpers
-Makefile       # install/test/build workflows
+capstone/      # Runnable FuncPipe RAG project
+Makefile       # Course-level entrypoints for the capstone
 mkdocs.yml     # Course-book configuration
 ```
 
