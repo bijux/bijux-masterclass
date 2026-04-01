@@ -39,6 +39,7 @@ Capstone corroboration:
 
 ---
 
+<a id="toc"></a>
 ## 1) Table of Contents
 
 1. [Table of Contents](#toc)

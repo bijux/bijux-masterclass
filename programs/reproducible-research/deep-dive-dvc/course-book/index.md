@@ -1,11 +1,11 @@
 # Deep Dive DVC
 
-Deep Dive DVC teaches reproducibility as a discipline of explicit state. The course is
-about more than moving files through a tool. It is about making data, parameters,
-metrics, experiments, remotes, and recovery boundaries precise enough that another
-person can trust them months later.
+Deep Dive DVC teaches reproducibility as a discipline of explicit state. It is now a
+ten-module beginner-to-mastery program, not only a compact state-management course. The
+goal is to make data, parameters, metrics, experiments, remotes, and recovery boundaries
+precise enough that another person can trust them months later.
 
-## Why this course exists
+## Why this program exists
 
 Many teams can rerun a pipeline once and still fail reproducibility in every way that
 matters:
@@ -16,7 +16,7 @@ matters:
 - experiments exist but baseline history and promotion rules are muddy
 - a remote failure or cache loss turns "tracked" state into folklore
 
-This course exists to close that gap.
+This program exists to close that gap.
 
 ## Reading contract
 
@@ -26,6 +26,7 @@ This is not a command reference. The learner path is deliberate:
 2. Learn state identity before pipeline execution.
 3. Learn pipeline truth before metric comparison and experimentation.
 4. Learn experimentation before governance, retention, and incident survival.
+5. Continue into promotion, auditability, migration, and stewardship after the core state model is stable.
 
 If you skip that order, later modules will still be readable, but their rules will feel
 administrative instead of necessary.
@@ -41,7 +42,9 @@ administrative instead of necessary.
 - [Module 06](module-06.md) formalizes experiments as controlled deviations instead of history damage.
 - [Module 07](module-07.md) turns collaboration and CI into enforceable social contracts.
 - [Module 08](module-08.md) explains retention, recovery, and long-term survivability under time pressure.
-- [Capstone](readme-capstone.md) provides the executable repository that keeps the course honest.
+- [Module 09](module-09.md) defines promotion, release contracts, and the evidence needed for downstream trust.
+- [Module 10](module-10.md) finishes with migration, governance, anti-patterns, and DVC tool boundaries.
+- [Capstone](readme-capstone.md) provides the executable repository that keeps the program honest.
 
 ## How to use the capstone while reading
 
@@ -49,6 +52,8 @@ administrative instead of necessary.
 - After Module 04, inspect the `dvc.yaml` stages and ask whether every influential edge is declared.
 - After Module 06, inspect how parameter changes create comparable experiment runs without mutating the baseline.
 - After Module 08, inspect the recovery drill and ask which state survives cache loss and why.
+- After Module 09, inspect `publish/v1/`, manifests, and promoted params or metrics as a release boundary.
+- In Module 10, use the capstone as a repository review specimen rather than a first-contact example.
 
 The capstone should answer the question: "What does this module look like in a real DVC repository?"
 
@@ -76,10 +81,12 @@ graph TD
   capstone --> capreadme["README.md"]
 ```
 
-## Common failure modes this course is trying to prevent
+## Common failure modes this program is trying to prevent
 
 - treating paths as identity
 - comparing metrics whose meaning has drifted
 - running pipelines with undeclared parameters or environment assumptions
 - using experiments without promotion rules
+- promoting state without the evidence needed to defend it later
+- letting migration or retention policy silently damage authoritative history
 - trusting remotes and recovery stories that were never rehearsed

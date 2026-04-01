@@ -10,7 +10,7 @@ and remain trustworthy over time.
 
 ## What It Contains
 
-- A course book in `course-book/`
+- A ten-module program guide in `course-book/`
 - A documented capstone entrypoint in `capstone/`
 - Local development entrypoints in `Makefile`
 
