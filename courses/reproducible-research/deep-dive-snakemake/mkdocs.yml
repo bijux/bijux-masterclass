@@ -21,10 +21,6 @@ plugins:
   - minify:
       minify_html: true
 
-markdown_extensions:
-  - footnotes
-  - tables
-
 nav:
   - Home: index.md
   - Modules:

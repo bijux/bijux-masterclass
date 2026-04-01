@@ -18,10 +18,6 @@ plugins:
   - macros:
       include_dir: .
 
-markdown_extensions:
-  - footnotes
-  - tables
-
 nav:
   - Home: index.md
   - Course Outline: module-00.md
