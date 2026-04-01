@@ -6,19 +6,20 @@ so new courses can be added without duplicating repo-level setup.
 
 ## Repository Layout
 
-```text
-.
-├── courses/
-│   ├── reproducible-research/
-│   │   ├── deep-dive-make/
-│   │   └── deep-dive-snakemake/
-│   └── python-programming/
-│       ├── python-functional-programming/
-│       └── python-meta-programming/
-├── docs/
-├── Makefile
-├── mkdocs.yml
-└── README.md
+```mermaid
+graph TD
+  root["deep-dive-series/"]
+  root --> courses["courses/"]
+  root --> docs["docs/"]
+  root --> makefile["Makefile"]
+  root --> mkdocs["mkdocs.yml"]
+  root --> readme["README.md"]
+  courses --> research["reproducible-research/"]
+  courses --> python["python-programming/"]
+  research --> make["deep-dive-make/"]
+  research --> snakemake["deep-dive-snakemake/"]
+  python --> functional["python-functional-programming/"]
+  python --> meta["python-meta-programming/"]
 ```
 
 ## Course Families

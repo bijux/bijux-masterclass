@@ -37,19 +37,20 @@ This module uses a tiny workflow that exercises: **profiles**, **executor plugin
 
 ### Golden layout (pre-run)
 
-```
-.
-├── Snakefile
-├── profiles
-│   ├── local
-│   │   └── config.v9+.yaml
-│   └── slurm
-│       └── config.v9+.yaml
-├── scripts
-│   ├── flaky_once.py
-│   ├── poison.py
-│   └── atomic_writer.py
-└── results
+```mermaid
+graph TD
+  lab["lab/"]
+  lab --> snakefile["Snakefile"]
+  lab --> profiles["profiles/"]
+  lab --> scripts["scripts/"]
+  lab --> results["results/"]
+  profiles --> local["local/"]
+  profiles --> slurm["slurm/"]
+  local --> localConfig["config.v9+.yaml"]
+  slurm --> slurmConfig["config.v9+.yaml"]
+  scripts --> flaky["flaky_once.py"]
+  scripts --> poison["poison.py"]
+  scripts --> atomic["atomic_writer.py"]
 ```
 
 ### Golden “commissioning” command sequence

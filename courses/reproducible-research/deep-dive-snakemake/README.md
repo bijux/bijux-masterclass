@@ -94,19 +94,20 @@ Successful completion confirms the workflow's contract on your system.
 
 ## Repository layout
 
-```text
-.
-├── course-book/              # Course-book source (MkDocs)
-├── mkdocs.yml                # Documentation configuration
-├── snakemake-capstone/       # End-to-end Snakemake reference workflow
-│   ├── Snakefile
-│   ├── config/
-│   ├── workflow/
-│   └── ...
-├── .github/workflows/        # CI + Pages automation
-├── Makefile                  # Unified entrypoints for local use and CI
-├── LICENSE
-└── README.md
+```mermaid
+graph TD
+  root["deep-dive-snakemake/"]
+  root --> book["course-book/"]
+  root --> mkdocs["mkdocs.yml"]
+  root --> capstone["snakemake-capstone/"]
+  root --> workflows[".github/workflows/"]
+  root --> makefile["Makefile"]
+  root --> license["LICENSE"]
+  root --> readme["README.md"]
+  capstone --> snakefile["Snakefile"]
+  capstone --> config["config/"]
+  capstone --> workflow["workflow/"]
+  capstone --> more["..."]
 ```
 
 [Back to top](#top)

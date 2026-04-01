@@ -25,10 +25,11 @@ semantics, strong engineering contracts, and maintainable abstractions.
 
 ## Repository Layout
 
-```text
-courses/
-  reproducible-research/
-  python-programming/
+```mermaid
+graph TD
+  courses["courses/"]
+  courses --> research["reproducible-research/"]
+  courses --> python["python-programming/"]
 ```
 
 ## Working Locally

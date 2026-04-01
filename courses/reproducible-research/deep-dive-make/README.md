@@ -82,27 +82,28 @@ If `selftest` passes, you’ve validated the capstone’s contract on your machi
 
 ## Repository layout
 
-```text
-.
-├── course-book/         # Course-book source (MkDocs)
-│   ├── module-00.md
-│   ├── module-01.md
-│   ├── module-02.md
-│   ├── module-03.md
-│   ├── module-04.md
-│   └── module-05.md
-├── make-capstone/        # Executable reference build + tests
-│   ├── Makefile
-│   ├── mk/               # Modularized make logic (contracts, rules, stamps, macros)
-│   ├── src/
-│   ├── include/
-│   ├── scripts/
-│   ├── tests/
-│   └── repro/
-├── .github/workflows/
-│   └── ci.yaml
-├── LICENSE
-└── README.md
+```mermaid
+graph TD
+  root["deep-dive-make/"]
+  root --> book["course-book/"]
+  root --> capstone["make-capstone/"]
+  root --> workflows[".github/workflows/"]
+  root --> license["LICENSE"]
+  root --> readme["README.md"]
+  book --> m00["module-00.md"]
+  book --> m01["module-01.md"]
+  book --> m02["module-02.md"]
+  book --> m03["module-03.md"]
+  book --> m04["module-04.md"]
+  book --> m05["module-05.md"]
+  capstone --> capMakefile["Makefile"]
+  capstone --> mk["mk/"]
+  capstone --> src["src/"]
+  capstone --> include["include/"]
+  capstone --> scripts["scripts/"]
+  capstone --> tests["tests/"]
+  capstone --> repro["repro/"]
+  workflows --> ci["ci.yaml"]
 ```
 
 [Back to top](#top)

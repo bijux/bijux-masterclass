@@ -105,17 +105,18 @@ Internal directories (`results/`, `logs/`, `benchmarks/`, `.snakemake/`) are not
 
 ## Repository Layout
 
-```text
-.
-├── Snakefile                  # Top-level orchestration and targets
-├── workflow/                  # Rule modules and publishing logic
-├── src/                       # Python package for workflow steps
-├── tests/                     # Unit tests for Python components
-├── config/                    # config.yaml + schema.yaml
-├── profiles/                  # Execution profiles (local, CI, cluster patterns)
-├── data/                      # Toy inputs (FASTQs, reference panel)
-├── FILE_API.md                # Published artifact contract
-└── Makefile                   # Quality gates and entrypoints
+```mermaid
+graph TD
+  root["snakemake-capstone/"]
+  root --> snakefile["Snakefile"]
+  root --> workflow["workflow/"]
+  root --> src["src/"]
+  root --> tests["tests/"]
+  root --> config["config/"]
+  root --> profiles["profiles/"]
+  root --> data["data/"]
+  root --> fileApi["FILE_API.md"]
+  root --> makefile["Makefile"]
 ```
 
 Runtime-generated:

@@ -633,21 +633,22 @@ Your performance changes are real only if you can show:
 
 Create this structure (exact):
 
-```
-.
-├── Snakefile
-├── config
-│   └── samples.tsv
-├── data
-│   ├── items.txt
-│   └── reads
-│       ├── s1_R1.txt
-│       ├── s1_R2.txt
-│       ├── s2_R1.txt
-│       └── s2_R2.txt
-└── workflow
-    └── envs
-        └── py.yaml
+```mermaid
+graph TD
+  lab["lab/"]
+  lab --> snakefile["Snakefile"]
+  lab --> config["config/"]
+  lab --> data["data/"]
+  lab --> workflow["workflow/"]
+  config --> samples["samples.tsv"]
+  data --> items["items.txt"]
+  data --> reads["reads/"]
+  reads --> s1r1["s1_R1.txt"]
+  reads --> s1r2["s1_R2.txt"]
+  reads --> s2r1["s2_R1.txt"]
+  reads --> s2r2["s2_R2.txt"]
+  workflow --> envs["envs/"]
+  envs --> py["py.yaml"]
 ```
 
 Populate:

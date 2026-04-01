@@ -82,22 +82,23 @@ Core mechanics:
 ---
 ## Architecture
 The Makefiles are intentionally layered so the design stays readable under growth:
-```text
-make-capstone/
-├── Makefile        # Entry point: public targets + includes
-├── mk/             # Build mechanics, separated by responsibility
-│ ├── common.mk     # toolchain defaults and shared configuration
-│ ├── macros.mk     # reusable primitives (atomic publish, helpers)
-│ ├── objects.mk    # discovery and object graph construction
-│ ├── stamps.mk     # modeled hidden inputs (tools/flags/env)
-│ ├── contract.mk   # selftests, gates, and invariants
-│ └── rules_eval.mk # quarantined eval patterns (opt-in)
-├── src/            # C sources (including dynamic/ discovery)
-├── include/        # stable headers
-├── scripts/        # generators (e.g., generated headers)
-├── tests/          # runtime assertions + build invariants harness
-├── repro/          # intentionally broken cases with fixes
-└── thirdparty/     # stub boundary for external integration
+```mermaid
+graph TD
+  capstone["make-capstone/"]
+  capstone --> makefile["Makefile"]
+  capstone --> mk["mk/"]
+  capstone --> src["src/"]
+  capstone --> include["include/"]
+  capstone --> scripts["scripts/"]
+  capstone --> tests["tests/"]
+  capstone --> repro["repro/"]
+  capstone --> thirdparty["thirdparty/"]
+  mk --> common["common.mk"]
+  mk --> macros["macros.mk"]
+  mk --> objects["objects.mk"]
+  mk --> stamps["stamps.mk"]
+  mk --> contract["contract.mk"]
+  mk --> rulesEval["rules_eval.mk"]
 ```
 The intent is to model a “real” build in miniature: the same failure modes show up, but the surface area stays small enough to audit.  
 [Back to top](#top)

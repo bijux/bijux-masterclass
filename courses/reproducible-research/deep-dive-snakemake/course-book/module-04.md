@@ -52,34 +52,35 @@ You will have:
 
 ### Golden layout
 
-```
-.
-├── Snakefile
-├── Snakefile.reference
-├── config
-│   ├── config.yaml
-│   ├── config.schema.yaml
-│   └── schemas
-│       ├── ref.schema.yaml
-│       └── broken.schema.yaml
-├── data
-│   ├── A.txt
-│   └── B.txt
-├── modules
-│   └── provider
-│       └── Snakefile
-├── workflow
-│   ├── contracts
-│   │   └── FILE_API.md
-│   └── rules
-│       ├── consumer.smk
-│       ├── entropy.smk
-│       └── resources.smk
-├── profiles
-│   └── local
-│       └── config.v9+.yaml
-└── ci
-    └── gate.sh
+```mermaid
+graph TD
+  lab["lab/"]
+  lab --> snakefile["Snakefile"]
+  lab --> reference["Snakefile.reference"]
+  lab --> config["config/"]
+  lab --> data["data/"]
+  lab --> modules["modules/"]
+  lab --> workflow["workflow/"]
+  lab --> profiles["profiles/"]
+  lab --> ci["ci/"]
+  config --> configYaml["config.yaml"]
+  config --> schemaYaml["config.schema.yaml"]
+  config --> schemas["schemas/"]
+  schemas --> refSchema["ref.schema.yaml"]
+  schemas --> brokenSchema["broken.schema.yaml"]
+  data --> a["A.txt"]
+  data --> b["B.txt"]
+  modules --> provider["provider/"]
+  provider --> providerSnakefile["Snakefile"]
+  workflow --> contracts["contracts/"]
+  workflow --> rules["rules/"]
+  contracts --> fileApi["FILE_API.md"]
+  rules --> consumer["consumer.smk"]
+  rules --> entropy["entropy.smk"]
+  rules --> resources["resources.smk"]
+  profiles --> local["local/"]
+  local --> profileConfig["config.v9+.yaml"]
+  ci --> gate["gate.sh"]
 ```
 
 ### `profiles/local/config.v9+.yaml`
