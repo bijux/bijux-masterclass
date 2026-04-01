@@ -1,6 +1,6 @@
 # Deep Dive DVC
 
-Deep Dive DVC is a course-book and future capstone for reasoning about data and pipeline state in reproducible research systems. It focuses on DVC as the layer that gives datasets, parameters, experiments, and recovery procedures durable mechanical contracts.
+Deep Dive DVC is a course-book and executable capstone for reasoning about data and pipeline state in reproducible research systems. It focuses on DVC as the layer that gives datasets, parameters, experiments, and recovery procedures durable mechanical contracts.
 
 Within the broader `reproducible-research` family, this course covers the question: what exactly is the state a system claims to reproduce?
 
@@ -15,7 +15,7 @@ Within the broader `reproducible-research` family, this course covers the questi
 ## Course structure
 
 - `course-book/` contains the published course material.
-- `capstone/` is reserved for the reference repository that will exercise the course contracts end to end.
+- `capstone/` contains the reference repository that exercises the course contracts end to end.
 - `Makefile` exposes stable course-level entrypoints inside the monorepo.
 
 ## Quickstart
@@ -31,6 +31,14 @@ Run the course-level verification target:
 ```bash
 make COURSE=reproducible-research/deep-dive-dvc test
 ```
+
+Run the capstone directly:
+
+```bash
+make -C courses/reproducible-research/deep-dive-dvc/capstone confirm
+```
+
+That confirmation suite performs `dvc repro`, runs the Python tests, pushes artifacts to the local training remote, deletes workspace state and cache, and restores the publish boundary via `dvc pull` plus `dvc checkout`.
 
 ## Module map
 

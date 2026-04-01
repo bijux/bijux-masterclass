@@ -31,9 +31,9 @@ This course owns the third layer. Its concern is not just data versioning in the
 
 This is not a generic DVC command reference and not an ML tutorial. It is a correctness-first course about using DVC to make state explicit enough that teams can reason about it, verify it, and recover it.
 
-## What the capstone will become
+## What the capstone proves
 
-`capstone/` is reserved for a reference repository that will make the course executable. The target shape is a small but realistic DVC-driven project with:
+`capstone/` is the executable reference repository for this course. It is a small but real DVC-driven project with:
 
 - tracked datasets and remotes
 - a truthful `dvc.yaml` pipeline
@@ -41,7 +41,7 @@ This is not a generic DVC command reference and not an ML tutorial. It is a corr
 - experiment workflows
 - CI-backed recovery checks
 
-Until that reference project lands, the course-book is the authoritative material.
+The concrete implementation models incident escalation risk, publishes a stable `publish/v1/` contract, and rehearses state recovery by restoring the workspace from a DVC remote after cache loss.
 
 ## Reading path
 
