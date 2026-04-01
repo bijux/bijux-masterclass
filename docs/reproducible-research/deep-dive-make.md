@@ -5,7 +5,7 @@ than as an ad hoc scripting surface.
 
 ## Repository Location
 
-`courses/reproducible-research/deep-dive-make`
+`programs/reproducible-research/deep-dive-make`
 
 ## What It Contains
 
@@ -16,6 +16,6 @@ than as an ad hoc scripting surface.
 ## Local Commands
 
 ```bash
-make COURSE=reproducible-research/deep-dive-make docs-build
-make COURSE=reproducible-research/deep-dive-make test
+make PROGRAM=reproducible-research/deep-dive-make docs-build
+make PROGRAM=reproducible-research/deep-dive-make test
 ```

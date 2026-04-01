@@ -1,6 +1,6 @@
 # Reproducible Research
 
-This family contains courses about build graphs, workflow execution, state
+This family contains programs about build graphs, workflow execution, state
 identity, publishing, verification, and operational reproducibility.
 
 ## Program Map
@@ -20,27 +20,27 @@ Current repository coverage:
 - `deep-dive-snakemake` covers workflow-scale orchestration.
 - `deep-dive-dvc` covers state identity, experiment lineage, and recovery.
 
-## Included Courses
+## Included Programs
 
 ### Deep Dive Make
 
-- Location: `courses/reproducible-research/deep-dive-make`
+- Location: `programs/reproducible-research/deep-dive-make`
 - Focus: GNU Make as a truthful, parallel-safe build graph engine
 - Local entrypoints:
-  - `make COURSE=reproducible-research/deep-dive-make course-help`
-  - `make COURSE=reproducible-research/deep-dive-make test`
+  - `make PROGRAM=reproducible-research/deep-dive-make program-help`
+  - `make PROGRAM=reproducible-research/deep-dive-make test`
 
 ### Deep Dive Snakemake
 
-- Location: `courses/reproducible-research/deep-dive-snakemake`
+- Location: `programs/reproducible-research/deep-dive-snakemake`
 - Focus: Snakemake as a reproducible workflow engine with explicit contracts
 - Local entrypoints:
-  - `make COURSE=reproducible-research/deep-dive-snakemake course-help`
+  - `make PROGRAM=reproducible-research/deep-dive-snakemake program-help`
 
 ### Deep Dive DVC
 
-- Location: `courses/reproducible-research/deep-dive-dvc`
+- Location: `programs/reproducible-research/deep-dive-dvc`
 - Focus: DVC as the contract layer for data identity, experiment lineage, and recoverability
 - Local entrypoints:
-  - `make COURSE=reproducible-research/deep-dive-dvc course-help`
-  - `make COURSE=reproducible-research/deep-dive-dvc docs-build`
+  - `make PROGRAM=reproducible-research/deep-dive-dvc program-help`
+  - `make PROGRAM=reproducible-research/deep-dive-dvc docs-build`

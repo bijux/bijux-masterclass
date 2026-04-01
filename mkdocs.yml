@@ -1,10 +1,10 @@
 INHERIT: mkdocs.shared.yml
 
-site_name: Deep Dive Series
-site_description: Unified catalog for the Deep Dive course collection.
+site_name: Bijux Masterclass
+site_description: Unified catalog for the Bijux Masterclass program collection.
 
 docs_dir: docs
-site_dir: artifacts/site/deep-dive-series
+site_dir: artifacts/site/bijux-masterclass
 
 nav:
   - Home: index.md

@@ -1,0 +1,86 @@
+INHERIT: ../../../mkdocs.shared.yml
+
+site_name: Python Object-Oriented Programming
+site_description: >-
+  Correctness-first deep dive into object-oriented Python: object semantics, explicit
+  responsibilities, state design, aggregates, and evolvable collaboration boundaries.
+site_url: https://bijux.io/bijux-masterclass/python-programming/python-object-oriented-programming/
+
+repo_name: bijux/bijux-masterclass
+repo_url: https://github.com/bijux/bijux-masterclass
+edit_uri: edit/master/programs/python-programming/python-object-oriented-programming/course-book/
+
+docs_dir: course-book
+site_dir: ../../../artifacts/site/python-programming/python-object-oriented-programming
+
+nav:
+  - Start Here:
+      - Course Home: index.md
+      - Orientation: module-00-orientation/index.md
+      - Course Map: module-00-orientation/course-map.md
+      - Capstone Overview: capstone.md
+
+  - "Module 01: Semantic Floor":
+      - Overview: module-01-object-model/index.md
+      - Object Identity, State, and Behavior: module-01-object-model/object-identity-state-and-behavior.md
+      - Attribute Layout, Class State, and Instance State: module-01-object-model/attribute-layout-class-and-instance-state.md
+      - Construction Discipline and Invariants: module-01-object-model/construction-discipline-and-invariants.md
+      - Encapsulation, Public Surface, and Representation: module-01-object-model/encapsulation-public-surface-and-representation.md
+      - Equality, Ordering, and Hashing: module-01-object-model/equality-ordering-and-hashing.md
+      - Aliasing, Mutable Keys, and Shared State: module-01-object-model/aliasing-mutable-keys-and-shared-state.md
+      - Copying, Cloning, and Custom Semantics: module-01-object-model/copying-cloning-and-custom-semantics.md
+      - Python Data Model as Design Surface: module-01-object-model/python-data-model-as-design-surface.md
+      - When Classes Are the Wrong Tool: module-01-object-model/when-classes-are-the-wrong-tool.md
+      - "Checkpoint: Script to Object Model": module-01-object-model/refactor-script-to-object-model.md
+
+  - "Module 02: Roles and Boundaries":
+      - Overview: module-02-design-and-layering/index.md
+      - Responsibilities, Cohesion, and Object Smells: module-02-design-and-layering/responsibilities-cohesion-and-object-smells.md
+      - Composition over Inheritance: module-02-design-and-layering/composition-over-inheritance.md
+      - Value Objects versus Entities: module-02-design-and-layering/value-objects-versus-entities.md
+      - Semantic Types over Raw Primitives: module-02-design-and-layering/semantic-types-over-raw-primitives.md
+      - Services versus Stateful Entities: module-02-design-and-layering/services-versus-stateful-entities.md
+      - Domain, Application, and Infrastructure Layers: module-02-design-and-layering/domain-application-and-infrastructure-layers.md
+      - Inheritance and Fragile Base Classes: module-02-design-and-layering/inheritance-and-fragile-base-classes.md
+      - Template Method and Small Hierarchies: module-02-design-and-layering/template-method-and-small-hierarchies.md
+      - Duck Typing, ABCs, and Protocols: module-02-design-and-layering/duck-typing-abcs-and-protocols.md
+      - "Checkpoint: Layered Design with Small Hierarchies": module-02-design-and-layering/refactor-layered-design-with-small-hierarchies.md
+
+  - "Module 03: State and Lifecycles":
+      - Overview: module-03-state-and-typestate/index.md
+      - Properties and Computed Attributes: module-03-state-and-typestate/properties-and-computed-attributes.md
+      - Descriptor Mental Model: module-03-state-and-typestate/descriptor-mental-model.md
+      - Dataclasses for Values and Entities: module-03-state-and-typestate/dataclasses-for-values-and-entities.md
+      - Dataclass Inheritance, Defaults, Slots, and Frozen Pitfalls: module-03-state-and-typestate/dataclass-inheritance-defaults-slots-and-frozen-pitfalls.md
+      - Post-Init Validation and Invariants: module-03-state-and-typestate/post-init-validation-and-invariants.md
+      - Boundary Validation Libraries: module-03-state-and-typestate/boundary-validation-libraries.md
+      - Null Optionals and Partial Objects: module-03-state-and-typestate/null-optionals-and-partial-objects.md
+      - Lifecycle and Typestate: module-03-state-and-typestate/lifecycle-and-typestate.md
+      - Typestate in Python APIs: module-03-state-and-typestate/typestate-in-python-apis.md
+      - "Checkpoint: Dataclasses, Null Safety, and Typestate": module-03-state-and-typestate/refactor-dataclasses-null-safety-and-typestate.md
+
+  - "Module 04: Collaboration and Aggregates":
+      - Overview: module-04-aggregates-and-collaboration/index.md
+      - Aggregates and Consistency Boundaries: module-04-aggregates-and-collaboration/aggregates-and-consistency-boundaries.md
+      - Cross-Object Invariants: module-04-aggregates-and-collaboration/cross-object-invariants.md
+      - Aggregate Lifecycle and Failure Semantics: module-04-aggregates-and-collaboration/aggregate-lifecycle-and-failure-semantics.md
+      - Domain Events without Event Sourcing: module-04-aggregates-and-collaboration/domain-events-without-event-sourcing.md
+      - In-Process Event Bus: module-04-aggregates-and-collaboration/in-process-event-bus.md
+      - Projections, Read Models, and Debug Views: module-04-aggregates-and-collaboration/projections-read-models-and-debug-views.md
+      - Strategy and Policy Objects: module-04-aggregates-and-collaboration/strategy-and-policy-objects.md
+      - Adapters and Bridges: module-04-aggregates-and-collaboration/adapters-and-bridges.md
+      - Collaboration Surfaces without Tangle: module-04-aggregates-and-collaboration/collaboration-surfaces-without-tangle.md
+      - "Checkpoint: Aggregates, Events, and Strategies": module-04-aggregates-and-collaboration/refactor-aggregates-events-and-strategies.md
+
+  - "Module 05: Operational Survival":
+      - Overview: module-05-resources-and-evolution/index.md
+      - Resource Ownership and Context Managers: module-05-resources-and-evolution/resource-ownership-and-context-managers.md
+      - Unit of Work and Failure Handling: module-05-resources-and-evolution/unit-of-work-and-failure-handling.md
+      - Deterministic Cleanup and Leak Prevention: module-05-resources-and-evolution/deterministic-cleanup-and-leak-prevention.md
+      - Idempotent Operations and Safe Retries: module-05-resources-and-evolution/idempotent-operations-and-safe-retries.md
+      - Logging and Error Propagation: module-05-resources-and-evolution/logging-and-error-propagation.md
+      - Public versus Internal Modules: module-05-resources-and-evolution/public-versus-internal-modules.md
+      - Design Smells and Refactoring Patterns: module-05-resources-and-evolution/design-smells-and-refactoring-patterns.md
+      - Copying and Versioning over Time: module-05-resources-and-evolution/copying-and-versioning-over-time.md
+      - Compatibility Contracts and Evolution: module-05-resources-and-evolution/compatibility-contracts-and-evolution.md
+      - "Checkpoint: New Feature without Breaking Behavior": module-05-resources-and-evolution/refactor-new-feature-without-breaking-behavior.md

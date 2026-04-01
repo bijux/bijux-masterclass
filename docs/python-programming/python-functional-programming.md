@@ -6,7 +6,7 @@ functional design in production Python.
 
 ## Repository Location
 
-`courses/python-programming/python-functional-programming`
+`programs/python-programming/python-functional-programming`
 
 ## What It Contains
 
@@ -17,6 +17,6 @@ functional design in production Python.
 ## Local Commands
 
 ```bash
-make COURSE=python-programming/python-functional-programming docs-build
-make COURSE=python-programming/python-functional-programming test
+make PROGRAM=python-programming/python-functional-programming docs-build
+make PROGRAM=python-programming/python-functional-programming test
 ```

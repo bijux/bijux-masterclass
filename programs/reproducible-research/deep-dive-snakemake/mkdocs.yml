@@ -1,0 +1,36 @@
+INHERIT: ../../../mkdocs.shared.yml
+
+site_name: Deep Dive Snakemake
+site_description: Course book and reference workflow patterns for Snakemake.
+site_author: Bijan Mousavi <bijan@bijux.io>
+site_url: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-snakemake/
+repo_name: bijux/bijux-masterclass
+repo_url: https://github.com/bijux/bijux-masterclass
+edit_uri: edit/master/programs/reproducible-research/deep-dive-snakemake/course-book/
+
+docs_dir: course-book
+site_dir: ../../../artifacts/site/reproducible-research/deep-dive-snakemake
+
+plugins:
+  - search
+  - macros:
+      include_dir: .
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+  - minify:
+      minify_html: true
+
+nav:
+  - Start Here:
+      - Course Home: index.md
+      - Orientation: module-00.md
+      - Capstone Overview: readme-capstone.md
+  - "Module 01: File Contracts":
+      - Overview: module-01.md
+  - "Module 02: Dynamic DAGs":
+      - Overview: module-02.md
+  - "Module 03: Production Operation":
+      - Overview: module-03.md
+  - "Module 04: Scaling Boundaries":
+      - Overview: module-04.md

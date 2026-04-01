@@ -1,11 +1,11 @@
-# Deep Dive Series
+# Bijux Masterclass
 
-The Deep Dive Series is the umbrella catalog for a growing set of
-correctness-first courses. The repository keeps all course histories in one
-place and organizes them by long-lived subject area so new courses can be
+The Bijux Masterclass is the umbrella catalog for a growing set of
+correctness-first programs. The repository keeps all program histories in one
+place and organizes them by long-lived subject area so new programs can be
 added without inventing a new repository shape each time.
 
-## Course Families
+## Program Families
 
 ### Reproducible Research
 
@@ -29,7 +29,7 @@ semantics, strong engineering contracts, and maintainable abstractions.
 
 ```mermaid
 graph TD
-  courses["courses/"]
+  courses["programs/"]
   courses --> research["reproducible-research/"]
   courses --> python["python-programming/"]
 ```
@@ -48,9 +48,9 @@ Serve the series site locally:
 make series-docs-serve
 ```
 
-Work with a specific course:
+Work with a specific program:
 
 ```bash
-make COURSE=reproducible-research/deep-dive-make course-help
-make COURSE=python-programming/python-functional-programming test
+make PROGRAM=reproducible-research/deep-dive-make program-help
+make PROGRAM=python-programming/python-functional-programming test
 ```

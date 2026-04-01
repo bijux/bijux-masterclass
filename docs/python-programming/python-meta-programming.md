@@ -5,7 +5,7 @@ metaclasses through traceable runtime behavior instead of folklore.
 
 ## Repository Location
 
-`courses/python-programming/python-meta-programming`
+`programs/python-programming/python-meta-programming`
 
 ## What It Contains
 
@@ -17,6 +17,6 @@ metaclasses through traceable runtime behavior instead of folklore.
 ## Local Commands
 
 ```bash
-make COURSE=python-programming/python-meta-programming docs-build
-make COURSE=python-programming/python-meta-programming test
+make PROGRAM=python-programming/python-meta-programming docs-build
+make PROGRAM=python-programming/python-meta-programming test
 ```

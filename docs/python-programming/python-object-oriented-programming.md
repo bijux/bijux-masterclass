@@ -5,7 +5,7 @@ evolution as explicit engineering contracts rather than loose style choices.
 
 ## Repository Location
 
-`courses/python-programming/python-object-oriented-programming`
+`programs/python-programming/python-object-oriented-programming`
 
 ## What It Contains
 
@@ -17,6 +17,6 @@ evolution as explicit engineering contracts rather than loose style choices.
 ## Local Commands
 
 ```bash
-make COURSE=python-programming/python-object-oriented-programming docs-build
-make COURSE=python-programming/python-object-oriented-programming test
+make PROGRAM=python-programming/python-object-oriented-programming docs-build
+make PROGRAM=python-programming/python-object-oriented-programming test
 ```

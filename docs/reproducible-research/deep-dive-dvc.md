@@ -6,7 +6,7 @@ and remain trustworthy over time.
 
 ## Repository Location
 
-`courses/reproducible-research/deep-dive-dvc`
+`programs/reproducible-research/deep-dive-dvc`
 
 ## What It Contains
 
@@ -17,6 +17,6 @@ and remain trustworthy over time.
 ## Local Commands
 
 ```bash
-make COURSE=reproducible-research/deep-dive-dvc docs-build
-make COURSE=reproducible-research/deep-dive-dvc test
+make PROGRAM=reproducible-research/deep-dive-dvc docs-build
+make PROGRAM=reproducible-research/deep-dive-dvc test
 ```

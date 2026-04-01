@@ -1,0 +1,31 @@
+INHERIT: ../../../mkdocs.shared.yml
+
+site_name: Python Meta-Programming
+site_description: >-
+  A correctness-first course-book on Python metaprogramming: introspection, decorators,
+  descriptors, and metaclasses—without magical handwaving.
+site_url: https://bijux.io/bijux-masterclass/python-programming/python-meta-programming/
+
+repo_name: bijux/bijux-masterclass
+repo_url: https://github.com/bijux/bijux-masterclass
+edit_uri: edit/master/programs/python-programming/python-meta-programming/course-book/
+
+docs_dir: course-book
+site_dir: ../../../artifacts/site/python-programming/python-meta-programming
+
+nav:
+  - Start Here:
+      - Course Home: index.md
+      - Orientation: module-00.md
+      - Capstone Guide: capstone.md
+  - "Module 01: Everything Is an Object": module-01.md
+  - "Module 02: Basic Introspection": module-02.md
+  - "Module 03: The inspect Module": module-03.md
+  - "Module 04: Decorators": module-04.md
+  - "Module 05: Decorator Patterns and Typing": module-05.md
+  - "Module 06: Class Decorators and the Property Bridge": module-06.md
+  - "Module 07: Descriptors": module-07.md
+  - "Module 08: Descriptors for Framework-Grade Patterns": module-08.md
+  - "Module 09: Metaclasses": module-09.md
+  - "Module 10: Responsibility and Runtime Boundaries": module-10.md
+  - "Module 11: Outro": module-11.md

@@ -5,7 +5,7 @@ safe dynamic behavior, publishable artifacts, and reproducible execution.
 
 ## Repository Location
 
-`courses/reproducible-research/deep-dive-snakemake`
+`programs/reproducible-research/deep-dive-snakemake`
 
 ## What It Contains
 
@@ -16,5 +16,5 @@ safe dynamic behavior, publishable artifacts, and reproducible execution.
 ## Local Commands
 
 ```bash
-make COURSE=reproducible-research/deep-dive-snakemake course-help
+make PROGRAM=reproducible-research/deep-dive-snakemake program-help
 ```

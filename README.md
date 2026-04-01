@@ -1,15 +1,15 @@
-# Deep Dive Series
+# Bijux Masterclass
 
-This repository is the permanent home for the Deep Dive course collection.
-Each course keeps its own full git history while living inside one repository,
-so new courses can be added without duplicating repo-level setup.
+This repository is the permanent home for the Bijux Masterclass program collection.
+Each program keeps its own full git history while living inside one repository,
+so new programs can be added without duplicating repo-level setup.
 
 ## Repository Layout
 
 ```mermaid
 graph TD
-  root["deep-dive-series/"]
-  root --> courses["courses/"]
+  root["bijux-masterclass/"]
+  root --> courses["programs/"]
   root --> docs["docs/"]
   root --> makefile["Makefile"]
   root --> mkdocs["mkdocs.yml"]
@@ -24,7 +24,7 @@ graph TD
   python --> meta["python-meta-programming/"]
 ```
 
-## Course Families
+## Program Families
 
 - `reproducible-research`
   - `deep-dive-make`
@@ -35,7 +35,7 @@ graph TD
   - `python-functional-programming`
   - `python-meta-programming`
 
-## Working With Courses
+## Working With Programs
 
 List the available families:
 
@@ -43,23 +43,23 @@ List the available families:
 make families
 ```
 
-List the available courses:
+List the available programs:
 
 ```bash
-make courses
+make programs
 ```
 
-Run a common target against a selected course:
+Run a common target against a selected program:
 
 ```bash
-make COURSE=reproducible-research/deep-dive-make docs-build
-make COURSE=python-programming/python-functional-programming test
+make PROGRAM=reproducible-research/deep-dive-make docs-build
+make PROGRAM=python-programming/python-functional-programming test
 ```
 
-Show a course's own Make targets:
+Show a program's own Make targets:
 
 ```bash
-make COURSE=reproducible-research/deep-dive-snakemake course-help
+make PROGRAM=reproducible-research/deep-dive-snakemake program-help
 ```
 
 Build the series site:
