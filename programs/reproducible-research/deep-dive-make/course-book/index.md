@@ -65,7 +65,7 @@ You are expected to distrust claims that cannot be checked. Where possible, the 
 | 09 | Performance and Incident Response | Measurement, observability, build triage, and operational runbooks. |
 | 10 | Mastery | Migration strategy, governance, anti-pattern recognition, and tool-boundary judgment. |
 
-Syllabus: [`module-00.md`](module-00)  
+Syllabus: [`module-00.md`](module-00.md)  
 [Back to top](#top)
 
 ---
@@ -94,7 +94,7 @@ Older versions may work for basic modules but lack key parallel-safe primitives.
 ---
 ## How to read it
 Recommended path (best learning outcomes):
-1. Start at the syllabus: [`module-00.md`](module-00)
+1. Start at the syllabus: [`module-00.md`](module-00.md)
 2. Read modules in order (01 → 10)
 3. After each advanced module, apply at least one pattern in the capstone and re-run selftests
 If you are here for incident response or reference:
