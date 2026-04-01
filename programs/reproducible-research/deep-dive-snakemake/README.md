@@ -1,6 +1,6 @@
 # Deep Dive Snakemake
 
-A course-book and executable capstone that teaches **Snakemake as a workflow engine**—not merely a collection of rules and scripts. The objective is to enable the creation of workflows that feature **explicit contracts, safe dynamic behavior, atomic outputs, reproducible execution, and built-in validation**.
+A program guide and executable capstone that teaches **Snakemake as a workflow engine**—not merely a collection of rules and scripts. The objective is to enable the creation of workflows that feature **explicit contracts, safe dynamic behavior, atomic outputs, reproducible execution, and built-in validation**, from first-contact workflow design to long-lived workflow stewardship.
 
 [![Series Validation](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml/badge.svg?branch=master)](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml?query=branch%3Amaster)
 [![Snakemake](https://img.shields.io/badge/Snakemake-8.0%2B-blue?style=flat-square)](https://snakemake.readthedocs.io/en/stable/)
@@ -12,15 +12,15 @@ A course-book and executable capstone that teaches **Snakemake as a workflow eng
 
 ---
 
-## Who this course is for
+## Who this program is for
 
 - Engineers who already know basic Snakemake syntax and now need stronger workflow design judgment
+- Engineers and researchers who want a beginner-to-mastery path instead of scattered Snakemake snippets
 - Researchers and platform teams maintaining pipelines that must survive CI, shared filesystems, and long-lived change
 - Reviewers who want concrete criteria for deciding whether a workflow is robust or merely convenient
 
-## Who this course is not for
+## Who this program is not for
 
-- Absolute beginners looking for a first introduction to Snakemake syntax
 - Readers who only want isolated snippets without understanding workflow contracts
 - Teams trying to debug executor behavior before they understand their workflow semantics
 
@@ -37,13 +37,13 @@ Many Snakemake workflows function adequately in simple cases but encounter issue
 - **Reproducibility**: profiles, manifests, and integrity checks for verifiable runs.
 - **Self-validation**: wrapper-driven checks confirm correctness end-to-end.
 
-This repository offers practical guidance toward genuine mastery of Snakemake semantics: understanding its guarantees, limitations, and patterns that ensure workflows remain reliable as complexity increases.
+This repository offers a structured beginner-to-mastery path through Snakemake semantics: understanding its guarantees, limitations, and patterns that ensure workflows remain reliable as complexity increases.
 
 [Back to top](#top)
 
 ---
 
-## What you should be able to do after this course
+## What you should be able to do after this program
 
 - explain why a workflow re-runs using evidence instead of intuition
 - distinguish a truthful dynamic DAG from a workflow that only appears to work
@@ -57,16 +57,20 @@ This repository offers practical guidance toward genuine mastery of Snakemake se
 
 ## What you get
 
-### 1) The course-book
+### 1) The program guide
 
-A compact, focused handbook with practical patterns, anti-patterns, and guidance:
+A compact, focused handbook with a full 10-module progression:
 
-- explicit inputs/outputs and safe writing
-- checkpoints and dependency re-evaluation
-- configuration + schema validation
-- modular workflow composition
-- publishing, manifests, and integrity checks
-- execution profiles and reproducible runs
+- **01 — First Principles**: file contracts, targets, dry-runs, and the basic Snakemake mental model
+- **02 — Dynamic DAGs**: checkpoints, deterministic discovery, integrity, and dynamic safety
+- **03 — Production Operation**: profiles, retries, staging, and governance
+- **04 — Scaling Patterns**: modularity, interfaces, CI gates, and executor-proof semantics
+- **05 — Rule Boundaries**: scripts, wrappers, environments, and helper-code discipline
+- **06 — Publish Contracts**: versioned outputs, manifests, reports, and downstream trust
+- **07 — Workflow Architecture**: modules, file APIs, repository structure, and reuse
+- **08 — Operating Contexts**: profiles, executors, storage, and staging policy
+- **09 — Incident Response**: performance, observability, and workflow debugging under pressure
+- **10 — Mastery**: governance, migration, anti-patterns, and tool-boundary judgment
 
 Read on the website: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-snakemake/
 
@@ -125,10 +129,10 @@ Successful completion confirms the workflow's contract on your system.
 
 ---
 
-## How to study this course well
+## How to study this program well
 
 1. Start with the orientation material before reading the deeper technical modules.
-2. Work through Modules 01 to 04 in order because later workflow patterns depend on earlier file-contract discipline.
+2. Work through Modules 01 to 10 in order because later workflow patterns depend on earlier file-contract discipline.
 3. Treat each module as a design checkpoint: read the overview, then the detailed module body, then inspect the capstone for the same idea.
 4. Re-run the capstone proof targets regularly so the workflow stays executable in your head, not only in prose.
 5. Use dry-runs, summaries, and proof artifacts as learning tools, not only as debugging tools.
@@ -150,11 +154,17 @@ Successful completion confirms the workflow's contract on your system.
 
 ## Module map
 
-- `00` Orientation and study map
-- `01` File contracts, rebuild truth, and safe rule design
-- `02` Dynamic DAGs, integrity, environments, and performance patterns
-- `03` Production operation, profiles, staging, retries, and governance
-- `04` Scaling boundaries, modularity, CI gates, and executor-proof semantics
+- `00` Program outline and study map
+- `01` First principles: the file-DAG contract
+- `02` Dynamic DAGs, integrity, and deterministic discovery
+- `03` Production operation, profiles, retries, staging, and governance
+- `04` Scaling patterns, modularity, interfaces, and CI gates
+- `05` Software stacks, scripts, wrappers, and reproducible rule boundaries
+- `06` Versioned publishing, reports, and downstream workflow contracts
+- `07` Workflow architecture, modules, file APIs, and reuse
+- `08` Operating contexts: profiles, executors, storage, and staging boundaries
+- `09` Performance, observability, and workflow incident response
+- `10` Mastery: governance, migration, anti-patterns, and tool boundaries
 
 [Back to top](#top)
 

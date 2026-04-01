@@ -2,10 +2,9 @@
 
 Deep Dive Snakemake teaches workflow design as a discipline of explicit file contracts,
 deterministic planning, safe dynamic behavior, and durable operational boundaries. It is
-not about collecting more rules. It is about making workflows explainable, reproducible,
-and survivable.
+now a ten-module beginner-to-mastery program, not only a compact advanced reference.
 
-## Why this course exists
+## Why this program exists
 
 Many Snakemake resources stop too early. They explain rules, wildcards, and dry-runs,
 but they do not prepare readers for the pressure that appears later:
@@ -15,7 +14,7 @@ but they do not prepare readers for the pressure that appears later:
 - outputs that exist but are not trustworthy
 - workflows that pass once locally and then drift in CI or on shared infrastructure
 
-This course exists to close that gap.
+This program exists to close that gap.
 
 ## Reading contract
 
@@ -25,18 +24,25 @@ This is not a browse-at-random reference. The learner path is deliberate:
 2. Learn truthful file contracts before dynamic DAG behavior.
 3. Learn dynamic DAG behavior before production execution and governance.
 4. Learn production execution before scaling boundaries and CI gates.
+5. Continue into rule boundaries, publishing, architecture, operations, and mastery once the core feels stable.
 
 If you skip that order, later material will still be readable, but the trade-offs will
 feel arbitrary instead of principled.
 
 ## What each module contributes
 
-- [Module 00](module-00.md) establishes the learner contract, study strategy, and capstone map.
+- [Module 00](module-00.md) establishes the full program map and capstone relationship.
 - [Module 01](module-01.md) defines the semantic floor: file contracts, rebuild truth, wildcards, and publishing discipline.
 - [Module 02](module-02.md) explains dynamic DAGs, integrity, environments, and performance patterns.
 - [Module 03](module-03.md) turns profiles, retries, staging, and governance into operational contracts.
 - [Module 04](module-04.md) explains modularity, interface boundaries, CI gates, and executor-proof semantics.
-- [Capstone](readme-capstone.md) provides the executable reference workflow that keeps the course honest.
+- [Module 05](module-05.md) teaches software stacks, scripts, wrappers, and reproducible rule boundaries.
+- [Module 06](module-06.md) teaches versioned publishing, reports, and downstream workflow contracts.
+- [Module 07](module-07.md) teaches workflow architecture, modules, file APIs, and reusable boundaries.
+- [Module 08](module-08.md) deepens profiles, executors, storage, and staging as operating-context boundaries.
+- [Module 09](module-09.md) teaches performance, observability, and workflow incident response.
+- [Module 10](module-10.md) finishes with governance, migration, anti-patterns, and tool-boundary judgment.
+- [Capstone](readme-capstone.md) provides the executable reference workflow that keeps the program honest.
 
 ## How to use the capstone while reading
 
@@ -44,15 +50,20 @@ feel arbitrary instead of principled.
 - After Module 02, inspect the checkpoint and the way discovery is stabilized.
 - After Module 03, inspect profiles, retries, artifact verification, and proof targets.
 - After Module 04, inspect module boundaries, file APIs, and CI-style gates.
+- After Modules 05 and 06, inspect software environments, provenance, publish rules, and `publish/v1/`.
+- After Modules 07 to 09, inspect repository architecture, operating profiles, logs, benchmarks, and workflow-tour artifacts.
+- In Module 10, use the capstone as a workflow review specimen rather than a first-contact example.
 
 The capstone should function as your executable answer to “what does this rule look like in a real workflow?”
 
-## Common failure modes this course is trying to prevent
+## Common failure modes this program is trying to prevent
 
 - treating a workflow as a script rather than as a file-driven DAG
 - allowing dynamic discovery to hide moving targets or unstable plans
 - mixing workflow semantics with site policy or executor quirks
 - publishing artifacts without a stable versioned interface
+- letting helper code, environments, or wrappers mutate workflow meaning invisibly
+- allowing repository architecture or profile drift to become hidden coupling
 - trusting a workflow because it ran once rather than because its proofs are explicit
 
 ## Expected learner rhythm

@@ -9,7 +9,7 @@ safe dynamic behavior, publishable artifacts, and reproducible execution.
 
 ## What It Contains
 
-- A course book in `course-book/`
+- A ten-module program guide in `course-book/`
 - A reference workflow in `capstone/`
 - Local development entrypoints in `Makefile`
 

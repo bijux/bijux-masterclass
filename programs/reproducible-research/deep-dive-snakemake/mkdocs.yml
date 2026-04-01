@@ -1,7 +1,7 @@
 INHERIT: ../../../mkdocs.shared.yml
 
 site_name: Deep Dive Snakemake
-site_description: Course book and reference workflow patterns for Snakemake.
+site_description: Ten-module Snakemake program guide and reference workflow from beginner to mastery.
 site_author: Bijan Mousavi <bijan@bijux.io>
 site_url: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-snakemake/
 repo_name: bijux/bijux-masterclass
@@ -24,7 +24,7 @@ plugins:
 nav:
   - Start Here:
       - Course Home: index.md
-      - Orientation: module-00.md
+      - Program Outline: module-00.md
       - Capstone Overview: readme-capstone.md
   - "Module 01: File Contracts":
       - Overview: module-01.md
@@ -34,3 +34,15 @@ nav:
       - Overview: module-03.md
   - "Module 04: Scaling Boundaries":
       - Overview: module-04.md
+  - "Module 05: Rule Boundaries":
+      - Overview: module-05.md
+  - "Module 06: Publish Contracts":
+      - Overview: module-06.md
+  - "Module 07: Workflow Architecture":
+      - Overview: module-07.md
+  - "Module 08: Operating Contexts":
+      - Overview: module-08.md
+  - "Module 09: Incident Response":
+      - Overview: module-09.md
+  - "Module 10: Mastery":
+      - Overview: module-10.md
