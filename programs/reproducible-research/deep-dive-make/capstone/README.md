@@ -1,6 +1,6 @@
 <a id="top"></a>
-# Deep Dive Make: The Course-Book Capstone
-The capstone is the executable reference build for **Deep Dive Make**: a compact C project whose Makefiles are written to **prove**, not merely claim, production-grade properties—**truthful DAGs, atomic publication, parallel safety, determinism, and self-testing invariants**. It is the practical companion to the course-book in [`course-book/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/course-book): every major pattern in the text has a living implementation here, with repros for common failure modes and CI-enforced verification.
+# Deep Dive Make: Program Capstone
+The capstone is the executable reference build for **Deep Dive Make**: a compact C project whose Makefiles are written to **prove**, not merely claim, production-grade properties—**truthful DAGs, atomic publication, parallel safety, determinism, and self-testing invariants**. It is the practical companion to the program guide in [`course-book/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/course-book): every major pattern in the text has a living implementation here, with repros for common failure modes and CI-enforced verification.
 
 [![Series Validation](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml/badge.svg?branch=master)](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml?query=branch%3Amaster)
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
@@ -16,10 +16,11 @@ The capstone is the executable reference build for **Deep Dive Make**: a compact
 - [Quick start](#quick-start)
 - [Public targets](#public-targets)
 - [What it builds](#what-it-builds)
+- [Where it fits in the program](#where-it-fits-in-the-program)
 - [Architecture](#architecture)
 - [Platform notes](#platform-notes)
 - [Repro pack](#repro-pack)
-- [Links into the course-book](#links-into-the-course-book)
+- [Links into the program guide](#links-into-the-program-guide)
 - [Contributing](#contributing)
 - [License](#license)
 ---
@@ -80,6 +81,23 @@ Core mechanics:
 [Back to top](#top)
 
 ---
+## Where it fits in the program
+The capstone is intentionally strongest after the beginner modules have already taught the
+core semantics on smaller local projects.
+
+| Program area | What the capstone lets you verify |
+| --- | --- |
+| Modules 01-02 | The difference between a truthful graph and a graph that only appears to work. |
+| Modules 03-05 | Deterministic discovery, selftests, portability boundaries, and failure-mode evidence. |
+| Modules 06-07 | Generated headers, layered `mk/*.mk` architecture, and reusable build helpers. |
+| Modules 08-09 | Dist packaging, attestations, performance guardrails, and incident-oriented diagnostics. |
+| Module 10 | A compact system you can review for migration boundaries, governance rules, and anti-patterns. |
+
+If you are new to Make, use this repository as corroboration after the early local
+exercises, not as your first exposure to syntax.
+[Back to top](#top)
+
+---
 ## Architecture
 The Makefiles are intentionally layered so the design stays readable under growth:
 ```mermaid
@@ -112,7 +130,7 @@ The intent is to model a “real” build in miniature: the same failure modes s
 
 ---
 ## Repro pack
-`repro/` contains small Makefiles that intentionally demonstrate failure modes (often only visible under `-j`), along with the repair patterns taught in the course-book.
+`repro/` contains small Makefiles that intentionally demonstrate failure modes (often only visible under `-j`), along with the repair patterns taught in the program guide.
 Examples include:
 * shared append/log races
 * temp file collisions and partial writes
@@ -127,8 +145,8 @@ make -f repro/01-shared-append.mk -j4
 [Back to top](#top)
 
 ---
-## Links into the course-book
-* Course text: [https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/](https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/)
+## Links into the program guide
+* Program site: [https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/](https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/)
 * Source chapters: [`course-book/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/course-book)
 The capstone is referenced throughout the modules via “tie-ins.” The expectation is a tight loop:
 **read → reproduce → repair → verify**  
@@ -139,9 +157,9 @@ The capstone is referenced throughout the modules via “tie-ins.” The expecta
 Contributions are welcome when they improve **correctness**, **clarity**, or **reproducibility** (new repros, sharper invariants, better diagnostics).
 Minimum bar for changes that touch the build (from repository root):
 ```sh
-make -C capstone selftest
+make PROGRAM=reproducible-research/deep-dive-make test
 ```
-(or `gmake -C capstone selftest` on macOS)
+(or `gmake PROGRAM=reproducible-research/deep-dive-make test` on macOS)
 Open a PR against `main` with a short “claim → proof” note (what you changed, why it’s correct, and how it’s verified).  
 [Back to top](#top)
 
