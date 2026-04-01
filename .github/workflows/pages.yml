@@ -1,13 +1,8 @@
-name: pages
+name: Series Pages
 
 on:
   push:
-    branches: [main]
-    paths:
-      - mkdocs.yml
-      - requirements-docs.txt
-      - course-book/**
-      - .github/workflows/pages.yaml
+    branches: [master, main]
   workflow_dispatch:
 
 permissions:
@@ -16,34 +11,35 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: series-pages
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.11"
+          cache: pip
 
-      - name: Install docs deps
+      - name: Install documentation dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install -U pip
           pip install -r requirements-docs.txt
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Build site
+      - name: Build series site
         run: |
-          mkdocs build --strict
+          make series-docs-build
 
-      - name: Upload artifact
+      - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
@@ -55,6 +51,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy
+      - name: Deploy site
         id: deployment
         uses: actions/deploy-pages@v4

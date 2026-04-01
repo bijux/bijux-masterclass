@@ -1,0 +1,62 @@
+name: Course Validation
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: series-site
+            setup: |
+              python -m pip install -U pip
+              pip install -r requirements-docs.txt
+            validate: |
+              make series-docs-build
+          - name: deep-dive-make
+            setup: |
+              python -m pip install -U pip
+            validate: |
+              make COURSE=reproducible-research/deep-dive-make docs-build
+              make COURSE=reproducible-research/deep-dive-make test
+          - name: deep-dive-snakemake
+            setup: |
+              python -m pip install -U pip
+              pip install -e "./courses/reproducible-research/deep-dive-snakemake/snakemake-capstone[dev]"
+            validate: |
+              make COURSE=reproducible-research/deep-dive-snakemake docs-build
+              make -C courses/reproducible-research/deep-dive-snakemake/snakemake-capstone confirm
+          - name: python-functional-programming
+            setup: |
+              python -m pip install -U pip
+            validate: |
+              make COURSE=python-programming/python-functional-programming docs-build
+              make COURSE=python-programming/python-functional-programming test
+          - name: python-meta-programming
+            setup: |
+              python -m pip install -U pip
+            validate: |
+              make COURSE=python-programming/python-meta-programming docs-build
+    name: ${{ matrix.name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install prerequisites
+        run: ${{ matrix.setup }}
+
+      - name: Run validation
+        run: ${{ matrix.validate }}
