@@ -1,190 +1,58 @@
-<a id="top"></a>
-# Python Metaprogramming: Course Book
+# Python Metaprogramming
 
-**A correctness-first exploration of Python’s metaprogramming mechanisms** — introspection, decorators, descriptors, and metaclasses — grounded in traceable runtime behavior, explicit invariants, and professional engineering discipline.
+This course teaches Python metaprogramming as a discipline of runtime honesty. It is not
+about collecting more magic. It is about understanding what the interpreter is doing when
+objects inspect, transform, and register other objects.
 
-This repository contains the source material for the course, rendered as a static site using MkDocs Material.
+## Why this course exists
 
-- **Live documentation**: https://bijux.io/deep-dive-series/python-programming/python-meta-programming/
-- **Repository root**: https://github.com/bijux/deep-dive-series/tree/master/courses/python-programming/python-meta-programming
+Many metaprogramming resources fail in one of two ways:
 
-<span style="font-size: 1em;">[Back to top](#top)</span>
+- they celebrate power without explaining the invariants that make it safe
+- they jump straight to advanced hooks and leave readers unable to compare them to simpler alternatives
 
----
+This course exists to close that gap.
 
-<a id="toc"></a>
-## Table of Contents
+## Reading contract
 
-1. [Purpose and scope](#purpose)
-2. [Target audience](#audience)
-3. [Course structure](#structure)
-4. [Repository layout](#layout)
-5. [Methodology and standards](#methodology)
-6. [Prerequisites](#prerequisites)
-7. [Verification protocol](#verification)
-8. [Capstone](#capstone)
-9. [Related projects](#related)
-10. [Contributing](#contributing)
-11. [License](#license)
+This is not a reference to skim in arbitrary order. The learner path is deliberate:
 
-<span style="font-size: 1em;">[Back to top](#top)</span>
+1. Start with the object model and introspection before decorators.
+2. Learn decorators before descriptors and descriptors before metaclasses.
+3. Reach the responsibility module only after you understand the mechanics it is trying to constrain.
+4. Keep the capstone open so every mechanism remains attached to one executable system.
 
----
+If you skip that order, later modules will still be readable, but the design trade-offs
+will feel like folklore instead of engineering.
 
-<a id="purpose"></a>
-## Purpose and scope
+## What each module contributes
 
-Python’s metaprogramming facilities enable extraordinary flexibility but also introduce significant risks to reliability, debuggability, and maintainability. Many existing resources either focus on superficial patterns or dive directly into advanced constructs without establishing a solid foundation in runtime semantics.
+- [Module 00](module-00.md) defines the study strategy, the power ladder, and the capstone map.
+- [Module 01](module-01.md) establishes the object model that all later runtime hooks depend on.
+- [Module 02](module-02.md) teaches safe introspection without breaking semantics.
+- [Module 03](module-03.md) turns `inspect` into a verification and diagnostic tool.
+- [Module 04](module-04.md) introduces decorators as controlled callable transformation.
+- [Module 05](module-05.md) develops decorator patterns with stronger production and typing discipline.
+- [Module 06](module-06.md) bridges class decorators, `@property`, and the move toward attribute control.
+- [Module 07](module-07.md) explains the descriptor protocol as the real attribute engine.
+- [Module 08](module-08.md) extends descriptors toward framework-grade patterns.
+- [Module 09](module-09.md) introduces metaclasses as a last-resort class-creation hook.
+- [Module 10](module-10.md) turns responsibility, security, and debuggability into hard boundaries.
+- [Capstone](capstone.md) provides the executable runtime that keeps the course honest.
 
-This course addresses that gap by providing a systematic, evidence-based treatment of the core mechanisms:
+## How to use the capstone while reading
 
-- Precise delineation of language-guaranteed behavior versus implementation-specific details,
-- Clear identification of invariants required for correctness,
-- Explicit discussion of failure modes and their observable signatures,
-- Emphasis on tooling-friendly, maintainable patterns and clear boundaries for production use.
+- After Module 04, inspect how wrappers preserve or damage signatures and metadata.
+- After Module 07, inspect where descriptor behavior lives and how state is stored.
+- After Module 09, inspect what the metaclass owns that other mechanisms do not.
+- After Module 10, inspect which parts of the runtime would be hardest to debug if the implementation became less explicit.
 
-Every claim is supported by minimal, executable examples that demonstrate the exact runtime behavior.
+The capstone should answer the question: "What does this runtime hook look like in a real Python system?"
 
-<span style="font-size: 1em;">[Back to top](#top)</span>
+## Common failure modes this course is trying to prevent
 
----
-
-<a id="audience"></a>
-## Target audience
-
-This material is designed for:
-
-- Intermediate to advanced Python developers seeking a deeper understanding of framework-level internals,
-- Library and framework authors who need to make informed decisions when employing descriptors, decorators, or metaclasses,
-- Engineers maintaining systems that rely on sophisticated metaprogramming (e.g., ORMs, serialization frameworks, plugin architectures).
-
-**Prerequisites**: Proficiency with Python classes, functions, inheritance, and basic introspection (`dir`, `getattr`, etc.). Familiarity with type hints is beneficial but not required.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="structure"></a>
-## Course structure
-
-The course progresses incrementally through focused modules:
-
-- **00 – Overview and Introduction**
-- **01 – Everything Is an Object**
-- **02 – Basic Introspection**
-- **03 – The `inspect` Module**
-- **04 – Decorators: Fundamentals**
-- **05 – Decorators: Production Patterns & Typing**
-- **06 – Class Decorators, `@property`, and the Typing Bridge**
-- **07 – The Descriptor Protocol (Part 1)**
-- **08 – The Descriptor Protocol (Part 2 – Framework Grade)**
-- **09 – Metaclasses**
-- **10 – Professional Responsibility & the Outer Darkness**
-- **11 – Outro**
-
-Each module includes runnable code examples, visual diagrams, precise definitions, and a dedicated glossary.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="layout"></a>
-## Repository layout
-
-This course follows the same stable structure as the rest of the series:
-
-- `course-book/` contains the published course content.
-- `capstone/` contains the executable plugin-runtime reference implementation for the course.
-
-The repository root remains the stable entrypoint for the course `README.md`, `Makefile`, and `mkdocs.yml`.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="methodology"></a>
-## Methodology and standards
-
-Modules follow a consistent, rigorous structure:
-
-- **Definition** → **Semantics** → **Failure modes** → **Minimal reproducible example** → **Recommended pattern** → **Verification probe**
-
-No assertion is presented without an accompanying executable demonstration. Claims that cannot be verified through small, self-contained programs are considered incomplete.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="prerequisites"></a>
-## Prerequisites
-
-- Python 3.11+ recommended (most content is compatible with 3.10 unless explicitly noted),
-- Standard library only for core examples,
-- No external dependencies required to run the provided snippets.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="verification"></a>
-## Verification protocol
-
-Readers are encouraged to validate claims immediately:
-
-- Copy provided snippets into a temporary file,
-- Execute under the target Python version,
-- Treat any discrepancy as a potential issue until resolved.
-
-Discrepancies, ambiguities, or non-runnable examples should be reported via issues or pull requests.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="capstone"></a>
-## Capstone
-
-The course capstone is a small plugin runtime built to make the course’s claims
-executable. It combines descriptor-backed configuration fields, action decorators,
-metaclass-driven registration, and introspection-based manifests in one codebase.
-
-- Read the capstone overview in [capstone.md](capstone.md).
-- Run it from the repository root with `make COURSE=python-programming/python-meta-programming test`.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="related"></a>
-## Related projects
-
-This course aligns with other correctness-focused resources in the same style:
-
-- **bijux hub**: https://bijux.io/
-- **bijux-cli**: https://bijux.io/bijux-cli/
-- **Deep Dive Make**: https://bijux.io/deep-dive-series/reproducible-research/deep-dive-make/
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="contributing"></a>
-## Contributing
-
-Contributions that enhance clarity, correctness, or completeness are welcome. Requirements include:
-
-- A minimal, self-contained reproduction or demonstration,
-- An updated or new verification probe,
-- Specification of tested Python versions,
-- Preservation of the course’s precise, evidence-based tone.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
-
----
-
-<a id="license"></a>
-## License
-
-This project is licensed under the **MIT License**. See the repository root [LICENSE](https://github.com/bijux/deep-dive-series/blob/master/LICENSE) for details.
-
-<span style="font-size: 1em;">[Back to top](#top)</span>
+- reaching for metaclasses before understanding decorators or descriptors
+- treating introspection as harmless when it can trigger work or hide fragility
+- wrapping callables in ways that destroy signatures, tracebacks, or tooling visibility
+- making class creation more magical than the problem demands
+- using dynamic power without clear responsibility boundaries
