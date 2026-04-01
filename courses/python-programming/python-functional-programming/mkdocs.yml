@@ -16,6 +16,7 @@ site_dir: ../../../artifacts/site/python-programming/python-functional-programmi
 nav:
   - Start Here:
       - Course Home: index.md
+      - Orientation Overview: module-00-orientation/index.md
       - Course Orientation: module-00-orientation/course-orientation.md
       - How to Study This Course: module-00-orientation/how-to-study-this-course.md
       - FuncPipe Capstone Guide: capstone.md
