@@ -34,6 +34,36 @@ Metaclasses intervene **before** a class exists, during the class statement itse
 
 All `python` fences are runnable. Any intentional failure is wrapped.
 
+## Why this module matters in the course
+
+This is the highest-power mechanism in the core runtime ladder. That is exactly why the
+module has to work harder pedagogically: readers need to learn not only what metaclasses
+can do, but why most problems should still be solved below this level.
+
+The value of this module is not "now you can use metaclasses everywhere." The value is
+that you can finally judge when they are truly the right boundary.
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- What work belongs at class-creation time rather than instance or call time?
+- Which invariants justify a metaclass instead of a class decorator or descriptor?
+- Why do metaclass conflicts appear, and what do they tell you about the design?
+- How do you keep metaclass behavior deterministic, inspectable, and reviewable?
+
+If those answers remain weak, the safest move in real code is still to avoid metaclasses.
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- `PluginMeta` in `capstone/src/incident_plugins/`
+- tests that assert deterministic registration and resettable registries
+- the boundary between class-definition work and runtime manifest export
+
+The capstone should make one point concrete here: metaclasses are justified when they enforce class-creation invariants that lower-power tools cannot own cleanly.
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---
