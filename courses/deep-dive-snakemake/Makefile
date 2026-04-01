@@ -36,6 +36,8 @@ capstone-confirm: ## Full clean-room confirmation in snakemake-capstone (runs wo
 
 check: docs-build capstone-check ## Run root docs build + capstone fast checks
 
+test: check ## Run the course's default verification target
+
 clean: docs-clean ## Remove common build artifacts
 	rm -rf $(VENV_DIR) .pytest_cache .ruff_cache
 	find . -type d -name "__pycache__" -prune -exec rm -rf {} +

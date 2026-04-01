@@ -5,6 +5,7 @@ SHELL := /bin/sh
 COURSES_DIR := courses
 COURSE ?= deep-dive-make
 COURSE_DIR := $(COURSES_DIR)/$(COURSE)
+RUN_COURSE = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(COURSE_DIR)
 
 .PHONY: help
 help: ## Show available targets
@@ -16,20 +17,20 @@ courses: ## List available courses
 
 .PHONY: course-help
 course-help: ## Show the selected course's Make targets
-	@$(MAKE) -C $(COURSE_DIR) help
+	@$(RUN_COURSE) help
 
 .PHONY: docs-build
 docs-build: ## Build docs for the selected course
-	@$(MAKE) -C $(COURSE_DIR) docs-build
+	@$(RUN_COURSE) docs-build
 
 .PHONY: docs-serve
 docs-serve: ## Serve docs for the selected course
-	@$(MAKE) -C $(COURSE_DIR) docs-serve
+	@$(RUN_COURSE) docs-serve
 
 .PHONY: test
 test: ## Run tests for the selected course
-	@$(MAKE) -C $(COURSE_DIR) test
+	@$(RUN_COURSE) test
 
 .PHONY: clean
 clean: ## Run clean for the selected course
-	@$(MAKE) -C $(COURSE_DIR) clean
+	@$(RUN_COURSE) clean

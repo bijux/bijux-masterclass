@@ -3,7 +3,7 @@
 # ===== Basics =====
 .PHONY: install test build lint clean clean-all venv \
         worktrees snapshots clean-history module-md module-funcpipe freeze-codebase \
-        docs docs-deps docs-serve docs-build
+        docs docs-deps docs-serve docs-build help
 
 .DEFAULT_GOAL := install
 
@@ -17,42 +17,46 @@ PYTEST     := $(VENV)/bin/pytest
 HATCH      := $(VENV)/bin/hatch
 MKDOCS     := $(VENV)/bin/mkdocs
 
+help: ## Show available targets
+	@awk 'BEGIN {FS = ":.*##"; printf "\nTargets:\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+	@echo ""
+
 $(VENV_PY):
 	$(PYTHON) -m venv $(VENV)
 	$(VENV_PIP) install -U pip
 
-venv: $(VENV_PY)
+venv: $(VENV_PY) ## Create the local virtual environment
 
-install: venv
+install: venv ## Install development dependencies
 	$(VENV_PIP) install -e '.[dev]'
 
-test: venv
+test: venv ## Run the test suite
 	$(PYTEST) -q
 
-build: venv
+build: venv ## Build distribution artifacts
 	$(HATCH) build
 
-lint: venv
+lint: venv ## Run linting and type checks
 	$(RUFF) check src tests
 	$(MYPY) --strict src/funcpipe_rag
 
-docs-deps: venv
+docs-deps: venv ## Install documentation dependencies
 	$(VENV_PIP) install -e '.[docs]'
 
-docs: docs-build
+docs: docs-build ## Build documentation
 
-docs-build: docs-deps
+docs-build: docs-deps ## Build MkDocs documentation
 	$(MKDOCS) build --strict
 
-docs-serve: docs-deps
+docs-serve: docs-deps ## Serve MkDocs locally
 	$(MKDOCS) serve
 
-clean:
+clean: ## Remove build and virtualenv artifacts
 	rm -rf dist build *.egg-info \
 		.pytest_cache .mypy_cache .ruff_cache .hypothesis .benchmarks \
 		$(VENV)
 
-clean-all: clean
+clean-all: clean ## Remove additional generated caches
 	find . -type d \( \
 		-name "__pycache__" -o \
 		-name ".pytest_cache" -o \
@@ -72,7 +76,7 @@ SNAPSHOTS_DIR := $(HISTORY_DIR)/snapshots
 FREEZE_OUT    ?= all-cores/funcpipe-rag-all-code.md
 
 # Export src + tests from each tag into history/snapshots/module-XX/
-snapshots:
+snapshots: ## Export tagged module snapshots into history/snapshots
 	@set -e; \
 	mkdir -p "$(SNAPSHOTS_DIR)"; \
 	for m in $(MODULES); do \
@@ -89,10 +93,10 @@ snapshots:
 	done
 
 # (optional) handy alias
-snapshot: snapshots
+snapshot: snapshots ## Alias for snapshots
 
 # Create detached worktrees at module tags (if you still want this)
-worktrees:
+worktrees: ## Create detached worktrees for module tags
 	@mkdir -p "$(WORKTREES_DIR)"; \
 	for m in $(MODULES); do \
 		tag="module-$$m"; \
@@ -109,7 +113,7 @@ worktrees:
 		fi; \
 	done
 
-clean-history:
+clean-history: ## Remove generated history worktrees and snapshots
 	@rm -rf "$(WORKTREES_DIR)" "$(SNAPSHOTS_DIR)"; \
 	git worktree prune
 
@@ -117,7 +121,7 @@ clean-history:
 # Supports:
 #   1) legacy:  module-01/module-01-md/core-*.md
 #   2) flat:    module-01/M01C01.md ... M01C10.md
-module-md:
+module-md: ## Concatenate module markdown sources into all-cores
 	@set -e; \
 	parent_dir="."; \
 	out_dir="$$parent_dir/all-cores"; \
@@ -146,7 +150,7 @@ module-md:
 
 
 # Freeze each snapshot module (history/snapshots/module-XX) into all-cores/
-module-funcpipe: snapshots
+module-funcpipe: snapshots ## Freeze tagged snapshots into all-cores markdown bundles
 	@set -e; \
 	mkdir -p all-cores; \
 	for base in history/snapshots/module-[0-9][0-9]; do \
@@ -213,7 +217,7 @@ module-funcpipe: snapshots
 	done
 
 
-freeze-codebase:
+freeze-codebase: ## Export the current codebase into a markdown bundle
 	@set -e; \
 	out="$(FREEZE_OUT)"; \
 	echo ">> $$out"; \
