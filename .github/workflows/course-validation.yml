@@ -54,6 +54,7 @@ jobs:
               python -m pip install -U pip
             validate: |
               make COURSE=python-programming/python-meta-programming docs-build
+              make COURSE=python-programming/python-meta-programming test
     name: ${{ matrix.name }}
     steps:
       - name: Checkout repository
