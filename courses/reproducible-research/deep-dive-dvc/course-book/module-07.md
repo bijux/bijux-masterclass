@@ -16,6 +16,39 @@ This module confronts an inherent truth: **Reproducibility embodies a social agr
 
 **Prerequisites**: Proficiency in Modules 01–06 is imperative. Acquaintance with Git workflows, CI platforms (e.g., GitHub Actions, GitLab CI), and DVC remotes is advisable; reference pertinent documentation as necessary.
 
+## Why this module matters in the course
+
+This is the moment where the course stops pretending that good tooling alone is enough.
+By this point the learner has seen how to represent state correctly. Now the question is
+whether a team will actually preserve those rules under deadline pressure, onboarding,
+review shortcuts, and forgotten uploads.
+
+That is why this module belongs late in the course. Governance without technical clarity
+feels bureaucratic. Governance after technical clarity feels necessary.
+
+## Questions this module should answer
+
+By the end of the module, you should be able to answer:
+
+- Which reproducibility failures are really human-coordination failures in disguise?
+- What should CI enforce instead of trusting developers to remember?
+- Which repository events should block promotion because the state contract is incomplete?
+- How do remotes, reviews, and branch rules become part of the proof surface?
+
+If those answers remain informal, the repository is still depending on optimism.
+
+## What to inspect in the capstone
+
+Keep the capstone open while reading this module and inspect:
+
+- the `confirm` path in the capstone `Makefile`
+- the `push` and `recovery-drill` targets as examples of social rules turned into commands
+- `publish/v1/` as the review boundary that other people should be able to trust
+- `dvc.lock` and tracked params or metrics as the evidence CI should care about
+
+The capstone should make one point visible: a reproducible system is not complete until
+another human can verify it without private context.
+
 ---
 
 ## 7.1 The Fallacy of the "Careful Team"
