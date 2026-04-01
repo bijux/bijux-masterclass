@@ -14,14 +14,13 @@ docs_dir: course-book
 site_dir: ../../../artifacts/site/python-programming/python-object-oriented-programming
 
 nav:
-  - Home: index.md
-  - Capstone: capstone.md
-
-  - Orientation:
-      - Start Here: module-00-orientation/index.md
+  - Start Here:
+      - Course Home: index.md
+      - Orientation: module-00-orientation/index.md
       - Course Map: module-00-orientation/course-map.md
+      - Capstone Overview: capstone.md
 
-  - "Module 01: Object Model":
+  - "Module 01: Semantic Floor":
       - Overview: module-01-object-model/index.md
       - Object Identity, State, and Behavior: module-01-object-model/object-identity-state-and-behavior.md
       - Attribute Layout, Class State, and Instance State: module-01-object-model/attribute-layout-class-and-instance-state.md
@@ -32,9 +31,9 @@ nav:
       - Copying, Cloning, and Custom Semantics: module-01-object-model/copying-cloning-and-custom-semantics.md
       - Python Data Model as Design Surface: module-01-object-model/python-data-model-as-design-surface.md
       - When Classes Are the Wrong Tool: module-01-object-model/when-classes-are-the-wrong-tool.md
-      - "Refactor: Script to Object Model": module-01-object-model/refactor-script-to-object-model.md
+      - "Checkpoint: Script to Object Model": module-01-object-model/refactor-script-to-object-model.md
 
-  - "Module 02: Design and Layering":
+  - "Module 02: Roles and Boundaries":
       - Overview: module-02-design-and-layering/index.md
       - Responsibilities, Cohesion, and Object Smells: module-02-design-and-layering/responsibilities-cohesion-and-object-smells.md
       - Composition over Inheritance: module-02-design-and-layering/composition-over-inheritance.md
@@ -45,9 +44,9 @@ nav:
       - Inheritance and Fragile Base Classes: module-02-design-and-layering/inheritance-and-fragile-base-classes.md
       - Template Method and Small Hierarchies: module-02-design-and-layering/template-method-and-small-hierarchies.md
       - Duck Typing, ABCs, and Protocols: module-02-design-and-layering/duck-typing-abcs-and-protocols.md
-      - "Refactor: Layered Design with Small Hierarchies": module-02-design-and-layering/refactor-layered-design-with-small-hierarchies.md
+      - "Checkpoint: Layered Design with Small Hierarchies": module-02-design-and-layering/refactor-layered-design-with-small-hierarchies.md
 
-  - "Module 03: State and Typestate":
+  - "Module 03: State and Lifecycles":
       - Overview: module-03-state-and-typestate/index.md
       - Properties and Computed Attributes: module-03-state-and-typestate/properties-and-computed-attributes.md
       - Descriptor Mental Model: module-03-state-and-typestate/descriptor-mental-model.md
@@ -58,9 +57,9 @@ nav:
       - Null Optionals and Partial Objects: module-03-state-and-typestate/null-optionals-and-partial-objects.md
       - Lifecycle and Typestate: module-03-state-and-typestate/lifecycle-and-typestate.md
       - Typestate in Python APIs: module-03-state-and-typestate/typestate-in-python-apis.md
-      - "Refactor: Dataclasses, Null Safety, and Typestate": module-03-state-and-typestate/refactor-dataclasses-null-safety-and-typestate.md
+      - "Checkpoint: Dataclasses, Null Safety, and Typestate": module-03-state-and-typestate/refactor-dataclasses-null-safety-and-typestate.md
 
-  - "Module 04: Aggregates and Collaboration":
+  - "Module 04: Collaboration and Aggregates":
       - Overview: module-04-aggregates-and-collaboration/index.md
       - Aggregates and Consistency Boundaries: module-04-aggregates-and-collaboration/aggregates-and-consistency-boundaries.md
       - Cross-Object Invariants: module-04-aggregates-and-collaboration/cross-object-invariants.md
@@ -71,9 +70,9 @@ nav:
       - Strategy and Policy Objects: module-04-aggregates-and-collaboration/strategy-and-policy-objects.md
       - Adapters and Bridges: module-04-aggregates-and-collaboration/adapters-and-bridges.md
       - Collaboration Surfaces without Tangle: module-04-aggregates-and-collaboration/collaboration-surfaces-without-tangle.md
-      - "Refactor: Aggregates, Events, and Strategies": module-04-aggregates-and-collaboration/refactor-aggregates-events-and-strategies.md
+      - "Checkpoint: Aggregates, Events, and Strategies": module-04-aggregates-and-collaboration/refactor-aggregates-events-and-strategies.md
 
-  - "Module 05: Resources and Evolution":
+  - "Module 05: Operational Survival":
       - Overview: module-05-resources-and-evolution/index.md
       - Resource Ownership and Context Managers: module-05-resources-and-evolution/resource-ownership-and-context-managers.md
       - Unit of Work and Failure Handling: module-05-resources-and-evolution/unit-of-work-and-failure-handling.md
@@ -84,4 +83,4 @@ nav:
       - Design Smells and Refactoring Patterns: module-05-resources-and-evolution/design-smells-and-refactoring-patterns.md
       - Copying and Versioning over Time: module-05-resources-and-evolution/copying-and-versioning-over-time.md
       - Compatibility Contracts and Evolution: module-05-resources-and-evolution/compatibility-contracts-and-evolution.md
-      - "Refactor: New Feature without Breaking Behavior": module-05-resources-and-evolution/refactor-new-feature-without-breaking-behavior.md
+      - "Checkpoint: New Feature without Breaking Behavior": module-05-resources-and-evolution/refactor-new-feature-without-breaking-behavior.md
