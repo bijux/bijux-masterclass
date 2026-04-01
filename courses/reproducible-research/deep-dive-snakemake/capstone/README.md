@@ -1,3 +1,5 @@
+<a id="top"></a>
+
 # Snakemake Capstone — Reference Workflow
 
 A compact, end-to-end Snakemake workflow that demonstrates rigorous engineering practices on toy FASTQ inputs. The biological analysis is intentionally minimal; the emphasis is on workflow correctness, reproducibility, and maintainability: explicit contracts, safe dynamic DAGs, governed configuration, versioned publishing, artifact verification, and execution across contexts (local, CI, cluster, Docker).
@@ -32,6 +34,18 @@ The workflow is deliberately small yet complete, allowing full execution and ins
 
 ---
 
+## Study goal
+
+Use this capstone to answer one question repeatedly:
+
+> If this workflow changed tomorrow, which file or boundary should absorb that change, and why?
+
+If the course is doing its job, the answer should get clearer after each module.
+
+[Back to top](#top)
+
+---
+
 ## Key Concepts Demonstrated
 
 ### Workflow Design
@@ -53,6 +67,25 @@ The workflow is deliberately small yet complete, allowing full execution and ins
 - Unit tests for pure Python components
 - Artifact verification (parsing and sanity checks)
 - Clean-room confirmation via Make targets
+
+[Back to top](#top)
+
+---
+
+## How to study this capstone
+
+Start in this order:
+
+1. `Snakefile`
+2. `workflow/rules/common.smk`
+3. `workflow/rules/preprocess.smk`
+4. `workflow/rules/summarize_report.smk`
+5. `workflow/rules/publish.smk`
+6. `FILE_API.md`
+7. `profiles/`
+8. `tests/`
+
+That order mirrors the course: file contracts first, dynamic behavior second, operational policy third, and publish governance last.
 
 [Back to top](#top)
 
@@ -85,6 +118,17 @@ The workflow is deliberately small yet complete, allowing full execution and ins
 
 ---
 
+## Module map into the capstone
+
+- **Module 01** explains the explicit rule contracts, logs, benchmarks, and stable publish boundary.
+- **Module 02** explains the checkpoint, deterministic discovery, provenance, and integrity artifacts.
+- **Module 03** explains profiles, retries, artifact verification, and clean-room confirmation.
+- **Module 04** explains module boundaries, file APIs, CI-style gates, and executor-proof semantics.
+
+[Back to top](#top)
+
+---
+
 ## Published Artifacts (Stable Interface)
 
 Published outputs reside in `publish/v1/` and form a stable, externally consumable contract:
@@ -98,6 +142,17 @@ Published outputs reside in `publish/v1/` and form a stable, externally consumab
 Detailed specifications are provided in `FILE_API.md`.
 
 Internal directories (`results/`, `logs/`, `benchmarks/`, `.snakemake/`) are not part of the stable interface.
+
+[Back to top](#top)
+
+---
+
+## What to inspect during review
+
+- Which artifacts are authoritative and which are only derived?
+- Which workflow behavior changes when the executor changes, and which should not?
+- Where does sample discovery become explicit and durable instead of hidden?
+- Which outputs are safe for downstream consumers to trust?
 
 [Back to top](#top)
 
