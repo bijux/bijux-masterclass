@@ -22,9 +22,10 @@ This repository contains the source material for the course, rendered as a stati
 5. [Methodology and standards](#methodology)
 6. [Prerequisites](#prerequisites)
 7. [Verification protocol](#verification)
-8. [Related projects](#related)
-9. [Contributing](#contributing)
-10. [License](#license)
+8. [Capstone](#capstone)
+9. [Related projects](#related)
+10. [Contributing](#contributing)
+11. [License](#license)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -93,7 +94,7 @@ Each module includes runnable code examples, visual diagrams, precise definition
 This course follows the same stable structure as the rest of the series:
 
 - `course-book/` contains the published course content.
-- `capstone/` is reserved for synthesis exercises, runnable verification bundles, and future hands-on material.
+- `capstone/` contains the executable plugin-runtime reference implementation for the course.
 
 The repository root remains the stable entrypoint for the course `README.md`, `Makefile`, and `mkdocs.yml`.
 
@@ -135,6 +136,20 @@ Readers are encouraged to validate claims immediately:
 - Treat any discrepancy as a potential issue until resolved.
 
 Discrepancies, ambiguities, or non-runnable examples should be reported via issues or pull requests.
+
+<span style="font-size: 1em;">[Back to top](#top)</span>
+
+---
+
+<a id="capstone"></a>
+## Capstone
+
+The course capstone is a small plugin runtime built to make the course’s claims
+executable. It combines descriptor-backed configuration fields, action decorators,
+metaclass-driven registration, and introspection-based manifests in one codebase.
+
+- Read the capstone overview in [capstone.md](capstone.md).
+- Run it from the repository root with `make COURSE=python-programming/python-meta-programming test`.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

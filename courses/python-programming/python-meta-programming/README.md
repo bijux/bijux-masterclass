@@ -28,9 +28,10 @@ This is not a collection of clever tricks. It is a systematic exploration of Pyt
 4. [Key principles](#principles)
 5. [Repository layout](#layout)
 6. [Running the docs locally](#local)
-7. [Related projects](#related)
-8. [Contributing](#contributing)
-9. [License](#license)
+7. [Running the capstone](#capstone)
+8. [Related projects](#related)
+9. [Contributing](#contributing)
+10. [License](#license)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -109,7 +110,7 @@ Each module includes runnable code examples, visual diagrams, precise definition
 This course follows the same stable structure as the rest of the series:
 
 - `course-book/` contains the published course content.
-- `capstone/` is reserved for synthesis exercises, runnable verification bundles, and future hands-on material.
+- `capstone/` contains the executable plugin-runtime reference implementation for the course.
 
 The repository root remains the stable entrypoint for the course `README.md`, `Makefile`, and `mkdocs.yml`.
 
@@ -131,6 +132,35 @@ To validate the build exactly as CI does:
 ```bash
 make COURSE=python-programming/python-meta-programming docs-build
 ```
+
+To run the course capstone:
+
+```bash
+make COURSE=python-programming/python-meta-programming test
+```
+
+<span style="font-size: 1em;">[Back to top](#top)</span>
+
+---
+
+<a id="capstone"></a>
+## Running the capstone
+
+The capstone is a plugin runtime for incident-delivery adapters. It ties together
+descriptors, decorators, metaclasses, and introspection in one executable system.
+
+From the course directory:
+
+```bash
+make -C courses/python-programming/python-meta-programming/capstone confirm
+```
+
+What it demonstrates:
+
+- descriptor-backed configuration fields with coercion and validation
+- decorator-preserved action signatures plus invocation recording
+- metaclass-driven plugin registration and generated constructors
+- runtime manifest export without executing plugin actions
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

@@ -15,6 +15,7 @@ site_dir: site
 
 nav:
   - Home: index.md
+  - Capstone: capstone.md
   - Volume I:
       - "00 — Overview and Introduction": module-00.md
       - "01 — Everything Is an Object": module-01.md
