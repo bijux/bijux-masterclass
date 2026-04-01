@@ -61,6 +61,7 @@ nav:
       - Streaming Observability: module-03-iterators-and-lazy-dataflow/streaming-observability.md
 
   - "Module 04: Resilience and Streaming Failures":
+      - Overview: module-04-resilience-and-streaming-failures/index.md
       - Structural Recursion and Iteration: module-04-resilience-and-streaming-failures/structural-recursion-and-iteration.md
       - Folds and Reductions: module-04-resilience-and-streaming-failures/folds-and-reductions.md
       - Memoization: module-04-resilience-and-streaming-failures/memoization.md
@@ -73,6 +74,7 @@ nav:
       - Structured Error Reports: module-04-resilience-and-streaming-failures/structured-error-reports.md
 
   - "Module 05: Algebraic Data Modelling":
+      - Overview: module-05-algebraic-data-modelling/index.md
       - Product and Sum Types: module-05-algebraic-data-modelling/product-and-sum-types.md
       - Domain State ADTs: module-05-algebraic-data-modelling/domain-state-adts.md
       - Functors: module-05-algebraic-data-modelling/functors.md
@@ -85,6 +87,7 @@ nav:
       - ADT Performance: module-05-algebraic-data-modelling/adt-performance.md
 
   - "Module 06: Monadic Flow and Explicit Context":
+      - Overview: module-06-monadic-flow-and-explicit-context/index.md
       - and_then and bind: module-06-monadic-flow-and-explicit-context/and-then-and-bind.md
       - Law-Guided Design: module-06-monadic-flow-and-explicit-context/law-guided-design.md
       - Lifting Plain Functions: module-06-monadic-flow-and-explicit-context/lifting-plain-functions.md
