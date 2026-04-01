@@ -1,4 +1,4 @@
-## M04C05: Streaming Error Handling – Mixed Good/Bad Data in a Single FuncPipe
+# Streaming Error Handling
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -457,6 +457,6 @@ All streaming operations are truly lazy.
 4. Implement `split_results_to_sinks_guarded` for safe indexing + error warehouse.  
 5. Add ordering test to your own pipeline using tagged inputs.
 
-**Next:** M04C06 – Validation Aggregators & Monoidal Error Collection.
+**Continue with:** [Error Aggregation](../module-04-resilience-and-streaming-failures/error-aggregation.md)
 
 You now have the complete toolkit to process real-world messy data without ever losing a single record or halting on one bad apple. The rest of Module 4 is about aggregating and reporting those errors beautifully.

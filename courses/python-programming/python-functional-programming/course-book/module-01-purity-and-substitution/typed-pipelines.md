@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Typed Pipelines
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: ... | ... | ... |
 | ... | ... | ... |
 
-## M01C07: Type-Hinted Pure Functions & Higher-Order Pipelines – TypeVar, ParamSpec, Concatenate
 
 > **Core question:**  
 > How do you use Python’s static typing (TypeVar, ParamSpec, Concatenate) to precisely describe pure functions and higher-order pipelines—so that composition errors are caught by the type checker instead of at 02:00 in production?
@@ -540,4 +539,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for readers wanting basics.
 
-**Next:** Core 8 – Extracting Side Effects. (Builds on this RAG pure core.)
+**Continue with:** [Isolating Side Effects](../module-01-purity-and-substitution/isolating-side-effects.md)

@@ -1,4 +1,4 @@
-# Module 3: Lazy Iteration and Streaming
+# Generators vs Comprehensions
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
 | 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
 
-## M03C02: Generator Expressions vs List Comprehensions – Memory, Readability & Laws
 
 > **Core question:**  
 > How do you replace list comprehensions with generator expressions to eliminate unnecessary materialization, improve readability, and gain short-circuiting — while keeping mathematically tight equivalence laws to the eager version?
@@ -357,6 +356,6 @@ Everything else → generator expression.
 
 **Project Exercise:** Replace all list comprehensions in the RAG pipeline with generator expressions. Measure peak memory on the full 10 k arXiv dataset (should drop from ~800 MB eager to < 50 MB lazy).
 
-**Next:** M03C03 – Composing Lazy Pipelines with itertools.
+**Continue with:** [itertools Composition](../module-03-iterators-and-lazy-dataflow/itertools-composition.md)
 
 You have just eliminated the most common memory leak in Python data code. The rest of Module 3 is pure composition power.

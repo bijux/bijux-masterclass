@@ -1,4 +1,4 @@
-# M07C10: Incremental Migration – Pushing Effects Outward in Existing Codebases
+# Incremental Migration
 
 **Module 07 – Final Main Track Core**
 

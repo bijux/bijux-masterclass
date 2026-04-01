@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Tiny Function DSLs
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C08 – Tiny Data-Driven DSLs (Using Frozen Data to Express Domain Rules)
 
 > **Core question:**  
 > How do you replace sprawling if-else chains and hard-coded domain logic with tiny, composable data-driven DSLs—so rules become printable, testable, evolvable, and flow through M02C07 pipelines without scattering behaviour across the codebase?
@@ -497,7 +496,7 @@ if x > 0: print(x)  # OK for one-off
 - Did interpreter enable tests?  
 - Did composability clarify logic?
 
-**Next:** Core 9 – Debugging FP Code.
+**Continue with:** [Debugging Compositions](../module-02-data-first-apis-and-expression-style/debugging-compositions.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 

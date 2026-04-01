@@ -1,23 +1,25 @@
-# FP Python Standards (Module 09 – Team Adoption)
+# Functional Python Standards
 
-This repo’s defaults are **functional by default**:
+These standards capture the default design stance of this course and capstone.
 
-- Pure core by default; effects only in `funcpipe_rag.boundaries` and `funcpipe_rag.infra`.
-- Prefer **stdlib FP** (`itertools`, `functools`, `operator`, `pathlib`) before adding new abstractions.
-- Keep configuration as immutable data; build pipelines from config (no global state).
-- Keep error handling explicit via `funcpipe_rag.result.types.Result` and `ErrInfo`.
-- Prefer small, composable functions; name intermediates when a pipeline becomes hard to scan.
+## Core defaults
 
-## Patterns
+- Keep the core pure by default; effects belong at explicit boundaries.
+- Pass configuration as data instead of reading ambient globals or environment values in the core.
+- Prefer small, composable functions over large orchestration blocks.
+- Represent expected failures explicitly instead of burying them in broad exception handling.
+- Treat laziness, retries, and async coordination as visible contracts, not hidden behavior.
 
-- **Iterator pipelines**: use `itertools.chain`, `itertools.accumulate`, `itertools.islice`, `itertools.groupby` (sorted/consecutive precondition).
-- **Higher-order**: use `functools.partial` for configurators; use `functools.lru_cache` only for pure functions.
-- **Lambda avoidance**: prefer `operator.itemgetter`/`attrgetter` for simple projections.
-- **Boundaries**: shells/adapters interpret `IOPlan`/`AsyncPlan`; ports return descriptions, never execute.
+## Package-level expectations
 
-## Pragmatic escapes
+- Keep pure functional helpers in `funcpipe_rag.fp`, `funcpipe_rag.result`, `funcpipe_rag.tree`, and `funcpipe_rag.streaming`.
+- Keep domain and pipeline rules in `funcpipe_rag.core`, `funcpipe_rag.rag`, and `funcpipe_rag.policies`.
+- Keep concrete effect interpreters in boundary, infrastructure, or shell packages.
+- Keep interop layers thin and honest about the libraries they wrap.
 
-- Loops are allowed where they improve clarity or performance.
-- Eager materialization is allowed at explicit sinks/boundaries.
-- Custom abstractions (monads/effects) exist from earlier modules; for Module 09 code, treat them as optional and prefer stdlib-first refactors unless there is a concrete benefit.
+## Review defaults
 
+- Prefer standard-library tools such as `itertools`, `functools`, `operator`, and `pathlib` before inventing a new abstraction.
+- Name intermediate steps when a pipeline stops being easy to scan.
+- Allow loops or eager materialization when they improve clarity or protect performance, but make the boundary explicit.
+- Add property-based or law-based tests when a helper claims algebraic guarantees.

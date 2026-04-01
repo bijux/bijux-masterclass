@@ -1,4 +1,4 @@
-# M06C08: Writer Pattern – Accumulating Logs/Metrics as Pure Data
+# Writer Pattern
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -233,6 +233,6 @@ def test_writer_listen_roundtrip(entries):
 2. Add structured metrics (e.g. token counts) to an embedding pipeline.
 3. Use listen + censor to filter sensitive data from logs in a test.
 
-**Next:** M06C09 – Refactoring try/except Spaghetti into Pure Monadic Pipelines
+**Continue with:** [Refactoring try/except](../module-06-monadic-flow-and-explicit-context/refactoring-try-except.md)
 
 You have now added **pure, testable observability** to every pipeline. Logs and metrics are now first-class data — composable, deterministic, and proven correct by Hypothesis. The remaining cores are full-pipeline refactors and architectural patterns.

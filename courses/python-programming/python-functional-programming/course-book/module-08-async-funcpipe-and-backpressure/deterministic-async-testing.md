@@ -1,4 +1,4 @@
-# M08C05: Deterministic Testing of Async Functional Pipelines (Fake Time/Executors)
+# Deterministic Async Testing
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
@@ -284,7 +284,7 @@ async def test_backoff_cap_and_jitter_deterministic(attempts, base_ms):
 4. Run your full test suite — confirm it completes in < 3 s with zero flakes.  
 5. Celebrate – your async pipeline is now bulletproof in CI.
 
-**Next** → M08C06: Rate Limiting & Fairness – Cooperative Scheduling
+**Continue with:** [Rate Limiting and Fairness](../module-08-async-funcpipe-and-backpressure/rate-limiting-and-fairness.md)
 
 You now have **fully deterministic testing of all timing-dependent async behavior** — the final piece that makes Async FuncPipe truly production-ready and CI-friendly.
 

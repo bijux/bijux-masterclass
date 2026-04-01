@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Isolating Side Effects
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: ... | ... | ... |
 | ... | ... | ... |
 
-## M01C08: Extracting Side Effects – Passing Dependencies Explicitly Instead of Touching Globals
 
 > **Core question:**  
 > How do you eliminate hidden side effects (globals, env, time, RNG, I/O) by passing all dependencies explicitly—so that pure logic stays testable, composable, and free from “it works on my machine” bugs?
@@ -469,4 +468,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for readers wanting basics.
 
-**Next:** Core 9 – Equational Reasoning and Local Rewrite Rules for Pure Code. (Builds on this RAG pure core.)
+**Continue with:** [Equational Reasoning](../module-01-purity-and-substitution/equational-reasoning.md)

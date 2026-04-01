@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Higher-Order Composition
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: ... | ... | ... |
 | ... | ... | ... |
 
-## M01C04: Higher-Order Functions & Composition – map, filter, reduce, Pipelines
 
 > **Core question:**  
 > How do you build concise, reusable, composable transformations using functions as first-class citizens—so that complex logic emerges from simple, testable building blocks without imperative loops or hidden state?
@@ -440,4 +439,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
 
-**Next:** Core 5 – Local FP Refactorings. (Builds on this RAG pure core.)
+**Continue with:** [Local FP Refactors](../module-01-purity-and-substitution/local-fp-refactors.md)

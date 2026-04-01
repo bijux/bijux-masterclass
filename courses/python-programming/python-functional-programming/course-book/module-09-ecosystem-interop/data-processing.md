@@ -1,4 +1,4 @@
-# Core 3: Data Processing – Pandas/Polars/Dask in FP Style (Pure Transforms, Method Chains vs Pipelines)
+# Data Processing
 **Module 09**
 > **Core question:**  
 > How do you adapt data processing libraries like Pandas, Polars, and Dask to functional programming principles, emphasizing pure transforms, method chaining for readability, and composable pipelines, while respecting each library's execution model and costs in FuncPipe?
@@ -226,4 +226,4 @@ Polars fastest for in-memory; Dask scales out; Pandas baseline.
 df = df.assign(col=lambda d: f(d)).loc[lambda d: cond(d)]
 ```
 
-**Next Core: 4. Web and Services – FastAPI Endpoints with Pure Core & Thin Adapters**
+**Continue with:** [Web and Services](../module-09-ecosystem-interop/web-and-services.md)

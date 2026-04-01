@@ -1,4 +1,4 @@
-# M07C08: Idempotent Effect Design – Safe Retries and Replays
+# Idempotent Effects
 
 **Module 07 – Main Track Core**
 
@@ -251,6 +251,6 @@ Materialization + hashing is O(n) once per logical call; subsequent retries/repl
 3. Add a property test proving that two identical inputs produce the same key and only one write.  
 4. Implement an idempotent “publish to Kafka” behaviour using message keys.
 
-**Next** → M07C09: Sessions & Transactions as Explicit Data (Not Hidden Globals)
+**Continue with:** [Sessions and Transactions](../module-07-effect-boundaries-and-resource-safety/sessions-and-transactions.md)
 
 You now design **idempotent effects** that can be safely retried or replayed – the final piece that makes your pipelines truly resilient. Combined with everything before, your system can now survive failures, network partitions, and process restarts without corruption or duplication. The remaining cores are specialisations and production patterns.

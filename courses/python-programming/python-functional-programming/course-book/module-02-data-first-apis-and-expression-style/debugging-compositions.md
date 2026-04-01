@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Debugging Compositions
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C09 – Debugging FP Code (Naming, Probing, and Tracing Intermediate Steps in Compositions)
 
 > **Core question:**  
 > How do you debug pure, composed FP pipelines without scattering prints or breaking laziness—so "it works in my head but not in prod" becomes structured traces, reproducible probes, and self-documenting names that turn black-box flows into auditable glass?
@@ -513,7 +512,7 @@ print(512)  # OK for one-off
 - Did probes catch invariants?  
 - Did verbose shrink failures?
 
-**Next:** Core 10 – Refactoring Imperative Scripts into FP-Friendly Modules and APIs.
+**Continue with:** [Imperative to FP Refactor](../module-02-data-first-apis-and-expression-style/imperative-to-fp-refactor.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 

@@ -1,4 +1,4 @@
-# M07C04: Resource Safety – Context Managers, Cleanup Guarantees, and Partial Consumption
+# Resource Safety
 
 **Module 07 – Main Track Core**
 
@@ -141,6 +141,6 @@ Constant overhead; in I/O-bound pipelines the cost is negligible.
 3. Write a property test that injects a mid-stream exception and asserts no file leaks.  
 4. Refactor a shell to always use `contextlib.closing` on resource-owning iterators and prove via mock that cleanup happens even on early break.
 
-**Next** → M07C05: Functional Logging & Tracing (Logs as Data, Monoidal Accumulation)
+**Continue with:** [Functional Logging](../module-07-effect-boundaries-and-resource-safety/functional-logging.md)
 
 You now have **reliable resource safety** in every adapter — files, connections, and locks clean up correctly even if the pipeline aborts halfway. Combined with ports, capability protocols, and `IOPlan`, your effectful code is finally as safe as your pure core. The remaining cores are specialisations and production patterns.

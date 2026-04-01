@@ -1,4 +1,4 @@
-# Core 3: Observability – Tracing Through Pure Pipelines, Debuggable Composition
+# Observability
 
 **Module 10**
 > **Core question:**  
@@ -248,4 +248,4 @@ chunks, logs_thunk = run_writer(traceable(gen_chunks)(docs))
 logs = logs_thunk()
 ```
 
-**Next: core 4. Property-Based Regression & Invariant Testing for Pure Pipelines (Hypothesis in CI)**
+**Continue with:** [Property-Based Regression](../module-10-refactoring-and-sustainment/property-based-regression.md)

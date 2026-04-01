@@ -1,4 +1,4 @@
-## M04C09: Functional Retries with Policies (Pure, Composable Retry Loops)
+# Functional Retries
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -407,6 +407,6 @@ Bounded by `max_attempts` and `inflight_cap`; pure and lazy.
 3. Refactor an imperative retry loop → `retry_map_iter`.  
 4. Combine with breaker → confirm rate reflects final outcomes after retries.
 
-**Next:** M04C10 – Structured Error Reports from Streaming Pipelines.
+**Continue with:** [Structured Error Reports](../module-04-resilience-and-streaming-failures/structured-error-reports.md)
 
 You now have the complete toolkit to make any flaky operation resilient — pure, bounded, fair, and composable with every previous core. The final core is about turning all those errors into beautiful reports.

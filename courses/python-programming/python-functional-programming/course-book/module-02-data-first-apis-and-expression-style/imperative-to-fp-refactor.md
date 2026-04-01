@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Imperative to FP Refactor
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C10 – Refactoring Imperative Scripts into FP-Friendly Modules and APIs
 
 > **Core question:**  
 > How do you take a messy imperative script full of loops, globals, and side effects and refactor it into clean FP modules—so the whole codebase becomes composable, testable, and maintainable using only M02C01–M02C09 patterns?

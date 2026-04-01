@@ -1,4 +1,4 @@
-# M06C10: Configurable Pipelines – Runtime Toggles via Higher-Order Combinators
+# Configurable Pipelines
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  

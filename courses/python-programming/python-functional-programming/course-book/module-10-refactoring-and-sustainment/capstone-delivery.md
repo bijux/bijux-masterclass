@@ -1,4 +1,4 @@
-# Core 10: Capstone — Proving, Shipping, and Sustaining a FuncPipe System
+# Capstone Delivery
 
 **Module 10 (Conclusion)**  
 > **Core question:**  

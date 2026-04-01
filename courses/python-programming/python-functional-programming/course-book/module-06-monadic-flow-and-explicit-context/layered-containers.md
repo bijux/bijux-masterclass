@@ -1,4 +1,4 @@
-# M06C07: Container Layering – Combining Effects Without Monad Transformers
+# Layered Containers
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -190,6 +190,6 @@ def test_transpose_option_result_error_dominates(e):
 2. Swap to Option[Result[T]] with transpose — confirm propagation changes.
 3. Add Reader or State to an existing layered pipeline — choose order deliberately.
 
-**Next:** M06C08 – Writer Pattern – Accumulating Logs/Metrics as Pure Data
+**Continue with:** [Writer Pattern](../module-06-monadic-flow-and-explicit-context/writer-pattern.md)
 
 You have now combined **all** effect containers into production-ready pipelines using nothing more than simple nesting and deliberate layer order. Your code is pure, composable, and proven correct by Hypothesis — with zero category-theory overhead. The remaining cores are pure polish.

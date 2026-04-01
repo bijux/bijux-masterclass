@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Local FP Refactors
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: ... | ... | ... |
 | ... | ... | ... |
 
-## M01C05: Local FP Refactorings – Replace In-Place Loops with Small Pure Transforms
 
 > **Core question:**  
 > How do you systematically refactor imperative, stateful code into small, pure, composable functions—so that hidden mutations vanish, equational reasoning becomes possible, and every change is locally verifiable?
@@ -499,4 +498,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
 
-**Next:** Core 6 – Small Combinator Libraries. (Builds on this RAG pure core.)
+**Continue with:** [Small Combinator Library](../module-01-purity-and-substitution/small-combinator-library.md)

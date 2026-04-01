@@ -1,4 +1,4 @@
-# Core 1: Systematic Refactor – Imperative Spaghetti → Layered FuncPipe (Step-by-Step)
+# Systematic Refactor
 
 **Module 10**
 > **Core question:**  
@@ -243,4 +243,4 @@ Set system-specific budget (multi-dimensional: latency, throughput, peak RSS). P
 result = perform_io(rag_composed(storage, in_path, out_path))
 ```
 
-**Next: core 2. Performance Budgeting – When FP Wins, When to Vectorize, When to Drop to C/NumPy**
+**Continue with:** [Performance Budgeting](../module-10-refactoring-and-sustainment/performance-budgeting.md)

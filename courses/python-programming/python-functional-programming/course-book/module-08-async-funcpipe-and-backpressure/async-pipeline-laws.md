@@ -1,4 +1,4 @@
-# M08C10: Law-Like Properties for Async Pipelines (Idempotence, At-Most-Once, No Duplication)
+# Async Pipeline Laws
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  

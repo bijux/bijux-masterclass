@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Callbacks to Combinators
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C07 – Callback Hell to Combinators (Replacing Callbacks with Clear Functional Pipelines)
 
 > **Core question:**  
 > How do you replace nested callbacks and imperative chains with combinators (flow, fmap, ffilter, flatmap) that compose lazy, configured, boundary-sealed functions—so pipelines from M02C01–M02C06 are efficient, readable, and testable?
@@ -468,7 +467,7 @@ for x in xs: print(x)  # OK for one-off
 - Did laziness reduce memory?  
 - Did binding clarify config?
 
-**Next:** Core 8 – Tiny Function DSLs.
+**Continue with:** [Tiny Function DSLs](../module-02-data-first-apis-and-expression-style/tiny-function-dsls.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 

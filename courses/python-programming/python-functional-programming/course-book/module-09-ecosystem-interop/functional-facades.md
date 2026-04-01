@@ -1,4 +1,4 @@
-# Core 8: Wrapping Imperative Libraries in Functional Facades (Normalizing Side-Effectful APIs)
+# Functional Facades
 **Module 09**
 > **Core question:**
 > How do you wrap imperative, side-effectful libraries in pure functional facades that return effect descriptions (not executed effects), expose algebraic ports with enforced contracts (e.g., keyed elements for idempotence), and normalize errors/resources into rich domain ADTs, enabling seamless integration into FuncPipe while preserving purity, composability, and testability?
@@ -292,4 +292,4 @@ embedder = openai_embedder_adapter(client_factory)
 action = embedder.embed_batch(items)
 result = perform_io(action)  # Sink
 ```
-**Next Core: 9. Cross-Process Composition – Serializing Configs/Specifications, Not Live Objects**
+**Continue with:** [Cross-Process Composition](../module-09-ecosystem-interop/cross-process-composition.md)

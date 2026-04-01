@@ -1,4 +1,4 @@
-# M05C06: Pydantic v2 as Smart Constructors – Runtime Enforcement Without Losing ADTs
+# Pydantic Smart Constructors
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -305,6 +305,6 @@ def test_schema_stable(snapshot):
 3. Replace one raw JSON → dataclass with Pydantic edge + bridge.  
 4. Add schema snapshot test for a model → verify stability.
 
-**Next:** M05C07 – Pattern Matching in Python 3.10+ for ADTs.
+**Continue with:** [Pattern Matching](../module-05-algebraic-data-modelling/pattern-matching.md)
 
 You now have bulletproof I/O: every external payload is validated exactly once at the edge, serialized stably forever, and the core pipeline runs at full speed on pure frozen ADTs. The rest of Module 5 adds pattern matching for orchestration and final serialization contracts.

@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Expression-Oriented Python
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C02: Expression-Oriented Python – Comprehensions, Conditional Expressions, No Control Flags
 
 > **Core question:**  
 > How do you replace statement-heavy imperative code (loops + flags + breaks) with expressions, comprehensions, and data-driven conditionals—so control flow becomes explicit, composable, and easy to reason about?
@@ -535,7 +534,7 @@ Rarely, for profiled hot paths (e.g., large loops), use imperative behind an exp
 **Reflect:** In your code, find one loop with flag. Refactor to expression; add Hypothesis equiv.  
 **Project Exercise:** Apply to RAG; run properties on sample data.
 
-**Next:** Core 3 – Intro Laziness & Generators. (Builds on this expressions.)
+**Continue with:** [Introducing Laziness](../module-02-data-first-apis-and-expression-style/introducing-laziness.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 

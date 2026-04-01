@@ -1,4 +1,4 @@
-# M05C01: Product & Sum Types via dataclasses, Enum, Union
+# Product and Sum Types
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -367,6 +367,6 @@ def test_node_exhaustive_match(node):
 3. Add a new variant to an existing sum type → verify mypy errors in all match sites.  
 4. Replace a mutable class in your codebase with a frozen dataclass → measure memory improvement (slots!).
 
-**Next:** M05C02 – Modelling Domain States (Pending/Running/Done, Success/Failure) as ADTs.
+**Continue with:** [Domain State ADTs](../module-05-algebraic-data-modelling/domain-state-adts.md)
 
 You now model every piece of domain data as pure, immutable, exhaustively-handled values — eliminating vast classes of bugs before they happen. The rest of Module 5 is about composing these ADTs into powerful abstractions (functors, applicatives, monoids).

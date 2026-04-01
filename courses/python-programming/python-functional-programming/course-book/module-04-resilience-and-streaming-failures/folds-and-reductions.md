@@ -1,4 +1,4 @@
-# M04C02: Folds & Reductions as Safe Recursion (Monoidal Fusion, Custom Accumulators)
+# Folds and Reductions
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -350,6 +350,6 @@ Result metadata (paths when used) is intrinsic; auxiliary overhead is only the e
 3. Add `scan_tree` progress reporting to the RAG pipeline (yield running chunk count).  
 4. Find any multi-pass aggregation in your codebase → fuse into one fold → measure speedup.
 
-**Next:** M04C03 – Memoization & Caching of Pure Functions (lru_cache, Custom Disk-Backed Caches, Observational Purity).
+**Continue with:** [Memoization](../module-04-resilience-and-streaming-failures/memoization.md)
 
 You now own the universal pattern for safe aggregation over any algebraic data type. Everything else in Module 4 is just specialising this fold.

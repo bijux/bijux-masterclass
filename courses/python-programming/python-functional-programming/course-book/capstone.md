@@ -37,11 +37,11 @@ Use the capstone as evidence, not just as a runnable project:
 
 ## Best entry surfaces
 
-- Repository guide: [`capstone/README.md`](../capstone/README.md)
-- Architecture map: [`capstone/ARCHITECTURE.md`](../capstone/ARCHITECTURE.md)
-- Tour guide: [`capstone/TOUR.md`](../capstone/TOUR.md)
-- Source tree: [`capstone/src/funcpipe_rag/`](../capstone/src/funcpipe_rag/)
-- Tests: [`capstone/tests/`](../capstone/tests/)
+- Repository guide: [`capstone/README.md`](https://github.com/bijux/deep-dive-series/blob/master/courses/python-programming/python-functional-programming/capstone/README.md)
+- Architecture map: [`capstone/ARCHITECTURE.md`](https://github.com/bijux/deep-dive-series/blob/master/courses/python-programming/python-functional-programming/capstone/ARCHITECTURE.md)
+- Tour guide: [`capstone/TOUR.md`](https://github.com/bijux/deep-dive-series/blob/master/courses/python-programming/python-functional-programming/capstone/TOUR.md)
+- Source tree: [`capstone/src/funcpipe_rag/`](https://github.com/bijux/deep-dive-series/tree/master/courses/python-programming/python-functional-programming/capstone/src/funcpipe_rag)
+- Tests: [`capstone/tests/`](https://github.com/bijux/deep-dive-series/tree/master/courses/python-programming/python-functional-programming/capstone/tests)
 
 ## Core commands
 

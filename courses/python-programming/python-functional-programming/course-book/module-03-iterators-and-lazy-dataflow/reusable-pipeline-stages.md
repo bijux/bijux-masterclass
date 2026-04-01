@@ -1,4 +1,4 @@
-# Module 3: Lazy Iteration and Streaming
+# Reusable Pipeline Stages
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
 | 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
 
-## M03C06: Building Reusable Iterator-Based FuncPipe Stages – Reusable Pipelines, Not One-Off Scripts
 
 > **Core question:**  
 > How do you build reusable, composable iterator stages using closures and higher-order functions to create configurable pipelines instead of rigid one-off scripts, while preserving purity and equivalence?
@@ -544,7 +543,7 @@ For tiny, throw-away one-offs; otherwise factories.
 - Prefer explicit composition (compose) over opaque chains.
 - For concurrency, capture immutable configs; never share open handles across factory instances.
 
-**Next:** M03C07 – Fan-In and Fan-Out for Streams. (Builds on this.)
+**Continue with:** [Fan-In and Fan-Out](../module-03-iterators-and-lazy-dataflow/fan-in-and-fan-out.md)
 
 ### Repository Alignment
 

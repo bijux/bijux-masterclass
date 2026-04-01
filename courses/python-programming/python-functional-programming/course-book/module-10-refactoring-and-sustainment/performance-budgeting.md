@@ -1,4 +1,4 @@
-# Core 2: Performance Budgeting – When FP Wins, When to Vectorize, When to Drop to C/NumPy
+# Performance Budgeting
 
 **Module 10**
 > **Core question:**  
@@ -226,4 +226,4 @@ Enforce budgets: optimizations must meet thresholds or revert; FP often improves
 embeds = budgeted_stage(batch_embed, budget)(texts)
 ```
 
-**Next: core 3. Observability – Tracing Through Pure Pipelines, Debuggable Composition**
+**Continue with:** [Observability](../module-10-refactoring-and-sustainment/observability.md)

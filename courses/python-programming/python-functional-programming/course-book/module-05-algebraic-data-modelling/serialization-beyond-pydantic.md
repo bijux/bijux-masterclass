@@ -1,4 +1,4 @@
-# M05C08: ADT Serialization Contracts – Stable, Versioned, Beyond Pydantic
+# Serialization Beyond Pydantic
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -425,6 +425,6 @@ def test_chunk_v1_migration():
 3. Replace one `json.dumps(asdict(...))` with envelope serde.  
 4. Add streaming persistence for a pipeline stage.
 
-**Next:** M05C09 – Compositional Domain Models – Splitting ADTs Across Subsystems.
+**Continue with:** [Compositional Domain Models](../module-05-algebraic-data-modelling/compositional-domain-models.md)
 
 You now serialize every core ADT with stable, versioned, migratable contracts — schema evolution is explicit and safe forever. The rest of Module 5 adds compositional domain models and performance guidance for heavy ADTs.

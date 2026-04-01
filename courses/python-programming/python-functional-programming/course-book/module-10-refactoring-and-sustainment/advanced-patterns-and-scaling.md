@@ -1,4 +1,4 @@
-# Core 6: Advanced Patterns & Scaling – Pattern Matching, Typing, Parallel Execution
+# Advanced Patterns and Scaling
 
 **Module 10**
 > **Core question:**  
@@ -211,4 +211,4 @@ match res:
 par = parallel_map_result(f, items)
 ```
 
-**Next: core 7. Domain-Driven Design Meets FP – Aligning Bounded Contexts with Pipelines**
+**Continue with:** [DDD and FP](../module-10-refactoring-and-sustainment/ddd-and-fp.md)

@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Configuration as Data
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C06 – Configuration-as-Data (dataclasses/dicts + Partial Application for Behaviour)
 
 > **Core question:**  
 > How do you turn raw settings from env, files, or CLI into immutable, validated data (frozen dataclasses or dicts) that drive behaviour via partial and closures—so pipelines from M02C01–M02C05 are deterministic and testable?
@@ -515,7 +514,7 @@ print(512)  # OK for one-off constant
 - Did data enable easier tests?  
 - Did binding clarify behaviour?
 
-**Next:** Core 7 – Callback Hell to Combinators.
+**Continue with:** [Callbacks to Combinators](../module-02-data-first-apis-and-expression-style/callbacks-to-combinators.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 

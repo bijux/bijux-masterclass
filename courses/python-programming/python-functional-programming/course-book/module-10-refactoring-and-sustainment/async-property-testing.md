@@ -1,4 +1,4 @@
-# Core 5: Property-Based Testing for Async and Streaming Pipelines (Hypothesis Strategies and Faked I/O)
+# Async Property Testing
 
 **Module 10**
 > **Core question:**  
@@ -287,4 +287,4 @@ async def test_stream_law(gen):
     # ...
 ```
 
-**Next: core 6. Future Directions – Pattern Matching, Typing Advances, Next-Step Parallel FuncPipe**
+**Continue with:** [Advanced Patterns and Scaling](../module-10-refactoring-and-sustainment/advanced-patterns-and-scaling.md)

@@ -1,4 +1,4 @@
-# M06C09: Refactoring `try/except` Spaghetti into Pure Monadic Pipelines
+# Refactoring try/except
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -272,6 +272,6 @@ Run this in CI. If it ever fails, you broke the refactor.
 2. Add Hypothesis equivalence tests and delete the old imperative version.
 3. Celebrate — you now have one less piece of spaghetti forever.
 
-**Next:** M06C10 – Configurable Pipelines – Toggle Validation, Logging, Metrics at Runtime
+**Continue with:** [Configurable Pipelines](../module-06-monadic-flow-and-explicit-context/configurable-pipelines.md)
 
 You have now refactored imperative error handling into pure, composable, mathematically proven pipelines. Your codebase is dramatically cleaner, safer, and ready for the final architectural patterns.

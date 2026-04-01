@@ -1,4 +1,4 @@
-# M04C01: Structural Recursion vs Iteration in Python – Pragmatic Limits & Safe Depth  
+# Structural Recursion and Iteration
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -345,4 +345,4 @@ Result metadata inherently costs O(N×avg_depth) path tuples – unavoidable.
 2. Implement human-readable section id `"1.2.3"` via a second fold pass (no quadratic allocation).  
 3. Wire `flatten` into the public RAG API; verify with `islice(..., 10)` touches exactly 10 nodes.
 
-**Next:** M04C02 – Folds & Reductions as Safe Recursion (Monoidal Fusion, Custom Accumulators).
+**Continue with:** [Folds and Reductions](../module-04-resilience-and-streaming-failures/folds-and-reductions.md)

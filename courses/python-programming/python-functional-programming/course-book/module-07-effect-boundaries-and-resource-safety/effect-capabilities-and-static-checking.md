@@ -1,4 +1,4 @@
-# M07C06: Effect Capabilities & Static Checking with Protocols + `mypy --strict`
+# Effect Capabilities and Static Checking
 
 **Module 07 – Main Track Core**
 
@@ -203,6 +203,6 @@ Protocols introduce no additional runtime overhead beyond normal method dispatch
 3. Add a property test proving two different implementations of the same protocol yield identical results.  
 4. Create a `Reader[RagCapabilities, ...]` pipeline and run it with both mock and real capabilities.
 
-**Next** → M07C07: Composing Effects – Building Larger Behaviour from Small Capability Interfaces
+**Continue with:** [Composing Effects](../module-07-effect-boundaries-and-resource-safety/composing-effects.md)
 
 You now have **statically verified capability isolation** – with `mypy --strict`, explicit types (no `Any`), and CI import rules, core code cannot reach beyond its declared capabilities. Combined with ports, `IOPlan`, resource safety, and pure logging, your architecture is effectively bulletproof. The remaining cores are specialisations and production patterns.

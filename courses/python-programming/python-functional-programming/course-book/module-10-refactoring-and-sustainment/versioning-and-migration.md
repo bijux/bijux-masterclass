@@ -1,4 +1,4 @@
-# Core 8: Versioning and Migration of FuncPipe Contracts and Pipeline Graphs
+# Versioning and Migration
 
 **Module 10**
 > **Core question:**  
@@ -327,4 +327,4 @@ if translated.is_ok():
     await chunking.ingest(translated.ok())
 ```
 
-**Next: core 9. Governance – Ownership, Change Control, and “Unsafe” Extensions of FuncPipe**
+**Continue with:** [Governance](../module-10-refactoring-and-sustainment/governance.md)

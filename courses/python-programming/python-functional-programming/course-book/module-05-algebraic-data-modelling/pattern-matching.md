@@ -1,4 +1,4 @@
-# M05C07: Pattern Matching in Python 3.10+ for ADTs
+# Pattern Matching
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -240,6 +240,6 @@ def test_result_match_exhaustive(res):
 3. Use guards to handle retryable errors in a Result match.  
 4. Replace a nested if-elif with or-patterns (`case Ok() | Some():`).
 
-**Next:** M05C08 – ADT Serialization Contracts (to_dict/from_dict, Versioning, Stability).
+**Continue with:** [Serialization Beyond Pydantic](../module-05-algebraic-data-modelling/serialization-beyond-pydantic.md)
 
 You now destructure and handle every ADT with concise, exhaustive, type-narrowing `match` statements — no more `isinstance` boilerplate, no more silent missing cases. The rest of Module 5 adds stable serialization, compositional domain models, and performance guidance for heavy ADTs.

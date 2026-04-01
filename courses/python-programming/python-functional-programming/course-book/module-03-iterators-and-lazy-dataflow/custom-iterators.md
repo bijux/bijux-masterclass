@@ -1,4 +1,4 @@
-# Module 3: Lazy Iteration and Streaming
+# Custom Iterators
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
 | 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
 
-## M03C09: Designing Custom Iterator Types – Classes Implementing `__iter__` / `__next__`
 
 > **Core question:**  
 > How do you design custom iterator classes that implement `__iter__` and `__next__` for complex stateful logic, ensuring purity, laziness, and equivalence while enabling reuse beyond simple generators?
@@ -588,7 +587,7 @@ Simple logic; else class.
 - Test cleanup/del.
 - For async iters, see future.
 
-**Next:** Core 10 – Observability for Streams. (Builds on this.)
+**Continue with:** [Streaming Observability](../module-03-iterators-and-lazy-dataflow/streaming-observability.md)
 
 ### Repository Alignment
 

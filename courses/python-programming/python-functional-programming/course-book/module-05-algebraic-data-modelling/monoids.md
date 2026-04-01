@@ -1,4 +1,4 @@
-# M05C05: Monoids & Semigroups – Aggregation That Never Lies
+# Monoids
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -379,6 +379,6 @@ def test_metrics_finite_guard():
 3. Build a deep config monoid with `map_monoid(product_monoid(...))`.  
 4. Prove your log aggregation is near-linear and parallel-safe.
 
-**Next:** M05C06 – Pydantic v2 as Smart Constructors – Runtime Enforcement Without Losing ADTs.
+**Continue with:** [Pydantic Smart Constructors](../module-05-algebraic-data-modelling/pydantic-smart-constructors.md)
 
 You now aggregate anything — logs, metrics, configs, errors — with mathematically proven correctness, near-linear time, and full parallelism. The rest of Module 5 adds Pydantic for runtime validation, pattern matching for orchestration, and serialization contracts.

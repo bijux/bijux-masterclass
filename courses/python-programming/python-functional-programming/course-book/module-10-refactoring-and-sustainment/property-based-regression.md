@@ -1,4 +1,4 @@
-# Core 4: Property-Based Regression & Invariant Testing for Pure Pipelines (Hypothesis in CI)
+# Property-Based Regression
 
 **Module 10**
 > **Core question:**  
@@ -308,4 +308,4 @@ def test_rag_invariant(docs):
     # ...
 ```
 
-**Next: core 5. Property-Based Testing for Async and Streaming Pipelines (Hypothesis Strategies and Faked I/O)**
+**Continue with:** [Async Property Testing](../module-10-refactoring-and-sustainment/async-property-testing.md)

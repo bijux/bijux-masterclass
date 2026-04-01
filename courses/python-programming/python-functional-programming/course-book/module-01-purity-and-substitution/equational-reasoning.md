@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Equational Reasoning
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: ... | ... | ... |
 | ... | ... | ... |
 
-## M01C09: Equational Reasoning & Local Rewrite Rules for Pure Code
 
 > **Core question:**  
 > How do you use algebraic laws to rewrite pure code confidently—so that optimizations like fusing maps or moving filters are provably safe, and local changes don't break distant callers?
@@ -455,4 +454,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for readers wanting basics.
 
-**Next:** Core 10 – Idempotent & Monotone Transforms. (Builds on this RAG pure core.)
+**Continue with:** [Idempotent Transforms](../module-01-purity-and-substitution/idempotent-transforms.md)

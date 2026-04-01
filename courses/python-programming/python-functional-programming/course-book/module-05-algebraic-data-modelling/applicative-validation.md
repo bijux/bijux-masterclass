@@ -1,4 +1,4 @@
-# M05C04: Applicative Validation – Independent Checks, Accumulate All Errors
+# Applicative Validation
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -270,6 +270,6 @@ def test_v_failure_rejects_empty():
 3. Implement `v_liftA4`..`v_liftA8` via currying.  
 4. Use `v_traverse` to validate an entire batch of chunks before embedding.
 
-**Next:** M05C05 – Monoids & Semigroups (Aggregation, Logs, Metrics).
+**Continue with:** [Monoids](../module-05-algebraic-data-modelling/monoids.md)
 
 You now validate independently and collect every error in one pass — no more “fix one, resubmit” cycles. The rest of Module 5 introduces Monoids (for error combination, logs, metrics) and Monads (for dependent sequencing when you really do want short-circuiting).

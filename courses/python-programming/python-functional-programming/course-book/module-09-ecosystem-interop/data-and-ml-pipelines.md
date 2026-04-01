@@ -1,4 +1,4 @@
-# Core 5: Data/ML Pipelines – Stateless Transforms, Config-Driven FuncPipe Steps
+# Data and ML Pipelines
 **Module 09**
 > **Core question:**  
 > How do you construct data and ML pipelines in FuncPipe using stateless transforms driven by configuration data, enabling composable, reproducible, and testable chains or pipelines that integrate pure functions with ML-specific steps like embedding or feature extraction?
@@ -314,4 +314,4 @@ pipeline = build_pipeline(config, artifacts)
 result = pipeline(data)
 ```
 
-**Next Core: 6. Command-Line and Config-Driven FuncPipe – Integrating with Click/Typer**
+**Continue with:** [CLI and Config Pipelines](../module-09-ecosystem-interop/cli-and-config-pipelines.md)

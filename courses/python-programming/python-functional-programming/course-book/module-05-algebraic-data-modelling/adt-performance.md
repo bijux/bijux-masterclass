@@ -1,4 +1,4 @@
-# M05C10: Performance & Ergonomics of Heavy ADTs (When to Compromise Representation)
+# ADT Performance
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.

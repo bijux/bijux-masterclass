@@ -1,4 +1,4 @@
-# Module 3: Lazy Iteration and Streaming
+# itertools Composition
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
 | 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
 
-## M03C03: Composing Iterators with itertools – chain, islice, groupby, tee
 
 > **Core question:**  
 > How do you use itertools tools like chain, islice, groupby, and tee to compose lazy iterators into efficient pipelines, avoiding materialization while preserving order and equivalence?
@@ -375,7 +374,7 @@ For mutable state; use custom.
 
 **Project Exercise:** Compose RAG; verify laziness.
 
-**Next:** M03C04 – Chunking, Windowing, Grouping. (Builds on this.)
+**Continue with:** [Chunking and Windowing](../module-03-iterators-and-lazy-dataflow/chunking-and-windowing.md)
 
 ### Repository Alignment
 

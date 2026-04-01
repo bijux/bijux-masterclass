@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Pure Functions & Contracts
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: ... | ... | ... |
 | ... | ... | ... |
 
-## M01C02: Pure Functions & Contracts – Inputs, Outputs, No Shared Mutation
 
 > **Core question:**  
 > How do you constrain functions so that purity violations—hidden inputs, nondeterministic outputs, or shared mutation—are detectable early by signatures, properties, and optional runtime checks?
@@ -385,4 +384,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
 
-**Next:** Core 3 – Immutability & Value Semantics. (Builds on this RAG pure core.)
+**Continue with:** [Immutability & Value Semantics](../module-01-purity-and-substitution/immutability-and-value-semantics.md)

@@ -1,4 +1,4 @@
-# Module 3: Lazy Iteration and Streaming
+# Time-Aware Streaming
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
 | 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
 
-## M03C08: Time-Aware Streaming Patterns – Throttling and Simple Rate-Limiting in Pure Style
 
 > **Core question:**  
 > How do you incorporate time awareness into iterator pipelines for throttling and rate-limiting, using pure, functional patterns without side-effects or global clocks, while preserving laziness and equivalence?
@@ -462,7 +461,7 @@ Batch processing; else time-aware.
 - Mock for deterministic tests.
 - For async time, see future cores.
 
-**Next:** M03C09 – Designing Custom Iterator Types. (Builds on this.)
+**Continue with:** [Custom Iterators](../module-03-iterators-and-lazy-dataflow/custom-iterators.md)
 
 ### Repository Alignment
 

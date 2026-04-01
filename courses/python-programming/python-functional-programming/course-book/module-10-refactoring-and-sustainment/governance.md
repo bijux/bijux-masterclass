@@ -1,4 +1,4 @@
-# Core 9: Governance – Ownership, Change Control, and “Unsafe” Extensions of FuncPipe
+# Governance
 
 **Module 10**
 > **Core question:**  
@@ -205,4 +205,4 @@ dedup = fast_global_dedup if policy.use_fast_global_dedup else pure_dedup
 chunks = chunk_pipeline(docs, dedup)
 ```
 
-**Next: core 10. Teaching, Onboarding, and Designing the Bridge from FuncPipe to ParaPipe**
+**Continue with:** [Capstone Delivery](../module-10-refactoring-and-sustainment/capstone-delivery.md)

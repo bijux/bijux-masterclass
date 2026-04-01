@@ -1,4 +1,4 @@
-# M05C09: Compositional Domain Models – Splitting ADTs Across Subsystems
+# Compositional Domain Models
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -337,6 +337,6 @@ def test_assemble_dim_mismatch_fails(content, source, tags, model, vector):
 3. Add a v1 → current upcast function for one subsystem.  
 4. Verify with property test that round-trip through serialization preserves data.
 
-**Next:** M05C10 – Performance & Ergonomics of Heavy ADTs (When to Compromise Representation).
+**Continue with:** [ADT Performance](../module-05-algebraic-data-modelling/adt-performance.md)
 
 You now build large systems as loosely coupled subsystem ADTs recombined only at explicit, validated integration points — teams evolve independently, schema conflicts vanish, and the domain model stays coherent forever. The final core gives concrete performance guidance for when (and how) to compromise pure ADTs in hot paths.

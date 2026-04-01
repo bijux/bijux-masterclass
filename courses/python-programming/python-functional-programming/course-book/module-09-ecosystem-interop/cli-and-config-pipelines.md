@@ -1,4 +1,4 @@
-# Core 6: Command-Line and Config-Driven FuncPipe – Integrating with Click/Typer
+# CLI and Config Pipelines
 **Module 09**
 > **Core question:**  
 > How do you integrate command-line interfaces with FuncPipe using Click or Typer to create config-driven entry points that delegate to pure pipelines, support overrides, and maintain testability while separating CLI concerns from core logic?
@@ -365,4 +365,4 @@ def handler(arg: Type):
     raise typer.Exit(handle_result(result, spec.output_format))
 ```
 
-**Next Core: 7. FP Style with Distributed/Dataflow Systems (Dask/Beam-Like Transform + Sink Thinking)**
+**Continue with:** [Distributed Dataflow](../module-09-ecosystem-interop/distributed-dataflow.md)

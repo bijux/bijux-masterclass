@@ -1,4 +1,4 @@
-# M06C03: Lifting Plain Functions into Containers – map, ap, and_then Helpers
+# Lifting Plain Functions
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -137,6 +137,6 @@ def test_validation_accumulates(e1, e2):
 2. Convert a real `try/except` chain to `and_then` + `try_result`.
 3. Add a new field to an existing validation — confirm it’s a single-line change.
 
-**Next:** M06C04 – Reader-like Pattern – Eliminating Closure Boilerplate Forever
+**Continue with:** [Reader Pattern](../module-06-monadic-flow-and-explicit-context/reader-pattern.md)
 
 You have now reached the point where every pipeline you write is **linear on the happy path**, **automatically propagates every error**, and is **mathematically proven correct** by Hypothesis. The remaining cores remove the last bits of friction.

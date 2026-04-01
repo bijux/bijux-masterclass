@@ -1,4 +1,4 @@
-# Core 7: FP Style with Distributed/Dataflow Systems (Dask/Beam-Like Transform + Sink Thinking)
+# Distributed Dataflow
 **Module 09**
 > **Core question:**
 > How do you adapt distributed/dataflow systems like Dask or Apache Beam to functional programming principles in FuncPipe, using pure transforms, lazy graphs, explicit sinks, and stateful operators with algebraic contracts to maintain composability, purity, and testability for large-scale pipelines?
@@ -561,4 +561,4 @@ ir = build_ir_from_config(config)
 bag = compile_to_dask(ir, data, config)
 result = bag.compute()
 ```
-**Next Core: 8. Wrapping Imperative Libraries in Functional Facades (Normalizing Side-Effectful APIs)**
+**Continue with:** [Functional Facades](../module-09-ecosystem-interop/functional-facades.md)

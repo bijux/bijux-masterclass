@@ -1,4 +1,4 @@
-# Core 4: Web and Services – FastAPI Endpoints with Pure Core & Thin Adapters
+# Web and Services
 **Module 09**
 > **Core question:**  
 > How do you build web services using FastAPI in a functional style, with thin adapters delegating to pure core logic, dependency injection for capabilities, and explicit mappings for errors/responses to maintain composability and testability in FuncPipe pipelines?
@@ -343,4 +343,4 @@ async def handler(input: Model = Body(...), dep=Depends()):
     return pure_core(input, dep)
 ```
 
-**Next Core: 5. Data/ML Pipelines – Stateless Transforms, Config-Driven FuncPipe Steps**
+**Continue with:** [Data and ML Pipelines](../module-09-ecosystem-interop/data-and-ml-pipelines.md)

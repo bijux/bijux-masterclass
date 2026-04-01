@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Imperative vs Functional
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -41,7 +41,6 @@ Keep the FuncPipe capstone open while reading this module and inspect:
 
 The capstone should make one idea concrete here: purity is a design boundary, not a slogan.
 
-## M01C01: Imperative vs Functional – Purity & Referential Transparency
 
 > **Core question:**  
 > How does hidden state prevent substitution, and how do you refactor imperative code to pure functions that enable equational reasoning?
@@ -509,4 +508,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
 
-**Next:** Core 2 – Pure Functions & Contracts. (Builds on this RAG pure core.)
+**Continue with:** [Pure Functions & Contracts](../module-01-purity-and-substitution/pure-functions-and-contracts.md)

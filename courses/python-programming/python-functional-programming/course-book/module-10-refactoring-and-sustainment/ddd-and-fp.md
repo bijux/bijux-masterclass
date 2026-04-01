@@ -1,4 +1,4 @@
-# Core 7: Domain-Driven Design Meets FP – Aligning Bounded Contexts with Pipelines
+# DDD and FP
 
 **Module 10**
 > **Core question:**  
@@ -304,4 +304,4 @@ if translated.is_ok():
     await chunking.ingest(translated.ok())
 ```
 
-**Next: core 8. Versioning and Migration of FuncPipe Contracts and Pipeline Graphs**
+**Continue with:** [Versioning and Migration](../module-10-refactoring-and-sustainment/versioning-and-migration.md)

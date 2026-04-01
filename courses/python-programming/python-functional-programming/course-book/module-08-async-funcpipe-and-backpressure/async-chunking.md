@@ -1,4 +1,4 @@
-# M08C09: Time- and Size-Based Chunking Strategies in Async Pipelines
+# Async Chunking
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
@@ -320,7 +320,7 @@ async def test_chunk_time_bound(items):
 4. Measure latency/cost before and after — celebrate the 10–50× improvement.  
 5. Sleep well — your pipeline is now both streaming-fast and batch-efficient.
 
-**Next** → M08C10: Law-Like Properties for Async Pipelines (Idempotence, At-Most-Once, No Duplication)
+**Continue with:** [Async Pipeline Laws](../module-08-async-funcpipe-and-backpressure/async-pipeline-laws.md)
 
 You now have production-grade time- and size-based chunking that turns single-item death-by-latency into efficient batches — while preserving every correctness guarantee we fought for.
 

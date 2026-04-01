@@ -1,4 +1,4 @@
-# M08C01: async/await as Descriptions of Steps, Not Hidden Magic
+# async/await as Descriptions
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
 > This is a **required** core. Every production FuncPipe async system treats `async def` as a pure description of steps — never hidden magic.
@@ -335,6 +335,6 @@ Composition is O(1) per layer — no work until interpretation.
 4. Run the same `AsyncPlan` twice in a test and assert identical results (for idempotent cases).  
 5. Celebrate – you now have async without magic.
 
-**Next** → M08C02: Async Generators & Streams – Building Async FuncPipe
+**Continue with:** [Async Generators](../module-08-async-funcpipe-and-backpressure/async-generators.md)
 
 You now model **async operations as pure, composable descriptions** — exactly symmetrical to `IOPlan`. Your core remains pure, your shell controls execution, and concurrency is finally explicit data, not hidden magic.

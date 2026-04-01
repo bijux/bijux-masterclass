@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Closures & Partials
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C01: Closures & Partials for Configurators – Pure Configurators
 
 > **Core question:**  
 > How do closures and partial application create pure configurators that capture immutable config to produce reusable, deterministic variants of RAG pipelines without globals or mutable defaults?
@@ -417,6 +416,6 @@ Rarely, for one-off calls with fixed config (e.g., scripts), pass params explici
 **Reflect:** In your code, find one configurable func (global/default). Refactor to pure configurator; add Hypothesis equiv.  
 **Project Exercise:** Apply to RAG; run properties on sample data.
 
-**Next:** Core 2 – Expression-Oriented Python. (Builds on this configurator.)
+**Continue with:** [Expression-Oriented Python](../module-02-data-first-apis-and-expression-style/expression-oriented-python.md)
 
 > **Further Reading:** For more on closures in Python, see 'Fluent Python' by Luciano Ramalho. Explore toolz for advanced partials once comfortable.

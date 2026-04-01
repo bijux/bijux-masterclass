@@ -1,4 +1,4 @@
-# M07C03: Capability Protocols – Typed Effect Interfaces (Storage, Clock, Logger, Cache)
+# Capability Protocols
 
 **Module 07 – Main Track Core**
 
@@ -221,6 +221,6 @@ Protocols introduce no additional runtime overhead beyond normal method dispatch
 3. Write a property test that proves `CollectingLogger` receives exactly the expected entries.  
 4. Add a `AppCapabilities` dataclass bundling all your protocols and refactor one shell to inject a single object.
 
-**Next** → M07C04: Resource Safety – Guaranteeing Cleanup on Partial Consumption
+**Continue with:** [Resource Safety](../module-07-effect-boundaries-and-resource-safety/resource-safety.md)
 
 You now have **statically checked, composable capability protocols** for every common effect. Your core is pure, your shell injects real implementations, and mypy + Hypothesis guarantee you never accidentally reach into concrete infrastructure or conflate absence with null. This is the foundation every production FuncPipe system is built on.

@@ -1,4 +1,4 @@
-## M04C10: Structured Error Reports from Streaming Pipelines (Errors as First-Class Data)
+# Structured Error Reports
 
 ## Module 04 Recap – What You Can Now Do
 

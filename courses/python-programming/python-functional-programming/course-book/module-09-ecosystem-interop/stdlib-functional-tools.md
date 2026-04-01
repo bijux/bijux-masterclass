@@ -1,4 +1,4 @@
-# Core 1: FP in Stdlib – itertools, functools, operator, pathlib
+# Standard Library Functional Tools
 
 **Module 09**
 > **Core question:**  
@@ -230,4 +230,4 @@ Stdlib FP is efficient; verified via benchmarks.
 merged = chain(stream1, stream2)
 ```
 
-**Next Core: 2. FP Helper Libraries – `toolz` / `returns` in Real Pipelines**
+**Continue with:** [Helper Libraries](../module-09-ecosystem-interop/helper-libraries.md)

@@ -1,4 +1,4 @@
-# M08C03: Bounded Queues & Backpressure – Preventing Memory Blowups
+# Backpressure
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
@@ -432,7 +432,7 @@ Both modes are now truly O(max_concurrent) memory — even under arbitrary head-
 4. Force a head-of-line straggler and verify memory stays bounded.  
 5. Celebrate – you now have safe, configurable concurrency with true memory bounds.
 
-**Next** → M08C04: Retry & Timeout Policies as Pure Data
+**Continue with:** [Retry and Timeout Policies](../module-08-async-funcpipe-and-backpressure/retry-and-timeout-policies.md)
 
 You now have **bounded, backpressure-safe async streams with guaranteed O(max_concurrent) memory in both modes** — the core primitive that makes high-concurrency FuncPipe production-ready. The remaining cores add resilience (retry/timeout) and fairness — all as pure data.
 

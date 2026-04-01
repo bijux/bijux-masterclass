@@ -1,4 +1,4 @@
-# M08C04: Retry & Timeout Policies as Pure Data Fed into Async Steps
+# Retry and Timeout Policies
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
@@ -417,7 +417,7 @@ async def test_non_idempotent_warning():
 4. Write a test with fake `ResilienceEnv` asserting exact attempt count and backoff delays.  
 5. Celebrate – you now have production-grade resilience.
 
-**Next** → M08C05: Rate Limiting & Fairness – Cooperative Scheduling
+**Continue with:** [Deterministic Async Testing](../module-08-async-funcpipe-and-backpressure/deterministic-async-testing.md)
 
 You now have **resilient, backpressure-safe async streams** — ready for real-world flakiness and load. The remaining cores add fairness and complete the production Async FuncPipe.
 

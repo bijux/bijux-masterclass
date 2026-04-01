@@ -1,4 +1,4 @@
-## M04C03: Memoization & Caching of Pure Functions (lru_cache, Custom & Persistent Caches)
+# Memoization
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -363,6 +363,6 @@ All variants are observationally pure.
 3. Add `DiskCache` for content-based deduplication hashes that survive restarts.  
 4. Find an expensive pure function in your codebase → memoize with `memoize_keyed` → add equivalence property.
 
-**Next:** M04C04 – Result/Option Types for Per-Record Failures (Simple FP Error Containers).
+**Continue with:** [Result and Option Failures](../module-04-resilience-and-streaming-failures/result-and-option-failures.md)
 
 You now have the complete toolkit to make any pure computation effectively O(unique inputs) — even across process restarts. The rest of Module 4 is about doing it safely when things go wrong.

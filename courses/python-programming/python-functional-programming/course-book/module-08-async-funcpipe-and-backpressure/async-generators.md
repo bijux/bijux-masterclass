@@ -1,4 +1,4 @@
-# M08C02: Async Generators & Streams – Building Async FuncPipe
+# Async Generators
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
@@ -340,7 +340,7 @@ Full consumption has same asymptotics as batch; partial consumption is O(1).
 4. Write a Hypothesis property proving one of the bind laws on a small synthetic stream.  
 5. Celebrate – you now have true async streaming without magic or leaks.
 
-**Next** → M08C03: Bounded Queues & Backpressure – Preventing Memory Blowups
+**Continue with:** [Backpressure](../module-08-async-funcpipe-and-backpressure/backpressure.md)
 
 You now have **lazy, composable, resource-safe async streams** — the foundation for production Async FuncPipe. The remaining cores add backpressure, fairness, retries, and full async RAG — all while keeping the core pure and the shell in full control.
 

@@ -1,4 +1,4 @@
-# M06C06: Error-Typed Flows – Expected Domain Errors vs Unexpected Failures
+# Error-Typed Flows
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -272,6 +272,6 @@ safe_user = try_result(
 2. Add a new expected domain error to an existing pipeline — confirm it's a one-line change.
 3. Deliberately introduce a KeyError bug inside a pure function — confirm it crashes (not silently converted).
 
-**Next:** M06C07 – Container Layering – Result[Option[T]] Without Monad Transformers
+**Continue with:** [Layered Containers](../module-06-monadic-flow-and-explicit-context/layered-containers.md)
 
 You have now rigorously separated expected domain errors (typed, composable) from unexpected failures (raise early). Your pipelines are pure for all recoverable cases, and real bugs can never be silently swallowed. The remaining cores are architectural patterns and polish.

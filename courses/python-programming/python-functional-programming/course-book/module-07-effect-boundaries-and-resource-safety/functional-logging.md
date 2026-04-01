@@ -1,4 +1,4 @@
-# M07C05: Functional Logging & Tracing – Logs as Data (Monoidal Accumulation with Writer)
+# Functional Logging
 
 **Module 07 – Main Track Core**
 
@@ -243,6 +243,6 @@ Writer is efficient enough for millions of log entries in long-running pipelines
 3. Write a property test that proves log order matches execution order for a chained pipeline.  
 4. Implement a `CollectingLogger` shell that asserts expected log entries in tests.
 
-**Next** → M07C06: Effect Capabilities & Static Checking with `mypy --strict`
+**Continue with:** [Effect Capabilities and Static Checking](../module-07-effect-boundaries-and-resource-safety/effect-capabilities-and-static-checking.md)
 
 You now have **pure, composable, testable logging** in every pipeline. Logs are data – accumulated monoidally, composable and replayable, and never side effects in cores. Combined with ports, capability protocols, `IOPlan`, and resource safety, your system is finally ready for serious production use. The remaining cores are specialisations and deployment patterns.

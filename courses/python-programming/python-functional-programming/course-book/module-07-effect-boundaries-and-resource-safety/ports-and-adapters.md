@@ -1,4 +1,4 @@
-# M07C01: Ports & Adapters – Pure Domain, Effectful Infrastructure
+# Ports and Adapters
 
 ## Progression Note
 Module 7 moves from pure effect-aware composition to **real-world architecture**.
@@ -200,6 +200,6 @@ The RAG pipeline surface itself remains the Module 02–06 config-as-data API in
 2. Implement both a real and an in-memory adapter.  
 3. Write a Hypothesis test that proves swappability (same inputs → same core outputs).
 
-**Next:** M07C02 – External Effect Libraries (`returns` / `effect`) – Optional Comparison
+**Continue with:** [Effect Interfaces](../module-07-effect-boundaries-and-resource-safety/effect-interfaces.md)
 
 You have now reached production-grade functional architecture: fully pure core, mechanically proven swappability, atomic writes, resource safety, lazy streaming, and graceful typed error handling — all while preserving the beauty of the Module 6 monadic pipelines. This is the real-world pattern that scales.

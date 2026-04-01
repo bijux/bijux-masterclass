@@ -1,4 +1,4 @@
-# Module 3: Lazy Iteration and Streaming
+# Infinite Sequences Safely
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
 | 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
 
-## M03C05: Infinite & Unbounded Sequences – Fencing with islice, takewhile, dropwhile
 
 > **Core question:**  
 > How do you safely handle infinite or unbounded sequences in lazy pipelines by using fencing tools like islice, takewhile, and dropwhile to bound demand, short-circuit computation, and prevent resource exhaustion?
@@ -347,7 +346,7 @@ Everything else → fence aggressively.
 
 **Project Exercise:** Add `max_chunks=10_000` and `min_doc_len=500` defaults to your RAG config. Verify on a malicious 1 TB simulated input that the pipeline terminates in < 1 second.
 
-**Next:** M03C06 – Building Reusable Iterator-Based FuncPipe Stages. (Builds on this.)
+**Continue with:** [Reusable Pipeline Stages](../module-03-iterators-and-lazy-dataflow/reusable-pipeline-stages.md)
 
 ### Repository Alignment
 

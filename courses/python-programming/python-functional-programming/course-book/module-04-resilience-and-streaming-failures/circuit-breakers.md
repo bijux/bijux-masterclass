@@ -1,4 +1,4 @@
-## M04C07: Short-Circuiting and Circuit-Breaker Behaviour via Pure Result Types
+# Circuit Breakers
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -462,6 +462,6 @@ All breakers are truly lazy generators with O(1) auxiliary memory.
 3. Implement custom predicate breaker for "stop on first OOM" → test.  
 4. Combine with `par_try_map_iter` → verify parallel work stops on trigger.
 
-**Next:** M04C08 – Resource-Aware Streaming – Ensuring Generators Close and Clean Up Correctly.
+**Continue with:** [Resource-Aware Streams](../module-04-resilience-and-streaming-failures/resource-aware-streams.md)
 
 You now have the complete toolkit to abort doomed runs instantly while keeping every line of code pure, composable, and resource-safe. The rest of Module 4 is about retries and final reporting.

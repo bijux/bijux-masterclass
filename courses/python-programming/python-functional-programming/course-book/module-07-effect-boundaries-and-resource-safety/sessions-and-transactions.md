@@ -1,4 +1,4 @@
-# M07C09: Sessions & Transactions as Explicit Data (Not Hidden Globals)
+# Sessions and Transactions
 
 **Module 07 – Main Track Core**
 
@@ -265,6 +265,6 @@ Linear in transaction steps and session config size; no hidden costs.
 3. Refactor one real pipeline stage to take an explicit `Tx` instead of using a global connection.  
 4. Add a property test proving rollback is called on body failure.
 
-**Next** → M07C10: Incremental Migration – Pushing Effects Outward in Existing Codebases
+**Continue with:** [Incremental Migration](../module-07-effect-boundaries-and-resource-safety/incremental-migration.md)
 
 You now model **sessions and transactions as explicit data** – eliminating hidden globals forever. Combined with everything before, your system can now handle complex stateful effects while remaining pure, composable, and testable. The final core shows how to migrate real codebases to this architecture.

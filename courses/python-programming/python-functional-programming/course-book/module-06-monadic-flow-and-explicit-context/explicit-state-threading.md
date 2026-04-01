@@ -1,4 +1,4 @@
-# M06C05: Minimal State Pattern – Threading Local Mutable State Without Globals
+# Explicit State Threading
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -226,6 +226,6 @@ def test_put_get():
 2. Add a token counter + processed-chunks counter to an existing embedding pipeline.
 3. Layer State inside Reader from M06C04 — run the same pipeline with two different configs and assert different final states.
 
-**Next:** M06C06 – Writer Pattern – Accumulating Logs/Metrics as Pure Data
+**Continue with:** [Error-Typed Flows](../module-06-monadic-flow-and-explicit-context/error-typed-flows.md)
 
 You have now handled **all three classic effects** (config, failure, state) in a pure, composable way. Every pipeline you write from here on is mathematically pure, fully testable, and proven correct by Hypothesis. The remaining cores are polish and architecture.

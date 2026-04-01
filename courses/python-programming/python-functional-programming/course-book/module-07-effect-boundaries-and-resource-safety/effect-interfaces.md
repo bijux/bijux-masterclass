@@ -1,4 +1,4 @@
-# M07C02: Effect Interfaces – Native Deferred IO vs Library Alternatives (`returns`, `effect`)
+# Effect Interfaces
 
 **Module 07 – Optional Comparison Core**  
 > **Main track**: Cores 1, 3–10 (Ports & Adapters + Capability Protocols → Production).  
@@ -264,6 +264,6 @@ No extra overhead beyond what any monadic IO style incurs in Python.
 2. In a test or shell-only context, write a “log-only” interpreter variant that records intended operations but never touches the filesystem; prove via `mock_open` or `tmpdir` inspection that no real writes occur.  
 3. Add Hypothesis monad law tests for your own pipeline.
 
-**Next** → M07C03: Capability Protocols (Clock, RNG, Logger as Pure Data)
+**Continue with:** [Capability Protocols](../module-07-effect-boundaries-and-resource-safety/capability-protocols.md)
 
 You now have a minimal, law-checked effect ADT that slots perfectly into the Core 1 architecture: all logic stays pure, all effects are described as data, and the shell remains a thin, swappable layer around `perform`. The rest of Module 7 is just specialisations of this pattern.

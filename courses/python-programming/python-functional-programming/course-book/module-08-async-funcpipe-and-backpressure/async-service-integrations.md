@@ -1,4 +1,4 @@
-# M08C08: Designing Async Adapters for External Services (HTTP, DB) from Pure Interfaces
+# Async Service Integrations
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
@@ -369,7 +369,7 @@ async def test_pgvector_upsert_idempotence(chunks):
 4. Add a fully deterministic equivalence property test using stubbed clients.  
 5. Sleep well — your pipeline now survives provider changes without a single core modification.
 
-**Next** → M08C09: Time- and Size-Based Chunking Strategies in Async Pipelines
+**Continue with:** [Async Chunking](../module-08-async-funcpipe-and-backpressure/async-chunking.md)
 
 You now have production-grade, swappable, resilient async adapters for every external service — while the pure core remains eternally untouched.
 

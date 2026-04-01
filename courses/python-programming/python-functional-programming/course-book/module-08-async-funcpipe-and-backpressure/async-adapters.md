@@ -1,4 +1,4 @@
-# M08C07: Integrating Pure FuncPipe Core with Async Edges Cleanly
+# Async Adapters
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
@@ -300,7 +300,7 @@ async def test_layered_pipeline_equivalence(raw_lines):
 4. Add the equivalence property test between pure core and layered pipeline.  
 5. Delete every `await` that was previously in your core. Celebrate.
 
-**Next** → M08C08: Designing Async Adapters for External Services (HTTP, DB) from Pure Interfaces
+**Continue with:** [Async Service Integrations](../module-08-async-funcpipe-and-backpressure/async-service-integrations.md)
 
 You now have a pure, synchronous, instantly testable core running efficiently inside a full async, backpressure-safe, resilient, rate-limited, fair pipeline — without a single line of async in the core.
 

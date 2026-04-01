@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Effect Boundaries
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C05 – Boundary Design (Isolating I/O to Edges Only)
 
 > **Core question:**  
 > How do you isolate all side effects (I/O, mutation, exceptions) to thin, explicit boundaries—so the core stays parametric over effects, composable, and equational while handling real-world I/O?
@@ -466,7 +465,7 @@ print(json.loads(open("data.json").read()))  # OK for one-off
 - Did fakes catch leaks?  
 - Did boundaries clarify effects?
 
-**Next:** Core 6 – Configuration-as-Data.
+**Continue with:** [Configuration as Data](../module-02-data-first-apis-and-expression-style/configuration-as-data.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 

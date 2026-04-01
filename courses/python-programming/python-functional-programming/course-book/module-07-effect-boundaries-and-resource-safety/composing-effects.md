@@ -1,4 +1,4 @@
-# M07C07: Composing Effects – Building Larger Behaviour from Small Capability Interfaces
+# Composing Effects
 
 **Module 07 – Main Track Core**
 
@@ -236,6 +236,6 @@ Composition adds only constant overhead per layer – no work is performed until
 3. Refactor your real RAG pipeline to use a shell-only concrete `ProdRagCapabilities` dataclass injected via Reader.  
 4. Write a property test proving two different `Clock` implementations yield identical logs (modulo timestamps).
 
-**Next** → M07C08: Idempotent Effect Design for Safe Retries and Replays
+**Continue with:** [Idempotent Effects](../module-07-effect-boundaries-and-resource-safety/idempotent-effects.md)
 
 You now compose tiny capability protocols into powerful, reusable behaviours – all while preserving minimality, purity, and static safety. Your system scales without interface bloat or duplicated orchestration logic. The remaining cores are specialisations and production patterns.

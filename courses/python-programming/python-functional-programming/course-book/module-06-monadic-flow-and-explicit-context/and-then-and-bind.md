@@ -1,4 +1,4 @@
-# M06C01: `and_then` / `bind` Patterns for Result/Option Pipelines
+# and_then and bind
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -325,6 +325,6 @@ def test_option_tap_transparent(o):
 3. Implement `and_then` (and the four laws) for a custom two-variant ADT of your own.
 4. Find and eliminate one instance of nested `Result[Result[...]]` or `Option[Option[...]]` using `and_then`.
 
-**Next:** M06C02 – Law-Guided Design – Identity & Associativity Checks with Hypothesis.
+**Continue with:** [Law-Guided Design](../module-06-monadic-flow-and-explicit-context/law-guided-design.md)
 
 You now chain any number of fallible or optional steps with a single, lawful `and_then` — short-circuiting automatically, no boilerplate, refactor-safe forever. The rest of Module 6 builds Reader/State/Writer patterns and configurable pipelines on top of these monads.

@@ -1,4 +1,4 @@
-## M04C04: Result/Option Types for Per-Record Failures (Simple FP Error Containers)
+# Result and Option Failures
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -360,6 +360,6 @@ All streaming operations are truly lazy and O(1) per item.
 3. Replace every try/except in a data-processing function with `Result`.  
 4. Add `partition_results` at the end of your RAG pipeline → log summary of failures with full `ErrInfo`.
 
-**Next:** M04C05 – Validation Aggregators & Monoidal Error Collection.
+**Continue with:** [Streaming Error Handling](../module-04-resilience-and-streaming-failures/streaming-error-handling.md)
 
 You now have the complete toolkit to process real-world messy data without ever losing a single record or crashing on one bad apple. The rest of Module 4 is about aggregating and reporting those errors beautifully.

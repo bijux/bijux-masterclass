@@ -1,4 +1,4 @@
-# Core 2: FP Helper Libraries – `toolz` / `returns` in Real Pipelines
+# Helper Libraries
 **Module 09**
 > **Core question:**  
 > How do you optionally integrate external FP libraries like `toolz` (for ergonomic combinators) and `returns` (for typed monadic containers) into FuncPipe pipelines, using `toolz` for syntax sugar over stdlib iterators and `returns` only at outermost boundaries with immediate conversion to our custom ADTs?
@@ -291,4 +291,4 @@ Helpers ~ stdlib; groupby O(n) memory; memoize bounded by lru_cache.
 result = pipe(data, curried.map(f), curried.filter(g))
 ```
 
-**Next Core: 3. Data Processing – Pandas/Polars/Dask in FP Style (Pure Transforms, Method Chains vs Pipelines)**
+**Continue with:** [Data Processing](../module-09-ecosystem-interop/data-processing.md)

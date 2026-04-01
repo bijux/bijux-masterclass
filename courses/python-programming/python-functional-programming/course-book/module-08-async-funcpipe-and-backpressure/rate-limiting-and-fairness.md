@@ -1,4 +1,4 @@
-# M08C06: Rate Limiting & Fairness – Cooperative Scheduling
+# Rate Limiting and Fairness
 
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
@@ -349,7 +349,7 @@ async def test_fair_merge_exact_proportional_when_all_ready(total, weight_a, wei
 4. Run the proportional-share test with your tenant weights.  
 5. Sleep well — your pipeline now respects the real world without selling your soul.
 
-**Next** → M08C07: Integrating Pure FuncPipe Core with Async Edges Cleanly
+**Continue with:** [Async Adapters](../module-08-async-funcpipe-and-backpressure/async-adapters.md)
 
 You have completed the entire production-grade Async FuncPipe toolbox: pure descriptions, backpressure, resilience, deterministic testing, rate limiting, and fairness — all as composable, mathematically lawful combinators.
 

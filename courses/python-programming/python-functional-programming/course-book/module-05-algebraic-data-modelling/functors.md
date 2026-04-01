@@ -1,4 +1,4 @@
-# M05C03: Functors in Python – “Things You Can Map Over” (Option, Result, List)
+# Functors
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -379,6 +379,6 @@ def test_iter_functor_laws(xs):
 3. Replace all manual `if res.is_err(): return res` with `result_map` / `result_try_map`.  
 4. Add Hypothesis law tests for any custom container you map over.
 
-**Next:** M05C04 – Applicative Validation (Independent Checks, Accumulate All Errors).
+**Continue with:** [Applicative Validation](../module-05-algebraic-data-modelling/applicative-validation.md)
 
 You now transform data through any container with a single, lawful, composable curried `map` — no unboxing, no loops, no boilerplate, short-circuit guaranteed. The rest of Module 5 builds Applicatives (parallel validation), Monads (sequencing), and Monoids (aggregation) on top of these functors.

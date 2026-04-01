@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Immutability & Value Semantics
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: ... | ... | ... |
 | ... | ... | ... |
 
-## M01C03: Immutability & Value Semantics – Tuples, Frozensets, Frozen Dataclasses, Persistent Structures
 
 > **Core question:**  
 > How do you make data truly immutable with value semantics—never changing after creation, equality by value, and (when possible) structural sharing for efficiency—so that sharing is safe, reasoning is local, and mutations are impossible?
@@ -484,4 +483,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
 
-**Next:** Core 4 – Higher-Order Functions & Composition. (Builds on this RAG pure core.)
+**Continue with:** [Higher-Order Composition](../module-01-purity-and-substitution/higher-order-composition.md)

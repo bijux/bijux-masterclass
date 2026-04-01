@@ -1,4 +1,4 @@
-# Module 1: Foundational FP Concepts
+# Small Combinator Library
 
 ## Progression Note
 By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: ... | ... | ... |
 | ... | ... | ... |
 
-## M01C06: Small Combinator Libraries – map/filter-Style Helpers and Custom `pipe` Abstractions
 
 > **Core question:**  
 > How do you build a tiny, reusable combinator library—so that complex data flows emerge from a handful of pure, curried building blocks instead of copy-pasting pipeline fragments across your codebase?
@@ -549,4 +548,4 @@ All claims (e.g., referential transparency) are verifiable via the provided Hypo
 
 **Further Reading:** For more on purity pitfalls, see 'Fluent Python' 2nd Edition by Luciano Ramalho (covers Python 3.10, still relevant for 3.13+). Check free resources like Python.org's FP section or Codecademy's Advanced Python course for basics.
 
-**Next:** Core 7 – Type-Hinted Pure Functions and Higher-Order Pipelines. (Builds on this RAG pure core.)
+**Continue with:** [Typed Pipelines](../module-01-purity-and-substitution/typed-pipelines.md)

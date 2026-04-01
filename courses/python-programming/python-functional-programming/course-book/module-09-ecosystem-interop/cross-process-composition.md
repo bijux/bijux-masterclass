@@ -1,4 +1,4 @@
-# Core 9: Cross-Process Composition – Serializing Configs/Specifications, Not Live Objects
+# Cross-Process Composition
 **Module 09**
 
 > **Core question:**
@@ -292,4 +292,4 @@ if isinstance(recon_res, Err):
 else:
     result = recon_res.value.run(data)
 ```
-**Next Core: 10. Team Adoption – Coding Standards, Patterns, and Review Guidelines for FP-Style Python**
+**Continue with:** [Team Adoption](../module-09-ecosystem-interop/team-adoption.md)

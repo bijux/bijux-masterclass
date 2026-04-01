@@ -1,4 +1,4 @@
-## M04C08: Resource-Aware Streaming – Ensuring Generators Close and Clean Up Correctly
+# Resource-Aware Streams
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -381,6 +381,6 @@ Constant overhead; cleanup guaranteed on all paths.
 3. Compose three nested resources → verify LIFO closure order.  
 4. Add `auto_close` to your embedder → verify no leaks on OOM.
 
-**Next:** M04C09 – Functional Retries with Policies (Pure, Composable Retry Loops).
+**Continue with:** [Functional Retries](../module-04-resilience-and-streaming-failures/functional-retries.md)
 
 You now have the complete toolkit to never leak a resource again — even when everything goes wrong. The rest of Module 4 is about retries and final reporting.

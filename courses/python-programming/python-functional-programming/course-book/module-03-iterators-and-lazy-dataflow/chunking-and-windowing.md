@@ -1,4 +1,4 @@
-# Module 3: Lazy Iteration and Streaming
+# Chunking and Windowing
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
 | 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
 
-## M03C04: Chunking, Windowing, Grouping – Streaming Aggregations
 
 > **Core question:**  
 > How do you implement lazy chunking, sliding windows, and contiguous grouping in streaming pipelines to perform aggregations without materializing full collections, while preserving order and coverage?
@@ -382,7 +381,7 @@ Non-contiguous keys (sort first, paying O(n log n)); truly random access (materi
 
 **Project Exercise:** Add overlap=128 and tail_policy="emit_short" to your RAG env. Verify perfect reconstruction on a sample abstract and that memory stays flat on the 10k dataset.
 
-**Next:** M03C05 – Infinite & Unbounded Sequences. (Builds on this.)
+**Continue with:** [Infinite Sequences Safely](../module-03-iterators-and-lazy-dataflow/infinite-sequences-safely.md)
 
 ### Repository Alignment
 

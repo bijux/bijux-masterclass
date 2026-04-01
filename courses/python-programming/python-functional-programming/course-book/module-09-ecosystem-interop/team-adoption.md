@@ -1,4 +1,4 @@
-# Core 10: Team Adoption – Coding Standards, Patterns, and Review Guidelines for FP-Style Python
+# Team Adoption
 **Module 09**
 > **Core question:**  
 > How do you establish coding standards, recognize key patterns, and implement review guidelines to facilitate team adoption of FP-style Python, ensuring consistent, maintainable, and high-quality functional code in projects like FuncPipe?

@@ -1,4 +1,4 @@
-# M05C02: Modelling Domain States (Pending/Running/Done/Failed) as ADTs
+# Domain State ADTs
 
 ## Progression Note
 By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
@@ -477,6 +477,6 @@ def test_terminal_idempotent(state):
 2. Add a new event (e.g. `EvPause`) and new state `Paused` → watch mypy break every transition site.  
 3. Make a pipeline step return `Result[Done, Failed]` wrapping the terminal state produced by the state machine.
 
-**Next:** M05C03 – Functors in Python (“Things You Can Map Over” – Option, Result, List).
+**Continue with:** [Functors](../module-05-algebraic-data-modelling/functors.md)
 
 You now model every domain state as pure, immutable, exhaustively-handled ADTs — illegal states are unrepresentable, invalid transitions impossible, and the type checker enforces totality. The rest of Module 5 composes these ADTs into functors, applicatives, and monoids for bulletproof pipelines.

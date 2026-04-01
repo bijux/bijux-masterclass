@@ -1,4 +1,4 @@
-# M06C02: Law-Guided Design – Identity & Associativity Checks with Hypothesis
+# Law-Guided Design
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -281,6 +281,6 @@ If you deliberately break `Err.and_then` to return `Ok(0)` instead of `self`, th
 3. Write a property that proves `result_sequence([Ok(x) for x in xs]) == Ok(list(xs))` and short-circuits on the first `Err`.
 4. Implement the same laws for a tiny custom monad of your own (e.g. a `Logger[str, A]` Writer) and get the suite green.
 
-**Next:** M06C03 – Validation Applicative – Accumulating Errors Instead of Fail-Fast
+**Continue with:** [Lifting Plain Functions](../module-06-monadic-flow-and-explicit-context/lifting-plain-functions.md)
 
 You now have **mechanical verification** that your core abstractions satisfy the algebraic laws — meaning every pipeline you write for the rest of the project is extremely unlikely to break under composition or refactoring, because the laws have been checked over thousands of generated examples.

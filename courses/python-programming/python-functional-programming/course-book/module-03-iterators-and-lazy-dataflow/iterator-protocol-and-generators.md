@@ -1,4 +1,4 @@
-# Module 3: Lazy Iteration and Streaming
+# Iterator Protocol and Generators
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
@@ -41,7 +41,6 @@ Keep the FuncPipe capstone open while reading this module and inspect:
 
 The capstone should make one point visible here: laziness is a controlled boundary choice, not a magic performance fix.
 
-## M03C01: Iterator Protocol & Generator Functions – Lazy Dataflow Foundations
 
 > **Core question:**  
 > How do you use `yield` and the iterator protocol (`__iter__` / `__next__`) to transform eager list-based transforms into lazy, memory-efficient generators that only compute on demand — and why does this unlock everything else in Module 3?
@@ -387,6 +386,6 @@ Everything else → generator.
 
 **Project Exercise:** Run the lazy chunker on the full 10k arXiv dataset. Measure peak memory (should be ~10–20 MB instead of 500+ MB eager).
 
-**Next:** M03C02 – Generator Expressions & itertools Foundations.
+**Continue with:** [Generators vs Comprehensions](../module-03-iterators-and-lazy-dataflow/generators-vs-comprehensions.md)
 
 You now own the single most important primitive in all of Module 3. Everything else is just composing these lazy streams.

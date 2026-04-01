@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# Introducing Laziness
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C03 – Intro to Laziness with Generators (“Don’t Build the List”)
 
 > **Core question:**  
 > How do you replace eager, memory-hungry list comprehensions with lazy generators—so pipelines stay efficient, composable, and only compute what’s needed?
@@ -370,7 +369,7 @@ Did the pipeline handle larger data?
 
 **Project Exercise:** Apply to RAG; run properties on sample data.
 
-**Next:** Core 4 – Designing FP-Friendly APIs (Small Arity, Explicit Parameters, No Hidden Globals).
+**Continue with:** [FP-Friendly APIs](../module-02-data-first-apis-and-expression-style/fp-friendly-apis.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 

@@ -1,4 +1,4 @@
-# M06C04: Reader Pattern – Configuration as an Explicit, Injectable Dependency
+# Reader Pattern
 
 ## Progression Note
 Module 6 shifts from pure data modelling to **effect-aware composition**.  
@@ -206,6 +206,6 @@ def test_reader_associativity(r):
 2. Add a debug flag that enables extra validation — implement with `local`.
 3. Write a test that runs the same pipeline with two different configs and asserts different behaviour.
 
-**Next:** M06C05 – Minimal State Pattern – Threading Local Mutable State Without Globals
+**Continue with:** [Explicit State Threading](../module-06-monadic-flow-and-explicit-context/explicit-state-threading.md)
 
 You have now completely eliminated closure-captured variables from your monadic pipelines. Configuration is now a **first-class, typed, injectable dependency** — and your pipelines are pure, composable, and proven correct by Hypothesis. The final core removes the last remaining effect: local mutable state.

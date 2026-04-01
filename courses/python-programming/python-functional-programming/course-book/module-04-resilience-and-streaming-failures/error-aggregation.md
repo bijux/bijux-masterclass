@@ -1,4 +1,4 @@
-## M04C06: Error Aggregation Strategies – Fail-Fast vs Error-List Accumulation for Streams
+# Error Aggregation
 
 ## Progression Note
 By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
@@ -458,6 +458,6 @@ Fail-fast strategies are lazy; accumulation requires finite streams.
 3. Implement circuit-breaker on embedding error rate → test early stop.  
 4. Use `collect_both` at pipeline end → generate JSON error report.
 
-**Next:** M04C07 – Retries with Backoff Policies for Transient Failures.
+**Continue with:** [Circuit Breakers](../module-04-resilience-and-streaming-failures/circuit-breakers.md)
 
 You now have the complete toolkit to choose exactly how strict or forgiving your pipeline should be — all with mathematical guarantees and zero manual loops. The rest of Module 4 is about adding retries and final reporting.

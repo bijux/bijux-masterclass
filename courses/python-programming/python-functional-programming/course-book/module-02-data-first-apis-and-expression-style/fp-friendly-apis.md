@@ -1,4 +1,4 @@
-# Module 2: First-Class Functions and Expressive Python
+# FP-Friendly APIs
 
 ## Progression Note
 By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
@@ -11,7 +11,6 @@ Here's a snippet from the progression map:
 | 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
 | 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
 
-## M02C04 – Designing FP-Friendly APIs (Small Arity, Explicit Dependencies, No Hidden Globals)
 
 > **Core question:**  
 > How do you design APIs with ≤3 parameters, explicit config and dependencies, and no hidden globals—so pipelines from M02C01–M02C03 are composable, testable, and predictable?
@@ -501,7 +500,7 @@ def legacy_rag(docs, chunk_size, cleaner, keep, debug):
 - Did tests catch global bugs?  
 - Did config/deps clarify domain logic?
 
-**Next:** Core 5 – Boundary Design (Isolating I/O to Edges).
+**Continue with:** [Effect Boundaries](../module-02-data-first-apis-and-expression-style/effect-boundaries.md)
 
 Verify all patterns with Hypothesis—examples provided show how to detect impurities like globals or non-determinism.
 
