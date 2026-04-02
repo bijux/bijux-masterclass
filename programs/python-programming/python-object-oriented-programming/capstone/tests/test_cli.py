@@ -47,3 +47,15 @@ def test_timeline_command_reports_the_ordered_scenario_flow(capsys) -> None:
     assert "cpu-hot mode=threshold threshold=0.9 window=1" in output
     assert "cpu  cpu-hot" not in output
     assert "cpu cpu-hot -> critical observed=0.95 threshold=0.9" in output
+
+
+def test_retirement_command_reports_before_and_after_state(capsys) -> None:
+    assert main(["retirement"]) == 0
+
+    output = capsys.readouterr().out
+    assert "before_retirement:" in output
+    assert "after_retirement:" in output
+    assert "open_incidents=['disk-hot']" in output
+    assert "retired_rules=disk-hot" in output
+    assert "open_incidents=[]" in output
+    assert "retirement_reason=replaced by storage saturation policy" in output

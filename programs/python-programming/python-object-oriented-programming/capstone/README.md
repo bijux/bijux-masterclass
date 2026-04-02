@@ -114,6 +114,7 @@ If this is your first honest pass through the capstone, use this order:
 
 - `make inspect` writes a learner-facing inspection bundle with summary, lifecycle, and history outputs.
 - `make inspect-timeline` prints the ordered scenario flow when you need sequence before proofs.
+- `make inspect-retirement` prints the before-and-after retirement scenario when you need full lifecycle cleanup in one route.
 - `make tour` writes the walkthrough bundle with the scenario story and matching local guides.
 - `make verify-report` writes the executable verification report bundle with test results and captured state.
 - `make confirm` runs the strongest local confirmation route.

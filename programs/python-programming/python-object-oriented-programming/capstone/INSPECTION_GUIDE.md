@@ -38,6 +38,7 @@ files first. The goal is to make each inspection command answer one kind of ques
 | `make inspect-rules` | which rules are draft, active, or retired |
 | `make inspect-history` | how incidents accumulated for each metric |
 | `make inspect-timeline` | what ordered scenario moments produced the current state |
+| `make inspect-retirement` | what changed before and after a rule retirement |
 
 ## Recommended reading order
 
@@ -46,6 +47,7 @@ files first. The goal is to make each inspection command answer one kind of ques
 3. `rules.txt`
 4. `history.txt`
 5. `timeline.txt`
+6. `retirement.txt`
 
 That order moves from the current high-level snapshot into lifecycle detail, incident
 history, and finally the ordered scenario flow.
@@ -64,6 +66,7 @@ history, and finally the ordered scenario flow.
 | `rules.txt` | which rules are draft, active, or retired and what each rule definition looks like | whether evaluation variability is placed in the right seam |
 | `history.txt` | which incidents were published and accumulated downstream | whether the history source remained non-authoritative in code |
 | `timeline.txt` | which ordered steps produced the saved scenario state | whether the runtime and aggregate boundaries are placed correctly under arbitrary change |
+| `retirement.txt` | what lifecycle-owned cleanup changed before and after rule retirement | whether the retirement semantics generalize to every future change without additional proof |
 
 ## Best follow-up choices
 

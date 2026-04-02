@@ -6,6 +6,7 @@ from collections.abc import Sequence
 from .scenario import (
     DEFAULT_RULE_REGISTRATIONS,
     DEFAULT_SAMPLES,
+    build_retirement_review,
     build_default_observation,
 )
 
@@ -20,6 +21,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("rules", help="Show the rule lifecycle summary.")
     subparsers.add_parser("history", help="Show incident history grouped by metric.")
     subparsers.add_parser("timeline", help="Show the scenario as an ordered event timeline.")
+    subparsers.add_parser("retirement", help="Show the retirement scenario before and after state.")
     return parser
 
 
@@ -75,6 +77,18 @@ def main(argv: Sequence[str] | None = None) -> int:
                     f"{metric_name} {incident.rule_id} -> {incident.severity} "
                     f"observed={incident.observed_value} threshold={incident.threshold}"
                 )
+        return 0
+
+    if args.command == "retirement":
+        review = build_retirement_review()
+        print("before_retirement:")
+        print(f"  open_incidents={sorted(review.active_snapshot.open_incidents)}")
+        print(f"  active_rules={', '.join(review.active_snapshot.summary.active_rule_ids) or '(none)'}")
+        print("after_retirement:")
+        print(f"  retired_rules={', '.join(review.retired_snapshot.summary.retired_rule_ids) or '(none)'}")
+        print(f"  open_incidents={sorted(review.retired_snapshot.open_incidents)}")
+        print(f"  incident_history={ {metric: len(items) for metric, items in review.retired_snapshot.incident_history.items()} }")
+        print(f"  retirement_reason={review.retired_reason}")
         return 0
 
     for metric_name, incidents in observation.snapshot.incident_history.items():

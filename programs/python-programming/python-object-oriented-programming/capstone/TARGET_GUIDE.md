@@ -32,6 +32,7 @@ command for the question you actually have.
 | `demo` | run the human-readable monitoring scenario |
 | `inspect` | build the learner-facing inspection bundle |
 | `inspect-timeline` | print the ordered scenario flow directly in the terminal |
+| `inspect-retirement` | print the retirement scenario before-and-after state |
 | `tour` | build the learner-facing walkthrough bundle |
 | `verify-report` | build the executable verification report bundle |
 | `proof` | run the full course-sanctioned evidence route |
@@ -77,6 +78,14 @@ Use:
 * `make inspect-timeline`
 * `SCENARIO_GUIDE.md`
 * `EVENT_FLOW_GUIDE.md`
+
+### If the question is "what does retirement change and clean up?"
+
+Use:
+
+* `make inspect-retirement`
+* `RETIREMENT_SCENARIO_GUIDE.md`
+* `RULE_LIFECYCLE_GUIDE.md`
 
 ### If the question is "what saved bundle proves the behavior?"
 
