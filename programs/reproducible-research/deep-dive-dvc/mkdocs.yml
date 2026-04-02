@@ -38,6 +38,7 @@ nav:
       - "Capstone Guide": readme-capstone.md
       - "Capstone Map": capstone-map.md
       - "Capstone File Guide": capstone-file-guide.md
+      - "Repository Layer Guide": repository-layer-guide.md
       - "Capstone Review Worksheet": capstone-review-worksheet.md
       - "Capstone Extension Guide": capstone-extension-guide.md
   - "Module 01: Why Reproducibility Fails": module-01.md
