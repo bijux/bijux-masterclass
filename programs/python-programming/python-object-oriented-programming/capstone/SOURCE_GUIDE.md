@@ -52,5 +52,6 @@ through files until something looks familiar.
 ## Best companion guides
 
 - read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when you want the same route at package granularity
+- read [RUNTIME_GUIDE.md](RUNTIME_GUIDE.md) when the runtime file needs a boundary-first explanation before line-by-line reading
 - read [CHANGE_RECIPES.md](CHANGE_RECIPES.md) when the reading route has turned into an edit route
 - read [TEST_GUIDE.md](TEST_GUIDE.md) when you need the executable surface that matches the source file

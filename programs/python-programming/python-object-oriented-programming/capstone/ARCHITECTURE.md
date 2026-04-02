@@ -63,6 +63,7 @@ projections should stay derived so read concerns do not mutate authoritative sta
 - Use `EXTENSION_GUIDE.md` when the architecture question is really a change-placement question.
 - Use `EVENT_FLOW_GUIDE.md` when the main question is how aggregate decisions become read-model state.
 - Use `CHANGE_RECIPES.md` when the architecture question has already become an edit plan.
+- Use `RUNTIME_GUIDE.md` when the main confusion is which orchestration belongs in the runtime at all.
 
 ## Architecture questions for review
 
