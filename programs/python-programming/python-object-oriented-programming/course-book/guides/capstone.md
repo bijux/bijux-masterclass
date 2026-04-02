@@ -34,6 +34,19 @@ This is the course's executable reference model. It is intentionally small enoug
 read in one sitting, but rich enough to expose the object-oriented pressures the course
 is teaching you to reason about.
 
+## Domain primer
+
+The capstone models one operational problem only:
+
+- a team defines monitoring rules for a service
+- those rules move through a clear lifecycle
+- incoming samples are evaluated against active rules
+- incidents are emitted without letting downstream views control the domain
+
+That narrow domain is deliberate. It is small enough that ownership mistakes stay visible
+and rich enough that aggregates, policies, events, projections, and runtime orchestration
+all become necessary for honest reasons.
+
 ## Study goal
 
 Use the capstone to answer one question repeatedly:
@@ -71,6 +84,16 @@ clearer after each module.
 - Modules 01-03: start with value semantics, lifecycle rules, and aggregate state transitions.
 - Modules 04-07: follow ownership through policies, events, repositories, runtime coordination, and time pressure.
 - Modules 08-10: switch to bundles, tests, and public review routes to decide whether the design deserves trust.
+
+## Inspect, explain, prove
+
+Use the capstone with one repeated loop:
+
+1. Inspect one file, guide, or saved bundle.
+2. Explain which object or boundary owns the behavior you just saw.
+3. Prove that claim with one named test or one named command.
+
+That loop keeps the capstone from becoming a repository tour without a learning contract.
 
 ## Run it
 
