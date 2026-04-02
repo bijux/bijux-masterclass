@@ -88,12 +88,15 @@ Use `capstone/` when you want the raw executable reference build.
 | Command | What it does |
 | --- | --- |
 | `gmake help` | show public capstone targets on macOS |
+| `gmake inspect` | build the learner-facing inspection bundle |
 | `gmake walkthrough` | build the learner-facing walkthrough bundle |
 | `gmake tour` | print the recommended reading route |
 | `gmake selftest` | run convergence, equivalence, and negative checks |
+| `gmake verify-report` | write the selftest verification report bundle |
 | `gmake proof` | write the sanctioned learner-facing proof bundle set |
 | `gmake selftest-report` | write the selftest verification report bundle |
 | `gmake profile-audit` | write the execution-profile review bundle |
+| `gmake confirm` | run the strongest capstone confirmation route |
 | `gmake hardened` | run the strongest capstone validation set |
 | `gmake repro` | list the failure-mode repro pack |
 
@@ -116,7 +119,10 @@ If you are reviewing the capstone deeply:
 
 ```sh
 gmake -C capstone help
+gmake -C capstone inspect
+gmake -C capstone verify-report
 gmake -C capstone proof
+gmake -C capstone confirm
 gmake -C capstone repro
 ```
 

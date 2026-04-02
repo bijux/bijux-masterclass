@@ -43,6 +43,7 @@ failure class.
 | `app`, `build/bin/*`, `build/include/dynamic.h`, `all` | the primary build outputs and convergence sentinel |
 | `build/*.o`, `build/*.d`, `build/flags*.stamp` | internal graph artifacts used to model and verify correctness |
 | `build/attest.txt`, `dist.tar.gz` | explicit proof or release artifacts that are not required for ordinary builds |
+| `artifacts/walkthrough/*`, `artifacts/proof/*`, `artifacts/audit/*` | learner-facing review bundles with manifests and guide files |
 | `repro/*.mk` | teaching surfaces that intentionally demonstrate broken patterns |
 | `tests/run.sh` output | the proof harness for build-system behavior rather than product behavior alone |
 
@@ -55,6 +56,7 @@ failure class.
 Treat these as public capstone surfaces:
 
 * the top-level targets shown by `help`
+* the local capstone guides that explain how to review those targets and bundles
 * the files described in [`capstone-file-guide.md`](capstone-file-guide.md)
 * the proof routes documented in [`proof-matrix.md`](proof-matrix.md)
 
@@ -70,6 +72,7 @@ unless the docs promote them intentionally.
 | Mistake | Why it confuses the learner |
 | --- | --- |
 | treating `build/*.o` as if they were the course deliverable | they are graph evidence, not the learner-facing contract |
+| treating audit bundles as if they were internal cache | they are deliberate teaching and review surfaces with published route files |
 | treating `repro/*.mk` as production patterns | they are controlled failures designed for study |
 | folding `attest` or `dist` into the normal build path | it mixes proof or release work into ordinary artifact identity |
 | assuming the `all` sentinel is just another phony target | it is part of the convergence contract |

@@ -37,13 +37,14 @@ turning the experience into random file browsing.
 Work through these in order:
 
 1. run `gmake -C capstone help`
-2. run `gmake -C capstone proof`
-3. read `capstone/Makefile`
-4. read `capstone/tests/run.sh`
+2. run `make PROGRAM=reproducible-research/deep-dive-make proof`
+3. read the capstone's local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/TARGET_GUIDE.md)
+4. read `capstone/Makefile` and `capstone/tests/run.sh`
 5. inspect `artifacts/proof/reproducible-research/deep-dive-make/selftest/`
 6. inspect `artifacts/audit/reproducible-research/deep-dive-make/contract/`
 7. inspect `artifacts/audit/reproducible-research/deep-dive-make/incident/`
-8. run `gmake -C capstone repro`
+8. inspect `artifacts/audit/reproducible-research/deep-dive-make/profile/`
+9. run `gmake -C capstone repro`
 
 Goal: confirm that the repository has a public API, a proof harness, and explicit failure
 teaching material.
@@ -58,6 +59,7 @@ At the end of the checklist, you should be able to answer:
 
 * what `selftest` proves
 * where the sanctioned proof bundle set is written
+* where the profile review bundle fits into the proof route
 * where hidden inputs are modeled
 * where generated files enter the graph
 * which target another engineer should call first

@@ -45,7 +45,10 @@ These live in `programs/reproducible-research/deep-dive-make/Makefile`.
 | `capstone` | build the capstone | you want artifacts without the full selftest |
 | `capstone-selftest` | run the capstone proof harness | you are validating the reference build |
 | `capstone-hardened` | run selftest plus audits and runtime checks | you want the strongest built-in validation |
+| `inspect` | build the learner-facing inspection bundle | you want the smallest bounded review route |
 | `capstone-walkthrough` | build the learner-facing walkthrough bundle | you want the bounded first-pass capstone route |
+| `capstone-verify-report` | build the saved selftest report bundle | you want durable executed proof output |
+| `capstone-confirm` | run the strongest shared confirmation route | you want the published review and validation surface |
 | `capstone-clean` | clear capstone outputs | you need a clean build state |
 
 [Back to top](#top)
@@ -61,6 +64,8 @@ These live in `capstone/Makefile`.
 | `all` | build the main executable and dynamic binaries, then converge |
 | `test` | run runtime behavior checks on built artifacts |
 | `selftest` | prove convergence, serial/parallel equivalence, and a negative hidden-input case |
+| `inspect` | alias the contract-audit route with learner review naming |
+| `verify-report` | alias the selftest report with shared catalog naming |
 | `walkthrough` | write the learner-facing walkthrough bundle |
 | `tour` | print the recommended first reading route |
 | `discovery-audit` | assert deterministic discovery order |
@@ -68,6 +73,7 @@ These live in `capstone/Makefile`.
 | `attest` | write evidence without contaminating artifact identity |
 | `trace-count` | report a lightweight observability metric |
 | `portability-audit` | print tool and feature assumptions |
+| `confirm` | alias the strongest capstone confirmation route |
 | `hardened` | combine selftest, audits, attestations, and runtime checks |
 
 [Back to top](#top)
@@ -82,7 +88,10 @@ Treat these as stable entrypoints:
 * capstone `all`
 * capstone `test`
 * capstone `selftest`
+* capstone `inspect`
+* capstone `verify-report`
 * capstone `hardened`
+* capstone `confirm`
 * capstone `help`
 * capstone `walkthrough`
 * capstone `tour`
@@ -100,16 +109,17 @@ If you are new to the course:
 
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
-make -C capstone help
-make -C capstone tour
-make -C capstone selftest
+make PROGRAM=reproducible-research/deep-dive-make inspect
+gmake -C capstone help
+gmake -C capstone tour
+gmake -C capstone selftest
 ```
 
 If you are reviewing the course as a system:
 
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make test
-make -C capstone hardened
+make PROGRAM=reproducible-research/deep-dive-make capstone-confirm
 ```
 
 [Back to top](#top)

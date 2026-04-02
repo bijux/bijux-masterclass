@@ -38,12 +38,13 @@ step.
 
 Use this when you want the minimum useful capstone pass.
 
-1. Run `make -C capstone walkthrough`
-2. Run `make -C capstone help`
-3. Read `capstone/Makefile` and identify the public targets
-4. Read `capstone/tests/run.sh` and list the invariants it proves
-5. Run `make -C capstone selftest`
-6. Inspect one repro under `capstone/repro/`
+1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough`
+2. Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/WALKTHROUGH_GUIDE.md)
+3. Run `make PROGRAM=reproducible-research/deep-dive-make inspect`
+4. Read `capstone/Makefile` and identify the public targets with the local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/TARGET_GUIDE.md)
+5. Read `capstone/tests/run.sh` and list the invariants it proves
+6. Run `make PROGRAM=reproducible-research/deep-dive-make test`
+7. Inspect one repro under `capstone/repro/`
 
 Goal: leave with a clear picture of what the capstone promises and how it proves it.
 
@@ -55,11 +56,12 @@ Goal: leave with a clear picture of what the capstone promises and how it proves
 
 Use this after Modules 03-06.
 
-1. Follow object discovery in `capstone/mk/objects.mk`
-2. Follow modeled inputs in `capstone/mk/stamps.mk`
-3. Trace generated header production from `scripts/gen_dynamic_h.py`
-4. Run `make -C capstone --trace dyn`
-5. Compare the build contract in the docs to the behavior you observed
+1. Read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/ARCHITECTURE.md)
+2. Follow object discovery in `capstone/mk/objects.mk`
+3. Follow modeled inputs in `capstone/mk/stamps.mk`
+4. Trace generated header production from `scripts/gen_dynamic_h.py`
+5. Run `gmake -C capstone --trace dyn`
+6. Compare the build contract in the docs to the behavior you observed
 
 Goal: see how truthful graph modeling survives a more realistic repository.
 
@@ -71,11 +73,12 @@ Goal: see how truthful graph modeling survives a more realistic repository.
 
 Use this during Modules 07-10.
 
-1. Read `capstone/Makefile` for public API boundaries
-2. Read `capstone/mk/*.mk` for layer responsibilities
-3. Inspect `capstone/scripts/mkdist.py` for release boundary design
-4. Review `capstone/repro/` as migration-risk examples
-5. Run `make -C capstone hardened`
+1. Read the capstone's local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/TARGET_GUIDE.md)
+2. Read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/ARCHITECTURE.md)
+3. Read `capstone/mk/*.mk` for layer responsibilities
+4. Inspect `capstone/scripts/mkdist.py` for release boundary design
+5. Review `capstone/repro/` as migration-risk examples
+6. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm`
 
 Goal: evaluate the capstone as a build-system specimen, not just as a demo.
 

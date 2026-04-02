@@ -54,6 +54,9 @@ contract is still honest.
 
 That distinction is why the course keeps returning to `selftest` when it talks about
 proof, not only compilation.
+When you need that proof preserved as a review bundle, use
+`make PROGRAM=reproducible-research/deep-dive-make capstone-verify-report` and read the
+capstone's local [`SELFTEST_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/SELFTEST_GUIDE.md).
 
 [Back to top](#top)
 
@@ -64,7 +67,7 @@ proof, not only compilation.
 1. `capstone/Makefile`
 2. `capstone/tests/run.sh`
 3. this page
-4. `make -C capstone selftest`
+4. `make PROGRAM=reproducible-research/deep-dive-make test`
 
 That order keeps the learner anchored in contract, then harness, then executed proof.
 
