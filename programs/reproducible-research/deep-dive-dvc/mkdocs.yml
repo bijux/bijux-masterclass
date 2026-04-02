@@ -25,6 +25,7 @@ nav:
       - "Learner Entry": start-here.md
       - "Learning Contract": learning-contract.md
       - "Program Outline": module-00.md
+      - "Platform Setup": platform-setup.md
   - Course Reference:
       - "Module Dependency Map": module-dependency-map.md
       - "State Glossary": state-glossary.md
