@@ -71,7 +71,7 @@ become much harder to judge honestly.
 8. Use `course-book/module-00-orientation/return-map.md` when you are resuming the course after a break and need to re-enter from the right boundary.
 9. Use `course-book/guides/proof-ladder.md` when you need the smallest honest proof route.
 10. Move through Modules `00` to `10` in order, then close with the mastery review inside Module `10`.
-11. Keep `course-book/guides/capstone-map.md` and `capstone/README.md` open while reading.
+11. Keep `course-book/capstone/index.md` and `course-book/capstone/capstone-map.md` open while reading.
 
 ## What this course covers
 
