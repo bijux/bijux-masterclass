@@ -175,11 +175,16 @@ make confirm
 Use `WALKTHROUGH_GUIDE.md` when you want the lightest honest repository route before
 moving to executed proof in `TOUR.md`.
 
+Use `DOMAIN_GUIDE.md` when biological vocabulary or the sample-to-report story is the
+current blocker rather than Snakemake itself.
+
 Use `make selftest` when the narrow question is determinism across core counts rather
 than full clean-room confirmation.
 
 Use `PROOF_GUIDE.md` when you want the shortest route from a course claim to the target,
 file, or published artifact that proves it.
+Use `DOMAIN_GUIDE.md` when you need the smallest honest explanation of what the dataset,
+sample-processing steps, and published outputs mean.
 Use `ARCHITECTURE.md` when the question is about repository ownership.
 Use `WALKTHROUGH_GUIDE.md` when you need the first-contact route.
 Use `PUBLISH_REVIEW_GUIDE.md`, `PROFILE_AUDIT_GUIDE.md`, and `INCIDENT_REVIEW_GUIDE.md`
