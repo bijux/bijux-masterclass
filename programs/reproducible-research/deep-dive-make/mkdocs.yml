@@ -29,6 +29,7 @@ nav:
       - Program Outline: module-00.md
   - Course Reference:
       - Module Dependency Map: module-dependency-map.md
+      - Command Guide: command-guide.md
       - Build-Graph Glossary: build-graph-glossary.md
       - Concept Index: concept-index.md
       - Practice Map: practice-map.md
