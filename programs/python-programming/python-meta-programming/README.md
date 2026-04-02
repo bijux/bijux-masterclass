@@ -24,11 +24,40 @@ This course is not for:
 - first-contact Python learners
 - designs that still have a simpler explicit solution available
 
+## What you will be able to do
+
+By the end of the course, you should be able to:
+
+- explain what happens at import time, class-definition time, instance time, and call time
+- inspect runtime behavior without accidentally executing the wrong thing
+- preserve signatures, provenance, and reviewability when wrapping callables
+- choose honestly between plain code, decorators, descriptors, class decorators, and metaclasses
+- review meta-heavy code for hidden state, global hooks, and unjustified runtime power
+
+## Recommended background
+
+- comfortable Python fluency with classes, functions, modules, exceptions, and tests
+- some exposure to `dataclasses`, `typing`, and `inspect`
+- willingness to evaluate dynamic behavior by debugging cost instead of cleverness
+
 ## Course shape
 
-- `course-book/` now follows one stable shape: `guides/`, `reference/`, `module-00-orientation/`, and Modules `01` to `10`
+- `course-book/` follows one stable shape: `guides/`, `reference/`, `module-00-orientation/`, and Modules `01` to `10`
 - `capstone/` contains the executable incident-plugin runtime used to prove the course claims
 - `Makefile` exposes stable program-level commands from the monorepo root
+
+## Reading contract
+
+This is not a browse-at-random course. The sequence matters:
+
+1. Learn runtime observation before wrapper design.
+2. Learn wrapper design before descriptor ownership.
+3. Learn descriptor ownership before metaclasses.
+4. Learn the mechanism ladder before governance and red lines.
+5. Keep the capstone open while reading so every hook stays attached to one runnable codebase.
+
+If you skip that order, later modules can still feel readable, but the design trade-offs
+become much harder to judge honestly.
 
 ## Learner route
 
@@ -36,6 +65,16 @@ This course is not for:
 2. Read `course-book/guides/course-guide.md` and `course-book/guides/learning-contract.md`.
 3. Move through Modules `00` to `10` in order, then close with the mastery review inside Module `10`.
 4. Keep `course-book/guides/capstone-map.md` and `capstone/README.md` open while reading.
+
+## What this course covers
+
+- Python's runtime object model for functions, classes, modules, methods, and instances
+- safe observation with builtins and `inspect`
+- signature preservation, provenance, and wrapper discipline
+- decorator design, policy boundaries, and typing-aware runtime behavior
+- class decorators, properties, descriptors, and per-attribute ownership
+- metaclass design, class-creation timing, and declaration-time enforcement
+- governance boundaries for dynamic execution, monkey-patching, import hooks, and review policy
 
 ## Module map
 
@@ -53,15 +92,22 @@ This course is not for:
 | `09` | Metaclass Design and Class Creation | justify the highest-power class hook narrowly and visibly |
 | `10` | Runtime Governance and Mastery Review | convert mechanism knowledge into review standards and exit criteria |
 
-## What the capstone proves
+## How the capstone fits
 
-The capstone is a plugin runtime for incident-delivery adapters. It keeps four mechanisms
-visible in one small system:
+[`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-meta-programming/capstone)
+is the executable proof for the course. It is a plugin runtime for incident-delivery
+adapters that keeps four mechanisms visible in one inspectable system:
 
 - descriptor-backed configuration fields
 - action decorators with preserved metadata
 - metaclass-driven registration and generated constructor signatures
 - introspection-driven manifest export that does not execute business actions
+
+Use it to answer questions like:
+
+- Which behavior belongs to attribute access instead of wrappers?
+- Which work happens at class-definition time instead of runtime invocation?
+- Which exported facts can be inspected without executing user behavior?
 
 ## Working locally
 
@@ -72,6 +118,14 @@ make PROGRAM=python-programming/python-meta-programming docs-serve
 make PROGRAM=python-programming/python-meta-programming docs-build
 make PROGRAM=python-programming/python-meta-programming test
 ```
+
+Primary reading route:
+
+- `course-book/guides/index.md`
+- `course-book/guides/start-here.md`
+- `course-book/index.md`
+- `course-book/module-00-orientation/index.md`
+- `course-book/guides/capstone.md`
 
 ## License
 

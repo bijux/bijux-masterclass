@@ -31,6 +31,18 @@ This course teaches Python metaprogramming as a discipline of runtime honesty. T
 is not to make code look advanced. The goal is to understand what Python is doing when
 code inspects, wraps, validates, or registers other code and objects.
 
+## Who this course is for
+
+- experienced Python developers who already understand ordinary object design
+- library and framework authors who need runtime behavior to stay observable
+- reviewers inheriting dynamic codebases that feel magical but underexplained
+
+## Who this course is not for
+
+- first-contact Python learners
+- trick collecting
+- designs that still have a simpler explicit solution available
+
 ## Start here
 
 - [Start Here](guides/start-here.md)
@@ -63,6 +75,13 @@ Use [Review Checklist](reference/review-checklist.md), [Practice Map](guides/pra
 [Capstone Proof Checklist](guides/capstone-proof-checklist.md) to keep the material pedagogic
 instead of ornamental.
 
+## Best reading route
+
+1. Start with [Start Here](guides/start-here.md) and [Course Guide](guides/course-guide.md).
+2. Read [Module 00](module-00-orientation/index.md) before the mechanism-heavy modules.
+3. Move through Modules 01 to 10 in order so each higher-power mechanism rests on a lower-power one.
+4. Bring in the [Capstone Guide](guides/capstone.md) and [Capstone Map](guides/capstone-map.md) once the current mechanism is clear enough to inspect in code.
+
 ## Module Table of Contents
 
 | Module | Title | Why it matters |
@@ -86,3 +105,10 @@ instead of ornamental.
 - putting class-creation behavior into code that should stay ordinary and explicit
 - teaching metaclasses before the learner understands descriptors
 - approving meta-heavy code without a proof route
+
+## What success looks like
+
+- You can say what happens at import time, class-definition time, instance time, and call time.
+- You can choose a lower-power mechanism before escalating to a higher-power one.
+- You can inspect a dynamic system without accidentally executing business behavior.
+- You can explain why the capstone uses a descriptor, decorator, or metaclass in one place but not another.
