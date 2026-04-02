@@ -1,7 +1,4 @@
-<a id="top"></a>
-
-# Deep Dive Snakemake: Capstone Map
-
+# Deep Dive Snakemake Capstone Map
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -10,134 +7,69 @@
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
   program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Deep Dive Snakemake: Capstone Map"]
+  pressure --> guide["Deep Dive Snakemake Capstone Map"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Name the current module or question"] --> choose["Choose one capstone route"]
+  choose --> inspect["Inspect the matching guide, file, or command"]
+  inspect --> next_move["Stop when one honest proof route is visible"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: the capstone is a corroboration surface, not the
+first lesson. Read the second diagram as the route rule: choose one capstone route by
+module or question, inspect the matching surface, then stop when one honest proof route
+is visible.
 
-The capstone is the executable cross-check for this program, but it should not be the
-first teaching surface for every concept. This page gives you one clear route through the
-repository so you know when to enter it, what to inspect, and which command proves the
-idea you are studying.
+## Enter the capstone at the right time
 
----
+Enter only when the module idea is already legible in the local exercise.
 
-## Recommended Entry Rule
+Return to the module first if:
 
-Use the capstone lightly in Module 01, heavily in Modules 02-09, and as a workflow review
-specimen in Module 10.
+- you cannot yet explain the concept on a smaller workflow
+- you do not know which command should prove the behavior
+- the repository feels larger than the concept you are studying
 
-If a concept still feels abstract, return to the smaller module exercise first. The
-capstone should confirm understanding, not replace first-contact learning.
+## Choose the route by question
 
----
-
-## Enter by Module Arc
-
-| Module arc | Why enter now | First honest capstone route |
+| If the question is... | Start here | Escalate only if needed |
 | --- | --- | --- |
-| Modules 01-02 | learn file contracts and discovery without drowning in repository detail | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
-| Modules 03-04 | see execution policy and repository architecture after the module has named them clearly | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` |
-| Modules 05-09 | verify larger boundaries such as publish trust, profiles, observability, and incident evidence | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
-| Module 10 | review the workflow as a long-lived governed product | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
+| what this repository promises | [Capstone Guide](index.md) | [Capstone Walkthrough](capstone-walkthrough.md) |
+| which repository surface matches the current module | the table below | [Capstone File Guide](capstone-file-guide.md) |
+| which command should prove the current claim | [Command Guide](command-guide.md) | [Capstone Proof Guide](capstone-proof-guide.md) |
+| what is safe for downstream trust | [Publish Review Guide](publish-review-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| what differs across execution contexts | [Profile Audit Guide](profile-audit-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
----
+## Choose the route by module arc
 
-## Enter By Question Type
-
-Use the question, not your anxiety level, to choose the route:
-
-| Question type | Start here | Escalate only if needed |
+| Module arc | What should already be clear locally | First capstone route |
 | --- | --- | --- |
-| what does this repository promise | `capstone-walkthrough` | `capstone-tour` |
-| is the repository architecture legible in executable form | `capstone-tour` | `proof` |
-| does the workflow still hold under ordinary proof | `test` | `capstone-verify-report` |
-| what differs across execution contexts | `capstone-profile-audit` | `proof` |
-| should I trust the full system as a steward | `proof` | `capstone-confirm` |
+| Modules 01-02 | truthful file contracts, deterministic discovery, and explicit checkpoints | [Capstone Walkthrough](capstone-walkthrough.md) |
+| Modules 03-04 | policy surfaces, execution boundaries, and repository interfaces | [Command Guide](command-guide.md) |
+| Modules 05-08 | software boundaries, publish contracts, and operating contexts | [Capstone Proof Guide](capstone-proof-guide.md) |
+| Modules 09-10 | incident evidence, migration boundaries, and stewardship judgment | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
----
+## Module-to-capstone map
 
-## Module-to-Capstone Route
-
-| Module | Learner goal | Capstone surfaces | First capstone command |
+| Module | Main learner question | Capstone surface | First command |
 | --- | --- | --- | --- |
-| 01 First Principles | understand truthful file contracts and stable targets | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
-| 02 Dynamic DAGs | see checkpoint discovery become explicit and durable | `Snakefile`, `results/discovered_samples.json`, `publish/v1/discovered_samples.json` | `make PROGRAM=reproducible-research/deep-dive-snakemake test` |
-| 03 Production Operation | inspect policy surfaces and clean-room confirmation | `profiles/`, `Makefile`, `tests/selftest.sh` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` |
-| 04 Scaling Patterns | inspect modular rule files and repository interfaces | `workflow/rules/`, `FILE_API.md`, `TOUR.md` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` |
-| 05 Rule Boundaries | inspect environments, helper code, and script boundaries | `workflow/envs/python.yaml`, `workflow/scripts/provenance.py`, `src/capstone/` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
-| 06 Publish Contracts | inspect stable outputs, manifests, and reports | `publish/v1/`, `workflow/rules/publish.smk`, `FILE_API.md` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
-| 07 Workflow Architecture | review how rules, helpers, and file APIs are split | `Snakefile`, `workflow/rules/`, `src/capstone/`, `FILE_API.md` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
-| 08 Operating Contexts | compare local, CI, and scheduler-oriented policy | `profiles/local/`, `profiles/ci/`, `profiles/slurm/`, `Makefile` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` |
-| 09 Incident Response | inspect logs, benchmarks, and workflow-tour artifacts as evidence | `logs/`, `benchmarks/`, `artifacts/workflow-tour/`, tests | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
-| 10 Mastery | review the whole repository as a long-lived workflow product | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
+| 01 File Contracts | what makes the workflow file-driven instead of script-shaped | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make walkthrough` |
+| 02 Dynamic DAGs | where discovery becomes explicit instead of magical | checkpoint rule files, discovered-set artifacts, `publish/v1/discovered_samples.json` | `make verify` |
+| 03 Production Operation | what counts as workflow semantics versus operating policy | `profiles/`, `Makefile`, `tests/selftest.sh` | `make tour` |
+| 04 Scaling Patterns | how repository structure stays legible as the workflow grows | `workflow/rules/`, `FILE_API.md`, `TOUR.md` | `make tour` |
+| 05 Rule Boundaries | where helper code, wrappers, and environments belong | `workflow/envs/`, `workflow/scripts/`, `src/capstone/` | `make proof` |
+| 06 Publish Contracts | what downstream consumers may trust from the workflow | `publish/v1/`, `FILE_API.md`, publish bundle evidence | `make verify-report` |
+| 07 Workflow Architecture | how rules, helpers, and file APIs are split deliberately | `Snakefile`, `workflow/rules/`, `src/capstone/` | `make proof` |
+| 08 Operating Contexts | how local, CI, and scheduler policy differ without semantic drift | `profiles/local/`, `profiles/ci/`, `profiles/slurm/` | `make profile-audit` |
+| 09 Incident Response | how logs, benchmarks, and workflow-tour evidence support diagnosis | `logs/`, `benchmarks/`, incident bundle surfaces | `make proof` |
+| 10 Governance | whether another maintainer could review or migrate the workflow safely | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make confirm` |
 
-When the main question is repository ownership rather than a single module idea, use
-`capstone/docs/ARCHITECTURE.md` first and then return to the row that matches your current module.
+## Good stopping point
 
-[Back to top](#top)
-
----
-
-## First Capstone Tour
-
-If you want one sane first walkthrough, use this order:
-
-1. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` to generate the learner-first reading bundle.
-2. Read `Snakefile` to see the entrypoint and default target.
-3. Read `workflow/rules/common.smk` and then the rule-family files.
-4. Read `FILE_API.md` to see what downstream consumers are actually allowed to trust.
-5. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` and then `make PROGRAM=reproducible-research/deep-dive-snakemake test` when you want executed proof.
-
-This order keeps contract and repository shape ahead of implementation detail.
-
-Use [Capstone Walkthrough](capstone-walkthrough.md) when you want the course-book version
-of that same first-contact route.
-
-[Back to top](#top)
-
----
-
-## Fast Routes by Goal
-
-| Goal | Start here | Then inspect |
-| --- | --- | --- |
-| Why did this workflow plan these jobs? | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `Snakefile`, `workflow/rules/` |
-| Where does dynamic discovery become explicit? | `make PROGRAM=reproducible-research/deep-dive-snakemake test` | `results/discovered_samples.json`, `publish/v1/discovered_samples.json` |
-| What is the stable downstream contract? | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `publish/v1/`, `FILE_API.md` |
-| How are policy and semantics separated? | inspect `profiles/` | `Makefile`, `Snakefile` |
-| Where do helper-code boundaries live? | inspect `src/capstone/` | `workflow/scripts/`, `workflow/envs/` |
-| How would I review this workflow before migration? | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `FILE_API.md`, `profiles/`, `tests/`, `Makefile` |
-
-Use [Capstone Architecture Guide](capstone-architecture-guide.md) when the review question
-is about repository layers rather than about one output or command.
-
-Use [Capstone Proof Guide](capstone-proof-guide.md) when you want help choosing the
-narrowest honest proof route before you run anything.
-
-[Back to top](#top)
-
----
-
-## Capstone Discipline
-
-Use the capstone well:
-
-* read the module first, then verify in the capstone
-* prefer commands and files over vague summaries
-* inspect one boundary question at a time
-* treat the workflow tour and verification targets as review evidence, not decoration
-
-If the repository ever starts to feel bigger than the concept you are studying, step back
-to the module and return once the smaller exercise has made the idea legible again.
-
-[Back to top](#top)
+Stop when you can name one capstone surface, one command, and one reason they are
+enough for the current module or question. If you still feel pulled toward the whole
+repository, step back to the smaller route.
