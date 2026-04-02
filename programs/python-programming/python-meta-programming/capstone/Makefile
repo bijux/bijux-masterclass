@@ -29,6 +29,10 @@ manifest: ## Render the delivery manifest from the public CLI
 plugin: ## Render one concrete plugin contract from the public CLI
 	@PYTHONPATH=src $(CLI) plugin delivery webhook
 
+.PHONY: field
+field: ## Render one concrete field contract from the public CLI
+	@PYTHONPATH=src $(CLI) field delivery webhook endpoint
+
 .PHONY: registry
 registry: ## Render the delivery registry from the public CLI
 	@PYTHONPATH=src $(CLI) registry --group delivery
@@ -62,6 +66,7 @@ inspect: ## Build the learner-facing inspection bundle
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(INSPECT_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(INSPECT_DIR)/registry.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(INSPECT_DIR)/plugin.json
+	@PYTHONPATH=src $(CLI) field delivery webhook endpoint > $(INSPECT_DIR)/field.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
 	@cp BUNDLE_GUIDE.md $(INSPECT_DIR)/BUNDLE_GUIDE.md
@@ -71,8 +76,8 @@ inspect: ## Build the learner-facing inspection bundle
 	@cp PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
 	@printf '%s\n' \
 		'Inspection route:' \
-		'  1. Read manifest.json for field and action metadata.' \
-		'  2. Read registry.json, plugin.json, and signatures.json for the registered plugins, one concrete contract, and generated callable shapes.' \
+		'  1. Read manifest.json for group-level field and action metadata.' \
+		'  2. Read registry.json, plugin.json, field.json, and signatures.json for registered plugins, one concrete plugin, one concrete field, and generated callable shapes.' \
 		'  3. Read INSPECTION_GUIDE.md and TARGET_GUIDE.md for the next review route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership.' \
 		> $(INSPECT_DIR)/route.txt

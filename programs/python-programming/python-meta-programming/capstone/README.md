@@ -116,6 +116,7 @@ all interact here, so the implementation has to stay honest about:
 ## Review routes
 
 - `make inspect` writes the learner-facing inspection bundle with manifest and registry evidence.
+- `make field` isolates one descriptor-backed public field contract from the CLI surface.
 - `make tour` writes the learner-facing walkthrough bundle with manifest, registry, demo, and trace outputs.
 - `make verify-report` writes the executable verification report bundle with pytest output and public-surface evidence.
 - `make confirm` runs the strongest local executable confirmation route.

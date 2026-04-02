@@ -34,6 +34,7 @@ instead of letting them blur into invocation proof.
 | `manifest.json` | what field and action metadata are publicly visible |
 | `registry.json` | which concrete plugins are actually registered |
 | `plugin.json` | what one concrete plugin contract looks like end to end |
+| `field.json` | what one concrete field contract looks like in isolation |
 | `signatures.json` | what generated constructor and action signatures are publicly visible |
 | `route.txt` | what to read next in the saved review order |
 | `manifest.json` in the bundle manifest | whether the saved bundle inventory is complete and stable |
@@ -44,15 +45,17 @@ instead of letting them blur into invocation proof.
 2. Read `manifest.json`.
 3. Read `registry.json`.
 4. Read `plugin.json`.
-5. Read `signatures.json`.
-6. Read `route.txt`.
-7. Follow the linked local guides only after you can state what the public surface shows.
+5. Read `field.json`.
+6. Read `signatures.json`.
+7. Read `route.txt`.
+8. Follow the linked local guides only after you can state what the public surface shows.
 
 ## What this route should teach
 
 - the manifest is observational metadata, not a hidden invocation channel
 - the registry is a runtime fact you can inspect directly rather than infer from imports
 - one concrete plugin contract can be reviewed without jumping straight to invocation
+- one field contract can be reviewed without rereading the full plugin manifest
 - generated signatures are part of the public review surface rather than a private implementation detail
 - public inspection can stay useful even before you know every internal class and hook
 

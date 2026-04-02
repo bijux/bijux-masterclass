@@ -31,6 +31,7 @@ route for the claim you need to check.
 | --- | --- |
 | `manifest` | inspect the observable plugin schema without execution |
 | `plugin` | inspect one concrete plugin contract without invocation |
+| `field` | inspect one concrete field contract without invocation |
 | `registry` | inspect the registered plugins without opening private internals |
 | `signatures` | inspect generated constructor and action signatures without invocation |
 | `demo` | invoke one realistic delivery action |
@@ -49,6 +50,7 @@ Use:
 
 * `make manifest`
 * `make plugin`
+* `make field`
 * `make registry`
 * `make signatures`
 
@@ -80,6 +82,8 @@ Use:
   `manifest` explains schema and action metadata; `registry` explains which plugins are currently registered.
 - `manifest` versus `plugin`
   `manifest` shows the whole exported group; `plugin` lets you inspect one concrete plugin contract in isolation.
+- `plugin` versus `field`
+  `plugin` keeps fields and actions together; `field` isolates one descriptor-backed public contract.
 - `registry` versus `signatures`
   `registry` proves which plugins exist; `signatures` proves which generated call shapes they expose.
 - `demo` versus `trace`

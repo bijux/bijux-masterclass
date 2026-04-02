@@ -51,6 +51,7 @@ reason about metaclasses or concrete plugins.
 
 - `tests/test_fields.py` for coercion, defaults, and per-instance storage
 - `manifest` output when the question is about public schema shape
+- `make field` when the question is one concrete exported field contract
 - `DEFINITION_TIME_GUIDE.md` when the question is really about when the field becomes wired into the class
 
 ## Best companion guides

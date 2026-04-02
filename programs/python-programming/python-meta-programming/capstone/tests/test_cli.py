@@ -41,6 +41,18 @@ def test_plugin_command_renders_one_concrete_plugin_contract(capsys) -> None:
     assert captured["actions"][0]["name"] == "deliver"
 
 
+def test_field_command_renders_one_concrete_field_contract(capsys) -> None:
+    exit_code = main(["field", "delivery", "webhook", "endpoint"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["plugin_name"] == "webhook"
+    assert captured["field"]["name"] == "endpoint"
+    assert captured["field"]["kind"] == "string"
+    assert captured["field"]["minimum"] == 8
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [

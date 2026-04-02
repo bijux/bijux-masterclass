@@ -35,6 +35,15 @@ def _build_parser() -> argparse.ArgumentParser:
     plugin.add_argument("plugin_name", help="Registered plugin name.")
     plugin.set_defaults(handler=_handle_plugin)
 
+    field = subparsers.add_parser(
+        "field",
+        help="Render one field contract for one concrete plugin.",
+    )
+    field.add_argument("group", help="Plugin group name.")
+    field.add_argument("plugin_name", help="Registered plugin name.")
+    field.add_argument("field_name", help="Declared field name.")
+    field.set_defaults(handler=_handle_field)
+
     registry = subparsers.add_parser("registry", help="Render the plugin registry as JSON.")
     registry.add_argument("--group", help="Restrict output to one plugin group.")
     registry.set_defaults(handler=_handle_registry)
@@ -87,6 +96,16 @@ def _handle_manifest(args: argparse.Namespace) -> dict[str, list[dict[str, objec
 def _handle_plugin(args: argparse.Namespace) -> dict[str, object]:
     plugin_cls = _REGISTRY[args.group][args.plugin_name]
     return plugin_cls.manifest()
+
+
+def _handle_field(args: argparse.Namespace) -> dict[str, object]:
+    plugin_cls = _REGISTRY[args.group][args.plugin_name]
+    field = plugin_cls.__plugin_fields__[args.field_name]
+    return {
+        "group": args.group,
+        "plugin_name": args.plugin_name,
+        "field": field.spec().manifest(),
+    }
 
 
 def _handle_registry(args: argparse.Namespace) -> dict[str, Any]:
