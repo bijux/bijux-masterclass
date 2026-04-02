@@ -33,3 +33,4 @@ reading the course front to back.
 - [Object Design Checklist](object-design-checklist.md) for object-level and aggregate-level design review
 - [Boundary Review Prompts](boundary-review-prompts.md) for API, persistence, runtime, and extension pressure
 - [Topic Boundaries](topic-boundaries.md) for what belongs in the center of the course and what only touches its edges
+- [Anti-Pattern Atlas](anti-pattern-atlas.md) for common OOP failure shapes and the modules that repair them
