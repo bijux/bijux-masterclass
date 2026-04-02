@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 03 — Production Operations and Policy Boundaries
+# Module 03: Production Operations and Policy Boundaries
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 03 — Production Operations and Policy Boundaries"]
+  program --> module["Module 03: Production Operations and Policy Boundaries"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

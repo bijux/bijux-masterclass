@@ -1,4 +1,4 @@
-# Module 08: Async FuncPipe and Backpressure
+# Module 08: Async Pipelines, Backpressure, and Fairness
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 08: Async FuncPipe and Backpressure"]
+  program --> module["Module 08: Async Pipelines, Backpressure, and Fairness"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

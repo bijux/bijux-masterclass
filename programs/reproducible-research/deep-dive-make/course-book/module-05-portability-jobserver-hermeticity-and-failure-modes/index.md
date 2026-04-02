@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 05 — Hardening: Portability, Jobserver, Hermeticity, Performance, and Failure Modes
+# Module 05: Portability, Hermeticity, and Failure Modes
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 05 — Hardening: Portability, Jobserver, Hermeticity, Performance, and Failure Modes"]
+  program --> module["Module 05: Portability, Hermeticity, and Failure Modes"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 04 — Scaling Workflows and Interface Boundaries
+# Module 04: Scaling Workflows and Interface Boundaries
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 04 — Scaling Workflows and Interface Boundaries"]
+  program --> module["Module 04: Scaling Workflows and Interface Boundaries"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -34,7 +34,7 @@ Capstone exists here as corroboration. The module should already make interface
 boundaries meaningful before you inspect the repository layout and proof surfaces in the
 reference workflow.
 
-## Scaling Patterns: Modularity, Interfaces, CI Gates, and Executor-Proof Semantics
+## Scaling Workflows and Interface Boundaries
 
 > **Version & scope contract**
 >

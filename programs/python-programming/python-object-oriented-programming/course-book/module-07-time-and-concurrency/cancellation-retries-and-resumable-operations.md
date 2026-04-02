@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 07: Time and Concurrency"]
+  program --> module["Module 07: Time, Scheduling, and Concurrency Boundaries"]
   module --> concept["Cancellation, Retries, and Resumable Operations"]
   concept --> capstone["Capstone pressure point"]
 ```

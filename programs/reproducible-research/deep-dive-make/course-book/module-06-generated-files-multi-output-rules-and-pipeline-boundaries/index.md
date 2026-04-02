@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 06 — Generated Files, Multi-Output Rules, and Pipeline Boundaries
+# Module 06: Generated Files, Multi-Output Rules, and Pipeline Boundaries
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 06 — Generated Files, Multi-Output Rules, and Pipeline Boundaries"]
+  program --> module["Module 06: Generated Files, Multi-Output Rules, and Pipeline Boundaries"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

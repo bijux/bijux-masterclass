@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 08 — Operating Contexts: Profiles, Executors, Storage, and Staging Boundaries
+# Module 08: Operating Contexts and Execution Policy
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 08 — Operating Contexts: Profiles, Executors, Storage, and Staging Boundaries"]
+  program --> module["Module 08: Operating Contexts and Execution Policy"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

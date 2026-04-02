@@ -1,4 +1,4 @@
-# Module 04 — Pipelines as Truthful DAGs
+# Module 04: Truthful Pipelines and Declared Dependencies
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 04 — Pipelines as Truthful DAGs"]
+  program --> module["Module 04: Truthful Pipelines and Declared Dependencies"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -280,7 +280,7 @@ Inability to articulate a stage's execution rationale denotes systemic failure.
 
 ---
 
-## Module 04 — Invariants Checklist
+## Module 04: Invariants Checklist
 
 Affirm:
 - [ ] Comprehensive declaration of stage influences.

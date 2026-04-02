@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 07: Descriptor Mechanics and Attribute Lookup
+# Module 07: Descriptors, Lookup, and Attribute Control
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 07: Descriptor Mechanics and Attribute Lookup"]
+  program --> module["Module 07: Descriptors, Lookup, and Attribute Control"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

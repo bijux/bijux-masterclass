@@ -1,4 +1,4 @@
-# Module 06: Persistence and Schema Evolution
+# Module 06: Persistence, Serialization, and Schema Evolution
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 06: Persistence and Schema Evolution"]
+  program --> module["Module 06: Persistence, Serialization, and Schema Evolution"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

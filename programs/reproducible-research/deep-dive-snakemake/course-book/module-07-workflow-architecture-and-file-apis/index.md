@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 07 — Workflow Architecture, Modules, File APIs, and Reuse Without Confusion
+# Module 07: Workflow Architecture and File APIs
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 07 — Workflow Architecture, Modules, File APIs, and Reuse Without Confusion"]
+  program --> module["Module 07: Workflow Architecture and File APIs"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

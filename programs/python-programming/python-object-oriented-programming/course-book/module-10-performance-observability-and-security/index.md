@@ -1,4 +1,4 @@
-# Module 10: Performance, Observability, and Security
+# Module 10: Performance, Observability, and Security Review Review
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 10: Performance, Observability, and Security"]
+  program --> module["Module 10: Performance, Observability, and Security Review"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

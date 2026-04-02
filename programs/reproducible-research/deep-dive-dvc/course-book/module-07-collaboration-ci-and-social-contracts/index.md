@@ -1,4 +1,4 @@
-# Module 07 — Collaboration, CI, and Social Contracts
+# Module 07: Collaboration, CI, and Social Contracts
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 07 — Collaboration, CI, and Social Contracts"]
+  program --> module["Module 07: Collaboration, CI, and Social Contracts"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -324,7 +324,7 @@ This perspective is pragmatic, not pessimistic.
 
 ---
 
-## Module 07 — Invariants Checklist
+## Module 07: Invariants Checklist
 
 Affirm readiness by substantiating:
 

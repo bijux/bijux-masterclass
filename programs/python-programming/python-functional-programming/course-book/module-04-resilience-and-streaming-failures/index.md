@@ -1,4 +1,4 @@
-# Module 04: Resilience and Streaming Failures
+# Module 04: Streaming Resilience and Failure Handling
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Resilience and Streaming Failures"]
+  program --> module["Module 04: Streaming Resilience and Failure Handling"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

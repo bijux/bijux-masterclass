@@ -1,4 +1,4 @@
-# Module 08: Testing and Verification
+# Module 08: Testing, Contracts, and Verification Depth
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 08: Testing and Verification"]
+  program --> module["Module 08: Testing, Contracts, and Verification Depth"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

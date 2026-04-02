@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 02 — Dynamic DAGs, Integrity, and Deterministic Discovery
+# Module 02: Dynamic DAGs, Discovery, and Integrity
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 02 — Dynamic DAGs, Integrity, and Deterministic Discovery"]
+  program --> module["Module 02: Dynamic DAGs, Discovery, and Integrity"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 04: Aggregates and Collaboration"]
+  program --> module["Module 04: Aggregates, Events, and Collaboration Boundaries"]
   module --> concept["Projections, Read Models, and Object-Graph Debug Views"]
   concept --> capstone["Capstone pressure point"]
 ```

@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 07 — Reusable Build Architecture, Layered Includes, and Build APIs
+# Module 07: Build Architecture, Layered Includes, and Build APIs
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 07 — Reusable Build Architecture, Layered Includes, and Build APIs"]
+  program --> module["Module 07: Build Architecture, Layered Includes, and Build APIs"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

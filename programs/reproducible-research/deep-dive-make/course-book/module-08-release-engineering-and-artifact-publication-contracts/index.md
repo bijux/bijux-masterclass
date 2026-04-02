@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 08 — Release Engineering, Packaging, and Artifact Publication Contracts
+# Module 08: Release Engineering and Artifact Contracts
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 08 — Release Engineering, Packaging, and Artifact Publication Contracts"]
+  program --> module["Module 08: Release Engineering and Artifact Contracts"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

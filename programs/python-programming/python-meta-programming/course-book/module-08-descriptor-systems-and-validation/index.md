@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 08: Descriptor Systems and Validation
+# Module 08: Descriptor Systems, Validation, and Framework Design
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 08: Descriptor Systems and Validation"]
+  program --> module["Module 08: Descriptor Systems, Validation, and Framework Design"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

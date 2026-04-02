@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity and Substitution"]
+  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
   module --> concept["Isolating Side Effects"]
   concept --> capstone["Capstone pressure point"]
 ```

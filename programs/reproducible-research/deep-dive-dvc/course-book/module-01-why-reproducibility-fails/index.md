@@ -1,4 +1,4 @@
-# Module 01 — Why Reproducibility Fails
+# Module 01: Reproducibility Failures in Real Teams
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 01 — Why Reproducibility Fails"]
+  program --> module["Module 01: Reproducibility Failures in Real Teams"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -247,7 +247,7 @@ Each invariant is defined, exemplified, and failure-tested rigorously.
 
 ---
 
-## Module 01 — Readiness Checklist
+## Module 01: Readiness Checklist
 
 Affirm readiness by confirming:
 - [ ] Explanation of Git's inadequacy for reproducibility.

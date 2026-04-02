@@ -1,4 +1,4 @@
-# Module 03: State and Typestate
+# Module 03: State, Validation, and Typestate
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 03: State and Typestate"]
+  program --> module["Module 03: State, Validation, and Typestate"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

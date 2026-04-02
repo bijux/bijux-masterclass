@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 05 — Software Stacks, Scripts, Wrappers, and Reproducible Rule Boundaries
+# Module 05: Software Boundaries and Reproducible Rules
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 05 — Software Stacks, Scripts, Wrappers, and Reproducible Rule Boundaries"]
+  program --> module["Module 05: Software Boundaries and Reproducible Rules"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

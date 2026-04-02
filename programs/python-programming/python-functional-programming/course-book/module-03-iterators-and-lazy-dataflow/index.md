@@ -1,4 +1,4 @@
-# Module 03: Iterators and Lazy Dataflow
+# Module 03: Iterators, Laziness, and Streaming Dataflow
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators and Lazy Dataflow"]
+  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

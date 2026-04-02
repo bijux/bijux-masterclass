@@ -1,4 +1,4 @@
-# Module 09: Public APIs and Extension Governance
+# Module 09: Public APIs, Extension Seams, and Governance
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 09: Public APIs and Extension Governance"]
+  program --> module["Module 09: Public APIs, Extension Seams, and Governance"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

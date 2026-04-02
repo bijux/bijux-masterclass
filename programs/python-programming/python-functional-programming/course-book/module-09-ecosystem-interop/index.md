@@ -1,4 +1,4 @@
-# Module 09: Ecosystem Interop
+# Module 09: Ecosystem Interop and Boundary Discipline and Boundary Discipline
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 09: Ecosystem Interop"]
+  program --> module["Module 09: Ecosystem Interop and Boundary Discipline"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

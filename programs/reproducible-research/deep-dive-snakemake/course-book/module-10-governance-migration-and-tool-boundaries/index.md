@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 10 — Mastery: Governance, Migration, Anti-Patterns, and Tool Boundaries
+# Module 10: Governance, Migration, and Tool Boundaries
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 10 — Mastery: Governance, Migration, Anti-Patterns, and Tool Boundaries"]
+  program --> module["Module 10: Governance, Migration, and Tool Boundaries"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

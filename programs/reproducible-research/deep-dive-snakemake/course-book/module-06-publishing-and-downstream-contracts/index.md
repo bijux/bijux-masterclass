@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 06 — Versioned Publishing, Reports, and Downstream Workflow Contracts
+# Module 06: Publishing and Downstream Contracts
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 06 — Versioned Publishing, Reports, and Downstream Workflow Contracts"]
+  program --> module["Module 06: Publishing and Downstream Contracts"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

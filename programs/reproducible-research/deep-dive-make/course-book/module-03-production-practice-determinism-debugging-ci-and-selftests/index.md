@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 03 — Production Practice: Determinism, Debugging, CI Contracts, Selftests, and Disciplined DSL
+# Module 03: Determinism, Debugging, and Self-Testing
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 03 — Production Practice: Determinism, Debugging, CI Contracts, Selftests, and Disciplined DSL"]
+  program --> module["Module 03: Determinism, Debugging, and Self-Testing"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

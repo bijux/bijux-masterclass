@@ -1,4 +1,4 @@
-# Module 01: Purity and Substitution
+# Module 01: Purity, Substitution, and Local Reasoning
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity and Substitution"]
+  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

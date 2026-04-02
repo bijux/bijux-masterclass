@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 04 — Make Semantics Under Pressure: CLI, Precedence, Includes, and Rule Edge-Cases
+# Module 04: Rule Semantics, Precedence, and Edge Cases
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 04 — Make Semantics Under Pressure: CLI, Precedence, Includes, and Rule Edge-Cases"]
+  program --> module["Module 04: Rule Semantics, Precedence, and Edge Cases"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

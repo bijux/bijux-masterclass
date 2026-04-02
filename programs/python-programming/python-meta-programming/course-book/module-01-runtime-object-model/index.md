@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 01: Runtime Object Model
+# Module 01: Runtime Objects and the Python Object Model
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 01: Runtime Object Model"]
+  program --> module["Module 01: Runtime Objects and the Python Object Model"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

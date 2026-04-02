@@ -1,4 +1,4 @@
-# Module 00: Orientation and Reading Discipline
+# Module 00: Orientation and Study Practice
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 00: Orientation and Reading Discipline"]
+  program --> module["Module 00: Orientation and Study Practice"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

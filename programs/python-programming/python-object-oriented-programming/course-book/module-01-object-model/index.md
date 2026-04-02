@@ -1,4 +1,4 @@
-# Module 01: Object Model
+# Module 01: Object Semantics and the Python Data Model
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 01: Object Model"]
+  program --> module["Module 01: Object Semantics and the Python Data Model"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

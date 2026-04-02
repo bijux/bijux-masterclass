@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 02: Safe Runtime Observation
+# Module 02: Safe Runtime Observation and Inspection and Inspection
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 02: Safe Runtime Observation"]
+  program --> module["Module 02: Safe Runtime Observation and Inspection"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

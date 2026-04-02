@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 01 — First Principles and the File-DAG Contract
+# Module 01: File Contracts and Workflow Graph Truth
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 01 — First Principles and the File-DAG Contract"]
+  program --> module["Module 01: File Contracts and Workflow Graph Truth"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

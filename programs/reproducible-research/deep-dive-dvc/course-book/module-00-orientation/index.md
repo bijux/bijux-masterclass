@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 00 — Orientation and Study Strategy
+# Module 00: Orientation and Study Practice
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 00 — Orientation and Study Strategy"]
+  program --> module["Module 00: Orientation and Study Practice"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -65,7 +65,7 @@ reference repository in `capstone/`.
 
 ## Program Arc
 
-### Module 01 — Why Reproducibility Fails
+### Module 01: Reproducibility Failures in Real Teams
 
 Start from the failure modes that push teams toward DVC in the first place: results that
 cannot be defended, datasets that drift silently, and metrics that stop meaning what they
@@ -73,63 +73,63 @@ appear to mean.
 
 **Deliverable:** a precise explanation of what problem DVC solves and what it does not solve by itself.
 
-### Module 02 — Data Identity and Content Addressing
+### Module 02: Data Identity and Content Addressing
 
 Learn why paths are only locators and why reproducibility starts with immutable,
 content-addressed identity across workspace, cache, Git, and remote layers.
 
 **Deliverable:** a repository that can distinguish location from identity and explain how a datum is recovered.
 
-### Module 03 — Execution Environments as Inputs
+### Module 03: Execution Environments as Reproducible Inputs
 
 Move beyond code and data alone. Environments, runtime assumptions, and tool versions
 become part of the declared input surface rather than invisible luck.
 
 **Deliverable:** a state story that includes the runtime boundary instead of hand-waving it away.
 
-### Module 04 — Pipelines as Truthful DAGs
+### Module 04: Truthful Pipelines and Declared Dependencies
 
 Turn DVC stages into honest state transitions. Dependencies, outputs, params, and lock
 state become a reviewable graph rather than a convenient script wrapper.
 
 **Deliverable:** a `dvc.yaml` pipeline whose stage behavior can be explained and defended under review.
 
-### Module 05 — Metrics, Parameters, and Meaning
+### Module 05: Metrics, Parameters, and Comparable Meaning
 
 Treat numbers as semantic contracts, not just logged values. Parameters and metrics become
 first-class state that preserve comparability across time.
 
 **Deliverable:** a repository whose comparisons remain meaningful instead of only mechanically repeatable.
 
-### Module 06 — Experiments Without Chaos
+### Module 06: Experiments, Baselines, and Controlled Change
 
 Formalize exploration as a controlled, reversible process. Experiments become comparable
 deviations from a baseline rather than local folklore.
 
 **Deliverable:** an experiment workflow that allows change without corrupting baseline history.
 
-### Module 07 — Collaboration, CI, and Social Contracts
+### Module 07: Collaboration, CI, and Social Contracts
 
 Make good behavior enforceable across humans. Reviews, remotes, CI gates, and promotion
 habits become social contracts with technical backing.
 
 **Deliverable:** a repository where another person can verify trustworthy state without private context.
 
-### Module 08 — Production, Scale, and Incident Survival
+### Module 08: Recovery, Scale, and Incident Survival
 
 Design for time as an adversary. Retention, garbage collection, cache loss, remote
 migration, and recovery drills become part of the system instead of afterthoughts.
 
 **Deliverable:** a repository that can survive time pressure and still restore authoritative state.
 
-### Module 09 — Promotion, Registry Boundaries, Release Contracts, and Auditability
+### Module 09: Promotion, Registry Boundaries, and Auditability
 
 Separate exploratory state from promoted state. Publish surfaces, manifests, params,
 metrics, and lock evidence become a defendable release contract for downstream users.
 
 **Deliverable:** a promoted state bundle another reviewer or consumer can validate without guesswork.
 
-### Module 10 — Mastery: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries
+### Module 10: Migration, Governance, and DVC Boundaries
 
 Finish with stewardship judgment: reviewing real repositories, planning migrations,
 setting governance rules, rejecting recurring anti-patterns, and deciding where DVC

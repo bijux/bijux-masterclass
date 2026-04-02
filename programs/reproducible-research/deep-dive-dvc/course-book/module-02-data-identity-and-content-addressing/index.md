@@ -1,4 +1,4 @@
-# Module 02 — Data Identity and Content Addressing
+# Module 02: Data Identity and Content Addressing
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 02 — Data Identity and Content Addressing"]
+  program --> module["Module 02: Data Identity and Content Addressing"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -276,7 +276,7 @@ Discomfort with this paradigm signals productive reevaluation of prior practices
 
 ---
 
-## Module 02 — Invariants Checklist
+## Module 02: Invariants Checklist
 
 Affirm and justify:
 - [ ] Data identity derives exclusively from content.

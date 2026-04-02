@@ -1,4 +1,4 @@
-# Module 02: Design and Layering
+# Module 02: Design Roles, Interfaces, and Layering
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 02: Design and Layering"]
+  program --> module["Module 02: Design Roles, Interfaces, and Layering"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

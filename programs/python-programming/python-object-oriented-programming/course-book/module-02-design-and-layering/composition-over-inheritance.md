@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 02: Design and Layering"]
+  program --> module["Module 02: Design Roles, Interfaces, and Layering"]
   module --> concept["Composition over Inheritance as Default"]
   concept --> capstone["Capstone pressure point"]
 ```

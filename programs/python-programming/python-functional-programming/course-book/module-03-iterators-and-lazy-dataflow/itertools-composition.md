@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators and Lazy Dataflow"]
+  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
   module --> concept["itertools Composition"]
   concept --> capstone["Capstone pressure point"]
 ```

@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 10 — Mastery: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries
+# Module 10: Migration, Governance, and DVC Boundaries
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 10 — Mastery: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries"]
+  program --> module["Module 10: Migration, Governance, and DVC Boundaries"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

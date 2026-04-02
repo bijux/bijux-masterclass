@@ -1,4 +1,4 @@
-# Module 07: Time and Concurrency
+# Module 07: Time, Scheduling, and Concurrency Boundaries
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 07: Time and Concurrency"]
+  program --> module["Module 07: Time, Scheduling, and Concurrency Boundaries"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 02 — Scaling: Parallelism, Safety, and Large-Project Structure
+# Module 02: Parallel Safety and Project Structure
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 02 — Scaling: Parallelism, Safety, and Large-Project Structure"]
+  program --> module["Module 02: Parallel Safety and Project Structure"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

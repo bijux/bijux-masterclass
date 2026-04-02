@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Resilience and Streaming Failures"]
+  program --> module["Module 04: Streaming Resilience and Failure Handling"]
   module --> concept["Error Aggregation"]
   concept --> capstone["Capstone pressure point"]
 ```

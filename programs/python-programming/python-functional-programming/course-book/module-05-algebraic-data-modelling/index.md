@@ -1,4 +1,4 @@
-# Module 05: Algebraic Data Modelling
+# Module 05: Algebraic Data Modelling and Validation and Validation
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling"]
+  program --> module["Module 05: Algebraic Data Modelling and Validation"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

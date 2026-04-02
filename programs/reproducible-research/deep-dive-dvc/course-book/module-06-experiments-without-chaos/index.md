@@ -1,4 +1,4 @@
-# Module 06 — Experiments Without Chaos
+# Module 06: Experiments, Baselines, and Controlled Change
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 06 — Experiments Without Chaos"]
+  program --> module["Module 06: Experiments, Baselines, and Controlled Change"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -299,7 +299,7 @@ Equating all elements with significance undermines reliability.
 
 ---
 
-## Module 06 — Invariants Checklist
+## Module 06: Invariants Checklist
 
 Confirm:
 - [ ] Experiments segregated from primary history.

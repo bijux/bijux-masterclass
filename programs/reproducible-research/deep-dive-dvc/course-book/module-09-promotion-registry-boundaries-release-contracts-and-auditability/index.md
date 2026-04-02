@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 09 — Promotion, Registry Boundaries, Release Contracts, and Auditability
+# Module 09: Promotion, Registry Boundaries, and Auditability
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 09 — Promotion, Registry Boundaries, Release Contracts, and Auditability"]
+  program --> module["Module 09: Promotion, Registry Boundaries, and Auditability"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

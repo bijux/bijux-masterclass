@@ -1,4 +1,4 @@
-# Module 03 — Execution Environments as Inputs
+# Module 03: Execution Environments as Reproducible Inputs
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 03 — Execution Environments as Inputs"]
+  program --> module["Module 03: Execution Environments as Reproducible Inputs"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -227,7 +227,7 @@ Influential factors must be captured, constrained, or acknowledged as variable; 
 
 ---
 
-## Module 03 — Invariants Checklist
+## Module 03: Invariants Checklist
 
 Affirm and substantiate:
 - [ ] Environments impact outcomes despite identical data.

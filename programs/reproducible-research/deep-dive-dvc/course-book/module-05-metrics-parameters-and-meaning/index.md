@@ -1,4 +1,4 @@
-# Module 05 — Metrics, Parameters, and Meaning
+# Module 05: Metrics, Parameters, and Comparable Meaning
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 05 — Metrics, Parameters, and Meaning"]
+  program --> module["Module 05: Metrics, Parameters, and Comparable Meaning"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -268,7 +268,7 @@ DVC equips you with instruments for this defense—execution is yours.
 
 ---
 
-## Module 05 — Invariants Checklist
+## Module 05: Invariants Checklist
 
 Affirm:
 - [ ] All consequential parameters tracked.

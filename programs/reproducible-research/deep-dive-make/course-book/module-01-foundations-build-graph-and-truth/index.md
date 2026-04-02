@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 01 — Foundations: The Build Graph and Truth
+# Module 01: Build Graph Foundations and Truth
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 01 — Foundations: The Build Graph and Truth"]
+  program --> module["Module 01: Build Graph Foundations and Truth"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

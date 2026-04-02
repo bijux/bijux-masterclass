@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 03: `inspect`, Signatures, and Provenance
+# Module 03: Signatures, Provenance, and Runtime Evidence
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 03: `inspect`, Signatures, and Provenance"]
+  program --> module["Module 03: Signatures, Provenance, and Runtime Evidence"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]

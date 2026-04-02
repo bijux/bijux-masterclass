@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 09: Ecosystem Interop"]
+  program --> module["Module 09: Ecosystem Interop and Boundary Discipline"]
   module --> concept["Helper Libraries"]
   concept --> capstone["Capstone pressure point"]
 ```

@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Module 00 — Orientation and Study Strategy
+# Module 00: Orientation and Study Practice
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 00 — Orientation and Study Strategy"]
+  program --> module["Module 00: Orientation and Study Practice"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -53,7 +53,7 @@ reference build in `capstone/`.
 
 ## Program Arc
 
-### Module 01 — Foundations: The Build Graph and Truth
+### Module 01: Build Graph Foundations and Truth
 
 Start from the core idea of Make: targets, prerequisites, recipes, default goals, and the
 reason builds rebuild. This module is where a total beginner learns to read Make as a
@@ -61,63 +61,63 @@ graph instead of as a shell script with extra punctuation.
 
 **Deliverable:** a tiny build that converges and can explain its own rebuild behavior.
 
-### Module 02 — Scaling: Parallelism, Safety, and Large-Project Structure
+### Module 02: Parallel Safety and Project Structure
 
 Move from one small truthful build to a larger one that stays safe under `-j`. This is
 where “works locally” becomes “still works when the graph is stressed.”
 
 **Deliverable:** a parallel-safe build plus a repro pack that demonstrates and fixes race classes.
 
-### Module 03 — Production Practice: Determinism, Debugging, CI Contracts, Selftests, and Disciplined DSL
+### Module 03: Determinism, Debugging, and Self-Testing
 
 Turn correctness into a production habit: deterministic discovery, stable public targets,
 selftests, and Make-native forensics.
 
 **Deliverable:** a CI-ready build contract with selftests and deterministic behavior across runs.
 
-### Module 04 — Make Semantics Under Pressure: CLI, Precedence, Includes, and Rule Edge-Cases
+### Module 04: Rule Semantics, Precedence, and Edge Cases
 
 Learn the sharp edges you need when something breaks: CLI semantics, variable provenance,
 include restart behavior, and advanced rule semantics.
 
 **Deliverable:** a reproducible runbook for diagnosing tricky Make behavior without folklore.
 
-### Module 05 — Hardening: Portability, Jobserver, Hermeticity, Performance, and Failure Modes
+### Module 05: Portability, Hermeticity, and Failure Modes
 
 Define platform and tooling boundaries, model semantically relevant non-file inputs, and
 make the build survive controlled recursion and environmental drift.
 
 **Deliverable:** a hardened build contract with portability checks and failure-mode evidence.
 
-### Module 06 — Generated Files, Multi-Output Rules, and Pipeline Boundaries
+### Module 06: Generated Files, Multi-Output Rules, and Pipeline Boundaries
 
 Treat generators, manifests, generated headers, and coupled outputs as first-class graph
 citizens instead of incidental side effects.
 
 **Deliverable:** a generator pipeline that runs exactly when its declared inputs change.
 
-### Module 07 — Reusable Build Architecture, Layered Includes, and Build APIs
+### Module 07: Build Architecture, Layered Includes, and Build APIs
 
 Scale the build into layered `mk/*.mk` files, reusable macros, and a stable public target
 surface without turning the system into a private language.
 
 **Deliverable:** a documented build API with layered includes and auditable reuse.
 
-### Module 08 — Release Engineering, Packaging, and Artifact Publication Contracts
+### Module 08: Release Engineering and Artifact Contracts
 
 Define what it means to publish an artifact safely: bundle layout, manifests, checksums,
 install behavior, and atomic release boundaries.
 
 **Deliverable:** a release surface that publishes trustworthy artifacts and supporting evidence.
 
-### Module 09 — Performance, Observability, and Build Incident Response
+### Module 09: Performance, Observability, and Incident Response
 
 Measure parse-time costs, isolate slow or flaky behavior, and build a runbook that another
 engineer can actually use during an incident.
 
 **Deliverable:** a measured build plus an operational triage ladder.
 
-### Module 10 — Mastery: Migration, Governance, and Knowing Make's Boundaries
+### Module 10: Migration, Governance, and Tool Boundaries
 
 Review legacy Make systems, plan migrations without losing proof, govern future changes,
 and decide when Make should remain the orchestrator or hand off responsibility.

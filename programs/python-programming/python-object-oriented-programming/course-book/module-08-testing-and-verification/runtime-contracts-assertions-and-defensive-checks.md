@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> module["Module 08: Testing and Verification"]
+  program --> module["Module 08: Testing, Contracts, and Verification Depth"]
   module --> concept["Runtime Contracts, Assertions, and Defensive Checks"]
   concept --> capstone["Capstone pressure point"]
 ```

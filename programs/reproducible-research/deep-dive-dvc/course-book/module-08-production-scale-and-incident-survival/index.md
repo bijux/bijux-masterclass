@@ -1,4 +1,4 @@
-# Module 08 — Production, Scale, and Incident Survival
+# Module 08: Recovery, Scale, and Incident Survival
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 08 — Production, Scale, and Incident Survival"]
+  program --> module["Module 08: Recovery, Scale, and Incident Survival"]
   module --> lessons["Lesson pages and worked examples"]
   module --> checkpoints["Exercises and closing criteria"]
   module --> capstone["Related capstone evidence"]
@@ -290,7 +290,7 @@ Recovery-capable systems surpass those merely evasive of errors.
 
 ---
 
-## Module 08 — Final Invariants Checklist
+## Module 08: Final Invariants Checklist
 
 Course completion should enable affirmations of:
 

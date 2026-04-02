@@ -1,4 +1,4 @@
-# Module 10: Refactoring and Sustainment
+# Module 10: Refactoring, Performance, and Sustainment
 
 
 <!-- page-maps:start -->
