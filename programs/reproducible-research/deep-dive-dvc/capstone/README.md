@@ -176,6 +176,14 @@ If you are unsure which route fits your question, use
 `course-book/reference/verification-route-guide.md` before defaulting to the strongest
 command.
 
+If you are still unsure, use this escalation order:
+
+1. `make tour`
+2. `make verify`
+3. `make verify-report`
+4. `make experiment-review` or `make recovery-review` or `make release-review`
+5. `make confirm`
+
 ## What `confirm` proves
 
 `make confirm` is the strongest built-in verification target in this repository.
