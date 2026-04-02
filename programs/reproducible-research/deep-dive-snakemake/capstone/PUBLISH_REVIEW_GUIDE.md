@@ -31,6 +31,9 @@ flowchart LR
 This guide explains how to review the publish boundary as a contract, not only as a
 directory that happens to contain files.
 
+Use `RESULTS_BOUNDARY_GUIDE.md` first when the real question is whether a surface
+deserves promotion into the publish contract at all.
+
 ---
 
 ## Primary Review Route

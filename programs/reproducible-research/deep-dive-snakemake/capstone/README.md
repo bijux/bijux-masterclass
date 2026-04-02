@@ -196,6 +196,9 @@ publishing, or operating policy.
 Use `CONFIG_CONTRACT_GUIDE.md` when the blocker is configuration truth: what lives in
 `config.yaml`, what `Snakefile` defaults inject, what profiles change, and what
 provenance finally records.
+Use `RESULTS_BOUNDARY_GUIDE.md` when the question is why a surface stays in `results/`
+as internal evidence or gets promoted into `publish/v1/` as part of the downstream
+contract.
 Use `CHECKPOINT_GUIDE.md` when the core review question is how dynamic sample discovery
 becomes a durable artifact instead of hidden state.
 Use `EXACT_SOURCE_GUIDE.md` when the question is "which file should I read next" and you

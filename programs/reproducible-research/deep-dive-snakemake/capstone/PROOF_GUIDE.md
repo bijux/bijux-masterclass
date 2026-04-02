@@ -49,6 +49,7 @@ file, or artifact that defends it.
 - Domain vocabulary and sample-to-report story: `DOMAIN_GUIDE.md`
 - Stage ownership and first proof surface: `WORKFLOW_STAGE_GUIDE.md`
 - Configuration truth and materialization: `CONFIG_CONTRACT_GUIDE.md`
+- Internal results versus public publish surfaces: `RESULTS_BOUNDARY_GUIDE.md`
 - Checkpoint and dynamic DAG review: `CHECKPOINT_GUIDE.md`
 - Exact file routing for a concrete question: `EXACT_SOURCE_GUIDE.md`
 - Choosing the right guide, command, or bundle: `REVIEW_ROUTE_GUIDE.md`
