@@ -69,6 +69,7 @@ make proof
 - `ARCHITECTURE.md` for ownership boundaries
 - `PLUGIN_CATALOG.md` for the concrete adapters and why each one exists
 - `PUBLIC_API_GUIDE.md` for the supported package surface
+- `TRACE_GUIDE.md` for the invocation-history review route
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route
 - `PACKAGE_GUIDE.md` for the code-reading route

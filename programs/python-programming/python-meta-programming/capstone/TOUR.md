@@ -66,3 +66,6 @@ each source file is trying to own.
 3. Run `make trace` to see configuration and action history.
 4. Run `make tour` to save that full route for review.
 5. Run `make confirm` when you want the stronger executable proof.
+
+Read [TRACE_GUIDE.md](TRACE_GUIDE.md) when the trace output is the most important surface
+for the question you are holding.

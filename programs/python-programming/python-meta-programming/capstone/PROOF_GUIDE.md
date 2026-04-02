@@ -86,3 +86,6 @@ public surface without opening private internals first.
 - Which proof demonstrates definition-time behavior?
 - Which proof demonstrates preserved callable metadata?
 - Which proof demonstrates that the manifest stays observational rather than operational?
+
+Use [TRACE_GUIDE.md](TRACE_GUIDE.md) when the key proof question is really about wrapper
+history and visible invocation metadata.
