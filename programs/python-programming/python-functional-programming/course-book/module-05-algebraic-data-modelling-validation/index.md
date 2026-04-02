@@ -87,3 +87,7 @@ and why explicit shapes matter before the course introduces lawful chaining patt
 - You can explain which domain distinctions deserve explicit data shapes instead of flags, `None`, or stringly typed values.
 - You can review a constructor or pattern match and tell whether it keeps invariants close to the model.
 - You can justify a modelling trade-off in terms of correctness, composition, and long-term maintainability.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

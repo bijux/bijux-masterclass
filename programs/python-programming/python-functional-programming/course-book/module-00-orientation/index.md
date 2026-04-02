@@ -100,3 +100,7 @@ The FuncPipe RAG capstone matures with the course:
 - You can explain why purity, effects, and failure handling are treated as design contracts instead of style preferences.
 - You know which orientation page to revisit when you need the short route, the full route, or the capstone route.
 - You can describe how Modules 01 to 10 change the capstone, not just what topics they mention.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

@@ -87,3 +87,7 @@ explicit context keeps abstractions honest instead of magical. Use
 - You can explain why a lawful composition rule matters for maintenance instead of treating it as theory trivia.
 - You can identify when explicit context clarifies behavior and when a container abstraction would hide too much.
 - You can compare an exception-driven path with a compositional path and explain which one is easier to review.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

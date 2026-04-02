@@ -87,3 +87,7 @@ semantics, boundaries, and review discipline the course spent ten modules buildi
 - You can describe how the codebase proves correctness, compatibility, and ownership over time.
 - You can judge whether a change proposal improves the system or only moves complexity around.
 - You can explain what makes the capstone maintainable two years from now, not only runnable today.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

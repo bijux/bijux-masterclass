@@ -87,3 +87,7 @@ against `capstone/_history/worktrees/module-09` before moving forward.
 - You can explain where interop is a boundary problem rather than a reason to abandon the course’s design rules.
 - You can judge whether a wrapper keeps configuration, failure, and review evidence explicit enough for long-term maintenance.
 - You can defend a library choice in terms of contracts, not convenience alone.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

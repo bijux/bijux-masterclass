@@ -89,3 +89,7 @@ Use [Refactoring Guide](refactoring-guide.md) and compare against
 - You can explain when work happens in a pipeline instead of only what data moves through it.
 - You can review a streaming helper and spot hidden materialization, cleanup leaks, or ordering surprises.
 - You can justify the boundary between reusable lazy stages and explicit materialization.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

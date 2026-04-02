@@ -87,3 +87,7 @@ pipeline, and what evidence proves that cleanup still happens under both paths. 
 - You can defend an error strategy in terms of stream semantics, not personal preference.
 - You can point to where retries, circuit breaking, and cleanup are encoded as policy instead of scattered control flow.
 - You can review resilience code and explain what evidence proves it under both success and failure.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

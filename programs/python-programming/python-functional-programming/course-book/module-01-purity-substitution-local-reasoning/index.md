@@ -89,3 +89,7 @@ and where a thin effect wrapper belongs when purity is impossible. Use
 - You can defend a purity judgment without appealing to taste or syntax alone.
 - You can point to the exact place where an effect wrapper belongs when the transform itself cannot stay pure.
 - You can compare two implementations and explain whether they are meaning-preserving under substitution.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

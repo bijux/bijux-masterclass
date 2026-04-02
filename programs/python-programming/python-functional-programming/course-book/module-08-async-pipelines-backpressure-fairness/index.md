@@ -87,3 +87,7 @@ control flow. Use [Refactoring Guide](refactoring-guide.md) and compare against
 - You can explain how concurrency stays bounded instead of accidental.
 - You can identify which async abstractions describe work and which ones actually drive execution.
 - You can defend an async design in terms of fairness, backpressure, and testability.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

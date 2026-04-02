@@ -108,3 +108,7 @@ capstone, when the narrower question is only the pytest suite.
 By the end of the course, the learner should be able to point at the capstone and explain
 its boundaries, dataflow, failure strategy, infrastructure seams, and sustainment story
 without treating any of those as hidden magic.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between repository routes, review surfaces, and proof commands.

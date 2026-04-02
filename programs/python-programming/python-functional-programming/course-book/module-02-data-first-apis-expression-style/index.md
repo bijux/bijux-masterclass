@@ -89,3 +89,7 @@ implementation trick. Use [Refactoring Guide](refactoring-guide.md) and compare 
 - You can explain why a data-first API composes more predictably than one driven by ambient flags.
 - You can identify where laziness starts to influence interface design instead of remaining an internal optimization.
 - You can review a configuration path and explain how overrides stay explicit and testable.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

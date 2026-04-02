@@ -87,3 +87,7 @@ why capability discipline matters before async coordination enters the picture. 
 - You can point to the exact boundary where infrastructure enters the system and explain why that boundary is narrow enough.
 - You can explain how idempotency, cleanup, and transaction handling are enforced rather than assumed.
 - You can judge whether a migration plan preserves the core contracts while reality is still messy.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

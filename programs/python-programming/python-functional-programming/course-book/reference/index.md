@@ -27,7 +27,7 @@ course or the capstone.
 
 ## Pages in this section
 
-- [Functional Glossary](glossary.md) for the course vocabulary that appears across modules and the capstone
+- [Glossary](glossary.md) for the course vocabulary that appears across modules and the capstone
 - [FP Standards](fp-standards.md) for the stable engineering rules that define acceptable functional design in this course
 - [Functional Anti-Pattern Atlas](anti-pattern-atlas.md) for recurring failure shapes and the repair route back to the course
 - [Boundary Review Prompts](boundary-review-prompts.md) for sharper keep, change, or reject questions during review
