@@ -31,6 +31,9 @@ flowchart LR
 This guide explains how to review workflow incidents without collapsing everything into
 one vague question about whether the pipeline "works."
 
+Use `EXECUTION_EVIDENCE_GUIDE.md` first when the confusion is about which executed
+surface answers which kind of question.
+
 ---
 
 ## Primary Review Route

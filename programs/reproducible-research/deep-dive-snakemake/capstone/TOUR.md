@@ -81,3 +81,6 @@ evidence, published interface, and reproducibility metadata.
 If that route feels too broad, step back to `WALKTHROUGH_GUIDE.md`. If it feels too
 narrow, continue into `PUBLISH_REVIEW_GUIDE.md` or `INCIDENT_REVIEW_GUIDE.md` depending
 on the question you are reviewing.
+
+Use `EXECUTION_EVIDENCE_GUIDE.md` when the blocker is not where the files are, but what
+each executed evidence surface is actually supposed to prove.
