@@ -27,7 +27,7 @@ evidence in the capstone.
 
 ## Proof route
 
-1. Read `capstone/PROOF_GUIDE.md`.
+1. Read `capstone/docs/PROOF_GUIDE.md`.
 2. Run `make inspect` when you want the saved learner-facing snapshot before reading tests.
 3. Run `make verify-report` when you want test output and learner-facing state in one review bundle.
 4. Run `make confirm` when you want the strongest local confirmation route.

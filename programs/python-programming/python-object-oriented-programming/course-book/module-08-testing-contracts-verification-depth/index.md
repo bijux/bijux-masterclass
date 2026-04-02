@@ -84,7 +84,7 @@ test count.
 
 | If the claim is about... | Start with | Then compare |
 | --- | --- | --- |
-| lifecycle and invariant authority | `capstone/TEST_GUIDE.md` and lifecycle tests | `capstone/PROOF_GUIDE.md` |
+| lifecycle and invariant authority | `capstone/docs/TEST_GUIDE.md` and lifecycle tests | `capstone/docs/PROOF_GUIDE.md` |
 | replaceable policy behavior | evaluation tests | `policies.py` and `PACKAGE_GUIDE.md` |
 | learner-facing use cases | application or demo tests | `TOUR.md` and `TARGET_GUIDE.md` |
 | runtime or repository boundaries | runtime or unit-of-work tests | `ARCHITECTURE.md` and `EXTENSION_GUIDE.md` |

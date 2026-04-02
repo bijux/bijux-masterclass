@@ -75,42 +75,45 @@ Or from the repository root:
 make PROGRAM=python-programming/python-object-oriented-programming proof
 ```
 
-Review and proof routes:
+## Documentation set
 
-- [GUIDE_INDEX.md](GUIDE_INDEX.md)
-- [FIRST_SESSION_GUIDE.md](FIRST_SESSION_GUIDE.md)
-- [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
-- [OWNERSHIP_BOUNDARIES.md](OWNERSHIP_BOUNDARIES.md)
-- [SCENARIO_BOUNDARY_MAP.md](SCENARIO_BOUNDARY_MAP.md)
-- [PROOF_GUIDE.md](PROOF_GUIDE.md)
-- [ARCHITECTURE.md](ARCHITECTURE.md)
-- [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md)
-- [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md)
-- [RETIREMENT_SCENARIO_GUIDE.md](RETIREMENT_SCENARIO_GUIDE.md)
-- [RATE_OF_CHANGE_SCENARIO_GUIDE.md](RATE_OF_CHANGE_SCENARIO_GUIDE.md)
-- [RULE_LIFECYCLE_GUIDE.md](RULE_LIFECYCLE_GUIDE.md)
-- [EVENT_FLOW_GUIDE.md](EVENT_FLOW_GUIDE.md)
-- [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md)
-- [MANIFEST_GUIDE.md](MANIFEST_GUIDE.md)
-- [CHANGE_RECIPES.md](CHANGE_RECIPES.md)
-- [RUNTIME_GUIDE.md](RUNTIME_GUIDE.md)
-- [PROJECTION_GUIDE.md](PROJECTION_GUIDE.md)
-- [PUBLIC_API_GUIDE.md](PUBLIC_API_GUIDE.md)
-- [SCENARIO_SELECTION_GUIDE.md](SCENARIO_SELECTION_GUIDE.md)
-- [SOURCE_GUIDE.md](SOURCE_GUIDE.md)
-- [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md)
-- [TOUR.md](TOUR.md)
-- [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
-- [TEST_GUIDE.md](TEST_GUIDE.md)
-- [TARGET_GUIDE.md](TARGET_GUIDE.md)
-- [INSPECTION_GUIDE.md](INSPECTION_GUIDE.md)
-- [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md)
+All supporting capstone guides live in [docs/](docs/). The root stays focused on the
+entry route while still linking the complete local documentation set:
+
+- [GUIDE_INDEX.md](docs/GUIDE_INDEX.md)
+- [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md)
+- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
+- [OWNERSHIP_BOUNDARIES.md](docs/OWNERSHIP_BOUNDARIES.md)
+- [SCENARIO_BOUNDARY_MAP.md](docs/SCENARIO_BOUNDARY_MAP.md)
+- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [DOMAIN_GUIDE.md](docs/DOMAIN_GUIDE.md)
+- [SCENARIO_GUIDE.md](docs/SCENARIO_GUIDE.md)
+- [RETIREMENT_SCENARIO_GUIDE.md](docs/RETIREMENT_SCENARIO_GUIDE.md)
+- [RATE_OF_CHANGE_SCENARIO_GUIDE.md](docs/RATE_OF_CHANGE_SCENARIO_GUIDE.md)
+- [RULE_LIFECYCLE_GUIDE.md](docs/RULE_LIFECYCLE_GUIDE.md)
+- [EVENT_FLOW_GUIDE.md](docs/EVENT_FLOW_GUIDE.md)
+- [BUNDLE_GUIDE.md](docs/BUNDLE_GUIDE.md)
+- [MANIFEST_GUIDE.md](docs/MANIFEST_GUIDE.md)
+- [CHANGE_RECIPES.md](docs/CHANGE_RECIPES.md)
+- [RUNTIME_GUIDE.md](docs/RUNTIME_GUIDE.md)
+- [PROJECTION_GUIDE.md](docs/PROJECTION_GUIDE.md)
+- [PUBLIC_API_GUIDE.md](docs/PUBLIC_API_GUIDE.md)
+- [SCENARIO_SELECTION_GUIDE.md](docs/SCENARIO_SELECTION_GUIDE.md)
+- [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
+- [COURSE_STAGE_MAP.md](docs/COURSE_STAGE_MAP.md)
+- [TOUR.md](docs/TOUR.md)
+- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
+- [TEST_GUIDE.md](docs/TEST_GUIDE.md)
+- [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
+- [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
+- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
 
 ## First session route
 
 If this is your first honest pass through the capstone, use this order:
 
-Read [FIRST_SESSION_GUIDE.md](FIRST_SESSION_GUIDE.md) for the stable local route, then
+Read [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md) for the stable local route, then
 come back to this README for the broader guide list and review routes.
 
 ## Review routes
@@ -126,7 +129,7 @@ come back to this README for the broader guide list and review routes.
 - `make confirm` runs the strongest local confirmation route.
 - `make proof` builds the published learner-facing review route.
 
-Use [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md) when you want the relationship between those saved
+Use [BUNDLE_GUIDE.md](docs/BUNDLE_GUIDE.md) when you want the relationship between those saved
 directories kept explicit.
 
 ## Route by reader goal
@@ -174,7 +177,7 @@ Use this loop throughout the capstone:
 2. Explain which object or boundary owns the behavior.
 3. Prove that claim with one named command or one named test.
 
-Use [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md) when you want that loop tied directly to the current stage of the course instead of the full capstone at once.
+Use [COURSE_STAGE_MAP.md](docs/COURSE_STAGE_MAP.md) when you want that loop tied directly to the current stage of the course instead of the full capstone at once.
 
 ## Currency audit
 
@@ -247,7 +250,7 @@ place to start if you want to understand how a team would drive the capstone wit
 reaching into its internals first. Use `make tour` when you want that scenario captured
 as a durable bundle instead of transient terminal output.
 
-For the full narrative route, continue to [TOUR.md](TOUR.md).
+For the full narrative route, continue to [TOUR.md](docs/TOUR.md).
 
 ## Architecture
 
@@ -276,7 +279,7 @@ graph TD
   events --> ledger
 ```
 
-For a fuller boundary review, continue to [ARCHITECTURE.md](ARCHITECTURE.md).
+For a fuller boundary review, continue to [ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Layout
 

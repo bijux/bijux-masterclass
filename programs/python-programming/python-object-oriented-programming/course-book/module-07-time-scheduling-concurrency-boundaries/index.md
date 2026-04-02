@@ -84,7 +84,7 @@ plumbing to bolt on later.
 ## Review route for time pressure
 
 1. Read `src/service_monitoring/runtime.py`.
-2. Compare it with `capstone/TOUR.md` and `capstone/ARCHITECTURE.md`.
+2. Compare it with `capstone/docs/TOUR.md` and `capstone/docs/ARCHITECTURE.md`.
 3. Use the runtime tests after you can already say which object should remain ignorant of time, retries, or async concerns.
 
 This route keeps a common mistake visible: once time pressure appears, teams often let

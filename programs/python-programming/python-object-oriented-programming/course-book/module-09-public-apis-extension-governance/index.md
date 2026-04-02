@@ -83,8 +83,8 @@ into an ungoverned surface area.
 ## Public surface review route
 
 1. Read `src/service_monitoring/application.py`.
-2. Compare it with `capstone/PACKAGE_GUIDE.md` and `capstone/EXTENSION_GUIDE.md`.
-3. Use `capstone/TARGET_GUIDE.md` and the learner-facing routes to decide which promises are public enough to defend.
+2. Compare it with `capstone/docs/PACKAGE_GUIDE.md` and `capstone/docs/EXTENSION_GUIDE.md`.
+3. Use `capstone/docs/TARGET_GUIDE.md` and the learner-facing routes to decide which promises are public enough to defend.
 
 This route keeps one governance question visible: a public surface is not simply the code
 other people can import. It is the narrow surface you are prepared to document, version,

@@ -82,8 +82,8 @@ semantics instead of flattening them away.
 ## First review route for storage boundaries
 
 1. Read `src/service_monitoring/repository.py`.
-2. Keep `capstone/ARCHITECTURE.md` open while you read.
-3. Compare the repository boundary with the unit-of-work proof surface in `capstone/TEST_GUIDE.md` and `capstone/PROOF_GUIDE.md`.
+2. Keep `capstone/docs/ARCHITECTURE.md` open while you read.
+3. Compare the repository boundary with the unit-of-work proof surface in `capstone/docs/TEST_GUIDE.md` and `capstone/docs/PROOF_GUIDE.md`.
 
 That route keeps the central distinction visible: the repository may translate and persist
 state, but it must not become the place where domain rules are smuggled in or constructors
