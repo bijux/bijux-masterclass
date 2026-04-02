@@ -1,7 +1,8 @@
-"""Module 09 Core 6: optional Typer CLI (end-of-Module-09).
+"""Module 09 Core 6: optional Typer CLI seam (end-of-Module-09).
 
-This is an optional shell. It is behind a dynamic import guard so the repo does
-not require `typer` to be installed to import/run tests.
+The stdlib argparse shell is the canonical learner route in this repository.
+This file exists only to show where a richer framework shell could attach
+without changing the pure helper split or the default proof surface.
 """
 
 # mypy: ignore-errors

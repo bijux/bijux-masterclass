@@ -26,9 +26,9 @@ flowchart LR
 
 **Module 09**
 > **Core question:**  
-> How do you integrate command-line interfaces with FuncPipe using Click or Typer to create config-driven entry points that delegate to pure pipelines, support overrides, and maintain testability while separating CLI concerns from core logic?
+> How do you add command-line entry points to FuncPipe without letting framework choice take over the architecture, while keeping config loading, overrides, and pipeline assembly explicit and testable?
 
-In this core, we integrate CLI tools with FuncPipe in the FuncPipe RAG Builder (now at `funcpipe-rag-09`). Click and Typer enable type-safe, composable CLIs with subcommands, options, and arguments; Typer leverages Python type hints for automatic validation and help docs. Emphasize thin CLI adapters (commands that parse to RunSpec, delegate to pure-ish run_from_spec, handle output/exit centrally), config-driven execution (e.g., JSON/YAML loaded as Pydantic, with overrides: CLI > env > file > defaults via deep merge and re-validation), and testable commands (invoke as funcs with mocks, pure runner for core). Refactor RAG entry points (e.g., rag-process command) into CLI-driven scripts, verifying equivalence and laws like determinism (same spec yields same outputs under pinned env). Dependencies: `pip install typer pyyaml`; optional `click` (Typer for type-driven simplicity; Click for advanced); tradeoffs: Click flexibility (callbacks, groups) vs Typer simplicity (type-driven); sharp edges: config overriding (deep merge to avoid partial overrides), error handling in CLI (map FPResult to exit codes/table), config discovery (--config, env var, XDG paths), dry-run/print-config for usability.
+In this core, the shipped learner route is deliberately boring: a stdlib `argparse` shell at the repository edge, pure override helpers in `pipelines/cli.py`, and pipeline assembly that stays outside the shell. That is the canonical implementation because it proves the architectural point without extra framework noise. Typer and Click still matter, but here they are optional extension seams that should preserve the same contract rather than redefine it. The real lesson is thin shell adapters, config-driven execution, override precedence, explicit exit-code mapping, and tests that compare CLI behavior against the same core pipeline logic.
 
 **Motivation Bug:** Hard-coded scripts mix I/O with logic, leading to untestable entry points; CLI integration with config-driving separates concerns for reusable, testable FuncPipe.
 
@@ -40,15 +40,15 @@ In this core, we integrate CLI tools with FuncPipe in the FuncPipe RAG Builder (
 - **Composability:** Subcommands for modular pipelines; groups for related funcs.
 - **Purity:** Core funcs pure; effects in CLI (e.g., print, file I/O); runtime coercion for primitives.
 - **Semantics:** Laws like determinism (fixed spec deterministic under pinned env/artifacts, no timestamps/random); equivalence (CLI call == direct func up to I/O/formatting); verified via properties/invoke tests.
-- **Integration:** Wrap RAG pipelines in commands; use Pydantic for config/args; test with Typer/Click runners; entrypoints in `capstone/pyproject.toml`.
-- **Mypy Config:** --strict; typer/click typing.
+- **Integration:** Keep the shipped route stdlib-first; optional Typer or Click shells should reuse the same pure override/config helpers instead of forking the design.
+- **Mypy Config:** --strict on the shipped helpers and stdlib shell; optional framework shells may stay import-guarded.
 
-**Audience:** Developers exposing FuncPipe as tools/scripts, needing config-driven CLIs in FP style.
+**Audience:** Developers exposing FuncPipe as tools/scripts and needing one honest CLI boundary before deciding whether extra framework features are worth the dependency.
 
 **Outcome:**
-1. Build CLI with Typer/Click delegating to pure FuncPipe.
-2. Make RAG config-driven via CLI with overrides/merge.
-3. Prove equivalence/laws with tests.
+1. Build a thin CLI shell that delegates to pure FuncPipe helpers instead of mixing policy into argument parsing.
+2. Make the capstone config-driven via explicit override and merge rules.
+3. Judge when a richer CLI framework is warranted without changing the underlying contract.
 
 ---
 ## 1. Laws & Invariants
@@ -65,26 +65,27 @@ These laws ensure CLI doesn't break FuncPipe properties.
 ## 2. Decision Table
 | Scenario | Type Safety | Subcommands Needed | Recommended |
 |-----------------------|-------------|---------------------|-------------|
-| Simple script | Low | No | Click basics |
-| Type-driven | High | No | Typer |
-| Complex groups | Medium | Yes | Click groups |
-| Config overrides | Any | Any | Both with options |
+| Canonical learner route | Sufficient | No | stdlib `argparse` |
+| Type-driven shell with framework help | High | No | Typer |
+| Complex callback-heavy groups | Medium | Yes | Click |
+| Config overrides with the same pure helper split | Any | Any | keep the repo's stdlib helper layer, then wrap as needed |
 
-**Typer for FP-friendly types; Click for advanced.**
+**Start with stdlib `argparse`; reach for Typer or Click only when the shell genuinely needs more than the default proof route.**
 
 ---
 ## 3. Public API (CLI Commands & Config Loaders)
-Commands as thin adapters. Guard imports.
+Commands are thin adapters. Start with the shipped shell, then compare optional wrappers against it.
 
 **Repo alignment note (end-of-Module-09):**
 - This repo ships a stdlib `argparse` CLI at `capstone/src/funcpipe_rag/boundaries/shells/cli.py`.
 - Override parsing/merge lives in `capstone/src/funcpipe_rag/pipelines/cli.py`.
 - A minimal optional Typer shell exists at `capstone/src/funcpipe_rag/boundaries/shells/typer_cli.py` (import-guarded).
 
-**Teaching contract:**
-- The shipped reference implementation is the stdlib `argparse` shell.
-- The Typer block below is an extension sketch that uses the same pure override/config split; it is included to show how the boundary scales, not to imply a second production shell.
-- Review the repo files above when you want the canonical implementation surface.
+**Canonical learner route:**
+- Open `boundaries/shells/cli.py` first.
+- Open `pipelines/cli.py` second.
+- Treat the Typer block below as an optional extension sketch, not as a competing production path.
+- If an example here and the repo disagree, the shipped stdlib shell wins.
 
 **Exit Code Mapping (from FPResult):**
 | Result | Code | Example |
@@ -293,7 +294,7 @@ def rag_process(input_path, config_path, overrides, seed, output_format, dry_run
     exit_code = handle_result(result, spec.output_format)  # Use click.echo in handle
     raise click.exceptions.Exit(exit_code)
 ```
-### 4.2 Typer for Type-Driven
+### 4.2 Optional Typer Extension Sketch
 ```python
 # See Public API above. The shipped repo keeps argparse as the canonical learner route
 # and offers the Typer shell as an optional extension seam with the same helper split.
