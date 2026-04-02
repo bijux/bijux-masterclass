@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test build lint clean clean-all venv demo tour proof \
+.PHONY: install test build lint clean clean-all venv demo inspect verify-report tour proof \
         worktrees snapshots clean-history module-md module-funcpipe freeze-codebase \
         help
 
@@ -17,6 +17,8 @@ MYPY       := $(VENV)/bin/mypy
 PYTEST     := $(VENV)/bin/pytest
 HATCH      := $(VENV)/bin/hatch
 TOUR_DIR   ?= $(ARTIFACTS_DIR)/tour/python-programming/python-functional-programming
+INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-functional-programming
+VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-functional-programming
 
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"; printf "\nTargets:\n"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -36,6 +38,46 @@ test: install ## Run the test suite
 
 demo: tour ## Build the learner-facing capstone walkthrough
 
+inspect: install ## Build the learner-facing inspection bundle
+	rm -rf $(INSPECT_DIR)
+	mkdir -p $(INSPECT_DIR)
+	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(INSPECT_DIR)/summary.txt
+	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(INSPECT_DIR)/summary.json
+	cp README.md $(INSPECT_DIR)/README.md
+	cp ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
+	cp PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
+	cp TEST_GUIDE.md $(INSPECT_DIR)/TEST_GUIDE.md
+	cp PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
+	printf '%s\n' \
+		'Inspection route:' \
+		'  1. Read summary.txt for the human review map.' \
+		'  2. Read summary.json for the machine-readable package and test groups.' \
+		'  3. Read PACKAGE_GUIDE.md and TEST_GUIDE.md for the local reading routes.' \
+		'  4. Read ARCHITECTURE.md and PROOF_GUIDE.md when you need ownership and proof depth.' \
+		> $(INSPECT_DIR)/route.txt
+	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
+	@echo "✔ wrote learner-facing inspection bundle to $(INSPECT_DIR)"
+
+verify-report: install ## Build the structured capstone verification report bundle
+	rm -rf $(VERIFY_REPORT_DIR)
+	mkdir -p $(VERIFY_REPORT_DIR)
+	$(PYTEST) -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
+	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(VERIFY_REPORT_DIR)/review-summary.json
+	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(VERIFY_REPORT_DIR)/review-summary.txt
+	cp README.md $(VERIFY_REPORT_DIR)/README.md
+	cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
+	cp WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
+	cp TOUR.md $(VERIFY_REPORT_DIR)/TOUR.md
+	printf '%s\n' \
+		'Verification report route:' \
+		'  1. Read pytest.txt for the executed verification result.' \
+		'  2. Read review-summary.txt for the package, test, and route inventory.' \
+		'  3. Read PROOF_GUIDE.md when you need claim-to-evidence routing.' \
+		'  4. Read WALKTHROUGH_GUIDE.md and TOUR.md when you want the matching human review order.' \
+		> $(VERIFY_REPORT_DIR)/route.txt
+	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
+	@echo "✔ wrote capstone verification report to $(VERIFY_REPORT_DIR)"
+
 tour: install ## Build the learner-facing proof bundle
 	rm -rf $(TOUR_DIR)
 	mkdir -p $(TOUR_DIR)
@@ -45,6 +87,9 @@ tour: install ## Build the learner-facing proof bundle
 	cp README.md $(TOUR_DIR)/README.md
 	cp pyproject.toml $(TOUR_DIR)/pyproject.toml
 	cp TOUR.md $(TOUR_DIR)/TOUR.md
+	cp WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
+	cp PACKAGE_GUIDE.md $(TOUR_DIR)/PACKAGE_GUIDE.md
+	cp TEST_GUIDE.md $(TOUR_DIR)/TEST_GUIDE.md
 	printf '%s\n' \
 		"core=src/funcpipe_rag/core" \
 		"result=src/funcpipe_rag/result" \
@@ -52,9 +97,10 @@ tour: install ## Build the learner-facing proof bundle
 		"async_effects=src/funcpipe_rag/domain/effects/async_" \
 		"tests=tests/unit" \
 		> $(TOUR_DIR)/focus-areas.txt
+	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/manifest.json
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
-proof: test tour ## Run the sanctioned learner-facing proof route
+proof: test inspect tour ## Run the sanctioned learner-facing proof route
 
 build: install ## Build distribution artifacts
 	$(HATCH) build
