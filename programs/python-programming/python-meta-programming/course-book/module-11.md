@@ -1,4 +1,4 @@
-# Outro – Closing *Python Metaprogramming I* and Looking Ahead
+# Module 11: Mastery Review
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 11"]
-  page["Outro – Closing *Python Metaprogramming I* and Looking Ahead"]
+  page["Module 11: Mastery Review"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,10 +25,32 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-At this point you have seen the full “stack” of Python’s runtime customisation points: objects and namespaces, introspection (`dir`, `vars`, `inspect`), decorators (simple, parameterized, and type-aware), class decorators and properties, the descriptor protocol from first principles, and metaclasses with custom `type` pipelines and registries—together with a sober look at eval/exec, import hooks, and structural typing. You should now be able to trace what happens when you write `@decorator`, when you access `obj.field`, or when a framework registers a class at import time, without treating any of it as magic.
+You have now moved through the full runtime ladder: observation, wrapping, attribute
+control, class creation, and governance. This final module exists to turn that material
+into review judgment and explicit exit criteria.
 
-The capstones you implemented—self-printing functions, robust `debug_print`, signature-driven `__repr__`, caching and validation decorators, frozen/immutable classes, reusable field descriptors, a mini-ORM, and a metaclass-based plugin registry—are deliberately modest in scope but structurally realistic. They are meant to be templates you can extend in your own work, with a clear understanding of the trade-offs around performance, error reporting, and maintainability. If you can now read the source of `property`, `dataclasses.dataclass`, or a Pydantic-style field implementation and see the same patterns, the course has achieved its main objective.
+## What you should now be able to explain
 
-Equally important, you should have internalized the constraints: that metaprogramming complicates stack traces and profiling if you are careless; that dynamic execution is never safe on untrusted input; that import-time side effects and global registries must be handled with feature flags, clear contracts, and tests; and that sometimes the correct decision is to *not* use a descriptor, metaclass, or import hook at all. The final module’s focus on professional responsibility is not decoration; it is a boundary on where these techniques remain defensible in serious systems.
+- what happens at import time, class-definition time, instance time, and call time
+- which metadata or signatures must remain visible after wrapping
+- why a descriptor or metaclass is justified in one design and unjustified in another
+- which dynamic mechanisms are too dangerous for routine application code
 
-**Python Metaprogramming I** is therefore the foundation: it teaches you how the mechanisms work, what they cost, and where they break. **Python Metaprogramming II** will assume this level of fluency and push further into async integration, static typing tooling, performance engineering, testing frameworks for meta-heavy designs, hardened plugin architectures, and end-to-end framework case studies. If you are comfortable with the material here—able to implement and critique these patterns—you are ready for that next step.
+## What you should now be able to review
+
+- a decorator that claims to preserve callable identity
+- a descriptor that claims to own validation semantics
+- a metaclass that claims to enforce class-definition-time invariants
+- a plugin or registry design that claims to stay deterministic and testable
+
+## Capstone exit checks
+
+- run the course proof route
+- inspect the public manifest before invoking a plugin action
+- explain which file owns registration, field validation, and runtime invocation
+- identify one change you would reject as making the system more magical than necessary
+
+## What mastery means here
+
+Mastery in this course does not mean reaching for metaclasses faster. It means reaching
+for metaprogramming less often, and using it more precisely when the design truly needs it.

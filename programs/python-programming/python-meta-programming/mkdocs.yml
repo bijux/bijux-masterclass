@@ -19,26 +19,29 @@ nav:
       - Learner Entry: start-here.md
       - Course Guide: course-guide.md
       - Learning Contract: learning-contract.md
+      - Orientation: module-00.md
+      - Capstone Guide: capstone.md
+  - Course Reference:
       - Runtime Power Ladder: runtime-power-ladder.md
       - Module Dependency Map: module-dependency-map.md
       - Practice Map: practice-map.md
       - Runtime Glossary: runtime-glossary.md
       - Review Checklist: review-checklist.md
+  - Capstone Reference:
       - Capstone Map: capstone-map.md
       - Capstone File Guide: capstone-file-guide.md
       - Capstone Proof Checklist: capstone-proof-checklist.md
       - Capstone Review Worksheet: capstone-review-worksheet.md
       - Capstone Extension Guide: capstone-extension-guide.md
-      - Orientation: module-00.md
-      - Capstone Guide: capstone.md
-  - "Module 01: Everything Is an Object": module-01.md
-  - "Module 02: Basic Introspection": module-02.md
-  - "Module 03: The inspect Module": module-03.md
-  - "Module 04: Decorators": module-04.md
-  - "Module 05: Decorator Patterns and Typing": module-05.md
-  - "Module 06: Class Decorators and the Property Bridge": module-06.md
-  - "Module 07: Descriptors": module-07.md
-  - "Module 08: Descriptors for Framework-Grade Patterns": module-08.md
-  - "Module 09: Metaclasses": module-09.md
-  - "Module 10: Responsibility and Runtime Boundaries": module-10.md
-  - "Module 11: Outro": module-11.md
+  - Modules:
+      - "01 — Everything Is an Object": module-01.md
+      - "02 — Basic Introspection": module-02.md
+      - "03 — inspect as a Runtime Tool": module-03.md
+      - "04 — Decorators": module-04.md
+      - "05 — Decorator Patterns and Typing": module-05.md
+      - "06 — Class Decorators and Properties": module-06.md
+      - "07 — Descriptors": module-07.md
+      - "08 — Descriptor Patterns": module-08.md
+      - "09 — Metaclasses and Class Creation": module-09.md
+      - "10 — Runtime Governance and Responsibility": module-10.md
+      - "11 — Mastery Review": module-11.md

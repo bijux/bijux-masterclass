@@ -25,44 +25,34 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-The metaprogramming capstone is the course’s executable proof. It is where introspection,
-decorators, descriptors, and metaclasses stop being isolated topics and start interacting
-inside one runtime.
+The metaprogramming capstone is the executable proof for the course. It is a compact
+incident-plugin runtime where decorators, descriptors, metaclasses, and introspection
+must coexist without hiding responsibility.
 
-## What this capstone is proving
+## What the capstone proves
 
-The capstone is a plugin runtime for incident-delivery adapters with:
+- configuration invariants can live on descriptor-backed fields
+- wrappers can preserve callable metadata while still recording action history
+- class-definition-time registration can stay deterministic and testable
+- manifest export can expose the runtime shape without executing plugin behavior
 
-- descriptor-backed configuration fields
-- action decorators that preserve signatures and record calls
-- a metaclass that gathers fields and registers plugins
-- introspection-driven manifest export that does not execute plugin behavior
+## Read these guides together
 
-Its size is deliberate. The runtime is small enough to audit and large enough to force the mechanisms to coexist honestly.
-
-## How to use it while reading
-
-- After Module 04, inspect how action wrappers keep signatures and metadata visible.
-- After Module 07, inspect how `Field` descriptors own validation and per-instance storage.
-- After Module 09, inspect what `PluginMeta` enforces at class-definition time.
-- After Module 10, inspect how manifest export keeps the runtime observable instead of magical.
+- [Capstone Map](capstone-map.md)
+- [Capstone File Guide](capstone-file-guide.md)
+- [Capstone Proof Checklist](capstone-proof-checklist.md)
+- [Capstone Extension Guide](capstone-extension-guide.md)
 
 ## Best entrypoints
 
-- Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-meta-programming/capstone/README.md)
-- Runtime framework: [`capstone/src/incident_plugins/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-meta-programming/capstone/src/incident_plugins)
-- Tests: [`capstone/tests/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-meta-programming/capstone/tests)
+- repository guide: `capstone/README.md`
+- runtime architecture: `capstone/ARCHITECTURE.md`
+- proof route: `capstone/PROOF_GUIDE.md`
+- source: `capstone/src/incident_plugins/`
+- tests: `capstone/tests/`
 
-## Core commands
+## Review questions
 
-```bash
-make PROGRAM=python-programming/python-meta-programming test
-make -C capstone confirm
-```
-
-## What to inspect during review
-
-- Which behavior happens at definition time and which happens at runtime?
-- Which wrappers preserve identity and which could damage tooling visibility?
-- Which invariants belong on fields, on classes, or in plain runtime code?
-- Which parts of the runtime stay observable without executing plugin actions?
+- Which work happens before an instance exists?
+- Which runtime facts are inspectable from the public surface?
+- Which mechanism would you replace first if you had to simplify the design?

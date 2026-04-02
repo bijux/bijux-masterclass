@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 10: Professional Responsibility & the Outer Darkness
+# Module 10: Runtime Governance and Responsibility
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 10"]
-  page["Module 10: Professional Responsibility & the Outer Darkness"]
+  page["Module 10: Runtime Governance and Responsibility"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -46,11 +46,12 @@ flowchart LR
 <a id="introduction"></a>
 ## Introduction
 
-This module is not about new tricks. It is about **policy**: what you may do with metaprogramming power (Modules 1–9) **without destroying debuggability, testability, security, or team trust**.
+This module is not about new tricks. It is about policy: what you may do with
+metaprogramming power without destroying debuggability, testability, security, or team trust.
 
 Non-negotiable thesis:
 
-> If your metaprogramming makes failures harder to debug than the boring alternative, it’s not clever—it’s a liability.
+> If your metaprogramming makes failures harder to debug than the boring alternative, it is a liability.
 
 You get **red lines**, **checklists**, and **drop-in patterns** that keep the magic observable and reversible.
 
