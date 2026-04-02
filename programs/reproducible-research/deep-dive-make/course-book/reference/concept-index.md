@@ -91,7 +91,7 @@ theme across the whole course.
 
 When using this index, the most useful companion pages are:
 
-* [`build-graph-glossary.md`](build-graph-glossary.md)
+* [`glossary.md`](glossary.md)
 * [`incident-ladder.md`](incident-ladder.md)
 * [`capstone-map.md`](../capstone/capstone-map.md)
 * [`completion-rubric.md`](completion-rubric.md)

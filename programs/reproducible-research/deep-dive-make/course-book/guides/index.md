@@ -68,3 +68,7 @@ one module chapter.
 - `capstone/` stays the capstone-specific reading, review, and repro shelf
 - `reference/` stays the durable map and glossary shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.

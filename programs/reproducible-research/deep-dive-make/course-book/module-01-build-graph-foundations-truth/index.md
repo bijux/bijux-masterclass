@@ -650,3 +650,7 @@ You can point to the `--trace` line that justifies the rebuild.
 If you can’t prove these, you don’t “basically understand Make”—you’re still guessing.
 
 [Back to top](#top)
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

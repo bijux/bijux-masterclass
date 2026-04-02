@@ -36,7 +36,7 @@ standards.
 ## Reference Pages
 
 - [Module Dependency Map](module-dependency-map.md) for concept order and safe reading sequence
-- [Build-Graph Glossary](build-graph-glossary.md) for durable terminology
+- [Glossary](glossary.md) for durable terminology
 - [Topic Boundaries](topic-boundaries.md) for what the course treats as core, supporting, and boundary material
 - [Concept Index](concept-index.md) for locating where an idea is taught
 - [Anti-Pattern Atlas](anti-pattern-atlas.md) for routing common Make smells to the right repair path
@@ -47,3 +47,7 @@ standards.
 - [Artifact Boundary Guide](artifact-boundary-guide.md) for separating outputs, proofs, and teaching surfaces
 - [Selftest Map](selftest-map.md) for reading the build proof harness
 - [Completion Rubric](completion-rubric.md) for course and repository review
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between standards, checklists, prompts, and boundary calls.

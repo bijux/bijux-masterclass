@@ -37,7 +37,7 @@ nav:
   - Reference:
       - Reference Home: reference/index.md
       - Module Dependency Map: reference/module-dependency-map.md
-      - Build-Graph Glossary: reference/build-graph-glossary.md
+      - Glossary: reference/glossary.md
       - Topic Boundaries: reference/topic-boundaries.md
       - Concept Index: reference/concept-index.md
       - Anti-Pattern Atlas: reference/anti-pattern-atlas.md

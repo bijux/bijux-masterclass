@@ -620,3 +620,7 @@ You pass Module 04 only if you can do all of the following without guessing:
 [Back to top](#top)
 
 ---
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

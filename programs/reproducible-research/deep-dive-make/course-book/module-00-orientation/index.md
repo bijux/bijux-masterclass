@@ -212,7 +212,7 @@ Use these support pages when you reach each milestone:
 
 | Milestone | Best support pages |
 | --- | --- |
-| Build graph literacy | [`build-graph-glossary.md`](../reference/build-graph-glossary.md), [`practice-map.md`](../reference/practice-map.md), [`proof-matrix.md`](../guides/proof-matrix.md), [`module-checkpoints.md`](../guides/module-checkpoints.md) |
+| Build graph literacy | [`glossary.md`](../reference/glossary.md), [`practice-map.md`](../reference/practice-map.md), [`proof-matrix.md`](../guides/proof-matrix.md), [`module-checkpoints.md`](../guides/module-checkpoints.md) |
 | Production discipline | [`command-guide.md`](../capstone/command-guide.md), [`public-targets.md`](../reference/public-targets.md), [`incident-ladder.md`](../reference/incident-ladder.md), [`proof-ladder.md`](../guides/proof-ladder.md) |
 | System design | [`capstone-map.md`](../capstone/capstone-map.md), [`capstone-file-guide.md`](../capstone/capstone-file-guide.md), [`capstone-walkthrough.md`](../capstone/capstone-walkthrough.md), [`module-promise-map.md`](../guides/module-promise-map.md) |
 | Operational judgment | [`completion-rubric.md`](../reference/completion-rubric.md), [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md), [`capstone-extension-guide.md`](../capstone/capstone-extension-guide.md), [`topic-boundaries.md`](../reference/topic-boundaries.md) |
@@ -231,3 +231,7 @@ If the capstone ever feels larger than the concept you are trying to learn, that
 signal to return to the module playground rather than push through confusion.
 
 [Back to top](#top)
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
