@@ -238,20 +238,34 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1 --report $(RECOVERY_AUDIT_DIR)/verify.json
 	@$(DVC) status > $(RECOVERY_AUDIT_DIR)/after-status.txt
 	@cp dvc.lock $(RECOVERY_AUDIT_DIR)/dvc.lock
+	@cp RECOVERY_GUIDE.md $(RECOVERY_AUDIT_DIR)/RECOVERY_GUIDE.md
+	@cp STATE_LAYER_GUIDE.md $(RECOVERY_AUDIT_DIR)/STATE_LAYER_GUIDE.md
+	@cp PUBLISH_CONTRACT.md $(RECOVERY_AUDIT_DIR)/PUBLISH_CONTRACT.md
 	@cp publish/v1/manifest.json $(RECOVERY_AUDIT_DIR)/publish-v1/manifest.json
+	@cp publish/v1/data-profile.json $(RECOVERY_AUDIT_DIR)/publish-v1/data-profile.json
+	@cp publish/v1/model.json $(RECOVERY_AUDIT_DIR)/publish-v1/model.json
+	@cp publish/v1/metrics.json $(RECOVERY_AUDIT_DIR)/publish-v1/metrics.json
+	@cp publish/v1/params.yaml $(RECOVERY_AUDIT_DIR)/publish-v1/params.yaml
 	@cp publish/v1/report.md $(RECOVERY_AUDIT_DIR)/publish-v1/report.md
+	@$(INSPECT) manifest-summary --publish publish/v1 > $(RECOVERY_AUDIT_DIR)/manifest-summary.json
+	@$(INSPECT) profile-summary --publish publish/v1 > $(RECOVERY_AUDIT_DIR)/profile-summary.json
+	@$(INSPECT) model-summary --publish publish/v1 > $(RECOVERY_AUDIT_DIR)/model-summary.json
+	@$(INSPECT) threshold-review --publish publish/v1 > $(RECOVERY_AUDIT_DIR)/threshold-review.json
+	@$(INSPECT) state-summary --publish publish/v1 --metrics metrics/metrics.json --params params.yaml --lock dvc.lock > $(RECOVERY_AUDIT_DIR)/state-summary.json
 	@printf '%s\n' \
 		'Recovery audit route:' \
 		'  1. Read remote.txt to confirm the configured recovery source.' \
 		'  2. Compare before-status.txt and after-status.txt to see the repository state around the drill.' \
 		'  3. Read pull.txt and checkout.txt for the recovery commands that rebuilt local state.' \
-		'  4. Read verify.json and publish-v1/manifest.json to confirm the restored publish contract.' \
-		'  5. Compare dvc.lock against the restored publish bundle when you need recorded provenance.' > $(RECOVERY_AUDIT_DIR)/route.txt
+		'  4. Read verify.json, manifest-summary.json, and state-summary.json to confirm the restored contract and restored repository state.' \
+		'  5. Read profile-summary.json, model-summary.json, threshold-review.json, and the publish-v1 files when you need restored release evidence.' \
+		'  6. Compare dvc.lock against the restored publish bundle when you need recorded provenance.' > $(RECOVERY_AUDIT_DIR)/route.txt
 	@printf '%s\n' \
 		'Recovery questions:' \
 		'  Which facts come from the remote-backed restore rather than the working tree?' \
 		'  Which restored files are safe for downstream trust without re-running training?' \
-		'  Which parts of recovery still depend on repository-internal state rather than the publish bundle alone?' > $(RECOVERY_AUDIT_DIR)/review-questions.txt
+		'  Which parts of recovery still depend on repository-internal state rather than the publish bundle alone?' \
+		'  Which restored review surfaces are enough for a downstream audit after the drill?' > $(RECOVERY_AUDIT_DIR)/review-questions.txt
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RECOVERY_AUDIT_DIR) --output $(RECOVERY_AUDIT_DIR)/manifest.json
 	@echo "✔ wrote recovery audit bundle to $(RECOVERY_AUDIT_DIR)"
 
