@@ -37,6 +37,13 @@ only its syntax.
 - projections derive views from events instead of controlling the model
 - persistence and rollback concerns stay explicit
 
+## Dependency direction to keep in mind
+
+- learner-facing commands may pass through `application.py`, but they should not bypass aggregate ownership
+- `runtime.py` may coordinate multiple boundaries, but it should depend on domain decisions rather than redefine them
+- projections may depend on emitted events, but the aggregate should not depend on projection state
+- repository and unit-of-work mechanics may serve the aggregate, but they should not hide business rules from review
+
 ## Question to boundary map
 
 | If the review question is... | Start here | Then compare |
@@ -53,6 +60,13 @@ only its syntax.
 - If a new integration or sink appears, can it stay outside `model.py`?
 - If a new read model appears, can it derive from events instead of mutating authoritative state?
 - If persistence changes, can the aggregate remain the owner of domain rules?
+
+## Drift signals to catch early
+
+- the runtime starts answering lifecycle questions that used to belong to the aggregate
+- a projection becomes necessary to decide whether the aggregate may change
+- a repository abstraction becomes the only place where a business rule is still visible
+- a new evaluation mode cannot be added without widening `model.py` and `runtime.py` together
 
 ## Best use inside the course
 

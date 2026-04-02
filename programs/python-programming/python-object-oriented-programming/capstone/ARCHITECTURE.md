@@ -44,6 +44,17 @@ The aggregate should stay authoritative for domain change. The runtime should st
 enough that replacing a source or sink does not change the rules of the domain. The
 projections should stay derived so read concerns do not mutate authoritative state.
 
+## Dependency direction
+
+| Surface | May depend on | Should not depend on |
+| --- | --- | --- |
+| `application.py` | use-case inputs, runtime coordination, aggregate-facing operations | projection internals as a source of truth |
+| `model.py` | domain values, events, policy abstractions | runtime adapters, sinks, or learner-facing command flow |
+| `policies.py` | rule-evaluation inputs and domain values | repository or projection mechanics |
+| `runtime.py` | aggregate operations, repositories, projections, sinks, and sources | projection state as an authority for domain decisions |
+| `read_models.py` and `projections.py` | emitted events and display needs | aggregate mutation paths |
+| `repository.py` | storage semantics and rollback coordination | hidden lifecycle or evaluation rules |
+
 ## Review routes for architecture questions
 
 - Use `make inspect` when you want the derived state bundle before opening code.
@@ -73,3 +84,12 @@ projections should stay derived so read concerns do not mutate authoritative sta
 - projections mutating authoritative state
 - persistence concerns leaking into the aggregate's core rules
 - evaluation variability implemented as condition ladders spread across multiple files
+
+## Boundary drift review
+
+Ask these during review before changing the code:
+
+- does this proposal make the runtime smarter than the aggregate about rule truth
+- does this proposal force a read model to become authoritative
+- does this proposal hide a domain rule inside persistence or adapter code
+- does this proposal widen several files because ownership was not settled first
