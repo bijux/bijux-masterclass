@@ -44,6 +44,8 @@ inspect: install ## Build the learner-facing inspection bundle
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(INSPECT_DIR)/summary.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(INSPECT_DIR)/summary.json
 	cp README.md $(INSPECT_DIR)/README.md
+	cp GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
+	cp COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
 	cp ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
 	cp PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
 	cp TEST_GUIDE.md $(INSPECT_DIR)/TEST_GUIDE.md
@@ -65,6 +67,8 @@ verify-report: install ## Build the structured capstone verification report bund
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(VERIFY_REPORT_DIR)/review-summary.json
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(VERIFY_REPORT_DIR)/review-summary.txt
 	cp README.md $(VERIFY_REPORT_DIR)/README.md
+	cp GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
+	cp COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
 	cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
 	cp WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
 	cp TOUR.md $(VERIFY_REPORT_DIR)/TOUR.md
@@ -85,6 +89,8 @@ tour: install ## Build the learner-facing proof bundle
 	find src/funcpipe_rag -type d | sort > $(TOUR_DIR)/package-tree.txt
 	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
 	cp README.md $(TOUR_DIR)/README.md
+	cp GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
+	cp COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
 	cp pyproject.toml $(TOUR_DIR)/pyproject.toml
 	cp TOUR.md $(TOUR_DIR)/TOUR.md
 	cp WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
