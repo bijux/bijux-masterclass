@@ -42,6 +42,7 @@ nav:
       - "Capstone File Guide": capstone-file-guide.md
       - "Repository Layer Guide": repository-layer-guide.md
       - "Capstone Review Worksheet": capstone-review-worksheet.md
+      - "Release Audit Checklist": release-audit-checklist.md
       - "Capstone Extension Guide": capstone-extension-guide.md
   - "Module 01: Why Reproducibility Fails": module-01.md
   - "Module 02: Data Identity and Content Addressing": module-02.md
