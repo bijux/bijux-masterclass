@@ -20,7 +20,10 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this guide is the first-pass entry route, not a
+second course catalog. Read the second diagram as the guide loop: arrive with one
+question, use only the matching sections, then leave with one smaller and more honest
+next move.
 
 This is the shortest honest route into the course. Read it before you start browsing
 module pages. The subject is not functional syntax by itself. The subject is how to make
@@ -39,21 +42,28 @@ effects into explicit contracts.
 - you want functional vocabulary without changing hidden state or effect design
 - you want abstractions before you understand the contracts they are supposed to protect
 
-## Best Reading Route
+## Best first pass
 
-1. Read [Course Home](../index.md) for the course promise and module arc.
-2. Read [Functional Programming Course Map](../module-00-orientation/course-map.md) for the full route before you pick a reading pace.
-3. Read [Course Guide](course-guide.md) for the module sequence and page roles.
-4. Read [Foundations Reading Plan](foundations-reading-plan.md) if you want a paced route through Modules 01 to 03.
+1. Read [Course Home](../index.md) for the course promise and the module arc.
+2. Read [Course Guide](course-guide.md) for the meaning of each part of the shelf.
+3. Read [Learning Contract](learning-contract.md) before you start Module 01.
+4. Choose one pace:
+   - [Foundations Reading Plan](foundations-reading-plan.md) if you want a lower-density first pass
+   - [Functional Programming Course Map](../module-00-orientation/course-map.md) if you want the full route visible at once
 5. Read [FuncPipe RAG Primer](funcpipe-rag-primer.md) if the capstone domain is unfamiliar.
-6. Read [Outcomes and Proof Map](outcomes-and-proof-map.md) if you want the course contract stated explicitly.
-7. Read [Learning Contract](learning-contract.md) before you start Module 01.
-8. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
-9. Read [Mid-Course Map](../module-00-orientation/mid-course-map.md) when you are leaving the semantic floor and entering failures, effects, and async pressure.
-10. Read [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need the smallest honest re-entry route.
-11. Keep [FuncPipe Capstone Guide](../capstone/index.md) open while reading the full course.
-12. Use [Engineering Question Map](engineering-question-map.md) when your pressure is already concrete.
-13. Use [Command Guide](../capstone/command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](../capstone/capstone-map.md) when you want the executable route.
+6. Keep [FuncPipe Capstone Guide](../capstone/index.md) nearby so each module has an executable mirror.
+
+## Choose your next page by pressure
+
+| If your pressure is... | Best next page |
+| --- | --- |
+| I need the full orientation shelf before Module 01. | [Orientation](../module-00-orientation/index.md) |
+| I want the promise and proof route for each module. | [Module Promise Map](module-promise-map.md) |
+| I want the course contract stated as outcomes and evidence. | [Outcomes and Proof Map](outcomes-and-proof-map.md) |
+| My question is already practical. | [Engineering Question Map](engineering-question-map.md) |
+| I am leaving the semantic floor and entering failures, effects, or async pressure. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) |
+| I am returning after a break. | [Return Map](../module-00-orientation/return-map.md) |
+| I need the executable route. | [Proof Matrix](proof-matrix.md) and [Capstone Map](../capstone/capstone-map.md) |
 
 ## Use The Arcs Deliberately
 
@@ -68,16 +78,8 @@ You are using the course correctly if each module helps you answer one question 
 clearly in the capstone: what is still pure, where effects begin, and why that boundary
 is easier to review than the alternatives.
 
-## First Pages To Keep Open
+## Stop here when
 
-- [Course Home](../index.md)
-- [First-Contact Map](../module-00-orientation/first-contact-map.md)
-- [Mid-Course Map](../module-00-orientation/mid-course-map.md)
-- [Return Map](../module-00-orientation/return-map.md)
-- [Mastery Map](../module-00-orientation/mastery-map.md)
-- [Course Guide](course-guide.md)
-- [Foundations Reading Plan](foundations-reading-plan.md)
-- [FuncPipe RAG Primer](funcpipe-rag-primer.md)
-- [Outcomes and Proof Map](outcomes-and-proof-map.md)
-- [Orientation](../module-00-orientation/index.md)
-- [FuncPipe Capstone Guide](../capstone/index.md)
+- you know whether you are taking the lower-density route or the full route
+- you can name the first support page you need after Module 01
+- you have one concrete capstone question to carry into the modules
