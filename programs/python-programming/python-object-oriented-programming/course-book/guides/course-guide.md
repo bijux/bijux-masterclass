@@ -83,6 +83,7 @@ Modules 08 to 10 ask whether the model can be trusted:
 - [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
 - [Module Dependency Map](module-dependency-map.md) when the reading order needs justification
+- [Study Routes](study-routes.md) when you need a human-sized session plan instead of the full course at once
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
 - [Pressure Routes](pressure-routes.md) when the next useful module depends on the design pressure you are under
 - [Proof Ladder](proof-ladder.md) when you need to size proof correctly
