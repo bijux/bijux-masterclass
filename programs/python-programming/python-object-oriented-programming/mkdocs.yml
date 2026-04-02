@@ -33,6 +33,11 @@ nav:
       - Course Map: module-00-orientation/course-map.md
       - Capstone Overview: guides/capstone.md
 
+  - Reference:
+      - Reference Home: reference/index.md
+      - Object Design Checklist: reference/object-design-checklist.md
+      - Boundary Review Prompts: reference/boundary-review-prompts.md
+
   - "Module 01: Semantic Floor":
       - Overview: module-01-object-model/index.md
       - Object Identity, State, and Behavior: module-01-object-model/object-identity-state-and-behavior.md

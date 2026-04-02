@@ -60,6 +60,11 @@ will feel arbitrary instead of principled.
 
 If you want the shortest stable entry route, start with [Start Here](guides/start-here.md).
 
+## Keep these references nearby
+
+- [Object Design Checklist](reference/object-design-checklist.md)
+- [Boundary Review Prompts](reference/boundary-review-prompts.md)
+
 ## Working model
 
 The course uses a monitoring-system domain as the running example. That domain is
