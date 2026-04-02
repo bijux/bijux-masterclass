@@ -46,8 +46,9 @@ and easier to justify than a simpler alternative.
 2. Read [Course Guide](course-guide.md) for the module arc and page roles.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
 4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.
-5. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) open while reading so every stronger hook is judged against a lower-power alternative.
-6. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
+5. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
+6. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) open while reading so every stronger hook is judged against a lower-power alternative.
+7. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
 
 ## Route By Pressure
 
