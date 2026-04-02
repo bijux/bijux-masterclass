@@ -40,6 +40,9 @@ review without pretending it tells the whole repository story by itself.
 - whether one experiment should replace the baseline
 - whether the publish bundle proves full internal provenance
 
+Use `make model-summary` when you want the promoted training and weight story rendered
+into one compact review surface before opening the raw model file.
+
 ## Best companion guides
 
 - read [CONTROL_SURFACE_GUIDE.md](CONTROL_SURFACE_GUIDE.md) when the next question is how training params changed the model behavior

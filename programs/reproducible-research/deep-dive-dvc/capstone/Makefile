@@ -81,6 +81,10 @@ stage-summary: verify ## Render the declared and recorded stage contract summary
 profile-summary: verify ## Render the promoted data profile summary
 	@$(INSPECT) profile-summary --publish publish/v1
 
+.PHONY: model-summary
+model-summary: verify ## Render the promoted model summary
+	@$(INSPECT) model-summary --publish publish/v1
+
 .PHONY: release-summary
 release-summary: verify ## Render the promoted release summary
 	@$(INSPECT) release-summary --publish publish/v1
@@ -118,6 +122,7 @@ tour: verify ## Build the learner-facing proof bundle
 	@cp publish/v1/report.md $(TOUR_DIR)/publish-v1/report.md
 	@cp TOUR.md $(TOUR_DIR)/TOUR.md
 	@$(INSPECT) profile-summary --publish publish/v1 > $(TOUR_DIR)/profile-summary.json
+	@$(INSPECT) model-summary --publish publish/v1 > $(TOUR_DIR)/model-summary.json
 	@$(INSPECT) stage-summary --pipeline dvc.yaml --lock dvc.lock > $(TOUR_DIR)/stage-summary.json
 	@$(INSPECT) state-summary --publish publish/v1 --metrics metrics/metrics.json --params params.yaml --lock dvc.lock > $(TOUR_DIR)/state-summary.json
 	@$(INSPECT) release-summary --publish publish/v1 > $(TOUR_DIR)/release-summary.json
@@ -129,7 +134,7 @@ tour: verify ## Build the learner-facing proof bundle
 		'  2. Read stage-summary.json before comparing dvc.yaml and dvc.lock directly.' \
 		'  3. Read dvc.yaml and dvc.lock together.' \
 		'  4. Read publish-v1/manifest.json and PUBLISH_CONTRACT.md together.' \
-		'  5. Read publish-v1/metrics.json, threshold-review.json, and publish-v1/params.yaml together.' \
+		'  5. Read profile-summary.json, model-summary.json, publish-v1/metrics.json, threshold-review.json, and publish-v1/params.yaml together.' \
 		'  6. Read remote.txt when reviewing recovery assumptions.' > $(TOUR_DIR)/route.txt
 	@printf '%s\n' \
 		'Release boundary evidence:' \

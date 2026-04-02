@@ -6,6 +6,7 @@ from pathlib import Path
 from incident_escalation_capstone.common import write_json
 from incident_escalation_capstone.inspect import (
     main,
+    model_summary,
     profile_summary,
     release_summary,
     review_queue,
@@ -41,11 +42,43 @@ def _write_publish_fixture(base: Path) -> None:
         },
     )
     write_json(
+        publish_dir / "model.json",
+        {
+            "feature_names": [
+                "backlog_days",
+                "reopened_count",
+                "integration_touchpoints",
+                "customer_tier",
+                "weekend_handoff",
+                "severity_score",
+            ],
+            "weights": {
+                "backlog_days": 1.0,
+                "reopened_count": 0.4,
+                "integration_touchpoints": 0.8,
+                "customer_tier": 0.3,
+                "weekend_handoff": 0.9,
+                "severity_score": 1.2,
+            },
+            "means": {},
+            "scales": {},
+            "bias": 0.1,
+            "training": {
+                "rows": 18,
+                "iterations": 900,
+                "learning_rate": 0.25,
+                "l2": 0.02,
+                "final_loss": 0.133515,
+            },
+        },
+    )
+    write_json(
         publish_dir / "manifest.json",
         {
             "artifacts": [
                 {"path": "data-profile.json", "sha256": "w", "bytes": 4},
                 {"path": "metrics.json", "sha256": "x", "bytes": 1},
+                {"path": "model.json", "sha256": "m", "bytes": 5},
                 {"path": "params.yaml", "sha256": "y", "bytes": 2},
                 {"path": "predictions.csv", "sha256": "z", "bytes": 3},
             ],
@@ -79,7 +112,7 @@ def test_release_summary_returns_public_release_facts(tmp_path: Path) -> None:
 
     summary = release_summary(tmp_path / "publish")
 
-    assert summary["artifact_count"] == 4
+    assert summary["artifact_count"] == 5
     assert summary["decision_threshold"] == 0.52
     assert summary["brier_score"] == 0.11
 
@@ -92,6 +125,16 @@ def test_profile_summary_returns_promoted_population_facts(tmp_path: Path) -> No
     assert summary["raw_rows"] == 24
     assert summary["feature_count"] == 6
     assert summary["largest_team"]["team"] == "billing"
+
+
+def test_model_summary_returns_promoted_training_facts(tmp_path: Path) -> None:
+    _write_publish_fixture(tmp_path)
+
+    summary = model_summary(tmp_path / "publish")
+
+    assert summary["feature_count"] == 6
+    assert summary["training_rows"] == 18
+    assert summary["strongest_feature"]["name"] == "severity_score"
 
 
 def test_state_summary_combines_declaration_execution_and_publish_state(tmp_path: Path) -> None:
@@ -195,7 +238,7 @@ def test_cli_prints_release_summary_json(capsys, tmp_path: Path) -> None:
     payload = json.loads(capsys.readouterr().out)
 
     assert exit_code == 0
-    assert payload["artifact_count"] == 4
+    assert payload["artifact_count"] == 5
 
 
 def test_cli_prints_profile_summary_json(capsys, tmp_path: Path) -> None:
@@ -207,6 +250,17 @@ def test_cli_prints_profile_summary_json(capsys, tmp_path: Path) -> None:
     assert exit_code == 0
     assert payload["team_count"] == 2
     assert payload["largest_team"]["team"] == "billing"
+
+
+def test_cli_prints_model_summary_json(capsys, tmp_path: Path) -> None:
+    _write_publish_fixture(tmp_path)
+
+    exit_code = main(["model-summary", "--publish", str(tmp_path / "publish")])
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert payload["training_rows"] == 18
+    assert payload["strongest_feature"]["name"] == "severity_score"
 
 
 def test_cli_prints_stage_summary_json(capsys, tmp_path: Path) -> None:

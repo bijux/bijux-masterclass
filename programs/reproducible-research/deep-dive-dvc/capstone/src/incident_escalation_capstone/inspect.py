@@ -43,6 +43,25 @@ def profile_summary(publish_dir: Path) -> dict[str, object]:
     }
 
 
+def model_summary(publish_dir: Path) -> dict[str, object]:
+    model = read_json(publish_dir / "model.json")
+    weights = model["weights"]
+    strongest_feature = max(weights.items(), key=lambda item: abs(float(item[1])))
+    return {
+        "publish_dir": publish_dir.as_posix(),
+        "feature_count": len(model["feature_names"]),
+        "training_rows": int(model["training"]["rows"]),
+        "iterations": int(model["training"]["iterations"]),
+        "learning_rate": float(model["training"]["learning_rate"]),
+        "l2": float(model["training"]["l2"]),
+        "final_loss": float(model["training"]["final_loss"]),
+        "strongest_feature": {
+            "name": strongest_feature[0],
+            "weight": float(strongest_feature[1]),
+        },
+    }
+
+
 def stage_summary(*, pipeline_path: Path, lock_path: Path) -> dict[str, object]:
     pipeline_data = load_params(pipeline_path)
     lock_data = load_params(lock_path)
@@ -166,6 +185,10 @@ def main(argv: list[str] | None = None) -> int:
     profile.add_argument("--publish", type=Path, required=True)
     profile.set_defaults(handler=_handle_profile_summary)
 
+    model = subparsers.add_parser("model-summary", help="Render a summary of the promoted model artifact.")
+    model.add_argument("--publish", type=Path, required=True)
+    model.set_defaults(handler=_handle_model_summary)
+
     stage = subparsers.add_parser("stage-summary", help="Render a summary of declared and recorded stage contracts.")
     stage.add_argument("--pipeline", type=Path, required=True)
     stage.add_argument("--lock", type=Path, required=True)
@@ -200,6 +223,10 @@ def _handle_release_summary(args: argparse.Namespace) -> dict[str, object]:
 
 def _handle_profile_summary(args: argparse.Namespace) -> dict[str, object]:
     return profile_summary(args.publish)
+
+
+def _handle_model_summary(args: argparse.Namespace) -> dict[str, object]:
+    return model_summary(args.publish)
 
 
 def _handle_stage_summary(args: argparse.Namespace) -> dict[str, object]:

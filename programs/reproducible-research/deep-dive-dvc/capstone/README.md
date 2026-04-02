@@ -155,6 +155,7 @@ make verify-report
 make state-summary
 make stage-summary
 make profile-summary
+make model-summary
 make release-summary
 make review-queue
 make threshold-review
@@ -179,6 +180,7 @@ These commands answer different questions:
 - `make verify-report` writes a structured verification report under `artifacts/proof/reproducible-research/deep-dive-dvc/verify/`.
 - `make stage-summary` renders the declared and recorded stage contract in one learner-facing summary.
 - `make profile-summary` renders the promoted population facts in one learner-facing summary.
+- `make model-summary` renders the promoted scoring artifact in one learner-facing summary.
 - `make threshold-review` renders borderline promoted predictions near the current decision threshold.
 - `make confirm` reruns the broader confirmation flow that the course points learners to.
 - `make recovery-drill` proves that a remote-backed restore still works after local loss.
