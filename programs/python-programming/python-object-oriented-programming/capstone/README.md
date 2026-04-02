@@ -80,6 +80,7 @@ Review and proof routes:
 - [GUIDE_INDEX.md](GUIDE_INDEX.md)
 - [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
 - [OWNERSHIP_BOUNDARIES.md](OWNERSHIP_BOUNDARIES.md)
+- [SCENARIO_BOUNDARY_MAP.md](SCENARIO_BOUNDARY_MAP.md)
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md)
@@ -141,6 +142,7 @@ directories kept explicit.
 | --- | --- | --- |
 | understand the domain before reading code | `GUIDE_INDEX.md`, this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make demo` and `TOUR.md` |
 | inspect ownership boundaries file by file | `OWNERSHIP_BOUNDARIES.md` and `PACKAGE_GUIDE.md` | `SOURCE_GUIDE.md` and `ARCHITECTURE.md` |
+| pick the smallest scenario for the current pressure | `SCENARIO_BOUNDARY_MAP.md` | the matching scenario guide and inspect route |
 | confirm one design claim with evidence | `PROOF_GUIDE.md` | `make inspect` or `make verify-report` |
 | review the full capstone as a learner-facing artifact | `make tour` | `make proof` |
 | run the strongest local confirmation route | `make confirm` | `make proof` if you need the published bundle |

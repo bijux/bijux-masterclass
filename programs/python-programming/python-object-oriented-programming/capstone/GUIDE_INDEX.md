@@ -27,6 +27,7 @@ capstone doc set reviewable instead of making learners rescan the README every t
 
 ## If you want the scenario route
 
+- `SCENARIO_BOUNDARY_MAP.md`
 - `SCENARIO_GUIDE.md`
 - `RULE_LIFECYCLE_GUIDE.md`
 - `EVENT_FLOW_GUIDE.md`
@@ -42,7 +43,7 @@ capstone doc set reviewable instead of making learners rescan the README every t
 
 - "What does this system model?" -> `README.md`
 - "Which boundary owns this behavior?" -> `ARCHITECTURE.md`
-- "Which scenario shows this pressure?" -> `SCENARIO_GUIDE.md`
+- "Which scenario shows this pressure?" -> `SCENARIO_BOUNDARY_MAP.md`
 - "Which guide explains the file route?" -> `SOURCE_GUIDE.md`
 - "Which command or saved bundle should I use?" -> `COMMAND_GUIDE.md`
 - "Where should a change land?" -> `EXTENSION_GUIDE.md`
