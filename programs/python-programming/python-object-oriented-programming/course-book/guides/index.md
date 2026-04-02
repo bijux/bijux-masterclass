@@ -31,6 +31,7 @@ module tree can stay focused on long-lived content.
 - [Start Here](start-here.md) for the shortest honest entry route
 - [Course Guide](course-guide.md) for the module arc and support-page roles
 - [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
+- [Outcomes And Proof Map](outcomes-and-proof-map.md) for the route from course promise to evidence
 - [Orientation](../module-00-orientation/index.md) for the full course shape
 - [Course Map](../module-00-orientation/course-map.md) for the reading structure
 

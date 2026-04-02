@@ -91,6 +91,7 @@ make -C programs/python-programming/python-object-oriented-programming/capstone 
 Primary reading route:
 
 - `course-book/guides/start-here.md`
+- `course-book/guides/outcomes-and-proof-map.md`
 - `course-book/guides/module-promise-map.md`
 - `course-book/guides/module-checkpoints.md`
 - `course-book/index.md`

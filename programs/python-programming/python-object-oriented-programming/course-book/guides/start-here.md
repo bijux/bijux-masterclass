@@ -55,11 +55,12 @@ If those still feel shaky, slow down and treat [Orientation](../module-00-orient
 1. Read [Course Home](../index.md) for the course promise and module arc.
 2. Read [Course Guide](course-guide.md) for the module sequence and page roles.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
-4. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
-5. Use [Design Question Map](design-question-map.md), [Module Promise Map](module-promise-map.md), and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-6. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
-7. Use [Study Routes](study-routes.md) when you need a session-sized plan instead of the full course at once.
-8. Use [Proof Ladder](proof-ladder.md), [Command Guide](command-guide.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+4. Read [Outcomes And Proof Map](outcomes-and-proof-map.md) so the learner promises stay tied to evidence from the start.
+5. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
+6. Use [Design Question Map](design-question-map.md), [Module Promise Map](module-promise-map.md), and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
+7. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
+8. Use [Study Routes](study-routes.md) when you need a session-sized plan instead of the full course at once.
+9. Use [Proof Ladder](proof-ladder.md), [Command Guide](command-guide.md), and [Capstone Map](capstone-map.md) when you want the executable route.
 
 ## Choose a reading mode before you continue
 

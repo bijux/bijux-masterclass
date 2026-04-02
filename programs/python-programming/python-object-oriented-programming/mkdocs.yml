@@ -20,6 +20,7 @@ nav:
       - Guides Home: guides/index.md
       - Start Here: guides/start-here.md
       - Course Guide: guides/course-guide.md
+      - Outcomes And Proof Map: guides/outcomes-and-proof-map.md
       - Learning Contract: guides/learning-contract.md
       - Orientation: module-00-orientation/index.md
       - Course Map: module-00-orientation/course-map.md
@@ -27,6 +28,7 @@ nav:
       - Mid-Course Map: module-00-orientation/mid-course-map.md
       - Mastery Map: module-00-orientation/mastery-map.md
   - Guides:
+      - Outcomes And Proof Map: guides/outcomes-and-proof-map.md
       - Design Question Map: guides/design-question-map.md
       - Module Promise Map: guides/module-promise-map.md
       - Module Checkpoints: guides/module-checkpoints.md

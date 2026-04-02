@@ -81,6 +81,7 @@ Modules 08 to 10 ask whether the model can be trusted:
 
 ## Support Pages To Keep Open
 
+- [Outcomes And Proof Map](outcomes-and-proof-map.md) when you want the course promises tied directly to evidence
 - [Design Question Map](design-question-map.md) when the design question is clearer than the module name
 - [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
