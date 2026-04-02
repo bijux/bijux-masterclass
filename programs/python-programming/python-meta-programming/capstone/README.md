@@ -54,6 +54,13 @@ If you are new to this capstone, the best first route is:
 6. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
 7. Read the matching tests.
 
+## Start with these defaults
+
+- If you do not know where to begin, read [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md).
+- If you know the question but not the guide, read [GUIDE_INDEX.md](docs/GUIDE_INDEX.md).
+- If you know the guide but not the command, read [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md).
+- If you already have a claim and need evidence, read [PROOF_GUIDE.md](docs/PROOF_GUIDE.md).
+
 ## What it models
 
 - a `PluginMeta` metaclass that registers concrete plugins by group and stable name
@@ -147,19 +154,19 @@ your pressure instead of reading the full list in alphabetical order.
 
 - `make manifest`
 - `make registry`
-- `COMMAND_GUIDE.md`
-- `PUBLIC_SURFACE_MAP.md`
-- `MANIFEST_GUIDE.md`
-- `REGISTRY_GUIDE.md`
-- `TARGET_GUIDE.md`
+- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
+- [PUBLIC_SURFACE_MAP.md](docs/PUBLIC_SURFACE_MAP.md)
+- [MANIFEST_GUIDE.md](docs/MANIFEST_GUIDE.md)
+- [REGISTRY_GUIDE.md](docs/REGISTRY_GUIDE.md)
+- [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
 
 ### "Where do wrappers, fields, and class creation live?"
 
-- `ARCHITECTURE.md`
-- `DESIGN_BOUNDARIES.md`
-- `PACKAGE_GUIDE.md`
-- `SOURCE_GUIDE.md`
-- `SOURCE_TO_PROOF_MAP.md`
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
+- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
+- [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
+- [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md)
 - `src/incident_plugins/actions.py`
 - `src/incident_plugins/fields.py`
 - `src/incident_plugins/framework.py`
@@ -170,27 +177,30 @@ your pressure instead of reading the full list in alphabetical order.
 - `make field`
 - `make action`
 - `make signatures`
-- `PLUGIN_CATALOG.md`
-- `CONSTRUCTOR_GUIDE.md`
+- [PLUGIN_CATALOG.md](docs/PLUGIN_CATALOG.md)
+- [CONSTRUCTOR_GUIDE.md](docs/CONSTRUCTOR_GUIDE.md)
 
 ### "How do I review the full learner-facing route?"
 
-- `FIRST_SESSION_GUIDE.md`
+- [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md)
 - `make inspect`
 - `make tour`
-- `INSPECTION_GUIDE.md`
-- `REVIEW_ROUTE_MAP.md`
-- `WALKTHROUGH_GUIDE.md`
-- `TOUR.md`
+- [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
+- [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md)
+- [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
+- [TOUR.md](docs/TOUR.md)
 
 ### "How do I prove the runtime still works?"
 
 - `make verify-report`
 - `make proof`
 - `make confirm`
-- `TEST_GUIDE.md`
-- `TEST_READING_MAP.md`
-- `PROOF_GUIDE.md`
+- [TEST_GUIDE.md](docs/TEST_GUIDE.md)
+- [TEST_READING_MAP.md](docs/TEST_READING_MAP.md)
+- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
+
+Use these question routes when you already know the pressure. Otherwise, stay with the
+defaults above and escalate only one guide at a time.
 
 ## Read it by course stage
 
@@ -237,19 +247,19 @@ feel fuzzier than the commands.
 
 ## Best companion guides
 
-- `FIRST_SESSION_GUIDE.md` for the smallest honest first pass
-- `GUIDE_INDEX.md` for the smallest local route into the doc set
-- `COMMAND_GUIDE.md` for local command selection and artifact locations
-- `PUBLIC_SURFACE_MAP.md` for connecting commands, outputs, and owning files
-- `SOURCE_TO_PROOF_MAP.md` for change-to-proof alignment
-- `TEST_READING_MAP.md` for finding the first proof file by question
-- `REVIEW_ROUTE_MAP.md` for choosing the right local route, command, and bundle
-- `ARCHITECTURE.md` for ownership boundaries
-- `DESIGN_BOUNDARIES.md` for what each mechanism owns and what it should not own
-- `PLUGIN_RUNTIME_GUIDE.md` for the timing model
-- `MECHANISM_SELECTION_GUIDE.md` for change placement
-- `SCENARIO_SELECTION_GUIDE.md` for smallest-route selection
-- `EXTENSION_GUIDE.md` for safe evolution
+- [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md) for the smallest honest first pass
+- [GUIDE_INDEX.md](docs/GUIDE_INDEX.md) for the smallest local route into the doc set
+- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md) for local command selection and artifact locations
+- [PUBLIC_SURFACE_MAP.md](docs/PUBLIC_SURFACE_MAP.md) for connecting commands, outputs, and owning files
+- [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md) for change-to-proof alignment
+- [TEST_READING_MAP.md](docs/TEST_READING_MAP.md) for finding the first proof file by question
+- [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md) for choosing the right local route, command, and bundle
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) for ownership boundaries
+- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) for what each mechanism owns and what it should not own
+- [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md) for the timing model
+- [MECHANISM_SELECTION_GUIDE.md](docs/MECHANISM_SELECTION_GUIDE.md) for change placement
+- [SCENARIO_SELECTION_GUIDE.md](docs/SCENARIO_SELECTION_GUIDE.md) for smallest-route selection
+- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md) for safe evolution
 
 ## Definition of done
 
