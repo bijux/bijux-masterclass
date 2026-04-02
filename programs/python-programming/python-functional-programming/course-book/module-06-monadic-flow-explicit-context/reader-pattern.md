@@ -50,7 +50,7 @@ This is the core that finally kills the last remaining anti-pattern from the ear
 |--------------------------|------------|-------------|-------------------|-----------------|--------------------------|
 | Manual threading         | Explicit   | Good        | Poor              | Poor            | Verbose, error-prone     |
 | Closure capture          | Hidden     | Bad         | Bad               | Bad             | Works until it doesn't   |
-| Reader (this core)       | Explicit   | Perfect     | Perfect           | Perfect         | The only acceptable way  |
+| Reader (this core)       | Explicit   | Strong      | Strong            | Strong          | Best fit for this core   |
 
 Reader is "closure capture, but lawful, typed, and composable".
 
