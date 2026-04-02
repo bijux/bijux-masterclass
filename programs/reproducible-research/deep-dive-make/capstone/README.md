@@ -86,8 +86,8 @@ which proof is running and why it matters.
 ## Recommended first walkthrough
 Use this order the first time you enter the capstone:
 
-1. `make help`
-2. `make tour`
+1. `make walkthrough`
+2. `make help`
 3. read `Makefile`
 4. read `tests/run.sh`
 5. run `make selftest`
@@ -95,6 +95,8 @@ Use this order the first time you enter the capstone:
 
 That route keeps the learner focused on public contract first, proof harness second, and
 failure teaching material third.
+
+The walkthrough bundle is written to `artifacts/walkthrough/reproducible-research/deep-dive-make/`.
 
 [Back to top](#top)
 
@@ -106,6 +108,7 @@ These are the stable entrypoints you can rely on and extend:
 | ------------------- | --------------------------------------------------------------------- | ------------------------------------ |
 | `help` | Print available targets and key knobs. | Discoverability. |
 | `tour` | Print the recommended walkthrough order. | Faster onboarding into the capstone. |
+| `walkthrough` | Write the learner-facing walkthrough bundle. | Durable first-pass reading route. |
 | `all` | Build primary artifacts. | Normal build. |
 | `test` | Run runtime checks on outputs. | Functional validation. |
 | `selftest` | Verify build-system invariants (convergence, equivalence, negatives). | Integrity gate. |

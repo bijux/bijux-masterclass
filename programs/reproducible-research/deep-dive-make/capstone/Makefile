@@ -33,12 +33,14 @@ BLD_DIR := build
 MK_DIR  := mk
 TST_DIR := tests
 REP_DIR := repro
+ARTIFACTS_DIR ?= ../../../../artifacts
+WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
 
 DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
-.PHONY: dyn lint test dist repro discovery-audit attest selftest \
+.PHONY: dyn lint test dist repro discovery-audit attest selftest walkthrough \
         clean submake-demo perf trace-count hardened show-origins FORCE \
         portability-audit eval-demo help tour
 
@@ -117,6 +119,7 @@ help:
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
 >     '  tour              print the recommended capstone walkthrough' \
+>     '  walkthrough       build the learner-facing walkthrough bundle' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
 >     '  repro             show how to run the race repro pack' \
 >     '  attest            write build/attest.txt (not a dependency of all)' \
@@ -134,16 +137,39 @@ help:
 tour:
 >     @printf '%s\n' \
 >     'Capstone walkthrough:' \
->     '  1. make help' \
->     '  2. read Makefile for the public build API' \
->     '  3. read tests/run.sh for the proof harness' \
->     '  4. make selftest' \
->     '  5. inspect one repro under repro/' \
+>     '  1. make walkthrough' \
+>     '  2. make help' \
+>     '  3. read Makefile for the public build API' \
+>     '  4. read tests/run.sh for the proof harness' \
+>     '  5. make selftest' \
+>     '  6. inspect one repro under repro/' \
 >     '' \
 >     'Focused routes:' \
 >     '  generators  -> make --trace dyn' \
 >     '  architecture -> make help && make -p > build/review.dump' \
 >     '  incidents    -> make trace-count && make -f repro/01-shared-log.mk -j2 all'
+
+walkthrough:
+>     rm -rf "$(WALKTHROUGH_DIR)"
+>     mkdir -p "$(WALKTHROUGH_DIR)/repro" "$(WALKTHROUGH_DIR)/tests"
+>     cp README.md "$(WALKTHROUGH_DIR)/README.md"
+>     cp Makefile "$(WALKTHROUGH_DIR)/Makefile"
+>     cp $(TST_DIR)/run.sh "$(WALKTHROUGH_DIR)/tests/run.sh"
+>     cp $(REP_DIR)/01-shared-log.mk "$(WALKTHROUGH_DIR)/repro/01-shared-log.mk"
+>     printf '%s\n' \
+>       '1. Read README.md to understand the capstone contract.' \
+>       '2. Read Makefile to identify the public targets.' \
+>       '3. Read tests/run.sh to see what selftest is proving.' \
+>       '4. Run make help in the capstone directory.' \
+>       '5. Run make selftest when you want executed proof.' \
+>       '6. Inspect repro/01-shared-log.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
+>     printf '%s\n' \
+>       'Public entry commands:' \
+>       '  make help' \
+>       '  make selftest' \
+>       '  make repro' \
+>       '  make hardened' > "$(WALKTHROUGH_DIR)/commands.txt"
+>     @echo "PASS: wrote capstone walkthrough to $(WALKTHROUGH_DIR)"
 
 # ---- CI-style entrypoints ----
 lint:
