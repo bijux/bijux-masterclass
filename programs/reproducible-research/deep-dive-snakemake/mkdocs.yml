@@ -28,9 +28,11 @@ nav:
       - Learner Entry: start-here.md
       - Learning Contract: learning-contract.md
       - Program Outline: module-00.md
+  - Course Reference:
       - Module Dependency Map: module-dependency-map.md
       - Workflow Glossary: workflow-glossary.md
       - Practice Map: practice-map.md
+  - Capstone Route:
       - Capstone File Guide: capstone-file-guide.md
       - Capstone Map: capstone-map.md
       - Capstone Overview: readme-capstone.md
