@@ -75,23 +75,35 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 - Modules 07 to 09 explain its descriptors, validation surfaces, and class-creation choices.
 - Module 10 explains its governance rules and why stronger hooks remain narrow.
 
-## Support Pages To Keep Open
+## Support pages by moment
+
+### When you are choosing how to enter
 
 - [Pressure Routes](pressure-routes.md) when you are entering from a concrete engineering pressure
 - [Reading Routes](reading-routes.md) when you need a lower-density or pressure-shaped sequence
 - [Design Question Map](design-question-map.md) when you can name the engineering question faster than the module
+- [Module Dependency Map](module-dependency-map.md) when you need the sequence justified
+
+### When you are checking whether a module actually landed
+
 - [Module Promise Map](module-promise-map.md) when you want the exact contract of each module stated plainly
 - [Module Checkpoints](module-checkpoints.md) when you need a concrete exit bar before moving on
 - [Outcomes and Proof Map](outcomes-and-proof-map.md) when you want course-level promises tied to proof surfaces
+- [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
+
+### When you are deciding whether a dynamic mechanism is justified
+
 - [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current claim
 - [Runtime Power Ladder](../reference/runtime-power-ladder.md) when you need the governing review model
+- [Mechanism Selection](mechanism-selection.md) when you need a problem-to-tool comparison
 - [Topic Boundaries](../reference/topic-boundaries.md) when you need to decide what belongs inside the course center
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) when you are recognizing a smell before you can name the mechanism
-- [Mechanism Selection](mechanism-selection.md) when you need a problem-to-tool comparison
-- [Module Dependency Map](module-dependency-map.md) when you need the sequence justified
-- [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
+
+### When you need the executable surface
+
 - [Command Guide](../capstone/command-guide.md) when you need the executable route
-- [Capstone Map](../capstone/capstone-map.md) and [Capstone File Guide](../capstone/capstone-file-guide.md) when you want the repository route kept explicit
+- [Capstone Map](../capstone/capstone-map.md) when you need the module-to-repository route
+- [Capstone File Guide](../capstone/capstone-file-guide.md) when you need the owning files kept explicit
 
 ## Honest Expectation
 
