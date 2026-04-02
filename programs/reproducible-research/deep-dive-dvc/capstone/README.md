@@ -72,6 +72,7 @@ repository:
 - `BUNDLE_MANIFEST_GUIDE.md` explains the saved review-bundle inventory and how to audit it.
 - `SOURCE_GUIDE.md` gives the exact file route for common capstone questions.
 - `CHANGE_PLACEMENT_GUIDE.md` explains where new requirements belong in params, stages, publish, inspect, or recovery surfaces.
+- `DATA_PROFILE_GUIDE.md` explains how to read the promoted population summary before trusting metrics.
 - `src/incident_escalation_capstone/` contains the pipeline implementation.
 - `params.yaml` is the declared control surface for splitting, training, and decision policy.
 - `dvc.yaml` and `dvc.lock` define and prove the pipeline execution graph.
@@ -116,7 +117,8 @@ Use this order the first time you enter the capstone:
 12. run `make verify`
 13. run `make release-review`
 14. inspect `publish/v1/manifest.json`
-15. read `PUBLISH_CONTRACT.md`
+15. read `DATA_PROFILE_GUIDE.md`
+16. read `PUBLISH_CONTRACT.md`
 
 That route keeps the learner focused on contract first, then declared state, then
 recorded state, then promoted evidence.

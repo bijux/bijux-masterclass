@@ -37,10 +37,11 @@ Use this guide when the question is no longer "did the pipeline run?" and is now
 ## Release review order
 
 1. `manifest.json` for inventory and integrity
-2. `params.yaml` for the promoted control surface
-3. `metrics.json` for the promoted quantitative story
-4. `report.md` for the human-readable summary
-5. `predictions.csv` and `data-profile.json` for deeper inspection
+2. `data-profile.json` for the promoted population story
+3. `params.yaml` for the promoted control surface
+4. `metrics.json` for the promoted quantitative story
+5. `report.md` for the human-readable summary
+6. `predictions.csv` for deeper inspection
 
 ## What this route proves
 
