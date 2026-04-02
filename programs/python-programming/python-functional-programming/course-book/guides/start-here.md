@@ -69,6 +69,7 @@ is easier to review than the alternatives.
 
 - [Course Home](../index.md)
 - [First-Contact Map](../module-00-orientation/first-contact-map.md)
+- [Mastery Map](../module-00-orientation/mastery-map.md)
 - [Course Guide](course-guide.md)
 - [Foundations Reading Plan](foundations-reading-plan.md)
 - [FuncPipe RAG Primer](funcpipe-rag-primer.md)

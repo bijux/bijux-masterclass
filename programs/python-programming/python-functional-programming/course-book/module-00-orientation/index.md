@@ -73,6 +73,7 @@ you read. The course assumes engineering curiosity, not perfection.
 
 - Read the [Functional Programming Course Map](course-map.md) to see the four course arcs on one page.
 - Read the [First-Contact Map](first-contact-map.md) if you want the shortest stable first session.
+- Read the [Mastery Map](mastery-map.md) when you are returning with a design or review pressure.
 - Read the full [Course Orientation](course-orientation.md).
 - Read [How to Study This Course](how-to-study-this-course.md).
 - Keep the [FuncPipe Capstone Guide](../guides/capstone.md) open from the beginning, and keep [Start Here](../guides/start-here.md) available when you need the short learner route again.
