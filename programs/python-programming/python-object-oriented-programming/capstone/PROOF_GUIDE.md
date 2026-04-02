@@ -27,24 +27,31 @@ because the learner can inspect behavior directly.
 
 ## Current proof routes
 
-- `make confirm` runs the executable test suite.
-- `make demo` runs the human-readable monitoring scenario.
-- `make inspect-summary` and `make inspect-history` expose learner-facing review surfaces.
+- `make inspect` writes the learner-facing inspection bundle.
+- `make tour` writes the learner-facing walkthrough bundle.
+- `make verify-report` writes test output together with captured learner-facing state.
+- `make confirm` runs the strongest local confirmation route.
 - `make proof` runs the sanctioned end-to-end route.
 
 ## What each route proves
 
-- `make confirm` proves that the current object boundaries and lifecycle behavior survive executable checks.
-- `make demo` proves that a human can follow the scenario from policy creation to incident publication and resulting snapshots.
+- `make inspect` proves that the scenario state can be reviewed without spelunking into internals first.
+- `make tour` proves that a human can follow the story from policy creation to incident publication.
+- `make verify-report` proves that executable checks and learner-facing state agree in one saved review bundle.
+- `make confirm` proves that the current object boundaries and lifecycle behavior survive the strongest local confirmation route.
+- `make proof` proves that the published learner-facing review route is still coherent end to end.
 
 ## Honest limitation
 
-These routes prove different things. Tests prove behavioral contracts precisely. The demo
-proves that the system remains understandable as a story. You need both.
+These routes prove different things. Bundles make review easier, but they do not replace
+judgment. Tests prove behavioral contracts precisely. Walkthrough and inspection routes
+prove that the system remains understandable as a story and as a state surface. You need
+both.
 
 ## Best review pattern
 
 1. State the claim you want to check.
-2. Choose the command that produces the closest evidence, or use `make proof` for the full route.
-3. Inspect the relevant code file.
-4. Decide whether the evidence matches the design claim or only hints at it.
+2. Choose the smallest route that produces the closest evidence, or use `make proof` for the full route.
+3. Read the saved bundle files before opening implementation internals.
+4. Inspect the relevant code file.
+5. Decide whether the evidence matches the design claim or only hints at it.

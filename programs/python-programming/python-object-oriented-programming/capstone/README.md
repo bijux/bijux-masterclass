@@ -63,11 +63,24 @@ Or from the repository root:
 make PROGRAM=python-programming/python-object-oriented-programming proof
 ```
 
-Proof and review route:
+Review and proof routes:
 
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [TOUR.md](TOUR.md)
+- [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
+- [TEST_GUIDE.md](TEST_GUIDE.md)
+- [TARGET_GUIDE.md](TARGET_GUIDE.md)
+- [INSPECTION_GUIDE.md](INSPECTION_GUIDE.md)
+- [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md)
+
+## Review routes
+
+- `make inspect` writes a learner-facing inspection bundle with summary, lifecycle, and history outputs.
+- `make tour` writes the walkthrough bundle with the scenario story and matching local guides.
+- `make verify-report` writes the executable verification report bundle with test results and captured state.
+- `make confirm` runs the strongest local confirmation route.
+- `make proof` builds the published learner-facing review route.
 
 ## How to read this code
 
@@ -82,6 +95,8 @@ Start in this order:
 7. `tests/`
 
 That order mirrors the course: semantics first, then replaceable behavior, then orchestration.
+Use `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`, and `EXTENSION_GUIDE.md` when you need a narrower
+reading route than the full overview.
 
 ## Design intent
 
@@ -112,7 +127,8 @@ make demo
 
 That path exercises the application surface in `application.py`, which is the best
 place to start if you want to understand how a team would drive the capstone without
-reaching into its internals first.
+reaching into its internals first. Use `make tour` when you want that scenario captured
+as a durable bundle instead of transient terminal output.
 
 For the full narrative route, continue to [TOUR.md](TOUR.md).
 

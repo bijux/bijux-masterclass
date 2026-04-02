@@ -44,6 +44,13 @@ The aggregate should stay authoritative for domain change. The runtime should st
 enough that replacing a source or sink does not change the rules of the domain. The
 projections should stay derived so read concerns do not mutate authoritative state.
 
+## Review routes for architecture questions
+
+- Use `make inspect` when you want the derived state bundle before opening code.
+- Use `make tour` when you want the learner-facing scenario route through the architecture.
+- Use `make verify-report` when you need executable evidence alongside that review.
+- Use `EXTENSION_GUIDE.md` when the architecture question is really a change-placement question.
+
 ## Architecture questions for review
 
 - What would break if rule activation lived in the runtime instead of the aggregate?

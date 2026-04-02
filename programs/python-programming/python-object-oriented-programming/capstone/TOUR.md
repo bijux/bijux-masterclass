@@ -24,7 +24,8 @@ flowchart TD
 <!-- page-maps:end -->
 
 This guide explains the capstone as a narrative, not only as a file tree. Read it before
-or after running `make demo`.
+or after running `make demo`. Use `make tour` when you want this narrative captured as a
+bundle instead of only printed once in the terminal.
 
 ## Scenario route
 
@@ -34,6 +35,12 @@ or after running `make demo`.
 4. Observe metric samples through the application surface.
 5. Let the runtime publish alerts and update downstream views.
 6. Inspect the resulting summary, active rule index, and open incidents.
+
+## Best command route
+
+1. Run `make demo` when you want the narrative directly in the terminal.
+2. Run `make tour` when you want `walkthrough.txt`, the local guide set, and a stable manifest for review.
+3. Compare the walkthrough bundle with `ARCHITECTURE.md` and `WALKTHROUGH_GUIDE.md`.
 
 ## Why this route matters
 
@@ -51,3 +58,5 @@ The tour reveals the architectural promise of the capstone:
 - `src/service_monitoring/runtime.py`
 - `src/service_monitoring/model.py`
 - `src/service_monitoring/read_models.py`
+- `TARGET_GUIDE.md`
+- `WALKTHROUGH_GUIDE.md`

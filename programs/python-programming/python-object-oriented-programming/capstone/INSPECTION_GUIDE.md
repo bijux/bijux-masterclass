@@ -6,9 +6,12 @@
 
 ```mermaid
 graph LR
-  summary["inspect-summary"] --> snapshot["Policy snapshot"]
-  rules["inspect-rules"] --> lifecycle["Rule lifecycle state"]
-  history["inspect-history"] --> incidents["Incident history"]
+  inspect["inspect"] --> summary["summary.txt"]
+  inspect --> rules["rules.txt"]
+  inspect --> history["history.txt"]
+  summary --> snapshot["Policy snapshot"]
+  rules --> lifecycle["Rule lifecycle state"]
+  history --> incidents["Incident history"]
   snapshot --> review["Review ownership and projections"]
   lifecycle --> review
   incidents --> review
@@ -16,8 +19,8 @@ graph LR
 
 ```mermaid
 flowchart LR
-  question["Choose the state question"] --> command["Run the matching inspect command"]
-  command --> output["Read the learner-facing snapshot"]
+  question["Choose the state question"] --> command["Run the inspect bundle route"]
+  command --> output["Read the saved learner-facing files"]
   output --> owner["Name the owning object or projection"]
   owner --> next["Decide whether you need tests, demo, or proof next"]
 ```
@@ -30,15 +33,17 @@ files first. The goal is to make each inspection command answer one kind of ques
 
 | Command | Best question |
 | --- | --- |
+| `make inspect` | I want the whole learner-facing inspection bundle |
 | `make inspect-summary` | what policy state and open incidents exist right now |
 | `make inspect-rules` | which rules are draft, active, or retired |
 | `make inspect-history` | how incidents accumulated for each metric |
 
 ## Recommended reading order
 
-1. `make inspect-summary`
-2. `make inspect-rules`
-3. `make inspect-history`
+1. `make inspect`
+2. `summary.txt`
+3. `rules.txt`
+4. `history.txt`
 
 That order moves from the current high-level snapshot into lifecycle detail and then into
 incident history.

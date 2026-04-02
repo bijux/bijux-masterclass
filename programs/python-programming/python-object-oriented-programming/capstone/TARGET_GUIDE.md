@@ -28,11 +28,11 @@ command for the question you actually have.
 
 | Target | What it is for |
 | --- | --- |
-| `confirm` | run the executable confirmation suite |
+| `confirm` | run the strongest local confirmation route |
 | `demo` | run the human-readable monitoring scenario |
-| `inspect-summary` | inspect the policy snapshot and open incidents |
-| `inspect-rules` | inspect rule lifecycle state by category |
-| `inspect-history` | inspect incident history grouped by metric |
+| `inspect` | build the learner-facing inspection bundle |
+| `tour` | build the learner-facing walkthrough bundle |
+| `verify-report` | build the executable verification report bundle |
 | `proof` | run the full course-sanctioned evidence route |
 
 ## Fast target selection
@@ -48,15 +48,22 @@ Use:
 Use:
 
 * `make demo`
+* `make tour`
 * `TOUR.md`
 
 ### If the question is "what is the current capstone state?"
 
 Use:
 
-* `make inspect-summary`
-* `make inspect-rules`
-* `make inspect-history`
+* `make inspect`
+* `INSPECTION_GUIDE.md`
+
+### If the question is "what saved bundle proves the behavior?"
+
+Use:
+
+* `make verify-report`
+* `PROOF_GUIDE.md`
 
 ### If the question is "what is the strongest published route?"
 
@@ -67,11 +74,11 @@ Use:
 ## Important distinctions
 
 - `confirm` versus `proof`
-  `confirm` proves behavior with tests; `proof` combines tests, walkthrough, and inspection routes.
-- `demo` versus `inspect-summary`
-  `demo` tells the scenario story; `inspect-summary` gives a compact state snapshot.
-- `inspect-rules` versus `inspect-history`
-  rule inspection explains lifecycle state; history inspection explains incident accumulation.
+  `confirm` proves the local route as strongly as possible; `proof` builds the published learner-facing evidence route.
+- `demo` versus `tour`
+  `demo` tells the story directly in the terminal; `tour` saves that story with matching review guides.
+- `inspect` versus `verify-report`
+  `inspect` focuses on learner-facing state; `verify-report` combines tests and saved state for stronger review.
 
 ## Best companion guides
 
@@ -81,3 +88,5 @@ Read these with the target guide:
 * `TEST_GUIDE.md`
 * `WALKTHROUGH_GUIDE.md`
 * `PROOF_GUIDE.md`
+* `INSPECTION_GUIDE.md`
+* `EXTENSION_GUIDE.md`
