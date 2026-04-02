@@ -34,6 +34,9 @@ another tool should own a different concern.
 
 Mastery is the ability to preserve correctness while making deliberate boundary decisions.
 
+Capstone exists here as corroboration. The reference build is a compact review specimen,
+not a substitute for the migration and governance method you should learn in the module.
+
 ### Before You Begin
 
 This module works best after the rest of the program. It is designed for review,

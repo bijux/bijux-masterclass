@@ -33,6 +33,9 @@ audit. Module 07 is about reuse that preserves truth instead of diluting it.
 
 The point is not to make Make clever. The point is to make larger builds explainable.
 
+Capstone exists here as corroboration. The local layering exercises should make the
+architecture legible before you compare them to the reference build layout.
+
 ### Before You Begin
 
 This module works best after Modules 02-06, when you already trust the graph and now need

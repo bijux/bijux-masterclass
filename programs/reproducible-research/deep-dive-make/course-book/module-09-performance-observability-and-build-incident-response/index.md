@@ -34,6 +34,9 @@ hits.
 
 You are not optimizing Makefiles for sport. You are protecting engineering feedback loops.
 
+Capstone exists here as corroboration. The local measurement and incident drills should
+already tell a coherent story before you inspect the reference build guardrails.
+
 ### Before You Begin
 
 This module works best after Modules 02-08, when the build is already truthful and the

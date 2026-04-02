@@ -34,6 +34,9 @@ trust.
 
 This is where “the build finished” becomes “the artifact is fit to publish.”
 
+Capstone exists here as corroboration. The local release exercises should make the
+artifact boundary and evidence story clear before you inspect the reference build.
+
 ### Before You Begin
 
 This module works best after Modules 03-07, when your build already converges and you are

@@ -26,11 +26,14 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Module 01 taught correctness on a small graph. Module 02 is where that correctness either survives contact with reality—or collapses the first time someone runs `make -j` on a slightly larger repo.
+Module 01 taught correctness on a small graph. Module 02 is where that correctness
+either survives contact with reality or collapses the first time someone runs `make -j`
+on a slightly larger repository.
 
 This module does **not** treat parallelism as a performance trick. It treats it as an adversarial test of whether your DAG is telling the truth.
 
-Capstone is **only** corroboration. This module remains complete and runnable even if `capstone/` didn’t exist.
+Capstone is only corroboration. This module remains complete and runnable even if
+`capstone/` did not exist.
 
 ### At a glance
 

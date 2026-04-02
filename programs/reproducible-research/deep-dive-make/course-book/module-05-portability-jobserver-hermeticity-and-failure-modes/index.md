@@ -26,12 +26,19 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This module turns “a correct build” into a **declared contract** with **auditable assumptions**. You stop trusting your workstation, your shell, your locale, your toolchain, and your process—and you model what matters.
+Modules 01-04 teach correctness, parallel safety, determinism, and exact semantics.
+Module 05 turns that groundwork into a declared contract with auditable assumptions. You
+stop trusting your workstation, shell, locale, toolchain, and process, and you model
+what actually changes build meaning.
 
 A hardened build system has two properties:
 
 1. it **degrades intentionally** (portability, feature gates, fallbacks), and
 2. it **proves itself** (convergence, equivalence, negative tests, and measurement).
+
+Capstone exists here as corroboration. The local exercises should already make the
+boundary and hardening decisions understandable before you compare them to the reference
+build.
 
 ### At a glance
 

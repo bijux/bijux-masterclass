@@ -26,15 +26,21 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
+Module 01 establishes the core model: Make evaluates a dependency graph. Correct rebuild
+behavior requires explicit edges, safe publication, and convergence. You build a tiny
+project, deliberately break correctness, diagnose with Make's own forensics, repair it
+with canonical patterns, and then prove the graph converges.
+
+Capstone exists here as corroboration, not first exposure. This module should already
+make the core failure modes legible before you inspect the reference build.
+
 ### Quick Reference
 | Concept                  | Key Takeaway                                      | Proof Command                  |
 |--------------------------|---------------------------------------------------|--------------------------------|
-| DAG evaluation           | Targets rebuild only when prerequisites are newer  | `make --trace all`             |
-| Hidden inputs            | Must be modeled explicitly (stamps)               | Inject time-based flag → non-convergence |
-| Atomic publication       | Temp → rename + `.DELETE_ON_ERROR`                | Force failure → no poison artifact |
-| Depfiles                 | Automatic header tracking                         | Touch header → correct rebuild |
-
-Module 01 establishes the core model: Make evaluates a dependency graph. Correct rebuild behavior requires explicit edges, safe publication, and convergence. This module is self-contained: you build a tiny project, deliberately break correctness, diagnose with Make’s own forensics, fix with canonical patterns, and **prove convergence**.
+| DAG evaluation           | Targets rebuild only when prerequisites are newer | `make --trace all`             |
+| Hidden inputs            | Must be modeled explicitly (stamps)               | Inject time-based flag -> non-convergence |
+| Atomic publication       | Temp -> rename + `.DELETE_ON_ERROR`               | Force failure -> no poison artifact |
+| Depfiles                 | Automatic header tracking                         | Touch header -> correct rebuild |
 
 ### At a glance
 

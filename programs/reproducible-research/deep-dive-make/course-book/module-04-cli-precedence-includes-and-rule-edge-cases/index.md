@@ -26,9 +26,13 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Modules 01–03 taught you to build truthful graphs, survive `-j`, and enforce determinism and CI contracts. This module is the thing you reach for when you already *know* what you intend, but you need the exact semantics and the sharp edges—fast, provable, and without folklore.
+Modules 01-03 taught you to build truthful graphs, survive `-j`, and enforce
+determinism and CI contracts. Module 04 is the semantics reference you reach for when
+you already know your intent but need the exact behavior and sharp edges without
+folklore.
 
-Capstone exists here as **corroboration**: a runnable place where these semantics are exercised. The module stands on its own.
+Capstone exists here as corroboration: a runnable place where these semantics are
+exercised. The module stands on its own.
 
 ### At a glance
 

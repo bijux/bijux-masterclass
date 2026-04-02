@@ -35,6 +35,9 @@ files.
 The core question is simple: how do you keep code generation from becoming an excuse for
 lying to Make?
 
+Capstone exists here as corroboration. The generator playgrounds in this module should
+make the stale-file story understandable before you inspect the reference build.
+
 ### Before You Begin
 
 This module works best after Modules 01-05, especially the parts on convergence,

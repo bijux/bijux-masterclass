@@ -26,9 +26,14 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Modules 01–02 get you to “correct” and “parallel-safe.” Module 03 is where correctness becomes **reliable under change**: the DAG stays stable across machines/CI, rebuilds are explainable under pressure, the build has a CI-stable interface, and the Makefile is protected against abstraction-driven graph rot.
+Modules 01-02 get you to "correct" and "parallel-safe." Module 03 is where correctness
+becomes reliable under change: the DAG stays stable across machines and CI, rebuilds are
+explainable under pressure, the build exposes a stable interface, and the Makefile is
+protected against abstraction-driven graph rot.
 
-Capstone exists to **corroborate**. This module remains runnable and self-contained; capstone is the validation sidebar. (Capstone mappings/targets shown later mirror the existing repo surface.)
+Capstone exists as corroboration. This module remains runnable and self-contained; the
+reference build is a validation sidebar rather than a prerequisite. Capstone
+mappings and targets shown later mirror the existing repository surface.
 
 ### At a glance
 
