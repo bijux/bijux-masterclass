@@ -36,7 +36,7 @@ We now treat failure and absence as first-class effects that propagate automatic
 | 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
 
 **Core question**  
-How do you use property-based testing with Hypothesis to **machine-check** that your `and_then` (and `map`) implementations satisfy the monad/functor laws — giving you high, mechanically verified confidence that arbitrarily long pipelines will behave exactly as the equational reasoning predicts?
+How do you use property-based testing with Hypothesis to **machine-check** that your `and_then` (and `map`) implementations satisfy the monad/functor laws — giving you high, mechanically verified confidence for the modeled compositions and function families you actually run in CI?
 
 Property-based testing with Hypothesis turns the algebraic laws from “nice theory” into **executable specifications** that run in CI and fail fast if anyone ever regresses the core abstractions.
 
@@ -45,7 +45,7 @@ Property-based testing with Hypothesis turns the algebraic laws from “nice the
 **Outcome**
 1. You will have a reusable, DRY test suite that machine-checks monad/functor laws for Result and Option.
 2. You will see exactly how a broken implementation fails the properties (and shrinks to a minimal counterexample).
-3. You will internalise why these laws are the only thing standing between “works on happy path” and “works under all possible compositions”.
+3. You will internalise why these laws are what protect the modeled composition space from becoming “works on happy path” folklore.
 
 ## Why Laws Matter – One Sentence Each
 - **Left identity**: Wrapping a value and immediately unwrapping is a no-op → you can safely insert `Ok(x)` or `Some(x)` anywhere without changing meaning.
@@ -67,7 +67,8 @@ Violate any of these and your pipeline may work today but break silently tomorro
 | Result Bifunctor Composition | `m.map_err(f).map_err(g) == m.map_err(lambda e: g(f(e)))`                   | Error transformation composes correctly                   |
 | Short-circuit                | `Err(e).and_then(any) == Err(e)` / `NoneVal().and_then(any) == NoneVal()`   | Forgotten propagation paths impossible                    |
 
-All laws are verified with Hypothesis in CI. A single failing example breaks the build.
+These laws are verified with Hypothesis in CI for the repository's modeled strategies and
+function families. A single failing example breaks the build.
 
 ## 2. Strategies – Shrinkable, Deterministic Function Families (capstone/tests/strategies.py)
 

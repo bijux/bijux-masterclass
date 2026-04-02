@@ -45,7 +45,7 @@ This is the true capstone of Module 6. You now have every tool required to ship 
 **Outcome**
 1. You will toggle validation, logging, and metrics with small, composable combinators.
 2. You will build one pipeline that behaves completely differently under different configs — with zero duplication.
-3. You will have mechanical proof for the featured toggle laws, so the enabled and disabled paths stay refactor-safe within the modeled toggle space.
+3. You will have mechanical proof for the featured toggle laws across the modeled enabled and disabled toggle states, so the supported paths stay refactor-safe.
 
 ## Why Higher-Order Combinators + Reader Is the Only Acceptable Pattern
 
@@ -64,10 +64,14 @@ Higher-order combinators + Reader is the only pattern that gives you everything.
 |----------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
 | Identity (disabled)              | `toggle_validation(False, validate, pipeline) == pipeline`                  | Disabled validation is a no-op                            |
 | Projection Equivalence           | `fst(toggle_metrics(enabled, measure, zero, p)(x)) == p(x)`                 | Metrics wrapping does not change the computed value       |
-| Endomorphic Monad Preservation   | `toggle_validation` preserves Result monad laws                             | Refactor-safe when validation enabled                     |
+| Endomorphic Composition Preservation | `toggle_validation(True, validate, pipeline) == (lambda x: validate(x).and_then(pipeline))` | Enabled validation composes without inventing a second control-flow shape |
 | Writer Law Compatibility         | `run(toggle_logging(enabled, p, mk_msg)(x)).value == p(x)`                  | Logging preserves the payload while accumulating logs     |
 
-The capstone verifies these claims in `capstone/tests/unit/fp/test_configurable.py` across enabled and disabled toggle states, and it relies on the dedicated Writer and Result law suites under `capstone/tests/unit/fp/laws/` for the container-level guarantees.
+The capstone verifies these claims in `capstone/tests/unit/fp/test_configurable.py`
+across enabled and disabled toggle states, and it relies on the dedicated Writer and
+Result law suites under `capstone/tests/unit/fp/laws/` for the container-level
+guarantees. The proof here is intentionally bounded to the toggle combinators and test
+strategies the repository models.
 
 ## 2. Public API – Three combinators (that's all you need)
 
