@@ -41,6 +41,8 @@ nav:
       - Capstone Extension Guide: guides/capstone-extension-guide.md
 
   - Reference:
+      - Reference Home: reference/index.md
+      - Functional Glossary: reference/glossary.md
       - FP Standards: reference/fp-standards.md
       - Review Checklist: reference/review-checklist.md
       - Self-Review Prompts: reference/self-review-prompts.md
