@@ -32,7 +32,7 @@ $(VENV_PY):
 venv: $(VENV_PY) ## Create the local virtual environment
 
 install: venv ## Install development dependencies
-	$(VENV_PIP) install -e '.[dev]'
+	$(VENV_PIP) install --ignore-installed -e '.[dev]'
 
 test: install ## Run the test suite
 	$(PYTEST) -q
