@@ -19,6 +19,9 @@ confirm: test ## Run the executable validation suite
 demo: ## Run the capstone scenario walkthrough
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo
 
+.PHONY: tour
+tour: demo ## Run the learner-facing walkthrough route
+
 .PHONY: inspect-summary
 inspect-summary: ## Inspect the scenario summary
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary
@@ -31,8 +34,11 @@ inspect-rules: ## Inspect the rule lifecycle summary
 inspect-history: ## Inspect incident history by metric
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history
 
+.PHONY: inspect
+inspect: inspect-summary inspect-rules inspect-history ## Inspect the capstone learner-facing state
+
 .PHONY: proof
-proof: confirm demo inspect-summary inspect-history ## Run the full learner proof route
+proof: confirm tour inspect ## Run the full learner proof route
 
 .PHONY: clean
 clean: ## Remove generated caches

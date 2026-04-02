@@ -16,3 +16,7 @@ def main() -> None:
     pprint(result.snapshot.active_rule_index)
     print("\nOpen incidents:")
     pprint(result.snapshot.open_incidents)
+
+
+if __name__ == "__main__":
+    main()

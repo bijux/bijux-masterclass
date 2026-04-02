@@ -22,8 +22,19 @@ demo: ## Run the capstone scenario walkthrough
 
 .PHONY: inspect
 inspect: ## Inspect the capstone learner-facing state
-	@$(RUN_CAPSTONE) inspect-summary
-	@$(RUN_CAPSTONE) inspect-history
+	@$(RUN_CAPSTONE) inspect
+
+.PHONY: capstone-walkthrough
+capstone-walkthrough: ## Run the capstone learner-facing walkthrough route
+	@$(RUN_CAPSTONE) tour
+
+.PHONY: capstone-tour
+capstone-tour: ## Run the capstone learner-facing tour route
+	@$(RUN_CAPSTONE) tour
+
+.PHONY: capstone-confirm
+capstone-confirm: ## Run the capstone confirmation route
+	@$(RUN_CAPSTONE) confirm
 
 .PHONY: proof
 proof: ## Run the full capstone proof route
