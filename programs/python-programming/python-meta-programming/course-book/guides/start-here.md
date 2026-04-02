@@ -43,9 +43,10 @@ and easier to justify than a simpler alternative.
 2. Read [Course Guide](course-guide.md) for the module arc and page roles.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
 4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.
-5. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
-6. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
-7. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
+5. Use [Pressure Routes](pressure-routes.md) when you are entering from a code review or framework problem.
+6. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
+7. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
+8. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
 
 ## Route By Pressure
 
@@ -54,7 +55,8 @@ and easier to justify than a simpler alternative.
 1. Read [Course Guide](course-guide.md).
 2. Read [Module 00](../module-00-orientation/index.md).
 3. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md), [Module 07](../module-07-descriptors-lookup-attribute-control/index.md), and [Module 09](../module-09-metaclass-design-class-creation/index.md) as the three main review hotspots.
-4. Cross-check the [Capstone Guide](capstone.md).
+4. Use [Pressure Routes](pressure-routes.md) if you need the route tuned to wrappers, descriptors, or metaclasses specifically.
+5. Cross-check the [Capstone Guide](capstone.md).
 
 ### Route 2: Full mastery path
 
@@ -76,5 +78,6 @@ By the end of the course, you should be able to explain:
 
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)
+- [Pressure Routes](pressure-routes.md)
 - [Module 00](../module-00-orientation/index.md)
 - [Capstone Guide](capstone.md)

@@ -77,6 +77,7 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 
 ## Support Pages To Keep Open
 
+- [Pressure Routes](pressure-routes.md) when you are entering from a concrete engineering pressure
 - [Reading Routes](reading-routes.md) when you need a lower-density or pressure-shaped sequence
 - [Runtime Power Ladder](../reference/runtime-power-ladder.md) when you need the governing review model
 - [Mechanism Selection](mechanism-selection.md) when you need a problem-to-tool comparison
