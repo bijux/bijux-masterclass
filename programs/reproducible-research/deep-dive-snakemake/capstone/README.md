@@ -116,6 +116,7 @@ Run these public entrypoints from the capstone directory:
 make walkthrough
 make selftest
 make verify-report
+make profile-audit
 make tour
 make confirm
 ```
@@ -129,6 +130,8 @@ file, or published artifact that proves it.
 Use `make verify-report` when you want a durable publish-contract report under
 `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` rather than a single
 console verdict.
+Use `make profile-audit` when the question is about execution policy across local, CI,
+and cluster contexts rather than publish correctness alone.
 
 Generated review bundles now keep the published workflow manifest and the bundle
 inventory separate: `publish-manifest.json` describes the published interface, while

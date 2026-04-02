@@ -25,6 +25,7 @@ TMP_DIR       ?= $(ARTIFACTS_DIR)/tmp/reproducible-research/deep-dive-snakemake
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-snakemake
 TOUR_DIR      ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-snakemake
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-snakemake/verify
+PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/profile
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -47,7 +48,7 @@ PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
-	verify-report \
+	verify-report profile-audit \
 	check ci validate verify confirm selftest \
 	docker-build docker-run
 
@@ -140,6 +141,29 @@ verify-report: verify ## Write a structured publish verification report
 		'  3. Read publish/v1/report/index.html when you need the human-readable review surface.' > "$(VERIFY_REPORT_DIR)/route.txt"
 	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(VERIFY_REPORT_DIR)" --output "$(VERIFY_REPORT_DIR)/bundle-manifest.json"
 	@echo "✔ wrote publish verification report to $(VERIFY_REPORT_DIR)"
+
+profile-audit: validate-config ## Build the profile review bundle
+	@rm -rf "$(PROFILE_AUDIT_DIR)"
+	@mkdir -p "$(PROFILE_AUDIT_DIR)/profiles"
+	cp profiles/local/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/local.yaml"
+	cp profiles/ci/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/ci.yaml"
+	cp profiles/slurm/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/slurm.yaml"
+	$(SNAKEMAKE) --profile profiles/local --cores $(CORES) --configfile $(CONFIG) -n -p > "$(PROFILE_AUDIT_DIR)/local-dryrun.txt"
+	$(SNAKEMAKE) --profile profiles/ci --cores $(CORES) --configfile $(CONFIG) -n -p > "$(PROFILE_AUDIT_DIR)/ci-dryrun.txt"
+	$(SNAKEMAKE) --profile profiles/slurm --cores $(CORES) --configfile $(CONFIG) -n -p > "$(PROFILE_AUDIT_DIR)/slurm-dryrun.txt"
+	@printf '%s\n' \
+		'Profile audit route:' \
+		'  1. Read the three profile config files side by side.' \
+		'  2. Compare local-dryrun.txt, ci-dryrun.txt, and slurm-dryrun.txt.' \
+		'  3. Ask which settings change execution policy without changing workflow meaning.' \
+		'  4. Return to README.md and PROOF_GUIDE.md if you need the workflow contract context.' > "$(PROFILE_AUDIT_DIR)/route.txt"
+	@printf '%s\n' \
+		'Profile questions:' \
+		'  Which differences are executor policy and which would change workflow meaning?' \
+		'  Which profile assumptions would matter for reproducibility review later?' \
+		'  Which resources are resolved differently across local, ci, and slurm?' > "$(PROFILE_AUDIT_DIR)/review-questions.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(PROFILE_AUDIT_DIR)" --output "$(PROFILE_AUDIT_DIR)/bundle-manifest.json"
+	@echo "✔ wrote profile audit bundle to $(PROFILE_AUDIT_DIR)"
 
 # ---- high-level flows ----
 check: lint test wf-lint wf-dryrun validate-config ## Fast pre-flight (no workflow execution); NOT a formatting gate
