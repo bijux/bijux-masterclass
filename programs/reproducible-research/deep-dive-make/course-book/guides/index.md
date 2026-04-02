@@ -39,6 +39,7 @@ Use them in this order when you are new to the program:
 ## Start With These Pages
 
 - [Start Here](start-here.md) if you need the right entry path
+- [Pressure Routes](pressure-routes.md) if your learning route is shaped by urgency, stewardship, or repair pressure
 - [Course Guide](course-guide.md) if you want the fastest route to the right support page
 - [Learning Contract](learning-contract.md) if you want the pedagogical boundaries first
 - [Module Promise Map](module-promise-map.md) if you want each module title translated into an explicit learner contract
