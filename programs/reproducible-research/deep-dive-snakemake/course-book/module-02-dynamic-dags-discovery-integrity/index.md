@@ -299,6 +299,8 @@ A **checkpoint** is a rule that allows Snakemake to **re-evaluate part of the DA
 
 We will “discover” chunk IDs from a file, then process each chunk.
 
+Create this scratch input inside the example repository:
+
 **data/items.txt**
 
 ```text
@@ -562,7 +564,7 @@ From the CLI docs:
 
 ## 4.2 Minimal repro: one env reused across many rules
 
-**workflow/envs/py.yaml**
+**workflow/envs/python.yaml**
 
 ```yaml
 channels:
@@ -577,13 +579,13 @@ dependencies:
 rule step1:
     input: "data/items.txt"
     output: "work/step1.txt"
-    conda: "workflow/envs/py.yaml"
+    conda: "workflow/envs/python.yaml"
     shell: "python -c \"open('{output}', 'w').write(open('{input}').read())\""
 
 rule step2:
     input: "work/step1.txt"
     output: "results/final.txt"
-    conda: "workflow/envs/py.yaml"
+    conda: "workflow/envs/python.yaml"
     shell: "python -c \"open('{output}', 'w').write(open('{input}').read().lower())\""
 ```
 
@@ -608,8 +610,8 @@ Snakemake supports `<platform>.pin.txt` alongside env YAML to freeze environment
 Example:
 
 ```
-workflow/envs/py.yaml
-workflow/envs/py.linux-64.pin.txt
+workflow/envs/python.yaml
+workflow/envs/python.linux-64.pin.txt
 ```
 
 **Interpretation:** this is “container-like reproducibility” without building an image.
@@ -719,14 +721,14 @@ graph TD
   reads --> s2r1["s2_R1.txt"]
   reads --> s2r2["s2_R2.txt"]
   workflow --> envs["envs/"]
-  envs --> py["py.yaml"]
+  envs --> py["python.yaml"]
 ```
 
 Populate:
 
-* `data/items.txt` as in Core 2
+* `data/items.txt` as the scratch discovery input from Core 2
 * `config/samples.tsv` as in Core 1
-* `workflow/envs/py.yaml` as in Core 4
+* `workflow/envs/python.yaml` as in Core 4
 
 ---
 
