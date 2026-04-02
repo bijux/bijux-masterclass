@@ -39,6 +39,13 @@ hides the actual design issue.
 | review architecture and boundaries | [Capstone Architecture Guide](capstone-architecture-guide.md) and [Capstone Walkthrough](capstone-walkthrough.md) | you need durable saved evidence |
 | review executable evidence | [Capstone Proof Guide](capstone-proof-guide.md) and `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | you need to modify or extend the capstone itself |
 
+## What each rung cannot prove on its own
+
+- reading pages can explain the intended ownership, but they cannot prove current behavior
+- inspection bundles can show state and narrative clearly, but they cannot replace targeted behavioral checks
+- confirmation routes can prove the current local contract, but they cannot repair a vague question or an unclear ownership claim
+- published proof routes can prove the learner-facing path still works, but they are too heavy for every narrow design question
+
 ## Rules for escalation
 
 - Read before you run when the question is architectural.
@@ -51,6 +58,15 @@ hides the actual design issue.
 - using `capstone-confirm` to answer a question that a module overview already settles
 - treating saved proof artifacts as if they replace reading the design surfaces
 - reading the capstone without knowing what module promise you are trying to confirm
+- escalating to the strongest route before deciding which object or boundary is actually under review
+
+## Escalation checkpoints
+
+Before you move up one rung, make sure you can answer these:
+
+- what exact claim am I trying to prove
+- which object or boundary should own that claim
+- what weaker route already failed to answer it honestly
 
 The ladder keeps the proof route proportional. That makes the capstone support the
 course instead of overshadowing it.

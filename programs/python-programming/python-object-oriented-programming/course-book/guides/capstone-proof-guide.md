@@ -32,6 +32,14 @@ evidence in the capstone.
 5. Run `make proof` when you want the sanctioned end-to-end route.
 6. Use [Capstone Review Checklist](capstone-review-checklist.md) to decide whether the evidence is strong enough.
 
+## Route selection rules
+
+- choose `make inspect` when the main question is "what state or story should a learner see"
+- choose `make tour` when the question is about sequence, walkthrough readability, or ownership across steps
+- choose `make verify-report` when the question crosses tests and learner-facing state at the same time
+- choose `make confirm` when a narrow claim has already been located and you need the strongest local bar
+- choose `make proof` when you are reviewing the whole learner-facing evidence route, not only one behavior
+
 ## What you should be able to answer after proof review
 
 - Which object owns the checked behavior?
@@ -60,3 +68,10 @@ evidence in the capstone.
 - If the question is architectural, start with guides and targeted tests before `confirm`.
 - If the question is behavioral, start with the smallest saved bundle or test that exercises the claimed behavior.
 - If the question is course-level trust, escalate to `make proof` only after the narrower claims are already clear.
+
+## Signs you picked the wrong route
+
+- the command finished, but you still cannot name the owning object
+- the saved bundle looks useful, but it does not touch the claim you care about
+- the route proves several things at once and leaves the original question blurrier
+- you reached for `make proof` mainly because the narrower route felt mentally uncomfortable
