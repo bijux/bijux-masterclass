@@ -59,7 +59,7 @@ pytest suite.
 | Modules 01 to 03 | what stays pure and lazy | `tests/unit/fp/`, `tests/unit/result/`, `tests/unit/streaming/`, `src/funcpipe_rag/fp/`, `streaming/` |
 | Modules 04 to 06 | how failures, laws, and explicit context stay reviewable | `tests/unit/fp/laws/`, `tests/unit/policies/`, `src/funcpipe_rag/result/`, `fp/effects/`, `policies/` |
 | Modules 07 to 08 | where effects and async pressure enter | `tests/unit/domain/`, `tests/unit/infra/adapters/`, `src/funcpipe_rag/domain/`, `boundaries/`, `infra/` |
-| Modules 09 to 10 | how interop, review, and sustainment stay honest | `tests/unit/interop/`, `capstone/TOUR.md`, `capstone/ARCHITECTURE.md`, `course-book/capstone-review-worksheet.md` |
+| Modules 09 to 10 | how interop, review, and sustainment stay honest | `tests/unit/interop/`, `capstone/TOUR.md`, `capstone/ARCHITECTURE.md`, `course-book/guides/capstone-review-worksheet.md` |
 
 ## Best companions
 
