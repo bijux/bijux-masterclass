@@ -46,6 +46,15 @@ Use this when you are starting the course or refreshing the foundations.
 - runtime objects, safe observation, signatures, provenance, and evidence
 - the minimum route for understanding why later runtime hooks should not feel magical
 
+### [Mid-Course Map](mid-course-map.md)
+
+Use this when the foundations are no longer the blocker but the control and ownership
+modules still need a clearer bridge.
+
+- Modules 04 to 08
+- wrapper honesty, class customization, descriptor ownership, and field architecture
+- the route that keeps the climb toward higher-power hooks deliberate instead of blurry
+
 ### [Mastery Map](mastery-map.md)
 
 Use this when you are reviewing stronger runtime hooks or deciding whether the design is still honest.
@@ -77,3 +86,4 @@ This keeps the course tied to human questions instead of forcing the learner to 
 - Keep [Module Promise Map](../guides/module-promise-map.md) and [Module Checkpoints](../guides/module-checkpoints.md) open so each stage has a clear contract and exit bar.
 - Keep [Proof Ladder](../guides/proof-ladder.md) open so proof stays proportional to the question.
 - Keep [Capstone Map](../guides/capstone-map.md) open so the course remains attached to one executable system.
+- Keep [Mid-Course Map](mid-course-map.md) open whenever the jump from observation to ownership feels too abrupt.
