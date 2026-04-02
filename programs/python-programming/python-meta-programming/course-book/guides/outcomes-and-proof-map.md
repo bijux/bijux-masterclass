@@ -28,6 +28,11 @@ Use this page when you want the course contract written out explicitly: what the
 should become able to do, what work builds that ability, and what repository surface
 proves it honestly enough to review.
 
+## Start from the missing ability
+
+If one outcome still feels weak, do not reread the whole course. Start with the row for
+that missing ability, then follow only its first route and primary capstone evidence.
+
 ## Alignment map
 
 | Course outcome | Main learning activities | Primary capstone evidence | Best first route |
@@ -66,6 +71,14 @@ When a learner says "I understood this course claim," the next useful question i
 
 If the learner cannot name the surface, the next step is usually not another page. It is
 a return to the proof route.
+
+## Good stopping point
+
+Stop with this page once you can say:
+
+- which outcome is currently weakest
+- which activity should strengthen it next
+- which capstone surface would prove that the ability is now real
 
 ## Best companion pages
 
