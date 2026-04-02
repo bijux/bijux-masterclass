@@ -36,6 +36,17 @@ bundle instead of only printed once in the terminal.
 5. Let the runtime publish alerts and update downstream views.
 6. Inspect the resulting summary, active rule index, and open incidents.
 
+## What to notice at each step
+
+| Scenario step | Main question | Best surface to compare |
+| --- | --- | --- |
+| create policy | which object becomes authoritative first | `application.py` and `model.py` |
+| register rules | who accepts or rejects rule setup | `model.py` and lifecycle tests |
+| activate rules | where lifecycle permission actually lives | `tests/test_policy_lifecycle.py` |
+| observe samples | which boundary evaluates behavior versus coordinates flow | `runtime.py` and `policies.py` |
+| publish incidents | which outputs are derived rather than authoritative | `read_models.py` and `projections.py` |
+| inspect snapshot | which learner-facing route best shows current state | `INSPECTION_GUIDE.md` |
+
 ## Best command route
 
 1. Run `make demo` when you want the narrative directly in the terminal.
@@ -60,3 +71,9 @@ The tour reveals the architectural promise of the capstone:
 - `src/service_monitoring/read_models.py`
 - `TARGET_GUIDE.md`
 - `WALKTHROUGH_GUIDE.md`
+
+## Compare these after the tour
+
+- compare `TOUR.md` with `ARCHITECTURE.md` to see which scenario step maps to which boundary
+- compare `TOUR.md` with `TEST_GUIDE.md` to decide which executable proof best matches the story
+- compare `TOUR.md` with `PROOF_GUIDE.md` when you want to move from narrative understanding into stronger evidence
