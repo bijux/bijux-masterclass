@@ -396,6 +396,19 @@ source-baseline-clean: clean-generated ## Remove local-only state that must not 
 	@rm -rf .dvc-remote .pytest_cache .dvc/cache __pycache__ src/incident_escalation_capstone.egg-info
 	@find . -type d -name "__pycache__" -prune -exec rm -rf {} +
 
+.PHONY: source-baseline-check
+source-baseline-check: ## Fail if local-only state would contaminate a source bundle
+	@paths="$$(find . \
+		\( -path './data/derived' -o -path './metrics' -o -path './models' -o -path './publish' -o -path './state' \
+		   -o -path './.dvc-remote' -o -path './.pytest_cache' -o -path './.dvc/cache' \
+		   -o -path './src/incident_escalation_capstone.egg-info' -o -name '__pycache__' \) \
+		-prune -print | sort)"; \
+	if [ -n "$$paths" ]; then \
+		printf '%s\n' 'FAIL: source bundle would include local-only state:' "$$paths" >&2; \
+		exit 1; \
+	fi; \
+	printf '%s\n' 'PASS: source baseline contains no local-only state'
+
 .PHONY: clean
 clean: clean-generated ## Remove local virtual environment and caches
 	@rm -rf $(VENV_DIR) .pytest_cache .dvc/cache __pycache__ src/incident_escalation_capstone.egg-info
