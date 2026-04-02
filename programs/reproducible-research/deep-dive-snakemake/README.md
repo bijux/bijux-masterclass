@@ -33,9 +33,10 @@ Many Snakemake workflows function adequately in simple cases but encounter issue
 
 This repository offers a structured beginner-to-mastery path through Snakemake semantics: understanding its guarantees, limitations, and patterns that ensure workflows remain reliable as complexity increases.
 
-The repository now separates three surfaces clearly:
+The repository now separates four surfaces clearly:
 
 - `course-book/guides/` for learner entry, pressure routes, promise maps, checkpoints, and capstone reading routes
+- `course-book/capstone/` for workflow entry, command routing, publish review, and profile review
 - `course-book/reference/` for stable maps, glossary pages, anti-pattern routing, and review checklists
 - `course-book/module-00-orientation/` through `course-book/module-10-*/` for the actual learning arc
 
@@ -48,7 +49,7 @@ Use the course in this order:
 5. `course-book/guides/module-checkpoints.md`
 6. `course-book/module-00-orientation/index.md`
 7. Modules `01` to `10` in order
-8. `course-book/guides/proof-ladder.md` and `course-book/guides/capstone-map.md` once the local model is clear
+8. `course-book/guides/proof-ladder.md`, `course-book/capstone/index.md`, and `course-book/capstone/capstone-map.md` once the local model is clear
 
 [Back to top](#top)
 
