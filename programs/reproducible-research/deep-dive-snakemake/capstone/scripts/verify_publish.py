@@ -64,7 +64,10 @@ def main() -> int:
 
     manifest_paths = [entry["path"] for entry in manifest["files"]]
     if manifest_paths != EXPECTED_PUBLISHED_PATHS:
-        raise ValueError(f"manifest paths must equal {EXPECTED_PUBLISHED_PATHS}, got {manifest_paths}")
+        raise ValueError(
+            "manifest paths must equal "
+            f"{EXPECTED_PUBLISHED_PATHS}, got {manifest_paths}"
+        )
 
     discovered_samples = sorted(discovered["samples"])
     summary_units = sorted(summary["units"])

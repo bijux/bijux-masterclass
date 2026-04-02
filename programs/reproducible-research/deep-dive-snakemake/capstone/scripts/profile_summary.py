@@ -35,7 +35,11 @@ def load_profile(path: Path) -> dict[str, object]:
 
 def build_summary(profile_paths: dict[str, Path]) -> dict[str, object]:
     loaded = {
-        name: load_profile(path) for name, path in sorted(profile_paths.items(), key=lambda item: item[0])
+        name: load_profile(path)
+        for name, path in sorted(
+            profile_paths.items(),
+            key=lambda item: item[0],
+        )
     }
     keys = sorted({key for payload in loaded.values() for key in payload})
 
@@ -55,7 +59,10 @@ def build_summary(profile_paths: dict[str, Path]) -> dict[str, object]:
             profile_only_settings[key] = present_names
 
     return {
-        "profiles": {name: path.resolve().as_posix() for name, path in sorted(profile_paths.items())},
+        "profiles": {
+            name: path.resolve().as_posix()
+            for name, path in sorted(profile_paths.items())
+        },
         "shared_settings": shared_settings,
         "differing_settings": differing_settings,
         "profile_only_settings": profile_only_settings,

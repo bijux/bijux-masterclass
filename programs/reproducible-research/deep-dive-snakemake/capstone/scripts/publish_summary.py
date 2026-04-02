@@ -27,7 +27,11 @@ def build_summary(publish_dir: Path) -> dict[str, object]:
         "sample_count": len(samples),
         "samples": sorted(samples),
         "sample_modes": {
-            sample: info["mode"] for sample, info in sorted(samples.items(), key=lambda item: item[0])
+            sample: info["mode"]
+            for sample, info in sorted(
+                samples.items(),
+                key=lambda item: item[0],
+            )
         },
         "unit_count": len(units),
         "published_files": [entry["path"] for entry in manifest["files"]],
