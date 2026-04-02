@@ -37,11 +37,11 @@ nav:
       - Capstone Review Worksheet: guides/capstone-review-worksheet.md
       - Capstone Extension Guide: guides/capstone-extension-guide.md
   - Modules:
-      - "01 — Everything Is an Object": module-01.md
-      - "02 — Basic Introspection": module-02.md
-      - "03 — inspect as a Runtime Tool": module-03.md
-      - "04 — Decorators": module-04.md
-      - "05 — Decorator Patterns and Typing": module-05.md
+      - "01 — Runtime Object Model": module-01-runtime-object-model/index.md
+      - "02 — Safe Runtime Observation": module-02-safe-runtime-observation/index.md
+      - "03 — inspect, Signatures, and Provenance": module-03-inspect-signatures-and-provenance/index.md
+      - "04 — Function Wrappers and Decorators": module-04-function-wrappers-and-decorators/index.md
+      - "05 — Decorator Design and Typing": module-05-decorator-design-and-typing/index.md
       - "06 — Class Decorators and Properties": module-06.md
       - "07 — Descriptors": module-07.md
       - "08 — Descriptor Patterns": module-08.md

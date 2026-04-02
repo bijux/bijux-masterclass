@@ -42,8 +42,8 @@ named home inside it.
 
 ## Module to capstone route
 
-- [Module 03](../module-03.md): inspect signatures and docs from the manifest surface
-- [Modules 04-05](../module-04.md): compare raw action methods with wrapped action metadata
+- [Module 03](../module-03-inspect-signatures-and-provenance/index.md): inspect signatures and docs from the manifest surface
+- [Modules 04-05](../module-04-function-wrappers-and-decorators/index.md): compare raw action methods with wrapped action metadata
 - [Modules 07-08](../module-07.md): inspect descriptor declaration, storage, and validation flow
 - [Module 09](../module-09.md): inspect registration and class-definition-time invariants
 - [Modules 10-11](../module-10.md): inspect whether the public surface remains observable and governable

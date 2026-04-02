@@ -36,9 +36,9 @@ before earlier boundaries are stable.
 
 ## Dependency logic
 
-- [Module 01](../module-01.md) and [Module 02](../module-02.md) teach the object and namespace model.
-- [Module 03](../module-03.md) turns inspection into a verification tool instead of passive curiosity.
-- [Modules 04-06](../module-04.md) through [module-06.md](../module-06.md) move from function wrappers to class-level transformation.
+- [Module 01](../module-01-runtime-object-model/index.md) and [Module 02](../module-02-safe-runtime-observation/index.md) teach the object and namespace model.
+- [Module 03](../module-03-inspect-signatures-and-provenance/index.md) turns inspection into a verification tool instead of passive curiosity.
+- [Modules 04-06](../module-04-function-wrappers-and-decorators/index.md) through [module-06.md](../module-06.md) move from function wrappers to class-level transformation.
 - [Modules 07-08](../module-07.md) through [module-08.md](../module-08.md) explain attribute control as a first-class design surface.
 - [Module 09](../module-09.md) only makes sense after the learner can compare it to descriptors and class decorators.
 - [Modules 10-11](../module-10.md) through [module-11.md](../module-11.md) turn mechanics into review judgment.

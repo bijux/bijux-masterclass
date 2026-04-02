@@ -48,8 +48,8 @@ The course has four linked layers:
 
 ### Runtime mechanics
 
-- [Modules 01-03](../module-01.md) through [module-03.md](../module-03.md) explain objects, introspection, and `inspect`.
-- [Modules 04-06](../module-04.md) through [module-06.md](../module-06.md) explain decorators, typing discipline, and the bridge to attribute control.
+- [Modules 01-03](../module-01-runtime-object-model/index.md) through [module-03-inspect-signatures-and-provenance/index.md](../module-03-inspect-signatures-and-provenance/index.md) explain objects, introspection, and `inspect`.
+- [Modules 04-06](../module-04-function-wrappers-and-decorators/index.md) through [module-06.md](../module-06.md) explain decorators, typing discipline, and the bridge to attribute control.
 - [Modules 07-09](../module-07.md) through [module-09.md](../module-09.md) explain descriptors, framework-grade patterns, and metaclasses.
 
 ### Governance

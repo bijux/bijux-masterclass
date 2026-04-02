@@ -46,7 +46,7 @@ and easier to justify than a simpler alternative.
 
 1. Read [Course Guide](course-guide.md).
 2. Read [Module 00](../module-00-orientation/index.md).
-3. Read [Module 04](../module-04.md), [Module 07](../module-07.md), and [Module 09](../module-09.md).
+3. Read [Module 04](../module-04-function-wrappers-and-decorators/index.md), [Module 07](../module-07.md), and [Module 09](../module-09.md).
 4. Cross-check the [Capstone Guide](capstone.md).
 
 ### Route 2: Full mastery path

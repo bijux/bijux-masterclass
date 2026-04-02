@@ -64,8 +64,8 @@ instead of ornamental.
 ## Module route
 
 - [Module 00](module-00-orientation/index.md) defines the reading discipline.
-- [Modules 01-03](module-01.md) through [module-03.md](module-03.md) build the object and inspection model.
-- [Modules 04-06](module-04.md) through [module-06.md](module-06.md) explain wrappers and class decorators.
+- [Modules 01-03](module-01-runtime-object-model/index.md) through [module-03-inspect-signatures-and-provenance/index.md](module-03-inspect-signatures-and-provenance/index.md) build the object and inspection model.
+- [Modules 04-06](module-04-function-wrappers-and-decorators/index.md) through [module-06.md](module-06.md) explain wrappers and class decorators.
 - [Modules 07-09](module-07.md) through [module-09.md](module-09.md) explain descriptors and metaclasses.
 - [Modules 10-11](module-10.md) through [module-11.md](module-11.md) convert mechanisms into governance and mastery review.
 
