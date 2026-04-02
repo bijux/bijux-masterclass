@@ -56,7 +56,7 @@ Use this when DVC still feels foreign.
 2. [`module-00-orientation/index.md`](../module-00-orientation/index.md)
 3. Modules 01 and 02
 4. [`module-checkpoints.md`](module-checkpoints.md)
-5. [`readme-capstone.md`](readme-capstone.md)
+5. [`readme-capstone.md`](../capstone/index.md)
 
 ### Inherited Repository Repair
 
@@ -66,7 +66,7 @@ Use this when you already have a repository that runs but is hard to trust.
 2. Module 01
 3. Module 04
 4. Module 07
-5. [`capstone-map.md`](capstone-map.md)
+5. [`capstone/capstone-map.md`](../capstone/capstone-map.md)
 
 ### Promotion And Stewardship Review
 
@@ -85,7 +85,7 @@ Use this when the repository already lost local state and you need the shortest 
 1. [`verification-route-guide.md`](../reference/verification-route-guide.md)
 2. Module 08
 3. [`authority-map.md`](../reference/authority-map.md)
-4. [`capstone-map.md`](capstone-map.md)
+4. [`capstone/capstone-map.md`](../capstone/capstone-map.md)
 5. `capstone-recovery-review`
 
 [Back to top](#top)

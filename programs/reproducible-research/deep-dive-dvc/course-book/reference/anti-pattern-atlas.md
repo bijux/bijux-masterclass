@@ -87,7 +87,7 @@ Use these with the atlas:
 
 * [`authority-map.md`](authority-map.md) for state-layer review
 * [`module-dependency-map.md`](module-dependency-map.md) for where the idea is taught in sequence
-* [`capstone-map.md`](../guides/capstone-map.md) for module-aware repository routing
+* [`capstone-map.md`](../capstone/capstone-map.md) for module-aware repository routing
 * [`verification-route-guide.md`](verification-route-guide.md) for narrower proof selection
 
 [Back to top](#top)

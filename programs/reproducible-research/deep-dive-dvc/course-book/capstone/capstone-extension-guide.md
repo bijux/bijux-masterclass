@@ -92,7 +92,7 @@ Use these pages with this guide:
 
 * [`capstone-file-guide.md`](capstone-file-guide.md)
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
-* [`proof-matrix.md`](proof-matrix.md)
+* [`proof-matrix.md`](../guides/proof-matrix.md)
 * [`completion-rubric.md`](../reference/completion-rubric.md)
 
 [Back to top](#top)

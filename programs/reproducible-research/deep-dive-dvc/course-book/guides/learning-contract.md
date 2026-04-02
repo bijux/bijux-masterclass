@@ -109,7 +109,7 @@ Do not use the capstone:
 * as a substitute for understanding state layers
 * as evidence that you understand a topic you still cannot explain in plain language
 
-Use [`capstone-map.md`](capstone-map.md) when you need a guided route through the
+Use [`capstone/capstone-map.md`](../capstone/capstone-map.md) when you need a guided route through the
 repository.
 
 [Back to top](#top)

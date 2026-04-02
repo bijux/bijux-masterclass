@@ -101,7 +101,7 @@ The most useful companion pages for this guide are:
 
 * [`authority-map.md`](authority-map.md)
 * [`proof-matrix.md`](../guides/proof-matrix.md)
-* [`capstone-map.md`](../guides/capstone-map.md)
-* [`repository-layer-guide.md`](../guides/repository-layer-guide.md)
+* [`capstone-map.md`](../capstone/capstone-map.md)
+* [`repository-layer-guide.md`](../capstone/repository-layer-guide.md)
 
 [Back to top](#top)

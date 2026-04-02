@@ -44,7 +44,7 @@ chapter.
 
 ## Use These For Commands And Proof
 
-- [Command Guide](command-guide.md) for command boundaries
+- [Command Guide](../capstone/command-guide.md) for command boundaries
 - [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
 - [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence surface
 - [Authority Map](../reference/authority-map.md) when the question is which layer of state is authoritative
@@ -52,21 +52,22 @@ chapter.
 
 ## Use These For Capstone Reading
 
-- [Capstone Guide](readme-capstone.md) for the repository contract
-- [Capstone Architecture Guide](capstone-architecture-guide.md) for the repository structure
-- [Capstone Map](capstone-map.md) for module-to-repository routing
-- [Capstone File Guide](capstone-file-guide.md) for file responsibilities
-- [Repository Layer Guide](repository-layer-guide.md) for authority and layer ownership
-- [Experiment Review Guide](experiment-review-guide.md) for controlled deviation review
-- [Release Review Guide](release-review-guide.md) for downstream trust review
-- [Recovery Review Guide](recovery-review-guide.md) for durability review
-- [Capstone Review Worksheet](capstone-review-worksheet.md) for structured repository assessment
-- [Release Audit Checklist](release-audit-checklist.md) for promotion review
-- [Capstone Extension Guide](capstone-extension-guide.md) for safe evolution
+- [Capstone Guide](../capstone/index.md) for the repository contract
+- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for the repository structure
+- [Capstone Map](../capstone/capstone-map.md) for module-to-repository routing
+- [Capstone File Guide](../capstone/capstone-file-guide.md) for file responsibilities
+- [Repository Layer Guide](../capstone/repository-layer-guide.md) for authority and layer ownership
+- [Experiment Review Guide](../capstone/experiment-review-guide.md) for controlled deviation review
+- [Release Review Guide](../capstone/release-review-guide.md) for downstream trust review
+- [Recovery Review Guide](../capstone/recovery-review-guide.md) for durability review
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for structured repository assessment
+- [Release Audit Checklist](../capstone/release-audit-checklist.md) for promotion review
+- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
 
 ## Keep The Layout Stable
 
 - `index.md` stays the course home
 - `guides/` stays the learner route and proof shelf
+- `capstone/` stays the capstone-specific reading, review, and stewardship shelf
 - `reference/` stays the durable state and review shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

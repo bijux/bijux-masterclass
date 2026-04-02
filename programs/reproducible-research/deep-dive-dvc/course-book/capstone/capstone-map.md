@@ -95,7 +95,7 @@ This order keeps state identity and contract meaning ahead of mechanics.
 
 When you move from the course into the repository, keep these pages open as a set:
 
-1. [Capstone Guide](readme-capstone.md)
+1. [Capstone Guide](index.md)
 2. [Capstone File Guide](capstone-file-guide.md)
 3. [Repository Layer Guide](repository-layer-guide.md)
 4. [Verification Route Guide](../reference/verification-route-guide.md)

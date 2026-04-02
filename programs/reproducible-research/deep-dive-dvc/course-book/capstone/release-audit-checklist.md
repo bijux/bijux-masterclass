@@ -97,7 +97,7 @@ The most useful companion pages for this checklist are:
 
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
 * [`evidence-boundary-guide.md`](../reference/evidence-boundary-guide.md)
-* [`proof-matrix.md`](proof-matrix.md)
+* [`proof-matrix.md`](../guides/proof-matrix.md)
 * [`capstone-extension-guide.md`](capstone-extension-guide.md)
 
 [Back to top](#top)

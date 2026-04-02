@@ -50,7 +50,7 @@ sequence.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
 4. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
 5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-6. Keep [Truth Contracts](truth-contracts.md), [Authority Map](../reference/authority-map.md), and [Capstone Map](capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
+6. Keep [Truth Contracts](truth-contracts.md), [Authority Map](../reference/authority-map.md), and [Capstone Map](../capstone/capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
 
 ## Route By Pressure
 
@@ -70,7 +70,7 @@ sequence.
 4. Read [Module 04](../module-04-truthful-pipelines-declared-dependencies/index.md).
 5. Read [Module 07](../module-07-collaboration-ci-social-contracts/index.md).
 6. Read [Module 08](../module-08-recovery-scale-incident-survival/index.md).
-7. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](capstone-map.md) to inspect the reference repository selectively.
+7. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](../capstone/capstone-map.md) to inspect the reference repository selectively.
 
 ### Reproducibility stewardship
 
@@ -79,7 +79,7 @@ sequence.
 3. Read [Module 08](../module-08-recovery-scale-incident-survival/index.md).
 4. Read [Module 09](../module-09-promotion-registry-boundaries-auditability/index.md).
 5. Read [Module 10](../module-10-migration-governance-dvc-boundaries/index.md).
-6. Finish with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Release Audit Checklist](release-audit-checklist.md).
+6. Finish with [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) and [Release Audit Checklist](../capstone/release-audit-checklist.md).
 
 ## Success Signal
 
@@ -96,6 +96,6 @@ You are using the course correctly if you can explain all of this without hand-w
 - [Course Guide](course-guide.md)
 - [Module 00](../module-00-orientation/index.md)
 - [Authority Map](../reference/authority-map.md)
-- [Capstone Guide](readme-capstone.md)
+- [Capstone Guide](../capstone/index.md)
 
 [Back to top](#top)
