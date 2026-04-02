@@ -95,3 +95,4 @@ Keep the FuncPipe RAG capstone open while reading the map.
 - `how-to-study-this-course.md`
 - `../guides/start-here.md`
 - `../guides/outcomes-and-proof-map.md`
+- `../../capstone/CODE_ROUTE_MAP.md`

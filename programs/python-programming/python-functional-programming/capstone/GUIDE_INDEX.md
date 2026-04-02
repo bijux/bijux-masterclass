@@ -15,6 +15,7 @@ time.
 ## If you want the package and file route
 
 - `ARCHITECTURE.md`
+- `CODE_ROUTE_MAP.md`
 - `PACKAGE_GUIDE.md`
 - `TEST_GUIDE.md`
 
@@ -41,6 +42,7 @@ Choose based on the question you have:
 
 - "What does this capstone model?" -> `README.md`
 - "Which package owns this behavior?" -> `ARCHITECTURE.md`
+- "Which current files should I open first for this concept?" -> `CODE_ROUTE_MAP.md`
 - "What should I read first in the code?" -> `PACKAGE_GUIDE.md`
 - "Which tests prove this claim?" -> `TEST_GUIDE.md`
 - "Which proof should fail first for this claim?" -> `TEST_READING_MAP.md`
@@ -54,4 +56,4 @@ Choose based on the question you have:
 ## Best next file after this one
 
 If you do not have a sharper question yet, open `README.md`, then
-`FIRST_SESSION_GUIDE.md`, then `ARCHITECTURE.md`.
+`FIRST_SESSION_GUIDE.md`, then `CODE_ROUTE_MAP.md`.

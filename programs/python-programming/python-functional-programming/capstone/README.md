@@ -100,6 +100,7 @@ Proof route:
 
 - `FIRST_SESSION_GUIDE.md`
 - `GUIDE_INDEX.md`
+- `CODE_ROUTE_MAP.md`
 - `COMMAND_GUIDE.md`
 - `PUBLIC_SURFACE_MAP.md`
 - `SOURCE_TO_PROOF_MAP.md`
@@ -115,6 +116,7 @@ Proof route:
 
 - `FIRST_SESSION_GUIDE.md` for the smallest honest first pass through the capstone
 - `GUIDE_INDEX.md` for the smallest route into the capstone doc set
+- `CODE_ROUTE_MAP.md` for the shortest concept-to-source route through the current codebase
 - `COMMAND_GUIDE.md` for choosing the smallest honest command and artifact route
 - `PUBLIC_SURFACE_MAP.md` for understanding what each published route actually exposes
 - `SOURCE_TO_PROOF_MAP.md` for package-to-proof alignment
@@ -129,6 +131,7 @@ Proof route:
 Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
 effects, or orchestration should live.
 Use `FIRST_SESSION_GUIDE.md` first whenever the capstone itself still feels too large.
+Use `CODE_ROUTE_MAP.md` first whenever you know the concept but not the current file route.
 Use `PUBLIC_SURFACE_MAP.md` when you ran a route and still need to know what it actually exposed.
 Use `PROOF_GUIDE.md` when you need to choose between fast inspection, saved review output,
 and the strongest confirmation route.
