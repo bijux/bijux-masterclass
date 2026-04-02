@@ -38,6 +38,7 @@ nav:
       - "Completion Rubric": completion-rubric.md
   - Capstone Route:
       - "Capstone Guide": readme-capstone.md
+      - "Capstone Architecture Guide": capstone-architecture-guide.md
       - "Capstone Map": capstone-map.md
       - "Capstone File Guide": capstone-file-guide.md
       - "Repository Layer Guide": repository-layer-guide.md

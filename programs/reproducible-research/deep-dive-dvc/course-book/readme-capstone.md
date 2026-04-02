@@ -58,7 +58,9 @@ If you want a module-by-module route through the repository, start with
 ## Best entrypoints
 
 - Capstone map: [capstone-map.md](capstone-map.md)
+- Capstone architecture: [capstone-architecture-guide.md](capstone-architecture-guide.md)
 - Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/README.md)
+- Repository architecture: [`capstone/ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/ARCHITECTURE.md)
 - Pipeline graph: [`capstone/dvc.yaml`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/dvc.yaml)
 - Declared inputs: [`capstone/params.yaml`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/params.yaml)
 - Verification logic: [`capstone/src/incident_escalation_capstone/verify.py`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/src/incident_escalation_capstone/verify.py)
