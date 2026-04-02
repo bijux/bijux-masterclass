@@ -85,6 +85,7 @@ Keep the FuncPipe RAG capstone open while reading the map.
 ## Best companion pages
 
 - `index.md`
+- `first-contact-map.md`
 - `course-orientation.md`
 - `how-to-study-this-course.md`
 - `../guides/start-here.md`

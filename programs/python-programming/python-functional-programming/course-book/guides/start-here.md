@@ -68,6 +68,7 @@ is easier to review than the alternatives.
 ## First Pages To Keep Open
 
 - [Course Home](../index.md)
+- [First-Contact Map](../module-00-orientation/first-contact-map.md)
 - [Course Guide](course-guide.md)
 - [Foundations Reading Plan](foundations-reading-plan.md)
 - [FuncPipe RAG Primer](funcpipe-rag-primer.md)
