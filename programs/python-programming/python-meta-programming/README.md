@@ -136,6 +136,7 @@ Primary reading route:
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
 - `course-book/capstone/index.md`
+- `course-book/capstone/capstone-map.md`
 - `course-book/capstone/capstone-architecture-guide.md`
 - `course-book/capstone/capstone-walkthrough.md`
 - `course-book/reference/topic-boundaries.md`
