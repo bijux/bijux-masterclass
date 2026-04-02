@@ -54,6 +54,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | the workflow validates configuration before execution | `make -C capstone validate-config` | `capstone/config/config.yaml`, `capstone/config/schema.yaml` |
 | the workflow can explain its plan before a run | `make -C capstone wf-dryrun` | `artifacts/make/workflow-walkthrough/dryrun.txt`, `capstone/workflow/rules/` |
 | the publish bundle can defend itself after execution | `make -C capstone verify-artifacts` | `capstone/publish/v1/manifest.json`, `capstone/publish/v1/provenance.json` |
+| the publish boundary is reviewable as a durable contract | `make -C capstone verify-report` | `capstone/FILE_API.md`, `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` |
 | the repository can prove itself through one stronger end-to-end route | `make -C capstone confirm` | `capstone/Makefile`, `capstone/tests/` |
 | the executed workflow tour is reviewable as evidence | `make -C capstone tour` | `artifacts/make/workflow-tour/`, `capstone/TOUR.md` |
 
@@ -83,5 +84,6 @@ The most useful companion pages for this matrix are:
 * [`boundary-map.md`](boundary-map.md)
 * [`practice-map.md`](practice-map.md)
 * [`capstone-file-guide.md`](capstone-file-guide.md)
+* [`publish-review-guide.md`](publish-review-guide.md)
 
 [Back to top](#top)
