@@ -30,6 +30,18 @@ clear responsibilities, and long-lived system boundaries. The focus is not on cl
 syntax in isolation. The focus is on how object models behave under mutation,
 inheritance, refactoring, and operational change.
 
+## Use this course if
+
+- you already know basic Python class syntax and now need stronger design judgment
+- you design or review systems where ownership, invariants, or lifecycle rules feel blurry
+- you want object-oriented material that stays tied to tests, capstone proof, and long-lived change
+
+## Do not use this course as
+
+- a first introduction to `class`, `self`, or inheritance syntax
+- a pattern catalog detached from Python runtime behavior
+- a reason to force classes into problems that should stay plain functions or plain data
+
 ## Why this course exists
 
 Many Python OOP resources stop at surface mechanics: classes, inheritance, and a few
@@ -60,6 +72,13 @@ will feel arbitrary instead of principled.
 
 If you want the shortest stable entry route, start with [Start Here](guides/start-here.md).
 
+## Fast entry routes
+
+- Use [Start Here](guides/start-here.md) when you need the shortest honest route into the course.
+- Use [Course Guide](guides/course-guide.md) when you want the ten-module arc explained before you start reading.
+- Use [Pressure Routes](guides/pressure-routes.md) when you already have a concrete design or review problem.
+- Use [Capstone](guides/capstone.md) only after the module idea is clear enough that you know what you are trying to prove.
+
 ## Keep these references nearby
 
 - [Object Design Checklist](reference/object-design-checklist.md)
@@ -77,6 +96,13 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 - [Module Checkpoints](guides/module-checkpoints.md)
 - [Pressure Routes](guides/pressure-routes.md)
 - [Proof Ladder](guides/proof-ladder.md)
+
+## What to keep open while reading
+
+- [Module Promise Map](guides/module-promise-map.md) when you need the title of a module translated into a learner contract
+- [Module Checkpoints](guides/module-checkpoints.md) when you want the "done" bar to stay visible
+- [Capstone Map](guides/capstone-map.md) when you want the module-to-repository bridge
+- [Proof Ladder](guides/proof-ladder.md) when you want to choose the smallest honest proof route
 
 ## Course shape
 
