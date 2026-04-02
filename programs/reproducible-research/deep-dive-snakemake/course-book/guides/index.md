@@ -42,6 +42,7 @@ Use these first if you are entering the program or returning after a break:
 
 * [Start Here](start-here.md)
 * [Module Promise Map](module-promise-map.md)
+* [Module Checkpoints](module-checkpoints.md)
 * [Course Guide](course-guide.md)
 * [Platform Setup](platform-setup.md)
 * [Learning Contract](learning-contract.md)
