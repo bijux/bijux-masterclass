@@ -16,22 +16,22 @@ site_dir: ../../../artifacts/site/python-programming/python-object-oriented-prog
 
 nav:
   - Start Here:
-      - Start Here: start-here.md
+      - Start Here: guides/start-here.md
       - Course Home: index.md
-      - Course Guide: course-guide.md
-      - Learning Contract: learning-contract.md
-      - Module Dependency Map: module-dependency-map.md
-      - Practice Map: practice-map.md
-      - Command Guide: command-guide.md
-      - Capstone Map: capstone-map.md
-      - Capstone File Guide: capstone-file-guide.md
-      - Capstone Review Checklist: capstone-review-checklist.md
-      - Capstone Architecture Guide: capstone-architecture-guide.md
-      - Capstone Walkthrough: capstone-walkthrough.md
-      - Capstone Proof Guide: capstone-proof-guide.md
+      - Course Guide: guides/course-guide.md
+      - Learning Contract: guides/learning-contract.md
+      - Module Dependency Map: guides/module-dependency-map.md
+      - Practice Map: guides/practice-map.md
+      - Command Guide: guides/command-guide.md
+      - Capstone Map: guides/capstone-map.md
+      - Capstone File Guide: guides/capstone-file-guide.md
+      - Capstone Review Checklist: guides/capstone-review-checklist.md
+      - Capstone Architecture Guide: guides/capstone-architecture-guide.md
+      - Capstone Walkthrough: guides/capstone-walkthrough.md
+      - Capstone Proof Guide: guides/capstone-proof-guide.md
       - Orientation: module-00-orientation/index.md
       - Course Map: module-00-orientation/course-map.md
-      - Capstone Overview: capstone.md
+      - Capstone Overview: guides/capstone.md
 
   - "Module 01: Semantic Floor":
       - Overview: module-01-object-model/index.md

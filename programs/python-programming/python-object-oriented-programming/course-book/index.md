@@ -58,7 +58,7 @@ This is not a browse-at-random reference. The course is designed as a sequence:
 If you skip that order, later chapters will still be readable, but the design trade-offs
 will feel arbitrary instead of principled.
 
-If you want the shortest stable entry route, start with [Start Here](start-here.md).
+If you want the shortest stable entry route, start with [Start Here](guides/start-here.md).
 
 ## Working model
 
@@ -98,7 +98,7 @@ By the end of the course, you should be able to:
 - [Module 08](module-08-testing-and-verification/index.md) turns verification into a design discipline with contracts, properties, and confidence layers.
 - [Module 09](module-09-public-apis-and-extension-governance/index.md) defines the public surface, extension seams, and governance rules for long-lived reuse.
 - [Module 10](module-10-performance-observability-and-security/index.md) closes the course with measurement, observability, security, and full capstone review.
-- [Capstone](capstone.md) provides the executable slice that keeps the prose honest.
+- [Capstone](guides/capstone.md) provides the executable slice that keeps the prose honest.
 
 ## Common failure modes this course is trying to prevent
 
@@ -113,11 +113,11 @@ By the end of the course, you should be able to:
 
 ## Reading order
 
-- Start with [Start Here](start-here.md).
-- Continue with [Course Guide](course-guide.md) and [Learning Contract](learning-contract.md).
+- Start with [Start Here](guides/start-here.md).
+- Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
 - Start with [Orientation](module-00-orientation/index.md).
 - Work through Modules 01 to 10 in order.
-- Use the [Capstone](capstone.md) to connect the prose to runnable code.
+- Use the [Capstone](guides/capstone.md) to connect the prose to runnable code.
 
 ## Expected learner rhythm
 
