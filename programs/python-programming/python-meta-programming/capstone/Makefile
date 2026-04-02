@@ -64,6 +64,7 @@ inspect: ## Build the learner-facing inspection bundle
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(INSPECT_DIR)/plugin.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
+	@cp BUNDLE_GUIDE.md $(INSPECT_DIR)/BUNDLE_GUIDE.md
 	@cp PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
 	@cp TARGET_GUIDE.md $(INSPECT_DIR)/TARGET_GUIDE.md
 	@cp INSPECTION_GUIDE.md $(INSPECT_DIR)/INSPECTION_GUIDE.md
@@ -97,6 +98,7 @@ verify-report: ## Build the structured capstone verification report
 		--arg "summary=worker backlog growing" \
 		> $(VERIFY_REPORT_DIR)/trace.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
+	@cp BUNDLE_GUIDE.md $(VERIFY_REPORT_DIR)/BUNDLE_GUIDE.md
 	@cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
 	@cp TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
 	@cp WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
@@ -135,6 +137,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@find src/incident_plugins -type f | sort > $(TOUR_DIR)/runtime-files.txt
 	@find tests -type f | sort > $(TOUR_DIR)/test-files.txt
 	@cp README.md $(TOUR_DIR)/README.md
+	@cp BUNDLE_GUIDE.md $(TOUR_DIR)/BUNDLE_GUIDE.md
 	@cp ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
 	@cp PROOF_GUIDE.md $(TOUR_DIR)/PROOF_GUIDE.md
 	@cp TOUR.md $(TOUR_DIR)/TOUR.md

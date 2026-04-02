@@ -95,3 +95,4 @@ Read these with the target guide:
 * `TEST_GUIDE.md`
 * `WALKTHROUGH_GUIDE.md`
 * `PROOF_GUIDE.md`
+* `BUNDLE_GUIDE.md`
