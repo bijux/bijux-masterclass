@@ -69,3 +69,6 @@ each source file is trying to own.
 
 Read [TRACE_GUIDE.md](TRACE_GUIDE.md) when the trace output is the most important surface
 for the question you are holding.
+
+Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the tour gives enough overall shape but you
+need a narrower source route for one specific question.

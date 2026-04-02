@@ -80,6 +80,7 @@ make proof
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route
 - `PACKAGE_GUIDE.md` for the code-reading route
+- `SOURCE_GUIDE.md` for exact file, class, and function routing
 - `TEST_GUIDE.md` for the proof-reading route
 - `TARGET_GUIDE.md` and `INSPECTION_GUIDE.md` for the public review surface
 - `EXTENSION_GUIDE.md` for the safest change-placement route

@@ -75,6 +75,9 @@ adapter differences still need a purpose-driven explanation.
 Read [PUBLIC_API_GUIDE.md](PUBLIC_API_GUIDE.md) when the question is no longer only
 internal ownership, but what the package intentionally exports.
 
+Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the package route is still too broad and you
+need the exact class or function that owns the behavior.
+
 ## What this guide prevents
 
 - starting in concrete plugins and mistaking them for the framework contract
