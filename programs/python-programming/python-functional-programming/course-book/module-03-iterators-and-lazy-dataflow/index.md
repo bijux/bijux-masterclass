@@ -44,6 +44,7 @@ happens, how much memory is used, and where materialization becomes a conscious 
 - [Chunking and Windowing](chunking-and-windowing.md)
 - [Infinite Sequences Safely](infinite-sequences-safely.md)
 - [Reusable Pipeline Stages](reusable-pipeline-stages.md)
+- [Pipeline Stage Review and Reuse](pipeline-stage-review-and-reuse.md)
 - [Fan-In and Fan-Out](fan-in-and-fan-out.md)
 - [Time-Aware Streaming](time-aware-streaming.md)
 - [Custom Iterators](custom-iterators.md)

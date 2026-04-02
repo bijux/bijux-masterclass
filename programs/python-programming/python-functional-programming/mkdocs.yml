@@ -78,6 +78,7 @@ nav:
       - Chunking and Windowing: module-03-iterators-and-lazy-dataflow/chunking-and-windowing.md
       - Infinite Sequences Safely: module-03-iterators-and-lazy-dataflow/infinite-sequences-safely.md
       - Reusable Pipeline Stages: module-03-iterators-and-lazy-dataflow/reusable-pipeline-stages.md
+      - Pipeline Stage Review and Reuse: module-03-iterators-and-lazy-dataflow/pipeline-stage-review-and-reuse.md
       - Fan-In and Fan-Out: module-03-iterators-and-lazy-dataflow/fan-in-and-fan-out.md
       - Time-Aware Streaming: module-03-iterators-and-lazy-dataflow/time-aware-streaming.md
       - Custom Iterators: module-03-iterators-and-lazy-dataflow/custom-iterators.md
