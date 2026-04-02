@@ -22,6 +22,18 @@ Use this guide when you are already inside `capstone/` and need the smallest hon
 command. The goal is not command memorization. The goal is keeping proof proportional to
 the question you are trying to answer.
 
+## Start with these commands first
+
+- Start with `make manifest` when you need the safest observational route.
+- Start with `make trace` when you already know the question is about one concrete invocation.
+- Start with `make inspect` when you need a durable artifact for later reading.
+
+## Do not start with these by default
+
+- Do not start with `make proof` on a first pass; it is broader than most first questions need.
+- Do not start with `make confirm` when the question is still about ownership or public shape.
+- Do not start with `make demo` when you actually need configuration, history, or preserved metadata.
+
 ## Stable local commands
 
 | Command | What it is for | What it gives you |
@@ -74,6 +86,13 @@ Use these when you need the broadest local confidence:
 
 - `make confirm`
 - `make proof`
+
+## Default escalation
+
+1. Start with one observational command.
+2. Move to one behavior command only if the observational route is not enough.
+3. Move to a saved bundle only when you need a durable review surface.
+4. Move to `confirm` or `proof` only when the claim truly needs the strongest route.
 
 ## Artifact locations
 
