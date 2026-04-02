@@ -8,6 +8,7 @@
 .DEFAULT_GOAL := install
 
 ARTIFACTS_DIR ?= ../../../../artifacts
+DOCS_DIR   := docs
 VENV       ?= $(ARTIFACTS_DIR)/venv/python-programming/python-functional-programming/capstone
 PYTHON     ?= python3
 VENV_PY    := $(VENV)/bin/python
@@ -44,17 +45,17 @@ inspect: install ## Build the learner-facing inspection bundle
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(INSPECT_DIR)/summary.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(INSPECT_DIR)/summary.json
 	cp README.md $(INSPECT_DIR)/README.md
-	cp FIRST_SESSION_GUIDE.md $(INSPECT_DIR)/FIRST_SESSION_GUIDE.md
-	cp GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
-	cp COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
-	cp ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
-	cp PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
-	cp PUBLIC_SURFACE_MAP.md $(INSPECT_DIR)/PUBLIC_SURFACE_MAP.md
-	cp REVIEW_ROUTE_MAP.md $(INSPECT_DIR)/REVIEW_ROUTE_MAP.md
-	cp SOURCE_TO_PROOF_MAP.md $(INSPECT_DIR)/SOURCE_TO_PROOF_MAP.md
-	cp TEST_GUIDE.md $(INSPECT_DIR)/TEST_GUIDE.md
-	cp TEST_READING_MAP.md $(INSPECT_DIR)/TEST_READING_MAP.md
-	cp PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
+	cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(INSPECT_DIR)/FIRST_SESSION_GUIDE.md
+	cp $(DOCS_DIR)/GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
+	cp $(DOCS_DIR)/COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
+	cp $(DOCS_DIR)/ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
+	cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
+	cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(INSPECT_DIR)/PUBLIC_SURFACE_MAP.md
+	cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(INSPECT_DIR)/REVIEW_ROUTE_MAP.md
+	cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(INSPECT_DIR)/SOURCE_TO_PROOF_MAP.md
+	cp $(DOCS_DIR)/TEST_GUIDE.md $(INSPECT_DIR)/TEST_GUIDE.md
+	cp $(DOCS_DIR)/TEST_READING_MAP.md $(INSPECT_DIR)/TEST_READING_MAP.md
+	cp $(DOCS_DIR)/PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
 	printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read summary.txt for the human review map.' \
@@ -73,15 +74,15 @@ verify-report: install ## Build the structured capstone verification report bund
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(VERIFY_REPORT_DIR)/review-summary.json
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(VERIFY_REPORT_DIR)/review-summary.txt
 	cp README.md $(VERIFY_REPORT_DIR)/README.md
-	cp GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
-	cp COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
-	cp PUBLIC_SURFACE_MAP.md $(VERIFY_REPORT_DIR)/PUBLIC_SURFACE_MAP.md
-	cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
-	cp REVIEW_ROUTE_MAP.md $(VERIFY_REPORT_DIR)/REVIEW_ROUTE_MAP.md
-	cp SOURCE_TO_PROOF_MAP.md $(VERIFY_REPORT_DIR)/SOURCE_TO_PROOF_MAP.md
-	cp TEST_READING_MAP.md $(VERIFY_REPORT_DIR)/TEST_READING_MAP.md
-	cp WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
-	cp TOUR.md $(VERIFY_REPORT_DIR)/TOUR.md
+	cp $(DOCS_DIR)/GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
+	cp $(DOCS_DIR)/COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
+	cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(VERIFY_REPORT_DIR)/PUBLIC_SURFACE_MAP.md
+	cp $(DOCS_DIR)/PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
+	cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(VERIFY_REPORT_DIR)/REVIEW_ROUTE_MAP.md
+	cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(VERIFY_REPORT_DIR)/SOURCE_TO_PROOF_MAP.md
+	cp $(DOCS_DIR)/TEST_READING_MAP.md $(VERIFY_REPORT_DIR)/TEST_READING_MAP.md
+	cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
+	cp $(DOCS_DIR)/TOUR.md $(VERIFY_REPORT_DIR)/TOUR.md
 	printf '%s\n' \
 		'Verification report route:' \
 		'  1. Read pytest.txt for the executed verification result.' \
@@ -100,18 +101,18 @@ tour: install ## Build the learner-facing proof bundle
 	find src/funcpipe_rag -type d | sort > $(TOUR_DIR)/package-tree.txt
 	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
 	cp README.md $(TOUR_DIR)/README.md
-	cp FIRST_SESSION_GUIDE.md $(TOUR_DIR)/FIRST_SESSION_GUIDE.md
-	cp GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
-	cp COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
-	cp PUBLIC_SURFACE_MAP.md $(TOUR_DIR)/PUBLIC_SURFACE_MAP.md
+	cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(TOUR_DIR)/FIRST_SESSION_GUIDE.md
+	cp $(DOCS_DIR)/GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
+	cp $(DOCS_DIR)/COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
+	cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(TOUR_DIR)/PUBLIC_SURFACE_MAP.md
 	cp pyproject.toml $(TOUR_DIR)/pyproject.toml
-	cp REVIEW_ROUTE_MAP.md $(TOUR_DIR)/REVIEW_ROUTE_MAP.md
-	cp SOURCE_TO_PROOF_MAP.md $(TOUR_DIR)/SOURCE_TO_PROOF_MAP.md
-	cp TEST_READING_MAP.md $(TOUR_DIR)/TEST_READING_MAP.md
-	cp TOUR.md $(TOUR_DIR)/TOUR.md
-	cp WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
-	cp PACKAGE_GUIDE.md $(TOUR_DIR)/PACKAGE_GUIDE.md
-	cp TEST_GUIDE.md $(TOUR_DIR)/TEST_GUIDE.md
+	cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(TOUR_DIR)/REVIEW_ROUTE_MAP.md
+	cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(TOUR_DIR)/SOURCE_TO_PROOF_MAP.md
+	cp $(DOCS_DIR)/TEST_READING_MAP.md $(TOUR_DIR)/TEST_READING_MAP.md
+	cp $(DOCS_DIR)/TOUR.md $(TOUR_DIR)/TOUR.md
+	cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
+	cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(TOUR_DIR)/PACKAGE_GUIDE.md
+	cp $(DOCS_DIR)/TEST_GUIDE.md $(TOUR_DIR)/TEST_GUIDE.md
 	printf '%s\n' \
 		"core=src/funcpipe_rag/core" \
 		"result=src/funcpipe_rag/result" \

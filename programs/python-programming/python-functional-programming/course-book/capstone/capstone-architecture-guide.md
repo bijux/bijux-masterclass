@@ -27,7 +27,7 @@ only its syntax.
 
 ## What to inspect
 
-1. Read `capstone/ARCHITECTURE.md`.
+1. Read `capstone/docs/ARCHITECTURE.md`.
 2. Compare it with [FuncPipe Capstone Guide](index.md) and [Capstone File Guide](capstone-file-guide.md).
 3. Inspect `tests/`, then `src/funcpipe_rag/fp/`, `rag/`, `pipelines/`, `domain/`, and `boundaries/` in that order.
 

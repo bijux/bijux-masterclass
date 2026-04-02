@@ -29,12 +29,12 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 
 - Start with [FuncPipe Capstone Guide](index.md) for the overall role and purpose.
 - Read [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
-- Read the capstone's local [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/PACKAGE_GUIDE.md) when you are already inside the repository and want the same route locally.
+- Read the capstone's local [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/PACKAGE_GUIDE.md) when you are already inside the repository and want the same route locally.
 - Read [Capstone Test Guide](capstone-test-guide.md) when you want the test suite to function as a review map.
 - Read [Capstone Review Worksheet](capstone-review-worksheet.md) when you want an explicit review lens.
 - Read [Capstone Architecture Guide](capstone-architecture-guide.md) when you are reviewing package boundaries.
 - Read [Capstone Walkthrough](capstone-walkthrough.md) when you want the learner-facing tour story.
-- Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/WALKTHROUGH_GUIDE.md) when you want the repository itself to provide the first-pass reading order.
+- Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/WALKTHROUGH_GUIDE.md) when you want the repository itself to provide the first-pass reading order.
 - Read [Capstone Proof Guide](capstone-proof-guide.md) when you want the verification route.
 - Use `make PROGRAM=python-programming/python-functional-programming inspect` when you need the shortest inspection route before choosing a deeper guide.
 - Use `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you need a saved review bundle instead of only console output.
@@ -61,7 +61,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 | Module 07: Effect boundaries and resource safety | `capstone/src/funcpipe_rag/boundaries/`, `capstone/src/funcpipe_rag/domain/effects/`, `capstone/src/funcpipe_rag/domain/capabilities.py` | `capstone/tests/unit/domain/test_io_plan_laws.py`, `capstone/tests/unit/domain/test_session.py`, `capstone/tests/unit/domain/test_idempotent.py` | `make PROGRAM=python-programming/python-functional-programming capstone-tour` |
 | Module 08: Async FuncPipe and backpressure | `capstone/src/funcpipe_rag/domain/effects/async_/`, `capstone/src/funcpipe_rag/infra/adapters/async_runtime.py` | `capstone/tests/unit/domain/test_async_backpressure.py`, `capstone/tests/unit/domain/test_async_law_properties.py`, `capstone/tests/unit/domain/test_async_resilience.py` | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
 | Module 09: Ecosystem interop | `capstone/src/funcpipe_rag/boundaries/shells/cli.py`, `capstone/src/funcpipe_rag/pipelines/cli.py`, `capstone/src/funcpipe_rag/interop/` | `capstone/tests/unit/pipelines/test_cli_overrides.py`, `capstone/tests/unit/interop/test_stdlib_fp.py`, `capstone/tests/unit/interop/test_toolz_compat.py` | `make PROGRAM=python-programming/python-functional-programming capstone-tour` |
-| Module 10: Refactoring and sustainment | `capstone/README.md`, `capstone/ARCHITECTURE.md`, `capstone/PROOF_GUIDE.md`, `capstone/pyproject.toml` | `capstone/TOUR.md`, `capstone/WALKTHROUGH_GUIDE.md`, `capstone/PROOF_GUIDE.md` | `make PROGRAM=python-programming/python-functional-programming test` |
+| Module 10: Refactoring and sustainment | `capstone/README.md`, `capstone/docs/ARCHITECTURE.md`, `capstone/docs/PROOF_GUIDE.md`, `capstone/pyproject.toml` | `capstone/docs/TOUR.md`, `capstone/docs/WALKTHROUGH_GUIDE.md`, `capstone/docs/PROOF_GUIDE.md` | `make PROGRAM=python-programming/python-functional-programming test` |
 
 Use this table when a module page tells you to inspect the capstone and you want the
 smallest stable route from concept to source, proof, and command.

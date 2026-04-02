@@ -98,19 +98,19 @@ History route:
 
 Proof route:
 
-- `FIRST_SESSION_GUIDE.md`
-- `GUIDE_INDEX.md`
-- `CODE_ROUTE_MAP.md`
-- `COMMAND_GUIDE.md`
-- `PUBLIC_SURFACE_MAP.md`
-- `SOURCE_TO_PROOF_MAP.md`
-- `TEST_READING_MAP.md`
-- `REVIEW_ROUTE_MAP.md`
-- `PROOF_GUIDE.md`
-- `ARCHITECTURE.md`
-- `TOUR.md`
-- `WALKTHROUGH_GUIDE.md`
-- `EXTENSION_GUIDE.md`
+- [`FIRST_SESSION_GUIDE.md`](docs/FIRST_SESSION_GUIDE.md)
+- [`GUIDE_INDEX.md`](docs/GUIDE_INDEX.md)
+- [`CODE_ROUTE_MAP.md`](docs/CODE_ROUTE_MAP.md)
+- [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md)
+- [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md)
+- [`SOURCE_TO_PROOF_MAP.md`](docs/SOURCE_TO_PROOF_MAP.md)
+- [`TEST_READING_MAP.md`](docs/TEST_READING_MAP.md)
+- [`REVIEW_ROUTE_MAP.md`](docs/REVIEW_ROUTE_MAP.md)
+- [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md)
+- [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`TOUR.md`](docs/TOUR.md)
+- [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md)
+- [`EXTENSION_GUIDE.md`](docs/EXTENSION_GUIDE.md)
 
 ## Recommended review path
 
@@ -136,6 +136,27 @@ Use `PUBLIC_SURFACE_MAP.md` when you ran a route and still need to know what it 
 Use `PROOF_GUIDE.md` when you need to choose between fast inspection, saved review output,
 and the strongest confirmation route.
 Use `TOUR.md` when you want the shortest human-readable route through the proof bundle.
+
+## Documentation set
+
+All capstone documentation lives under [`docs/`](docs/). Use this index when you want
+the full guide surface from one place:
+
+- [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`CODE_ROUTE_MAP.md`](docs/CODE_ROUTE_MAP.md)
+- [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md)
+- [`EXTENSION_GUIDE.md`](docs/EXTENSION_GUIDE.md)
+- [`FIRST_SESSION_GUIDE.md`](docs/FIRST_SESSION_GUIDE.md)
+- [`GUIDE_INDEX.md`](docs/GUIDE_INDEX.md)
+- [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md)
+- [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md)
+- [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md)
+- [`REVIEW_ROUTE_MAP.md`](docs/REVIEW_ROUTE_MAP.md)
+- [`SOURCE_TO_PROOF_MAP.md`](docs/SOURCE_TO_PROOF_MAP.md)
+- [`TEST_GUIDE.md`](docs/TEST_GUIDE.md)
+- [`TEST_READING_MAP.md`](docs/TEST_READING_MAP.md)
+- [`TOUR.md`](docs/TOUR.md)
+- [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md)
 
 ## Course connection
 

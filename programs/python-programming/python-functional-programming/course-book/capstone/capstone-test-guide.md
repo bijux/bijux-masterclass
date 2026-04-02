@@ -27,7 +27,7 @@ reading route through the test suite.
 
 ## Best route
 
-1. Read the capstone's local [`TEST_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/TEST_GUIDE.md).
+1. Read the capstone's local [`TEST_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/TEST_GUIDE.md).
 2. Start with the test group that matches the current module.
 3. Run `make PROGRAM=python-programming/python-functional-programming test`.
 4. Compare the tests you read with [Proof Matrix](../guides/proof-matrix.md) and [Capstone Review Worksheet](capstone-review-worksheet.md).

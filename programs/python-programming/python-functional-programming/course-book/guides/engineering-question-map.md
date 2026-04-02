@@ -111,9 +111,9 @@ Start with:
 
 Then inspect:
 
-- `capstone/ARCHITECTURE.md`
-- `capstone/PROOF_GUIDE.md`
-- `capstone/WALKTHROUGH_GUIDE.md`
+- `capstone/docs/ARCHITECTURE.md`
+- `capstone/docs/PROOF_GUIDE.md`
+- `capstone/docs/WALKTHROUGH_GUIDE.md`
 
 ## Use this map well
 
