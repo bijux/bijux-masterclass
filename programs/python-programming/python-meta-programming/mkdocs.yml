@@ -16,6 +16,8 @@ site_dir: ../../../artifacts/site/python-programming/python-meta-programming
 nav:
   - Start Here:
       - Course Home: index.md
+      - Learner Entry: start-here.md
+      - Course Guide: course-guide.md
       - Orientation: module-00.md
       - Capstone Guide: capstone.md
   - "Module 01: Everything Is an Object": module-01.md
