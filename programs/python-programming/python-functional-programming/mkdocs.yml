@@ -15,16 +15,22 @@ site_dir: ../../../artifacts/site/python-programming/python-functional-programmi
 
 nav:
   - Start Here:
+      - Course Home: index.md
       - Guides Home: guides/index.md
       - Start Here: guides/start-here.md
-      - Course Home: index.md
       - Course Guide: guides/course-guide.md
       - Learning Contract: guides/learning-contract.md
+      - Orientation Overview: module-00-orientation/index.md
+      - Course Orientation: module-00-orientation/course-orientation.md
+      - How to Study This Course: module-00-orientation/how-to-study-this-course.md
+  - Guides:
       - Module Dependency Map: guides/module-dependency-map.md
       - Practice Map: guides/practice-map.md
       - Command Guide: guides/command-guide.md
       - History Guide: guides/history-guide.md
       - Proof Matrix: guides/proof-matrix.md
+  - Capstone:
+      - FuncPipe Capstone Guide: guides/capstone.md
       - Capstone Map: guides/capstone-map.md
       - Capstone File Guide: guides/capstone-file-guide.md
       - Capstone Test Guide: guides/capstone-test-guide.md
@@ -33,10 +39,11 @@ nav:
       - Capstone Walkthrough: guides/capstone-walkthrough.md
       - Capstone Proof Guide: guides/capstone-proof-guide.md
       - Capstone Extension Guide: guides/capstone-extension-guide.md
-      - Orientation Overview: module-00-orientation/index.md
-      - Course Orientation: module-00-orientation/course-orientation.md
-      - How to Study This Course: module-00-orientation/how-to-study-this-course.md
-      - FuncPipe Capstone Guide: guides/capstone.md
+
+  - Reference:
+      - FP Standards: reference/fp-standards.md
+      - Review Checklist: reference/review-checklist.md
+      - Self-Review Prompts: reference/self-review-prompts.md
 
   - "Module 01: Purity and Substitution":
       - Overview: module-01-purity-and-substitution/index.md
@@ -184,8 +191,3 @@ nav:
       - Governance: module-10-refactoring-and-sustainment/governance.md
       - Capstone Delivery: module-10-refactoring-and-sustainment/capstone-delivery.md
       - Refactoring Guide: module-10-refactoring-and-sustainment/refactoring-guide.md
-
-  - Reference:
-      - FP Standards: reference/fp-standards.md
-      - Review Checklist: reference/review-checklist.md
-      - Self-Review Prompts: reference/self-review-prompts.md

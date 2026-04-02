@@ -25,15 +25,19 @@ nav:
   - Start Here:
       - Course Home: index.md
       - Guides Home: guides/index.md
+      - Start Here: guides/start-here.md
       - Course Guide: guides/course-guide.md
-      - Learner Entry: guides/start-here.md
+      - Learning Contract: guides/learning-contract.md
+      - Platform Setup: guides/platform-setup.md
+      - "Module 00: Orientation and Study Strategy": module-00-orientation/index.md
+  - Guides:
       - Pressure Routes: guides/pressure-routes.md
       - Module Promise Map: guides/module-promise-map.md
       - Module Checkpoints: guides/module-checkpoints.md
-      - Platform Setup: guides/platform-setup.md
-      - Learning Contract: guides/learning-contract.md
-      - "Module 00: Orientation and Study Strategy": module-00-orientation/index.md
-  - Course Reference:
+      - Command Guide: guides/command-guide.md
+      - Proof Ladder: guides/proof-ladder.md
+      - Proof Matrix: guides/proof-matrix.md
+  - Reference:
       - Reference Home: reference/index.md
       - Module Dependency Map: reference/module-dependency-map.md
       - Boundary Map: reference/boundary-map.md
@@ -41,23 +45,20 @@ nav:
       - Topic Boundaries: reference/topic-boundaries.md
       - Practice Map: reference/practice-map.md
       - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
-      - Command Guide: guides/command-guide.md
-      - Proof Ladder: guides/proof-ladder.md
-      - Proof Matrix: guides/proof-matrix.md
-      - Publish Review Guide: guides/publish-review-guide.md
-      - Profile Audit Guide: guides/profile-audit-guide.md
-      - Incident Review Guide: guides/incident-review-guide.md
       - Completion Rubric: reference/completion-rubric.md
-  - Capstone Route:
+  - Capstone:
+      - Capstone Guide: guides/readme-capstone.md
       - Capstone File Guide: guides/capstone-file-guide.md
       - Capstone Architecture Guide: guides/capstone-architecture-guide.md
       - Repository Layer Guide: reference/repository-layer-guide.md
       - Capstone Map: guides/capstone-map.md
       - Capstone Proof Guide: guides/capstone-proof-guide.md
       - Capstone Walkthrough: guides/capstone-walkthrough.md
+      - Publish Review Guide: guides/publish-review-guide.md
+      - Profile Audit Guide: guides/profile-audit-guide.md
+      - Incident Review Guide: guides/incident-review-guide.md
       - Capstone Review Worksheet: guides/capstone-review-worksheet.md
       - Capstone Extension Guide: guides/capstone-extension-guide.md
-      - Capstone Overview: guides/readme-capstone.md
   - "Module 01: First Principles and the File-DAG Contract":
       - Overview: module-01-file-contracts-and-the-workflow-dag/index.md
   - "Module 02: Dynamic DAGs, Integrity, and Deterministic Discovery":

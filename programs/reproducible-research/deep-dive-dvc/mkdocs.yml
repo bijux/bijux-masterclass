@@ -22,15 +22,19 @@ nav:
   - Start Here:
       - "Course Home": index.md
       - "Guides Home": guides/index.md
+      - "Start Here": guides/start-here.md
       - "Course Guide": guides/course-guide.md
-      - "Learner Entry": guides/start-here.md
+      - "Learning Contract": guides/learning-contract.md
+      - "Platform Setup": guides/platform-setup.md
+      - "Module 00: Orientation and Study Strategy": module-00-orientation/index.md
+  - Guides:
       - "Pressure Routes": guides/pressure-routes.md
       - "Module Promise Map": guides/module-promise-map.md
       - "Module Checkpoints": guides/module-checkpoints.md
-      - "Learning Contract": guides/learning-contract.md
-      - "Module 00: Orientation and Study Strategy": module-00-orientation/index.md
-      - "Platform Setup": guides/platform-setup.md
-  - Course Reference:
+      - "Command Guide": guides/command-guide.md
+      - "Proof Ladder": guides/proof-ladder.md
+      - "Proof Matrix": guides/proof-matrix.md
+  - Reference:
       - "Reference Home": reference/index.md
       - "Module Dependency Map": reference/module-dependency-map.md
       - "Authority Map": reference/authority-map.md
@@ -39,13 +43,9 @@ nav:
       - "Topic Boundaries": reference/topic-boundaries.md
       - "Practice Map": reference/practice-map.md
       - "Anti-Pattern Atlas": reference/anti-pattern-atlas.md
-      - "Command Guide": guides/command-guide.md
-      - "Proof Ladder": guides/proof-ladder.md
       - "Verification Route Guide": reference/verification-route-guide.md
-      - "Proof Matrix": guides/proof-matrix.md
       - "Completion Rubric": reference/completion-rubric.md
-  - Capstone Route:
-      - "Guides Home": guides/index.md
+  - Capstone:
       - "Capstone Guide": guides/readme-capstone.md
       - "Capstone Architecture Guide": guides/capstone-architecture-guide.md
       - "Capstone Map": guides/capstone-map.md

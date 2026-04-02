@@ -17,34 +17,35 @@ nav:
   - Start Here:
       - Course Home: index.md
       - Guides Home: guides/index.md
-      - Learner Entry: guides/start-here.md
+      - Start Here: guides/start-here.md
       - Course Guide: guides/course-guide.md
       - Learning Contract: guides/learning-contract.md
-      - Orientation: module-00-orientation/index.md
-      - Capstone Guide: guides/capstone.md
-  - Course Reference:
-      - Reference Home: reference/index.md
+      - "Module 00: Orientation": module-00-orientation/index.md
+  - Guides:
       - Command Guide: guides/command-guide.md
-      - Runtime Power Ladder: reference/runtime-power-ladder.md
       - Module Dependency Map: guides/module-dependency-map.md
       - Practice Map: guides/practice-map.md
+  - Reference:
+      - Reference Home: reference/index.md
+      - Runtime Power Ladder: reference/runtime-power-ladder.md
       - Runtime Glossary: reference/runtime-glossary.md
       - Review Checklist: reference/review-checklist.md
-  - Capstone Reference:
+  - Capstone:
+      - Capstone Guide: guides/capstone.md
       - Capstone Map: guides/capstone-map.md
       - Capstone File Guide: guides/capstone-file-guide.md
       - Capstone Proof Checklist: guides/capstone-proof-checklist.md
       - Capstone Review Worksheet: guides/capstone-review-worksheet.md
       - Capstone Extension Guide: guides/capstone-extension-guide.md
-  - Modules:
-      - "01 — Runtime Object Model": module-01-runtime-object-model/index.md
-      - "02 — Safe Runtime Observation": module-02-safe-runtime-observation/index.md
-      - "03 — inspect, Signatures, and Provenance": module-03-inspect-signatures-and-provenance/index.md
-      - "04 — Function Wrappers and Decorators": module-04-function-wrappers-and-decorators/index.md
-      - "05 — Decorator Design and Typing": module-05-decorator-design-and-typing/index.md
-      - "06 — Class Customization Before Metaclasses": module-06-class-customization-before-metaclasses/index.md
-      - "07 — Descriptor Mechanics and Lookup": module-07-descriptor-mechanics-and-lookup/index.md
-      - "08 — Descriptor Systems and Validation": module-08-descriptor-systems-and-validation/index.md
-      - "09 — Metaclass Design and Class Creation": module-09-metaclass-design-and-class-creation/index.md
-      - "10 — Runtime Governance and Mastery": module-10-runtime-governance-and-mastery/index.md
-      - "10 Review — Mastery Review": module-10-runtime-governance-and-mastery/mastery-review.md
+  - "Module 01: Runtime Object Model": module-01-runtime-object-model/index.md
+  - "Module 02: Safe Runtime Observation": module-02-safe-runtime-observation/index.md
+  - "Module 03: inspect, Signatures, and Provenance": module-03-inspect-signatures-and-provenance/index.md
+  - "Module 04: Function Wrappers and Decorators": module-04-function-wrappers-and-decorators/index.md
+  - "Module 05: Decorator Design and Typing": module-05-decorator-design-and-typing/index.md
+  - "Module 06: Class Customization Before Metaclasses": module-06-class-customization-before-metaclasses/index.md
+  - "Module 07: Descriptor Mechanics and Lookup": module-07-descriptor-mechanics-and-lookup/index.md
+  - "Module 08: Descriptor Systems and Validation": module-08-descriptor-systems-and-validation/index.md
+  - "Module 09: Metaclass Design and Class Creation": module-09-metaclass-design-and-class-creation/index.md
+  - "Module 10: Runtime Governance and Mastery":
+      - Overview: module-10-runtime-governance-and-mastery/index.md
+      - Mastery Review: module-10-runtime-governance-and-mastery/mastery-review.md
