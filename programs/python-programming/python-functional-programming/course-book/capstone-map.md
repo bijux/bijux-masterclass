@@ -33,6 +33,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 - Read [Capstone Review Worksheet](capstone-review-worksheet.md) when you want an explicit review lens.
 - Read [Capstone Architecture Guide](capstone-architecture-guide.md) when you are reviewing package boundaries.
 - Read [Capstone Walkthrough](capstone-walkthrough.md) when you want the learner-facing tour story.
+- Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/WALKTHROUGH_GUIDE.md) when you want the repository itself to provide the first-pass reading order.
 - Read [Capstone Proof Guide](capstone-proof-guide.md) when you want the verification route.
 - Read [Capstone Extension Guide](capstone-extension-guide.md) when you want to decide where a new change belongs.
 

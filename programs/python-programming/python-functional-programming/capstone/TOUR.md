@@ -31,6 +31,9 @@ bundle that captures the code and evidence surfaces the course keeps referring t
 package layout, test proof, and the main areas where purity, effects, and async
 coordination live.
 
+Use [`WALKTHROUGH_GUIDE.md`](WALKTHROUGH_GUIDE.md) when you want a stable first-pass route
+through the bundle instead of deciding the reading order yourself.
+
 The tour is not just a convenience export. It is the shortest path from course prose to
 inspectable evidence when you want a human-readable review route.
 

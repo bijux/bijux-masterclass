@@ -25,10 +25,11 @@ reference alone.
 
 ## Recommended route
 
-1. Read `capstone/TOUR.md`.
+1. Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/WALKTHROUGH_GUIDE.md).
 2. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour`.
-3. Read the generated `pytest.txt`, `focus-areas.txt`, `package-tree.txt`, and `test-tree.txt` in that order.
-4. Compare what you learned with [Capstone Architecture Guide](capstone-architecture-guide.md) and [Capstone Review Worksheet](capstone-review-worksheet.md).
+3. Read `capstone/TOUR.md` for the purpose of the generated bundle.
+4. Read the generated `pytest.txt`, `focus-areas.txt`, `package-tree.txt`, and `test-tree.txt` in that order.
+5. Compare what you learned with [Capstone Architecture Guide](capstone-architecture-guide.md), [Capstone Test Guide](capstone-test-guide.md), and [Capstone Review Worksheet](capstone-review-worksheet.md).
 
 ## What the walkthrough should teach
 
