@@ -1,28 +1,25 @@
 # Reference
 
 <!-- page-maps:start -->
-## Page Maps
+## Reference Position
 
 ```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Reference"]
-  page["Reference"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.supports.-> capstone
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive Make"]
+  program --> reference["Reference"]
+  reference --> review["Design or review decision"]
+  review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
-flowchart LR
-  question["Bring a build or review question"] --> map["Choose the right glossary, map, or rubric"]
-  map --> module["Return to the matching module"]
-  module --> proof["Use the matching proof route"]
-  proof --> review["Review the resulting evidence"]
+flowchart TD
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
+  lookup --> compare["Compare the current code or workflow against the boundary"]
+  compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
 The reference surface holds the durable reading aids for Deep Dive Make. These pages are
 for questions that recur across modules: vocabulary, learning order, stable target
