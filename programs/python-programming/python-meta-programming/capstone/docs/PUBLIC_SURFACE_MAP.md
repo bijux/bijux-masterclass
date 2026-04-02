@@ -24,16 +24,16 @@ capstone observational surfaces connected to real implementation ownership.
 
 ## Command to ownership map
 
-| Command | Main output | First owning file | Best next proof surface |
-| --- | --- | --- | --- |
-| `make manifest` | group-level field and action metadata | `src/incident_plugins/framework.py` | `tests/test_registry.py` or `PROOF_GUIDE.md` |
-| `make plugin` | one concrete plugin contract | `src/incident_plugins/plugins.py` | `tests/test_runtime.py` |
-| `make field` | one descriptor-backed field contract | `src/incident_plugins/fields.py` | `tests/test_fields.py` |
-| `make action` | one decorator-backed action contract | `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
-| `make registry` | registered plugin names and order | `src/incident_plugins/framework.py` | `tests/test_registry.py` |
-| `make signatures` | generated constructor and action signatures | `src/incident_plugins/framework.py` and `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
-| `make demo` | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | `TRACE_GUIDE.md` |
-| `make trace` | invocation history with config and action metadata | `src/incident_plugins/actions.py` and `src/incident_plugins/plugins.py` | `tests/test_runtime.py` or `tests/test_cli.py` |
+| Command | Kind of fact | Main output | First owning file | Best next proof surface |
+| --- | --- | --- | --- | --- |
+| `make manifest` | inspection-time fact | group-level field and action metadata | `src/incident_plugins/framework.py` | `tests/test_registry.py` or `PROOF_GUIDE.md` |
+| `make plugin` | inspection-time fact | one concrete plugin contract | `src/incident_plugins/plugins.py` | `tests/test_runtime.py` |
+| `make field` | inspection-time fact | one descriptor-backed field contract | `src/incident_plugins/fields.py` | `tests/test_fields.py` |
+| `make action` | inspection-time fact | one decorator-backed action contract | `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
+| `make registry` | class-definition fact made observable later | registered plugin names and order | `src/incident_plugins/framework.py` | `tests/test_registry.py` |
+| `make signatures` | class-definition fact made observable later | generated constructor and action signatures | `src/incident_plugins/framework.py` and `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
+| `make demo` | call-time fact | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | `TRACE_GUIDE.md` |
+| `make trace` | call-time fact with visible metadata | invocation history with config and action metadata | `src/incident_plugins/actions.py` and `src/incident_plugins/plugins.py` | `tests/test_runtime.py` or `tests/test_cli.py` |
 
 ## Best reading order by output type
 
@@ -48,6 +48,12 @@ Ask these questions after every public route:
 - Did this command show a definition-time fact, an attribute-level fact, or a call-time fact?
 - Which file owns that fact first?
 - Which test would become relevant only if the public output stopped being enough?
+
+## Fast escalation rule
+
+- Stay with inspection-time routes when the question is still "what exists?"
+- Move to call-time routes only when the question becomes "what happened?"
+- Move to tests only when the public output and the ownership claim still do not line up.
 
 ## Best companion guides
 
