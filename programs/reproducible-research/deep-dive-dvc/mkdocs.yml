@@ -26,6 +26,7 @@ nav:
       - "Program Outline": module-00.md
       - "Module Dependency Map": module-dependency-map.md
       - "State Glossary": state-glossary.md
+      - "Practice Map": practice-map.md
       - "Capstone Guide": readme-capstone.md
       - "Capstone Map": capstone-map.md
   - "Module 01: Why Reproducibility Fails": module-01.md
