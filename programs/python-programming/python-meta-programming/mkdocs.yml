@@ -27,6 +27,7 @@ nav:
       - "Module 00: Orientation": module-00-orientation/index.md
       - Course Map: module-00-orientation/course-map.md
       - First-Contact Map: module-00-orientation/first-contact-map.md
+      - Mastery Map: module-00-orientation/mastery-map.md
   - Guides:
       - Pressure Routes: guides/pressure-routes.md
       - Reading Routes: guides/reading-routes.md

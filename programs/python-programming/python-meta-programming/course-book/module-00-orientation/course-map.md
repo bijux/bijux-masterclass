@@ -46,6 +46,14 @@ Use this when you are starting the course or refreshing the foundations.
 - runtime objects, safe observation, signatures, provenance, and evidence
 - the minimum route for understanding why later runtime hooks should not feel magical
 
+### [Mastery Map](mastery-map.md)
+
+Use this when you are reviewing stronger runtime hooks or deciding whether the design is still honest.
+
+- Modules 04 to 10
+- wrappers, descriptors, metaclasses, dynamic execution boundaries, and review policy
+- the route where mechanism knowledge becomes design judgment
+
 ## Route by runtime question
 
 | If your current question is... | Start with | Then |

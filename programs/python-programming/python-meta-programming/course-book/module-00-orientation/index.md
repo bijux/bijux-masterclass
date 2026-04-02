@@ -66,6 +66,7 @@ Use these pages with this module when you want the course shape to stay visible:
 
 - [Course Map](course-map.md) for the whole ten-module arc
 - [First-Contact Map](first-contact-map.md) for the minimum honest route into the foundations
+- [Mastery Map](mastery-map.md) for the late-course review and extension route
 
 ## What the capstone proves
 
