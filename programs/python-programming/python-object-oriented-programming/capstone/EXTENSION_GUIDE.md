@@ -41,11 +41,27 @@ boundary that actually owns it.
 - Change `src/service_monitoring/repository.py` when persistence semantics or rollback behavior changes.
 - Change `src/service_monitoring/read_models.py` or `src/service_monitoring/projections.py` when a new downstream view is needed.
 
+## Update obligations by change type
+
+| If you change... | You should also review... | Why |
+| --- | --- | --- |
+| `model.py` | lifecycle tests, `PROOF_GUIDE.md`, and `ARCHITECTURE.md` | ownership and proof language must still match the aggregate |
+| `policies.py` | evaluation tests, `PACKAGE_GUIDE.md`, and `TEST_GUIDE.md` | replaceable behavior should remain obvious to the learner |
+| `runtime.py` | runtime tests, `TOUR.md`, and `ARCHITECTURE.md` | orchestration changes affect both design and story |
+| `repository.py` | unit-of-work tests and `ARCHITECTURE.md` | persistence should stay explicit instead of becoming hidden behavior |
+| `read_models.py` or `projections.py` | inspection bundles, `INSPECTION_GUIDE.md`, and runtime tests | derived views must stay truthful and non-authoritative |
+
 ## Honest warning
 
 If an extension starts by editing the runtime before naming the authoritative domain
 object, the design is already getting blurry. The runtime should compose behavior, not
 quietly absorb domain rules that belong to the aggregate or evaluation policies.
+
+## Drift warnings
+
+- if one feature forces edits across aggregate, runtime, and projections at once, stop and re-check ownership
+- if a new capability needs documentation changes but no proof changes, the proof route is probably underspecified
+- if a learner could no longer discover the correct edit point from the guides, the extension seam is no longer clear
 
 ## Recommended proof route after a change
 
@@ -53,3 +69,10 @@ quietly absorb domain rules that belong to the aggregate or evaluation policies.
 2. Run `make confirm` to prove the contract still holds.
 3. Run `make demo` or `make inspect` if the learner-facing narrative or review surface changed.
 4. Update `PROOF_GUIDE.md`, `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`, or `TARGET_GUIDE.md` when the review route changed.
+
+## Minimum honest extension close-out
+
+- the new behavior lands in the owning boundary
+- the closest test fails before the fix and passes after it
+- the most relevant local guide still points a future learner to the same boundary
+- the proof route remains proportionate to the claim
