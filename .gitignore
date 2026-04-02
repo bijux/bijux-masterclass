@@ -12,3 +12,4 @@ venv/
 env/
 site/
 docs/library/
+*.egg-info/

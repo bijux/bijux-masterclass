@@ -24,6 +24,18 @@ capstone-tour: ## Build the learner-facing capstone proof bundle
 capstone-verify-report: ## Build the capstone verification report bundle
 	@$(RUN_CAPSTONE) verify-report
 
+.PHONY: capstone-state-summary
+capstone-state-summary: ## Render a combined declaration, execution, and release summary
+	@$(RUN_CAPSTONE) state-summary
+
+.PHONY: capstone-release-summary
+capstone-release-summary: ## Render the promoted release summary
+	@$(RUN_CAPSTONE) release-summary
+
+.PHONY: capstone-review-queue
+capstone-review-queue: ## Render the structured prediction review queue
+	@$(RUN_CAPSTONE) review-queue
+
 .PHONY: capstone-verify
 capstone-verify: ## Run the capstone contract verification route
 	@$(RUN_CAPSTONE) verify
@@ -40,9 +52,21 @@ capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
 capstone-release-audit: ## Build the capstone release-boundary audit bundle
 	@$(RUN_CAPSTONE) release-audit
 
+.PHONY: capstone-release-review
+capstone-release-review: ## Build the capstone release review bundle
+	@$(RUN_CAPSTONE) release-review
+
 .PHONY: capstone-recovery-audit
 capstone-recovery-audit: ## Build the capstone remote-recovery audit bundle
 	@$(RUN_CAPSTONE) recovery-audit
+
+.PHONY: capstone-recovery-review
+capstone-recovery-review: ## Build the capstone remote recovery review bundle
+	@$(RUN_CAPSTONE) recovery-review
+
+.PHONY: capstone-experiment-review
+capstone-experiment-review: ## Build the capstone experiment comparison bundle
+	@$(RUN_CAPSTONE) experiment-review
 
 .PHONY: clean
 clean: ## Remove build artifacts

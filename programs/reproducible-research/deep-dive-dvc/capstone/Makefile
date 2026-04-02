@@ -10,11 +10,13 @@ VENV_PY := $(abspath $(VENV_BIN)/python)
 PIP := $(VENV_PY) -m pip
 PYTEST := $(VENV_PY) -m pytest
 DVC := $(VENV_PY) -m dvc
+INSPECT := $(VENV_PY) -m incident_escalation_capstone.inspect
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-dvc
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
 RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
+EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
 
 .PHONY: help
 help: ## Show available targets
@@ -27,6 +29,7 @@ venv: ## Create the local virtual environment
 
 .PHONY: install
 install: venv ## Install capstone dependencies
+	@rm -rf src/incident_escalation_capstone.egg-info
 	@$(PIP) install -e . pytest dvc
 
 .PHONY: dvc-init
@@ -59,6 +62,18 @@ verify-report: repro ## Write a structured verification report for the published
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "✔ wrote verification report to $(VERIFY_REPORT_DIR)"
 
+.PHONY: state-summary
+state-summary: verify ## Render the combined declaration, execution, and release summary
+	@$(INSPECT) state-summary --publish publish/v1 --metrics metrics/metrics.json --params params.yaml --lock dvc.lock
+
+.PHONY: release-summary
+release-summary: verify ## Render the promoted release summary
+	@$(INSPECT) release-summary --publish publish/v1
+
+.PHONY: review-queue
+review-queue: verify ## Render the structured prediction review queue
+	@$(INSPECT) review-queue --publish publish/v1
+
 .PHONY: tour
 tour: verify ## Build the learner-facing proof bundle
 	@rm -rf $(TOUR_DIR)
@@ -70,6 +85,10 @@ tour: verify ## Build the learner-facing proof bundle
 	@cp dvc.lock $(TOUR_DIR)/dvc.lock
 	@cp params.yaml $(TOUR_DIR)/params.yaml
 	@cp PUBLISH_CONTRACT.md $(TOUR_DIR)/PUBLISH_CONTRACT.md
+	@cp ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
+	@cp EXPERIMENT_GUIDE.md $(TOUR_DIR)/EXPERIMENT_GUIDE.md
+	@cp RECOVERY_GUIDE.md $(TOUR_DIR)/RECOVERY_GUIDE.md
+	@cp RELEASE_REVIEW_GUIDE.md $(TOUR_DIR)/RELEASE_REVIEW_GUIDE.md
 	@cp metrics/metrics.json $(TOUR_DIR)/metrics.json
 	@cp publish/v1/manifest.json $(TOUR_DIR)/publish-v1/manifest.json
 	@cp publish/v1/metrics.json $(TOUR_DIR)/publish-v1/metrics.json
@@ -79,6 +98,9 @@ tour: verify ## Build the learner-facing proof bundle
 	@cp publish/v1/predictions.csv $(TOUR_DIR)/publish-v1/predictions.csv
 	@cp publish/v1/report.md $(TOUR_DIR)/publish-v1/report.md
 	@cp TOUR.md $(TOUR_DIR)/TOUR.md
+	@$(INSPECT) state-summary --publish publish/v1 --metrics metrics/metrics.json --params params.yaml --lock dvc.lock > $(TOUR_DIR)/state-summary.json
+	@$(INSPECT) release-summary --publish publish/v1 > $(TOUR_DIR)/release-summary.json
+	@$(INSPECT) review-queue --publish publish/v1 > $(TOUR_DIR)/review-queue.json
 	@printf '%s\n' \
 		'Executed proof route:' \
 		'  1. Read status.txt for DVC up-to-date state.' \
@@ -130,6 +152,10 @@ release-audit: verify ## Build a focused release-boundary audit bundle
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RELEASE_AUDIT_DIR) --output $(RELEASE_AUDIT_DIR)/manifest.json
 	@echo "✔ wrote release audit bundle to $(RELEASE_AUDIT_DIR)"
 
+.PHONY: release-review
+release-review: release-audit ## Build a focused release review bundle
+
+
 .PHONY: recovery-audit
 recovery-audit: push ## Capture the remote-backed recovery route as a review bundle
 	@rm -rf $(RECOVERY_AUDIT_DIR)
@@ -158,6 +184,31 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 		'  Which parts of recovery still depend on repository-internal state rather than the publish bundle alone?' > $(RECOVERY_AUDIT_DIR)/review-questions.txt
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RECOVERY_AUDIT_DIR) --output $(RECOVERY_AUDIT_DIR)/manifest.json
 	@echo "✔ wrote recovery audit bundle to $(RECOVERY_AUDIT_DIR)"
+
+.PHONY: recovery-review
+recovery-review: recovery-audit ## Capture the remote-backed recovery review bundle
+
+.PHONY: experiment-review
+experiment-review: verify ## Build a focused experiment comparison bundle
+	@rm -rf $(EXPERIMENT_REVIEW_DIR)
+	@mkdir -p $(EXPERIMENT_REVIEW_DIR)
+	@cp params.yaml $(EXPERIMENT_REVIEW_DIR)/params.yaml
+	@cp metrics/metrics.json $(EXPERIMENT_REVIEW_DIR)/metrics.json
+	@cp publish/v1/report.md $(EXPERIMENT_REVIEW_DIR)/report.md
+	@$(DVC) exp show --no-pager > $(EXPERIMENT_REVIEW_DIR)/exp-show.txt
+	@printf '%s\n' \
+		'Experiment review route:' \
+		'  1. Read params.yaml for the baseline control surface.' \
+		'  2. Read metrics.json for the baseline quantitative surface.' \
+		'  3. Read exp-show.txt for comparable experiment records.' \
+		'  4. Read report.md when you need the current promoted human review surface.' > $(EXPERIMENT_REVIEW_DIR)/route.txt
+	@printf '%s\n' \
+		'Experiment review questions:' \
+		'  Which declared parameter changes are being compared?' \
+		'  Which metric changes matter enough to justify promotion review?' \
+		'  Which candidate still needs release-boundary evidence before downstream trust?' > $(EXPERIMENT_REVIEW_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(EXPERIMENT_REVIEW_DIR) --output $(EXPERIMENT_REVIEW_DIR)/manifest.json
+	@echo "✔ wrote experiment review bundle to $(EXPERIMENT_REVIEW_DIR)"
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
@@ -232,5 +283,5 @@ clean-generated: ## Remove generated pipeline outputs
 
 .PHONY: clean
 clean: clean-generated ## Remove local virtual environment and caches
-	@rm -rf $(VENV_DIR) .pytest_cache .dvc/cache __pycache__
+	@rm -rf $(VENV_DIR) .pytest_cache .dvc/cache __pycache__ src/incident_escalation_capstone.egg-info
 	@find . -type d -name "__pycache__" -prune -exec rm -rf {} +
