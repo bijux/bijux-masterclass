@@ -41,6 +41,7 @@ The rule is simple: open the smallest page that answers the next honest learner 
 Use these first if you are entering the program or returning after a break:
 
 * [Start Here](start-here.md)
+* [Pressure Routes](pressure-routes.md)
 * [Module Promise Map](module-promise-map.md)
 * [Module Checkpoints](module-checkpoints.md)
 * [Course Guide](course-guide.md)
