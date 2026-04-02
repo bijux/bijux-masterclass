@@ -69,15 +69,16 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 
 1. `README.md`
 2. `DOMAIN_GUIDE.md`
-3. `dvc.yaml`
-4. `dvc.lock`
-5. `params.yaml`
-6. `metrics.json`
-7. `state-summary.json`
-8. `release-summary.json`
-9. `review-queue.json`
-10. `publish-v1/manifest.json`
-11. `publish-v1/report.md`
+3. `STAGE_CONTRACT_GUIDE.md`
+4. `dvc.yaml`
+5. `dvc.lock`
+6. `params.yaml`
+7. `metrics.json`
+8. `state-summary.json`
+9. `release-summary.json`
+10. `review-queue.json`
+11. `publish-v1/manifest.json`
+12. `publish-v1/report.md`
 
 That order mirrors the course: repository contract, declared graph, recorded execution,
 declared inputs, measured outcome, promoted interface, and human-readable report.

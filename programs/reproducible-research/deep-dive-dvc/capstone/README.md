@@ -66,6 +66,7 @@ repository:
 
 - `data/raw/service_incidents.csv` is the committed source dataset.
 - `DOMAIN_GUIDE.md` explains the incident-escalation domain and column meanings before the pipeline route starts.
+- `STAGE_CONTRACT_GUIDE.md` explains what each DVC stage owns and what should not cross that boundary.
 - `src/incident_escalation_capstone/` contains the pipeline implementation.
 - `params.yaml` is the declared control surface for splitting, training, and decision policy.
 - `dvc.yaml` and `dvc.lock` define and prove the pipeline execution graph.
@@ -99,15 +100,16 @@ Use this order the first time you enter the capstone:
 1. `make walkthrough`
 2. read `README.md`
 3. read `DOMAIN_GUIDE.md`
-4. read `ARCHITECTURE.md`
-5. read `dvc.yaml`
-6. read `dvc.lock`
-7. read `params.yaml`
-8. run `make state-summary`
-9. run `make verify`
-10. run `make release-review`
-11. inspect `publish/v1/manifest.json`
-12. read `PUBLISH_CONTRACT.md`
+4. read `STAGE_CONTRACT_GUIDE.md`
+5. read `ARCHITECTURE.md`
+6. read `dvc.yaml`
+7. read `dvc.lock`
+8. read `params.yaml`
+9. run `make state-summary`
+10. run `make verify`
+11. run `make release-review`
+12. inspect `publish/v1/manifest.json`
+13. read `PUBLISH_CONTRACT.md`
 
 That route keeps the learner focused on contract first, then declared state, then
 recorded state, then promoted evidence.

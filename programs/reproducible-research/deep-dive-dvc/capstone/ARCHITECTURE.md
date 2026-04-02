@@ -46,6 +46,9 @@ is verified.
 - `publish.py` writes the downstream review bundle.
 - `verify.py` checks whether the promoted bundle satisfies the release contract.
 
+Use [STAGE_CONTRACT_GUIDE.md](STAGE_CONTRACT_GUIDE.md) when the next question is not
+only which file owns a behavior, but which DVC stage boundary should own it.
+
 ### Review surfaces
 
 - `publish/v1/` is the promoted downstream interface.
