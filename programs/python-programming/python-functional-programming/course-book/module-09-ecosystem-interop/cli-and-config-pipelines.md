@@ -81,6 +81,11 @@ Commands as thin adapters. Guard imports.
 - Override parsing/merge lives in `capstone/src/funcpipe_rag/pipelines/cli.py`.
 - A minimal optional Typer shell exists at `capstone/src/funcpipe_rag/boundaries/shells/typer_cli.py` (import-guarded).
 
+**Teaching contract:**
+- The shipped reference implementation is the stdlib `argparse` shell.
+- The Typer block below is an extension sketch that uses the same pure override/config split; it is included to show how the boundary scales, not to imply a second production shell.
+- Review the repo files above when you want the canonical implementation surface.
+
 **Exit Code Mapping (from FPResult):**
 | Result | Code | Example |
 |--------|------|---------|
@@ -98,8 +103,8 @@ import json
 import yaml
 import typer
 from pydantic import BaseModel
-from funcpipe_rag import rag_pipeline  # Pure core; placeholder
-from funcpipe_rag import PipelineConfig, FPResult, Ok, ErrInfo, StepConfig  # From prior
+from funcpipe_rag import rag_pipeline
+from funcpipe_rag import PipelineConfig, FPResult, Ok, ErrInfo, StepConfig
 
 Out = TypeVar('Out')
 
@@ -188,9 +193,9 @@ def apply_overrides(cfg: PipelineConfig, overrides: Dict[str, Any]) -> PipelineC
 
 def run_from_spec(spec: RunSpec) -> FPResult[Out, ErrInfo]:
     if spec.seed is not None:
-        set_seed(spec.seed)  # Placeholder; pin for determinism
-    docs = load_docs(spec.input_path)  # Boundary I/O; placeholder
-    return rag_pipeline(spec.config, docs, spec.artifacts)  # Delegate pure; adjust sig
+        set_seed(spec.seed)  # Example boundary hook; the shipped shell keeps determinism in config and fixtures.
+    docs = load_docs(spec.input_path)  # Boundary I/O enters here before delegating into the pipeline builder.
+    return rag_pipeline(spec.config, docs, spec.artifacts)
 
 
 def handle_result(result: FPResult[Out, ErrInfo], output_format: str) -> int:
@@ -232,7 +237,7 @@ def build_spec_from_cli(
     config = apply_overrides(config, cli_step_overrides)
     config = PipelineConfig.model_validate(config.model_dump())  # Re-validate after apply
     return RunSpec(input_path=input_path, config=config, artifacts=load_artifacts(), seed=seed,
-                   output_format=output_format)  # load_artifacts placeholder
+                   output_format=output_format)  # Example artifact injection seam.
 
 
 @app.command()
@@ -290,12 +295,13 @@ def rag_process(input_path, config_path, overrides, seed, output_format, dry_run
 ```
 ### 4.2 Typer for Type-Driven
 ```python
-# See Public API; similar
+# See Public API above. The shipped repo keeps argparse as the canonical learner route
+# and offers the Typer shell as an optional extension seam with the same helper split.
 ```
 ### 4.3 Config Loading/Overrides
 ```python
-# See load_and_override; expand parse_override for nested
-# For nested list, extend to support [index]; placeholder for prod
+# See load_and_override and parse_override above.
+# The shipped repo supports dotted dict overrides and keeps list-index syntax out of the public contract.
 ```
 ### 4.4 Integration in RAG
 ```python

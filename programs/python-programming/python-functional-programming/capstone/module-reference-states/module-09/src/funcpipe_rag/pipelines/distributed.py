@@ -28,20 +28,19 @@ def beam_available() -> bool:
 
 
 def compile_to_dask_bag(*_args: Any, **_kwargs: Any) -> Any:
-    """Placeholder entrypoint for a Dask compiler (requires dask.bag installed)."""
+    """Extension seam stub for a Dask compiler (requires dask.bag installed)."""
 
     if not dask_available():
         raise ImportError("dask is not available")
-    raise NotImplementedError("Dask compiler is optional and not enabled in this repo by default")
+    raise NotImplementedError("Dask compiler seam is documented, but no Dask backend ships in the default repo")
 
 
 def compile_to_beam(*_args: Any, **_kwargs: Any) -> Any:
-    """Placeholder entrypoint for an Apache Beam compiler (requires apache-beam installed)."""
+    """Extension seam stub for an Apache Beam compiler (requires apache-beam installed)."""
 
     if not beam_available():
         raise ImportError("apache-beam is not available")
-    raise NotImplementedError("Beam compiler is optional and not enabled in this repo by default")
+    raise NotImplementedError("Beam compiler seam is documented, but no Beam backend ships in the default repo")
 
 
 __all__ = ["dask_available", "beam_available", "compile_to_dask_bag", "compile_to_beam"]
-

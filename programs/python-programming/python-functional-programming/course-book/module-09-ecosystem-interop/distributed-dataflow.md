@@ -82,7 +82,8 @@ Builders as funcs. Guard imports. We define an intermediate representation (IR) 
 
 **Repo alignment note (end-of-Module-09):**
 - Dask/Beam are optional and not part of this repo’s default dependency set.
-- This repo includes a placeholder location for compilers at `capstone/src/funcpipe_rag/pipelines/distributed.py` (import-guarded).
+- This repo includes an import-guarded extension seam stub for compilers at `capstone/src/funcpipe_rag/pipelines/distributed.py`.
+- That file is intentionally a boundary marker: it documents where distributed backends would attach without claiming that Dask or Beam are part of the default proof route.
 
 ```python
 from typing import Callable, TypeVar, Any, List, Dict, Optional, Literal, Union
