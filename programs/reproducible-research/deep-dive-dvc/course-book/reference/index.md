@@ -41,6 +41,7 @@ order, comparison routes, and course completion standards.
 - [Authority Map](authority-map.md) for deciding which layer is authoritative
 - [Evidence Boundary Guide](evidence-boundary-guide.md) for separating declaration, execution, promotion, and recovery proof
 - [State Glossary](state-glossary.md) for durable language
+- [Version Support Guide](version-support-guide.md) for the supported toolchain contract and the commands that prove you are still inside it
 - [Topic Boundaries](topic-boundaries.md) for what the course treats as core, supporting, and boundary material
 - [Practice Map](practice-map.md) for module-to-proof routing
 - [Anti-Pattern Atlas](anti-pattern-atlas.md) for routing common reproducibility smells to the right repair path

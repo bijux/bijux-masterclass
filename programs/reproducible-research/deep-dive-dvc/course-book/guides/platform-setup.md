@@ -32,6 +32,10 @@ course assumes a small, explicit platform contract.
 
 This page makes that contract clear before the learner hits avoidable setup failures.
 
+Use [`../reference/version-support-guide.md`](../reference/version-support-guide.md) when
+you need the longer-lived support contract and drift rules instead of just the initial
+setup sequence.
+
 ---
 
 ## Minimum Tooling
@@ -68,12 +72,14 @@ From `programs/reproducible-research/deep-dive-dvc/capstone/`:
 
 ```sh
 make install
+make platform-report
 make dvc-init
 make repro
 ```
 
 That sequence creates the virtual environment, installs DVC plus the capstone package,
-initializes `.dvc/`, and configures the local training remote.
+prints the supported Python, Git, and DVC versions, initializes `.dvc/`, and configures
+the local training remote.
 
 [Back to top](#top)
 
@@ -85,12 +91,14 @@ From the capstone directory:
 
 ```sh
 make help
+make platform-report
 make walkthrough
 make verify
 ```
 
-If `make verify` succeeds, the capstone can execute, validate the publish bundle, and
-read the configured remote-backed state surfaces.
+If `make platform-report` and `make verify` both succeed, the capstone is running inside
+the supported toolchain and can validate the publish bundle and read the configured
+remote-backed state surfaces.
 
 [Back to top](#top)
 

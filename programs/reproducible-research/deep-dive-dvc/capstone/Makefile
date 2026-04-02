@@ -32,6 +32,13 @@ install: venv ## Install capstone dependencies
 	@rm -rf src/incident_escalation_capstone.egg-info
 	@$(PIP) install -e . pytest dvc
 
+.PHONY: platform-report
+platform-report: install ## Print the supported Python, Git, and DVC versions
+	@printf 'python_executable=%s\n' "$(VENV_PY)"
+	@$(VENV_PY) -c 'import sys; print(f"python_version={sys.version.split()[0]}")'
+	@printf 'git_version=%s\n' "$$(git --version | awk "{print \$$3}")"
+	@printf 'dvc_version=%s\n' "$$($(DVC) version | awk "NR==1 {print \$$3}")"
+
 .PHONY: dvc-init
 dvc-init: install ## Initialize DVC metadata and the local training remote
 	@if [ ! -d .dvc ]; then $(DVC) init --subdir -q; fi
