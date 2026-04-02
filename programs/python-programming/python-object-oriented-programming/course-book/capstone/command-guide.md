@@ -33,6 +33,7 @@ make PROGRAM=python-programming/python-object-oriented-programming docs-build
 make PROGRAM=python-programming/python-object-oriented-programming test
 make PROGRAM=python-programming/python-object-oriented-programming demo
 make PROGRAM=python-programming/python-object-oriented-programming inspect
+make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough
 make PROGRAM=python-programming/python-object-oriented-programming capstone-tour
 make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report
 make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm
@@ -54,9 +55,10 @@ make proof
 
 - Use `docs-serve` when you are reading and want the course-book locally.
 - Use `test` when you want the raw executable suite without the review bundles.
-- Use `demo` when you want the walkthrough printed directly in the terminal.
+- Use `demo` when you want the scenario printed directly in the terminal without the saved learner-facing bundle.
 - Use `inspect` when you want a saved learner-facing inspection bundle with scenario, rules, and history outputs.
-- Use `capstone-tour` or `tour` when you want the saved walkthrough bundle for review or sharing.
+- Use `capstone-walkthrough` from the repository root, or `tour` inside `capstone/`, when you want the saved walkthrough bundle for review or sharing.
+- Use `capstone-tour` when you want the stronger learner-facing tour route after the walkthrough is already clear.
 - Use `capstone-verify-report` or `verify-report` when you want test output and learner-facing state captured together.
 - Use `capstone-confirm` or `confirm` when you want the strongest program-approved confirmation route.
 - Use `proof` when you want the full course-sanctioned evidence route in one command.
@@ -65,7 +67,7 @@ make proof
 
 | If you want to... | Start with | Escalate to |
 | --- | --- | --- |
-| understand the capstone story without reading internals first | `demo` | `capstone-tour` |
+| understand the capstone story without reading internals first | `capstone-walkthrough` | `capstone-tour` |
 | inspect saved learner-facing state | `inspect` | `capstone-verify-report` |
 | run raw executable checks quickly | `test` | `capstone-confirm` |
 | review architecture with durable evidence | `capstone-tour` | `capstone-verify-report` |
@@ -73,7 +75,7 @@ make proof
 
 ## Smallest honest command
 
-- If the question is narrative, start with `demo` or `capstone-tour`.
+- If the question is narrative, start with `capstone-walkthrough` and use `demo` only when you specifically want the terminal-only scenario route.
 - If the question is behavioral, start with `test` or `inspect`.
 - If the question is whole-capstone trust, start with `capstone-confirm` and escalate to `proof` only when you need the full learner-facing route.
 
