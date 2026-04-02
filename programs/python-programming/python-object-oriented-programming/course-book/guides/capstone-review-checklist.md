@@ -49,6 +49,21 @@ Use this checklist when reviewing the capstone after a module or before extendin
 - Which file would you edit first for the change you are imagining?
 - Which extension guide would stop you from placing that change in the wrong boundary?
 
+## Red flags
+
+- The runtime starts owning lifecycle decisions that should stay in the aggregate.
+- Read models or projections begin mutating authoritative state directly.
+- New evaluation behavior lands in the aggregate as condition ladders instead of policy surfaces.
+- Persistence concerns start redefining the domain model instead of adapting to it.
+- A reviewer can no longer name the smallest test or bundle that proves a claim.
+
+## Evidence prompts
+
+- If you changed this boundary tomorrow, which test should fail first?
+- Which saved bundle would let another reviewer understand the claim without rerunning commands?
+- Which guide would you open before editing the file you have in mind?
+- Which object would become suspicious first if the design drifted toward procedural glue?
+
 ## Module-stage prompts
 
 - Modules 01-03: Which value or lifecycle rule becomes false first if the model drifts?
