@@ -29,7 +29,7 @@ before incident, profile, or migration questions.
 ## Bounded proof pass
 
 1. Run `make PROGRAM=reproducible-research/deep-dive-make proof`.
-2. Read the capstone's local [TARGET_GUIDE.md](../../capstone/docs/TARGET_GUIDE.md).
+2. Read [Command Guide](command-guide.md).
 3. Read `capstone/Makefile` and `capstone/tests/run.sh`.
 4. Inspect `artifacts/proof/reproducible-research/deep-dive-make/selftest/`.
 5. Inspect `artifacts/audit/reproducible-research/deep-dive-make/contract/`.

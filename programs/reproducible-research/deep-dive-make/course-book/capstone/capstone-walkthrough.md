@@ -32,9 +32,9 @@ is visible.
 ## 30-minute first pass
 
 1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough`.
-2. Read the capstone's local [WALKTHROUGH_GUIDE.md](../../capstone/docs/WALKTHROUGH_GUIDE.md).
+2. Read [Capstone Walkthrough](capstone-walkthrough.md) for the learner-facing route.
 3. Run `make PROGRAM=reproducible-research/deep-dive-make inspect`.
-4. Read the capstone's local [TARGET_GUIDE.md](../../capstone/docs/TARGET_GUIDE.md).
+4. Read [Command Guide](command-guide.md) for the smallest honest command.
 5. Read `capstone/Makefile` and `capstone/tests/run.sh`.
 6. Run `make PROGRAM=reproducible-research/deep-dive-make test`.
 
@@ -45,7 +45,7 @@ and how the build proves more than compilation.
 
 Use this only after Modules 06-08.
 
-1. Read the capstone's local [ARCHITECTURE.md](../../capstone/docs/ARCHITECTURE.md).
+1. Read [Capstone File Guide](capstone-file-guide.md) before widening into the repository.
 2. Follow discovery in `capstone/mk/objects.mk`.
 3. Follow modeled hidden inputs in `capstone/mk/stamps.mk`.
 4. Trace generated-header production from `capstone/scripts/gen_dynamic_h.py`.
@@ -58,8 +58,8 @@ publication boundaries.
 
 Use this only after Modules 09-10.
 
-1. Read the capstone's local [TARGET_GUIDE.md](../../capstone/docs/TARGET_GUIDE.md).
-2. Read the capstone's local [ARCHITECTURE.md](../../capstone/docs/ARCHITECTURE.md).
+1. Read [Command Guide](command-guide.md).
+2. Read [Capstone File Guide](capstone-file-guide.md).
 3. Review `capstone/mk/*.mk`, `capstone/tests/`, and `capstone/repro/`.
 4. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm`.
 
