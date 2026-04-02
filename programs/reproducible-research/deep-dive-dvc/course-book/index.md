@@ -1,9 +1,12 @@
 # Deep Dive DVC
 
-Deep Dive DVC teaches reproducibility as a discipline of explicit state. It is now a
-ten-module beginner-to-mastery program, not only a compact state-management course. The
-goal is to make data, parameters, metrics, experiments, remotes, and recovery boundaries
-precise enough that another person can trust them months later.
+Deep Dive DVC teaches reproducibility as a discipline of explicit state. The goal is to
+make data, parameters, metrics, experiments, remotes, and recovery boundaries precise
+enough that another person can trust them months later.
+
+This course is designed as a guided route, not a loose pile of DVC notes. Start with the
+learner path that matches your role, then use the capstone only when the concept is
+already legible enough to benefit from executable proof.
 
 ## Why this program exists
 
@@ -18,9 +21,16 @@ matters:
 
 This program exists to close that gap.
 
-## Reading contract
+## Start With One Route
 
-This is not a command reference. The learner path is deliberate:
+Choose one entry:
+
+1. If you are new to the program, start with [`start-here.md`](start-here.md).
+2. If you already know the course exists but need the right support page, use [`course-guide.md`](course-guide.md).
+3. If you want the full program shape before reading modules, open [`module-00.md`](module-00.md).
+4. If you need the executable repository, start with [`readme-capstone.md`](readme-capstone.md), not the raw capstone directory.
+
+The learner path is deliberate:
 
 1. Start with why reproducibility fails.
 2. Learn state identity before pipeline execution.
@@ -31,16 +41,9 @@ This is not a command reference. The learner path is deliberate:
 If you skip that order, later modules will still be readable, but their rules will feel
 administrative instead of necessary.
 
-## Start here
+## Course Shape At A Glance
 
-If you are not sure where to begin, use [`start-here.md`](start-here.md) before diving
-into the modules. It routes beginners, working maintainers, and reproducibility stewards
-to the right entry path so the capstone does not become an accidental first lesson.
-
-If you already know the course exists but are not sure which support page you need, use
-[`course-guide.md`](course-guide.md) as the stable hub.
-
-## What each module contributes
+Use this snapshot when you need the fastest sense of what the modules are doing:
 
 - [Module 00](module-00.md) defines the study strategy, the family context, and the capstone route.
 - [Module 01](module-01.md) explains why common Git-and-script workflows still fail reproducibility.
@@ -56,7 +59,17 @@ If you already know the course exists but are not sure which support page you ne
 - [Capstone Guide](readme-capstone.md) explains what the executable repository proves.
 - [Capstone Map](capstone-map.md) shows which repository surfaces to inspect for each module.
 
-## How to use the capstone while reading
+## Support Pages Worth Knowing Early
+
+These pages make the course easier to navigate:
+
+- [`learning-contract.md`](learning-contract.md) clarifies what the course optimizes for and refuses to optimize for.
+- [`module-dependency-map.md`](module-dependency-map.md) shows which concepts should be learned before others.
+- [`platform-setup.md`](platform-setup.md) explains the local environment assumptions before you run proof commands.
+- [`practice-map.md`](practice-map.md) maps each module to its main proof loop and capstone follow-up.
+- [`command-guide.md`](command-guide.md) explains where each command belongs.
+
+## How To Use The Capstone While Reading
 
 - After Module 02, inspect how the repository separates workspace state, cache state, and publish state.
 - After Module 04, inspect the `dvc.yaml` stages and ask whether every influential edge is declared.
@@ -67,7 +80,17 @@ If you already know the course exists but are not sure which support page you ne
 
 The capstone should answer the question: "What does this module look like in a real DVC repository?"
 
-## Working locally
+## What The Course Is Trying To Prevent
+
+- treating paths as identity
+- comparing metrics whose meaning has drifted
+- running pipelines with undeclared parameters or environment assumptions
+- using experiments without promotion rules
+- promoting state without the evidence needed to defend it later
+- letting migration or retention policy silently damage authoritative history
+- trusting remotes and recovery stories that were never rehearsed
+
+## Working Locally
 
 From the repository root:
 
@@ -76,7 +99,7 @@ make PROGRAM=reproducible-research/deep-dive-dvc docs-serve
 make PROGRAM=reproducible-research/deep-dive-dvc test
 ```
 
-## Repository layout
+## Repository Layout
 
 ```mermaid
 graph TD
@@ -91,13 +114,3 @@ graph TD
   book --> capmap["capstone-map.md"]
   capstone --> capreadme["README.md"]
 ```
-
-## Common failure modes this program is trying to prevent
-
-- treating paths as identity
-- comparing metrics whose meaning has drifted
-- running pipelines with undeclared parameters or environment assumptions
-- using experiments without promotion rules
-- promoting state without the evidence needed to defend it later
-- letting migration or retention policy silently damage authoritative history
-- trusting remotes and recovery stories that were never rehearsed
