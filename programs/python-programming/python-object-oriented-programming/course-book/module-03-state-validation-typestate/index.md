@@ -70,6 +70,12 @@ represented as a contract instead of a pile of tolerated exceptions.
 3. Finish with lifecycle and typestate because they build on the earlier representation choices.
 4. Use the refactor chapter to see state constraints made explicit in one coherent model.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want the state and lifecycle promise connected to evidence.
+- `../guides/module-checkpoints.md` when you need a sharper bar for legal and illegal state reasoning.
+- `../reference/self-review-prompts.md` when you want to test whether nullability, validation, and transitions now sound like contract language.
+
 ## Common failure modes
 
 - hiding expensive or stateful work behind innocent-looking properties

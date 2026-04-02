@@ -74,6 +74,12 @@ should collaborate without turning the system into framework theater.
 3. Read interfaces and protocols after the role boundaries are clear.
 4. Finish with the refactor chapter to see a thin layered design emerge from concrete pressure.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want the role-assignment promise tied to a capstone proof route.
+- `../guides/design-question-map.md` when the ownership question feels clearer than the chapter title.
+- `../reference/self-review-prompts.md` when you want to test whether you can justify one owner and reject a nearby wrong owner.
+
 ## Common failure modes
 
 - placing behavior wherever the current developer happens to be editing

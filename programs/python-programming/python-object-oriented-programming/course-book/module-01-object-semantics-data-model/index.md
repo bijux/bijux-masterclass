@@ -75,6 +75,12 @@ instead of engineering decisions.
 3. Then study aliasing, copying, and the broader data model.
 4. Finish with the "when classes are the wrong tool" chapter and the module refactor.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want the learner outcome tied directly to a proof route.
+- `../guides/module-promise-map.md` when you want this module kept honest as a semantic-floor contract.
+- `../reference/self-review-prompts.md` when you want to test whether identity, equality, and mutation already sound like review language instead of vocabulary recall.
+
 ## Common failure modes
 
 - using mutable objects as keys without respecting hash semantics

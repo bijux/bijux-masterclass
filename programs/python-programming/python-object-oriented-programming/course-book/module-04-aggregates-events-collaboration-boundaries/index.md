@@ -75,6 +75,12 @@ This module is about finding the boundary between those extremes.
 3. Study policies, adapters, and collaboration surfaces after the boundary is clear.
 4. Use the refactor chapter as the test of whether the model stays coherent under extension.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want the authority and collaboration promise tied to one proof surface.
+- `../guides/capstone-map.md` when you want this module attached to the exact capstone files and commands.
+- `../reference/self-review-prompts.md` when you want to test whether you can distinguish authority, projection, and orchestration without guessing.
+
 ## First capstone pass for this module
 
 1. Read `capstone/ARCHITECTURE.md`.
