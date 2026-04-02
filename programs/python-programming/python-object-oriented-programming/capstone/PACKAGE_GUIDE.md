@@ -85,3 +85,6 @@ coordination third, and proof surfaces last.
 - treating read models as if they were authoritative state
 - putting a new rule mode into the runtime instead of the policy seam
 - reaching for tests before you know which package is supposed to own the behavior
+
+Read [CHANGE_RECIPES.md](CHANGE_RECIPES.md) when you want those file choices turned into
+concrete local edit sequences.

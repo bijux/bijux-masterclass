@@ -76,3 +76,6 @@ quietly absorb domain rules that belong to the aggregate or evaluation policies.
 - the closest test fails before the fix and passes after it
 - the most relevant local guide still points a future learner to the same boundary
 - the proof route remains proportionate to the claim
+
+Use [CHANGE_RECIPES.md](CHANGE_RECIPES.md) when you want a concrete local example before
+you open the first file.
