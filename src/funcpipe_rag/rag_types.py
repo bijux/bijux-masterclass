@@ -8,6 +8,7 @@ All types are frozen dataclasses → instances are values:
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 
 
@@ -22,6 +23,9 @@ class RawDoc:
     title: str
     abstract: str
     categories: str
+
+
+DocRule = Callable[[RawDoc], bool]
 
 
 @dataclass(frozen=True)
@@ -68,7 +72,10 @@ class RagEnv:
     """Immutable configuration for a single pipeline run."""
 
     chunk_size: int
+    sample_size: int = 5
 
     def __post_init__(self) -> None:
         if self.chunk_size <= 0:
             raise ValueError("RagEnv.chunk_size must be a positive integer")
+        if self.sample_size <= 0:
+            raise ValueError("RagEnv.sample_size must be a positive integer")

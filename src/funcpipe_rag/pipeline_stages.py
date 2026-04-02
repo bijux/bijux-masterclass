@@ -1,18 +1,14 @@
 """Pure, composable pipeline stages for the FuncPipe RAG implementation.
 
-Every function in this module is:
-- Pure (same inputs → same outputs, no side effects)
-- Total (always returns a value, never raises for valid input)
-- Referentially transparent
-- Designed to be composed with ``fmap``, ``flow``, or ``RagPipe``
-
-This file represents the final state of Module 01: the pipeline is not just pure,
-it is **canonical** — repeated application yields a fixed point in one pass.
+End-of-Module-02 codebase: these stages are the stable, deterministic core used
+by the higher-level APIs (configs, rules, taps/probes, boundary shells).
 """
 
 from __future__ import annotations
 
 import hashlib
+
+from collections.abc import Iterable, Iterator
 
 from funcpipe_rag.rag_types import (
     RawDoc,
@@ -24,10 +20,7 @@ from funcpipe_rag.rag_types import (
 
 
 def clean_doc(doc: RawDoc) -> CleanDoc:
-    """Deterministically normalise whitespace and case in the abstract.
-
-    The transformation is idempotent: ``clean_doc(clean_doc(doc)) == clean_doc(doc)``.
-    """
+    """Deterministically normalise whitespace and case in the abstract."""
     abstract = " ".join(doc.abstract.strip().lower().split())
     return CleanDoc(
         doc_id=doc.doc_id,
@@ -43,16 +36,22 @@ def chunk_doc(doc: CleanDoc, env: RagEnv) -> list[ChunkWithoutEmbedding]:
     The result is order-preserving and covers the entire abstract without gaps
     or overlaps (except possibly a shorter final chunk).
     """
+    return list(iter_chunk_doc(doc, env))
+
+
+def iter_chunk_doc(doc: CleanDoc, env: RagEnv) -> Iterator[ChunkWithoutEmbedding]:
+    """Yield chunks lazily from a cleaned document."""
+
     text = doc.abstract
-    return [
-        ChunkWithoutEmbedding(
-            doc_id=doc.doc_id,
-            text=text[i : i + env.chunk_size],
-            start=i,
-            end=i + len(text[i : i + env.chunk_size]),
-        )
-        for i in range(0, len(text), env.chunk_size)
-    ]
+    for start in range(0, len(text), env.chunk_size):
+        piece = text[start : start + env.chunk_size]
+        if piece:
+            yield ChunkWithoutEmbedding(
+                doc_id=doc.doc_id,
+                text=piece,
+                start=start,
+                end=start + len(piece),
+            )
 
 
 def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
@@ -75,7 +74,7 @@ def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
     )
 
 
-def structural_dedup_chunks(chunks: list[Chunk]) -> list[Chunk]:
+def structural_dedup_chunks(chunks: Iterable[Chunk]) -> list[Chunk]:
     """Canonical deduplication: sort by (doc_id, start) then remove structural duplicates.
 
     This function is:
@@ -83,7 +82,6 @@ def structural_dedup_chunks(chunks: list[Chunk]) -> list[Chunk]:
     - Canonical: output depends only on the set of unique chunks, not input order
     - Convergent: one pass reaches the fixed point
 
-    This is the final lesson of Module 01 – stability under repeated application.
     """
     seen: set[tuple[str, str, int, int]] = set()
     result: list[Chunk] = []
@@ -94,22 +92,4 @@ def structural_dedup_chunks(chunks: list[Chunk]) -> list[Chunk]:
             seen.add(key)
             result.append(chunk)
 
-    return result
-
-
-# --------------------------------------------------------------------------- #
-# Legacy / pedagogical variants – kept only for teaching, not used in production
-# --------------------------------------------------------------------------- #
-
-# These are intentionally left here with clear deprecation notices.
-# They exist so students can import and compare against the final versions above.
-
-def _legacy_order_preserving_dedup(chunks: list[Chunk]) -> list[Chunk]:
-    """Old version – preserved only for equivalence tests."""
-    seen = set()
-    result = []
-    for c in chunks:
-        if c not in seen:
-            seen.add(c)
-            result.append(c)
     return result

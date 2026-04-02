@@ -1,4 +1,4 @@
-"""Shared Hypothesis strategies used across the Module 01 tests."""
+"""Shared Hypothesis strategies used across the test suite."""
 
 from __future__ import annotations
 
