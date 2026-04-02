@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Start Here
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,86 +13,63 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Name the current pressure"] --> route["Choose one starting route"]
+  route --> orient["Anchor in Module 00"]
+  orient --> next_move["Leave with one stable next module or guide"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this page is for choosing the first honest route,
+not for replacing the course. Read the second diagram as the loop: choose one route,
+anchor in Module 00, and leave with one stable next move.
 
 Deep Dive DVC is not a command catalog. It is a course about making state explicit
 enough that another person can recover, compare, release, and defend results later.
 
-Use this page to pick the right entry route before you start reading modules out of
-sequence.
+## Use this page when
 
-## Use This Course If
+- DVC still feels new and you want the safest ramp
+- the repository is already confusing and you need the smallest justifiable route
+- you steward reproducibility and need the course without random browsing
 
-- you are learning DVC and want a principled state model instead of only command recall
-- you inherited a repository where data, params, metrics, or experiments are hard to trust
-- you already use DVC but still cannot say which state is authoritative
-- you review whether a repository can survive handoff, recovery, and promotion pressure
+## Do not use this page to
 
-## Do Not Start Here If
+- replace the module sequence with support-page browsing
+- enter the capstone before the local concept is legible
+- choose the strongest proof route by default
 
-- you only want a quick command reminder without system trade-offs
-- you want tooling advice before you can explain the repository's state model
-- you want to treat remotes, metrics, and publish artifacts as interchangeable surfaces
+## Best first pass
 
-## Best Reading Route
+1. Read [Course Home](../index.md).
+2. Read [Course Guide](course-guide.md).
+3. Read [Learning Contract](learning-contract.md).
+4. Read [Module 00](../module-00-orientation/index.md).
+5. Continue to [Module 01](../module-01-reproducibility-failures-real-teams/index.md).
 
-1. Read [Course Home](../index.md) for the program promise and support surfaces.
-2. Read [Course Guide](course-guide.md) for the module arc and page roles.
-3. Read [Learning Contract](learning-contract.md) before you start Module 01.
-4. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
-5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-6. Keep [Truth Contracts](truth-contracts.md), [Authority Map](../reference/authority-map.md), and [Capstone Map](../capstone/capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
+Stop there before opening more shelves. That is enough to make the reading contract,
+state contract, and capstone timing visible.
 
-## Route By Pressure
+## Choose the route that matches your pressure
 
-### First contact
+| If you need... | Read next | Keep nearby |
+| --- | --- | --- |
+| first contact with DVC | [Module 01](../module-01-reproducibility-failures-real-teams/index.md), [Module 02](../module-02-data-identity-content-addressing/index.md) | [Module Checkpoints](module-checkpoints.md) |
+| repair of an existing repository | [Pressure Routes](pressure-routes.md), [Module 04](../module-04-truthful-pipelines-declared-dependencies/index.md), [Module 08](../module-08-recovery-scale-incident-survival/index.md) | [Authority Map](../reference/authority-map.md) |
+| stewardship of a long-lived repository | [Module 05](../module-05-metrics-parameters-comparable-meaning/index.md), [Module 09](../module-09-promotion-registry-boundaries-auditability/index.md), [Module 10](../module-10-migration-governance-dvc-boundaries/index.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 
-1. Read [Course Guide](course-guide.md).
-2. Read [Module 00](../module-00-orientation/index.md).
-3. Read [Module 01](../module-01-reproducibility-failures-real-teams/index.md).
-4. Read [Module 02](../module-02-data-identity-content-addressing/index.md).
-5. Use [Module Checkpoints](module-checkpoints.md) before moving on.
+## What to keep open
 
-### Repair an existing repository
+- [Course Guide](course-guide.md)
+- [Truth Contracts](truth-contracts.md)
+- [Module Promise Map](module-promise-map.md)
+- [Authority Map](../reference/authority-map.md)
+- [Capstone Guide](../capstone/index.md), but only as a later corroboration surface
 
-1. Read [Pressure Routes](pressure-routes.md).
-2. Read [Authority Map](../reference/authority-map.md).
-3. Read [Module 01](../module-01-reproducibility-failures-real-teams/index.md).
-4. Read [Module 04](../module-04-truthful-pipelines-declared-dependencies/index.md).
-5. Read [Module 07](../module-07-collaboration-ci-social-contracts/index.md).
-6. Read [Module 08](../module-08-recovery-scale-incident-survival/index.md).
-7. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](../capstone/capstone-map.md) to inspect the reference repository selectively.
+## Success signal
 
-### Reproducibility stewardship
-
-1. Read [Evidence Boundary Guide](../reference/evidence-boundary-guide.md).
-2. Read [Module 05](../module-05-metrics-parameters-comparable-meaning/index.md).
-3. Read [Module 08](../module-08-recovery-scale-incident-survival/index.md).
-4. Read [Module 09](../module-09-promotion-registry-boundaries-auditability/index.md).
-5. Read [Module 10](../module-10-migration-governance-dvc-boundaries/index.md).
-6. Finish with [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) and [Release Audit Checklist](../capstone/release-audit-checklist.md).
-
-## Success Signal
-
-You are using the course correctly if you can explain all of this without hand-waving:
+You are using the course correctly if you can explain:
 
 - which layer of state is authoritative
-- the difference between workspace state, Git state, cache state, and remote durability
-- why a pipeline stage should or should not rerun
-- which params, metrics, and publish artifacts are safe for downstream trust
-
-## First Pages To Keep Open
-
-- [Course Home](../index.md)
-- [Course Guide](course-guide.md)
-- [Module 00](../module-00-orientation/index.md)
-- [Authority Map](../reference/authority-map.md)
-- [Capstone Guide](../capstone/index.md)
-
-[Back to top](#top)
+- why the capstone is not your first lesson
+- which support page answers the next question without opening everything
+- which proof route is proportionate to the claim in front of you
