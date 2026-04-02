@@ -20,7 +20,10 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this guide is the bridge into the capstone, not a
+replacement for the repository docs. Read the second diagram as the guide loop: arrive
+with one course-shaped question, open the smallest matching capstone route, then leave
+with one smaller and more honest next move.
 
 The FuncPipe RAG capstone is the course's executable proof. It is not a separate side
 project and not a graduation appendix. It is the repository the course keeps using to
@@ -45,56 +48,42 @@ If the retrieval domain itself feels noisy, read [FuncPipe RAG Primer](../guides
 first. It narrows the vocabulary so the capstone stays attached to the FP lesson instead
 of turning into a separate subject.
 
-## What the learner should do with it
+## Choose the right capstone route
 
-Use the capstone as evidence, not just as a runnable project:
-
-- inspect the code after each module to locate the same contract in executable form
-- read implementation and tests together so the claims stay attached to proof
-- compare the pure core with the adapter layer instead of treating everything as one blob
-- return to the architecture and tour material whenever the abstractions start to feel abstract
+| If your question is... | Best page |
+| --- | --- |
+| Which capstone surface matches the current module? | [Capstone Map](capstone-map.md) |
+| Which files should I read first? | [Capstone File Guide](capstone-file-guide.md) |
+| Which tests should I read first? | [Capstone Test Guide](capstone-test-guide.md) |
+| Where do packages and boundaries live? | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| Which proof route is honest for my question? | [Capstone Proof Guide](capstone-proof-guide.md) |
+| Where should a new change land? | [Capstone Extension Guide](capstone-extension-guide.md) |
 
 ## Capstone checkpoints by module range
 
-- Modules 01 to 03:
-  Inspect pure transforms, explicit configuration, and lazy pipeline stages.
-- Modules 04 to 06:
-  Inspect failure containers, modelling choices, and lawful chaining patterns.
-- Modules 07 to 08:
-  Inspect capability protocols, adapter shells, async boundaries, and pressure-control logic.
-- Modules 09 to 10:
-  Inspect interop helpers, review surfaces, performance trade-offs, and sustainment decisions.
+| Module range | What to inspect in the capstone |
+| --- | --- |
+| Modules 01 to 03 | pure transforms, explicit configuration, and lazy pipeline stages |
+| Modules 04 to 06 | failure containers, modelling choices, and lawful chaining patterns |
+| Modules 07 to 08 | capability protocols, adapter shells, async boundaries, and pressure-control logic |
+| Modules 09 to 10 | interop helpers, review surfaces, performance trade-offs, and sustainment decisions |
 
 ## Best entry surfaces
 
 - Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/README.md)
+- Guide index: [`capstone/docs/GUIDE_INDEX.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/GUIDE_INDEX.md)
 - Architecture map: [`capstone/docs/ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/ARCHITECTURE.md)
 - Tour guide: [`capstone/docs/TOUR.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/TOUR.md)
-- Source tree: [`capstone/src/funcpipe_rag/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-functional-programming/capstone/src/funcpipe_rag)
-- Tests: [`capstone/tests/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-functional-programming/capstone/tests)
+- Proof guide: [`capstone/docs/PROOF_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/PROOF_GUIDE.md)
 
 ## Core commands
 
-From the repository root:
-
-```bash
-make PROGRAM=python-programming/python-functional-programming install
-make PROGRAM=python-programming/python-functional-programming test
-make PROGRAM=python-programming/python-functional-programming capstone-test
-make PROGRAM=python-programming/python-functional-programming capstone-tour
-```
-
-From the capstone directory:
-
-```bash
-make install
-make test
-make tour
-```
-
-At the repository root, `test` is the full course confirmation route and maps to the
-capstone's `confirm` target. Use `capstone-test` from the root, or `make test` inside the
-capstone, when the narrower question is only the pytest suite.
+| If you need... | From the repository root | From the capstone directory |
+| --- | --- | --- |
+| install the project | `make PROGRAM=python-programming/python-functional-programming install` | `make install` |
+| the strongest course-level proof route | `make PROGRAM=python-programming/python-functional-programming test` | `make confirm` |
+| the pytest suite only | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `make test` |
+| the learner-facing walkthrough bundle | `make PROGRAM=python-programming/python-functional-programming capstone-tour` | `make tour` |
 
 ## Review questions
 
@@ -112,3 +101,9 @@ without treating any of those as hidden magic.
 ## Directory glossary
 
 Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between repository routes, review surfaces, and proof commands.
+
+## Stop here when
+
+- you know which capstone page answers your current course question
+- you know whether your next move is code reading, test reading, or proof
+- you know the smallest command that fits that move
