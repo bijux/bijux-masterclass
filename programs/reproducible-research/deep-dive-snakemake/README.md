@@ -163,7 +163,7 @@ global `snakemake` install. The exact setup contract lives in
 1. Start with `course-book/guides/start-here.md`, then `course-book/guides/pressure-routes.md` if your context is not calm first-contact study.
 2. Use `course-book/guides/module-promise-map.md` and `course-book/guides/module-checkpoints.md` to keep the module arc honest as you go.
 3. Work through Modules 01 to 10 in order because later workflow patterns depend on earlier file-contract discipline.
-4. Use `course-book/guides/proof-ladder.md`, `course-book/guides/capstone-map.md`, and `course-book/guides/proof-matrix.md` when you need to enter the reference workflow deliberately instead of browsing randomly.
+4. Use `course-book/guides/proof-ladder.md`, `course-book/capstone/index.md`, `course-book/capstone/capstone-map.md`, and `course-book/guides/proof-matrix.md` when you need to enter the reference workflow deliberately instead of browsing randomly.
 5. Re-run the capstone proof targets regularly so the workflow stays executable in your head, not only in prose.
 6. Use dry-runs, summaries, and proof artifacts as learning tools, not only as debugging tools.
 
