@@ -42,6 +42,7 @@ Use them in this order when you are new to the program:
 - [Course Guide](course-guide.md) if you want the fastest route to the right support page
 - [Learning Contract](learning-contract.md) if you want the pedagogical boundaries first
 - [Module Promise Map](module-promise-map.md) if you want each module title translated into an explicit learner contract
+- [Module Checkpoints](module-checkpoints.md) if you want a module-end readiness bar before moving on
 - [Platform Setup](platform-setup.md) if you plan to run the proof surfaces locally
 
 ## Proof And Navigation Guides

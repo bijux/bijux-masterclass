@@ -26,6 +26,7 @@ nav:
       - Course Guide: guides/course-guide.md
       - Learner Entry: guides/start-here.md
       - Module Promise Map: guides/module-promise-map.md
+      - Module Checkpoints: guides/module-checkpoints.md
       - Platform Setup: guides/platform-setup.md
       - Learning Contract: guides/learning-contract.md
       - "Module 00: Orientation and Study Strategy": module-00-orientation/index.md
