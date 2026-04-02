@@ -63,6 +63,7 @@ instead of letting them blur into invocation proof.
 - Go to `TEST_GUIDE.md` when you need precise executable proof for a claim the bundle only suggests.
 - Go to `PROOF_GUIDE.md` when you need the strongest review route.
 - Go to `REGISTRY_GUIDE.md` when the next question is why a plugin is or is not registered at all.
+- Go to `MANIFEST_GUIDE.md` when the next question is what the runtime exports before invocation.
 
 ## What this guide prevents
 

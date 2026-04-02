@@ -84,6 +84,9 @@ public surface without opening private internals first.
 Use [REGISTRY_GUIDE.md](REGISTRY_GUIDE.md) when the metaclass proof question is mainly
 about deterministic registration and duplicate handling.
 
+Use [MANIFEST_GUIDE.md](MANIFEST_GUIDE.md) when the proof question is mainly about
+observational export rather than registration or invocation.
+
 ## Review questions
 
 - Which proof demonstrates definition-time behavior?
