@@ -20,6 +20,10 @@ test: ## Run the capstone confirmation suite
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	@$(RUN_CAPSTONE) tour
 
+.PHONY: capstone-verify-report
+capstone-verify-report: ## Build the capstone verification report bundle
+	@$(RUN_CAPSTONE) verify-report
+
 .PHONY: capstone-verify
 capstone-verify: ## Run the capstone contract verification route
 	@$(RUN_CAPSTONE) verify
@@ -31,6 +35,14 @@ capstone-confirm: ## Run the capstone's strongest confirmation route
 .PHONY: capstone-walkthrough
 capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@$(RUN_CAPSTONE) walkthrough
+
+.PHONY: capstone-release-audit
+capstone-release-audit: ## Build the capstone release-boundary audit bundle
+	@$(RUN_CAPSTONE) release-audit
+
+.PHONY: capstone-recovery-audit
+capstone-recovery-audit: ## Build the capstone remote-recovery audit bundle
+	@$(RUN_CAPSTONE) recovery-audit
 
 .PHONY: clean
 clean: ## Remove build artifacts
