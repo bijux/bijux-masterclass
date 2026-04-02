@@ -66,7 +66,7 @@ info: ## Print tool versions and key settings
 
 clean: ## Remove build/run artifacts (keeps git-tracked files)
 	rm -rf .snakemake publish results logs benchmarks .hypothesis .benchmarks dag.png rulegraph.png .pytest_cache
-	rm -rf "$(LINT_DIR_ABS)" "$(TEST_DIR_ABS)" "$(WF_DIR_ABS)" "$(TMP_DIR_ABS)" "$(WALKTHROUGH_DIR_ABS)" "$(TOUR_DIR_ABS)" .ruff_cache artifacts
+	rm -rf "$(LINT_DIR_ABS)" "$(TEST_DIR_ABS)" "$(WF_DIR_ABS)" "$(TMP_DIR_ABS)" "$(WALKTHROUGH_DIR_ABS)" "$(TOUR_DIR_ABS)" .ruff_cache
 	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
 	@true
 
@@ -135,7 +135,7 @@ validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
 confirm: clean purge-dsstore ci verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
-	@/bin/bash tests/selftest.sh
+	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p "$(WALKTHROUGH_DIR_ABS)"

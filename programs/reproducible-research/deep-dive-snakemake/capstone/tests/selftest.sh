@@ -7,11 +7,12 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${REPO_ROOT}"
 PROFILE="${1:-profiles/ci}"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 OUT_BASE="$(mktemp -d)"
 cleanup() { rm -rf "${OUT_BASE}"; }
 trap cleanup EXIT
 hash_file() {
-  python - <<'PY' "$1"
+  "${PYTHON_BIN}" - <<'PY' "$1"
 import hashlib
 from pathlib import Path
 p = Path(__import__("sys").argv[1])
