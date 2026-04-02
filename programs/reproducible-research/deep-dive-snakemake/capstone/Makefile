@@ -150,14 +150,30 @@ verify-artifacts: ## Verify publish artifacts exist and are parseable (best-effo
 		2>&1 | tee "$(LINT_DIR_ABS)/verify_artifacts.log"
 
 verify-report: verify ## Write a structured publish verification report
-	@mkdir -p "$(VERIFY_REPORT_DIR)"
+	@mkdir -p "$(VERIFY_REPORT_DIR)/report"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
+	@cp FILE_API.md "$(VERIFY_REPORT_DIR)/FILE_API.md"
+	@cp PUBLISH_REVIEW_GUIDE.md "$(VERIFY_REPORT_DIR)/PUBLISH_REVIEW_GUIDE.md"
+	@cp README.md "$(VERIFY_REPORT_DIR)/README.md"
+	@cp "$(PUBLISH_DIR_ABS)/manifest.json" "$(VERIFY_REPORT_DIR)/manifest.json"
+	@cp "$(PUBLISH_DIR_ABS)/discovered_samples.json" "$(VERIFY_REPORT_DIR)/discovered_samples.json"
+	@cp "$(PUBLISH_DIR_ABS)/summary.json" "$(VERIFY_REPORT_DIR)/summary.json"
+	@cp "$(PUBLISH_DIR_ABS)/summary.tsv" "$(VERIFY_REPORT_DIR)/summary.tsv"
+	@cp "$(PUBLISH_DIR_ABS)/provenance.json" "$(VERIFY_REPORT_DIR)/provenance.json"
+	@cp "$(PUBLISH_DIR_ABS)/report/index.html" "$(VERIFY_REPORT_DIR)/report/index.html"
 	@$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" --report "$(VERIFY_REPORT_DIR)/verify.json"
 	@printf '%s\n' \
 		'Verification report route:' \
-		'  1. Read verify.json for the per-surface publish checks.' \
-		'  2. Read publish/v1/manifest.json beside it when you need the published inventory.' \
-		'  3. Read publish/v1/report/index.html when you need the human-readable review surface.' > "$(VERIFY_REPORT_DIR)/route.txt"
+		'  1. Read PUBLISH_REVIEW_GUIDE.md and FILE_API.md to understand the contract under review.' \
+		'  2. Read verify.json for the per-surface publish checks.' \
+		'  3. Read manifest.json, discovered_samples.json, summary.json, and provenance.json together.' \
+		'  4. Read summary.tsv and report/index.html when you need the compact human-facing review surfaces.' \
+		'  5. Use README.md if you need to reconnect the publish boundary to the repository contract.' > "$(VERIFY_REPORT_DIR)/route.txt"
+	@printf '%s\n' \
+		'Publish review questions:' \
+		'  Which files are public contracts and which are only supporting evidence?' \
+		'  Which check would fail first if the publish boundary drifted silently?' \
+		'  Which publish file would require a version bump if its semantics changed?' > "$(VERIFY_REPORT_DIR)/review-questions.txt"
 	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(VERIFY_REPORT_DIR)" --output "$(VERIFY_REPORT_DIR)/bundle-manifest.json"
 	@echo "✔ wrote publish verification report to $(VERIFY_REPORT_DIR)"
 
