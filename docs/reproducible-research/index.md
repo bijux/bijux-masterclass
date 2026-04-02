@@ -44,7 +44,7 @@ flowchart LR
 ### [Deep Dive Make](deep-dive-make.md)
 
 - Local course home: [Deep Dive Make course home](../library/reproducible-research/deep-dive-make/course-book/index.md)
-- Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/course-book/start-here.md)
+- Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/course-book/guides/start-here.md)
 - Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-make/capstone/README.md)
 
 ### [Deep Dive Snakemake](deep-dive-snakemake.md)

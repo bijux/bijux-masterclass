@@ -35,7 +35,7 @@ flowchart LR
 ## Local Catalog Route
 
 - Course home: [Program guide](../library/reproducible-research/deep-dive-make/course-book/index.md)
-- Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/course-book/start-here.md)
+- Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/course-book/guides/start-here.md)
 - Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-make/capstone/README.md)
 
 ## Local Commands

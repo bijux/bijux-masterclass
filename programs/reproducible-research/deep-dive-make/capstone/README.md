@@ -196,16 +196,21 @@ surface area a human can still reason about.
 The capstone is intentionally strongest after the beginner modules have already taught the
 core semantics on smaller local projects.
 
-| Program area | What the capstone lets you verify |
-| --- | --- |
-| Modules 01-02 | The difference between a truthful graph and a graph that only appears to work. |
-| Modules 03-05 | Deterministic discovery, selftests, portability boundaries, and failure-mode evidence. |
-| Modules 06-07 | Generated headers, layered `mk/*.mk` architecture, and reusable build helpers. |
-| Modules 08-09 | Dist packaging, attestations, performance guardrails, and incident-oriented diagnostics. |
-| Module 10 | A compact system you can review for migration boundaries, governance rules, and anti-patterns. |
+| Program area | What the capstone lets you verify | Best first command |
+| --- | --- | --- |
+| Modules 01-02 | The difference between a truthful graph and a graph that only appears to work. | `make walkthrough` |
+| Modules 03-05 | Deterministic discovery, selftests, portability boundaries, and failure-mode evidence. | `make inspect` then `make verify-report` |
+| Modules 06-07 | Generated headers, layered `mk/*.mk` architecture, and reusable build helpers. | `make proof` |
+| Modules 08-09 | Dist packaging, attestations, performance guardrails, and incident-oriented diagnostics. | `make proof` then `make profile-audit` |
+| Module 10 | A compact system you can review for migration boundaries, governance rules, and anti-patterns. | `make confirm` |
 
 If you are new to Make, use this repository as corroboration after the early local
 exercises, not as your first exposure to syntax.
+
+The practical rule is simple: finish the module exercise first, then use the smallest
+capstone route that answers the next honest question. Walkthrough is for first contact
+with the repository, inspect and verify-report are for proof discipline, proof is for the
+full review bundle, and confirm is for the final stewardship pass.
 [Back to top](#top)
 
 ---

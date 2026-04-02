@@ -32,6 +32,19 @@ turning the experience into random file browsing.
 
 ---
 
+## Enter This Checklist At The Right Time
+
+Use this full checklist after Module 03. Before that point, prefer the smaller
+`capstone-walkthrough` route so the capstone stays a corroboration surface rather than a
+replacement for the local exercises.
+
+If you are in Modules 06-10, this checklist becomes the baseline review route before
+incident audits, profile audits, or the final confirmation path.
+
+[Back to top](#top)
+
+---
+
 ## First Pass
 
 Work through these in order:

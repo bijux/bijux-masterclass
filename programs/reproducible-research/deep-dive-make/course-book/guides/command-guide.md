@@ -104,16 +104,16 @@ Use `capstone/` when you want the raw executable reference build.
 
 ---
 
-## Best Defaults
+## Best Defaults by Module Arc
 
-If you are new:
+Use the smallest honest route for the part of the course you are in:
 
-```sh
-make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-make proof
-make PROGRAM=reproducible-research/deep-dive-make inspect
-make PROGRAM=reproducible-research/deep-dive-make test
-```
+| Module arc | Start with | Then use |
+| --- | --- | --- |
+| Modules 01-02 | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-make test` |
+| Modules 03-05 | `make PROGRAM=reproducible-research/deep-dive-make inspect` | `make PROGRAM=reproducible-research/deep-dive-make capstone-verify-report` |
+| Modules 06-09 | `make PROGRAM=reproducible-research/deep-dive-make proof` | `make PROGRAM=reproducible-research/deep-dive-make capstone-profile-audit` |
+| Module 10 | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` | `gmake -C capstone repro` |
 
 If you are reviewing the capstone deeply:
 

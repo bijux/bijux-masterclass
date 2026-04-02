@@ -64,9 +64,28 @@ teaching.
 
 ---
 
+## Enter by Module Arc
+
+Use the capstone differently depending on where you are in the course:
+
+| Module arc | What you should already know locally | First honest capstone route |
+| --- | --- | --- |
+| Modules 01-02 | truthful edges, atomic publication, and one parallel race you can explain | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` |
+| Modules 03-05 | selftests, public targets, portability boundaries, and one negative proof | `make PROGRAM=reproducible-research/deep-dive-make inspect` then `make PROGRAM=reproducible-research/deep-dive-make capstone-verify-report` |
+| Modules 06-09 | generator boundaries, layered `mk/*.mk`, release contracts, and one incident ladder | `make PROGRAM=reproducible-research/deep-dive-make proof` |
+| Module 10 | review method, migration rubric, and governance rules | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` |
+
+If you cannot explain the local exercise yet, do not escalate to the capstone. The
+capstone is where the module claims are corroborated under a larger surface, not where
+they are first discovered.
+
+[Back to top](#top)
+
+---
+
 ## Three Reliable Entry Routes
 
-### Route A: First serious capstone pass
+### Route A: First serious capstone pass for Modules 01-03
 
 Use this after Module 02 or 03.
 
@@ -76,7 +95,7 @@ Use this after Module 02 or 03.
 4. read `capstone/Makefile` and `capstone/tests/run.sh`
 5. run `make PROGRAM=reproducible-research/deep-dive-make test`
 
-### Route B: Generator and boundary study
+### Route B: Generator and boundary study for Modules 06-08
 
 Use this during Module 06.
 
@@ -86,7 +105,7 @@ Use this during Module 06.
 4. read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/ARCHITECTURE.md)
 5. run `gmake -C capstone --trace dyn`
 
-### Route C: Architecture and stewardship review
+### Route C: Architecture and stewardship review for Modules 07-10
 
 Use this during Modules 07-10.
 
@@ -102,18 +121,18 @@ Use this during Modules 07-10.
 
 ## Module-to-Capstone Route
 
-| Module | Learner goal | Capstone surfaces | Proof command |
+| Module | Learner goal | Capstone surfaces | First capstone command |
 | --- | --- | --- | --- |
-| 01 Foundations | See a truthful graph and atomic publication at small scale | `capstone/Makefile`, `capstone/src/`, `capstone/include/` | `make -C capstone -n all` |
-| 02 Scaling | Watch parallel safety and deterministic discovery under pressure | `capstone/repro/`, `capstone/mk/objects.mk`, `capstone/tests/run.sh` | `make -C capstone selftest` |
-| 03 Production Practice | See CI-stable targets and build-system selftests | `capstone/Makefile`, `capstone/tests/run.sh`, `capstone/mk/macros.mk` | `make -C capstone selftest` |
-| 04 Semantics Under Pressure | Inspect precedence, help surface, and optional rule generation | `capstone/Makefile`, `capstone/mk/rules_eval.mk` | `make -C capstone show-origins` |
-| 05 Hardening | Confirm portability boundaries, attestations, and guarded recursion | `capstone/mk/contract.mk`, `capstone/Makefile`, `capstone/thirdparty/` | `make -C capstone hardened` |
-| 06 Generated Files | Follow the generated-header path and boundary files | `capstone/scripts/`, `capstone/mk/stamps.mk`, `capstone/Makefile` | `make -C capstone --trace dyn` |
-| 07 Build Architecture | Read the layered `mk/*.mk` structure as a public API | `capstone/Makefile`, `capstone/mk/*.mk` | `make -C capstone help` |
-| 08 Release Engineering | Inspect packaging and evidence surfaces without polluting identity | `capstone/Makefile`, `capstone/scripts/mkdist.py`, `capstone/build/attest.txt` | `make -C capstone dist attest` |
-| 09 Incident Response | Measure trace volume and operational diagnostics | `capstone/tests/run.sh`, `capstone/Makefile`, `capstone/repro/` | `make -C capstone trace-count` |
-| 10 Mastery | Review the whole build as a migration and governance specimen | `capstone/Makefile`, `capstone/mk/`, `capstone/repro/`, `capstone/tests/` | `make -C capstone help && make -C capstone -p > build/review.dump` |
+| 01 Foundations | See a truthful graph and atomic publication at small scale | `capstone/Makefile`, `capstone/src/`, `capstone/include/` | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` |
+| 02 Scaling | Watch parallel safety and deterministic discovery under pressure | `capstone/repro/`, `capstone/mk/objects.mk`, `capstone/tests/run.sh` | `make PROGRAM=reproducible-research/deep-dive-make test` |
+| 03 Production Practice | See CI-stable targets and build-system selftests | `capstone/Makefile`, `capstone/tests/run.sh`, `capstone/mk/macros.mk` | `make PROGRAM=reproducible-research/deep-dive-make capstone-verify-report` |
+| 04 Semantics Under Pressure | Inspect precedence, help surface, and optional rule generation | `capstone/Makefile`, `capstone/mk/rules_eval.mk` | `make PROGRAM=reproducible-research/deep-dive-make capstone-tour` |
+| 05 Hardening | Confirm portability boundaries, attestations, and guarded recursion | `capstone/mk/contract.mk`, `capstone/Makefile`, `capstone/thirdparty/` | `make PROGRAM=reproducible-research/deep-dive-make capstone-contract-audit` |
+| 06 Generated Files | Follow the generated-header path and boundary files | `capstone/scripts/`, `capstone/mk/stamps.mk`, `capstone/Makefile` | `make PROGRAM=reproducible-research/deep-dive-make proof` |
+| 07 Build Architecture | Read the layered `mk/*.mk` structure as a public API | `capstone/Makefile`, `capstone/mk/*.mk` | `make PROGRAM=reproducible-research/deep-dive-make inspect` |
+| 08 Release Engineering | Inspect packaging and evidence surfaces without polluting identity | `capstone/Makefile`, `capstone/scripts/mkdist.py`, `capstone/build/attest.txt` | `make PROGRAM=reproducible-research/deep-dive-make proof` |
+| 09 Incident Response | Measure trace volume and operational diagnostics | `capstone/tests/run.sh`, `capstone/Makefile`, `capstone/repro/` | `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` |
+| 10 Mastery | Review the whole build as a migration and governance specimen | `capstone/Makefile`, `capstone/mk/`, `capstone/repro/`, `capstone/tests/` | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` |
 
 [Back to top](#top)
 
