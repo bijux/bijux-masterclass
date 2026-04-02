@@ -46,6 +46,7 @@ nav:
       - Higher-Order Composition: module-01-purity-and-substitution/higher-order-composition.md
       - Local FP Refactors: module-01-purity-and-substitution/local-fp-refactors.md
       - Small Combinator Library: module-01-purity-and-substitution/small-combinator-library.md
+      - Combinator Laws and Trade-Offs: module-01-purity-and-substitution/combinator-laws-and-tradeoffs.md
       - Typed Pipelines: module-01-purity-and-substitution/typed-pipelines.md
       - Isolating Side Effects: module-01-purity-and-substitution/isolating-side-effects.md
       - Equational Reasoning: module-01-purity-and-substitution/equational-reasoning.md

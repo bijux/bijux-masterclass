@@ -44,6 +44,7 @@ ornamental instead of necessary.
 - [Higher-Order Composition](higher-order-composition.md)
 - [Local FP Refactors](local-fp-refactors.md)
 - [Small Combinator Library](small-combinator-library.md)
+- [Combinator Laws and Trade-Offs](combinator-laws-and-tradeoffs.md)
 - [Typed Pipelines](typed-pipelines.md)
 - [Isolating Side Effects](isolating-side-effects.md)
 - [Equational Reasoning](equational-reasoning.md)
