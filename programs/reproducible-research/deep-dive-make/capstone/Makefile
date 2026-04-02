@@ -250,7 +250,8 @@ repro:
 >     '  2. repro/05-mkdir-race.mk' \
 >     '  3. repro/06-order-only-misuse.mk' \
 >     '' \
->     'For the full teaching route, read course-book/repro-catalog.md'
+>     'For the capstone teaching route, read REPRO_GUIDE.md' \
+>     'For the course route, read course-book/repro-catalog.md'
 
 discovery-audit:
 >     printf '%s\n' $(DYN_SRCS) | LC_ALL=C sort -c

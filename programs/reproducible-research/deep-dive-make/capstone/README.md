@@ -229,6 +229,9 @@ Best first route:
 
 That route moves from obvious concurrency failure into subtler graph-modeling mistakes.
 
+Use [`REPRO_GUIDE.md`](REPRO_GUIDE.md) when you want the failure classes organized by what
+they teach rather than by filename alone.
+
 [Back to top](#top)
 
 ---
