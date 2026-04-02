@@ -1,29 +1,25 @@
 # Runtime Power Ladder
 
 <!-- page-maps:start -->
-## Page Maps
+## Reference Position
 
 ```mermaid
-graph TD
-  plain["Plain code"]
-  inspect["Introspection"]
-  decorators["Decorators"]
-  descriptors["Descriptors"]
-  metaclasses["Metaclasses"]
-  global["Global hooks and dynamic execution"]
-
-  plain --> inspect --> decorators --> descriptors --> metaclasses --> global
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> reference["Runtime Power Ladder"]
+  reference --> review["Design or review decision"]
+  review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
-flowchart LR
-  problem["Need more runtime control"] --> first["Ask if plain code is enough"]
-  first --> yes["Stay with plain code"]
-  first --> no["Move up one rung only"]
-  no --> compare["Record the new cost"]
-  compare --> stop["Stop when the problem is solved honestly"]
+flowchart TD
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
+  lookup --> compare["Compare the current code or workflow against the boundary"]
+  compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
 This page is the central decision rule for the course. Higher-power runtime hooks are
 not "more advanced" in a way that makes them better. They are more invasive, harder to

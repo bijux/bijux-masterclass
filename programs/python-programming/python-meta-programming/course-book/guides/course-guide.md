@@ -1,30 +1,25 @@
 # Course Guide
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph TD
-  guide["Course Guide"]
-  orientation["Orientation and reading contract"]
-  ladder["Runtime power ladder"]
-  modules["Mechanics modules"]
-  capstone["Capstone proof route"]
-  review["Review and mastery"]
-
-  guide --> orientation --> ladder --> modules --> capstone --> review
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Course Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  novice["Need conceptual grounding"] --> m00["Module 00"]
-  novice --> m01["Modules 01-03"]
-  wrappers["Need wrapper discipline"] --> m04["Modules 04-06"]
-  attributes["Need attribute control"] --> m07["Modules 07-08"]
-  classes["Need class creation control"] --> m09["Module 09"]
-  governance["Need policy and review"] --> m10["Modules 10-11"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This guide explains how the course is organized and what each part is trying to teach.
 The learner goal is not "know more hooks." The learner goal is "choose the lowest-power

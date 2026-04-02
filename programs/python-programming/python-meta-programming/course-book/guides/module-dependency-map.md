@@ -1,34 +1,25 @@
 # Module Dependency Map
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph TD
-  m00["00 Orientation"]
-  m01["01 Object Model"]
-  m02["02 Introspection"]
-  m03["03 inspect"]
-  m04["04 Decorators"]
-  m05["05 Decorator Patterns"]
-  m06["06 Class Decorators and Properties"]
-  m07["07 Descriptors"]
-  m08["08 Descriptor Patterns"]
-  m09["09 Metaclasses"]
-  m10["10 Runtime Boundaries"]
-  m11["11 Mastery Review"]
-
-  m00 --> m01 --> m02 --> m03 --> m04 --> m05 --> m06 --> m07 --> m08 --> m09 --> m10 --> m11
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Module Dependency Map"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  observe["Observe runtime shape"] --> transform["Transform callables"]
-  transform --> control["Control attribute access"]
-  control --> create["Control class creation"]
-  create --> govern["Apply governance and review rules"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This map exists so learners can see which concepts are prerequisites and which are
 parallel reinforcements. Metaprogramming becomes clumsy when later mechanisms are learned

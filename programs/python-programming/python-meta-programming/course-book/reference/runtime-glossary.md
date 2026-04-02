@@ -1,29 +1,25 @@
 # Runtime Glossary
 
 <!-- page-maps:start -->
-## Page Maps
+## Reference Position
 
 ```mermaid
-graph LR
-  glossary["Runtime Glossary"]
-  objects["Objects and namespaces"]
-  wrappers["Wrappers and descriptors"]
-  classes["Class creation"]
-  governance["Governance terms"]
-
-  glossary --> objects
-  glossary --> wrappers
-  glossary --> classes
-  glossary --> governance
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> reference["Runtime Glossary"]
+  reference --> review["Design or review decision"]
+  review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
-flowchart LR
-  term["Unknown term in a module"] --> lookup["Look it up here"]
-  lookup --> compare["Compare it with neighboring terms"]
-  compare --> module["Return to the module with sharper language"]
+flowchart TD
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
+  lookup --> compare["Compare the current code or workflow against the boundary"]
+  compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
 Use this glossary to keep the course vocabulary stable. In metaprogramming, unclear
 terms quickly become unclear boundaries.

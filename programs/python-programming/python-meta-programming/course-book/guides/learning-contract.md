@@ -1,26 +1,25 @@
 # Learning Contract
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  contract["Learning Contract"]
-  order["Read in order"]
-  inspect["Inspect the capstone"]
-  verify["Verify the claim"]
-  reflect["Write the trade-off"]
-
-  contract --> order --> inspect --> verify --> reflect
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Learning Contract"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  skip["Skip the order"] --> folklore["Trade-offs feel like folklore"]
-  follow["Follow the order"] --> contrast["You can compare tools honestly"]
-  contrast --> judgment["You build runtime judgment"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This course only works if you treat it as a judgment-building program instead of a bag
 of runtime tricks. The contract below is the minimum discipline required to get that

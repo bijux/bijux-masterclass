@@ -1,32 +1,25 @@
 # Capstone Map
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph TD
-  capstone["Incident plugin runtime"]
-  fields["Descriptor fields"]
-  actions["Action decorators"]
-  meta["Plugin metaclass"]
-  manifest["Manifest and invocation surface"]
-  tests["Proof tests"]
-
-  capstone --> fields
-  capstone --> actions
-  capstone --> meta
-  capstone --> manifest
-  capstone --> tests
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Map"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  module["Read a module claim"] --> file["Open the matching capstone file"]
-  file --> command["Run the matching proof command"]
-  command --> review["Answer one review question"]
-  review --> module
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This map keeps the course attached to one executable system. The capstone is a plugin
 runtime for incident delivery adapters, and each major course mechanism has a clearly

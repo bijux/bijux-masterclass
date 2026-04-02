@@ -1,28 +1,25 @@
 # Practice Map
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  module["Module reading"]
-  fence["Runnable code fence"]
-  capstone["Capstone inspection"]
-  proof["Proof command"]
-  notes["Review notes"]
-
-  module --> fence --> capstone --> proof --> notes
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Practice Map"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  introspection["Object model and introspection"] --> inspectPractice["Read runtime shape without changing it"]
-  decorators["Decorators"] --> wrapperPractice["Preserve signature and metadata"]
-  descriptors["Descriptors"] --> fieldPractice["Own validation on attribute access"]
-  metaclasses["Metaclasses"] --> classPractice["Own definition-time invariants only"]
-  governance["Boundaries"] --> reviewPractice["Reject unjustified power"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page to turn reading into deliberate practice. The course is strongest when
 each concept is followed by one small proof, one capstone inspection, and one review

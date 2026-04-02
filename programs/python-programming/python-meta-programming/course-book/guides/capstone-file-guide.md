@@ -1,34 +1,25 @@
 # Capstone File Guide
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  guide["Capstone File Guide"]
-  framework["framework.py"]
-  fields["fields.py"]
-  actions["actions.py"]
-  plugins["plugins.py"]
-  tests["tests/"]
-
-  guide --> framework
-  guide --> fields
-  guide --> actions
-  guide --> plugins
-  guide --> tests
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone File Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  start["Need to inspect one behavior"] --> ask["What kind of behavior is it?"]
-  ask --> attr["Attribute validation"] --> fields
-  ask --> call["Callable wrapping"] --> actions
-  ask --> classDef["Class creation or registry"] --> framework
-  ask --> concrete["Real plugin examples"] --> plugins
-  ask --> proof["Regression and failure cases"] --> tests
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This guide prevents one common learning failure: opening the capstone but not knowing
 which file owns which responsibility.

@@ -1,27 +1,25 @@
 # Review Checklist
 
 <!-- page-maps:start -->
-## Page Maps
+## Reference Position
 
 ```mermaid
-graph TD
-  review["Review Checklist"]
-  choose["Choose the mechanism"]
-  inspect["Inspect observability"]
-  test["Inspect testability"]
-  approve["Approve or reject"]
-
-  review --> choose --> inspect --> test --> approve
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> reference["Review Checklist"]
+  reference --> review["Design or review decision"]
+  review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
-flowchart LR
-  change["Review a meta-heavy change"] --> lower["Ask for the lower-power alternative"]
-  lower --> evidence["Ask for evidence and tests"]
-  evidence --> risks["Ask for debugging and security costs"]
-  risks --> decision["Approve, revise, or reject"]
+flowchart TD
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
+  lookup --> compare["Compare the current code or workflow against the boundary"]
+  compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
 Use this checklist when reviewing decorators, descriptors, metaclasses, dynamic execution,
 or plugin registration code. The goal is not to punish dynamic design. The goal is to
