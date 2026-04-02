@@ -63,11 +63,24 @@ instead of ornamental.
 
 ## Module route
 
-- [Module 00](module-00-orientation/index.md) defines the reading discipline.
-- [Modules 01-03](module-01-runtime-object-model/index.md) through [module-03-inspect-signatures-and-provenance/index.md](module-03-inspect-signatures-and-provenance/index.md) build the object and inspection model.
-- [Modules 04-06](module-04-function-wrappers-and-decorators/index.md) through [module-06-class-customization-before-metaclasses/index.md](module-06-class-customization-before-metaclasses/index.md) explain wrappers and class decorators.
-- [Modules 07-09](module-07-descriptor-mechanics-and-lookup/index.md) through [module-09-metaclass-design-and-class-creation/index.md](module-09-metaclass-design-and-class-creation/index.md) explain descriptors and metaclasses.
-- [Module 10](module-10-runtime-governance-and-mastery/index.md) and [Mastery Review](module-10-runtime-governance-and-mastery/mastery-review.md) convert mechanisms into governance and mastery review.
+- [Module 00](module-00-orientation/index.md): orient on the power ladder, study method, and capstone role.
+- [Module 01](module-01-runtime-object-model/index.md) to [Module 03](module-03-inspect-signatures-and-provenance/index.md): build the runtime observation model before any transformation happens.
+- [Module 04](module-04-function-wrappers-and-decorators/index.md) to [Module 06](module-06-class-customization-before-metaclasses/index.md): learn wrappers, policy-bearing decorators, and the last honest class-level tools before descriptors.
+- [Module 07](module-07-descriptor-mechanics-and-lookup/index.md) to [Module 09](module-09-metaclass-design-and-class-creation/index.md): move from attribute control to definition-time class creation with explicit justification at each step.
+- [Module 10](module-10-runtime-governance-and-mastery/index.md) and [Mastery Review](module-10-runtime-governance-and-mastery/mastery-review.md): convert mechanism knowledge into review policy and exit criteria.
+
+## Ten-module roadmap
+
+1. Runtime object model: what Python objects really are at runtime.
+2. Safe runtime observation: how to inspect without accidental execution.
+3. `inspect`, signatures, and provenance: how to turn observation into usable runtime evidence.
+4. Function wrappers and transparent decorators: how transformation begins without lying.
+5. Decorator design, policies, and typing: where wrappers become runtime policy.
+6. Class customization before metaclasses: what class-level tools can still solve honestly.
+7. Descriptor mechanics and attribute lookup: the real engine behind `obj.attr`.
+8. Descriptor systems and validation: where attribute machinery starts turning into framework architecture.
+9. Metaclass design and class creation: the highest-power hook, justified narrowly.
+10. Runtime governance and mastery: the rules that keep dynamic power reviewable.
 
 ## Failure modes this course is designed to prevent
 

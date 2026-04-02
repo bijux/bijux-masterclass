@@ -26,7 +26,7 @@ This course is not for:
 
 ## Course shape
 
-- `course-book/` contains the full learner route, reference guides, and capstone review surfaces
+- `course-book/` now follows one stable shape: `guides/`, `reference/`, `module-00-orientation/`, and Modules `01` to `10`
 - `capstone/` contains the executable incident-plugin runtime used to prove the course claims
 - `Makefile` exposes stable program-level commands from the monorepo root
 
@@ -34,7 +34,7 @@ This course is not for:
 
 1. Start with `course-book/guides/start-here.md`.
 2. Read `course-book/guides/course-guide.md` and `course-book/guides/learning-contract.md`.
-3. Move through Modules `00` to `10` in order, then finish with the mastery review.
+3. Move through Modules `00` to `10` in order, then close with the mastery review inside Module `10`.
 4. Keep `course-book/guides/capstone-map.md` and `capstone/README.md` open while reading.
 
 ## What the capstone proves

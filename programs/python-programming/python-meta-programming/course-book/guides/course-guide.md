@@ -48,9 +48,9 @@ The course has four linked layers:
 
 ### Runtime mechanics
 
-- [Modules 01-03](../module-01-runtime-object-model/index.md) through [module-03-inspect-signatures-and-provenance/index.md](../module-03-inspect-signatures-and-provenance/index.md) explain objects, introspection, and `inspect`.
-- [Modules 04-06](../module-04-function-wrappers-and-decorators/index.md) through [module-06-class-customization-before-metaclasses/index.md](../module-06-class-customization-before-metaclasses/index.md) explain decorators, typing discipline, and the bridge to attribute control.
-- [Modules 07-09](../module-07-descriptor-mechanics-and-lookup/index.md) through [module-09-metaclass-design-and-class-creation/index.md](../module-09-metaclass-design-and-class-creation/index.md) explain descriptors, framework-grade patterns, and metaclasses.
+- [Modules 01-03](../module-01-runtime-object-model/index.md) through [module-03-inspect-signatures-and-provenance/index.md](../module-03-inspect-signatures-and-provenance/index.md) explain objects, safe observation, and `inspect` as runtime evidence.
+- [Modules 04-06](../module-04-function-wrappers-and-decorators/index.md) through [module-06-class-customization-before-metaclasses/index.md](../module-06-class-customization-before-metaclasses/index.md) explain wrappers, policy-bearing decorators, and the last honest class-level tools before descriptors.
+- [Modules 07-09](../module-07-descriptor-mechanics-and-lookup/index.md) through [module-09-metaclass-design-and-class-creation/index.md](../module-09-metaclass-design-and-class-creation/index.md) explain descriptors, framework-shaped attribute systems, and the narrow case for metaclasses.
 
 ### Governance
 
@@ -68,6 +68,13 @@ The course has four linked layers:
 - Inspect the named capstone file immediately.
 - Run the smallest proof command that confirms the claim.
 - Write down where the mechanism would become dishonest in real code.
+
+## What the ten-module flow is trying to prevent
+
+- jumping to metaclasses before attribute lookup is mechanical in your head
+- treating decorators, descriptors, and metaclasses as interchangeable kinds of cleverness
+- learning a stronger hook before you can explain why the weaker one stopped being enough
+- reading the capstone as a framework stunt instead of as executable evidence for each boundary
 
 ## What to avoid while studying
 

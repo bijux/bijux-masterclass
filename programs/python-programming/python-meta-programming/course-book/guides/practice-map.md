@@ -45,7 +45,7 @@ question.
 - trace one attribute from descriptor declaration to per-instance storage
 - identify whether validation happens at assignment, at construction, or too late
 
-### Modules 09-11
+### Modules 09-10 and Mastery Review
 
 - identify one invariant that truly belongs at class creation time
 - reject at least one metaclass idea as better solved by a lower-power mechanism
