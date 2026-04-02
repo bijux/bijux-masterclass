@@ -50,4 +50,5 @@ one coherent proof system rather than three unrelated folders.
 
 - read [PROOF_GUIDE.md](PROOF_GUIDE.md) when you need claim-to-route matching
 - read [INSPECTION_GUIDE.md](INSPECTION_GUIDE.md) when one artifact inside the inspect bundle is still unclear
+- read [MANIFEST_GUIDE.md](MANIFEST_GUIDE.md) when you want the saved inventory and integrity surface
 - read [TARGET_GUIDE.md](TARGET_GUIDE.md) when you need the smallest honest command before building another bundle
