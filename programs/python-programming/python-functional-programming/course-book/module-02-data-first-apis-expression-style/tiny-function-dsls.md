@@ -214,7 +214,7 @@ from funcpipe_rag import eval_pred
 
 ### 4.3 Refactored Core (Uses DSL)
 
-Updated core with DSL (building on M02C07 combinators as implemented in `capstone/src/funcpipe_rag/fp.py`):
+Updated core with DSL (building on the compositional helpers under `capstone/src/funcpipe_rag/fp/`):
 
 ```python
 from funcpipe_rag import (
