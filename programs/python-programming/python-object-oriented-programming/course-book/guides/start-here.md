@@ -58,9 +58,9 @@ If those still feel shaky, slow down and treat [Orientation](../module-00-orient
 4. Read [Outcomes And Proof Map](outcomes-and-proof-map.md) so the learner promises stay tied to evidence from the start.
 5. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
 6. Use [Design Question Map](design-question-map.md), [Module Promise Map](module-promise-map.md), and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-7. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
+7. Keep [Capstone](../capstone/index.md) open while reading so the ownership claims stay tied to one executable system.
 8. Use [Study Routes](study-routes.md) when you need a session-sized plan instead of the full course at once.
-9. Use [Proof Ladder](proof-ladder.md), [Command Guide](command-guide.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+9. Use [Proof Ladder](proof-ladder.md), [Command Guide](../capstone/command-guide.md), and [Capstone Map](../capstone/capstone-map.md) when you want the executable route.
 
 ## Choose a reading mode before you continue
 
@@ -77,7 +77,7 @@ pages.
 2. Read [Orientation](../module-00-orientation/index.md).
 3. Read [Module Promise Map](module-promise-map.md).
 4. Choose one row from [Pressure Routes](pressure-routes.md).
-5. End with [Capstone](capstone.md) or [Capstone Map](capstone-map.md), not the strongest proof command.
+5. End with [Capstone](../capstone/index.md) or [Capstone Map](../capstone/capstone-map.md), not the strongest proof command.
 
 ## If you are tired but still want honest progress
 
@@ -103,4 +103,4 @@ surprising place for the behavior to live.
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)
 - [Orientation](../module-00-orientation/index.md)
-- [Capstone](capstone.md)
+- [Capstone](../capstone/index.md)

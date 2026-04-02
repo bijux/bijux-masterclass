@@ -78,7 +78,7 @@ This module is about finding the boundary between those extremes.
 ## Keep these support surfaces open
 
 - `../guides/outcomes-and-proof-map.md` when you want the authority and collaboration promise tied to one proof surface.
-- `../guides/capstone-map.md` when you want this module attached to the exact capstone files and commands.
+- `../capstone/capstone-map.md` when you want this module attached to the exact capstone files and commands.
 - `../reference/self-review-prompts.md` when you want to test whether you can distinguish authority, projection, and orchestration without guessing.
 
 ## First capstone pass for this module

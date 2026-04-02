@@ -38,7 +38,7 @@ These routes turn the course into repeatable study sessions instead of a pile of
 | If you need to... | Start here | Continue with | Stop when you can say... |
 | --- | --- | --- | --- |
 | rebuild semantics | Module 01, Module 02, or Module 03 overview | `module-promise-map.md` and `practice-map.md` | which object owns identity, value semantics, or lifecycle rules |
-| review collaboration boundaries | Modules 04 to 07 | `pressure-routes.md` and `capstone-map.md` | which boundary owns coordination and which one only derives views |
+| review collaboration boundaries | Modules 04 to 07 | `pressure-routes.md` and `capstone/capstone-map.md` | which boundary owns coordination and which one only derives views |
 | audit a design for trust | Modules 08 to 10 | `module-checkpoints.md` and `capstone-proof-guide.md` | which claim is proven by which saved route or test suite |
 
 ## Session recipe
@@ -59,4 +59,4 @@ These routes turn the course into repeatable study sessions instead of a pile of
 - pair this page with [Practice Map](practice-map.md) when you want each session tied to rehearsal
 - pair this page with [Pressure Routes](pressure-routes.md) when the best route depends on the problem you are under
 - pair this page with [Systems Route](systems-route.md) when the second half of the course is the main source of density
-- pair this page with [Capstone Proof Guide](capstone-proof-guide.md) when the session is mainly about confidence rather than reading
+- pair this page with [Capstone Proof Guide](../capstone/capstone-proof-guide.md) when the session is mainly about confidence rather than reading

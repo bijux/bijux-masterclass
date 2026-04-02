@@ -76,7 +76,7 @@ Modules 08 to 10 ask whether the model can be trusted:
 
 - If object semantics still feel slippery, stay with Modules 01 to 03 before you escalate into architecture advice.
 - If your real problem is collaboration or persistence drift, start with [Pressure Routes](pressure-routes.md) and then come back to the relevant arc here.
-- If you are reviewing an existing design, keep [Module Checkpoints](module-checkpoints.md) and [Capstone Map](capstone-map.md) open so each module stays tied to a concrete proof surface.
+- If you are reviewing an existing design, keep [Module Checkpoints](module-checkpoints.md) and [Capstone Map](../capstone/capstone-map.md) open so each module stays tied to a concrete proof surface.
 - If you only need the course shape before reading, use [Course Map](../module-00-orientation/course-map.md) instead of holding the whole sequence in memory.
 
 ## Support Pages To Keep Open
@@ -91,7 +91,7 @@ Modules 08 to 10 ask whether the model can be trusted:
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
 - [Pressure Routes](pressure-routes.md) when the next useful module depends on the design pressure you are under
 - [Proof Ladder](proof-ladder.md) when you need to size proof correctly
-- [Capstone](capstone.md) and [Capstone Map](capstone-map.md) when you want the repository route kept explicit
+- [Capstone](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) when you want the repository route kept explicit
 
 ## Honest Expectation
 

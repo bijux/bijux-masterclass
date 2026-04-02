@@ -47,23 +47,24 @@ module tree can stay focused on long-lived content.
 
 ## Use These For Commands And Proof
 
-- [Command Guide](command-guide.md) for the executable route
+- [Command Guide](../capstone/command-guide.md) for the executable route
 - [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
 - [Object Design Checklist](../reference/object-design-checklist.md), [Self-Review Prompts](../reference/self-review-prompts.md), and [Boundary Review Prompts](../reference/boundary-review-prompts.md) for stable review bars
 
 ## Use These For Capstone Reading
 
-- [Capstone](capstone.md) for the capstone’s role in the course
-- [Capstone Map](capstone-map.md) for the module-to-repository route
-- [Capstone File Guide](capstone-file-guide.md) for the capstone reading path
-- [Capstone Review Checklist](capstone-review-checklist.md) for a bounded review pass
-- [Capstone Architecture Guide](capstone-architecture-guide.md) for boundary ownership
-- [Capstone Walkthrough](capstone-walkthrough.md) for the human review story
-- [Capstone Proof Guide](capstone-proof-guide.md) for verification depth
+- [Capstone](../capstone/index.md) for the capstone’s role in the course
+- [Capstone Map](../capstone/capstone-map.md) for the module-to-repository route
+- [Capstone File Guide](../capstone/capstone-file-guide.md) for the capstone reading path
+- [Capstone Review Checklist](../capstone/capstone-review-checklist.md) for a bounded review pass
+- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for boundary ownership
+- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for the human review story
+- [Capstone Proof Guide](../capstone/capstone-proof-guide.md) for verification depth
 
 ## Keep The Layout Stable
 
 - `index.md` stays the course home
 - `guides/` stays the learner route and proof shelf
+- `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable review shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

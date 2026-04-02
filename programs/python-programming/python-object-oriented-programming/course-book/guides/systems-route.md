@@ -54,4 +54,4 @@ as one design story instead of seven isolated advanced topics.
 
 - [Pressure Routes](pressure-routes.md) when the real entry point is a current design problem
 - [Study Routes](study-routes.md) when you need a session-sized plan for one module
-- [Capstone Map](capstone-map.md) when you want the module sequence tied directly to repository surfaces
+- [Capstone Map](../capstone/capstone-map.md) when you want the module sequence tied directly to repository surfaces

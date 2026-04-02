@@ -80,7 +80,7 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 - Use [Course Guide](guides/course-guide.md) when you want the ten-module arc explained before you start reading.
 - Use [Outcomes And Proof Map](guides/outcomes-and-proof-map.md) when you want every promise tied to one evidence route.
 - Use [Pressure Routes](guides/pressure-routes.md) when you already have a concrete design or review problem.
-- Use [Capstone](guides/capstone.md) only after the module idea is clear enough that you know what you are trying to prove.
+- Use [Capstone](capstone/index.md) only after the module idea is clear enough that you know what you are trying to prove.
 
 ## Keep these references nearby
 
@@ -105,7 +105,7 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 
 - [Module Promise Map](guides/module-promise-map.md) when you need the title of a module translated into a learner contract
 - [Module Checkpoints](guides/module-checkpoints.md) when you want the "done" bar to stay visible
-- [Capstone Map](guides/capstone-map.md) when you want the module-to-repository bridge
+- [Capstone Map](capstone/capstone-map.md) when you want the module-to-repository bridge
 - [Proof Ladder](guides/proof-ladder.md) when you want to choose the smallest honest proof route
 
 ## Module Table of Contents
@@ -172,7 +172,7 @@ By the end of the course, you should be able to:
 - Use [Module Checkpoints](guides/module-checkpoints.md) and [Pressure Routes](guides/pressure-routes.md) when you need a more intentional route.
 - Start with [Orientation](module-00-orientation/index.md).
 - Work through Modules 01 to 10 in order.
-- Use the [Capstone](guides/capstone.md) and [Proof Ladder](guides/proof-ladder.md) to connect the prose to runnable code honestly.
+- Use the [Capstone](capstone/index.md) and [Proof Ladder](guides/proof-ladder.md) to connect the prose to runnable code honestly.
 
 ## Expected learner rhythm
 

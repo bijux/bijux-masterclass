@@ -33,9 +33,9 @@ hides the actual design issue.
 | understand the course promise | [Course Home](../index.md) and [Start Here](start-here.md) | you still cannot place the module you need |
 | understand one module promise | [Module Promise Map](module-promise-map.md) and the module overview | the ownership rule is still fuzzy |
 | know whether you are ready to move on | [Module Checkpoints](module-checkpoints.md) | you cannot explain the checkpoint in code |
-| inspect the capstone shape | [Capstone Map](capstone-map.md) and [Capstone File Guide](capstone-file-guide.md) | you need executable evidence |
-| review architecture and boundaries | [Capstone Architecture Guide](capstone-architecture-guide.md) and [Capstone Walkthrough](capstone-walkthrough.md) | you need durable saved evidence |
-| review executable evidence | [Capstone Proof Guide](capstone-proof-guide.md) and `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | you need to modify or extend the capstone itself |
+| inspect the capstone shape | [Capstone Map](../capstone/capstone-map.md) and [Capstone File Guide](../capstone/capstone-file-guide.md) | you need executable evidence |
+| review architecture and boundaries | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone Walkthrough](../capstone/capstone-walkthrough.md) | you need durable saved evidence |
+| review executable evidence | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) and `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | you need to modify or extend the capstone itself |
 
 ## What each rung cannot prove on its own
 

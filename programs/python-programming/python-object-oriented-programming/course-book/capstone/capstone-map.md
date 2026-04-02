@@ -27,7 +27,7 @@ Use it to decide where to go next when you want concrete proof for a course idea
 
 ## Capstone route
 
-- Start with [Capstone](capstone.md) for the overall purpose and domain.
+- Start with [Capstone](index.md) for the overall purpose and domain.
 - Read [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
 - Read [Capstone Review Checklist](capstone-review-checklist.md) when you want an explicit review lens.
 - Read [Capstone Architecture Guide](capstone-architecture-guide.md) when you are reviewing ownership and boundaries.

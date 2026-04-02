@@ -76,7 +76,7 @@ semantics instead of flattening them away.
 ## Keep these support surfaces open
 
 - `../guides/outcomes-and-proof-map.md` when you want the persistence promise tied to one evidence route.
-- `../guides/capstone-map.md` when you want the repository and proof surfaces kept explicit.
+- `../capstone/capstone-map.md` when you want the repository and proof surfaces kept explicit.
 - `../reference/self-review-prompts.md` when you want to test whether storage translation and domain meaning still sound separable.
 
 ## First review route for storage boundaries
