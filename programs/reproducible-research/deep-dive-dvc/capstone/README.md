@@ -156,6 +156,7 @@ make state-summary
 make stage-summary
 make profile-summary
 make model-summary
+make manifest-summary
 make release-summary
 make review-queue
 make threshold-review
@@ -181,6 +182,7 @@ These commands answer different questions:
 - `make stage-summary` renders the declared and recorded stage contract in one learner-facing summary.
 - `make profile-summary` renders the promoted population facts in one learner-facing summary.
 - `make model-summary` renders the promoted scoring artifact in one learner-facing summary.
+- `make manifest-summary` renders the promoted inventory, training metadata, and decision threshold in one learner-facing summary.
 - `make threshold-review` renders borderline promoted predictions near the current decision threshold.
 - `make confirm` reruns the broader confirmation flow that the course points learners to.
 - `make recovery-drill` proves that a remote-backed restore still works after local loss.

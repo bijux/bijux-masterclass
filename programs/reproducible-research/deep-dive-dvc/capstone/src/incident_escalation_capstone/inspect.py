@@ -62,6 +62,27 @@ def model_summary(publish_dir: Path) -> dict[str, object]:
     }
 
 
+def manifest_summary(publish_dir: Path) -> dict[str, object]:
+    manifest = read_json(publish_dir / "manifest.json")
+    artifact_paths = [entry["path"] for entry in manifest["artifacts"]]
+    largest_artifact = max(
+        manifest["artifacts"],
+        key=lambda entry: int(entry["bytes"]),
+    )
+    return {
+        "publish_dir": publish_dir.as_posix(),
+        "artifact_count": len(artifact_paths),
+        "artifact_paths": artifact_paths,
+        "largest_artifact": {
+            "path": largest_artifact["path"],
+            "bytes": int(largest_artifact["bytes"]),
+        },
+        "training_rows": int(manifest["training"]["rows"]),
+        "training_iterations": int(manifest["training"]["iterations"]),
+        "decision_threshold": float(manifest["decision"]["threshold"]),
+    }
+
+
 def stage_summary(*, pipeline_path: Path, lock_path: Path) -> dict[str, object]:
     pipeline_data = load_params(pipeline_path)
     lock_data = load_params(lock_path)
@@ -189,6 +210,10 @@ def main(argv: list[str] | None = None) -> int:
     model.add_argument("--publish", type=Path, required=True)
     model.set_defaults(handler=_handle_model_summary)
 
+    manifest = subparsers.add_parser("manifest-summary", help="Render a summary of the promoted publish manifest.")
+    manifest.add_argument("--publish", type=Path, required=True)
+    manifest.set_defaults(handler=_handle_manifest_summary)
+
     stage = subparsers.add_parser("stage-summary", help="Render a summary of declared and recorded stage contracts.")
     stage.add_argument("--pipeline", type=Path, required=True)
     stage.add_argument("--lock", type=Path, required=True)
@@ -227,6 +252,10 @@ def _handle_profile_summary(args: argparse.Namespace) -> dict[str, object]:
 
 def _handle_model_summary(args: argparse.Namespace) -> dict[str, object]:
     return model_summary(args.publish)
+
+
+def _handle_manifest_summary(args: argparse.Namespace) -> dict[str, object]:
+    return manifest_summary(args.publish)
 
 
 def _handle_stage_summary(args: argparse.Namespace) -> dict[str, object]:

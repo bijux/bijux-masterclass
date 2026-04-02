@@ -75,5 +75,8 @@ into record-level evidence.
 Read [MODEL_GUIDE.md](MODEL_GUIDE.md) when the next review question is what exact scoring
 behavior was promoted rather than only what metrics came out of it.
 
+Use `make manifest-summary` when you want the promoted inventory, training metadata, and
+decision threshold rendered into one compact review surface before opening the raw manifest.
+
 Read [DATA_PROFILE_GUIDE.md](DATA_PROFILE_GUIDE.md) when the next review question is
 which population the promoted metrics and predictions actually describe.

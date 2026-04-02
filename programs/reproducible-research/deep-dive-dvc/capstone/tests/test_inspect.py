@@ -5,6 +5,7 @@ from pathlib import Path
 
 from incident_escalation_capstone.common import write_json
 from incident_escalation_capstone.inspect import (
+    manifest_summary,
     main,
     model_summary,
     profile_summary,
@@ -82,7 +83,8 @@ def _write_publish_fixture(base: Path) -> None:
                 {"path": "params.yaml", "sha256": "y", "bytes": 2},
                 {"path": "predictions.csv", "sha256": "z", "bytes": 3},
             ],
-            "training": {"rows": 18},
+            "training": {"rows": 18, "iterations": 900},
+            "decision": {"threshold": 0.52},
         },
     )
     write_json(
@@ -135,6 +137,16 @@ def test_model_summary_returns_promoted_training_facts(tmp_path: Path) -> None:
     assert summary["feature_count"] == 6
     assert summary["training_rows"] == 18
     assert summary["strongest_feature"]["name"] == "severity_score"
+
+
+def test_manifest_summary_returns_promoted_inventory_facts(tmp_path: Path) -> None:
+    _write_publish_fixture(tmp_path)
+
+    summary = manifest_summary(tmp_path / "publish")
+
+    assert summary["artifact_count"] == 5
+    assert summary["largest_artifact"]["path"] == "model.json"
+    assert summary["decision_threshold"] == 0.52
 
 
 def test_state_summary_combines_declaration_execution_and_publish_state(tmp_path: Path) -> None:
@@ -261,6 +273,17 @@ def test_cli_prints_model_summary_json(capsys, tmp_path: Path) -> None:
     assert exit_code == 0
     assert payload["training_rows"] == 18
     assert payload["strongest_feature"]["name"] == "severity_score"
+
+
+def test_cli_prints_manifest_summary_json(capsys, tmp_path: Path) -> None:
+    _write_publish_fixture(tmp_path)
+
+    exit_code = main(["manifest-summary", "--publish", str(tmp_path / "publish")])
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert payload["artifact_count"] == 5
+    assert payload["training_rows"] == 18
 
 
 def test_cli_prints_stage_summary_json(capsys, tmp_path: Path) -> None:
