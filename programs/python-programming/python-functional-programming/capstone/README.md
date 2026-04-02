@@ -34,8 +34,8 @@ with executable code, tests, and operational boundaries.
 
 - `src/funcpipe_rag/` contains the application packages and architecture seams
 - `tests/` contains law checks, behavior checks, and integration proof
-- `module-reference-states/` stores the tracked end-of-module source states
-- `_history/` is generated locally from module tags and worktrees
+- `module-reference-states/` stores the tracked end-of-module snapshot sources
+- `_history/` is generated locally from module tags, verified worktrees, and per-module manifests
 - `scripts/` contains helper utilities used by the project workflow
 
 ## How to read this codebase
@@ -78,6 +78,7 @@ make verify-report
 make confirm
 make proof
 make history-refresh
+make history-verify
 ```
 
 From the repository root, `make PROGRAM=python-programming/python-functional-programming test`
@@ -88,7 +89,9 @@ bundles.
 History route:
 
 - `make history-refresh` rebuilds local module tags and `_history/worktrees/module-XX`
+- `make history-verify` re-checks that every generated worktree still matches the snapshot source it claims to represent
 - `_history/route.txt` records the generated module-to-tag map
+- `_history/manifests/module-XX.json` records the exact file inventory, hash, source root, and snapshot kind for each module snapshot
 - `module-reference-states/` is the tracked source of truth for Modules 01 to 09
 - `_history/worktrees/` is the generated local comparison surface you read after `history-refresh`
 - the live capstone is the Module 10 source of truth, with `_history/worktrees/module-10` generated from it for comparison

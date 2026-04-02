@@ -40,6 +40,7 @@ make PROGRAM=python-programming/python-functional-programming capstone-verify-re
 make PROGRAM=python-programming/python-functional-programming capstone-confirm
 make PROGRAM=python-programming/python-functional-programming proof
 make PROGRAM=python-programming/python-functional-programming history-refresh
+make PROGRAM=python-programming/python-functional-programming history-verify
 make PROGRAM=python-programming/python-functional-programming history-clean
 ```
 
@@ -55,6 +56,7 @@ make verify-report
 make confirm
 make proof
 make history-refresh
+make history-verify
 make history-clean
 ```
 
@@ -71,6 +73,7 @@ make history-clean
 - Use `capstone-confirm` or `confirm` when you want the strictest public confirmation route from inside the capstone itself.
 - Use `proof` when you want the sanctioned end-to-end evidence route in one command.
 - Use `history-refresh` when you want fresh module tags plus `_history/worktrees/module-XX` for module-by-module comparison.
+- Use `history-verify` when you want to confirm the generated worktrees still match the tracked module snapshot sources and manifests.
 - Use `history-clean` when you want to remove the generated history surface, the local module tags, and the generated history branch before rebuilding from scratch.
 
 ## Honest rule

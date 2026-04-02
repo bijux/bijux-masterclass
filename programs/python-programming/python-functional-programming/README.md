@@ -81,6 +81,7 @@ make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming capstone-test
 make PROGRAM=python-programming/python-functional-programming docs-serve
 make PROGRAM=python-programming/python-functional-programming history-refresh
+make PROGRAM=python-programming/python-functional-programming history-verify
 ```
 
 At the course level, `test` is the strongest published proof route and delegates to the
@@ -100,8 +101,8 @@ Primary reading route:
 - `course-book/` contains the published learning material.
 - `course-book/guides/` contains the durable learner and capstone guides.
 - `capstone/` contains the runnable FuncPipe RAG implementation, tests, and helper tooling.
-- `capstone/module-reference-states/` contains the tracked end-of-module source states for Modules 01 to 09.
-- `capstone/_history/` is generated locally from module tags and worktrees and is meant for study-time comparison, not as the tracked source of truth.
+- `capstone/module-reference-states/` contains the tracked end-of-module snapshot sources for Modules 01 to 09.
+- `capstone/_history/` is generated locally from module tags, verified worktrees, and per-module manifests, and is meant for study-time comparison, not as the tracked source of truth.
 - `Makefile` exposes stable course-level entrypoints from the monorepo root.
 
 ## Module map
