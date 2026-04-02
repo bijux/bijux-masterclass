@@ -44,16 +44,17 @@ This is the true capstone of Module 6. You now have every tool required to ship 
 2. You will build one pipeline that behaves completely differently under different configs — with zero duplication.
 3. You will have mechanical proof for the featured toggle laws across the modeled enabled and disabled toggle states, so the supported paths stay refactor-safe.
 
-## Why Higher-Order Combinators + Reader Is the Only Acceptable Pattern
+## Why Higher-Order Combinators + Reader Fit This Core Best
 
 | Pattern                    | Duplication | Purity | Testability | Reconfigurability | Refactor Safety |
 |----------------------------|-------------|--------|-------------|-------------------|-----------------|
 | Global flags               | None        | No     | Bad         | Medium            | Bad             |
 | Duplicated pipelines       | High        | Yes    | Good        | Bad               | Bad             |
 | Runtime if inside pipeline | Medium      | No     | Medium      | Good              | Bad             |
-| Combinators + Reader       | None        | Yes    | Perfect     | Perfect           | Perfect         |
+| Combinators + Reader       | None        | Yes    | Strong      | Strong            | Strong          |
 
-Higher-order combinators + Reader is the only pattern that gives you everything.
+Higher-order combinators + Reader are the best fit for the explicit configuration,
+testability, and refactor-safety pressures this core is modeling.
 
 ## 1. Laws & Invariants (machine-checked in CI)
 
