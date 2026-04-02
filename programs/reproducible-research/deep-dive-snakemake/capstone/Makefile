@@ -117,20 +117,9 @@ rulegraph: ## Render rulegraph to rulegraph.png (requires graphviz dot)
 
 validate-config: ## Validate config/config.yaml against config/schema.yaml (best-effort)
 	@mkdir -p "$(LINT_DIR_ABS)" "$(TMP_DIR_ABS)"
-	@script="$(TMP_DIR_ABS)/validate_config.sh"; \
-	rm -f "$$script"; \
-	echo '#!/usr/bin/env bash' > "$$script"; \
-	echo 'set -euo pipefail' >> "$$script"; \
-	echo 'cfg="config/config.yaml"; sch="config/schema.yaml"' >> "$$script"; \
-	echo '[ -f "$$cfg" ] || { echo "✘ missing $$cfg"; exit 1; }' >> "$$script"; \
-	echo '[ -f "$$sch" ] || { echo "✘ missing $$sch"; exit 1; }' >> "$$script"; \
-	echo 'command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }' >> "$$script"; \
-	echo '$(PYTHON) -m pip show jsonschema >/dev/null 2>&1 || { echo "↪︎ [SKIP] jsonschema not installed (pip install jsonschema)"; exit 0; }' >> "$$script"; \
-	echo '$(PYTHON) -m pip show pyyaml >/dev/null 2>&1 || { echo "↪︎ [SKIP] pyyaml not installed (pip install pyyaml)"; exit 0; }' >> "$$script"; \
-	printf '%s\n' '$(PYTHON) -c "import pathlib,yaml,jsonschema; cfg=pathlib.Path(\"config/config.yaml\"); sch=pathlib.Path(\"config/schema.yaml\"); c=yaml.safe_load(cfg.read_text()); s=yaml.safe_load(sch.read_text()); jsonschema.validate(c,s); print(\"✔ config validates against schema\")"' >> "$$script"; \
-	chmod +x "$$script"; \
-	bash "$$script" 2>&1 | tee "$(LINT_DIR_ABS)/config_schema.log"; \
-	rm -f "$$script"
+	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
+	@$(PYTHON) scripts/validate_config.py --config config/config.yaml --schema config/schema.yaml \
+		2>&1 | tee "$(LINT_DIR_ABS)/config_schema.log"
 
 verify-artifacts: ## Verify publish artifacts exist and are parseable (best-effort)
 	@mkdir -p "$(LINT_DIR_ABS)" "$(TMP_DIR_ABS)"
