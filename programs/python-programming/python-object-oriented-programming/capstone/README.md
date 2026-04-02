@@ -82,6 +82,34 @@ Review and proof routes:
 - `make confirm` runs the strongest local confirmation route.
 - `make proof` builds the published learner-facing review route.
 
+## Guided review route
+
+| Review question | Inspect first | What to conclude | Strongest proof route |
+| --- | --- | --- | --- |
+| Do the core value and entity boundaries make sense? | `src/service_monitoring/model.py`, `tests/test_policy_lifecycle.py` | Identity, equality, and lifecycle semantics are explicit rather than accidental | `make inspect` |
+| Is evaluation behavior owned by replaceable policy objects instead of condition ladders? | `src/service_monitoring/policies.py`, `tests/test_policy_evaluation.py` | Variation lives in named policy surfaces, not inside the aggregate | `make verify-report` |
+| Does orchestration stay outside the aggregate? | `src/service_monitoring/runtime.py`, `src/service_monitoring/application.py`, `ARCHITECTURE.md` | Runtime coordination does not become the source of truth | `make tour` |
+| Can the current design be reviewed as a learner-facing artifact instead of just a code dump? | `TOUR.md`, `INSPECTION_GUIDE.md`, `PROOF_GUIDE.md` | The capstone remains legible as a guided reference path | `make proof` |
+
+Use this order repeatedly: inspect the named files, state the ownership claim, then run the smallest route that produces matching evidence.
+
+## Currency audit
+
+- Supported runtime: Python `>=3.10` as declared in `pyproject.toml`.
+- Time semantics: domain timestamps use timezone-aware UTC (`datetime.now(timezone.utc)`), not naive `utcnow()`.
+- Persistence scope: the shipped capstone keeps an in-memory repository and unit of work so storage concerns stay reviewable before database tooling enters the story.
+- Concurrency scope: the capstone is intentionally synchronous today; concurrency and scheduling pressure are reviewed as design boundaries, not shipped runtime machinery.
+- Serialization scope: learner-facing review artifacts are text and JSON bundles produced by the Make targets, not a stable network API contract.
+
+## Definition of done
+
+- `make test` passes with `PYTHONPATH=src`.
+- `make inspect` produces readable summary, rules, and history bundles that match the documented scenario.
+- `make tour` produces the walkthrough bundle without requiring learners to read internals first.
+- `make verify-report` captures executable proof and learner-facing state in one saved review bundle.
+- `make confirm` completes the strongest local confirmation route.
+- `make proof` completes the full published learner route end to end.
+
 ## Read it by course stage
 
 - Semantic floor: inspect the model and lifecycle tests first.
