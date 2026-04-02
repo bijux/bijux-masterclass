@@ -262,32 +262,60 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	@echo "✔ wrote workflow walkthrough to $(WALKTHROUGH_DIR_ABS)"
 
 tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bundle
-	@mkdir -p "$(TOUR_DIR_ABS)"
+	@mkdir -p \
+		"$(TOUR_DIR_ABS)/workflow/rules" \
+		"$(TOUR_DIR_ABS)/profiles" \
+		"$(TOUR_DIR_ABS)/report"
 	$(SNAKEMAKE) --list-rules > "$(TOUR_DIR_ABS)/list-rules.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(TOUR_DIR_ABS)/dryrun.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) 2>&1 | tee "$(TOUR_DIR_ABS)/run.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) --summary > "$(TOUR_DIR_ABS)/summary.txt"
 	$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" > "$(TOUR_DIR_ABS)/verify.txt"
+	cp README.md "$(TOUR_DIR_ABS)/README.md"
+	cp DOMAIN_GUIDE.md "$(TOUR_DIR_ABS)/DOMAIN_GUIDE.md"
+	cp WORKFLOW_STAGE_GUIDE.md "$(TOUR_DIR_ABS)/WORKFLOW_STAGE_GUIDE.md"
+	cp CHECKPOINT_GUIDE.md "$(TOUR_DIR_ABS)/CHECKPOINT_GUIDE.md"
+	cp EXACT_SOURCE_GUIDE.md "$(TOUR_DIR_ABS)/EXACT_SOURCE_GUIDE.md"
+	cp ARCHITECTURE.md "$(TOUR_DIR_ABS)/ARCHITECTURE.md"
 	cp Snakefile "$(TOUR_DIR_ABS)/Snakefile"
 	cp PROOF_GUIDE.md "$(TOUR_DIR_ABS)/PROOF_GUIDE.md"
 	cp FILE_API.md "$(TOUR_DIR_ABS)/FILE_API.md"
+	cp PUBLISH_REVIEW_GUIDE.md "$(TOUR_DIR_ABS)/PUBLISH_REVIEW_GUIDE.md"
+	cp PROFILE_AUDIT_GUIDE.md "$(TOUR_DIR_ABS)/PROFILE_AUDIT_GUIDE.md"
+	cp INCIDENT_REVIEW_GUIDE.md "$(TOUR_DIR_ABS)/INCIDENT_REVIEW_GUIDE.md"
+	cp EXTENSION_GUIDE.md "$(TOUR_DIR_ABS)/EXTENSION_GUIDE.md"
+	cp config/config.yaml "$(TOUR_DIR_ABS)/config.yaml"
+	cp config/schema.yaml "$(TOUR_DIR_ABS)/schema.yaml"
+	cp workflow/rules/common.smk "$(TOUR_DIR_ABS)/workflow/rules/common.smk"
+	cp workflow/rules/preprocess.smk "$(TOUR_DIR_ABS)/workflow/rules/preprocess.smk"
+	cp workflow/rules/summarize_report.smk "$(TOUR_DIR_ABS)/workflow/rules/summarize_report.smk"
+	cp workflow/rules/publish.smk "$(TOUR_DIR_ABS)/workflow/rules/publish.smk"
+	cp profiles/local/config.yaml "$(TOUR_DIR_ABS)/profiles/local.yaml"
+	cp profiles/ci/config.yaml "$(TOUR_DIR_ABS)/profiles/ci.yaml"
+	cp profiles/slurm/config.yaml "$(TOUR_DIR_ABS)/profiles/slurm.yaml"
 	cp "$(MANIFEST_ABS)" "$(TOUR_DIR_ABS)/publish-manifest.json"
+	cp "$(PUBLISH_DIR_ABS)/discovered_samples.json" "$(TOUR_DIR_ABS)/discovered_samples.json"
 	cp "$(PUBLISH_DIR_ABS)/provenance.json" "$(TOUR_DIR_ABS)/provenance.json"
 	cp "$(PUBLISH_DIR_ABS)/summary.json" "$(TOUR_DIR_ABS)/summary.json"
-	cp README.md "$(TOUR_DIR_ABS)/README.md"
+	cp "$(PUBLISH_DIR_ABS)/summary.tsv" "$(TOUR_DIR_ABS)/summary.tsv"
+	cp "$(PUBLISH_DIR_ABS)/report/index.html" "$(TOUR_DIR_ABS)/report/index.html"
 	cp TOUR.md "$(TOUR_DIR_ABS)/TOUR.md"
 	@printf '%s\n' \
 		'Executed review route:' \
-		'  1. Read verify.txt for publish-contract sanity results.' \
-		'  2. Read list-rules.txt and dryrun.txt for declared workflow shape.' \
-		'  3. Read summary.txt and run.txt for executed workflow evidence.' \
-		'  4. Read publish-manifest.json, summary.json, and provenance.json together.' \
-		'  5. Read FILE_API.md and PROOF_GUIDE.md to interpret the published boundary.' > "$(TOUR_DIR_ABS)/route.txt"
+		'  1. Read README.md and DOMAIN_GUIDE.md to reset the repository and domain contract.' \
+		'  2. Read list-rules.txt, dryrun.txt, and WORKFLOW_STAGE_GUIDE.md for the declared workflow shape.' \
+		'  3. Read CHECKPOINT_GUIDE.md with discovered_samples.json when discovery behavior is the review target.' \
+		'  4. Read summary.txt and run.txt for executed workflow evidence.' \
+		'  5. Read publish-manifest.json, summary.json, summary.tsv, provenance.json, and report/index.html together.' \
+		'  6. Read FILE_API.md and PUBLISH_REVIEW_GUIDE.md to interpret the published boundary.' \
+		'  7. Read ARCHITECTURE.md, PROFILE_AUDIT_GUIDE.md, and INCIDENT_REVIEW_GUIDE.md when the issue is ownership or operating context.' \
+		'  8. Read EXACT_SOURCE_GUIDE.md when the next file is still not obvious.' > "$(TOUR_DIR_ABS)/route.txt"
 	@printf '%s\n' \
 		'Review questions:' \
 		'  Which workflow claims are visible before execution, and which only after execution?' \
 		'  Which publish artifacts would you trust downstream without reading logs?' \
-		'  Which behavior is tied to workflow design rather than executor choice?' > "$(TOUR_DIR_ABS)/review-questions.txt"
+		'  Which behavior is tied to workflow design rather than executor choice?' \
+		'  Which guide would you hand to a reviewer who only cares about discovery, publish trust, or profile drift?' > "$(TOUR_DIR_ABS)/review-questions.txt"
 	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(TOUR_DIR_ABS)" --output "$(TOUR_DIR_ABS)/bundle-manifest.json"
 	@echo "✔ wrote workflow tour to $(TOUR_DIR_ABS)"
 
