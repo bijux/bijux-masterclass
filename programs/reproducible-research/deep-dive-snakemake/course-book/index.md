@@ -1,6 +1,5 @@
 # Deep Dive Snakemake
 
-
 <!-- page-maps:start -->
 ## Course Shape
 
@@ -18,64 +17,55 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  promise["Read the course promise, scope, and audience"] --> orientation["Open Module 00 to anchor the mental model"]
-  orientation --> modules["Move into the module sequence that matches your pressure"]
-  modules --> support["Use guides and reference pages when they answer a concrete question"]
-  modules --> capstone["Bring the capstone in after the current idea is clear"]
+  promise["Read the course promise and learner fit"] --> route["Choose one stable entry lane"]
+  route --> orientation["Anchor the workflow model in Module 00"]
+  orientation --> modules["Read the modules in order"]
+  modules --> proof["Use guides, reference, and capstone only when they answer the current question"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so learners do not mistake the capstone or reference pages for the first stop.
+Read the first diagram as the shape of the whole book. Read the second diagram as the
+intended learner route so the capstone and support shelves do not become accidental first
+lessons.
 
 Deep Dive Snakemake teaches workflow design as a discipline of explicit file contracts,
-deterministic planning, safe dynamic behavior, and durable operational boundaries. It is
-now a ten-module beginner-to-mastery program, not only a compact advanced reference.
+deterministic planning, safe dynamic behavior, and durable operational boundaries. The
+goal is not to collect workflow tricks. The goal is to build workflows another engineer
+can inspect, trust, and extend without folklore.
 
-The top-level course-book has three durable surfaces:
+## Use this course if
 
-- [`guides/`](guides/index.md) for learner routes, module promises, checkpoints, and capstone entry
-- [`reference/`](reference/index.md) for durable definitions, anti-pattern routing, and review aids
-- Modules `00` to `10` for the teaching arc itself
+- you want a workflow model instead of disconnected Snakemake snippets
+- you inherited a pipeline that runs but is hard to trust, review, or extend
+- you already use Snakemake and now need stronger publish, profile, and workflow-boundary judgment
+- you review whether a workflow can survive CI, shared filesystems, and long-lived change
 
-## Why this program exists
+## Do not use this course as
 
-Many Snakemake resources stop too early. They explain rules, wildcards, and dry-runs,
-but they do not prepare readers for the pressure that appears later:
+- a syntax refresher detached from workflow contracts
+- executor advice before workflow meaning is clear
+- a reason to use dynamic behavior without explicit discovery and publish boundaries
 
-- checkpoints that quietly hide nondeterminism
-- profiles that mutate behavior without a clear policy boundary
-- outputs that exist but are not trustworthy
-- workflows that pass once locally and then drift in CI or on shared infrastructure
+## Choose one starting lane
 
-This program exists to close that gap.
+| If you are here because... | Start with | Stop when you can say... |
+| --- | --- | --- |
+| Snakemake is still new | [Start Here](guides/start-here.md), [Course Guide](guides/course-guide.md), [Module 00](module-00-orientation/index.md) | what a truthful file contract is and why the capstone is not your first lesson |
+| you need to repair an existing workflow | [Pressure Routes](guides/pressure-routes.md), [Module 03](module-03-production-operations-policy-boundaries/index.md), [Module 04](module-04-scaling-workflows-interface-boundaries/index.md) | whether the problem is workflow semantics, policy drift, interface sprawl, or incident pressure |
+| you steward a long-lived workflow repository | [Course Guide](guides/course-guide.md), [Module 06](module-06-publishing-downstream-contracts/index.md), [Module 07](module-07-workflow-architecture-file-apis/index.md) | which surfaces are public, which are policy, and which proof route is proportionate |
 
-## Reading contract
+## Keep these support pages nearby
 
-This is not a browse-at-random reference. The learner path is deliberate:
-
-1. Start with orientation and the study map.
-2. Learn truthful file contracts before dynamic DAG behavior.
-3. Learn dynamic DAG behavior before production execution and governance.
-4. Learn production execution before scaling boundaries and CI gates.
-5. Continue into rule boundaries, publishing, architecture, operations, and mastery once the core feels stable.
-
-If you skip that order, later material will still be readable, but the trade-offs will
-feel arbitrary instead of principled.
-
-## Start here
-
-If you are not sure where to begin, use [`start-here.md`](guides/start-here.md) before diving
-into the modules. It routes beginners, working maintainers, and workflow stewards to the
-right entry path so the capstone does not become an accidental first lesson.
-
-If your route is shaped by urgency instead of calm study, use
-[`pressure-routes.md`](guides/pressure-routes.md).
-
-If you already know the course exists but are not sure which support page you need, use
-[`course-guide.md`](guides/course-guide.md) as the stable hub.
-
-Use [`guides/index.md`](guides/index.md) when you want the full learner-support surface
-and [`reference/index.md`](reference/index.md) when you want the stable review shelf.
+| Need | Best page |
+| --- | --- |
+| shortest stable entry | [Start Here](guides/start-here.md) |
+| route shaped by urgency | [Pressure Routes](guides/pressure-routes.md) |
+| stable support hub | [Course Guide](guides/course-guide.md) |
+| module titles translated into promises | [Module Promise Map](guides/module-promise-map.md) |
+| module exit bar | [Module Checkpoints](guides/module-checkpoints.md) |
+| workflow split decisions | [Workflow Modularization](guides/workflow-modularization.md) |
+| smallest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
+| capstone entry by module and question | [Capstone Map](capstone/capstone-map.md) |
 
 ## Module Table of Contents
 
@@ -91,69 +81,32 @@ and [`reference/index.md`](reference/index.md) when you want the stable review s
 | [Module 07](module-07-workflow-architecture-file-apis/index.md) | Workflow Architecture and File APIs | organizes the repository so ownership stays visible |
 | [Module 08](module-08-operating-contexts-execution-policy/index.md) | Operating Contexts and Execution Policy | compares local, CI, and cluster policy without semantic drift |
 | [Module 09](module-09-performance-observability-incident-response/index.md) | Performance, Observability, and Incident Response | reviews logs, benchmarks, and incidents with explicit evidence |
-| [Module 10](module-10-governance-migration-tool-boundaries/index.md) | Governance, Migration, and Tool Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
+| [Module 10](module-10-governance-migration-tool-boundaries/index.md) | Governance, Migration, and Tool Boundaries | finishes with stewardship and tool-boundary judgment |
 
-## Use these support pages first
+## How the capstone fits
 
-These are the pages that make the course easier to trust and easier to finish:
+The capstone is the executable proof surface for the course. It should corroborate a
+module idea that is already legible, not replace first exposure.
 
-| Need | Best page |
-| --- | --- |
-| first learner route | [`start-here.md`](guides/start-here.md) |
-| route under repair, stewardship, or incident pressure | [`pressure-routes.md`](guides/pressure-routes.md) |
-| stable support hub | [`course-guide.md`](guides/course-guide.md) |
-| what each module title actually promises | [`module-promise-map.md`](guides/module-promise-map.md) |
-| whether you are ready to move on | [`module-checkpoints.md`](guides/module-checkpoints.md) |
-| smallest honest proof route | [`proof-ladder.md`](guides/proof-ladder.md) |
-| capstone entry by module | [`capstone-map.md`](capstone/capstone-map.md) |
+Use it in this order:
 
-## Recommended route
+1. learn the concept in the local module exercise
+2. choose the smallest honest route with [Proof Ladder](guides/proof-ladder.md)
+3. enter the repository through [Capstone Map](capstone/capstone-map.md) or [Command Guide](capstone/command-guide.md)
+4. escalate to stronger review only when the current question actually needs it
 
-1. Start with [Start Here](guides/start-here.md).
-2. Read [Pressure Routes](guides/pressure-routes.md) if your context is not calm first-contact study.
-3. Read [Module 00](module-00-orientation/index.md).
-4. Move through Modules 01 to 10 in order.
-5. Enter the capstone through [Capstone Map](capstone/capstone-map.md), [Proof Ladder](guides/proof-ladder.md), or [Proof Matrix](guides/proof-matrix.md) instead of browsing the repository cold.
+## Success signal
 
-## How to use the capstone while reading
+The course home has done its job when you know:
 
-Guided route: [Capstone Map](capstone/capstone-map.md)
+- where to start without random browsing
+- which support page answers the next question
+- why the capstone is a proof surface rather than a first-contact playground
+- why later modules are consequences of earlier file-contract and publish-boundary choices
 
-If you want the shortest stable proof route first, start with [Capstone Proof Guide](capstone/capstone-proof-guide.md).
+## Failure modes this course is designed to prevent
 
-- After Module 01, inspect its explicit file contracts and stable publish boundary.
-- After Module 02, inspect the checkpoint and the way discovery is stabilized.
-- After Module 03, inspect profiles, retries, artifact verification, and proof targets.
-- After Module 04, inspect module boundaries, file APIs, and CI-style gates.
-- After Modules 05 and 06, inspect software environments, provenance, publish rules, and `publish/v1/`.
-- After Modules 07 to 09, inspect repository architecture, operating profiles, logs, benchmarks, and workflow-tour artifacts.
-- In Module 10, use the capstone as a workflow review specimen rather than a first-contact example.
-
-The capstone should function as your executable answer to “what does this rule look like in a real workflow?”
-
-## Review surfaces
-
-When you are reviewing whether the course and capstone are actually coherent, use:
-
-* [`topic-boundaries.md`](reference/topic-boundaries.md)
-* [`anti-pattern-atlas.md`](reference/anti-pattern-atlas.md)
-* [`module-promise-map.md`](guides/module-promise-map.md)
-* [`module-checkpoints.md`](guides/module-checkpoints.md)
-* [`completion-rubric.md`](reference/completion-rubric.md)
-
-## Common failure modes this program is trying to prevent
-
-- treating a workflow as a script rather than as a file-driven DAG
-- allowing dynamic discovery to hide moving targets or unstable plans
-- mixing workflow semantics with site policy or executor quirks
-- publishing artifacts without a stable versioned interface
-- letting helper code, environments, or wrappers mutate workflow meaning invisibly
-- allowing repository architecture or profile drift to become hidden coupling
-- trusting a workflow because it ran once rather than because its proofs are explicit
-
-## Expected learner rhythm
-
-- Read one module overview before reading the detailed module body.
-- Pause at every major diagram or proof hook and explain what invariant it is protecting.
-- Keep the capstone open while reading so the abstractions stay attached to a concrete workflow.
-- Re-run verification commands regularly instead of waiting until the end.
+- treating a workflow as a script rather than a file-driven DAG
+- trusting a workflow because it ran once instead of because its contracts and proofs are visible
+- using the capstone as first contact and confusing repository size with conceptual clarity
+- treating publish, profile, and governance pages as substitutes for earlier workflow truth
