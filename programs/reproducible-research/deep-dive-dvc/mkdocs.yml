@@ -29,6 +29,7 @@ nav:
       - "Module 00: Orientation and Study Strategy": module-00-orientation/index.md
   - Guides:
       - "Pressure Routes": guides/pressure-routes.md
+      - "Truth Contracts": guides/truth-contracts.md
       - "Module Promise Map": guides/module-promise-map.md
       - "Module Checkpoints": guides/module-checkpoints.md
       - "Command Guide": guides/command-guide.md

@@ -39,6 +39,7 @@ chapter.
 ## Use These For Study Planning
 
 - [Pressure Routes](pressure-routes.md) when your route is shaped by recovery, stewardship, or repair pressure
+- [Truth Contracts](truth-contracts.md) when you need change-detection and evidence rules in one place
 - [Module Promise Map](module-promise-map.md) when you want each module title translated into a learner contract
 - [Module Checkpoints](module-checkpoints.md) when you want a module-end exit bar before moving on
 - [Module Dependency Map](../reference/module-dependency-map.md) when you need the safe reading order explained

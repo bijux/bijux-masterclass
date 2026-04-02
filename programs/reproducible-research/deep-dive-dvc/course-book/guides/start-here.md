@@ -53,7 +53,7 @@ sequence.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
 4. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
 5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-6. Keep [Authority Map](../reference/authority-map.md) and [Capstone Map](capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
+6. Keep [Truth Contracts](truth-contracts.md), [Authority Map](../reference/authority-map.md), and [Capstone Map](capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
 
 ## Route By Pressure
 

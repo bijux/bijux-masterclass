@@ -84,6 +84,7 @@ Modules 09 to 10 finish the course where long-lived repositories are judged:
 
 - [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
+- [Truth Contracts](truth-contracts.md) when you need to know what DVC will actually treat as change
 - [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
 - [Authority Map](../reference/authority-map.md) when you need to know which state layer settles a question
 - [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) when you need to size or route proof correctly
