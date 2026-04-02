@@ -38,3 +38,9 @@ evidence in the capstone.
 - Which output or assertion confirmed it?
 - Which bundle or command is the best durable proof route for that claim?
 - Which change would require a new or updated proof route?
+
+## Best proof route by module stage
+
+- Modules 01-03: start with `make inspect` and lifecycle-oriented tests.
+- Modules 04-07: prefer `make verify-report` when aggregate, repository, or runtime boundaries are the claim.
+- Modules 08-10: use `make confirm` or `make proof` when the question is full-system trust rather than one narrow behavior.

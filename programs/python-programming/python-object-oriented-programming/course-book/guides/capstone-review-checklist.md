@@ -48,3 +48,9 @@ Use this checklist when reviewing the capstone after a module or before extendin
 - Which saved bundle captures executable verification for later review?
 - Which file would you edit first for the change you are imagining?
 - Which extension guide would stop you from placing that change in the wrong boundary?
+
+## Module-stage prompts
+
+- Modules 01-03: Which value or lifecycle rule becomes false first if the model drifts?
+- Modules 04-07: Which boundary is authoritative once multiple objects, repositories, or runtime adapters are involved?
+- Modules 08-10: Which public bundle or command best proves the current design to another reviewer?

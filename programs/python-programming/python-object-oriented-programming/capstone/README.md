@@ -82,6 +82,12 @@ Review and proof routes:
 - `make confirm` runs the strongest local confirmation route.
 - `make proof` builds the published learner-facing review route.
 
+## Read it by course stage
+
+- Semantic floor: inspect the model and lifecycle tests first.
+- Collaboration and evolution: inspect policies, read models, repository boundaries, and runtime coordination.
+- Trust and governance: inspect bundles, proof routes, and public review outputs before reading internals.
+
 ## How to read this code
 
 Start in this order:

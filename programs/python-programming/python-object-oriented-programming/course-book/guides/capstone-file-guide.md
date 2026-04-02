@@ -55,6 +55,13 @@ alphabetically. The goal is to understand how the system is partitioned.
 - Read `INSPECTION_GUIDE.md` when you want the learner-facing output route.
 - Read `EXTENSION_GUIDE.md` when you want to place a new feature in the right boundary.
 
+## Route by module stage
+
+- Modules 01-03: focus on `model.py` and the lifecycle-focused tests.
+- Modules 04-05: focus on `model.py`, `policies.py`, and `read_models.py`.
+- Modules 06-07: focus on `repository.py`, `runtime.py`, and the runtime tests.
+- Modules 08-10: start from `tests/`, bundles, and review guides before opening internals.
+
 ## What this order prevents
 
 - starting in infrastructure and mistaking it for the core model

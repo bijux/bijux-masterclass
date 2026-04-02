@@ -66,6 +66,12 @@ clearer after each module.
 - After Module 09, inspect which parts of the code should become the supported public facade and extension seam.
 - After Module 10, review the whole capstone for hot paths, observability, trust boundaries, and operational readiness.
 
+## Best route by module stage
+
+- Modules 01-03: start with value semantics, lifecycle rules, and aggregate state transitions.
+- Modules 04-07: follow ownership through policies, events, repositories, runtime coordination, and time pressure.
+- Modules 08-10: switch to bundles, tests, and public review routes to decide whether the design deserves trust.
+
 ## Run it
 
 From the repository root:

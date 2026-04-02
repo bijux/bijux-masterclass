@@ -55,3 +55,9 @@ both.
 3. Read the saved bundle files before opening implementation internals.
 4. Inspect the relevant code file.
 5. Decide whether the evidence matches the design claim or only hints at it.
+
+## Route by course stage
+
+- Semantic floor: start with `make inspect` and the lifecycle-oriented tests.
+- Collaboration and evolution: use `make verify-report` when the claim crosses aggregates, policies, repositories, or runtime boundaries.
+- Trust and governance: use `make confirm` or `make proof` when you need the strongest end-to-end review surface.
