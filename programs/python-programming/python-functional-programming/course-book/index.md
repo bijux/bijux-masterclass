@@ -54,11 +54,11 @@ By the end of the course, you should be able to:
 
 ## Start here
 
-- Read [Start Here](start-here.md) for the shortest stable learner route.
-- Continue with [Course Guide](course-guide.md) and [Learning Contract](learning-contract.md).
-- Keep [History Guide](history-guide.md) nearby when you want the module-end comparison route.
+- Read [Start Here](guides/start-here.md) for the shortest stable learner route.
+- Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
+- Keep [History Guide](guides/history-guide.md) nearby when you want the module-end comparison route.
 - Read the [Orientation overview](module-00-orientation/index.md).
-- Keep [Proof Matrix](proof-matrix.md) nearby when you want the fastest route from course claims to executable evidence.
+- Keep [Proof Matrix](guides/proof-matrix.md) nearby when you want the fastest route from course claims to executable evidence.
 - Keep the [FuncPipe Capstone Guide](capstone.md) open from the beginning.
 - Work through the modules in order. The sequence is deliberate.
 

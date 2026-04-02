@@ -15,15 +15,15 @@ site_dir: ../../../artifacts/site/python-programming/python-functional-programmi
 
 nav:
   - Start Here:
-      - Start Here: start-here.md
+      - Start Here: guides/start-here.md
       - Course Home: index.md
-      - Course Guide: course-guide.md
-      - Learning Contract: learning-contract.md
-      - Module Dependency Map: module-dependency-map.md
-      - Practice Map: practice-map.md
-      - Command Guide: command-guide.md
-      - History Guide: history-guide.md
-      - Proof Matrix: proof-matrix.md
+      - Course Guide: guides/course-guide.md
+      - Learning Contract: guides/learning-contract.md
+      - Module Dependency Map: guides/module-dependency-map.md
+      - Practice Map: guides/practice-map.md
+      - Command Guide: guides/command-guide.md
+      - History Guide: guides/history-guide.md
+      - Proof Matrix: guides/proof-matrix.md
       - Capstone Map: capstone-map.md
       - Capstone File Guide: capstone-file-guide.md
       - Capstone Test Guide: capstone-test-guide.md

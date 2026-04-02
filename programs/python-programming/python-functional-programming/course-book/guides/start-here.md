@@ -42,12 +42,12 @@ If you keep those questions in view, the modules feel cumulative instead of deco
 
 ## Best reading route
 
-1. Read [Course Home](index.md) for the course promise and module arc.
-2. Read [Orientation](module-00-orientation/index.md), [Course Orientation](module-00-orientation/course-orientation.md), and [How to Study This Course](module-00-orientation/how-to-study-this-course.md).
+1. Read [Course Home](../index.md) for the course promise and module arc.
+2. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
 3. Read [Course Guide](course-guide.md) to understand the course structure.
 4. Read [Learning Contract](learning-contract.md) before Module 01.
-5. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
-6. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+5. Keep [FuncPipe Capstone Guide](../capstone.md) open while reading the full course.
+6. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](../capstone-map.md) when you want the executable route.
 
 ## What to avoid
 

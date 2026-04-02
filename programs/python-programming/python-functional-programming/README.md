@@ -45,7 +45,7 @@ This is not a browse-at-random reference. The reading path matters:
 If you skip that order, later modules will still be readable, but the trade-offs will
 feel ornamental instead of necessary.
 
-If you want the shortest stable entry route, start with `course-book/start-here.md`.
+If you want the shortest stable entry route, start with `course-book/guides/start-here.md`.
 
 ## What this course covers
 
@@ -84,10 +84,10 @@ make PROGRAM=python-programming/python-functional-programming history-refresh
 
 Primary reading route:
 
-- `course-book/start-here.md`
+- `course-book/guides/start-here.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
-- `course-book/history-guide.md`
+- `course-book/guides/history-guide.md`
 - `course-book/capstone.md`
 
 ## Course shape
