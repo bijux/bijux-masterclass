@@ -38,6 +38,7 @@ do not have to repeat that scaffolding.
 ## Use These For Study Planning
 
 - [Reading Routes](reading-routes.md) when you want a paced path through dense modules
+- [Mechanism Selection](mechanism-selection.md) when you need a concrete "use this, not that" guide
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence explained
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
 

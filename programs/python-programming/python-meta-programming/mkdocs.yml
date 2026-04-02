@@ -23,6 +23,7 @@ nav:
       - "Module 00: Orientation": module-00-orientation/index.md
   - Guides:
       - Reading Routes: guides/reading-routes.md
+      - Mechanism Selection: guides/mechanism-selection.md
       - Command Guide: guides/command-guide.md
       - Module Dependency Map: guides/module-dependency-map.md
       - Practice Map: guides/practice-map.md

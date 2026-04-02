@@ -84,6 +84,7 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-and-mastery/maste
 
 - [Reading Routes](reading-routes.md) when you need a lower-density or pressure-shaped sequence
 - [Runtime Power Ladder](../reference/runtime-power-ladder.md) when you need the governing review model
+- [Mechanism Selection](mechanism-selection.md) when you need a problem-to-tool comparison
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence justified
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
 - [Command Guide](command-guide.md) when you need the executable route
