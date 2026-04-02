@@ -55,10 +55,23 @@ enough to force real design choices about state.
 If you want a module-by-module route through the repository, start with
 [Capstone Map](capstone-map.md).
 
+## Best capstone entry by learning stage
+
+Use the capstone differently as the course advances:
+
+| Learning stage | Best starting page | Best first command | Why this is the right entry |
+| --- | --- | --- | --- |
+| Modules 01-03 | [Capstone Map](capstone-map.md) | `make -C capstone walkthrough` | keep the repository as a specimen while the state model is still forming |
+| Modules 04-06 | [Repository Layer Guide](repository-layer-guide.md) | `make -C capstone repro` or `make -C capstone verify` | inspect truthful execution, params, metrics, and experiment boundaries directly |
+| Modules 07-08 | [Recovery Review Guide](recovery-review-guide.md) | `make -C capstone confirm` or `make -C capstone recovery-review` | inspect what another maintainer can verify and restore under pressure |
+| Modules 09-10 | [Release Review Guide](release-review-guide.md) | `make -C capstone release-review` or `make -C capstone confirm` | review promoted trust surfaces, governance, and repository stewardship |
+
 ## Best entrypoints
 
 - Capstone map: [capstone-map.md](capstone-map.md)
 - Capstone architecture: [capstone-architecture-guide.md](capstone-architecture-guide.md)
+- Repository layer guide: [repository-layer-guide.md](repository-layer-guide.md)
+- Verification route guide: [../reference/verification-route-guide.md](../reference/verification-route-guide.md)
 - Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/README.md)
 - Repository architecture: [`capstone/ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/ARCHITECTURE.md)
 - Experiment route: [`capstone/EXPERIMENT_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/EXPERIMENT_GUIDE.md)
@@ -74,6 +87,9 @@ If you want a module-by-module route through the repository, start with
 make -C capstone walkthrough
 make -C capstone repro
 make -C capstone verify
+make -C capstone experiment-review
+make -C capstone release-review
+make -C capstone recovery-review
 make -C capstone confirm
 make -C capstone tour
 ```

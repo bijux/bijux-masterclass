@@ -54,6 +54,14 @@ pipeline truth, experiments, promotion, and recovery:
 - Modules 07-09 use this repository to inspect reviewability, promotion evidence, publish contracts, and remote-backed recovery.
 - Module 10 uses this repository as a review specimen for governance, migration, and tool-boundary judgment.
 
+If you arrived here from the course-book, keep these course pages open beside the
+repository:
+
+- `course-book/guides/readme-capstone.md`
+- `course-book/guides/capstone-map.md`
+- `course-book/guides/repository-layer-guide.md`
+- `course-book/reference/verification-route-guide.md`
+
 ## What lives here
 
 - `data/raw/service_incidents.csv` is the committed source dataset.
@@ -164,8 +172,9 @@ The walkthrough bundle now includes the verifier implementation, verifier tests,
 sample promoted manifest/report so the learner can connect declaration, enforcement, and
 published evidence in one reading route.
 
-If you are unsure which route fits your question, use the course-book
-`verification-route-guide.md` page before defaulting to the strongest command.
+If you are unsure which route fits your question, use
+`course-book/reference/verification-route-guide.md` before defaulting to the strongest
+command.
 
 ## What `confirm` proves
 

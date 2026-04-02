@@ -46,18 +46,18 @@ capstone should confirm understanding, not replace first-contact learning.
 
 ## Module-to-Capstone Route
 
-| Module | Learner goal | Capstone surfaces | Proof command |
-| --- | --- | --- | --- |
-| 01 Why Reproducibility Fails | see why rerunnable scripts are weaker than explicit state contracts | `README.md`, `TOUR.md`, `data/raw/service_incidents.csv` | `make -C capstone walkthrough` |
-| 02 Data Identity | separate location from durable data identity | `data/raw/`, `.dvc/cache`, `.dvc-remote/`, `dvc.lock` | `make -C capstone verify` |
-| 03 Environments as Inputs | inspect the runtime boundary instead of treating it as luck | `Makefile`, `pyproject.toml`, `src/incident_escalation_capstone/` | `make -C capstone test` |
-| 04 Truthful DAGs | inspect declared stage edges and recorded execution state | `dvc.yaml`, `dvc.lock`, `state/data_profile.json` | `make -C capstone repro` |
-| 05 Metrics and Parameters | inspect declared controls and semantic comparison surfaces | `params.yaml`, `metrics/metrics.json`, `publish/v1/metrics.json` | `make -C capstone verify` |
-| 06 Experiments | vary the control surface without mutating the baseline contract | `params.yaml`, `metrics/`, `publish/v1/`, experiment comparison bundle | `make -C capstone experiment-review` |
-| 07 Collaboration and CI | inspect verification gates and reproducibility checks another person can run | `Makefile`, `tests/`, `TOUR.md` | `make -C capstone confirm` |
-| 08 Incident Survival | rehearse cache loss and remote-backed restoration | `.dvc-remote/`, `publish/v1/`, recovery targets, recovery review bundle | `make -C capstone recovery-review` |
-| 09 Promotion and Auditability | inspect the promoted interface and the evidence that defends it | `publish/v1/`, `publish/v1/manifest.json`, `publish/v1/params.yaml`, `dvc.lock`, release review bundle | `make -C capstone release-review` |
-| 10 Mastery | review the full repository as a long-lived stewardship specimen | `README.md`, `dvc.yaml`, `dvc.lock`, `Makefile`, `publish/v1/` | `make -C capstone confirm` |
+| Module | Course page | Learner goal | Capstone surfaces | Proof command |
+| --- | --- | --- | --- | --- |
+| 01 Why Reproducibility Fails | [Module 01](../module-01-why-reproducibility-fails/index.md) | see why rerunnable scripts are weaker than explicit state contracts | `README.md`, `TOUR.md`, `data/raw/service_incidents.csv` | `make -C capstone walkthrough` |
+| 02 Data Identity and Content Addressing | [Module 02](../module-02-data-identity-and-content-addressing/index.md) | separate location from durable data identity | `data/raw/`, `.dvc/cache`, `.dvc-remote/`, `dvc.lock` | `make -C capstone verify` |
+| 03 Execution Environments as Inputs | [Module 03](../module-03-execution-environments-as-inputs/index.md) | inspect the runtime boundary instead of treating it as luck | `Makefile`, `pyproject.toml`, `src/incident_escalation_capstone/` | `make -C capstone test` |
+| 04 Pipelines as Truthful DAGs | [Module 04](../module-04-pipelines-as-truthful-dags/index.md) | inspect declared stage edges and recorded execution state | `dvc.yaml`, `dvc.lock`, `state/data_profile.json` | `make -C capstone repro` |
+| 05 Metrics, Parameters, and Meaning | [Module 05](../module-05-metrics-parameters-and-meaning/index.md) | inspect declared controls and semantic comparison surfaces | `params.yaml`, `metrics/metrics.json`, `publish/v1/metrics.json` | `make -C capstone verify` |
+| 06 Experiments Without Chaos | [Module 06](../module-06-experiments-without-chaos/index.md) | vary the control surface without mutating the baseline contract | `params.yaml`, `metrics/`, `publish/v1/`, experiment comparison bundle | `make -C capstone experiment-review` |
+| 07 Collaboration, CI, and Social Contracts | [Module 07](../module-07-collaboration-ci-and-social-contracts/index.md) | inspect verification gates and reproducibility checks another person can run | `Makefile`, `tests/`, `TOUR.md` | `make -C capstone confirm` |
+| 08 Production, Scale, and Incident Survival | [Module 08](../module-08-production-scale-and-incident-survival/index.md) | rehearse cache loss and remote-backed restoration | `.dvc-remote/`, `publish/v1/`, recovery targets, recovery review bundle | `make -C capstone recovery-review` |
+| 09 Promotion, Registry Boundaries, Release Contracts, and Auditability | [Module 09](../module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md) | inspect the promoted interface and the evidence that defends it | `publish/v1/`, `publish/v1/manifest.json`, `publish/v1/params.yaml`, `dvc.lock`, release review bundle | `make -C capstone release-review` |
+| 10 Migration, Governance, Anti-Patterns, and DVC Tool Boundaries | [Module 10](../module-10-migration-governance-anti-patterns-and-dvc-tool-boundaries/index.md) | review the full repository as a long-lived stewardship specimen | `README.md`, `dvc.yaml`, `dvc.lock`, `Makefile`, `publish/v1/` | `make -C capstone confirm` |
 
 [Back to top](#top)
 
@@ -75,6 +75,22 @@ If you want one sane first walkthrough, use this order:
 6. Run `make -C capstone confirm` when you want executable proof instead of a prose tour.
 
 This order keeps state identity and contract meaning ahead of mechanics.
+
+[Back to top](#top)
+
+---
+
+## Keep These Pages Open Together
+
+When you move from the course into the repository, keep these pages open as a set:
+
+1. [Capstone Guide](readme-capstone.md)
+2. [Capstone File Guide](capstone-file-guide.md)
+3. [Repository Layer Guide](repository-layer-guide.md)
+4. [Verification Route Guide](../reference/verification-route-guide.md)
+
+That combination keeps the learner from confusing file ownership, repository layers, and
+proof commands.
 
 [Back to top](#top)
 
