@@ -89,8 +89,8 @@ finally to declared configuration.
 
 Use these pages with this guide:
 
-* [`capstone-file-guide.md`](../guides/capstone-file-guide.md)
-* [`capstone-map.md`](../guides/capstone-map.md)
+* [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
+* [`capstone-map.md`](../capstone/capstone-map.md)
 * [`proof-matrix.md`](../guides/proof-matrix.md)
 
 [Back to top](#top)

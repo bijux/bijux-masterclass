@@ -51,7 +51,7 @@ Use this page to choose the right route before reading modules at random.
 4. Read [Platform Setup](platform-setup.md) before you run proof commands so the Snakemake 9.14.x version contract is explicit.
 5. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
 6. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-7. Keep [Boundary Map](../reference/boundary-map.md), [Workflow Modularization](workflow-modularization.md), and [Capstone Map](capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
+7. Keep [Boundary Map](../reference/boundary-map.md), [Workflow Modularization](workflow-modularization.md), and [Capstone Map](../capstone/capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
 
 ## Route By Pressure
 
@@ -69,7 +69,7 @@ Use this page to choose the right route before reading modules at random.
 3. Read [Module 03](../module-03-production-operations-policy-boundaries/index.md).
 4. Read [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md).
 5. Read [Module 08](../module-08-operating-contexts-execution-policy/index.md).
-6. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](capstone-map.md) to inspect the reference workflow selectively.
+6. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](../capstone/capstone-map.md) to inspect the reference workflow selectively.
 
 ### Workflow stewardship
 
@@ -77,7 +77,7 @@ Use this page to choose the right route before reading modules at random.
 2. Read [Module 07](../module-07-workflow-architecture-file-apis/index.md).
 3. Read [Module 09](../module-09-performance-observability-incident-response/index.md).
 4. Read [Module 10](../module-10-governance-migration-tool-boundaries/index.md).
-5. Finish with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Capstone Extension Guide](capstone-extension-guide.md).
+5. Finish with [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) and [Capstone Extension Guide](../capstone/capstone-extension-guide.md).
 
 ## Success Signal
 
@@ -94,6 +94,6 @@ You are using the course correctly if you can explain all of this without hand-w
 - [Course Guide](course-guide.md)
 - [Module 00](../module-00-orientation/index.md)
 - [Boundary Map](../reference/boundary-map.md)
-- [Capstone Guide](readme-capstone.md)
+- [Capstone Guide](../capstone/index.md)
 
 [Back to top](#top)

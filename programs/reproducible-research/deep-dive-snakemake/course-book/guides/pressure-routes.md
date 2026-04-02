@@ -56,7 +56,7 @@ Use this when Snakemake still feels foreign.
 2. [`module-00-orientation/index.md`](../module-00-orientation/index.md)
 3. Modules 01 and 02
 4. [`module-checkpoints.md`](module-checkpoints.md)
-5. [`capstone-walkthrough.md`](capstone-walkthrough.md)
+5. [`capstone-walkthrough.md`](../capstone/capstone-walkthrough.md)
 
 ### Inherited Workflow Repair
 
@@ -66,7 +66,7 @@ Use this when you already have a workflow that runs but is hard to trust.
 2. Module 03
 3. Module 04
 4. Module 08
-5. [`capstone-map.md`](capstone-map.md)
+5. [`capstone/capstone-map.md`](../capstone/capstone-map.md)
 
 ### Publish And Stewardship Review
 
@@ -81,10 +81,10 @@ Use this when the concern is downstream trust and long-lived workflow ownership.
 
 Use this when the workflow already failed and you need the shortest route to responsible diagnosis.
 
-1. [`incident-review-guide.md`](incident-review-guide.md)
+1. [`incident-review-guide.md`](../capstone/incident-review-guide.md)
 2. Module 09
-3. [`command-guide.md`](command-guide.md)
-4. [`capstone-map.md`](capstone-map.md)
+3. [`capstone/command-guide.md`](../capstone/command-guide.md)
+4. [`capstone/capstone-map.md`](../capstone/capstone-map.md)
 5. `proof`
 
 [Back to top](#top)

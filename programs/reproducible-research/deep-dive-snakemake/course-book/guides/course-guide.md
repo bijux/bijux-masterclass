@@ -86,7 +86,7 @@ Modules 09 to 10 finish the course where long-lived workflows are judged:
 - [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
 - [Boundary Map](../reference/boundary-map.md) when you need workflow versus policy separation
 - [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) when you need to size or route proof correctly
-- [Capstone Map](capstone-map.md) when you want the repository route by module
+- [Capstone Map](../capstone/capstone-map.md) when you want the repository route by module
 
 ## Honest Expectation
 

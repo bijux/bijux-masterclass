@@ -44,7 +44,7 @@ publish, policy, and confirmation commands.
 ## Recommended Route
 
 1. Read `capstone/PROOF_GUIDE.md`.
-2. Use [Proof Matrix](proof-matrix.md) to choose the narrowest command.
+2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command.
 3. Run that command from the capstone or course root.
 4. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to record what the evidence actually proves.
 

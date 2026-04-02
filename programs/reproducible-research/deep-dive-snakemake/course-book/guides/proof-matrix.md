@@ -84,11 +84,11 @@ The root-level equivalents for the specialized review bundles are:
 
 The most useful companion pages for this matrix are:
 
-* [`command-guide.md`](command-guide.md)
+* [`capstone/command-guide.md`](../capstone/command-guide.md)
 * [`boundary-map.md`](../reference/boundary-map.md)
 * [`practice-map.md`](../reference/practice-map.md)
-* [`capstone-file-guide.md`](capstone-file-guide.md)
-* [`publish-review-guide.md`](publish-review-guide.md)
-* [`incident-review-guide.md`](incident-review-guide.md)
+* [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
+* [`publish-review-guide.md`](../capstone/publish-review-guide.md)
+* [`incident-review-guide.md`](../capstone/incident-review-guide.md)
 
 [Back to top](#top)

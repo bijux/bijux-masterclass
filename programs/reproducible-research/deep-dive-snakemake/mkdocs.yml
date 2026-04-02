@@ -35,7 +35,6 @@ nav:
       - Workflow Modularization: guides/workflow-modularization.md
       - Module Promise Map: guides/module-promise-map.md
       - Module Checkpoints: guides/module-checkpoints.md
-      - Command Guide: guides/command-guide.md
       - Proof Ladder: guides/proof-ladder.md
       - Proof Matrix: guides/proof-matrix.md
   - Reference:
@@ -48,18 +47,19 @@ nav:
       - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
       - Completion Rubric: reference/completion-rubric.md
   - Capstone:
-      - Capstone Guide: guides/readme-capstone.md
-      - Capstone File Guide: guides/capstone-file-guide.md
-      - Capstone Architecture Guide: guides/capstone-architecture-guide.md
+      - Capstone Guide: capstone/index.md
+      - Command Guide: capstone/command-guide.md
+      - Capstone File Guide: capstone/capstone-file-guide.md
+      - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
       - Repository Layer Guide: reference/repository-layer-guide.md
-      - Capstone Map: guides/capstone-map.md
-      - Capstone Proof Guide: guides/capstone-proof-guide.md
-      - Capstone Walkthrough: guides/capstone-walkthrough.md
-      - Publish Review Guide: guides/publish-review-guide.md
-      - Profile Audit Guide: guides/profile-audit-guide.md
-      - Incident Review Guide: guides/incident-review-guide.md
-      - Capstone Review Worksheet: guides/capstone-review-worksheet.md
-      - Capstone Extension Guide: guides/capstone-extension-guide.md
+      - Capstone Map: capstone/capstone-map.md
+      - Capstone Proof Guide: capstone/capstone-proof-guide.md
+      - Capstone Walkthrough: capstone/capstone-walkthrough.md
+      - Publish Review Guide: capstone/publish-review-guide.md
+      - Profile Audit Guide: capstone/profile-audit-guide.md
+      - Incident Review Guide: capstone/incident-review-guide.md
+      - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+      - Capstone Extension Guide: capstone/capstone-extension-guide.md
   - "Module 01: First Principles and the File-DAG Contract":
       - Overview: module-01-file-contracts-workflow-graph-truth/index.md
   - "Module 02: Dynamic DAGs, Integrity, and Deterministic Discovery":

@@ -53,4 +53,4 @@ but "which split keeps the workflow legible?"
 
 - [Module 07](../module-07-workflow-architecture-file-apis/index.md) for the main teaching module
 - [Repository Layer Guide](../reference/repository-layer-guide.md) for the capstone file layout
-- [Capstone Map](capstone-map.md) for the module-to-repository route
+- [Capstone Map](../capstone/capstone-map.md) for the module-to-repository route

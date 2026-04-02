@@ -105,7 +105,7 @@ These are the pages that make the course easier to trust and easier to finish:
 | what each module title actually promises | [`module-promise-map.md`](guides/module-promise-map.md) |
 | whether you are ready to move on | [`module-checkpoints.md`](guides/module-checkpoints.md) |
 | smallest honest proof route | [`proof-ladder.md`](guides/proof-ladder.md) |
-| capstone entry by module | [`capstone-map.md`](guides/capstone-map.md) |
+| capstone entry by module | [`capstone-map.md`](capstone/capstone-map.md) |
 
 ## Recommended route
 
@@ -113,13 +113,13 @@ These are the pages that make the course easier to trust and easier to finish:
 2. Read [Pressure Routes](guides/pressure-routes.md) if your context is not calm first-contact study.
 3. Read [Module 00](module-00-orientation/index.md).
 4. Move through Modules 01 to 10 in order.
-5. Enter the capstone through [Capstone Map](guides/capstone-map.md), [Proof Ladder](guides/proof-ladder.md), or [Proof Matrix](guides/proof-matrix.md) instead of browsing the repository cold.
+5. Enter the capstone through [Capstone Map](capstone/capstone-map.md), [Proof Ladder](guides/proof-ladder.md), or [Proof Matrix](guides/proof-matrix.md) instead of browsing the repository cold.
 
 ## How to use the capstone while reading
 
-Guided route: [Capstone Map](guides/capstone-map.md)
+Guided route: [Capstone Map](capstone/capstone-map.md)
 
-If you want the shortest stable proof route first, start with [Capstone Proof Guide](guides/capstone-proof-guide.md).
+If you want the shortest stable proof route first, start with [Capstone Proof Guide](capstone/capstone-proof-guide.md).
 
 - After Module 01, inspect its explicit file contracts and stable publish boundary.
 - After Module 02, inspect the checkpoint and the way discovery is stabilized.

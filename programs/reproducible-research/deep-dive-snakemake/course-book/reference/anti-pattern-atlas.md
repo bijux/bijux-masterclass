@@ -89,7 +89,7 @@ Use these with the atlas:
 
 * [`boundary-map.md`](boundary-map.md) for workflow-boundary review
 * [`module-dependency-map.md`](module-dependency-map.md) for where the idea is taught in sequence
-* [`capstone-map.md`](../guides/capstone-map.md) for module-aware workflow routing
-* [`incident-review-guide.md`](../guides/incident-review-guide.md) for a narrower incident review surface
+* [`capstone-map.md`](../capstone/capstone-map.md) for module-aware workflow routing
+* [`incident-review-guide.md`](../capstone/incident-review-guide.md) for a narrower incident review surface
 
 [Back to top](#top)

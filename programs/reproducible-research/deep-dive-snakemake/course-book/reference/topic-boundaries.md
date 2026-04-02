@@ -132,7 +132,7 @@ Use these with this page:
 
 * [`workflow-glossary.md`](workflow-glossary.md) to revisit the shared vocabulary
 * [`module-dependency-map.md`](module-dependency-map.md) to see the safe learning order
-* [`capstone-map.md`](../guides/capstone-map.md) to choose the smallest honest workflow proof route
+* [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest workflow proof route
 * [`completion-rubric.md`](completion-rubric.md) to review whether the course is actually keeping its promises
 
 [Back to top](#top)

@@ -34,7 +34,7 @@ not only as a runnable workflow.
 1. Read `capstone/ARCHITECTURE.md`.
 2. Compare it with [Repository Layer Guide](../reference/repository-layer-guide.md) and [Capstone File Guide](capstone-file-guide.md).
 3. Inspect the matching capstone files in the order the architecture guide names them.
-4. Use [Proof Matrix](proof-matrix.md) to pick the strongest command for the boundary you are reviewing.
+4. Use [Proof Matrix](../guides/proof-matrix.md) to pick the strongest command for the boundary you are reviewing.
 
 [Back to top](#top)
 

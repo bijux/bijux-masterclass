@@ -48,7 +48,7 @@ The rule is simple: open the smallest page that answers the next honest learner 
 
 ## Use These For Commands And Proof
 
-- [Command Guide](command-guide.md) for command boundaries
+- [Command Guide](../capstone/command-guide.md) for command boundaries
 - [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
 - [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence surface
 - [Boundary Map](../reference/boundary-map.md) when you need workflow versus policy separation
@@ -56,21 +56,22 @@ The rule is simple: open the smallest page that answers the next honest learner 
 
 ## Use These For Capstone Reading
 
-- [Capstone Guide](readme-capstone.md) for the repository contract
-- [Capstone Architecture Guide](capstone-architecture-guide.md) for the repository structure
-- [Capstone Map](capstone-map.md) for module-to-repository routing
-- [Capstone File Guide](capstone-file-guide.md) for file responsibilities
-- [Capstone Walkthrough](capstone-walkthrough.md) for a bounded first reading route
-- [Capstone Proof Guide](capstone-proof-guide.md) for the shortest proof route
-- [Publish Review Guide](publish-review-guide.md) for publish-boundary review
-- [Profile Audit Guide](profile-audit-guide.md) for execution-policy review
-- [Incident Review Guide](incident-review-guide.md) for workflow triage under pressure
-- [Capstone Review Worksheet](capstone-review-worksheet.md) for structured repository assessment
-- [Capstone Extension Guide](capstone-extension-guide.md) for safe evolution
+- [Capstone Guide](../capstone/index.md) for the repository contract
+- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for the repository structure
+- [Capstone Map](../capstone/capstone-map.md) for module-to-repository routing
+- [Capstone File Guide](../capstone/capstone-file-guide.md) for file responsibilities
+- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for a bounded first reading route
+- [Capstone Proof Guide](../capstone/capstone-proof-guide.md) for the shortest proof route
+- [Publish Review Guide](../capstone/publish-review-guide.md) for publish-boundary review
+- [Profile Audit Guide](../capstone/profile-audit-guide.md) for execution-policy review
+- [Incident Review Guide](../capstone/incident-review-guide.md) for workflow triage under pressure
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for structured repository assessment
+- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
 
 ## Keep The Layout Stable
 
 - `index.md` stays the course home
 - `guides/` stays the learner route and proof shelf
+- `capstone/` stays the capstone-specific reading, proof, and incident-review shelf
 - `reference/` stays the durable workflow and review shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

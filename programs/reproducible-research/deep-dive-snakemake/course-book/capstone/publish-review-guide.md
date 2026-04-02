@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Incident Review Guide
+# Publish Review Guide
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
   program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Incident Review Guide"]
+  pressure --> guide["Publish Review Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
@@ -24,25 +24,25 @@ flowchart TD
 
 Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
-Use this page when the question is about incident response, reproducibility under
-pressure, or workflow debugging with evidence instead of intuition.
+Use this page when the question is not merely "did the workflow run?" but "what is the
+stable published contract and how is it defended?"
 
 ---
 
 ## Recommended Route
 
-1. Read `capstone/INCIDENT_REVIEW_GUIDE.md`.
-2. Use [Proof Matrix](proof-matrix.md) to choose the narrowest command for the current symptom.
-3. Compare the result with [Profile Audit Guide](profile-audit-guide.md) and [Publish Review Guide](publish-review-guide.md) if the problem spans multiple boundaries.
+1. Read `capstone/PUBLISH_REVIEW_GUIDE.md`.
+2. Run `make -C capstone verify-report` or the course-level equivalent.
+3. Compare the report bundle with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Proof Matrix](../guides/proof-matrix.md).
 
 [Back to top](#top)
 
 ---
 
-## What A Good Incident Review Can Answer
+## What A Good Review Can Answer
 
-- whether the failure is about workflow semantics, execution policy, or downstream trust
-- which command gives the most honest first evidence
-- which files should remain unchanged until stronger proof exists
+- which promoted files belong to the public contract
+- which proofs are about publish trust rather than workflow execution generally
+- which future change would require a versioned publish boundary change
 
 [Back to top](#top)
