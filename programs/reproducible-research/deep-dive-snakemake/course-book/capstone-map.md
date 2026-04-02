@@ -78,6 +78,9 @@ If you want one sane first walkthrough, use this order:
 
 This order keeps contract and repository shape ahead of implementation detail.
 
+Use [Capstone Walkthrough](capstone-walkthrough.md) when you want the course-book version
+of that same first-contact route.
+
 [Back to top](#top)
 
 ---

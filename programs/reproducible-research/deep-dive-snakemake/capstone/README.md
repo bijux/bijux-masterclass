@@ -147,6 +147,9 @@ make tour
 make confirm
 ```
 
+Use `WALKTHROUGH_GUIDE.md` when you want the lightest honest repository route before
+moving to executed proof in `TOUR.md`.
+
 Use `make selftest` when the narrow question is determinism across core counts rather
 than full clean-room confirmation.
 
