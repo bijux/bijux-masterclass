@@ -14,6 +14,16 @@ The central assertion, though potentially disconcerting, is inescapable: **Code 
 
 ---
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| environment boundary | "What part of the result depends on runtime rather than code or data?" | inspect the capstone only after you accept environment as state |
+| determinism spectrum | "Why can two honest runs still diverge?" | use capstone surfaces to inspect declared boundaries, not to promise sameness |
+| tool responsibility | "What should DVC record, and what should another tool own?" | compare DVC to lockfiles and containers intentionally |
+
+---
+
 ## 3.1 The Erroneous Presumption: Identical Code and Data Yield Identical Results
 
 This belief is entrenched, particularly within software engineering paradigms, yet it proves invalid in machine learning (ML) contexts. Identical scripts, datasets, and parameters can produce divergent outcomes, not due to overt errors, but through unrecognized input alterations residing within the environment.
@@ -50,6 +60,9 @@ The environment encompasses all factors influencing execution that remain undecl
 - Inherently stochastic algorithms.
 
 These components can alter results without modifications to code or data.
+
+That is the main conceptual move in this module: the environment is not background
+weather. It is part of the state surface.
 
 **Illustration**:
 

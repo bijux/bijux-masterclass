@@ -18,6 +18,18 @@ This module confronts the most insidious failure in ML systems: **outcomes that 
 
 ---
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| semantic metrics | "Are these numbers still measuring the same thing?" | inspect tracked metrics only after metric meaning is explicit |
+| parameter contracts | "Which controls are part of the comparison surface?" | compare `params.yaml` to published params deliberately |
+| reviewability | "What makes one run comparable to another?" | use the capstone to inspect params, metrics, and publish evidence together |
+
+The main outcome of this module is not more measurement. It is better comparability.
+
+---
+
 ## 5.1 The Perilous Misconception: Metrics as Mere Numerical Values
 
 Workflows commonly reduce metrics to scalars, tables, or plots—logged, diffed, and compared algorithmically. This overlooks their essence: **metrics articulate assertions about reality**.

@@ -12,6 +12,14 @@ This module delineates the root causes of such inconsistencies and prescribes me
 
 **Prerequisites**: Proficiency in Modules 01–03 is indispensable. Familiarity with directed acyclic graphs (DAGs), basic DVC commands (e.g., `dvc add`), and YAML syntax is advantageous; consult DVC documentation if required.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| truthful stages | "Why did this stage rerun, or why did it not?" | use the capstone heavily after the state model is already clear |
+| dependency declaration | "Which inputs are strong enough to belong in the graph?" | compare `dvc.yaml` and `dvc.lock` carefully |
+| operational trust | "When does `dvc repro` become predictable instead of mystical?" | inspect stage boundaries, not just stage names |
+
 ## Why this module matters in the course
 
 This is where the course turns state identity into executable truth. Once a team can name
@@ -32,6 +40,8 @@ By the end of the module, you should be able to answer:
 - Why is `dvc.lock` evidence of a graph execution rather than just a generated file?
 
 Those answers are the bridge between "the repository runs" and "the repository is reviewable."
+
+This module should make pipeline behavior more explainable, not merely more automated.
 
 ## What to inspect in the capstone
 

@@ -40,6 +40,14 @@ By the end of the module, you should be able to answer:
 
 If those answers are still fuzzy, pause here before moving on to pipeline semantics.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| content identity | "What makes two datasets the same?" | use the capstone after you can name the state layers clearly |
+| state layers | "Which copy is mutable, and which one is authoritative?" | inspect `dvc.lock`, cache, remote, and publish state deliberately |
+| recovery logic | "How does content identity make restoration possible?" | do not let remote behavior feel magical |
+
 ## What to inspect in the capstone
 
 Keep the capstone open while reading this module and inspect:
@@ -51,6 +59,9 @@ Keep the capstone open while reading this module and inspect:
 
 That contrast matters. The course is trying to teach that these locations do different
 jobs even when they all contain "the data."
+
+If the learner still thinks a filename is the identity of the data, this module is not
+done yet.
 
 ---
 

@@ -22,6 +22,16 @@ Upon completion, you should possess a definitive response to: *What problem does
 
 ---
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| reproducibility failure | "Why does rerunning code still fail trust?" | use the capstone lightly here, mainly as a specimen |
+| tool boundary | "What problem does DVC solve, and what does it not solve?" | enter only after the failure model feels concrete |
+| hidden state | "Which influential inputs are usually missing from the story?" | expect later modules to make the boundary explicit |
+
+---
+
 ## 1.1 A Familiar Scenario (Grounded in Practice)
 
 Examine a standard ML workflow, illustrated with simplified elements:
@@ -37,6 +47,9 @@ Months later:
 - A team member asserts no modifications were made, yet outcomes differ.
 
 No overt errors occur—no crashes or exceptions. Nonetheless, the outcome is irreproducible.
+
+The module is doing its job only if the learner leaves with a sharper question, not just
+with a stronger preference for DVC.
 
 This reflects not individual error, but the inherent outcome of ML processes lacking formalized dependencies. To illustrate, consider this pseudo-code snippet from `train.py`:
 
