@@ -83,6 +83,22 @@ they are first discovered.
 
 ---
 
+## Enter By Question Type
+
+Use the question, not your anxiety level, to choose the route:
+
+| Question type | Start here | Escalate only if needed |
+| --- | --- | --- |
+| what does this repository promise | `capstone-walkthrough` | `inspect` |
+| is the public build contract clear | `inspect` | `capstone-contract-audit` |
+| does the build still hold under proof | `test` | `capstone-verify-report` |
+| which failure class is this teaching | `capstone-incident-audit` | `proof` |
+| should I trust the full system as a steward | `proof` | `capstone-confirm` |
+
+[Back to top](#top)
+
+---
+
 ## Three Reliable Entry Routes
 
 ### Route A: First serious capstone pass for Modules 01-03

@@ -85,6 +85,15 @@ Use:
 * `make repro`
 * `make incident-audit`
 
+### If the question is "what is the smallest honest proof?"
+
+Use:
+
+* `make walkthrough` for first repository contact
+* `make inspect` for public-boundary review
+* `make selftest` for build-contract proof
+* `make proof` only when the narrower bundles are no longer enough
+
 [Back to top](#top)
 
 ---
@@ -102,6 +111,8 @@ Do not confuse these pairs:
 * `contract-audit` versus `profile-audit`
   contract review is about public promises and boundary declarations; profile review is
   about execution-policy and observability assumptions.
+* `selftest` versus `confirm`
+  `selftest` proves the build contract. `confirm` performs the strongest shared stewardship pass.
 
 [Back to top](#top)
 

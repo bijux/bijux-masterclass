@@ -123,3 +123,19 @@ make PROGRAM=reproducible-research/deep-dive-make capstone-confirm
 ```
 
 [Back to top](#top)
+
+---
+
+## Best Target By Question
+
+| Question | Smallest honest target |
+| --- | --- |
+| what is promised publicly | `inspect` |
+| what proves the build contract | `selftest` |
+| what saves durable proof | `verify-report` |
+| what reviews one failure class | `incident-audit` |
+| what reviews policy and observability boundaries | `profile-audit` |
+| what bundles the sanctioned review route | `proof` |
+| what performs the strongest stewardship pass | `confirm` |
+
+[Back to top](#top)

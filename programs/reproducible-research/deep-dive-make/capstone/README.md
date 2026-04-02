@@ -211,6 +211,15 @@ The practical rule is simple: finish the module exercise first, then use the sma
 capstone route that answers the next honest question. Walkthrough is for first contact
 with the repository, inspect and verify-report are for proof discipline, proof is for the
 full review bundle, and confirm is for the final stewardship pass.
+
+If you are still unsure, use this escalation order:
+
+1. `make walkthrough`
+2. `make inspect`
+3. `make selftest`
+4. `make verify-report`
+5. `make proof`
+6. `make confirm`
 [Back to top](#top)
 
 ---
