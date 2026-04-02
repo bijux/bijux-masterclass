@@ -73,6 +73,9 @@ course depends on.
 - prefer `src/capstone/` for reusable implementation code
 - do not let helper code bury visible workflow meaning
 
+Use `MODULE_BOUNDARY_GUIDE.md` when the question is not just "which file," but which
+kind of reusable surface should own the change.
+
 [Back to top](#top)
 
 ---

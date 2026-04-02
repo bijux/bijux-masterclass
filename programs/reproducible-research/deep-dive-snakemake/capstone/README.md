@@ -200,6 +200,8 @@ provenance finally records.
 Use `RESULTS_BOUNDARY_GUIDE.md` when the question is why a surface stays in `results/`
 as internal evidence or gets promoted into `publish/v1/` as part of the downstream
 contract.
+Use `MODULE_BOUNDARY_GUIDE.md` when the blocker is software layout: why some reuse lives
+in `workflow/modules/`, some in `workflow/scripts/`, and some in `src/capstone/`.
 Use `CHECKPOINT_GUIDE.md` when the core review question is how dynamic sample discovery
 becomes a durable artifact instead of hidden state.
 Use `EXACT_SOURCE_GUIDE.md` when the question is "which file should I read next" and you

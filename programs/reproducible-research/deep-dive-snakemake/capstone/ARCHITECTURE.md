@@ -93,5 +93,7 @@ to reusable code, to operating policy, and finally to the downstream contract.
 
 Use `EXACT_SOURCE_GUIDE.md` when the architecture answer still feels too broad and you
 need the smallest file route for one concrete question.
+Use `MODULE_BOUNDARY_GUIDE.md` when the confusion is specifically about `workflow/rules`,
+`workflow/modules`, `workflow/scripts`, and `src/capstone`.
 
 [Back to top](#top)
