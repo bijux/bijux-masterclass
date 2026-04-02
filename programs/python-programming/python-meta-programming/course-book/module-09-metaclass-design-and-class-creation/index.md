@@ -46,18 +46,23 @@ flowchart LR
 <a id="introduction"></a>
 ## Introduction
 
-Metaclasses are Python’s lowest-level, highest-impact hook for customizing **class creation**. They sit beneath:
+This is the narrowest and highest-power mechanism in the course. That is exactly why the
+module has to work harder than the others: if metaclasses appear merely powerful, the
+reader has learned the wrong lesson. The real lesson is why most designs should still stop
+lower on the ladder.
 
-* **Descriptors / `@property`** (Modules 7–8): per-attribute semantics.
-* **Class decorators** (Module 6): post-creation, opt-in class transformation.
+Metaclasses intervene during class creation itself. They are justified only when the
+invariant belongs to a whole class family at definition time and lower-power tools cannot
+own it cleanly. If a class decorator, descriptor, or explicit registration function can do
+the job honestly, that lower boundary should win.
 
-Metaclasses intervene **before** a class exists, during the class statement itself, and they apply **automatically** across the inheritance tree.
+Keep one question in view while reading:
 
-**Rule of thumb (non-negotiable):**
+> What specifically must happen before the class exists, and why would a lower-power tool fail to own that responsibility cleanly?
 
-> Use a metaclass only when you must enforce a class-creation invariant across a whole hierarchy, at definition time, and descriptors + class decorators are insufficient.
-
-All `python` fences are runnable. Any intentional failure is wrapped.
+The capstone answers that question with one concrete use: deterministic plugin registration.
+Everything else in the course should make that single metaclass feel more constrained, not
+more glamorous.
 
 ## Why this module matters in the course
 

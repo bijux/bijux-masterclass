@@ -45,23 +45,24 @@ flowchart LR
 <a id="introduction"></a>
 ## Introduction
 
-Building on Module 1’s attribute lookup rules and Module 6’s `@property` / class decorator bridge, this module exposes the mechanism that actually powers `obj.attr`: the descriptor protocol. If the details of attribute lookup have faded, briefly revisit Module 1, Core 2, then return here.
+This module is where attribute access stops feeling intuitive and starts becoming a real
+runtime protocol. Up to this point the course has shown wrappers and class-level
+customization. Here you finally see the mechanism that powers properties, bound methods,
+many validators, and a large share of framework field abstractions: descriptors.
 
-A descriptor is any object that defines at least one of `__get__`, `__set__`, or `__delete__` and is stored on a class. When Python resolves `obj.attr`, it walks the MRO (Module 1), finds the attribute on the first class that defines it, and—if that attribute is a descriptor—delegates to the descriptor’s methods instead of returning the raw object. Properties, bound methods, many slots, and most “field” abstractions in ORMs and validators are all built on this mechanism.
+The teaching goal is not “descriptors are advanced.” The goal is narrower and more useful:
+you should be able to explain what happens when Python reads or writes `obj.attr`, why one
+descriptor wins over instance state in one case but not another, and where per-instance
+storage actually lives. Once those rules are visible, many framework behaviors stop looking
+magical and start looking reviewable.
 
-This module stays in the single-interpreter, sync, CPython-centric world of Volume I and focuses on per-instance state descriptors:
+Keep one question in view while reading:
 
-- **Core 31**: the full four-method protocol (`__get__`, `__set__`, `__delete__`, `__set_name__`), with emphasis on how often each is actually used.
-- **Core 32**: data vs non-data descriptors, and the precedence rules that decide who wins between descriptors and instance dictionaries.
-- **Core 33**: how ordinary functions become bound methods via a hidden non-data descriptor.
-- **Core 34**: the first reusable field descriptors (`String`, `Positive`, `Email`) and a slotted variant.
-- **Capstone**: a didactic, unit-aware `Quantity` descriptor that normalises values to a base unit and returns an object that supports simple arithmetic, previewing the framework-grade patterns of Module 8.
+> Does this invariant belong to attribute access itself, or am I trying to use a descriptor where plain methods or class design would be clearer?
 
-The risk profile is clear:
-
-- **Spec-level**: the attribute lookup order and the rules for data/non-data descriptors.
-- **CPython-leaning**: exact behaviour of functions and properties as descriptors.
-- **Diagnostic / didactic only**: the `Quantity` capstone and slotted storage tricks—use them to understand the mechanism, not as drop-in framework code.
+That question matters because the capstone uses descriptors for configuration fields and
+nowhere else. If this module does not make descriptor ownership precise, every later
+dynamic pattern starts to look more necessary than it really is.
 
 ## Why this module matters in the course
 

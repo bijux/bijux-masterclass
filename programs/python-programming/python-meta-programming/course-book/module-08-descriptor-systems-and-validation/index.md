@@ -45,29 +45,24 @@ flowchart LR
 <a id="introduction"></a>
 ## Introduction
 
-Extending the foundational descriptor mechanics from Module 7—where the protocol enables reusable attribute control through `__get__`, `__set__`, `__delete__`, and `__set_name__`—this module advances to **framework-shaped** implementations. Framework-grade descriptors integrate caching, external persistence, composition, and type-driven validation, forming the backbone of libraries like Pydantic, SQLAlchemy, and attrs. These patterns address real-world demands: lazy computation for performance, distributed storage for scalability, and declarative coercion for robustness. By synthesizing descriptors with runtime type hints (Module 5) and properties/class decorators (Module 6), they enable concise, maintainable models without boilerplate.
+Module 07 made descriptor lookup mechanical. This module asks what happens when you keep
+adding responsibility to that mechanism. Caching, external storage, composition, and
+type-hint-driven validation are all real pressures that lead teams toward framework-shaped
+descriptor systems. The danger is that the design can become impressive before it becomes
+reviewable.
 
-Typing aside: most static type checkers (mypy, pyright, etc.) cannot fully “see through” these dynamic descriptor-based models without extra help (Protocols, plugins, or custom stubs). Volume II returns to these patterns from the static-analysis side and shows how to reconcile them with strict typing.
+That is why this module keeps its scope deliberately narrow. The examples are educational,
+single-process, and explicit about their limits. They are here to show why libraries such as
+Pydantic, SQLAlchemy, and attrs need stronger infrastructure than “a clever descriptor.”
+They are not here to pretend that a course exercise is an ORM.
 
-This module develops the second tier of descriptor usage through four cores (still within the same **single-threaded, synchronous, didactic** scope as the rest of Volume I):
+Keep one question in view while reading:
 
-- **Core 36: Lazy / computed / cached descriptors with invalidation** – how to defer work until first access, cache results per instance, and expose explicit invalidation hooks.
-- **Core 37: External storage descriptors** – descriptors that treat Redis/DB/config files (simulated here with an in-memory dict) as the real source of truth, with read-through caching.
-- **Core 38: Descriptor composition and meta-descriptors** – wrapping one descriptor inside another to layer validation, caching, logging, and other cross-cutting concerns.
-- **Core 39: Runtime validation and coercion using type hints** – using `typing.get_type_hints` and `Annotated[...]` metadata to build Pydantic-style, hint-driven fields.
+> Is this still a descriptor owning one attribute contract, or have I started building a framework that needs stronger architecture than a single field object can provide?
 
-The capstone combines these ideas into a **mini relational demo**:
-
-- a small `BaseField` family (`String`, `Integer`, `ForeignKey`, `OneToMany`) that all follow the same descriptor protocol,
-- a `ModelMeta` metaclass that auto-generates `__init__`, `save`, and `from_db`,
-- a toy in-memory, JSON-based “DB” (`_DB[model_name][pk] = {field: json_value, ...}`) that external fields treat as backing storage.
-
-All examples use a unified `BaseField` design for cohesion and remain compatible with introspection (Module 2) and signatures (Module 3). The target runtime is CPython 3.10+ (PEP 604 `X | Y` unions).
-
-**Critical Warning**  
-Everything in this module—especially the capstone—is deliberately simplified educational code. It is intentionally naive, single-threaded, non-transactional, and lacks any production safeguards (no connection pooling, no retries, no migrations, no concurrency control, no schema evolution). Do **not** copy-paste any of this into real projects as a replacement for mature libraries. The purpose is solely to illuminate the internal mechanics of real frameworks.
-
-Proceed to Core 36.
+The capstone makes that distinction useful. Its field descriptors remain focused on schema
+and coercion, while runtime orchestration lives elsewhere. This module should help you see
+that boundary, not blur it.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

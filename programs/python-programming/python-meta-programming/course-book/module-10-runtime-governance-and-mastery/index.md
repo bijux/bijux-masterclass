@@ -46,16 +46,18 @@ flowchart LR
 <a id="introduction"></a>
 ## Introduction
 
-This module is not about new tricks. It is about policy: what you may do with
-metaprogramming power without destroying debuggability, testability, security, or team trust.
+This module closes the mechanism ladder by turning it into review policy. No new hook in
+this chapter is more important than the judgment it teaches. Dynamic execution, import
+hooks, monkey-patching, and interface tricks only become defensible when the team can still
+observe, test, and reverse the behavior without folklore.
 
 Non-negotiable thesis:
 
 > If your metaprogramming makes failures harder to debug than the boring alternative, it is a liability.
 
-You get **red lines**, **checklists**, and **drop-in patterns** that keep the magic observable and reversible.
-
-All `python` fences are runnable as-is; any intentional failure is wrapped.
+The practical goal here is simple: leave the course with red lines you can actually use in
+code review. Earlier modules taught what the runtime can do. This module decides what the
+runtime should be allowed to do in real engineering work.
 
 ## Why this module matters in the course
 
