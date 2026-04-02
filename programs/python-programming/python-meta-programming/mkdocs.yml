@@ -20,6 +20,8 @@ nav:
       - Course Guide: course-guide.md
       - Learning Contract: learning-contract.md
       - Runtime Power Ladder: runtime-power-ladder.md
+      - Module Dependency Map: module-dependency-map.md
+      - Practice Map: practice-map.md
       - Orientation: module-00.md
       - Capstone Guide: capstone.md
   - "Module 01: Everything Is an Object": module-01.md
