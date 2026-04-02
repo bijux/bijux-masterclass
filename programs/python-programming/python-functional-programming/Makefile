@@ -28,6 +28,10 @@ capstone-test: ## Run only the capstone unit and integration test suite
 demo: ## Build the learner-facing capstone walkthrough
 	@$(RUN_CAPSTONE) demo
 
+.PHONY: capstone-walkthrough
+capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
+	@$(RUN_CAPSTONE) demo
+
 .PHONY: inspect
 inspect: ## Build the learner-facing capstone inspection bundle
 	@$(RUN_CAPSTONE) inspect
