@@ -48,6 +48,7 @@ that do not smear runtime behavior across the whole codebase.
 - [Async Service Integrations](async-service-integrations.md)
 - [Async Chunking](async-chunking.md)
 - [Async Pipeline Laws](async-pipeline-laws.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -59,4 +60,5 @@ that do not smear runtime behavior across the whole codebase.
 
 You should be able to explain how async coordination stays reviewable, what protects the
 system from runaway work, and how to tell whether an async abstraction clarifies or hides
-control flow.
+control flow. Use [Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-08` before moving forward.

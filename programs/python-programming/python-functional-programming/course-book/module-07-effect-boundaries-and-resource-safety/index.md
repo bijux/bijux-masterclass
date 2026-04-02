@@ -48,6 +48,7 @@ clarity. The emphasis is on explicit boundaries rather than wishful purity.
 - [Idempotent Effects](idempotent-effects.md)
 - [Sessions and Transactions](sessions-and-transactions.md)
 - [Incremental Migration](incremental-migration.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -58,4 +59,6 @@ clarity. The emphasis is on explicit boundaries rather than wishful purity.
 ## Before moving on
 
 You should be able to explain where the pure core ends, how effects are introduced, and
-why capability discipline matters before async coordination enters the picture.
+why capability discipline matters before async coordination enters the picture. Use
+[Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-07` before moving forward.
