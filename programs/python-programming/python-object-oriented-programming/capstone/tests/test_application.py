@@ -35,6 +35,7 @@ def test_application_supports_a_full_monitoring_workflow() -> None:
 
     assert observed.cycle_report.alerts_published == 1
     assert observed.snapshot.summary.active_rule_ids == ("cpu-hot",)
+    assert observed.snapshot.rules[0].evaluation_mode == "threshold"
     assert "cpu-hot" in observed.snapshot.open_incidents
 
 

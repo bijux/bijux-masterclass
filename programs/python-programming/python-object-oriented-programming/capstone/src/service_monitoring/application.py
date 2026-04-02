@@ -37,8 +37,21 @@ class PolicySummary:
 
 
 @dataclass(frozen=True, slots=True)
+class RuleSnapshot:
+    rule_id: str
+    metric_name: str
+    threshold: float
+    severity: str
+    window: int
+    evaluation_mode: str
+    state: str
+    retired_reason: str | None
+
+
+@dataclass(frozen=True, slots=True)
 class MonitoringSnapshot:
     summary: PolicySummary
+    rules: tuple[RuleSnapshot, ...]
     active_rule_index: dict[str, tuple[str, ...]]
     open_incidents: dict[str, IncidentSnapshot]
     incident_history: dict[str, tuple[IncidentSnapshot, ...]]
@@ -113,8 +126,26 @@ class MonitoringApplication:
 
     def snapshot(self, policy_id: str) -> MonitoringSnapshot:
         runtime_snapshot = self.runtime.snapshot()
+        policy = self.runtime.repository.get(policy_id)
+        rules = tuple(
+            RuleSnapshot(
+                rule_id=managed_rule.definition.rule_id,
+                metric_name=str(managed_rule.definition.metric_name),
+                threshold=managed_rule.definition.threshold,
+                severity=str(managed_rule.definition.severity),
+                window=managed_rule.definition.window,
+                evaluation_mode=managed_rule.definition.evaluation_mode,
+                state=managed_rule.state.value,
+                retired_reason=managed_rule.retired_reason,
+            )
+            for managed_rule in sorted(
+                policy.rules,
+                key=lambda managed_rule: managed_rule.definition.rule_id,
+            )
+        )
         return MonitoringSnapshot(
             summary=self.policy_summary(policy_id),
+            rules=rules,
             active_rule_index=runtime_snapshot["active_rule_index"],
             open_incidents=runtime_snapshot["open_incidents"],
             incident_history=runtime_snapshot["incident_history"],

@@ -3,6 +3,7 @@ from .application import (
     MonitoringSnapshot,
     ObservationResult,
     PolicySummary,
+    RuleSnapshot,
     RuleRegistration,
 )
 from .events import AlertTriggered, RuleActivated, RuleRegistered, RuleRetired
@@ -66,6 +67,7 @@ __all__ = [
     "RuleEvaluator",
     "RuleRegistered",
     "RuleRetired",
+    "RuleSnapshot",
     "RuleState",
     "Severity",
     "StaticMetricSource",

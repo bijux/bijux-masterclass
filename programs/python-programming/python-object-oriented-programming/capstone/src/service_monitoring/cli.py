@@ -39,6 +39,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"draft_rules: {', '.join(summary.draft_rule_ids) or '(none)'}")
         print(f"active_rules: {', '.join(summary.active_rule_ids) or '(none)'}")
         print(f"retired_rules: {', '.join(summary.retired_rule_ids) or '(none)'}")
+        print("rule_details:")
+        for rule in observation.snapshot.rules:
+            print(
+                "  "
+                f"{rule.rule_id} state={rule.state} metric={rule.metric_name} "
+                f"mode={rule.evaluation_mode} threshold={rule.threshold} "
+                f"window={rule.window} severity={rule.severity}"
+            )
         return 0
 
     if args.command == "timeline":

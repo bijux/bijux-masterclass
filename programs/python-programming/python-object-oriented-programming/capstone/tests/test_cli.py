@@ -19,6 +19,12 @@ def test_rules_command_reports_rule_lifecycle_state(capsys) -> None:
     assert "draft_rules: (none)" in output
     assert "active_rules: cpu-hot, cpu-sustained" in output
     assert "retired_rules: (none)" in output
+    assert "rule_details:" in output
+    assert "cpu-hot state=active metric=cpu mode=threshold threshold=0.9 window=1 severity=critical" in output
+    assert (
+        "cpu-sustained state=active metric=cpu mode=consecutive threshold=0.8 window=3 severity=warning"
+        in output
+    )
 
 
 def test_history_command_reports_metric_history(capsys) -> None:

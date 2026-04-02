@@ -53,7 +53,7 @@ history, and finally the ordered scenario flow.
 ## What each route should teach
 
 - `inspect-summary` should show the learner that the capstone still has one readable aggregate-centered story.
-- `inspect-rules` should show that lifecycle state is explicit and reviewable.
+- `inspect-rules` should show that lifecycle state and rule definition details are explicit and reviewable.
 - `inspect-history` should show that downstream incident views are derived from the scenario instead of controlling it.
 
 ## How to read the outputs honestly
@@ -61,7 +61,7 @@ history, and finally the ordered scenario flow.
 | Output | Best question | What it cannot prove on its own |
 | --- | --- | --- |
 | `summary.txt` | what state and incidents a learner should understand first | whether the domain rules were enforced correctly under all behaviors |
-| `rules.txt` | which rules are draft, active, or retired | whether evaluation variability is placed in the right seam |
+| `rules.txt` | which rules are draft, active, or retired and what each rule definition looks like | whether evaluation variability is placed in the right seam |
 | `history.txt` | which incidents were published and accumulated downstream | whether the history source remained non-authoritative in code |
 | `timeline.txt` | which ordered steps produced the saved scenario state | whether the runtime and aggregate boundaries are placed correctly under arbitrary change |
 
