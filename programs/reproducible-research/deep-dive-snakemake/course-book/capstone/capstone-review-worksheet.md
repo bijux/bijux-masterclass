@@ -84,7 +84,7 @@ Write down:
 
 Review these surfaces together:
 
-* `capstone/docs/FILE_API.md`
+* [Publish Review Guide](publish-review-guide.md)
 * `capstone/publish/v1/`
 * `capstone/publish/v1/manifest.json`
 

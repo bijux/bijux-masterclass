@@ -31,10 +31,10 @@ visible.
 
 ## 30-minute first pass
 
-1. Read `capstone/docs/WALKTHROUGH_GUIDE.md`.
+1. Read [Capstone Guide](index.md).
 2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`.
 3. Read the copied `Snakefile`, rule files, `list-rules.txt`, and `dryrun.txt` in that order.
-4. Read `capstone/docs/FILE_API.md`.
+4. Read [Capstone File Guide](capstone-file-guide.md).
 5. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to record what is visible before execution.
 
 Goal: leave with a clear picture of what the workflow claims to build, where dynamic

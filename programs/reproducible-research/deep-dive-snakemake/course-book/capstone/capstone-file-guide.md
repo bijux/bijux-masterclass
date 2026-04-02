@@ -36,14 +36,14 @@ file level.
 
 | File | Why it matters |
 | --- | --- |
-| `capstone/README.md` | defines the repository contract and the teaching route through the workflow |
+| [Capstone Guide](index.md) | defines the repository contract and the teaching route through the workflow |
 | `capstone/Snakefile` | shows the orchestration entrypoint and how rule families are assembled |
 | `capstone/workflow/rules/common.smk` | establishes shared functions, path logic, and workflow-wide conventions |
 | `capstone/workflow/rules/preprocess.smk` | contains discovery and per-sample processing contracts |
 | `capstone/workflow/rules/publish.smk` | defines the stable publish boundary and integrity evidence |
-| `capstone/docs/FILE_API.md` | documents which files are public contracts and which remain internal |
+| [Publish Review Guide](publish-review-guide.md) | documents which files are public contracts and which remain internal |
 | `capstone/Makefile` | exposes the learner-facing proof and verification commands |
-| `capstone/docs/TOUR.md` | explains the repository as a guided review surface rather than only a runnable workflow |
+| [Capstone Walkthrough](capstone-walkthrough.md) | explains the repository as a guided review surface rather than only a runnable workflow |
 
 [Back to top](#top)
 
@@ -69,13 +69,13 @@ file level.
 
 ## Best Reading Order
 
-1. `capstone/README.md`
+1. [Capstone Guide](index.md)
 2. `capstone/Snakefile`
 3. `capstone/workflow/rules/common.smk`
 4. `capstone/workflow/rules/preprocess.smk`
 5. `capstone/workflow/rules/summarize_report.smk`
 6. `capstone/workflow/rules/publish.smk`
-7. `capstone/docs/FILE_API.md`
+7. [Publish Review Guide](publish-review-guide.md)
 8. `capstone/Makefile`
 9. `capstone/profiles/`
 10. `capstone/tests/`

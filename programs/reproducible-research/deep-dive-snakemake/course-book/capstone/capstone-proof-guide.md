@@ -45,7 +45,7 @@ repository stays smaller than the concept you are learning.
 
 ## Bounded proof pass
 
-1. Read `capstone/docs/PROOF_GUIDE.md`.
+1. Read [Capstone Guide](index.md).
 2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command.
 3. Run that command from the capstone or course root.
 4. Record what the evidence proves before opening a stronger route.

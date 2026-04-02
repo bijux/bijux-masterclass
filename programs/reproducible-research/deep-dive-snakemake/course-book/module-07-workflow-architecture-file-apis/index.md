@@ -61,8 +61,8 @@ Capstone corroboration:
 
 * inspect `capstone/Snakefile`
 * inspect `capstone/workflow/rules/`
-* inspect `capstone/docs/FILE_API.md`
-* inspect `capstone/docs/TOUR.md`
+* inspect [Publish Review Guide](../capstone/publish-review-guide.md)
+* inspect [Capstone Walkthrough](../capstone/capstone-walkthrough.md)
 
 ## At a Glance
 

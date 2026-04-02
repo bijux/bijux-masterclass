@@ -62,7 +62,7 @@ snakemake --list-changes input code params
 Capstone corroboration:
 
 * inspect `capstone/Snakefile`
-* inspect `capstone/docs/FILE_API.md`
+* inspect [Publish Review Guide](../capstone/publish-review-guide.md)
 * inspect `capstone/profiles/`
 * inspect `capstone/tests/` and `capstone/Makefile`
 

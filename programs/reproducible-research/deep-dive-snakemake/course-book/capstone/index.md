@@ -39,9 +39,10 @@ course’s strongest claims become runnable:
 
 ## Best entrypoints
 
-- Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-snakemake/capstone/README.md)
-- Publish contract: [`capstone/docs/FILE_API.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-snakemake/capstone/docs/FILE_API.md)
-- Workflow root: [`capstone/Snakefile`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-snakemake/capstone/Snakefile)
+- Capstone walkthrough: [Capstone Walkthrough](capstone-walkthrough.md)
+- File guide: [Capstone File Guide](capstone-file-guide.md)
+- Architecture guide: [Capstone Architecture Guide](capstone-architecture-guide.md)
+- Workflow root: `capstone/Snakefile`
 
 ## Core commands
 
