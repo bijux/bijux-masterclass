@@ -75,6 +75,22 @@ into an ungoverned surface area.
 3. Finish with import discipline, review governance, and compatibility suites.
 4. Use the refactor chapter to expose a clean capstone API without leaking internals.
 
+## Public surface review route
+
+1. Read `src/service_monitoring/application.py`.
+2. Compare it with `capstone/PACKAGE_GUIDE.md` and `capstone/EXTENSION_GUIDE.md`.
+3. Use `capstone/TARGET_GUIDE.md` and the learner-facing routes to decide which promises are public enough to defend.
+
+This route keeps one governance question visible: a public surface is not simply the code
+other people can import. It is the narrow surface you are prepared to document, version,
+review, and prove repeatedly.
+
+## Questions to settle before calling a seam public
+
+- Would a consumer need this seam because of the domain contract, or only because the current file layout is convenient?
+- Which extension belongs at the facade or capability boundary instead of deep internal imports?
+- Which proof or walkthrough route would show another reviewer that this surface is intentionally supported?
+
 ## Common failure modes
 
 - importing deep internal modules because they happen to be convenient today
@@ -94,6 +110,14 @@ into an ungoverned surface area.
 The monitoring capstone can remain a closed teaching example or evolve into a reusable
 package surface. This module shows how to add a facade, documented extension points,
 and governance around plugins and integrations without weakening aggregate boundaries.
+
+## Honest completion signal
+
+You are ready to move on when you can choose one capstone seam and explain:
+
+- whether it should stay private or become public
+- which governance rule makes that choice durable
+- which evidence route would fail first if consumers started depending on the wrong layer
 
 ## Closing criteria
 
