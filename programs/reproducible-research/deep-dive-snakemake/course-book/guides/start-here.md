@@ -57,7 +57,7 @@ workflow behaves under pressure.
 
 Choose this if Snakemake still feels new.
 
-1. Read [`module-00.md`](../module-00.md)
+1. Read [`module-00-orientation/index.md`](../module-00-orientation/index.md)
 2. Read [`module-01.md`](../module-01.md)
 3. Read [`module-02.md`](../module-02.md)
 4. Enter the capstone only after file contracts and dynamic DAG basics feel clear
@@ -66,7 +66,7 @@ Choose this if Snakemake still feels new.
 
 Choose this if you already maintain a Snakemake repository.
 
-1. Skim [`module-00.md`](../module-00.md)
+1. Skim [`module-00-orientation/index.md`](../module-00-orientation/index.md)
 2. Read [`module-03.md`](../module-03.md)
 3. Read [`module-04.md`](../module-04.md)
 4. Read [`module-08.md`](../module-08.md)
@@ -121,7 +121,7 @@ make wf-dryrun
 Then use:
 
 * [`capstone-map.md`](capstone-map.md) when you want the repository route by module
-* [`module-00.md`](../module-00.md) when you want the full course arc
+* [`module-00-orientation/index.md`](../module-00-orientation/index.md) when you want the full course arc
 * [`course-guide.md`](course-guide.md) when you want the right support page quickly
 
 [Back to top](#top)

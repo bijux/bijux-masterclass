@@ -68,7 +68,7 @@ and [`reference/index.md`](reference/index.md) when you want the stable review s
 
 ## What each module contributes
 
-- [Module 00](module-00.md) establishes the full program map and capstone relationship.
+- [Module 00](module-00-orientation/index.md) establishes the full program map and capstone relationship.
 - [Module 01](module-01.md) defines the semantic floor: file contracts, rebuild truth, wildcards, and publishing discipline.
 - [Module 02](module-02.md) explains dynamic DAGs, integrity, environments, and performance patterns.
 - [Module 03](module-03.md) turns profiles, retries, staging, and governance into operational contracts.
