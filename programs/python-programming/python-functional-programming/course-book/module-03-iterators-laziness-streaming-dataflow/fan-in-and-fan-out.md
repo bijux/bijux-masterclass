@@ -520,8 +520,8 @@ Single stream; else fan.
 
 ### Repository Alignment
 
-- Implementation: `module-03/funcpipe-rag-03/src/funcpipe_rag/api/core.py::multicast`.
-- Tests: `module-03/funcpipe-rag-03/tests/test_module_03.py::test_multicast_independence`.
+- Implementation: `capstone/src/funcpipe_rag/streaming/fanout.py::multicast`.
+- Tests: `capstone/tests/unit/streaming/test_streaming.py::test_multicast_independence` and `::test_multicast_buffer_error_on_excess_skew`.
 
 ## itertools Decision Table – Use This
 

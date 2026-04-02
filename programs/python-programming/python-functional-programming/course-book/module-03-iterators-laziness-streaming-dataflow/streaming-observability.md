@@ -470,8 +470,8 @@ No debug; else observe.
 
 ### Repository Alignment
 
-- Implementation: `module-03/funcpipe-rag-03/src/funcpipe_rag/api/core.py::_trace_iter` and `api/types.py::RagTraceV3`.
-- Tests: `module-03/funcpipe-rag-03/tests/test_module_03.py::test_trace_neutrality` / `::test_trace_lens_samples_are_bounded`.
+- Implementation: `capstone/src/funcpipe_rag/rag/core.py::_trace_iter`, `capstone/src/funcpipe_rag/streaming/types.py::TraceLens`, and `capstone/src/funcpipe_rag/rag/types.py::RagTraceV3`.
+- Tests: `capstone/tests/unit/streaming/test_streaming.py::test_trace_neutrality_and_bounded_samples`.
 
 ## itertools Decision Table – Use This
 

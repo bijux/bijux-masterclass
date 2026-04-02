@@ -487,8 +487,8 @@ Batch processing; else time-aware.
 
 ### Repository Alignment
 
-- Implementation: `module-03/funcpipe-rag-03/src/funcpipe_rag/api/core.py::throttle` plus `module-03/funcpipe-rag-03/src/funcpipe_rag/fp.py::FakeTime`.
-- Tests: `module-03/funcpipe-rag-03/tests/test_module_03.py::test_throttle_uses_injected_clock`.
+- Implementation: `capstone/src/funcpipe_rag/streaming/time.py::throttle` plus `capstone/src/funcpipe_rag/fp/combinators.py::FakeTime`.
+- Tests: `capstone/tests/unit/streaming/test_streaming.py::test_throttle_uses_injected_clock`.
 
 ## itertools Decision Table – Use This
 
