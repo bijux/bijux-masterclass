@@ -23,6 +23,9 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 
 Use the smallest command that proves the specific claim you care about.
 
+Keep [Proof Ladder](proof-ladder.md) open while reading this page if you are not yet sure
+how much proof the current question actually needs.
+
 ## From the repository root
 
 ```bash
@@ -36,6 +39,11 @@ make PROGRAM=python-programming/python-meta-programming capstone-tour
 make PROGRAM=python-programming/python-meta-programming capstone-verify-report
 make PROGRAM=python-programming/python-meta-programming capstone-confirm
 make PROGRAM=python-programming/python-meta-programming capstone-manifest
+make PROGRAM=python-programming/python-meta-programming capstone-plugin
+make PROGRAM=python-programming/python-meta-programming capstone-field
+make PROGRAM=python-programming/python-meta-programming capstone-action
+make PROGRAM=python-programming/python-meta-programming capstone-registry
+make PROGRAM=python-programming/python-meta-programming capstone-signatures
 make PROGRAM=python-programming/python-meta-programming capstone-trace
 ```
 
@@ -47,7 +55,11 @@ make inspect
 make confirm
 make proof
 make manifest
+make plugin
+make field
+make action
 make registry
+make signatures
 make trace
 make tour
 make verify-report
@@ -55,12 +67,23 @@ make verify-report
 
 ## When to use which command
 
-- `demo`: invoke one realistic plugin action directly in the terminal
-- `inspect`: build the saved learner-facing inspection bundle
-- `confirm`: strongest local executable proof through pytest
-- `proof`: full published review route with saved bundles
-- `manifest`: inspect schema and action metadata without execution
+- `manifest`: inspect group-level schema and action metadata without execution
+- `plugin`: inspect one concrete plugin contract from the public CLI
+- `field`: inspect one concrete field contract and its exported schema
+- `action`: inspect one concrete action contract and its generated signature
 - `registry`: inspect registration determinism from the public surface
+- `signatures`: inspect constructor and action signatures together
+- `demo`: invoke one realistic plugin action directly in the terminal
 - `trace`: inspect result, configuration, and action history together
+- `inspect`: build the saved learner-facing inspection bundle
 - `tour`: write the learner-facing walkthrough bundle into `artifacts/`
 - `verify-report`: write the executable verification report bundle into `artifacts/`
+- `confirm`: strongest local executable proof through pytest
+- `proof`: full published review route with saved bundles
+
+## A small proof-first route
+
+1. Start with `manifest`, `registry`, `plugin`, `field`, `action`, or `signatures` when the question is about public shape.
+2. Move to `demo` or `trace` when the question is about one concrete runtime behavior.
+3. Move to `inspect` or `tour` when the question is about guided study or source ownership.
+4. Move to `verify-report`, `proof`, or `confirm` when the question is about executable confidence.

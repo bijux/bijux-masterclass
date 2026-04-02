@@ -47,8 +47,9 @@ and easier to justify than a simpler alternative.
 6. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
 7. Keep [Module Promise Map](module-promise-map.md) open so each module stays attached to one clear promise.
 8. Use [Module Checkpoints](module-checkpoints.md) at the end of each module so you know whether the current idea actually landed.
-9. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
-10. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
+9. Keep [Proof Ladder](proof-ladder.md) open so you can choose the smallest honest command for the current question.
+10. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
+11. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
 
 ## Route By Pressure
 

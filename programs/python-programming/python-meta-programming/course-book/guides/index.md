@@ -46,6 +46,7 @@ do not have to repeat that scaffolding.
 ## Use These For Commands And Proof
 
 - [Command Guide](command-guide.md) for the executable route
+- [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current question
 - [Review Checklist](../reference/review-checklist.md) when you need the stable review bar
 - [Runtime Glossary](../reference/runtime-glossary.md) when the vocabulary itself is the blocker
 
