@@ -114,17 +114,19 @@ when you need the exact support contract before running proof commands.
 
 ## Module map
 
-- `00` Orientation and study strategy
-- `01` Why reproducibility fails
-- `02` Data identity and content addressing
-- `03` Execution environments as inputs
-- `04` Pipelines as truthful DAGs
-- `05` Metrics, parameters, and meaning
-- `06` Experiments without chaos
-- `07` Collaboration, CI, and social contracts
-- `08` Production, scale, and incident survival
-- `09` Promotion, registry boundaries, release contracts, and auditability
-- `10` Migration, governance, anti-patterns, and DVC tool boundaries
+| Module | Title | Main focus |
+| --- | --- | --- |
+| `00` | Orientation and Study Practice | establish the learner route, proof surfaces, and capstone timing |
+| `01` | Why Reproducibility Fails in Real Teams | name the failure modes before teaching tools |
+| `02` | Data Identity and Content Addressing | separate stable paths from stable bytes and stable meaning |
+| `03` | Execution Environments as Reproducible Inputs | treat environment assumptions as part of the contract |
+| `04` | Truthful Pipelines and Declared Dependencies | make workflow edges visible enough to trust reruns |
+| `05` | Metrics, Parameters, and Comparable Meaning | keep comparisons honest as experiments evolve |
+| `06` | Experiments, Baselines, and Controlled Change | organize experimentation without mutating the truth surface |
+| `07` | Collaboration, CI, and Social Contracts | make team pressure and automation part of the state model |
+| `08` | Recovery, Scale, and Incident Survival | rehearse failure, recovery, and retained authority under pressure |
+| `09` | Promotion, Registry Boundaries, and Auditability | treat release and registry state as explicit trust boundaries |
+| `10` | Migration, Governance, and DVC Boundaries | finish with stewardship, migration, and tool-boundary judgment |
 
 ## License
 

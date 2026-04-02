@@ -38,6 +38,22 @@ Use the course in this order:
 7. Modules `01` to `10` in order
 8. `course-book/guides/proof-ladder.md` and `course-book/guides/capstone-map.md` once the local model is clear
 
+## Module map
+
+| Module | Title | Main focus |
+| --- | --- | --- |
+| `00` | Orientation and Study Practice | establish the learner route, proof ladder, and capstone timing |
+| `01` | Build Graph Truth and Rebuild Semantics | make dependency edges and rebuild meaning explicit |
+| `02` | Parallel Safety and Project Structure | scale the graph without introducing race-prone structure |
+| `03` | Determinism, Debugging, and CI Proof | make builds explainable, repeatable, and self-testing |
+| `04` | CLI Semantics, Precedence, and Rule Edge Cases | survive pressure with a correct mental model of Make behavior |
+| `05` | Portability, Jobserver, and Failure Modes | harden builds across environments and concurrency settings |
+| `06` | Generated Files, Multi-Output Rules, and Pipeline Boundaries | model generators and publication boundaries truthfully |
+| `07` | Reusable Build Architecture and Public Build APIs | turn Make into a governable repository architecture |
+| `08` | Release Engineering and Artifact Publication Contracts | publish artifacts with explicit install and integrity rules |
+| `09` | Performance, Observability, and Incident Response | diagnose build incidents with evidence rather than folklore |
+| `10` | Migration, Governance, and Make Boundaries | finish with stewardship, migration, and tool-boundary judgment |
+
 [Back to top](#top)
 
 ---
@@ -47,18 +63,9 @@ Use the course in this order:
 ### 1) The program guide (10 modules)
 
 A compact, opinionated handbook with patterns, anti-patterns, exercises, and a real
-beginner-to-mastery progression:
-
-- **01 — Foundations**: targets, prerequisites, rebuild semantics, and the first trustworthy local builds.
-- **02 — Scaling**: parallelism, ordering primitives, discovery patterns, and structure for growth.
-- **03 — Production Practice**: determinism, CI discipline, invariants, and style constraints that prevent drift.
-- **04 — Semantics Under Pressure**: edge cases and battle-tested rules you rely on when things break.
-- **05 — Hardening**: portability, jobserver correctness, modeled inputs, performance, and failure isolation.
-- **06 — Generated Files and Pipeline Boundaries**: code generators, manifests, and multi-output correctness.
-- **07 — Reusable Build Architecture**: layered includes, macros, and public build APIs.
-- **08 — Release Engineering**: packaging, publication, checksums, and install contracts.
-- **09 — Performance and Incident Response**: measurement, observability, and build runbooks.
-- **10 — Mastery**: migration strategy, governance, anti-patterns, and tool-boundary judgment.
+beginner-to-mastery progression. The module map above is the stable table of contents:
+each module title is short enough to scan, specific enough to guide review, and aligned
+to one shared naming style across the course-book surfaces.
 
 Read on the website: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/
 

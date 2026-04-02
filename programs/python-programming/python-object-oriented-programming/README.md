@@ -106,30 +106,19 @@ Primary reading route:
 
 ## Module map
 
-- `00` Orientation and course map
-- `01` Object model and data-model semantics
-- `02` Design roles, inheritance trade-offs, construction boundaries, interfaces, and layering
-- `03` State, validation, dataclasses, and typestate
-- `04` Aggregates, events, projections, and collaboration
-- `05` Resource ownership, failure handling, recovery contracts, and long-term evolution
-- `06` Persistence, repositories, ORM/session boundaries, serialization, and schema evolution
-- `07` Time, scheduling, concurrency, and async boundaries
-- `08` Testing, verification, contracts, and confidence
-- `09` Public APIs, extension points, plugins, and governance
-- `10` Performance, observability, security, and capstone mastery
-
-## Ten-module roadmap
-
-1. Object model: identity, equality, copying, and the semantic contract of an object.
-2. Design and layering: roles, composition, cooperative inheritance, construction boundaries, protocols, and boundary assignment.
-3. State and typestate: validation, lifecycle transitions, and illegal-state prevention.
-4. Aggregates and collaboration: cross-object invariants, events, projections, and policies.
-5. Resources and evolution: cleanup, failure contracts, compensation, compatibility, and safe change.
-6. Persistence and schema evolution: repositories, sessions, identity maps, codecs, versioning, and migration.
-7. Time and concurrency: clocks, scheduling, retries, queues, threads, and async boundaries.
-8. Testing and verification: behavioral proof, contracts, properties, and confidence ladders.
-9. Public APIs and extension governance: facades, plugin seams, compatibility, and review controls.
-10. Performance, observability, and security: operational review, trust boundaries, and capstone hardening.
+| Module | Title | Main focus |
+| --- | --- | --- |
+| `00` | Orientation and Study Practice | establish the reading contract, proof routes, and capstone timing |
+| `01` | Object Semantics and the Python Data Model | define identity, equality, copying, and object contracts |
+| `02` | Design Roles, Interfaces, and Layering | assign responsibilities across values, services, adapters, and layers |
+| `03` | State, Validation, and Typestate | make lifecycle rules and illegal states explicit |
+| `04` | Aggregates, Events, and Collaboration Boundaries | coordinate multiple objects without losing invariant ownership |
+| `05` | Resources, Failures, and Safe Evolution | handle cleanup, recovery, and compatibility under change |
+| `06` | Persistence, Serialization, and Schema Evolution | keep storage and rehydration from flattening the domain |
+| `07` | Time, Scheduling, and Concurrency Boundaries | make time pressure and concurrency explicit in the model |
+| `08` | Testing, Contracts, and Verification Depth | turn verification into a design discipline, not an afterthought |
+| `09` | Public APIs, Extension Seams, and Governance | publish stable surfaces without losing review control |
+| `10` | Performance, Observability, and Security Review | close with operational hardening and full capstone review |
 
 ## Capstone promise
 

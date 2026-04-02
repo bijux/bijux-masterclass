@@ -106,17 +106,19 @@ Primary reading route:
 
 ## Module map
 
-- `00` Orientation
-- `01` Purity and substitution
-- `02` Closures, expression style, and FP-friendly APIs
-- `03` Iterators, laziness, and streaming dataflow
-- `04` Recursion, folds, memoization, and streaming failures
-- `05` Algebraic data modelling
-- `06` Monadic flows as composable pipelines
-- `07` Effect boundaries and resource safety
-- `08` Async FuncPipe and backpressure
-- `09` FP across libraries and frameworks
-- `10` Refactoring, performance, and sustainment
+| Module | Title | Main focus |
+| --- | --- | --- |
+| `00` | Orientation and Study Practice | establish the reading order, proof surfaces, and capstone role |
+| `01` | Purity, Substitution, and Local Reasoning | make state and effects explicit before composition grows |
+| `02` | Data-First APIs and Expression Style | turn helpers into configurable, data-driven pipeline pieces |
+| `03` | Iterators, Laziness, and Streaming Dataflow | build lazy pipelines that materialize deliberately |
+| `04` | Streaming Resilience and Failure Handling | make retries, folds, cleanup, and typed failures explicit |
+| `05` | Algebraic Data Modelling and Validation | encode domain states and validation as explicit value shapes |
+| `06` | Monadic Flow and Explicit Context | compose dependent work without hiding context or failure |
+| `07` | Effect Boundaries and Resource Safety | move I/O, adapters, and resource lifecycles behind contracts |
+| `08` | Async Pipelines, Backpressure, and Fairness | add bounded async coordination and deterministic async proof |
+| `09` | Ecosystem Interop and Boundary Discipline | work with libraries and frameworks without losing the core design |
+| `10` | Refactoring, Performance, and Sustainment | keep the system governable under growth, review, and change |
 
 ## License
 

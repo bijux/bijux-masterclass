@@ -183,17 +183,19 @@ global `snakemake` install. The exact setup contract lives in
 
 ## Module map
 
-- `00` Orientation and study strategy
-- `01` First principles and the file-DAG contract
-- `02` Dynamic DAGs, integrity, and deterministic discovery
-- `03` Production operations and policy boundaries
-- `04` Scaling workflows and interface boundaries
-- `05` Software boundaries and reproducible rules
-- `06` Publishing and downstream contracts
-- `07` Workflow architecture and file APIs
-- `08` Operating contexts and execution policy
-- `09` Observability, performance, and incident response
-- `10` Governance, migration, and tool boundaries
+| Module | Title | Main focus |
+| --- | --- | --- |
+| `00` | Orientation and Study Practice | establish the learner route, proof surfaces, and capstone timing |
+| `01` | File Contracts and Workflow Graph Truth | teach the workflow as a file-driven DAG instead of a script |
+| `02` | Dynamic DAGs, Discovery, and Integrity | make checkpoints and changing sample sets reviewable |
+| `03` | Production Operations and Policy Boundaries | separate workflow semantics from operational policy |
+| `04` | Scaling Workflows and Interface Boundaries | scale the workflow without losing explicit interfaces |
+| `05` | Software Boundaries and Reproducible Rules | keep helper code and rule meaning in the right layer |
+| `06` | Publishing and Downstream Contracts | make the public artifact boundary versioned and trustworthy |
+| `07` | Workflow Architecture and File APIs | organize the repository so ownership stays visible |
+| `08` | Operating Contexts and Execution Policy | compare local, CI, and cluster policy without semantic drift |
+| `09` | Observability, Performance, and Incident Response | review logs, benchmarks, and incidents with explicit evidence |
+| `10` | Governance, Migration, and Tool Boundaries | finish with stewardship, migration, and tool-boundary judgment |
 
 [Back to top](#top)
 

@@ -37,6 +37,22 @@ This course is not for:
 3. Move through Modules `00` to `10` in order, then close with the mastery review inside Module `10`.
 4. Keep `course-book/guides/capstone-map.md` and `capstone/README.md` open while reading.
 
+## Module map
+
+| Module | Title | Main focus |
+| --- | --- | --- |
+| `00` | Orientation and Study Practice | establish the power ladder, reading order, and capstone role |
+| `01` | Runtime Objects and the Python Object Model | explain what Python objects really are at runtime |
+| `02` | Safe Runtime Observation and Inspection | inspect values and code without accidental execution |
+| `03` | Signatures, Provenance, and Runtime Evidence | turn observation into reliable runtime facts |
+| `04` | Function Wrappers and Transparent Decorators | begin transformation without lying about behavior or metadata |
+| `05` | Decorator Design, Policies, and Typing | carry runtime policy without obscuring signatures and intent |
+| `06` | Class Customization Before Metaclasses | use lower-power class tools before escalating to metaclasses |
+| `07` | Descriptors, Lookup, and Attribute Control | understand how attribute access is actually resolved |
+| `08` | Descriptor Systems, Validation, and Framework Design | turn descriptor mechanics into disciplined runtime architecture |
+| `09` | Metaclass Design and Class Creation | justify the highest-power class hook narrowly and visibly |
+| `10` | Runtime Governance and Mastery Review | convert mechanism knowledge into review standards and exit criteria |
+
 ## What the capstone proves
 
 The capstone is a plugin runtime for incident-delivery adapters. It keeps four mechanisms
