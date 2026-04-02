@@ -73,6 +73,14 @@ make proof
 - `src/incident_plugins/` for the implementation
 - `tests/` for the proof surface
 
+## Read it by course stage
+
+- Observation modules: start with `make manifest`, `make registry`, and `PROOF_GUIDE.md`
+- Decorator modules: inspect `src/incident_plugins/actions.py` and the runtime tests
+- Descriptor modules: inspect `src/incident_plugins/fields.py` and `tests/test_fields.py`
+- Metaclass module: inspect `src/incident_plugins/framework.py` and `tests/test_registry.py`
+- Governance and mastery: return to `make inspect`, `make verify-report`, and the saved `artifacts/` bundles
+
 ## Why this capstone exists
 
 The course book explains individual mechanisms in isolation. This capstone makes the

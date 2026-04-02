@@ -61,3 +61,11 @@ Also:
 - Which proof confirms preserved metadata rather than only produced output?
 - Which saved bundle is strongest for a human review without rerunning commands?
 - Which proof would fail first if the design became more magical?
+
+## Module-stage checkpoints
+
+- Modules 01-03: can you explain the manifest and generated constructor without executing a plugin action?
+- Modules 04-05: can you show preserved action metadata from both tests and public output?
+- Modules 06-08: can you point to one field invariant and the exact test proving per-instance behavior?
+- Module 09: can you show where registration happens and how duplicate prevention is proven?
+- Module 10 and mastery review: can you prove the public review commands are observational rather than operational?

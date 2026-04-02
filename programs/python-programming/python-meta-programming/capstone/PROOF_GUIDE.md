@@ -73,6 +73,14 @@ public surface without opening private internals first.
 - `confirm` proves the strongest local regression surface.
 - `proof` publishes the full learner-facing review route.
 
+## Read the proof route by module stage
+
+- Observation modules: inspect `manifest` and `registry` output before running actions.
+- Decorator modules: compare `demo`, `trace`, and runtime-test expectations.
+- Descriptor modules: pair `confirm` with `tests/test_fields.py`.
+- Metaclass module: pair `registry` output with `tests/test_registry.py`.
+- Governance and mastery: use `inspect`, `tour`, and `verify-report` as the final human review surface.
+
 ## Review questions
 
 - Which proof demonstrates definition-time behavior?

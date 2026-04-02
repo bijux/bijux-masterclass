@@ -36,6 +36,14 @@ must coexist without hiding responsibility.
 - class-definition-time registration can stay deterministic and testable
 - manifest export can expose the runtime shape without executing plugin behavior
 
+## Best route by module stage
+
+- Modules 01-03: start with manifest export and constructor signatures.
+- Modules 04-06: inspect `actions.py` and decorator-driven behavior before touching descriptors.
+- Modules 07-08: inspect `fields.py` and the field-focused tests.
+- Module 09: inspect registration and generated constructor behavior in `framework.py`.
+- Module 10 and mastery review: use the public commands and saved bundles as the final review surface.
+
 ## Read these guides together
 
 - [Capstone Map](capstone-map.md)

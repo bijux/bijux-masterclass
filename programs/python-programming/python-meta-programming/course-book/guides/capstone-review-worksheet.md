@@ -54,3 +54,11 @@ Use this worksheet while reviewing or extending the capstone.
 - Add one new field type without changing concrete plugins.
 - Add one new action-oriented proof without changing the registry contract.
 - Decide which local guide would have to change after each extension.
+
+## Module-stage prompts
+
+- Modules 01-03: Which manifest or constructor fact would you inspect first, and why is it safe to inspect?
+- Modules 04-05: Which wrapper behavior is visible in public output, and which part still requires reading tests?
+- Modules 06-08: Which field rule belongs on attribute access rather than object construction?
+- Module 09: Which invariant truly belongs at class-definition time?
+- Module 10 and mastery review: Which public command gives the clearest review evidence for this claim?

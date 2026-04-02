@@ -70,3 +70,11 @@ Proves manifest export, runtime invocation, and action-history recording.
 
 When a mechanism feels too abstract, move from the owning source file to the matching
 test file immediately. The course is strongest when implementation and proof stay adjacent.
+
+## Module-to-file route
+
+- Modules 01-03: `framework.py`, `test_registry.py`, and `test_runtime.py`
+- Modules 04-05: `actions.py` and `test_runtime.py`
+- Modules 06-08: `fields.py` and `test_fields.py`
+- Module 09: `framework.py` and `test_registry.py`
+- Module 10 and mastery review: `README.md`, `PROOF_GUIDE.md`, and the saved bundles under `artifacts/`
