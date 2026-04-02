@@ -73,6 +73,7 @@ Review and proof routes:
 
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)
+- [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md)
 - [TOUR.md](TOUR.md)
 - [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
 - [TEST_GUIDE.md](TEST_GUIDE.md)
@@ -116,6 +117,8 @@ Use this loop throughout the capstone:
 1. Inspect one file, guide, or saved bundle.
 2. Explain which object or boundary owns the behavior.
 3. Prove that claim with one named command or one named test.
+
+Use [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md) when you want that loop tied directly to the current stage of the course instead of the full capstone at once.
 
 ## Currency audit
 
