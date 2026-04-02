@@ -64,6 +64,8 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 
 - [Object Design Checklist](reference/object-design-checklist.md)
 - [Boundary Review Prompts](reference/boundary-review-prompts.md)
+- [Topic Boundaries](reference/topic-boundaries.md)
+- [Anti-Pattern Atlas](reference/anti-pattern-atlas.md)
 
 ## Guides
 
@@ -71,6 +73,10 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 - [Start Here](guides/start-here.md)
 - [Course Guide](guides/course-guide.md)
 - [Learning Contract](guides/learning-contract.md)
+- [Module Promise Map](guides/module-promise-map.md)
+- [Module Checkpoints](guides/module-checkpoints.md)
+- [Pressure Routes](guides/pressure-routes.md)
+- [Proof Ladder](guides/proof-ladder.md)
 
 ## Course shape
 
@@ -97,7 +103,8 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 
 The course uses a monitoring-system domain as the running example. That domain is
 small enough to reason about and rich enough to force real design choices around
-state, interfaces, aggregates, events, and failure handling.
+state, interfaces, aggregates, events, failure handling, construction boundaries,
+and persistence-session pressure.
 
 ## How to use the running example
 
@@ -137,9 +144,13 @@ By the end of the course, you should be able to:
 
 - treating classes as containers instead of contracts
 - using inheritance because it feels reusable rather than because it preserves substitutability
+- using `super()`, mixins, or framework base classes without being able to explain the call chain
 - hiding invalid states behind `None`, ad hoc flags, or informal conventions
 - scattering invariants across multiple objects with no clear owner
 - mixing domain rules, orchestration, persistence, and integrations in the same class
+- leaking construction, configuration, or service location into domain code
+- flattening failures into generic exceptions with no recovery contract
+- letting ORM sessions and lazy loading redefine the apparent object contract
 - introducing "small" changes that silently widen public API or lifecycle obligations
 - letting serialized shapes, async wrappers, or plugin hooks bypass the intended boundaries
 - optimizing or instrumenting the system in ways that quietly change semantics or expose secrets
@@ -147,10 +158,11 @@ By the end of the course, you should be able to:
 ## Reading order
 
 - Start with [Start Here](guides/start-here.md).
-- Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
+- Continue with [Module Promise Map](guides/module-promise-map.md), [Course Guide](guides/course-guide.md), and [Learning Contract](guides/learning-contract.md).
+- Use [Module Checkpoints](guides/module-checkpoints.md) and [Pressure Routes](guides/pressure-routes.md) when you need a more intentional route.
 - Start with [Orientation](module-00-orientation/index.md).
 - Work through Modules 01 to 10 in order.
-- Use the [Capstone](guides/capstone.md) to connect the prose to runnable code.
+- Use the [Capstone](guides/capstone.md) and [Proof Ladder](guides/proof-ladder.md) to connect the prose to runnable code honestly.
 
 ## Expected learner rhythm
 

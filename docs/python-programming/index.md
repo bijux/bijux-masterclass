@@ -45,7 +45,9 @@ flowchart LR
 ### [Python Object-Oriented Programming](python-object-oriented-programming.md)
 
 - Local course home: [Course home](../library/python-programming/python-object-oriented-programming/course-book/index.md)
-- Learner entry: [Orientation](../library/python-programming/python-object-oriented-programming/course-book/module-00-orientation/index.md)
+- Learner entry: [Start Here](../library/python-programming/python-object-oriented-programming/course-book/guides/start-here.md)
+- Promise review: [Module Promise Map](../library/python-programming/python-object-oriented-programming/course-book/guides/module-promise-map.md)
+- Pressure route: [Pressure Routes](../library/python-programming/python-object-oriented-programming/course-book/guides/pressure-routes.md)
 - Capstone guide: [Capstone README](../library/python-programming/python-object-oriented-programming/capstone/README.md)
 
 ### [Python Functional Programming](python-functional-programming.md)

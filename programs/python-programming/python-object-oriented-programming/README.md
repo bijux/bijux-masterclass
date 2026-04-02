@@ -36,11 +36,11 @@ By the end of the course, you should be able to:
 ## What this course covers
 
 - Python's object model: identity, state, attribute lookup, equality, hashing, and copying
-- Object responsibilities: composition, inheritance, protocols, semantic types, and layering
+- Object responsibilities: composition, inheritance, MRO, mixins, protocols, semantic types, and layering
 - State design: properties, dataclasses, validation, null-handling, and typestate
 - Collaboration: aggregates, domain events, projections, adapters, and strategy objects
-- Operational survival: resource ownership, unit of work, compatibility, and refactoring
-- Persistence: repositories, mapping, serialization, versioning, conflicts, and migration
+- Operational survival: resource ownership, unit of work, error contracts, compensation, compatibility, and refactoring
+- Persistence: repositories, mapping, ORM/session boundaries, serialization, versioning, conflicts, and migration
 - Runtime pressure: clocks, scheduling, queues, threads, async bridges, and safe retries
 - Verification: behavioral tests, property checks, contract suites, and confidence ladders
 - Extensibility: public APIs, facades, capability protocols, plugins, and governance
@@ -61,12 +61,12 @@ By the end of the course, you should be able to:
 
 ## How to study this course well
 
-1. Start with `course-book/guides/start-here.md`, then the orientation material and course map instead of jumping to random topics.
-2. Work through Modules 01 to 10 in order because the later modules assume earlier semantic and boundary decisions.
-3. Treat each module as a design checkpoint: read the overview, then the chapter sequence, then the refactor chapter.
-4. Use Modules 01 to 05 as the semantic and architectural base, then Modules 06 to 10 as the persistence, runtime, governance, and operational mastery arc.
-5. Keep the capstone open while reading so the abstractions stay grounded in one coherent domain.
-6. Run the verification targets after major reading blocks to keep the code and prose mentally connected.
+1. Start with `course-book/guides/start-here.md`, `course-book/guides/module-promise-map.md`, and `course-book/guides/module-checkpoints.md` before browsing module chapters.
+2. Use `course-book/guides/pressure-routes.md` when you are entering from a concrete engineering problem instead of reading front to back.
+3. Work through Modules 01 to 10 in order when possible because the later modules assume earlier semantic and boundary decisions.
+4. Treat each module as a design checkpoint: read the overview, then the chapter sequence, then the refactor chapter, then the module checkpoint.
+5. Use Modules 01 to 05 as the semantic and survivability base, then Modules 06 to 10 as the persistence, runtime, governance, and operational mastery arc.
+6. Keep the capstone open while reading so the abstractions stay grounded in one coherent domain, and use `course-book/guides/proof-ladder.md` before jumping to the strongest proof command.
 
 ## Quickstart
 
@@ -91,6 +91,8 @@ make -C programs/python-programming/python-object-oriented-programming/capstone 
 Primary reading route:
 
 - `course-book/guides/start-here.md`
+- `course-book/guides/module-promise-map.md`
+- `course-book/guides/module-checkpoints.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
 - `course-book/guides/capstone.md`
@@ -106,11 +108,11 @@ Primary reading route:
 
 - `00` Orientation and course map
 - `01` Object model and data-model semantics
-- `02` Design roles, interfaces, and layering
+- `02` Design roles, inheritance trade-offs, construction boundaries, interfaces, and layering
 - `03` State, validation, dataclasses, and typestate
 - `04` Aggregates, events, projections, and collaboration
-- `05` Resource ownership, failure handling, and long-term evolution
-- `06` Persistence, repositories, serialization, and schema evolution
+- `05` Resource ownership, failure handling, recovery contracts, and long-term evolution
+- `06` Persistence, repositories, ORM/session boundaries, serialization, and schema evolution
 - `07` Time, scheduling, concurrency, and async boundaries
 - `08` Testing, verification, contracts, and confidence
 - `09` Public APIs, extension points, plugins, and governance
@@ -119,11 +121,11 @@ Primary reading route:
 ## Ten-module roadmap
 
 1. Object model: identity, equality, copying, and the semantic contract of an object.
-2. Design and layering: roles, composition, protocols, and boundary assignment.
+2. Design and layering: roles, composition, cooperative inheritance, construction boundaries, protocols, and boundary assignment.
 3. State and typestate: validation, lifecycle transitions, and illegal-state prevention.
 4. Aggregates and collaboration: cross-object invariants, events, projections, and policies.
-5. Resources and evolution: cleanup, failure handling, compatibility, and safe change.
-6. Persistence and schema evolution: repositories, codecs, versioning, and migration.
+5. Resources and evolution: cleanup, failure contracts, compensation, compatibility, and safe change.
+6. Persistence and schema evolution: repositories, sessions, identity maps, codecs, versioning, and migration.
 7. Time and concurrency: clocks, scheduling, retries, queues, threads, and async boundaries.
 8. Testing and verification: behavioral proof, contracts, properties, and confidence ladders.
 9. Public APIs and extension governance: facades, plugin seams, compatibility, and review controls.

@@ -87,6 +87,8 @@ and verify the runtime behavior of the examples rather than relying on intuition
 ## Start here
 
 - Read the full [Course Map](course-map.md).
+- Read [Module Promise Map](../guides/module-promise-map.md) to understand the ten-module contract.
+- Read [Module Checkpoints](../guides/module-checkpoints.md) so the exit bar stays visible from the beginning.
 - Then continue into [Module 01](../module-01-object-model/index.md).
 
 ## Capstone roadmap
@@ -94,11 +96,11 @@ and verify the runtime behavior of the examples rather than relying on intuition
 The monitoring-system capstone matures with the course:
 
 - Module 01 gives you the object semantics needed to trust its value types and entity boundaries.
-- Module 02 explains why the code splits into domain objects, policies, runtime orchestration, and adapters.
+- Module 02 explains why the code splits into domain objects, policies, runtime orchestration, adapters, and one visible composition root.
 - Module 03 explains its lifecycle states, validation boundaries, and null-avoidance choices.
 - Module 04 explains its aggregate root, domain events, projections, and collaboration surfaces.
-- Module 05 explains its unit of work, cleanup obligations, and compatibility pressure under change.
-- Module 06 shows how repositories, codecs, and schema upgrades can be added without flattening the model.
+- Module 05 explains its unit of work, cleanup obligations, recovery contracts, and compatibility pressure under change.
+- Module 06 shows how repositories, codecs, sessions, and schema upgrades can be added without flattening the model.
 - Module 07 shows how clocks, queues, schedulers, and async adapters stay outside aggregate ownership.
 - Module 08 turns the capstone tests into a contract-driven verification story instead of a loose example set.
 - Module 09 explains how the capstone could expose a stable facade and governed extension seams.

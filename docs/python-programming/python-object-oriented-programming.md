@@ -35,7 +35,10 @@ flowchart LR
 ## Local Catalog Route
 
 - Course home: [Course home](../library/python-programming/python-object-oriented-programming/course-book/index.md)
-- Learner entry: [Orientation](../library/python-programming/python-object-oriented-programming/course-book/module-00-orientation/index.md)
+- Learner entry: [Start Here](../library/python-programming/python-object-oriented-programming/course-book/guides/start-here.md)
+- Promise review: [Module Promise Map](../library/python-programming/python-object-oriented-programming/course-book/guides/module-promise-map.md)
+- Pressure route: [Pressure Routes](../library/python-programming/python-object-oriented-programming/course-book/guides/pressure-routes.md)
+- Topic boundaries: [Topic Boundaries](../library/python-programming/python-object-oriented-programming/course-book/reference/topic-boundaries.md)
 - Capstone guide: [Capstone README](../library/python-programming/python-object-oriented-programming/capstone/README.md)
 
 ## Local Commands

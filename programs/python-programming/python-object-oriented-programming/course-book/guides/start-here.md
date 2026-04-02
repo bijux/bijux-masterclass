@@ -43,11 +43,13 @@ If you keep those questions in view, the modules feel cumulative instead of scat
 ## Best reading route
 
 1. Read [Course Home](../index.md) for the course promise and module arc.
-2. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
-3. Read [Course Guide](course-guide.md) to understand the semantic, systems, and governance arcs.
-4. Read [Learning Contract](learning-contract.md) before you start Module 01.
-5. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
-6. Use [Command Guide](command-guide.md) and [Capstone Map](capstone-map.md) when you want the executable route.
+2. Read [Module Promise Map](module-promise-map.md) so each module has a clear contract before you start.
+3. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
+4. Read [Course Guide](course-guide.md) and [Learning Contract](learning-contract.md) before you start Module 01.
+5. Keep [Module Checkpoints](module-checkpoints.md) open while reading so you know the module exit bar.
+6. Use [Pressure Routes](pressure-routes.md) when you are entering from a concrete code-review or design problem.
+7. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
+8. Use [Proof Ladder](proof-ladder.md), [Command Guide](command-guide.md), and [Capstone Map](capstone-map.md) when you want the executable route.
 
 ## When to use each arc
 
