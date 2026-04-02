@@ -6,6 +6,7 @@ capstone doc set reviewable instead of making learners rescan the README every t
 
 ## If you are just arriving
 
+- `FIRST_SESSION_GUIDE.md`
 - `README.md`
 - `DOMAIN_GUIDE.md`
 - `SCENARIO_GUIDE.md`
@@ -50,4 +51,4 @@ capstone doc set reviewable instead of making learners rescan the README every t
 
 ## Best next file after this one
 
-If you do not have a sharper question yet, read `README.md` and then `DOMAIN_GUIDE.md`.
+If you do not have a sharper question yet, read `FIRST_SESSION_GUIDE.md`.

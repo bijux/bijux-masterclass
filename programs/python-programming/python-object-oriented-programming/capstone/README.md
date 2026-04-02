@@ -78,6 +78,7 @@ make PROGRAM=python-programming/python-object-oriented-programming proof
 Review and proof routes:
 
 - [GUIDE_INDEX.md](GUIDE_INDEX.md)
+- [FIRST_SESSION_GUIDE.md](FIRST_SESSION_GUIDE.md)
 - [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
 - [OWNERSHIP_BOUNDARIES.md](OWNERSHIP_BOUNDARIES.md)
 - [SCENARIO_BOUNDARY_MAP.md](SCENARIO_BOUNDARY_MAP.md)
@@ -109,16 +110,8 @@ Review and proof routes:
 
 If this is your first honest pass through the capstone, use this order:
 
-1. Read [GUIDE_INDEX.md](GUIDE_INDEX.md), then read this README until the scenario and review routes make sense.
-2. Read [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md).
-3. Read [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md).
-4. Run `make demo`.
-5. Read [RULE_LIFECYCLE_GUIDE.md](RULE_LIFECYCLE_GUIDE.md).
-6. Read [TOUR.md](TOUR.md).
-7. Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md).
-8. Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) if you want the file-and-class route before opening code.
-9. Run `make inspect`.
-10. Open [PROOF_GUIDE.md](PROOF_GUIDE.md) only after you can already name the likely owner of one behavior.
+Read [FIRST_SESSION_GUIDE.md](FIRST_SESSION_GUIDE.md) for the stable local route, then
+come back to this README for the broader guide list and review routes.
 
 ## Review routes
 
