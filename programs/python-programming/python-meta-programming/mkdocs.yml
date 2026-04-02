@@ -16,24 +16,24 @@ site_dir: ../../../artifacts/site/python-programming/python-meta-programming
 nav:
   - Start Here:
       - Course Home: index.md
-      - Learner Entry: start-here.md
-      - Course Guide: course-guide.md
-      - Learning Contract: learning-contract.md
+      - Learner Entry: guides/start-here.md
+      - Course Guide: guides/course-guide.md
+      - Learning Contract: guides/learning-contract.md
       - Orientation: module-00.md
-      - Capstone Guide: capstone.md
+      - Capstone Guide: guides/capstone.md
   - Course Reference:
-      - Command Guide: command-guide.md
+      - Command Guide: guides/command-guide.md
       - Runtime Power Ladder: runtime-power-ladder.md
-      - Module Dependency Map: module-dependency-map.md
-      - Practice Map: practice-map.md
+      - Module Dependency Map: guides/module-dependency-map.md
+      - Practice Map: guides/practice-map.md
       - Runtime Glossary: runtime-glossary.md
       - Review Checklist: review-checklist.md
   - Capstone Reference:
-      - Capstone Map: capstone-map.md
-      - Capstone File Guide: capstone-file-guide.md
-      - Capstone Proof Checklist: capstone-proof-checklist.md
-      - Capstone Review Worksheet: capstone-review-worksheet.md
-      - Capstone Extension Guide: capstone-extension-guide.md
+      - Capstone Map: guides/capstone-map.md
+      - Capstone File Guide: guides/capstone-file-guide.md
+      - Capstone Proof Checklist: guides/capstone-proof-checklist.md
+      - Capstone Review Worksheet: guides/capstone-review-worksheet.md
+      - Capstone Extension Guide: guides/capstone-extension-guide.md
   - Modules:
       - "01 — Everything Is an Object": module-01.md
       - "02 — Basic Introspection": module-02.md

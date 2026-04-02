@@ -45,15 +45,15 @@ and easier to justify than a simpler alternative.
 ### Route 1: Reviewer under pressure
 
 1. Read [Course Guide](course-guide.md).
-2. Read [Module 00](module-00.md).
-3. Read [Module 04](module-04.md), [Module 07](module-07.md), and [Module 09](module-09.md).
+2. Read [Module 00](../module-00.md).
+3. Read [Module 04](../module-04.md), [Module 07](../module-07.md), and [Module 09](../module-09.md).
 4. Cross-check the [Capstone Guide](capstone.md).
 
 ### Route 2: Full mastery path
 
 1. Read [Course Guide](course-guide.md).
 2. Read [Learning Contract](learning-contract.md).
-3. Read every module in order from [Module 00](module-00.md) through [Module 11](module-11.md).
+3. Read every module in order from [Module 00](../module-00.md) through [Module 11](../module-11.md).
 4. Keep [Capstone Map](capstone-map.md) open while reading.
 
 ## What success looks like
@@ -67,7 +67,7 @@ By the end of the course, you should be able to explain:
 
 ## First files to keep open
 
-- [Course Home](index.md)
+- [Course Home](../index.md)
 - [Course Guide](course-guide.md)
-- [Module 00](module-00.md)
+- [Module 00](../module-00.md)
 - [Capstone Guide](capstone.md)

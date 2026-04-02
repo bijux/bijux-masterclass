@@ -44,18 +44,18 @@ The course has four linked layers:
 ### Orientation
 
 - [Start Here](start-here.md) decides whether the course matches your current problem.
-- [Module 00](module-00.md) defines the power ladder and the rules for reading the course.
+- [Module 00](../module-00.md) defines the power ladder and the rules for reading the course.
 
 ### Runtime mechanics
 
-- [Modules 01-03](module-01.md) through [module-03.md](module-03.md) explain objects, introspection, and `inspect`.
-- [Modules 04-06](module-04.md) through [module-06.md](module-06.md) explain decorators, typing discipline, and the bridge to attribute control.
-- [Modules 07-09](module-07.md) through [module-09.md](module-09.md) explain descriptors, framework-grade patterns, and metaclasses.
+- [Modules 01-03](../module-01.md) through [module-03.md](../module-03.md) explain objects, introspection, and `inspect`.
+- [Modules 04-06](../module-04.md) through [module-06.md](../module-06.md) explain decorators, typing discipline, and the bridge to attribute control.
+- [Modules 07-09](../module-07.md) through [module-09.md](../module-09.md) explain descriptors, framework-grade patterns, and metaclasses.
 
 ### Governance
 
-- [Module 10](module-10.md) defines red lines for dynamic execution and high-power runtime hooks.
-- [Module 11](module-11.md) closes the course with mastery questions instead of sequel marketing.
+- [Module 10](../module-10.md) defines red lines for dynamic execution and high-power runtime hooks.
+- [Module 11](../module-11.md) closes the course with mastery questions instead of sequel marketing.
 
 ### Capstone proof
 

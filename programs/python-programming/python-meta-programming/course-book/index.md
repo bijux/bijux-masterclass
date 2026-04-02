@@ -31,9 +31,9 @@ code inspects, wraps, validates, or registers other code and objects.
 
 ## Start with these pages
 
-- [Start Here](start-here.md)
-- [Course Guide](course-guide.md)
-- [Learning Contract](learning-contract.md)
+- [Start Here](guides/start-here.md)
+- [Course Guide](guides/course-guide.md)
+- [Learning Contract](guides/learning-contract.md)
 - [Runtime Power Ladder](runtime-power-ladder.md)
 
 ## What the course is organized around
@@ -50,14 +50,14 @@ The course moves from plain observation to invasive runtime control:
 
 ### One executable proof
 
-The [Capstone Guide](capstone.md) points to a single plugin runtime that keeps the major
-mechanisms visible in one place. Use [Capstone Map](capstone-map.md) and
-[Capstone File Guide](capstone-file-guide.md) while reading.
+The [Capstone Guide](guides/capstone.md) points to a single plugin runtime that keeps the major
+mechanisms visible in one place. Use [Capstone Map](guides/capstone-map.md) and
+[Capstone File Guide](guides/capstone-file-guide.md) while reading.
 
 ### Review judgment
 
-Use [Review Checklist](review-checklist.md), [Practice Map](practice-map.md), and
-[Capstone Proof Checklist](capstone-proof-checklist.md) to keep the material pedagogic
+Use [Review Checklist](review-checklist.md), [Practice Map](guides/practice-map.md), and
+[Capstone Proof Checklist](guides/capstone-proof-checklist.md) to keep the material pedagogic
 instead of ornamental.
 
 ## Module route
