@@ -54,6 +54,9 @@ The materialized truth of those layers appears later in `publish/v1/provenance.j
 4. `profiles/`
 5. `publish/v1/provenance.json`
 
+Run `make config-summary` when you want the shortest honest artifact that combines the
+repository config with the materialized run record.
+
 That route moves from explicit user settings, to validation rules, to default injection,
 to operating policy, and finally to the fully materialized run record.
 
@@ -77,4 +80,3 @@ to operating policy, and finally to the fully materialized run record.
 - Which defaults are teaching defaults from `Snakefile`, not user-edited config?
 - Which file proves what actually ran after all defaults and policy layers resolved?
 - Which change would require a rerun because it affects analytical meaning instead of operating policy?
-

@@ -170,6 +170,7 @@ make verify-report
 make publish-summary
 make profile-audit
 make profile-summary
+make config-summary
 make tour
 make confirm
 ```
@@ -213,6 +214,8 @@ console verdict.
 Use `make publish-summary` when you want one compact JSON that names the discovered
 samples, public files, top screen hits, and provenance identity without opening the
 full publish bundle.
+Use `make config-summary` when you want one compact JSON that shows the repository
+config, the materialized defaults, and the run identity captured in provenance.
 Use `make profile-audit` when the question is about execution policy across local, CI,
 and cluster contexts rather than publish correctness alone.
 Use `make profile-summary` when you want one compact JSON that separates shared policy

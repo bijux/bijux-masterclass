@@ -55,7 +55,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
-	publish-summary profile-summary \
+	publish-summary profile-summary config-summary \
 	verify-report profile-audit \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
@@ -215,6 +215,15 @@ profile-summary: profile-audit ## Write a compact comparison of local, CI, and S
 		--slurm "$(PROFILE_AUDIT_DIR)/profiles/slurm.yaml" \
 		--out "$(PROFILE_AUDIT_DIR)/profile-summary.json"
 	@echo "✔ wrote profile summary to $(PROFILE_AUDIT_DIR)/profile-summary.json"
+
+config-summary: verify ## Write a compact summary of the materialized workflow configuration
+	@mkdir -p "$(VERIFY_REPORT_DIR)"
+	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
+	@$(PYTHON) scripts/config_summary.py \
+		--config "config/config.yaml" \
+		--provenance "$(PUBLISH_DIR_ABS)/provenance.json" \
+		--out "$(VERIFY_REPORT_DIR)/config-summary.json"
+	@echo "✔ wrote config summary to $(VERIFY_REPORT_DIR)/config-summary.json"
 
 # ---- high-level flows ----
 check: lint test wf-lint wf-dryrun validate-config ## Fast pre-flight (no workflow execution); NOT a formatting gate
