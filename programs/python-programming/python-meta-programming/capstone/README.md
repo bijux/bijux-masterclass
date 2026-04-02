@@ -41,7 +41,7 @@ Use the smallest honest route for the question you have:
 
 - Want to inspect the public runtime shape without execution? Run `make manifest` or `make registry`.
 - Want to inspect one concrete field or action contract? Run `make field` or `make action`.
-- Want one full learner-facing review bundle? Run `make inspect` or `make tour`.
+- Want one full learner-facing review bundle? Run `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` from the repository root, or `make tour` locally.
 - Want executable confirmation? Run `make verify-report`, `make proof`, or `make confirm`.
 
 If you are new to this capstone, the best first route is:
@@ -93,6 +93,15 @@ make inspect
 make tour
 make verify-report
 make proof
+```
+
+From the repository root, use the published course-level routes:
+
+```bash
+make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
+make PROGRAM=python-programming/python-meta-programming capstone-tour
+make PROGRAM=python-programming/python-meta-programming capstone-verify-report
+make PROGRAM=python-programming/python-meta-programming capstone-confirm
 ```
 
 ## Documentation set
@@ -183,6 +192,7 @@ your pressure instead of reading the full list in alphabetical order.
 ### "How do I review the full learner-facing route?"
 
 - [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md)
+- `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough`
 - `make inspect`
 - `make tour`
 - [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
