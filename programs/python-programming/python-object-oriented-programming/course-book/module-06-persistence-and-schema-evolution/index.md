@@ -74,6 +74,22 @@ semantics instead of flattening them away.
 3. Move into transactional publication, testing, and migration strategy after the storage boundary is clear.
 4. Finish with the refactor chapter to see persistence added without corrupting the domain.
 
+## First review route for storage boundaries
+
+1. Read `src/service_monitoring/repository.py`.
+2. Keep `capstone/ARCHITECTURE.md` open while you read.
+3. Compare the repository boundary with the unit-of-work proof surface in `capstone/TEST_GUIDE.md` and `capstone/PROOF_GUIDE.md`.
+
+That route keeps the central distinction visible: the repository may translate and persist
+state, but it must not become the place where domain rules are smuggled in or constructors
+are bypassed.
+
+## Translation checklist
+
+- Which fields are domain meaning, and which are only storage convenience?
+- Which part of the serialized shape may evolve without changing the object contract?
+- Which older representation would need a compatibility plan before this change could ship?
+
 ## Common failure modes
 
 - letting ORM or JSON models become the domain model by default
@@ -95,6 +111,15 @@ The monitoring capstone currently uses an in-memory repository and unit of work.
 This module shows how that design can grow into file-backed, database-backed, or
 message-driven persistence without changing who owns invariants. Read it as the bridge
 between a teachable in-memory model and a production storage boundary.
+
+## Honest completion signal
+
+You are ready to move on when you can explain one persistence change in terms of all
+three of these at once:
+
+- what the domain contract is
+- what the storage representation is
+- what proof surface should fail first if those drift apart
 
 ## Closing criteria
 
