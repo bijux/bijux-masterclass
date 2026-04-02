@@ -24,6 +24,14 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 This guide explains how to extend the capstone without making it pedagogically muddy.
 The rule is to keep one extension attached to one clear ownership boundary.
 
+## Start by extension type
+
+| If you are adding... | Start with | Prove it with |
+| --- | --- | --- |
+| a new plugin | `plugins.py` | `make plugin`, `make trace`, and runtime tests |
+| a new field type | `fields.py` | `make field` and field tests |
+| a new action | one plugin method plus `@action` | `make action`, `make trace`, and runtime tests |
+
 ## Safe extension categories
 
 ### Add a new plugin
@@ -55,3 +63,9 @@ Every extension should answer:
 - why a lower-power layer was insufficient
 - what new proof was added to keep the runtime observable
 - which local capstone guide or review bundle changed as a result
+
+## What not to do during an extension
+
+- Do not widen the metaclass when a plugin, field, or action layer still owns the change.
+- Do not skip the public route and jump straight to tests.
+- Do not leave the local guides unchanged if the learner-facing route has really changed.
