@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so the final module turns mechanism knowledge
+into durable review judgment instead of into one more list of dangerous tools:
+
+- [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course review route
+- [Boundary Review Prompts](../reference/boundary-review-prompts.md) for keep/change/reject decisions under governance pressure
+- [Review Checklist](../reference/review-checklist.md) for the stable engineering bar
+- [Capstone Proof Checklist](../guides/capstone-proof-checklist.md) for the final claim-to-proof route through the runtime
+
+Carry this question into the module:
+
+> Which runtime powers are still defensible once debugging cost, observability, and team trust become the real review criteria?
+
 <a id="toc"></a>
 ## Table of Contents
 

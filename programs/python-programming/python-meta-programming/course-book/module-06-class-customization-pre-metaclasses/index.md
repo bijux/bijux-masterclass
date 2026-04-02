@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so the class-customization boundary stays clear
+before the course escalates into descriptors or metaclasses:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge through the middle of the course
+- [Mechanism Selection](../guides/mechanism-selection.md) for the lower-power comparison against metaclasses
+- [Module Checkpoints](../guides/module-checkpoints.md) for the exit bar before descriptors
+- [Capstone Architecture Guide](../guides/capstone-architecture-guide.md) for the generated constructor boundary in the runtime
+
+Carry this question into the module:
+
+> What can still be owned honestly after class creation, without taking control of class creation itself?
+
 <a id="toc"></a>
 ## Table of Contents
 

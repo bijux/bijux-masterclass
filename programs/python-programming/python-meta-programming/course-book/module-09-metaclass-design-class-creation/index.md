@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so metaclasses stay narrow, reviewable, and
+clearly downstream of the lower-power alternatives:
+
+- [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course review route into class creation and governance
+- [Mechanism Selection](../guides/mechanism-selection.md) for the last lower-power check before metaclasses
+- [Review Checklist](../reference/review-checklist.md) for the design bar applied to high-power hooks
+- [Capstone Architecture Guide](../guides/capstone-architecture-guide.md) for the definition-time registration boundary in the runtime
+
+Carry this question into the module:
+
+> What must happen before the class exists, and why would a descriptor, class decorator, or explicit registration function still be the wrong owner?
+
 <a id="toc"></a>
 ## Table of Contents
 

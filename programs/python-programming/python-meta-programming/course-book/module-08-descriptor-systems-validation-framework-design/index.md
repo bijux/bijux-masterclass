@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so framework-shaped descriptor design stays
+reviewable and does not quietly collapse into magical field systems:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the ownership route through descriptors
+- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for symptom-first review of descriptor overreach
+- [Boundary Review Prompts](../reference/boundary-review-prompts.md) for keep/change/reject pressure
+- [Capstone Architecture Guide](../guides/capstone-architecture-guide.md) for the descriptor-backed field architecture in the runtime
+
+Carry this question into the module:
+
+> When a field system grows more powerful, which responsibilities still belong to one attribute and which ones should move to explicit framework code?
+
 <a id="toc"></a>
 ## Table of Contents
 

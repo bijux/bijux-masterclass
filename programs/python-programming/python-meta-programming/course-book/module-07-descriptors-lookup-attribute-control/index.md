@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so descriptor mechanics stay attached to
+attribute ownership rather than becoming pure lookup trivia:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the ownership bridge into attribute control
+- [Mechanism Selection](../guides/mechanism-selection.md) for the boundary between wrappers, properties, and descriptors
+- [Topic Boundaries](../reference/topic-boundaries.md) for the course-wide scope line around descriptor use
+- [Capstone Map](../guides/capstone-map.md) for the field and constructor proof surfaces
+
+Carry this question into the module:
+
+> What belongs to attribute access itself, and what would become more confusing if I hid it behind a wrapper or wider class hook?
+
 <a id="toc"></a>
 ## Table of Contents
 
