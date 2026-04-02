@@ -30,7 +30,7 @@ The course-book now has three stable surfaces:
 
 - `course-book/guides/` for learner routes, command choice, and capstone entry
 - `course-book/reference/` for durable review maps, glossaries, and standards
-- `course-book/module-00...module-10` for the core teaching arc
+- `course-book/module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
 
 [Back to top](#top)
 
@@ -102,7 +102,7 @@ graph TD
   root --> workflows["../../../../.github/workflows/"]
   root --> license["LICENSE"]
   root --> readme["README.md"]
-  book --> m00["module-00.md"]
+  book --> m00["module-00-orientation/index.md"]
   book --> m01["module-01.md"]
   book --> m02["module-02.md"]
   book --> m03["module-03.md"]

@@ -40,7 +40,7 @@ Start with these pages in order:
 
 1. [`start-here.md`](start-here.md)
 2. [`platform-setup.md`](platform-setup.md)
-3. [`module-00.md`](module-00.md)
+3. [`module-00.md`](../module-00-orientation/index.md)
 4. [`learning-contract.md`](learning-contract.md)
 5. [`module-dependency-map.md`](../reference/module-dependency-map.md)
 

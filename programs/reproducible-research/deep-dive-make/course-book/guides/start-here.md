@@ -56,7 +56,7 @@ why it works.
 
 Choose this if Make still feels unfamiliar.
 
-1. Read [`module-00.md`](module-00.md)
+1. Read [`module-00.md`](../module-00-orientation/index.md)
 2. Read [`module-01.md`](module-01.md)
 3. Read [`module-02.md`](module-02.md)
 4. Enter the capstone only after the local module exercises make sense
@@ -65,7 +65,7 @@ Choose this if Make still feels unfamiliar.
 
 Choose this if you already maintain a Make-based repository.
 
-1. Skim [`module-00.md`](module-00.md)
+1. Skim [`module-00.md`](../module-00-orientation/index.md)
 2. Read [`module-04.md`](module-04.md)
 3. Read [`module-05.md`](module-05.md)
 4. Read [`module-09.md`](module-09.md)
@@ -116,6 +116,6 @@ instead of `/usr/bin/make`.
 From the course book:
 
 * use [`capstone-map.md`](capstone-map.md) when you want to cross-check a concept
-* use [`module-00.md`](module-00.md) when you want the full course arc
+* use [`module-00.md`](../module-00-orientation/index.md) when you want the full course arc
 
 [Back to top](#top)

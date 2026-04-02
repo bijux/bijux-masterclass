@@ -97,7 +97,7 @@ Use these as the default learner routes:
 
 | If you need | Start with | Then go to |
 | --- | --- | --- |
-| first exposure to GNU Make | [`start-here.md`](guides/start-here.md) | [`module-00.md`](module-00.md), then Module 01 |
+| first exposure to GNU Make | [`start-here.md`](guides/start-here.md) | [`module-00.md`](module-00-orientation/index.md), then Module 01 |
 | a stable course hub | [`course-guide.md`](guides/course-guide.md) | the support page that matches your question |
 | platform requirements first | [`platform-setup.md`](guides/platform-setup.md) | [`command-guide.md`](guides/command-guide.md) |
 | executable proof after the module | [`capstone-map.md`](guides/capstone-map.md) | [`capstone-walkthrough.md`](guides/capstone-walkthrough.md) |
@@ -111,7 +111,7 @@ These pages exist so learners do not have to reconstruct the course shape from t
 modules and one capstone:
 
 * [`course-guide.md`](guides/course-guide.md) for the stable hub
-* [`module-00.md`](module-00.md) for the full course arc
+* [`module-00.md`](module-00-orientation/index.md) for the full course arc
 * [`module-dependency-map.md`](reference/module-dependency-map.md) for the safe reading order
 * [`command-guide.md`](guides/command-guide.md) for root, program, and capstone commands
 * [`proof-matrix.md`](guides/proof-matrix.md) for claim-to-evidence routing
@@ -145,7 +145,7 @@ You are expected to distrust claims that cannot be checked. Where possible, the 
 | 09 | Performance and Incident Response | Measurement, observability, build triage, and operational runbooks. |
 | 10 | Mastery | Migration strategy, governance, anti-pattern recognition, and tool-boundary judgment. |
 
-Syllabus: [`module-00.md`](module-00.md)  
+Syllabus: [`module-00.md`](module-00-orientation/index.md)  
 [Back to top](#top)
 
 ---
