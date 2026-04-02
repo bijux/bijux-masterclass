@@ -36,6 +36,10 @@ This module is about keeping that boundary explicit: what belongs in workflow lo
 belongs in a script or package, what belongs in an environment definition, and what must
 be recorded as software evidence if another person is going to trust the run.
 
+Capstone exists here as corroboration. The local exercises should already make the
+workflow-versus-software boundary clear before you inspect the reference environments,
+scripts, and package layout.
+
 ### Before You Begin
 
 This module works best after Modules 01-04, especially the parts on file contracts,

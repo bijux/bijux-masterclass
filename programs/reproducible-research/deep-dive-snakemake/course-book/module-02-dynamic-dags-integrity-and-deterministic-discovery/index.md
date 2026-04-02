@@ -1,4 +1,6 @@
-# Module 02: Advanced Mechanics — Dynamic DAGs, Integrity, and Performance Patterns
+<a id="top"></a>
+
+# Module 02 — Dynamic DAGs, Integrity, and Deterministic Discovery
 
 
 <!-- page-maps:start -->
@@ -9,7 +11,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Snakemake"]
   section["Module 02"]
-  page["Module 02: Advanced Mechanics — Dynamic DAGs, Integrity, and Performance Patterns"]
+  page["Module 02 — Dynamic DAGs, Integrity, and Deterministic Discovery"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -24,6 +26,13 @@ flowchart LR
   verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
+
+Module 02 turns dynamic behavior into an explicit contract. Checkpoints, discovery
+artifacts, and provenance surfaces are useful only when the DAG stays reviewable and the
+discovered set stays stable enough to trust.
+
+Capstone exists here as corroboration. The module should already make deterministic
+discovery understandable before you inspect the capstone checkpoint and publish flow.
 
 > **Version & scope contract**
 >
@@ -44,7 +53,8 @@ Dynamic behavior is where many workflows become impressive demos and unreliable 
 Checkpoints, metadata-driven expansion, and environment management can all be correct, but
 they can also hide moving targets, unstable discovery, and irreproducible plans.
 
-This module is about turning “the DAG depends on data” from a hand-wave into a disciplined contract.
+This module is about turning "the DAG depends on data" from a hand-wave into a
+disciplined contract.
 
 ## Reading path
 

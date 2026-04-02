@@ -1,4 +1,6 @@
-# Snakemake Deep Dive — Module 04
+<a id="top"></a>
+
+# Module 04 — Scaling Workflows and Interface Boundaries
 
 
 <!-- page-maps:start -->
@@ -9,7 +11,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Snakemake"]
   section["Module 04"]
-  page["Snakemake Deep Dive — Module 04"]
+  page["Module 04 — Scaling Workflows and Interface Boundaries"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -24,6 +26,14 @@ flowchart LR
   verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
+
+Module 04 turns one working workflow into a repository another engineer can still review.
+Interfaces, file APIs, module boundaries, and CI gates matter because they keep growth
+from turning into hidden coupling.
+
+Capstone exists here as corroboration. The module should already make interface
+boundaries meaningful before you inspect the repository layout and proof surfaces in the
+reference workflow.
 
 ## Scaling Patterns: Modularity, Interfaces, CI Gates, and Executor-Proof Semantics
 

@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Snakemake Deep Dive
+# Module 01 — First Principles and the File-DAG Contract
 
 
 <!-- page-maps:start -->
@@ -11,7 +11,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Snakemake"]
   section["Module 01"]
-  page["Snakemake Deep Dive"]
+  page["Module 01 — First Principles and the File-DAG Contract"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -27,9 +27,13 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-## Module 01 — First Principles: The File-DAG Contract
+This module establishes the semantic floor for the whole program. You build a tiny
+workflow, break it in controlled ways, diagnose using Snakemake-native artifacts, apply
+canonical fixes, and prove convergence.
 
-This module is a self-contained, evidence-first reference. You will build a tiny workflow, break it in controlled ways, diagnose using Snakemake-native artifacts, apply canonical fixes, and prove convergence.
+Capstone exists here as corroboration, not first exposure. The local exercises in this
+module should already make workflow truth and rerun causes legible before you inspect the
+reference repository.
 
 ---
 

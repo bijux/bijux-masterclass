@@ -37,6 +37,10 @@ This module teaches a cost model for workflow performance, the observability sur
 make incidents explainable, and the review habits that keep tuning from quietly damaging
 workflow truth.
 
+Capstone exists here as corroboration. The local measurement and incident drills should
+already tell a coherent story before you inspect the reference benchmarks, logs, and
+workflow-tour artifacts.
+
 ### Before You Begin
 
 This module works best after Modules 01-08, especially the parts on dynamic DAGs,

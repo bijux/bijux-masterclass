@@ -35,6 +35,10 @@ This module is about designing that boundary on purpose: what remains internal, 
 published, how published outputs are versioned, and how manifests, reports, and checksums
 support trust without turning every run into a pile of unreviewable noise.
 
+Capstone exists here as corroboration. The local publishing exercises should already make
+the internal-versus-public split clear before you inspect `publish/v1/` and the file API
+in the reference workflow.
+
 ### Before You Begin
 
 This module works best after Modules 01-05, especially the parts on file contracts,

@@ -36,6 +36,9 @@ This module is about designing a Snakemake repository that stays legible as it g
 where rules live, how helper modules are arranged, which files are public contracts, and
 how reuse can reduce duplication without burying the workflow model.
 
+Capstone exists here as corroboration. The module should already make repository
+boundaries understandable before you inspect the reference workflow layout.
+
 ### Before You Begin
 
 This module works best after Modules 01-06, especially the parts on file contracts,

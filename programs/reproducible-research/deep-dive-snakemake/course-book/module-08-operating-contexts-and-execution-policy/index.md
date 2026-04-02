@@ -36,6 +36,10 @@ This module is about drawing that line cleanly. Profiles, executor settings, lat
 knobs, storage choices, retries, and staging policies should change *how* the workflow is
 run, not silently rewrite what the workflow means.
 
+Capstone exists here as corroboration. The local exercises should already make the
+execution-policy boundary understandable before you compare local, CI, and scheduler
+profiles in the reference workflow.
+
 ### Before You Begin
 
 This module works best after Modules 01-07, especially the parts on dynamic DAGs,

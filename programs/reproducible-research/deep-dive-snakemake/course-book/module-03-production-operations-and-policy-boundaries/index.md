@@ -1,4 +1,6 @@
-# Snakemake Deep Dive — Module 03
+<a id="top"></a>
+
+# Module 03 — Production Operations and Policy Boundaries
 
 
 <!-- page-maps:start -->
@@ -9,7 +11,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Snakemake"]
   section["Module 03"]
-  page["Snakemake Deep Dive — Module 03"]
+  page["Module 03 — Production Operations and Policy Boundaries"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -24,6 +26,14 @@ flowchart LR
   verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
+
+Module 03 is where workflow semantics meet operational policy. Profiles, retries,
+executor choices, staging, and governance only help if they preserve the workflow's
+meaning instead of quietly mutating it.
+
+Capstone exists here as corroboration. The module should already make the
+policy-versus-semantics split clear before you compare it with the reference profiles and
+confirmation routes.
 
 ## Production Snakemake: HPC/Cloud Execution, Error Handling, Data Locality, Governance
 

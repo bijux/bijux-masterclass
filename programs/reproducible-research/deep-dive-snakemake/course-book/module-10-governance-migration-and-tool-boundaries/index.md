@@ -37,6 +37,10 @@ This module is about that kind of judgment: how to govern a long-lived workflow,
 it safely, reject recurring anti-patterns early, and explain the workflow’s boundaries in
 a way another team can trust.
 
+Capstone exists here as corroboration. The reference repository is a compact review
+specimen, not a substitute for the migration and governance method this module is
+teaching.
+
 ### Before You Begin
 
 This module works best after the rest of the program. It assumes you already understand
