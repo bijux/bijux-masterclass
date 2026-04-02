@@ -20,16 +20,28 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this guide is for proof-first reading, not for
+surveying the whole suite. Read the second diagram as the guide loop: arrive with one
+claim to check, read only the matching proof group, then leave with one smaller and more
+honest next move.
 
 Use this page when a module tells you to inspect capstone proof and you want a stable
 reading route through the test suite.
 
+## Choose the first proof group
+
+| If your current claim is about... | Start here | Then compare with... |
+| --- | --- | --- |
+| purity, substitution, or lazy dataflow | `tests/unit/fp/`, `tests/unit/result/`, and `tests/unit/streaming/` | [Proof Matrix](../guides/proof-matrix.md) |
+| failure modelling, validation, or lawful composition | `tests/unit/fp/laws/`, `tests/unit/policies/`, and `tests/unit/rag/` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| effect boundaries, adapters, or async pressure | `tests/unit/domain/`, `tests/unit/boundaries/`, and `tests/unit/infra/adapters/` | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| interop, orchestration, or sustainment | `tests/unit/interop/`, `tests/unit/pipelines/`, and the saved proof bundle | [Capstone Proof Guide](capstone-proof-guide.md) |
+
 ## Best route
 
 1. Read the capstone's local [`TEST_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/TEST_GUIDE.md).
-2. Start with the test group that matches the current module.
-3. Run `make PROGRAM=python-programming/python-functional-programming test`.
+2. Start with the one test group that matches the current claim.
+3. Run `make PROGRAM=python-programming/python-functional-programming test` only if reading is not enough.
 4. Compare the tests you read with [Proof Matrix](../guides/proof-matrix.md) and [Capstone Review Worksheet](capstone-review-worksheet.md).
 
 ## Best module-to-test bridge
@@ -48,3 +60,9 @@ reading route through the test suite.
 - treating every test folder as equally relevant to every module
 - reading implementation code before you know what the proof surface promises
 - using a large test suite as a vague reassurance instead of as a review map
+
+## Stop here when
+
+- you know the first proof group worth opening
+- you know whether reading is enough or you need to run the suite
+- you can name which claim the test group is supposed to justify
