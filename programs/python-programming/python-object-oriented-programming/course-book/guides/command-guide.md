@@ -59,6 +59,22 @@ make proof
 - Use `capstone-confirm` or `confirm` when you want the strongest program-approved confirmation route.
 - Use `proof` when you want the full course-sanctioned evidence route in one command.
 
+## Route by learner goal
+
+| If you want to... | Start with | Escalate to |
+| --- | --- | --- |
+| understand the capstone story without reading internals first | `demo` | `capstone-tour` |
+| inspect saved learner-facing state | `inspect` | `capstone-verify-report` |
+| run raw executable checks quickly | `test` | `capstone-confirm` |
+| review architecture with durable evidence | `capstone-tour` | `capstone-verify-report` |
+| run the strongest course-approved confirmation route | `capstone-confirm` | `proof` |
+
+## Smallest honest command
+
+- If the question is narrative, start with `demo` or `capstone-tour`.
+- If the question is behavioral, start with `test` or `inspect`.
+- If the question is whole-capstone trust, start with `capstone-confirm` and escalate to `proof` only when you need the full learner-facing route.
+
 ## Honest rule
 
 If a course claim matters, there should be a command or test route that helps you inspect
