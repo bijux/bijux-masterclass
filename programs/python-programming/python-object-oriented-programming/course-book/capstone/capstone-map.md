@@ -40,10 +40,10 @@ Use it to decide where to go next when you want concrete proof for a course idea
 | Module | Inspect this first | Best guide | Strongest matching proof route |
 | --- | --- | --- | --- |
 | Module 01 | `src/service_monitoring/model.py` | [Capstone File Guide](capstone-file-guide.md) | `make inspect` |
-| Module 02 | `src/service_monitoring/model.py` and `src/service_monitoring/application.py` | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make tour` |
+| Module 02 | `src/service_monitoring/model.py` and `src/service_monitoring/application.py` | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` |
 | Module 03 | lifecycle rules in `src/service_monitoring/model.py` | [Capstone Review Checklist](capstone-review-checklist.md) | `make inspect` |
 | Module 04 | aggregate events and read-model flow | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make verify-report` |
-| Module 05 | `src/service_monitoring/runtime.py` and unit-of-work surfaces | [Capstone Walkthrough](capstone-walkthrough.md) | `make tour` |
+| Module 05 | `src/service_monitoring/runtime.py` and unit-of-work surfaces | [Capstone Walkthrough](capstone-walkthrough.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` |
 | Module 06 | `src/service_monitoring/repository.py` | [Capstone File Guide](capstone-file-guide.md) | `make verify-report` |
 | Module 07 | runtime coordination and tests | [Capstone Proof Guide](capstone-proof-guide.md) | `make verify-report` |
 | Module 08 | `tests/` and saved proof bundles | [Capstone Proof Guide](capstone-proof-guide.md) | `make confirm` |

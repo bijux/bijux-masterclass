@@ -37,7 +37,7 @@ evidence in the capstone.
 ## Route selection rules
 
 - choose `make inspect` when the main question is "what state or story should a learner see"
-- choose `make tour` when the question is about sequence, walkthrough readability, or ownership across steps
+- choose `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` when the question is about sequence, walkthrough readability, or ownership across steps
 - choose `make verify-report` when the question crosses tests and learner-facing state at the same time
 - choose `make confirm` when a narrow claim has already been located and you need the strongest local bar
 - choose `make proof` when you are reviewing the whole learner-facing evidence route, not only one behavior
@@ -61,8 +61,8 @@ evidence in the capstone.
 | --- | --- | --- |
 | value semantics, lifecycle rules, or aggregate ownership | `tests/test_policy_lifecycle.py` | `make inspect` |
 | replaceable evaluation behavior | `tests/test_policy_evaluation.py` | `make verify-report` |
-| runtime orchestration versus domain ownership | `tests/test_runtime.py` and `application.py` | `make tour` or `make verify-report` |
-| public learner-facing behavior | `tests/test_application.py` and `tests/test_demo.py` | `make inspect` or `make tour` |
+| runtime orchestration versus domain ownership | `tests/test_runtime.py` and `application.py` | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` or `make verify-report` |
+| public learner-facing behavior | `tests/test_application.py` and `tests/test_demo.py` | `make inspect` or `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` |
 | full-system trust and saved executable evidence | saved verification bundle plus `PROOF_GUIDE.md` | `make confirm` or `make proof` |
 
 ## Smallest honest proof by question

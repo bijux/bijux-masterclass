@@ -106,10 +106,10 @@ From the capstone directory:
 make confirm
 ```
 
-Run the scenario walkthrough from the capstone directory:
+Run the first published walkthrough route from the repository root:
 
 ```bash
-make demo
+make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough
 ```
 
 Use [Capstone Map](capstone-map.md) when you want the best next page for architecture,
