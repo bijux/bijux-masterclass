@@ -68,11 +68,26 @@ them.
 - Follow the repair module and re-read its overview before diving into one chapter.
 - Use the atlas during code review when “this feels wrong” is still too vague.
 
+## First repair move by failure family
+
+| If the failure looks like... | First repair move | First capstone surface |
+| --- | --- | --- |
+| a semantic contract is fuzzy | reopen the earliest module that defines the object role or lifecycle | `model.py` and the lifecycle-oriented tests |
+| collaboration or runtime pressure is swallowing ownership | reopen the matching systems module before changing code | `ARCHITECTURE.md`, `runtime.py`, or `repository.py` |
+| trust, public surface, or operations feel performative | reopen the matching trust module before asking for stronger proof | `TEST_GUIDE.md`, `PACKAGE_GUIDE.md`, or `PROOF_GUIDE.md` |
+
+## When two smells seem true at once
+
+- start with the earlier repair module, because later failures often inherit earlier ownership mistakes
+- prefer the smell that changes who is authoritative over the smell that only changes tooling or visibility
+- use the capstone surface named by the repair module to decide which smell is actually driving the damage
+
 ## Good signs after the repair
 
 - You can name the owner of the rule that used to be scattered.
 - You can explain which boundary is authoritative and which are derived.
 - You can add or remove behavior with smaller blast radius than before.
+- You can point to one proof surface that would fail first if the anti-pattern returned.
 
 An atlas like this keeps the course honest. It proves the book is not just teaching
 clean examples; it is also teaching how to recognize and repair the clumsy code people
