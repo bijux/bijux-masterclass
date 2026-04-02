@@ -34,7 +34,7 @@ code inspects, wraps, validates, or registers other code and objects.
 - [Start Here](guides/start-here.md)
 - [Course Guide](guides/course-guide.md)
 - [Learning Contract](guides/learning-contract.md)
-- [Runtime Power Ladder](runtime-power-ladder.md)
+- [Runtime Power Ladder](reference/runtime-power-ladder.md)
 
 ## What the course is organized around
 
@@ -56,7 +56,7 @@ mechanisms visible in one place. Use [Capstone Map](guides/capstone-map.md) and
 
 ### Review judgment
 
-Use [Review Checklist](review-checklist.md), [Practice Map](guides/practice-map.md), and
+Use [Review Checklist](reference/review-checklist.md), [Practice Map](guides/practice-map.md), and
 [Capstone Proof Checklist](guides/capstone-proof-checklist.md) to keep the material pedagogic
 instead of ornamental.
 

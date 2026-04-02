@@ -22,12 +22,13 @@ nav:
       - Orientation: module-00.md
       - Capstone Guide: guides/capstone.md
   - Course Reference:
+      - Reference Home: reference/index.md
       - Command Guide: guides/command-guide.md
-      - Runtime Power Ladder: runtime-power-ladder.md
+      - Runtime Power Ladder: reference/runtime-power-ladder.md
       - Module Dependency Map: guides/module-dependency-map.md
       - Practice Map: guides/practice-map.md
-      - Runtime Glossary: runtime-glossary.md
-      - Review Checklist: review-checklist.md
+      - Runtime Glossary: reference/runtime-glossary.md
+      - Review Checklist: reference/review-checklist.md
   - Capstone Reference:
       - Capstone Map: guides/capstone-map.md
       - Capstone File Guide: guides/capstone-file-guide.md
