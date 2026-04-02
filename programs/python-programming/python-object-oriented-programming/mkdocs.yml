@@ -27,6 +27,7 @@ nav:
       - Mid-Course Map: module-00-orientation/mid-course-map.md
       - Mastery Map: module-00-orientation/mastery-map.md
   - Guides:
+      - Design Question Map: guides/design-question-map.md
       - Module Promise Map: guides/module-promise-map.md
       - Module Checkpoints: guides/module-checkpoints.md
       - Pressure Routes: guides/pressure-routes.md

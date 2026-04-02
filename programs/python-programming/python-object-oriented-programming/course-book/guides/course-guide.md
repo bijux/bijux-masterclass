@@ -79,6 +79,7 @@ Modules 08 to 10 ask whether the model can be trusted:
 
 ## Support Pages To Keep Open
 
+- [Design Question Map](design-question-map.md) when the design question is clearer than the module name
 - [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
 - [Module Dependency Map](module-dependency-map.md) when the reading order needs justification
