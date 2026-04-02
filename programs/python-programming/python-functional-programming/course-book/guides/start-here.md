@@ -42,14 +42,15 @@ effects into explicit contracts.
 ## Best Reading Route
 
 1. Read [Course Home](../index.md) for the course promise and module arc.
-2. Read [Course Guide](course-guide.md) for the module sequence and page roles.
-3. Read [Foundations Reading Plan](foundations-reading-plan.md) if you want a paced route through Modules 01 to 03.
-4. Read [FuncPipe RAG Primer](funcpipe-rag-primer.md) if the capstone domain is unfamiliar.
-5. Read [Outcomes and Proof Map](outcomes-and-proof-map.md) if you want the course contract stated explicitly.
-6. Read [Learning Contract](learning-contract.md) before you start Module 01.
-7. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
-8. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
-9. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+2. Read [Functional Programming Course Map](../module-00-orientation/course-map.md) for the full route before you pick a reading pace.
+3. Read [Course Guide](course-guide.md) for the module sequence and page roles.
+4. Read [Foundations Reading Plan](foundations-reading-plan.md) if you want a paced route through Modules 01 to 03.
+5. Read [FuncPipe RAG Primer](funcpipe-rag-primer.md) if the capstone domain is unfamiliar.
+6. Read [Outcomes and Proof Map](outcomes-and-proof-map.md) if you want the course contract stated explicitly.
+7. Read [Learning Contract](learning-contract.md) before you start Module 01.
+8. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
+9. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
+10. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
 
 ## Use The Arcs Deliberately
 
