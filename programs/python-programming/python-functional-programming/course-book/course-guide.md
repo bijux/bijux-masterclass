@@ -74,5 +74,6 @@ keep the capstone in view, the later modules should feel like consequences of ea
 boundary decisions instead of unrelated advanced techniques.
 
 Use [Module Dependency Map](module-dependency-map.md) when you need to understand why the
-sequence is shaped this way, and use [Practice Map](practice-map.md) to keep each module
-tied to code and verification.
+sequence is shaped this way, use [Practice Map](practice-map.md) to keep each module tied
+to code and verification, and use [Proof Matrix](proof-matrix.md) when you need the
+shortest route from a design claim to capstone evidence.
