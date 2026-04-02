@@ -31,6 +31,7 @@ nav:
       - Program Outline: module-00.md
   - Course Reference:
       - Module Dependency Map: module-dependency-map.md
+      - Boundary Map: boundary-map.md
       - Workflow Glossary: workflow-glossary.md
       - Practice Map: practice-map.md
   - Capstone Route:
