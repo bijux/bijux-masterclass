@@ -62,6 +62,23 @@ coordination third, and proof surfaces last.
 - Open `repository.py` when you need to inspect persistence or rollback intent.
 - Open `read_models.py` and `projections.py` when you need to confirm which views are derived.
 
+## Best starting point by change
+
+| If the proposed change is about... | Start here | Keep this neighbor open too |
+| --- | --- | --- |
+| a new learner-facing use case | `application.py` | `model.py` |
+| a lifecycle or invariant rule | `model.py` | `tests/test_policy_lifecycle.py` |
+| a new evaluation behavior | `policies.py` | `model.py` |
+| runtime coordination or adapters | `runtime.py` | `application.py` |
+| persistence or rollback semantics | `repository.py` | `runtime.py` |
+| a new read concern or summary view | `read_models.py` or `projections.py` | emitted events and runtime flow |
+
+## Where not to start
+
+- do not start in `runtime.py` when the question is about who may accept a domain change
+- do not start in `read_models.py` when the question is about authoritative state
+- do not start in `tests/` before you can say which package is supposed to own the behavior
+
 ## What this guide prevents
 
 - starting in infrastructure and mistaking it for the domain core
