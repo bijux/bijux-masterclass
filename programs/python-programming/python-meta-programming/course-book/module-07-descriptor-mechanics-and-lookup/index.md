@@ -30,10 +30,10 @@ flowchart LR
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Core 31: Full Protocol: `__get__`, `__set__`, `__delete__`, `__set_name__`](#core31)
-3. [Core 32: Data vs Non-Data Descriptors – The Precedence Rule That Makes Everything Work](#core32)
-4. [Core 33: How Functions Become Bound Methods (The Hidden Descriptor)](#core33)
-5. [Core 34: First Reusable Descriptors: String(), Positive(), Email(), etc.](#core34)
+2. [Core 1: Full Protocol: `__get__`, `__set__`, `__delete__`, `__set_name__`](#core31)
+3. [Core 2: Data vs Non-Data Descriptors – The Precedence Rule That Makes Everything Work](#core32)
+4. [Core 3: How Functions Become Bound Methods (The Hidden Descriptor)](#core33)
+5. [Core 4: First Reusable Descriptors: String(), Positive(), Email(), etc.](#core34)
 6. [Synthesis: Descriptors as the Real Attribute Engine](#synthesis)
 7. [Capstone: Quantity – Didactic Unit-Aware Length Descriptor](#capstone)
 8. [Power Ladder Checkpoint](#power-checkpoint)
@@ -100,7 +100,7 @@ The capstone should make one point concrete here: descriptors are the real attri
 ---
 
 <a id="core31"></a>
-## Core 31: Full Protocol: `__get__`, `__set__`, `__delete__`, `__set_name__`
+## Core 1: Full Protocol: `__get__`, `__set__`, `__delete__`, `__set_name__`
 
 ### Canonical Definition
 
@@ -205,7 +205,7 @@ Implement `TrackedDesc` that logs every `__get__`, `__set__`, and `__delete__` w
 ---
 
 <a id="core32"></a>
-## Core 32: Data vs Non-Data Descriptors – The Precedence Rule That Makes Everything Work
+## Core 2: Data vs Non-Data Descriptors – The Precedence Rule That Makes Everything Work
 
 ### Canonical Definition
 
@@ -305,7 +305,7 @@ Implement a `LoggedProperty` that behaves like `@property` but logs every access
 ---
 
 <a id="core33"></a>
-## Core 33: How Functions Become Bound Methods (The Hidden Descriptor)
+## Core 3: How Functions Become Bound Methods (The Hidden Descriptor)
 
 ### Canonical Definition
 
@@ -361,7 +361,7 @@ Write a `@classbound` decorator that turns an instance method into a class metho
 ---
 
 <a id="core34"></a>
-## Core 34: First Reusable Descriptors: String(), Positive(), Email(), etc.
+## Core 4: First Reusable Descriptors: String(), Positive(), Email(), etc.
 
 ### Canonical Definition
 
@@ -498,10 +498,10 @@ Implement `NonEmptyString` (rejects empty/blank after strip) and `Choices(option
 
 Cores 31–34 move us from “descriptors exist” (Module 1, Module 6) to a usable, mental model–level mastery of the protocol:
 
-- **Core 31 (full protocol)** makes the mechanics explicit and ranks the methods by real-world frequency.
-- **Core 32 (data vs non-data)** ties the protocol back into attribute lookup: data descriptors win over instance dictionaries; non-data descriptors can be shadowed. This explains why properties with setters behave differently from plain `@property`, and why methods are still override-friendly.
-- **Core 33 (bound methods)** reveals what happens when you write `obj.method(...)`: a hidden non-data descriptor call (`function.__get__`) produces a bound method object.
-- **Core 34 (reusable descriptors)** shows how to turn the protocol into reusable building blocks: `String`, `Positive`, `Email`, and a slotted variant that demonstrates external storage patterns.
+- **Core 1 (full protocol)** makes the mechanics explicit and ranks the methods by real-world frequency.
+- **Core 2 (data vs non-data)** ties the protocol back into attribute lookup: data descriptors win over instance dictionaries; non-data descriptors can be shadowed. This explains why properties with setters behave differently from plain `@property`, and why methods are still override-friendly.
+- **Core 3 (bound methods)** reveals what happens when you write `obj.method(...)`: a hidden non-data descriptor call (`function.__get__`) produces a bound method object.
+- **Core 4 (reusable descriptors)** shows how to turn the protocol into reusable building blocks: `String`, `Positive`, `Email`, and a slotted variant that demonstrates external storage patterns.
 
 Three boundaries matter going into Module 8:
 

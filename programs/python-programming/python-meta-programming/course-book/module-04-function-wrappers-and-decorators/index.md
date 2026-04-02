@@ -30,10 +30,10 @@ flowchart LR
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Core 16: Nested Functions → Functions That Return Functions](#core16)
-3. [Core 17: @decorator Syntax Is Just func = decorator(func)](#core17)
-4. [Core 18: First Real Decorators: @timer, @once, @deprecated](#core18)
-5. [Core 19: functools.wraps and Writing Your Own Identity-Preserving Wrapper](#core19)
+2. [Core 1: Nested Functions → Functions That Return Functions](#core16)
+3. [Core 2: @decorator Syntax Is Just func = decorator(func)](#core17)
+4. [Core 3: First Real Decorators: @timer, @once, @deprecated](#core18)
+5. [Core 4: functools.wraps and Writing Your Own Identity-Preserving Wrapper](#core19)
 6. [Synthesis: Controlled Transformation of First-Class Functions](#synthesis)
 7. [Capstone: @cache - Didactic Memoization from Scratch](#capstone)
 8. [Power Ladder Checkpoint](#power-checkpoint)
@@ -130,7 +130,7 @@ graph TD
 ---
 
 <a id="core16"></a>
-## Core 16: Nested Functions → Functions That Return Functions
+## Core 1: Nested Functions → Functions That Return Functions
 
 ### Canonical Definition
 
@@ -191,7 +191,7 @@ print(multiply(4, 1))  # Call 2 to multiply\n4
 # These first examples deliberately omit functools.wraps so you can see the raw
 # “outer defines inner, then return inner” pattern. In real code you almost
 # always combine this structure with functools.wraps to preserve the original
-# function’s name, docstring, and signature (developed fully in Core 19).
+# function’s name, docstring, and signature (developed fully in Core 4).
 ```
 
 ### Advanced Notes and Pitfalls
@@ -212,7 +212,7 @@ Implement `log_calls(func)` nesting a wrapper that logs args/kwargs pre-call (fo
 ---
 
 <a id="core17"></a>
-## Core 17: @decorator Syntax Is Just func = decorator(func)
+## Core 2: @decorator Syntax Is Just func = decorator(func)
 
 ### Canonical Definition
 
@@ -342,7 +342,7 @@ Apply stacked `@uppercase @add_exclaim` to a function returning lowercase; verif
 ---
 
 <a id="core18"></a>
-## Core 18: First Real Decorators: @timer, @once, @deprecated
+## Core 3: First Real Decorators: @timer, @once, @deprecated
 
 ### Canonical Definition
 
@@ -350,7 +350,7 @@ Practical decorators transform via domain-specific logic: `@timer` measures exec
 
 ### Deep Dive Explanation
 
-These exemplars illustrate decorators' utility: timing for profiling, once for lazy init, deprecation for API evolution—each exploiting `*args, **kwargs` forwarding and closure-based state. They build on Core 16 nesting, using Module 2 `callable` implicitly via delegation. Historically, `@timer` echoes profiling tools (cProfile), `@once` singleton-style initialization patterns, `@deprecated` maintenance best practices. We chose exactly these three because they match real production concerns:
+These exemplars illustrate decorators' utility: timing for profiling, once for lazy init, deprecation for API evolution—each exploiting `*args, **kwargs` forwarding and closure-based state. They build on Core 1 nesting, using Module 2 `callable` implicitly via delegation. Historically, `@timer` echoes profiling tools (cProfile), `@once` singleton-style initialization patterns, `@deprecated` maintenance best practices. We chose exactly these three because they match real production concerns:
 
 - `@timer` – measuring execution time of hot paths using `time.perf_counter`.
 - `@once` – one-time initialization with cached state on the wrapper (e.g. `_once_result`).
@@ -434,7 +434,7 @@ print(old_api(3))  # /path:1: DeprecationWarning: old_api is deprecated; use alt
 # Trace: warn at caller level; stack shows user frame; delegates unchanged.
 ```
 
-Notice that `@timer`, `@once`, and `@deprecated` now all use `functools.wraps` on their inner wrapper to keep the original function’s name, docstring, and signature intact. In the earlier “bare” examples in Core 16 we skipped this on purpose so you could see the core wrapping pattern; Core 19 will dig into `functools.wraps` and identity preservation in depth.
+Notice that `@timer`, `@once`, and `@deprecated` now all use `functools.wraps` on their inner wrapper to keep the original function’s name, docstring, and signature intact. In the earlier “bare” examples in Core 1 we skipped this on purpose so you could see the core wrapping pattern; Core 4 will dig into `functools.wraps` and identity preservation in depth.
 
 ### Advanced Notes and Pitfalls
 
@@ -455,11 +455,11 @@ Implement `@retry(times=3)`: wraps, catches Exception, retries up to times (expo
 ---
 
 <a id="core19"></a>
-## Core 19: functools.wraps and Writing Your Own Identity-Preserving Wrapper
+## Core 4: functools.wraps and Writing Your Own Identity-Preserving Wrapper
 
 ### Canonical Definition
 
-`functools.wraps(wrapped, assigned=WRAPPER_ASSIGNMENTS, updated=WRAPPER_UPDATES)` is a decorator factory yielding a wrapper that copies attributes from `wrapped` (e.g., `__name__`, `__doc__`, `__module__`) to preserve identity for introspection (Module 1). `WRAPPER_ASSIGNMENTS` = `('__module__', '__name__', '__qualname__', '__doc__', '__annotations__')`; `WRAPPER_UPDATES` = `('__dict__', '__wrapped__')`. Custom wrappers replicate via `setattr(wrapper, attr, getattr(wrapped, attr, None))`. This is the formal tool that makes the forward references in Core 16 and Core 18 concrete.
+`functools.wraps(wrapped, assigned=WRAPPER_ASSIGNMENTS, updated=WRAPPER_UPDATES)` is a decorator factory yielding a wrapper that copies attributes from `wrapped` (e.g., `__name__`, `__doc__`, `__module__`) to preserve identity for introspection (Module 1). `WRAPPER_ASSIGNMENTS` = `('__module__', '__name__', '__qualname__', '__doc__', '__annotations__')`; `WRAPPER_UPDATES` = `('__dict__', '__wrapped__')`. Custom wrappers replicate via `setattr(wrapper, attr, getattr(wrapped, attr, None))`. This is the formal tool that makes the forward references in Core 1 and Core 3 concrete.
 
 ### Deep Dive Explanation
 
@@ -641,10 +641,10 @@ Refactor `@timer` with `@wraps`; verify `help(timer_func)` shows original doc/na
 
 Cores 16–19 take the static object model and introspection machinery from Modules 1–3 and make it *transforming*:
 
-- Core 16 (nested functions) shows how closures let you build wrappers that remember the original function and any decorator state.
-- Core 17 (`@decorator` syntax) turns explicit `f = d(f)` wiring into declarative annotations, stacking multiple transformations predictably.
-- Core 18 (e.g. `@timer`, `@once`, `@deprecated`) demonstrates real-world behaviours—timing, one-shot initialisation, deprecation signalling—implemented as disciplined wrappers.
-- Core 19 (`functools.wraps`) closes the loop with Module 3: it preserves names, docs, annotations, and the unwrapped function so that `inspect` still sees the *logical* callable, not just the outermost wrapper.
+- Core 1 (nested functions) shows how closures let you build wrappers that remember the original function and any decorator state.
+- Core 2 (`@decorator` syntax) turns explicit `f = d(f)` wiring into declarative annotations, stacking multiple transformations predictably.
+- Core 3 (e.g. `@timer`, `@once`, `@deprecated`) demonstrates real-world behaviours—timing, one-shot initialisation, deprecation signalling—implemented as disciplined wrappers.
+- Core 4 (`functools.wraps`) closes the loop with Module 3: it preserves names, docs, annotations, and the unwrapped function so that `inspect` still sees the *logical* callable, not just the outermost wrapper.
 
 The pattern is now clear: Module 1 gave you first-class callables; Module 2 taught you how to inspect and classify them; Module 3 gave you structured views (`Signature`, provenance, frames); Module 4 uses all of that to build decorators that change *behaviour* while keeping identities and introspection surfaces honest. The capstone `@cache` decorator then acts as a didactic stress test: it is useful but intentionally non-production, forcing you to confront the semantic and concurrency pitfalls that appear the moment a decorator stops being “just logging” and starts caching or controlling side effects.
 
@@ -758,7 +758,7 @@ def _make_unhashable_key(args, kwargs):
 
 ### Deep Dive Explanation
 
-`@cache` operationalises memoization: factory parameterises size (0 disables, None unlimited), decorator wraps with `@wraps` for metadata, state via instance attrs for debuggability (e.g., inspect `wrapper._cache`). Key hashes args/kwargs exactly as `functools.lru_cache` does in its canonical form. `cache_clear` exposed as method. Ties to Module 1 `__call__` (delegation), Core 16 closure (state via attrs), Core 18 logic (miss/hit). Pedagogically, trace fib: recursive calls hit cache, reducing tree. For production, replace list with OrderedDict (O(1) move_to_end) and use `functools.lru_cache`.
+`@cache` operationalises memoization: factory parameterises size (0 disables, None unlimited), decorator wraps with `@wraps` for metadata, state via instance attrs for debuggability (e.g., inspect `wrapper._cache`). Key hashes args/kwargs exactly as `functools.lru_cache` does in its canonical form. `cache_clear` exposed as method. Ties to Module 1 `__call__` (delegation), Core 1 closure (state via attrs), Core 3 logic (miss/hit). Pedagogically, trace fib: recursive calls hit cache, reducing tree. For production, replace list with OrderedDict (O(1) move_to_end) and use `functools.lru_cache`.
 
 ### Examples
 

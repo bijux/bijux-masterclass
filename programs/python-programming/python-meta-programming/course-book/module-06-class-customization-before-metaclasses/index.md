@@ -31,10 +31,10 @@ flowchart LR
 
 1. [Introduction](#introduction)
 2. [Visual: Tooling Power Ladder](#visual)
-3. [Core 26: Class Decorators — Transformation Post-Construction](#core26)
-4. [Core 27: `@dataclass` Dissected — What It Generates (and What It Doesn’t)](#core27)
-5. [Core 28: `@property` / `.setter` / `.deleter` — The Friendly Face of Descriptors](#core28)
-6. [Core 29: Runtime Type Hints as a Declarative Aid for Attribute Validation](#core29)
+3. [Core 1: Class Decorators — Transformation Post-Construction](#core26)
+4. [Core 2: `@dataclass` Dissected — What It Generates (and What It Doesn’t)](#core27)
+5. [Core 3: `@property` / `.setter` / `.deleter` — The Friendly Face of Descriptors](#core28)
+6. [Core 4: Runtime Type Hints as a Declarative Aid for Attribute Validation](#core29)
 7. [Capstone: `@frozen` — Surface Immutability + Optional Validation](#capstone)
 8. [Power Ladder Checkpoint](#power-checkpoint)
 9. [Glossary (Module 6)](#glossary)
@@ -92,7 +92,7 @@ Caption: Choose the lowest-power tool that solves the problem.
 ---
 
 <a id="core26"></a>
-## Core 26: Class Decorators — Transformation Post-Construction
+## Core 1: Class Decorators — Transformation Post-Construction
 
 ### Definition
 
@@ -214,7 +214,7 @@ Implement `@log_attributes` that wraps `__setattr__`:
 
 ---
 
-## Core 27: `@dataclass` Dissected — What It Generates (and What It Doesn’t) { #core27 }
+## Core 2: `@dataclass` Dissected — What It Generates (and What It Doesn’t) { #core27 }
 
 ### What `@dataclass` does
 
@@ -356,7 +356,7 @@ Write `@small_dataclass` that:
 ---
 
 <a id="core28"></a>
-## Core 28: `@property` / `.setter` / `.deleter` — The Friendly Face of Descriptors
+## Core 3: `@property` / `.setter` / `.deleter` — The Friendly Face of Descriptors
 
 ### Correct semantics (precise)
 
@@ -527,7 +527,7 @@ Implement a minimal cached-property-like descriptor:
 
 ---
 
-## Core 29: Runtime Type Hints as a Declarative Aid for Attribute Validation { #core29 }
+## Core 4: Runtime Type Hints as a Declarative Aid for Attribute Validation { #core29 }
 
 ### Key point
 

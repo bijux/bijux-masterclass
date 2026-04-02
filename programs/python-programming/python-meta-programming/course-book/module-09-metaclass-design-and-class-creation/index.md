@@ -32,10 +32,10 @@ flowchart LR
 1. [Introduction](#introduction)
 2. [Visual: Tooling Power Ladder](#visual-ladder)
 3. [Visual: Class Creation Pipeline](#visual-pipeline)
-4. [Core 41: `type(name, bases, namespace)` — Manual Class Creation](#core41)
-5. [Core 42: `class X(metaclass=MyMeta)` — Resolution, Timing, Conflicts](#core42)
-6. [Core 43: Metaclass `__new__` vs `__init__`](#core43)
-7. [Core 44: `__prepare__` — Declaration-Time Enforcement](#core44)
+4. [Core 1: `type(name, bases, namespace)` — Manual Class Creation](#core41)
+5. [Core 2: `class X(metaclass=MyMeta)` — Resolution, Timing, Conflicts](#core42)
+6. [Core 3: Metaclass `__new__` vs `__init__`](#core43)
+7. [Core 4: `__prepare__` — Declaration-Time Enforcement](#core44)
 8. [Capstone: `PluginMeta` — Automatic Plugin Registration](#capstone)
 9. [Power Ladder Checkpoint](#power-checkpoint)
 10. [Glossary (Module 9)](#glossary)
@@ -142,7 +142,7 @@ Caption: The entire pipeline runs before any instance of `C` can exist.
 
 ---
 
-## Core 41: `type(name, bases, namespace)` — Manual Class Creation { #core41 }
+## Core 1: `type(name, bases, namespace)` — Manual Class Creation { #core41 }
 
 ### Canonical idea
 
@@ -204,7 +204,7 @@ Implement `dynamic_dataclass(fields: dict[str, type]) -> type` using only `type(
 ---
 
 <a id="core42"></a>
-## Core 42: `class X(metaclass=MyMeta)` — Resolution, Timing, Conflicts
+## Core 2: `class X(metaclass=MyMeta)` — Resolution, Timing, Conflicts
 
 ### Timing (no illusions)
 
@@ -293,7 +293,7 @@ print(type(OK) is MetaAB)  # True
 ---
 
 <a id="core43"></a>
-## Core 43: Metaclass `__new__` vs `__init__`
+## Core 3: Metaclass `__new__` vs `__init__`
 
 ### Visual: the split
 
@@ -352,7 +352,7 @@ Write `AutoReprMeta` that injects `__repr__` in `__new__` using `__annotations__
 ---
 
 <a id="core44"></a>
-## Core 44: `__prepare__` — Declaration-Time Enforcement
+## Core 4: `__prepare__` — Declaration-Time Enforcement
 
 ### Visual: why `__prepare__` is unique
 

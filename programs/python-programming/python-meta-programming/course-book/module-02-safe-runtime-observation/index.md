@@ -31,10 +31,10 @@ flowchart LR
 
 1. [Introduction](#introduction)
 2. [Visual: The Real Risk Boundary](#visual)
-3. [Core 6: `dir()`, `vars()`, `__dict__`, `__slots__` — Visible Names vs Stored State](#core6)
-4. [Core 7: `getattr`, `setattr`, `delattr`, `hasattr` — Dynamic Access Is Not Inspection](#core7)
-5. [Core 8: `type`, `isinstance`, `issubclass` — Exactness vs Polymorphism](#core8)
-6. [Core 9: `callable()` and the `__call__` Protocol — “May I Attempt a Call?”](#core9)
+3. [Core 1: `dir()`, `vars()`, `__dict__`, `__slots__` — Visible Names vs Stored State](#core6)
+4. [Core 2: `getattr`, `setattr`, `delattr`, `hasattr` — Dynamic Access Is Not Inspection](#core7)
+5. [Core 3: `type`, `isinstance`, `issubclass` — Exactness vs Polymorphism](#core8)
+6. [Core 4: `callable()` and the `__call__` Protocol — “May I Attempt a Call?”](#core9)
 7. [Synthesis: A Disciplined Workflow](#synthesis)
 8. [Capstone: `DebugMixin.debug_print()` — Debugging Without Accidental Execution](#capstone)
 9. [Glossary (Module 2)](#glossary)
@@ -62,10 +62,10 @@ So “introspection” here means two things:
 
 We keep to stable primitives:
 
-- **Core 6: Attribute enumeration** — `dir`, `vars`, `__dict__`, `__slots__`
-- **Core 7: Dynamic attribute access** — `getattr`, `setattr`, `delattr`, `hasattr`
-- **Core 8: Type and instance classification** — `type`, `isinstance`, `issubclass`
-- **Core 9: Callability detection** — `callable`, `__call__`
+- **Core 1: Attribute enumeration** — `dir`, `vars`, `__dict__`, `__slots__`
+- **Core 2: Dynamic attribute access** — `getattr`, `setattr`, `delattr`, `hasattr`
+- **Core 3: Type and instance classification** — `type`, `isinstance`, `issubclass`
+- **Core 4: Callability detection** — `callable`, `__call__`
 
 We defer full `inspect` to Module 3, with one deliberate preview: `inspect.getattr_static` (because it demonstrates the key safety boundary clearly).
 
@@ -98,7 +98,7 @@ The important takeaway: **“names” are usually cheaper than “values.”** E
 ---
 
 <a id="core6"></a>
-## Core 6: `dir()`, `vars()`, `__dict__`, `__slots__` — Visible Names vs Stored State
+## Core 1: `dir()`, `vars()`, `__dict__`, `__slots__` — Visible Names vs Stored State
 
 ### Canonical definition
 
@@ -245,7 +245,7 @@ Test on:
 ---
 
 <a id="core7"></a>
-## Core 7: `getattr`, `setattr`, `delattr`, `hasattr` — Dynamic Access Is Not Inspection
+## Core 2: `getattr`, `setattr`, `delattr`, `hasattr` — Dynamic Access Is Not Inspection
 
 ### Canonical definition
 
@@ -381,7 +381,7 @@ Make it *not* swallow other exceptions.
 ---
 
 <a id="core8"></a>
-## Core 8: `type`, `isinstance`, `issubclass` — Exactness vs Polymorphism
+## Core 3: `type`, `isinstance`, `issubclass` — Exactness vs Polymorphism
 
 ### Canonical definition
 
@@ -427,7 +427,7 @@ Write `ensure_iterable(x)` that:
 ---
 
 <a id="core9"></a>
-## Core 9: `callable()` and the `__call__` Protocol — “May I Attempt a Call?”
+## Core 4: `callable()` and the `__call__` Protocol — “May I Attempt a Call?”
 
 ### Canonical definition
 

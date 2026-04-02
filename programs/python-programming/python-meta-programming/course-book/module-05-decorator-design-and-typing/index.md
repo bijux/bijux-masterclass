@@ -30,10 +30,10 @@ flowchart LR
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Core 21: Decorator Factories (Parameterized Decorators)](#core21)
-3. [Core 22: @retry, @timeout, @rate_limited – Patterns from httpx, Celery, etc.](#core22)
-4. [Core 23: Preserving and Using Annotations at Runtime (typing.get_type_hints inside Decorators)](#core23)
-5. [Core 24: How @lru_cache is Really Implemented Under the Hood](#core24)
+2. [Core 1: Decorator Factories (Parameterized Decorators)](#core21)
+3. [Core 2: @retry, @timeout, @rate_limited – Patterns from httpx, Celery, etc.](#core22)
+4. [Core 3: Preserving and Using Annotations at Runtime (typing.get_type_hints inside Decorators)](#core23)
+5. [Core 4: How @lru_cache is Really Implemented Under the Hood](#core24)
 6. [Synthesis: Resilient and Typed Decorators on a Single-Threaded Core](#synthesis)
 7. [Capstone: @validated - Partial Runtime Type Contract Checker](#capstone)
 8. [Glossary (Module 5)](#glossary)
@@ -78,7 +78,7 @@ Risk boundary for this module:
 ---
 
 <a id="core21"></a>
-## Core 21: Decorator Factories (Parameterized Decorators)
+## Core 1: Decorator Factories (Parameterized Decorators)
 
 ### Canonical Definition
 
@@ -259,7 +259,7 @@ Implement `repeat(times)` factory: returns decorator repeating func `times` time
 ---
 
 <a id="core22"></a>
-## Core 22: @retry, @timeout, @rate_limited – Patterns from httpx, Celery, etc.
+## Core 2: @retry, @timeout, @rate_limited – Patterns from httpx, Celery, etc.
 
 ### Canonical Definition
 
@@ -272,7 +272,7 @@ All three decorators in this core are intentionally **single-threaded and synchr
 
 ### Deep Dive Explanation
 
-These patterns operationalise reliability in distributed systems: retry for transient errors (httpx's `Retry`), timeout for blocking calls (Celery's tasks), rate limiting for API compliance (e.g., windowed buckets). They build on Core 18's logic with factories (Core 21) for tuning and `functools.wraps` for introspection. Historically, such utilities proliferated post-2010 with async/microservices, emphasising backoff to avoid thundering herds. Why these? They exemplify stateful wrappers (e.g., retry counters in closure) and external dependencies (time/signal). Pedagogically, trace `@retry`: wrapper catches exceptions, sleeps exponentially, delegates—extend with jitter for realism.
+These patterns operationalise reliability in distributed systems: retry for transient errors (httpx's `Retry`), timeout for blocking calls (Celery's tasks), rate limiting for API compliance (e.g., windowed buckets). They build on Core 18's logic with factories (Core 1) for tuning and `functools.wraps` for introspection. Historically, such utilities proliferated post-2010 with async/microservices, emphasising backoff to avoid thundering herds. Why these? They exemplify stateful wrappers (e.g., retry counters in closure) and external dependencies (time/signal). Pedagogically, trace `@retry`: wrapper catches exceptions, sleeps exponentially, delegates—extend with jitter for realism.
 
 As with the entire volume, **assume a single-threaded, synchronous environment for all examples in this core**. In real systems, production-grade versions of these decorators must add locking and/or async-aware primitives before sharing state (counters, windows, caches) across threads or tasks; that work is deferred explicitly to Volume II.
 
@@ -407,7 +407,7 @@ Enhance `@retry` with jitter and logging; implement `@circuit_breaker(failure_th
 ---
 
 <a id="core23"></a>
-## Core 23: Preserving and Using Annotations at Runtime (typing.get_type_hints inside Decorators)
+## Core 3: Preserving and Using Annotations at Runtime (typing.get_type_hints inside Decorators)
 
 ### Canonical Definition
 
@@ -479,7 +479,7 @@ graph TD
 
 ### Deep Dive Explanation
 
-Annotations enable self-documenting contracts, but runtime access requires preservation to survive wrapping. `get_type_hints` evaluates strings/forwards (PEP 563 legacy) and integrates with `inspect.signature` for bound values. Historically, PEP 484 (2014) introduced hints, with runtime support via `typing` (3.5+). Factories (Core 21) can leverage hints for dynamic behavior, tying to Module 3's signatures. Why runtime? Enables generic validators without code-gen.  
+Annotations enable self-documenting contracts, but runtime access requires preservation to survive wrapping. `get_type_hints` evaluates strings/forwards (PEP 563 legacy) and integrates with `inspect.signature` for bound values. Historically, PEP 484 (2014) introduced hints, with runtime support via `typing` (3.5+). Factories (Core 1) can leverage hints for dynamic behavior, tying to Module 3's signatures. Why runtime? Enables generic validators without code-gen.  
 Pitfall: Forward refs need `__future__.annotations`; use `evaluate=False` for raw. Pedagogically, trace: wraps copies annotations; get_type_hints resolves; check via `_is_instance` in wrapper (handles Union/Any simply).
 
 **Caution on cost and intent.** Calling `typing.get_type_hints` and performing runtime checks on every call carries non-trivial overhead. The patterns in this core are intended for boundaries where that cost is acceptable (validation layers, debugging, or teaching), not as a blanket replacement for static type checking. In production you typically rely on tools like `mypy` or Pyright for most type enforcement, reserving runtime checks for narrow, security- or correctness-critical interfaces.
@@ -575,7 +575,7 @@ except NotImplementedError as e:
 - `get_type_hints` resolves Union/Optional; parameterised generics (e.g. `list[int]`) cause `_is_instance` to raise `NotImplementedError`. `Annotated[...]` is effectively treated as its base type here because we call `get_type_hints()` without `include_extras=True`.
 - Pitfall: Decorators mutating `__annotations__` desync—rely on wraps.
 - Pitfall: Forward refs (e.g., 'str') need globals; pass `globals=globals()` to get_type_hints.
-- Extension: Combine with Core 22 retry for validation-retry loops.
+- Extension: Combine with Core 2 retry for validation-retry loops.
 
 ### Exercise
 
@@ -586,7 +586,7 @@ Extend `@validate_args` to check return: capture result, validate against hints[
 ---
 
 <a id="core24"></a>
-## Core 24: How @lru_cache is Really Implemented Under the Hood
+## Core 4: How @lru_cache is Really Implemented Under the Hood
 
 ### Canonical Definition
 
@@ -668,10 +668,10 @@ Reimplement naive LRU from Core 20 using OrderedDict.move_to_end for O(1); compa
 
 Cores 21–24 take the basic decorator machinery from Module 4 and push it toward real-world concerns:
 
-- **Core 21 (decorator factories)** shows how to parameterise decorators cleanly: configuration is captured once at definition time, and the resulting wrapper stays simple.
-- **Core 22 (retry/timeout/rate-limit)** demonstrates how much behaviour you can layer on top of a function—retries, cancellation by timeout, quota enforcement—using nothing more than closures, time functions, and disciplined `try`/`except`.
-- **Core 23 (annotation-aware wrappers)** connects decorators to the typing world: `get_type_hints` plus `inspect.signature` allow you to introspect both *what* was declared and *what* was actually passed, then enforce simple contracts at runtime.
-- **Core 24 (`lru_cache` behaviour)** anchors the didactic cache implementations in a production-grade reference: you see how key construction, eviction, and introspection (`cache_info`, `cache_clear`) fit together in a real API.
+- **Core 1 (decorator factories)** shows how to parameterise decorators cleanly: configuration is captured once at definition time, and the resulting wrapper stays simple.
+- **Core 2 (retry/timeout/rate-limit)** demonstrates how much behaviour you can layer on top of a function—retries, cancellation by timeout, quota enforcement—using nothing more than closures, time functions, and disciplined `try`/`except`.
+- **Core 3 (annotation-aware wrappers)** connects decorators to the typing world: `get_type_hints` plus `inspect.signature` allow you to introspect both *what* was declared and *what* was actually passed, then enforce simple contracts at runtime.
+- **Core 4 (`lru_cache` behaviour)** anchors the didactic cache implementations in a production-grade reference: you see how key construction, eviction, and introspection (`cache_info`, `cache_clear`) fit together in a real API.
 
 Two themes recur:
 
@@ -775,9 +775,9 @@ greet("World")  # Hello, World
 
 ### Deep Dive Explanation
 
-`@validated` enforces basic contracts: factory tunes raise_on_error (default True), decorator preserves annotations via wraps, caches hints/sig for efficiency, wrapper binds args, recurses on `Union`/`|` via `get_origin`/`args`, checks via `_is_instance` (plain classes only). Return validated post-call. Ties to Core 23 hints and Module 3 binding; _is_instance handles `Union`/`|` (PEP 604), Optional, Any (passes always), raises for generics/Annotated. Historically, echoes typeguard's runtime checks but function-focused. Pedagogically, trace mismatch: bind applies defaults, _is_instance fails → TypeError (raise_on_error=True) or warn (function may still fail). Extend with Annotated parsing (e.g., inspect metadata for constraints). For production, integrate validators like pydantic.Validator; compose with `@retry` for resilient parsing.
+`@validated` enforces basic contracts: factory tunes raise_on_error (default True), decorator preserves annotations via wraps, caches hints/sig for efficiency, wrapper binds args, recurses on `Union`/`|` via `get_origin`/`args`, checks via `_is_instance` (plain classes only). Return validated post-call. Ties to Core 3 hints and Module 3 binding; _is_instance handles `Union`/`|` (PEP 604), Optional, Any (passes always), raises for generics/Annotated. Historically, echoes typeguard's runtime checks but function-focused. Pedagogically, trace mismatch: bind applies defaults, _is_instance fails → TypeError (raise_on_error=True) or warn (function may still fail). Extend with Annotated parsing (e.g., inspect metadata for constraints). For production, integrate validators like pydantic.Validator; compose with `@retry` for resilient parsing.
 
-As with Core 23, treat `@validated` as a **surgical tool**, not a global policy. It is best used at well-defined boundaries (e.g. public API surfaces, plugin entry points) where the extra runtime cost and partial nature of the checks are acceptable and clearly documented. The heavy lifting for type correctness should still come from static analysis.
+As with Core 3, treat `@validated` as a **surgical tool**, not a global policy. It is best used at well-defined boundaries (e.g. public API surfaces, plugin entry points) where the extra runtime cost and partial nature of the checks are acceptable and clearly documented. The heavy lifting for type correctness should still come from static analysis.
 
 ### Examples
 

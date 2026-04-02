@@ -30,10 +30,10 @@ flowchart LR
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Core 11: `inspect.signature()` — Contracts, Kinds, and Binding](#core11)
-3. [Core 12: `getsource`, `getfile`, `getmodule` — Provenance Is Best-Effort](#core12)
-4. [Core 13: `getmembers` vs `getattr_static` — Dynamic Values vs Safe Structure](#core13)
-5. [Core 14: Frames and Stack Introspection — Diagnostics Only](#core14)
+2. [Core 1: `inspect.signature()` — Contracts, Kinds, and Binding](#core11)
+3. [Core 2: `getsource`, `getfile`, `getmodule` — Provenance Is Best-Effort](#core12)
+4. [Core 3: `getmembers` vs `getattr_static` — Dynamic Values vs Safe Structure](#core13)
+5. [Core 4: Frames and Stack Introspection — Diagnostics Only](#core14)
 6. [Capstone: A Safe, Signature-Guided `__repr__` Mixin](#capstone)
 7. [Glossary (Module 3)](#glossary)
 
@@ -48,10 +48,10 @@ Modules 1–2 gave you raw building blocks: `__code__`, `dir()`, `getattr`, clas
 
 We cover four practical areas:
 
-* **Core 11: Signatures + argument binding** — `inspect.signature`, `Parameter`, `BoundArguments`.
-* **Core 12: Source + provenance** — `getsource`, `getfile`, `getmodule` (best-effort).
-* **Core 13: Member enumeration** — `getmembers` (dynamic) vs `getattr_static` (safe/static).
-* **Core 14: Stack + frames** — `currentframe`, `stack` (diagnostics only).
+* **Core 1: Signatures + argument binding** — `inspect.signature`, `Parameter`, `BoundArguments`.
+* **Core 2: Source + provenance** — `getsource`, `getfile`, `getmodule` (best-effort).
+* **Core 3: Member enumeration** — `getmembers` (dynamic) vs `getattr_static` (safe/static).
+* **Core 4: Stack + frames** — `currentframe`, `stack` (diagnostics only).
 
 Risk stance (non-negotiable):
 
@@ -66,7 +66,7 @@ Capstone: a safe `__repr__` mixin that orders fields using signatures and reads 
 ---
 
 <a id="core11"></a>
-## Core 11: `inspect.signature()` — Contracts, Kinds, and Binding
+## Core 1: `inspect.signature()` — Contracts, Kinds, and Binding
 
 ### Canonical definition
 
@@ -231,7 +231,7 @@ Write `@validate_call` that:
 ---
 
 <a id="core12"></a>
-## Core 12: `getsource`, `getfile`, `getmodule` — Provenance Is Best-Effort
+## Core 2: `getsource`, `getfile`, `getmodule` — Provenance Is Best-Effort
 
 ### Canonical definition
 
@@ -318,7 +318,7 @@ Implement `where_defined(obj)` returning `(module_name, file_or_none, first_line
 ---
 
 <a id="core13"></a>
-## Core 13: `getmembers` vs `getattr_static` — Dynamic Values vs Safe Structure
+## Core 3: `getmembers` vs `getattr_static` — Dynamic Values vs Safe Structure
 
 ### Canonical definition
 
@@ -421,7 +421,7 @@ Implement `list_properties(cls)` that returns property names and their docstring
 ---
 
 <a id="core14"></a>
-## Core 14: Frames and Stack Introspection — Diagnostics Only
+## Core 4: Frames and Stack Introspection — Diagnostics Only
 
 ### Canonical definition
 

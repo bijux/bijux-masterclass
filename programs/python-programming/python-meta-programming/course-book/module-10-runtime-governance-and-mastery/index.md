@@ -32,10 +32,10 @@ flowchart LR
 1. [Introduction](#introduction)
 2. [Visual: Responsibility Ladder](#visual-ladder)
 3. [Visual: Non-Negotiables (Red Lines)](#visual-redlines)
-4. [Core 46: Dynamic Execution — `compile` / `eval` / `exec` Without Lying to Yourself](#core46)
-5. [Core 47: ABCs, Protocols, `__subclasshook__` — Interfaces With Controlled Semantics](#core47)
-6. [Core 48: Responsible Metaprogramming — Tracebacks, Performance, Globals, Monkey-Patching](#core48)
-7. [Core 49: Import Hooks & AST Transforms — Tooling-Grade, Not App-Grade](#core49)
+4. [Core 1: Dynamic Execution — `compile` / `eval` / `exec` Without Lying to Yourself](#core46)
+5. [Core 2: ABCs, Protocols, `__subclasshook__` — Interfaces With Controlled Semantics](#core47)
+6. [Core 3: Responsible Metaprogramming — Tracebacks, Performance, Globals, Monkey-Patching](#core48)
+7. [Core 4: Import Hooks & AST Transforms — Tooling-Grade, Not App-Grade](#core49)
 8. [Capstone: Plugin Architectures — Decorator vs Metaclass vs Import Hook](#capstone)
 9. [Power Ladder Checkpoint](#power-checkpoint)
 10. [Glossary (Module 10)](#glossary)
@@ -128,7 +128,7 @@ graph TD
 ---
 
 <a id="core46"></a>
-## Core 46: Dynamic Execution — `compile` / `eval` / `exec` Without Lying to Yourself
+## Core 1: Dynamic Execution — `compile` / `eval` / `exec` Without Lying to Yourself
 
 ### The only honest rule
 
@@ -246,7 +246,7 @@ Dynamic execution checklist
 ---
 
 <a id="core47"></a>
-## Core 47: ABCs, Protocols, `__subclasshook__` — Interfaces With Controlled Semantics
+## Core 2: ABCs, Protocols, `__subclasshook__` — Interfaces With Controlled Semantics
 
 ### Visual: “Interface” options and what they guarantee
 
@@ -350,7 +350,7 @@ Interface checklist
 ---
 
 <a id="core48"></a>
-## Core 48: Responsible Metaprogramming — Tracebacks, Performance, Globals, Monkey-Patching
+## Core 3: Responsible Metaprogramming — Tracebacks, Performance, Globals, Monkey-Patching
 
 ### Visual: Guardrails for “magic”
 
@@ -503,7 +503,7 @@ m.append(2)  # normal (reverted)
 ---
 
 <a id="core49"></a>
-## Core 49: Import Hooks & AST Transforms — Tooling-Grade, Not App-Grade
+## Core 4: Import Hooks & AST Transforms — Tooling-Grade, Not App-Grade
 
 ### Visual: Why this is “outer darkness” for apps
 

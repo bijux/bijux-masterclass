@@ -30,10 +30,10 @@ flowchart LR
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Core 36: Lazy / Computed / Cached Descriptors with Invalidation](#core36)
-3. [Core 37: External Storage Descriptors](#core37)
-4. [Core 38: Descriptor Composition and Meta-Descriptors](#core38)
-5. [Core 39: Runtime Validation & Coercion Using Type Hints](#core39)
+2. [Core 1: Lazy / Computed / Cached Descriptors with Invalidation](#core36)
+3. [Core 2: External Storage Descriptors](#core37)
+4. [Core 3: Descriptor Composition and Meta-Descriptors](#core38)
+5. [Core 4: Runtime Validation & Coercion Using Type Hints](#core39)
 6. [Synthesis: Framework-Grade Descriptors in Context](#synthesis)
 7. [Capstone: Mini-Relational Demo – Educational ORM Only](#capstone)
 8. [Glossary (Module 8)](#glossary)
@@ -69,7 +69,7 @@ that boundary, not blur it.
 ---
 
 <a id="core36"></a>
-## Core 36: Lazy / Computed / Cached Descriptors with Invalidation
+## Core 1: Lazy / Computed / Cached Descriptors with Invalidation
 
 ### Canonical Definition
 
@@ -147,7 +147,7 @@ print(p.word_count)      # recomputes → 1
 ---
 
 <a id="core37"></a>
-## Core 37: External Storage Descriptors
+## Core 2: External Storage Descriptors
 
 ### Canonical Definition
 
@@ -240,7 +240,7 @@ class ExternalDesc:
         self.store.set(key, json.dumps(value))
         obj.__dict__[f"_{self.name}"] = value
 
-    # For parity with Core 36, an optional explicit invalidation hook:
+    # For parity with Core 1, an optional explicit invalidation hook:
     def invalidate(self, obj):
         """Clear the per-instance cache for this external field only."""
         obj.__dict__.pop(f"_{self.name}", None)
@@ -249,7 +249,7 @@ class ExternalDesc:
 ### Advanced Notes and Pitfalls
 
 - This example uses a process-local `ExternalStore` keyed by primary keys and field names. For **per-instance** external storage keyed by object identity—especially with `__slots__`—revisit Module 7’s `SlottedPositive` example, which uses `WeakKeyDictionary` to avoid memory leaks when objects are garbage-collected.
-- As with Core 36, hiding remote calls behind attribute access can be surprising. In real systems you should pair such descriptors with logging/metrics and clear documentation so that `obj.field` does not silently perform expensive I/O.
+- As with Core 1, hiding remote calls behind attribute access can be surprising. In real systems you should pair such descriptors with logging/metrics and clear documentation so that `obj.field` does not silently perform expensive I/O.
 
 ### Use / Avoid
 
@@ -263,7 +263,7 @@ class ExternalDesc:
 ---
 
 <a id="core38"></a>
-## Core 38: Descriptor Composition and Meta-Descriptors
+## Core 3: Descriptor Composition and Meta-Descriptors
 
 ### Canonical Definition
 
@@ -310,7 +310,7 @@ def validated(validator: Callable, inner):
 ---
 
 <a id="core39"></a>
-## Core 39: Runtime Validation & Coercion Using Type Hints
+## Core 4: Runtime Validation & Coercion Using Type Hints
 
 ### Helper validators
 
@@ -402,15 +402,15 @@ Module 7 established the descriptor protocol as the “engine” behind attribut
 
 The four cores and the capstone line up as follows:
 
-- **Core 36 (lazy / computed / cached descriptors)** – shows how to push work to first access, keep results per instance in `__dict__`, and expose an explicit invalidation hook. This is the descriptor analogue of memoization, and the building block behind things like cached properties and lazy ORM relationships.
+- **Core 1 (lazy / computed / cached descriptors)** – shows how to push work to first access, keep results per instance in `__dict__`, and expose an explicit invalidation hook. This is the descriptor analogue of memoization, and the building block behind things like cached properties and lazy ORM relationships.
 
-- **Core 37 (external storage descriptors)** – makes the backing store explicit: Redis/DB/config files (simulated with an in-memory dict) become the source of truth, while the descriptor provides a transparent proxy with read-through caching. This is the bridge from “descriptors as local validation” to “descriptors as distributed state.” See the Core 37 flow diagram above for the exact request/response path.
+- **Core 2 (external storage descriptors)** – makes the backing store explicit: Redis/DB/config files (simulated with an in-memory dict) become the source of truth, while the descriptor provides a transparent proxy with read-through caching. This is the bridge from “descriptors as local validation” to “descriptors as distributed state.” See the Core 2 flow diagram above for the exact request/response path.
 
-- **Core 38 (descriptor composition / meta-descriptors)** – replaces a proliferation of subclasses with composable layers. By wrapping one descriptor in another (`FieldMeta`, `validated(...)`), you can stack validation, logging, caching, or encryption without rewriting the underlying storage or hint logic.
+- **Core 3 (descriptor composition / meta-descriptors)** – replaces a proliferation of subclasses with composable layers. By wrapping one descriptor in another (`FieldMeta`, `validated(...)`), you can stack validation, logging, caching, or encryption without rewriting the underlying storage or hint logic.
 
-- **Core 39 (hint-driven validation and coercion)** – closes the loop with Module 5: the descriptor now reads type hints via `get_type_hints`, honors `Annotated[...]` metadata, and runs coercion + validators on every write. This is the core of “Pydantic-style” models, but expressed in terms of the raw descriptor protocol.
+- **Core 4 (hint-driven validation and coercion)** – closes the loop with Module 5: the descriptor now reads type hints via `get_type_hints`, honors `Annotated[...]` metadata, and runs coercion + validators on every write. This is the core of “Pydantic-style” models, but expressed in terms of the raw descriptor protocol.
 
-The **Capstone** (“mini relational demo”) pulls all of this together and instantiates the Core 37 flow diagram in a concrete, relational setting:
+The **Capstone** (“mini relational demo”) pulls all of this together and instantiates the Core 2 flow diagram in a concrete, relational setting:
 
 - `BaseField` centralizes the mechanics: defaults, lazy computation, external vs local storage, type-hint-based coercion, validators, and a minimal `invalidate`.
 - Concrete fields (`String`, `Integer`, `ForeignKey`, `OneToMany`) specialize behaviour without reimplementing the protocol, mirroring how real frameworks define “field types.”
