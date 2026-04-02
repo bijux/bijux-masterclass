@@ -52,6 +52,14 @@ From this directory:
 make confirm
 ```
 
+## Read it in this order
+
+- `ARCHITECTURE.md` for ownership boundaries
+- `TOUR.md` for a guided file-by-file walk
+- `PROOF_GUIDE.md` for the repeatable verification route
+- `src/incident_plugins/` for the implementation
+- `tests/` for the proof surface
+
 ## Why this capstone exists
 
 The course book explains individual mechanisms in isolation. This capstone makes the
@@ -67,3 +75,4 @@ all interact here, so the implementation has to stay honest about:
 
 - `src/incident_plugins/` contains the framework and built-in plugins.
 - `tests/` contains executable verification for descriptors, registration, and runtime manifests.
+- `ARCHITECTURE.md`, `TOUR.md`, and `PROOF_GUIDE.md` turn the capstone into a learner-facing proof surface.

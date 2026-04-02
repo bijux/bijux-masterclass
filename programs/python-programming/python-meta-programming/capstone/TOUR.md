@@ -1,0 +1,52 @@
+# Capstone Tour
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  readme["README"]
+  architecture["ARCHITECTURE"]
+  source["Source files"]
+  proof["PROOF_GUIDE"]
+  tests["Tests"]
+
+  readme --> architecture --> source --> proof --> tests
+```
+
+```mermaid
+flowchart TD
+  start["Start the tour"] --> framework["Open framework.py first"]
+  framework --> fields["Then fields.py"]
+  fields --> actions["Then actions.py"]
+  actions --> plugins["Then plugins.py"]
+  plugins --> tests["Finish with proof tests"]
+```
+<!-- page-maps:end -->
+
+Use this tour when you want a guided walk instead of jumping straight into the source.
+
+## Stop 1: `framework.py`
+
+Read `PluginMeta`, then `PluginBase.manifest()`, then `build_manifest()`. This is the
+best place to understand what happens at class-definition time and what stays visible
+from the public surface.
+
+## Stop 2: `fields.py`
+
+Read `Field`, then one concrete specialization such as `StringField`. This is where the
+course proves that attribute-level invariants can remain explicit.
+
+## Stop 3: `actions.py`
+
+Read `action()`. Focus on what the wrapper preserves and what extra runtime state it adds.
+
+## Stop 4: `plugins.py`
+
+Read `ConsoleNotifier`, `WebhookNotifier`, and `PagerNotifier`. These make the abstractions
+concrete enough to review like ordinary production code.
+
+## Stop 5: tests
+
+Read tests last, not first. The tests are strongest when you already know which claim
+each source file is trying to own.
