@@ -76,6 +76,22 @@ made the system understandable in the first place.
 3. Finish with runbooks, capstone review, and the final mastery checkpoint.
 4. Treat the closing chapters as a full-system audit, not just another feature pass.
 
+## Operational audit route
+
+1. Start with `capstone/INSPECTION_GUIDE.md` and `capstone/TARGET_GUIDE.md`.
+2. Compare those learner-facing routes with `capstone/PROOF_GUIDE.md`.
+3. Only then inspect the implementation surfaces that make the operational claim plausible.
+
+This route keeps the final module honest: operational hardening should improve confidence,
+observability, and trust boundaries without forcing the reader to abandon the ownership
+model built earlier in the course.
+
+## Audit questions to keep explicit
+
+- Which performance change preserves semantics, and which one silently changes freshness, ordering, or authority?
+- Which signal should clarify collaboration rather than merely increase log volume?
+- Which trust boundary needs a stronger review artifact, command route, or runbook before the change is safe?
+
 ## Common failure modes
 
 - optimizing by folklore before measuring real hot paths
@@ -95,6 +111,14 @@ made the system understandable in the first place.
 The monitoring capstone is intentionally small, but it still exposes the same questions
 as a larger system: where performance matters, which signals operators need, how payloads
 cross trust boundaries, and what it means to evolve the design without losing clarity.
+
+## Honest completion signal
+
+You are ready to finish the course when you can review one operational change and say:
+
+- what semantic contract must not change
+- which review artifact or proof route should reveal drift first
+- which hardening move belongs at the boundary instead of inside the domain model
 
 ## Closing criteria
 
