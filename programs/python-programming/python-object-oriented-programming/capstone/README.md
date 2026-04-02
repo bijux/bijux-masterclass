@@ -63,6 +63,12 @@ Or from the repository root:
 make PROGRAM=python-programming/python-object-oriented-programming test
 ```
 
+Proof and review route:
+
+- [PROOF_GUIDE.md](PROOF_GUIDE.md)
+- [ARCHITECTURE.md](ARCHITECTURE.md)
+- [TOUR.md](TOUR.md)
+
 ## How to read this code
 
 Start in this order:
