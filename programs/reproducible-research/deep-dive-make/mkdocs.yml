@@ -60,7 +60,7 @@ nav:
       - "04 — Semantics Under Pressure": module-04-cli-precedence-includes-and-rule-edge-cases/index.md
       - "05 — Hardening": module-05-portability-jobserver-hermeticity-and-failure-modes/index.md
       - "06 — Generated Files and Pipeline Boundaries": module-06-generated-files-multi-output-rules-and-pipeline-boundaries/index.md
-      - "07 — Reusable Build Architecture": module-07.md
-      - "08 — Release Engineering": module-08.md
-      - "09 — Performance and Incident Response": module-09.md
-      - "10 — Mastery": module-10.md
+      - "07 — Reusable Build Architecture": module-07-reusable-build-architecture-and-build-apis/index.md
+      - "08 — Release Engineering": module-08-release-engineering-and-artifact-publication-contracts/index.md
+      - "09 — Performance and Incident Response": module-09-performance-observability-and-build-incident-response/index.md
+      - "10 — Mastery": module-10-migration-governance-and-make-boundaries/index.md

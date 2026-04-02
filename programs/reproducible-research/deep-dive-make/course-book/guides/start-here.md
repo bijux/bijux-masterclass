@@ -68,7 +68,7 @@ Choose this if you already maintain a Make-based repository.
 1. Skim [`module-00.md`](../module-00-orientation/index.md)
 2. Read [`module-04.md`](../module-04-cli-precedence-includes-and-rule-edge-cases/index.md)
 3. Read [`module-05.md`](../module-05-portability-jobserver-hermeticity-and-failure-modes/index.md)
-4. Read [`module-09.md`](module-09.md)
+4. Read [`module-09.md`](../module-09-performance-observability-and-build-incident-response/index.md)
 5. Use [`capstone-map.md`](capstone-map.md) to inspect the reference build selectively
 
 ### Route 3: Build-System Stewardship
@@ -76,9 +76,9 @@ Choose this if you already maintain a Make-based repository.
 Choose this if your job includes release, CI, or long-term build governance.
 
 1. Read [`module-03.md`](../module-03-production-practice-determinism-debugging-ci-and-selftests/index.md)
-2. Read [`module-07.md`](module-07.md)
-3. Read [`module-08.md`](module-08.md)
-4. Read [`module-10.md`](module-10.md)
+2. Read [`module-07.md`](../module-07-reusable-build-architecture-and-build-apis/index.md)
+3. Read [`module-08.md`](../module-08-release-engineering-and-artifact-publication-contracts/index.md)
+4. Read [`module-10.md`](../module-10-migration-governance-and-make-boundaries/index.md)
 5. Finish with the capstone review route
 
 [Back to top](#top)
