@@ -105,3 +105,11 @@ all interact here, so the implementation has to stay honest about:
 - `make verify-report` writes the executable verification report bundle with pytest output and public-surface evidence.
 - `make confirm` runs the strongest local executable confirmation route.
 - `make proof` builds the published learner-facing review route.
+
+## Definition of done
+
+- `make inspect` writes the learner-facing inspection bundle with manifest and registry evidence.
+- `make tour` writes the guided walkthrough bundle for file-by-file review.
+- `make verify-report` captures pytest output together with the public runtime surface.
+- `make confirm` completes the strongest local executable confirmation route.
+- `make proof` completes the published learner review route end to end.

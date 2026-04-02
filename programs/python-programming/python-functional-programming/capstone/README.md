@@ -131,3 +131,11 @@ Use this repository as a running mirror of the course:
 | Module 10: Refactoring and sustainment | `README.md`, `ARCHITECTURE.md`, `PROOF_GUIDE.md`, `pyproject.toml` | `make verify-report`, `make proof`, `make confirm` | `make confirm` |
 
 Use this table when a course page tells you to "inspect the capstone" and you want the shortest stable path from concept to evidence.
+
+## Definition of done
+
+- `make inspect` produces the learner-facing inspection bundle with the expected review files.
+- `make verify-report` writes executable proof and review artifacts into one saved bundle.
+- `make tour` produces the walkthrough bundle for capstone-first reading.
+- `make confirm` completes the strongest built-in confirmation route.
+- `make proof` completes the published learner route end to end.

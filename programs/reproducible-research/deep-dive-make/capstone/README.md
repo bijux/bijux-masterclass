@@ -111,6 +111,14 @@ When you need a reviewable proof bundle instead of console output, run
 `make selftest-report`. That bundle now includes `SELFTEST_GUIDE.md` so the evidence
 files can be read in a deliberate order.
 
+## Definition of done
+
+- `make inspect` produces the bounded learner-facing inspection bundle.
+- `make selftest` proves convergence, serial/parallel equivalence, and the negative hidden-input case.
+- `make verify-report` writes the durable review bundle for the current proof run.
+- `make proof` builds the larger published review route.
+- `make confirm` completes the strongest built-in stewardship route.
+
 [Back to top](#top)
 
 ---

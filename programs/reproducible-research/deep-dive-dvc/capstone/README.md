@@ -197,6 +197,14 @@ It combines:
 That means `confirm` is not just a smoke test. It is the shortest path to asking whether
 the repository can still defend and restore its state honestly.
 
+## Definition of done
+
+- `make verify` confirms the promoted artifact contract for the current repository state.
+- `make verify-report` writes the saved verification bundle under `artifacts/proof/reproducible-research/deep-dive-dvc/verify/`.
+- `make release-review`, `make experiment-review`, and `make recovery-review` each write the narrower audit bundle they promise.
+- `make confirm` completes the strongest built-in verification route, including recovery.
+- `make tour` produces the learner-facing proof bundle for repository review.
+
 ## How to review this repository
 
 When inspecting the capstone, ask:

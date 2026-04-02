@@ -431,6 +431,18 @@ To modify the published contract, increment the version directory (e.g., `v2`) a
 
 ---
 
+## Definition of done
+
+- `make walkthrough` produces the first-contact learner bundle.
+- `make selftest` proves the bounded determinism and repository-health checks documented in the guides.
+- `make verify-report` writes the durable publish-contract verification bundle.
+- `make tour` writes the larger learner-facing proof bundle.
+- `make confirm` completes the strongest built-in confirmation route.
+
+[Back to top](#top)
+
+---
+
 ## License
 
 MIT — see the repository root [LICENSE](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE). © 2025 Bijan Mousavi <bijan@bijux.io>.
