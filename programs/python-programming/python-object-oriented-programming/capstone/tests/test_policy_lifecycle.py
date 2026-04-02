@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 
@@ -39,6 +39,27 @@ def test_policy_emits_events_for_registration_activation_and_retirement() -> Non
     assert isinstance(events[1], RuleActivated)
     assert isinstance(events[2], RuleRetired)
     assert policy.collect_events() == []
+
+
+def test_policy_default_event_timestamps_are_timezone_aware_utc() -> None:
+    policy = MonitoringPolicy("policy-utc")
+    rule = ThresholdRule(
+        rule_id="latency-hot",
+        metric_name=MetricName("latency"),
+        threshold=0.92,
+        severity=Severity("critical"),
+    )
+
+    policy.add_rule(rule)
+    policy.activate_rule("latency-hot")
+    policy.retire_rule("latency-hot", "replaced by percentile-based alert")
+
+    events = policy.collect_events()
+
+    assert [type(event) for event in events] == [RuleRegistered, RuleActivated, RuleRetired]
+    for event in events:
+        assert event.occurred_at.tzinfo is timezone.utc
+        assert event.occurred_at.utcoffset() == timezone.utc.utcoffset(event.occurred_at)
 
 
 def test_policy_blocks_duplicate_active_metric_window_signatures() -> None:

@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from copy import deepcopy
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Iterable
 
@@ -108,6 +108,10 @@ class MonitoringPolicy:
         self._rules: dict[str, ManagedRule] = {}
         self._pending_events: list[object] = []
 
+    @staticmethod
+    def _default_occurred_at() -> datetime:
+        return datetime.now(timezone.utc)
+
     @property
     def rules(self) -> tuple[ManagedRule, ...]:
         return tuple(self._rules.values())
@@ -126,7 +130,7 @@ class MonitoringPolicy:
                 rule_id=rule.rule_id,
                 metric_name=str(rule.metric_name),
                 severity=str(rule.severity),
-                occurred_at=occurred_at or datetime.utcnow(),
+                occurred_at=occurred_at or self._default_occurred_at(),
             )
         )
 
@@ -141,7 +145,7 @@ class MonitoringPolicy:
                 rule_id=rule.rule_id,
                 metric_name=str(rule.metric_name),
                 severity=str(rule.severity),
-                occurred_at=occurred_at or datetime.utcnow(),
+                occurred_at=occurred_at or self._default_occurred_at(),
             )
         )
 
@@ -161,7 +165,7 @@ class MonitoringPolicy:
                 rule_id=rule.rule_id,
                 metric_name=str(rule.metric_name),
                 reason=reason.strip(),
-                occurred_at=occurred_at or datetime.utcnow(),
+                occurred_at=occurred_at or self._default_occurred_at(),
             )
         )
 
