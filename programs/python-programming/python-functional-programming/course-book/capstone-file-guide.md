@@ -25,6 +25,9 @@ flowchart LR
 This guide gives the capstone a human reading order. The goal is not to read every file
 alphabetically. The goal is to understand how the project is partitioned.
 
+Start with the local capstone [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/PACKAGE_GUIDE.md)
+when you want the repository itself to carry the same reading order.
+
 ## Recommended reading order
 
 1. `tests/`
@@ -42,6 +45,12 @@ alphabetically. The goal is to understand how the project is partitioned.
 - `pipelines/` and `policies/` hold assembly, orchestration choices, and explicit policies.
 - `domain/` and `boundaries/` hold capabilities, shells, and effect coordination seams.
 - `infra/` and `interop/` hold the concrete adapters and external-library bridges.
+
+## Best local companion
+
+Use the capstone's local [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/PACKAGE_GUIDE.md)
+when you are already in the repository and want the same reading route without switching
+back to the course-book.
 
 ## What this order prevents
 
