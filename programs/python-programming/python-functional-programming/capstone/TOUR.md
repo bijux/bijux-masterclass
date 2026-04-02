@@ -31,6 +31,9 @@ bundle that captures the code and evidence surfaces the course keeps referring t
 package layout, test proof, and the main areas where purity, effects, and async
 coordination live.
 
+The tour is not just a convenience export. It is the shortest path from course prose to
+inspectable evidence when you want a human-readable review route.
+
 ## What the tour produces
 
 - `pytest.txt`: the current test run for the capstone
@@ -66,3 +69,9 @@ make PROGRAM=python-programming/python-functional-programming capstone-tour
 
 That order mirrors the course: map first, proof second, then architectural hotspots, and
 finally the wider codebase shape.
+
+## Questions to carry through the tour
+
+- Which packages stay descriptive instead of effectful?
+- Which focus areas correspond to the module you just studied?
+- Which test surfaces prove the current abstraction instead of only exercising it?

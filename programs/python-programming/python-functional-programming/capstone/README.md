@@ -82,6 +82,7 @@ make tour
 
 Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
 effects, or orchestration should live.
+Use `TOUR.md` when you want the shortest human-readable route through the proof bundle.
 
 ## Course connection
 
