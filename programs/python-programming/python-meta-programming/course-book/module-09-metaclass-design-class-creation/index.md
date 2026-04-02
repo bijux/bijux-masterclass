@@ -99,6 +99,20 @@ Keep the capstone open while reading this module and inspect:
 
 The capstone should make one point concrete here: metaclasses are justified when they enforce class-creation invariants that lower-power tools cannot own cleanly.
 
+### Use this module when
+
+- a design is proposing class-creation hooks, registries, or declaration-time enforcement
+- you need to decide whether a metaclass is truly required or only looks powerful
+- import-time behavior and class-definition timing are starting to affect maintainability
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- what must happen before the class exists for a metaclass to be justified
+- why a class decorator, descriptor, or explicit helper might still be the better design
+- how the capstone registry stays deterministic, inspectable, and resettable in tests
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---

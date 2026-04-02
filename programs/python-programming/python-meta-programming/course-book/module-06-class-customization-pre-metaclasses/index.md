@@ -73,6 +73,26 @@ Design stance:
 > Prefer class decorators, properties, descriptors, or explicit helpers over custom `__setattr__`.
 > Reach for higher-power hooks only when the lower one cannot own the invariant cleanly.
 
+### Use this module when
+
+- you are about to reach for a descriptor or metaclass but have not exhausted class-level tools yet
+- a class needs generated behavior, validation, or representation without deeper runtime hooks
+- you need a clearer line between post-creation customization and class-creation control
+
+### Capstone anchors
+
+- inspect constructor and plugin-class behavior before focusing on `PluginMeta`
+- compare class-level customization with the separate descriptor and wrapper boundaries in the capstone
+- use the capstone to name what can stay explicit after class creation
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- when a class decorator, property, or helper is enough
+- why some invariants still belong below descriptor or metaclass level
+- how the capstone keeps class customization, field ownership, and registration as separate concerns
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---

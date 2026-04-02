@@ -94,6 +94,20 @@ Keep the capstone open while reading this module and inspect:
 
 The capstone should make one point concrete here: descriptors are the real attribute engine, not an exotic edge feature.
 
+### Use this module when
+
+- attribute access still feels mysterious instead of mechanical
+- you need to explain why one attribute wins over instance state while another can be shadowed
+- a validation design may belong to a descriptor but you are not yet sure
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- what makes an object a descriptor and when Python invokes it
+- why data and non-data descriptors have different precedence
+- how the capstone field system stores per-instance state without leaking behavior across instances
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---

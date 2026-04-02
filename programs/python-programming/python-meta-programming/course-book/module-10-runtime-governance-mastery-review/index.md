@@ -94,6 +94,20 @@ Keep the capstone open while reading this module and inspect:
 
 The capstone should make one final point concrete: metaprogramming is only defensible when the runtime stays observable.
 
+### Use this module when
+
+- the mechanics are clear but the approval standard is still fuzzy
+- a dynamic design needs explicit red lines around safety, debuggability, or reviewability
+- you need to turn mechanism knowledge into code-review judgment
+
+### Closing bar
+
+Before finishing the course, you should be able to explain:
+
+- which runtime powers belong only in tooling or exceptional cases
+- what makes a dynamic design reversible, observable, and reviewable
+- why the capstone remains defensible because its runtime facts stay visible from the public surface
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---

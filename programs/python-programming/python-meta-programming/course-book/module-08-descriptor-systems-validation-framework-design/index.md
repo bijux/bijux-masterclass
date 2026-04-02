@@ -63,6 +63,26 @@ The capstone makes that distinction useful. Its field descriptors remain focused
 and coercion, while runtime orchestration lives elsewhere. This module should help you see
 that boundary, not blur it.
 
+### Use this module when
+
+- a descriptor design is starting to accumulate caching, storage, or validation responsibilities
+- you need to judge when a field abstraction has crossed into framework design
+- you want concrete limits on what a course example should and should not pretend to prove
+
+### Capstone anchors
+
+- compare the capstone field layer with the richer descriptor patterns in this module
+- keep `fields.py` in view as the intentionally narrower design
+- use the capstone to spot which responsibilities were kept out of the descriptor layer on purpose
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- when a descriptor is still one attribute contract and when it has become architecture
+- how caching, external storage, or type-hint-driven validation widen the design surface
+- why the capstone field system stays narrower than an ORM or validation framework
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---
