@@ -2,7 +2,7 @@
 
 # ===== Basics =====
 .PHONY: install test build lint clean clean-all venv demo inspect verify-report tour proof confirm \
-        history-refresh history-clean history-freeze-code module-md freeze-codebase \
+        history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
 .DEFAULT_GOAL := install
@@ -136,6 +136,9 @@ FREEZE_OUT    ?= all-cores/funcpipe-rag-all-code.md
 
 history-refresh: ## Build local module tags and generated worktrees under _history
 	$(PYTHON) scripts/build_module_history.py --out-dir $(HISTORY_DIR)
+
+history-verify: ## Verify generated module worktrees against the tracked snapshot sources
+	$(PYTHON) scripts/build_module_history.py --out-dir $(HISTORY_DIR) --verify-only
 
 history-clean: ## Remove generated module history worktrees and metadata
 	@rm -rf "$(HISTORY_DIR)"; \

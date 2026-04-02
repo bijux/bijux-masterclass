@@ -60,6 +60,10 @@ lint: ## Run capstone linting and type checks
 history-refresh: ## Build local module tags and generated worktrees
 	@$(RUN_CAPSTONE) history-refresh
 
+.PHONY: history-verify
+history-verify: ## Verify generated module worktrees against their tracked snapshot sources
+	@$(RUN_CAPSTONE) history-verify
+
 .PHONY: history-clean
 history-clean: ## Remove generated module history worktrees
 	@$(RUN_CAPSTONE) history-clean
