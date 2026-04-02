@@ -25,10 +25,9 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-A ten-module program for learning **GNU Make as a declarative build-graph engine**—from
-first-contact basics to build-system mastery. The focus is not “Makefile tricks,” but
-**semantic discipline**: truthful dependency graphs, atomic outputs, parallel safety,
-deterministic results, and repeatable verification.
+A ten-module program for learning **GNU Make as a declarative build-graph engine**. The
+focus is not “Makefile tricks,” but **semantic discipline**: truthful dependency graphs,
+atomic outputs, parallel safety, deterministic results, and repeatable verification.
 
 The top-level course-book now has three stable surfaces:
 
@@ -105,6 +104,19 @@ Use these as the default learner routes:
 [Back to top](#top)
 
 ---
+## Course shape at a glance
+
+Use this snapshot when you want the fastest sense of how the arc is organized:
+
+- [Module 00](module-00-orientation/index.md) explains the study strategy, the support surfaces, and the capstone timing.
+- [Modules 01-03](module-01-foundations-build-graph-and-truth/index.md) build the core graph model: truth, `-j` safety, determinism, and CI-stable practice.
+- [Modules 04-06](module-04-cli-precedence-includes-and-rule-edge-cases/index.md) make the graph survivable under pressure: semantics, hardening, and generated-file boundaries.
+- [Modules 07-08](module-07-reusable-build-architecture-and-build-apis/index.md) scale the build into layered architecture and trustworthy release surfaces.
+- [Modules 09-10](module-09-performance-observability-and-build-incident-response/index.md) finish with observability, incident response, migration, and governance judgment.
+- [Guides](guides/index.md) hold learner routes and capstone entry.
+- [Reference](reference/index.md) holds the durable maps, glossaries, and review standards.
+
+---
 ## Support pages that matter first
 
 These pages exist so learners do not have to reconstruct the course shape from ten
@@ -134,16 +146,16 @@ You are expected to distrust claims that cannot be checked. Where possible, the 
 
 | Module | Title | What it gives you |
 |---:|---|---|
-| 01 | Foundations | The graph model, rebuild truth, and the first dependable Makefiles. |
-| 02 | Scaling | Parallel safety, discovery patterns, and structure for growth. |
-| 03 | Production Practice | Determinism, CI discipline, selftests, and forensics that explain rebuilds. |
-| 04 | Semantics Under Pressure | CLI semantics, precedence, includes, and rule edge cases you need in incidents. |
-| 05 | Hardening | Portability, jobserver correctness, modeled inputs, and failure isolation. |
-| 06 | Generated Files and Pipeline Boundaries | Correct generators, multi-output producers, manifests, and publication boundaries. |
-| 07 | Reusable Build Architecture | Layered includes, build APIs, macros, and repository-scale structure. |
-| 08 | Release Engineering | Packaging, artifact publication, install contracts, and release manifests. |
-| 09 | Performance and Incident Response | Measurement, observability, build triage, and operational runbooks. |
-| 10 | Mastery | Migration strategy, governance, anti-pattern recognition, and tool-boundary judgment. |
+| 01 | Foundations: The Build Graph and Truth | The graph model, rebuild truth, and the first dependable Makefiles. |
+| 02 | Scaling: Parallelism, Safety, and Large-Project Structure | Parallel safety, discovery patterns, and structure for growth. |
+| 03 | Production Practice: Determinism, Debugging, CI Contracts, Selftests, and Disciplined DSL | Determinism, CI discipline, selftests, and forensics that explain rebuilds. |
+| 04 | Make Semantics Under Pressure: CLI, Precedence, Includes, and Rule Edge-Cases | CLI semantics, precedence, includes, and rule edge cases you need in incidents. |
+| 05 | Hardening: Portability, Jobserver, Hermeticity, Performance, and Failure Modes | Portability, jobserver correctness, modeled inputs, and failure isolation. |
+| 06 | Generated Files, Multi-Output Rules, and Pipeline Boundaries | Correct generators, multi-output producers, manifests, and publication boundaries. |
+| 07 | Reusable Build Architecture, Layered Includes, and Build APIs | Layered includes, build APIs, macros, and repository-scale structure. |
+| 08 | Release Engineering, Packaging, and Artifact Publication Contracts | Packaging, artifact publication, install contracts, and release manifests. |
+| 09 | Performance, Observability, and Build Incident Response | Measurement, observability, build triage, and operational runbooks. |
+| 10 | Migration, Governance, and Knowing Make's Boundaries | Migration strategy, governance, anti-pattern recognition, and tool-boundary judgment. |
 
 Syllabus: [`module-00.md`](module-00-orientation/index.md)  
 [Back to top](#top)

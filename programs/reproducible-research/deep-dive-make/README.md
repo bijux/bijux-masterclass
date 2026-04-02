@@ -32,6 +32,15 @@ The course-book now has three stable surfaces:
 - `course-book/reference/` for durable review maps, glossaries, and standards
 - `course-book/module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
 
+Use the course in this order:
+
+1. `course-book/guides/start-here.md`
+2. `course-book/guides/index.md`
+3. `course-book/guides/course-guide.md`
+4. `course-book/module-00-orientation/index.md`
+5. Modules `01` to `10` in order
+6. `course-book/guides/readme-capstone.md` and `course-book/guides/capstone-map.md` once the local model is clear
+
 [Back to top](#top)
 
 ---
