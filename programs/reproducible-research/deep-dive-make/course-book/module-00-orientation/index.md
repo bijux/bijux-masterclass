@@ -142,10 +142,11 @@ Use this if you are learning Make from the ground up.
 
 Use this if you already own a Make-based repository.
 
-1. Module 04 for semantics under pressure
-2. Module 05 for hardening boundaries
-3. Module 09 for incident response
-4. Module 10 for review and migration decisions
+1. [`pressure-routes.md`](../guides/pressure-routes.md) for the repair-first route
+2. Module 04 for semantics under pressure
+3. Module 05 for hardening boundaries
+4. Module 09 for incident response
+5. Module 10 for review and migration decisions
 
 ### Build steward path
 
@@ -155,6 +156,7 @@ Use this if your primary concern is release, CI, and long-lived ownership.
 2. Module 07 for build architecture
 3. Module 08 for release contracts
 4. Module 10 for governance and boundaries
+5. [`module-promise-map.md`](../guides/module-promise-map.md) for title-to-deliverable review
 
 ---
 
@@ -211,10 +213,10 @@ Use these support pages when you reach each milestone:
 
 | Milestone | Best support pages |
 | --- | --- |
-| Build graph literacy | [`build-graph-glossary.md`](../reference/build-graph-glossary.md), [`practice-map.md`](../reference/practice-map.md), [`proof-matrix.md`](../guides/proof-matrix.md) |
-| Production discipline | [`command-guide.md`](../guides/command-guide.md), [`public-targets.md`](../reference/public-targets.md), [`incident-ladder.md`](../reference/incident-ladder.md) |
-| System design | [`capstone-map.md`](../guides/capstone-map.md), [`capstone-file-guide.md`](../guides/capstone-file-guide.md), [`capstone-walkthrough.md`](../guides/capstone-walkthrough.md) |
-| Operational judgment | [`completion-rubric.md`](../reference/completion-rubric.md), [`capstone-review-worksheet.md`](../guides/capstone-review-worksheet.md), [`capstone-extension-guide.md`](../guides/capstone-extension-guide.md) |
+| Build graph literacy | [`build-graph-glossary.md`](../reference/build-graph-glossary.md), [`practice-map.md`](../reference/practice-map.md), [`proof-matrix.md`](../guides/proof-matrix.md), [`module-checkpoints.md`](../guides/module-checkpoints.md) |
+| Production discipline | [`command-guide.md`](../guides/command-guide.md), [`public-targets.md`](../reference/public-targets.md), [`incident-ladder.md`](../reference/incident-ladder.md), [`proof-ladder.md`](../guides/proof-ladder.md) |
+| System design | [`capstone-map.md`](../guides/capstone-map.md), [`capstone-file-guide.md`](../guides/capstone-file-guide.md), [`capstone-walkthrough.md`](../guides/capstone-walkthrough.md), [`module-promise-map.md`](../guides/module-promise-map.md) |
+| Operational judgment | [`completion-rubric.md`](../reference/completion-rubric.md), [`capstone-review-worksheet.md`](../guides/capstone-review-worksheet.md), [`capstone-extension-guide.md`](../guides/capstone-extension-guide.md), [`topic-boundaries.md`](../reference/topic-boundaries.md) |
 
 ---
 

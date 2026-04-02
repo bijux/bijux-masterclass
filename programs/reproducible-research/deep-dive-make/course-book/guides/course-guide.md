@@ -39,10 +39,13 @@ This guide groups the course surfaces by the question you are trying to answer.
 Start with these pages in order:
 
 1. [`start-here.md`](start-here.md)
-2. [`platform-setup.md`](platform-setup.md)
-3. [`module-00.md`](../module-00-orientation/index.md)
-4. [`learning-contract.md`](learning-contract.md)
-5. [`module-dependency-map.md`](../reference/module-dependency-map.md)
+2. [`pressure-routes.md`](pressure-routes.md)
+3. [`platform-setup.md`](platform-setup.md)
+4. [`module-00.md`](../module-00-orientation/index.md)
+5. [`learning-contract.md`](learning-contract.md)
+6. [`module-promise-map.md`](module-promise-map.md)
+7. [`module-checkpoints.md`](module-checkpoints.md)
+8. [`module-dependency-map.md`](../reference/module-dependency-map.md)
 
 Then begin Module 01.
 
@@ -56,7 +59,10 @@ Use these pages when you already know the course but need a fast answer:
 
 * [`build-graph-glossary.md`](../reference/build-graph-glossary.md) for shared vocabulary
 * [`concept-index.md`](../reference/concept-index.md) for where an idea is taught
+* [`topic-boundaries.md`](../reference/topic-boundaries.md) for what the course centers and what it does not
+* [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) for common Make smells
 * [`command-guide.md`](command-guide.md) for root, program, and capstone surfaces
+* [`proof-ladder.md`](proof-ladder.md) for smallest-honest proof selection
 * [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
 * [`practice-map.md`](../reference/practice-map.md) for the right proof loop
 * [`public-targets.md`](../reference/public-targets.md) for stable command surfaces
@@ -88,6 +94,8 @@ Use these pages when you care about assessment, maintainability, or repository r
 
 * [`completion-rubric.md`](../reference/completion-rubric.md)
 * [`module-dependency-map.md`](../reference/module-dependency-map.md)
+* [`module-promise-map.md`](module-promise-map.md)
+* [`module-checkpoints.md`](module-checkpoints.md)
 * [`proof-matrix.md`](proof-matrix.md)
 * [`public-targets.md`](../reference/public-targets.md)
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
@@ -102,10 +110,9 @@ Use these pages when you care about assessment, maintainability, or repository r
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-make test
-make PROGRAM=reproducible-research/deep-dive-make capstone-tour
-gmake -C capstone help
+make PROGRAM=reproducible-research/deep-dive-make inspect
 ```
 
-Use `gmake` on macOS, where `/usr/bin/make` is not GNU Make 4.3+.
+Use `gmake` inside `capstone/` on macOS, where `/usr/bin/make` is not GNU Make 4.3+.
 
 [Back to top](#top)

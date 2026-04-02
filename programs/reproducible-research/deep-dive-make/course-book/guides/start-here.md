@@ -59,17 +59,19 @@ Choose this if Make still feels unfamiliar.
 1. Read [`module-00.md`](../module-00-orientation/index.md)
 2. Read [`module-01.md`](../module-01-foundations-build-graph-and-truth/index.md)
 3. Read [`module-02.md`](../module-02-parallel-safety-and-project-structure/index.md)
-4. Enter the capstone only after the local module exercises make sense
+4. Use [`module-checkpoints.md`](module-checkpoints.md) before moving on
+5. Enter the capstone only after the local module exercises make sense
 
 ### Route 2: Repair an Existing Build
 
 Choose this if you already maintain a Make-based repository.
 
-1. Skim [`module-00.md`](../module-00-orientation/index.md)
-2. Read [`module-04.md`](../module-04-cli-precedence-includes-and-rule-edge-cases/index.md)
-3. Read [`module-05.md`](../module-05-portability-jobserver-hermeticity-and-failure-modes/index.md)
-4. Read [`module-09.md`](../module-09-performance-observability-and-build-incident-response/index.md)
-5. Use [`capstone-map.md`](capstone-map.md) to inspect the reference build selectively
+1. Read [`pressure-routes.md`](pressure-routes.md)
+2. Skim [`module-00.md`](../module-00-orientation/index.md)
+3. Read [`module-04.md`](../module-04-cli-precedence-includes-and-rule-edge-cases/index.md)
+4. Read [`module-05.md`](../module-05-portability-jobserver-hermeticity-and-failure-modes/index.md)
+5. Read [`module-09.md`](../module-09-performance-observability-and-build-incident-response/index.md)
+6. Use [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) and [`capstone-map.md`](capstone-map.md) to inspect the reference build selectively
 
 ### Route 3: Build-System Stewardship
 
@@ -79,7 +81,8 @@ Choose this if your job includes release, CI, or long-term build governance.
 2. Read [`module-07.md`](../module-07-reusable-build-architecture-and-build-apis/index.md)
 3. Read [`module-08.md`](../module-08-release-engineering-and-artifact-publication-contracts/index.md)
 4. Read [`module-10.md`](../module-10-migration-governance-and-make-boundaries/index.md)
-5. Finish with the capstone review route
+5. Use [`module-promise-map.md`](module-promise-map.md) to keep the titles honest
+6. Finish with the capstone review route
 
 [Back to top](#top)
 
@@ -106,8 +109,8 @@ before using the capstone as your primary learning surface.
 From `programs/reproducible-research/deep-dive-make/`:
 
 ```sh
-make -C capstone help
-make -C capstone selftest
+make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-make inspect
 ```
 
 If you are on macOS, read [`platform-setup.md`](platform-setup.md) first and use `gmake`
@@ -117,5 +120,6 @@ From the course book:
 
 * use [`capstone-map.md`](capstone-map.md) when you want to cross-check a concept
 * use [`module-00.md`](../module-00-orientation/index.md) when you want the full course arc
+* use [`proof-ladder.md`](proof-ladder.md) when you are not sure how much proof is enough
 
 [Back to top](#top)
