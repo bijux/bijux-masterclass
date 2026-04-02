@@ -16,6 +16,17 @@ reference repository in `capstone/`.
 
 ---
 
+## At a Glance
+
+| What this course optimizes for | What this course refuses to optimize for |
+| --- | --- |
+| explicit state identity | vague claims that a pipeline is "tracked somehow" |
+| durable metrics, params, and publish evidence | outputs that only make sense to the original author |
+| recovery and promotion discipline | trust based on memory or directory names |
+| pedagogy that moves from state model to repository stewardship | dropping the learner into a full repository too early |
+
+---
+
 ## Program Arc
 
 ### Module 01 — Why Reproducibility Fails
@@ -92,6 +103,38 @@ should remain authoritative versus where another system should take over.
 
 ---
 
+## Study Paths
+
+### Full course path
+
+Use this if you are learning DVC from the ground up.
+
+1. Modules 01-02 for failure modes and state identity
+2. Modules 03-05 for environments, pipelines, params, and metrics
+3. Modules 06-09 for experiments, collaboration, recovery, and promotion
+4. Module 10 for review, migration, and governance
+
+### Working maintainer path
+
+Use this if you already operate a DVC repository.
+
+1. Module 04 for truthful pipeline behavior
+2. Module 07 for collaboration and CI contracts
+3. Module 08 for retention and recovery discipline
+4. Module 09 for promotion boundaries
+5. Module 10 for stewardship judgment
+
+### Reproducibility steward path
+
+Use this if your role is auditability, release, or long-lived system ownership.
+
+1. Module 05 for semantic state surfaces
+2. Module 08 for durability and incident survival
+3. Module 09 for publish contracts
+4. Module 10 for migration and governance
+
+---
+
 ## Recommended Reading Path
 
 1. Read Modules 01 to 10 in order.
@@ -120,6 +163,30 @@ to the exact repository files and proof command that demonstrate it.
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc test
 ```
+
+---
+
+## Milestones
+
+| Milestone | Modules | What you should be able to do |
+| --- | --- | --- |
+| State literacy | 01-02 | explain identity, state layers, and why paths are not enough |
+| Executable truth | 03-05 | model environments, truthful pipelines, params, and comparable metrics |
+| Controlled change | 06-07 | run experiments and collaboration flows without corrupting trust |
+| Long-lived trust | 08-10 | recover, promote, review, and govern state over time |
+
+---
+
+## Capstone Timing
+
+Enter the capstone at three deliberate moments:
+
+* after Module 02 to inspect state layers and identity boundaries
+* after Module 04 or 05 to inspect truthful pipeline and metric surfaces
+* after Modules 08-10 to review recovery, promotion, and stewardship choices
+
+If the capstone ever feels larger than the concept you are studying, return to the module
+and restore the smaller state model first.
 
 Use the capstone to keep answering one question: when a result is challenged months later,
 which exact state can the repository recover, compare, and prove?
