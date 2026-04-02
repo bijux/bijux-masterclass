@@ -29,6 +29,7 @@ theme:
     - content.code.copy
     - content.code.select
     - content.action.edit
+    - content.action.view
   palette:
     - scheme: default
       primary: indigo
@@ -36,6 +37,9 @@ theme:
 
 plugins:
   - search
+  - git-revision-date-localized:
+      enable_creation_date: false
+      fallback_to_build_date: true
 
 markdown_extensions:
   - admonition
@@ -51,7 +55,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_div_format
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
