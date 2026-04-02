@@ -63,11 +63,10 @@ Minimal fields:
 Produced by: `python -m capstone.trim_fastq`
 
 * `schema_version`
-* `input_fastq`
-* `output_fastq`
-* `reads_in`, `reads_out`
-* `bases_in`, `bases_out`
-* `filters` (counts for each filter reason)
+* `input`: `{path, reads, bases}`
+* `output`: `{path, reads, bases}`
+* `params`: trimming parameters used for the run
+* `clipping`: nested counts for adapter, quality, and poly-run clipping
 
 ### `dedup.json`
 
@@ -75,14 +74,17 @@ Produced by: `python -m capstone.dedup_fastq`
 
 * `schema_version`
 * `mode` (`dedup` or `copy`)
-* `reads_in`, `reads_out`
-* `unique_keys` (int)
+* `input`: `{path, reads, bases}`
+* `output`: `{path, reads, bases}`
+* `dedup_key`
+* `duplicates_dropped`
 
 ### `kmer.json`
 
 Produced by: `python -m capstone.kmer_profile`
 
 * `schema_version`
+* `input`
 * `k`
 * `signature_size`
 * `unique_kmers`
@@ -95,8 +97,11 @@ Produced by: `python -m capstone.kmer_profile`
 Produced by: `python -m capstone.screen_panel`
 
 * `schema_version`
+* `sample_kmer_json`
+* `panel_fasta`
 * `k`
 * `signature_size`
+* `score_type`
 * `scores` (sorted list of panel hits)
 
 ## Published API (`publish/v1/`)
@@ -106,6 +111,7 @@ Produced by: `python -m capstone.screen_panel`
 Produced by the checkpoint `discover_samples`.
 
 * `schema_version`
+* `allow_paired_end`
 * `raw_dir`, `glob`, `n_files`
 * `samples` mapping: `{sample: {mode: SE|PE, reads: {SE|R1|R2: path}}}`
 
@@ -114,7 +120,8 @@ Produced by the checkpoint `discover_samples`.
 Produced by: `python -m capstone.summarize`
 
 * `schema_version`
-* `samples`: `{sample: {...}}` (merged metrics from all upstream steps)
+* `units`: `{sample: {...}}` (merged metrics from all upstream steps)
+* each unit includes `raw_qc`, `trim`, `trimmed_qc`, `dedup`, `kmer`, `screen`, and `highlights`
 
 ### `report/index.html`
 
@@ -128,9 +135,10 @@ Produced by rule `provenance`.
 
 Records:
 
-* timestamps
-* Python/Snakemake versions
-* git commit (if available)
+* `timestamp_utc`
+* `python_version`, `python_executable`, `platform`
+* `snakemake_version`
+* `git_commit` (if available)
 * the fully materialized config
 
 ### `manifest.json`
@@ -138,4 +146,8 @@ Records:
 Produced by: `python -m capstone.manifest`
 
 * `schema_version`
-* `files`: mapping `relative_path -> {sha256, bytes}`
+* `base`: absolute directory used to relativize published paths
+* `files`: ordered list of `{path, sha256}` records
+
+Use `RESULTS_BOUNDARY_GUIDE.md` when the question is whether a surface belongs under
+`results/` as an internal contract or under `publish/v1/` as a downstream-facing one.

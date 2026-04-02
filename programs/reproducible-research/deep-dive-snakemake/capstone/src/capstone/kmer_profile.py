@@ -66,6 +66,7 @@ def main() -> None:
     top = counts.most_common(args.top)
 
     payload = {
+        "schema_version": 2,
         "input": str(in_fastq),
         "k": args.k,
         "signature_size": args.signature_size,

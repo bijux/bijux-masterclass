@@ -4,6 +4,14 @@ import argparse
 import json
 from pathlib import Path
 
+EXPECTED_PUBLISHED_PATHS = [
+    "discovered_samples.json",
+    "provenance.json",
+    "report/index.html",
+    "summary.json",
+    "summary.tsv",
+]
+
 
 def load_json(path: Path) -> object:
     with path.open("r", encoding="utf-8") as handle:
@@ -33,18 +41,38 @@ def main() -> int:
             raise ValueError(f"published artifact is empty: {path}")
 
     manifest = load_json(publish_dir / "manifest.json")
-    load_json(publish_dir / "provenance.json")
+    provenance = load_json(publish_dir / "provenance.json")
     discovered = load_json(publish_dir / "discovered_samples.json")
     summary = load_json(publish_dir / "summary.json")
 
     if int(manifest["schema_version"]) != 2:
         raise ValueError("manifest schema_version must be 2")
+    if int(provenance["schema_version"]) != 2:
+        raise ValueError("provenance schema_version must be 2")
+    if int(discovered["schema_version"]) != 2:
+        raise ValueError("discovered_samples.json schema_version must be 2")
+    if int(summary["schema_version"]) != 2:
+        raise ValueError("summary.json schema_version must be 2")
     if not manifest["files"]:
         raise ValueError("manifest must list published files")
     if not discovered["samples"]:
         raise ValueError("discovered_samples.json must list at least one sample")
     if not summary["units"]:
         raise ValueError("summary.json must list at least one unit")
+    if "timestamp_utc" not in provenance or "config" not in provenance:
+        raise ValueError("provenance.json must record timestamp_utc and config")
+
+    manifest_paths = [entry["path"] for entry in manifest["files"]]
+    if manifest_paths != EXPECTED_PUBLISHED_PATHS:
+        raise ValueError(f"manifest paths must equal {EXPECTED_PUBLISHED_PATHS}, got {manifest_paths}")
+
+    discovered_samples = sorted(discovered["samples"])
+    summary_units = sorted(summary["units"])
+    if discovered_samples != summary_units:
+        raise ValueError(
+            "summary.json units must match discovered_samples.json sample keys "
+            f"(got units={summary_units}, samples={discovered_samples})"
+        )
 
     report_html = (publish_dir / "report" / "index.html").read_text(encoding="utf-8")
     if "<html" not in report_html.lower():
@@ -65,14 +93,23 @@ def main() -> int:
                             "check": "manifest",
                             "schema_version": int(manifest["schema_version"]),
                             "file_count": len(manifest["files"]),
+                            "paths": manifest_paths,
                         },
                         {
                             "check": "discovery",
                             "sample_count": len(discovered["samples"]),
+                            "schema_version": int(discovered["schema_version"]),
                         },
                         {
                             "check": "summary",
                             "unit_count": len(summary["units"]),
+                            "schema_version": int(summary["schema_version"]),
+                            "units_match_discovery": discovered_samples == summary_units,
+                        },
+                        {
+                            "check": "provenance",
+                            "schema_version": int(provenance["schema_version"]),
+                            "snakemake_version": provenance.get("snakemake_version"),
                         },
                         {
                             "check": "report",

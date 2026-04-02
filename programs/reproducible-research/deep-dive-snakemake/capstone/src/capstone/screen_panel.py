@@ -112,6 +112,7 @@ def main() -> None:
     scores.sort(key=lambda d: (-d["signature_overlap"], d["panel"]))
 
     payload = {
+        "schema_version": 2,
         "sample_kmer_json": str(sample_json),
         "panel_fasta": str(panel_fasta),
         "k": k,
