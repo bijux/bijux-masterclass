@@ -59,6 +59,7 @@ By the end of the course, you should be able to:
 - Read [Guides](guides/index.md) when you want the guide space itself to stay organized.
 - Read [Start Here](guides/start-here.md) for the shortest stable learner route.
 - Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
+- Use [Module Promise Map](guides/module-promise-map.md) when you want the promise and evidence route for each module before reading deeply.
 - Use [Foundations Reading Plan](guides/foundations-reading-plan.md) when you want a paced route through Modules 01 to 03.
 - Use [FuncPipe RAG Primer](guides/funcpipe-rag-primer.md) when the capstone domain is unfamiliar and you want the smallest useful vocabulary set.
 - Use [Outcomes and Proof Map](guides/outcomes-and-proof-map.md) when you want the course contract expressed as outcomes, learning work, and evidence.

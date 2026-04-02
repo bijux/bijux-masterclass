@@ -40,6 +40,7 @@ work with the reference states, and how to inspect the capstone without guessing
 ## Use These For Study Planning
 
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence explained
+- [Module Promise Map](module-promise-map.md) when you want the promise and evidence route for each module
 - [Practice Map](practice-map.md) when you want the rehearsal loop in one place
 - [History Guide](history-guide.md) when you want `_history` and module worktree comparisons
 
