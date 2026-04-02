@@ -33,6 +33,12 @@ This course is designed as a guided route, not a loose pile of DVC notes. Start 
 learner path that matches your role, then use the capstone when the concept is clear
 enough that executable proof will sharpen it rather than overwhelm it.
 
+The top-level course-book now has three stable surfaces:
+
+- [`guides/`](guides/index.md) for learner routes, command choices, and capstone entry
+- [`reference/`](reference/index.md) for durable maps, glossary pages, and review standards
+- module pages for the core ten-module teaching arc
+
 ## Why this program exists
 
 Many teams can rerun a pipeline once and still fail reproducibility in every way that
@@ -95,6 +101,8 @@ These pages make the course easier to navigate:
 - [`authority-map.md`](reference/authority-map.md) explains which layer of state settles which trust question.
 - [`evidence-boundary-guide.md`](reference/evidence-boundary-guide.md) explains what declaration, execution, promotion, and recovery evidence can and cannot prove.
 - [`command-guide.md`](guides/command-guide.md) explains where each command belongs.
+- [`guides/index.md`](guides/index.md) collects the full learner and capstone route in one place.
+- [`reference/index.md`](reference/index.md) collects the durable review maps in one place.
 
 ## How To Use The Capstone While Reading
 

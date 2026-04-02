@@ -21,6 +21,7 @@ plugins:
 nav:
   - Start Here:
       - "Course Home": index.md
+      - "Guides Home": guides/index.md
       - "Course Guide": guides/course-guide.md
       - "Learner Entry": guides/start-here.md
       - "Learning Contract": guides/learning-contract.md
@@ -38,6 +39,7 @@ nav:
       - "Proof Matrix": guides/proof-matrix.md
       - "Completion Rubric": reference/completion-rubric.md
   - Capstone Route:
+      - "Guides Home": guides/index.md
       - "Capstone Guide": guides/readme-capstone.md
       - "Capstone Architecture Guide": guides/capstone-architecture-guide.md
       - "Capstone Map": guides/capstone-map.md
