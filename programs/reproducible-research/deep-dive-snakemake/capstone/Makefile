@@ -123,31 +123,9 @@ validate-config: ## Validate config/config.yaml against config/schema.yaml (best
 
 verify-artifacts: ## Verify publish artifacts exist and are parseable (best-effort)
 	@mkdir -p "$(LINT_DIR_ABS)" "$(TMP_DIR_ABS)"
-	@rm -f "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '#!/usr/bin/env bash' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo 'set -euo pipefail' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo 'files=(' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '  "publish/v1/manifest.json"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '  "publish/v1/provenance.json"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '  "publish/v1/discovered_samples.json"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '  "publish/v1/summary.json"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '  "publish/v1/summary.tsv"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '  "publish/v1/report/index.html"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo ')' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo 'for f in "$${files[@]}"; do' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '  [ -f "$$f" ] || { echo "✘ missing $$f"; exit 1; }' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '  [ -s "$$f" ] || { echo "✘ empty $$f"; exit 1; }' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo 'done' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo 'command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '$(PYTHON) -c "import json; json.load(open(\"publish/v1/manifest.json\")); print(\"✔ manifest.json parses\")"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '$(PYTHON) -c "import json; json.load(open(\"publish/v1/provenance.json\")); print(\"✔ provenance.json parses\")"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '$(PYTHON) -c "import json; json.load(open(\"publish/v1/discovered_samples.json\")); print(\"✔ discovered_samples.json parses\")"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo '$(PYTHON) -c "import json; json.load(open(\"publish/v1/summary.json\")); print(\"✔ summary.json parses\")"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo 'grep -qi "<html" "publish/v1/report/index.html" || { echo "✘ report/index.html does not look like HTML"; exit 1; }' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@echo 'echo "✔ artifacts look sane"' >> "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@chmod +x "$(TMP_DIR_ABS)/verify_artifacts.sh"
-	@/bin/bash "$(TMP_DIR_ABS)/verify_artifacts.sh" 2>&1 | tee "$(LINT_DIR_ABS)/verify_artifacts.log"
-	@rm -f "$(TMP_DIR_ABS)/verify_artifacts.sh"
+	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
+	@$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" \
+		2>&1 | tee "$(LINT_DIR_ABS)/verify_artifacts.log"
 
 # ---- high-level flows ----
 check: lint test wf-lint wf-dryrun validate-config ## Fast pre-flight (no workflow execution); NOT a formatting gate
