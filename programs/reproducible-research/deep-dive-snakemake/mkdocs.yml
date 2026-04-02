@@ -11,6 +11,21 @@ edit_uri: edit/master/programs/reproducible-research/deep-dive-snakemake/course-
 docs_dir: course-book
 site_dir: ../../../artifacts/site/reproducible-research/deep-dive-snakemake
 
+theme:
+  custom_dir: ../../../docs/overrides
+  logo: ../../../docs/assets/bijux_logo_hq.png
+  favicon: ../../../docs/assets/site-icons/favicon.ico
+
+extra_css:
+  - ../../../docs/assets/styles/extra.css
+
+extra_javascript:
+  - ../../../docs/assets/javascripts/vendor/mermaid-11.6.0.min.js
+  - ../../../docs/assets/javascripts/mermaid-init.js
+
+hooks:
+  - ../../../docs/hooks/publish_site_assets.py
+
 plugins:
   - search
   - macros:
