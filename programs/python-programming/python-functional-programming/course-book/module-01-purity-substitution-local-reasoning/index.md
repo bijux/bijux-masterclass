@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so the semantic floor stays attached to the
+course promise and the capstone proof route:
+
+- [First-Contact Map](../module-00-orientation/first-contact-map.md) for the shortest stable entry route
+- [Module Promise Map](../guides/module-promise-map.md) for the plain-language contract of the module
+- [Module Checkpoints](../guides/module-checkpoints.md) for the exit bar before Module 02
+- [Capstone Map](../guides/capstone-map.md) for the matching core packages and proof surfaces
+
+Carry this question into the module:
+
+> Which code can still be trusted as a local transform, and what immediately stops being substitutable once hidden state or effects enter?
+
 This module establishes the semantic floor for the whole course. If the learner cannot
 separate pure transforms from hidden state here, every later abstraction will feel
 ornamental instead of necessary.

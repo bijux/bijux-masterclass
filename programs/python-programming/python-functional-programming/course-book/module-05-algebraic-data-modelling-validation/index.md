@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so value modelling stays connected to reviewable
+domain states instead of turning into type-shape ornament:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge through failures and modelling
+- [Engineering Question Map](../guides/engineering-question-map.md) for domain-pressure routing
+- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for symptom-first review of modelling mistakes
+- [Capstone Map](../guides/capstone-map.md) for the validation and domain-state surfaces in FuncPipe
+
+Carry this question into the module:
+
+> Which states, failures, and construction rules deserve first-class value shapes instead of scattered conditionals?
+
 This module gives the course a stronger modelling language. Instead of encoding domain
 states and validation rules with flags, `None`, and scattered conditionals, the learner
 starts using explicit data shapes that are easier to reason about and test.

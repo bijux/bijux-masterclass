@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so failure handling remains a design boundary
+instead of turning into hidden retry folklore:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge into failure and effect pressure
+- [Engineering Question Map](../guides/engineering-question-map.md) for pressure-first entry into the course
+- [Proof Matrix](../guides/proof-matrix.md) for the matching executable route
+- [Capstone Map](../guides/capstone-map.md) for the result, retry, and breaker surfaces in FuncPipe
+
+Carry this question into the module:
+
+> How do failures stay explicit enough to compose, retry, or aggregate without disappearing into control flow?
+
 This module turns lazy pipelines into production-minded pipelines. Once computation is
 streaming, failures, retries, cleanup, and error aggregation can no longer be treated as
 afterthoughts.

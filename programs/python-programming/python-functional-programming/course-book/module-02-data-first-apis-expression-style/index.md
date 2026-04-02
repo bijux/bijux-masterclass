@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so data-first design stays connected to explicit
+configuration and composition pressure:
+
+- [First-Contact Map](../module-00-orientation/first-contact-map.md) for the foundation route through the first three modules
+- [Module Promise Map](../guides/module-promise-map.md) for the module contract in one place
+- [Practice Map](../guides/practice-map.md) for the read-inspect-prove rhythm
+- [Capstone Map](../guides/capstone-map.md) for the configured pipeline surfaces in FuncPipe
+
+Carry this question into the module:
+
+> What should become explicit data so the pipeline composes honestly instead of hiding choices inside control flow?
+
 This module turns purity from a local refactoring habit into a reusable design style.
 The focus is on configuration, expression-oriented code, and APIs that compose without
 leaking globals or control flags.

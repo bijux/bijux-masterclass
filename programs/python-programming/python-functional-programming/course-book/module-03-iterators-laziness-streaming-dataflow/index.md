@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so laziness stays tied to execution timing,
+materialization, and proof instead of becoming stream vocabulary on its own:
+
+- [First-Contact Map](../module-00-orientation/first-contact-map.md) for the full foundation route that ends here
+- [Foundations Reading Plan](../guides/foundations-reading-plan.md) for the paced route through Modules 01 to 03
+- [Proof Matrix](../guides/proof-matrix.md) for the smallest honest evidence route
+- [Capstone Map](../guides/capstone-map.md) for the streaming and tree-fold surfaces in FuncPipe
+
+Carry this question into the module:
+
+> When does work happen, where does materialization occur, and how can I make that timing visible enough to review?
+
 This module makes streaming a first-class part of the course architecture. The learner
 moves from pure transforms over finite collections to deliberate control over when work
 happens, how much memory is used, and where materialization becomes a conscious choice.
