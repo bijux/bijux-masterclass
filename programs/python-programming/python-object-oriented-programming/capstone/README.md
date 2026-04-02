@@ -135,6 +135,8 @@ graph TD
   events --> ledger
 ```
 
+For a fuller boundary review, continue to [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## Layout
 
 - `src/service_monitoring/model.py` contains the aggregate, rules, and alert model.
