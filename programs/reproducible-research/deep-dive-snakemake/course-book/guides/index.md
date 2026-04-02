@@ -34,59 +34,47 @@ the right one.
 
 The rule is simple: open the smallest page that answers the next honest learner question.
 
----
+## Read These First
 
-## Start The Course
+- [Start Here](start-here.md) for the shortest honest entry route
+- [Course Guide](course-guide.md) for the full module arc and page roles
+- [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
+- [Module 00: Orientation and Study Strategy](../module-00-orientation/index.md) for the course shape
+- [Platform Setup](platform-setup.md) before you run local proof commands
 
-Use these first if you are entering the program or returning after a break:
+## Use These For Study Planning
 
-* [Start Here](start-here.md)
-* [Pressure Routes](pressure-routes.md)
-* [Module Promise Map](module-promise-map.md)
-* [Module Checkpoints](module-checkpoints.md)
-* [Course Guide](course-guide.md)
-* [Platform Setup](platform-setup.md)
-* [Learning Contract](learning-contract.md)
+- [Pressure Routes](pressure-routes.md) when your route is shaped by repair, stewardship, or workflow pressure
+- [Module Promise Map](module-promise-map.md) when you want each module title translated into a learner contract
+- [Module Checkpoints](module-checkpoints.md) when you want a module-end exit bar before moving on
+- [Module Dependency Map](../reference/module-dependency-map.md) when you need the safe reading order explained
+- [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
 
-[Back to top](#top)
+## Use These For Commands And Proof
 
----
+- [Command Guide](command-guide.md) for command boundaries
+- [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
+- [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence surface
+- [Boundary Map](../reference/boundary-map.md) when you need workflow versus policy separation
+- [Workflow Glossary](../reference/workflow-glossary.md) when the vocabulary itself is the blocker
 
-## Run Commands With Intent
+## Use These For Capstone Reading
 
-Use these when the question is about execution, proof, or command boundaries:
+- [Capstone Guide](readme-capstone.md) for the repository contract
+- [Capstone Architecture Guide](capstone-architecture-guide.md) for the repository structure
+- [Capstone Map](capstone-map.md) for module-to-repository routing
+- [Capstone File Guide](capstone-file-guide.md) for file responsibilities
+- [Capstone Walkthrough](capstone-walkthrough.md) for a bounded first reading route
+- [Capstone Proof Guide](capstone-proof-guide.md) for the shortest proof route
+- [Publish Review Guide](publish-review-guide.md) for publish-boundary review
+- [Profile Audit Guide](profile-audit-guide.md) for execution-policy review
+- [Incident Review Guide](incident-review-guide.md) for workflow triage under pressure
+- [Capstone Review Worksheet](capstone-review-worksheet.md) for structured repository assessment
+- [Capstone Extension Guide](capstone-extension-guide.md) for safe evolution
 
-* [Command Guide](command-guide.md)
-* [Proof Ladder](proof-ladder.md)
-* [Proof Matrix](proof-matrix.md)
+## Keep The Layout Stable
 
-[Back to top](#top)
-
----
-
-## Enter The Capstone Deliberately
-
-Use these when the module idea is already legible and you want the executable repository:
-
-* [Capstone Guide](readme-capstone.md)
-* [Capstone Map](capstone-map.md)
-* [Capstone File Guide](capstone-file-guide.md)
-* [Capstone Walkthrough](capstone-walkthrough.md)
-* [Capstone Proof Guide](capstone-proof-guide.md)
-* [Capstone Review Worksheet](capstone-review-worksheet.md)
-* [Capstone Extension Guide](capstone-extension-guide.md)
-
-[Back to top](#top)
-
----
-
-## Review One Boundary At A Time
-
-Use these when your review question is narrower than "how does the whole repository work":
-
-* [Capstone Architecture Guide](capstone-architecture-guide.md)
-* [Publish Review Guide](publish-review-guide.md)
-* [Profile Audit Guide](profile-audit-guide.md)
-* [Incident Review Guide](incident-review-guide.md)
-
-[Back to top](#top)
+- `index.md` stays the course home
+- `guides/` stays the learner route and proof shelf
+- `reference/` stays the durable workflow and review shelf
+- `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

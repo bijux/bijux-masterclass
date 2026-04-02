@@ -28,76 +28,74 @@ flowchart LR
 <!-- page-maps:end -->
 
 Deep Dive Snakemake now has enough support material that learners need one stable hub for
-finding the right page quickly.
+finding the right page quickly. The goal is not to memorize Snakemake features. The goal
+is to learn how explicit file contracts, dynamic safety, and durable workflow evidence
+fit together over a ten-module sequence.
 
-This guide groups the course surfaces by the question you are trying to answer.
+## Course Spine
 
----
+The course has four linked layers:
 
-## If You Are New Here
+1. entry pages and orientation
+2. module work from file contracts to tool-boundary judgment
+3. capstone proof in one executable workflow repository
+4. review surfaces for publish, profile, and incident questions
 
-Start with these pages in order:
+## The Four Arcs
 
-1. [`start-here.md`](start-here.md)
-2. [`pressure-routes.md`](pressure-routes.md)
-3. [`module-00-orientation/index.md`](../module-00-orientation/index.md)
-4. [`learning-contract.md`](learning-contract.md)
-5. [`module-promise-map.md`](module-promise-map.md)
-6. [`module-checkpoints.md`](module-checkpoints.md)
-7. [`module-dependency-map.md`](../reference/module-dependency-map.md)
+### File-contract foundations
 
-Then begin Module 01.
+Modules 01 to 02 establish the semantic floor:
 
-[Back to top](#top)
+- why workflows must declare file contracts before they scale
+- how dynamic DAG behavior stays deterministic and reviewable
+- how discovery can remain explicit instead of magical
 
----
+### Policy and scaling boundaries
 
-## If You Need A Stable Reference
+Modules 03 to 05 turn the workflow into something survivable:
 
-Use these pages when you already know the course but need a fast answer:
+- profiles, retries, and execution policy become reviewable boundaries
+- scaling patterns stop hiding coupling behind convenience
+- software boundaries make helper code, environments, and wrappers honest
 
-* [`workflow-glossary.md`](../reference/workflow-glossary.md) for shared vocabulary
-* [`topic-boundaries.md`](../reference/topic-boundaries.md) for what the course centers and what it does not
-* [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) for common workflow smells
-* [`practice-map.md`](../reference/practice-map.md) for the right proof route
-* [`proof-ladder.md`](proof-ladder.md) for smallest-honest proof selection
-* [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
-* [`capstone-map.md`](capstone-map.md) for module-to-repository routing
+### Publish and architecture surfaces
 
-[Back to top](#top)
+Modules 06 to 08 move from workflow correctness to durable repository design:
 
----
+- publish contracts define what downstream consumers may trust
+- repository architecture and file APIs make the workflow legible under growth
+- operating context separates workflow semantics from execution policy
 
-## If You Need The Capstone
+### Incident and governance judgment
 
-Use these pages when the concept is already legible and you want the executable
-repository:
+Modules 09 to 10 finish the course where long-lived workflows are judged:
 
-* [`readme-capstone.md`](readme-capstone.md) for the repository contract
-* [`capstone-map.md`](capstone-map.md) for the module route
-* [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
-* [`capstone-proof-guide.md`](capstone-proof-guide.md) for shortest-route proof selection
+- performance and incidents become observable and explainable
+- migration and governance decisions stay tied to contracts instead of habit
 
-Then use the capstone commands that match your question.
+## How The Capstone Fits
 
-[Back to top](#top)
+- Modules 01 to 02 explain the capstone's file contracts, checkpoints, and deterministic discovery.
+- Modules 03 to 05 explain its profiles, wrappers, helper-code boundaries, and policy surfaces.
+- Modules 06 to 08 explain its publish routes, file APIs, and operating-context boundaries.
+- Modules 09 to 10 explain its incident review, migration judgment, and stewardship rules.
 
----
+## Support Pages To Keep Open
 
-## If You Are Reviewing The Course
+- [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
+- [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
+- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
+- [Boundary Map](../reference/boundary-map.md) when you need workflow versus policy separation
+- [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) when you need to size or route proof correctly
+- [Capstone Map](capstone-map.md) when you want the repository route by module
 
-Use these pages when you care about maintainability, assessment, or stewardship:
+## Honest Expectation
 
-* [`module-dependency-map.md`](../reference/module-dependency-map.md)
-* [`learning-contract.md`](learning-contract.md)
-* [`module-promise-map.md`](module-promise-map.md)
-* [`module-checkpoints.md`](module-checkpoints.md)
-* [`practice-map.md`](../reference/practice-map.md)
-* [`readme-capstone.md`](readme-capstone.md)
-
-[Back to top](#top)
-
----
+If you rush, the course will feel like a collection of workflow tricks. If you read it
+in order and keep the capstone in view, the later modules should feel like consequences
+of earlier file-contract and publish-boundary decisions rather than unrelated advanced
+features.
 
 ## Best Three Entry Commands
 

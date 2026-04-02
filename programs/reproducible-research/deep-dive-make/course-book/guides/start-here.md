@@ -32,94 +32,69 @@ build and maintain truthful Make-based systems.
 
 Use this page to choose the right entry point before you start reading modules at random.
 
----
+## Use This Course If
 
-## Who This Course Is For
+- you are new to GNU Make and want a reliable graph model instead of memorized recipes
+- you inherited a brittle Makefile and need a repair path you can justify
+- you already use Make in production but still get surprised by rebuilds or `-j`
+- you review whether Make should keep owning a build boundary at all
 
-This course is a good fit if you are:
+## Do Not Start Here If
 
-* new to GNU Make and want a reliable mental model instead of memorized tricks
-* inheriting a brittle Makefile and need a repair path you can trust
-* already using Make in production but still getting surprised by rebuilds or `-j`
-* reviewing whether Make is still the right orchestrator for a larger build
+- you only need a quick copy-paste snippet and do not care why it works
+- you want shell-programming depth more than build-graph correctness
+- you want Make to solve every orchestration problem without tool-boundary judgment
 
-This course is a poor fit if you only need a quick copy-paste snippet and do not care
-why it works.
+## Best Reading Route
 
-[Back to top](#top)
+1. Read [Course Home](../index.md) for the program promise and support surfaces.
+2. Read [Course Guide](course-guide.md) for the module arc and page roles.
+3. Read [Learning Contract](learning-contract.md) before you start Module 01.
+4. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
+5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
+6. Keep [Capstone Map](capstone-map.md) and [Proof Ladder](proof-ladder.md) nearby, but enter the capstone only after the local module idea is clear.
 
----
+## Route By Pressure
 
-## Pick Your Route
+### First contact
 
-### Route 1: First Contact
+1. Read [Module 00](../module-00-orientation/index.md).
+2. Read [Module 01](../module-01-foundations-build-graph-and-truth/index.md).
+3. Read [Module 02](../module-02-parallel-safety-and-project-structure/index.md).
+4. Use [Module Checkpoints](module-checkpoints.md) before moving on.
 
-Choose this if Make still feels unfamiliar.
+### Repair an existing build
 
-1. Read [`module-00.md`](../module-00-orientation/index.md)
-2. Read [`module-01.md`](../module-01-foundations-build-graph-and-truth/index.md)
-3. Read [`module-02.md`](../module-02-parallel-safety-and-project-structure/index.md)
-4. Use [`module-checkpoints.md`](module-checkpoints.md) before moving on
-5. Enter the capstone only after the local module exercises make sense
+1. Read [Pressure Routes](pressure-routes.md).
+2. Skim [Module 00](../module-00-orientation/index.md).
+3. Read [Module 04](../module-04-cli-precedence-includes-and-rule-edge-cases/index.md).
+4. Read [Module 05](../module-05-portability-jobserver-hermeticity-and-failure-modes/index.md).
+5. Read [Module 09](../module-09-performance-observability-and-build-incident-response/index.md).
+6. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](capstone-map.md) to inspect the reference build selectively.
 
-### Route 2: Repair an Existing Build
+### Build-system stewardship
 
-Choose this if you already maintain a Make-based repository.
+1. Read [Module 03](../module-03-production-practice-determinism-debugging-ci-and-selftests/index.md).
+2. Read [Module 07](../module-07-reusable-build-architecture-and-build-apis/index.md).
+3. Read [Module 08](../module-08-release-engineering-and-artifact-publication-contracts/index.md).
+4. Read [Module 10](../module-10-migration-governance-and-make-boundaries/index.md).
+5. Finish with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Capstone Extension Guide](capstone-extension-guide.md).
 
-1. Read [`pressure-routes.md`](pressure-routes.md)
-2. Skim [`module-00.md`](../module-00-orientation/index.md)
-3. Read [`module-04.md`](../module-04-cli-precedence-includes-and-rule-edge-cases/index.md)
-4. Read [`module-05.md`](../module-05-portability-jobserver-hermeticity-and-failure-modes/index.md)
-5. Read [`module-09.md`](../module-09-performance-observability-and-build-incident-response/index.md)
-6. Use [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) and [`capstone-map.md`](capstone-map.md) to inspect the reference build selectively
+## Success Signal
 
-### Route 3: Build-System Stewardship
+You are using the course correctly if you can explain all of this without guesswork:
 
-Choose this if your job includes release, CI, or long-term build governance.
+- why a target rebuilt using `make --trace`
+- whether a failure is a missing edge, a publication bug, or a parallel-safety bug
+- which targets are public and which are implementation detail
+- which proof command would settle the claim instead of extending the argument
 
-1. Read [`module-03.md`](../module-03-production-practice-determinism-debugging-ci-and-selftests/index.md)
-2. Read [`module-07.md`](../module-07-reusable-build-architecture-and-build-apis/index.md)
-3. Read [`module-08.md`](../module-08-release-engineering-and-artifact-publication-contracts/index.md)
-4. Read [`module-10.md`](../module-10-migration-governance-and-make-boundaries/index.md)
-5. Use [`module-promise-map.md`](module-promise-map.md) to keep the titles honest
-6. Finish with the capstone review route
+## First Pages To Keep Open
 
-[Back to top](#top)
-
----
-
-## What Success Looks Like
-
-You are using the course correctly if you can do all of this without guesswork:
-
-* explain why a target rebuilt using `make --trace`
-* identify whether a failure is a missing edge, a publication bug, or a parallel-safety bug
-* predict which targets are public and which are implementation detail
-* verify build claims with repeatable commands instead of folklore
-
-If you cannot yet do that, slow down and stay in the smaller module exercises longer
-before using the capstone as your primary learning surface.
-
-[Back to top](#top)
-
----
-
-## First Commands To Run
-
-From `programs/reproducible-research/deep-dive-make/`:
-
-```sh
-make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-make inspect
-```
-
-If you are on macOS, read [`platform-setup.md`](platform-setup.md) first and use `gmake`
-instead of `/usr/bin/make`.
-
-From the course book:
-
-* use [`capstone-map.md`](capstone-map.md) when you want to cross-check a concept
-* use [`module-00.md`](../module-00-orientation/index.md) when you want the full course arc
-* use [`proof-ladder.md`](proof-ladder.md) when you are not sure how much proof is enough
+- [Course Home](../index.md)
+- [Course Guide](course-guide.md)
+- [Module 00](../module-00-orientation/index.md)
+- [Platform Setup](platform-setup.md)
+- [Capstone Guide](readme-capstone.md)
 
 [Back to top](#top)

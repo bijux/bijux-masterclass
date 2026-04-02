@@ -28,82 +28,72 @@ flowchart LR
 <!-- page-maps:end -->
 
 Deep Dive Make now has enough supporting material that learners need one stable hub for
-choosing the right page quickly.
+choosing the right page quickly. The goal is not to memorize Make features. The goal is
+to learn how truthful graphs, safe publication, and reviewable proof fit together over a
+ten-module sequence.
 
-This guide groups the course surfaces by the question you are trying to answer.
+## Course Spine
 
----
+The course has four linked layers:
 
-## If You Are New Here
+1. entry pages and orientation
+2. module work from local build truth to larger build boundaries
+3. capstone proof in one executable reference build
+4. review surfaces for stewardship, incident response, and migration judgment
 
-Start with these pages in order:
+## The Four Arcs
 
-1. [`start-here.md`](start-here.md)
-2. [`pressure-routes.md`](pressure-routes.md)
-3. [`platform-setup.md`](platform-setup.md)
-4. [`module-00.md`](../module-00-orientation/index.md)
-5. [`learning-contract.md`](learning-contract.md)
-6. [`module-promise-map.md`](module-promise-map.md)
-7. [`module-checkpoints.md`](module-checkpoints.md)
-8. [`module-dependency-map.md`](../reference/module-dependency-map.md)
+### Build truth
 
-Then begin Module 01.
+Modules 01 to 03 establish the semantic floor:
 
-[Back to top](#top)
+- why Make is a graph engine instead of a shell convenience layer
+- how parallel safety, determinism, and selftests change the meaning of "works"
+- how to prove a build claim with native evidence instead of folklore
 
----
+### Pressure and hardening
 
-## If You Need A Stable Reference
+Modules 04 to 06 turn the basic graph into something survivable:
 
-Use these pages when you already know the course but need a fast answer:
+- CLI and include behavior stay legible under pressure
+- portability, modeled inputs, and failure hygiene become explicit design work
+- generated files and multi-output rules get real publication boundaries
 
-* [`build-graph-glossary.md`](../reference/build-graph-glossary.md) for shared vocabulary
-* [`concept-index.md`](../reference/concept-index.md) for where an idea is taught
-* [`topic-boundaries.md`](../reference/topic-boundaries.md) for what the course centers and what it does not
-* [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) for common Make smells
-* [`command-guide.md`](command-guide.md) for root, program, and capstone surfaces
-* [`proof-ladder.md`](proof-ladder.md) for smallest-honest proof selection
-* [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
-* [`practice-map.md`](../reference/practice-map.md) for the right proof loop
-* [`public-targets.md`](../reference/public-targets.md) for stable command surfaces
-* [`incident-ladder.md`](../reference/incident-ladder.md) for debugging order
+### Reusable build surfaces
 
-[Back to top](#top)
+Modules 07 to 08 move from one honest build to a reusable build system:
 
----
+- layered includes and build APIs stop large repositories from becoming private languages
+- release and publication contracts define what downstream systems may trust
 
-## If You Need The Capstone
+### Incident and governance judgment
 
-Use these pages when the course concept is already legible and you want the executable
-reference build:
+Modules 09 to 10 finish the course where long-lived build systems actually fail:
 
-* [`capstone-map.md`](capstone-map.md) for module-to-repository routing
-* [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
-* [`capstone-proof-checklist.md`](capstone-proof-checklist.md) for one bounded proof pass
-* [`capstone-walkthrough.md`](capstone-walkthrough.md) for bounded reading routes
-* [`repro-catalog.md`](repro-catalog.md) for failure-mode examples
-* [`capstone-extension-guide.md`](capstone-extension-guide.md) for safe evolution
+- incidents become observable and reviewable instead of superstitious
+- migration and governance decisions stay tied to proof, not preference
 
-[Back to top](#top)
+## How The Capstone Fits
 
----
+- Modules 01 to 03 explain the capstone's graph truth, convergence checks, and selftest discipline.
+- Modules 04 to 06 explain its failure modeling, portability boundaries, and generated-file handling.
+- Modules 07 to 08 explain its layered `mk/` architecture, public targets, and release surfaces.
+- Modules 09 to 10 explain its incident bundles, migration judgment, and stewardship rules.
 
-## If You Are Reviewing The Course
+## Support Pages To Keep Open
 
-Use these pages when you care about assessment, maintainability, or repository review:
+- [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
+- [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
+- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
+- [Command Guide](command-guide.md) when you need the right command surface
+- [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) when you need to size or route proof correctly
+- [Capstone Map](capstone-map.md) when you want the repository route by module
 
-* [`completion-rubric.md`](../reference/completion-rubric.md)
-* [`module-dependency-map.md`](../reference/module-dependency-map.md)
-* [`module-promise-map.md`](module-promise-map.md)
-* [`module-checkpoints.md`](module-checkpoints.md)
-* [`proof-matrix.md`](proof-matrix.md)
-* [`public-targets.md`](../reference/public-targets.md)
-* [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
-* [`capstone-extension-guide.md`](capstone-extension-guide.md)
+## Honest Expectation
 
-[Back to top](#top)
-
----
+If you rush, the course will feel like a pile of edge cases. If you read it in order and
+keep the capstone in view, the later modules should feel like consequences of earlier
+graph and publication decisions rather than unrelated advanced tricks.
 
 ## Best Three Entry Commands
 

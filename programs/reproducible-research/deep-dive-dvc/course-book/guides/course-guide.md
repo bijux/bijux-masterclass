@@ -28,105 +28,72 @@ flowchart LR
 <!-- page-maps:end -->
 
 Deep Dive DVC now has enough support pages that learners need one stable hub for finding
-the right surface quickly.
+the right surface quickly. The goal is not to memorize DVC commands. The goal is to
+learn how explicit state, truthful pipelines, and durable evidence fit together over a
+ten-module sequence.
 
-This guide groups the course by the question you are trying to answer.
+## Course Spine
 
-The top-level distinction is deliberate:
+The course has four linked layers:
 
-- `guides/` pages choose routes and proof surfaces
-- `reference/` pages settle recurring trust questions
-- module directories do the main teaching work
+1. entry pages and orientation
+2. module work from state identity to promotion and governance
+3. capstone proof in one executable repository
+4. review surfaces for recovery, release, and stewardship questions
 
----
+## The Four Arcs
 
-## If You Are New Here
+### State foundations
 
-Start with these pages in order:
+Modules 01 to 03 establish the semantic floor:
 
-1. [`start-here.md`](start-here.md)
-2. [`pressure-routes.md`](pressure-routes.md)
-3. [`module-00.md`](../module-00-orientation/index.md)
-4. [`learning-contract.md`](learning-contract.md)
-5. [`module-promise-map.md`](module-promise-map.md)
-6. [`module-checkpoints.md`](module-checkpoints.md)
-7. [`module-dependency-map.md`](../reference/module-dependency-map.md)
-8. [`platform-setup.md`](platform-setup.md) if you plan to run local proof commands
+- why reproducibility fails even when a pipeline can rerun once
+- how data identity, cache truth, and execution environments become explicit state
+- which layer of state answers which trust question
 
-Then begin Module 01.
+### Truthful execution and experiments
 
-[Back to top](#top)
+Modules 04 to 06 turn the state model into disciplined execution:
 
----
+- pipelines become truthful DAGs instead of hopeful rerun stories
+- metrics, parameters, and experiments gain explicit meaning and comparison rules
+- experiments stop being chaos by acquiring bounded contracts
 
-## If You Need A Stable Reference
+### Collaboration and recovery pressure
 
-Use these pages when you already know the course but need a fast answer:
+Modules 07 to 08 move the course from local correctness to survivability:
 
-* [`state-glossary.md`](../reference/state-glossary.md) for shared vocabulary
-* [`authority-map.md`](../reference/authority-map.md) for which layer settles a trust question
-* [`topic-boundaries.md`](../reference/topic-boundaries.md) for what the course centers and what it does not
-* [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) for common reproducibility smells
-* [`practice-map.md`](../reference/practice-map.md) for the right proof route
-* [`command-guide.md`](command-guide.md) for command boundaries
-* [`proof-ladder.md`](proof-ladder.md) for smallest-honest proof selection
-* [`proof-matrix.md`](proof-matrix.md) for claims-to-evidence routing
-* [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
-* [`capstone-map.md`](capstone-map.md) for module-to-repository routing
+- CI, collaboration, and social contracts stop repository drift
+- recovery, scale, and incident pressure expose whether the repository is still trustworthy
 
-[Back to top](#top)
+### Promotion and governance
 
----
+Modules 09 to 10 finish the course where long-lived repositories are judged:
 
-## If You Need The Capstone
+- release boundaries and auditability define what downstream users may trust
+- migration and governance decisions stay tied to evidence instead of habit
 
-Use these pages when the concept is already legible and you want the executable
-repository:
+## How The Capstone Fits
 
-* [`readme-capstone.md`](readme-capstone.md) for the repository contract
-* [`capstone-map.md`](capstone-map.md) for the module route
-* [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
-* [`repository-layer-guide.md`](repository-layer-guide.md) for authority and layer ownership
-* [`proof-ladder.md`](proof-ladder.md) for proportional proof choice
-* [`capstone-review-worksheet.md`](capstone-review-worksheet.md) for repository review
-* [`capstone-extension-guide.md`](capstone-extension-guide.md) for safe evolution
+- Modules 01 to 03 explain the capstone's state surfaces, cache boundaries, and authority maps.
+- Modules 04 to 06 explain its pipeline declarations, metrics, params, and experiment routes.
+- Modules 07 to 08 explain its CI, recovery, and durability review surfaces.
+- Modules 09 to 10 explain its publish contracts, audit routes, and stewardship rules.
 
-Then use the capstone commands that match your question.
+## Support Pages To Keep Open
 
-[Back to top](#top)
+- [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
+- [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
+- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
+- [Authority Map](../reference/authority-map.md) when you need to know which state layer settles a question
+- [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) when you need to size or route proof correctly
+- [Capstone Map](capstone-map.md) when you want the repository route by module
 
----
+## Honest Expectation
 
-## If You Are Reviewing The Course
-
-Use these pages when you care about maintainability, assessment, or stewardship:
-
-* [`module-dependency-map.md`](../reference/module-dependency-map.md)
-* [`learning-contract.md`](learning-contract.md)
-* [`module-promise-map.md`](module-promise-map.md)
-* [`module-checkpoints.md`](module-checkpoints.md)
-* [`practice-map.md`](../reference/practice-map.md)
-* [`completion-rubric.md`](../reference/completion-rubric.md)
-* [`proof-matrix.md`](proof-matrix.md)
-* [`readme-capstone.md`](readme-capstone.md)
-
-[Back to top](#top)
-
----
-
-## If You Have A Specific Proof Question
-
-Use these pages when you already know the question and want the fastest route:
-
-* "Which state is authoritative?" -> [`authority-map.md`](../reference/authority-map.md)
-* "Which command should I run?" -> [`command-guide.md`](command-guide.md)
-* "Which file proves the claim?" -> [`proof-matrix.md`](proof-matrix.md)
-* "Which module should send me into the capstone?" -> [`capstone-map.md`](capstone-map.md)
-* "What should I inspect in the repository?" -> [`capstone-file-guide.md`](capstone-file-guide.md)
-
-[Back to top](#top)
-
----
+If you rush, the course will feel administrative. If you read it in order and keep the
+capstone in view, the later modules should feel like consequences of earlier state and
+pipeline decisions rather than after-the-fact governance paperwork.
 
 ## Best Entry Commands
 
