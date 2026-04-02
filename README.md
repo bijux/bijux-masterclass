@@ -65,11 +65,17 @@ make PROGRAM=reproducible-research/deep-dive-snakemake program-help
 Build the series site:
 
 ```bash
-make series-docs-build
+make docs-build
 ```
 
 Serve the series site locally:
 
 ```bash
-make series-docs-serve
+make docs-serve
+```
+
+Use the explicit per-program docs route when you only want one program:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming docs-serve
 ```

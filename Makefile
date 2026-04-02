@@ -5,6 +5,8 @@ SHELL := /bin/sh
 PROGRAMS_DIR := programs
 PROGRAM ?= reproducible-research/deep-dive-make
 PROGRAM_DIR := $(PROGRAMS_DIR)/$(PROGRAM)
+PROGRAM_ORIGIN := $(origin PROGRAM)
+PROGRAM_IS_EXPLICIT := $(filter command line environment override,$(PROGRAM_ORIGIN))
 RUN_PROGRAM = tool=make; if command -v gmake >/dev/null 2>&1; then tool=gmake; fi; $$tool -C $(PROGRAM_DIR)
 PYTHON ?= python3
 ARTIFACTS_DIR ?= artifacts
@@ -13,6 +15,8 @@ VENV_BIN := $(VENV_DIR)/bin
 VENV_PY := $(abspath $(VENV_BIN)/python)
 PIP := $(VENV_PY) -m pip
 MKDOCS := $(VENV_PY) -m mkdocs
+SYNC_SERIES_DOCS := $(PYTHON) scripts/sync_series_docs.py
+DOCS_ENV = NO_MKDOCS_2_WARNING=true
 
 .PHONY: help
 help: ## Show available targets
@@ -30,13 +34,31 @@ families: ## List available program families
 program-help: ## Show the selected program's Make targets
 	@$(RUN_PROGRAM) help
 
+.PHONY: program-docs-build
+program-docs-build: series-docs-install ## Build docs for the selected program
+	@cd $(PROGRAM_DIR) && $(DOCS_ENV) $(MKDOCS) build -f mkdocs.yml --strict
+
+.PHONY: program-docs-serve
+program-docs-serve: series-docs-install ## Serve docs for the selected program
+	@cd $(PROGRAM_DIR) && $(DOCS_ENV) $(MKDOCS) serve -f mkdocs.yml
+
 .PHONY: docs-build
-docs-build: series-docs-install ## Build docs for the selected program
-	@cd $(PROGRAM_DIR) && $(MKDOCS) build -f mkdocs.yml --strict
+docs-build: series-docs-install ## Build the full catalog, or one program if PROGRAM is set explicitly
+ifeq ($(PROGRAM_IS_EXPLICIT),)
+	@$(SYNC_SERIES_DOCS)
+	@$(DOCS_ENV) $(MKDOCS) build --strict
+else
+	@cd $(PROGRAM_DIR) && $(DOCS_ENV) $(MKDOCS) build -f mkdocs.yml --strict
+endif
 
 .PHONY: docs-serve
-docs-serve: series-docs-install ## Serve docs for the selected program
-	@cd $(PROGRAM_DIR) && $(MKDOCS) serve -f mkdocs.yml
+docs-serve: series-docs-install ## Serve the full catalog, or one program if PROGRAM is set explicitly
+ifeq ($(PROGRAM_IS_EXPLICIT),)
+	@$(SYNC_SERIES_DOCS)
+	@$(DOCS_ENV) $(MKDOCS) serve
+else
+	@cd $(PROGRAM_DIR) && $(DOCS_ENV) $(MKDOCS) serve -f mkdocs.yml
+endif
 
 .PHONY: test
 test: ## Run tests for the selected program
@@ -77,8 +99,10 @@ series-docs-install: series-docs-venv ## Install series documentation dependenci
 
 .PHONY: series-docs-build
 series-docs-build: series-docs-install ## Build the series documentation site
-	@$(MKDOCS) build --strict
+	@$(SYNC_SERIES_DOCS)
+	@$(DOCS_ENV) $(MKDOCS) build --strict
 
 .PHONY: series-docs-serve
 series-docs-serve: series-docs-install ## Serve the series documentation site locally
-	@$(MKDOCS) serve
+	@$(SYNC_SERIES_DOCS)
+	@$(DOCS_ENV) $(MKDOCS) serve

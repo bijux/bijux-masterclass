@@ -11,3 +11,4 @@ artifacts/
 venv/
 env/
 site/
+docs/library/
