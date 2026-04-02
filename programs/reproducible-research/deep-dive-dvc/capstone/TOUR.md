@@ -35,6 +35,9 @@ If you want a lighter first step, run `make walkthrough` first. That bundle cont
 repository contract, pipeline declaration, recorded lock state, params surface, and a
 suggested reading route without executing the workflow.
 
+Read [BUNDLE_MANIFEST_GUIDE.md](BUNDLE_MANIFEST_GUIDE.md) when the next question is not
+which proof route to use, but exactly what a saved bundle captured.
+
 ## What the tour produces
 
 - `status.txt`: DVC's current view of whether the repository is up to date
