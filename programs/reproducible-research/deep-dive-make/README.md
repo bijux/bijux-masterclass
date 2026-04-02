@@ -28,18 +28,20 @@ This is a practical step toward *real* understanding of Make: what it guarantees
 
 The course-book now has three stable surfaces:
 
-- `course-book/guides/` for learner routes, command choice, and capstone entry
-- `course-book/reference/` for durable review maps, glossaries, and standards
+- `course-book/guides/` for learner routes, module promises, checkpoints, and capstone entry
+- `course-book/reference/` for durable review maps, glossaries, standards, and anti-patterns
 - `course-book/module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
 
 Use the course in this order:
 
 1. `course-book/guides/start-here.md`
-2. `course-book/guides/index.md`
+2. `course-book/guides/pressure-routes.md`
 3. `course-book/guides/course-guide.md`
-4. `course-book/module-00-orientation/index.md`
-5. Modules `01` to `10` in order
-6. `course-book/guides/readme-capstone.md` and `course-book/guides/capstone-map.md` once the local model is clear
+4. `course-book/guides/module-promise-map.md`
+5. `course-book/guides/module-checkpoints.md`
+6. `course-book/module-00-orientation/index.md`
+7. Modules `01` to `10` in order
+8. `course-book/guides/proof-ladder.md` and `course-book/guides/capstone-map.md` once the local model is clear
 
 [Back to top](#top)
 
@@ -69,7 +71,17 @@ Read on the website: https://bijux.io/bijux-masterclass/reproducible-research/de
 
 `capstone/` is a working build that embodies the rules above and provides a concrete reference for “what correct looks like” under pressure (including parallel builds).
 
-### 3) A repro pack of failure modes
+### 3) Review surfaces that keep the course honest
+
+The course now includes dedicated support pages for:
+
+- topic boundaries and blind spots
+- module promise tracking
+- module-end checkpoints
+- anti-pattern routing
+- proof sizing and capstone escalation
+
+### 4) A repro pack of failure modes
 
 Small, isolated examples of common pitfalls (races, stamp lies, mkdir hazards, generated header modeling) meant to be *reproduced*, not merely described.
 
@@ -83,19 +95,24 @@ From the monorepo root:
 ### Linux (GNU Make)
 
 ```sh
+make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-make inspect
 make PROGRAM=reproducible-research/deep-dive-make test
-make PROGRAM=reproducible-research/deep-dive-make capstone-tour
+make PROGRAM=reproducible-research/deep-dive-make proof
 ```
 
 ### macOS (GNU Make via Homebrew)
 
 ```sh
 brew install make
+make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-make inspect
 make PROGRAM=reproducible-research/deep-dive-make test
-make PROGRAM=reproducible-research/deep-dive-make capstone-tour
+make PROGRAM=reproducible-research/deep-dive-make proof
 ```
 
-If `selftest` passes, you’ve validated the capstone’s contract on your machine.
+Use `capstone-walkthrough` first, `inspect` when you need the public boundary, `test`
+for routine proof, and `proof` only when the narrower routes are no longer enough.
 
 [Back to top](#top)
 

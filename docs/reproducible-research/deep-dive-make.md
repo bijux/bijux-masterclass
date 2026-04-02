@@ -36,14 +36,18 @@ flowchart LR
 
 - Course home: [Program guide](../library/reproducible-research/deep-dive-make/course-book/index.md)
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/course-book/guides/start-here.md)
+- Pressure routes: [Pressure Routes](../library/reproducible-research/deep-dive-make/course-book/guides/pressure-routes.md)
+- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-make/course-book/guides/module-promise-map.md)
 - Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-make/capstone/README.md)
 
 ## Local Commands
 
 ```bash
 make PROGRAM=reproducible-research/deep-dive-make docs-serve
+make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-make inspect
 make PROGRAM=reproducible-research/deep-dive-make test
-make PROGRAM=reproducible-research/deep-dive-make capstone-tour
+make PROGRAM=reproducible-research/deep-dive-make proof
 ```
 
 ## Honesty Boundary

@@ -45,6 +45,8 @@ flowchart LR
 
 - Local course home: [Deep Dive Make course home](../library/reproducible-research/deep-dive-make/course-book/index.md)
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/course-book/guides/start-here.md)
+- Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-make/course-book/guides/pressure-routes.md)
+- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-make/course-book/guides/module-promise-map.md)
 - Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-make/capstone/README.md)
 
 ### [Deep Dive Snakemake](deep-dive-snakemake.md)
