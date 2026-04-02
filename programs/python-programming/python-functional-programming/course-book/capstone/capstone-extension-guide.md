@@ -27,7 +27,7 @@ should the next change land?"
 
 ## Recommended route
 
-1. Read `capstone/docs/EXTENSION_GUIDE.md`.
+1. Read [Capstone File Guide](capstone-file-guide.md).
 2. Compare the change you are imagining with [Capstone File Guide](capstone-file-guide.md).
 3. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to decide what proof must change with the implementation.
 

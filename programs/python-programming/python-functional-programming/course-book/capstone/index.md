@@ -70,11 +70,11 @@ of turning into a separate subject.
 
 ## Best entry surfaces
 
-- Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/README.md)
-- Guide index: [`capstone/docs/GUIDE_INDEX.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/GUIDE_INDEX.md)
-- Architecture map: [`capstone/docs/ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/ARCHITECTURE.md)
-- Tour guide: [`capstone/docs/TOUR.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/TOUR.md)
-- Proof guide: [`capstone/docs/PROOF_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/PROOF_GUIDE.md)
+- Capstone map: [Capstone Map](capstone-map.md)
+- File guide: [Capstone File Guide](capstone-file-guide.md)
+- Architecture map: [Capstone Architecture Guide](capstone-architecture-guide.md)
+- Walkthrough route: [Capstone Walkthrough](capstone-walkthrough.md)
+- Proof route: [Capstone Proof Guide](capstone-proof-guide.md)
 
 ## Core commands
 

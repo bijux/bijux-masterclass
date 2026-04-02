@@ -27,7 +27,7 @@ the capstone.
 
 ## Proof route
 
-1. Read `capstone/docs/PROOF_GUIDE.md`.
+1. Read [FuncPipe Capstone Guide](index.md).
 2. Run `make PROGRAM=python-programming/python-functional-programming inspect` when you need the fastest inventory of package, test, and guide ownership.
 3. Run `make PROGRAM=python-programming/python-functional-programming test` for direct executable verification.
 4. Run `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you want a review bundle with the executed test record.

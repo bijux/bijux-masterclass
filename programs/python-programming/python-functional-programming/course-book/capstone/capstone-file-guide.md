@@ -28,8 +28,7 @@ next move.
 This guide gives the capstone a human reading order. The goal is not to read every file
 alphabetically. The goal is to understand how the project is partitioned.
 
-Start with the local capstone [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/PACKAGE_GUIDE.md)
-when you want the repository itself to carry the same reading order.
+Start with [Capstone Map](capstone-map.md) when you want the repository reading order kept attached to the current module question.
 
 ## Choose your reading route
 
@@ -52,9 +51,7 @@ when you want the repository itself to carry the same reading order.
 
 ## Best local companion
 
-Use the capstone's local [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/PACKAGE_GUIDE.md)
-when you are already in the repository and want the same reading route without switching
-back to the course-book.
+Use [Capstone Architecture Guide](capstone-architecture-guide.md) when you want the same reading route anchored in package ownership instead of local file storage.
 
 ## What this order prevents
 
