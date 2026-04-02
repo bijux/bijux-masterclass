@@ -16,6 +16,17 @@ reference workflow in `capstone/`.
 
 ---
 
+## At a Glance
+
+| What this course optimizes for | What this course refuses to optimize for |
+| --- | --- |
+| explicit workflow contracts | pipelines that only "seem to work" under one command |
+| safe dynamic behavior | checkpoints used as hand-wavy magic |
+| stable publish boundaries | results directories that require private context to trust |
+| pedagogy that moves from file contracts to operational judgment | dropping the learner into a large repository too early |
+
+---
+
 ## Program Arc
 
 ### Module 01 — First Principles: The File-DAG Contract
@@ -93,6 +104,38 @@ concern to another tool.
 
 ---
 
+## Study Paths
+
+### Full course path
+
+Use this if you are learning Snakemake from the ground up.
+
+1. Modules 01-02 for file contracts and dynamic DAG discipline
+2. Modules 03-05 for operations, scaling boundaries, and software-rule separation
+3. Modules 06-09 for publish contracts, architecture, operating contexts, and incident response
+4. Module 10 for review, migration, and governance
+
+### Working maintainer path
+
+Use this if you already operate a Snakemake repository.
+
+1. Module 03 for production operation
+2. Module 04 for scaling and interfaces
+3. Module 08 for operating-context drift
+4. Module 09 for observability and incidents
+5. Module 10 for stewardship judgment
+
+### Workflow steward path
+
+Use this if your main concern is architecture, publishing, and long-lived workflow ownership.
+
+1. Module 06 for publish contracts
+2. Module 07 for repository architecture
+3. Module 08 for policy and operating boundaries
+4. Module 10 for governance and migration
+
+---
+
 ## Recommended Reading Path
 
 1. Read Modules 01 to 10 in order.
@@ -121,6 +164,30 @@ repository instead of jumping into the capstone cold.
 ```bash
 make PROGRAM=reproducible-research/deep-dive-snakemake test
 ```
+
+---
+
+## Milestones
+
+| Milestone | Modules | What you should be able to do |
+| --- | --- | --- |
+| Workflow literacy | 01-02 | explain file contracts, dry-runs, and disciplined dynamic discovery |
+| Operational stability | 03-05 | separate policy from semantics and explain reproducible rule boundaries |
+| Downstream trust | 06-08 | publish stable artifacts and keep operating contexts from changing workflow meaning |
+| Review judgment | 09-10 | run incident triage and review a workflow as a long-lived product |
+
+---
+
+## Capstone Timing
+
+Enter the capstone at three deliberate moments:
+
+* after Module 01 if you want to inspect the basic file-contract shape
+* after Modules 02-06 if you want to inspect discovery, publish, and rule-boundary discipline
+* after Modules 08-10 if you want to review the full repository as an operational and governance specimen
+
+If the capstone feels larger than the concept you are studying, return to the module and
+restore the smaller workflow model first.
 
 Use the capstone to answer this question repeatedly: if a workflow behavior changed
 tomorrow, which file or boundary should absorb that change, and why?
