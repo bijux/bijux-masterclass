@@ -25,7 +25,27 @@ Use this section when you need route guidance rather than a single mechanism pag
 guides keep the reading order, proof path, and capstone bridge explicit so the modules
 do not have to repeat that scaffolding.
 
-## Read These First
+## Pick one guide lane first
+
+### New learner
+
+- [Start Here](start-here.md)
+- [Course Guide](course-guide.md)
+- [Learning Contract](learning-contract.md)
+
+### Reviewer under pressure
+
+- [Pressure Routes](pressure-routes.md)
+- [Design Question Map](design-question-map.md)
+- [Proof Ladder](proof-ladder.md)
+
+### Builder choosing a mechanism
+
+- [Mechanism Selection](mechanism-selection.md)
+- [Module Dependency Map](module-dependency-map.md)
+- [Outcomes and Proof Map](outcomes-and-proof-map.md)
+
+## Read these first
 
 - [Start Here](start-here.md) for the shortest honest entry route
 - [Course Guide](course-guide.md) for the module arc and support-page roles
@@ -66,6 +86,13 @@ do not have to repeat that scaffolding.
 - [Capstone Proof Checklist](../capstone/capstone-proof-checklist.md) for a bounded proof pass
 - [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for structured repository review
 - [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
+
+## Good use of this shelf
+
+- Open one route guide first, not three at once.
+- Move to reference pages when the question becomes a standard or boundary call.
+- Move to capstone pages only after you know which module claim you want to inspect.
+- Stop once one page has given you a clear next module, proof route, or review decision.
 
 ## Keep The Layout Stable
 
