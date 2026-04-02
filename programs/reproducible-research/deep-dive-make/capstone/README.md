@@ -88,6 +88,18 @@ gmake verify-report
 A passing `selftest` is the signal that the contract holds: convergence, serial/parallel equivalence, and negative tests designed to detect common defects.
 `inspect` is the fastest bounded review route. `verify-report` preserves the selftest
 result as a durable review bundle.
+
+If you are entering from Module 04 and need the precedence demo the course-book teaches,
+use:
+
+```sh
+gmake show
+CFLAGS=ENV gmake show-e
+gmake CFLAGS=CLI show
+```
+
+Those targets expose the current `CFLAGS` origin, flavor, and raw value without asking
+you to create a scratch Makefile first.
 [Back to top](#top)
 
 ---
@@ -158,6 +170,8 @@ These are the stable entrypoints you can rely on and extend:
 | Target | Meaning | Why you care |
 | ------------------- | --------------------------------------------------------------------- | ------------------------------------ |
 | `help` | Print available targets and key knobs. | Discoverability. |
+| `show` | Print `CFLAGS` origin, flavor, and raw value. | Variable-precedence inspection. |
+| `show-e` | Re-run `show` with environment override enabled. | Module 04 precedence proof. |
 | `tour` | Print the recommended walkthrough order. | Faster onboarding into the capstone. |
 | `walkthrough` | Write the learner-facing walkthrough bundle. | Durable first-pass reading route. |
 | `contract-audit` | Write the public-contract review bundle. | Review entrypoints and boundaries before the strongest proof path. |

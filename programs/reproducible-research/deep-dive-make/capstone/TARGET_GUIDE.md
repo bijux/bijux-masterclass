@@ -40,6 +40,8 @@ smallest honest command.
 | --- | --- | --- |
 | `help` | public target list and key variables | you are orienting yourself |
 | `all` | main build outputs and convergence sentinel | you need the ordinary build result |
+| `show` | `CFLAGS` origin, flavor, and raw value | you are inspecting precedence without environment override |
+| `show-e` | `CFLAGS` origin, flavor, and raw value under `-e` | you are proving the environment-override branch from Module 04 |
 | `test` | runtime behavior checks | you need product-facing validation |
 | `selftest` | convergence, schedule equivalence, and negative hidden-input checks | you need build-system proof |
 | `walkthrough` | learner-first walkthrough bundle | you need a bounded first pass |
@@ -63,6 +65,14 @@ Use:
 
 * `make help`
 * `make contract-audit`
+
+### If the question is "why did this variable change?"
+
+Use:
+
+* `make show`
+* `make show-e`
+* `make show-origins`
 
 ### If the question is "is the graph still honest?"
 
@@ -104,6 +114,9 @@ Do not confuse these pairs:
 
 * `all` versus `selftest`
   `all` builds artifacts once. `selftest` proves the build contract.
+* `show` versus `show-e`
+  `show` reports file and command-line precedence under the normal rules. `show-e`
+  reruns the same introspection with GNU Make's environment-override mode.
 * `tour` versus `walkthrough`
   `tour` is the shortest review route. `walkthrough` writes the bounded first-pass bundle.
 * `selftest-report` versus `proof`

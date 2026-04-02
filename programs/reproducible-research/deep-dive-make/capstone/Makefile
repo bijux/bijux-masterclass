@@ -123,6 +123,8 @@ help:
 >     @printf '%s\n' \
 >     'Public targets:' \
 >     '  all               build app + dynamic bins (also writes ./all sentinel)' \
+>     '  show              print CFLAGS origin, flavor, and raw value' \
+>     '  show-e            rerun show with environment override enabled' \
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
 >     '  selftest-report   write the selftest evidence bundle to artifacts/' \
