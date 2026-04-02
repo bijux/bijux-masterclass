@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Command Guide
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,115 +13,72 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["What are you trying to do?"] --> layer["Choose the matching command layer"]
+  layer --> command["Run the smallest honest command"]
+  command --> next_move["Escalate only if the question changes"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this page is for command choice, not for reading
+the whole capstone. Read the second diagram as the rule: choose the command layer that
+matches the current job, run the smallest honest command, then escalate only if the
+question changes.
 
 Deep Dive DVC has three command layers: repository root, program directory, and capstone
-directory. This page makes those boundaries explicit.
+directory. The layers exist so learners do not have to guess where a command belongs.
 
-Use it when you know what proof question you have but are not sure where the command
-belongs.
+## Choose the command layer
 
----
+| If you need... | Use this layer | Why |
+| --- | --- | --- |
+| one stable entrypoint from the repository root | repository root | consistent commands across all programs |
+| course-local commands while staying inside the program | `programs/reproducible-research/deep-dive-dvc/` | a smaller surface than the repo root |
+| the raw executable reference repository | `capstone/` | direct access to the DVC project itself |
 
-## Repository Root
+## Start by job, not by directory
+
+| If the job is... | Start here | Do not start with |
+| --- | --- | --- |
+| first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `make -C capstone confirm` |
+| current-state verification | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make -C capstone tour` |
+| experiment comparison | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | `make -C capstone confirm` |
+| release-boundary review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | random `make -C capstone` exploration |
+| strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` |
+
+## Repository root
 
 Use root-level commands when you want one entrypoint that works across programs.
 
-| Command | What it does |
-| --- | --- |
-| `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | show the program Makefile surface |
-| `make PROGRAM=reproducible-research/deep-dive-dvc docs-build` | build the course docs in strict mode |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | build the learner-first capstone walkthrough bundle |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | build the executed capstone proof bundle |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-state-summary` | render the combined declaration, execution, and release summary |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-summary` | render the promoted release summary |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-review-queue` | render the structured prediction review queue |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | validate the promoted contract through the public root surface |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | build the experiment comparison bundle |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | build the release review bundle |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | build the recovery review bundle |
-| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | run the strongest repository-wide capstone proof route |
-| `make PROGRAM=reproducible-research/deep-dive-dvc test` | run the course's main verification target |
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm`
 
-[Back to top](#top)
-
----
-
-## Program Directory
+## Program directory
 
 Use `programs/reproducible-research/deep-dive-dvc/` when you want the course-local
 surface.
 
-| Command | What it does |
-| --- | --- |
-| `make help` | show program-level targets |
-| `make test` | run the capstone confirmation suite via the program surface |
-| `make capstone-walkthrough` | build the learner-first walkthrough bundle |
-| `make capstone-tour` | build the executed capstone proof bundle |
-| `make capstone-state-summary` | render the combined state summary |
-| `make capstone-release-summary` | render the promoted release summary |
-| `make capstone-review-queue` | render the structured review queue |
-| `make capstone-verify` | run the capstone contract verification route |
-| `make capstone-experiment-review` | build the experiment comparison bundle |
-| `make capstone-release-review` | build the release review bundle |
-| `make capstone-recovery-review` | build the recovery review bundle |
-| `make capstone-confirm` | run the strongest capstone confirmation route |
-| `make clean` | remove program and capstone build artifacts |
+- `make capstone-walkthrough`
+- `make capstone-verify`
+- `make capstone-experiment-review`
+- `make capstone-release-review`
+- `make capstone-confirm`
 
-[Back to top](#top)
+## Capstone directory
 
----
+Use `capstone/` when you want the raw reference repository.
 
-## Capstone Directory
+- `make walkthrough`
+- `make verify`
+- `make experiment-review`
+- `make release-review`
+- `make recovery-review`
+- `make confirm`
 
-Use `capstone/` when you want the raw executable DVC repository.
+## Good stopping point
 
-| Command | What it does |
-| --- | --- |
-| `make help` | show public capstone targets |
-| `make walkthrough` | build the learner-first reading bundle without executing the workflow |
-| `make repro` | execute the DVC pipeline |
-| `make state-summary` | render the combined declaration, execution, and release summary |
-| `make release-summary` | render the promoted release summary |
-| `make review-queue` | render the structured prediction review queue |
-| `make verify` | run the pipeline and validate the promoted contract |
-| `make experiment-review` | build the experiment comparison bundle |
-| `make release-review` | build the release review bundle |
-| `make confirm` | run verification, tests, and the recovery drill |
-| `make recovery-drill` | prove remote-backed restoration after local loss |
-| `make recovery-review` | build the remote-backed recovery review bundle |
-| `make tour` | build the executed proof bundle |
-
-[Back to top](#top)
-
----
-
-## Best Defaults
-
-If you are new:
-
-```sh
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-state-summary
-```
-
-If you are reviewing the capstone deeply:
-
-```sh
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
-make -C capstone help
-```
-
-Use [`verification-route-guide.md`](../reference/verification-route-guide.md) when you need to choose
-between `walkthrough`, `verify`, `confirm`, `recovery-drill`, and `tour`.
-
-[Back to top](#top)
+Stop when you can explain why the chosen command layer is proportionate to the current
+question. If the layer still feels too large, step down one layer before opening more
+targets.
