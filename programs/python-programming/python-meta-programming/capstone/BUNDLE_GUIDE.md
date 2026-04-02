@@ -47,3 +47,4 @@ produced without diffing every file manually.
 - read [INSPECTION_GUIDE.md](INSPECTION_GUIDE.md) when the inspect bundle is the right route but one artifact is still unclear
 - read [WALKTHROUGH_GUIDE.md](WALKTHROUGH_GUIDE.md) when the tour bundle is the right route
 - read [PROOF_GUIDE.md](PROOF_GUIDE.md) when the verify-report bundle is the right route
+- read [BUNDLE_MANIFEST_GUIDE.md](BUNDLE_MANIFEST_GUIDE.md) when the question is the exact saved inventory rather than the route choice

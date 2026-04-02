@@ -30,6 +30,7 @@ kind of pressure each test file is meant to catch.
 2. `tests/test_fields.py`
 3. `tests/test_runtime.py`
 4. `tests/test_cli.py`
+5. `tests/test_bundle_manifest.py`
 
 That route keeps class-definition-time behavior first, descriptor rules second, runtime
 invocation third, and public CLI proof last.
@@ -42,6 +43,7 @@ invocation third, and public CLI proof last.
 | `test_fields.py` | descriptor validation, coercion, defaults, and per-instance storage behavior | `fields.py`, `plugins.py` |
 | `test_runtime.py` | plugin creation, runtime invocation, action history, and manifest observation without execution | `framework.py`, `actions.py`, `plugins.py` |
 | `test_cli.py` | public command behavior for manifest, invoke, and trace routes | `cli.py`, `framework.py` |
+| `test_bundle_manifest.py` | stable saved-bundle inventory generation | `scripts/write_bundle_manifest.py` |
 
 ## Best proof questions
 
