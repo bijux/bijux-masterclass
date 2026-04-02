@@ -43,9 +43,9 @@ This is the true capstone of Module 6. You now have every tool required to ship 
 **Audience**: Engineers who want their beautiful monadic pipelines to actually run in production with different behaviours for dev/prod/test — without compromising on purity or testability.
 
 **Outcome**
-1. You will toggle any cross-cutting concern with a one-line combinator.
+1. You will toggle validation, logging, and metrics with small, composable combinators.
 2. You will build one pipeline that behaves completely differently under different configs — with zero duplication.
-3. You will have mechanical proof that every toggle preserves the appropriate laws — meaning every configuration is refactor-safe.
+3. You will have mechanical proof for the featured toggle laws, so the enabled and disabled paths stay refactor-safe within the modeled toggle space.
 
 ## Why Higher-Order Combinators + Reader Is the Only Acceptable Pattern
 
@@ -62,13 +62,12 @@ Higher-order combinators + Reader is the only pattern that gives you everything.
 
 | Law                              | Formal Statement                                                            | Why it matters                                            |
 |----------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Identity (disabled)              | `toggle_xxx(False, p) == p` (endomorphic toggles only)                      | Disabled feature is a no-op                               |
-| Projection Equivalence           | For shape-changing toggles: `proj(toggle_xxx(enabled, p)(x)) == p(x)`       | Core behaviour unchanged by toggle                        |
+| Identity (disabled)              | `toggle_validation(False, validate, pipeline) == pipeline`                  | Disabled validation is a no-op                            |
+| Projection Equivalence           | `fst(toggle_metrics(enabled, measure, zero, p)(x)) == p(x)`                 | Metrics wrapping does not change the computed value       |
 | Endomorphic Monad Preservation   | `toggle_validation` preserves Result monad laws                             | Refactor-safe when validation enabled                     |
-| Writer Law Compatibility         | `toggle_logging` produces lawful Writer values                              | Logs accumulate correctly                                 |
+| Writer Law Compatibility         | `run(toggle_logging(enabled, p, mk_msg)(x)).value == p(x)`                  | Logging preserves the payload while accumulating logs     |
 
-
-All equivalence and preservation properties run in CI over all possible config combinations.
+The capstone verifies these claims in `capstone/tests/unit/fp/test_configurable.py` across enabled and disabled toggle states, and it relies on the dedicated Writer and Result law suites under `capstone/tests/unit/fp/laws/` for the container-level guarantees.
 
 ## 2. Public API – Three combinators (that's all you need)
 
