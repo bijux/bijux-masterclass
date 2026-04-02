@@ -31,6 +31,12 @@ make the course concrete: value objects, entities, rule lifecycles, aggregate ro
 evaluation policies, read models, runtime adapters, and unit-of-work boundaries are
 all exercised in runnable code instead of only in chapter prose.
 
+## Use this capstone for
+
+- learning how the course’s ownership rules look in one executable system
+- reviewing where domain logic ends and orchestration begins
+- proving one design claim with the smallest honest command or saved bundle
+
 The scenario is deliberately human and operational:
 
 - a team defines monitoring rules for a service
@@ -82,6 +88,16 @@ Review and proof routes:
 - `make confirm` runs the strongest local confirmation route.
 - `make proof` builds the published learner-facing review route.
 
+## Route by reader goal
+
+| If you want to... | Start with | Then |
+| --- | --- | --- |
+| understand the domain before reading code | this README and `make demo` | `TOUR.md` |
+| inspect ownership boundaries file by file | `PACKAGE_GUIDE.md` | `ARCHITECTURE.md` |
+| confirm one design claim with evidence | `PROOF_GUIDE.md` | `make inspect` or `make verify-report` |
+| review the full capstone as a learner-facing artifact | `make tour` | `make proof` |
+| run the strongest local confirmation route | `make confirm` | `make proof` if you need the published bundle |
+
 ## Guided review route
 
 | Review question | Inspect first | What to conclude | Strongest proof route |
@@ -92,6 +108,14 @@ Review and proof routes:
 | Can the current design be reviewed as a learner-facing artifact instead of just a code dump? | `TOUR.md`, `INSPECTION_GUIDE.md`, `PROOF_GUIDE.md` | The capstone remains legible as a guided reference path | `make proof` |
 
 Use this order repeatedly: inspect the named files, state the ownership claim, then run the smallest route that produces matching evidence.
+
+## Inspect, explain, prove
+
+Use this loop throughout the capstone:
+
+1. Inspect one file, guide, or saved bundle.
+2. Explain which object or boundary owns the behavior.
+3. Prove that claim with one named command or one named test.
 
 ## Currency audit
 
