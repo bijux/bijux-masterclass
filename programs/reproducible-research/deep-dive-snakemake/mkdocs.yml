@@ -24,12 +24,14 @@ plugins:
 nav:
   - Start Here:
       - Course Home: index.md
+      - Guides Home: guides/index.md
       - Course Guide: guides/course-guide.md
       - Learner Entry: guides/start-here.md
       - Platform Setup: guides/platform-setup.md
       - Learning Contract: guides/learning-contract.md
       - Program Outline: module-00.md
   - Course Reference:
+      - Reference Home: reference/index.md
       - Module Dependency Map: reference/module-dependency-map.md
       - Boundary Map: reference/boundary-map.md
       - Workflow Glossary: reference/workflow-glossary.md

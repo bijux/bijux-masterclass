@@ -63,6 +63,9 @@ right entry path so the capstone does not become an accidental first lesson.
 If you already know the course exists but are not sure which support page you need, use
 [`course-guide.md`](guides/course-guide.md) as the stable hub.
 
+Use [`guides/index.md`](guides/index.md) when you want the full learner-support surface
+and [`reference/index.md`](reference/index.md) when you want the stable review shelf.
+
 ## What each module contributes
 
 - [Module 00](module-00.md) establishes the full program map and capstone relationship.
