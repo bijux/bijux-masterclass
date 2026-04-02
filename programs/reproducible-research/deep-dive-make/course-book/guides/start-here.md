@@ -49,7 +49,7 @@ Use this page to choose the right entry point before you start reading modules a
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
 4. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
 5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-6. Keep [Capstone Map](capstone-map.md) and [Proof Ladder](proof-ladder.md) nearby, but enter the capstone only after the local module idea is clear.
+6. Keep [Capstone Map](../capstone/capstone-map.md) and [Proof Ladder](proof-ladder.md) nearby, but enter the capstone only after the local module idea is clear.
 
 ## Route By Pressure
 
@@ -67,7 +67,7 @@ Use this page to choose the right entry point before you start reading modules a
 3. Read [Module 04](../module-04-rule-semantics-precedence-edge-cases/index.md).
 4. Read [Module 05](../module-05-portability-hermeticity-failure-modes/index.md).
 5. Read [Module 09](../module-09-performance-observability-incident-response/index.md).
-6. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](capstone-map.md) to inspect the reference build selectively.
+6. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](../capstone/capstone-map.md) to inspect the reference build selectively.
 
 ### Build-system stewardship
 
@@ -75,7 +75,7 @@ Use this page to choose the right entry point before you start reading modules a
 2. Read [Module 07](../module-07-build-architecture-layered-includes-apis/index.md).
 3. Read [Module 08](../module-08-release-engineering-artifact-contracts/index.md).
 4. Read [Module 10](../module-10-migration-governance-tool-boundaries/index.md).
-5. Finish with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Capstone Extension Guide](capstone-extension-guide.md).
+5. Finish with [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) and [Capstone Extension Guide](../capstone/capstone-extension-guide.md).
 
 ## Success Signal
 
@@ -92,6 +92,6 @@ You are using the course correctly if you can explain all of this without guessw
 - [Course Guide](course-guide.md)
 - [Module 00](../module-00-orientation/index.md)
 - [Platform Setup](platform-setup.md)
-- [Capstone Guide](readme-capstone.md)
+- [Capstone Guide](../capstone/index.md)
 
 [Back to top](#top)

@@ -89,7 +89,7 @@ Use these with the atlas:
 
 * [`concept-index.md`](concept-index.md) for where the idea is taught in full
 * [`incident-ladder.md`](incident-ladder.md) for operational diagnosis order
-* [`capstone-map.md`](../guides/capstone-map.md) for module-aware capstone routing
-* [`repro-catalog.md`](../guides/repro-catalog.md) for concrete failure-class examples
+* [`capstone-map.md`](../capstone/capstone-map.md) for module-aware capstone routing
+* [`repro-catalog.md`](../capstone/repro-catalog.md) for concrete failure-class examples
 
 [Back to top](#top)

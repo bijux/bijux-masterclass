@@ -133,6 +133,6 @@ Use these with this page:
 * [`concept-index.md`](concept-index.md) to find where a topic is actually taught
 * [`module-dependency-map.md`](module-dependency-map.md) to see the safe learning order
 * [`public-targets.md`](public-targets.md) to separate the stable API from implementation detail
-* [`capstone-map.md`](../guides/capstone-map.md) to choose the smallest honest proof route
+* [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest proof route
 
 [Back to top](#top)

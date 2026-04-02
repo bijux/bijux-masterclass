@@ -84,10 +84,10 @@ Use it when you know what concept you care about but want the fastest evidence r
 
 The most useful companion pages for this matrix are:
 
-* [`command-guide.md`](command-guide.md)
+* [`capstone/command-guide.md`](../capstone/command-guide.md)
 * [`public-targets.md`](../reference/public-targets.md)
 * [`practice-map.md`](../reference/practice-map.md)
-* [`capstone-file-guide.md`](capstone-file-guide.md)
+* [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 * [`selftest-map.md`](../reference/selftest-map.md)
 
 [Back to top](#top)

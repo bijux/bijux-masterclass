@@ -113,7 +113,7 @@ Do not use the capstone:
 * as a substitute for a minimal repro
 * as evidence that you understand a concept you still cannot explain on a smaller graph
 
-Use [`capstone-map.md`](capstone-map.md) when you need a guided route through the
+Use [`capstone/capstone-map.md`](../capstone/capstone-map.md) when you need a guided route through the
 repository.
 
 [Back to top](#top)

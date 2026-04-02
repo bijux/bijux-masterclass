@@ -89,9 +89,9 @@ The ladder exists to prevent these clumsy review habits:
 
 Use these with the ladder:
 
-* [`command-guide.md`](command-guide.md) for command-layer boundaries
+* [`capstone/command-guide.md`](../capstone/command-guide.md) for command-layer boundaries
 * [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
-* [`capstone-map.md`](capstone-map.md) for module-aware entry routes
+* [`capstone/capstone-map.md`](../capstone/capstone-map.md) for module-aware entry routes
 * [`public-targets.md`](../reference/public-targets.md) for the stable target API
 
 [Back to top](#top)

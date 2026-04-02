@@ -43,7 +43,7 @@ one module chapter.
 
 ## Use These For Commands And Proof
 
-- [Command Guide](command-guide.md) for root, program, and capstone command boundaries
+- [Command Guide](../capstone/command-guide.md) for root, program, and capstone command boundaries
 - [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
 - [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence surface
 - [Public Targets](../reference/public-targets.md) when you need the stable command surface
@@ -51,19 +51,20 @@ one module chapter.
 
 ## Use These For Capstone Reading
 
-- [Capstone Guide](readme-capstone.md) for the repository contract
-- [Capstone Map](capstone-map.md) for module-to-repository routing
-- [Capstone File Guide](capstone-file-guide.md) for file responsibilities
-- [Capstone Walkthrough](capstone-walkthrough.md) for a bounded first reading route
-- [Capstone Proof Checklist](capstone-proof-checklist.md) for one proof pass
-- [Capstone Review Worksheet](capstone-review-worksheet.md) for structured repository review
-- [Repro Catalog](repro-catalog.md) for failure-mode examples
-- [Repro Study Worksheet](repro-study-worksheet.md) for guided failure analysis
-- [Capstone Extension Guide](capstone-extension-guide.md) for safe evolution
+- [Capstone Guide](../capstone/index.md) for the repository contract
+- [Capstone Map](../capstone/capstone-map.md) for module-to-repository routing
+- [Capstone File Guide](../capstone/capstone-file-guide.md) for file responsibilities
+- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for a bounded first reading route
+- [Capstone Proof Checklist](../capstone/capstone-proof-checklist.md) for one proof pass
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for structured repository review
+- [Repro Catalog](../capstone/repro-catalog.md) for failure-mode examples
+- [Repro Study Worksheet](../capstone/repro-study-worksheet.md) for guided failure analysis
+- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
 
 ## Keep The Layout Stable
 
 - `index.md` stays the course home
 - `guides/` stays the learner route and proof shelf
+- `capstone/` stays the capstone-specific reading, review, and repro shelf
 - `reference/` stays the durable map and glossary shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

@@ -97,7 +97,7 @@ These are the pages that make the course easier to trust and easier to finish:
 | what each module title actually promises | [`module-promise-map.md`](guides/module-promise-map.md) |
 | whether you are ready to move on | [`module-checkpoints.md`](guides/module-checkpoints.md) |
 | smallest honest proof route | [`proof-ladder.md`](guides/proof-ladder.md) |
-| capstone entry by module | [`capstone-map.md`](guides/capstone-map.md) |
+| capstone entry by module | [`capstone-map.md`](capstone/capstone-map.md) |
 
 [Back to top](#top)
 
@@ -159,8 +159,8 @@ The course is paired with an executable reference build in [`capstone/`](https:/
 Use these routes in order:
 
 1. [`proof-ladder.md`](guides/proof-ladder.md) to size the proof correctly
-2. [`capstone-map.md`](guides/capstone-map.md) to enter by module arc
-3. [`command-guide.md`](guides/command-guide.md) when you need the exact command layer
+2. [`capstone-map.md`](capstone/capstone-map.md) to enter by module arc
+3. [`command-guide.md`](capstone/command-guide.md) when you need the exact command layer
 
 From the repository root, the most useful first commands are:
 

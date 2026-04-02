@@ -59,7 +59,7 @@ Use this when Make still feels foreign.
 2. [`module-00-orientation/index.md`](../module-00-orientation/index.md)
 3. Modules 01 and 02
 4. [`module-checkpoints.md`](module-checkpoints.md)
-5. [`capstone-walkthrough.md`](capstone-walkthrough.md)
+5. [`capstone-walkthrough.md`](../capstone/capstone-walkthrough.md)
 
 ### Inherited Build Repair
 
@@ -69,7 +69,7 @@ Use this when you already have a failing or brittle build.
 2. Module 04
 3. Module 05
 4. Module 09
-5. [`capstone-map.md`](capstone-map.md)
+5. [`capstone/capstone-map.md`](../capstone/capstone-map.md)
 
 ### Release And Stewardship
 
@@ -88,7 +88,7 @@ Use this when a build already failed and you need the shortest route to responsi
 1. [`incident-ladder.md`](../reference/incident-ladder.md)
 2. Module 09
 3. [`public-targets.md`](../reference/public-targets.md)
-4. [`capstone-map.md`](capstone-map.md)
+4. [`capstone/capstone-map.md`](../capstone/capstone-map.md)
 5. `capstone-incident-audit`
 
 [Back to top](#top)

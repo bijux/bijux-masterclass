@@ -88,7 +88,7 @@ At the end of the checklist, you should be able to answer:
 If you want more depth after the checklist:
 
 * use [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
-* use [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
+* use [`proof-matrix.md`](../guides/proof-matrix.md) for claim-to-evidence routing
 * use [`repro-catalog.md`](repro-catalog.md) for failure-class study
 
 [Back to top](#top)

@@ -54,7 +54,7 @@ Treat these as public capstone surfaces:
 
 * the top-level targets shown by `help`
 * the local capstone guides that explain how to review those targets and bundles
-* the files described in [`capstone-file-guide.md`](../guides/capstone-file-guide.md)
+* the files described in [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 * the proof routes documented in [`proof-matrix.md`](../guides/proof-matrix.md)
 
 Treat other internal helper files and intermediate artifacts as implementation detail
@@ -83,7 +83,7 @@ unless the docs promote them intentionally.
 Use these pages with this guide:
 
 * [`public-targets.md`](public-targets.md)
-* [`capstone-file-guide.md`](../guides/capstone-file-guide.md)
-* [`capstone-proof-checklist.md`](../guides/capstone-proof-checklist.md)
+* [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
+* [`capstone-proof-checklist.md`](../capstone/capstone-proof-checklist.md)
 
 [Back to top](#top)

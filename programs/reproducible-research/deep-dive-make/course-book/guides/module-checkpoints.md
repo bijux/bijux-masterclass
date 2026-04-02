@@ -91,6 +91,6 @@ Use these with the checkpoints:
 * [`module-promise-map.md`](module-promise-map.md) to see what each title promised
 * [`proof-ladder.md`](proof-ladder.md) to keep proof proportional to the question
 * [`practice-map.md`](../reference/practice-map.md) to match module work with proof loops
-* [`capstone-review-worksheet.md`](capstone-review-worksheet.md) when you want to record what the evidence actually showed
+* [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) when you want to record what the evidence actually showed
 
 [Back to top](#top)

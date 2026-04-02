@@ -86,9 +86,9 @@ Modules 09 to 10 finish the course where long-lived build systems actually fail:
 - [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
 - [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
-- [Command Guide](command-guide.md) when you need the right command surface
+- [Command Guide](../capstone/command-guide.md) when you need the right command surface
 - [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) when you need to size or route proof correctly
-- [Capstone Map](capstone-map.md) when you want the repository route by module
+- [Capstone Map](../capstone/capstone-map.md) when you want the repository route by module
 
 ## Honest Expectation
 

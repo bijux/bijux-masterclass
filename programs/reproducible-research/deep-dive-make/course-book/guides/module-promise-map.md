@@ -93,6 +93,6 @@ Use these pages with the promise map:
 * [`course-guide.md`](course-guide.md) for the stable learner hub
 * [`module-checkpoints.md`](module-checkpoints.md) for the end-of-module review bar
 * [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
-* [`capstone-map.md`](capstone-map.md) for module-to-capstone entry routes
+* [`capstone/capstone-map.md`](../capstone/capstone-map.md) for module-to-capstone entry routes
 
 [Back to top](#top)

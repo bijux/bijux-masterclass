@@ -178,7 +178,7 @@ correctness, scaling, diagnostics, and hardening become concrete. The early modu
 smaller local teaching projects first so the learner can see the semantics without a large
 repository in the way.
 
-Use [`capstone-map.md`](../guides/capstone-map.md) when you want a module-by-module route through
+Use [`capstone-map.md`](../capstone/capstone-map.md) when you want a module-by-module route through
 the capstone instead of jumping into its files cold.
 
 **Proof command:**
@@ -213,9 +213,9 @@ Use these support pages when you reach each milestone:
 | Milestone | Best support pages |
 | --- | --- |
 | Build graph literacy | [`build-graph-glossary.md`](../reference/build-graph-glossary.md), [`practice-map.md`](../reference/practice-map.md), [`proof-matrix.md`](../guides/proof-matrix.md), [`module-checkpoints.md`](../guides/module-checkpoints.md) |
-| Production discipline | [`command-guide.md`](../guides/command-guide.md), [`public-targets.md`](../reference/public-targets.md), [`incident-ladder.md`](../reference/incident-ladder.md), [`proof-ladder.md`](../guides/proof-ladder.md) |
-| System design | [`capstone-map.md`](../guides/capstone-map.md), [`capstone-file-guide.md`](../guides/capstone-file-guide.md), [`capstone-walkthrough.md`](../guides/capstone-walkthrough.md), [`module-promise-map.md`](../guides/module-promise-map.md) |
-| Operational judgment | [`completion-rubric.md`](../reference/completion-rubric.md), [`capstone-review-worksheet.md`](../guides/capstone-review-worksheet.md), [`capstone-extension-guide.md`](../guides/capstone-extension-guide.md), [`topic-boundaries.md`](../reference/topic-boundaries.md) |
+| Production discipline | [`command-guide.md`](../capstone/command-guide.md), [`public-targets.md`](../reference/public-targets.md), [`incident-ladder.md`](../reference/incident-ladder.md), [`proof-ladder.md`](../guides/proof-ladder.md) |
+| System design | [`capstone-map.md`](../capstone/capstone-map.md), [`capstone-file-guide.md`](../capstone/capstone-file-guide.md), [`capstone-walkthrough.md`](../capstone/capstone-walkthrough.md), [`module-promise-map.md`](../guides/module-promise-map.md) |
+| Operational judgment | [`completion-rubric.md`](../reference/completion-rubric.md), [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md), [`capstone-extension-guide.md`](../capstone/capstone-extension-guide.md), [`topic-boundaries.md`](../reference/topic-boundaries.md) |
 
 ---
 

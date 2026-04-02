@@ -32,7 +32,6 @@ nav:
       - Pressure Routes: guides/pressure-routes.md
       - Module Promise Map: guides/module-promise-map.md
       - Module Checkpoints: guides/module-checkpoints.md
-      - Command Guide: guides/command-guide.md
       - Proof Ladder: guides/proof-ladder.md
       - Proof Matrix: guides/proof-matrix.md
   - Reference:
@@ -47,18 +46,19 @@ nav:
       - Incident Ladder: reference/incident-ladder.md
       - Completion Rubric: reference/completion-rubric.md
   - Capstone:
-      - Capstone Guide: guides/readme-capstone.md
-      - Capstone Map: guides/capstone-map.md
-      - Capstone File Guide: guides/capstone-file-guide.md
+      - Capstone Guide: capstone/index.md
+      - Command Guide: capstone/command-guide.md
+      - Capstone Map: capstone/capstone-map.md
+      - Capstone File Guide: capstone/capstone-file-guide.md
       - Mk Layer Guide: reference/mk-layer-guide.md
       - Artifact Boundary Guide: reference/artifact-boundary-guide.md
       - Selftest Map: reference/selftest-map.md
-      - Capstone Proof Checklist: guides/capstone-proof-checklist.md
-      - Capstone Review Worksheet: guides/capstone-review-worksheet.md
-      - Capstone Walkthrough: guides/capstone-walkthrough.md
-      - Repro Catalog: guides/repro-catalog.md
-      - Repro Study Worksheet: guides/repro-study-worksheet.md
-      - Capstone Extension Guide: guides/capstone-extension-guide.md
+      - Capstone Proof Checklist: capstone/capstone-proof-checklist.md
+      - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+      - Capstone Walkthrough: capstone/capstone-walkthrough.md
+      - Repro Catalog: capstone/repro-catalog.md
+      - Repro Study Worksheet: capstone/repro-study-worksheet.md
+      - Capstone Extension Guide: capstone/capstone-extension-guide.md
   - "Module 01: Foundations, Build Graphs, and Truth": module-01-build-graph-foundations-truth/index.md
   - "Module 02: Parallel Safety and Project Structure": module-02-parallel-safety-project-structure/index.md
   - "Module 03: Production Practice, Determinism, and Selftests": module-03-determinism-debugging-self-testing/index.md
