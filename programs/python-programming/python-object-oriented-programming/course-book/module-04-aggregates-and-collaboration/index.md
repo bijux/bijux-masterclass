@@ -76,6 +76,19 @@ This module is about finding the boundary between those extremes.
 3. Study policies, adapters, and collaboration surfaces after the boundary is clear.
 4. Use the refactor chapter as the test of whether the model stays coherent under extension.
 
+## First capstone pass for this module
+
+1. Read `capstone/ARCHITECTURE.md`.
+2. Inspect `src/service_monitoring/model.py`.
+3. Inspect `src/service_monitoring/read_models.py` and `src/service_monitoring/projections.py`.
+4. Use `make inspect` or the lifecycle tests only after you can already name the authoritative boundary.
+
+## If the module still feels blurry
+
+- ask which object may reject a change instead of asking which object merely hears about it
+- compare the aggregate with one projection and explain why only one of them may change domain truth
+- compare a policy seam with orchestration and explain why variation is not the same thing as authority
+
 ## Common failure modes
 
 - emitting events from objects that do not own the underlying invariant
@@ -96,6 +109,15 @@ This module is the direct explanation of the capstone's architecture. The `Monit
 aggregate owns registration, activation, retirement, and alert production; projections stay
 downstream of events; policies encapsulate evaluation variation; and the runtime coordinates
 without becoming the source of truth. Read this module as the justification for those edges.
+
+## Honest completion signal
+
+You are ready to move on when you can open one capstone collaboration path and answer all
+three of these without guessing:
+
+- which boundary is authoritative
+- which artifact is only derived
+- which extension should land outside the aggregate
 
 ## Closing criteria
 
