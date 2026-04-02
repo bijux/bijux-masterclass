@@ -30,6 +30,17 @@ def test_signatures_command_renders_generated_constructor_and_action_shapes(caps
     assert console["actions"]["deliver"] == "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'"
 
 
+def test_plugin_command_renders_one_concrete_plugin_contract(capsys) -> None:
+    exit_code = main(["plugin", "delivery", "webhook"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["plugin_name"] == "webhook"
+    assert captured["fields"][0]["name"] == "endpoint"
+    assert captured["actions"][0]["name"] == "deliver"
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [

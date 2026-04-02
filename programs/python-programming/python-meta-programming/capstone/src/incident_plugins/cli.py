@@ -27,6 +27,14 @@ def _build_parser() -> argparse.ArgumentParser:
     manifest.add_argument("--group", help="Restrict output to one plugin group.")
     manifest.set_defaults(handler=_handle_manifest)
 
+    plugin = subparsers.add_parser(
+        "plugin",
+        help="Render the manifest entry for one concrete plugin.",
+    )
+    plugin.add_argument("group", help="Plugin group name.")
+    plugin.add_argument("plugin_name", help="Registered plugin name.")
+    plugin.set_defaults(handler=_handle_plugin)
+
     registry = subparsers.add_parser("registry", help="Render the plugin registry as JSON.")
     registry.add_argument("--group", help="Restrict output to one plugin group.")
     registry.set_defaults(handler=_handle_registry)
@@ -74,6 +82,11 @@ def _add_runtime_arguments(parser: argparse.ArgumentParser) -> None:
 
 def _handle_manifest(args: argparse.Namespace) -> dict[str, list[dict[str, object]]]:
     return build_manifest(args.group)
+
+
+def _handle_plugin(args: argparse.Namespace) -> dict[str, object]:
+    plugin_cls = _REGISTRY[args.group][args.plugin_name]
+    return plugin_cls.manifest()
 
 
 def _handle_registry(args: argparse.Namespace) -> dict[str, Any]:

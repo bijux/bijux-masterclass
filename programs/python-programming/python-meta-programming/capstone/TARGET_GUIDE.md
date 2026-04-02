@@ -30,6 +30,7 @@ route for the claim you need to check.
 | Target | What it is for |
 | --- | --- |
 | `manifest` | inspect the observable plugin schema without execution |
+| `plugin` | inspect one concrete plugin contract without invocation |
 | `registry` | inspect the registered plugins without opening private internals |
 | `signatures` | inspect generated constructor and action signatures without invocation |
 | `demo` | invoke one realistic delivery action |
@@ -47,6 +48,7 @@ route for the claim you need to check.
 Use:
 
 * `make manifest`
+* `make plugin`
 * `make registry`
 * `make signatures`
 
@@ -76,6 +78,8 @@ Use:
 
 - `manifest` versus `registry`
   `manifest` explains schema and action metadata; `registry` explains which plugins are currently registered.
+- `manifest` versus `plugin`
+  `manifest` shows the whole exported group; `plugin` lets you inspect one concrete plugin contract in isolation.
 - `registry` versus `signatures`
   `registry` proves which plugins exist; `signatures` proves which generated call shapes they expose.
 - `demo` versus `trace`
