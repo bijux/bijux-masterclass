@@ -68,6 +68,7 @@ make proof
 - `DEFINITION_TIME_GUIDE.md` for the class-definition sequence before runtime invocation
 - `ARCHITECTURE.md` for ownership boundaries
 - `PLUGIN_CATALOG.md` for the concrete adapters and why each one exists
+- `PUBLIC_API_GUIDE.md` for the supported package surface
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route
 - `PACKAGE_GUIDE.md` for the code-reading route

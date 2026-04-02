@@ -63,6 +63,9 @@ order needs a sequence view before the file-by-file route.
 Read [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when the framework is clear but the concrete
 adapter differences still need a purpose-driven explanation.
 
+Read [PUBLIC_API_GUIDE.md](PUBLIC_API_GUIDE.md) when the question is no longer only
+internal ownership, but what the package intentionally exports.
+
 ## What this guide prevents
 
 - starting in concrete plugins and mistaking them for the framework contract
