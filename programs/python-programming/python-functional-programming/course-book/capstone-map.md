@@ -28,6 +28,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 
 - Start with [FuncPipe Capstone Guide](capstone.md) for the overall role and purpose.
 - Read [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
+- Read [Capstone Review Worksheet](capstone-review-worksheet.md) when you want an explicit review lens.
 - Read [Capstone Architecture Guide](capstone-architecture-guide.md) when you are reviewing package boundaries.
 - Read [Capstone Walkthrough](capstone-walkthrough.md) when you want the learner-facing tour story.
 - Read [Capstone Proof Guide](capstone-proof-guide.md) when you want the verification route.
