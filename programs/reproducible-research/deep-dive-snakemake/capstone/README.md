@@ -122,6 +122,9 @@ make confirm
 Use `make selftest` when the narrow question is determinism across core counts rather
 than full clean-room confirmation.
 
+Use `PROOF_GUIDE.md` when you want the shortest route from a course claim to the target,
+file, or published artifact that proves it.
+
 [Back to top](#top)
 
 ---

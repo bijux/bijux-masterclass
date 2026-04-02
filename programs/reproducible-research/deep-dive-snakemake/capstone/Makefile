@@ -142,15 +142,37 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	$(SNAKEMAKE) --list-rules > "$(WALKTHROUGH_DIR_ABS)/list-rules.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(WALKTHROUGH_DIR_ABS)/dryrun.txt"
 	cp README.md "$(WALKTHROUGH_DIR_ABS)/README.md"
+	cp PROOF_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/PROOF_GUIDE.md"
+	cp Snakefile "$(WALKTHROUGH_DIR_ABS)/Snakefile"
 	cp FILE_API.md "$(WALKTHROUGH_DIR_ABS)/FILE_API.md"
+	cp config/config.yaml "$(WALKTHROUGH_DIR_ABS)/config.yaml"
+	cp config/schema.yaml "$(WALKTHROUGH_DIR_ABS)/schema.yaml"
+	mkdir -p "$(WALKTHROUGH_DIR_ABS)/workflow/rules"
+	cp workflow/rules/common.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/common.smk"
+	cp workflow/rules/publish.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/publish.smk"
 	cp TOUR.md "$(WALKTHROUGH_DIR_ABS)/TOUR.md"
 	@printf '%s\n' \
 		'1. Read README.md to understand the repository contract.' \
-		'2. Read list-rules.txt to see the visible workflow surface.' \
-		'3. Read dryrun.txt to inspect the planned jobs without execution.' \
-		'4. Read FILE_API.md to see which outputs are public contracts.' \
-		'5. Run make selftest when you want deterministic execution proof.' \
-		'6. Run make tour when you want executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
+		'2. Read PROOF_GUIDE.md to map claims to workflow evidence.' \
+		'3. Read Snakefile and workflow/rules/common.smk for the public workflow shape.' \
+		'4. Read list-rules.txt and dryrun.txt to inspect the visible rule surface and plan.' \
+		'5. Read FILE_API.md to see which outputs are public contracts.' \
+		'6. Run make selftest when you want deterministic execution proof.' \
+		'7. Run make tour when you want executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
+	@printf '%s\n' \
+		'Public entry commands:' \
+		'  make walkthrough' \
+		'  make wf-dryrun' \
+		'  make selftest' \
+		'  make verify' \
+		'  make confirm' \
+		'  make tour' > "$(WALKTHROUGH_DIR_ABS)/commands.txt"
+	@printf '%s\n' \
+		'Review questions:' \
+		'  Which files define the durable public workflow contract?' \
+		'  Where does dynamic discovery become explicit and reviewable?' \
+		'  Which published outputs are safe for downstream trust?' \
+		'  Which guarantees come from clean-room confirmation rather than a dry-run?' > "$(WALKTHROUGH_DIR_ABS)/review-questions.txt"
 	@echo "✔ wrote workflow walkthrough to $(WALKTHROUGH_DIR_ABS)"
 
 tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bundle
@@ -159,11 +181,27 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(TOUR_DIR_ABS)/dryrun.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) 2>&1 | tee "$(TOUR_DIR_ABS)/run.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) --summary > "$(TOUR_DIR_ABS)/summary.txt"
+	$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" > "$(TOUR_DIR_ABS)/verify.txt"
+	cp Snakefile "$(TOUR_DIR_ABS)/Snakefile"
+	cp PROOF_GUIDE.md "$(TOUR_DIR_ABS)/PROOF_GUIDE.md"
 	cp FILE_API.md "$(TOUR_DIR_ABS)/FILE_API.md"
 	cp "$(MANIFEST_ABS)" "$(TOUR_DIR_ABS)/manifest.json"
 	cp "$(PUBLISH_DIR_ABS)/provenance.json" "$(TOUR_DIR_ABS)/provenance.json"
+	cp "$(PUBLISH_DIR_ABS)/summary.json" "$(TOUR_DIR_ABS)/summary.json"
 	cp README.md "$(TOUR_DIR_ABS)/README.md"
 	cp TOUR.md "$(TOUR_DIR_ABS)/TOUR.md"
+	@printf '%s\n' \
+		'Executed review route:' \
+		'  1. Read verify.txt for publish-contract sanity results.' \
+		'  2. Read list-rules.txt and dryrun.txt for declared workflow shape.' \
+		'  3. Read summary.txt and run.txt for executed workflow evidence.' \
+		'  4. Read manifest.json, summary.json, and provenance.json together.' \
+		'  5. Read FILE_API.md and PROOF_GUIDE.md to interpret the published boundary.' > "$(TOUR_DIR_ABS)/route.txt"
+	@printf '%s\n' \
+		'Review questions:' \
+		'  Which workflow claims are visible before execution, and which only after execution?' \
+		'  Which publish artifacts would you trust downstream without reading logs?' \
+		'  Which behavior is tied to workflow design rather than executor choice?' > "$(TOUR_DIR_ABS)/review-questions.txt"
 	@echo "✔ wrote workflow tour to $(TOUR_DIR_ABS)"
 
 # ---- docker ----
