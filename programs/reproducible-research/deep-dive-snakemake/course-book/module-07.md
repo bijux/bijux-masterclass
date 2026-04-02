@@ -2,6 +2,31 @@
 
 # Module 07 — Workflow Architecture, Modules, File APIs, and Reuse Without Confusion
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 07"]
+  page["Module 07 — Workflow Architecture, Modules, File APIs, and Reuse Without Confusion"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Workflows become hard to maintain long before they become biologically or computationally
 large. The usual cause is not scale by itself. It is hidden architecture: rules copied
 across files, modules introduced without a boundary story, and consumers depending on

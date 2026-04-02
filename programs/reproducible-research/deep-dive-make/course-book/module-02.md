@@ -1,6 +1,31 @@
 <a id="top"></a>
 # Module 02 — Scaling: Parallelism, Safety, and Large-Project Structure
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Module 02"]
+  page["Module 02 — Scaling: Parallelism, Safety, and Large-Project Structure"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Module 01 taught correctness on a small graph. Module 02 is where that correctness either survives contact with reality—or collapses the first time someone runs `make -j` on a slightly larger repo.
 
 This module does **not** treat parallelism as a performance trick. It treats it as an adversarial test of whether your DAG is telling the truth.

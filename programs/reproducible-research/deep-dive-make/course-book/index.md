@@ -1,5 +1,30 @@
 <a id="top"></a>
 # Deep Dive Make: The Program Guide
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Course home"]
+  page["Deep Dive Make: The Program Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 A ten-module program for learning **GNU Make as a declarative build-graph engine**—from
 first-contact basics to build-system mastery. The focus is not “Makefile tricks,” but
 **semantic discipline**: truthful dependency graphs, atomic outputs, parallel safety,

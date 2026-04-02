@@ -1,5 +1,30 @@
 # Snakemake Deep Dive — Module 04
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 04"]
+  page["Snakemake Deep Dive — Module 04"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Scaling Patterns: Modularity, Interfaces, CI Gates, and Executor-Proof Semantics
 
 > **Version & scope contract**
@@ -197,7 +222,7 @@ snakemake --profile profiles/local --list-changes code > .proof/list-changes.cod
 
 ---
 
-# Core 1 — Modularity that scales: `include` vs `module` and real boundaries
+## Core 1 — Modularity that scales: `include` vs `module` and real boundaries
 
 ## Learning objectives
 
@@ -329,7 +354,7 @@ Provide:
 
 ---
 
-# Core 2 — Interface contracts: naming, schemas, versioned outputs, compatibility
+## Core 2 — Interface contracts: naming, schemas, versioned outputs, compatibility
 
 ## Learning objectives
 
@@ -389,7 +414,7 @@ Provide:
 
 ---
 
-# Core 3 — Determinism and drift control: CI as the correctness boundary
+## Core 3 — Determinism and drift control: CI as the correctness boundary
 
 ## Learning objectives
 
@@ -480,7 +505,7 @@ Provide:
 
 ---
 
-# Core 4 — Resource semantics with evidence: prove what the workflow asked for
+## Core 4 — Resource semantics with evidence: prove what the workflow asked for
 
 ## Learning objectives
 
@@ -577,7 +602,7 @@ Provide:
 
 ---
 
-# Core 5 — Workflow as a product: distribution, pinning, upgrade paths, team practice
+## Core 5 — Workflow as a product: distribution, pinning, upgrade paths, team practice
 
 ## Learning objectives
 

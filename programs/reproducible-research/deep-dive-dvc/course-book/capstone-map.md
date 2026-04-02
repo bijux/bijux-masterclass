@@ -2,6 +2,31 @@
 
 # Deep Dive DVC: Capstone Map
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Capstone Map"]
+  page["Deep Dive DVC: Capstone Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The capstone is the executable cross-check for this program, but it should not be the
 first teaching surface for every concept. This page gives you one clear route through
 the repository so you know when to enter it, what to inspect, and which command proves

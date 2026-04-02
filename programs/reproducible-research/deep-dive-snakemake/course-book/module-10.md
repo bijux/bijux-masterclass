@@ -2,6 +2,31 @@
 
 # Module 10 — Mastery: Governance, Migration, Anti-Patterns, and Tool Boundaries
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 10"]
+  page["Module 10 — Mastery: Governance, Migration, Anti-Patterns, and Tool Boundaries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The final step in learning Snakemake is not another directive or another executor flag.
 It is judgment. Mature workflow engineering means reviewing an existing repository without
 wishful thinking, deciding what must remain stable, changing the right boundary first, and

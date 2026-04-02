@@ -2,6 +2,31 @@
 
 # Snakemake Deep Dive
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 01"]
+  page["Snakemake Deep Dive"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Module 01 — First Principles: The File-DAG Contract
 
 This module is a self-contained, evidence-first reference. You will build a tiny workflow, break it in controlled ways, diagnose using Snakemake-native artifacts, apply canonical fixes, and prove convergence.
@@ -111,7 +136,7 @@ flowchart LR
 
 ---
 
-# 1) Setup: runnable minimal project + golden outputs
+## 1) Setup: runnable minimal project + golden outputs
 
 ## 1.1 Create the project
 
@@ -279,7 +304,7 @@ B	2
 
 ---
 
-# 2) Debug commands: what each answers + expected outputs
+## 2) Debug commands: what each answers + expected outputs
 
 These commands are your ground truth. If your explanation cannot be grounded in these artifacts, it is not an explanation.
 
@@ -343,7 +368,7 @@ Expected: clean or warnings you can justify. Ignoring lint is accepting workflow
 
 ---
 
-# Core template
+## Core template
 
 Every core uses the same structure:
 
@@ -358,7 +383,7 @@ Every core uses the same structure:
 
 ---
 
-# 3) Core 1 — File contracts → DAG → jobs
+## 3) Core 1 — File contracts → DAG → jobs
 
 ## Learning objectives
 
@@ -459,7 +484,7 @@ Evidence required: no job node for `never_called`.
 
 ---
 
-# 4) Core 2 — Rebuild truth: convergence and hidden inputs
+## 4) Core 2 — Rebuild truth: convergence and hidden inputs
 
 ## Learning objectives
 
@@ -560,7 +585,7 @@ snakemake -n -s workflow/Snakefile.nondet
 
 ---
 
-# 5) Core 3 — Wildcards: unification, ambiguity, constraints
+## 5) Core 3 — Wildcards: unification, ambiguity, constraints
 
 ## Learning objectives
 
@@ -667,7 +692,7 @@ After redesign:
 
 ---
 
-# 6) Core 4 — Config discipline: validate early, isolate policy
+## 6) Core 4 — Config discipline: validate early, isolate policy
 
 ## Learning objectives
 
@@ -726,7 +751,7 @@ A parse/startup failure before any job runs, e.g. a schema validation error indi
 
 ---
 
-# 7) Core 5 — Publishing discipline: atomic outputs, logs, shadow, temp/protected
+## 7) Core 5 — Publishing discipline: atomic outputs, logs, shadow, temp/protected
 
 ## Learning objectives
 
@@ -882,7 +907,7 @@ rule summarize_counts:
 
 ---
 
-# 8) Debugging playbook table
+## 8) Debugging playbook table
 
 | Symptom                              | First command         | Required evidence                        | Primary cause                 | First fix                                        |
 | ------------------------------------ | --------------------- | ---------------------------------------- | ----------------------------- | ------------------------------------------------ |
@@ -895,7 +920,7 @@ rule summarize_counts:
 
 ---
 
-# 9) Exercises (with golden states)
+## 9) Exercises (with golden states)
 
 Each exercise submission must include: symptom → violated contract → fix → proof artifacts (`-n`, `--summary`, DAG/rulegraph).
 
@@ -937,7 +962,7 @@ Each exercise submission must include: symptom → violated contract → fix →
 
 ---
 
-# 10) Closing recap
+## 10) Closing recap
 
 Snakemake is a file-DAG engine. Your job is not to “run steps.” Your job is to keep the DAG truthful.
 

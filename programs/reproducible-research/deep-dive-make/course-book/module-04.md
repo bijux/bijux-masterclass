@@ -1,6 +1,31 @@
 <a id="top"></a>
 # Module 04 — Make Semantics Under Pressure: CLI, Precedence, Includes, and Rule Edge-Cases
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Module 04"]
+  page["Module 04 — Make Semantics Under Pressure: CLI, Precedence, Includes, and Rule Edge-Cases"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Modules 01–03 taught you to build truthful graphs, survive `-j`, and enforce determinism and CI contracts. This module is the thing you reach for when you already *know* what you intend, but you need the exact semantics and the sharp edges—fast, provable, and without folklore.
 
 Capstone exists here as **corroboration**: a runnable place where these semantics are exercised. The module stands on its own.

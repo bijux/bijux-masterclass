@@ -2,6 +2,31 @@
 
 # Module 10 — Mastery: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Module 10"]
+  page["Module 10 — Mastery: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The last step in learning DVC is not one more command. It is judgment. Mature state
 management means reviewing an existing repository without wishful thinking, deciding which
 state boundaries must remain stable, migrating them without damaging trust, and knowing

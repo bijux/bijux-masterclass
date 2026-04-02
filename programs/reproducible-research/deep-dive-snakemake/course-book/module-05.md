@@ -2,6 +2,31 @@
 
 # Module 05 — Software Stacks, Scripts, Wrappers, and Reproducible Rule Boundaries
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 05"]
+  page["Module 05 — Software Stacks, Scripts, Wrappers, and Reproducible Rule Boundaries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Once a workflow is semantically correct, the next source of failure is usually the
 boundary between Snakemake and the software it drives. Shell fragments grow into mini
 programs, Python imports leak across environments, wrappers hide assumptions, and a rule

@@ -1,5 +1,31 @@
 # Workflow Tour
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  guide["Capstone docs"]
+  section["TOUR"]
+  page["Workflow Tour"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 This tour is the executed proof route for the Snakemake capstone. It creates a bundle
 under `artifacts/workflow-tour/` so you can inspect the workflow the same way the course
 asks you to reason about it: through declared rules, planned jobs, real execution,

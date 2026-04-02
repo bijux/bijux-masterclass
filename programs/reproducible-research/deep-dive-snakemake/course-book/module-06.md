@@ -2,6 +2,31 @@
 
 # Module 06 — Versioned Publishing, Reports, and Downstream Workflow Contracts
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 06"]
+  page["Module 06 — Versioned Publishing, Reports, and Downstream Workflow Contracts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 A workflow run is not automatically a trustworthy result. The internal execution state
 that helps the workflow operate is often not the same thing as the published surface that
 another human, notebook, or downstream pipeline is allowed to depend on.

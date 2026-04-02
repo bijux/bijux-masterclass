@@ -2,6 +2,32 @@
 
 # Proof Guide
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  guide["Capstone docs"]
+  section["PROOF_GUIDE"]
+  page["Proof Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 This capstone is designed to prove build-system properties, not just compile a small C
 program. Use this guide when you want the shortest route from a claim to the target, file,
 or failure surface that defends it.

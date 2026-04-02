@@ -1,5 +1,30 @@
 # Module 02: Advanced Mechanics — Dynamic DAGs, Integrity, and Performance Patterns
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 02"]
+  page["Module 02: Advanced Mechanics — Dynamic DAGs, Integrity, and Performance Patterns"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 > **Version & scope contract**
 >
 > * Target: **Snakemake 9.14.x** semantics (mid-December 2025 docs). Verify your runtime:
@@ -93,7 +118,7 @@ flowchart TD
 
 ---
 
-# Core 1 — Wildcard Mastery: Metadata-Driven Expansion Without Explosions
+## Core 1 — Wildcard Mastery: Metadata-Driven Expansion Without Explosions
 
 ## Learning objectives
 
@@ -238,7 +263,7 @@ snakemake -n
 
 ---
 
-# Core 2 — Checkpoints: Dynamic DAGs Done Safely (and When They’re a Smell)
+## Core 2 — Checkpoints: Dynamic DAGs Done Safely (and When They’re a Smell)
 
 ## Learning objectives
 
@@ -396,7 +421,7 @@ snakemake -j 1 results/chunks.manifest
 
 ---
 
-# Core 3 — Data Integrity and Provenance as First-Class Outputs
+## Core 3 — Data Integrity and Provenance as First-Class Outputs
 
 ## Learning objectives
 
@@ -503,7 +528,7 @@ Your workflow is “auditable” only if you can answer, with artifacts:
 
 ---
 
-# Core 4 — Environments and Containers: Reproducibility Without Slowness
+## Core 4 — Environments and Containers: Reproducibility Without Slowness
 
 ## Learning objectives
 
@@ -597,7 +622,7 @@ You have “reproducible software deployment” if:
 
 ---
 
-# Core 5 — Performance Patterns: DAG Shape, Scheduler Load, and I/O
+## Core 5 — Performance Patterns: DAG Shape, Scheduler Load, and I/O
 
 ## Learning objectives
 
@@ -666,7 +691,7 @@ Your performance changes are real only if you can show:
 ---
 
 <a id="appendix-a--minimal-lab-setup"></a>
-# Appendix A — Minimal Lab Setup
+## Appendix A — Minimal Lab Setup
 
 Create this structure (exact):
 
@@ -697,7 +722,7 @@ Populate:
 ---
 
 <a id="appendix-b--debugging-playbook-what-you-see--what-it-means--first-fix"></a>
-# Appendix B — Debugging Playbook: What You See → What It Means → First Fix
+## Appendix B — Debugging Playbook: What You See → What It Means → First Fix
 
 | What you see                             | Run this                                              | Expected evidence               | Likely cause                                       | First fix                                                             |
 | ---------------------------------------- | ----------------------------------------------------- | ------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
@@ -712,7 +737,7 @@ CLI evidence tools (`--summary`, `--detailed-summary`, `--list-changes`, `--repo
 ---
 
 <a id="appendix-c--exercises"></a>
-# Appendix C — Exercises
+## Appendix C — Exercises
 
 Each exercise requires:
 
@@ -755,7 +780,7 @@ Each exercise requires:
 ---
 
 <a id="appendix-d--reference-workflow-complete-runnable-baseline"></a>
-# Appendix D — Reference Workflow (Complete, Runnable Baseline)
+## Appendix D — Reference Workflow (Complete, Runnable Baseline)
 
 If you want **one copy-paste file** that exercises Module 02 patterns (metadata targets + checkpoint discovery + provenance hooks), use this **single Snakefile**:
 

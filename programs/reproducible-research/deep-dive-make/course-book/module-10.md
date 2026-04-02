@@ -2,6 +2,31 @@
 
 # Module 10 — Mastery: Migration, Governance, and Knowing Make's Boundaries
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Module 10"]
+  page["Module 10 — Mastery: Migration, Governance, and Knowing Make's Boundaries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The last module is not about one more GNU Make trick. It is about judgment. Mature build
 engineering means knowing how to review a legacy Make system, how to improve it without
 breaking trust, and how to recognize when Make should remain the orchestrator versus when

@@ -1,6 +1,31 @@
 <a id="top"></a>
 # Module 03 — Production Practice: Determinism, Debugging, CI Contracts, Selftests, and Disciplined DSL
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Module 03"]
+  page["Module 03 — Production Practice: Determinism, Debugging, CI Contracts, Selftests, and Disciplined DSL"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Modules 01–02 get you to “correct” and “parallel-safe.” Module 03 is where correctness becomes **reliable under change**: the DAG stays stable across machines/CI, rebuilds are explainable under pressure, the build has a CI-stable interface, and the Makefile is protected against abstraction-driven graph rot.
 
 Capstone exists to **corroborate**. This module remains runnable and self-contained; capstone is the validation sidebar. (Capstone mappings/targets shown later mirror the existing repo surface.)

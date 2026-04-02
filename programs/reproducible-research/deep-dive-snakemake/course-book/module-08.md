@@ -2,6 +2,31 @@
 
 # Module 08 — Operating Contexts: Profiles, Executors, Storage, and Staging Boundaries
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 08"]
+  page["Module 08 — Operating Contexts: Profiles, Executors, Storage, and Staging Boundaries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 A workflow that only works under one command on one machine is not yet operationally
 sound. Snakemake becomes much more useful when the workflow semantics stay stable while
 the operating context changes: local development, CI, scheduled execution, scratch space,

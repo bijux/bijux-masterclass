@@ -1,5 +1,30 @@
 # Deep Dive Snakemake
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Course home"]
+  page["Deep Dive Snakemake"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Deep Dive Snakemake teaches workflow design as a discipline of explicit file contracts,
 deterministic planning, safe dynamic behavior, and durable operational boundaries. It is
 now a ten-module beginner-to-mastery program, not only a compact advanced reference.

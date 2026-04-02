@@ -2,6 +2,31 @@
 
 # Repro Study Worksheet
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Repro Study Worksheet"]
+  page["Repro Study Worksheet"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Use this worksheet when running the capstone repro pack. The goal is not only to trigger
 the failure. The goal is to explain it well enough that you could repair the graph or
 publication boundary deliberately.

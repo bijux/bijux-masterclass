@@ -2,6 +2,31 @@
 
 # Module 09 — Promotion, Registry Boundaries, Release Contracts, and Auditability
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Module 09"]
+  page["Module 09 — Promotion, Registry Boundaries, Release Contracts, and Auditability"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Recoverable state is not automatically trusted state. A DVC repository becomes far more
 useful when a team can answer which artifacts are experimental, which are baseline, which
 are promoted for downstream use, and which pieces of evidence must travel with a release

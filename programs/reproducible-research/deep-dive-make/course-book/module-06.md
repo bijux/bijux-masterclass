@@ -2,6 +2,31 @@
 
 # Module 06 — Generated Files, Multi-Output Rules, and Pipeline Boundaries
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Module 06"]
+  page["Module 06 — Generated Files, Multi-Output Rules, and Pipeline Boundaries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Modules 01–05 teach you to write correct builds. Module 06 turns that correctness into a
 safe content pipeline: generators, manifests, generated headers, bundled outputs, and
 stage boundaries that keep rebuild behavior truthful even when one command produces many

@@ -2,6 +2,32 @@
 
 # Repro Guide
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  guide["Capstone docs"]
+  section["REPRO_GUIDE"]
+  page["Repro Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 The repro pack exists to turn build failures into reviewable teaching surfaces. Use it
 when you want to study one failure class at a time instead of treating concurrency and
 graph defects as random incidents.

@@ -1,5 +1,30 @@
 # Snakemake Deep Dive — Module 03
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Module 03"]
+  page["Snakemake Deep Dive — Module 03"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Production Snakemake: HPC/Cloud Execution, Error Handling, Data Locality, Governance
 
 > **Version & scope contract**
@@ -103,7 +128,7 @@ snakemake --profile profiles/local --list-changes code
 
 ---
 
-# Core 1 — Execution backends via profiles (cluster-first by construction)
+## Core 1 — Execution backends via profiles (cluster-first by construction)
 
 ## Learning objectives
 
@@ -192,7 +217,7 @@ Attach:
 
 ---
 
-# Core 2 — Robustness: atomicity, retries, incomplete semantics
+## Core 2 — Robustness: atomicity, retries, incomplete semantics
 
 ## Learning objectives
 
@@ -349,7 +374,7 @@ Submit:
 
 ---
 
-# Core 3 — Data locality and staging: storage plugins + explicit prefixes
+## Core 3 — Data locality and staging: storage plugins + explicit prefixes
 
 ## Learning objectives
 
@@ -462,7 +487,7 @@ Provide:
 
 ---
 
-# Core 4 — Testing and CI/CD: generate unit tests, then gate
+## Core 4 — Testing and CI/CD: generate unit tests, then gate
 
 ## Learning objectives
 
@@ -549,7 +574,7 @@ Provide:
 
 ---
 
-# Core 5 — Maintainability and governance: drift reports, contracts, versioning
+## Core 5 — Maintainability and governance: drift reports, contracts, versioning
 
 ## Learning objectives
 
