@@ -58,12 +58,14 @@ Install GNU Make:
 brew install make
 ```
 
-Then use `gmake` for course and capstone commands:
+Then keep using the published course commands from the repository root:
 
 ```sh
-gmake -C capstone help
-gmake -C capstone selftest
+make PROGRAM=reproducible-research/deep-dive-make program-help
+make PROGRAM=reproducible-research/deep-dive-make test
 ```
+
+If you step down into `capstone/` for the raw executable reference build, use `gmake` there.
 
 [Back to top](#top)
 
@@ -86,13 +88,14 @@ If the reported version is older than 4.3, upgrade before trusting the course re
 
 ## Verify Your Setup
 
-From `programs/reproducible-research/deep-dive-make/`:
+From repository root:
 
 ```sh
-make help
+make PROGRAM=reproducible-research/deep-dive-make program-help
+make PROGRAM=reproducible-research/deep-dive-make test
 ```
 
-From `capstone/`:
+From `programs/reproducible-research/deep-dive-make/capstone/`:
 
 ```sh
 gmake help

@@ -801,9 +801,9 @@ Capstone is corroboration and an engineering-grade example—not the lesson itse
 ### Runbook (from repo root)
 
 ```sh
-make -C capstone selftest
-make -C capstone discovery-audit
-make -C capstone --trace all
+make PROGRAM=reproducible-research/deep-dive-make test
+make PROGRAM=reproducible-research/deep-dive-make capstone-discovery-audit
+make PROGRAM=reproducible-research/deep-dive-make inspect
 ```
 
 ### Where to look (file map)

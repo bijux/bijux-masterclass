@@ -520,8 +520,8 @@ Capstone is corroboration, not the lesson. After you finish Module 01 locally, u
 From repo root:
 
 ```sh
-make -C capstone selftest
-make -C capstone --trace all
+make PROGRAM=reproducible-research/deep-dive-make test
+make PROGRAM=reproducible-research/deep-dive-make inspect
 ```
 
 ### Where to look (file map)

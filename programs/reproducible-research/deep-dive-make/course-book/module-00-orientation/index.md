@@ -184,13 +184,7 @@ the capstone instead of jumping into its files cold.
 **Proof command:**
 
 ```sh
-make -C capstone selftest
-```
-
-macOS:
-
-```sh
-gmake -C capstone selftest
+make PROGRAM=reproducible-research/deep-dive-make test
 ```
 
 ---
