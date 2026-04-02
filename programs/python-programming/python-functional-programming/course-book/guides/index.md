@@ -42,6 +42,7 @@ work with the reference states, and how to inspect the capstone without guessing
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence explained
 - [Module Promise Map](module-promise-map.md) when you want the promise and evidence route for each module
 - [Module Checkpoints](module-checkpoints.md) when you need an honest bar for moving on
+- [Engineering Question Map](engineering-question-map.md) when your pressure is practical and you need the owning module route
 - [Practice Map](practice-map.md) when you want the rehearsal loop in one place
 - [History Guide](history-guide.md) when you want `_history` and module worktree comparisons
 
