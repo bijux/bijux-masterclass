@@ -63,3 +63,6 @@ verification.
 
 Use [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the architecture is clear but the learner
 still needs the fastest exact route from one question to one file and proof surface.
+
+Use [CHANGE_PLACEMENT_GUIDE.md](CHANGE_PLACEMENT_GUIDE.md) when the main pressure is no
+longer reading the current design, but deciding where a new responsibility should live.

@@ -51,6 +51,9 @@ Use `make stage-summary` when you want the repository to render that declared-ve
 - Which facts should be reviewed in `dvc.lock` after execution?
 - Which promoted facts should still wait until `publish/v1/`?
 
+Read [CHANGE_PLACEMENT_GUIDE.md](CHANGE_PLACEMENT_GUIDE.md) when the stage contract is
+clear but the next design question is where a new requirement should be placed.
+
 ## Best companion guides
 
 - read [ARCHITECTURE.md](ARCHITECTURE.md) when the next question is file ownership above the stage level
