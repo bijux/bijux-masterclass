@@ -27,6 +27,17 @@ Use this guide when you want to inspect what the runtime exposes without immedia
 executing one plugin action. The goal is to make manifest and registry review explicit
 instead of letting them blur into invocation proof.
 
+## Start with the smallest output
+
+| If the question is... | Read this first | Do not open first |
+| --- | --- | --- |
+| what field and action metadata are publicly visible | `manifest.json` | `trace.txt` |
+| which plugins are actually registered | `registry.json` | `tests/test_cli.py` |
+| what one plugin contract looks like end to end | `plugin.json` | `framework.py` |
+| what one field or action contract looks like in isolation | `field.json` or `action.json` | `plugins.py` |
+| what generated call signatures are publicly visible | `signatures.json` | `actions.py` |
+| what the saved bundle contains | `bundle-manifest.json` | `manifest.json` |
+
 ## Which output answers which question
 
 | Output | Best question |
@@ -39,6 +50,10 @@ instead of letting them blur into invocation proof.
 | `signatures.json` | what generated constructor and action signatures are publicly visible |
 | `route.txt` | what to read next in the saved review order |
 | `manifest.json` in the bundle manifest | whether the saved bundle inventory is complete and stable |
+
+`manifest.json` describes the runtime's public shape. `bundle-manifest.json` describes the
+saved files produced by the inspection route. They answer different questions and should
+not substitute for each other.
 
 ## Recommended reading order
 
@@ -76,3 +91,8 @@ instead of letting them blur into invocation proof.
 - mistaking manifest output for proof of successful invocation
 - treating registry state as if it were enough to justify the full runtime design
 - opening framework internals before you can explain the public inspection surface
+
+## Good stopping point
+
+Stop when the smallest saved output answers the current question and you can name the
+next stronger route only if that question changes.
