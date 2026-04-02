@@ -22,6 +22,7 @@ dependencies = []
 
 [project.scripts]
 funcpipe-rag = "funcpipe_rag.boundaries.shells.cli:main"
+funcpipe-rag-review = "funcpipe_rag.boundaries.shells.review_cli:main"
 
 [project.optional-dependencies]
 docs = [
