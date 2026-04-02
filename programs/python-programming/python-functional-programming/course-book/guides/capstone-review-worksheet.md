@@ -2,24 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  claim["Course claim"] --> code["Capstone package or file"]
-  code --> tests["Tests or tour artifact"]
-  tests --> worksheet["Review worksheet"]
-  worksheet --> decision["Accept or challenge the boundary"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Review Worksheet"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  purity["What is still pure?"] --> effect["Where does effect begin?"]
-  effect --> failure["How is failure represented?"]
-  failure --> stream["Where does the code materialize or buffer?"]
-  stream --> proof["What test or tour artifact proves the claim?"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this worksheet after a module or before changing the capstone. The goal is not only
 to agree with the architecture. The goal is to inspect whether the evidence justifies it.

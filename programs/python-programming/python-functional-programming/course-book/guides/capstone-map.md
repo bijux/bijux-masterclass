@@ -2,24 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph TD
-  home["FuncPipe Capstone Guide"] --> files["Capstone file guide"]
-  home --> architecture["Capstone architecture guide"]
-  home --> walkthrough["Capstone walkthrough"]
-  home --> proof["Capstone proof guide"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Map"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  module["Current module"] --> question["Which capstone boundary matches this module?"]
-  question --> page["Open the matching capstone guide"]
-  page --> code["Inspect the code or tour artifact"]
-  code --> verify["Run the matching command"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This map turns the capstone into a deliberate study surface instead of a single guide
 page. Use it whenever you want to decide where to go next for concrete evidence.

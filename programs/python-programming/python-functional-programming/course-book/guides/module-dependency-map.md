@@ -2,30 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph TD
-  m1["01 Purity"] --> m2["02 Data-first APIs"]
-  m2 --> m3["03 Iterators and lazy dataflow"]
-  m3 --> m4["04 Streaming failures"]
-  m4 --> m5["05 Algebraic modelling"]
-  m5 --> m6["06 Monadic flow"]
-  m6 --> m7["07 Effect boundaries"]
-  m7 --> m8["08 Async pressure"]
-  m8 --> m9["09 Ecosystem interop"]
-  m9 --> m10["10 Sustainment"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Module Dependency Map"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  purity["Purity"] --> dataflow["Dataflow"]
-  dataflow --> failure["Failure modelling"]
-  failure --> effects["Effect design"]
-  effects --> async["Async pressure"]
-  async --> interop["Interop and sustainment"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This map exists to prevent a common failure mode: reading a later lesson without the
 earlier concept that makes it necessary.

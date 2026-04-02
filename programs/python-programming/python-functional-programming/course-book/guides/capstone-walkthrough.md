@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  modules["Modules 01-10"] --> walkthrough["Capstone Walkthrough"]
-  walkthrough --> tour["make capstone-tour"]
-  tour --> review["Review the generated bundle and code"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Walkthrough"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  tests["Test proof surface"] --> packages["Package layout"]
-  packages --> focus["Focus areas"]
-  focus --> contract["README and project contract"]
-  contract --> insight["Review the boundary decisions"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when you want the capstone as a guided learner story instead of as package
 reference alone.

@@ -2,28 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Reference Position
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Reference"]
-  page["Self-Review Prompts"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> reference["Self-Review Prompts"]
+  reference --> review["Design or review decision"]
+  review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+flowchart TD
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
+  lookup --> compare["Compare the current code or workflow against the boundary"]
+  compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
 Use these prompts after each module to check whether the course ideas are becoming
 operational rather than just familiar.

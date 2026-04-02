@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  course["Course claim"] --> bridge["Capstone Test Guide"]
-  bridge --> local["capstone/TEST_GUIDE.md"]
-  local --> tests["Capstone test groups"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Test Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  question["What claim are you checking?"] --> group["Choose the nearest test group"]
-  group --> files["Read representative tests"]
-  files --> proof["Run the matching proof command"]
-  proof --> decision["Decide whether the claim is really defended"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when a module tells you to inspect capstone proof and you want a stable
 reading route through the test suite.

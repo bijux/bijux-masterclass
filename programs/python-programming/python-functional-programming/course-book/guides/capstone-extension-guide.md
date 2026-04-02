@@ -2,24 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  review["Capstone review"] --> extension["Capstone Extension Guide"]
-  extension --> local["capstone/EXTENSION_GUIDE.md"]
-  local --> code["Owning package"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Extension Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  request["New change request"] --> classify["Classify the change"]
-  classify --> pure["Pure or modelling"]
-  classify --> policy["Policy or pipeline"]
-  classify --> effect["Boundary or adapter"]
-  classify --> interop["Interop bridge"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when the course asks not only "what is this boundary?" but also "where
 should the next change land?"

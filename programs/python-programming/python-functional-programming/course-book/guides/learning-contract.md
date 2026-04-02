@@ -2,24 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  start["Start Here"] --> contract["Learning Contract"]
-  contract --> module["Current module"]
-  module --> capstone["Capstone evidence"]
-  capstone --> review["Review and verification"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Learning Contract"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  read["Read the module overview"] --> study["Study the lesson sequence in order"]
-  study --> inspect["Inspect the matching capstone surface"]
-  inspect --> verify["Run the matching command or test route"]
-  verify --> explain["Explain the boundary decision in your own words"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This course asks for deliberate reading. The lessons are designed to improve judgment,
 not only recall. That only works if you keep the prose, code, and verification surface

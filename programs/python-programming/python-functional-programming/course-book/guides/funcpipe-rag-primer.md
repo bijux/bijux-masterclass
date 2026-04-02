@@ -2,22 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  course["Python Functional Programming"] --> primer["FuncPipe RAG Primer"]
-  primer --> glossary["Functional glossary"]
-  primer --> capstone["FuncPipe capstone"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["FuncPipe RAG Primer"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  start["Need just enough domain context"] --> terms["Learn the small vocabulary set"]
-  terms --> scope["Separate core domain facts from FP teaching goals"]
-  scope --> inspect["Open the matching capstone surfaces only when needed"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this guide when the capstone's retrieval-augmented generation domain starts competing
 with the functional-programming lesson. The capstone is not trying to make you an expert

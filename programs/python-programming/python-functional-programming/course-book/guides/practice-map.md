@@ -2,24 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  overview["Read module overview"] --> lessons["Study the lesson sequence"]
-  lessons --> claim["Write one boundary claim"]
-  claim --> inspect["Inspect the matching capstone surface"]
-  inspect --> verify["Run the matching proof route"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Practice Map"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  module["Current module"] --> question["What stays pure here?"]
-  question --> boundary["Where does effect enter?"]
-  boundary --> evidence["Which capstone file or test proves it?"]
-  evidence --> recap["What change should remain local now?"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This page turns the course into a repeatable rehearsal loop. The goal is not only to
 finish reading. The goal is to improve judgment under change.

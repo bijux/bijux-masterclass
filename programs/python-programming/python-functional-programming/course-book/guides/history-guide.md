@@ -2,24 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  start["Course home"] --> guide["History Guide"]
-  guide --> refs["Local module tags"]
-  refs --> worktrees["_history/worktrees/module-XX"]
-  worktrees --> compare["Module-end comparison"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["History Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  source["Tracked source state"] --> refresh["Run history-refresh"]
-  refresh --> tags["python-functional-programming-module-XX"]
-  tags --> worktree["Generated worktree"]
-  worktree --> refactor["Compare your code and refactor"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This guide explains the honest module-history contract for the course. The generated
 `_history/` directory is for local comparison only. The tracked source of truth lives in
