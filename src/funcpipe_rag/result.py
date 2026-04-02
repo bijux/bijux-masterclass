@@ -1,7 +1,8 @@
-"""Minimal Result type for Module 02 boundaries.
+"""Minimal Result type for boundary-safe APIs (Modules 02–03).
 
-Module 02 uses a simple ``Result[T] = Ok[T] | Err`` to make failure explicit at
-boundaries (I/O, parsing) without raising exceptions.
+Introduced in Module 02 and used throughout Module 03: a small
+``Result[T] = Ok[T] | Err`` union to make failure explicit at boundaries
+(I/O, parsing) without raising exceptions.
 """
 
 from __future__ import annotations
@@ -39,4 +40,3 @@ def result_and_then(res: Result[T], fn: Callable[[T], Result[U]]) -> Result[U]:
 
 
 __all__ = ["Ok", "Err", "Result", "result_map", "result_and_then"]
-

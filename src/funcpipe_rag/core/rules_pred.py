@@ -1,4 +1,4 @@
-"""A tiny, frozen predicate DSL expressed as data (Module 02)."""
+"""A tiny, frozen predicate DSL expressed as data (Modules 02–03)."""
 
 from __future__ import annotations
 

@@ -1,9 +1,10 @@
-"""Small, focused functional helpers for the end-of-Module-02 codebase.
+"""Small, focused functional helpers for the end-of-Module-03 codebase.
 
 This module intentionally stays minimal while supporting:
 - Left-to-right function composition
 - Lazy iterator combinators (map/filter/flatmap)
 - Observation-only taps and probes for debugging
+- Deterministic time injection helpers for streaming (Module 03)
 """
 
 from __future__ import annotations
@@ -178,6 +179,23 @@ def instrument_stage(
     return wrapped
 
 
+class FakeTime:
+    """Deterministic, injected time source for testing time-aware streaming stages (Module 03)."""
+
+    def __init__(self, start: float = 0.0) -> None:
+        self._now = float(start)
+        self.sleeps: list[float] = []
+
+    def clock(self) -> float:
+        return self._now
+
+    def sleep(self, seconds: float) -> None:
+        if seconds < 0:
+            raise ValueError("sleep seconds must be >= 0")
+        self.sleeps.append(float(seconds))
+        self._now += float(seconds)
+
+
 __all__ = [
     "identity",
     "compose",
@@ -191,4 +209,5 @@ __all__ = [
     "probe",
     "StageInstrumentation",
     "instrument_stage",
+    "FakeTime",
 ]

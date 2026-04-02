@@ -1,4 +1,8 @@
-"""Application-level config for Module 02 shells (M02C10)."""
+"""Application-level config for the end-of-Module-03 shells.
+
+The thin CLI/boundary pattern was introduced in M02C10 and remains the
+recommended way to keep I/O at the edges.
+"""
 
 from __future__ import annotations
 
@@ -15,4 +19,3 @@ class AppConfig:
 
 
 __all__ = ["AppConfig"]
-

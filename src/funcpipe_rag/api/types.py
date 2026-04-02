@@ -1,4 +1,8 @@
-"""Public API types introduced in Module 02."""
+"""Public API types for the end-of-Module-03 codebase.
+
+Most of these types are introduced in Module 02 and extended in Module 03
+(notably tracing/stream observability).
+"""
 
 from __future__ import annotations
 
@@ -6,6 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any, Callable, Mapping
 
 from funcpipe_rag.rag_types import Chunk, CleanDoc, RawDoc, DocRule
+from funcpipe_rag.streaming import TraceLens
 
 TapDocs = Callable[[tuple[RawDoc, ...]], None]
 TapCleaned = Callable[[tuple[CleanDoc, ...]], None]
@@ -39,7 +44,7 @@ class DebugConfig:
 
 @dataclass(frozen=True)
 class Observations:
-    """Deterministic summary for a RAG invocation (end-of-Module 02)."""
+    """Deterministic summary for a RAG invocation (end-of-Module 03)."""
 
     total_docs: int
     total_chunks: int
@@ -50,5 +55,14 @@ class Observations:
     extra: tuple[Any, ...] = ()
     warnings: tuple[Any, ...] = ()
 
+@dataclass
+class RagTraceV3:
+    """Module 03 stream trace: bounded samples for each pipeline stage."""
 
-__all__ = ["DocRule", "RagTaps", "DebugConfig", "Observations"]
+    docs: TraceLens[RawDoc] = field(default_factory=TraceLens)
+    cleaned: TraceLens[CleanDoc] = field(default_factory=TraceLens)
+    chunks: TraceLens[Any] = field(default_factory=TraceLens)  # typically ChunkWithoutEmbedding
+    embedded: TraceLens[Any] = field(default_factory=TraceLens)  # typically Chunk
+
+
+__all__ = ["DocRule", "RagTaps", "DebugConfig", "Observations", "TraceLens", "RagTraceV3"]

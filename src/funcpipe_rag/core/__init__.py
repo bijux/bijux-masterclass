@@ -1,4 +1,4 @@
-"""Module-02 core helpers (rules and safety lint)."""
+"""Core helpers used across modules (rules, safety lint, streaming dedup)."""
 
 from .rules_pred import (
     Pred,
@@ -25,6 +25,7 @@ from .rules_dsl import (
     parse_rule,
 )
 from .rules_lint import SafeVisitor, assert_rule_is_safe_expr
+from .structural_dedup import DedupIterator, structural_dedup_lazy
 
 __all__ = [
     "Pred",
@@ -49,5 +50,6 @@ __all__ = [
     "parse_rule",
     "SafeVisitor",
     "assert_rule_is_safe_expr",
+    "DedupIterator",
+    "structural_dedup_lazy",
 ]
-

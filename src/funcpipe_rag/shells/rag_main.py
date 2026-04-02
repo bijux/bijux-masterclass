@@ -1,4 +1,8 @@
-"""Thin orchestrator example (M02C10): boundary config + pure core + I/O edges."""
+"""Thin orchestrator example for the end-of-Module-03 codebase.
+
+This boundary config + pure core + I/O edges shape is introduced in M02C10 and
+remains unchanged for Module 03.
+"""
 
 from __future__ import annotations
 
@@ -72,4 +76,3 @@ def _run(cfg: AppConfig) -> Result[None]:
 
 
 __all__ = ["boundary_app_config", "read_docs", "write_chunks", "orchestrate"]
-

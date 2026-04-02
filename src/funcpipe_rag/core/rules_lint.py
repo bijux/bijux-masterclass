@@ -1,4 +1,4 @@
-"""AST validator for dynamic rule expressions (Module 02)."""
+"""AST validator for dynamic rule expressions (Modules 02–03)."""
 
 from __future__ import annotations
 
@@ -88,4 +88,3 @@ def assert_rule_is_safe_expr(expr: str) -> None:
 
 
 __all__ = ["SafeVisitor", "assert_rule_is_safe_expr"]
-

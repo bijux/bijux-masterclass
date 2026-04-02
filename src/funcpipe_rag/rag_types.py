@@ -11,6 +11,8 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 
+TailPolicy = str
+
 
 @dataclass(frozen=True)
 class RawDoc:
@@ -73,9 +75,32 @@ class RagEnv:
 
     chunk_size: int
     sample_size: int = 5
+    overlap: int = 0
+    tail_policy: TailPolicy = "emit_short"
 
     def __post_init__(self) -> None:
+        if not isinstance(self.chunk_size, int):
+            raise ValueError("RagEnv.chunk_size must be an int")
         if self.chunk_size <= 0:
             raise ValueError("RagEnv.chunk_size must be a positive integer")
+        if not isinstance(self.sample_size, int):
+            raise ValueError("RagEnv.sample_size must be an int")
         if self.sample_size <= 0:
             raise ValueError("RagEnv.sample_size must be a positive integer")
+        if not isinstance(self.overlap, int):
+            raise ValueError("RagEnv.overlap must be an int")
+        if not 0 <= self.overlap < self.chunk_size:
+            raise ValueError("RagEnv.overlap must satisfy 0 <= overlap < chunk_size")
+        if self.tail_policy not in {"emit_short", "drop", "pad"}:
+            raise ValueError('RagEnv.tail_policy must be one of: "emit_short", "drop", "pad"')
+
+
+__all__ = [
+    "RawDoc",
+    "DocRule",
+    "CleanDoc",
+    "ChunkWithoutEmbedding",
+    "Chunk",
+    "TailPolicy",
+    "RagEnv",
+]

@@ -1,4 +1,8 @@
-"""Configuration-as-data for deterministic document cleaning (Module 02)."""
+"""Configuration-as-data for deterministic document cleaning (Modules 02–03).
+
+This is introduced in Module 02 and kept stable through Module 03: represent
+cleaning as immutable data and bind it into a pure ``RawDoc -> CleanDoc`` stage.
+"""
 
 from __future__ import annotations
 

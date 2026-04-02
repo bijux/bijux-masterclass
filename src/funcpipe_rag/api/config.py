@@ -1,8 +1,13 @@
-"""Configuration and dependency wiring for Module 02."""
+"""Configuration and dependency wiring for the end-of-Module-03 codebase.
+
+The config-as-data and dependency-wiring patterns are introduced in Module 02
+and extended in Module 03 with streaming entry points.
+"""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from collections.abc import Iterable, Iterator
 from typing import Callable, Mapping, Protocol
 
 from funcpipe_rag.api.clean_cfg import CleanConfig, DEFAULT_CLEAN_CONFIG, RULES, make_cleaner
@@ -64,6 +69,26 @@ def make_rag_fn(
     return run
 
 
+def make_gen_rag_fn(
+    *,
+    chunk_size: int,
+    max_chunks: int = 10_000,
+    clean_cfg: CleanConfig = DEFAULT_CLEAN_CONFIG,
+    keep: RulesConfig = DEFAULT_RULES,
+) -> Callable[[Iterable[RawDoc]], Iterator[ChunkWithoutEmbedding]]:
+    """Pure configurator: build a streaming docs -> chunk stream function (Module 03)."""
+
+    from funcpipe_rag.api.core import gen_bounded_chunks
+
+    config = RagConfig(env=RagEnv(chunk_size), keep=keep, clean=clean_cfg)
+    deps = get_deps(config)
+
+    def run(docs: Iterable[RawDoc]) -> Iterator[ChunkWithoutEmbedding]:
+        return gen_bounded_chunks(docs, config, deps, max_chunks=max_chunks)
+
+    return run
+
+
 def boundary_rag_config(raw: Mapping[str, object]) -> Result[RagConfig]:
     """Parse untyped boundary config into frozen RagConfig."""
 
@@ -90,5 +115,6 @@ __all__ = [
     "RagBoundaryDeps",
     "get_deps",
     "make_rag_fn",
+    "make_gen_rag_fn",
     "boundary_rag_config",
 ]
