@@ -48,7 +48,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit clean submake-demo perf trace-count hardened confirm show-origins FORCE \
+        contract-audit inspect incident-audit clean submake-demo perf trace-count hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -465,6 +465,12 @@ confirm: hardened
 >     @echo "PASS: confirm route completed"
 
 # ---- precedence introspection ----
+show:
+>     @echo "origin=$(origin CFLAGS) flavor=$(flavor CFLAGS) value='$(value CFLAGS)'"
+
+show-e:
+>     @$(MAKE) --no-print-directory -e show
+
 show-origins:
 >     @echo "CFLAGS origin=$(origin CFLAGS) flavor=$(flavor CFLAGS)"
 
