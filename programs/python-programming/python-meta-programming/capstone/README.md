@@ -67,6 +67,7 @@ make proof
 - `SCENARIO_GUIDE.md` for the shipped demo and trace contracts
 - `DEFINITION_TIME_GUIDE.md` for the class-definition sequence before runtime invocation
 - `ARCHITECTURE.md` for ownership boundaries
+- `PLUGIN_CATALOG.md` for the concrete adapters and why each one exists
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route
 - `PACKAGE_GUIDE.md` for the code-reading route

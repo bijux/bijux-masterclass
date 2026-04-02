@@ -60,6 +60,9 @@ discipline third, concrete plugin behavior fourth, and proof surfaces last.
 Read [DEFINITION_TIME_GUIDE.md](DEFINITION_TIME_GUIDE.md) when the metaclass and descriptor
 order needs a sequence view before the file-by-file route.
 
+Read [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when the framework is clear but the concrete
+adapter differences still need a purpose-driven explanation.
+
 ## What this guide prevents
 
 - starting in concrete plugins and mistaking them for the framework contract

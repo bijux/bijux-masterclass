@@ -51,6 +51,9 @@ Read `action()`. Focus on what the wrapper preserves and what extra runtime stat
 Read `ConsoleNotifier`, `WebhookNotifier`, and `PagerNotifier`. These make the abstractions
 concrete enough to review like ordinary production code.
 
+Use [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when the differences between the built-in
+plugins are more useful than the shared framework machinery.
+
 ## Stop 5: tests
 
 Read tests last, not first. The tests are strongest when you already know which claim
