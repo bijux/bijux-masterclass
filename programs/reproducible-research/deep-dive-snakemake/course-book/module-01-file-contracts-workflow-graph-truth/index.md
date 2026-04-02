@@ -149,15 +149,15 @@ Create this structure:
 project/
   workflow/
     Snakefile
-    profiles/
-      default/
-        config.yaml
   config/
     config.yaml
-    config.schema.json
+    schema.yaml
   data/
     A.txt
     B.txt
+  profiles/
+    default/
+      config.yaml
 ```
 
 Inputs:
@@ -187,27 +187,24 @@ samples: ["A", "B"]
 
 Schema (fail fast):
 
-**`config/config.schema.json`**
+**`config/schema.yaml`**
 
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "required": ["samples"],
-  "properties": {
-    "samples": {
-      "type": "array",
-      "minItems": 1,
-      "items": { "type": "string", "pattern": "^[A-Za-z0-9_]+$" }
-    }
-  },
-  "additionalProperties": false
-}
+```yaml
+type: object
+required: [samples]
+properties:
+  samples:
+    type: array
+    minItems: 1
+    items:
+      type: string
+      pattern: "^[A-Za-z0-9_]+$"
+additionalProperties: false
 ```
 
 Profile (policy only):
 
-**`workflow/profiles/default/config.yaml`**
+**`profiles/default/config.yaml`**
 
 ```yaml
 cores: 2
@@ -226,7 +223,7 @@ Paste the **reference Snakefile** from Core 5 into `workflow/Snakefile`.
 From `project/`:
 
 ```bash
-snakemake --profile workflow/profiles/default
+snakemake --profile profiles/default
 ```
 
 ### Expected console output (representative)
@@ -314,7 +311,7 @@ These commands are your ground truth. If your explanation cannot be grounded in 
 ## 2.1 Dry-run (what would run?)
 
 ```bash
-snakemake -n --profile workflow/profiles/default
+snakemake -n --profile profiles/default
 ```
 
 Expected after a clean run:
@@ -327,7 +324,7 @@ Nothing to be done.
 ## 2.2 Summary (who owns what? what’s missing?)
 
 ```bash
-snakemake --summary --profile workflow/profiles/default
+snakemake --summary --profile profiles/default
 ```
 
 Expected invariants:
@@ -342,7 +339,7 @@ Expected invariants:
 ## 2.3 DAG (why is a job scheduled?)
 
 ```bash
-snakemake --dag --profile workflow/profiles/default | dot -Tpdf > dag.pdf
+snakemake --dag --profile profiles/default | dot -Tpdf > dag.pdf
 ```
 
 Expected DAG shape:
@@ -353,7 +350,7 @@ Expected DAG shape:
 ## 2.4 Rule graph (macro dependency view)
 
 ```bash
-snakemake --rulegraph --profile workflow/profiles/default | dot -Tpdf > rulegraph.pdf
+snakemake --rulegraph --profile profiles/default | dot -Tpdf > rulegraph.pdf
 ```
 
 Expected:
@@ -364,7 +361,7 @@ Expected:
 ## 2.5 Lint (structural defects)
 
 ```bash
-snakemake --lint --profile workflow/profiles/default
+snakemake --lint --profile profiles/default
 ```
 
 Expected: clean or warnings you can justify. Ignoring lint is accepting workflow drift.
@@ -734,7 +731,7 @@ samplez: ["A", "B"]
 Run:
 
 ```bash
-snakemake --profile workflow/profiles/default
+snakemake --profile profiles/default
 ```
 
 ## Expected output (representative)
@@ -848,7 +845,7 @@ from pathlib import Path
 from snakemake.utils import validate
 
 configfile: "config/config.yaml"
-validate(config, "config/config.schema.json")
+validate(config, "config/schema.yaml")
 
 SAMPLES = config["samples"]
 
