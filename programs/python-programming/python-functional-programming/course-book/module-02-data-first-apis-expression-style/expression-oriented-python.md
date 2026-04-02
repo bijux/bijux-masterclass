@@ -328,7 +328,7 @@ This preserves the **value semantics** of the pipeline while allowing optional m
 
 ### 5.2 Expression-Oriented RAG Core
 
-We now rewrite the RAG core in an expression style. This is an **illustration-only** refactor; the runnable end-of-Module-02 implementation lives in `capstone/src/funcpipe_rag/api/core.py` (`full_rag_api_docs` / `full_rag_api`).
+We now rewrite the RAG core in an expression style. This is an **illustration-only** refactor; the runnable end-of-Module-02 implementation lives in `capstone/src/funcpipe_rag/rag/rag_api.py` (`full_rag_api_docs` / `full_rag_api`) with the frozen config and dependency wiring in `capstone/src/funcpipe_rag/rag/config.py`.
 
 ```python
 # core2_refactor_demo.py (illustration only; not the canonical Module-02 API)

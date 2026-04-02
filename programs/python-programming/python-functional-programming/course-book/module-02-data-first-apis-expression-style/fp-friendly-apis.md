@@ -281,7 +281,9 @@ Wraps the core components, handles materialization and taps:
 ```python
 from funcpipe_rag import RagConfig, RagCoreDeps, full_rag_api_docs
 
-# Canonical end-of-Module-02 API (implemented in `capstone/src/funcpipe_rag/api/core.py`)
+# Canonical end-of-Module-02 API
+# See `capstone/src/funcpipe_rag/rag/rag_api.py` for the public API shape and
+# `capstone/src/funcpipe_rag/rag/config.py` for the frozen config and dependency wiring.
 chunks, obs = full_rag_api_docs(docs, config, deps)
 ```
 
@@ -290,7 +292,7 @@ chunks, obs = full_rag_api_docs(docs, config, deps)
 - Builds on M02C03 laziness internally (lazy post-clean via sub-core); materializes filter/clean at edge for taps/obs.  
 - Reuses core expressions via a private `_tap` helper and the `iter_chunks_from_cleaned` sub-core; taps are observational side effects isolated to the edge.  
 - Matches the baseline stage composition when `config.keep = DEFAULT_RULES`, `deps.taps = None`.  
-**Note:** `iter_rag_core` is the fully streaming core. `full_rag_api_docs` intentionally materializes intermediates for observations/taps; laziness applies post-clean. Dedup runs post-tap as it requires a global view. `_tap` is an internal helper (see `capstone/src/funcpipe_rag/api/core.py`), not a public API.
+**Note:** `iter_rag_core` is the fully streaming core. `full_rag_api_docs` intentionally materializes intermediates for observations/taps; laziness applies post-clean. Dedup runs post-tap as it requires a global view. `_tap` is an internal helper in `capstone/src/funcpipe_rag/rag/rag_api.py`, not a public API.
 
 ### 4.4 Configurator Tie-In (M02C01) and Swapping Examples
 
