@@ -42,8 +42,8 @@ def main() -> int:
         raise ValueError("manifest must list published files")
     if not discovered["samples"]:
         raise ValueError("discovered_samples.json must list at least one sample")
-    if not summary["samples"]:
-        raise ValueError("summary.json must list at least one sample")
+    if not summary["units"]:
+        raise ValueError("summary.json must list at least one unit")
 
     report_html = (publish_dir / "report" / "index.html").read_text(encoding="utf-8")
     if "<html" not in report_html.lower():

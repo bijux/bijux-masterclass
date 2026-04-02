@@ -28,7 +28,7 @@ run_once() {
   local outdir="${OUT_BASE}/run_${cores}"
   mkdir -p "${outdir}"
   snakemake --snakefile Snakefile --profile "${PROFILE}" --cores "${cores}" --config results_dir="${outdir}/results" publish_dir="${outdir}/publish" logs_dir="${outdir}/logs" benchmarks_dir="${outdir}/benchmarks" >/dev/null
-  hash_file "${outdir}/publish/summary.json"
+  hash_file "${outdir}/publish/v1/summary.json"
 }
 # Lint should be clean (contract hygiene).
 snakemake --snakefile Snakefile --lint >/dev/null
