@@ -2,27 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Design and Layering"]
-  base["Base class"]
-  mixin["Mixin"]
-  leaf["Concrete class"]
-
-  module --> base
-  module --> mixin
-  module --> leaf
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> module["Module 02: Design and Layering"]
+  module --> concept["Cooperative Inheritance, MRO, and Mixins"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
-flowchart LR
-  design["Choose inheritance at all"] --> mro["Understand the method resolution order"]
-  mro --> super["Use cooperative super correctly"]
-  super --> mixins["Keep mixins narrow and behavior-specific"]
+flowchart TD
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 ## Purpose
 

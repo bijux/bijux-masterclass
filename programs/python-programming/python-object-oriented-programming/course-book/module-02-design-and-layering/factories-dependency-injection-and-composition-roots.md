@@ -2,26 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Design and Layering"]
-  config["Configuration"]
-  root["Composition root"]
-  domain["Domain objects"]
-
-  module --> config
-  config --> root --> domain
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> module["Module 02: Design and Layering"]
+  module --> concept["Factories, Dependency Injection, and Composition Roots"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
-flowchart LR
-  need["Need an object graph"] --> decide["Decide what is construction and what is domain behavior"]
-  decide --> root["Assemble at the composition root"]
-  root --> domain["Inject collaborators without leaking setup inward"]
+flowchart TD
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 ## Purpose
 

@@ -1,29 +1,25 @@
 # Mastery Map
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  orientation["Orientation"]
-  page["Mastery Map"]
-  m8["Module 08"]
-  m9["Module 09"]
-  m10["Module 10"]
-
-  orientation --> page
-  page --> m8
-  page --> m9
-  page --> m10
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> module["Module 00: Orientation and Reading Discipline"]
+  module --> concept["Mastery Map"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
-flowchart LR
-  start["Need capstone hardening and long-term governance"] --> m8["Verification"]
-  m8 --> m9["Public APIs and extension seams"]
-  m9 --> m10["Performance, observability, and security"]
+flowchart TD
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 Use this map when you are reviewing the capstone, planning extensions, or judging
 whether the design is ready for production pressure.

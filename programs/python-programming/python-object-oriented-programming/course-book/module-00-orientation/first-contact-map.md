@@ -1,29 +1,25 @@
 # First-Contact Map
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  orientation["Orientation"]
-  page["First-Contact Map"]
-  m1["Module 01"]
-  m2["Module 02"]
-  m3["Module 03"]
-
-  orientation --> page
-  page --> m1
-  page --> m2
-  page --> m3
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> module["Module 00: Orientation and Reading Discipline"]
+  module --> concept["First-Contact Map"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
-flowchart LR
-  start["New to the course"] --> m1["Object model"]
-  m1 --> m2["Responsibilities and layering"]
-  m2 --> m3["State and typestate"]
+flowchart TD
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 Use this map when you are starting the course or refreshing the foundations. These
 modules define the vocabulary and design rules the rest of the course assumes.

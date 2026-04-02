@@ -1,32 +1,25 @@
 # Mid-Course Map
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  orientation["Orientation"]
-  page["Mid-Course Map"]
-  m4["Module 04"]
-  m5["Module 05"]
-  m6["Module 06"]
-  m7["Module 07"]
-
-  orientation --> page
-  page --> m4
-  page --> m5
-  page --> m6
-  page --> m7
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> module["Module 00: Orientation and Reading Discipline"]
+  module --> concept["Mid-Course Map"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
-flowchart LR
-  start["Foundations feel stable"] --> m4["Aggregates and collaboration"]
-  m4 --> m5["Resources and evolution"]
-  m5 --> m6["Persistence and schema evolution"]
-  m6 --> m7["Time and concurrency boundaries"]
+flowchart TD
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 Use this map once the object model and state model are clear. These modules turn the
 course from object design into system design.

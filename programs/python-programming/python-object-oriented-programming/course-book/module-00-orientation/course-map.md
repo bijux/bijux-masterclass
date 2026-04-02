@@ -1,32 +1,25 @@
 # Course Map
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Object-Oriented Programming"]
-  section["Orientation"]
-  page["Course Map"]
-  first["First-contact map"]
-  middle["Mid-course map"]
-  mastery["Mastery map"]
-
-  family --> program --> section --> page
-  page --> first
-  page --> middle
-  page --> mastery
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> module["Module 00: Orientation and Reading Discipline"]
+  module --> concept["Course Map"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
-flowchart LR
-  start["Need the whole course shape"] --> choose["Pick the map that matches your stage"]
-  choose --> first["First contact"]
-  choose --> middle["Mid-course"]
-  choose --> mastery["Mastery and capstone hardening"]
+flowchart TD
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This page is the orientation hub for the full course. The progression is deliberate:
 start with the Python object model, move into responsibility and layering, then into
