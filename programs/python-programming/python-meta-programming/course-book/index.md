@@ -31,7 +31,7 @@ This course teaches Python metaprogramming as a discipline of runtime honesty. T
 is not to make code look advanced. The goal is to understand what Python is doing when
 code inspects, wraps, validates, or registers other code and objects.
 
-## Start with these pages
+## Start here
 
 - [Start Here](guides/start-here.md)
 - [Guides Home](guides/index.md)

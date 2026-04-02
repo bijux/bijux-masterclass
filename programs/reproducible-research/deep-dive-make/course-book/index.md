@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Deep Dive Make: The Program Guide
+# Deep Dive Make
 
 <!-- page-maps:start -->
 ## Course Shape
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> home["Deep Dive Make: The Program Guide"]
+  program --> home["Deep Dive Make"]
   home --> modules["Modules 00-10"]
   home --> guides["Guides"]
   home --> reference["Reference"]
@@ -107,16 +107,16 @@ These are the pages that make the course easier to trust and easier to finish:
 | Module | Title | Why it matters |
 | --- | --- | --- |
 | [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof ladder, and capstone timing |
-| [Module 01](module-01-foundations-build-graph-and-truth/index.md) | Build Graph Truth and Rebuild Semantics | makes dependency edges and rebuild meaning explicit |
+| [Module 01](module-01-foundations-build-graph-and-truth/index.md) | Build Graph Foundations and Truth | makes dependency edges and rebuild meaning explicit |
 | [Module 02](module-02-parallel-safety-and-project-structure/index.md) | Parallel Safety and Project Structure | scales the graph without introducing race-prone structure |
-| [Module 03](module-03-production-practice-determinism-debugging-ci-and-selftests/index.md) | Determinism, Debugging, and CI Proof | makes builds explainable, repeatable, and self-testing |
-| [Module 04](module-04-cli-precedence-includes-and-rule-edge-cases/index.md) | CLI Semantics, Precedence, and Rule Edge Cases | survives pressure with a correct mental model of Make behavior |
-| [Module 05](module-05-portability-jobserver-hermeticity-and-failure-modes/index.md) | Portability, Jobserver, and Failure Modes | hardens builds across environments and concurrency settings |
+| [Module 03](module-03-production-practice-determinism-debugging-ci-and-selftests/index.md) | Determinism, Debugging, and Self-Testing | makes builds explainable, repeatable, and self-testing |
+| [Module 04](module-04-cli-precedence-includes-and-rule-edge-cases/index.md) | Rule Semantics, Precedence, and Edge Cases | survives pressure with a correct mental model of Make behavior |
+| [Module 05](module-05-portability-jobserver-hermeticity-and-failure-modes/index.md) | Portability, Hermeticity, and Failure Modes | hardens builds across environments and concurrency settings |
 | [Module 06](module-06-generated-files-multi-output-rules-and-pipeline-boundaries/index.md) | Generated Files, Multi-Output Rules, and Pipeline Boundaries | models generators and publication boundaries truthfully |
-| [Module 07](module-07-reusable-build-architecture-and-build-apis/index.md) | Reusable Build Architecture and Public Build APIs | turns Make into a governable repository architecture |
-| [Module 08](module-08-release-engineering-and-artifact-publication-contracts/index.md) | Release Engineering and Artifact Publication Contracts | publishes artifacts with explicit install and integrity rules |
+| [Module 07](module-07-reusable-build-architecture-and-build-apis/index.md) | Build Architecture, Layered Includes, and Build APIs | turns Make into a governable repository architecture |
+| [Module 08](module-08-release-engineering-and-artifact-publication-contracts/index.md) | Release Engineering and Artifact Contracts | publishes artifacts with explicit install and integrity rules |
 | [Module 09](module-09-performance-observability-and-build-incident-response/index.md) | Performance, Observability, and Incident Response | diagnoses build incidents with evidence rather than folklore |
-| [Module 10](module-10-migration-governance-and-make-boundaries/index.md) | Migration, Governance, and Make Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
+| [Module 10](module-10-migration-governance-and-make-boundaries/index.md) | Migration, Governance, and Tool Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
 
 ---
 ## How the guide is written

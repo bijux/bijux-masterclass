@@ -90,7 +90,7 @@ and [`reference/index.md`](reference/index.md) when you want the stable review s
 | [Module 06](module-06-publishing-and-downstream-contracts/index.md) | Publishing and Downstream Contracts | makes the public artifact boundary versioned and trustworthy |
 | [Module 07](module-07-workflow-architecture-and-file-apis/index.md) | Workflow Architecture and File APIs | organizes the repository so ownership stays visible |
 | [Module 08](module-08-operating-contexts-and-execution-policy/index.md) | Operating Contexts and Execution Policy | compares local, CI, and cluster policy without semantic drift |
-| [Module 09](module-09-observability-performance-and-incident-response/index.md) | Observability, Performance, and Incident Response | reviews logs, benchmarks, and incidents with explicit evidence |
+| [Module 09](module-09-observability-performance-and-incident-response/index.md) | Performance, Observability, and Incident Response | reviews logs, benchmarks, and incidents with explicit evidence |
 | [Module 10](module-10-governance-migration-and-tool-boundaries/index.md) | Governance, Migration, and Tool Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
 
 ## Use these support pages first

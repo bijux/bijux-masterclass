@@ -55,7 +55,7 @@ matters:
 
 This program exists to close that gap.
 
-## Start With One Route
+## Start here
 
 Choose one entry:
 
@@ -81,7 +81,7 @@ administrative instead of necessary.
 | Module | Title | Why it matters |
 | --- | --- | --- |
 | [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof surfaces, and capstone timing |
-| [Module 01](module-01-why-reproducibility-fails/index.md) | Why Reproducibility Fails in Real Teams | names the failure modes before teaching tools |
+| [Module 01](module-01-why-reproducibility-fails/index.md) | Reproducibility Failures in Real Teams | names the failure modes before teaching tools |
 | [Module 02](module-02-data-identity-and-content-addressing/index.md) | Data Identity and Content Addressing | separates stable paths from stable bytes and stable meaning |
 | [Module 03](module-03-execution-environments-as-inputs/index.md) | Execution Environments as Reproducible Inputs | treats environment assumptions as part of the contract |
 | [Module 04](module-04-pipelines-as-truthful-dags/index.md) | Truthful Pipelines and Declared Dependencies | makes workflow edges visible enough to trust reruns |
