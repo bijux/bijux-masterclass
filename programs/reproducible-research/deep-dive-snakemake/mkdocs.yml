@@ -39,6 +39,7 @@ nav:
       - Workflow Glossary: reference/workflow-glossary.md
       - Topic Boundaries: reference/topic-boundaries.md
       - Practice Map: reference/practice-map.md
+      - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
       - Command Guide: guides/command-guide.md
       - Proof Ladder: guides/proof-ladder.md
       - Proof Matrix: guides/proof-matrix.md

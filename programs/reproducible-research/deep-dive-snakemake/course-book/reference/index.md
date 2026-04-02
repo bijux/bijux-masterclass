@@ -45,6 +45,7 @@ instead of a learner-entry guide.
 
 * [Module Dependency Map](module-dependency-map.md)
 * [Practice Map](practice-map.md)
+* [Anti-Pattern Atlas](anti-pattern-atlas.md)
 
 [Back to top](#top)
 
