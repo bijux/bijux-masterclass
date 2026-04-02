@@ -16,7 +16,9 @@ VENV_PY := $(abspath $(VENV_BIN)/python)
 PIP := $(VENV_PY) -m pip
 MKDOCS := $(VENV_PY) -m mkdocs
 SYNC_SERIES_DOCS := $(PYTHON) scripts/sync_series_docs.py
+RENDER_ROOT_MKDOCS := $(PYTHON) scripts/render_root_mkdocs.py
 DOCS_ENV = NO_MKDOCS_2_WARNING=true
+ROOT_MKDOCS_FILE := artifacts/mkdocs.root.yml
 
 .PHONY: help
 help: ## Show available targets
@@ -46,7 +48,8 @@ program-docs-serve: series-docs-install ## Serve docs for the selected program
 docs-build: series-docs-install ## Build the full catalog, or one program if PROGRAM is set explicitly
 ifeq ($(PROGRAM_IS_EXPLICIT),)
 	@$(SYNC_SERIES_DOCS)
-	@$(DOCS_ENV) $(MKDOCS) build --strict
+	@$(RENDER_ROOT_MKDOCS)
+	@$(DOCS_ENV) $(MKDOCS) build -f $(ROOT_MKDOCS_FILE) --strict
 else
 	@cd $(PROGRAM_DIR) && $(DOCS_ENV) $(MKDOCS) build -f mkdocs.yml --strict
 endif
@@ -55,7 +58,8 @@ endif
 docs-serve: series-docs-install ## Serve the full catalog, or one program if PROGRAM is set explicitly
 ifeq ($(PROGRAM_IS_EXPLICIT),)
 	@$(SYNC_SERIES_DOCS)
-	@$(DOCS_ENV) $(MKDOCS) serve
+	@$(RENDER_ROOT_MKDOCS)
+	@$(DOCS_ENV) $(MKDOCS) serve -f $(ROOT_MKDOCS_FILE)
 else
 	@cd $(PROGRAM_DIR) && $(DOCS_ENV) $(MKDOCS) serve -f mkdocs.yml
 endif
@@ -132,9 +136,11 @@ series-docs-install: series-docs-venv ## Install series documentation dependenci
 .PHONY: series-docs-build
 series-docs-build: series-docs-install ## Build the series documentation site
 	@$(SYNC_SERIES_DOCS)
-	@$(DOCS_ENV) $(MKDOCS) build --strict
+	@$(RENDER_ROOT_MKDOCS)
+	@$(DOCS_ENV) $(MKDOCS) build -f $(ROOT_MKDOCS_FILE) --strict
 
 .PHONY: series-docs-serve
 series-docs-serve: series-docs-install ## Serve the series documentation site locally
 	@$(SYNC_SERIES_DOCS)
-	@$(DOCS_ENV) $(MKDOCS) serve
+	@$(RENDER_ROOT_MKDOCS)
+	@$(DOCS_ENV) $(MKDOCS) serve -f $(ROOT_MKDOCS_FILE)
