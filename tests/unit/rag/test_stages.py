@@ -8,7 +8,7 @@ import hypothesis.strategies as st
 from funcpipe_rag import clean_doc, chunk_doc, embed_chunk, structural_dedup_chunks
 from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, RawDoc, RagEnv
 
-from .conftest import doc_list_strategy, env_strategy, pipeline_chunk_strategy, raw_doc_strategy
+from tests.strategies import doc_list_strategy, env_strategy, pipeline_chunk_strategy, raw_doc_strategy
 
 
 @given(doc=raw_doc_strategy())

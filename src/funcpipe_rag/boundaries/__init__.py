@@ -1,4 +1,4 @@
-"""Impure edges and boundary adapters (end-of-Module-06).
+"""Impure edges and boundary adapters (end-of-Module-07).
 
 This package groups the parts of the project that perform I/O or interact with
 the outside world (CLI, filesystem, JSON/MessagePack, Pydantic schemas).

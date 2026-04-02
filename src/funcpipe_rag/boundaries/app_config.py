@@ -1,4 +1,4 @@
-"""Application-level boundary config (end-of-Module-06)."""
+"""Application-level boundary config (end-of-Module-07)."""
 
 from __future__ import annotations
 

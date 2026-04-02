@@ -1,4 +1,4 @@
-"""Aggregation folds over Result streams (end-of-Module-06)."""
+"""Aggregation folds over Result streams (end-of-Module-07)."""
 
 from __future__ import annotations
 

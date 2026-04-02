@@ -1,4 +1,4 @@
-"""Boundary adapters (end-of-Module-06).
+"""Boundary adapters (end-of-Module-07).
 
 This subpackage groups reusable "edge adapters":
 - Serialization (`serde`)

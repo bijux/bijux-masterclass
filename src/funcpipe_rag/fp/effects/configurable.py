@@ -28,13 +28,13 @@ def toggle_logging(
     enabled: bool,
     pipeline: Callable[[T], A],
     mk_msg: Callable[[T, A], str] | None = None,
-) -> Callable[[T], Writer[A]]:
+) -> Callable[[T], Writer[A, str]]:
     if not enabled:
         return lambda x: Writer(lambda: (pipeline(x), ()))
 
     msg = mk_msg or (lambda x, _: f"processing {x}")
 
-    def wrapped(x: T) -> Writer[A]:
+    def wrapped(x: T) -> Writer[A, str]:
         value = pipeline(x)
         return tell(msg(x, value)).map(lambda _: value)
 

@@ -1,4 +1,4 @@
-"""RAG pipeline APIs (Module 02–06; end-of-Module-06).
+"""RAG pipeline APIs (Module 02–07; end-of-Module-07).
 
 This module contains the domain-specific core pipeline entry points:
 - a minimal lazy pipeline (`iter_rag`)

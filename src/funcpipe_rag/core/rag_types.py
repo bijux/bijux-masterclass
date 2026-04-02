@@ -1,4 +1,4 @@
-"""Core domain value types for FuncPipe RAG (end-of-Module-06).
+"""Core domain value types for FuncPipe RAG (end-of-Module-07).
 
 All types are frozen dataclasses → instances are values:
 - They support structural equality.

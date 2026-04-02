@@ -1,6 +1,6 @@
-"""funcpipe_rag – end-of-Module-06 codebase.
+"""funcpipe_rag – end-of-Module-07 codebase.
 
-This package is the consolidated project state at the end of Module 06:
+This package is the consolidated project state at the end of Module 07:
 - Immutable domain types
 - Pure pipeline stages + canonical structural de-duplication
 - Config-as-data + closure-based configurators
@@ -13,10 +13,13 @@ This package is the consolidated project state at the end of Module 06:
 - Type-driven APIs: ADTs + functors/applicatives/monoids + serde + Pydantic edges (Module 05)
 - Module 06: monadic helpers (Reader/State/Writer), container layering helpers, configurable pipelines,
   and boundary exception bridging.
+- Module 07: ports/capabilities, deferred IO plans (`IOPlan`), structured logs as pure data (Writer),
+  idempotent behaviours, retry wrappers, and Session/Tx bracketing.
 
 Note: Module-05+ type-driven utilities live in `funcpipe_rag.fp` (and boundary
 adapters in `funcpipe_rag.boundaries`). The RAG pipeline APIs live in
-`funcpipe_rag.rag`.
+`funcpipe_rag.rag`. Module 07 architecture primitives live in `funcpipe_rag.domain`
+with concrete adapters in `funcpipe_rag.infra.adapters`.
 """
 
 from __future__ import annotations
@@ -84,7 +87,7 @@ from .fp import (
     toggle_metrics,
 )
 
-# Modules 02–06 public API layer (end-of-Module-06)
+# Modules 02–07 public API layer (end-of-Module-07)
 from .result import (
     Result,
     Ok,

@@ -1,4 +1,4 @@
-"""Module 06: effect-encoding utilities (end-of-Module-06).
+"""Module 06: effect-encoding utilities (end-of-Module-07).
 
 This subpackage groups the "small monads" and effect helpers introduced in
 Module 06:
@@ -7,6 +7,9 @@ Module 06:
 - Writer: pure log/metrics accumulation
 - Layering helpers (no monad transformers)
 - Runtime-configurable pipeline toggles
+
+Note: Module 07 introduces `IOPlan` and IOPlan-specific wrappers, but in this codebase they
+live under `funcpipe_rag.domain.effects` as domain-owned effect interfaces.
 """
 
 from .configurable import toggle_logging, toggle_metrics, toggle_validation
@@ -25,7 +28,6 @@ from .writer import (
     wr_map,
     wr_pure,
 )
-
 __all__ = [
     # Reader
     "Reader",
@@ -59,4 +61,3 @@ __all__ = [
     "toggle_logging",
     "toggle_metrics",
 ]
-

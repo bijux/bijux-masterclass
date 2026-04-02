@@ -1,4 +1,4 @@
-"""Streaming RAG helpers (Module 03+; end-of-Module-06).
+"""Streaming RAG helpers (Module 03+; end-of-Module-07).
 
 These functions keep the core pipeline lazy while optionally fencing work,
 grouping by doc, and tracing samples.

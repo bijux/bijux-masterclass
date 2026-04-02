@@ -1,4 +1,4 @@
-"""Resource-safety wrappers for streaming pipelines (end-of-Module-06)."""
+"""Resource-safety wrappers for streaming pipelines (end-of-Module-07)."""
 
 from __future__ import annotations
 

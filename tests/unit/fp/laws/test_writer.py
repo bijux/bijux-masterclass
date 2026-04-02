@@ -12,7 +12,7 @@ settings.load_profile("ci")
 
 @given(x=st.integers(-20, 20))
 def test_writer_left_identity(x: int) -> None:
-    def f(n: int) -> Writer[int]:
+    def f(n: int) -> Writer[int, str]:
         return Writer(lambda: (n + 1, ("inc",)))
 
     assert run_writer(pure(x).and_then(f)) == run_writer(f(x))
@@ -28,10 +28,10 @@ def test_writer_right_identity(entries: list[str]) -> None:
 def test_writer_associativity(entries: list[str]) -> None:
     w = Writer(lambda: (42, tuple(entries)))
 
-    def f(a: int) -> Writer[int]:
+    def f(a: int) -> Writer[int, str]:
         return Writer(lambda: (a + 1, ("f",)))
 
-    def g(b: int) -> Writer[int]:
+    def g(b: int) -> Writer[int, str]:
         return Writer(lambda: (b * 2, ("g",)))
 
     assert run_writer(w.and_then(f).and_then(g)) == run_writer(w.and_then(lambda x: f(x).and_then(g)))

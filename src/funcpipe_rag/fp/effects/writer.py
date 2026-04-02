@@ -1,33 +1,38 @@
-"""Module 06: Writer – accumulate logs/metrics as pure data (effects)."""
+"""Module 06–07: Writer – accumulate logs/metrics as pure data (effects).
+
+Module 07 generalises the Writer log entry type to support structured logs
+(e.g. `domain.logging.LogEntry`) while preserving the Module 06 API.
+"""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Generic, Tuple, TypeVar
+from typing import Callable, Generic, Tuple, TypeAlias, TypeVar
 
 from funcpipe_rag.result.types import Err, Ok, Result
 
 T = TypeVar("T")
 U = TypeVar("U")
 E = TypeVar("E")
-
-LogEntry = str
-Log = Tuple[LogEntry, ...]
+LogEntryT = TypeVar("LogEntryT")
+Log: TypeAlias = Tuple[LogEntryT, ...]
+StrLogEntry: TypeAlias = str
+StrLog: TypeAlias = tuple[str, ...]
 
 
 @dataclass(frozen=True)
-class Writer(Generic[T]):
-    run: Callable[[], Tuple[T, Log]]
+class Writer(Generic[T, LogEntryT]):
+    run: Callable[[], Tuple[T, Log[LogEntryT]]]
 
-    def map(self, f: Callable[[T], U]) -> "Writer[U]":
-        def _run() -> Tuple[U, Log]:
+    def map(self, f: Callable[[T], U]) -> "Writer[U, LogEntryT]":
+        def _run() -> Tuple[U, Log[LogEntryT]]:
             value, log = self.run()
             return f(value), log
 
         return Writer(_run)
 
-    def and_then(self, f: Callable[[T], "Writer[U]"]) -> "Writer[U]":
-        def _run() -> Tuple[U, Log]:
+    def and_then(self, f: Callable[[T], "Writer[U, LogEntryT]"]) -> "Writer[U, LogEntryT]":
+        def _run() -> Tuple[U, Log[LogEntryT]]:
             value, log1 = self.run()
             next_value, log2 = f(value).run()
             return next_value, log1 + log2
@@ -35,52 +40,61 @@ class Writer(Generic[T]):
         return Writer(_run)
 
 
-def pure(x: T) -> Writer[T]:
+def pure(x: T) -> Writer[T, LogEntryT]:
     return Writer(lambda: (x, ()))
 
 
-def tell(entry: LogEntry) -> Writer[None]:
+def tell(entry: LogEntryT) -> Writer[None, LogEntryT]:
     return Writer(lambda: (None, (entry,)))
 
 
-def tell_many(entries: Log) -> Writer[None]:
+def tell_many(entries: Log[LogEntryT]) -> Writer[None, LogEntryT]:
     return Writer(lambda: (None, entries))
 
 
-def listen(p: Writer[T]) -> Writer[Tuple[T, Log]]:
-    def _run() -> Tuple[Tuple[T, Log], Log]:
+def listen(p: Writer[T, LogEntryT]) -> Writer[Tuple[T, Log[LogEntryT]], LogEntryT]:
+    def _run() -> Tuple[Tuple[T, Log[LogEntryT]], Log[LogEntryT]]:
         value, log = p.run()
         return (value, log), log
 
     return Writer(_run)
 
 
-def censor(f: Callable[[Log], Log], p: Writer[T]) -> Writer[T]:
-    def _run() -> Tuple[T, Log]:
+def censor(
+    f: Callable[[Log[LogEntryT]], Log[LogEntryT]],
+    p: Writer[T, LogEntryT],
+) -> Writer[T, LogEntryT]:
+    def _run() -> Tuple[T, Log[LogEntryT]]:
         value, log = p.run()
         return value, f(log)
 
     return Writer(_run)
 
 
-def run_writer(p: Writer[T]) -> Tuple[T, Log]:
+def run_writer(p: Writer[T, LogEntryT]) -> Tuple[T, Log[LogEntryT]]:
     return p.run()
 
 
-def wr_pure(x: T) -> Writer[Result[T, E]]:
+def wr_pure(x: T) -> Writer[Result[T, E], LogEntryT]:
     return Writer(lambda: (Ok(x), ()))
 
 
-def wr_map(p: Writer[Result[T, E]], f: Callable[[T], U]) -> Writer[Result[U, E]]:
-    def _run() -> Tuple[Result[U, E], Log]:
+def wr_map(
+    p: Writer[Result[T, E], LogEntryT],
+    f: Callable[[T], U],
+) -> Writer[Result[U, E], LogEntryT]:
+    def _run() -> Tuple[Result[U, E], Log[LogEntryT]]:
         r, log = p.run()
         return r.map(f), log
 
     return Writer(_run)
 
 
-def wr_and_then(p: Writer[Result[T, E]], k: Callable[[T], Writer[Result[U, E]]]) -> Writer[Result[U, E]]:
-    def _run() -> Tuple[Result[U, E], Log]:
+def wr_and_then(
+    p: Writer[Result[T, E], LogEntryT],
+    k: Callable[[T], Writer[Result[U, E], LogEntryT]],
+) -> Writer[Result[U, E], LogEntryT]:
+    def _run() -> Tuple[Result[U, E], Log[LogEntryT]]:
         r, log1 = p.run()
         if isinstance(r, Err):
             return Err(r.error), log1
@@ -91,8 +105,9 @@ def wr_and_then(p: Writer[Result[T, E]], k: Callable[[T], Writer[Result[U, E]]])
 
 
 __all__ = [
-    "LogEntry",
     "Log",
+    "StrLogEntry",
+    "StrLog",
     "Writer",
     "pure",
     "tell",

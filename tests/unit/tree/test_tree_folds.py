@@ -5,7 +5,7 @@ from hypothesis import given
 from funcpipe_rag.tree import flatten
 from funcpipe_rag.tree import fold_count_length_maxdepth, fold_tree, fold_tree_buffered, fold_tree_no_path
 
-from .conftest import tree_strategy
+from tests.strategies import tree_strategy
 
 
 def recursive_fold(tree, seed, combiner, *, depth: int = 0, path: tuple[int, ...] = ()):

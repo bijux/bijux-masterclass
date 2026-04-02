@@ -1,4 +1,4 @@
-"""Tree folds and scans as safe recursion (end-of-Module-06)."""
+"""Tree folds and scans as safe recursion (end-of-Module-07)."""
 
 from __future__ import annotations
 

@@ -7,7 +7,7 @@ from hypothesis import given
 
 from funcpipe_rag.tree import flatten, iter_flatten, iter_flatten_buffered, recursive_flatten
 
-from .conftest import deep_chain_strategy, tree_strategy
+from tests.strategies import deep_chain_strategy, tree_strategy
 
 
 @given(tree=tree_strategy())
@@ -44,4 +44,3 @@ def test_metadata_and_order_invariants(tree) -> None:
     for p, q in zip(paths, paths[1:]):
         if len(p) == len(q) and len(p) > 0 and p[:-1] == q[:-1]:
             assert p[-1] < q[-1]
-
