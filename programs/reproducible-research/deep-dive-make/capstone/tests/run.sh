@@ -2,10 +2,17 @@
 set -eu
 
 MAKE_BIN="${MAKE:-make}"
+SELFTEST_REPORT_DIR="${SELFTEST_REPORT_DIR:-}"
 
 fail() { echo "selftest: FAIL: $*" >&2; exit 1; }
 pass() { echo "selftest: PASS: $*"; }
 step() { echo "selftest: STEP: $*"; }
+
+record() {
+  [ -n "${SELFTEST_REPORT_DIR}" ] || return 0
+  mkdir -p "${SELFTEST_REPORT_DIR}"
+  printf '%s\n' "$2" > "${SELFTEST_REPORT_DIR}/$1"
+}
 
 hash_cmd() {
   if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
@@ -31,12 +38,16 @@ export DEBUG=0
 # Heuristic guardrail: trace line count is a proxy for "too much work at parse/decision time".
 # Override in CI via TRACE_MAX=<n> or disable by setting TRACE_MAX=0.
 TRACE_MAX="${TRACE_MAX:-500}"
+record settings.env "MAKE_BIN=${MAKE_BIN}
+TRACE_MAX=${TRACE_MAX}
+TMPDIR=${tmp}"
 
 # 1) Convergence
 step "convergence"
 "$MAKE_BIN" clean >/dev/null
 "$MAKE_BIN" -j1 all >/dev/null
 "$MAKE_BIN" -q all || fail "convergence: repo not up-to-date after build (exit $(($?)))"
+record convergence.txt "PASS"
 pass "convergence"
 
 # 2) Serial vs parallel equivalence
@@ -80,6 +91,8 @@ rm -f parallel_hash.tmp
 echo "selftest: INFO: parallel hash complete"
 
 diff -u serial.sum parallel.sum >/dev/null || fail "serial/parallel: artifact mismatch"
+record serial.sum "$(cat serial.sum)"
+record parallel.sum "$(cat parallel.sum)"
 pass "serial-parallel equivalence"
 
 # Performance baseline guardrail (trace expansions <500)
@@ -88,6 +101,7 @@ TRACE_LINES=$("$MAKE_BIN" --trace -n all 2>&1 | wc -l)
 if [ "$TRACE_MAX" -ne 0 ] && [ "$TRACE_LINES" -gt "$TRACE_MAX" ]; then
   fail "performance: trace lines exceed TRACE_MAX=$TRACE_MAX (got $TRACE_LINES). Use: make trace-count; and see: make perf. (TRACE_MAX is a guardrail; set TRACE_MAX=0 to disable.)"
 fi
+record trace-count.txt "trace-lines=${TRACE_LINES}"
 pass "performance: trace within TRACE_MAX=$TRACE_MAX"
 
 # 3) Negative test: hidden input must break convergence
@@ -102,7 +116,12 @@ sleep 1
 if "$MAKE_BIN" -q all; then
   fail "negative: converged despite hidden input"
 fi
+record hidden-input.txt "PASS"
 pass "negative: hidden input detected (non-convergence)"
 
 mv config.mk.bak config.mk
+record summary.txt "convergence=PASS
+serial_parallel_equivalence=PASS
+trace_guardrail=PASS
+hidden_input_detection=PASS"
 echo "selftest: PASS: all checks completed"

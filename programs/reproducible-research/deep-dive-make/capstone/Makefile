@@ -36,12 +36,13 @@ REP_DIR := repro
 ARTIFACTS_DIR ?= ../../../../artifacts
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
+SELFTEST_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-make/selftest
 
 DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
-.PHONY: dyn lint test dist repro discovery-audit attest selftest walkthrough \
+.PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report walkthrough \
         clean submake-demo perf trace-count hardened show-origins FORCE \
         portability-audit eval-demo help tour
 
@@ -119,6 +120,7 @@ help:
 >     '  all               build app + dynamic bins (also writes ./all sentinel)' \
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
+>     '  selftest-report   write the selftest evidence bundle to artifacts/' \
 >     '  tour              print the recommended capstone walkthrough' \
 >     '  walkthrough       build the learner-facing walkthrough bundle' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
@@ -272,6 +274,12 @@ attest: all | $(BLD_DIR)/
 # ---- universal truth command ----
 selftest:
 >     MAKE="$(MAKE)" $(TST_DIR)/run.sh
+
+selftest-report:
+>     rm -rf "$(SELFTEST_REPORT_DIR)"
+>     mkdir -p "$(SELFTEST_REPORT_DIR)"
+>     MAKE="$(MAKE)" SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR)" $(TST_DIR)/run.sh
+>     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR)"
 
 # ---- quarantined rule-generation demo (optional) ----
 USE_EVAL ?= no
