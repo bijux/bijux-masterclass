@@ -63,6 +63,7 @@ nav:
       - FP-Friendly APIs: module-02-data-first-apis-and-expression-style/fp-friendly-apis.md
       - Effect Boundaries: module-02-data-first-apis-and-expression-style/effect-boundaries.md
       - Configuration as Data: module-02-data-first-apis-and-expression-style/configuration-as-data.md
+      - Configuration Review and Validation: module-02-data-first-apis-and-expression-style/configuration-review-and-validation.md
       - Callbacks to Combinators: module-02-data-first-apis-and-expression-style/callbacks-to-combinators.md
       - Tiny Function DSLs: module-02-data-first-apis-and-expression-style/tiny-function-dsls.md
       - Debugging Compositions: module-02-data-first-apis-and-expression-style/debugging-compositions.md

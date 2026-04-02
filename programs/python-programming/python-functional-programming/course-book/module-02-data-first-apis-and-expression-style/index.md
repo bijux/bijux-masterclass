@@ -45,6 +45,7 @@ leaking globals or control flags.
 - [FP-Friendly APIs](fp-friendly-apis.md)
 - [Effect Boundaries](effect-boundaries.md)
 - [Configuration as Data](configuration-as-data.md)
+- [Configuration Review and Validation](configuration-review-and-validation.md)
 - [Callbacks to Combinators](callbacks-to-combinators.md)
 - [Tiny Function DSLs](tiny-function-dsls.md)
 - [Debugging Compositions](debugging-compositions.md)
