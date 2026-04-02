@@ -108,6 +108,8 @@ That path exercises the application surface in `application.py`, which is the be
 place to start if you want to understand how a team would drive the capstone without
 reaching into its internals first.
 
+For the full narrative route, continue to [TOUR.md](TOUR.md).
+
 ## Architecture
 
 ```mermaid
