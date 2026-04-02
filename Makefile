@@ -120,6 +120,18 @@ capstone-verify-report: ## Build the selected program's capstone verification re
 capstone-profile-audit: ## Build the selected program's capstone execution-policy audit bundle
 	@$(RUN_PROGRAM) capstone-profile-audit
 
+.PHONY: capstone-discovery-audit
+capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
+	@$(RUN_PROGRAM) capstone-discovery-audit
+
+.PHONY: capstone-portability-audit
+capstone-portability-audit: ## Build the selected program's capstone portability audit bundle
+	@$(RUN_PROGRAM) capstone-portability-audit
+
+.PHONY: capstone-source-bundle
+capstone-source-bundle: ## Build the selected program's tracked-source capstone bundle
+	@$(RUN_PROGRAM) capstone-source-bundle
+
 .PHONY: capstone-verify
 capstone-verify: ## Run the selected program's capstone contract verification
 	@$(RUN_PROGRAM) capstone-verify

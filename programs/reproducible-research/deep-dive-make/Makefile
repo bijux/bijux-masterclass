@@ -52,7 +52,8 @@ typecheck: install-dev ## Run mypy on Python helper scripts
 # Capstone (GNU Make repository)
 .PHONY: capstone capstone-selftest capstone-hardened capstone-tour capstone-walkthrough \
         capstone-contract-audit capstone-incident-audit capstone-verify-report \
-        capstone-profile-audit capstone-confirm capstone-clean demo inspect proof
+        capstone-profile-audit capstone-discovery-audit capstone-portability-audit \
+        capstone-source-bundle capstone-confirm capstone-clean demo inspect proof
 capstone: ## Build the capstone (writes ./all sentinel inside capstone)
 > $(MAKE) -C $(CAPSTONE_DIR) all
 
@@ -79,6 +80,15 @@ capstone-verify-report: ## Build the capstone verification report bundle
 
 capstone-profile-audit: ## Build the capstone execution-profile audit bundle
 > $(MAKE) -C $(CAPSTONE_DIR) profile-audit
+
+capstone-discovery-audit: ## Build the capstone deterministic-discovery audit bundle
+> $(MAKE) -C $(CAPSTONE_DIR) discovery-audit
+
+capstone-portability-audit: ## Build the capstone portability-boundary audit bundle
+> $(MAKE) -C $(CAPSTONE_DIR) portability-audit
+
+capstone-source-bundle: ## Build the capstone tracked-source release bundle
+> $(MAKE) -C $(CAPSTONE_DIR) source-bundle
 
 capstone-confirm: ## Run the capstone's strongest confirmation route
 > $(MAKE) -C $(CAPSTONE_DIR) confirm
