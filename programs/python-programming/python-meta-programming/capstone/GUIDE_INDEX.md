@@ -54,6 +54,7 @@ local guide that matches the question you actually have.
 - `MANIFEST_GUIDE.md`
 - `REGISTRY_GUIDE.md`
 - `INSPECTION_GUIDE.md`
+- `PUBLIC_SURFACE_MAP.md`
 
 ### "How do wrappers, fields, and constructors work?"
 
