@@ -18,6 +18,7 @@ deterministic results, and repeatable verification.
 ## Table of Contents
 - [Why this program exists](#why-this-program-exists)
 - [Start here](start-here.md)
+- [Course guide](course-guide.md)
 - [Learning contract](learning-contract.md)
 - [How the guide is written](#how-the-guide-is-written)
 - [What you will learn](#what-you-will-learn)
@@ -46,6 +47,13 @@ If you maintain a legacy Makefile or design a new build, the objective is the sa
 If you are not sure where to begin, use [`start-here.md`](start-here.md) before diving
 into the modules. It routes beginners, working maintainers, and build stewards to the
 right entry point so the capstone does not become an accidental first lesson.
+
+[Back to top](#top)
+
+---
+## Course guide
+Use [`course-guide.md`](course-guide.md) when you need one page that groups the course
+surfaces by learner need: first entry, stable reference, capstone use, and review use.
 
 [Back to top](#top)
 
