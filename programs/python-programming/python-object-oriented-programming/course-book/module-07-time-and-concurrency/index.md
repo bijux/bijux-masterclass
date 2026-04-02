@@ -36,6 +36,19 @@ Keep one question in view while reading:
 
 That question is what keeps runtime concerns explicit instead of contagious.
 
+## Preflight
+
+- You should already be able to separate aggregate ownership from runtime orchestration after the earlier modules.
+- If clocks, queues, retries, and async APIs still feel like one generic runtime concern, slow down and separate them by ownership.
+- Keep asking whether time and concurrency pressure belongs inside an object or at the boundary coordinating it.
+
+## Learning outcomes
+
+- model clocks, deadlines, cancellation, and concurrency pressure as explicit contracts
+- choose between locks, queues, ownership transfer, and async boundaries with design-level reasoning
+- distinguish monotonic time from wall-clock time where correctness depends on the difference
+- review sync/async bridges without letting scheduler concerns infect the whole model
+
 ## Why this module matters
 
 Time and concurrency amplify design mistakes:
@@ -71,13 +84,19 @@ plumbing to bolt on later.
 - treating cancellation as an exception detail instead of a state transition concern
 - memoizing mutable or time-sensitive results without invalidation rules
 
+## Exercises
+
+- Pick one operation and explain which clock it should depend on and why a different clock would be unsafe.
+- Review one concurrency pressure point and justify whether locking, queuing, or ownership transfer is the cleaner response.
+- Compare one sync API and one async wrapper and explain where the boundary should live to keep the domain readable.
+
 ## Capstone connection
 
 The monitoring capstone already evaluates live samples and emits incidents. This module
 shows how that runtime could grow scheduled polling, worker queues, time-based rules,
 and async adapters while preserving aggregate ownership and explicit boundaries.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to design Python object systems that remain clear,
 testable, and safe when clocks, worker concurrency, and async integration pressure are real.

@@ -35,6 +35,19 @@ Keep one question in view while reading:
 
 That question is what keeps extensibility from turning into unmanaged surface area.
 
+## Preflight
+
+- You should already be able to explain ownership boundaries before deciding what may become public or extensible.
+- If facades, plugins, and compatibility guarantees still blur together, keep the capstone package boundary visible while reading.
+- Treat every extension point as a governance cost, not as free optionality.
+
+## Learning outcomes
+
+- define the narrowest public surface that preserves object ownership and consumer clarity
+- distinguish facades, capability-based seams, plugins, and internal modules by governance cost
+- design deprecation, compatibility, and executable documentation policies that keep examples honest
+- review extension mechanisms without letting consumers mutate internals directly
+
 ## Why this module matters
 
 Without API discipline, object-oriented systems decay in familiar ways:
@@ -70,13 +83,19 @@ into an ungoverned surface area.
 - claiming backward compatibility while removing behavior informally
 - allowing plugins to mutate domain internals directly
 
+## Exercises
+
+- Name one surface that should become public and one surface that should stay private, then justify both in terms of ownership.
+- Review one extension seam and explain which governance rule makes it safe enough to publish.
+- Compare a facade-based extension point with direct internal imports and explain which consumer behavior each one encourages.
+
 ## Capstone connection
 
 The monitoring capstone can remain a closed teaching example or evolve into a reusable
 package surface. This module shows how to add a facade, documented extension points,
 and governance around plugins and integrations without weakening aggregate boundaries.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to define and defend a public object-oriented Python
 surface that supports customization, versioned change, and reviewable extension rules.

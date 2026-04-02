@@ -35,6 +35,19 @@ Keep one question in view while reading:
 
 That question turns verification into design evidence instead of test-count theater.
 
+## Preflight
+
+- You should already be able to name the ownership and lifecycle rules that deserve proof.
+- If tests still feel like a separate discipline from design, read this module with one capstone invariant in mind.
+- Keep asking which test surface would fail first if a boundary, transition, or repository contract drifted.
+
+## Learning outcomes
+
+- design verification layers that match domain, boundary, and operational risk instead of defaulting to one style
+- choose between behavioral, property-based, contract, and integration tests with explicit justification
+- expose lifecycle, repository, and adapter failures that shallow happy-path tests would miss
+- use runtime checks and approval boundaries to support executable design claims
+
 ## Why this module matters
 
 Object-heavy systems often fail in ways that shallow unit tests miss:
@@ -70,13 +83,19 @@ test count.
 - snapshotting unstable representations and calling it regression protection
 - assuming a passing unit test layer means production workflows are covered
 
+## Exercises
+
+- Take one ownership boundary and name the first test that should fail if that boundary stops being true.
+- Compare a mock-heavy test with a fake or contract test and explain which one would better expose interface drift.
+- Review one fixture or snapshot and explain whether it clarifies the invariant or hides the setup needed to understand it.
+
 ## Capstone connection
 
 The monitoring capstone already includes unit and application tests. This module shows
 how to extend that suite toward stateful lifecycle coverage, repository contracts,
 property checks, and confidence layers that match real design risk.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to construct a verification strategy that matches the
 semantic and operational risk of an object-oriented Python codebase rather than relying

@@ -35,6 +35,19 @@ Keep one question in view while reading:
 That question matters because bad layering usually starts with a correct behavior placed
 in the wrong object.
 
+## Preflight
+
+- You should already be able to describe object identity and value semantics from Module 01 without hesitation.
+- If composition, inheritance, or construction boundaries still blur together, keep the capstone package map open while reading.
+- Treat every layering example as an ownership decision, not a directory-layout exercise.
+
+## Learning outcomes
+
+- assign behavior to objects, policies, factories, and composition roots with explicit cohesion criteria
+- explain when composition clarifies design and when inheritance remains reviewable
+- evaluate wrapper types, protocols, and layered boundaries as correctness tools instead of style markers
+- identify assembly boundaries that keep construction logic from leaking across the codebase
+
 ## Why this module matters
 
 Many codebases become difficult not because individual objects are broken, but because
@@ -72,6 +85,12 @@ should collaborate without turning the system into framework theater.
 - letting object construction sprawl across the system instead of one visible assembly boundary
 - introducing layers by directory naming alone without real boundary discipline
 
+## Exercises
+
+- Take one behavior from the capstone and justify why it belongs in a domain object, a policy object, or the runtime facade.
+- Review one inheritance example and explain whether it is semantic extension, reuse pressure, or avoidable coupling.
+- Sketch a composition root for one workflow and explain why the rest of the system should not assemble that graph itself.
+
 ## Capstone connection
 
 The capstone separates domain objects, evaluation policies, runtime orchestration,
@@ -79,7 +98,7 @@ repositories, and adapters on purpose. This module gives the reasoning for that 
 why `MonitoringPolicy` should not fetch metrics, why strategies should own evaluation
 variability, and why the runtime facade should coordinate without absorbing domain logic.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to decompose object-heavy code into explicit
 roles with cleaner cohesion and more stable collaboration boundaries.

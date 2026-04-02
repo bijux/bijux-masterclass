@@ -35,6 +35,19 @@ Keep one question in view while reading:
 That question is what separates an aggregate from a cluster of objects that merely happen
 to call each other.
 
+## Preflight
+
+- You should already be able to name ownership boundaries and state contracts from the earlier modules.
+- If event emission, projections, or policy objects still feel interchangeable, slow down before reading aggregate examples.
+- Treat every collaboration example as a test of authority: who is allowed to change what, and who only derives views.
+
+## Learning outcomes
+
+- define aggregate boundaries that centralize cross-object invariants without collapsing into manager objects
+- distinguish authoritative state, domain events, projections, policies, and adapters by responsibility
+- explain how collaboration can stay explicit without letting every object know every other object
+- review extension pressure without weakening the source-of-truth boundary
+
 ## Why this module matters
 
 Once more than one object collaborates, correctness stops being a local property.
@@ -71,6 +84,12 @@ This module is about finding the boundary between those extremes.
 - letting adapters leak storage or transport assumptions into domain methods
 - adding strategies without a stable contract, turning extension into guesswork
 
+## Exercises
+
+- Identify one cross-object invariant and explain which aggregate or boundary should own it.
+- Review one event flow and state which artifact is authoritative and which artifact is only a downstream projection.
+- Compare an aggregate design with a manager-object design and explain which one keeps invariants easier to audit.
+
 ## Capstone connection
 
 This module is the direct explanation of the capstone's architecture. The `MonitoringPolicy`
@@ -78,7 +97,7 @@ aggregate owns registration, activation, retirement, and alert production; proje
 downstream of events; policies encapsulate evaluation variation; and the runtime coordinates
 without becoming the source of truth. Read this module as the justification for those edges.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to design aggregate roots, projections, policies,
 and adapters that preserve coherence without creating god objects.

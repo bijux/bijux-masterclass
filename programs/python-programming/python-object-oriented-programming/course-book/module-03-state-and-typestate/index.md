@@ -34,6 +34,19 @@ Keep one question in view while reading:
 
 That question is what turns state from tolerated mess into an explicit design contract.
 
+## Preflight
+
+- You should already be able to distinguish ownership boundaries from convenience wrappers after Module 02.
+- If properties, dataclasses, or validation hooks still feel magical, verify them with small examples before moving into typestate.
+- Keep asking whether a state representation makes illegal operations harder or merely documents them after the fact.
+
+## Learning outcomes
+
+- model legal and illegal states explicitly instead of relying on caller discipline
+- choose between properties, constructors, boundary validation, and lifecycle APIs with clear trade-offs
+- represent nullability, partial objects, and transitions without collapsing meaning into `None`
+- use typestate-inspired APIs to make invalid operations harder to express
+
 ## Why this module matters
 
 Object-oriented systems often look clean at the class level while hiding most of
@@ -66,6 +79,12 @@ represented as a contract instead of a pile of tolerated exceptions.
 - creating objects that are technically constructible but semantically unusable
 - allowing lifecycle transitions through informal caller discipline instead of explicit APIs
 
+## Exercises
+
+- Pick one object lifecycle and list the legal transitions, the illegal transitions, and the method boundary that should enforce them.
+- Review one property or constructor and explain whether it clarifies state or hides work that should stay explicit.
+- Replace one ambiguous `None` meaning with a sharper representation and explain what bug surface that removes.
+
 ## Capstone connection
 
 The capstone's lifecycle states, constructor validation, and rule definitions are examples
@@ -73,7 +92,7 @@ of this module's core point: internal state should communicate legal operations 
 The `MonitoringPolicy` aggregate is only trustworthy because draft, active, and retired
 rules are explicit, and because invalid inputs are rejected at the edges of object creation.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to model lifecycles, validation rules, and null
 semantics with fewer hidden states and fewer ad hoc runtime checks.

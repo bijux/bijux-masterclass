@@ -35,6 +35,19 @@ Keep one question in view while reading:
 
 That question is what prevents persistence from flattening the model into records.
 
+## Preflight
+
+- You should already be able to describe aggregate ownership and state contracts before adding storage concerns.
+- If repository, codec, and schema boundaries still feel interchangeable, keep the domain/storage distinction visible while reading.
+- Treat persistence as translation work that must preserve meaning, not as permission to flatten the model.
+
+## Learning outcomes
+
+- define repository and codec contracts that preserve domain meaning across storage boundaries
+- separate domain objects from storage records, session state, and serialized representations
+- design schema evolution and compatibility strategies before old data becomes a production problem
+- review conflict detection and transactional publication as part of persistence semantics
+
 ## Why this module matters
 
 Many Python systems start with a clean object model and lose discipline the moment
@@ -70,6 +83,12 @@ semantics instead of flattening them away.
 - persisting partially valid aggregates because repository code bypasses constructors
 - treating write conflicts as impossible until production traffic proves otherwise
 
+## Exercises
+
+- Map one aggregate to a storage representation and name which fields are domain meaning versus storage convenience.
+- Review one serialization change and explain how you would preserve compatibility for older persisted data.
+- Describe one repository API and justify why it is narrow enough to prevent storage assumptions from leaking inward.
+
 ## Capstone connection
 
 The monitoring capstone currently uses an in-memory repository and unit of work.
@@ -77,7 +96,7 @@ This module shows how that design can grow into file-backed, database-backed, or
 message-driven persistence without changing who owns invariants. Read it as the bridge
 between a teachable in-memory model and a production storage boundary.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to add persistence, serialization, and schema
 change to an object-oriented Python system without sacrificing aggregate integrity

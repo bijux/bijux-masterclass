@@ -36,6 +36,19 @@ Keep one question in view while reading:
 That question is what turns operational hardening into the final design audit instead of
 an unrelated production checklist.
 
+## Preflight
+
+- You should already be able to explain the semantic ownership model before tuning or hardening the system.
+- If performance, observability, or security work still feels like a collection of isolated checklists, tie each concern back to the object model while reading.
+- Keep asking which operational change preserves the design and which one silently corrupts it.
+
+## Learning outcomes
+
+- measure and improve performance without changing the object contract accidentally
+- add logs, metrics, traces, and runbooks that clarify object collaboration rather than obscuring it
+- evaluate trust boundaries, deserialization, and secret handling as design constraints
+- perform a full-system production review without abandoning the ownership model established earlier in the course
+
 ## Why this module matters
 
 Well-structured code can still fail in production if it:
@@ -71,13 +84,19 @@ made the system understandable in the first place.
 - treating deserialization as harmless data loading instead of a trust boundary
 - shipping a system with no runbook for the failure modes the design already predicts
 
+## Exercises
+
+- Pick one suspected hot path and explain what you would measure before changing the design.
+- Review one observability addition and state what behavior it should clarify without leaking sensitive or misleading data.
+- Describe one trust boundary in the capstone and explain which review artifact or runbook should accompany it.
+
 ## Capstone connection
 
 The monitoring capstone is intentionally small, but it still exposes the same questions
 as a larger system: where performance matters, which signals operators need, how payloads
 cross trust boundaries, and what it means to evolve the design without losing clarity.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to review and harden an object-oriented Python system
 for production use while preserving the semantic discipline built through the earlier modules.

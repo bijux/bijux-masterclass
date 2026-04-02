@@ -1,4 +1,4 @@
-# Orientation and Reading Discipline
+# Module 00: Orientation and Reading Discipline
 
 
 <!-- page-maps:start -->
@@ -38,6 +38,13 @@ Keep one question in view while reading the whole book:
 That question is the thread connecting the whole course. Semantics come first because
 later architecture, persistence, and operational choices only make sense when ownership
 already means something precise.
+
+## Learning outcomes
+
+- explain the central ownership question that unifies the full course
+- identify the prerequisite Python skills that need to feel routine before later modules become productive
+- choose the right orientation, checkpoint, and capstone guides before starting Module 01
+- describe how the capstone gains semantic, architectural, and operational meaning across Modules 01 to 10
 
 ## What this course is not
 
@@ -105,3 +112,15 @@ The monitoring-system capstone matures with the course:
 - Module 08 turns the capstone tests into a contract-driven verification story instead of a loose example set.
 - Module 09 explains how the capstone could expose a stable facade and governed extension seams.
 - Module 10 reviews the full design for performance, observability, trust boundaries, and operational readiness.
+
+## Exercises
+
+- Write a short ownership rule for this course in your own words, then name one kind of design mistake that rule should prevent.
+- Identify the prerequisite that feels least automatic for you, then name the first module where that weakness would create review confusion.
+- Open [Course Map](course-map.md), [Module Promise Map](../guides/module-promise-map.md), and [Module Checkpoints](../guides/module-checkpoints.md), then decide which guide you will revisit for first contact and which guide you will revisit for proof.
+
+## Closing criteria
+
+- You can explain what this course treats as object-oriented design discipline rather than syntax familiarity.
+- You know which guide to revisit when you need the course map, the module promise map, or the checkpoint bar.
+- You can describe how the capstone grows from semantic example to operational review surface across the ten modules.

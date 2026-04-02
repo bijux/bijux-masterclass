@@ -35,6 +35,19 @@ Keep one question in view while reading:
 That question keeps operational concerns attached to ownership instead of dissolving into
 general “infrastructure” language.
 
+## Preflight
+
+- You should already be able to name the ownership boundary for domain behavior before attaching operational concerns to it.
+- If retries, cleanup, or public API boundaries still feel like "someone else’s layer," treat this module as design work, not operations trivia.
+- Keep asking who pays for failure, leakage, or compatibility drift when a change goes wrong.
+
+## Learning outcomes
+
+- assign cleanup, failure handling, retries, and compatibility pressure to explicit owners
+- distinguish domain errors from system-boundary failures without flattening them into generic exceptions
+- evaluate idempotency, unit-of-work boundaries, and public surface discipline as long-term design contracts
+- extend behavior without bypassing invariants or widening the accidental public API
+
 ## Why this module matters
 
 A design can look elegant in greenfield code review and still fail in production because
@@ -69,6 +82,12 @@ than as a later concern owned by "infrastructure people."
 - exposing internal modules as accidental public API
 - adding new features by bypassing existing invariants instead of extending them cleanly
 
+## Exercises
+
+- Pick one operation and explain who owns cleanup, who owns retry policy, and which failures should remain visible to callers.
+- Review one public surface and state which modules are contract and which modules should remain implementation detail.
+- Describe one feature addition that should extend the existing model and one that would be a bypass around current invariants.
+
 ## Capstone connection
 
 The capstone's in-memory unit of work, runtime facade, and repository boundary are
@@ -76,7 +95,7 @@ small on purpose, but they model the pressure this module is about: who owns fai
 who commits change, which surfaces are public, and how new rule behavior can be added
 without rewriting the rest of the system.
 
-## Outcome
+## Closing criteria
 
 You should finish this module able to shape object-oriented Python systems that stay
 operable and maintainable under long-term change rather than only under greenfield conditions.
