@@ -29,11 +29,12 @@ reference alone.
 
 1. Read [FuncPipe Capstone Guide](index.md).
 2. Run `make PROGRAM=python-programming/python-functional-programming inspect` if you need the quickest review map before running tests.
-3. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour`.
-4. Read [Capstone Proof Guide](capstone-proof-guide.md) for the purpose of the generated bundle.
+3. Run `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough`.
+4. Read [Capstone Proof Guide](capstone-proof-guide.md) if you want to compare the walkthrough with the stronger saved proof routes.
 5. Read the generated `pytest.txt`, `focus-areas.txt`, `package-tree.txt`, and `test-tree.txt` in that order.
-6. Run `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you need a saved review bundle with the executed test record.
-7. Compare what you learned with [Capstone Architecture Guide](capstone-architecture-guide.md), [Capstone Test Guide](capstone-test-guide.md), and [Capstone Review Worksheet](capstone-review-worksheet.md).
+6. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` only when you want the learner-facing proof bundle after the walkthrough is already clear.
+7. Run `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you need a saved review bundle with the executed test record.
+8. Compare what you learned with [Capstone Architecture Guide](capstone-architecture-guide.md), [Capstone Test Guide](capstone-test-guide.md), and [Capstone Review Worksheet](capstone-review-worksheet.md).
 
 ## What the walkthrough should teach
 

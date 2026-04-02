@@ -83,7 +83,7 @@ of turning into a separate subject.
 | install the project | `make PROGRAM=python-programming/python-functional-programming install` | `make install` |
 | the strongest course-level proof route | `make PROGRAM=python-programming/python-functional-programming test` | `make confirm` |
 | the pytest suite only | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `make test` |
-| the learner-facing walkthrough bundle | `make PROGRAM=python-programming/python-functional-programming capstone-tour` | `make tour` |
+| the learner-facing walkthrough bundle | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` | `make demo` |
 
 ## Review questions
 
