@@ -2,28 +2,30 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Course Shape
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Course home"]
-  page["Python Functional Programming"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> home["Python Functional Programming"]
+  home --> modules["Modules 00-10"]
+  home --> guides["Guides"]
+  home --> reference["Reference"]
+  modules --> capstone["Capstone"]
+  guides --> capstone
+  reference --> capstone
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+flowchart TD
+  promise["Read the course promise, scope, and audience"] --> orientation["Open Module 00 to anchor the mental model"]
+  orientation --> modules["Move into the module sequence that matches your pressure"]
+  modules --> support["Use guides and reference pages when they answer a concrete question"]
+  modules --> capstone["Bring the capstone in after the current idea is clear"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so learners do not mistake the capstone or reference pages for the first stop.
 
 This course teaches functional programming in Python as a discipline of explicit dataflow,
 controlled effects, and reviewable operational boundaries. The goal is not to imitate a
