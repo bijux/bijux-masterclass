@@ -54,3 +54,17 @@ clear unless the ownership rules are made explicit.
 - What is the narrowest supported extension seam?
 - Could a plugin or adapter mutate domain internals it should not control?
 - Which review or compatibility checks would fail first if an extension broke the contract?
+
+## Decision bar after the prompts
+
+After you answer the prompts for one boundary, force a clear verdict:
+
+- keep the current boundary because ownership, proof, and review cost still line up
+- tighten the boundary because convenient access is creating accidental authority
+- redesign the boundary because the current split no longer matches who owns the rule
+
+## Evidence to ask for before accepting the boundary
+
+- which guide, file, or command would you show another reviewer first
+- which proof surface should fail first if this boundary drifts
+- which neighboring boundary becomes safer because this one stayed narrow

@@ -57,3 +57,15 @@ the current object boundary earns its existence.
 - What would have to change if a new behavior were added tomorrow?
 - Which callers would break if this object’s representation changed?
 - Does the object keep compatibility pressure local, or does it widen ripple effects?
+
+## Keep, split, or redesign signals
+
+- keep the object if one ownership story still explains its invariants, mutation, and public contract cleanly
+- split the object if two different authorities are hiding behind one convenient class name
+- redesign the boundary if callers must know private sequencing, cleanup, or storage details to use it safely
+
+## Evidence to ask for before you accept the design
+
+- which capstone file or module example shows this role clearly
+- which test or saved route would fail first if this ownership claim stopped being true
+- which neighboring boundary should stay simpler because this object is carrying the right burden
