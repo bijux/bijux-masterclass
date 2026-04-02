@@ -54,11 +54,25 @@ incident history.
 - `inspect-rules` should show that lifecycle state is explicit and reviewable.
 - `inspect-history` should show that downstream incident views are derived from the scenario instead of controlling it.
 
+## How to read the outputs honestly
+
+| Output | Best question | What it cannot prove on its own |
+| --- | --- | --- |
+| `summary.txt` | what state and incidents a learner should understand first | whether the domain rules were enforced correctly under all behaviors |
+| `rules.txt` | which rules are draft, active, or retired | whether evaluation variability is placed in the right seam |
+| `history.txt` | which incidents were published and accumulated downstream | whether the history source remained non-authoritative in code |
+
 ## Best follow-up choices
 
 - Go to `PACKAGE_GUIDE.md` when the question becomes "which package owns this state?"
 - Go to `TEST_GUIDE.md` when the question becomes "which test proves this state change?"
 - Go to `PROOF_GUIDE.md` when the question becomes "which route is strongest for this claim?"
+
+## Escalate when
+
+- the output shows surprising state but you cannot yet name the owner of the change
+- two outputs look consistent, but you still do not know which one is authoritative
+- the inspection bundle tells a coherent story, but you need executable evidence for the same claim
 
 ## What this guide prevents
 

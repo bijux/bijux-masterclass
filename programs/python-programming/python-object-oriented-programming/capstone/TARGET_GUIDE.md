@@ -35,6 +35,17 @@ command for the question you actually have.
 | `verify-report` | build the executable verification report bundle |
 | `proof` | run the full course-sanctioned evidence route |
 
+## Pick by output shape
+
+| If you need... | Choose |
+| --- | --- |
+| terminal narrative only | `make demo` |
+| saved learner-facing state files | `make inspect` |
+| saved walkthrough story plus guide set | `make tour` |
+| saved tests plus learner-facing state | `make verify-report` |
+| the strongest local confidence bar | `make confirm` |
+| the published end-to-end learner route | `make proof` |
+
 ## Fast target selection
 
 ### If the question is "does the design still hold?"
@@ -79,6 +90,12 @@ Use:
   `demo` tells the story directly in the terminal; `tour` saves that story with matching review guides.
 - `inspect` versus `verify-report`
   `inspect` focuses on learner-facing state; `verify-report` combines tests and saved state for stronger review.
+
+## Signs a target is too heavy
+
+- you ran it mainly because it felt safer than naming the real question
+- the output answered several things, but not the one boundary you were reviewing
+- a lighter route could already have told you which file or test to open next
 
 ## Best companion guides
 
