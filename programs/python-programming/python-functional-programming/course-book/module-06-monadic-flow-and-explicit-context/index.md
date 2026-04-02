@@ -48,6 +48,7 @@ The emphasis is on readability, lawfulness, and explicit context.
 - [Writer Pattern](writer-pattern.md)
 - [Refactoring try/except](refactoring-try-except.md)
 - [Configurable Pipelines](configurable-pipelines.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -58,4 +59,6 @@ The emphasis is on readability, lawfulness, and explicit context.
 ## Before moving on
 
 You should be able to explain why lawful composition matters for refactoring, and how
-explicit context keeps abstractions honest instead of magical.
+explicit context keeps abstractions honest instead of magical. Use
+[Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-06` before moving forward.

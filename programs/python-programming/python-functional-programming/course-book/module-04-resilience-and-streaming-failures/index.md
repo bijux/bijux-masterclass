@@ -48,6 +48,7 @@ afterthoughts.
 - [Resource-Aware Streams](resource-aware-streams.md)
 - [Functional Retries](functional-retries.md)
 - [Structured Error Reports](structured-error-reports.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -58,4 +59,6 @@ afterthoughts.
 ## Before moving on
 
 You should be able to explain which failures belong in the stream, which should stop the
-pipeline, and what evidence proves that cleanup still happens under both paths.
+pipeline, and what evidence proves that cleanup still happens under both paths. Use
+[Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-04` before moving forward.

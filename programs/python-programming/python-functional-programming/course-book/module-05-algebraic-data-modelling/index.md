@@ -48,6 +48,7 @@ starts using explicit data shapes that are easier to reason about and test.
 - [Serialization Beyond Pydantic](serialization-beyond-pydantic.md)
 - [Compositional Domain Models](compositional-domain-models.md)
 - [ADT Performance](adt-performance.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -58,4 +59,6 @@ starts using explicit data shapes that are easier to reason about and test.
 ## Before moving on
 
 You should be able to explain how algebraic modelling makes downstream composition safer,
-and why explicit shapes matter before the course introduces lawful chaining patterns.
+and why explicit shapes matter before the course introduces lawful chaining patterns. Use
+[Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-05` before moving forward.
