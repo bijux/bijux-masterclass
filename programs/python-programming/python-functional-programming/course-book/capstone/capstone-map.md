@@ -20,33 +20,34 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this page routes you into the right capstone
+surface, not through every capstone page in order. Read the second diagram as the guide
+loop: arrive with one question, choose the matching route, then leave with one smaller
+and more honest next move.
 
 This map turns the capstone into a deliberate study surface instead of a single guide
 page. Use it whenever you want to decide where to go next for concrete evidence.
 
-## Capstone route
+## Choose one capstone route
 
-- Start with [FuncPipe Capstone Guide](index.md) for the overall role and purpose.
-- Read [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
-- Read the capstone's local [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/PACKAGE_GUIDE.md) when you are already inside the repository and want the same route locally.
-- Read [Capstone Test Guide](capstone-test-guide.md) when you want the test suite to function as a review map.
-- Read [Capstone Review Worksheet](capstone-review-worksheet.md) when you want an explicit review lens.
-- Read [Capstone Architecture Guide](capstone-architecture-guide.md) when you are reviewing package boundaries.
-- Read [Capstone Walkthrough](capstone-walkthrough.md) when you want the learner-facing tour story.
-- Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/WALKTHROUGH_GUIDE.md) when you want the repository itself to provide the first-pass reading order.
-- Read [Capstone Proof Guide](capstone-proof-guide.md) when you want the verification route.
-- Use `make PROGRAM=python-programming/python-functional-programming inspect` when you need the shortest inspection route before choosing a deeper guide.
-- Use `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you need a saved review bundle instead of only console output.
-- Use `make PROGRAM=python-programming/python-functional-programming capstone-confirm` when you need the strongest published confirmation route.
-- Read [Capstone Extension Guide](capstone-extension-guide.md) when you want to decide where a new change belongs.
+| If your question is... | Best page | Smallest command if needed |
+| --- | --- | --- |
+| Which capstone page should I open first? | [FuncPipe Capstone Guide](index.md) | none |
+| Which files should I read first? | [Capstone File Guide](capstone-file-guide.md) | `make PROGRAM=python-programming/python-functional-programming inspect` |
+| Which tests or proof artifacts match the current module? | [Capstone Test Guide](capstone-test-guide.md) | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
+| Where do package boundaries and adapters live? | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make PROGRAM=python-programming/python-functional-programming inspect` |
+| Which saved proof route fits this claim? | [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
+| I need the learner-facing tour story. | [Capstone Walkthrough](capstone-walkthrough.md) | `make PROGRAM=python-programming/python-functional-programming capstone-tour` |
+| I need explicit review prompts or change placement. | [Capstone Review Worksheet](capstone-review-worksheet.md) or [Capstone Extension Guide](capstone-extension-guide.md) | none |
 
 ## Module-to-capstone bridge
 
-- Modules 01 to 03 map most directly to `fp/`, `result/`, `streaming/`, and the pipeline core.
-- Modules 04 to 06 map most directly to failure containers, algebraic modelling, and configured flows.
-- Modules 07 to 08 map most directly to `domain/`, `boundaries/`, `infra/`, and async effect packages.
-- Modules 09 to 10 map most directly to `interop/`, review guides, and proof surfaces.
+| Module range | Best first route |
+| --- | --- |
+| Modules 01 to 03 | `fp/`, `result/`, `streaming/`, and the pipeline core |
+| Modules 04 to 06 | failure containers, algebraic modelling, and configured flows |
+| Modules 07 to 08 | `domain/`, `boundaries/`, `infra/`, and async effect packages |
+| Modules 09 to 10 | `interop/`, review guides, and proof surfaces |
 
 ## Module-to-file, test, and proof route
 
@@ -65,3 +66,9 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 
 Use this table when a module page tells you to inspect the capstone and you want the
 smallest stable route from concept to source, proof, and command.
+
+## Stop here when
+
+- you know which capstone page owns your question
+- you know whether you need code, tests, review prompts, or proof artifacts
+- you know the smallest command worth running next
