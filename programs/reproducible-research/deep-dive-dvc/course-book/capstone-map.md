@@ -23,7 +23,7 @@ capstone should confirm understanding, not replace first-contact learning.
 
 | Module | Learner goal | Capstone surfaces | Proof command |
 | --- | --- | --- | --- |
-| 01 Why Reproducibility Fails | see why rerunnable scripts are weaker than explicit state contracts | `README.md`, `TOUR.md`, `data/raw/service_incidents.csv` | `make -C capstone tour` |
+| 01 Why Reproducibility Fails | see why rerunnable scripts are weaker than explicit state contracts | `README.md`, `TOUR.md`, `data/raw/service_incidents.csv` | `make -C capstone walkthrough` |
 | 02 Data Identity | separate location from durable data identity | `data/raw/`, `.dvc/cache`, `.dvc-remote/`, `dvc.lock` | `make -C capstone verify` |
 | 03 Environments as Inputs | inspect the runtime boundary instead of treating it as luck | `Makefile`, `pyproject.toml`, `src/incident_escalation_capstone/` | `make -C capstone test` |
 | 04 Truthful DAGs | inspect declared stage edges and recorded execution state | `dvc.yaml`, `dvc.lock`, `state/data_profile.json` | `make -C capstone repro` |
@@ -42,11 +42,12 @@ capstone should confirm understanding, not replace first-contact learning.
 
 If you want one sane first walkthrough, use this order:
 
-1. Read `capstone/README.md` to understand the contract the repository is trying to keep.
-2. Read `capstone/dvc.yaml` and then `capstone/dvc.lock` to compare declared versus recorded state.
-3. Read `capstone/params.yaml` and `capstone/metrics/metrics.json` to see what comparisons are allowed to mean.
-4. Read `capstone/publish/v1/` and `capstone/TOUR.md` to inspect the promoted contract and proof bundle.
-5. Run `make -C capstone confirm` when you want executable proof instead of a prose tour.
+1. Run `make -C capstone walkthrough` to generate the learner-first reading bundle.
+2. Read `capstone/README.md` to understand the contract the repository is trying to keep.
+3. Read `capstone/dvc.yaml` and then `capstone/dvc.lock` to compare declared versus recorded state.
+4. Read `capstone/params.yaml` and `capstone/metrics/metrics.json` to see what comparisons are allowed to mean.
+5. Read `capstone/publish/v1/` and `capstone/TOUR.md` to inspect the promoted contract and proof bundle.
+6. Run `make -C capstone confirm` when you want executable proof instead of a prose tour.
 
 This order keeps state identity and contract meaning ahead of mechanics.
 

@@ -60,9 +60,10 @@ Use this order the first time you enter the capstone:
 2. read `README.md`
 3. read `dvc.yaml`
 4. read `dvc.lock`
-5. run `make verify`
-6. run `make tour`
-7. inspect `publish/v1/manifest.json`
+5. read `params.yaml`
+6. run `make verify`
+7. run `make tour`
+8. inspect `publish/v1/manifest.json`
 
 That route keeps the learner focused on contract first, then declared state, then
 recorded state, then promoted evidence.
@@ -101,6 +102,7 @@ These commands answer different questions:
 - `make verify` checks that the current repository state matches the expected contract.
 - `make confirm` reruns the broader confirmation flow that the course points learners to.
 - `make recovery-drill` proves that a remote-backed restore still works after local loss.
+- `make walkthrough` writes the learner-first reading bundle under `artifacts/walkthrough/reproducible-research/deep-dive-dvc/`.
 - `make tour` writes a learner-facing proof bundle under `artifacts/tour/reproducible-research/deep-dive-dvc/`.
 
 ## What `confirm` proves

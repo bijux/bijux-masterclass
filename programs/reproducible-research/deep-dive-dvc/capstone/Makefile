@@ -10,6 +10,7 @@ VENV_PY := $(abspath $(VENV_BIN)/python)
 PIP := $(VENV_PY) -m pip
 PYTEST := $(VENV_PY) -m pytest
 DVC := $(VENV_PY) -m dvc
+WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-dvc
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
 
 .PHONY: help
@@ -63,20 +64,22 @@ tour: verify ## Build the learner-facing proof bundle
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
 .PHONY: walkthrough
-walkthrough: ## Print the recommended first capstone walkthrough
+walkthrough: ## Build the learner-facing capstone walkthrough bundle
+	@rm -rf $(WALKTHROUGH_DIR)
+	@mkdir -p $(WALKTHROUGH_DIR)
+	@cp README.md $(WALKTHROUGH_DIR)/README.md
+	@cp dvc.yaml $(WALKTHROUGH_DIR)/dvc.yaml
+	@cp dvc.lock $(WALKTHROUGH_DIR)/dvc.lock
+	@cp params.yaml $(WALKTHROUGH_DIR)/params.yaml
+	@cp TOUR.md $(WALKTHROUGH_DIR)/TOUR.md
 	@printf '%s\n' \
-		'Capstone walkthrough:' \
-		'  1. read README.md for the repository contract' \
-		'  2. read dvc.yaml and then dvc.lock' \
-		'  3. inspect params.yaml and metrics/metrics.json' \
-		'  4. run make verify' \
-		'  5. run make tour' \
-		'  6. inspect publish/v1/manifest.json and publish/v1/report.md' \
-		'' \
-		'Focused proof targets:' \
-		'  make verify         validate the promoted artifact contract' \
-		'  make confirm        run verify, tests, and recovery drill' \
-		'  make recovery-drill prove remote-backed restoration after loss'
+		'1. Read README.md to understand the repository contract.' \
+		'2. Read dvc.yaml to inspect the declared pipeline.' \
+		'3. Read dvc.lock to compare recorded state against the declaration.' \
+		'4. Read params.yaml to see the declared control surface.' \
+		'5. Run make verify when you want executed proof.' \
+		'6. Run make tour when you want the full evidence bundle.' > $(WALKTHROUGH_DIR)/route.txt
+	@echo "✔ wrote learner-facing walkthrough to $(WALKTHROUGH_DIR)"
 
 .PHONY: push
 push: repro ## Push tracked artifacts to the local training remote

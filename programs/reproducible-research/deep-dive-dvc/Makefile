@@ -20,6 +20,10 @@ test: ## Run the capstone confirmation suite
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	@$(RUN_CAPSTONE) tour
 
+.PHONY: capstone-walkthrough
+capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
+	@$(RUN_CAPSTONE) walkthrough
+
 .PHONY: clean
 clean: ## Remove build artifacts
 	@rm -rf $(COURSE_VENV_DIR) $(SITE_DIR) .pytest_cache .ruff_cache .mypy_cache

@@ -1,9 +1,13 @@
 # Capstone Tour
 
-This tour is the learner-facing entrypoint for the DVC capstone. It builds a proof bundle
-that captures the repository state the course asks you to reason about: declared pipeline
+This tour is the executed proof route for the DVC capstone. It builds a bundle that
+captures the repository state the course asks you to reason about: declared pipeline
 shape, recorded execution state, tracked metrics, promoted artifacts, and the stable
 publish boundary.
+
+If you want a lighter first step, run `make walkthrough` first. That bundle contains the
+repository contract, pipeline declaration, recorded lock state, params surface, and a
+suggested reading route without executing the workflow.
 
 ## What the tour produces
 
@@ -27,20 +31,22 @@ make tour
 From the repository root:
 
 ```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
 ```
 
 ## What to inspect first
 
-1. `dvc.yaml`
-2. `dvc.lock`
-3. `params.yaml`
-4. `metrics.json`
-5. `publish-v1/manifest.json`
-6. `publish-v1/report.md`
+1. `README.md`
+2. `dvc.yaml`
+3. `dvc.lock`
+4. `params.yaml`
+5. `metrics.json`
+6. `publish-v1/manifest.json`
+7. `publish-v1/report.md`
 
-That order mirrors the course: declared graph, recorded execution, declared inputs,
-measured outcome, promoted interface, and human-readable report.
+That order mirrors the course: repository contract, declared graph, recorded execution,
+declared inputs, measured outcome, promoted interface, and human-readable report.
 
 ## What this tour does not replace
 

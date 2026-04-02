@@ -41,6 +41,7 @@ If you want a module-by-module route through the repository, start with
 ## Core commands
 
 ```bash
+make -C capstone walkthrough
 make -C capstone repro
 make -C capstone verify
 make -C capstone confirm
