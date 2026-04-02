@@ -58,7 +58,7 @@ Choose one entry:
 
 1. If you are new to the program, start with [`start-here.md`](guides/start-here.md).
 2. If you need a stable route through support pages, use [`course-guide.md`](guides/course-guide.md).
-3. If you want the full program shape before reading modules, open [`module-00.md`](module-00.md).
+3. If you want the full program shape before reading modules, open [`module-00.md`](module-00-orientation/index.md).
 4. If you need the executable repository, start with [`readme-capstone.md`](guides/readme-capstone.md), not the raw capstone directory.
 
 The learner path is deliberate:
@@ -76,7 +76,7 @@ administrative instead of necessary.
 
 Use this snapshot when you need the fastest sense of what the modules are doing:
 
-- [Module 00](module-00.md) defines the study strategy, the family context, and the capstone route.
+- [Module 00](module-00-orientation/index.md) defines the study strategy, the family context, and the capstone route.
 - [Module 01](module-01.md) explains why common Git-and-script workflows still fail reproducibility.
 - [Module 02](module-02.md) defines stable data identity through content addressing and state layers.
 - [Module 03](module-03.md) explains why execution environments are part of the declared input surface.
@@ -150,7 +150,7 @@ graph TD
   root --> makefile["Makefile"]
   root --> mkdocs["mkdocs.yml"]
   root --> readme["README.md"]
-  book --> orientation["module-00.md"]
+  book --> orientation["module-00-orientation/index.md"]
   book --> modules["module-01.md ... module-10.md"]
   book --> capmap["guides/capstone-map.md"]
   capstone --> capreadme["README.md"]

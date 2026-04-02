@@ -180,11 +180,11 @@ Use these pages when you reach each milestone:
 
 | Milestone | Best support pages | Why these pages matter |
 | --- | --- | --- |
-| before Module 01 | `guides/start-here.md`, `guides/learning-contract.md`, `reference/module-dependency-map.md` | establish the learner route and the pedagogical boundaries |
-| Modules 01-02 | `reference/state-glossary.md`, `reference/authority-map.md` | keep identity, authority, and layer language precise |
-| Modules 03-05 | `reference/practice-map.md`, `guides/command-guide.md`, `guides/proof-matrix.md` | connect pipeline and metric concepts to executable proof |
-| Modules 06-09 | `guides/capstone-map.md`, `guides/capstone-file-guide.md`, `guides/readme-capstone.md` | move from concept to repository inspection without losing the teaching thread |
-| Module 10 and later review | `reference/completion-rubric.md`, `guides/capstone-review-worksheet.md`, `guides/capstone-extension-guide.md` | assess the course and evolve the repository without weakening the contract |
+| before Module 01 | `../guides/start-here.md`, `../guides/learning-contract.md`, `../reference/module-dependency-map.md` | establish the learner route and the pedagogical boundaries |
+| Modules 01-02 | `../reference/state-glossary.md`, `../reference/authority-map.md` | keep identity, authority, and layer language precise |
+| Modules 03-05 | `../reference/practice-map.md`, `../guides/command-guide.md`, `../guides/proof-matrix.md` | connect pipeline and metric concepts to executable proof |
+| Modules 06-09 | `../guides/capstone-map.md`, `../guides/capstone-file-guide.md`, `../guides/readme-capstone.md` | move from concept to repository inspection without losing the teaching thread |
+| Module 10 and later review | `../reference/completion-rubric.md`, `../guides/capstone-review-worksheet.md`, `../guides/capstone-extension-guide.md` | assess the course and evolve the repository without weakening the contract |
 
 This keeps the support surfaces on the main learner route instead of making them feel
 optional.
@@ -198,7 +198,7 @@ pipelines, metrics, experiments, promotion, remotes, and recovery become concret
 early modules still benefit from smaller mental and local examples first so the learner
 can understand state identity before the repository becomes the main teaching surface.
 
-Use [Capstone Map](guides/capstone-map.md) when you want one clear route from a module concept
+Use [Capstone Map](../guides/capstone-map.md) when you want one clear route from a module concept
 to the exact repository files and proof command that demonstrate it.
 
 **Proof command:**
@@ -233,9 +233,9 @@ and restore the smaller state model first.
 
 Use this page sequence when you enter the capstone:
 
-1. [`readme-capstone.md`](guides/readme-capstone.md)
-2. [`capstone-map.md`](guides/capstone-map.md)
-3. [`capstone-file-guide.md`](guides/capstone-file-guide.md)
+1. [`readme-capstone.md`](../guides/readme-capstone.md)
+2. [`capstone-map.md`](../guides/capstone-map.md)
+3. [`capstone-file-guide.md`](../guides/capstone-file-guide.md)
 4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
 5. `make -C capstone confirm` when you want the strongest built-in proof route
 

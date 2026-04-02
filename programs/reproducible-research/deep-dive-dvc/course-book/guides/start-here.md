@@ -58,7 +58,7 @@ design trade-offs.
 Choose this if DVC still feels new.
 
 1. Read [`course-guide.md`](course-guide.md)
-2. Read [`module-00.md`](../module-00.md)
+2. Read [`module-00.md`](../module-00-orientation/index.md)
 3. Read [`module-01.md`](../module-01.md)
 4. Read [`module-02.md`](../module-02.md)
 5. Enter the capstone only after the state-layer model feels clear
@@ -123,7 +123,7 @@ make -C capstone confirm
 Then use:
 
 * [`capstone-map.md`](capstone-map.md) when you want the repository route by module
-* [`module-00.md`](../module-00.md) when you want the full course arc
+* [`module-00.md`](../module-00-orientation/index.md) when you want the full course arc
 * [`course-guide.md`](course-guide.md) when you want the right support page quickly
 * [`verification-route-guide.md`](../reference/verification-route-guide.md) when you need the right proof path after the first walkthrough
 

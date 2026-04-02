@@ -39,7 +39,7 @@ This guide groups the course by the question you are trying to answer.
 Start with these pages in order:
 
 1. [`start-here.md`](start-here.md)
-2. [`module-00.md`](../module-00.md)
+2. [`module-00.md`](../module-00-orientation/index.md)
 3. [`learning-contract.md`](learning-contract.md)
 4. [`module-dependency-map.md`](../reference/module-dependency-map.md)
 5. [`platform-setup.md`](platform-setup.md) if you plan to run local proof commands

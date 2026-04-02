@@ -41,7 +41,7 @@ Use the course in this order:
 1. `course-book/guides/start-here.md`
 2. `course-book/guides/index.md`
 3. `course-book/guides/course-guide.md`
-4. `course-book/module-00.md`
+4. `course-book/module-00-orientation/index.md`
 5. Modules `01` to `10` in order
 6. `course-book/guides/readme-capstone.md` and `course-book/guides/capstone-map.md` once the state model feels stable
 

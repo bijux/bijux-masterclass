@@ -25,7 +25,7 @@ nav:
       - "Course Guide": guides/course-guide.md
       - "Learner Entry": guides/start-here.md
       - "Learning Contract": guides/learning-contract.md
-      - "Program Outline": module-00.md
+      - "Program Outline": module-00-orientation/index.md
       - "Platform Setup": guides/platform-setup.md
   - Course Reference:
       - "Reference Home": reference/index.md
