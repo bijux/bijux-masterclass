@@ -46,4 +46,4 @@ to agree with the architecture. The goal is to inspect whether the evidence just
 
 - Which test folder or tour artifact proves the current claim?
 - Which command should you run before accepting the boundary?
-- Which question from [Functional Review Checklist](reference/review-checklist.md) is most relevant to this review?
+- Which question from [Functional Review Checklist](../reference/review-checklist.md) is most relevant to this review?
