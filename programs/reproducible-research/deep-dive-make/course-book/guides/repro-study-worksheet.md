@@ -89,7 +89,7 @@ That route moves from visible parallel corruption into subtler graph-boundary mi
 Use these pages with this worksheet:
 
 * [`repro-catalog.md`](repro-catalog.md)
-* [`incident-ladder.md`](incident-ladder.md)
+* [`incident-ladder.md`](../reference/incident-ladder.md)
 * [`proof-matrix.md`](proof-matrix.md)
 
 [Back to top](#top)

@@ -95,6 +95,6 @@ The most useful companion pages for the repro pack are:
 
 * [`capstone-map.md`](capstone-map.md)
 * [`capstone-file-guide.md`](capstone-file-guide.md)
-* [`incident-ladder.md`](incident-ladder.md)
+* [`incident-ladder.md`](../reference/incident-ladder.md)
 
 [Back to top](#top)

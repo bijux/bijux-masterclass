@@ -22,34 +22,35 @@ plugins:
 nav:
   - Start Here:
       - Home: index.md
-      - Course Guide: course-guide.md
-      - Learner Entry: start-here.md
-      - Platform Setup: platform-setup.md
-      - Learning Contract: learning-contract.md
+      - Course Guide: guides/course-guide.md
+      - Learner Entry: guides/start-here.md
+      - Platform Setup: guides/platform-setup.md
+      - Learning Contract: guides/learning-contract.md
       - Program Outline: module-00.md
   - Course Reference:
-      - Module Dependency Map: module-dependency-map.md
-      - Command Guide: command-guide.md
-      - Proof Matrix: proof-matrix.md
-      - Build-Graph Glossary: build-graph-glossary.md
-      - Concept Index: concept-index.md
-      - Practice Map: practice-map.md
-      - Public Targets: public-targets.md
-      - Incident Ladder: incident-ladder.md
-      - Completion Rubric: completion-rubric.md
+      - Reference Home: reference/index.md
+      - Module Dependency Map: reference/module-dependency-map.md
+      - Command Guide: guides/command-guide.md
+      - Proof Matrix: guides/proof-matrix.md
+      - Build-Graph Glossary: reference/build-graph-glossary.md
+      - Concept Index: reference/concept-index.md
+      - Practice Map: reference/practice-map.md
+      - Public Targets: reference/public-targets.md
+      - Incident Ladder: reference/incident-ladder.md
+      - Completion Rubric: reference/completion-rubric.md
   - Capstone Reference:
-      - Capstone Map: capstone-map.md
-      - Capstone File Guide: capstone-file-guide.md
-      - Mk Layer Guide: mk-layer-guide.md
-      - Artifact Boundary Guide: artifact-boundary-guide.md
-      - Selftest Map: selftest-map.md
-      - Capstone Proof Checklist: capstone-proof-checklist.md
-      - Capstone Review Worksheet: capstone-review-worksheet.md
-      - Capstone Walkthrough: capstone-walkthrough.md
-      - Repro Catalog: repro-catalog.md
-      - Repro Study Worksheet: repro-study-worksheet.md
-      - Capstone Extension Guide: capstone-extension-guide.md
-      - Capstone Project: readme-capstone.md
+      - Capstone Map: guides/capstone-map.md
+      - Capstone File Guide: guides/capstone-file-guide.md
+      - Mk Layer Guide: reference/mk-layer-guide.md
+      - Artifact Boundary Guide: reference/artifact-boundary-guide.md
+      - Selftest Map: reference/selftest-map.md
+      - Capstone Proof Checklist: guides/capstone-proof-checklist.md
+      - Capstone Review Worksheet: guides/capstone-review-worksheet.md
+      - Capstone Walkthrough: guides/capstone-walkthrough.md
+      - Repro Catalog: guides/repro-catalog.md
+      - Repro Study Worksheet: guides/repro-study-worksheet.md
+      - Capstone Extension Guide: guides/capstone-extension-guide.md
+      - Capstone Project: guides/readme-capstone.md
   - Modules:
       - "01 — Foundations": module-01.md
       - "02 — Scaling": module-02.md

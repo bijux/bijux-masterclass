@@ -63,7 +63,7 @@ If you maintain a legacy Makefile or design a new build, the objective is the sa
 
 ---
 ## Start here
-If you are not sure where to begin, use [`start-here.md`](start-here.md) before diving
+If you are not sure where to begin, use [`start-here.md`](guides/start-here.md) before diving
 into the modules. It routes beginners, working maintainers, and build stewards to the
 right entry point so the capstone does not become an accidental first lesson.
 
@@ -71,14 +71,14 @@ right entry point so the capstone does not become an accidental first lesson.
 
 ---
 ## Course guide
-Use [`course-guide.md`](course-guide.md) when you need one page that groups the course
+Use [`course-guide.md`](guides/course-guide.md) when you need one page that groups the course
 surfaces by learner need: first entry, stable reference, capstone use, and review use.
 
 [Back to top](#top)
 
 ---
 ## Learning contract
-Use [`learning-contract.md`](learning-contract.md) as the stable reference for how this
+Use [`learning-contract.md`](guides/learning-contract.md) as the stable reference for how this
 course teaches: concept, failure mode, repair, and proof. It makes the pedagogical bar
 explicit instead of leaving it scattered across modules.
 
@@ -91,10 +91,10 @@ Use these as the default learner routes:
 
 | If you need | Start with | Then go to |
 | --- | --- | --- |
-| first exposure to GNU Make | [`start-here.md`](start-here.md) | [`module-00.md`](module-00.md), then Module 01 |
-| a stable course hub | [`course-guide.md`](course-guide.md) | the support page that matches your question |
-| platform requirements first | [`platform-setup.md`](platform-setup.md) | [`command-guide.md`](command-guide.md) |
-| executable proof after the module | [`capstone-map.md`](capstone-map.md) | [`capstone-walkthrough.md`](capstone-walkthrough.md) |
+| first exposure to GNU Make | [`start-here.md`](guides/start-here.md) | [`module-00.md`](module-00.md), then Module 01 |
+| a stable course hub | [`course-guide.md`](guides/course-guide.md) | the support page that matches your question |
+| platform requirements first | [`platform-setup.md`](guides/platform-setup.md) | [`command-guide.md`](guides/command-guide.md) |
+| executable proof after the module | [`capstone-map.md`](guides/capstone-map.md) | [`capstone-walkthrough.md`](guides/capstone-walkthrough.md) |
 
 [Back to top](#top)
 
@@ -104,11 +104,11 @@ Use these as the default learner routes:
 These pages exist so learners do not have to reconstruct the course shape from ten
 modules and one capstone:
 
-* [`course-guide.md`](course-guide.md) for the stable hub
+* [`course-guide.md`](guides/course-guide.md) for the stable hub
 * [`module-00.md`](module-00.md) for the full course arc
-* [`module-dependency-map.md`](module-dependency-map.md) for the safe reading order
-* [`command-guide.md`](command-guide.md) for root, program, and capstone commands
-* [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
+* [`module-dependency-map.md`](reference/module-dependency-map.md) for the safe reading order
+* [`command-guide.md`](guides/command-guide.md) for root, program, and capstone commands
+* [`proof-matrix.md`](guides/proof-matrix.md) for claim-to-evidence routing
 
 [Back to top](#top)
 
@@ -169,7 +169,7 @@ Older versions may work for basic modules but lack key parallel-safe primitives.
 ## Verification via the capstone
 The program is paired with an executable reference build: [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone). It exists for one reason: **proof**.
 
-Recommended guide: [`capstone-map.md`](capstone-map.md)
+Recommended guide: [`capstone-map.md`](guides/capstone-map.md)
 
 From the repository root:
 ```sh

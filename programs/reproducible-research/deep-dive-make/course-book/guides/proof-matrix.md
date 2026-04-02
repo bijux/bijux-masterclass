@@ -53,8 +53,8 @@ Use it when you know what concept you care about but want the fastest evidence r
 | Claim | Command | File surfaces |
 | --- | --- | --- |
 | the build has a stable public API | `gmake -C capstone help` | `capstone/Makefile` |
-| the layered `mk/*.mk` structure has explicit responsibilities | inspect [`mk-layer-guide.md`](mk-layer-guide.md) | `capstone/mk/*.mk` |
-| artifact boundaries are smaller than the whole repository | inspect [`artifact-boundary-guide.md`](artifact-boundary-guide.md) | `capstone/build/`, `capstone/repro/`, `capstone/tests/` |
+| the layered `mk/*.mk` structure has explicit responsibilities | inspect [`mk-layer-guide.md`](../reference/mk-layer-guide.md) | `capstone/mk/*.mk` |
+| artifact boundaries are smaller than the whole repository | inspect [`artifact-boundary-guide.md`](../reference/artifact-boundary-guide.md) | `capstone/build/`, `capstone/repro/`, `capstone/tests/` |
 | the build can explain rebuild behavior | `gmake -C capstone --trace all` | `capstone/Makefile`, `capstone/mk/*.mk` |
 | the build declares portability boundaries | `gmake -C capstone portability-audit` | `capstone/mk/contract.mk` |
 | the build produces non-contaminating evidence | `gmake -C capstone attest` | `capstone/Makefile`, `build/attest.txt` |
@@ -84,9 +84,9 @@ Use it when you know what concept you care about but want the fastest evidence r
 The most useful companion pages for this matrix are:
 
 * [`command-guide.md`](command-guide.md)
-* [`public-targets.md`](public-targets.md)
-* [`practice-map.md`](practice-map.md)
+* [`public-targets.md`](../reference/public-targets.md)
+* [`practice-map.md`](../reference/practice-map.md)
 * [`capstone-file-guide.md`](capstone-file-guide.md)
-* [`selftest-map.md`](selftest-map.md)
+* [`selftest-map.md`](../reference/selftest-map.md)
 
 [Back to top](#top)

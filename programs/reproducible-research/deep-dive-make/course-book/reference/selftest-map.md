@@ -79,8 +79,8 @@ That order keeps the learner anchored in contract, then harness, then executed p
 
 Use these pages with this map:
 
-* [`capstone-proof-checklist.md`](capstone-proof-checklist.md)
-* [`proof-matrix.md`](proof-matrix.md)
-* [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
+* [`capstone-proof-checklist.md`](../guides/capstone-proof-checklist.md)
+* [`proof-matrix.md`](../guides/proof-matrix.md)
+* [`capstone-review-worksheet.md`](../guides/capstone-review-worksheet.md)
 
 [Back to top](#top)

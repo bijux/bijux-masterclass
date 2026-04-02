@@ -42,7 +42,7 @@ Start with these pages in order:
 2. [`platform-setup.md`](platform-setup.md)
 3. [`module-00.md`](module-00.md)
 4. [`learning-contract.md`](learning-contract.md)
-5. [`module-dependency-map.md`](module-dependency-map.md)
+5. [`module-dependency-map.md`](../reference/module-dependency-map.md)
 
 Then begin Module 01.
 
@@ -54,13 +54,13 @@ Then begin Module 01.
 
 Use these pages when you already know the course but need a fast answer:
 
-* [`build-graph-glossary.md`](build-graph-glossary.md) for shared vocabulary
-* [`concept-index.md`](concept-index.md) for where an idea is taught
+* [`build-graph-glossary.md`](../reference/build-graph-glossary.md) for shared vocabulary
+* [`concept-index.md`](../reference/concept-index.md) for where an idea is taught
 * [`command-guide.md`](command-guide.md) for root, program, and capstone surfaces
 * [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
-* [`practice-map.md`](practice-map.md) for the right proof loop
-* [`public-targets.md`](public-targets.md) for stable command surfaces
-* [`incident-ladder.md`](incident-ladder.md) for debugging order
+* [`practice-map.md`](../reference/practice-map.md) for the right proof loop
+* [`public-targets.md`](../reference/public-targets.md) for stable command surfaces
+* [`incident-ladder.md`](../reference/incident-ladder.md) for debugging order
 
 [Back to top](#top)
 
@@ -86,10 +86,10 @@ reference build:
 
 Use these pages when you care about assessment, maintainability, or repository review:
 
-* [`completion-rubric.md`](completion-rubric.md)
-* [`module-dependency-map.md`](module-dependency-map.md)
+* [`completion-rubric.md`](../reference/completion-rubric.md)
+* [`module-dependency-map.md`](../reference/module-dependency-map.md)
 * [`proof-matrix.md`](proof-matrix.md)
-* [`public-targets.md`](public-targets.md)
+* [`public-targets.md`](../reference/public-targets.md)
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
 * [`capstone-extension-guide.md`](capstone-extension-guide.md)
 
