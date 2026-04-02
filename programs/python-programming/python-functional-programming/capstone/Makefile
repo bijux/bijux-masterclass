@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test build lint clean clean-all venv demo inspect verify-report tour proof \
+.PHONY: install test build lint clean clean-all venv demo inspect verify-report tour proof confirm \
         worktrees snapshots clean-history module-md module-funcpipe freeze-codebase \
         help
 
@@ -101,6 +101,8 @@ tour: install ## Build the learner-facing proof bundle
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
 proof: test inspect tour ## Run the sanctioned learner-facing proof route
+
+confirm: lint build verify-report proof ## Run the strongest capstone confirmation route
 
 build: install ## Build distribution artifacts
 	$(HATCH) build

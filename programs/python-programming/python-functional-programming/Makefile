@@ -24,9 +24,21 @@ test: ## Run the capstone test suite
 demo: ## Build the learner-facing capstone walkthrough
 	@$(RUN_CAPSTONE) demo
 
+.PHONY: inspect
+inspect: ## Build the learner-facing capstone inspection bundle
+	@$(RUN_CAPSTONE) inspect
+
 .PHONY: capstone-tour
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	@$(RUN_CAPSTONE) tour
+
+.PHONY: capstone-verify-report
+capstone-verify-report: ## Build the capstone verification report bundle
+	@$(RUN_CAPSTONE) verify-report
+
+.PHONY: capstone-confirm
+capstone-confirm: ## Run the capstone's strongest confirmation route
+	@$(RUN_CAPSTONE) confirm
 
 .PHONY: proof
 proof: ## Run the full capstone proof route

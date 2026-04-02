@@ -34,6 +34,28 @@ def _freeze_metadata(m: Mapping[str, JSON]) -> tuple[tuple[str, JSON], ...]:
     return tuple(sorted(m.items()))
 
 
+def _json_object(value: JSON, *, field: str) -> dict[str, JSON]:
+    if not isinstance(value, Mapping):
+        raise ValueError(f"{field} must be a JSON object")
+    result: dict[str, JSON] = {}
+    for key, item in value.items():
+        if not isinstance(key, str):
+            raise ValueError(f"{field} keys must be strings")
+        result[key] = item
+    return result
+
+
+def _json_number_array(value: JSON, *, field: str) -> list[float]:
+    if not isinstance(value, Sequence) or isinstance(value, (str, bytes)):
+        raise ValueError(f"{field} must be a JSON array of numbers")
+    result: list[float] = []
+    for item in value:
+        if not isinstance(item, (int, float)):
+            raise ValueError(f"{field} must be a JSON array of numbers")
+        result.append(float(item))
+    return result
+
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class Chunk:
     """Immutable, stable, JSON-roundtrippable chunk record."""
@@ -109,26 +131,36 @@ def failure(*, code: str, msg: str, attempt: int) -> Failure:
 def chunk_state_to_dict(state: ChunkState) -> dict[str, JSON]:
     base: dict[str, JSON] = {"kind": state.kind, "version": 1}
     if isinstance(state, Success):
-        return base | {"embedding": list(state.embedding), "metadata": dict(state.metadata)}
-    return base | {"code": state.code, "msg": state.msg, "attempt": state.attempt}
+        base["embedding"] = [float(value) for value in state.embedding]
+        base["metadata"] = {key: value for key, value in state.metadata}
+        return base
+    base["code"] = state.code
+    base["msg"] = state.msg
+    base["attempt"] = state.attempt
+    return base
 
 
 def chunk_state_from_dict(d: Mapping[str, JSON]) -> ChunkState:
     if d.get("version") != 1:
         raise ValueError("unsupported version")
-    kind = d["kind"]
-    if kind == "success":
+    kind_raw = d.get("kind")
+    if not isinstance(kind_raw, str):
+        raise ValueError("kind must be str")
+    if kind_raw == "success":
         return success(
-            embedding=d["embedding"],  # type: ignore[arg-type]
-            metadata=dict(d["metadata"]),  # type: ignore[arg-type]
+            embedding=_json_number_array(d.get("embedding"), field="embedding"),
+            metadata=_json_object(d.get("metadata"), field="metadata"),
         )
-    if kind == "failure":
+    if kind_raw == "failure":
+        attempt_raw = d.get("attempt")
+        if not isinstance(attempt_raw, int) or isinstance(attempt_raw, bool):
+            raise ValueError("attempt must be int")
         return failure(
             code=str(d["code"]),
             msg=str(d["msg"]),
-            attempt=int(d["attempt"]),  # type: ignore[arg-type]
+            attempt=attempt_raw,
         )
-    raise ValueError(f"unknown kind {kind!r}")
+    raise ValueError(f"unknown kind {kind_raw!r}")
 
 
 #
