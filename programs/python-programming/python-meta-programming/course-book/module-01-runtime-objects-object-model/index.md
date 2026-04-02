@@ -65,6 +65,26 @@ When needed, we will distinguish:
 
 In the rest of this text, anything that goes through `inspect` or documented attributes (`__name__`, `__annotations__`, etc.) counts as spec-level or supported introspection; anything that pokes directly at `__code__`, `__closure__`, or cell objects is treated as diagnostic-only CPython behaviour.
 
+### Use this module when
+
+- a dynamic design still feels like "framework magic" rather than ordinary runtime objects
+- you are not yet sure which runtime facts are language-level guarantees and which are interpreter details
+- later modules feel abstract because the object model under them is still fuzzy
+
+### Capstone anchors
+
+- inspect the public manifest surface before reading implementation details
+- treat functions, classes, and plugin instances in `src/incident_plugins/` as ordinary runtime objects first
+- use the capstone to name what happens at import time, class-definition time, and call time
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- what makes a function, class, module, and instance an ordinary runtime object
+- which surfaces are safe for supported introspection and which are diagnostic-only
+- how the capstone runtime is built from ordinary object relationships rather than hidden magic
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---

@@ -73,6 +73,26 @@ We defer full `inspect` to Module 3, with one deliberate preview: `inspect.getat
 - **Spec-level / supported**: documented builtins (`dir`, `vars`, `getattr`, `type`, …) and the attribute access semantics they invoke.
 - **CPython-leaning**: details like `MemberDescriptorType` for slots. Useful for tooling, but not something to build application correctness on.
 
+### Use this module when
+
+- you need to inspect runtime state without accidentally executing business behavior
+- you keep reaching for `getattr` or `hasattr` without a clear safety story
+- the boundary between names, stored state, and resolved values still feels blurred
+
+### Capstone anchors
+
+- start with `make manifest` and `make registry` before opening source files
+- use the capstone CLI outputs as examples of inspection that stays observational
+- compare safe public inspection with the richer runtime behavior behind plugin invocation
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- why attribute access is a protocol and not automatically passive
+- when `dir`, `vars`, `getattr`, and `getattr_static` answer different questions
+- how the capstone exposes useful runtime facts without invoking plugin actions
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---

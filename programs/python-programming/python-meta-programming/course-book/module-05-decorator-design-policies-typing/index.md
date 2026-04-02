@@ -72,6 +72,26 @@ Risk boundary for this module:
 - type-hint-driven behavior stays partial and reviewable rather than pretending to be a full type system
 - examples remain synchronous and single-process so design costs are visible instead of hidden behind infrastructure
 
+### Use this module when
+
+- decorator code is starting to carry retries, validation, caching, or other policy
+- you need to decide whether annotation-driven runtime behavior is honest enough to approve
+- wrapper-based designs are beginning to compete with explicit objects or service boundaries
+
+### Capstone anchors
+
+- compare the narrow action wrapper in `src/incident_plugins/actions.py` with the heavier policy patterns taught here
+- use manifest and action outputs to see what metadata must remain visible
+- keep the schema and registration boundaries in view so wrapper ownership does not sprawl
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- which policy can still live honestly in a decorator and which policy should move elsewhere
+- what annotation-aware runtime behavior can promise without pretending to be static typing
+- why the capstone keeps wrapper logic narrower than field or registration logic
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---

@@ -60,6 +60,26 @@ Risk stance (non-negotiable):
 
 Capstone: a safe `__repr__` mixin that orders fields using signatures and reads state without evaluating properties or walking the stack.
 
+### Use this module when
+
+- you need callable evidence that is stronger than "it looks inspectable"
+- you are reviewing wrapper-heavy code and need to know what metadata must survive
+- you need to separate safe structure inspection from dynamic member resolution
+
+### Capstone anchors
+
+- inspect action signatures before invoking any plugin behavior
+- compare manifest output with the code that assembles it in `framework.py`
+- use the capstone to see where provenance is strong evidence and where it stays best-effort
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- what `inspect.signature` proves about a callable and why `bind()` matters
+- why provenance helpers are useful but not correctness foundations
+- how the capstone exports callable and field facts without turning inspection into execution
+
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
 ---

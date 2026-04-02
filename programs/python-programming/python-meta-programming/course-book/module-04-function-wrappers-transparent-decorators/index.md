@@ -102,6 +102,20 @@ Keep the capstone open while reading this module and inspect:
 
 The capstone should make one point concrete here: a good decorator changes behavior without lying about what it wrapped.
 
+### Use this module when
+
+- a wrapper design feels clever but you cannot yet say what it changed at definition time or call time
+- you are not sure whether a decorator preserved the callable contract
+- you need a review standard for when a wrapper is still thin and when it has become hidden policy
+
+### Closing bar
+
+Before moving on, you should be able to explain:
+
+- what work happens once when decoration occurs and what repeats on every call
+- why `functools.wraps` and preserved signatures are review requirements
+- how the capstone action wrapper stays narrower than a small framework
+
 ```mermaid
 graph TD
   subgraph DefinitionTime["Definition time"]
