@@ -77,6 +77,7 @@ make PROGRAM=python-programming/python-object-oriented-programming proof
 
 Review and proof routes:
 
+- [GUIDE_INDEX.md](GUIDE_INDEX.md)
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md)
@@ -105,7 +106,7 @@ Review and proof routes:
 
 If this is your first honest pass through the capstone, use this order:
 
-1. Read this README until the scenario and review routes make sense.
+1. Read [GUIDE_INDEX.md](GUIDE_INDEX.md), then read this README until the scenario and review routes make sense.
 2. Read [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md).
 3. Read [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md).
 4. Run `make demo`.
@@ -135,7 +136,7 @@ directories kept explicit.
 
 | If you want to... | Start with | Then |
 | --- | --- | --- |
-| understand the domain before reading code | this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make demo` and `TOUR.md` |
+| understand the domain before reading code | `GUIDE_INDEX.md`, this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make demo` and `TOUR.md` |
 | inspect ownership boundaries file by file | `PACKAGE_GUIDE.md` | `SOURCE_GUIDE.md` and `ARCHITECTURE.md` |
 | confirm one design claim with evidence | `PROOF_GUIDE.md` | `make inspect` or `make verify-report` |
 | review the full capstone as a learner-facing artifact | `make tour` | `make proof` |
