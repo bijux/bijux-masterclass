@@ -46,6 +46,18 @@ supposed to settle a trust question.
 | DVC remote | durable recovery source when local cache is lost | human-readable release meaning |
 | `publish/v1/` | downstream contract another person may trust | the full internal state story |
 
+## Review Order
+
+When a trust question is ambiguous, inspect the layers in this order:
+
+1. `dvc.yaml` for declared responsibility
+2. `dvc.lock` for recorded execution state
+3. DVC remote or recovery drills for durability
+4. `publish/v1/` for downstream release trust
+
+That order prevents one common DVC mistake: jumping from a visible file straight to a
+trust claim without checking what authority that file actually has.
+
 [Back to top](#top)
 
 ---
@@ -59,6 +71,7 @@ supposed to settle a trust question.
 | can this repository restore tracked data after local loss | the DVC remote plus `dvc pull` |
 | what may downstream users rely on | `publish/v1/` plus its manifest |
 | what is merely visible today in the working tree | workspace files |
+| what changed meaningfully between comparable runs | `params.yaml`, `metrics/metrics.json`, and experiment metadata |
 
 [Back to top](#top)
 
@@ -72,6 +85,7 @@ supposed to settle a trust question.
 | treating `dvc.yaml` as proof of execution | declaration is not the same as recorded state |
 | treating the local cache as durable recovery | it disappears with the machine or cleanup |
 | treating the publish bundle as the whole repository truth | promoted state is intentionally smaller than the internal state story |
+| treating a successful restore as proof of semantic comparability | durability does not guarantee that params or metrics still mean the same thing |
 
 [Back to top](#top)
 

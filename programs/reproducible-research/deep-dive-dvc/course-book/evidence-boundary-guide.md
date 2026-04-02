@@ -44,6 +44,7 @@ comparison, promotion, or recovery.
 | tracked comparison evidence | `capstone/metrics/metrics.json`, `capstone/params.yaml` | what comparisons are meant to remain semantically stable | that a downstream consumer should trust every internal artifact |
 | promoted release evidence | `capstone/publish/v1/manifest.json`, `capstone/publish/v1/metrics.json`, `capstone/publish/v1/params.yaml` | what the repository intentionally exports for downstream trust | the full internal training or experimentation story |
 | recovery evidence | `make -C capstone recovery-drill`, DVC remote state | that tracked artifacts can be restored after local loss | that the repository is pedagogically clear or well-governed |
+| experiment evidence | experiment params, metrics, and comparison summaries | which declared deviations are being compared to the baseline | whether the candidate should be promoted downstream |
 
 [Back to top](#top)
 
@@ -58,6 +59,7 @@ comparison, promotion, or recovery.
 | are these params and metrics safe to compare | tracked comparison evidence |
 | what can a downstream reviewer rely on | promoted release evidence |
 | what survives when local material is deleted | recovery evidence |
+| whether an experiment is a meaningful candidate rather than random variance | experiment evidence |
 
 [Back to top](#top)
 
@@ -70,8 +72,9 @@ Read the evidence in this order:
 1. declaration
 2. recorded execution
 3. comparison surfaces
-4. promoted contract
-5. recovery proof
+4. experiment comparison, if a candidate run exists
+5. promoted contract
+6. recovery proof
 
 That sequence mirrors the course: first understand what the repository claims, then what
 it recorded, then what remains comparable, then what gets promoted, then what survives
@@ -89,6 +92,7 @@ time and loss.
 | treating `metrics/metrics.json` as the publish contract | internal comparison surfaces are not the same as promoted trust surfaces |
 | treating `publish/v1/` as the whole repository story | release evidence is intentionally smaller than internal evidence |
 | treating recovery success as proof that comparisons remain meaningful | durability alone does not preserve semantic clarity |
+| treating one improved metric as enough for promotion | comparison evidence is not the same as release evidence |
 
 [Back to top](#top)
 

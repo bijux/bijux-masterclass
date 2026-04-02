@@ -46,6 +46,7 @@ actually reading.
 | internal outputs | `capstone/state/`, `capstone/metrics/`, `capstone/models/`, `capstone/data/derived/` | hold internal repository evidence and generated state |
 | promoted contract | `capstone/publish/v1/` | expose the smaller, reviewable bundle downstream users may trust |
 | durability layer | `capstone/.dvc/`, `capstone/.dvc-remote/`, DVC cache | support restoration, synchronization, and long-term recovery |
+| experiment comparison layer | experiment runs, params deltas, comparison bundles | explain why one changed run is comparable to the baseline |
 
 [Back to top](#top)
 
@@ -60,7 +61,8 @@ Use this sequence the first time:
 3. read `capstone/dvc.lock` to inspect recorded execution evidence
 4. inspect `capstone/src/incident_escalation_capstone/` only after the declared graph is clear
 5. inspect `capstone/publish/v1/` to see what the repository promotes for downstream trust
-6. inspect recovery surfaces only after you understand what state should survive loss
+6. inspect experiment comparison surfaces when evaluating changed params
+7. inspect recovery surfaces only after you understand what state should survive loss
 
 That order keeps the learner focused on contract first and mechanics second.
 
@@ -79,6 +81,7 @@ That order keeps the learner focused on contract first and mechanics second.
 | which generated artifacts are only internal | internal outputs |
 | what may a downstream reviewer rely on | promoted contract |
 | what survives local loss | durability layer |
+| what makes one changed run meaningfully comparable to the baseline | experiment comparison layer |
 
 [Back to top](#top)
 
