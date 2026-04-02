@@ -91,3 +91,6 @@ concrete local edit sequences.
 
 Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when you want the next layer down: the exact
 file-and-class route inside those package choices.
+
+Read [PUBLIC_API_GUIDE.md](PUBLIC_API_GUIDE.md) when the question is no longer only
+internal file ownership, but what should count as the supported package surface.
