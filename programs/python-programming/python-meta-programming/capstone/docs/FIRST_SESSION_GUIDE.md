@@ -29,9 +29,9 @@ files, and the next honest proof route.
 ## First-session route
 
 1. Run `make manifest`.
-2. Read `README.md`.
-3. Read `GUIDE_INDEX.md`.
-4. Read `ARCHITECTURE.md`.
+2. Read [README.md](../README.md).
+3. Read [GUIDE_INDEX.md](GUIDE_INDEX.md).
+4. Read [ARCHITECTURE.md](ARCHITECTURE.md).
 5. Open `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
 6. Read `tests/test_registry.py` and `tests/test_fields.py`.
 7. Stop there unless your current question clearly requires invocation or CLI detail.
@@ -69,7 +69,7 @@ extra guides.
 
 ## Best next routes after the first session
 
-- Read `COMMAND_GUIDE.md` if your next question is command selection.
-- Read `GUIDE_INDEX.md` if your next question is which local guide matches the pressure.
-- Read `SOURCE_GUIDE.md` if your next question is where one owning symbol lives.
-- Read `TEST_GUIDE.md` if your next question is which proof file should fail first.
+- Read [COMMAND_GUIDE.md](COMMAND_GUIDE.md) if your next question is command selection.
+- Read [GUIDE_INDEX.md](GUIDE_INDEX.md) if your next question is which local guide matches the pressure.
+- Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) if your next question is where one owning symbol lives.
+- Read [TEST_GUIDE.md](TEST_GUIDE.md) if your next question is which proof file should fail first.
