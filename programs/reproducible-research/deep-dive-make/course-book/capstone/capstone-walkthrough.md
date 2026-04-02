@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Capstone Walkthrough
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,99 +13,65 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Do you need a first pass or a deeper review?"] --> route["Choose one walkthrough depth"]
+  route --> inspect["Read the matching guide and artifact"]
+  inspect --> next_move["Stop when one honest repository story is visible"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this page gives the capstone a teaching route,
+not just a repository map. Read the second diagram as the rule: choose one walkthrough
+depth, read the matching guide and artifact, then stop when one honest repository story
+is visible.
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+## First pass versus deeper pass
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+- First pass: use the 30-minute route when you need one bounded learner story from public targets to proof.
+- Deeper pass: use the longer routes only when the question changes from entry to architecture or stewardship.
 
-This walkthrough gives the capstone a teaching route, not just a repository map.
+## 30-minute first pass
 
-Use it when you want a bounded tour of the reference build with a clear question at each
-step.
+1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough`.
+2. Read the capstone's local [WALKTHROUGH_GUIDE.md](../../capstone/docs/WALKTHROUGH_GUIDE.md).
+3. Run `make PROGRAM=reproducible-research/deep-dive-make inspect`.
+4. Read the capstone's local [TARGET_GUIDE.md](../../capstone/docs/TARGET_GUIDE.md).
+5. Read `capstone/Makefile` and `capstone/tests/run.sh`.
+6. Run `make PROGRAM=reproducible-research/deep-dive-make test`.
 
----
+Goal: leave with a clear picture of what the capstone promises, which targets are public,
+and how the build proves more than compilation.
 
-## 30-Minute Tour
+## Architecture pass
 
-Use this when you want the minimum useful capstone pass.
+Use this only after Modules 06-08.
 
-1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough`
-2. Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/WALKTHROUGH_GUIDE.md)
-3. Run `make PROGRAM=reproducible-research/deep-dive-make inspect`
-4. Read `capstone/Makefile` and identify the public targets with the local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/TARGET_GUIDE.md)
-5. Read `capstone/tests/run.sh` and list the invariants it proves
-6. Run `make PROGRAM=reproducible-research/deep-dive-make test`
-7. Inspect one repro under `capstone/repro/`
+1. Read the capstone's local [ARCHITECTURE.md](../../capstone/docs/ARCHITECTURE.md).
+2. Follow discovery in `capstone/mk/objects.mk`.
+3. Follow modeled hidden inputs in `capstone/mk/stamps.mk`.
+4. Trace generated-header production from `capstone/scripts/gen_dynamic_h.py`.
+5. Run `gmake -C capstone --trace dyn`.
 
-Goal: leave with a clear picture of what the capstone promises and how it proves it.
+Goal: see how truthful graph modeling survives a repository with layers, generation, and
+publication boundaries.
 
-[Back to top](#top)
+## Stewardship pass
 
----
+Use this only after Modules 09-10.
 
-## 60-Minute Tour
+1. Read the capstone's local [TARGET_GUIDE.md](../../capstone/docs/TARGET_GUIDE.md).
+2. Read the capstone's local [ARCHITECTURE.md](../../capstone/docs/ARCHITECTURE.md).
+3. Review `capstone/mk/*.mk`, `capstone/tests/`, and `capstone/repro/`.
+4. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm`.
 
-Use this after Modules 03-06.
+Goal: judge whether another maintainer could extend, review, or migrate the build
+without losing its teaching honesty.
 
-1. Read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/ARCHITECTURE.md)
-2. Follow object discovery in `capstone/mk/objects.mk`
-3. Follow modeled inputs in `capstone/mk/stamps.mk`
-4. Trace generated header production from `scripts/gen_dynamic_h.py`
-5. Run `gmake -C capstone --trace dyn`
-6. Compare the build contract in the docs to the behavior you observed
+## Good stopping point
 
-Goal: see how truthful graph modeling survives a more realistic repository.
+Stop when you can explain one complete repository story:
 
-[Back to top](#top)
+- the public target you started from
+- the build behavior it is supposed to prove
+- the file or proof surface that makes that claim inspectable
 
----
-
-## 90-Minute Steward Tour
-
-Use this during Modules 07-10.
-
-1. Read the capstone's local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/TARGET_GUIDE.md)
-2. Read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/ARCHITECTURE.md)
-3. Read `capstone/mk/*.mk` for layer responsibilities
-4. Inspect `capstone/scripts/mkdist.py` for release boundary design
-5. Review `capstone/repro/` as migration-risk examples
-6. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm`
-
-Goal: evaluate the capstone as a build-system specimen, not just as a demo.
-
-[Back to top](#top)
-
----
-
-## Questions To Keep Asking
-
-At every step, ask:
-
-* what is the declared input boundary
-* what would break under `-j` if the graph were lying
-* which target is public versus internal
-* how would another maintainer discover this behavior later
-
-If you cannot answer those, slow down before opening more files.
-
-[Back to top](#top)
-
----
-
-## Exit Criteria
-
-The walkthrough has done its job when you can:
-
-* explain why `selftest` is stronger than `all`
-* point to one modeled hidden input
-* point to one deliberate publication boundary
-* identify one repro that teaches a real failure class
-
-[Back to top](#top)
+If you cannot tell that story yet, do not widen the tour. Repeat the smaller pass.
