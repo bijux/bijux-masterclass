@@ -39,7 +39,7 @@ nav:
       - Object Design Checklist: reference/object-design-checklist.md
       - Boundary Review Prompts: reference/boundary-review-prompts.md
 
-  - "Module 01: Semantic Floor":
+  - "Module 01: Object Model":
       - Overview: module-01-object-model/index.md
       - Object Identity, State, and Behavior: module-01-object-model/object-identity-state-and-behavior.md
       - Attribute Layout, Class State, and Instance State: module-01-object-model/attribute-layout-class-and-instance-state.md
@@ -52,7 +52,7 @@ nav:
       - When Classes Are the Wrong Tool: module-01-object-model/when-classes-are-the-wrong-tool.md
       - "Checkpoint: Script to Object Model": module-01-object-model/refactor-script-to-object-model.md
 
-  - "Module 02: Roles and Boundaries":
+  - "Module 02: Design and Layering":
       - Overview: module-02-design-and-layering/index.md
       - Responsibilities, Cohesion, and Object Smells: module-02-design-and-layering/responsibilities-cohesion-and-object-smells.md
       - Composition over Inheritance: module-02-design-and-layering/composition-over-inheritance.md
@@ -65,7 +65,7 @@ nav:
       - Duck Typing, ABCs, and Protocols: module-02-design-and-layering/duck-typing-abcs-and-protocols.md
       - "Checkpoint: Layered Design with Small Hierarchies": module-02-design-and-layering/refactor-layered-design-with-small-hierarchies.md
 
-  - "Module 03: State and Lifecycles":
+  - "Module 03: State and Typestate":
       - Overview: module-03-state-and-typestate/index.md
       - Properties and Computed Attributes: module-03-state-and-typestate/properties-and-computed-attributes.md
       - Descriptor Mental Model: module-03-state-and-typestate/descriptor-mental-model.md
@@ -78,7 +78,7 @@ nav:
       - Typestate in Python APIs: module-03-state-and-typestate/typestate-in-python-apis.md
       - "Checkpoint: Dataclasses, Null Safety, and Typestate": module-03-state-and-typestate/refactor-dataclasses-null-safety-and-typestate.md
 
-  - "Module 04: Collaboration and Aggregates":
+  - "Module 04: Aggregates and Collaboration":
       - Overview: module-04-aggregates-and-collaboration/index.md
       - Aggregates and Consistency Boundaries: module-04-aggregates-and-collaboration/aggregates-and-consistency-boundaries.md
       - Cross-Object Invariants: module-04-aggregates-and-collaboration/cross-object-invariants.md
@@ -91,7 +91,7 @@ nav:
       - Collaboration Surfaces without Tangle: module-04-aggregates-and-collaboration/collaboration-surfaces-without-tangle.md
       - "Checkpoint: Aggregates, Events, and Strategies": module-04-aggregates-and-collaboration/refactor-aggregates-events-and-strategies.md
 
-  - "Module 05: Operational Survival":
+  - "Module 05: Resources and Evolution":
       - Overview: module-05-resources-and-evolution/index.md
       - Resource Ownership and Context Managers: module-05-resources-and-evolution/resource-ownership-and-context-managers.md
       - Unit of Work and Failure Handling: module-05-resources-and-evolution/unit-of-work-and-failure-handling.md
@@ -104,7 +104,7 @@ nav:
       - Compatibility Contracts and Evolution: module-05-resources-and-evolution/compatibility-contracts-and-evolution.md
       - "Checkpoint: New Feature without Breaking Behavior": module-05-resources-and-evolution/refactor-new-feature-without-breaking-behavior.md
 
-  - "Module 06: Persistence and Evolution":
+  - "Module 06: Persistence and Schema Evolution":
       - Overview: module-06-persistence-and-schema-evolution/index.md
       - Repository Contracts and Aggregate Rehydration: module-06-persistence-and-schema-evolution/repository-contracts-and-aggregate-rehydration.md
       - Mapping Domain Objects to Storage Models: module-06-persistence-and-schema-evolution/mapping-domain-objects-to-storage-models.md
@@ -156,7 +156,7 @@ nav:
       - Third-Party Integration Contracts and Compatibility Suites: module-09-public-apis-and-extension-governance/third-party-integration-contracts-and-compatibility-suites.md
       - "Checkpoint: Public API for Safe Customization": module-09-public-apis-and-extension-governance/refactor-public-api-for-safe-customization.md
 
-  - "Module 10: Operational Mastery":
+  - "Module 10: Performance, Observability, and Security":
       - Overview: module-10-performance-observability-and-security/index.md
       - Measuring Allocation Costs and Object Hot Paths: module-10-performance-observability-and-security/measuring-allocation-costs-and-object-hot-paths.md
       - Profiling before Optimization: module-10-performance-observability-and-security/profiling-before-optimization.md
