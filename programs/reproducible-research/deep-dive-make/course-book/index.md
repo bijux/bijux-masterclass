@@ -100,17 +100,21 @@ These are the pages that make the course easier to trust and easier to finish:
 [Back to top](#top)
 
 ---
-## Course shape at a glance
+## Module Table of Contents
 
-Use this snapshot when you want the fastest sense of how the arc is organized:
-
-- [Module 00](module-00-orientation/index.md) explains the study strategy, the support surfaces, and the capstone timing.
-- [Modules 01-03](module-01-foundations-build-graph-and-truth/index.md) establish graph truth, parallel safety, and production proof habits.
-- [Modules 04-06](module-04-cli-precedence-includes-and-rule-edge-cases/index.md) deal with pressure: semantics, hardening, and generated-file boundaries.
-- [Modules 07-08](module-07-reusable-build-architecture-and-build-apis/index.md) turn the build into a reusable architecture with trustworthy release surfaces.
-- [Modules 09-10](module-09-performance-observability-and-build-incident-response/index.md) finish with incidents, migration, governance, and tool-boundary judgment.
-- [Guides](guides/index.md) hold learner routes and capstone entry.
-- [Reference](reference/index.md) holds the durable maps, glossaries, anti-patterns, and review standards.
+| Module | Title | Why it matters |
+| --- | --- | --- |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof ladder, and capstone timing |
+| [Module 01](module-01-foundations-build-graph-and-truth/index.md) | Build Graph Truth and Rebuild Semantics | makes dependency edges and rebuild meaning explicit |
+| [Module 02](module-02-parallel-safety-and-project-structure/index.md) | Parallel Safety and Project Structure | scales the graph without introducing race-prone structure |
+| [Module 03](module-03-production-practice-determinism-debugging-ci-and-selftests/index.md) | Determinism, Debugging, and CI Proof | makes builds explainable, repeatable, and self-testing |
+| [Module 04](module-04-cli-precedence-includes-and-rule-edge-cases/index.md) | CLI Semantics, Precedence, and Rule Edge Cases | survives pressure with a correct mental model of Make behavior |
+| [Module 05](module-05-portability-jobserver-hermeticity-and-failure-modes/index.md) | Portability, Jobserver, and Failure Modes | hardens builds across environments and concurrency settings |
+| [Module 06](module-06-generated-files-multi-output-rules-and-pipeline-boundaries/index.md) | Generated Files, Multi-Output Rules, and Pipeline Boundaries | models generators and publication boundaries truthfully |
+| [Module 07](module-07-reusable-build-architecture-and-build-apis/index.md) | Reusable Build Architecture and Public Build APIs | turns Make into a governable repository architecture |
+| [Module 08](module-08-release-engineering-and-artifact-publication-contracts/index.md) | Release Engineering and Artifact Publication Contracts | publishes artifacts with explicit install and integrity rules |
+| [Module 09](module-09-performance-observability-and-build-incident-response/index.md) | Performance, Observability, and Incident Response | diagnoses build incidents with evidence rather than folklore |
+| [Module 10](module-10-migration-governance-and-make-boundaries/index.md) | Migration, Governance, and Make Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
 
 ---
 ## How the guide is written
@@ -120,26 +124,6 @@ You are expected to distrust claims that cannot be checked. Where possible, the 
 - `make --trace` (why something rebuilt)
 - `make -p` (expanded database: targets/vars/rules)
 - serial vs parallel equivalence checks (hashes, manifests, outputs)  
-[Back to top](#top)
-
----
-## What you will learn
-### Module map
-
-| Module | Title | What it gives you |
-|---:|---|---|
-| 01 | Foundations: The Build Graph and Truth | The graph model, rebuild truth, and the first dependable Makefiles. |
-| 02 | Scaling: Parallelism, Safety, and Large-Project Structure | Parallel safety, discovery patterns, and structure for growth. |
-| 03 | Production Practice: Determinism, Debugging, CI Contracts, Selftests, and Disciplined DSL | Determinism, CI discipline, selftests, and forensics that explain rebuilds. |
-| 04 | Make Semantics Under Pressure: CLI, Precedence, Includes, and Rule Edge-Cases | CLI semantics, precedence, includes, and rule edge cases you need in incidents. |
-| 05 | Hardening: Portability, Jobserver, Hermeticity, Performance, and Failure Modes | Portability, jobserver correctness, modeled inputs, and failure isolation. |
-| 06 | Generated Files, Multi-Output Rules, and Pipeline Boundaries | Correct generators, multi-output producers, manifests, and publication boundaries. |
-| 07 | Reusable Build Architecture, Layered Includes, and Build APIs | Layered includes, build APIs, macros, and repository-scale structure. |
-| 08 | Release Engineering, Packaging, and Artifact Publication Contracts | Packaging, artifact publication, install contracts, and release manifests. |
-| 09 | Performance, Observability, and Build Incident Response | Measurement, observability, build triage, and operational runbooks. |
-| 10 | Migration, Governance, and Knowing Make's Boundaries | Migration strategy, governance, anti-pattern recognition, and tool-boundary judgment. |
-
-Syllabus: [`module-00-orientation/index.md`](module-00-orientation/index.md)  
 [Back to top](#top)
 
 ---

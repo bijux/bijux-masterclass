@@ -104,26 +104,21 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 - [Capstone Map](guides/capstone-map.md) when you want the module-to-repository bridge
 - [Proof Ladder](guides/proof-ladder.md) when you want to choose the smallest honest proof route
 
-## Course shape
+## Module Table of Contents
 
-- [Orientation](module-00-orientation/index.md) establishes the reading discipline and course map.
-- [Modules 01-03](module-01-object-model/index.md) through [module-03-state-and-typestate/index.md](module-03-state-and-typestate/index.md) build the semantic and state-design floor.
-- [Modules 04-07](module-04-aggregates-and-collaboration/index.md) through [module-07-time-and-concurrency/index.md](module-07-time-and-concurrency/index.md) apply that floor to collaboration, persistence, and runtime pressure.
-- [Modules 08-10](module-08-testing-and-verification/index.md) through [module-10-performance-observability-and-security/index.md](module-10-performance-observability-and-security/index.md) audit whether the design is actually trustworthy under tests, public use, and operations.
-- [Capstone](guides/capstone.md) keeps the whole route tied to one executable system.
-
-## Ten-module roadmap
-
-1. [Module 01](module-01-object-model/index.md): object semantics and the Python data model.
-2. [Module 02](module-02-design-and-layering/index.md): responsibility assignment and collaboration boundaries.
-3. [Module 03](module-03-state-and-typestate/index.md): state, validation, and lifecycle rules.
-4. [Module 04](module-04-aggregates-and-collaboration/index.md): aggregates, events, policies, and projections.
-5. [Module 05](module-05-resources-and-evolution/index.md): cleanup, failure handling, and safe evolution.
-6. [Module 06](module-06-persistence-and-schema-evolution/index.md): repositories, storage mapping, and schema change.
-7. [Module 07](module-07-time-and-concurrency/index.md): clocks, scheduling, concurrency, and async boundaries.
-8. [Module 08](module-08-testing-and-verification/index.md): executable proof and confidence design.
-9. [Module 09](module-09-public-apis-and-extension-governance/index.md): public surfaces, extension seams, and governance.
-10. [Module 10](module-10-performance-observability-and-security/index.md): operational review, observability, security, and capstone mastery.
+| Module | Title | Why it matters |
+| --- | --- | --- |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the reading contract, proof routes, and capstone timing |
+| [Module 01](module-01-object-model/index.md) | Object Semantics and the Python Data Model | defines identity, equality, copying, and object contracts |
+| [Module 02](module-02-design-and-layering/index.md) | Design Roles, Interfaces, and Layering | assigns responsibilities across values, services, adapters, and layers |
+| [Module 03](module-03-state-and-typestate/index.md) | State, Validation, and Typestate | makes lifecycle rules and illegal states explicit |
+| [Module 04](module-04-aggregates-and-collaboration/index.md) | Aggregates, Events, and Collaboration Boundaries | coordinates multiple objects without losing invariant ownership |
+| [Module 05](module-05-resources-and-evolution/index.md) | Resources, Failures, and Safe Evolution | handles cleanup, recovery, and compatibility under change |
+| [Module 06](module-06-persistence-and-schema-evolution/index.md) | Persistence, Serialization, and Schema Evolution | keeps storage and rehydration from flattening the domain |
+| [Module 07](module-07-time-and-concurrency/index.md) | Time, Scheduling, and Concurrency Boundaries | makes time pressure and concurrency explicit in the model |
+| [Module 08](module-08-testing-and-verification/index.md) | Testing, Contracts, and Verification Depth | turns verification into a design discipline, not an afterthought |
+| [Module 09](module-09-public-apis-and-extension-governance/index.md) | Public APIs, Extension Seams, and Governance | publishes stable surfaces without losing review control |
+| [Module 10](module-10-performance-observability-and-security/index.md) | Performance, Observability, and Security Review | closes with operational hardening and full capstone review |
 
 ## Working model
 
@@ -150,21 +145,6 @@ By the end of the course, you should be able to:
 - evolve storage, codecs, and compatibility boundaries without flattening the domain
 - keep time, concurrency, logging, retries, and observability explicit
 - publish public APIs and extension points that remain governable under change
-
-## What each module contributes
-
-- [Orientation](module-00-orientation/index.md) establishes the learner contract, prerequisites, and course map.
-- [Module 01](module-01-object-model/index.md) defines the semantic floor: identity, state, equality, attribute lookup, and copying.
-- [Module 02](module-02-design-and-layering/index.md) assigns responsibilities across values, entities, services, policies, and adapters.
-- [Module 03](module-03-state-and-typestate/index.md) turns state transitions, validation, and typestate into explicit design work.
-- [Module 04](module-04-aggregates-and-collaboration/index.md) moves from single-object correctness to coherent collaboration boundaries.
-- [Module 05](module-05-resources-and-evolution/index.md) focuses on survivability: cleanup, failure handling, compatibility, and change.
-- [Module 06](module-06-persistence-and-schema-evolution/index.md) adds repositories, serialization, conflicts, and schema evolution.
-- [Module 07](module-07-time-and-concurrency/index.md) adds clocks, schedulers, queues, async bridges, and concurrency-safe runtime boundaries.
-- [Module 08](module-08-testing-and-verification/index.md) turns verification into a design discipline with contracts, properties, and confidence layers.
-- [Module 09](module-09-public-apis-and-extension-governance/index.md) defines the public surface, extension seams, and governance rules for long-lived reuse.
-- [Module 10](module-10-performance-observability-and-security/index.md) closes the course with measurement, observability, security, and full capstone review.
-- [Capstone](guides/capstone.md) provides the executable slice that keeps the prose honest.
 
 ## Common failure modes this course is trying to prevent
 

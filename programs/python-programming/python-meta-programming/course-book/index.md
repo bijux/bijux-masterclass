@@ -61,26 +61,21 @@ Use [Review Checklist](reference/review-checklist.md), [Practice Map](guides/pra
 [Capstone Proof Checklist](guides/capstone-proof-checklist.md) to keep the material pedagogic
 instead of ornamental.
 
-## Module route
+## Module Table of Contents
 
-- [Module 00](module-00-orientation/index.md): orient on the power ladder, study method, and capstone role.
-- [Module 01](module-01-runtime-object-model/index.md) to [Module 03](module-03-inspect-signatures-and-provenance/index.md): build the runtime observation model before any transformation happens.
-- [Module 04](module-04-function-wrappers-and-decorators/index.md) to [Module 06](module-06-class-customization-before-metaclasses/index.md): learn wrappers, policy-bearing decorators, and the last honest class-level tools before descriptors.
-- [Module 07](module-07-descriptor-mechanics-and-lookup/index.md) to [Module 09](module-09-metaclass-design-and-class-creation/index.md): move from attribute control to definition-time class creation with explicit justification at each step.
-- [Module 10](module-10-runtime-governance-and-mastery/index.md) and [Mastery Review](module-10-runtime-governance-and-mastery/mastery-review.md): convert mechanism knowledge into review policy and exit criteria.
-
-## Ten-module roadmap
-
-1. Runtime object model: what Python objects really are at runtime.
-2. Safe runtime observation: how to inspect without accidental execution.
-3. `inspect`, signatures, and provenance: how to turn observation into usable runtime evidence.
-4. Function wrappers and transparent decorators: how transformation begins without lying.
-5. Decorator design, policies, and typing: where wrappers become runtime policy.
-6. Class customization before metaclasses: what class-level tools can still solve honestly.
-7. Descriptor mechanics and attribute lookup: the real engine behind `obj.attr`.
-8. Descriptor systems and validation: where attribute machinery starts turning into framework architecture.
-9. Metaclass design and class creation: the highest-power hook, justified narrowly.
-10. Runtime governance and mastery: the rules that keep dynamic power reviewable.
+| Module | Title | Why it matters |
+| --- | --- | --- |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the power ladder, reading order, and capstone role |
+| [Module 01](module-01-runtime-object-model/index.md) | Runtime Objects and the Python Object Model | explains what Python objects really are at runtime |
+| [Module 02](module-02-safe-runtime-observation/index.md) | Safe Runtime Observation and Inspection | inspects values and code without accidental execution |
+| [Module 03](module-03-inspect-signatures-and-provenance/index.md) | Signatures, Provenance, and Runtime Evidence | turns observation into reliable runtime facts |
+| [Module 04](module-04-function-wrappers-and-decorators/index.md) | Function Wrappers and Transparent Decorators | begins transformation without lying about behavior or metadata |
+| [Module 05](module-05-decorator-design-and-typing/index.md) | Decorator Design, Policies, and Typing | carries runtime policy without obscuring signatures and intent |
+| [Module 06](module-06-class-customization-before-metaclasses/index.md) | Class Customization Before Metaclasses | uses lower-power class tools before escalating to metaclasses |
+| [Module 07](module-07-descriptor-mechanics-and-lookup/index.md) | Descriptors, Lookup, and Attribute Control | explains how attribute access is actually resolved |
+| [Module 08](module-08-descriptor-systems-and-validation/index.md) | Descriptor Systems, Validation, and Framework Design | turns descriptor mechanics into disciplined runtime architecture |
+| [Module 09](module-09-metaclass-design-and-class-creation/index.md) | Metaclass Design and Class Creation | justifies the highest-power class hook narrowly and visibly |
+| [Module 10](module-10-runtime-governance-and-mastery/index.md) | Runtime Governance and Mastery Review | converts mechanism knowledge into review standards and exit criteria |
 
 ## Failure modes this course is designed to prevent
 

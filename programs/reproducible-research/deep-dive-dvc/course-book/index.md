@@ -74,17 +74,21 @@ The learner path is deliberate:
 If you skip that order, later modules will still be readable, but their rules will feel
 administrative instead of necessary.
 
-## Course Shape At A Glance
+## Module Table of Contents
 
-Use this snapshot when you need the fastest sense of what the modules are doing:
-
-- [Module 00](module-00-orientation/index.md) orients the learner and explains how the course, guides, reference pages, and capstone fit together.
-- [Modules 01-03](module-01-why-reproducibility-fails/index.md) build the state foundation: failure modes, identity, and environment boundaries.
-- [Modules 04-06](module-04-pipelines-as-truthful-dags/index.md) turn the state model into truthful execution, comparable metrics, and controlled experiments.
-- [Modules 07-08](module-07-collaboration-ci-and-social-contracts/index.md) make that system survive teams, CI, time, recovery pressure, and storage failure.
-- [Modules 09-10](module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md) finish with release boundaries, auditability, migration, and governance judgment.
-- [Capstone Guide](guides/readme-capstone.md) explains what the executable repository proves.
-- [Capstone Map](guides/capstone-map.md) shows which repository surfaces to inspect for each module.
+| Module | Title | Why it matters |
+| --- | --- | --- |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof surfaces, and capstone timing |
+| [Module 01](module-01-why-reproducibility-fails/index.md) | Why Reproducibility Fails in Real Teams | names the failure modes before teaching tools |
+| [Module 02](module-02-data-identity-and-content-addressing/index.md) | Data Identity and Content Addressing | separates stable paths from stable bytes and stable meaning |
+| [Module 03](module-03-execution-environments-as-inputs/index.md) | Execution Environments as Reproducible Inputs | treats environment assumptions as part of the contract |
+| [Module 04](module-04-pipelines-as-truthful-dags/index.md) | Truthful Pipelines and Declared Dependencies | makes workflow edges visible enough to trust reruns |
+| [Module 05](module-05-metrics-parameters-and-meaning/index.md) | Metrics, Parameters, and Comparable Meaning | keeps comparisons honest as experiments evolve |
+| [Module 06](module-06-experiments-without-chaos/index.md) | Experiments, Baselines, and Controlled Change | organizes experimentation without mutating the truth surface |
+| [Module 07](module-07-collaboration-ci-and-social-contracts/index.md) | Collaboration, CI, and Social Contracts | makes team pressure and automation part of the state model |
+| [Module 08](module-08-production-scale-and-incident-survival/index.md) | Recovery, Scale, and Incident Survival | rehearses failure, recovery, and retained authority under pressure |
+| [Module 09](module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md) | Promotion, Registry Boundaries, and Auditability | treats release and registry state as explicit trust boundaries |
+| [Module 10](module-10-migration-governance-anti-patterns-and-dvc-tool-boundaries/index.md) | Migration, Governance, and DVC Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
 
 ## Use These Support Pages First
 

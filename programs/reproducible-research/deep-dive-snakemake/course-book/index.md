@@ -75,17 +75,21 @@ If you already know the course exists but are not sure which support page you ne
 Use [`guides/index.md`](guides/index.md) when you want the full learner-support surface
 and [`reference/index.md`](reference/index.md) when you want the stable review shelf.
 
-## Course shape at a glance
+## Module Table of Contents
 
-Use this snapshot when you want the fastest sense of how the arc is organized:
-
-- [Module 00](module-00-orientation/index.md) explains the study strategy, support surfaces, and capstone timing.
-- [Modules 01-02](module-01-file-contracts-and-the-workflow-dag/index.md) establish the workflow contract and dynamic DAG discipline.
-- [Modules 03-05](module-03-production-operations-and-policy-boundaries/index.md) turn policy, scaling, and software boundaries into explicit review surfaces.
-- [Modules 06-08](module-06-publishing-and-downstream-contracts/index.md) define publish trust, repository architecture, and operating-context boundaries.
-- [Modules 09-10](module-09-observability-performance-and-incident-response/index.md) finish with incidents, governance, migration, and tool-boundary judgment.
-- [Guides](guides/index.md) hold learner routes and capstone entry.
-- [Reference](reference/index.md) holds durable maps, glossaries, anti-patterns, and review standards.
+| Module | Title | Why it matters |
+| --- | --- | --- |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof surfaces, and capstone timing |
+| [Module 01](module-01-file-contracts-and-the-workflow-dag/index.md) | File Contracts and Workflow Graph Truth | teaches the workflow as a file-driven DAG instead of a script |
+| [Module 02](module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md) | Dynamic DAGs, Discovery, and Integrity | makes checkpoints and changing sample sets reviewable |
+| [Module 03](module-03-production-operations-and-policy-boundaries/index.md) | Production Operations and Policy Boundaries | separates workflow semantics from operational policy |
+| [Module 04](module-04-scaling-workflows-and-interface-boundaries/index.md) | Scaling Workflows and Interface Boundaries | scales the workflow without losing explicit interfaces |
+| [Module 05](module-05-software-boundaries-and-reproducible-rules/index.md) | Software Boundaries and Reproducible Rules | keeps helper code and rule meaning in the right layer |
+| [Module 06](module-06-publishing-and-downstream-contracts/index.md) | Publishing and Downstream Contracts | makes the public artifact boundary versioned and trustworthy |
+| [Module 07](module-07-workflow-architecture-and-file-apis/index.md) | Workflow Architecture and File APIs | organizes the repository so ownership stays visible |
+| [Module 08](module-08-operating-contexts-and-execution-policy/index.md) | Operating Contexts and Execution Policy | compares local, CI, and cluster policy without semantic drift |
+| [Module 09](module-09-observability-performance-and-incident-response/index.md) | Observability, Performance, and Incident Response | reviews logs, benchmarks, and incidents with explicit evidence |
+| [Module 10](module-10-governance-migration-and-tool-boundaries/index.md) | Governance, Migration, and Tool Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
 
 ## Use these support pages first
 
