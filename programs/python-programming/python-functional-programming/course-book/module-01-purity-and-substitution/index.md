@@ -29,7 +29,7 @@ This module establishes the semantic floor for the whole course. If the learner 
 separate pure transforms from hidden state here, every later abstraction will feel
 ornamental instead of necessary.
 
-## What this module teaches
+## Learning outcomes
 
 - how purity and substitution change the way you review Python code
 - how immutability and value semantics reduce hidden coupling
@@ -52,6 +52,12 @@ ornamental instead of necessary.
 - [Idempotent Transforms](idempotent-transforms.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+## Exercises
+
+- Take one helper from the capstone and classify it as pure, effectful, or mixed, then justify the classification in terms of substitution.
+- Rewrite one small imperative branch as a value-preserving transform and state what behavioral evidence would prove the refactor safe.
+- Pick one input transformation and explain whether repeated application is idempotent, conditional, or unsafe.
+
 ## Capstone checkpoints
 
 - Identify which helpers in FuncPipe stay pure across refactors.
@@ -64,3 +70,9 @@ You should be able to explain why a function is pure, why that matters for subst
 and where a thin effect wrapper belongs when purity is impossible. Use
 [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-01` before moving forward.
+
+## Closing criteria
+
+- You can defend a purity judgment without appealing to taste or syntax alone.
+- You can point to the exact place where an effect wrapper belongs when the transform itself cannot stay pure.
+- You can compare two implementations and explain whether they are meaning-preserving under substitution.

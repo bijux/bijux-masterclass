@@ -29,7 +29,7 @@ This module takes the data models from Module 05 and shows how dependent steps c
 chained without tangling failure handling, configuration lookup, or local state updates.
 The emphasis is on readability, lawfulness, and explicit context.
 
-## What this module teaches
+## Learning outcomes
 
 - how lawful chaining removes repetitive propagation code
 - how Reader, State, and Writer patterns make context explicit
@@ -50,6 +50,12 @@ The emphasis is on readability, lawfulness, and explicit context.
 - [Configurable Pipelines](configurable-pipelines.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+## Exercises
+
+- Rewrite one nested propagation path with lawful chaining and explain which repetition disappears.
+- Identify one place where Reader, State, or Writer is warranted and one place where ordinary functions are still enough.
+- Review one logging or context-carrying helper and explain whether it preserves the underlying payload contract.
+
 ## Capstone checkpoints
 
 - Inspect where dependent operations short-circuit automatically.
@@ -62,3 +68,9 @@ You should be able to explain why lawful composition matters for refactoring, an
 explicit context keeps abstractions honest instead of magical. Use
 [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-06` before moving forward.
+
+## Closing criteria
+
+- You can explain why a lawful composition rule matters for maintenance instead of treating it as theory trivia.
+- You can identify when explicit context clarifies behavior and when a container abstraction would hide too much.
+- You can compare an exception-driven path with a compositional path and explain which one is easier to review.

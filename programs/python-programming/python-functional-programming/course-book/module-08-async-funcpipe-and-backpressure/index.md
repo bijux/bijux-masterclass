@@ -29,7 +29,7 @@ This module treats async code as a coordination problem, not a style choice. The
 moves from effect boundaries to bounded concurrency, fairness, and testable async plans
 that do not smear runtime behavior across the whole codebase.
 
-## What this module teaches
+## Learning outcomes
 
 - how async steps stay explicit instead of magical
 - how backpressure and timeouts protect pipelines under load
@@ -50,6 +50,12 @@ that do not smear runtime behavior across the whole codebase.
 - [Async Pipeline Laws](async-pipeline-laws.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+## Exercises
+
+- Identify one async boundary and explain where scheduling belongs and where pure transformation still belongs.
+- Review one queue, timeout, or retry policy and state what pressure scenario it is meant to absorb.
+- Compare one async test helper with the runtime path it protects and explain why the test remains deterministic.
+
 ## Capstone checkpoints
 
 - Inspect where async work is described and where it is actually driven.
@@ -62,3 +68,9 @@ You should be able to explain how async coordination stays reviewable, what prot
 system from runaway work, and how to tell whether an async abstraction clarifies or hides
 control flow. Use [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-08` before moving forward.
+
+## Closing criteria
+
+- You can explain how concurrency stays bounded instead of accidental.
+- You can identify which async abstractions describe work and which ones actually drive execution.
+- You can defend an async design in terms of fairness, backpressure, and testability.

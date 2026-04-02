@@ -29,7 +29,7 @@ This module makes streaming a first-class part of the course architecture. The l
 moves from pure transforms over finite collections to deliberate control over when work
 happens, how much memory is used, and where materialization becomes a conscious choice.
 
-## What this module teaches
+## Learning outcomes
 
 - how iterators and generators model on-demand dataflow in Python
 - how `itertools` and custom iterators support reusable streaming stages
@@ -52,6 +52,12 @@ happens, how much memory is used, and where materialization becomes a conscious 
 - [Streaming Observability](streaming-observability.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+## Exercises
+
+- Identify one place where laziness is valuable and one place where materialization is the honest choice, then justify both.
+- Sketch a small chunking or windowing pipeline and explain what memory or ordering contract it relies on.
+- Review one observability helper and state whether it preserves lazy behavior or forces hidden evaluation.
+
 ## Capstone checkpoints
 
 - Identify where FuncPipe stays lazy and where it deliberately materializes.
@@ -64,3 +70,9 @@ You should be able to explain why laziness changes error handling, resource mana
 and review strategy before the course introduces typed failures and resilience patterns.
 Use [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-03` before moving forward.
+
+## Closing criteria
+
+- You can explain when work happens in a pipeline instead of only what data moves through it.
+- You can review a streaming helper and spot hidden materialization, cleanup leaks, or ordering surprises.
+- You can justify the boundary between reusable lazy stages and explicit materialization.

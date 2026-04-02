@@ -1,4 +1,4 @@
-# Orientation
+# Module 00: Orientation
 
 
 <!-- page-maps:start -->
@@ -29,6 +29,13 @@ This course teaches functional programming in Python as a discipline for making 
 effects, and operational risk easier to reason about. The goal is not to imitate another
 language. The goal is to make real Python systems clearer under testing, refactoring,
 integration, and growth.
+
+## Learning outcomes
+
+- explain the course boundary: functional programming here means clearer Python systems, not imitation of another language
+- identify the prerequisites that must already feel routine before the later modules become productive
+- choose the right reading route through the orientation pages, guides, and capstone surfaces
+- describe how the capstone evolves from semantic floor to long-lived sustainment evidence
 
 ## What this course is not
 
@@ -77,3 +84,15 @@ The FuncPipe RAG capstone matures with the course:
 - Modules 04 to 06 introduce typed failures, algebraic modelling, and lawful composition.
 - Modules 07 to 08 move effects and async coordination behind explicit boundaries.
 - Modules 09 to 10 focus on interop, review standards, and long-lived sustainment.
+
+## Exercises
+
+- Write a one-paragraph statement of what this course owns and what it explicitly does not try to teach.
+- Identify the prerequisite that feels least stable for you, then name the module where that gap would become expensive.
+- Open [Start Here](../guides/start-here.md) and [FuncPipe Capstone Guide](../guides/capstone.md), then note which route you will use for first contact and which route you will use for proof.
+
+## Closing criteria
+
+- You can explain why purity, effects, and failure handling are treated as design contracts instead of style preferences.
+- You know which orientation page to revisit when you need the short route, the full route, or the capstone route.
+- You can describe how Modules 01 to 10 change the capstone, not just what topics they mention.

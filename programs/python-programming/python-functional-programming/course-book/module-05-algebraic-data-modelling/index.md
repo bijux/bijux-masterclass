@@ -29,7 +29,7 @@ This module gives the course a stronger modelling language. Instead of encoding 
 states and validation rules with flags, `None`, and scattered conditionals, the learner
 starts using explicit data shapes that are easier to reason about and test.
 
-## What this module teaches
+## Learning outcomes
 
 - how product and sum types clarify domain meaning in Python
 - how mapping, validation, and aggregation follow stable algebraic rules
@@ -50,6 +50,12 @@ starts using explicit data shapes that are easier to reason about and test.
 - [ADT Performance](adt-performance.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+## Exercises
+
+- Replace one primitive-heavy data shape with a product or sum type and explain which invalid states disappear.
+- Compare fail-fast and accumulating validation for one modelling boundary and state which one matches the domain rule.
+- Inspect one serialization boundary and explain whether it preserves or erodes the model’s meaning.
+
 ## Capstone checkpoints
 
 - Inspect where FuncPipe uses richer value shapes instead of raw primitives.
@@ -62,3 +68,9 @@ You should be able to explain how algebraic modelling makes downstream compositi
 and why explicit shapes matter before the course introduces lawful chaining patterns. Use
 [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-05` before moving forward.
+
+## Closing criteria
+
+- You can explain which domain distinctions deserve explicit data shapes instead of flags, `None`, or stringly typed values.
+- You can review a constructor or pattern match and tell whether it keeps invariants close to the model.
+- You can justify a modelling trade-off in terms of correctness, composition, and long-term maintainability.

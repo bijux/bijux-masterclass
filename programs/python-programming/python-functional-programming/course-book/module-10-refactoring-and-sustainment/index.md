@@ -29,7 +29,7 @@ This module is the long-term survival guide for the course. It focuses on how fu
 design choices age under performance pressure, team growth, changing contracts, and the
 need to prove behavior over time.
 
-## What this module teaches
+## Learning outcomes
 
 - how to refactor imperative code toward a layered functional design
 - how to think about performance, observability, and regression evidence together
@@ -50,6 +50,12 @@ need to prove behavior over time.
 - [Capstone Delivery](capstone-delivery.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+## Exercises
+
+- Review one refactor proposal and explain what evidence would make it safe to merge instead of merely attractive.
+- Pick one performance or observability trade-off and state which contract must remain intact while tuning it.
+- Define one governance rule for the capstone and explain which regression or compatibility failure it prevents.
+
 ## Capstone checkpoints
 
 - Review whether the codebase has evidence for correctness, not just commentary.
@@ -62,3 +68,9 @@ You should be able to explain how the capstone can continue evolving without los
 semantics, boundaries, and review discipline the course spent ten modules building. Use
 [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-10` before you call the course complete.
+
+## Closing criteria
+
+- You can describe how the codebase proves correctness, compatibility, and ownership over time.
+- You can judge whether a change proposal improves the system or only moves complexity around.
+- You can explain what makes the capstone maintainable two years from now, not only runnable today.

@@ -29,7 +29,7 @@ This module is where the course stops talking only about pure internals and star
 how real systems touch files, clocks, databases, logs, and transactions without losing
 clarity. The emphasis is on explicit boundaries rather than wishful purity.
 
-## What this module teaches
+## Learning outcomes
 
 - how ports and adapters keep the core insulated from infrastructure details
 - how capability protocols define what effectful code is allowed to do
@@ -50,6 +50,12 @@ clarity. The emphasis is on explicit boundaries rather than wishful purity.
 - [Incremental Migration](incremental-migration.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+## Exercises
+
+- Draw one boundary between pure logic and infrastructure, then name the port or capability that keeps it honest.
+- Review one cleanup or transaction path and explain where failure handling must live for the contract to remain explicit.
+- Pick one migration step and justify why it is incremental enough to ship without rewriting the whole system.
+
 ## Capstone checkpoints
 
 - Inspect which interfaces define capabilities and which files provide concrete adapters.
@@ -62,3 +68,9 @@ You should be able to explain where the pure core ends, how effects are introduc
 why capability discipline matters before async coordination enters the picture. Use
 [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-07` before moving forward.
+
+## Closing criteria
+
+- You can point to the exact boundary where infrastructure enters the system and explain why that boundary is narrow enough.
+- You can explain how idempotency, cleanup, and transaction handling are enforced rather than assumed.
+- You can judge whether a migration plan preserves the core contracts while reality is still messy.

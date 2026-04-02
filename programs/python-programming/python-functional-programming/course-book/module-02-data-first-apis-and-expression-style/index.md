@@ -29,7 +29,7 @@ This module turns purity from a local refactoring habit into a reusable design s
 The focus is on configuration, expression-oriented code, and APIs that compose without
 leaking globals or control flags.
 
-## What this module teaches
+## Learning outcomes
 
 - how closures and partial application create configurable pure behavior
 - how expression-oriented Python keeps dataflow visible
@@ -52,6 +52,12 @@ leaking globals or control flags.
 - [Imperative to FP Refactor](imperative-to-fp-refactor.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+## Exercises
+
+- Refactor one callback-heavy path into a data-first pipeline and name the configuration value that should stay explicit.
+- Trace one closure or partial application example and explain what behavior is being fixed at construction time.
+- Review one API surface and state whether it exposes configuration as data or hides it in control flow.
+
 ## Capstone checkpoints
 
 - Locate the configuration values that shape the pipeline without mutating globals.
@@ -64,3 +70,9 @@ You should be able to explain how data-first APIs stay configurable without turn
 dependency soup, and where laziness starts to become a design obligation rather than an
 implementation trick. Use [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-02` before moving forward.
+
+## Closing criteria
+
+- You can explain why a data-first API composes more predictably than one driven by ambient flags.
+- You can identify where laziness starts to influence interface design instead of remaining an internal optimization.
+- You can review a configuration path and explain how overrides stay explicit and testable.
