@@ -346,7 +346,7 @@ Internal directories (`results/`, `logs/`, `benchmarks/`, `.snakemake/`) are not
 
 ## Documentation set
 
-All capstone documentation lives under [`docs/`](docs/). Use this index when you want
+All capstone documentation lives under `docs/`. Use this index when you want
 the full guide surface from one place:
 
 - [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)

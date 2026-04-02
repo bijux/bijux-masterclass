@@ -90,7 +90,7 @@ make proof
 
 ## Documentation set
 
-All supporting capstone guides live in [docs/](docs/). The root stays focused on the
+All supporting capstone guides live under `docs/`. The root stays focused on the
 entry route while still linking the complete local documentation set:
 
 - [ACTION_GUIDE.md](docs/ACTION_GUIDE.md)

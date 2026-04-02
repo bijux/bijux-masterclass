@@ -32,7 +32,7 @@ when a module introduces a new idea and you want to find the concrete code that 
 The architecture is only useful if it keeps one distinction readable: which packages stay
 descriptive and which packages are allowed to execute concrete effects.
 
-Use [`PACKAGE_GUIDE.md`](../PACKAGE_GUIDE.md) when you want the shortest local reading order
+Use [`PACKAGE_GUIDE.md`](PACKAGE_GUIDE.md) when you want the shortest local reading order
 through those package groups.
 
 ## Core package groups

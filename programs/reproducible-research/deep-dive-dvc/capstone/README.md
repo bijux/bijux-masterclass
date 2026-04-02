@@ -238,7 +238,7 @@ missing proof surface, but choosing the right one without over-escalating.
 
 ## Documentation set
 
-All capstone documentation lives under [`docs/`](docs/). Use this index when you want
+All capstone documentation lives under `docs/`. Use this index when you want
 the full guide surface from one place:
 
 * [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)

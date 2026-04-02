@@ -139,7 +139,7 @@ Use `TOUR.md` when you want the shortest human-readable route through the proof 
 
 ## Documentation set
 
-All capstone documentation lives under [`docs/`](docs/). Use this index when you want
+All capstone documentation lives under `docs/`. Use this index when you want
 the full guide surface from one place:
 
 - [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)

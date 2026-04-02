@@ -35,13 +35,13 @@ If you want a lighter first step, run `make walkthrough` first. That bundle cont
 repository contract, pipeline declaration, recorded lock state, params surface, and a
 suggested reading route without executing the workflow.
 
-Read [BUNDLE_MANIFEST_GUIDE.md](../BUNDLE_MANIFEST_GUIDE.md) when the next question is not
+Read [BUNDLE_MANIFEST_GUIDE.md](BUNDLE_MANIFEST_GUIDE.md) when the next question is not
 which proof route to use, but exactly what a saved bundle captured.
 
-Read [SOURCE_GUIDE.md](../SOURCE_GUIDE.md) when the bundle and stage routes are clear but
+Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the bundle and stage routes are clear but
 you need the exact owning file for one behavior.
 
-Read [REVIEW_ROUTE_GUIDE.md](../REVIEW_ROUTE_GUIDE.md) when the main question is whether the
+Read [REVIEW_ROUTE_GUIDE.md](REVIEW_ROUTE_GUIDE.md) when the main question is whether the
 tour is the right route at all or whether a smaller summary or saved bundle would be cleaner.
 
 ## What the tour produces

@@ -45,6 +45,6 @@ into one compact review surface before opening the raw model file.
 
 ## Best companion guides
 
-- read [CONTROL_SURFACE_GUIDE.md](../CONTROL_SURFACE_GUIDE.md) when the next question is how training params changed the model behavior
-- read [PUBLISH_CONTRACT.md](../PUBLISH_CONTRACT.md) when the next question is why the model belongs in the promoted release boundary at all
-- read [RELEASE_REVIEW_GUIDE.md](../RELEASE_REVIEW_GUIDE.md) when the next question is how to combine model review with metrics and report review
+- read [CONTROL_SURFACE_GUIDE.md](CONTROL_SURFACE_GUIDE.md) when the next question is how training params changed the model behavior
+- read [PUBLISH_CONTRACT.md](PUBLISH_CONTRACT.md) when the next question is why the model belongs in the promoted release boundary at all
+- read [RELEASE_REVIEW_GUIDE.md](RELEASE_REVIEW_GUIDE.md) when the next question is how to combine model review with metrics and report review

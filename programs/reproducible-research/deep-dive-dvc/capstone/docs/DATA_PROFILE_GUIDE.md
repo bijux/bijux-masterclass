@@ -47,6 +47,6 @@ reviewable summary before opening the raw JSON.
 
 ## Best companion guides
 
-- read [PUBLISH_CONTRACT.md](../PUBLISH_CONTRACT.md) when the next question is why the profile belongs in `publish/v1/`
-- read [RELEASE_REVIEW_GUIDE.md](../RELEASE_REVIEW_GUIDE.md) when the next question is how to combine profile, metrics, and report review
-- read [CONTROL_SURFACE_GUIDE.md](../CONTROL_SURFACE_GUIDE.md) when the next question is whether params changes still keep the profile and metrics comparable
+- read [PUBLISH_CONTRACT.md](PUBLISH_CONTRACT.md) when the next question is why the profile belongs in `publish/v1/`
+- read [RELEASE_REVIEW_GUIDE.md](RELEASE_REVIEW_GUIDE.md) when the next question is how to combine profile, metrics, and report review
+- read [CONTROL_SURFACE_GUIDE.md](CONTROL_SURFACE_GUIDE.md) when the next question is whether params changes still keep the profile and metrics comparable

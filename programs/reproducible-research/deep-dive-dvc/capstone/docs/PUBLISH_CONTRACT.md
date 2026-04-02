@@ -53,7 +53,7 @@ internal training story to understand what was promoted.
 
 Those questions still belong to the wider repository and its recorded execution state.
 
-Read [STATE_LAYER_GUIDE.md](../STATE_LAYER_GUIDE.md) when the next question is why
+Read [STATE_LAYER_GUIDE.md](STATE_LAYER_GUIDE.md) when the next question is why
 `publish/v1/` is authoritative for downstream review but not for the entire repository story.
 
 ## Best review route
@@ -72,11 +72,11 @@ Use this order:
 That route moves from contract inventory into control surface, then into evaluation, then
 into record-level evidence.
 
-Read [MODEL_GUIDE.md](../MODEL_GUIDE.md) when the next review question is what exact scoring
+Read [MODEL_GUIDE.md](MODEL_GUIDE.md) when the next review question is what exact scoring
 behavior was promoted rather than only what metrics came out of it.
 
 Use `make manifest-summary` when you want the promoted inventory, training metadata, and
 decision threshold rendered into one compact review surface before opening the raw manifest.
 
-Read [DATA_PROFILE_GUIDE.md](../DATA_PROFILE_GUIDE.md) when the next review question is
+Read [DATA_PROFILE_GUIDE.md](DATA_PROFILE_GUIDE.md) when the next review question is
 which population the promoted metrics and predictions actually describe.

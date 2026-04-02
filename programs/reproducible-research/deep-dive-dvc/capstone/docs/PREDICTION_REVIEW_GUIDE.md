@@ -43,6 +43,6 @@ and `threshold-review` work together as one honest review surface.
 
 ## Best companion guides
 
-- read [CONTROL_SURFACE_GUIDE.md](../CONTROL_SURFACE_GUIDE.md) when the next question is whether threshold changes are still comparable
-- read [RELEASE_REVIEW_GUIDE.md](../RELEASE_REVIEW_GUIDE.md) when the next question is whether record-level evidence changes downstream trust
-- read [MODEL_GUIDE.md](../MODEL_GUIDE.md) when the next question is whether a record pattern points back to the promoted scoring behavior
+- read [CONTROL_SURFACE_GUIDE.md](CONTROL_SURFACE_GUIDE.md) when the next question is whether threshold changes are still comparable
+- read [RELEASE_REVIEW_GUIDE.md](RELEASE_REVIEW_GUIDE.md) when the next question is whether record-level evidence changes downstream trust
+- read [MODEL_GUIDE.md](MODEL_GUIDE.md) when the next question is whether a record pattern points back to the promoted scoring behavior

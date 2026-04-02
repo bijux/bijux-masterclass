@@ -77,7 +77,7 @@ make PROGRAM=python-programming/python-object-oriented-programming proof
 
 ## Documentation set
 
-All supporting capstone guides live in [docs/](docs/). The root stays focused on the
+All supporting capstone guides live under `docs/`. The root stays focused on the
 entry route while still linking the complete local documentation set:
 
 - [GUIDE_INDEX.md](docs/GUIDE_INDEX.md)

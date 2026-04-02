@@ -53,6 +53,6 @@ team could plausibly review before deciding whether closer intervention is likel
 
 ## Best companion guides
 
-- read [STATE_LAYER_GUIDE.md](../STATE_LAYER_GUIDE.md) when the domain is clear but the repository state layers are not
-- read [STAGE_CONTRACT_GUIDE.md](../STAGE_CONTRACT_GUIDE.md) when the next question is where each domain fact gets transformed
-- read [PUBLISH_CONTRACT.md](../PUBLISH_CONTRACT.md) when the next question is which domain evidence survives into `publish/v1/`
+- read [STATE_LAYER_GUIDE.md](STATE_LAYER_GUIDE.md) when the domain is clear but the repository state layers are not
+- read [STAGE_CONTRACT_GUIDE.md](STAGE_CONTRACT_GUIDE.md) when the next question is where each domain fact gets transformed
+- read [PUBLISH_CONTRACT.md](PUBLISH_CONTRACT.md) when the next question is which domain evidence survives into `publish/v1/`
