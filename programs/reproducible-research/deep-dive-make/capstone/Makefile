@@ -35,6 +35,7 @@ TST_DIR := tests
 REP_DIR := repro
 ARTIFACTS_DIR ?= ../../../../artifacts
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
+TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
 
 DEPFLAGS := -MMD -MP
 
@@ -135,6 +136,33 @@ help:
 >     ''
 
 tour:
+>     rm -rf "$(TOUR_DIR)"
+>     mkdir -p "$(TOUR_DIR)/mk" "$(TOUR_DIR)/repro" "$(TOUR_DIR)/tests"
+>     cp README.md "$(TOUR_DIR)/README.md"
+>     cp PROOF_GUIDE.md "$(TOUR_DIR)/PROOF_GUIDE.md"
+>     cp Makefile "$(TOUR_DIR)/Makefile"
+>     cp $(TST_DIR)/run.sh "$(TOUR_DIR)/tests/run.sh"
+>     cp $(MK_DIR)/contract.mk "$(TOUR_DIR)/mk/contract.mk"
+>     cp $(MK_DIR)/common.mk "$(TOUR_DIR)/mk/common.mk"
+>     cp $(MK_DIR)/objects.mk "$(TOUR_DIR)/mk/objects.mk"
+>     cp $(MK_DIR)/stamps.mk "$(TOUR_DIR)/mk/stamps.mk"
+>     cp $(REP_DIR)/01-shared-log.mk "$(TOUR_DIR)/repro/01-shared-log.mk"
+>     $(MAKE) help > "$(TOUR_DIR)/help.txt"
+>     $(MAKE) trace-count > "$(TOUR_DIR)/trace-count.txt"
+>     printf '%s\n' \
+>       'Tour route:' \
+>       '  1. Read README.md for the repository contract.' \
+>       '  2. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
+>       '  3. Read help.txt to see the stable public interface.' \
+>       '  4. Read tests/run.sh for the proof harness.' \
+>       '  5. Read trace-count.txt for the observability guardrail.' \
+>       '  6. Inspect repro/01-shared-log.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
+>     printf '%s\n' \
+>       'Focused routes:' \
+>       '  generators   -> make --trace dyn' \
+>       '  architecture -> read mk/contract.mk, mk/objects.mk, mk/stamps.mk' \
+>       '  incidents    -> make -f repro/01-shared-log.mk -j2 all' \
+>       '  integrity    -> make selftest' > "$(TOUR_DIR)/focused-routes.txt"
 >     @printf '%s\n' \
 >     'Capstone walkthrough:' \
 >     '  1. make walkthrough' \
@@ -143,6 +171,8 @@ tour:
 >     '  4. read tests/run.sh for the proof harness' \
 >     '  5. make selftest' \
 >     '  6. inspect one repro under repro/' \
+>     '' \
+>     "Tour bundle: $(TOUR_DIR)" \
 >     '' \
 >     'Focused routes:' \
 >     '  generators  -> make --trace dyn' \
