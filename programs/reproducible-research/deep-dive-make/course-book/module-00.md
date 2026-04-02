@@ -180,6 +180,19 @@ gmake -C capstone selftest
 
 ---
 
+## Support Pages By Milestone
+
+Use these support pages when you reach each milestone:
+
+| Milestone | Best support pages |
+| --- | --- |
+| Build graph literacy | [`build-graph-glossary.md`](build-graph-glossary.md), [`practice-map.md`](practice-map.md), [`proof-matrix.md`](proof-matrix.md) |
+| Production discipline | [`command-guide.md`](command-guide.md), [`public-targets.md`](public-targets.md), [`incident-ladder.md`](incident-ladder.md) |
+| System design | [`capstone-map.md`](capstone-map.md), [`capstone-file-guide.md`](capstone-file-guide.md), [`capstone-walkthrough.md`](capstone-walkthrough.md) |
+| Operational judgment | [`completion-rubric.md`](completion-rubric.md), [`capstone-review-worksheet.md`](capstone-review-worksheet.md), [`capstone-extension-guide.md`](capstone-extension-guide.md) |
+
+---
+
 ## Capstone Timing
 
 Enter the capstone at three distinct moments:
