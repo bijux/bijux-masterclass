@@ -31,7 +31,7 @@ Use it whenever you want to connect a course claim to runnable evidence.
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming capstone-test
-make PROGRAM=python-programming/python-functional-programming demo
+make PROGRAM=python-programming/python-functional-programming capstone-walkthrough
 make PROGRAM=python-programming/python-functional-programming inspect
 make PROGRAM=python-programming/python-functional-programming docs-serve
 make PROGRAM=python-programming/python-functional-programming docs-build
@@ -66,7 +66,7 @@ make history-clean
 - Use `install` before your first capstone run or when the environment changed.
 - Use `test` when you want the strongest published course-level confirmation route.
 - Use `capstone-test` when you only want the capstone pytest suite without the full confirmation bundle.
-- Use `demo` when you want the learner-facing walkthrough route with the shared catalog verb.
+- Use `capstone-walkthrough` from the repository root, or `demo` inside `capstone/`, when you want the learner-facing walkthrough route.
 - Use `inspect` when you want the quickest inventory of packages, tests, and proof guides.
 - Use `capstone-tour` or `tour` when you want the learner-facing proof bundle.
 - Use `capstone-verify-report` or `verify-report` when you want a durable review bundle with executed test output.
