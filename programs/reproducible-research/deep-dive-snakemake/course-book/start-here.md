@@ -97,5 +97,6 @@ Then use:
 
 * [`capstone-map.md`](capstone-map.md) when you want the repository route by module
 * [`module-00.md`](module-00.md) when you want the full course arc
+* [`course-guide.md`](course-guide.md) when you want the right support page quickly
 
 [Back to top](#top)

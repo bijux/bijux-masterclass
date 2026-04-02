@@ -24,6 +24,7 @@ plugins:
 nav:
   - Start Here:
       - Course Home: index.md
+      - Course Guide: course-guide.md
       - Learner Entry: start-here.md
       - Learning Contract: learning-contract.md
       - Program Outline: module-00.md
