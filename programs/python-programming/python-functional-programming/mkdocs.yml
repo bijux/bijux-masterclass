@@ -54,6 +54,7 @@ nav:
       - Functional Glossary: reference/glossary.md
       - FP Standards: reference/fp-standards.md
       - Functional Anti-Pattern Atlas: reference/anti-pattern-atlas.md
+      - Boundary Review Prompts: reference/boundary-review-prompts.md
       - Review Checklist: reference/review-checklist.md
       - Self-Review Prompts: reference/self-review-prompts.md
       - Topic Boundaries: reference/topic-boundaries.md

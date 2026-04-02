@@ -30,6 +30,7 @@ course or the capstone.
 - [Functional Glossary](glossary.md) for the course vocabulary that appears across modules and the capstone
 - [FP Standards](fp-standards.md) for the stable engineering rules that define acceptable functional design in this course
 - [Functional Anti-Pattern Atlas](anti-pattern-atlas.md) for recurring failure shapes and the repair route back to the course
+- [Boundary Review Prompts](boundary-review-prompts.md) for sharper keep, change, or reject questions during review
 - [Review Checklist](review-checklist.md) for code review and capstone inspection
 - [Self-Review Prompts](self-review-prompts.md) for turning module ideas into retrieval practice and design judgment
 - [Topic Boundaries](topic-boundaries.md) for deciding whether a question belongs in the course center, on its edge, or outside it
