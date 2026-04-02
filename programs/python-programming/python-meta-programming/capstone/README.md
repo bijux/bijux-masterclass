@@ -47,10 +47,11 @@ Use the smallest honest route for the question you have:
 If you are new to this capstone, the best first route is:
 
 1. Run `make manifest`.
-2. Read `PLUGIN_RUNTIME_GUIDE.md`.
-3. Read `ARCHITECTURE.md`.
-4. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
-5. Read the matching tests.
+2. Read `GUIDE_INDEX.md`.
+3. Read `PLUGIN_RUNTIME_GUIDE.md`.
+4. Read `ARCHITECTURE.md`.
+5. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
+6. Read the matching tests.
 
 ## What it models
 
@@ -175,6 +176,7 @@ feel fuzzier than the commands.
 
 ## Best companion guides
 
+- `GUIDE_INDEX.md` for the smallest local route into the doc set
 - `ARCHITECTURE.md` for ownership boundaries
 - `PLUGIN_RUNTIME_GUIDE.md` for the timing model
 - `MECHANISM_SELECTION_GUIDE.md` for change placement
