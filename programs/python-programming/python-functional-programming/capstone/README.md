@@ -30,22 +30,33 @@ This directory contains the runnable project that anchors the Python Functional
 Programming course. It exists to prove that the course's design claims survive contact
 with executable code, tests, and operational boundaries.
 
+## Start with one question
+
+| If your question is... | Start here | Then go to... |
+| --- | --- | --- |
+| What does this repository prove for the course? | [`GUIDE_INDEX.md`](docs/GUIDE_INDEX.md) | [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md) |
+| Which files should I read first? | [`FIRST_SESSION_GUIDE.md`](docs/FIRST_SESSION_GUIDE.md) | [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md) |
+| Which commands should I run? | [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md) | `make inspect`, `make verify-report`, or `make confirm` |
+| Which tests or artifacts justify a claim? | [`TEST_GUIDE.md`](docs/TEST_GUIDE.md) | [`SOURCE_TO_PROOF_MAP.md`](docs/SOURCE_TO_PROOF_MAP.md) |
+| Where do purity, effects, and adapters live? | [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) | [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md) |
+| How should I review the repository as a human? | [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md) | [`TOUR.md`](docs/TOUR.md) |
+
 ## Repository shape
 
-- `src/funcpipe_rag/` contains the application packages and architecture seams
-- `tests/` contains law checks, behavior checks, and integration proof
-- `module-reference-states/` stores the tracked end-of-module snapshot sources
-- `_history/` is generated locally from module tags, verified worktrees, and per-module manifests
-- `scripts/` contains helper utilities used by the project workflow
+| Area | What it owns |
+| --- | --- |
+| `src/funcpipe_rag/` | application packages and architecture seams |
+| `tests/` | law checks, behavior checks, and integration proof |
+| `module-reference-states/` | tracked end-of-module snapshot sources |
+| `_history/` | generated module worktrees and comparison manifests |
+| `scripts/` | project workflow helpers |
 
-## How to read this codebase
+## First honest pass
 
-Start with evidence, then expand outward:
-
-1. Read the test surface to see what the project promises.
-2. Read the core packages to locate pure transforms and value modelling.
-3. Read the adapter and runtime packages to see where effects enter.
-4. Read the async and interop surfaces only after the core boundaries are clear.
+1. Read [`FIRST_SESSION_GUIDE.md`](docs/FIRST_SESSION_GUIDE.md).
+2. Open [`TEST_GUIDE.md`](docs/TEST_GUIDE.md) or [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md), depending on whether you want proof-first or code-first reading.
+3. Run the smallest command that answers your question.
+4. Stop when you can name one boundary, one proof surface, and one next page.
 
 ## What to look for
 
@@ -86,6 +97,16 @@ is the strongest published course-level proof route and delegates here to `make 
 Use `capstone-test` when you only want the pytest suite without the extra confirmation
 bundles.
 
+## Choose the smallest command that answers your question
+
+| If you need... | Command |
+| --- | --- |
+| a fast inventory of packages, tests, and guides | `make inspect` |
+| the pytest suite only | `make test` |
+| a saved proof bundle with review artifacts | `make verify-report` |
+| the human walkthrough bundle | `make tour` |
+| the strongest built-in confirmation route | `make confirm` |
+
 History route:
 
 - `make history-refresh` rebuilds local module tags and `_history/worktrees/module-XX`
@@ -116,17 +137,11 @@ Proof route:
 
 - `FIRST_SESSION_GUIDE.md` for the smallest honest first pass through the capstone
 - `GUIDE_INDEX.md` for the smallest route into the capstone doc set
-- `CODE_ROUTE_MAP.md` for the shortest concept-to-source route through the current codebase
 - `COMMAND_GUIDE.md` for choosing the smallest honest command and artifact route
-- `PUBLIC_SURFACE_MAP.md` for understanding what each published route actually exposes
-- `SOURCE_TO_PROOF_MAP.md` for package-to-proof alignment
-- `TEST_READING_MAP.md` for choosing the first proof group by claim
-- `REVIEW_ROUTE_MAP.md` for guide-to-command-to-artifact routing
-- `ARCHITECTURE.md` for the package map
-- `tests/` for the proof surface
-- `src/funcpipe_rag/` for package boundaries
-- `TOUR.md` for the generated review bundle
-- `pyproject.toml` for the executable project contract
+- `TEST_GUIDE.md` and `TEST_READING_MAP.md` for proof-first reading
+- `PACKAGE_GUIDE.md` and `CODE_ROUTE_MAP.md` for code-first reading
+- `ARCHITECTURE.md` and `PUBLIC_SURFACE_MAP.md` for boundary ownership
+- `PROOF_GUIDE.md`, `REVIEW_ROUTE_MAP.md`, and `TOUR.md` for saved review routes
 
 Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
 effects, or orchestration should live.
@@ -191,3 +206,9 @@ Use this table when a course page tells you to "inspect the capstone" and you wa
 - `make tour` produces the walkthrough bundle for capstone-first reading.
 - `make confirm` completes the strongest built-in confirmation route.
 - `make proof` completes the published learner route end to end.
+
+## Stop here when
+
+- you know the first guide you need
+- you know the smallest command that answers your current question
+- you are no longer trying to read the whole repository in one sitting
