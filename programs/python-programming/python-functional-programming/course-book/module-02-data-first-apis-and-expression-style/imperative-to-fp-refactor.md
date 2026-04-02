@@ -115,12 +115,12 @@ Pure modules, bound via partial, allow storage in dicts, composition with M02C01
 ```text
 Imperative Script (Messy)               FP Modules (Clean)
 +-----------------------+               +---------------------------------------------+
-| def main():           |               | # capstone/src/funcpipe_rag/api/core.py              |
+| def main():           |               | # capstone/src/funcpipe_rag/rag/rag_api.py           |
 |     data = load()     |               | def full_rag_api_docs(docs, cfg, deps): ... |
-|     total = 0         |               | # capstone/src/funcpipe_rag/shells/rag_api_shell.py  |
+|     total = 0         |               | # capstone/src/funcpipe_rag/boundaries/shells/rag_api_shell.py |
 |     for item in data: |               | def read_docs(path): ...                    |
 |         total += ...  |               | def write_chunks(path, chunks): ...         |
-|     save(total)       |               | # capstone/src/funcpipe_rag/shells/rag_main.py       |
+|     save(total)       |               | # capstone/src/funcpipe_rag/boundaries/shells/rag_main.py      |
 +-----------------------+               | def orchestrate(args): ...                  |
    ↑ Globals, Mutation                  +---------------------------------------------+
                                          ↑ Pure core + sealed I/O
@@ -238,7 +238,7 @@ def rag_core_iter(docs: Iterable[RawDoc], config: RagConfig, deps: RagCoreDeps) 
         fmap(deps.embedder),
     )()
 
-# Boundary module (see `capstone/src/funcpipe_rag/shells/rag_api_shell.py`)
+# Boundary module (see `capstone/src/funcpipe_rag/boundaries/shells/rag_api_shell.py`)
 def read_docs(path: str) -> Result[list[RawDoc]]:
     try:
         with open(path) as f:
@@ -255,7 +255,7 @@ def write_chunks(path: str, chunks: list[Chunk]) -> Result[None]:
     except Exception as e:
         return Err(str(e))
 
-# Orchestrator (see `capstone/src/funcpipe_rag/shells/rag_main.py`)
+# Orchestrator (see `capstone/src/funcpipe_rag/boundaries/shells/rag_main.py`)
 def orchestrate(args: list[str]) -> Result[None]:
     return result_and_then(boundary_app_config(args), _run)
 
@@ -271,7 +271,7 @@ This refactor eliminates globals and loops, making the core pure and easier to t
 ### 4.1 Pure Module (Core Logic)
 
 ```python
-# capstone/src/funcpipe_rag/api/core.py + capstone/src/funcpipe_rag/api/config.py
+# capstone/src/funcpipe_rag/rag/rag_api.py + capstone/src/funcpipe_rag/rag/config.py
 from funcpipe_rag import RagConfig, RagEnv, full_rag_api_docs, get_deps
 
 config = RagConfig(env=RagEnv(512))
@@ -285,8 +285,8 @@ chunks, obs = full_rag_api_docs(docs, config, deps)
 ### 4.2 Boundary Module (Sealed I/O + Config)
 
 ```python
-# capstone/src/funcpipe_rag/shells/rag_main.py (CLI parsing + I/O edges)
-from funcpipe_rag.shells.rag_main import boundary_app_config, read_docs, write_chunks
+# capstone/src/funcpipe_rag/boundaries/shells/rag_main.py (CLI parsing + I/O edges)
+from funcpipe_rag.boundaries.shells.rag_main import boundary_app_config, read_docs, write_chunks
 ```
 
 **Properties:** Sealed effects; CLI parsing. Globals → config fields.
@@ -294,8 +294,8 @@ from funcpipe_rag.shells.rag_main import boundary_app_config, read_docs, write_c
 ### 4.3 Orchestrator (Thin Main)
 
 ```python
-# capstone/src/funcpipe_rag/shells/rag_main.py (thin orchestrator)
-from funcpipe_rag.shells.rag_main import orchestrate
+# capstone/src/funcpipe_rag/boundaries/shells/rag_main.py (thin orchestrator)
+from funcpipe_rag.boundaries.shells.rag_main import orchestrate
 
 res = orchestrate(["--input", "in.csv", "--output", "out.jsonl", "--chunk_size", "512"])
 ```
@@ -340,16 +340,16 @@ From `capstone/tests/conftest.py`.
 
 See the repo’s end-of-Module-02 tests instead of creating new “module-specific” test files:
 
-- `capstone/tests/test_rag_api.py` proves `full_rag_api_docs` matches a baseline built from the pure stages.
-- `capstone/tests/test_rag_api.py` exercises the boundary shape (`full_rag_api_path` returns `Ok((chunks, obs))` with a `FakeReader`).
-- `capstone/tests/test_rag_api.py` proves `iter_rag_core` is deterministic.
-- `capstone/tests/test_rag_stages.py` contains properties for `clean_doc`, `chunk_doc`, `embed_chunk`, and `structural_dedup_chunks`.
-- `capstone/tests/test_fp.py` contains laws/smoke tests for `fmap`, `ffilter`, `flatmap`, and `pipe`.
+- `capstone/tests/unit/rag/test_api.py` proves `full_rag_api_docs` matches a baseline built from the pure stages.
+- `capstone/tests/unit/rag/test_api.py` exercises the boundary shape (`full_rag_api_path` returns `Ok((chunks, obs))` with a `FakeReader`).
+- `capstone/tests/unit/rag/test_api.py` proves `iter_rag_core` is deterministic.
+- `capstone/tests/unit/rag/test_stages.py` contains properties for `clean_doc`, `chunk_doc`, `embed_chunk`, and `structural_dedup_chunks`.
+- `capstone/tests/unit/fp/test_iter_helpers.py` contains laws and smoke tests for `fmap`, `ffilter`, `flatmap`, and `pipe`.
 
 Baseline equivalence excerpt:
 
 ```python
-# capstone/tests/test_rag_api.py
+# capstone/tests/unit/rag/test_api.py
 from hypothesis import given
 
 from funcpipe_rag import RagConfig, clean_doc, embed_chunk, full_rag_api_docs, gen_chunk_doc, get_deps, structural_dedup_chunks
