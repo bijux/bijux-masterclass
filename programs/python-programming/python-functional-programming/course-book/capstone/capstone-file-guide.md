@@ -20,7 +20,10 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this guide is for code-reading pressure, not for
+touring the whole repository. Read the second diagram as the guide loop: arrive with one
+question about files or package ownership, then leave with one smaller and more honest
+next move.
 
 This guide gives the capstone a human reading order. The goal is not to read every file
 alphabetically. The goal is to understand how the project is partitioned.
@@ -28,14 +31,15 @@ alphabetically. The goal is to understand how the project is partitioned.
 Start with the local capstone [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/docs/PACKAGE_GUIDE.md)
 when you want the repository itself to carry the same reading order.
 
-## Recommended reading order
+## Choose your reading route
 
-1. `tests/`
-2. `src/funcpipe_rag/fp/` and `src/funcpipe_rag/result/`
-3. `src/funcpipe_rag/rag/` and `src/funcpipe_rag/core/`
-4. `src/funcpipe_rag/pipelines/` and `src/funcpipe_rag/policies/`
-5. `src/funcpipe_rag/domain/` and `src/funcpipe_rag/boundaries/`
-6. `src/funcpipe_rag/infra/` and `src/funcpipe_rag/interop/`
+| If your question is... | Start here | Then go to... |
+| --- | --- | --- |
+| What does the project promise before I read the code? | `tests/` | `src/funcpipe_rag/fp/` and `src/funcpipe_rag/result/` |
+| Where is the pure core? | `src/funcpipe_rag/fp/` and `src/funcpipe_rag/result/` | `src/funcpipe_rag/rag/` and `src/funcpipe_rag/core/` |
+| Where are pipeline assembly and policy choices? | `src/funcpipe_rag/pipelines/` and `src/funcpipe_rag/policies/` | `src/funcpipe_rag/domain/` |
+| Where do effects and adapters begin? | `src/funcpipe_rag/domain/` and `src/funcpipe_rag/boundaries/` | `src/funcpipe_rag/infra/` and `src/funcpipe_rag/interop/` |
+| Where should I review integration edges last? | `src/funcpipe_rag/infra/` and `src/funcpipe_rag/interop/` | the matching tests and review guides |
 
 ## What each area is for
 
@@ -57,3 +61,9 @@ back to the course-book.
 - starting in adapters and mistaking them for the core design
 - treating every package as equally effectful
 - losing track of where a new integration or policy should land
+
+## Stop here when
+
+- you know the first package group worth opening
+- you know which package group should stay closed until later
+- you know whether your next move is code reading or test reading
