@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test build lint clean clean-all venv tour proof \
+.PHONY: install test build lint clean clean-all venv demo tour proof \
         worktrees snapshots clean-history module-md module-funcpipe freeze-codebase \
         help
 
@@ -33,6 +33,8 @@ install: venv ## Install development dependencies
 
 test: install ## Run the test suite
 	$(PYTEST) -q
+
+demo: tour ## Build the learner-facing capstone walkthrough
 
 tour: install ## Build the learner-facing proof bundle
 	rm -rf $(TOUR_DIR)

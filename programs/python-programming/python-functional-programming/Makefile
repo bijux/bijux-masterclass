@@ -20,6 +20,10 @@ install: ## Install capstone development dependencies
 test: ## Run the capstone test suite
 	@$(RUN_CAPSTONE) test
 
+.PHONY: demo
+demo: ## Build the learner-facing capstone walkthrough
+	@$(RUN_CAPSTONE) demo
+
 .PHONY: capstone-tour
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	@$(RUN_CAPSTONE) tour
