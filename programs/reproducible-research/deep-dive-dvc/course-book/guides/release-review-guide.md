@@ -1,26 +1,25 @@
 # Release Review Guide
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  module["Module 09"]
-  guide["Release Review Guide"]
-  capstone["Release route"]
-  publish["publish/v1/"]
-
-  module --> guide --> capstone --> publish
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive DVC"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Release Review Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  question["What is safe for downstream trust?"] --> contract["Inspect the promoted contract"]
-  contract --> evidence["Inspect release evidence in order"]
-  evidence --> limits["Record the trust limits"]
-  limits --> decision["Make the release decision"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this guide when studying promotion and auditability.
 

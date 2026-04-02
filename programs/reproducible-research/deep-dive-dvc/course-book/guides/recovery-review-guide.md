@@ -1,26 +1,25 @@
 # Recovery Review Guide
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  module["Module 08"]
-  guide["Recovery Review Guide"]
-  capstone["Recovery drill"]
-  bundle["Recovery evidence bundle"]
-
-  module --> guide --> capstone --> bundle
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive DVC"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Recovery Review Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  question["What survives local loss?"] --> drill["Run the recovery route"]
-  drill --> compare["Compare before and after state"]
-  compare --> contract["Check the restored publish contract"]
-  contract --> boundary["Record what still depends on the remote"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this guide when studying Module 08 or when reviewing whether the capstone’s recovery
 story is real rather than aspirational.
