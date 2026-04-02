@@ -143,4 +143,5 @@ Read these with the target guide:
 * `PROOF_GUIDE.md`
 * `INSPECTION_GUIDE.md`
 * `BUNDLE_GUIDE.md`
+* `SCENARIO_SELECTION_GUIDE.md`
 * `EXTENSION_GUIDE.md`

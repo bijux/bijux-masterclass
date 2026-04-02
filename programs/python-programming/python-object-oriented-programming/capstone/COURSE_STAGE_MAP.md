@@ -26,9 +26,9 @@ honest capstone route for that stage.
 
 | Course stage | Start here | Then inspect | Best command |
 | --- | --- | --- | --- |
-| Semantic floor | `src/service_monitoring/model.py` | `tests/test_policy_lifecycle.py` and `PACKAGE_GUIDE.md` | `make inspect` |
-| Collaboration and evolution | `ARCHITECTURE.md` | `runtime.py`, `repository.py`, `read_models.py` | `make verify-report` |
-| Trust and governance | `PROOF_GUIDE.md` | saved bundles, `TEST_GUIDE.md`, and `EXTENSION_GUIDE.md` | `make confirm` or `make proof` |
+| Semantic floor | `src/service_monitoring/model.py` | `tests/test_policy_lifecycle.py`, `PACKAGE_GUIDE.md`, and the default scenario | `make inspect` |
+| Collaboration and evolution | `ARCHITECTURE.md` | `runtime.py`, `repository.py`, `read_models.py`, and the retirement scenario | `make verify-report` |
+| Trust and governance | `PROOF_GUIDE.md` | saved bundles, `TEST_GUIDE.md`, `EXTENSION_GUIDE.md`, and the rate-of-change scenario | `make confirm` or `make proof` |
 
 ## Stage questions
 
