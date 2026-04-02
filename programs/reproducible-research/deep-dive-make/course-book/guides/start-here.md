@@ -66,8 +66,8 @@ Choose this if Make still feels unfamiliar.
 Choose this if you already maintain a Make-based repository.
 
 1. Skim [`module-00.md`](../module-00-orientation/index.md)
-2. Read [`module-04.md`](module-04.md)
-3. Read [`module-05.md`](module-05.md)
+2. Read [`module-04.md`](../module-04-cli-precedence-includes-and-rule-edge-cases/index.md)
+3. Read [`module-05.md`](../module-05-portability-jobserver-hermeticity-and-failure-modes/index.md)
 4. Read [`module-09.md`](module-09.md)
 5. Use [`capstone-map.md`](capstone-map.md) to inspect the reference build selectively
 
