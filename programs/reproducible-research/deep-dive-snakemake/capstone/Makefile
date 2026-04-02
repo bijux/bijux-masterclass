@@ -66,7 +66,7 @@ info: ## Print tool versions and key settings
 
 clean: ## Remove build/run artifacts (keeps git-tracked files)
 	rm -rf .snakemake publish results logs benchmarks .hypothesis .benchmarks dag.png rulegraph.png .pytest_cache
-	rm -rf "$(ARTIFACTS_DIR_ABS)" .ruff_cache artifacts
+	rm -rf "$(LINT_DIR_ABS)" "$(TEST_DIR_ABS)" "$(WF_DIR_ABS)" "$(TMP_DIR_ABS)" "$(WALKTHROUGH_DIR_ABS)" "$(TOUR_DIR_ABS)" .ruff_cache artifacts
 	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
 	@true
 
