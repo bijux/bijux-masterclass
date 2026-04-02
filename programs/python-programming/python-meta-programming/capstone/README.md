@@ -66,6 +66,7 @@ make proof
 - `PLUGIN_RUNTIME_GUIDE.md` for the vocabulary and timing model
 - `SCENARIO_GUIDE.md` for the shipped demo and trace contracts
 - `DEFINITION_TIME_GUIDE.md` for the class-definition sequence before runtime invocation
+- `FIELD_GUIDE.md` for descriptor-backed configuration ownership
 - `ARCHITECTURE.md` for ownership boundaries
 - `PLUGIN_CATALOG.md` for the concrete adapters and why each one exists
 - `PUBLIC_API_GUIDE.md` for the supported package surface
