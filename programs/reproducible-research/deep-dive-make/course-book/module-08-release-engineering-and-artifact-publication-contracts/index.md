@@ -4,28 +4,27 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Module Position
 
 ```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Module 08"]
-  page["Module 08 — Release Engineering, Packaging, and Artifact Publication Contracts"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive Make"]
+  program --> module["Module 08 — Release Engineering, Packaging, and Artifact Publication Contracts"]
+  module --> lessons["Lesson pages and worked examples"]
+  module --> checkpoints["Exercises and closing criteria"]
+  module --> capstone["Related capstone evidence"]
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+flowchart TD
+  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
+  lesson_map --> study["Read the lessons and examples with one review question in mind"]
+  study --> proof["Test the idea with exercises and capstone checkpoints"]
+  proof --> close["Move on only when the closing criteria feel concrete"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
 Building something locally is not the same as delivering it. Module 08 is about the
 moment a build becomes an artifact contract: release directories, package boundaries,
