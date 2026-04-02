@@ -43,7 +43,7 @@ nav:
   - Reference:
       - Reference Home: reference/index.md
       - Runtime Power Ladder: reference/runtime-power-ladder.md
-      - Runtime Glossary: reference/runtime-glossary.md
+      - Glossary: reference/glossary.md
       - Review Checklist: reference/review-checklist.md
       - Self-Review Prompts: reference/self-review-prompts.md
       - Boundary Review Prompts: reference/boundary-review-prompts.md

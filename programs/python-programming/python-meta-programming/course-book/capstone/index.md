@@ -73,3 +73,7 @@ This keeps the capstone from becoming a repository tour without a learning contr
 - Which work happens before an instance exists?
 - Which runtime facts are inspectable from the public surface?
 - Which mechanism would you replace first if you had to simplify the design?
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between repository routes, review surfaces, and proof commands.

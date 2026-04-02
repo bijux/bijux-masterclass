@@ -654,3 +654,7 @@ You are ready for Module 10 when you can defend a metaclass decision with concre
 Proceed to **Module 10**.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

@@ -95,3 +95,7 @@ If a course claim cannot be connected to this runtime, treat it skeptically.
 This course is not a tricks catalog and not a recommendation to make everything dynamic.
 It is a correctness-first course about knowing what Python can do, what it should do, and
 where the responsibility lines need to stay hard.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

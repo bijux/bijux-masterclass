@@ -773,3 +773,7 @@ You have completed Module 8.
 Proceed to Module 9: Metaclasses – When Everything Else Is Not Enough.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

@@ -54,7 +54,7 @@ do not have to repeat that scaffolding.
 - [Boundary Review Prompts](../reference/boundary-review-prompts.md) when you need sharper keep/change/reject prompts
 - [Topic Boundaries](../reference/topic-boundaries.md) when you need the scope boundary
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) when you need a symptom-first failure map
-- [Runtime Glossary](../reference/runtime-glossary.md) when the vocabulary itself is the blocker
+- [Glossary](../reference/glossary.md) when the vocabulary itself is the blocker
 
 ## Use These For Capstone Reading
 
@@ -74,3 +74,7 @@ do not have to repeat that scaffolding.
 - `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable runtime and review shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.

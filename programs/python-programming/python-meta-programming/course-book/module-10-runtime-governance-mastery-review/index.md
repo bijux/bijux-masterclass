@@ -856,3 +856,7 @@ You have completed the module when you can review high-power runtime code with o
 You now understand metaclasses thoroughly — and exactly why you should almost never write one yourself.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
