@@ -52,6 +52,12 @@ For each repro:
 3. describe the defect class in words
 4. state the repair pattern before you implement anything
 
+Best first questions:
+
+* `01-shared-log.mk`: why are two recipes writing to the same output surface?
+* `05-mkdir-race.mk`: why is directory creation a correctness concern under `-j`?
+* `06-order-only-misuse.mk`: which edge should affect staleness rather than only sequencing?
+
 If you only run the Makefile and shrug at the result, the repro did not teach enough.
 
 [Back to top](#top)

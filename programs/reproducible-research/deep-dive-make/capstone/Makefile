@@ -168,7 +168,14 @@ repro:
 >     '  make -f repro/04-generated-header.mk all      generated-file modeling' \
 >     '  make -f repro/05-mkdir-race.mk -j2 all       directory creation race' \
 >     '  make -f repro/06-order-only-misuse.mk all    order-only prerequisite misuse' \
->     '  make -f repro/07-pattern-ambiguity.mk all    ambiguous pattern rule selection'
+>     '  make -f repro/07-pattern-ambiguity.mk all    ambiguous pattern rule selection' \
+>     '' \
+>     'Suggested first route:' \
+>     '  1. repro/01-shared-log.mk' \
+>     '  2. repro/05-mkdir-race.mk' \
+>     '  3. repro/06-order-only-misuse.mk' \
+>     '' \
+>     'For the full teaching route, read course-book/repro-catalog.md'
 
 discovery-audit:
 >     printf '%s\n' $(DYN_SRCS) | LC_ALL=C sort -c

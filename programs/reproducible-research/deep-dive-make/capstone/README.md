@@ -205,6 +205,14 @@ List the available repro entrypoints:
 make repro
 ```
 
+Best first route:
+
+1. `repro/01-shared-log.mk`
+2. `repro/05-mkdir-race.mk`
+3. `repro/06-order-only-misuse.mk`
+
+That route moves from obvious concurrency failure into subtler graph-modeling mistakes.
+
 [Back to top](#top)
 
 ---
