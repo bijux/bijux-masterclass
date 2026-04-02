@@ -27,7 +27,7 @@ nav:
       - Learner Entry: guides/start-here.md
       - Platform Setup: guides/platform-setup.md
       - Learning Contract: guides/learning-contract.md
-      - Module 00: Orientation and Study Strategy: module-00-orientation/index.md
+      - "Module 00: Orientation and Study Strategy": module-00-orientation/index.md
   - Course Reference:
       - Reference Home: reference/index.md
       - Module Dependency Map: reference/module-dependency-map.md
