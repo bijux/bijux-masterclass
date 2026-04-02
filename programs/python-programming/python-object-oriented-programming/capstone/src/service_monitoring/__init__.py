@@ -34,6 +34,7 @@ from .runtime import (
     MonitoringRuntime,
     StaticMetricSource,
 )
+from .scenario import DEFAULT_POLICY_ID, build_default_application, build_default_observation
 
 __all__ = [
     "ActiveRuleIndex",
@@ -42,6 +43,7 @@ __all__ = [
     "ConsecutiveThresholdPolicy",
     "CollectingIncidentSink",
     "CycleReport",
+    "DEFAULT_POLICY_ID",
     "DomainError",
     "EvaluationOutcome",
     "InMemoryPolicyRepository",
@@ -69,4 +71,6 @@ __all__ = [
     "StaticMetricSource",
     "ThresholdPolicy",
     "ThresholdRule",
+    "build_default_application",
+    "build_default_observation",
 ]
