@@ -50,7 +50,7 @@ work with the reference states, and how to inspect the capstone without guessing
 
 - [Command Guide](command-guide.md) for the executable surface
 - [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence
-- [Review Checklist](../reference/review-checklist.md) and [Self-Review Prompts](../reference/self-review-prompts.md) when you need a stable review bar
+- [Review Checklist](../reference/review-checklist.md), [Functional Anti-Pattern Atlas](../reference/anti-pattern-atlas.md), and [Self-Review Prompts](../reference/self-review-prompts.md) when you need a stable review bar
 
 ## Use These For Capstone Reading
 
