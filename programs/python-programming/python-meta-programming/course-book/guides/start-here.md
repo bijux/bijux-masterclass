@@ -45,8 +45,9 @@ and easier to justify than a simpler alternative.
 4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.
 5. Use [Pressure Routes](pressure-routes.md) when you are entering from a code review or framework problem.
 6. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
-7. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
-8. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
+7. Keep [Module Promise Map](module-promise-map.md) open so each module stays attached to one clear promise.
+8. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
+9. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
 
 ## Route By Pressure
 
@@ -79,5 +80,6 @@ By the end of the course, you should be able to explain:
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)
 - [Pressure Routes](pressure-routes.md)
+- [Module Promise Map](module-promise-map.md)
 - [Module 00](../module-00-orientation/index.md)
 - [Capstone Guide](capstone.md)

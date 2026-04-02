@@ -79,6 +79,7 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 
 - [Pressure Routes](pressure-routes.md) when you are entering from a concrete engineering pressure
 - [Reading Routes](reading-routes.md) when you need a lower-density or pressure-shaped sequence
+- [Module Promise Map](module-promise-map.md) when you want the exact contract of each module stated plainly
 - [Runtime Power Ladder](../reference/runtime-power-ladder.md) when you need the governing review model
 - [Mechanism Selection](mechanism-selection.md) when you need a problem-to-tool comparison
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence justified
