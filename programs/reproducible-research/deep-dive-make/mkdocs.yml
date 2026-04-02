@@ -54,9 +54,9 @@ nav:
       - Capstone Extension Guide: guides/capstone-extension-guide.md
       - Capstone Project: guides/readme-capstone.md
   - Modules:
-      - "01 — Foundations": module-01.md
-      - "02 — Scaling": module-02.md
-      - "03 — Production Practice": module-03.md
+      - "01 — Foundations": module-01-foundations-build-graph-and-truth/index.md
+      - "02 — Scaling": module-02-parallel-safety-and-project-structure/index.md
+      - "03 — Production Practice": module-03-production-practice-determinism-debugging-ci-and-selftests/index.md
       - "04 — Semantics Under Pressure": module-04.md
       - "05 — Hardening": module-05.md
       - "06 — Generated Files and Pipeline Boundaries": module-06.md

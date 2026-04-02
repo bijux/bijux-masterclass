@@ -57,8 +57,8 @@ why it works.
 Choose this if Make still feels unfamiliar.
 
 1. Read [`module-00.md`](../module-00-orientation/index.md)
-2. Read [`module-01.md`](module-01.md)
-3. Read [`module-02.md`](module-02.md)
+2. Read [`module-01.md`](../module-01-foundations-build-graph-and-truth/index.md)
+3. Read [`module-02.md`](../module-02-parallel-safety-and-project-structure/index.md)
 4. Enter the capstone only after the local module exercises make sense
 
 ### Route 2: Repair an Existing Build
@@ -75,7 +75,7 @@ Choose this if you already maintain a Make-based repository.
 
 Choose this if your job includes release, CI, or long-term build governance.
 
-1. Read [`module-03.md`](module-03.md)
+1. Read [`module-03.md`](../module-03-production-practice-determinism-debugging-ci-and-selftests/index.md)
 2. Read [`module-07.md`](module-07.md)
 3. Read [`module-08.md`](module-08.md)
 4. Read [`module-10.md`](module-10.md)
