@@ -41,7 +41,8 @@ The capstone demonstrates a system where:
 - async coordination is bounded, testable, and inspectable
 
 Use [Capstone Map](capstone-map.md) when you want the best next page for code reading,
-architecture review, walkthrough, or proof.
+architecture review, walkthrough, or proof. That page now includes a module-by-module
+route to the first file, test, and command worth opening.
 
 If the retrieval domain itself feels noisy, read [FuncPipe RAG Primer](funcpipe-rag-primer.md)
 first. It narrows the vocabulary so the capstone stays attached to the FP lesson instead
