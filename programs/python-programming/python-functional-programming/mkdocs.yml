@@ -165,6 +165,7 @@ nav:
       - Data and ML Pipelines: module-09-ecosystem-interop/data-and-ml-pipelines.md
       - CLI and Config Pipelines: module-09-ecosystem-interop/cli-and-config-pipelines.md
       - Distributed Dataflow: module-09-ecosystem-interop/distributed-dataflow.md
+      - Distributed Dataflow Review: module-09-ecosystem-interop/distributed-dataflow-review.md
       - Functional Facades: module-09-ecosystem-interop/functional-facades.md
       - Cross-Process Composition: module-09-ecosystem-interop/cross-process-composition.md
       - Team Adoption: module-09-ecosystem-interop/team-adoption.md

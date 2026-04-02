@@ -45,6 +45,7 @@ conventions? The answer is not purity theater. It is deliberate interop.
 - [Data and ML Pipelines](data-and-ml-pipelines.md)
 - [CLI and Config Pipelines](cli-and-config-pipelines.md)
 - [Distributed Dataflow](distributed-dataflow.md)
+- [Distributed Dataflow Review](distributed-dataflow-review.md)
 - [Functional Facades](functional-facades.md)
 - [Cross-Process Composition](cross-process-composition.md)
 - [Team Adoption](team-adoption.md)
