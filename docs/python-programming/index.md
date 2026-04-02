@@ -57,7 +57,7 @@ flowchart LR
 ### [Python Meta-Programming](python-meta-programming.md)
 
 - Local course home: [Course home](../library/python-programming/python-meta-programming/course-book/index.md)
-- Learner entry: [Orientation](../library/python-programming/python-meta-programming/course-book/module-00.md)
+- Learner entry: [Orientation](../library/python-programming/python-meta-programming/course-book/module-00-orientation/index.md)
 - Capstone guide: [Capstone README](../library/python-programming/python-meta-programming/capstone/README.md)
 
 <div class="bijux-panel-grid">
