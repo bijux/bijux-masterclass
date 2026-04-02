@@ -52,12 +52,12 @@ publish, policy, and confirmation commands.
 
 ## Strongest Default Routes
 
-- `make -C capstone walkthrough` when you want first-contact evidence without execution
-- `make -C capstone tour` when you want executed workflow proof
-- `make -C capstone verify-report` when you want publish-boundary review
-- `make -C capstone profile-audit` when you want execution-policy review
-- `make -C capstone proof` when you want the sanctioned learner-facing route
-- `make -C capstone confirm` when you want clean-room contract confirmation
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` when you want first-contact evidence without execution
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` when you want executed workflow proof
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` when you want publish-boundary review
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` when you want execution-policy review
+- `make PROGRAM=reproducible-research/deep-dive-snakemake proof` when you want the sanctioned learner-facing route
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` when you want clean-room contract confirmation
 
 [Back to top](#top)
 

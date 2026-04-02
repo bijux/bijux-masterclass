@@ -55,6 +55,20 @@ capstone should confirm understanding, not replace first-contact learning.
 
 ---
 
+## Enter By Question Type
+
+Use the question, not your anxiety level, to choose the route:
+
+| Question type | Start here | Escalate only if needed |
+| --- | --- | --- |
+| what does this repository promise | `capstone-walkthrough` | `capstone-tour` |
+| is the repository architecture legible in executable form | `capstone-tour` | `proof` |
+| does the workflow still hold under ordinary proof | `test` | `capstone-verify-report` |
+| what differs across execution contexts | `capstone-profile-audit` | `proof` |
+| should I trust the full system as a steward | `proof` | `capstone-confirm` |
+
+---
+
 ## Module-to-Capstone Route
 
 | Module | Learner goal | Capstone surfaces | First capstone command |
@@ -81,11 +95,11 @@ When the main question is repository ownership rather than a single module idea,
 
 If you want one sane first walkthrough, use this order:
 
-1. Run `make -C capstone walkthrough` to generate the learner-first reading bundle.
+1. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` to generate the learner-first reading bundle.
 2. Read `Snakefile` to see the entrypoint and default target.
 3. Read `workflow/rules/common.smk` and then the rule-family files.
 4. Read `FILE_API.md` to see what downstream consumers are actually allowed to trust.
-5. Run `make -C capstone tour` and then `make -C capstone verify` when you want executed proof.
+5. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` and then `make PROGRAM=reproducible-research/deep-dive-snakemake test` when you want executed proof.
 
 This order keeps contract and repository shape ahead of implementation detail.
 
@@ -100,12 +114,12 @@ of that same first-contact route.
 
 | Goal | Start here | Then inspect |
 | --- | --- | --- |
-| Why did this workflow plan these jobs? | `make -C capstone wf-dryrun` | `Snakefile`, `workflow/rules/` |
-| Where does dynamic discovery become explicit? | `make -C capstone wf-run` | `results/discovered_samples.json`, `publish/v1/discovered_samples.json` |
-| What is the stable downstream contract? | `make -C capstone verify-artifacts` | `publish/v1/`, `FILE_API.md` |
+| Why did this workflow plan these jobs? | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `Snakefile`, `workflow/rules/` |
+| Where does dynamic discovery become explicit? | `make PROGRAM=reproducible-research/deep-dive-snakemake test` | `results/discovered_samples.json`, `publish/v1/discovered_samples.json` |
+| What is the stable downstream contract? | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `publish/v1/`, `FILE_API.md` |
 | How are policy and semantics separated? | inspect `profiles/` | `Makefile`, `Snakefile` |
 | Where do helper-code boundaries live? | inspect `src/capstone/` | `workflow/scripts/`, `workflow/envs/` |
-| How would I review this workflow before migration? | `make -C capstone tour` | `FILE_API.md`, `profiles/`, `tests/`, `Makefile` |
+| How would I review this workflow before migration? | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `FILE_API.md`, `profiles/`, `tests/`, `Makefile` |
 
 Use [Capstone Architecture Guide](capstone-architecture-guide.md) when the review question
 is about repository layers rather than about one output or command.

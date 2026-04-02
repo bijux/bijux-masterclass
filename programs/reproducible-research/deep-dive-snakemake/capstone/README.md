@@ -95,6 +95,15 @@ capstone route that answers the next honest question. `walkthrough` is for first
 contact, `tour` is for executed repository review, `proof` is for the larger
 corroboration bundle, and `confirm` is for the strongest stewardship pass.
 
+If you are still unsure, use this escalation order:
+
+1. `make walkthrough`
+2. `make tour`
+3. `make selftest`
+4. `make verify-report`
+5. `make proof`
+6. `make confirm`
+
 [Back to top](#top)
 
 ---
