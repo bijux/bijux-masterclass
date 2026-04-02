@@ -96,7 +96,7 @@ Primary reading route:
 - `course-book/guides/module-checkpoints.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
-- `course-book/guides/capstone.md`
+- `course-book/capstone/index.md`
 
 ## How to know you are succeeding
 
