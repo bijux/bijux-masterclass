@@ -36,6 +36,11 @@ flowchart LR
 
 - Course home: [Program guide](../library/reproducible-research/deep-dive-dvc/course-book/index.md)
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-dvc/course-book/guides/start-here.md)
+- Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-dvc/course-book/guides/pressure-routes.md)
+- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-dvc/course-book/guides/module-promise-map.md)
+- Readiness check: [Module Checkpoints](../library/reproducible-research/deep-dive-dvc/course-book/guides/module-checkpoints.md)
+- Proof escalation: [Proof Ladder](../library/reproducible-research/deep-dive-dvc/course-book/guides/proof-ladder.md)
+- Topic boundaries: [Topic Boundaries](../library/reproducible-research/deep-dive-dvc/course-book/reference/topic-boundaries.md)
 - Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-dvc/capstone/README.md)
 
 ## Local Commands
@@ -43,6 +48,7 @@ flowchart LR
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc docs-serve
 make PROGRAM=reproducible-research/deep-dive-dvc test
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 ```
 

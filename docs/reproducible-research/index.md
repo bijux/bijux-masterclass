@@ -61,6 +61,8 @@ flowchart LR
 
 - Local course home: [Deep Dive DVC course home](../library/reproducible-research/deep-dive-dvc/course-book/index.md)
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-dvc/course-book/guides/start-here.md)
+- Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-dvc/course-book/guides/pressure-routes.md)
+- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-dvc/course-book/guides/module-promise-map.md)
 - Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-dvc/capstone/README.md)
 
 <div class="bijux-panel-grid">

@@ -41,9 +41,11 @@ Use the course in this order:
 1. `course-book/guides/start-here.md`
 2. `course-book/guides/index.md`
 3. `course-book/guides/course-guide.md`
-4. `course-book/module-00-orientation/index.md`
-5. Modules `01` to `10` in order, following the state, execution, collaboration, and governance arc
-6. `course-book/guides/readme-capstone.md` and `course-book/guides/capstone-map.md` once the state model feels stable
+4. `course-book/guides/pressure-routes.md` if you need the fastest honest route by work pressure
+5. `course-book/guides/module-promise-map.md` and `course-book/guides/module-checkpoints.md` to keep the module promises and exit bars visible
+6. `course-book/module-00-orientation/index.md`
+7. Modules `01` to `10` in order, following the state, execution, collaboration, and governance arc
+8. `course-book/guides/readme-capstone.md`, `course-book/guides/capstone-map.md`, and `course-book/guides/proof-ladder.md` once the state model feels stable
 
 The route matters because the program is trying to build judgment, not only command recall.
 
@@ -52,6 +54,15 @@ The course-book now has three stable top-level surfaces:
 - `guides/` for learner routes, proof selection, and capstone entry
 - `reference/` for durable maps, glossary pages, and review standards
 - `module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
+
+If you are choosing where to enter, use:
+
+- `course-book/guides/pressure-routes.md` for the smallest honest route by problem shape
+- `course-book/guides/module-promise-map.md` for what each module truly promises
+- `course-book/guides/module-checkpoints.md` for module-end readiness checks
+- `course-book/guides/proof-ladder.md` for how to escalate from tour to stronger proof
+- `course-book/reference/topic-boundaries.md` for what this course treats as central, adjacent, or out of scope
+- `course-book/reference/anti-pattern-atlas.md` for common reproducibility failures and where the course addresses them
 
 ## What this program covers
 
@@ -86,6 +97,7 @@ From the repository root:
 make PROGRAM=reproducible-research/deep-dive-dvc docs-serve
 make PROGRAM=reproducible-research/deep-dive-dvc test
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 ```
 
 Run the capstone directly:
