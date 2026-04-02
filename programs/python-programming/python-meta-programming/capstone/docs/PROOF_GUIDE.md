@@ -28,7 +28,17 @@ flowchart LR
 
 This guide keeps the capstone honest by tying each public claim to one repeatable proof path.
 
-## Base proof
+## Start by claim
+
+| If the claim is... | Start with | Escalate with |
+| --- | --- | --- |
+| the runtime surface is observational | `make manifest` or `make registry` | `make inspect` |
+| wrapper behavior stays visible | `make trace` | `tests/test_runtime.py` |
+| descriptor fields own validation | `make field` | `tests/test_fields.py` |
+| registration stays deterministic | `make registry` | `tests/test_registry.py` |
+| the full review surface still agrees with tests | `make verify-report` | `make proof` |
+
+## Strongest local proof
 
 Run:
 
@@ -64,6 +74,12 @@ make trace
 
 These commands prove that the runtime shape and invocation path are inspectable from the
 public surface without opening private internals first.
+
+## Smallest honest routes
+
+- Use `manifest` before `inspect` when one public schema question is enough.
+- Use `trace` before `verify-report` when one invocation route is enough.
+- Use `confirm` before `proof` when the question is executable confidence rather than published review output.
 
 ## Honest distinctions
 
