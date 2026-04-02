@@ -18,6 +18,18 @@ def test_manifest_command_renders_public_runtime_shape(capsys) -> None:
     ]
 
 
+def test_signatures_command_renders_generated_constructor_and_action_shapes(capsys) -> None:
+    exit_code = main(["signatures", "--group", "delivery"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    console = captured["delivery"][0]
+    assert console["plugin_name"] == "console"
+    assert console["constructor"] == "(*, prefix='[incident]', stream='stdout', uppercase_severity=False)"
+    assert console["actions"]["deliver"] == "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'"
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [

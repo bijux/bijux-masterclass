@@ -31,6 +31,7 @@ route for the claim you need to check.
 | --- | --- |
 | `manifest` | inspect the observable plugin schema without execution |
 | `registry` | inspect the registered plugins without opening private internals |
+| `signatures` | inspect generated constructor and action signatures without invocation |
 | `demo` | invoke one realistic delivery action |
 | `trace` | inspect one invocation together with configuration and action history |
 | `inspect` | build the saved learner-facing inspection bundle |
@@ -47,6 +48,7 @@ Use:
 
 * `make manifest`
 * `make registry`
+* `make signatures`
 
 ### If the question is "what happens when one action is invoked?"
 
@@ -74,6 +76,8 @@ Use:
 
 - `manifest` versus `registry`
   `manifest` explains schema and action metadata; `registry` explains which plugins are currently registered.
+- `registry` versus `signatures`
+  `registry` proves which plugins exist; `signatures` proves which generated call shapes they expose.
 - `demo` versus `trace`
   `demo` shows one result; `trace` shows result, configuration, and recorded action history together.
 - `confirm` versus `proof`

@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import inspect
 from typing import Any
 
-from .framework import PluginMeta, build_manifest, create_plugin, invoke
+from .framework import PluginMeta, _REGISTRY, build_manifest, create_plugin, invoke
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -29,6 +30,13 @@ def _build_parser() -> argparse.ArgumentParser:
     registry = subparsers.add_parser("registry", help="Render the plugin registry as JSON.")
     registry.add_argument("--group", help="Restrict output to one plugin group.")
     registry.set_defaults(handler=_handle_registry)
+
+    signatures = subparsers.add_parser(
+        "signatures",
+        help="Render generated constructor and action signatures as JSON.",
+    )
+    signatures.add_argument("--group", help="Restrict output to one plugin group.")
+    signatures.set_defaults(handler=_handle_signatures)
 
     invoke_parser = subparsers.add_parser("invoke", help="Invoke one plugin action and print the result.")
     _add_runtime_arguments(invoke_parser)
@@ -73,6 +81,24 @@ def _handle_registry(args: argparse.Namespace) -> dict[str, Any]:
     if args.group is not None:
         return {"group": args.group, "plugins": list(registry)}
     return {group: list(plugins) for group, plugins in registry.items()}
+
+
+def _handle_signatures(args: argparse.Namespace) -> dict[str, list[dict[str, object]]]:
+    groups = [args.group] if args.group is not None else sorted(_REGISTRY)
+    return {
+        group_name: [
+            {
+                "plugin_name": plugin_name,
+                "constructor": str(inspect.signature(plugin_cls)),
+                "actions": {
+                    action_name: str(inspect.signature(getattr(plugin_cls, action_name)))
+                    for action_name in plugin_cls.__plugin_actions__
+                },
+            }
+            for plugin_name, plugin_cls in sorted(_REGISTRY.get(group_name, {}).items())
+        ]
+        for group_name in groups
+    }
 
 
 def _handle_invoke(args: argparse.Namespace) -> dict[str, object]:

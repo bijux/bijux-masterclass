@@ -29,6 +29,10 @@ manifest: ## Render the delivery manifest from the public CLI
 registry: ## Render the delivery registry from the public CLI
 	@PYTHONPATH=src $(CLI) registry --group delivery
 
+.PHONY: signatures
+signatures: ## Render generated constructor and action signatures from the public CLI
+	@PYTHONPATH=src $(CLI) signatures --group delivery
+
 .PHONY: demo
 demo: ## Invoke one delivery action from the public CLI
 	@PYTHONPATH=src $(CLI) invoke delivery console deliver \
@@ -53,6 +57,7 @@ inspect: ## Build the learner-facing inspection bundle
 	@mkdir -p $(INSPECT_DIR)
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(INSPECT_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(INSPECT_DIR)/registry.json
+	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
 	@cp PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
 	@cp TARGET_GUIDE.md $(INSPECT_DIR)/TARGET_GUIDE.md
@@ -61,7 +66,7 @@ inspect: ## Build the learner-facing inspection bundle
 	@printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read manifest.json for field and action metadata.' \
-		'  2. Read registry.json for the registered plugin names.' \
+		'  2. Read registry.json and signatures.json for the registered plugins and generated callable shapes.' \
 		'  3. Read INSPECTION_GUIDE.md and TARGET_GUIDE.md for the next review route.' \
 		'  4. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership.' \
 		> $(INSPECT_DIR)/route.txt
@@ -77,6 +82,7 @@ verify-report: ## Build the structured capstone verification report
 	@mkdir -p $(VERIFY_REPORT_DIR)
 	@$(PYTHON) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(VERIFY_REPORT_DIR)/manifest.json
+	@PYTHONPATH=src $(CLI) signatures --group delivery > $(VERIFY_REPORT_DIR)/signatures.json
 	@PYTHONPATH=src $(CLI) trace delivery pager preview \
 		--config "service=core" \
 		--config "routing_key=sev1" \
@@ -92,7 +98,7 @@ verify-report: ## Build the structured capstone verification report
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable proof.' \
-		'  2. Read manifest.json and trace.json for the saved public-surface evidence.' \
+		'  2. Read manifest.json, signatures.json, and trace.json for the saved public-surface evidence.' \
 		'  3. Read TEST_GUIDE.md and PROOF_GUIDE.md for the closest claim-to-proof route.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/bundle-manifest.json
@@ -104,6 +110,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@mkdir -p $(TOUR_DIR)
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(TOUR_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(TOUR_DIR)/registry.json
+	@PYTHONPATH=src $(CLI) signatures --group delivery > $(TOUR_DIR)/signatures.json
 	@PYTHONPATH=src $(CLI) invoke delivery console deliver \
 		--config "prefix=[ops]" \
 		--config "uppercase_severity=true" \
@@ -136,7 +143,7 @@ tour: ## Build the learner-facing walkthrough bundle
 		> $(TOUR_DIR)/focus-areas.txt
 	@printf '%s\n' \
 		'Walkthrough route:' \
-		'  1. Read manifest.json and registry.json to inspect the public runtime shape.' \
+		'  1. Read manifest.json, registry.json, and signatures.json to inspect the public runtime shape.' \
 		'  2. Read demo.json for one concrete invocation.' \
 		'  3. Read trace.json for configuration and action-history visibility.' \
 		'  4. Read WALKTHROUGH_GUIDE.md and TOUR.md for the review order.' \
