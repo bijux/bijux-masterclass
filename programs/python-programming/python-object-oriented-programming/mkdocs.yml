@@ -117,6 +117,7 @@ nav:
       - Overview: module-06-persistence-and-schema-evolution/index.md
       - Repository Contracts and Aggregate Rehydration: module-06-persistence-and-schema-evolution/repository-contracts-and-aggregate-rehydration.md
       - Mapping Domain Objects to Storage Models: module-06-persistence-and-schema-evolution/mapping-domain-objects-to-storage-models.md
+      - ORMs, Identity Maps, and Session Boundaries: module-06-persistence-and-schema-evolution/orms-identity-map-and-session-boundaries.md
       - Serialization Boundaries and Explicit Codecs: module-06-persistence-and-schema-evolution/serialization-boundaries-and-explicit-codecs.md
       - Snapshots, Events, and Rebuild Trade-Offs: module-06-persistence-and-schema-evolution/snapshots-events-and-rebuild-trade-offs.md
       - Schema Versioning and Upcasters: module-06-persistence-and-schema-evolution/schema-versioning-and-upcasters.md
