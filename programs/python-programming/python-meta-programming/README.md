@@ -132,9 +132,9 @@ Primary reading route:
 - `course-book/guides/start-here.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
-- `course-book/guides/capstone.md`
-- `course-book/guides/capstone-architecture-guide.md`
-- `course-book/guides/capstone-walkthrough.md`
+- `course-book/capstone/index.md`
+- `course-book/capstone/capstone-architecture-guide.md`
+- `course-book/capstone/capstone-walkthrough.md`
 - `course-book/reference/topic-boundaries.md`
 - `course-book/reference/anti-pattern-atlas.md`
 
