@@ -17,13 +17,13 @@ RUFF      ?= ruff
 DOT       ?= dot
 
 # ---- artifacts sandbox (no root pollution) ----
-ARTIFACTS_DIR ?= artifacts/make
-LINT_DIR      ?= $(ARTIFACTS_DIR)/lint
-TEST_DIR      ?= $(ARTIFACTS_DIR)/test
-WF_DIR        ?= $(ARTIFACTS_DIR)/workflow
-TMP_DIR       ?= $(ARTIFACTS_DIR)/tmp
-WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/workflow-walkthrough
-TOUR_DIR      ?= $(ARTIFACTS_DIR)/workflow-tour
+ARTIFACTS_DIR ?= ../../../../artifacts
+LINT_DIR      ?= $(ARTIFACTS_DIR)/lint/reproducible-research/deep-dive-snakemake
+TEST_DIR      ?= $(ARTIFACTS_DIR)/test/reproducible-research/deep-dive-snakemake
+WF_DIR        ?= $(ARTIFACTS_DIR)/workflow/reproducible-research/deep-dive-snakemake
+TMP_DIR       ?= $(ARTIFACTS_DIR)/tmp/reproducible-research/deep-dive-snakemake
+WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-snakemake
+TOUR_DIR      ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-snakemake
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
