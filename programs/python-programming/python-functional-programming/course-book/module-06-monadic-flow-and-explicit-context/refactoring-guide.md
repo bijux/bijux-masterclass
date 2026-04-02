@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 06"] --> guide["Refactoring Guide"]
-  guide --> worktree["_history/worktrees/module-06"]
-  worktree --> next["Module 07"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 06: Monadic Flow and Explicit Context"]
+  module --> concept["Module 06 Refactoring Guide"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  chain["Inspect dependent composition"] --> context["Check explicit context carriers"]
-  context --> laws["Read monad, reader, state, and writer laws"]
-  laws --> refactor["Review exception-to-data refactors"]
-  refactor --> move["Advance only when context is visible"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This guide closes Module 06. The point is not to admire monadic vocabulary. The point is
 to make sequencing, context, and failure propagation easier to read and safer to change.

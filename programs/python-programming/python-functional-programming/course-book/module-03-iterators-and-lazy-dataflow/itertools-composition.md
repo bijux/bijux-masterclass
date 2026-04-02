@@ -2,28 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Functional Programming"]
-  section["Iterators And Lazy Dataflow"]
-  page["itertools Composition"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 03: Iterators and Lazy Dataflow"]
+  module --> concept["itertools Composition"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+flowchart TD
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 ## Progression Note
 By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.

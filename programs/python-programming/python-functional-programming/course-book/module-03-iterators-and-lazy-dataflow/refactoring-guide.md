@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 03"] --> guide["Refactoring Guide"]
-  guide --> worktree["_history/worktrees/module-03"]
-  worktree --> next["Module 04"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 03: Iterators and Lazy Dataflow"]
+  module --> concept["Module 03 Refactoring Guide"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  lazy["Trace what stays lazy"] --> materialize["Mark deliberate materialization"]
-  materialize --> stream["Inspect streaming helpers and tests"]
-  stream --> observe["Check observability without behavior drift"]
-  observe --> move["Move on only when evaluation order is clear"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This guide closes Module 03. The point is not to celebrate generators on their own. The
 point is to know when computation happens, when memory grows, and how to observe a stream

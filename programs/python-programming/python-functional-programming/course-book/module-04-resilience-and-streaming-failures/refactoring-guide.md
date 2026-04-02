@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 04"] --> guide["Refactoring Guide"]
-  guide --> worktree["_history/worktrees/module-04"]
-  worktree --> next["Module 05"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 04: Resilience and Streaming Failures"]
+  module --> concept["Module 04 Refactoring Guide"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  stream["Inspect the streaming failure path"] --> retry["Check retry and cleanup policy"]
-  retry --> result["Review Result and Option boundaries"]
-  result --> report["Confirm reports expose failures as data"]
-  report --> move["Advance only when failure shape is explicit"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This guide closes Module 04. The goal is to leave the module knowing how a streaming
 pipeline fails, retries, and cleans up without making those choices invisible.

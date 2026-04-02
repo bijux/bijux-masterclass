@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 03"] --> stages["Reusable Pipeline Stages"]
-  stages --> review["Pipeline Stage Review and Reuse"]
-  review --> next["Fan-In and Fan-Out"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 03: Iterators and Lazy Dataflow"]
+  module --> concept["Pipeline Stage Review and Reuse"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  factory["Check the stage factory"] --> purity["Check purity and freshness"]
-  purity --> properties["Read the reuse properties"]
-  properties --> limits["Name when a factory is overkill"]
-  limits --> move["Move on only when stage reuse reduces code and review cost"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This lesson closes the reusable-stage hotspot. The main lesson should teach you how to
 build stage factories. This companion page explains how to review those factories and how

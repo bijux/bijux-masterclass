@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 05"] --> guide["Refactoring Guide"]
-  guide --> worktree["_history/worktrees/module-05"]
-  worktree --> next["Module 06"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 05: Algebraic Data Modelling"]
+  module --> concept["Module 05 Refactoring Guide"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  shape["Inspect the domain shapes"] --> smart["Check smart constructors and validation"]
-  smart --> match["Review pattern matching and serialization"]
-  match --> laws["Read the algebraic law tests"]
-  laws --> move["Move on only when the model is explicit"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This guide closes Module 05. The learner standard here is explicit modelling. The code
 should tell you what states exist, what data is valid, and how transport concerns stay

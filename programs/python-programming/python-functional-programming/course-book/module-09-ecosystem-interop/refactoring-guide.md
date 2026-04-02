@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 09"] --> guide["Refactoring Guide"]
-  guide --> worktree["_history/worktrees/module-09"]
-  worktree --> next["Module 10"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 09: Ecosystem Interop"]
+  module --> concept["Module 09 Refactoring Guide"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  wrapper["Inspect interop wrappers"] --> config["Check explicit configuration flow"]
-  config --> stdlib["Review stdlib and library boundaries"]
-  stdlib --> team["Compare team-facing adoption surfaces"]
-  team --> move["Advance only when interop stays deliberate"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This guide closes Module 09. The real question is whether the course discipline survives
 contact with normal Python libraries, service boundaries, and team conventions.

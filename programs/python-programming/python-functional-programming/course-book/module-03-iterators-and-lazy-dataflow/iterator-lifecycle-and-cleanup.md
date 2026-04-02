@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 03"] --> iterators["Custom Iterators"]
-  iterators --> review["Iterator Lifecycle and Cleanup"]
-  review --> next["Streaming Observability"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 03: Iterators and Lazy Dataflow"]
+  module --> concept["Iterator Lifecycle and Cleanup"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  cursor["Check iterable vs iterator roles"] --> cleanup["Check cleanup and close semantics"]
-  cleanup --> properties["Read parity and freshness properties"]
-  properties --> limits["Name when a generator is still the better tool"]
-  limits --> move["Move on only when the class earns its complexity"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This lesson closes the custom-iterator hotspot. The main lesson should teach you how to
 build the cursor and factory pair. This companion page explains how to review the

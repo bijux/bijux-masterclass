@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 02"] --> guide["Refactoring Guide"]
-  guide --> worktree["_history/worktrees/module-02"]
-  worktree --> next["Module 03"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 02: Data-First APIs and Expression Style"]
+  module --> concept["Module 02 Refactoring Guide"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  config["Check configuration as data"] --> api["Inspect data-first API signatures"]
-  api --> compose["Follow the composition chain"]
-  compose --> debug["Confirm debugging stays explicit"]
-  debug --> move["Carry only explicit inputs forward"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This guide closes Module 02. The goal is to make configuration and composition explicit
 enough that changing behavior does not require hidden globals or callback archaeology.

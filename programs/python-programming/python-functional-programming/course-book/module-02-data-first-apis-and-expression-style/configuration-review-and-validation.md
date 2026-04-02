@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 02"] --> config["Configuration as Data"]
-  config --> review["Configuration Review and Validation"]
-  review --> next["Callbacks to Combinators"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 02: Data-First APIs and Expression Style"]
+  module --> concept["Configuration Review and Validation"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  model["Check the immutable model"] --> boundary["Check the validation boundary"]
-  boundary --> properties["Read config-driven properties"]
-  properties --> limits["Name when config-as-data is overkill"]
-  limits --> move["Move on only when config changes are predictable"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This lesson closes the configuration hotspot. The main lesson explains how to turn hidden
 settings into explicit data. This companion page explains how to test that contract and

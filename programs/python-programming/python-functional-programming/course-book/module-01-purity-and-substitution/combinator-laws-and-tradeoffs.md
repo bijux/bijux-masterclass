@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 01"] --> toolkit["Small Combinator Library"]
-  toolkit --> review["Combinator Laws and Trade-Offs"]
-  review --> next["Typed Pipelines"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 01: Purity and Substitution"]
+  module --> concept["Combinator Laws and Trade-Offs"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  laws["Check algebraic laws"] --> tests["Read the property tests"]
-  tests --> risks["Name the trade-offs and failure modes"]
-  risks --> capstone["Compare the capstone helper surface"]
-  capstone --> move["Move on only when the toolkit earns its place"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This lesson exists because building a helper library is not the same thing as justifying
 it. Once you have a small combinator kit, the next question is whether it preserves the

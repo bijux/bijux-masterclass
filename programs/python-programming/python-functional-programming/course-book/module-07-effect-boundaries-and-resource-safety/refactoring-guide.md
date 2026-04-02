@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 07"] --> guide["Refactoring Guide"]
-  guide --> worktree["_history/worktrees/module-07"]
-  worktree --> next["Module 08"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 07: Effect Boundaries and Resource Safety"]
+  module --> concept["Module 07 Refactoring Guide"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  ports["Inspect ports and protocols"] --> adapters["Check concrete adapters"]
-  adapters --> policy["Review resource and transaction policy"]
-  policy --> migration["Compare migration seams"]
-  migration --> move["Advance only when the boundary is reviewable"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This guide closes Module 07. The standard is not wishful purity. The standard is a core
 that can name its capabilities and a boundary layer that can be reviewed under change.

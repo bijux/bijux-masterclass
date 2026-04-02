@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 02"] --> lesson["Expression-Oriented Python"]
-  lesson --> review["Expression Review and Trade-Offs"]
-  review --> next["Introducing Laziness"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 02: Data-First APIs and Expression Style"]
+  module --> concept["Expression Review and Trade-Offs"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  expression["Check the expression form"] --> baseline["Compare with the imperative baseline"]
-  baseline --> properties["Read the equivalence properties"]
-  properties --> limits["Name when expressions stop helping"]
-  limits --> move["Move on only when the rewrite is easier to review"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This lesson exists to answer the question the main lesson leaves open: when does an
 expression-oriented rewrite actually improve the code, and how do you prove that the

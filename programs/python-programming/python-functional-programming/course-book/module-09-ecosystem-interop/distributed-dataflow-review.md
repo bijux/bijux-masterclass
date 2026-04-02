@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 09"] --> lesson["Distributed Dataflow"]
-  lesson --> review["Distributed Dataflow Review"]
-  review --> next["Functional Facades"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 09: Ecosystem Interop"]
+  module --> concept["Distributed Dataflow Review"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  backend["Check the backend mapping"] --> proofs["Read the equivalence and runtime checks"]
-  proofs --> risks["Name the operational risks"]
-  risks --> sinks["Confirm effects stay in sinks and boundaries"]
-  sinks --> move["Move on only when scale does not erase the core contract"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This companion page closes the distributed-dataflow hotspot. The main lesson should teach
 how to preserve the functional contract while targeting Dask or Beam. This page explains

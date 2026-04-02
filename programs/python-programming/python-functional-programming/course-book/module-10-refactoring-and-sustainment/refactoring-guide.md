@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Concept Position
 
 ```mermaid
-graph LR
-  module["Module 10"] --> guide["Refactoring Guide"]
-  guide --> worktree["_history/worktrees/module-10"]
-  worktree --> proof["Capstone confirm and proof"]
+flowchart TD
+  family["Python Programming"] --> program["Python Functional Programming"]
+  program --> module["Module 10: Refactoring and Sustainment"]
+  module --> concept["Module 10 Refactoring Guide"]
+  concept --> capstone["Capstone pressure point"]
 ```
 
 ```mermaid
 flowchart TD
-  evidence["Inspect long-term evidence"] --> performance["Check performance and observability trade-offs"]
-  performance --> migration["Review migration and governance surfaces"]
-  migration --> confirm["Run confirm or proof when needed"]
-  confirm --> sustain["Decide whether the codebase can survive change"]
+  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
+  example --> boundary["Name the boundary this page is trying to protect"]
+  boundary --> proof["Carry that question into code review or the capstone"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
 
 This guide closes the course. The final standard is sustainment: can the codebase keep
 its semantics, evidence, and review discipline while performance pressure and team change
