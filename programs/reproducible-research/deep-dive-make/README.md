@@ -26,6 +26,12 @@ Most Makefiles “work” until they don’t: hidden inputs, phony ordering, sta
 
 This is a practical step toward *real* understanding of Make: what it guarantees, what it does not, and how to design Makefiles that remain correct as projects grow.
 
+The course-book now has three stable surfaces:
+
+- `course-book/guides/` for learner routes, command choice, and capstone entry
+- `course-book/reference/` for durable review maps, glossaries, and standards
+- `course-book/module-00...module-10` for the core teaching arc
+
 [Back to top](#top)
 
 ---

@@ -22,6 +22,7 @@ plugins:
 nav:
   - Start Here:
       - Home: index.md
+      - Guides Home: guides/index.md
       - Course Guide: guides/course-guide.md
       - Learner Entry: guides/start-here.md
       - Platform Setup: guides/platform-setup.md
@@ -39,6 +40,7 @@ nav:
       - Incident Ladder: reference/incident-ladder.md
       - Completion Rubric: reference/completion-rubric.md
   - Capstone Reference:
+      - Guides Home: guides/index.md
       - Capstone Map: guides/capstone-map.md
       - Capstone File Guide: guides/capstone-file-guide.md
       - Mk Layer Guide: reference/mk-layer-guide.md

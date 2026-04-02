@@ -30,6 +30,12 @@ first-contact basics to build-system mastery. The focus is not “Makefile trick
 **semantic discipline**: truthful dependency graphs, atomic outputs, parallel safety,
 deterministic results, and repeatable verification.
 
+The top-level course-book now has three stable surfaces:
+
+- [`guides/`](guides/index.md) for learner routes, command choice, and capstone entry
+- [`reference/`](reference/index.md) for durable maps, glossaries, and review standards
+- module pages for the ten-module teaching arc
+
 [![Series Validation](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml/badge.svg?branch=master)](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml?query=branch%3Amaster)
 [![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
 [![License](https://img.shields.io/github/license/bijux/bijux-masterclass?style=flat-square)](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE)
