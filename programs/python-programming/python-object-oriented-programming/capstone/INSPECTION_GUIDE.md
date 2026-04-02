@@ -39,6 +39,7 @@ files first. The goal is to make each inspection command answer one kind of ques
 | `make inspect-history` | how incidents accumulated for each metric |
 | `make inspect-timeline` | what ordered scenario moments produced the current state |
 | `make inspect-retirement` | what changed before and after a rule retirement |
+| `make inspect-rate-of-change` | what the alternate evaluation mode produces |
 
 ## Recommended reading order
 
@@ -48,6 +49,7 @@ files first. The goal is to make each inspection command answer one kind of ques
 4. `history.txt`
 5. `timeline.txt`
 6. `retirement.txt`
+7. `rate_of_change.txt`
 
 That order moves from the current high-level snapshot into lifecycle detail, incident
 history, and finally the ordered scenario flow.
@@ -67,6 +69,7 @@ history, and finally the ordered scenario flow.
 | `history.txt` | which incidents were published and accumulated downstream | whether the history source remained non-authoritative in code |
 | `timeline.txt` | which ordered steps produced the saved scenario state | whether the runtime and aggregate boundaries are placed correctly under arbitrary change |
 | `retirement.txt` | what lifecycle-owned cleanup changed before and after rule retirement | whether the retirement semantics generalize to every future change without additional proof |
+| `rate_of_change.txt` | what the alternate evaluation seam proves with one fixed rule and sample window | whether every future evaluation policy belongs in the same seam without more tests |
 
 ## Best follow-up choices
 

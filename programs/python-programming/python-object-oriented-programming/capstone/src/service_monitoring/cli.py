@@ -6,6 +6,7 @@ from collections.abc import Sequence
 from .scenario import (
     DEFAULT_RULE_REGISTRATIONS,
     DEFAULT_SAMPLES,
+    build_rate_of_change_observation,
     build_retirement_review,
     build_default_observation,
 )
@@ -22,6 +23,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("history", help="Show incident history grouped by metric.")
     subparsers.add_parser("timeline", help="Show the scenario as an ordered event timeline.")
     subparsers.add_parser("retirement", help="Show the retirement scenario before and after state.")
+    subparsers.add_parser("rate-of-change", help="Show the alternate evaluation-mode scenario.")
     return parser
 
 
@@ -89,6 +91,22 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"  open_incidents={sorted(review.retired_snapshot.open_incidents)}")
         print(f"  incident_history={ {metric: len(items) for metric, items in review.retired_snapshot.incident_history.items()} }")
         print(f"  retirement_reason={review.retired_reason}")
+        return 0
+
+    if args.command == "rate-of-change":
+        observation = build_rate_of_change_observation()
+        print("policy_id: service-monitoring-rate-of-change")
+        print("rule_mode: rate_of_change")
+        print(f"alerts_published: {observation.cycle_report.alerts_published}")
+        print(f"open_incidents: {sorted(observation.snapshot.open_incidents)}")
+        incident = observation.snapshot.open_incidents["latency-spike"]
+        print(
+            "alert:"
+            f" rule_id={incident.rule_id}"
+            f" severity={incident.severity}"
+            f" observed_value={incident.observed_value}"
+            f" threshold={incident.threshold}"
+        )
         return 0
 
     for metric_name, incidents in observation.snapshot.incident_history.items():

@@ -34,6 +34,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@cp DOMAIN_GUIDE.md $(TOUR_DIR)/DOMAIN_GUIDE.md
 	@cp SCENARIO_GUIDE.md $(TOUR_DIR)/SCENARIO_GUIDE.md
 	@cp RETIREMENT_SCENARIO_GUIDE.md $(TOUR_DIR)/RETIREMENT_SCENARIO_GUIDE.md
+	@cp RATE_OF_CHANGE_SCENARIO_GUIDE.md $(TOUR_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md
 	@cp RULE_LIFECYCLE_GUIDE.md $(TOUR_DIR)/RULE_LIFECYCLE_GUIDE.md
 	@cp EVENT_FLOW_GUIDE.md $(TOUR_DIR)/EVENT_FLOW_GUIDE.md
 	@cp BUNDLE_GUIDE.md $(TOUR_DIR)/BUNDLE_GUIDE.md
@@ -72,6 +73,10 @@ inspect-timeline: ## Inspect the ordered scenario timeline
 inspect-retirement: ## Inspect the retirement scenario before and after state
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli retirement
 
+.PHONY: inspect-rate-of-change
+inspect-rate-of-change: ## Inspect the alternate rate-of-change scenario
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rate-of-change
+
 .PHONY: inspect
 inspect: ## Build the capstone learner-facing inspection bundle
 	@rm -rf $(INSPECT_DIR)
@@ -81,11 +86,13 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(INSPECT_DIR)/history.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli timeline > $(INSPECT_DIR)/timeline.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli retirement > $(INSPECT_DIR)/retirement.txt
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rate-of-change > $(INSPECT_DIR)/rate_of_change.txt
 	@cp README.md $(INSPECT_DIR)/README.md
 	@cp ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
 	@cp DOMAIN_GUIDE.md $(INSPECT_DIR)/DOMAIN_GUIDE.md
 	@cp SCENARIO_GUIDE.md $(INSPECT_DIR)/SCENARIO_GUIDE.md
 	@cp RETIREMENT_SCENARIO_GUIDE.md $(INSPECT_DIR)/RETIREMENT_SCENARIO_GUIDE.md
+	@cp RATE_OF_CHANGE_SCENARIO_GUIDE.md $(INSPECT_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md
 	@cp RULE_LIFECYCLE_GUIDE.md $(INSPECT_DIR)/RULE_LIFECYCLE_GUIDE.md
 	@cp BUNDLE_GUIDE.md $(INSPECT_DIR)/BUNDLE_GUIDE.md
 	@cp CHANGE_RECIPES.md $(INSPECT_DIR)/CHANGE_RECIPES.md
@@ -98,8 +105,8 @@ inspect: ## Build the capstone learner-facing inspection bundle
 		'Inspection route:' \
 		'  1. Read summary.txt for the current policy and open incident state.' \
 		'  2. Read rules.txt for rule lifecycle state.' \
-		'  3. Read history.txt, timeline.txt, and retirement.txt for incident history, ordered flow, and full lifecycle review.' \
-		'  4. Read DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, INSPECTION_GUIDE.md, PACKAGE_GUIDE.md, and TARGET_GUIDE.md to connect the outputs to the code.' \
+		'  3. Read history.txt, timeline.txt, retirement.txt, and rate_of_change.txt for shipped scenario variants and their outputs.' \
+		'  4. Read DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, RATE_OF_CHANGE_SCENARIO_GUIDE.md, INSPECTION_GUIDE.md, PACKAGE_GUIDE.md, and TARGET_GUIDE.md to connect the outputs to the code.' \
 		> $(INSPECT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
 	@echo "wrote learner-facing inspection bundle to $(INSPECT_DIR)"
@@ -113,20 +120,22 @@ verify-report: ## Build the capstone verification report bundle
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(VERIFY_REPORT_DIR)/history.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli timeline > $(VERIFY_REPORT_DIR)/timeline.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli retirement > $(VERIFY_REPORT_DIR)/retirement.txt
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rate-of-change > $(VERIFY_REPORT_DIR)/rate_of_change.txt
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
 	@cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
 	@cp TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
 	@cp EVENT_FLOW_GUIDE.md $(VERIFY_REPORT_DIR)/EVENT_FLOW_GUIDE.md
 	@cp BUNDLE_GUIDE.md $(VERIFY_REPORT_DIR)/BUNDLE_GUIDE.md
 	@cp RETIREMENT_SCENARIO_GUIDE.md $(VERIFY_REPORT_DIR)/RETIREMENT_SCENARIO_GUIDE.md
+	@cp RATE_OF_CHANGE_SCENARIO_GUIDE.md $(VERIFY_REPORT_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md
 	@cp WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
 	@cp INSPECTION_GUIDE.md $(VERIFY_REPORT_DIR)/INSPECTION_GUIDE.md
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable confirmation.' \
-		'  2. Read summary.txt, history.txt, timeline.txt, and retirement.txt for the learner-facing state and scenario variants captured alongside the tests.' \
+		'  2. Read summary.txt, history.txt, timeline.txt, retirement.txt, and rate_of_change.txt for the learner-facing state and scenario variants captured alongside the tests.' \
 		'  3. Read PROOF_GUIDE.md and EVENT_FLOW_GUIDE.md for claim-to-evidence and event-to-artifact routing.' \
-		'  4. Read TEST_GUIDE.md, WALKTHROUGH_GUIDE.md, INSPECTION_GUIDE.md, and RETIREMENT_SCENARIO_GUIDE.md for the matching human review path.' \
+		'  4. Read TEST_GUIDE.md, WALKTHROUGH_GUIDE.md, INSPECTION_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, and RATE_OF_CHANGE_SCENARIO_GUIDE.md for the matching human review path.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "wrote capstone verification report to $(VERIFY_REPORT_DIR)"

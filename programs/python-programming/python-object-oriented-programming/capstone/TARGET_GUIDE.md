@@ -33,6 +33,7 @@ command for the question you actually have.
 | `inspect` | build the learner-facing inspection bundle |
 | `inspect-timeline` | print the ordered scenario flow directly in the terminal |
 | `inspect-retirement` | print the retirement scenario before-and-after state |
+| `inspect-rate-of-change` | print the alternate evaluation-mode scenario |
 | `tour` | build the learner-facing walkthrough bundle |
 | `verify-report` | build the executable verification report bundle |
 | `proof` | run the full course-sanctioned evidence route |
@@ -86,6 +87,14 @@ Use:
 * `make inspect-retirement`
 * `RETIREMENT_SCENARIO_GUIDE.md`
 * `RULE_LIFECYCLE_GUIDE.md`
+
+### If the question is "what proves the policy seam is real?"
+
+Use:
+
+* `make inspect-rate-of-change`
+* `RATE_OF_CHANGE_SCENARIO_GUIDE.md`
+* `TEST_GUIDE.md`
 
 ### If the question is "what saved bundle proves the behavior?"
 

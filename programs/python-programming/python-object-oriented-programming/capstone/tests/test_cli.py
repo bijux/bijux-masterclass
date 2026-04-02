@@ -59,3 +59,14 @@ def test_retirement_command_reports_before_and_after_state(capsys) -> None:
     assert "retired_rules=disk-hot" in output
     assert "open_incidents=[]" in output
     assert "retirement_reason=replaced by storage saturation policy" in output
+
+
+def test_rate_of_change_command_reports_the_alternate_mode(capsys) -> None:
+    assert main(["rate-of-change"]) == 0
+
+    output = capsys.readouterr().out
+    assert "policy_id: service-monitoring-rate-of-change" in output
+    assert "rule_mode: rate_of_change" in output
+    assert "alerts_published: 1" in output
+    assert "open_incidents: ['latency-spike']" in output
+    assert "observed_value=0.26" in output
