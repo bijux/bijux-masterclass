@@ -62,7 +62,7 @@ Modules 07 to 09 explain the higher-power runtime hooks:
 
 ### Governance and mastery
 
-Module 10 and [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md) convert mechanism knowledge into review policy:
+Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/mastery-review.md) convert mechanism knowledge into review policy:
 
 - dynamic power gets red lines
 - debugging cost becomes part of the design argument

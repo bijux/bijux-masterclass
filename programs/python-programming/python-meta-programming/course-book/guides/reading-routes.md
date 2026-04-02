@@ -32,9 +32,9 @@ keeps the power ladder visible and avoids turning later modules into a blur.
 Use this when metaprogramming is still more vocabulary than mechanism.
 
 1. Read [Module 00](../module-00-orientation/index.md) for the runtime ladder and study model.
-2. Read [Module 01](../module-01-runtime-object-model/index.md) through [Module 03](../module-03-inspect-signatures-and-provenance/index.md) in order.
+2. Read [Module 01](../module-01-runtime-objects-object-model/index.md) through [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) in order.
 3. Stop and use [Practice Map](practice-map.md) after Module 03 before you continue into wrappers.
-4. Read [Module 04](../module-04-function-wrappers-and-decorators/index.md) through [Module 06](../module-06-class-customization-before-metaclasses/index.md).
+4. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) through [Module 06](../module-06-class-customization-pre-metaclasses/index.md).
 5. Enter [Capstone Map](capstone-map.md) only after you can explain the lower-power alternative for each mechanism.
 
 ## Route 2: Review Hotspots
@@ -43,18 +43,18 @@ Use this when you already review Python frameworks and need the shortest honest 
 the common trouble spots.
 
 1. Read [Runtime Power Ladder](../reference/runtime-power-ladder.md).
-2. Read [Module 04](../module-04-function-wrappers-and-decorators/index.md) for wrapper honesty.
-3. Read [Module 07](../module-07-descriptor-mechanics-and-lookup/index.md) for lookup ownership.
-4. Read [Module 09](../module-09-metaclass-design-and-class-creation/index.md) for class-creation boundaries.
-5. Finish with [Module 10](../module-10-runtime-governance-and-mastery/index.md) and [Review Checklist](../reference/review-checklist.md).
+2. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) for wrapper honesty.
+3. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) for lookup ownership.
+4. Read [Module 09](../module-09-metaclass-design-class-creation/index.md) for class-creation boundaries.
+5. Finish with [Module 10](../module-10-runtime-governance-mastery-review/index.md) and [Review Checklist](../reference/review-checklist.md).
 
 ## Route 3: Attribute and Validation Systems
 
 Use this when the real question is field ownership, lookup order, or validation design.
 
-1. Read [Module 06](../module-06-class-customization-before-metaclasses/index.md).
-2. Read [Module 07](../module-07-descriptor-mechanics-and-lookup/index.md).
-3. Read [Module 08](../module-08-descriptor-systems-and-validation/index.md).
+1. Read [Module 06](../module-06-class-customization-pre-metaclasses/index.md).
+2. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md).
+3. Read [Module 08](../module-08-descriptor-systems-validation-framework-design/index.md).
 4. Use [Capstone Map](capstone-map.md) to inspect the descriptor-backed field surfaces.
 
 ## Route 4: Class Creation and Governance
@@ -62,8 +62,8 @@ Use this when the real question is field ownership, lookup order, or validation 
 Use this when the design question is whether a metaclass, registry, or import-time hook is
 actually justified.
 
-1. Read [Module 09](../module-09-metaclass-design-and-class-creation/index.md).
-2. Read [Module 10](../module-10-runtime-governance-and-mastery/index.md).
+1. Read [Module 09](../module-09-metaclass-design-class-creation/index.md).
+2. Read [Module 10](../module-10-runtime-governance-mastery-review/index.md).
 3. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Review Checklist](../reference/review-checklist.md) open while reading.
 4. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to force a lower-power alternative check.
 

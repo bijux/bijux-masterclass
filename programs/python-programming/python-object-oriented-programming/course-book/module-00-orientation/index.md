@@ -95,7 +95,7 @@ and verify the runtime behavior of the examples rather than relying on intuition
 - Read the full [Course Map](course-map.md).
 - Read [Module Promise Map](../guides/module-promise-map.md) to understand the ten-module contract.
 - Read [Module Checkpoints](../guides/module-checkpoints.md) so the exit bar stays visible from the beginning.
-- Then continue into [Module 01](../module-01-object-model/index.md).
+- Then continue into [Module 01](../module-01-object-semantics-data-model/index.md).
 
 ## Capstone roadmap
 

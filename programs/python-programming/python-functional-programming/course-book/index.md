@@ -73,16 +73,16 @@ By the end of the course, you should be able to:
 | Module | Title | Why it matters |
 | --- | --- | --- |
 | [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the reading route, proof surfaces, and capstone timing |
-| [Module 01](module-01-purity-and-substitution/index.md) | Purity, Substitution, and Local Reasoning | creates the semantic floor for explicit state and effect design |
-| [Module 02](module-02-data-first-apis-and-expression-style/index.md) | Data-First APIs and Expression Style | turns pure helpers into configurable, data-driven pipeline pieces |
-| [Module 03](module-03-iterators-and-lazy-dataflow/index.md) | Iterators, Laziness, and Streaming Dataflow | builds lazy pipelines that materialize deliberately |
-| [Module 04](module-04-resilience-and-streaming-failures/index.md) | Streaming Resilience and Failure Handling | makes retries, folds, cleanup, and typed failures explicit |
-| [Module 05](module-05-algebraic-data-modelling/index.md) | Algebraic Data Modelling and Validation | encodes domain states and validation as explicit value shapes |
-| [Module 06](module-06-monadic-flow-and-explicit-context/index.md) | Monadic Flow and Explicit Context | composes dependent work without hiding context or failure |
-| [Module 07](module-07-effect-boundaries-and-resource-safety/index.md) | Effect Boundaries and Resource Safety | moves I/O, adapters, and resource lifecycles behind contracts |
-| [Module 08](module-08-async-funcpipe-and-backpressure/index.md) | Async Pipelines, Backpressure, and Fairness | adds bounded async coordination and deterministic async proof |
-| [Module 09](module-09-ecosystem-interop/index.md) | Ecosystem Interop and Boundary Discipline | works with frameworks and libraries without losing the core design |
-| [Module 10](module-10-refactoring-and-sustainment/index.md) | Refactoring, Performance, and Sustainment | keeps the system governable under growth, review, and change |
+| [Module 01](module-01-purity-substitution-local-reasoning/index.md) | Purity, Substitution, and Local Reasoning | creates the semantic floor for explicit state and effect design |
+| [Module 02](module-02-data-first-apis-expression-style/index.md) | Data-First APIs and Expression Style | turns pure helpers into configurable, data-driven pipeline pieces |
+| [Module 03](module-03-iterators-laziness-streaming-dataflow/index.md) | Iterators, Laziness, and Streaming Dataflow | builds lazy pipelines that materialize deliberately |
+| [Module 04](module-04-streaming-resilience-failure-handling/index.md) | Streaming Resilience and Failure Handling | makes retries, folds, cleanup, and typed failures explicit |
+| [Module 05](module-05-algebraic-data-modelling-validation/index.md) | Algebraic Data Modelling and Validation | encodes domain states and validation as explicit value shapes |
+| [Module 06](module-06-monadic-flow-explicit-context/index.md) | Monadic Flow and Explicit Context | composes dependent work without hiding context or failure |
+| [Module 07](module-07-effect-boundaries-resource-safety/index.md) | Effect Boundaries and Resource Safety | moves I/O, adapters, and resource lifecycles behind contracts |
+| [Module 08](module-08-async-pipelines-backpressure-fairness/index.md) | Async Pipelines, Backpressure, and Fairness | adds bounded async coordination and deterministic async proof |
+| [Module 09](module-09-ecosystem-interop-boundary-discipline/index.md) | Ecosystem Interop and Boundary Discipline | works with frameworks and libraries without losing the core design |
+| [Module 10](module-10-refactoring-performance-sustainment/index.md) | Refactoring, Performance, and Sustainment | keeps the system governable under growth, review, and change |
 
 ## How the capstone fits
 

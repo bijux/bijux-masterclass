@@ -48,7 +48,7 @@ You are ready for the course if most of these already feel routine:
 - using `dataclass` for a simple value type without guessing what it generates
 - describing why shared mutable state can create non-local bugs
 
-If those still feel shaky, slow down and treat [Orientation](../module-00-orientation/index.md) plus [Module 01](../module-01-object-model/index.md) as a deliberate on-ramp instead of trying to browse the whole course.
+If those still feel shaky, slow down and treat [Orientation](../module-00-orientation/index.md) plus [Module 01](../module-01-object-semantics-data-model/index.md) as a deliberate on-ramp instead of trying to browse the whole course.
 
 ## Best Reading Route
 

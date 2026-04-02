@@ -59,13 +59,13 @@ nav:
       - "Capstone Review Worksheet": guides/capstone-review-worksheet.md
       - "Release Audit Checklist": guides/release-audit-checklist.md
       - "Capstone Extension Guide": guides/capstone-extension-guide.md
-  - "Module 01: Why Reproducibility Fails": module-01-why-reproducibility-fails/index.md
-  - "Module 02: Data Identity and Content Addressing": module-02-data-identity-and-content-addressing/index.md
-  - "Module 03: Execution Environments as Inputs": module-03-execution-environments-as-inputs/index.md
-  - "Module 04: Pipelines as Truthful DAGs": module-04-pipelines-as-truthful-dags/index.md
-  - "Module 05: Metrics, Parameters, and Meaning": module-05-metrics-parameters-and-meaning/index.md
-  - "Module 06: Experiments Without Chaos": module-06-experiments-without-chaos/index.md
-  - "Module 07: Collaboration, CI, and Social Contracts": module-07-collaboration-ci-and-social-contracts/index.md
-  - "Module 08: Production, Scale, and Incident Survival": module-08-production-scale-and-incident-survival/index.md
-  - "Module 09: Promotion, Registry Boundaries, Release Contracts, and Auditability": module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md
-  - "Module 10: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries": module-10-migration-governance-anti-patterns-and-dvc-tool-boundaries/index.md
+  - "Module 01: Why Reproducibility Fails": module-01-reproducibility-failures-real-teams/index.md
+  - "Module 02: Data Identity and Content Addressing": module-02-data-identity-content-addressing/index.md
+  - "Module 03: Execution Environments as Inputs": module-03-execution-environments-reproducible-inputs/index.md
+  - "Module 04: Pipelines as Truthful DAGs": module-04-truthful-pipelines-declared-dependencies/index.md
+  - "Module 05: Metrics, Parameters, and Meaning": module-05-metrics-parameters-comparable-meaning/index.md
+  - "Module 06: Experiments Without Chaos": module-06-experiments-baselines-controlled-change/index.md
+  - "Module 07: Collaboration, CI, and Social Contracts": module-07-collaboration-ci-social-contracts/index.md
+  - "Module 08: Production, Scale, and Incident Survival": module-08-recovery-scale-incident-survival/index.md
+  - "Module 09: Promotion, Registry Boundaries, Release Contracts, and Auditability": module-09-promotion-registry-boundaries-auditability/index.md
+  - "Module 10: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries": module-10-migration-governance-dvc-boundaries/index.md

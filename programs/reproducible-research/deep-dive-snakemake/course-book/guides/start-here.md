@@ -58,25 +58,25 @@ Use this page to choose the right route before reading modules at random.
 ### First contact
 
 1. Read [Module 00](../module-00-orientation/index.md).
-2. Read [Module 01](../module-01-file-contracts-and-the-workflow-dag/index.md).
-3. Read [Module 02](../module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md).
+2. Read [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md).
+3. Read [Module 02](../module-02-dynamic-dags-discovery-integrity/index.md).
 4. Use [Module Checkpoints](module-checkpoints.md) before moving on.
 
 ### Repair an existing workflow
 
 1. Read [Pressure Routes](pressure-routes.md).
 2. Skim [Module 00](../module-00-orientation/index.md).
-3. Read [Module 03](../module-03-production-operations-and-policy-boundaries/index.md).
-4. Read [Module 04](../module-04-scaling-workflows-and-interface-boundaries/index.md).
-5. Read [Module 08](../module-08-operating-contexts-and-execution-policy/index.md).
+3. Read [Module 03](../module-03-production-operations-policy-boundaries/index.md).
+4. Read [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md).
+5. Read [Module 08](../module-08-operating-contexts-execution-policy/index.md).
 6. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](capstone-map.md) to inspect the reference workflow selectively.
 
 ### Workflow stewardship
 
-1. Read [Module 06](../module-06-publishing-and-downstream-contracts/index.md).
-2. Read [Module 07](../module-07-workflow-architecture-and-file-apis/index.md).
-3. Read [Module 09](../module-09-observability-performance-and-incident-response/index.md).
-4. Read [Module 10](../module-10-governance-migration-and-tool-boundaries/index.md).
+1. Read [Module 06](../module-06-publishing-downstream-contracts/index.md).
+2. Read [Module 07](../module-07-workflow-architecture-file-apis/index.md).
+3. Read [Module 09](../module-09-performance-observability-incident-response/index.md).
+4. Read [Module 10](../module-10-governance-migration-tool-boundaries/index.md).
 5. Finish with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Capstone Extension Guide](capstone-extension-guide.md).
 
 ## Success Signal

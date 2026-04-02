@@ -111,16 +111,16 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 | Module | Title | Why it matters |
 | --- | --- | --- |
 | [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the reading contract, proof routes, and capstone timing |
-| [Module 01](module-01-object-model/index.md) | Object Semantics and the Python Data Model | defines identity, equality, copying, and object contracts |
-| [Module 02](module-02-design-and-layering/index.md) | Design Roles, Interfaces, and Layering | assigns responsibilities across values, services, adapters, and layers |
-| [Module 03](module-03-state-and-typestate/index.md) | State, Validation, and Typestate | makes lifecycle rules and illegal states explicit |
-| [Module 04](module-04-aggregates-and-collaboration/index.md) | Aggregates, Events, and Collaboration Boundaries | coordinates multiple objects without losing invariant ownership |
-| [Module 05](module-05-resources-and-evolution/index.md) | Resources, Failures, and Safe Evolution | handles cleanup, recovery, and compatibility under change |
-| [Module 06](module-06-persistence-and-schema-evolution/index.md) | Persistence, Serialization, and Schema Evolution | keeps storage and rehydration from flattening the domain |
-| [Module 07](module-07-time-and-concurrency/index.md) | Time, Scheduling, and Concurrency Boundaries | makes time pressure and concurrency explicit in the model |
-| [Module 08](module-08-testing-and-verification/index.md) | Testing, Contracts, and Verification Depth | turns verification into a design discipline, not an afterthought |
-| [Module 09](module-09-public-apis-and-extension-governance/index.md) | Public APIs, Extension Seams, and Governance | publishes stable surfaces without losing review control |
-| [Module 10](module-10-performance-observability-and-security/index.md) | Performance, Observability, and Security Review | closes with operational hardening and full capstone review |
+| [Module 01](module-01-object-semantics-data-model/index.md) | Object Semantics and the Python Data Model | defines identity, equality, copying, and object contracts |
+| [Module 02](module-02-design-roles-interfaces-layering/index.md) | Design Roles, Interfaces, and Layering | assigns responsibilities across values, services, adapters, and layers |
+| [Module 03](module-03-state-validation-typestate/index.md) | State, Validation, and Typestate | makes lifecycle rules and illegal states explicit |
+| [Module 04](module-04-aggregates-events-collaboration-boundaries/index.md) | Aggregates, Events, and Collaboration Boundaries | coordinates multiple objects without losing invariant ownership |
+| [Module 05](module-05-resources-failures-safe-evolution/index.md) | Resources, Failures, and Safe Evolution | handles cleanup, recovery, and compatibility under change |
+| [Module 06](module-06-persistence-serialization-schema-evolution/index.md) | Persistence, Serialization, and Schema Evolution | keeps storage and rehydration from flattening the domain |
+| [Module 07](module-07-time-scheduling-concurrency-boundaries/index.md) | Time, Scheduling, and Concurrency Boundaries | makes time pressure and concurrency explicit in the model |
+| [Module 08](module-08-testing-contracts-verification-depth/index.md) | Testing, Contracts, and Verification Depth | turns verification into a design discipline, not an afterthought |
+| [Module 09](module-09-public-apis-extension-governance/index.md) | Public APIs, Extension Seams, and Governance | publishes stable surfaces without losing review control |
+| [Module 10](module-10-performance-observability-security-review/index.md) | Performance, Observability, and Security Review | closes with operational hardening and full capstone review |
 
 ## Working model
 

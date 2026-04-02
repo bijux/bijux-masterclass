@@ -61,22 +61,22 @@ nav:
       - Capstone Review Worksheet: guides/capstone-review-worksheet.md
       - Capstone Extension Guide: guides/capstone-extension-guide.md
   - "Module 01: First Principles and the File-DAG Contract":
-      - Overview: module-01-file-contracts-and-the-workflow-dag/index.md
+      - Overview: module-01-file-contracts-workflow-graph-truth/index.md
   - "Module 02: Dynamic DAGs, Integrity, and Deterministic Discovery":
-      - Overview: module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md
+      - Overview: module-02-dynamic-dags-discovery-integrity/index.md
   - "Module 03: Production Operations and Policy Boundaries":
-      - Overview: module-03-production-operations-and-policy-boundaries/index.md
+      - Overview: module-03-production-operations-policy-boundaries/index.md
   - "Module 04: Scaling Workflows and Interface Boundaries":
-      - Overview: module-04-scaling-workflows-and-interface-boundaries/index.md
+      - Overview: module-04-scaling-workflows-interface-boundaries/index.md
   - "Module 05: Software Boundaries and Reproducible Rules":
-      - Overview: module-05-software-boundaries-and-reproducible-rules/index.md
+      - Overview: module-05-software-boundaries-reproducible-rules/index.md
   - "Module 06: Publishing and Downstream Contracts":
-      - Overview: module-06-publishing-and-downstream-contracts/index.md
+      - Overview: module-06-publishing-downstream-contracts/index.md
   - "Module 07: Workflow Architecture and File APIs":
-      - Overview: module-07-workflow-architecture-and-file-apis/index.md
+      - Overview: module-07-workflow-architecture-file-apis/index.md
   - "Module 08: Operating Contexts and Execution Policy":
-      - Overview: module-08-operating-contexts-and-execution-policy/index.md
+      - Overview: module-08-operating-contexts-execution-policy/index.md
   - "Module 09: Observability, Performance, and Incident Response":
-      - Overview: module-09-observability-performance-and-incident-response/index.md
+      - Overview: module-09-performance-observability-incident-response/index.md
   - "Module 10: Governance, Migration, and Tool Boundaries":
-      - Overview: module-10-governance-migration-and-tool-boundaries/index.md
+      - Overview: module-10-governance-migration-tool-boundaries/index.md

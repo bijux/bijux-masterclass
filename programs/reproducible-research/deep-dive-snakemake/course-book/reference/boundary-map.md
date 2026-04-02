@@ -79,8 +79,8 @@ to settle a trust question.
 Use these pages with this map:
 
 * [`workflow-glossary.md`](workflow-glossary.md)
-* [`module-03-production-operations-and-policy-boundaries/index.md`](../module-03-production-operations-and-policy-boundaries/index.md)
-* [`module-06-publishing-and-downstream-contracts/index.md`](../module-06-publishing-and-downstream-contracts/index.md)
+* [`module-03-production-operations-policy-boundaries/index.md`](../module-03-production-operations-policy-boundaries/index.md)
+* [`module-06-publishing-downstream-contracts/index.md`](../module-06-publishing-downstream-contracts/index.md)
 * [`capstone-map.md`](../guides/capstone-map.md)
 
 [Back to top](#top)

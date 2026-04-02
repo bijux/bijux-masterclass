@@ -81,16 +81,16 @@ administrative instead of necessary.
 | Module | Title | Why it matters |
 | --- | --- | --- |
 | [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof surfaces, and capstone timing |
-| [Module 01](module-01-why-reproducibility-fails/index.md) | Reproducibility Failures in Real Teams | names the failure modes before teaching tools |
-| [Module 02](module-02-data-identity-and-content-addressing/index.md) | Data Identity and Content Addressing | separates stable paths from stable bytes and stable meaning |
-| [Module 03](module-03-execution-environments-as-inputs/index.md) | Execution Environments as Reproducible Inputs | treats environment assumptions as part of the contract |
-| [Module 04](module-04-pipelines-as-truthful-dags/index.md) | Truthful Pipelines and Declared Dependencies | makes workflow edges visible enough to trust reruns |
-| [Module 05](module-05-metrics-parameters-and-meaning/index.md) | Metrics, Parameters, and Comparable Meaning | keeps comparisons honest as experiments evolve |
-| [Module 06](module-06-experiments-without-chaos/index.md) | Experiments, Baselines, and Controlled Change | organizes experimentation without mutating the truth surface |
-| [Module 07](module-07-collaboration-ci-and-social-contracts/index.md) | Collaboration, CI, and Social Contracts | makes team pressure and automation part of the state model |
-| [Module 08](module-08-production-scale-and-incident-survival/index.md) | Recovery, Scale, and Incident Survival | rehearses failure, recovery, and retained authority under pressure |
-| [Module 09](module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md) | Promotion, Registry Boundaries, and Auditability | treats release and registry state as explicit trust boundaries |
-| [Module 10](module-10-migration-governance-anti-patterns-and-dvc-tool-boundaries/index.md) | Migration, Governance, and DVC Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
+| [Module 01](module-01-reproducibility-failures-real-teams/index.md) | Reproducibility Failures in Real Teams | names the failure modes before teaching tools |
+| [Module 02](module-02-data-identity-content-addressing/index.md) | Data Identity and Content Addressing | separates stable paths from stable bytes and stable meaning |
+| [Module 03](module-03-execution-environments-reproducible-inputs/index.md) | Execution Environments as Reproducible Inputs | treats environment assumptions as part of the contract |
+| [Module 04](module-04-truthful-pipelines-declared-dependencies/index.md) | Truthful Pipelines and Declared Dependencies | makes workflow edges visible enough to trust reruns |
+| [Module 05](module-05-metrics-parameters-comparable-meaning/index.md) | Metrics, Parameters, and Comparable Meaning | keeps comparisons honest as experiments evolve |
+| [Module 06](module-06-experiments-baselines-controlled-change/index.md) | Experiments, Baselines, and Controlled Change | organizes experimentation without mutating the truth surface |
+| [Module 07](module-07-collaboration-ci-social-contracts/index.md) | Collaboration, CI, and Social Contracts | makes team pressure and automation part of the state model |
+| [Module 08](module-08-recovery-scale-incident-survival/index.md) | Recovery, Scale, and Incident Survival | rehearses failure, recovery, and retained authority under pressure |
+| [Module 09](module-09-promotion-registry-boundaries-auditability/index.md) | Promotion, Registry Boundaries, and Auditability | treats release and registry state as explicit trust boundaries |
+| [Module 10](module-10-migration-governance-dvc-boundaries/index.md) | Migration, Governance, and DVC Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
 
 ## Use These Support Pages First
 

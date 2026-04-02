@@ -56,25 +56,25 @@ Use this page to choose the right entry point before you start reading modules a
 ### First contact
 
 1. Read [Module 00](../module-00-orientation/index.md).
-2. Read [Module 01](../module-01-foundations-build-graph-and-truth/index.md).
-3. Read [Module 02](../module-02-parallel-safety-and-project-structure/index.md).
+2. Read [Module 01](../module-01-build-graph-foundations-truth/index.md).
+3. Read [Module 02](../module-02-parallel-safety-project-structure/index.md).
 4. Use [Module Checkpoints](module-checkpoints.md) before moving on.
 
 ### Repair an existing build
 
 1. Read [Pressure Routes](pressure-routes.md).
 2. Skim [Module 00](../module-00-orientation/index.md).
-3. Read [Module 04](../module-04-cli-precedence-includes-and-rule-edge-cases/index.md).
-4. Read [Module 05](../module-05-portability-jobserver-hermeticity-and-failure-modes/index.md).
-5. Read [Module 09](../module-09-performance-observability-and-build-incident-response/index.md).
+3. Read [Module 04](../module-04-rule-semantics-precedence-edge-cases/index.md).
+4. Read [Module 05](../module-05-portability-hermeticity-failure-modes/index.md).
+5. Read [Module 09](../module-09-performance-observability-incident-response/index.md).
 6. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](capstone-map.md) to inspect the reference build selectively.
 
 ### Build-system stewardship
 
-1. Read [Module 03](../module-03-production-practice-determinism-debugging-ci-and-selftests/index.md).
-2. Read [Module 07](../module-07-reusable-build-architecture-and-build-apis/index.md).
-3. Read [Module 08](../module-08-release-engineering-and-artifact-publication-contracts/index.md).
-4. Read [Module 10](../module-10-migration-governance-and-make-boundaries/index.md).
+1. Read [Module 03](../module-03-determinism-debugging-self-testing/index.md).
+2. Read [Module 07](../module-07-build-architecture-layered-includes-apis/index.md).
+3. Read [Module 08](../module-08-release-engineering-artifact-contracts/index.md).
+4. Read [Module 10](../module-10-migration-governance-tool-boundaries/index.md).
 5. Finish with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Capstone Extension Guide](capstone-extension-guide.md).
 
 ## Success Signal

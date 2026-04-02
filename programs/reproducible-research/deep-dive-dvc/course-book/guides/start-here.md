@@ -58,27 +58,27 @@ sequence.
 
 1. Read [Course Guide](course-guide.md).
 2. Read [Module 00](../module-00-orientation/index.md).
-3. Read [Module 01](../module-01-why-reproducibility-fails/index.md).
-4. Read [Module 02](../module-02-data-identity-and-content-addressing/index.md).
+3. Read [Module 01](../module-01-reproducibility-failures-real-teams/index.md).
+4. Read [Module 02](../module-02-data-identity-content-addressing/index.md).
 5. Use [Module Checkpoints](module-checkpoints.md) before moving on.
 
 ### Repair an existing repository
 
 1. Read [Pressure Routes](pressure-routes.md).
 2. Read [Authority Map](../reference/authority-map.md).
-3. Read [Module 01](../module-01-why-reproducibility-fails/index.md).
-4. Read [Module 04](../module-04-pipelines-as-truthful-dags/index.md).
-5. Read [Module 07](../module-07-collaboration-ci-and-social-contracts/index.md).
-6. Read [Module 08](../module-08-production-scale-and-incident-survival/index.md).
+3. Read [Module 01](../module-01-reproducibility-failures-real-teams/index.md).
+4. Read [Module 04](../module-04-truthful-pipelines-declared-dependencies/index.md).
+5. Read [Module 07](../module-07-collaboration-ci-social-contracts/index.md).
+6. Read [Module 08](../module-08-recovery-scale-incident-survival/index.md).
 7. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](capstone-map.md) to inspect the reference repository selectively.
 
 ### Reproducibility stewardship
 
 1. Read [Evidence Boundary Guide](../reference/evidence-boundary-guide.md).
-2. Read [Module 05](../module-05-metrics-parameters-and-meaning/index.md).
-3. Read [Module 08](../module-08-production-scale-and-incident-survival/index.md).
-4. Read [Module 09](../module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md).
-5. Read [Module 10](../module-10-migration-governance-anti-patterns-and-dvc-tool-boundaries/index.md).
+2. Read [Module 05](../module-05-metrics-parameters-comparable-meaning/index.md).
+3. Read [Module 08](../module-08-recovery-scale-incident-survival/index.md).
+4. Read [Module 09](../module-09-promotion-registry-boundaries-auditability/index.md).
+5. Read [Module 10](../module-10-migration-governance-dvc-boundaries/index.md).
 6. Finish with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Release Audit Checklist](release-audit-checklist.md).
 
 ## Success Signal
