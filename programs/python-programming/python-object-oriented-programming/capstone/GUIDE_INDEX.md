@@ -18,6 +18,7 @@ capstone doc set reviewable instead of making learners rescan the README every t
 
 ## If you want the proof route
 
+- `COMMAND_GUIDE.md`
 - `PROOF_GUIDE.md`
 - `TEST_GUIDE.md`
 - `INSPECTION_GUIDE.md`
@@ -42,7 +43,7 @@ capstone doc set reviewable instead of making learners rescan the README every t
 - "Which boundary owns this behavior?" -> `ARCHITECTURE.md`
 - "Which scenario shows this pressure?" -> `SCENARIO_GUIDE.md`
 - "Which guide explains the file route?" -> `SOURCE_GUIDE.md`
-- "Which command or saved bundle should I use?" -> `PROOF_GUIDE.md`
+- "Which command or saved bundle should I use?" -> `COMMAND_GUIDE.md`
 - "Where should a change land?" -> `EXTENSION_GUIDE.md`
 
 ## Best next file after this one

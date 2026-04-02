@@ -78,6 +78,7 @@ make PROGRAM=python-programming/python-object-oriented-programming proof
 Review and proof routes:
 
 - [GUIDE_INDEX.md](GUIDE_INDEX.md)
+- [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md)
@@ -119,6 +120,7 @@ If this is your first honest pass through the capstone, use this order:
 
 ## Review routes
 
+- `COMMAND_GUIDE.md` explains which command or saved bundle best matches the current question.
 - `make inspect` writes a learner-facing inspection bundle with summary, lifecycle, and history outputs.
 - `make inspect-timeline` prints the ordered scenario flow when you need sequence before proofs.
 - `make inspect-retirement` prints the before-and-after retirement scenario when you need full lifecycle cleanup in one route.
