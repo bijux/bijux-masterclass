@@ -24,6 +24,15 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 This guide prevents one common learning failure: opening the capstone but not knowing
 which file owns which responsibility.
 
+## Start by question
+
+| If your question is... | Start with | Then read |
+| --- | --- | --- |
+| what exists before any instance is created | `framework.py` | `test_registry.py` |
+| how one field validates and stores data | `fields.py` | `test_fields.py` |
+| how one wrapped action preserves metadata | `actions.py` | `test_runtime.py` |
+| how the abstractions look in a concrete plugin | `plugins.py` | `test_runtime.py` |
+
 ## Source files
 
 ### `framework.py`
@@ -61,6 +70,12 @@ Proves manifest export, runtime invocation, and action-history recording.
 
 When a mechanism feels too abstract, move from the owning source file to the matching
 test file immediately. The course is strongest when implementation and proof stay adjacent.
+
+## What not to do first
+
+- Do not start in `plugins.py` if the ownership model is still fuzzy.
+- Do not start in tests if you cannot yet name the owning source file.
+- Do not open every file in order when one question only needs one ownership route.
 
 ## Module-to-file route
 
