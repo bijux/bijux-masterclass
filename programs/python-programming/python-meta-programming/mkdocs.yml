@@ -32,6 +32,7 @@ nav:
   - Guides:
       - Pressure Routes: guides/pressure-routes.md
       - Reading Routes: guides/reading-routes.md
+      - Design Question Map: guides/design-question-map.md
       - Module Promise Map: guides/module-promise-map.md
       - Module Checkpoints: guides/module-checkpoints.md
       - Outcomes and Proof Map: guides/outcomes-and-proof-map.md

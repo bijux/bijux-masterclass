@@ -79,6 +79,7 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 
 - [Pressure Routes](pressure-routes.md) when you are entering from a concrete engineering pressure
 - [Reading Routes](reading-routes.md) when you need a lower-density or pressure-shaped sequence
+- [Design Question Map](design-question-map.md) when you can name the engineering question faster than the module
 - [Module Promise Map](module-promise-map.md) when you want the exact contract of each module stated plainly
 - [Module Checkpoints](module-checkpoints.md) when you need a concrete exit bar before moving on
 - [Outcomes and Proof Map](outcomes-and-proof-map.md) when you want course-level promises tied to proof surfaces

@@ -37,6 +37,7 @@ do not have to repeat that scaffolding.
 
 - [Pressure Routes](pressure-routes.md) when you are entering from a real engineering pressure
 - [Reading Routes](reading-routes.md) when you want a paced path through dense modules
+- [Design Question Map](design-question-map.md) when your question is clearer than the mechanism name
 - [Module Promise Map](module-promise-map.md) when you want the promise of each module stated plainly
 - [Module Checkpoints](module-checkpoints.md) when you need to know whether you are ready for the next module
 - [Outcomes and Proof Map](outcomes-and-proof-map.md) when you want learner outcomes tied directly to evidence
