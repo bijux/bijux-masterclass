@@ -151,24 +151,41 @@ tour:
 
 walkthrough:
 >     rm -rf "$(WALKTHROUGH_DIR)"
->     mkdir -p "$(WALKTHROUGH_DIR)/repro" "$(WALKTHROUGH_DIR)/tests"
+>     mkdir -p "$(WALKTHROUGH_DIR)/repro" "$(WALKTHROUGH_DIR)/tests" "$(WALKTHROUGH_DIR)/mk"
 >     cp README.md "$(WALKTHROUGH_DIR)/README.md"
+>     cp PROOF_GUIDE.md "$(WALKTHROUGH_DIR)/PROOF_GUIDE.md"
 >     cp Makefile "$(WALKTHROUGH_DIR)/Makefile"
 >     cp $(TST_DIR)/run.sh "$(WALKTHROUGH_DIR)/tests/run.sh"
+>     cp $(MK_DIR)/contract.mk "$(WALKTHROUGH_DIR)/mk/contract.mk"
+>     cp $(MK_DIR)/common.mk "$(WALKTHROUGH_DIR)/mk/common.mk"
+>     cp $(MK_DIR)/objects.mk "$(WALKTHROUGH_DIR)/mk/objects.mk"
+>     cp $(MK_DIR)/stamps.mk "$(WALKTHROUGH_DIR)/mk/stamps.mk"
 >     cp $(REP_DIR)/01-shared-log.mk "$(WALKTHROUGH_DIR)/repro/01-shared-log.mk"
 >     printf '%s\n' \
 >       '1. Read README.md to understand the capstone contract.' \
->       '2. Read Makefile to identify the public targets.' \
->       '3. Read tests/run.sh to see what selftest is proving.' \
->       '4. Run make help in the capstone directory.' \
->       '5. Run make selftest when you want executed proof.' \
->       '6. Inspect repro/01-shared-log.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
+>       '2. Read PROOF_GUIDE.md to map claims to proof surfaces.' \
+>       '3. Read Makefile to identify the public targets.' \
+>       '4. Read tests/run.sh to see what selftest is proving.' \
+>       '5. Read mk/contract.mk and mk/objects.mk for the boundary and graph model.' \
+>       '6. Run make help in the capstone directory.' \
+>       '7. Run make selftest when you want executed proof.' \
+>       '8. Inspect repro/01-shared-log.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Public entry commands:' \
 >       '  make help' \
 >       '  make selftest' \
 >       '  make repro' \
 >       '  make hardened' > "$(WALKTHROUGH_DIR)/commands.txt"
+>     printf '%s\n' \
+>       'Walkthrough bundle surfaces:' \
+>       '  README.md            repository contract and program fit' \
+>       '  PROOF_GUIDE.md       claim-to-evidence routing' \
+>       '  Makefile             stable public target surface' \
+>       '  tests/run.sh         selftest proof harness' \
+>       '  mk/contract.mk       platform and policy boundaries' \
+>       '  mk/objects.mk        rooted discovery and object modeling' \
+>       '  mk/stamps.mk         build-state evidence surfaces' \
+>       '  repro/01-shared-log.mk first concurrency failure route' > "$(WALKTHROUGH_DIR)/bundle-guide.txt"
 >     @echo "PASS: wrote capstone walkthrough to $(WALKTHROUGH_DIR)"
 
 # ---- CI-style entrypoints ----
