@@ -59,6 +59,7 @@ By the end of the course, you should be able to:
 - Read [Guides](guides/index.md) when you want the guide space itself to stay organized.
 - Read [Start Here](guides/start-here.md) for the shortest stable learner route.
 - Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
+- Use [Return Map](module-00-orientation/return-map.md) when you are coming back after a break and need the right re-entry boundary.
 - Use [Module Promise Map](guides/module-promise-map.md) when you want the promise and evidence route for each module before reading deeply.
 - Use [Module Checkpoints](guides/module-checkpoints.md) when you want a clear bar for finishing a module honestly.
 - Use [Foundations Reading Plan](guides/foundations-reading-plan.md) when you want a paced route through Modules 01 to 03.

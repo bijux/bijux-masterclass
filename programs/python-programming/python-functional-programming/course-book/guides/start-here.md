@@ -50,9 +50,10 @@ effects into explicit contracts.
 7. Read [Learning Contract](learning-contract.md) before you start Module 01.
 8. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
 9. Read [Mid-Course Map](../module-00-orientation/mid-course-map.md) when you are leaving the semantic floor and entering failures, effects, and async pressure.
-10. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
-11. Use [Engineering Question Map](engineering-question-map.md) when your pressure is already concrete.
-12. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+10. Read [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need the smallest honest re-entry route.
+11. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
+12. Use [Engineering Question Map](engineering-question-map.md) when your pressure is already concrete.
+13. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
 
 ## Use The Arcs Deliberately
 
@@ -72,6 +73,7 @@ is easier to review than the alternatives.
 - [Course Home](../index.md)
 - [First-Contact Map](../module-00-orientation/first-contact-map.md)
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md)
+- [Return Map](../module-00-orientation/return-map.md)
 - [Mastery Map](../module-00-orientation/mastery-map.md)
 - [Course Guide](course-guide.md)
 - [Foundations Reading Plan](foundations-reading-plan.md)
