@@ -22,6 +22,7 @@ nav:
       - Orientation: module-00.md
       - Capstone Guide: capstone.md
   - Course Reference:
+      - Command Guide: command-guide.md
       - Runtime Power Ladder: runtime-power-ladder.md
       - Module Dependency Map: module-dependency-map.md
       - Practice Map: practice-map.md

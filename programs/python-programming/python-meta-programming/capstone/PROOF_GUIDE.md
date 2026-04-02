@@ -41,15 +41,23 @@ export, and runtime invocation behavior.
 
 ## Public-surface proof
 
-After the CLI lands, run:
+Run the public proof surface:
 
 ```bash
-python -m incident_plugins.cli manifest --group delivery
-python -m incident_plugins.cli invoke delivery console deliver --config prefix='[ops]' --arg title='CPU high' --arg severity='warning' --arg summary='node-1 crossed 90%'
+make proof
 ```
 
-These commands prove that the runtime shape and invocation path are inspectable without
-opening private internals first.
+Or run the CLI pieces individually:
+
+```bash
+make manifest
+make registry
+make demo
+make trace
+```
+
+These commands prove that the runtime shape and invocation path are inspectable from the
+public surface without opening private internals first.
 
 ## Review questions
 
