@@ -17,6 +17,7 @@ Start with these pages in order:
 2. [`module-00.md`](module-00.md)
 3. [`learning-contract.md`](learning-contract.md)
 4. [`module-dependency-map.md`](module-dependency-map.md)
+5. [`platform-setup.md`](platform-setup.md) if you plan to run local proof commands
 
 Then begin Module 01.
 
@@ -29,7 +30,10 @@ Then begin Module 01.
 Use these pages when you already know the course but need a fast answer:
 
 * [`state-glossary.md`](state-glossary.md) for shared vocabulary
+* [`authority-map.md`](authority-map.md) for which layer settles a trust question
 * [`practice-map.md`](practice-map.md) for the right proof route
+* [`command-guide.md`](command-guide.md) for command boundaries
+* [`proof-matrix.md`](proof-matrix.md) for claims-to-evidence routing
 * [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
 * [`capstone-map.md`](capstone-map.md) for module-to-repository routing
 
@@ -45,6 +49,8 @@ repository:
 * [`readme-capstone.md`](readme-capstone.md) for the repository contract
 * [`capstone-map.md`](capstone-map.md) for the module route
 * [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
+* [`capstone-review-worksheet.md`](capstone-review-worksheet.md) for repository review
+* [`capstone-extension-guide.md`](capstone-extension-guide.md) for safe evolution
 
 Then use the capstone commands that match your question.
 
@@ -59,17 +65,42 @@ Use these pages when you care about maintainability, assessment, or stewardship:
 * [`module-dependency-map.md`](module-dependency-map.md)
 * [`learning-contract.md`](learning-contract.md)
 * [`practice-map.md`](practice-map.md)
+* [`completion-rubric.md`](completion-rubric.md)
+* [`proof-matrix.md`](proof-matrix.md)
 * [`readme-capstone.md`](readme-capstone.md)
 
 [Back to top](#top)
 
 ---
 
-## Best Three Entry Commands
+## If You Have A Specific Proof Question
+
+Use these pages when you already know the question and want the fastest route:
+
+* "Which state is authoritative?" -> [`authority-map.md`](authority-map.md)
+* "Which command should I run?" -> [`command-guide.md`](command-guide.md)
+* "Which file proves the claim?" -> [`proof-matrix.md`](proof-matrix.md)
+* "Which module should send me into the capstone?" -> [`capstone-map.md`](capstone-map.md)
+* "What should I inspect in the repository?" -> [`capstone-file-guide.md`](capstone-file-guide.md)
+
+[Back to top](#top)
+
+---
+
+## Best Entry Commands
+
+If you are learning:
 
 ```sh
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-dvc test
+```
+
+If you are reviewing:
+
+```sh
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
+make -C capstone confirm
 make -C capstone help
 ```
 
