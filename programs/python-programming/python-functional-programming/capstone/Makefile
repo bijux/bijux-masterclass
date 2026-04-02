@@ -139,6 +139,10 @@ history-refresh: ## Build local module tags and generated worktrees under _histo
 
 history-clean: ## Remove generated module history worktrees and metadata
 	@rm -rf "$(HISTORY_DIR)"; \
+	for tag in "$$(git tag --list 'python-functional-programming-module-*')"; do \
+		git tag -d "$$tag" >/dev/null; \
+	done; \
+	git update-ref -d refs/heads/python-functional-programming-history 2>/dev/null || true; \
 	git worktree prune
 
 # Concatenate all core markdowns per module into all-cores/

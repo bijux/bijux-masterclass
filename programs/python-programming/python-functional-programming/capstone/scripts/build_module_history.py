@@ -152,7 +152,7 @@ def write_metadata(out_dir: Path, modules: list[ModuleSource], commits: dict[str
     )
     route_lines = [
         "Generated module history route:",
-        "  1. Run make history-refresh from the capstone or program directory.",
+        "  1. Run make PROGRAM=python-programming/python-functional-programming history-refresh from the repository root, or make history-refresh from the course or capstone directory.",
         "  2. Open _history/worktrees/module-XX for the module you want to compare.",
         "  3. Use the matching python-functional-programming-module-XX tag when you want the exact ref name.",
         "  4. Re-run make history-refresh after updating a module reference state or the live capstone endpoint.",
