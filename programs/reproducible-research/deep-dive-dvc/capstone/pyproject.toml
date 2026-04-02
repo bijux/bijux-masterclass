@@ -14,6 +14,9 @@ authors = [
 ]
 dependencies = []
 
+[project.scripts]
+incident-escalation-inspect = "incident_escalation_capstone.inspect:main"
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 
