@@ -32,6 +32,7 @@ nav:
       - "State Glossary": state-glossary.md
       - "Practice Map": practice-map.md
       - "Command Guide": command-guide.md
+      - "Proof Matrix": proof-matrix.md
   - Capstone Route:
       - "Capstone Guide": readme-capstone.md
       - "Capstone Map": capstone-map.md
