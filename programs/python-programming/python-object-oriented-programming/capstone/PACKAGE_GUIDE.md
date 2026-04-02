@@ -88,3 +88,6 @@ coordination third, and proof surfaces last.
 
 Read [CHANGE_RECIPES.md](CHANGE_RECIPES.md) when you want those file choices turned into
 concrete local edit sequences.
+
+Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when you want the next layer down: the exact
+file-and-class route inside those package choices.

@@ -29,9 +29,10 @@ learners who need a deliberate route from scenario story to ownership and proof.
 1. Run `make demo`.
 2. Read `TOUR.md`.
 3. Read `PACKAGE_GUIDE.md`.
-4. Run `make inspect-summary` and `make inspect-history`.
-5. Read `TEST_GUIDE.md`.
-6. Read `PROOF_GUIDE.md`.
+4. Read `SOURCE_GUIDE.md` if you want the exact code route behind the story.
+5. Run `make inspect-summary` and `make inspect-history`.
+6. Read `TEST_GUIDE.md`.
+7. Read `PROOF_GUIDE.md`.
 
 That route keeps story first, package ownership second, inspection third, and proof last.
 
