@@ -102,8 +102,10 @@ Primary reading route:
 
 ## Course shape
 
-- `course-book/` contains the published learning material.
-- `course-book/guides/` contains the durable learner and capstone guides.
+- `course-book/guides/` contains the durable learner routes, reading contracts, checkpoints, and proof maps.
+- `course-book/capstone/` contains the repository entry pages, architecture routes, file guides, and review worksheets.
+- `course-book/reference/` contains durable maps, glossary pages, and review standards.
+- `course-book/module-00-orientation/` plus Modules `01` to `10` contain the core teaching arc.
 - `capstone/` contains the runnable FuncPipe RAG implementation, tests, and helper tooling.
 - `capstone/module-reference-states/` contains the tracked end-of-module snapshot sources for Modules 01 to 09.
 - `capstone/_history/` is generated locally from module tags, verified worktrees, and per-module manifests, and is meant for study-time comparison, not as the tracked source of truth.
