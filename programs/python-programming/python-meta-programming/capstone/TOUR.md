@@ -34,6 +34,9 @@ Read `PluginMeta`, then `PluginBase.manifest()`, then `build_manifest()`. This i
 best place to understand what happens at class-definition time and what stays visible
 from the public surface.
 
+Keep [DEFINITION_TIME_GUIDE.md](DEFINITION_TIME_GUIDE.md) nearby if the class-definition
+timeline is still harder to hold than the file names.
+
 ## Stop 2: `fields.py`
 
 Read `Field`, then one concrete specialization such as `StringField`. This is where the

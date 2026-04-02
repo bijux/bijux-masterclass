@@ -65,6 +65,7 @@ make proof
 
 - `PLUGIN_RUNTIME_GUIDE.md` for the vocabulary and timing model
 - `SCENARIO_GUIDE.md` for the shipped demo and trace contracts
+- `DEFINITION_TIME_GUIDE.md` for the class-definition sequence before runtime invocation
 - `ARCHITECTURE.md` for ownership boundaries
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route

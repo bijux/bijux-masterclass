@@ -57,6 +57,9 @@ discipline third, concrete plugin behavior fourth, and proof surfaces last.
 - Open `plugins.py` when you need the concrete behavior that keeps the framework honest.
 - Open `cli.py` when you need to inspect the public surface without importing private internals yourself.
 
+Read [DEFINITION_TIME_GUIDE.md](DEFINITION_TIME_GUIDE.md) when the metaclass and descriptor
+order needs a sequence view before the file-by-file route.
+
 ## What this guide prevents
 
 - starting in concrete plugins and mistaking them for the framework contract
