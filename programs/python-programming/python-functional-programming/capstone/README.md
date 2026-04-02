@@ -98,6 +98,7 @@ History route:
 
 Proof route:
 
+- `FIRST_SESSION_GUIDE.md`
 - `GUIDE_INDEX.md`
 - `COMMAND_GUIDE.md`
 - `PROOF_GUIDE.md`
@@ -108,6 +109,7 @@ Proof route:
 
 ## Recommended review path
 
+- `FIRST_SESSION_GUIDE.md` for the smallest honest first pass through the capstone
 - `GUIDE_INDEX.md` for the smallest route into the capstone doc set
 - `COMMAND_GUIDE.md` for choosing the smallest honest command and artifact route
 - `ARCHITECTURE.md` for the package map
@@ -118,6 +120,7 @@ Proof route:
 
 Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
 effects, or orchestration should live.
+Use `FIRST_SESSION_GUIDE.md` first whenever the capstone itself still feels too large.
 Use `PROOF_GUIDE.md` when you need to choose between fast inspection, saved review output,
 and the strongest confirmation route.
 Use `TOUR.md` when you want the shortest human-readable route through the proof bundle.

@@ -8,6 +8,7 @@ time.
 ## If you are just arriving
 
 - `README.md`
+- `FIRST_SESSION_GUIDE.md`
 - `ARCHITECTURE.md`
 - `WALKTHROUGH_GUIDE.md`
 
@@ -44,4 +45,5 @@ Choose based on the question you have:
 
 ## Best next file after this one
 
-If you do not have a sharper question yet, open `README.md` and then `ARCHITECTURE.md`.
+If you do not have a sharper question yet, open `README.md`, then
+`FIRST_SESSION_GUIDE.md`, then `ARCHITECTURE.md`.
