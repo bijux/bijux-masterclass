@@ -97,6 +97,7 @@ Use it to answer practical questions:
 - Read each module overview before touching its lessons.
 - Work through the lessons in order unless you are deliberately reviewing.
 - After every module, read the matching `refactoring-guide.md` and compare against `_history/worktrees/module-XX`.
+- Treat `module-reference-states/` as the tracked source of truth and `_history/worktrees/` as the generated local comparison surface.
 - Treat refactor, law, and review chapters as checkpoints rather than optional extras.
 
 ## Common failure modes this course is trying to prevent

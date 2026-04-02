@@ -45,6 +45,18 @@ still matches the runnable repository. The stable route is:
 - `capstone/_history/worktrees/module-10` is generated from the live capstone so the final module stays aligned with the current course endpoint
 - `history-clean` removes the generated `_history/` directory, the local module tags, and the generated history branch
 
+## Which surface to use
+
+| Question | Surface to trust first | Why |
+| --- | --- | --- |
+| what is the tracked end-of-module source of truth | `capstone/module-reference-states/` | it is versioned in git and stable across machines |
+| what should I compare against while studying locally | `capstone/_history/worktrees/module-XX/` after `history-refresh` | it is the generated learner-facing comparison surface |
+| what is the Module 10 endpoint | the live capstone plus `capstone/_history/worktrees/module-10/` | Module 10 is anchored to the current repository state |
+| what can I delete and regenerate safely | `capstone/_history/` and the local history tags | those are derived surfaces, not tracked reference content |
+
+The short rule is simple: `module-reference-states/` is the repository's memory,
+`_history/worktrees/` is the learner's local comparison lens.
+
 ## Stable commands
 
 From the repository root:

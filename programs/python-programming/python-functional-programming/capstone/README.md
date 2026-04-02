@@ -90,6 +90,8 @@ History route:
 - `make history-refresh` rebuilds local module tags and `_history/worktrees/module-XX`
 - `_history/route.txt` records the generated module-to-tag map
 - `module-reference-states/` is the tracked source of truth for Modules 01 to 09
+- `_history/worktrees/` is the generated local comparison surface you read after `history-refresh`
+- the live capstone is the Module 10 source of truth, with `_history/worktrees/module-10` generated from it for comparison
 
 Proof route:
 
