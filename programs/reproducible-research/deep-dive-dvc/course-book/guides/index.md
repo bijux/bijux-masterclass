@@ -13,65 +13,70 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Name the exact question you need answered"] --> choose["Choose one guide lane"]
+  choose --> act["Open one page, not the whole shelf"]
+  act --> next_move["Leave with one next page, command, or proof route"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: the guides shelf is for a named pressure, not
+for wandering the whole course-book. Read the second diagram as the guide loop: choose
+one lane, use one page, then leave with one smaller next move.
 
-The guides surface holds the learner routes for Deep Dive DVC. Use these pages when you
-need study order, proof routing, or capstone reading help rather than a single module
-chapter.
+Use this shelf when you need route choice, proof sizing, or capstone entry help rather
+than one module chapter.
 
-## Read These First
+## Choose one lane
 
-- [Start Here](start-here.md) for the shortest honest entry route
-- [Course Guide](course-guide.md) for the full module arc and page roles
+| If you need... | Start here | Then use |
+| --- | --- | --- |
+| the shortest honest entry | [Start Here](start-here.md) | [Course Guide](course-guide.md) |
+| the full support-page map | [Course Guide](course-guide.md) | [Learning Contract](learning-contract.md) |
+| a route shaped by urgency | [Pressure Routes](pressure-routes.md) | [Proof Ladder](proof-ladder.md) |
+| module promises and exit bars | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
+| state truth and evidence rules | [Truth Contracts](truth-contracts.md) | [Authority Map](../reference/authority-map.md) |
+| capstone entry | [Capstone Guide](../capstone/index.md) | [Capstone Map](../capstone/capstone-map.md) |
+
+## Study routes
+
+- [Start Here](start-here.md) for the shortest stable route into the course
+- [Course Guide](course-guide.md) for the role of each support surface
 - [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
-- [Module 00: Orientation and Study Practice](../module-00-orientation/index.md) for the course shape
+- [Pressure Routes](pressure-routes.md) for repair, stewardship, and recovery entry paths
 - [Platform Setup](platform-setup.md) before you run local proof commands
 
-## Use These For Study Planning
+## Module support
 
-- [Pressure Routes](pressure-routes.md) when your route is shaped by recovery, stewardship, or repair pressure
 - [Truth Contracts](truth-contracts.md) when you need change-detection and evidence rules in one place
-- [Module Promise Map](module-promise-map.md) when you want each module title translated into a learner contract
-- [Module Checkpoints](module-checkpoints.md) when you want a module-end exit bar before moving on
-- [Module Dependency Map](../reference/module-dependency-map.md) when you need the safe reading order explained
+- [Module Promise Map](module-promise-map.md) when you want each title translated into a learner contract
+- [Module Checkpoints](module-checkpoints.md) when you need an exit bar before moving on
+- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
 - [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
 
-## Use These For Commands And Proof
+## Proof and command routes
 
-- [Command Guide](../capstone/command-guide.md) for command boundaries
-- [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
+- [Proof Ladder](proof-ladder.md) for choosing the smallest honest route
 - [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence surface
-- [Authority Map](../reference/authority-map.md) when the question is which layer of state is authoritative
+- [Authority Map](../reference/authority-map.md) when the question is which state layer is authoritative
 - [Evidence Boundary Guide](../reference/evidence-boundary-guide.md) when you need to separate declaration, execution, promotion, and recovery proof
+- [Command Guide](../capstone/command-guide.md) for command boundaries
 
-## Use These For Capstone Reading
+## Capstone entry routes
 
 - [Capstone Guide](../capstone/index.md) for the repository contract
-- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for the repository structure
-- [Capstone Map](../capstone/capstone-map.md) for module-to-repository routing
+- [Capstone Map](../capstone/capstone-map.md) for module and question routing
 - [Capstone File Guide](../capstone/capstone-file-guide.md) for file responsibilities
-- [Repository Layer Guide](../capstone/repository-layer-guide.md) for authority and layer ownership
-- [Experiment Review Guide](../capstone/experiment-review-guide.md) for controlled deviation review
-- [Release Review Guide](../capstone/release-review-guide.md) for downstream trust review
-- [Recovery Review Guide](../capstone/recovery-review-guide.md) for durability review
-- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for structured repository assessment
-- [Release Audit Checklist](../capstone/release-audit-checklist.md) for promotion review
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for steward-level repository review
+- [Release Audit Checklist](../capstone/release-audit-checklist.md) for downstream contract review
 - [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
 
-## Keep The Layout Stable
+## Good stopping point
 
-- `index.md` stays the course home
-- `guides/` stays the learner route and proof shelf
-- `capstone/` stays the capstone-specific reading, review, and stewardship shelf
-- `reference/` stays the durable state and review shelf
-- `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc
+Stop when you can name the single next page you need and the question it is supposed to
+answer. If you are still opening whole shelves, go back to the table above and choose a
+smaller lane.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept
+stable while you move between study routes, proof routes, and support pages.
