@@ -35,12 +35,6 @@ The top-level course-book has three durable surfaces:
 - [`reference/`](reference/index.md) for durable definitions, anti-pattern maps, and review aids
 - Modules `00` to `10` for the teaching arc itself
 
-[![Series Validation](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml/badge.svg?branch=master)](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml?query=branch%3Amaster)
-[![GNU Make](https://img.shields.io/badge/GNU%20Make-4.3%2B-blue?style=flat-square)](https://www.gnu.org/software/make/)
-[![License](https://img.shields.io/github/license/bijux/bijux-masterclass?style=flat-square)](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE)
-[![Docs](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/)
-[![Capstone](https://img.shields.io/badge/capstone-reference-green?style=flat-square)](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone)
-
 > **At a glance**: beginner-to-mastery progression • minimal reproducible examples •
 > bounded proof routes • a runnable capstone that corroborates the claims.
 > **Quality bar**: every core assertion should be checkable with `--trace`, `-p`,

@@ -32,11 +32,6 @@ A compact, end-to-end Snakemake workflow that demonstrates rigorous engineering 
 
 This project is designed to be **executed**, **studied**, and **extended** as a reference implementation.
 
-[![Series Validation](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml/badge.svg?branch=master)](https://github.com/bijux/bijux-masterclass/actions/workflows/program-validation.yml?query=branch%3Amaster)
-[![Snakemake](https://img.shields.io/badge/Snakemake-8.0%2B-blue?style=flat-square)](https://snakemake.readthedocs.io/en/stable/)
-[![License](https://img.shields.io/github/license/bijux/bijux-masterclass?style=flat-square)](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE)
-[![Course Book](https://img.shields.io/badge/docs-series-blue?style=flat-square)](https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-snakemake/)
-
 > The CI workflow executes full confirmation runs, including workflow execution and artifact validation.
 
 [Back to top](#top)
