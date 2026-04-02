@@ -12,6 +12,7 @@ PYTEST := $(VENV_PY) -m pytest
 DVC := $(VENV_PY) -m dvc
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-dvc
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
+RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 
 .PHONY: help
 help: ## Show available targets
@@ -85,6 +86,32 @@ tour: verify ## Build the learner-facing proof bundle
 	@echo "tour_dir=$(TOUR_DIR)" > $(TOUR_DIR)/bundle.env
 	@echo "publish_dir=$(TOUR_DIR)/publish-v1" >> $(TOUR_DIR)/bundle.env
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
+
+.PHONY: release-audit
+release-audit: verify ## Build a focused release-boundary audit bundle
+	@rm -rf $(RELEASE_AUDIT_DIR)
+	@mkdir -p $(RELEASE_AUDIT_DIR)/publish-v1
+	@cp PUBLISH_CONTRACT.md $(RELEASE_AUDIT_DIR)/PUBLISH_CONTRACT.md
+	@cp publish/v1/manifest.json $(RELEASE_AUDIT_DIR)/publish-v1/manifest.json
+	@cp publish/v1/metrics.json $(RELEASE_AUDIT_DIR)/publish-v1/metrics.json
+	@cp publish/v1/params.yaml $(RELEASE_AUDIT_DIR)/publish-v1/params.yaml
+	@cp publish/v1/report.md $(RELEASE_AUDIT_DIR)/publish-v1/report.md
+	@cp dvc.lock $(RELEASE_AUDIT_DIR)/dvc.lock
+	@printf '%s\n' \
+		'Release audit route:' \
+		'  1. Read publish-v1/manifest.json for the promoted inventory.' \
+		'  2. Read PUBLISH_CONTRACT.md for meaning and trust limits.' \
+		'  3. Read publish-v1/params.yaml and publish-v1/metrics.json together.' \
+		'  4. Read publish-v1/report.md for the human-readable summary.' \
+		'  5. Compare dvc.lock against the promoted contract when you need recorded provenance.' > $(RELEASE_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Release questions:' \
+		'  Which promoted files are safe for downstream trust?' \
+		'  Which review claims still depend on repository-internal evidence?' \
+		'  Which promoted metrics and params remain semantically meaningful later?' > $(RELEASE_AUDIT_DIR)/review-questions.txt
+	@echo "audit_dir=$(RELEASE_AUDIT_DIR)" > $(RELEASE_AUDIT_DIR)/bundle.env
+	@echo "publish_dir=$(RELEASE_AUDIT_DIR)/publish-v1" >> $(RELEASE_AUDIT_DIR)/bundle.env
+	@echo "✔ wrote release audit bundle to $(RELEASE_AUDIT_DIR)"
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle

@@ -96,6 +96,7 @@ Run these from this directory:
 make verify
 make confirm
 make recovery-drill
+make release-audit
 make tour
 ```
 
@@ -111,6 +112,7 @@ These commands answer different questions:
 - `make verify` checks that the current repository state matches the expected contract.
 - `make confirm` reruns the broader confirmation flow that the course points learners to.
 - `make recovery-drill` proves that a remote-backed restore still works after local loss.
+- `make release-audit` writes a focused release-boundary bundle under `artifacts/audit/reproducible-research/deep-dive-dvc/`.
 - `make walkthrough` writes the learner-first reading bundle under `artifacts/walkthrough/reproducible-research/deep-dive-dvc/`.
 - `make tour` writes a learner-facing proof bundle under `artifacts/tour/reproducible-research/deep-dive-dvc/`.
 
