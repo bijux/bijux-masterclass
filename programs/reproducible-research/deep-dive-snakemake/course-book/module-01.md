@@ -56,6 +56,14 @@ This module is the reason the capstone has a stable publish boundary, explicit i
 structured logs, and proof-oriented verification. When the capstone says `publish/v1/` is the
 contract and `results/` is not, that is a Module 01 design claim, not only an implementation detail.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| file contracts | "Why does this workflow produce or rerun these files?" | use the capstone lightly here, mainly to inspect stable boundaries |
+| wildcard discipline | "Which targets are precise enough to keep the DAG honest?" | enter the capstone only after local examples feel predictable |
+| publish discipline | "Which outputs are safe to treat as trusted?" | inspect `publish/v1/` only after the basic contract model is clear |
+
 ---
 
 ## Orientation

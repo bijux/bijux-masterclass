@@ -37,6 +37,14 @@ Capstone corroboration:
 * inspect `capstone/src/capstone/`
 * inspect `capstone/environment.yaml` and `capstone/Dockerfile`
 
+### At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| rule-versus-program logic | "What belongs in the workflow and what belongs in code?" | inspect scripts and packages only after the workflow contract itself is clear |
+| software stacks | "Which environment choices are part of workflow meaning?" | compare environment files, Docker surface, and provenance deliberately |
+| provenance | "What software evidence is necessary to defend a rerun later?" | use the capstone as a small but complete example |
+
 ---
 
 <a id="toc"></a>

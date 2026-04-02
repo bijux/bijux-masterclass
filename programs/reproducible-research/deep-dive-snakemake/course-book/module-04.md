@@ -37,6 +37,14 @@ The capstone’s `FILE_API.md`, workflow module layout, and confirmation targets
 expression of this module. If you want to see what “executor-proof semantics” means in one small
 repository, this is the module that explains that shape.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| modular boundaries | "Where does one workflow responsibility end and another begin?" | inspect the capstone once interface boundaries already feel meaningful |
+| file APIs | "Which paths are public contracts and which are internal detail?" | compare `FILE_API.md` with rule files intentionally |
+| CI gates | "What should scale review protect before the workflow gets bigger?" | use confirmation targets as the operational side of the interface story |
+
 ---
 
 ## Orientation: scaling fails at boundaries

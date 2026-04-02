@@ -37,6 +37,14 @@ The capstone’s profiles, confirm target, artifact verification, and workflow g
 of this module. If you want to know why the capstone is opinionated about proof artifacts and clean-room runs,
 this module is the reason.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| profiles as policy | "Which settings should change execution context without changing meaning?" | inspect the capstone after the policy-versus-semantics split feels clear |
+| retries and failure policy | "What should be retried, and what should fail fast?" | compare profiles and proof targets together |
+| production proof | "What makes a workflow trustworthy under CI or scheduler pressure?" | use `confirm` and related targets as evidence surfaces |
+
 ---
 
 ## Orientation: production is “policy + plugins + proofs”

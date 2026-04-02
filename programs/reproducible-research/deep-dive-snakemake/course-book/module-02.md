@@ -34,6 +34,14 @@ The capstone’s discovery checkpoint, provenance artifacts, and versioned publi
 depend on this module’s rules. If you want to know why discovery is recorded explicitly and
 why the workflow is opinionated about reproducibility evidence, this module provides that justification.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| deterministic discovery | "How can the DAG depend on data without becoming a moving target?" | use the capstone heavily once the explicit discovered-set idea is clear |
+| checkpoints | "What is a checkpoint allowed to discover, and what must it never hide?" | inspect the capstone after you can explain the checkpoint contract in words |
+| integrity evidence | "Which artifacts keep dynamic behavior reviewable?" | compare discovered-set and provenance files deliberately |
+
 ---
 
 ## Table of Contents
