@@ -62,6 +62,7 @@ If you are choosing where to enter, use:
 - `course-book/guides/module-promise-map.md` for what each module truly promises
 - `course-book/guides/module-checkpoints.md` for module-end readiness checks
 - `course-book/guides/proof-ladder.md` for how to escalate from tour to stronger proof
+- `course-book/capstone/index.md` and `course-book/capstone/capstone-map.md` for the repository entry shelf once the state model is stable
 - `course-book/reference/topic-boundaries.md` for what this course treats as central, adjacent, or out of scope
 - `course-book/reference/anti-pattern-atlas.md` for common reproducibility failures and where the course addresses them
 
