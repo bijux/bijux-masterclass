@@ -29,6 +29,12 @@ Deep Dive Snakemake teaches workflow design as a discipline of explicit file con
 deterministic planning, safe dynamic behavior, and durable operational boundaries. It is
 now a ten-module beginner-to-mastery program, not only a compact advanced reference.
 
+The top-level course-book has three durable surfaces:
+
+- [`guides/`](guides/index.md) for learner routes, module promises, checkpoints, and capstone entry
+- [`reference/`](reference/index.md) for durable definitions, anti-pattern routing, and review aids
+- Modules `00` to `10` for the teaching arc itself
+
 ## Why this program exists
 
 Many Snakemake resources stop too early. They explain rules, wildcards, and dry-runs,
@@ -60,6 +66,9 @@ If you are not sure where to begin, use [`start-here.md`](guides/start-here.md) 
 into the modules. It routes beginners, working maintainers, and workflow stewards to the
 right entry path so the capstone does not become an accidental first lesson.
 
+If your route is shaped by urgency instead of calm study, use
+[`pressure-routes.md`](guides/pressure-routes.md).
+
 If you already know the course exists but are not sure which support page you need, use
 [`course-guide.md`](guides/course-guide.md) as the stable hub.
 
@@ -68,33 +77,37 @@ and [`reference/index.md`](reference/index.md) when you want the stable review s
 
 ## Course shape at a glance
 
-The top level is now deliberate:
+Use this snapshot when you want the fastest sense of how the arc is organized:
 
-* `guides/` for learner entry, proof routing, and capstone reading routes
-* `reference/` for stable review surfaces and lookup pages
-* `module-00-orientation/` through `module-10-*/` for the learning arc itself
+- [Module 00](module-00-orientation/index.md) explains the study strategy, support surfaces, and capstone timing.
+- [Modules 01-02](module-01-file-contracts-and-the-workflow-dag/index.md) establish the workflow contract and dynamic DAG discipline.
+- [Modules 03-05](module-03-production-operations-and-policy-boundaries/index.md) turn policy, scaling, and software boundaries into explicit review surfaces.
+- [Modules 06-08](module-06-publishing-and-downstream-contracts/index.md) define publish trust, repository architecture, and operating-context boundaries.
+- [Modules 09-10](module-09-observability-performance-and-incident-response/index.md) finish with incidents, governance, migration, and tool-boundary judgment.
+- [Guides](guides/index.md) hold learner routes and capstone entry.
+- [Reference](reference/index.md) holds durable maps, glossaries, anti-patterns, and review standards.
 
-## What each module contributes
+## Use these support pages first
 
-- [Module 00](module-00-orientation/index.md) establishes the full program map and capstone relationship.
-- [Module 01](module-01-file-contracts-and-the-workflow-dag/index.md) defines the semantic floor: file contracts, rebuild truth, wildcards, and publishing discipline.
-- [Module 02](module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md) explains dynamic DAGs, integrity, environments, and performance patterns.
-- [Module 03](module-03-production-operations-and-policy-boundaries/index.md) turns profiles, retries, staging, and governance into operational contracts.
-- [Module 04](module-04-scaling-workflows-and-interface-boundaries/index.md) explains modularity, interface boundaries, CI gates, and executor-proof semantics.
-- [Module 05](module-05-software-boundaries-and-reproducible-rules/index.md) teaches software stacks, scripts, wrappers, and reproducible rule boundaries.
-- [Module 06](module-06-publishing-and-downstream-contracts/index.md) teaches versioned publishing, reports, and downstream workflow contracts.
-- [Module 07](module-07-workflow-architecture-and-file-apis/index.md) teaches workflow architecture, modules, file APIs, and reusable boundaries.
-- [Module 08](module-08-operating-contexts-and-execution-policy/index.md) deepens profiles, executors, storage, and staging as operating-context boundaries.
-- [Module 09](module-09-observability-performance-and-incident-response/index.md) teaches performance, observability, and workflow incident response.
-- [Module 10](module-10-governance-migration-and-tool-boundaries/index.md) finishes with governance, migration, anti-patterns, and tool-boundary judgment.
-- [Capstone](guides/readme-capstone.md) provides the executable reference workflow that keeps the program honest.
+These are the pages that make the course easier to trust and easier to finish:
+
+| Need | Best page |
+| --- | --- |
+| first learner route | [`start-here.md`](guides/start-here.md) |
+| route under repair, stewardship, or incident pressure | [`pressure-routes.md`](guides/pressure-routes.md) |
+| stable support hub | [`course-guide.md`](guides/course-guide.md) |
+| what each module title actually promises | [`module-promise-map.md`](guides/module-promise-map.md) |
+| whether you are ready to move on | [`module-checkpoints.md`](guides/module-checkpoints.md) |
+| smallest honest proof route | [`proof-ladder.md`](guides/proof-ladder.md) |
+| capstone entry by module | [`capstone-map.md`](guides/capstone-map.md) |
 
 ## Recommended route
 
 1. Start with [Start Here](guides/start-here.md).
-2. Read [Module 00](module-00-orientation/index.md).
-3. Move through Modules 01 to 10 in order.
-4. Enter the capstone through [Capstone Map](guides/capstone-map.md) or [Proof Matrix](guides/proof-matrix.md) instead of browsing the repository cold.
+2. Read [Pressure Routes](guides/pressure-routes.md) if your context is not calm first-contact study.
+3. Read [Module 00](module-00-orientation/index.md).
+4. Move through Modules 01 to 10 in order.
+5. Enter the capstone through [Capstone Map](guides/capstone-map.md), [Proof Ladder](guides/proof-ladder.md), or [Proof Matrix](guides/proof-matrix.md) instead of browsing the repository cold.
 
 ## How to use the capstone while reading
 
@@ -111,6 +124,16 @@ If you want the shortest stable proof route first, start with [Capstone Proof Gu
 - In Module 10, use the capstone as a workflow review specimen rather than a first-contact example.
 
 The capstone should function as your executable answer to “what does this rule look like in a real workflow?”
+
+## Review surfaces
+
+When you are reviewing whether the course and capstone are actually coherent, use:
+
+* [`topic-boundaries.md`](reference/topic-boundaries.md)
+* [`anti-pattern-atlas.md`](reference/anti-pattern-atlas.md)
+* [`module-promise-map.md`](guides/module-promise-map.md)
+* [`module-checkpoints.md`](guides/module-checkpoints.md)
+* [`completion-rubric.md`](reference/completion-rubric.md)
 
 ## Common failure modes this program is trying to prevent
 
