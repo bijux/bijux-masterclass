@@ -99,6 +99,8 @@ That route keeps the learner focused on public contract first, proof harness sec
 failure teaching material third.
 
 The walkthrough bundle is written to `artifacts/walkthrough/reproducible-research/deep-dive-make/`.
+Each generated bundle now includes a `manifest.json` inventory so review can start from
+an explicit file list instead of a guessed one.
 
 [Back to top](#top)
 
@@ -190,6 +192,9 @@ claim to the target, file, or failure surface that proves it.
 
 That guide complements this README by answering a narrower question: not "what is this
 repository?", but "where do I inspect when I need evidence now?"
+
+When a proof surface points you to a generated bundle, inspect that bundle's
+`manifest.json` before you treat it as review evidence.
 
 [Back to top](#top)
 

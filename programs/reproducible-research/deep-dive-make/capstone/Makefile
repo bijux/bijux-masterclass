@@ -181,6 +181,7 @@ tour:
 >     '  generators  -> make --trace dyn' \
 >     '  architecture -> make help && make -p > build/review.dump' \
 >     '  incidents    -> make trace-count && make -f repro/01-shared-log.mk -j2 all'
+>     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(TOUR_DIR)" --output "$(TOUR_DIR)/manifest.json"
 
 walkthrough:
 >     rm -rf "$(WALKTHROUGH_DIR)"
@@ -219,6 +220,7 @@ walkthrough:
 >       '  mk/objects.mk        rooted discovery and object modeling' \
 >       '  mk/stamps.mk         build-state evidence surfaces' \
 >       '  repro/01-shared-log.mk first concurrency failure route' > "$(WALKTHROUGH_DIR)/bundle-guide.txt"
+>     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(WALKTHROUGH_DIR)" --output "$(WALKTHROUGH_DIR)/manifest.json"
 >     @echo "PASS: wrote capstone walkthrough to $(WALKTHROUGH_DIR)"
 
 # ---- CI-style entrypoints ----
@@ -281,6 +283,7 @@ selftest-report:
 >     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
 >     MAKE="$(MAKE)" SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" $(TST_DIR)/run.sh
+>     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(SELFTEST_REPORT_DIR_ABS)" --output "$(SELFTEST_REPORT_DIR_ABS)/manifest.json"
 >     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR_ABS)"
 
 # ---- quarantined rule-generation demo (optional) ----
