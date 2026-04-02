@@ -25,6 +25,21 @@ not just the topic list. A good module promise answers three questions clearly: 
 pressure the module owns, what should feel different after reading it, and where that
 claim becomes inspectable.
 
+## Pick a module by the decision you cannot yet make
+
+| If you cannot yet decide... | Start with... |
+| --- | --- |
+| whether a helper is pure or hiding coordination | Module 01 |
+| whether configuration belongs in code or data | Module 02 |
+| where lazy work should become eager | Module 03 |
+| whether failure should stay exceptional or become a value | Module 04 |
+| whether a domain state deserves its own type | Module 05 |
+| whether a layered container clarifies or obscures flow | Module 06 |
+| where domain logic should stop and adapters should begin | Module 07 |
+| how to keep async work fair, bounded, and debuggable | Module 08 |
+| how to use ecosystem tools without dissolving the core | Module 09 |
+| how to justify change with evidence instead of style preference | Module 10 |
+
 | Module | Main promise | What should feel more possible after it | Best evidence route |
 | --- | --- | --- | --- |
 | `00` Orientation and Study Practice | You can enter the course deliberately instead of wandering it. | You can name the right reading route and proof surface before starting the modules. | `module-00-orientation/course-map.md`, `module-00-orientation/first-contact-map.md`, `guides/start-here.md` |
@@ -45,6 +60,12 @@ claim becomes inspectable.
 - You can describe the abstraction but not the production pressure it is meant to survive.
 - You keep reaching for later modules because the earlier discipline still feels optional.
 - You cannot name the smallest proof route that would challenge your current understanding.
+
+## Leave this page with one honest next move
+
+- open the module whose decision still feels unstable
+- open the named capstone surface only after choosing that module
+- open [Module Checkpoints](module-checkpoints.md) when you need the exit bar, not before
 
 ## Best companion pages
 
