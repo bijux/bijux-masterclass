@@ -30,6 +30,12 @@ parallel work, or async coordination enters the picture. This module teaches how
 model clocks, deadlines, concurrency, and async boundaries without turning design
 semantics into scheduler folklore.
 
+Keep one question in view while reading:
+
+> Which object owns time, cancellation, or concurrency pressure, and which objects should remain ignorant of that pressure?
+
+That question is what keeps runtime concerns explicit instead of contagious.
+
 ## Why this module matters
 
 Time and concurrency amplify design mistakes:

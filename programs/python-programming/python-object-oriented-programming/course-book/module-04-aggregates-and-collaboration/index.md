@@ -28,6 +28,13 @@ flowchart LR
 Systems fail when invariants are scattered. This module shifts the focus from single
 objects to coherent collaboration boundaries.
 
+Keep one question in view while reading:
+
+> Which object or boundary is authoritative once more than one object participates in the same rule?
+
+That question is what separates an aggregate from a cluster of objects that merely happen
+to call each other.
+
 ## Why this module matters
 
 Once more than one object collaborates, correctness stops being a local property.

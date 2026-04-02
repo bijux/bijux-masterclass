@@ -29,6 +29,12 @@ Objects do not stop being objects when they cross a process boundary. This modul
 teaches how to persist aggregates, serialize state, and evolve stored representations
 without letting storage concerns dissolve the domain model.
 
+Keep one question in view while reading:
+
+> Which part of this data shape is a domain contract, and which part is only a storage representation that should stay replaceable?
+
+That question is what prevents persistence from flattening the model into records.
+
 ## Why this module matters
 
 Many Python systems start with a clean object model and lose discipline the moment

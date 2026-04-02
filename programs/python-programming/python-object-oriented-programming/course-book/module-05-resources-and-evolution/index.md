@@ -28,6 +28,13 @@ flowchart LR
 Correct object models still fail if they leak resources, blur failure handling, or
 cannot evolve safely. This module treats survivability as part of design quality.
 
+Keep one question in view while reading:
+
+> Who owns the cost when this behavior fails, retries, leaks, or needs to evolve under an existing contract?
+
+That question keeps operational concerns attached to ownership instead of dissolving into
+general “infrastructure” language.
+
 ## Why this module matters
 
 A design can look elegant in greenfield code review and still fail in production because
