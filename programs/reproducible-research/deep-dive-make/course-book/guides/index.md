@@ -48,6 +48,7 @@ Use them in this order when you are new to the program:
 ## Proof And Navigation Guides
 
 - [Command Guide](command-guide.md) for root, program, and capstone command boundaries
+- [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
 - [Proof Matrix](proof-matrix.md) for claim-to-evidence routing
 - [Capstone Map](capstone-map.md) for module-to-repository routing
 - [Capstone File Guide](capstone-file-guide.md) for file responsibilities

@@ -34,6 +34,7 @@ nav:
       - Reference Home: reference/index.md
       - Module Dependency Map: reference/module-dependency-map.md
       - Command Guide: guides/command-guide.md
+      - Proof Ladder: guides/proof-ladder.md
       - Proof Matrix: guides/proof-matrix.md
       - Build-Graph Glossary: reference/build-graph-glossary.md
       - Topic Boundaries: reference/topic-boundaries.md
