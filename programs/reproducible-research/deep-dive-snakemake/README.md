@@ -35,7 +35,7 @@ This repository offers a structured beginner-to-mastery path through Snakemake s
 
 The repository now separates four surfaces clearly:
 
-- `course-book/guides/` for learner entry, pressure routes, promise maps, checkpoints, and capstone reading routes
+- `course-book/guides/` for learner entry, pressure routes, promise maps, checkpoints, and proof sizing
 - `course-book/capstone/` for workflow entry, command routing, publish review, and profile review
 - `course-book/reference/` for stable maps, glossary pages, anti-pattern routing, and review checklists
 - `course-book/module-00-orientation/` through `course-book/module-10-*/` for the actual learning arc
