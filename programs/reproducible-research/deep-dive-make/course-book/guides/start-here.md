@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Start Here
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,82 +13,63 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Name the current pressure"] --> route["Choose one starting route"]
+  route --> orient["Anchor in Module 00"]
+  orient --> next_move["Leave with one stable next module or guide"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this page is for choosing the first honest route,
+not for replacing the course. Read the second diagram as the loop: choose one route,
+anchor in Module 00, and leave with one stable next move.
 
-Deep Dive Make is not a syntax catalog. It is a correctness-first course about how to
-build and maintain truthful Make-based systems.
+Deep Dive Make is not a syntax catalog. It is a correctness-first course about truthful
+graphs, safe publication, bounded proof, and long-lived build-system judgment.
 
-Use this page to choose the right entry point before you start reading modules at random.
+## Use this page when
 
-## Use This Course If
+- Make still feels new and you want the safest ramp
+- the build is already hurting and you need the smallest justifiable route
+- you steward a build system and need the course without random browsing
 
-- you are new to GNU Make and want a reliable graph model instead of memorized recipes
-- you inherited a brittle Makefile and need a repair path you can justify
-- you already use Make in production but still get surprised by rebuilds or `-j`
-- you review whether Make should keep owning a build boundary at all
+## Do not use this page to
 
-## Do Not Start Here If
+- replace the module sequence with support-page browsing
+- enter the capstone before the local concept is legible
+- choose the heaviest proof route by default
 
-- you only need a quick copy-paste snippet and do not care why it works
-- you want shell-programming depth more than build-graph correctness
-- you want Make to solve every orchestration problem without tool-boundary judgment
+## Best first pass
 
-## Best Reading Route
+1. Read [Course Home](../index.md).
+2. Read [Course Guide](course-guide.md).
+3. Read [Learning Contract](learning-contract.md).
+4. Read [Module 00](../module-00-orientation/index.md).
+5. Continue to [Module 01](../module-01-build-graph-foundations-truth/index.md).
 
-1. Read [Course Home](../index.md) for the program promise and support surfaces.
-2. Read [Course Guide](course-guide.md) for the module arc and page roles.
-3. Read [Learning Contract](learning-contract.md) before you start Module 01.
-4. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
-5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-6. Keep [Capstone Map](../capstone/capstone-map.md) and [Proof Ladder](proof-ladder.md) nearby, but enter the capstone only after the local module idea is clear.
+Stop there before opening more shelves. That is enough to make the reading contract,
+proof contract, and capstone timing visible.
 
-## Route By Pressure
+## Choose the route that matches your pressure
 
-### First contact
+| If you need... | Read next | Keep nearby |
+| --- | --- | --- |
+| first contact with Make | [Module 01](../module-01-build-graph-foundations-truth/index.md), [Module 02](../module-02-parallel-safety-project-structure/index.md) | [Module Checkpoints](module-checkpoints.md) |
+| repair of an existing build | [Pressure Routes](pressure-routes.md), [Module 04](../module-04-rule-semantics-precedence-edge-cases/index.md), [Module 05](../module-05-portability-hermeticity-failure-modes/index.md) | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) |
+| stewardship of a long-lived build system | [Module 03](../module-03-determinism-debugging-self-testing/index.md), [Module 07](../module-07-build-architecture-layered-includes-apis/index.md), [Module 08](../module-08-release-engineering-artifact-contracts/index.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 
-1. Read [Module 00](../module-00-orientation/index.md).
-2. Read [Module 01](../module-01-build-graph-foundations-truth/index.md).
-3. Read [Module 02](../module-02-parallel-safety-project-structure/index.md).
-4. Use [Module Checkpoints](module-checkpoints.md) before moving on.
+## What to keep open
 
-### Repair an existing build
+- [Course Guide](course-guide.md)
+- [Module Promise Map](module-promise-map.md)
+- [Module Checkpoints](module-checkpoints.md)
+- [Proof Ladder](proof-ladder.md)
+- [Capstone Guide](../capstone/index.md), but only as a later corroboration surface
 
-1. Read [Pressure Routes](pressure-routes.md).
-2. Skim [Module 00](../module-00-orientation/index.md).
-3. Read [Module 04](../module-04-rule-semantics-precedence-edge-cases/index.md).
-4. Read [Module 05](../module-05-portability-hermeticity-failure-modes/index.md).
-5. Read [Module 09](../module-09-performance-observability-incident-response/index.md).
-6. Use [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) and [Capstone Map](../capstone/capstone-map.md) to inspect the reference build selectively.
+## Success signal
 
-### Build-system stewardship
-
-1. Read [Module 03](../module-03-determinism-debugging-self-testing/index.md).
-2. Read [Module 07](../module-07-build-architecture-layered-includes-apis/index.md).
-3. Read [Module 08](../module-08-release-engineering-artifact-contracts/index.md).
-4. Read [Module 10](../module-10-migration-governance-tool-boundaries/index.md).
-5. Finish with [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) and [Capstone Extension Guide](../capstone/capstone-extension-guide.md).
-
-## Success Signal
-
-You are using the course correctly if you can explain all of this without guesswork:
+You are using the course correctly if you can explain:
 
 - why a target rebuilt using `make --trace`
-- whether a failure is a missing edge, a publication bug, or a parallel-safety bug
-- which targets are public and which are implementation detail
-- which proof command would settle the claim instead of extending the argument
-
-## First Pages To Keep Open
-
-- [Course Home](../index.md)
-- [Course Guide](course-guide.md)
-- [Module 00](../module-00-orientation/index.md)
-- [Platform Setup](platform-setup.md)
-- [Capstone Guide](../capstone/index.md)
-
-[Back to top](#top)
+- why the capstone is not your first lesson
+- which support page answers the next question without opening everything
+- which proof route is proportionate to the claim in front of you
