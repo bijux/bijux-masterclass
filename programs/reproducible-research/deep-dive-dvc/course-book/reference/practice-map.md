@@ -75,8 +75,8 @@ dvc metrics diff
 Use when you want to inspect whether durability claims survive local loss.
 
 ```bash
-make -C capstone push
-make -C capstone recovery-drill
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review
 ```
 
 [Back to top](#top)

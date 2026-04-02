@@ -40,7 +40,7 @@ For every DVC repository question, answer these in order:
 | Did a parameter change in a way the pipeline knows about? | `params.yaml` plus the `params:` declaration in `dvc.yaml` | only declared params keys count toward stage change detection | `dvc repro` or `dvc status`, then inspect `dvc.yaml` and `dvc.lock` |
 | Did a metric change in a reviewable way? | tracked metric files plus the producing stage in `dvc.yaml` | the metric artifact changed after a tracked run | `dvc metrics show` or the course proof route, then inspect the metric file |
 | Can this experiment be compared honestly? | experiment state plus the same declared deps/params/outs contract | experiment commits or queued experiment state changed; undeclared params remain a blind spot | `dvc exp show` plus declared params review |
-| Can another person restore the tracked state after local loss? | DVC remote plus committed declarations | the remote object set and tracked declarations remain sufficient for pull/checkout | `make -C capstone recovery-drill` |
+| Can another person restore the tracked state after local loss? | DVC remote plus committed declarations | the remote object set and tracked declarations remain sufficient for pull/checkout | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` |
 
 ## The Most Common Misread
 

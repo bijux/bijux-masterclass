@@ -63,10 +63,10 @@ You should be able to do all of the following:
 
 Use these proof routes as the minimum capstone evidence:
 
-1. `make -C capstone walkthrough`
-2. `make -C capstone verify`
-3. `make -C capstone recovery-drill`
-4. `make -C capstone confirm`
+1. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
+2. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify`
+3. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill`
+4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm`
 
 You are not done if you ran them mechanically but cannot explain what each one proved.
 

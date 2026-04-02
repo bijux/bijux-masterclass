@@ -41,7 +41,7 @@ proof or a recovery drill for the whole repository contract.
 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` | whether you need durable verification evidence | a saved verification bundle |
 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | whether the promoted boundary is reviewable as a downstream contract | a focused release evidence bundle |
 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | whether the repository can defend itself as a whole | verification, tests, and recovery proof |
-| `make -C capstone recovery-drill` | whether tracked state survives local loss | a restore-from-remote rehearsal |
+| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | whether tracked state survives local loss | a restore-from-remote rehearsal |
 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | whether the restore evidence is durable enough for review | a recovery review bundle with before and after state |
 
 [Back to top](#top)
@@ -58,7 +58,7 @@ proof or a recovery drill for the whole repository contract.
 | I want to validate the promoted contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | it connects execution to promoted evidence |
 | I want to inspect the release boundary as a downstream reviewer | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | it narrows attention to promoted trust surfaces |
 | I want the strongest built-in repository check | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | it combines verification, tests, and recovery |
-| I want to test durability under loss | `make -C capstone recovery-drill` | it isolates the recovery claim |
+| I want to test durability under loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | it isolates the recovery claim |
 | I want a reviewable recovery bundle after the drill | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | it packages the recovery evidence for later inspection |
 | I want durable verification evidence | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` | it writes the main verification artifacts to one place |
 

@@ -40,7 +40,7 @@ comparison, promotion, or recovery.
 | recorded execution evidence | `capstone/dvc.lock` | the dependency and output state captured after execution | the downstream release contract by itself |
 | tracked comparison evidence | `capstone/metrics/metrics.json`, `capstone/params.yaml` | what comparisons are meant to remain semantically stable | that a downstream consumer should trust every internal artifact |
 | promoted release evidence | `capstone/publish/v1/manifest.json`, `capstone/publish/v1/metrics.json`, `capstone/publish/v1/params.yaml` | what the repository intentionally exports for downstream trust | the full internal training or experimentation story |
-| recovery evidence | `make -C capstone recovery-drill`, DVC remote state | that tracked artifacts can be restored after local loss | that the repository is pedagogically clear or well-governed |
+| recovery evidence | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill`, DVC remote state | that tracked artifacts can be restored after local loss | that the repository is pedagogically clear or well-governed |
 | experiment evidence | experiment params, metrics, and comparison summaries | which declared deviations are being compared to the baseline | whether the candidate should be promoted downstream |
 
 [Back to top](#top)
