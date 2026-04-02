@@ -35,6 +35,8 @@ This project is designed to be **executed**, **studied**, and **extended** as a 
 > The CI workflow executes full confirmation runs, including workflow execution and artifact validation.
 >
 > On a fresh machine, `make bootstrap-confirm` is the shortest supported setup-and-proof route.
+>
+> Supported semantics are pinned to **Snakemake 9.14.x**. If you bypass `make bootstrap-confirm`, verify your global `snakemake --version` first.
 
 [Back to top](#top)
 
@@ -126,6 +128,17 @@ If you are still unsure, use this escalation order:
 - Unit tests for pure Python components
 - Artifact verification (parsing and sanity checks)
 - Clean-room confirmation via Make targets
+
+[Back to top](#top)
+
+---
+
+## Version Contract
+
+- Python: **3.11+**
+- Snakemake semantics taught by the course: **9.14.x**
+- Preferred setup route: `make bootstrap-confirm`
+- Supported manual route: use a preinstalled `snakemake`, but only after confirming it reports `9.14.x`
 
 [Back to top](#top)
 

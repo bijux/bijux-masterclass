@@ -51,9 +51,10 @@ Use this page to choose the right route before reading modules at random.
 1. Read [Course Home](../index.md) for the program promise and support surfaces.
 2. Read [Course Guide](course-guide.md) for the module arc and page roles.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
-4. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
-5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-6. Keep [Boundary Map](../reference/boundary-map.md), [Workflow Modularization](workflow-modularization.md), and [Capstone Map](capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
+4. Read [Platform Setup](platform-setup.md) before you run proof commands so the Snakemake 9.14.x version contract is explicit.
+5. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
+6. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
+7. Keep [Boundary Map](../reference/boundary-map.md), [Workflow Modularization](workflow-modularization.md), and [Capstone Map](capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
 
 ## Route By Pressure
 

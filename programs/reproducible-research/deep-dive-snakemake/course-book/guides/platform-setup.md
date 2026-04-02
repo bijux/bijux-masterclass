@@ -39,9 +39,28 @@ This page makes that contract clear before the learner hits avoidable setup fail
 You need:
 
 * Python 3.11 or newer
-* Snakemake 8 or newer
+* Snakemake **9.14.x** if you are using a preinstalled global binary
 * a writable local filesystem for the capstone working directories
 * `dot` from Graphviz if you want DAG or rulegraph rendering
+
+The safest path on a fresh machine is still `make bootstrap-confirm`, because it creates
+the supported local toolchain instead of depending on whatever `snakemake` happens to be
+installed globally.
+
+[Back to top](#top)
+
+---
+
+## Version Contract
+
+The course and capstone teach **Snakemake 9.14.x semantics**. That matters because the
+course relies on modern behavior around profiles, modules, reporting, and current CLI
+surfaces.
+
+Use one of these two routes:
+
+* preferred: `make bootstrap-confirm` to create the pinned local toolchain and run the strongest clean-room proof route
+* acceptable: use a preinstalled `snakemake`, but verify `snakemake --version` reports `9.14.x` before trusting course commands literally
 
 [Back to top](#top)
 
