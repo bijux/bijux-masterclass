@@ -68,17 +68,41 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@rm -rf $(WALKTHROUGH_DIR)
 	@mkdir -p $(WALKTHROUGH_DIR)
 	@cp README.md $(WALKTHROUGH_DIR)/README.md
+	@cp PUBLISH_CONTRACT.md $(WALKTHROUGH_DIR)/PUBLISH_CONTRACT.md
 	@cp dvc.yaml $(WALKTHROUGH_DIR)/dvc.yaml
 	@cp dvc.lock $(WALKTHROUGH_DIR)/dvc.lock
 	@cp params.yaml $(WALKTHROUGH_DIR)/params.yaml
 	@cp TOUR.md $(WALKTHROUGH_DIR)/TOUR.md
 	@printf '%s\n' \
 		'1. Read README.md to understand the repository contract.' \
-		'2. Read dvc.yaml to inspect the declared pipeline.' \
-		'3. Read dvc.lock to compare recorded state against the declaration.' \
-		'4. Read params.yaml to see the declared control surface.' \
-		'5. Run make verify when you want executed proof.' \
-		'6. Run make tour when you want the full evidence bundle.' > $(WALKTHROUGH_DIR)/route.txt
+		'2. Read PUBLISH_CONTRACT.md to understand the promoted boundary.' \
+		'3. Read dvc.yaml to inspect the declared pipeline.' \
+		'4. Read dvc.lock to compare recorded state against the declaration.' \
+		'5. Read params.yaml to see the declared control surface.' \
+		'6. Run make verify when you want executed proof.' \
+		'7. Run make tour when you want the full evidence bundle.' > $(WALKTHROUGH_DIR)/route.txt
+	@printf '%s\n' \
+		'Public entry commands:' \
+		'  make walkthrough' \
+		'  make repro' \
+		'  make verify' \
+		'  make confirm' \
+		'  make recovery-drill' \
+		'  make tour' > $(WALKTHROUGH_DIR)/commands.txt
+	@printf '%s\n' \
+		'Review questions:' \
+		'  Which state is authoritative for declaration, execution, and promotion?' \
+		'  Which params and metrics are safe to compare later?' \
+		'  Which promoted files could a downstream reviewer trust without private context?' \
+		'  Which guarantees still depend on the DVC remote rather than the publish bundle alone?' > $(WALKTHROUGH_DIR)/review-questions.txt
+	@printf '%s\n' \
+		'Walkthrough bundle surfaces:' \
+		'  README.md             repository contract and learner entry rule' \
+		'  PUBLISH_CONTRACT.md   promoted boundary and trust limits' \
+		'  dvc.yaml              declared stage contract' \
+		'  dvc.lock              recorded execution state' \
+		'  params.yaml           control surface' \
+		'  TOUR.md               proof-bundle reading route' > $(WALKTHROUGH_DIR)/bundle-guide.txt
 	@echo "✔ wrote learner-facing walkthrough to $(WALKTHROUGH_DIR)"
 
 .PHONY: push
