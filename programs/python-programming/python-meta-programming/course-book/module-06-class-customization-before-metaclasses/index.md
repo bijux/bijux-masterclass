@@ -36,8 +36,13 @@ flowchart LR
 5. [Core 3: `@property` / `.setter` / `.deleter` — The Friendly Face of Descriptors](#core28)
 6. [Core 4: Runtime Type Hints as a Declarative Aid for Attribute Validation](#core29)
 7. [Capstone: `@frozen` — Surface Immutability + Optional Validation](#capstone)
-8. [Power Ladder Checkpoint](#power-checkpoint)
-9. [Glossary (Module 6)](#glossary)
+8. [Learning outcomes](#learning-outcomes)
+9. [Common failure modes](#common-failure-modes)
+10. [Exercises](#exercises)
+11. [Self-test](#self-test)
+12. [Closing criteria](#closing-criteria)
+13. [Power Ladder Checkpoint](#power-checkpoint)
+14. [Glossary (Module 6)](#glossary)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -767,6 +772,52 @@ try:
 except TypeError as e:
     print("Expected:", e)
 ```
+
+<a id="learning-outcomes"></a>
+## Learning outcomes
+
+By the end of this module, you should be able to:
+
+- Explain when a class decorator is enough and when the invariant really belongs to a descriptor or metaclass.
+- Predict what `@dataclass` generates, what it leaves alone, and where `frozen=True` or `slots=True` change the surface area.
+- Describe why `property` is still a descriptor and why read-only properties still win over instance dictionaries.
+- Use type hints as an opt-in runtime aid without overstating them as full runtime type enforcement.
+- Build a small class-level abstraction that stays reversible, explicit, and inspectable.
+
+<a id="common-failure-modes"></a>
+## Common failure modes
+
+- Using a class decorator to smuggle in behavior that really depends on per-attribute lookup rules; that is usually descriptor territory.
+- Treating `@dataclass` as "automatic validation" when it only generates methods and honors the rules you configure.
+- Forgetting that `property` is a data descriptor even without a user-defined setter, which leads to wrong shadowing assumptions.
+- Recomputing `typing.get_type_hints` on every assignment instead of caching the resolved hints per class.
+- Calling a class "frozen" while still exposing nested mutable state that can be mutated through existing references.
+
+<a id="exercises"></a>
+## Exercises
+
+- Write a `@registered(kind)` class decorator that records classes in a resettable registry without changing construction semantics.
+- Compare a plain class, a `@dataclass`, and the module's `@frozen` capstone for the same model type; document what each version generates and forbids.
+- Replace a hand-written validating `__setattr__` with one `property` and one descriptor-based field, then explain which boundary became clearer.
+- Add an `Annotated[...]` metadata parser to the runtime hint example, but keep the failure message explicit about which cases remain unsupported.
+
+<a id="self-test"></a>
+## Self-test
+
+- Can you explain why a class decorator cannot participate in declaration-time namespace control?
+- Can you point to one invariant in your own codebase that belongs on an attribute boundary instead of inside `__setattr__`?
+- Can you explain the difference between surface immutability and deep immutability without hand-waving?
+- Can you show which parts of a dataclass are generated code and which parts still come from the class body you wrote?
+
+<a id="closing-criteria"></a>
+## Closing criteria
+
+You are ready for Module 7 when you can take a class customization requirement and place it honestly on the power ladder:
+
+- Stay with plain class code when explicit methods already make the rule clear.
+- Use a class decorator when the change happens after class creation and remains opt-in.
+- Use `property` or a descriptor when the invariant belongs to a field boundary and must participate in attribute lookup.
+- Escalate beyond this module only when you can explain why post-construction customization is no longer enough.
 
 <a id="power-checkpoint"></a>
 ## Power Ladder Checkpoint
