@@ -64,8 +64,9 @@ become much harder to judge honestly.
 1. Start with `course-book/guides/start-here.md`.
 2. Read `course-book/guides/course-guide.md` and `course-book/guides/learning-contract.md`.
 3. Keep `course-book/guides/module-promise-map.md` open so each module stays attached to one clear promise.
-4. Move through Modules `00` to `10` in order, then close with the mastery review inside Module `10`.
-5. Keep `course-book/guides/capstone-map.md` and `capstone/README.md` open while reading.
+4. Use `course-book/guides/module-checkpoints.md` to decide whether you are ready to move on.
+5. Move through Modules `00` to `10` in order, then close with the mastery review inside Module `10`.
+6. Keep `course-book/guides/capstone-map.md` and `capstone/README.md` open while reading.
 
 ## What this course covers
 

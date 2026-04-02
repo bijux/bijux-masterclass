@@ -22,11 +22,13 @@ nav:
       - Learning Contract: guides/learning-contract.md
       - Pressure Routes: guides/pressure-routes.md
       - Module Promise Map: guides/module-promise-map.md
+      - Module Checkpoints: guides/module-checkpoints.md
       - "Module 00: Orientation": module-00-orientation/index.md
   - Guides:
       - Pressure Routes: guides/pressure-routes.md
       - Reading Routes: guides/reading-routes.md
       - Module Promise Map: guides/module-promise-map.md
+      - Module Checkpoints: guides/module-checkpoints.md
       - Mechanism Selection: guides/mechanism-selection.md
       - Command Guide: guides/command-guide.md
       - Module Dependency Map: guides/module-dependency-map.md
