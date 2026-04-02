@@ -246,7 +246,7 @@ and restore the smaller state model first.
 
 Use this page sequence when you enter the capstone:
 
-1. [`readme-capstone.md`](../capstone/index.md)
+1. [Capstone Guide](../capstone/index.md)
 2. [`capstone-map.md`](../capstone/capstone-map.md)
 3. [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`

@@ -81,4 +81,4 @@ The source bundle excludes:
 - `README.md`
 - `RELEASE_REVIEW_GUIDE.md`
 - `RECOVERY_GUIDE.md`
-- `course-book/guides/readme-capstone.md`
+- `course-book/capstone/index.md`
