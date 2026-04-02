@@ -56,6 +56,10 @@ and expected outputs visible while following the story.
 2. Run `make tour` when you want `walkthrough.txt`, the local guide set, and a stable manifest for review.
 3. Compare the walkthrough bundle with `ARCHITECTURE.md` and `WALKTHROUGH_GUIDE.md`.
 
+The current demo output is intentionally staged: it prints policy creation, rule
+registration, activation, sample observation, and derived-state inspection as separate
+moments so the learner can follow the story without reading code first.
+
 ## Why this route matters
 
 The tour reveals the architectural promise of the capstone:

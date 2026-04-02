@@ -46,7 +46,7 @@ That route keeps story first, package ownership second, inspection third, and pr
 
 | After you inspect... | You should be able to answer... | If not, go next to... |
 | --- | --- | --- |
-| `make demo` output | what story the learner can follow without internals | `TOUR.md` |
+| `make demo` output | what story the learner can follow without internals and where each stage hands off | `TOUR.md` |
 | `TOUR.md` | where the scenario hands off from application surface to domain ownership | `PACKAGE_GUIDE.md` |
 | inspection bundles | which outputs describe state versus derived incident history | `INSPECTION_GUIDE.md` |
 | `TEST_GUIDE.md` | which suite would fail first if the story stopped matching the design | `PROOF_GUIDE.md` |
