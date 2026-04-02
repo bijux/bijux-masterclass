@@ -27,7 +27,7 @@ alone.
 
 ## Recommended route
 
-1. Read `capstone/docs/TOUR.md`.
+1. Read [Capstone](index.md).
 2. Run `make tour` in the capstone directory, or `make PROGRAM=python-programming/python-object-oriented-programming capstone-tour` from the repository root.
 3. Read the saved `walkthrough.txt` output before diving into internals.
 4. Compare the walkthrough bundle with the ownership claims in [Capstone Architecture Guide](capstone-architecture-guide.md).
