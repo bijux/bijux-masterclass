@@ -1,28 +1,25 @@
 # Start Here
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Metaprogramming"]
-  section["Start Here"]
-  page["Start Here"]
-  route["Course guide and modules"]
-
-  family --> program --> section --> page --> route
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Start Here"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  begin["Read the course boundary"] --> choose["Choose the first reading path"]
-  choose --> overview["Open the course guide"]
-  choose --> orientation["Open Module 00"]
-  overview --> module["Continue into the first module"]
-  orientation --> module
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Start here if you are deciding whether this course matches your current problem. Python
 metaprogramming only pays for itself when the runtime behavior stays visible, testable,
