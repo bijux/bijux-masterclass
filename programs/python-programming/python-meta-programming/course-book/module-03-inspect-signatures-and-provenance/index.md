@@ -3,28 +3,27 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Module Position
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Metaprogramming"]
-  section["Module 03"]
-  page["Module 03: `inspect`, Signatures, and Provenance"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
+flowchart TD
+  family["Python Programming"] --> program["Python Metaprogramming"]
+  program --> module["Module 03: `inspect`, Signatures, and Provenance"]
+  module --> lessons["Lesson pages and worked examples"]
+  module --> checkpoints["Exercises and closing criteria"]
+  module --> capstone["Related capstone evidence"]
 ```
 
 ```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+flowchart TD
+  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
+  lesson_map --> study["Read the lessons and examples with one review question in mind"]
+  study --> proof["Test the idea with exercises and capstone checkpoints"]
+  proof --> close["Move on only when the closing criteria feel concrete"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
 <a id="toc"></a>
 ## Table of Contents
