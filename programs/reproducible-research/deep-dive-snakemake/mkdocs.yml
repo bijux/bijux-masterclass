@@ -30,20 +30,20 @@ nav:
       - Learning Contract: guides/learning-contract.md
       - Program Outline: module-00.md
   - Course Reference:
-      - Module Dependency Map: module-dependency-map.md
-      - Boundary Map: boundary-map.md
-      - Workflow Glossary: workflow-glossary.md
-      - Practice Map: practice-map.md
+      - Module Dependency Map: reference/module-dependency-map.md
+      - Boundary Map: reference/boundary-map.md
+      - Workflow Glossary: reference/workflow-glossary.md
+      - Practice Map: reference/practice-map.md
       - Command Guide: guides/command-guide.md
       - Proof Matrix: guides/proof-matrix.md
       - Publish Review Guide: guides/publish-review-guide.md
       - Profile Audit Guide: guides/profile-audit-guide.md
       - Incident Review Guide: guides/incident-review-guide.md
-      - Completion Rubric: completion-rubric.md
+      - Completion Rubric: reference/completion-rubric.md
   - Capstone Route:
       - Capstone File Guide: guides/capstone-file-guide.md
       - Capstone Architecture Guide: guides/capstone-architecture-guide.md
-      - Repository Layer Guide: repository-layer-guide.md
+      - Repository Layer Guide: reference/repository-layer-guide.md
       - Capstone Map: guides/capstone-map.md
       - Capstone Proof Guide: guides/capstone-proof-guide.md
       - Capstone Walkthrough: guides/capstone-walkthrough.md
