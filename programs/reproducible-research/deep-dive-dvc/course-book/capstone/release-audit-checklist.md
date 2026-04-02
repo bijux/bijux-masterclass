@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Release Audit Checklist
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,88 +13,57 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Do you need one downstream-trust judgment?"] --> route["Run the bounded release audit"]
+  route --> inspect["Inspect the promoted bundle against recorded state"]
+  inspect --> judgment["Leave with one explicit release judgment"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this checklist is for one release-boundary
+decision, not for whole-repository review. Read the second diagram as the rule: inspect
+the promoted bundle against recorded state, then leave with one explicit release
+judgment.
 
-Use this checklist when the question is narrower than "is this repository good?" and more
+Use this page when the question is narrower than "is this repository good?" and more
 specific than "is this promoted contract safe to trust downstream?"
 
-This page focuses on `publish/v1/` as a release boundary, not on the whole repository.
+## Bounded release audit
 
----
+1. Run `make -C capstone verify`.
+2. Inspect `capstone/publish/v1/manifest.json`.
+3. Inspect `capstone/publish/v1/metrics.json` and `capstone/publish/v1/params.yaml`.
+4. Compare the promoted bundle against `capstone/dvc.lock`.
+5. Run `make -C capstone release-review` only if the release boundary still feels unclear.
 
-## Contract Surfaces To Inspect
+## Questions this audit should answer
 
-Review these together:
+- which promoted artifacts are intended for downstream trust
+- whether every promoted artifact is traceable back to recorded repository state
+- whether the promoted bundle stays smaller and clearer than the internal repository
+- whether another reviewer could tell what not to trust from the promoted bundle alone
 
-* `capstone/publish/v1/manifest.json`
-* `capstone/publish/v1/metrics.json`
-* `capstone/publish/v1/params.yaml`
-* `capstone/publish/v1/report.md`
-* `capstone/dvc.lock`
+## Failure signs
 
-Write down whether each promoted artifact is traceable back to recorded repository state.
+- the manifest names files but not their review meaning
+- promoted metrics are present but their comparison contract is ambiguous
+- promoted params exist but their decision relevance is unclear
+- the promoted bundle looks like a raw dump of internal repository state
+- you need oral context from the author to know what downstream users may rely on
 
-[Back to top](#top)
+## Good stopping point
 
----
+Stop when you can write one explicit release judgment:
 
-## Release Questions
+- trust this promoted contract as-is
+- trust it with one named clarification to add
+- do not trust it yet because one exact promoted surface is still ambiguous
 
-Answer these before approving the promoted contract:
+If you cannot make one of those judgments, repeat the bounded audit before expanding to
+broader repository review.
 
-1. Which exact artifacts are intended for downstream trust?
-2. Which inputs, params, and metrics are named clearly enough to stay meaningful later?
-3. Does the promoted bundle stay smaller than the full internal repository story?
-4. Can you trace the promoted outputs back to recorded execution evidence in `dvc.lock`?
-5. Would another reviewer know what not to trust from the promoted bundle alone?
+## Best companion pages
 
-[Back to top](#top)
-
----
-
-## Failure Signs
-
-Treat these as warnings:
-
-* the manifest names files but not their review meaning
-* promoted metrics are present but their comparison contract is ambiguous
-* promoted params exist but their decision relevance is unclear
-* the promoted bundle looks like a raw dump of internal repository state
-* you need oral context from the author to understand what downstream users may rely on
-
-[Back to top](#top)
-
----
-
-## Best Audit Route
-
-Use this order:
-
-1. `make -C capstone verify`
-2. inspect `capstone/publish/v1/manifest.json`
-3. inspect `capstone/publish/v1/metrics.json` and `capstone/publish/v1/params.yaml`
-4. compare the promoted contract against `capstone/dvc.lock`
-5. run `make -C capstone tour` if you want the executed proof bundle collected in one place
-
-That keeps the audit grounded in recorded evidence instead of presentation alone.
-
-[Back to top](#top)
-
----
-
-## Best Companion Pages
-
-The most useful companion pages for this checklist are:
-
-* [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
-* [`evidence-boundary-guide.md`](../reference/evidence-boundary-guide.md)
-* [`proof-matrix.md`](../guides/proof-matrix.md)
-* [`capstone-extension-guide.md`](capstone-extension-guide.md)
-
-[Back to top](#top)
+- [Capstone Review Worksheet](capstone-review-worksheet.md)
+- [Evidence Boundary Guide](../reference/evidence-boundary-guide.md)
+- [Proof Matrix](../guides/proof-matrix.md)
+- [Capstone Extension Guide](capstone-extension-guide.md)
