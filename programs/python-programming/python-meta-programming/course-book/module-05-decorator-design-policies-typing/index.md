@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so policy-heavy decorators are judged against
+clear boundaries instead of against novelty:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the ownership bridge through the middle of the course
+- [Mechanism Selection](../guides/mechanism-selection.md) for deciding when wrapper policy has outgrown a decorator
+- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for symptom-first review of hidden policy sprawl
+- [Capstone Walkthrough](../guides/capstone-walkthrough.md) for the action-wrapper proof route
+
+Carry this question into the module:
+
+> Which part of this behavior still belongs in a wrapper, and which part should move to an explicit object, field, or service boundary instead?
+
 <a id="toc"></a>
 ## Table of Contents
 

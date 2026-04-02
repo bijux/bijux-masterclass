@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so signatures, provenance, and evidence remain
+part of a larger review discipline rather than a bag of inspection tricks:
+
+- [First-Contact Map](../module-00-orientation/first-contact-map.md) for the foundation route that ends here before wrappers begin
+- [Outcomes and Proof Map](../guides/outcomes-and-proof-map.md) for the learner outcome this module is meant to unlock
+- [Proof Ladder](../guides/proof-ladder.md) for the smallest honest evidence route
+- [Capstone Walkthrough](../guides/capstone-walkthrough.md) for the first proof pass through signatures and public outputs
+
+Carry this question into the module:
+
+> What evidence about a callable or object is strong enough to trust when a later wrapper or runtime hook depends on it?
+
 <a id="toc"></a>
 ## Table of Contents
 

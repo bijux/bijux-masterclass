@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so wrapper mechanics stay tied to ownership and
+proof instead of becoming a generic decorator enthusiasm page:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge from observation into callable transformation
+- [Pressure Routes](../guides/pressure-routes.md) for the shortest route into wrapper review pressure
+- [Mechanism Selection](../guides/mechanism-selection.md) for the lower-power check before policy grows
+- [Capstone Map](../guides/capstone-map.md) for the matching wrapper and trace surfaces in the runtime
+
+Carry this question into the module:
+
+> What changed at the callable boundary, and what must still remain visible for tools and reviewers to trust the wrapper?
+
 <a id="toc"></a>
 ## Table of Contents
 

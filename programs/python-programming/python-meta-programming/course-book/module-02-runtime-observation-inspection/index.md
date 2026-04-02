@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so observation stays disciplined and does not
+quietly turn into execution:
+
+- [First-Contact Map](../module-00-orientation/first-contact-map.md) for the foundation route through Modules 01 to 03
+- [Proof Ladder](../guides/proof-ladder.md) for the smallest honest proof route
+- [Practice Map](../guides/practice-map.md) for the read-inspect-prove rhythm
+- [Capstone Map](../guides/capstone-map.md) for the public observation surfaces in the runtime
+
+Carry this question into the module:
+
+> Which inspection tools reveal runtime structure, and which ones can accidentally execute the thing I am trying to observe?
+
 <a id="toc"></a>
 ## Table of Contents
 

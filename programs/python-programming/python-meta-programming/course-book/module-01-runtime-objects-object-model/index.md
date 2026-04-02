@@ -25,6 +25,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so the module stays attached to the course
+promise instead of turning into isolated runtime trivia:
+
+- [First-Contact Map](../module-00-orientation/first-contact-map.md) for the foundation route through Modules 01 to 03
+- [Module Promise Map](../guides/module-promise-map.md) for the plain-language module contract
+- [Module Checkpoints](../guides/module-checkpoints.md) for the exit bar before Module 02
+- [Capstone Map](../guides/capstone-map.md) for the matching runtime files and proof surfaces
+
+Carry this question into the module:
+
+> What objects and namespaces actually exist before any higher-power hook changes behavior?
+
 <a id="toc"></a>
 ## Table of Contents
 
