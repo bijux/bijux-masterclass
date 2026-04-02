@@ -1,0 +1,62 @@
+<a id="top"></a>
+
+# Proof Matrix
+
+This page maps the course's main claims to the commands and files that prove them.
+
+Use it when you care about a concept but want the fastest evidence route.
+
+---
+
+## Core Workflow Claims
+
+| Claim | Command | File surfaces |
+| --- | --- | --- |
+| the capstone has a bounded first-pass reading route | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `capstone/README.md`, `artifacts/make/workflow-walkthrough/` |
+| the workflow exposes its public rule surface clearly | `make -C capstone walkthrough` | `capstone/Snakefile`, `artifacts/make/workflow-walkthrough/list-rules.txt` |
+| dynamic discovery becomes explicit evidence instead of a hidden side effect | `make -C capstone verify` | `capstone/results/discovered_samples.json`, `capstone/publish/v1/discovered_samples.json` |
+| profiles change execution policy without changing workflow meaning | `make -C capstone wf-dryrun PROFILE=profiles/local` and `PROFILE=profiles/ci` | `capstone/profiles/`, `capstone/Makefile` |
+| promoted outputs are smaller than the full internal repository state | `make -C capstone tour` | `capstone/FILE_API.md`, `capstone/publish/v1/`, `capstone/results/` |
+
+[Back to top](#top)
+
+---
+
+## Operational Claims
+
+| Claim | Command | File surfaces |
+| --- | --- | --- |
+| the workflow validates configuration before execution | `make -C capstone validate-config` | `capstone/config/config.yaml`, `capstone/config/schema.yaml` |
+| the workflow can explain its plan before a run | `make -C capstone wf-dryrun` | `artifacts/make/workflow-walkthrough/dryrun.txt`, `capstone/workflow/rules/` |
+| the publish bundle can defend itself after execution | `make -C capstone verify-artifacts` | `capstone/publish/v1/manifest.json`, `capstone/publish/v1/provenance.json` |
+| the repository can prove itself through one stronger end-to-end route | `make -C capstone confirm` | `capstone/Makefile`, `capstone/tests/` |
+| the executed workflow tour is reviewable as evidence | `make -C capstone tour` | `artifacts/make/workflow-tour/`, `capstone/TOUR.md` |
+
+[Back to top](#top)
+
+---
+
+## Review Questions
+
+| Question | Best first command | Best first file |
+| --- | --- | --- |
+| where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `capstone/README.md` |
+| what does this workflow claim it will build | `make -C capstone wf-dryrun` | `capstone/Snakefile` |
+| what exactly is public for downstream trust | `make -C capstone verify-artifacts` | `capstone/FILE_API.md` |
+| which surface explains dynamic discovery honestly | `make -C capstone verify` | `capstone/workflow/rules/preprocess.smk` |
+| what would I inspect before migration | `make -C capstone confirm` | `capstone/README.md` |
+
+[Back to top](#top)
+
+---
+
+## Companion Pages
+
+The most useful companion pages for this matrix are:
+
+* [`command-guide.md`](command-guide.md)
+* [`boundary-map.md`](boundary-map.md)
+* [`practice-map.md`](practice-map.md)
+* [`capstone-file-guide.md`](capstone-file-guide.md)
+
+[Back to top](#top)
