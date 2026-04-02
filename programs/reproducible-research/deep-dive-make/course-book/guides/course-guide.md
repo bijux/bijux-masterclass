@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Course Guide
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,94 +13,65 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["What kind of help do you need?"] --> choose["Choose the matching course surface"]
+  choose --> route["Open one guide, module, or capstone page"]
+  route --> next_move["Leave with one smaller next move"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this guide is a support hub, not another chapter.
+Read the second diagram as the loop: identify the kind of help you need, choose the
+matching surface, then leave with one smaller next move.
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Deep Dive Make has four durable surfaces:
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+1. course home and orientation for entry and reading order
+2. modules for the teaching arc itself
+3. capstone pages for executable corroboration
+4. reference pages for durable review and repair maps
 
-Deep Dive Make now has enough supporting material that learners need one stable hub for
-choosing the right page quickly. The goal is not to memorize Make features. The goal is
-to learn how truthful graphs, safe publication, and reviewable proof fit together over a
-ten-module sequence.
+## Choose the right surface
 
-## Course Spine
+| If you need... | Start here | Do not start with |
+| --- | --- | --- |
+| first entry into the course | [Start Here](start-here.md) | the capstone repository |
+| the module sequence explained | [Module 00](../module-00-orientation/index.md) | incident or governance pages |
+| one support page for urgency | [Pressure Routes](pressure-routes.md) | random browsing through `guides/` |
+| proof sizing | [Proof Ladder](proof-ladder.md) | the strongest available command |
+| module-to-repository routing | [Capstone Map](../capstone/capstone-map.md) | raw repository files |
+| durable review maps | [Reference](../reference/index.md) | course-home prose |
 
-The course has four linked layers:
+## The teaching arc
 
-1. entry pages and orientation
-2. module work from local build truth to larger build boundaries
-3. capstone proof in one executable reference build
-4. review surfaces for stewardship, incident response, and migration judgment
+| Arc | Modules | What becomes legible |
+| --- | --- | --- |
+| graph truth | Modules 01-03 | truthful edges, publication boundaries, parallel safety, and self-testing |
+| pressure and hardening | Modules 04-06 | precedence, portability, modeled hidden inputs, and generator boundaries |
+| reusable build surfaces | Modules 07-08 | layered `mk/` design, public targets, and release contracts |
+| incident and stewardship judgment | Modules 09-10 | observability, migration boundaries, and long-lived governance |
 
-## The Four Arcs
+## The support shelf by job
 
-### Build truth
+- Read [Module Promise Map](module-promise-map.md) when module titles feel too compressed.
+- Read [Module Checkpoints](module-checkpoints.md) when you need a visible exit bar.
+- Read [Pressure Routes](pressure-routes.md) when the reading order is shaped by urgency.
+- Read [Proof Matrix](proof-matrix.md) when you already know the claim and need the evidence surface.
+- Read [Command Guide](../capstone/command-guide.md) when you know the route but not the command layer.
+- Read [Capstone Guide](../capstone/index.md) when you need the capstone contract before opening repository files.
 
-Modules 01 to 03 establish the semantic floor:
+## Best defaults
 
-- why Make is a graph engine instead of a shell convenience layer
-- how parallel safety, determinism, and selftests change the meaning of "works"
-- how to prove a build claim with native evidence instead of folklore
+Use these as your stable defaults unless the current pressure gives you a stronger reason:
 
-### Pressure and hardening
+1. enter with [Start Here](start-here.md)
+2. anchor in [Module 00](../module-00-orientation/index.md)
+3. read modules in order
+4. keep [Proof Ladder](proof-ladder.md) nearby
+5. enter the capstone through [Capstone Map](../capstone/capstone-map.md)
 
-Modules 04 to 06 turn the basic graph into something survivable:
+## Good stopping point
 
-- CLI and include behavior stay legible under pressure
-- portability, modeled inputs, and failure hygiene become explicit design work
-- generated files and multi-output rules get real publication boundaries
+Stop when you can answer two questions clearly:
 
-### Reusable build surfaces
-
-Modules 07 to 08 move from one honest build to a reusable build system:
-
-- layered includes and build APIs stop large repositories from becoming private languages
-- release and publication contracts define what downstream systems may trust
-
-### Incident and governance judgment
-
-Modules 09 to 10 finish the course where long-lived build systems actually fail:
-
-- incidents become observable and reviewable instead of superstitious
-- migration and governance decisions stay tied to proof, not preference
-
-## How The Capstone Fits
-
-- Modules 01 to 03 explain the capstone's graph truth, convergence checks, and selftest discipline.
-- Modules 04 to 06 explain its failure modeling, portability boundaries, and generated-file handling.
-- Modules 07 to 08 explain its layered `mk/` architecture, public targets, and release surfaces.
-- Modules 09 to 10 explain its incident bundles, migration judgment, and stewardship rules.
-
-## Support Pages To Keep Open
-
-- [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
-- [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
-- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
-- [Command Guide](../capstone/command-guide.md) when you need the right command surface
-- [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) when you need to size or route proof correctly
-- [Capstone Map](../capstone/capstone-map.md) when you want the repository route by module
-
-## Honest Expectation
-
-If you rush, the course will feel like a pile of edge cases. If you read it in order and
-keep the capstone in view, the later modules should feel like consequences of earlier
-graph and publication decisions rather than unrelated advanced tricks.
-
-## Best Three Entry Commands
-
-```sh
-make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-make test
-make PROGRAM=reproducible-research/deep-dive-make inspect
-```
-
-Use `gmake` inside `capstone/` on macOS, where `/usr/bin/make` is not GNU Make 4.3+.
-
-[Back to top](#top)
+- which surface should answer the next question
+- why the heavier surfaces would be premature right now
