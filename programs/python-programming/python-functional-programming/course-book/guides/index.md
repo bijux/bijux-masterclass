@@ -20,50 +20,51 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this guide shelf exists to answer a named
+pressure, not to become a second table of contents. Read the second diagram as the guide
+loop: arrive with one question, open the matching route, then leave with one smaller and
+more honest next move.
 
-This directory collects the durable learner guides for the course. The course home
-explains what the course teaches. The guides explain how to study it, how to compare your
-work with the reference states, and when to cross into the dedicated `capstone/` shelf
-without guessing.
+This directory collects the durable learner guides for the course. Use it when the course
+home tells you the promise, but you still need help choosing the right pace, proof
+surface, or capstone bridge.
 
-## Read These First
+## Choose one lane
 
-- [Start Here](start-here.md) for the shortest honest entry route
-- [Course Guide](course-guide.md) for the module arc and support-page roles
-- [Foundations Reading Plan](foundations-reading-plan.md) for a lower-density route through Modules 01 to 03
-- [FuncPipe RAG Primer](funcpipe-rag-primer.md) for the smallest capstone-domain vocabulary needed to study the course
-- [Outcomes and Proof Map](outcomes-and-proof-map.md) for the explicit course alignment between learning goals, activities, and proof
-- [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
-- [Orientation Overview](../module-00-orientation/index.md) for the full course shape
-- [Course Orientation](../module-00-orientation/course-orientation.md) and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md) for the reading rhythm
+| If your pressure is... | Best page | Then go to... |
+| --- | --- | --- |
+| I need the shortest honest entry route. | [Start Here](start-here.md) | [Course Guide](course-guide.md) |
+| I want a lighter first pass through the semantic floor. | [Foundations Reading Plan](foundations-reading-plan.md) | [Module Promise Map](module-promise-map.md) |
+| I need to know what each module is supposed to change. | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
+| My question is already practical. | [Engineering Question Map](engineering-question-map.md) | the owning module or [Proof Matrix](proof-matrix.md) |
+| I need to connect learning goals to proof. | [Outcomes and Proof Map](outcomes-and-proof-map.md) | [Proof Matrix](proof-matrix.md) |
+| The capstone domain still feels unfamiliar. | [FuncPipe RAG Primer](funcpipe-rag-primer.md) | [FuncPipe Capstone Guide](../capstone/index.md) |
+| I am resuming after a break. | [History Guide](history-guide.md) | [Return Map](../module-00-orientation/return-map.md) |
 
-## Use These For Study Planning
+## Use the shelf by job
 
-- [Module Dependency Map](module-dependency-map.md) when you need the sequence explained
-- [Module Promise Map](module-promise-map.md) when you want the promise and evidence route for each module
-- [Module Checkpoints](module-checkpoints.md) when you need an honest bar for moving on
-- [Engineering Question Map](engineering-question-map.md) when your pressure is practical and you need the owning module route
-- [Practice Map](practice-map.md) when you want the rehearsal loop in one place
-- [History Guide](history-guide.md) when you want `_history` and module worktree comparisons
+| Job | Best page |
+| --- | --- |
+| understand the module arc and support-page roles | [Course Guide](course-guide.md) |
+| see the sequence justified | [Module Dependency Map](module-dependency-map.md) |
+| check the promise and evidence route for one module | [Module Promise Map](module-promise-map.md) |
+| decide whether you are ready to move on | [Module Checkpoints](module-checkpoints.md) |
+| rehearse the module-to-proof loop | [Practice Map](practice-map.md) |
+| route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
+| compare current work with generated history surfaces | [History Guide](history-guide.md) |
+| hold the teaching bar steady | [Learning Contract](learning-contract.md) |
 
-## Use These For Commands And Proof
+## Cross into the capstone deliberately
 
-- [Command Guide](../capstone/command-guide.md) for the executable surface
-- [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence
-- [Review Checklist](../reference/review-checklist.md), [Functional Anti-Pattern Atlas](../reference/anti-pattern-atlas.md), [Boundary Review Prompts](../reference/boundary-review-prompts.md), and [Self-Review Prompts](../reference/self-review-prompts.md) when you need a stable review bar
-
-## Use These For Capstone Reading
-
-- [FuncPipe Capstone Guide](../capstone/index.md) for the capstone’s role in the course
-- [Capstone Map](../capstone/capstone-map.md) for the module-to-repository route
-- [Capstone File Guide](../capstone/capstone-file-guide.md) for package-first reading
-- [Capstone Test Guide](../capstone/capstone-test-guide.md) for test-first reading
-- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for review prompts
-- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for boundary ownership
-- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for the human review story
-- [Capstone Proof Guide](../capstone/capstone-proof-guide.md) for verification depth
-- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for change placement
+| If you need... | Best page |
+| --- | --- |
+| the capstone's role in the course | [FuncPipe Capstone Guide](../capstone/index.md) |
+| the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
+| a package-first reading route | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| a test-first reading route | [Capstone Test Guide](../capstone/capstone-test-guide.md) |
+| boundary ownership and package roles | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
+| review prompts and extension placement | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) and [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
+| verification depth and saved proof | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
 
 ## Keep The Layout Stable
 
@@ -72,6 +73,12 @@ without guessing.
 - `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable standards and checklist shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc
+
+## Stop here when
+
+- you can name the one guide that matches your current pressure
+- you know whether your next move is module reading, capstone reading, or proof
+- you have resisted opening five support pages at once
 
 ## Directory glossary
 
