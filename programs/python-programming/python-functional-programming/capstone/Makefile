@@ -32,11 +32,17 @@ $(VENV_PY):
 venv: $(VENV_PY) ## Create the local virtual environment
 
 install: venv ## Install development dependencies
-	$(VENV_PIP) install -e '.[dev]' || ( \
-		rm -rf $(VENV) && \
-		$(MAKE) venv && \
-		$(VENV_PIP) install -e '.[dev]' \
-	)
+	@set -e; \
+	$(VENV_PIP) install -e '.[dev]' || { \
+		rm -rf $(VENV); \
+		$(MAKE) venv; \
+		$(VENV_PIP) install -e '.[dev]'; \
+	}; \
+	test -x $(RUFF) && test -x $(MYPY) && test -x $(PYTEST) && test -x $(HATCH) || { \
+		rm -rf $(VENV); \
+		$(MAKE) venv; \
+		$(VENV_PIP) install -e '.[dev]'; \
+	}
 
 test: install ## Run the test suite
 	$(PYTEST) -q
