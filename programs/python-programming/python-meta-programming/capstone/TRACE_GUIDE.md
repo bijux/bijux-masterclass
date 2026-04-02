@@ -40,4 +40,5 @@ goal is to show exactly what the wrapper contributes and what it leaves alone.
 
 - read [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md) for the fixed trace inputs
 - read [TEST_GUIDE.md](TEST_GUIDE.md) when you want the closest proof file
+- read [ACTION_GUIDE.md](ACTION_GUIDE.md) when the wrapper contract itself is still fuzzy
 - read [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when you want to understand why `pager` is the best trace example

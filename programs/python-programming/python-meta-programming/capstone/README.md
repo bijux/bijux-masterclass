@@ -67,6 +67,7 @@ make proof
 - `SCENARIO_GUIDE.md` for the shipped demo and trace contracts
 - `DEFINITION_TIME_GUIDE.md` for the class-definition sequence before runtime invocation
 - `FIELD_GUIDE.md` for descriptor-backed configuration ownership
+- `ACTION_GUIDE.md` for decorator-backed action ownership
 - `ARCHITECTURE.md` for ownership boundaries
 - `PLUGIN_CATALOG.md` for the concrete adapters and why each one exists
 - `PUBLIC_API_GUIDE.md` for the supported package surface

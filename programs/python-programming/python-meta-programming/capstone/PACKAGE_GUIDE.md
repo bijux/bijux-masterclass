@@ -63,6 +63,9 @@ order needs a sequence view before the file-by-file route.
 Read [FIELD_GUIDE.md](FIELD_GUIDE.md) when `fields.py` is the main pressure and you want
 the descriptor contract isolated from the rest of the runtime.
 
+Read [ACTION_GUIDE.md](ACTION_GUIDE.md) when `actions.py` is the main pressure and you
+want the wrapper contract isolated from the rest of the runtime.
+
 Read [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when the framework is clear but the concrete
 adapter differences still need a purpose-driven explanation.
 
