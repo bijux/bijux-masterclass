@@ -23,12 +23,32 @@ with p.open("rb") as f:
 print(h.hexdigest())
 PY
 }
+
+hash_normalized_summary() {
+  "${PYTHON_BIN}" - <<'PY' "$1"
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+def normalize(value):
+    if isinstance(value, dict):
+        return {k: normalize(v) for k, v in value.items() if k != "path"}
+    if isinstance(value, list):
+        return [normalize(item) for item in value]
+    return value
+
+payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+normalized = json.dumps(normalize(payload), sort_keys=True, separators=(",", ":"))
+print(hashlib.sha256(normalized.encode("utf-8")).hexdigest())
+PY
+}
 run_once() {
   local cores="$1"
   local outdir="${OUT_BASE}/run_${cores}"
   mkdir -p "${outdir}"
   snakemake --snakefile Snakefile --profile "${PROFILE}" --cores "${cores}" --config results_dir="${outdir}/results" publish_dir="${outdir}/publish" logs_dir="${outdir}/logs" benchmarks_dir="${outdir}/benchmarks" >/dev/null
-  hash_file "${outdir}/publish/v1/summary.json"
+  hash_normalized_summary "${outdir}/publish/v1/summary.json"
 }
 # Lint should be clean (contract hygiene).
 snakemake --snakefile Snakefile --lint >/dev/null
@@ -40,7 +60,7 @@ if [[ "${h1}" != "${h4}" ]]; then
   echo " cores=4: ${h4}"
   exit 1
 fi
-echo "OK: deterministic publish/summary.json across cores (sha256=${h1})"
+echo "OK: deterministic normalized publish/v1/summary.json across cores (sha256=${h1})"
 
 # Drift detection test
 echo "Testing drift detection..."
