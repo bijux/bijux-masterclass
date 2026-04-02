@@ -101,6 +101,9 @@ failure teaching material third.
 The walkthrough bundle is written to `artifacts/walkthrough/reproducible-research/deep-dive-make/`.
 Each generated bundle now includes a `manifest.json` inventory so review can start from
 an explicit file list instead of a guessed one.
+Use `make contract-audit` when the narrower question is "what is the public contract and
+runtime boundary of this capstone?" That bundle is written to
+`artifacts/audit/reproducible-research/deep-dive-make/contract/`.
 
 [Back to top](#top)
 
@@ -113,6 +116,7 @@ These are the stable entrypoints you can rely on and extend:
 | `help` | Print available targets and key knobs. | Discoverability. |
 | `tour` | Print the recommended walkthrough order. | Faster onboarding into the capstone. |
 | `walkthrough` | Write the learner-facing walkthrough bundle. | Durable first-pass reading route. |
+| `contract-audit` | Write the public-contract review bundle. | Review entrypoints and boundaries before the strongest proof path. |
 | `all` | Build primary artifacts. | Normal build. |
 | `test` | Run runtime checks on outputs. | Functional validation. |
 | `selftest` | Verify build-system invariants (convergence, equivalence, negatives). | Integrity gate. |

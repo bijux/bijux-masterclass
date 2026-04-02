@@ -37,6 +37,7 @@ ARTIFACTS_DIR ?= ../../../../artifacts
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
 SELFTEST_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-make/selftest
+CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
 
 DEPFLAGS := -MMD -MP
@@ -44,7 +45,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report walkthrough \
-        clean submake-demo perf trace-count hardened show-origins FORCE \
+        contract-audit clean submake-demo perf trace-count hardened show-origins FORCE \
         portability-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -124,6 +125,7 @@ help:
 >     '  selftest-report   write the selftest evidence bundle to artifacts/' \
 >     '  tour              print the recommended capstone walkthrough' \
 >     '  walkthrough       build the learner-facing walkthrough bundle' \
+>     '  contract-audit    build the public-contract review bundle' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
 >     '  repro             show how to run the race repro pack' \
 >     '  attest            write build/attest.txt (not a dependency of all)' \
@@ -222,6 +224,31 @@ walkthrough:
 >       '  repro/01-shared-log.mk first concurrency failure route' > "$(WALKTHROUGH_DIR)/bundle-guide.txt"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(WALKTHROUGH_DIR)" --output "$(WALKTHROUGH_DIR)/manifest.json"
 >     @echo "PASS: wrote capstone walkthrough to $(WALKTHROUGH_DIR)"
+
+contract-audit:
+>     rm -rf "$(CONTRACT_AUDIT_DIR)"
+>     mkdir -p "$(CONTRACT_AUDIT_DIR)/tests"
+>     cp README.md "$(CONTRACT_AUDIT_DIR)/README.md"
+>     cp PROOF_GUIDE.md "$(CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     cp Makefile "$(CONTRACT_AUDIT_DIR)/Makefile"
+>     cp $(TST_DIR)/run.sh "$(CONTRACT_AUDIT_DIR)/tests/run.sh"
+>     $(MAKE) help > "$(CONTRACT_AUDIT_DIR)/help.txt"
+>     $(MAKE) portability-audit > "$(CONTRACT_AUDIT_DIR)/portability.txt"
+>     $(MAKE) discovery-audit > "$(CONTRACT_AUDIT_DIR)/discovery.txt"
+>     printf '%s\n' \
+>       'Contract audit route:' \
+>       '  1. Read README.md for the repository claim.' \
+>       '  2. Read help.txt for the stable public targets.' \
+>       '  3. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
+>       '  4. Read portability.txt for the declared runtime boundary.' \
+>       '  5. Read discovery.txt and tests/run.sh for graph and proof discipline.' > "$(CONTRACT_AUDIT_DIR)/route.txt"
+>     printf '%s\n' \
+>       'Review questions:' \
+>       '  Which targets are part of the durable public build contract?' \
+>       '  Which boundaries depend on GNU Make or toolchain features?' \
+>       '  Which discovery assumptions are explicit enough to audit?' > "$(CONTRACT_AUDIT_DIR)/review-questions.txt"
+>     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(CONTRACT_AUDIT_DIR)" --output "$(CONTRACT_AUDIT_DIR)/manifest.json"
+>     @echo "PASS: wrote contract audit to $(CONTRACT_AUDIT_DIR)"
 
 # ---- CI-style entrypoints ----
 lint:
