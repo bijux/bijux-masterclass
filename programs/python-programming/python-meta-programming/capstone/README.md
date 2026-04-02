@@ -93,6 +93,7 @@ make proof
 
 - `make manifest`
 - `make registry`
+- `COMMAND_GUIDE.md`
 - `MANIFEST_GUIDE.md`
 - `REGISTRY_GUIDE.md`
 - `TARGET_GUIDE.md`
@@ -177,6 +178,7 @@ feel fuzzier than the commands.
 ## Best companion guides
 
 - `GUIDE_INDEX.md` for the smallest local route into the doc set
+- `COMMAND_GUIDE.md` for local command selection and artifact locations
 - `ARCHITECTURE.md` for ownership boundaries
 - `PLUGIN_RUNTIME_GUIDE.md` for the timing model
 - `MECHANISM_SELECTION_GUIDE.md` for change placement

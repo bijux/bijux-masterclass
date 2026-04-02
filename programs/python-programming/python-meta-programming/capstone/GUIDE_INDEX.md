@@ -44,6 +44,7 @@ local guide that matches the question you actually have.
 
 ### "Which command should I run first?"
 
+- `COMMAND_GUIDE.md`
 - `TARGET_GUIDE.md`
 - `README.md`
 
@@ -78,7 +79,7 @@ local guide that matches the question you actually have.
 
 1. `README.md`
 2. `ARCHITECTURE.md`
-3. `TARGET_GUIDE.md`
+3. `COMMAND_GUIDE.md`
 4. `PACKAGE_GUIDE.md`
 
 That route gives the learner the project promise, the ownership model, the command route,
