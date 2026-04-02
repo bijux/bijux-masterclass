@@ -60,6 +60,9 @@ discipline third, concrete plugin behavior fourth, and proof surfaces last.
 Read [DEFINITION_TIME_GUIDE.md](DEFINITION_TIME_GUIDE.md) when the metaclass and descriptor
 order needs a sequence view before the file-by-file route.
 
+Read [CONSTRUCTOR_GUIDE.md](CONSTRUCTOR_GUIDE.md) when the main question is how declared
+fields become the concrete plugin constructor and visible call signature.
+
 Read [FIELD_GUIDE.md](FIELD_GUIDE.md) when `fields.py` is the main pressure and you want
 the descriptor contract isolated from the rest of the runtime.
 

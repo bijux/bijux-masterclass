@@ -70,6 +70,7 @@ make proof
 - `ACTION_GUIDE.md` for decorator-backed action ownership
 - `REGISTRY_GUIDE.md` for deterministic class registration and duplicate protection
 - `MANIFEST_GUIDE.md` for observational export of fields, actions, and plugin contracts
+- `CONSTRUCTOR_GUIDE.md` for metaclass-generated plugin constructors and signatures
 - `ARCHITECTURE.md` for ownership boundaries
 - `PLUGIN_CATALOG.md` for the concrete adapters and why each one exists
 - `PUBLIC_API_GUIDE.md` for the supported package surface
@@ -89,7 +90,7 @@ make proof
 
 - Observation modules: start with `make manifest`, `MANIFEST_GUIDE.md`, `make registry`, and `PROOF_GUIDE.md`
 - Decorator modules: inspect `src/incident_plugins/actions.py` and the runtime tests
-- Descriptor modules: inspect `src/incident_plugins/fields.py` and `tests/test_fields.py`
+- Descriptor modules: inspect `src/incident_plugins/fields.py`, `CONSTRUCTOR_GUIDE.md`, and `tests/test_fields.py`
 - Metaclass module: inspect `src/incident_plugins/framework.py` and `tests/test_registry.py`
 - Governance and mastery: return to `make inspect`, `make verify-report`, and the saved `artifacts/` bundles
 

@@ -50,5 +50,6 @@ before you reason about invocation.
 ## Best companion guides
 
 - read [PLUGIN_RUNTIME_GUIDE.md](PLUGIN_RUNTIME_GUIDE.md) when the terms are still fuzzy
+- read [CONSTRUCTOR_GUIDE.md](CONSTRUCTOR_GUIDE.md) when generated `__init__` and signature behavior needs its own explanation
 - read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when you want the file route for the same sequence
 - read [PROOF_GUIDE.md](PROOF_GUIDE.md) when you want the command route after the sequence is clear
