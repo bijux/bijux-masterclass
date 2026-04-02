@@ -35,6 +35,23 @@ the course in one place:
 - metaclass-driven registration and generated constructors
 - introspection-driven manifest export for tooling and debugging
 
+## Start here
+
+Use the smallest honest route for the question you have:
+
+- Want to inspect the public runtime shape without execution? Run `make manifest` or `make registry`.
+- Want to inspect one concrete field or action contract? Run `make field` or `make action`.
+- Want one full learner-facing review bundle? Run `make inspect` or `make tour`.
+- Want executable confirmation? Run `make verify-report`, `make proof`, or `make confirm`.
+
+If you are new to this capstone, the best first route is:
+
+1. Run `make manifest`.
+2. Read `PLUGIN_RUNTIME_GUIDE.md`.
+3. Read `ARCHITECTURE.md`.
+4. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
+5. Read the matching tests.
+
 ## What it models
 
 - a `PluginMeta` metaclass that registers concrete plugins by group and stable name
@@ -55,39 +72,63 @@ make confirm
 Or use the saved review routes:
 
 ```bash
+make manifest
+make registry
+make plugin
+make field
+make action
+make signatures
+make demo
+make trace
 make inspect
 make tour
 make verify-report
 make proof
 ```
 
-## Read it in this order
+## Read it by question
 
-- `PLUGIN_RUNTIME_GUIDE.md` for the vocabulary and timing model
-- `SCENARIO_GUIDE.md` for the shipped demo and trace contracts
-- `DEFINITION_TIME_GUIDE.md` for the class-definition sequence before runtime invocation
-- `FIELD_GUIDE.md` for descriptor-backed configuration ownership
-- `ACTION_GUIDE.md` for decorator-backed action ownership
-- `REGISTRY_GUIDE.md` for deterministic class registration and duplicate protection
-- `MANIFEST_GUIDE.md` for observational export of fields, actions, and plugin contracts
-- `CONSTRUCTOR_GUIDE.md` for metaclass-generated plugin constructors and signatures
-- `ARCHITECTURE.md` for ownership boundaries
-- `PLUGIN_CATALOG.md` for the concrete adapters and why each one exists
-- `PUBLIC_API_GUIDE.md` for the supported package surface
-- `TRACE_GUIDE.md` for the invocation-history review route
-- `BUNDLE_GUIDE.md` for the saved review routes and bundle inventory story
-- `BUNDLE_MANIFEST_GUIDE.md` for exact saved-bundle inventory review
-- `MECHANISM_SELECTION_GUIDE.md` for choosing between descriptor, decorator, metaclass, plugin, and CLI changes
-- `SCENARIO_SELECTION_GUIDE.md` for choosing the smallest honest capstone route
-- `TOUR.md` for a guided file-by-file walk
-- `PROOF_GUIDE.md` for the repeatable verification route
-- `PACKAGE_GUIDE.md` for the code-reading route
-- `SOURCE_GUIDE.md` for exact file, class, and function routing
-- `TEST_GUIDE.md` for the proof-reading route
-- `TARGET_GUIDE.md` and `INSPECTION_GUIDE.md` for the public review surface
-- `EXTENSION_GUIDE.md` for the safest change-placement route
-- `src/incident_plugins/` for the implementation
-- `tests/` for the proof surface
+### "What can I inspect without running business behavior?"
+
+- `make manifest`
+- `make registry`
+- `MANIFEST_GUIDE.md`
+- `REGISTRY_GUIDE.md`
+- `TARGET_GUIDE.md`
+
+### "Where do wrappers, fields, and class creation live?"
+
+- `ARCHITECTURE.md`
+- `PACKAGE_GUIDE.md`
+- `SOURCE_GUIDE.md`
+- `src/incident_plugins/actions.py`
+- `src/incident_plugins/fields.py`
+- `src/incident_plugins/framework.py`
+
+### "What does one concrete plugin look like?"
+
+- `make plugin`
+- `make field`
+- `make action`
+- `make signatures`
+- `PLUGIN_CATALOG.md`
+- `CONSTRUCTOR_GUIDE.md`
+
+### "How do I review the full learner-facing route?"
+
+- `make inspect`
+- `make tour`
+- `INSPECTION_GUIDE.md`
+- `WALKTHROUGH_GUIDE.md`
+- `TOUR.md`
+
+### "How do I prove the runtime still works?"
+
+- `make verify-report`
+- `make proof`
+- `make confirm`
+- `TEST_GUIDE.md`
+- `PROOF_GUIDE.md`
 
 ## Read it by course stage
 
@@ -108,17 +149,22 @@ all interact here, so the implementation has to stay honest about:
 - how signatures survive wrappers
 - how registries stay deterministic and resettable in tests
 
-## Layout
+## Repository layout
 
 - `src/incident_plugins/` contains the framework and built-in plugins.
+- `src/incident_plugins/framework.py` owns registration, generated constructors, and manifest export.
+- `src/incident_plugins/fields.py` owns descriptor-backed field contracts.
+- `src/incident_plugins/actions.py` owns wrapper-backed action contracts.
+- `src/incident_plugins/plugins.py` owns concrete delivery adapters.
 - `tests/` contains executable verification for descriptors, registration, and runtime manifests.
 - `ARCHITECTURE.md`, `TOUR.md`, `PROOF_GUIDE.md`, and the local guide set turn the capstone into a learner-facing review surface.
 
 ## Review routes
 
+- `make manifest` and `make registry` inspect the public runtime shape without invoking plugin behavior.
+- `make plugin`, `make field`, `make action`, and `make signatures` isolate one concrete public contract at a time.
+- `make demo` and `make trace` inspect one realistic runtime behavior and its recorded history.
 - `make inspect` writes the learner-facing inspection bundle with manifest and registry evidence.
-- `make field` isolates one descriptor-backed public field contract from the CLI surface.
-- `make action` isolates one decorator-backed public action contract from the CLI surface.
 - `make tour` writes the learner-facing walkthrough bundle with manifest, registry, demo, and trace outputs.
 - `make verify-report` writes the executable verification report bundle with pytest output and public-surface evidence.
 - `make confirm` runs the strongest local executable confirmation route.
@@ -126,6 +172,14 @@ all interact here, so the implementation has to stay honest about:
 
 Read [PLUGIN_RUNTIME_GUIDE.md](PLUGIN_RUNTIME_GUIDE.md) first when the runtime terms still
 feel fuzzier than the commands.
+
+## Best companion guides
+
+- `ARCHITECTURE.md` for ownership boundaries
+- `PLUGIN_RUNTIME_GUIDE.md` for the timing model
+- `MECHANISM_SELECTION_GUIDE.md` for change placement
+- `SCENARIO_SELECTION_GUIDE.md` for smallest-route selection
+- `EXTENSION_GUIDE.md` for safe evolution
 
 ## Definition of done
 
