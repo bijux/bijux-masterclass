@@ -138,13 +138,31 @@ Use this if your role is auditability, release, or long-lived system ownership.
 ## Recommended Reading Path
 
 1. Read Modules 01 to 10 in order.
-2. Use the capstone lightly at first, then heavily from Modules 04 to 09.
-3. Re-run proof commands as you go instead of trusting prose summaries.
-4. Treat Module 10 as the finish of the program, not as optional appendix material.
+2. Use support pages to keep the course legible instead of treating them as appendix material.
+3. Use the capstone lightly at first, then heavily from Modules 04 to 09.
+4. Re-run proof commands as you go instead of trusting prose summaries.
+5. Treat Module 10 as the finish of the program, not as optional appendix material.
 
 If you are totally new to DVC, spend extra time in Modules 01 and 02 before rushing into
 pipelines or experiments. If you already use DVC in production, Modules 07 to 10 will be
 the fastest route to operational value.
+
+---
+
+## Support Pages By Milestone
+
+Use these pages when you reach each milestone:
+
+| Milestone | Best support pages | Why these pages matter |
+| --- | --- | --- |
+| before Module 01 | `start-here.md`, `learning-contract.md`, `module-dependency-map.md` | establish the learner route and the pedagogical boundaries |
+| Modules 01-02 | `state-glossary.md`, `authority-map.md` | keep identity, authority, and layer language precise |
+| Modules 03-05 | `practice-map.md`, `command-guide.md`, `proof-matrix.md` | connect pipeline and metric concepts to executable proof |
+| Modules 06-09 | `capstone-map.md`, `capstone-file-guide.md`, `readme-capstone.md` | move from concept to repository inspection without losing the teaching thread |
+| Module 10 and later review | `completion-rubric.md`, `capstone-review-worksheet.md`, `capstone-extension-guide.md` | assess the course and evolve the repository without weakening the contract |
+
+This keeps the support surfaces on the main learner route instead of making them feel
+optional.
 
 ---
 
@@ -188,7 +206,15 @@ Enter the capstone at three deliberate moments:
 If the capstone ever feels larger than the concept you are studying, return to the module
 and restore the smaller state model first.
 
-Use the capstone to keep answering one question: when a result is challenged months later,
+Use this page sequence when you enter the capstone:
+
+1. [`readme-capstone.md`](readme-capstone.md)
+2. [`capstone-map.md`](capstone-map.md)
+3. [`capstone-file-guide.md`](capstone-file-guide.md)
+4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
+5. `make -C capstone confirm` when you want the strongest built-in proof route
+
+Keep using the capstone to answer one question: when a result is challenged months later,
 which exact state can the repository recover, compare, and prove?
 
 [Back to top](#top)
