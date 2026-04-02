@@ -24,6 +24,16 @@ Use this guide when you want the shortest path from a metaprogramming claim to t
 that actually proves it. The goal is not to admire coverage. The goal is to know what
 kind of pressure each test file is meant to catch.
 
+## Start by claim
+
+| If the claim is about... | Start here | Escalate only if needed |
+| --- | --- | --- |
+| class-definition-time registration and manifest ownership | `tests/test_registry.py` | `tests/test_cli.py` |
+| descriptor coercion, defaults, and per-instance storage | `tests/test_fields.py` | `tests/test_runtime.py` |
+| runtime plugin creation and action history | `tests/test_runtime.py` | `tests/test_cli.py` |
+| public command behavior and learner-facing CLI promises | `tests/test_cli.py` | `make confirm` |
+| saved review inventory stability | `tests/test_bundle_manifest.py` | `make verify-report` |
+
 ## Recommended reading order
 
 1. `tests/test_registry.py`
@@ -58,3 +68,8 @@ invocation third, and public CLI proof last.
 - reading only the concrete plugin tests and missing definition-time behavior
 - treating metaclass behavior as untestable or too indirect to verify
 - forgetting to update the right proof surface when a public command changes
+
+## Good stopping point
+
+Stop when you can name one test file that proves the claim in front of you and one
+clear reason you would need a stronger route.
