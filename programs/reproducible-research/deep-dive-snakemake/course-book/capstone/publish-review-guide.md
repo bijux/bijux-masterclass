@@ -32,7 +32,7 @@ stable published contract and how is it defended?"
 ## Recommended Route
 
 1. Read [Capstone File Guide](capstone-file-guide.md).
-2. Run `make -C capstone verify-report` or the course-level equivalent.
+2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`.
 3. Compare the report bundle with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Proof Matrix](../guides/proof-matrix.md).
 
 [Back to top](#top)

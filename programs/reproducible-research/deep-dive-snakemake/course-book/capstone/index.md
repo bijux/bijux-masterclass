@@ -47,11 +47,11 @@ course’s strongest claims become runnable:
 ## Core commands
 
 ```bash
-make -C capstone walkthrough
-make -C capstone wf-dryrun
-make -C capstone verify
-make -C capstone confirm
-make -C capstone tour
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-wf-dryrun
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm
 ```
 
 ## Study questions

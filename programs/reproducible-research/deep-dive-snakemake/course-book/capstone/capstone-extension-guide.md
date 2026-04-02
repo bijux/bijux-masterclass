@@ -77,10 +77,10 @@ the capstone reading order to answer where the next change belongs.
 
 After any meaningful capstone change, rerun:
 
-1. `make -C capstone walkthrough`
-2. `make -C capstone wf-dryrun`
-3. `make -C capstone verify`
-4. `make -C capstone tour`
+1. `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`
+2. `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-wf-dryrun`
+3. `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`
+4. `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour`
 
 If any of those results become harder to explain, the repository likely got worse even if
 it still runs.

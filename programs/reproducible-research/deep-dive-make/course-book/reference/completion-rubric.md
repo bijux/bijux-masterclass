@@ -66,7 +66,7 @@ Completion does not require memorizing the capstone. It does require using it co
 
 The learner should be able to:
 
-* run `make -C capstone selftest` and explain what it proves
+* run `make PROGRAM=reproducible-research/deep-dive-make test` and explain what it proves
 * identify at least one hidden input modeled in the capstone
 * identify at least one repro and describe the failure class it teaches
 * explain why `attest` is separated from artifact identity

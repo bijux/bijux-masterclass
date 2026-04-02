@@ -40,10 +40,10 @@ belongs.
 
 | If the job is... | Start here | Do not start with |
 | --- | --- | --- |
-| first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `gmake -C capstone confirm` |
-| public-contract review | `make PROGRAM=reproducible-research/deep-dive-make inspect` | `gmake -C capstone proof` |
-| build-system proof | `make PROGRAM=reproducible-research/deep-dive-make test` | `gmake -C capstone repro` |
-| steward-level review | `make PROGRAM=reproducible-research/deep-dive-make proof` | random `gmake -C capstone` exploration |
+| first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` |
+| public-contract review | `make PROGRAM=reproducible-research/deep-dive-make inspect` | `make PROGRAM=reproducible-research/deep-dive-make proof` |
+| build-system proof | `make PROGRAM=reproducible-research/deep-dive-make test` | `make PROGRAM=reproducible-research/deep-dive-make capstone-discovery-audit` |
+| steward-level review | `make PROGRAM=reproducible-research/deep-dive-make proof` | random `make PROGRAM=reproducible-research/deep-dive-make capstone-*` escalation |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` |
 
 ## Repository root
