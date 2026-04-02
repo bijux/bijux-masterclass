@@ -83,10 +83,10 @@ Use this snapshot when you need the fastest sense of what the modules are doing:
 - [Module 04](module-04-pipelines-as-truthful-dags/index.md) turns pipelines into truthful, inspectable execution graphs.
 - [Module 05](module-05-metrics-parameters-and-meaning/index.md) explains why parameters and metrics are semantic contracts, not just values.
 - [Module 06](module-06-experiments-without-chaos/index.md) formalizes experiments as controlled deviations instead of history damage.
-- [Module 07](module-07.md) turns collaboration and CI into enforceable social contracts.
-- [Module 08](module-08.md) explains retention, recovery, and long-term survivability under time pressure.
-- [Module 09](module-09.md) defines promotion, release contracts, and the evidence needed for downstream trust.
-- [Module 10](module-10.md) finishes with migration, governance, anti-patterns, and DVC tool boundaries.
+- [Module 07](module-07-collaboration-ci-and-social-contracts/index.md) turns collaboration and CI into enforceable social contracts.
+- [Module 08](module-08-production-scale-and-incident-survival/index.md) explains retention, recovery, and long-term survivability under time pressure.
+- [Module 09](module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md) defines promotion, release contracts, and the evidence needed for downstream trust.
+- [Module 10](module-10-migration-governance-anti-patterns-and-dvc-tool-boundaries/index.md) finishes with migration, governance, anti-patterns, and DVC tool boundaries.
 - [Capstone Guide](guides/readme-capstone.md) explains what the executable repository proves.
 - [Capstone Map](guides/capstone-map.md) shows which repository surfaces to inspect for each module.
 

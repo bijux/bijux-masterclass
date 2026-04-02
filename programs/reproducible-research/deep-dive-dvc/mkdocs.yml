@@ -57,7 +57,7 @@ nav:
   - "Module 04: Pipelines as Truthful DAGs": module-04-pipelines-as-truthful-dags/index.md
   - "Module 05: Metrics, Parameters, and Meaning": module-05-metrics-parameters-and-meaning/index.md
   - "Module 06: Experiments Without Chaos": module-06-experiments-without-chaos/index.md
-  - "Module 07: Collaboration, CI, and Social Contracts": module-07.md
-  - "Module 08: Production, Scale, and Incident Survival": module-08.md
-  - "Module 09: Promotion and Auditability": module-09.md
-  - "Module 10: Mastery": module-10.md
+  - "Module 07: Collaboration, CI, and Social Contracts": module-07-collaboration-ci-and-social-contracts/index.md
+  - "Module 08: Production, Scale, and Incident Survival": module-08-production-scale-and-incident-survival/index.md
+  - "Module 09: Promotion and Auditability": module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md
+  - "Module 10: Mastery": module-10-migration-governance-anti-patterns-and-dvc-tool-boundaries/index.md
