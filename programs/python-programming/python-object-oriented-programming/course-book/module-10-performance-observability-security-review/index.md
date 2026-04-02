@@ -83,8 +83,8 @@ made the system understandable in the first place.
 
 ## Operational audit route
 
-1. Start with `capstone/docs/INSPECTION_GUIDE.md` and `capstone/docs/TARGET_GUIDE.md`.
-2. Compare those learner-facing routes with `capstone/docs/PROOF_GUIDE.md`.
+1. Start with [Capstone Walkthrough](../capstone/capstone-walkthrough.md) and [Command Guide](../capstone/command-guide.md).
+2. Compare those learner-facing routes with [Capstone Proof Guide](../capstone/capstone-proof-guide.md).
 3. Only then inspect the implementation surfaces that make the operational claim plausible.
 
 This route keeps the final module honest: operational hardening should improve confidence,

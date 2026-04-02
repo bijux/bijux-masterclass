@@ -84,10 +84,10 @@ test count.
 
 | If the claim is about... | Start with | Then compare |
 | --- | --- | --- |
-| lifecycle and invariant authority | `capstone/docs/TEST_GUIDE.md` and lifecycle tests | `capstone/docs/PROOF_GUIDE.md` |
-| replaceable policy behavior | evaluation tests | `policies.py` and `PACKAGE_GUIDE.md` |
-| learner-facing use cases | application or demo tests | `TOUR.md` and `TARGET_GUIDE.md` |
-| runtime or repository boundaries | runtime or unit-of-work tests | `ARCHITECTURE.md` and `EXTENSION_GUIDE.md` |
+| lifecycle and invariant authority | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) and lifecycle tests | [Capstone Review Checklist](../capstone/capstone-review-checklist.md) |
+| replaceable policy behavior | evaluation tests | `policies.py` and [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| learner-facing use cases | application or demo tests | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) and [Command Guide](../capstone/command-guide.md) |
+| runtime or repository boundaries | runtime or unit-of-work tests | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone File Guide](../capstone/capstone-file-guide.md) |
 
 ## If verification still feels abstract
 

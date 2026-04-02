@@ -83,7 +83,7 @@ This module is about finding the boundary between those extremes.
 
 ## First capstone pass for this module
 
-1. Read `capstone/docs/ARCHITECTURE.md`.
+1. Read [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md).
 2. Inspect `src/service_monitoring/model.py`.
 3. Inspect `src/service_monitoring/read_models.py` and `src/service_monitoring/projections.py`.
 4. Use `make inspect` or the lifecycle tests only after you can already name the authoritative boundary.

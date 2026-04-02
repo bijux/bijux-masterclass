@@ -80,7 +80,7 @@ than as a later concern owned by "infrastructure people."
 
 ## Review route for failure ownership
 
-1. Inspect `capstone/docs/ARCHITECTURE.md` and `capstone/docs/EXTENSION_GUIDE.md`.
+1. Inspect [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone File Guide](../capstone/capstone-file-guide.md).
 2. Read `src/service_monitoring/runtime.py` and `src/service_monitoring/repository.py`.
 3. Inspect the unit-of-work and runtime test surfaces before escalating to the strongest proof route.
 
