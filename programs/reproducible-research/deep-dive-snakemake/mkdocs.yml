@@ -59,13 +59,13 @@ nav:
   - "Module 03: Production Operation":
       - Overview: module-03-production-operations-and-policy-boundaries/index.md
   - "Module 04: Scaling Boundaries":
-      - Overview: module-04.md
+      - Overview: module-04-scaling-workflows-and-interface-boundaries/index.md
   - "Module 05: Rule Boundaries":
-      - Overview: module-05.md
+      - Overview: module-05-software-boundaries-and-reproducible-rules/index.md
   - "Module 06: Publish Contracts":
-      - Overview: module-06.md
+      - Overview: module-06-publishing-and-downstream-contracts/index.md
   - "Module 07: Workflow Architecture":
-      - Overview: module-07.md
+      - Overview: module-07-workflow-architecture-and-file-apis/index.md
   - "Module 08: Operating Contexts":
       - Overview: module-08.md
   - "Module 09: Incident Response":

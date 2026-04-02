@@ -72,10 +72,10 @@ and [`reference/index.md`](reference/index.md) when you want the stable review s
 - [Module 01](module-01-file-contracts-and-the-workflow-dag/index.md) defines the semantic floor: file contracts, rebuild truth, wildcards, and publishing discipline.
 - [Module 02](module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md) explains dynamic DAGs, integrity, environments, and performance patterns.
 - [Module 03](module-03-production-operations-and-policy-boundaries/index.md) turns profiles, retries, staging, and governance into operational contracts.
-- [Module 04](module-04.md) explains modularity, interface boundaries, CI gates, and executor-proof semantics.
-- [Module 05](module-05.md) teaches software stacks, scripts, wrappers, and reproducible rule boundaries.
-- [Module 06](module-06.md) teaches versioned publishing, reports, and downstream workflow contracts.
-- [Module 07](module-07.md) teaches workflow architecture, modules, file APIs, and reusable boundaries.
+- [Module 04](module-04-scaling-workflows-and-interface-boundaries/index.md) explains modularity, interface boundaries, CI gates, and executor-proof semantics.
+- [Module 05](module-05-software-boundaries-and-reproducible-rules/index.md) teaches software stacks, scripts, wrappers, and reproducible rule boundaries.
+- [Module 06](module-06-publishing-and-downstream-contracts/index.md) teaches versioned publishing, reports, and downstream workflow contracts.
+- [Module 07](module-07-workflow-architecture-and-file-apis/index.md) teaches workflow architecture, modules, file APIs, and reusable boundaries.
 - [Module 08](module-08.md) deepens profiles, executors, storage, and staging as operating-context boundaries.
 - [Module 09](module-09.md) teaches performance, observability, and workflow incident response.
 - [Module 10](module-10.md) finishes with governance, migration, anti-patterns, and tool-boundary judgment.
