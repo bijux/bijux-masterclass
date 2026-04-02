@@ -4,28 +4,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Proof Ladder"]
-  capstone["Capstone targets"]
-
-  family --> program --> section --> page
-  page -.routes into.-> capstone
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Proof Ladder"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  question["Start with the question"] --> smallest["Choose the smallest honest proof"]
-  smallest --> inspect["Inspect the evidence"]
-  inspect --> escalate["Escalate only if the question is still open"]
-  escalate --> confidence["Reach confidence without cargo-cult overkill"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This page fixes a recurring problem: the course has enough proof routes that learners can
 easily overreach. They run the strongest command first, get buried in evidence, and lose

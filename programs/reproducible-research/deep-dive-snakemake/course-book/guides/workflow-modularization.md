@@ -1,29 +1,25 @@
 # Workflow Modularization
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  guide["Workflow Modularization"]
-  snakefile["Single Snakefile"]
-  includes["Included rule files"]
-  modules["Workflow modules"]
-  helpers["Scripts and package code"]
-
-  guide --> snakefile
-  guide --> includes
-  guide --> modules
-  guide --> helpers
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Workflow Modularization"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  ask["What kind of reuse do you need?"] --> boundary["Find the ownership boundary"]
-  boundary --> level["Choose one modularization level"]
-  level --> review["Check what the level must not hide"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when a workflow is growing and the main question is not "can we split it?"
 but "which split keeps the workflow legible?"

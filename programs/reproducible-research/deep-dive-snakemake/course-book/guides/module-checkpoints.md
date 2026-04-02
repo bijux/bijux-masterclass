@@ -4,28 +4,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Module Checkpoints"]
-  review["Learner review"]
-
-  family --> program --> section --> page
-  page -.drives.-> review
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Module Checkpoints"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  module["Finish a module"] --> checkpoint["Check the non-negotiable outcomes"]
-  checkpoint --> proof["Run the smallest honest proof route"]
-  proof --> decide["Decide whether to advance or revisit"]
-  decide --> next["Move to the next module with less drift"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This page is the missing study contract at the end of each module. It gives a human bar
 for readiness instead of assuming that reading the prose once means the concept is

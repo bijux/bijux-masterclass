@@ -4,23 +4,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  modules["Modules 01-10"] --> walkthrough["Capstone Walkthrough"]
-  walkthrough --> bundle["capstone walkthrough bundle"]
-  bundle --> review["Repository review and next proof steps"]
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Walkthrough"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  module["Current module"] --> walkthrough_cmd["Run the walkthrough"]
-  walkthrough_cmd --> inspect["Inspect rule surface and dry-run"]
-  inspect --> compare["Compare with the module claim"]
-  compare --> deepen["Move to tour or confirm when needed"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when you want the capstone as a guided first-contact repository tour rather
 than as a fully executed proof bundle.

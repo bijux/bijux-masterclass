@@ -4,22 +4,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  module["Modules 03 and 08"] --> guide["Profile Audit Guide"]
-  guide --> local["capstone/PROFILE_AUDIT_GUIDE.md"]
-  local --> bundle["profile audit bundle"]
+flowchart TD
+  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Profile Audit Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  question["Is this workflow meaning or execution policy?"] --> inspect["Inspect profile files and dry-runs"]
-  inspect --> compare["Compare operating contexts"]
-  compare --> decide["Decide whether the boundary is clean"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when the question is about local, CI, and scheduler execution contexts
 rather than about rule contracts alone.
