@@ -31,6 +31,7 @@ nav:
       - "Authority Map": authority-map.md
       - "State Glossary": state-glossary.md
       - "Practice Map": practice-map.md
+      - "Command Guide": command-guide.md
   - Capstone Route:
       - "Capstone Guide": readme-capstone.md
       - "Capstone Map": capstone-map.md
