@@ -36,6 +36,16 @@ then into descriptors, metaclasses, and finally runtime governance.
 - Keep the capstone open while reading so each mechanism stays attached to one executable surface.
 - Use the course guides when you need route help and the reference shelf when you need review standards.
 
+## Staged maps
+
+### [First-Contact Map](first-contact-map.md)
+
+Use this when you are starting the course or refreshing the foundations.
+
+- Modules 01 to 03
+- runtime objects, safe observation, signatures, provenance, and evidence
+- the minimum route for understanding why later runtime hooks should not feel magical
+
 ## Route by runtime question
 
 | If your current question is... | Start with | Then |

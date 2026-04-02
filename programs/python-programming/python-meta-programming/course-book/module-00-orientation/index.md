@@ -65,6 +65,7 @@ This ordering matters because metaprogramming only becomes trustworthy when you 
 Use these pages with this module when you want the course shape to stay visible:
 
 - [Course Map](course-map.md) for the whole ten-module arc
+- [First-Contact Map](first-contact-map.md) for the minimum honest route into the foundations
 
 ## What the capstone proves
 
