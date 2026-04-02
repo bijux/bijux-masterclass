@@ -65,6 +65,7 @@ nav:
       - Value Objects versus Entities: module-02-design-and-layering/value-objects-versus-entities.md
       - Semantic Types over Raw Primitives: module-02-design-and-layering/semantic-types-over-raw-primitives.md
       - Services versus Stateful Entities: module-02-design-and-layering/services-versus-stateful-entities.md
+      - Factories, Dependency Injection, and Composition Roots: module-02-design-and-layering/factories-dependency-injection-and-composition-roots.md
       - Domain, Application, and Infrastructure Layers: module-02-design-and-layering/domain-application-and-infrastructure-layers.md
       - Inheritance and Fragile Base Classes: module-02-design-and-layering/inheritance-and-fragile-base-classes.md
       - Cooperative Inheritance, MRO, and Mixins: module-02-design-and-layering/cooperative-inheritance-mro-and-mixins.md
