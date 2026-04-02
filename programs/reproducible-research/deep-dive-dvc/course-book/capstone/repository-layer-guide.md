@@ -36,7 +36,7 @@ actually reading.
 
 | Layer | Main surfaces | Responsibility |
 | --- | --- | --- |
-| course-facing contract | `capstone/README.md`, `capstone/docs/TOUR.md`, `course-book/capstone/index.md` | explain what the repository is trying to prove |
+| course-facing contract | [DVC Capstone Guide](index.md), [Capstone Map](capstone-map.md), `course-book/capstone/index.md` | explain what the repository is trying to prove |
 | declared workflow | `capstone/dvc.yaml`, `capstone/params.yaml`, `capstone/pyproject.toml` | declare the intended execution graph and control surface |
 | recorded workflow state | `capstone/dvc.lock` | record the exact state transition after execution |
 | implementation | `capstone/src/incident_escalation_capstone/` | implement the stages the workflow declares |
@@ -53,7 +53,7 @@ actually reading.
 
 Use this sequence the first time:
 
-1. read `capstone/README.md` to understand the repository claim
+1. read [DVC Capstone Guide](index.md) to understand the repository claim
 2. read `capstone/dvc.yaml` and `capstone/params.yaml` to inspect the declared contract
 3. read `capstone/dvc.lock` to inspect recorded execution evidence
 4. inspect `capstone/src/incident_escalation_capstone/` only after the declared graph is clear

@@ -36,16 +36,16 @@ file level.
 
 | File | Why it matters |
 | --- | --- |
-| `capstone/README.md` | defines the repository contract and the proof questions it is trying to answer |
-| `capstone/docs/ARCHITECTURE.md` | explains which files own declaration, execution, promotion, and verification |
+| [DVC Capstone Guide](index.md) | defines the repository contract and the proof questions it is trying to answer |
+| [Capstone Architecture Guide](capstone-architecture-guide.md) | explains which files own declaration, execution, promotion, and verification |
 | `capstone/dvc.yaml` | declares the pipeline graph and stage boundaries |
 | `capstone/dvc.lock` | records executed state and declared evidence |
 | `capstone/params.yaml` | defines the parameter surface that controls comparable runs |
 | `capstone/Makefile` | exposes the learner-facing verification and recovery targets |
-| `capstone/docs/EXPERIMENT_GUIDE.md` | explains how to inspect comparable experiment changes without mutating the baseline story |
-| `capstone/docs/RECOVERY_GUIDE.md` | explains what the restore drill proves and what it does not prove |
-| `capstone/docs/RELEASE_REVIEW_GUIDE.md` | explains how to review the promoted boundary as a downstream contract |
-| `capstone/docs/TOUR.md` | explains the proof bundle generated for learners and reviewers |
+| [Experiment Review Guide](experiment-review-guide.md) | explains how to inspect comparable experiment changes without mutating the baseline story |
+| [Recovery Review Guide](recovery-review-guide.md) | explains what the restore drill proves and what it does not prove |
+| [Release Review Guide](release-review-guide.md) | explains how to review the promoted boundary as a downstream contract |
+| [DVC Capstone Guide](index.md) | explains the proof bundle generated for learners and reviewers |
 | `capstone/publish/v1/manifest.json` | demonstrates the promoted release evidence boundary |
 
 [Back to top](#top)
@@ -71,13 +71,13 @@ file level.
 
 ## Best Reading Order
 
-1. `capstone/README.md`
+1. [DVC Capstone Guide](index.md)
 2. `capstone/dvc.yaml`
 3. `capstone/dvc.lock`
 4. `capstone/params.yaml`
 5. `capstone/Makefile`
-6. `capstone/docs/EXPERIMENT_GUIDE.md`, `capstone/docs/RECOVERY_GUIDE.md`, and `capstone/docs/RELEASE_REVIEW_GUIDE.md`
-7. `capstone/docs/TOUR.md`
+6. [Experiment Review Guide](experiment-review-guide.md), [Recovery Review Guide](recovery-review-guide.md), and [Release Review Guide](release-review-guide.md)
+7. [DVC Capstone Guide](index.md)
 8. `capstone/publish/v1/manifest.json`
 
 That order keeps the learner anchored in contract, then declared graph, then recorded
