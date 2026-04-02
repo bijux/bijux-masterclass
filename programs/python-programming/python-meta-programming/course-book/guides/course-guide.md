@@ -49,13 +49,13 @@ The course has four linked layers:
 ### Runtime mechanics
 
 - [Modules 01-03](../module-01-runtime-object-model/index.md) through [module-03-inspect-signatures-and-provenance/index.md](../module-03-inspect-signatures-and-provenance/index.md) explain objects, introspection, and `inspect`.
-- [Modules 04-06](../module-04-function-wrappers-and-decorators/index.md) through [module-06.md](../module-06.md) explain decorators, typing discipline, and the bridge to attribute control.
-- [Modules 07-09](../module-07.md) through [module-09.md](../module-09.md) explain descriptors, framework-grade patterns, and metaclasses.
+- [Modules 04-06](../module-04-function-wrappers-and-decorators/index.md) through [module-06-class-customization-before-metaclasses/index.md](../module-06-class-customization-before-metaclasses/index.md) explain decorators, typing discipline, and the bridge to attribute control.
+- [Modules 07-09](../module-07-descriptor-mechanics-and-lookup/index.md) through [module-09-metaclass-design-and-class-creation/index.md](../module-09-metaclass-design-and-class-creation/index.md) explain descriptors, framework-grade patterns, and metaclasses.
 
 ### Governance
 
-- [Module 10](../module-10.md) defines red lines for dynamic execution and high-power runtime hooks.
-- [Module 11](../module-11.md) closes the course with mastery questions instead of sequel marketing.
+- [Module 10](../module-10-runtime-governance-and-mastery/index.md) defines red lines for dynamic execution and high-power runtime hooks.
+- [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md) closes the course with explicit exit criteria instead of sequel marketing.
 
 ### Capstone proof
 

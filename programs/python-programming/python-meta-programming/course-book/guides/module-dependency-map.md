@@ -38,10 +38,10 @@ before earlier boundaries are stable.
 
 - [Module 01](../module-01-runtime-object-model/index.md) and [Module 02](../module-02-safe-runtime-observation/index.md) teach the object and namespace model.
 - [Module 03](../module-03-inspect-signatures-and-provenance/index.md) turns inspection into a verification tool instead of passive curiosity.
-- [Modules 04-06](../module-04-function-wrappers-and-decorators/index.md) through [module-06.md](../module-06.md) move from function wrappers to class-level transformation.
-- [Modules 07-08](../module-07.md) through [module-08.md](../module-08.md) explain attribute control as a first-class design surface.
-- [Module 09](../module-09.md) only makes sense after the learner can compare it to descriptors and class decorators.
-- [Modules 10-11](../module-10.md) through [module-11.md](../module-11.md) turn mechanics into review judgment.
+- [Modules 04-06](../module-04-function-wrappers-and-decorators/index.md) through [module-06-class-customization-before-metaclasses/index.md](../module-06-class-customization-before-metaclasses/index.md) move from function wrappers to class-level transformation.
+- [Modules 07-08](../module-07-descriptor-mechanics-and-lookup/index.md) through [module-08-descriptor-systems-and-validation/index.md](../module-08-descriptor-systems-and-validation/index.md) explain attribute control as a first-class design surface.
+- [Module 09](../module-09-metaclass-design-and-class-creation/index.md) only makes sense after the learner can compare it to descriptors and class decorators.
+- [Module 10](../module-10-runtime-governance-and-mastery/index.md) and [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md) turn mechanics into review judgment.
 
 ## Safe skip rules
 

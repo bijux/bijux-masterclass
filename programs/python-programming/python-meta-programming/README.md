@@ -34,7 +34,7 @@ This course is not for:
 
 1. Start with `course-book/guides/start-here.md`.
 2. Read `course-book/guides/course-guide.md` and `course-book/guides/learning-contract.md`.
-3. Move through Modules `00` to `11` in order.
+3. Move through Modules `00` to `10` in order, then finish with the mastery review.
 4. Keep `course-book/guides/capstone-map.md` and `capstone/README.md` open while reading.
 
 ## What the capstone proves

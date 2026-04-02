@@ -42,9 +42,9 @@ nav:
       - "03 — inspect, Signatures, and Provenance": module-03-inspect-signatures-and-provenance/index.md
       - "04 — Function Wrappers and Decorators": module-04-function-wrappers-and-decorators/index.md
       - "05 — Decorator Design and Typing": module-05-decorator-design-and-typing/index.md
-      - "06 — Class Decorators and Properties": module-06.md
-      - "07 — Descriptors": module-07.md
-      - "08 — Descriptor Patterns": module-08.md
-      - "09 — Metaclasses and Class Creation": module-09.md
-      - "10 — Runtime Governance and Responsibility": module-10.md
-      - "11 — Mastery Review": module-11.md
+      - "06 — Class Customization Before Metaclasses": module-06-class-customization-before-metaclasses/index.md
+      - "07 — Descriptor Mechanics and Lookup": module-07-descriptor-mechanics-and-lookup/index.md
+      - "08 — Descriptor Systems and Validation": module-08-descriptor-systems-and-validation/index.md
+      - "09 — Metaclass Design and Class Creation": module-09-metaclass-design-and-class-creation/index.md
+      - "10 — Runtime Governance and Mastery": module-10-runtime-governance-and-mastery/index.md
+      - "10 Review — Mastery Review": module-10-runtime-governance-and-mastery/mastery-review.md

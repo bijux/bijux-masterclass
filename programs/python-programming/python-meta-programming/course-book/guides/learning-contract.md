@@ -28,7 +28,7 @@ value out of it.
 
 ## Non-negotiable study rules
 
-1. Read the course in order from [Module 00](../module-00-orientation/index.md) to [Module 11](../module-11.md).
+1. Read the course in order from [Module 00](../module-00-orientation/index.md) to [Module 10](../module-10-runtime-governance-and-mastery/index.md), then close with [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md).
 2. Keep the [Capstone Guide](capstone.md) and [Capstone Map](capstone-map.md) open while reading.
 3. After every module, identify the lower-power alternative that would solve some of the same problems.
 4. Do not copy a pattern into production code until you can explain its debugging cost.

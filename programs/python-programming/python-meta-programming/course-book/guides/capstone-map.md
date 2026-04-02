@@ -44,9 +44,9 @@ named home inside it.
 
 - [Module 03](../module-03-inspect-signatures-and-provenance/index.md): inspect signatures and docs from the manifest surface
 - [Modules 04-05](../module-04-function-wrappers-and-decorators/index.md): compare raw action methods with wrapped action metadata
-- [Modules 07-08](../module-07.md): inspect descriptor declaration, storage, and validation flow
-- [Module 09](../module-09.md): inspect registration and class-definition-time invariants
-- [Modules 10-11](../module-10.md): inspect whether the public surface remains observable and governable
+- [Modules 07-08](../module-07-descriptor-mechanics-and-lookup/index.md): inspect descriptor declaration, storage, and validation flow
+- [Module 09](../module-09-metaclass-design-and-class-creation/index.md): inspect registration and class-definition-time invariants
+- [Module 10](../module-10-runtime-governance-and-mastery/index.md) and [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md): inspect whether the public surface remains observable and governable
 
 ## Local review guides
 

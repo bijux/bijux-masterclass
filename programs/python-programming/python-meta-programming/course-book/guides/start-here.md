@@ -46,14 +46,14 @@ and easier to justify than a simpler alternative.
 
 1. Read [Course Guide](course-guide.md).
 2. Read [Module 00](../module-00-orientation/index.md).
-3. Read [Module 04](../module-04-function-wrappers-and-decorators/index.md), [Module 07](../module-07.md), and [Module 09](../module-09.md).
+3. Read [Module 04](../module-04-function-wrappers-and-decorators/index.md), [Module 07](../module-07-descriptor-mechanics-and-lookup/index.md), and [Module 09](../module-09-metaclass-design-and-class-creation/index.md).
 4. Cross-check the [Capstone Guide](capstone.md).
 
 ### Route 2: Full mastery path
 
 1. Read [Course Guide](course-guide.md).
 2. Read [Learning Contract](learning-contract.md).
-3. Read every module in order from [Module 00](../module-00-orientation/index.md) through [Module 11](../module-11.md).
+3. Read every module in order from [Module 00](../module-00-orientation/index.md) through [Module 10](../module-10-runtime-governance-and-mastery/index.md), then finish with [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md).
 4. Keep [Capstone Map](capstone-map.md) open while reading.
 
 ## What success looks like
