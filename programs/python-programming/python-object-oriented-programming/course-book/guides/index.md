@@ -34,6 +34,7 @@ module tree can stay focused on long-lived content.
 - [Course Guide](course-guide.md) and [Learning Contract](learning-contract.md) for the study route
 - [Module Promise Map](module-promise-map.md) for what each module truly promises before you read it
 - [Module Checkpoints](module-checkpoints.md) for the module-end exit bar
+- [Pressure Routes](pressure-routes.md) and [Proof Ladder](proof-ladder.md) for route and proof selection
 - [Module Dependency Map](module-dependency-map.md) and [Practice Map](practice-map.md) for pacing and review
 - [Command Guide](command-guide.md) for the executable route
 - [Capstone](capstone.md), [Capstone Map](capstone-map.md), and [Capstone File Guide](capstone-file-guide.md) for the capstone reading path
