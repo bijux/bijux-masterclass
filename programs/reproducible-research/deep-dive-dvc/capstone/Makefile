@@ -188,23 +188,35 @@ release-audit: verify ## Build a focused release-boundary audit bundle
 	@rm -rf $(RELEASE_AUDIT_DIR)
 	@mkdir -p $(RELEASE_AUDIT_DIR)/publish-v1
 	@cp PUBLISH_CONTRACT.md $(RELEASE_AUDIT_DIR)/PUBLISH_CONTRACT.md
+	@cp DATA_PROFILE_GUIDE.md $(RELEASE_AUDIT_DIR)/DATA_PROFILE_GUIDE.md
+	@cp MODEL_GUIDE.md $(RELEASE_AUDIT_DIR)/MODEL_GUIDE.md
+	@cp PREDICTION_REVIEW_GUIDE.md $(RELEASE_AUDIT_DIR)/PREDICTION_REVIEW_GUIDE.md
 	@cp publish/v1/manifest.json $(RELEASE_AUDIT_DIR)/publish-v1/manifest.json
+	@cp publish/v1/data-profile.json $(RELEASE_AUDIT_DIR)/publish-v1/data-profile.json
 	@cp publish/v1/metrics.json $(RELEASE_AUDIT_DIR)/publish-v1/metrics.json
+	@cp publish/v1/model.json $(RELEASE_AUDIT_DIR)/publish-v1/model.json
 	@cp publish/v1/params.yaml $(RELEASE_AUDIT_DIR)/publish-v1/params.yaml
+	@cp publish/v1/predictions.csv $(RELEASE_AUDIT_DIR)/publish-v1/predictions.csv
 	@cp publish/v1/report.md $(RELEASE_AUDIT_DIR)/publish-v1/report.md
 	@cp dvc.lock $(RELEASE_AUDIT_DIR)/dvc.lock
+	@$(INSPECT) manifest-summary --publish publish/v1 > $(RELEASE_AUDIT_DIR)/manifest-summary.json
+	@$(INSPECT) profile-summary --publish publish/v1 > $(RELEASE_AUDIT_DIR)/profile-summary.json
+	@$(INSPECT) model-summary --publish publish/v1 > $(RELEASE_AUDIT_DIR)/model-summary.json
+	@$(INSPECT) threshold-review --publish publish/v1 > $(RELEASE_AUDIT_DIR)/threshold-review.json
+	@$(INSPECT) release-summary --publish publish/v1 > $(RELEASE_AUDIT_DIR)/release-summary.json
 	@printf '%s\n' \
 		'Release audit route:' \
-		'  1. Read publish-v1/manifest.json for the promoted inventory.' \
-		'  2. Read PUBLISH_CONTRACT.md for meaning and trust limits.' \
-		'  3. Read publish-v1/params.yaml and publish-v1/metrics.json together.' \
-		'  4. Read publish-v1/report.md for the human-readable summary.' \
+		'  1. Read manifest-summary.json and publish-v1/manifest.json for the promoted inventory.' \
+		'  2. Read profile-summary.json, model-summary.json, and threshold-review.json for population, scoring, and borderline decision context.' \
+		'  3. Read PUBLISH_CONTRACT.md, DATA_PROFILE_GUIDE.md, MODEL_GUIDE.md, and PREDICTION_REVIEW_GUIDE.md for meaning and trust limits.' \
+		'  4. Read publish-v1/params.yaml, publish-v1/metrics.json, and publish-v1/report.md together.' \
 		'  5. Compare dvc.lock against the promoted contract when you need recorded provenance.' > $(RELEASE_AUDIT_DIR)/route.txt
 	@printf '%s\n' \
 		'Release questions:' \
 		'  Which promoted files are safe for downstream trust?' \
 		'  Which review claims still depend on repository-internal evidence?' \
-		'  Which promoted metrics and params remain semantically meaningful later?' > $(RELEASE_AUDIT_DIR)/review-questions.txt
+		'  Which promoted metrics and params remain semantically meaningful later?' \
+		'  Which promoted records or borderline decisions still need human scrutiny?' > $(RELEASE_AUDIT_DIR)/review-questions.txt
 	@echo "audit_dir=$(RELEASE_AUDIT_DIR)" > $(RELEASE_AUDIT_DIR)/bundle.env
 	@echo "publish_dir=$(RELEASE_AUDIT_DIR)/publish-v1" >> $(RELEASE_AUDIT_DIR)/bundle.env
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RELEASE_AUDIT_DIR) --output $(RELEASE_AUDIT_DIR)/manifest.json
