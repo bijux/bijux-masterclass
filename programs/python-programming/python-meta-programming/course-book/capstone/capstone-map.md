@@ -29,11 +29,11 @@ named home inside it.
 
 | If you need to know... | Start with | Then inspect |
 | --- | --- | --- |
-| what the runtime exposes without execution | `make manifest` and `make registry` | `framework.py` and `capstone/docs/PLUGIN_RUNTIME_GUIDE.md` |
-| where wrapper behavior really lives | `capstone/docs/ACTION_GUIDE.md` | `actions.py` and `tests/test_runtime.py` |
-| where field ownership and validation live | `capstone/docs/FIELD_GUIDE.md` | `fields.py` and `tests/test_fields.py` |
-| whether class creation is honest | `capstone/docs/REGISTRY_GUIDE.md` | `framework.py` and `tests/test_registry.py` |
-| which route to hand to another reviewer | `capstone/docs/REVIEW_ROUTE_MAP.md` | `make inspect`, `make tour`, or `make verify-report` |
+| what the runtime exposes without execution | `make manifest` and `make registry` | `framework.py`, `manifest.json`, and [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| where wrapper behavior really lives | [Capstone Architecture Guide](capstone-architecture-guide.md) | `actions.py` and `tests/test_runtime.py` |
+| where field ownership and validation live | [Capstone File Guide](capstone-file-guide.md) | `fields.py` and `tests/test_fields.py` |
+| whether class creation is honest | [Capstone Architecture Guide](capstone-architecture-guide.md) | `framework.py` and `tests/test_registry.py` |
+| which route to hand to another reviewer | [Capstone Walkthrough](capstone-walkthrough.md) | `make inspect`, `make tour`, or `make verify-report` |
 
 ## Mechanism to file map
 
@@ -58,16 +58,16 @@ named home inside it.
 
 - Use [Capstone Architecture Guide](capstone-architecture-guide.md) when you need ownership boundaries before reading implementation detail.
 - Use [Capstone Walkthrough](capstone-walkthrough.md) when you need a guided first pass through commands and files.
-- Use `capstone/docs/PACKAGE_GUIDE.md` when you need a code-reading route.
-- Use `capstone/docs/TEST_GUIDE.md` when you need the shortest proof route.
-- Use `capstone/docs/WALKTHROUGH_GUIDE.md` when you need the public-surface narrative order.
-- Use `capstone/docs/TARGET_GUIDE.md` when you need the smallest honest command.
-- Use `capstone/docs/INSPECTION_GUIDE.md` and `capstone/docs/EXTENSION_GUIDE.md` when the question is review depth or change placement.
+- Use [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
+- Use [Capstone Proof Checklist](capstone-proof-checklist.md) when you need the shortest proof route.
+- Use [Capstone Walkthrough](capstone-walkthrough.md) when you need the public-surface narrative order.
+- Use [Command Guide](command-guide.md) when you need the smallest honest command.
+- Use [Capstone Proof Checklist](capstone-proof-checklist.md) and [Capstone Extension Guide](capstone-extension-guide.md) when the question is review depth or change placement.
 
 ## Practical reading order
 
 1. Start with one public surface such as `manifest`, `registry`, or `trace`.
-2. Read the matching local guide in `capstone/docs/` so the ownership claim is explicit.
+2. Read the matching page in this capstone shelf so the ownership claim is explicit before you widen into repository-local notes.
 3. Read the owning file in `framework.py`, `fields.py`, `actions.py`, or `plugins.py`.
 4. Read the matching tests only after you know what the file is claiming to own.
 5. Escalate to saved bundles only when another reviewer needs the route preserved.

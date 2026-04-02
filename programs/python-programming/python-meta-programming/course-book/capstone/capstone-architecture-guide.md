@@ -69,7 +69,7 @@ metaclass each own one narrow boundary and the CLI exposes those boundaries with
 
 ## Best reading order for the architecture
 
-1. Read `capstone/README.md` to understand the public claim of the project.
+1. Read [Capstone Guide](index.md) to understand the public claim of the project.
 2. Run or inspect `make manifest` and `make registry` to see the public runtime shape first.
 3. Read `src/incident_plugins/framework.py` for the class-creation and manifest boundary.
 4. Read `src/incident_plugins/fields.py` for attribute ownership.

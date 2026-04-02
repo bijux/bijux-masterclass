@@ -30,9 +30,9 @@ than only "having some tests."
 
 Use this when you need one honest pass without reopening the whole runtime:
 
-1. Read `capstone/README.md`.
+1. Read [Capstone Guide](index.md).
 2. Run `make PROGRAM=python-programming/python-meta-programming capstone-tour`.
-3. Read `capstone/docs/PROOF_GUIDE.md`.
+3. Read [Capstone Map](capstone-map.md).
 4. Check one matching test file for the claim under review.
 
 ### Deeper executable pass

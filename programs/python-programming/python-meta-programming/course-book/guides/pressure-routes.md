@@ -57,7 +57,7 @@ Use this route when the core question sounds like:
 Smallest executable follow-up:
 
 - Run `make PROGRAM=python-programming/python-meta-programming capstone-trace`.
-- Read `capstone/docs/TRACE_GUIDE.md`.
+- Read [Capstone Map](../capstone/capstone-map.md) and inspect the saved trace output before widening the review.
 
 ## Route 2: Untangle Attribute Validation and Field Ownership
 
@@ -78,7 +78,7 @@ Use this route when the core question sounds like:
 Smallest executable follow-up:
 
 - From `capstone/`, run `make field`.
-- Read `capstone/docs/FIELD_GUIDE.md`.
+- Read [Capstone File Guide](../capstone/capstone-file-guide.md) so field ownership stays explicit while you inspect `fields.py`.
 
 ## Route 3: Decide Whether a Metaclass Is Actually Justified
 
@@ -99,7 +99,7 @@ Use this route when the core question sounds like:
 Smallest executable follow-up:
 
 - From `capstone/`, run `make registry`.
-- Read `capstone/docs/REGISTRY_GUIDE.md`.
+- Read [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) before deciding the metaclass is justified.
 
 ## Route 4: Inherit a Dynamic Codebase Without Trusting Its Magic
 
@@ -120,7 +120,7 @@ Use this route when the core question sounds like:
 Smallest executable follow-up:
 
 - Run `make PROGRAM=python-programming/python-meta-programming inspect`.
-- Read `capstone/docs/INSPECTION_GUIDE.md`.
+- Read [Capstone Walkthrough](../capstone/capstone-walkthrough.md) so the inspection bundle stays attached to one review route.
 
 ## Route 5: Build a Small Framework Without Teaching the Wrong Lesson
 
@@ -141,7 +141,7 @@ Use this route when the core question sounds like:
 Smallest executable follow-up:
 
 - Run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`.
-- Read `capstone/docs/EXTENSION_GUIDE.md`.
+- Read [Capstone Extension Guide](../capstone/capstone-extension-guide.md) before deciding where a new framework change should land.
 
 ## Success Signal
 
