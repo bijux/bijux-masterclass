@@ -59,13 +59,13 @@ Return to the module first if:
 | --- | --- | --- | --- |
 | 01 Foundations | what makes a graph truthful instead of lucky | `Makefile`, `src/`, `include/` | `make walkthrough` |
 | 02 Scaling | what breaks under `-j` when the graph lies | `repro/`, `mk/objects.mk`, `tests/run.sh` | `make selftest` |
-| 03 Production Practice | how a build proves convergence and equivalence | `tests/run.sh`, `docs/SELFTEST_GUIDE.md` | `make verify-report` |
+| 03 Production Practice | how a build proves convergence and equivalence | `tests/run.sh`, [Capstone Proof Checklist](capstone-proof-checklist.md) | `make verify-report` |
 | 04 Semantics Under Pressure | how precedence and rule choice stay legible | `Makefile`, `mk/rules_eval.mk` | `make inspect` |
 | 05 Hardening | where portability and hidden-input boundaries live | `mk/contract.mk`, `mk/stamps.mk` | `make contract-audit` |
 | 06 Generated Files | how generation enters the graph honestly | `scripts/`, `mk/stamps.mk` | `make proof` |
-| 07 Build Architecture | how layered includes become a public build surface | `mk/*.mk`, `docs/ARCHITECTURE.md` | `make inspect` |
+| 07 Build Architecture | how layered includes become a public build surface | `mk/*.mk`, [Capstone File Guide](capstone-file-guide.md) | `make inspect` |
 | 08 Release Engineering | how release artifacts stay reviewable | `scripts/mkdist.py`, `build/attest.txt` | `make proof` |
-| 09 Incident Response | how failures become inspectable instead of superstitious | `repro/`, `docs/INCIDENT_REVIEW_GUIDE.md` | `make incident-audit` |
+| 09 Incident Response | how failures become inspectable instead of superstitious | `repro/`, [Repro Catalog](repro-catalog.md) | `make incident-audit` |
 | 10 Governance | whether another maintainer could extend or migrate the build safely | `mk/`, `tests/`, `repro/` | `make confirm` |
 
 ## Good stopping point

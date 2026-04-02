@@ -123,8 +123,7 @@ This is where `capstone/repro/` becomes especially useful as a reference for wha
 teaching or debugging repro looks like.
 When you need an executed example instead of a hand-driven repro, use
 `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` and read the
-capstone's local
-[`INCIDENT_REVIEW_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/INCIDENT_REVIEW_GUIDE.md).
+published [Repro Catalog](../capstone/repro-catalog.md).
 
 [Back to top](#top)
 

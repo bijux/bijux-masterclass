@@ -37,10 +37,10 @@ must coexist without hiding responsibility.
 
 | If your question is... | Start here | Then prove it with |
 | --- | --- | --- |
-| what the runtime exposes without execution | [Capstone Map](capstone-map.md) and `capstone/docs/PLUGIN_RUNTIME_GUIDE.md` | `make manifest` or `make registry` |
-| which file owns the mechanism | [Capstone Architecture Guide](capstone-architecture-guide.md) and `capstone/docs/PACKAGE_GUIDE.md` | `capstone/src/incident_plugins/` |
-| which command is the smallest honest proof | [Command Guide](command-guide.md) and `capstone/docs/TARGET_GUIDE.md` | the matching capstone target |
-| how to review the capstone end to end | [Capstone Walkthrough](capstone-walkthrough.md) and `capstone/docs/WALKTHROUGH_GUIDE.md` | `make tour` or `make verify-report` |
+| what the runtime exposes without execution | [Capstone Map](capstone-map.md) and the manifest or registry outputs | `make manifest` or `make registry` |
+| which file owns the mechanism | [Capstone Architecture Guide](capstone-architecture-guide.md) and [Capstone File Guide](capstone-file-guide.md) | `capstone/src/incident_plugins/` |
+| which command is the smallest honest proof | [Command Guide](command-guide.md) and the matching capstone target | the matching capstone target |
+| how to review the capstone end to end | [Capstone Walkthrough](capstone-walkthrough.md) and [Capstone Proof Checklist](capstone-proof-checklist.md) | `make tour` or `make verify-report` |
 
 ## Best route by module stage
 
@@ -71,7 +71,7 @@ This keeps the capstone from becoming a repository tour without a learning contr
 
 ## Best entrypoints
 
-- repository guide: `capstone/README.md`
+- repository guide: [Capstone Map](capstone-map.md)
 - runtime architecture: [Capstone Architecture Guide](capstone-architecture-guide.md)
 - proof route: [Capstone Proof Checklist](capstone-proof-checklist.md)
 - source: `capstone/src/incident_plugins/`

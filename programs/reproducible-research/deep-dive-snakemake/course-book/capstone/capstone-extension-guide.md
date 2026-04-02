@@ -66,8 +66,8 @@ These changes need stronger review:
 * moving analytical meaning into profile or executor-specific settings
 * adding repository structure that buries the visible rule graph under indirection
 
-The local companion for this page is `capstone/docs/EXTENSION_GUIDE.md`. Use it when you want
-the capstone itself to answer where the next change belongs.
+The best companion for this page is [Capstone File Guide](capstone-file-guide.md). Use it when you want
+the capstone reading order to answer where the next change belongs.
 
 [Back to top](#top)
 

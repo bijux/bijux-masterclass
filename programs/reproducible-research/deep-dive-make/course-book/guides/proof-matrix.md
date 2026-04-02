@@ -38,7 +38,7 @@ Use it when you know what concept you care about but want the fastest evidence r
 
 | Claim | Command | File surfaces |
 | --- | --- | --- |
-| the capstone has a bounded first-pass reading route | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `capstone/README.md`, `artifacts/walkthrough/reproducible-research/deep-dive-make/` |
+| the capstone has a bounded first-pass reading route | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `course-book/capstone/index.md`, `artifacts/walkthrough/reproducible-research/deep-dive-make/` |
 | the graph converges after a successful build | `gmake -C capstone selftest` | `capstone/Makefile`, `capstone/tests/run.sh` |
 | parallelism does not change artifact meaning | `gmake -C capstone selftest` | `capstone/tests/run.sh`, `capstone/repro/` |
 | discovery is deterministic | `gmake -C capstone discovery-audit` | `capstone/mk/objects.mk` |
@@ -69,7 +69,7 @@ Use it when you know what concept you care about but want the fastest evidence r
 
 | Question | Best first command | Best first file |
 | --- | --- | --- |
-| where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `capstone/README.md` |
+| where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `course-book/capstone/index.md` |
 | why did this rebuild | `gmake -C capstone --trace all` | `capstone/mk/stamps.mk` |
 | why is `-j` unsafe | `gmake -C capstone selftest` | `capstone/repro/01-shared-log.mk` |
 | where is the build API | `gmake -C capstone help` | `capstone/Makefile` |
