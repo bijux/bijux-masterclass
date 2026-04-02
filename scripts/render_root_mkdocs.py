@@ -115,9 +115,11 @@ def main() -> int:
     config["INHERIT"] = "../mkdocs.shared.yml"
     config["docs_dir"] = "../docs"
     config["site_dir"] = "site/bijux-masterclass"
-    theme = config.get("theme")
-    if isinstance(theme, dict) and theme.get("custom_dir") == "docs/overrides":
-        theme["custom_dir"] = "../docs/overrides"
+    theme = config.setdefault("theme", {})
+    if not isinstance(theme, dict):
+        raise TypeError(f"Unsupported theme configuration type: {type(theme)!r}")
+    theme["custom_dir"] = "../docs/overrides"
+    config["hooks"] = ["../docs/hooks/publish_site_assets.py"]
     OUTPUT_CONFIG.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_CONFIG.write_text(
         yaml.safe_dump(config, allow_unicode=True, sort_keys=False),

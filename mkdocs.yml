@@ -2,21 +2,13 @@ INHERIT: mkdocs.shared.yml
 
 site_name: Bijux Masterclass
 site_description: Unified catalog for the Bijux Masterclass program collection.
+site_author: Bijan Mousavi <bijan@bijux.io>
+site_url: https://bijux.io/bijux-masterclass/
 repo_name: bijux/bijux-masterclass
 repo_url: https://github.com/bijux/bijux-masterclass
 
 docs_dir: docs
 site_dir: artifacts/site/bijux-masterclass
-
-theme:
-  custom_dir: docs/overrides
-
-extra_css:
-  - assets/styles/extra.css
-
-extra_javascript:
-  - https://unpkg.com/mermaid@11.6.0/dist/mermaid.min.js
-  - assets/javascripts/mermaid-init.js
 
 nav:
   - Home: index.md
