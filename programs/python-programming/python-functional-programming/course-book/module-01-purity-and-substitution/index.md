@@ -46,6 +46,7 @@ ornamental instead of necessary.
 - [Small Combinator Library](small-combinator-library.md)
 - [Combinator Laws and Trade-Offs](combinator-laws-and-tradeoffs.md)
 - [Typed Pipelines](typed-pipelines.md)
+- [Typed Pipeline Review](typed-pipeline-review.md)
 - [Isolating Side Effects](isolating-side-effects.md)
 - [Equational Reasoning](equational-reasoning.md)
 - [Idempotent Transforms](idempotent-transforms.md)

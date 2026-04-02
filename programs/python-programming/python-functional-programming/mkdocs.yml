@@ -48,6 +48,7 @@ nav:
       - Small Combinator Library: module-01-purity-and-substitution/small-combinator-library.md
       - Combinator Laws and Trade-Offs: module-01-purity-and-substitution/combinator-laws-and-tradeoffs.md
       - Typed Pipelines: module-01-purity-and-substitution/typed-pipelines.md
+      - Typed Pipeline Review: module-01-purity-and-substitution/typed-pipeline-review.md
       - Isolating Side Effects: module-01-purity-and-substitution/isolating-side-effects.md
       - Equational Reasoning: module-01-purity-and-substitution/equational-reasoning.md
       - Idempotent Transforms: module-01-purity-and-substitution/idempotent-transforms.md
