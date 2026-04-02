@@ -23,6 +23,26 @@ def release_summary(publish_dir: Path) -> dict[str, object]:
     }
 
 
+def profile_summary(publish_dir: Path) -> dict[str, object]:
+    profile = read_json(publish_dir / "data-profile.json")
+    teams = profile["teams"]
+    largest_team = max(teams.items(), key=lambda item: int(item[1]))
+    return {
+        "publish_dir": publish_dir.as_posix(),
+        "raw_rows": int(profile["raw_rows"]),
+        "train_rows": int(profile["train_rows"]),
+        "eval_rows": int(profile["eval_rows"]),
+        "escalated_rows": int(profile["escalated_rows"]),
+        "escalation_rate": float(profile["escalation_rate"]),
+        "feature_count": len(profile["feature_names"]),
+        "team_count": len(teams),
+        "largest_team": {
+            "team": largest_team[0],
+            "rows": int(largest_team[1]),
+        },
+    }
+
+
 def stage_summary(*, pipeline_path: Path, lock_path: Path) -> dict[str, object]:
     pipeline_data = load_params(pipeline_path)
     lock_data = load_params(lock_path)
@@ -142,6 +162,10 @@ def main(argv: list[str] | None = None) -> int:
     release.add_argument("--publish", type=Path, required=True)
     release.set_defaults(handler=_handle_release_summary)
 
+    profile = subparsers.add_parser("profile-summary", help="Render a summary of the promoted data profile.")
+    profile.add_argument("--publish", type=Path, required=True)
+    profile.set_defaults(handler=_handle_profile_summary)
+
     stage = subparsers.add_parser("stage-summary", help="Render a summary of declared and recorded stage contracts.")
     stage.add_argument("--pipeline", type=Path, required=True)
     stage.add_argument("--lock", type=Path, required=True)
@@ -172,6 +196,10 @@ def main(argv: list[str] | None = None) -> int:
 
 def _handle_release_summary(args: argparse.Namespace) -> dict[str, object]:
     return release_summary(args.publish)
+
+
+def _handle_profile_summary(args: argparse.Namespace) -> dict[str, object]:
+    return profile_summary(args.publish)
 
 
 def _handle_stage_summary(args: argparse.Namespace) -> dict[str, object]:

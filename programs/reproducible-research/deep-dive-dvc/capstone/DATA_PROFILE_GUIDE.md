@@ -42,6 +42,9 @@ split, counted, and summarized before trusting evaluation results.
 - whether the threshold is appropriate for release
 - whether the publish bundle alone proves internal provenance
 
+Use `make profile-summary` when you want the promoted population story rendered into one
+reviewable summary before opening the raw JSON.
+
 ## Best companion guides
 
 - read [PUBLISH_CONTRACT.md](PUBLISH_CONTRACT.md) when the next question is why the profile belongs in `publish/v1/`

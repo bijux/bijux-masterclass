@@ -77,6 +77,10 @@ state-summary: verify ## Render the combined declaration, execution, and release
 stage-summary: verify ## Render the declared and recorded stage contract summary
 	@$(INSPECT) stage-summary --pipeline dvc.yaml --lock dvc.lock
 
+.PHONY: profile-summary
+profile-summary: verify ## Render the promoted data profile summary
+	@$(INSPECT) profile-summary --publish publish/v1
+
 .PHONY: release-summary
 release-summary: verify ## Render the promoted release summary
 	@$(INSPECT) release-summary --publish publish/v1
@@ -113,6 +117,7 @@ tour: verify ## Build the learner-facing proof bundle
 	@cp publish/v1/predictions.csv $(TOUR_DIR)/publish-v1/predictions.csv
 	@cp publish/v1/report.md $(TOUR_DIR)/publish-v1/report.md
 	@cp TOUR.md $(TOUR_DIR)/TOUR.md
+	@$(INSPECT) profile-summary --publish publish/v1 > $(TOUR_DIR)/profile-summary.json
 	@$(INSPECT) stage-summary --pipeline dvc.yaml --lock dvc.lock > $(TOUR_DIR)/stage-summary.json
 	@$(INSPECT) state-summary --publish publish/v1 --metrics metrics/metrics.json --params params.yaml --lock dvc.lock > $(TOUR_DIR)/state-summary.json
 	@$(INSPECT) release-summary --publish publish/v1 > $(TOUR_DIR)/release-summary.json
