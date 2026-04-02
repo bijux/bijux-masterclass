@@ -31,6 +31,8 @@ flowchart LR
 The repro pack exists to turn build failures into reviewable teaching surfaces. Use it
 when you want to study one failure class at a time instead of treating concurrency and
 graph defects as random incidents.
+When you want one curated executed example instead of choosing a repro by hand, use
+`make incident-audit` and read `INCIDENT_REVIEW_GUIDE.md`.
 
 ---
 
@@ -61,6 +63,20 @@ Use this route when the repro pack is new:
 4. `repro/04-generated-header.mk` for generated-file truthfulness
 
 That route moves from visible failure into subtler graph-modeling mistakes.
+
+[Back to top](#top)
+
+---
+
+## Incident Bundle Route
+
+Use this when you want a saved executed incident review:
+
+1. Run `make incident-audit`.
+2. Read `INCIDENT_REVIEW_GUIDE.md`.
+3. Read `command.txt`, `run.txt`, and `exit-status.txt`.
+4. Read the copied repro makefile.
+5. Return to `PROOF_GUIDE.md` to match the repair to the real capstone.
 
 [Back to top](#top)
 

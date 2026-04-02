@@ -81,13 +81,19 @@ From this directory (`capstone/`):
 ```sh
 # Linux (GNU Make)
 make selftest
+make inspect
+make verify-report
 ```
 ```sh
 # macOS (install GNU Make first, then use gmake)
 brew install make
 gmake selftest
+gmake inspect
+gmake verify-report
 ```
 A passing `selftest` is the signal that the contract holds: convergence, serial/parallel equivalence, and negative tests designed to detect common defects.
+`inspect` is the fastest bounded review route. `verify-report` preserves the selftest
+result as a durable review bundle.
 [Back to top](#top)
 
 ---
@@ -118,12 +124,13 @@ files can be read in a deliberate order.
 Use this order the first time you enter the capstone:
 
 1. `make walkthrough`
-2. `make help`
-3. read `Makefile`
-4. read `tests/run.sh`
-5. run `make selftest`
-6. read `PROOF_GUIDE.md`
-7. inspect one file under `repro/`
+2. read `WALKTHROUGH_GUIDE.md`
+3. read `TARGET_GUIDE.md`
+4. read `Makefile` and `tests/run.sh`
+5. run `make inspect`
+6. run `make selftest`
+7. read `PROOF_GUIDE.md` and `ARCHITECTURE.md`
+8. inspect one file under `repro/`
 
 That route keeps the learner focused on public contract first, proof harness second, and
 failure teaching material third.
@@ -137,6 +144,8 @@ runtime boundary of this capstone?" That bundle is written to
 Use `make incident-audit` when you want one executed failure bundle instead of a list of
 repro filenames. The default route packages `repro/05-mkdir-race.mk`, and you can point
 it at another repro with `REPRO_CASE=repro/01-shared-log.mk`.
+Use `make profile-audit` when the main question is execution-policy or observability
+boundary. Use `make confirm` when you want the strongest published confirmation route.
 
 [Back to top](#top)
 
@@ -234,6 +243,16 @@ repository?", but "where do I inspect when I need evidence now?"
 
 When a proof surface points you to a generated bundle, inspect that bundle's
 `manifest.json` before you treat it as review evidence.
+
+The local guide set is intentionally small and non-overlapping:
+
+* `WALKTHROUGH_GUIDE.md` for first-pass reading order
+* `TARGET_GUIDE.md` for stable target selection
+* `ARCHITECTURE.md` for layer ownership
+* `SELFTEST_GUIDE.md` for saved selftest evidence
+* `CONTRACT_AUDIT_GUIDE.md` for public-boundary review
+* `INCIDENT_REVIEW_GUIDE.md` for executed failure review
+* `PROFILE_AUDIT_GUIDE.md` for execution-policy review
 
 [Back to top](#top)
 
