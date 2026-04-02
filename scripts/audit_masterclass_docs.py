@@ -22,6 +22,8 @@ SKIP_PARTS = {
     ".mypy_cache",
     ".ruff_cache",
     ".venv",
+    "_history",
+    "all-cores",
     "site",
 }
 SKIP_CAPSTONE_PREFIXES = {
