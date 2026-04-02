@@ -24,6 +24,7 @@ time.
 - `PUBLIC_SURFACE_MAP.md`
 - `PROOF_GUIDE.md`
 - `TEST_READING_MAP.md`
+- `REVIEW_ROUTE_MAP.md`
 - `TOUR.md`
 - `WALKTHROUGH_GUIDE.md`
 
@@ -46,6 +47,7 @@ Choose based on the question you have:
 - "Which command should I run?" -> `COMMAND_GUIDE.md`
 - "What did a command or artifact actually expose?" -> `PUBLIC_SURFACE_MAP.md`
 - "What is the shortest human reading route?" -> `WALKTHROUGH_GUIDE.md`
+- "Which guide and route fit this review pressure?" -> `REVIEW_ROUTE_MAP.md`
 - "Where should a change go?" -> `EXTENSION_GUIDE.md`
 - "How do I prove a package or boundary change?" -> `SOURCE_TO_PROOF_MAP.md`
 
