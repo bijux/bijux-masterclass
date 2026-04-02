@@ -5,6 +5,8 @@ __MACOSX/
 .vscode/
 *.swp
 *~
+*.pyc
+*.pyo
 
 artifacts/
 .venv/
@@ -13,4 +15,11 @@ env/
 site/
 docs/library/
 *.egg-info/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+.benchmarks/
+.snakemake/
 programs/python-programming/python-functional-programming/capstone/_history/
