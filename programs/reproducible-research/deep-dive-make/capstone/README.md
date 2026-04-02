@@ -104,6 +104,9 @@ an explicit file list instead of a guessed one.
 Use `make contract-audit` when the narrower question is "what is the public contract and
 runtime boundary of this capstone?" That bundle is written to
 `artifacts/audit/reproducible-research/deep-dive-make/contract/`.
+Use `make incident-audit` when you want one executed failure bundle instead of a list of
+repro filenames. The default route packages `repro/05-mkdir-race.mk`, and you can point
+it at another repro with `REPRO_CASE=repro/01-shared-log.mk`.
 
 [Back to top](#top)
 
@@ -117,6 +120,7 @@ These are the stable entrypoints you can rely on and extend:
 | `tour` | Print the recommended walkthrough order. | Faster onboarding into the capstone. |
 | `walkthrough` | Write the learner-facing walkthrough bundle. | Durable first-pass reading route. |
 | `contract-audit` | Write the public-contract review bundle. | Review entrypoints and boundaries before the strongest proof path. |
+| `incident-audit` | Write an executed incident review bundle. | Study one failure class with command, output, and repair route together. |
 | `all` | Build primary artifacts. | Normal build. |
 | `test` | Run runtime checks on outputs. | Functional validation. |
 | `selftest` | Verify build-system invariants (convergence, equivalence, negatives). | Integrity gate. |

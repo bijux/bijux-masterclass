@@ -38,14 +38,16 @@ WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
 SELFTEST_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-make/selftest
 CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
+INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
+REPRO_CASE ?= $(REP_DIR)/05-mkdir-race.mk
 
 DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report walkthrough \
-        contract-audit clean submake-demo perf trace-count hardened show-origins FORCE \
+        contract-audit incident-audit clean submake-demo perf trace-count hardened show-origins FORCE \
         portability-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -126,6 +128,7 @@ help:
 >     '  tour              print the recommended capstone walkthrough' \
 >     '  walkthrough       build the learner-facing walkthrough bundle' \
 >     '  contract-audit    build the public-contract review bundle' \
+>     '  incident-audit    build an executed failure review bundle (REPRO_CASE=...)' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
 >     '  repro             show how to run the race repro pack' \
 >     '  attest            write build/attest.txt (not a dependency of all)' \
@@ -249,6 +252,32 @@ contract-audit:
 >       '  Which discovery assumptions are explicit enough to audit?' > "$(CONTRACT_AUDIT_DIR)/review-questions.txt"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(CONTRACT_AUDIT_DIR)" --output "$(CONTRACT_AUDIT_DIR)/manifest.json"
 >     @echo "PASS: wrote contract audit to $(CONTRACT_AUDIT_DIR)"
+
+incident-audit:
+>     rm -rf "$(INCIDENT_AUDIT_DIR)"
+>     mkdir -p "$(INCIDENT_AUDIT_DIR)"
+>     cp "$(REPRO_CASE)" "$(INCIDENT_AUDIT_DIR)/$(notdir $(REPRO_CASE))"
+>     printf '%s\n' "make -f $(REPRO_CASE) -j2 all" > "$(INCIDENT_AUDIT_DIR)/command.txt"
+>     if $(MAKE) -f "$(REPRO_CASE)" -j2 all > "$(INCIDENT_AUDIT_DIR)/run.txt" 2>&1; then status=0; else status=$$?; fi; \
+>       printf 'exit_status=%s\n' "$$status" > "$(INCIDENT_AUDIT_DIR)/exit-status.txt"; \
+>       $(MAKE) -f "$(REPRO_CASE)" clean >/dev/null 2>&1 || true
+>     printf '%s\n' \
+>       'Incident audit route:' \
+>       '  1. Read command.txt for the exact failing invocation.' \
+>       '  2. Read run.txt and exit-status.txt for the observed incident evidence.' \
+>       '  3. Read the copied repro makefile for the dishonest or unsafe pattern.' \
+>       '  4. Read REPRO_GUIDE.md for the repair route back into the course.' \
+>       '  5. Read PROOF_GUIDE.md if you need the matching production proof surface.' > "$(INCIDENT_AUDIT_DIR)/route.txt"
+>     printf '%s\n' \
+>       'Repair surfaces:' \
+>       '  REPRO_GUIDE.md   maps the failure class to the teaching repair pattern' \
+>       '  PROOF_GUIDE.md   maps the repaired claim to the reference build surface' \
+>       '  mk/objects.mk    shows rooted discovery and directory discipline in the real build' \
+>       '  mk/stamps.mk     shows durable state tracking in the real build' > "$(INCIDENT_AUDIT_DIR)/repair-surfaces.txt"
+>     cp REPRO_GUIDE.md "$(INCIDENT_AUDIT_DIR)/REPRO_GUIDE.md"
+>     cp PROOF_GUIDE.md "$(INCIDENT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(INCIDENT_AUDIT_DIR)" --output "$(INCIDENT_AUDIT_DIR)/manifest.json"
+>     @echo "PASS: wrote incident audit to $(INCIDENT_AUDIT_DIR)"
 
 # ---- CI-style entrypoints ----
 lint:
