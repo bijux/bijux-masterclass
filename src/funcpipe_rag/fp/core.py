@@ -1,4 +1,4 @@
-"""Module 05 core ADTs (products + tagged sums) and stable JSON helpers (end-of-Module-08)."""
+"""Module 05 core ADTs (products + tagged sums) and stable JSON helpers (end-of-Module-09)."""
 
 from __future__ import annotations
 

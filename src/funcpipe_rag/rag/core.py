@@ -1,4 +1,4 @@
-"""Core pipelines for the end-of-Module-08 codebase.
+"""Core pipelines for the end-of-Module-09 codebase.
 
 Module 02 established the pure, configurable API shapes.
 Module 03 extends the project with streaming helpers (boundedness, grouping,

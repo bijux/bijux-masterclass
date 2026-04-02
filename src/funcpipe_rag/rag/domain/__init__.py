@@ -1,4 +1,4 @@
-"""Module 05: compositional domain-modeling helpers (end-of-Module-08).
+"""Module 05: compositional domain-modeling helpers (end-of-Module-09).
 
 These ADTs are used in the Module 05 "type-driven design" cores:
 - independent, immutable subsystem records (`ChunkText`, `ChunkMetadata`, `Embedding`)

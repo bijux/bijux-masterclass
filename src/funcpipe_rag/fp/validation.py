@@ -1,4 +1,4 @@
-"""Module 05 Validation: applicative checks that accumulate all errors (end-of-Module-08)."""
+"""Module 05 Validation: applicative checks that accumulate all errors (end-of-Module-09)."""
 
 from __future__ import annotations
 

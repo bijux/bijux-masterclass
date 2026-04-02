@@ -2,7 +2,8 @@
 
 `IOPlan[A]` is a pure *description* of an effect that yields a `Result[A, ErrInfo]`
 when interpreted by the shell via `perform`.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

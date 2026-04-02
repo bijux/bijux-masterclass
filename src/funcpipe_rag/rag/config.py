@@ -1,4 +1,4 @@
-"""Configuration and dependency wiring for the RAG surface (end-of-Module-08).
+"""Configuration and dependency wiring for the RAG surface (end-of-Module-09).
 
 The config-as-data and dependency-wiring patterns are introduced in Module 02
 and extended in Module 03 with streaming entry points.

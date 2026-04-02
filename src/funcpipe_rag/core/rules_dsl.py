@@ -1,4 +1,6 @@
-"""Tiny function-level rules DSL (Modules 02–03)."""
+"""Tiny function-level rules DSL (Modules 02–03).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

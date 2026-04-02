@@ -1,4 +1,4 @@
-"""RAG-specific APIs for the end-of-Module-08 codebase.
+"""RAG-specific APIs for the end-of-Module-09 codebase.
 
 `funcpipe_rag.fp` contains the module-05 type-driven toolkit. The RAG pipeline
 entrypoints live here instead.

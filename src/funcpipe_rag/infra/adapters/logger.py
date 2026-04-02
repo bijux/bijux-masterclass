@@ -1,4 +1,6 @@
-"""Module 07 infra: log sinks (console + test collector)."""
+"""Module 07 infra: log sinks (console + test collector).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

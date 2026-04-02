@@ -1,4 +1,6 @@
-"""Module 07 infra: clocks (real + deterministic test)."""
+"""Module 07 infra: clocks (real + deterministic test).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

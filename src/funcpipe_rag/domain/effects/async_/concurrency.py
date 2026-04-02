@@ -1,4 +1,4 @@
-"""Module 08: AsyncGen concurrency controls (end-of-Module-08).
+"""Module 08: AsyncGen concurrency controls (end-of-Module-09).
 
 This module groups correlated "flow control" primitives:
 - bounded concurrency / backpressure (`async_gen_bounded_map`)

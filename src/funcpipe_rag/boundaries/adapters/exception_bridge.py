@@ -5,7 +5,8 @@ Unexpected failures (bugs) should raise and crash early.
 
 These helpers intentionally focus on *boundary* use: the caller supplies an
 `exc_type` that defines what is considered "expected".
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Module 05 compositional domain model: assemble subsystem ADTs safely (end-of-Module-08; domain-modeling)."""
+"""Module 05 compositional domain model: assemble subsystem ADTs safely (end-of-Module-09; domain-modeling)."""
 
 from __future__ import annotations
 

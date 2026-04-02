@@ -1,4 +1,6 @@
-"""Composable iterator stages and demand fencing (Module 03)."""
+"""Composable iterator stages and demand fencing (Module 03).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

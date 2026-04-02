@@ -1,4 +1,6 @@
-"""Module 07 infra: atomic write-if-absent adapter for idempotent writes."""
+"""Module 07 infra: atomic write-if-absent adapter for idempotent writes.
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

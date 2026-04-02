@@ -1,4 +1,4 @@
-"""RAG pipeline APIs (Module 02–08; end-of-Module-08).
+"""RAG pipeline APIs (Module 02–08; end-of-Module-09).
 
 This module contains the domain-specific core pipeline entry points:
 - a minimal lazy pipeline (`iter_rag`)
@@ -10,14 +10,16 @@ This module contains the domain-specific core pipeline entry points:
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable, Iterator, Sequence
+from itertools import chain
 from typing import TypeVar
 
 from funcpipe_rag.core.rules_dsl import any_doc
 from funcpipe_rag.core.rules_pred import eval_pred
-from funcpipe_rag.fp import StageInstrumentation, ffilter, flatmap, fmap, instrument_stage
 from funcpipe_rag.rag.stages import embed_chunk, structural_dedup_chunks
 from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, DocRule, RawDoc, RagEnv
 from funcpipe_rag.result import Err, Ok, Result
+
+from funcpipe_rag.fp import StageInstrumentation, instrument_stage
 
 from .chunking import gen_chunk_doc
 from .config import RagBoundaryDeps, RagConfig, RagCoreDeps
@@ -54,7 +56,13 @@ def iter_rag(
 
 
 def iter_rag_core(docs: Iterable[RawDoc], config: RagConfig, deps: RagCoreDeps) -> Iterator[Chunk]:
-    """Parametric streaming core: filter (RulesConfig) → clean → chunk → embed."""
+    """Parametric streaming core: filter (RulesConfig) → clean → chunk → embed.
+
+    Module 09 stdlib-first note:
+    - This pipeline is built from stdlib primitives (`filter`, `map`, `itertools.chain`).
+    - Optional tracing/probes are applied via `instrument_stage` only when enabled.
+    - See `course-book/reference/fp-standards.md` for the repo's stdlib-first guidance.
+    """
 
     def keep_rule(doc: RawDoc) -> bool:
         return eval_pred(doc, config.keep.keep_pred)
@@ -66,30 +74,53 @@ def iter_rag_core(docs: Iterable[RawDoc], config: RagConfig, deps: RagCoreDeps) 
     def chunker(doc: CleanDoc) -> Iterable[ChunkWithoutEmbedding]:
         return gen_chunk_doc(doc, config.env)
 
-    kept_stage = instrument_stage(
-        ffilter(keep_rule),
-        stage_name="kept",
-        instrumentation=StageInstrumentation(trace=config.debug.trace_kept),
-    )
-    clean_stage = instrument_stage(
-        fmap(deps.cleaner),
-        stage_name="clean",
-        instrumentation=StageInstrumentation(trace=config.debug.trace_clean),
-    )
+    def _kept(stream: Iterable[RawDoc]) -> Iterator[RawDoc]:
+        return filter(keep_rule, stream)
 
-    chunk_stage = instrument_stage(
-        flatmap(chunker),
-        stage_name="chunks",
-        instrumentation=StageInstrumentation(
-            trace=config.debug.trace_chunks,
-            probe_fn=check_chunk if config.debug.probe_chunks else None,
-        ),
-    )
-    embed_stage = instrument_stage(
-        fmap(deps.embedder),
-        stage_name="embedded",
-        instrumentation=StageInstrumentation(trace=config.debug.trace_embedded),
-    )
+    def _clean(stream: Iterable[RawDoc]) -> Iterator[CleanDoc]:
+        return map(deps.cleaner, stream)
+
+    def _chunk(stream: Iterable[CleanDoc]) -> Iterator[ChunkWithoutEmbedding]:
+        return chain.from_iterable(map(chunker, stream))
+
+    def _embed(stream: Iterable[ChunkWithoutEmbedding]) -> Iterator[Chunk]:
+        return map(deps.embedder, stream)
+
+    kept_stage: Callable[[Iterable[RawDoc]], Iterator[RawDoc]] = _kept
+    clean_stage: Callable[[Iterable[RawDoc]], Iterator[CleanDoc]] = _clean
+    chunk_stage: Callable[[Iterable[CleanDoc]], Iterator[ChunkWithoutEmbedding]] = _chunk
+    embed_stage: Callable[[Iterable[ChunkWithoutEmbedding]], Iterator[Chunk]] = _embed
+
+    if config.debug.trace_kept:
+        kept_stage = instrument_stage(
+            kept_stage,
+            stage_name="kept",
+            instrumentation=StageInstrumentation(trace=True),
+        )
+
+    if config.debug.trace_clean:
+        clean_stage = instrument_stage(
+            clean_stage,
+            stage_name="clean",
+            instrumentation=StageInstrumentation(trace=True),
+        )
+
+    if config.debug.trace_chunks or config.debug.probe_chunks:
+        chunk_stage = instrument_stage(
+            chunk_stage,
+            stage_name="chunks",
+            instrumentation=StageInstrumentation(
+                trace=config.debug.trace_chunks,
+                probe_fn=check_chunk if config.debug.probe_chunks else None,
+            ),
+        )
+
+    if config.debug.trace_embedded:
+        embed_stage = instrument_stage(
+            embed_stage,
+            stage_name="embedded",
+            instrumentation=StageInstrumentation(trace=True),
+        )
 
     stream: Iterable[RawDoc] = docs
     if config.debug.trace_docs:

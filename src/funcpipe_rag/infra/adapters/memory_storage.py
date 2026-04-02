@@ -1,4 +1,6 @@
-"""Module 07 infra: in-memory storage adapter (test double)."""
+"""Module 07 infra: in-memory storage adapter (test double).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

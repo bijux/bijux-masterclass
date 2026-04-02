@@ -1,4 +1,6 @@
-"""Module 07: explicit Session/Tx data and transaction bracketing (domain)."""
+"""Module 07: explicit Session/Tx data and transaction bracketing (domain).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Module 08: AsyncGen – streaming async effect descriptions (end-of-Module-08).
+"""Module 08: AsyncGen – streaming async effect descriptions (end-of-Module-09).
 
 This module groups the "core stream" primitives for Module 08:
 - `AsyncGen[T]`: a replayable thunk returning an async iterator of `Result[T, ErrInfo]`

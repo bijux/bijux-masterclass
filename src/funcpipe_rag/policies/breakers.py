@@ -1,4 +1,4 @@
-"""Short-circuiting and circuit breakers for Result streams (end-of-Module-08)."""
+"""Short-circuiting and circuit breakers for Result streams (end-of-Module-09)."""
 
 from __future__ import annotations
 

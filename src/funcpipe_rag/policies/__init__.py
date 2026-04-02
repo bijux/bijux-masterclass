@@ -1,4 +1,4 @@
-"""Module 04: cross-cutting policies and boundary helpers (end-of-Module-08).
+"""Module 04: cross-cutting policies and boundary helpers (end-of-Module-09).
 
 This package groups the non-domain-specific building blocks that shape how
 pipelines behave at the edges:

@@ -1,4 +1,6 @@
-"""Core helpers used across modules (rules, safety lint, streaming dedup)."""
+"""Core helpers used across modules (rules, safety lint, streaming dedup).
+
+End-of-Module-09 snapshot."""
 
 from .rules_pred import (
     Pred,

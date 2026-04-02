@@ -1,4 +1,6 @@
-"""Sampling helpers for streams (Module 03)."""
+"""Sampling helpers for streams (Module 03).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

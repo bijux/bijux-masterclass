@@ -5,7 +5,8 @@ Module 02 provides a canonical, order-independent deduplication helper
 
 Module 03 introduces a streaming alternative that preserves encounter order:
 the first time an item is seen it is yielded, and later duplicates are skipped.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

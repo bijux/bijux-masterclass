@@ -1,4 +1,4 @@
-"""Domain-owned effect interfaces (end-of-Module-08).
+"""Domain-owned effect interfaces (end-of-Module-09).
 
 The architecture treats these effect descriptions as part of the domain layer:
 - `IOPlan`: deferred, composable IO as pure data

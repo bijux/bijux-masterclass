@@ -1,4 +1,6 @@
-"""Module 08: resilience for AsyncPlan – retry/timeout policies as pure data (domain)."""
+"""Module 08: resilience for AsyncPlan – retry/timeout policies as pure data (domain).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

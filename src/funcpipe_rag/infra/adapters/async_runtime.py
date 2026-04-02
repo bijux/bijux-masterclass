@@ -1,4 +1,6 @@
-"""Module 08 infra: async runtime interpreter (shell-only)."""
+"""Module 08 infra: async runtime interpreter (shell-only).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

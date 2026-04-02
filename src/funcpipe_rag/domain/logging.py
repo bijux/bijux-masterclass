@@ -5,7 +5,8 @@ small helpers that produce `Writer[..., LogEntry]` values.
 
 The Writer container itself is a generic effect encoding and lives in
 `funcpipe_rag.fp.effects.writer`.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

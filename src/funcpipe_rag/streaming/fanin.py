@@ -1,4 +1,6 @@
-"""Fan-in helpers for multiple streaming sources (Module 03)."""
+"""Fan-in helpers for multiple streaming sources (Module 03).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

@@ -1,4 +1,6 @@
-"""Module 06: Container layering helpers (effects; no monad transformers)."""
+"""Module 06: Container layering helpers (effects; no monad transformers).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

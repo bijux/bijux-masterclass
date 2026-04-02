@@ -1,4 +1,4 @@
-"""Result/Option containers for pure, streaming-friendly error handling (end-of-Module-08).
+"""Result/Option containers for pure, streaming-friendly error handling (end-of-Module-09).
 
 Module 06 extends the ADTs with:
 - Canonical instance methods (`map`, `map_err`, `and_then`, `ap`) for lawful composition

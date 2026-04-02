@@ -8,7 +8,8 @@ This package groups the Module-03 helpers by responsibility:
 - groupby contiguity guards
 
 RAG-specific streaming functions live in `funcpipe_rag.rag.streaming_rag`.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

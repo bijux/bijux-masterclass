@@ -1,4 +1,6 @@
-"""Module 07: idempotent effect design for safe retries/replays."""
+"""Module 07: idempotent effect design for safe retries/replays.
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

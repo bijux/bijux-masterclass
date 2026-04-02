@@ -1,4 +1,4 @@
-"""Module 05 error codes and thin ErrInfo re-exports (end-of-Module-08)."""
+"""Module 05 error codes and thin ErrInfo re-exports (end-of-Module-09)."""
 
 from __future__ import annotations
 

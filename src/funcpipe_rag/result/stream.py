@@ -1,4 +1,4 @@
-"""Streaming combinators for Result-valued pipelines (end-of-Module-08)."""
+"""Streaming combinators for Result-valued pipelines (end-of-Module-09)."""
 
 from __future__ import annotations
 

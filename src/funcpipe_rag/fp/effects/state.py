@@ -1,4 +1,6 @@
-"""Module 06: State – explicit, threaded local state without mutation (effects)."""
+"""Module 06: State – explicit, threaded local state without mutation (effects).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

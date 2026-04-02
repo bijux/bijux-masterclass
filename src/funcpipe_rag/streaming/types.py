@@ -1,4 +1,6 @@
-"""Streaming type aliases and small trace helpers (Module 03)."""
+"""Streaming type aliases and small trace helpers (Module 03).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

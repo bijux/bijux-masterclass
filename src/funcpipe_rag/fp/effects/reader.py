@@ -2,7 +2,8 @@
 
 Reader encodes read-only environment access as a pure value:
 `Reader[C, T]` is a function `C -> T` with lawful `map` and `and_then`.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

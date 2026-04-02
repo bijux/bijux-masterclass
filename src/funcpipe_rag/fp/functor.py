@@ -1,4 +1,4 @@
-"""Module 05 functors: curried mapping over Option, Result, and sequences (end-of-Module-08)."""
+"""Module 05 functors: curried mapping over Option, Result, and sequences (end-of-Module-09)."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Module 08: async effect descriptions and combinators (end-of-Module-08).
+"""Module 08: async effect descriptions and combinators (end-of-Module-09).
 
 This subpackage groups all async-first primitives:
 - `AsyncPlan` (single async step as a pure description)
@@ -32,8 +32,19 @@ from .stream import (
     RealSleeper,
     Sleeper,
 )
-from .lifts import lift_sync, lift_sync_gen_with_executor, lift_sync_with_executor
-from .plan import AsyncAction, AsyncPlan, async_bind, async_from_result, async_gather, async_lift, async_map, async_pure
+from .plan import (
+    AsyncAction,
+    AsyncPlan,
+    async_bind,
+    async_from_result,
+    async_gather,
+    async_lift,
+    async_map,
+    async_pure,
+    lift_sync,
+    lift_sync_gen_with_executor,
+    lift_sync_with_executor,
+)
 from .resilience import (
     Clock,
     FakeClock,

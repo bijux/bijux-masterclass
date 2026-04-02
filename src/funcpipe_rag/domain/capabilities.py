@@ -1,4 +1,6 @@
-"""Module 07: capability protocols – typed effect interfaces (mypy --strict)."""
+"""Module 07: capability protocols – typed effect interfaces (mypy --strict).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

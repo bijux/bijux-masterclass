@@ -6,21 +6,27 @@ fresh coroutine each time (replayability), and awaiting it yields a
 
 Driving a plan (`await`, `asyncio.run`, task creation) belongs in shells/adapters,
 never in the domain core.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
 import asyncio
-from collections.abc import Awaitable, Callable
-from typing import TypeAlias, TypeVar
+from collections.abc import AsyncIterator, Awaitable, Callable
+from concurrent.futures import Executor
+from typing import TYPE_CHECKING, Any, TypeAlias, TypeVar
 
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 A = TypeVar("A")
 B = TypeVar("B")
+T = TypeVar("T")
 
 AsyncPlan: TypeAlias = Callable[[], Awaitable[Result[A, ErrInfo]]]
 AsyncAction: TypeAlias = AsyncPlan[A]
+
+if TYPE_CHECKING:
+    from .stream import AsyncGen
 
 
 def async_pure(value: A) -> AsyncPlan[A]:
@@ -35,6 +41,73 @@ def async_from_result(res: Result[A, ErrInfo]) -> AsyncPlan[A]:
         return res
 
     return lambda: _coro()
+
+
+def lift_sync(f: Callable[..., Result[T, ErrInfo]]) -> Callable[..., AsyncPlan[T]]:
+    """Lift a synchronous, `Result`-returning function into `AsyncPlan`.
+
+    This is the "anti-async-creep" adapter: it keeps the core synchronous and
+    pure while allowing async shells to compose it as a plan.
+    """
+
+    def lifted(*args: Any, **kwargs: Any) -> AsyncPlan[T]:
+        async def _act() -> Result[T, ErrInfo]:
+            try:
+                return f(*args, **kwargs)
+            except Exception as exc:
+                return Err(ErrInfo.from_exception(exc))
+
+        return lambda: _act()
+
+    return lifted
+
+
+def lift_sync_with_executor(
+    f: Callable[..., Result[T, ErrInfo]],
+    executor: Executor,
+) -> Callable[..., AsyncPlan[T]]:
+    """Lift a synchronous `Result` function into an executor-backed `AsyncPlan`."""
+
+    def lifted(*args: Any, **kwargs: Any) -> AsyncPlan[T]:
+        async def _act() -> Result[T, ErrInfo]:
+            loop = asyncio.get_running_loop()
+            try:
+                return await loop.run_in_executor(executor, lambda: f(*args, **kwargs))
+            except Exception as exc:
+                return Err(ErrInfo.from_exception(exc))
+
+        return lambda: _act()
+
+    return lifted
+
+
+def lift_sync_gen_with_executor(
+    f: Callable[..., Result[list[T], ErrInfo]],
+    executor: Executor,
+) -> Callable[..., "AsyncGen[T]"]:
+    """Lift a `Result[list[T]]` function into an async stream description.
+
+    This is a convenience adapter for synchronous stages that naturally return a
+    finite list (e.g., chunking) but need to run in an async shell without
+    blocking the event loop.
+    """
+
+    def lifted(*args: Any, **kwargs: Any) -> "AsyncGen[T]":
+        async def _gen() -> AsyncIterator[Result[T, ErrInfo]]:
+            loop = asyncio.get_running_loop()
+            try:
+                res = await loop.run_in_executor(executor, lambda: f(*args, **kwargs))
+                if isinstance(res, Ok):
+                    for item in res.value:
+                        yield Ok(item)
+                else:
+                    yield Err(res.error)
+            except Exception as exc:
+                yield Err(ErrInfo.from_exception(exc))
+
+        return lambda: _gen()
+
+    return lifted
 
 
 def async_bind(plan: AsyncPlan[A], f: Callable[[A], AsyncPlan[B]]) -> AsyncPlan[B]:
@@ -135,6 +208,9 @@ __all__ = [
     "AsyncAction",
     "async_pure",
     "async_from_result",
+    "lift_sync",
+    "lift_sync_with_executor",
+    "lift_sync_gen_with_executor",
     "async_bind",
     "async_map",
     "async_lift",

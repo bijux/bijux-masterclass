@@ -1,4 +1,6 @@
-"""AST validator for dynamic rule expressions (Modules 02–03)."""
+"""AST validator for dynamic rule expressions (Modules 02–03).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

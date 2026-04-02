@@ -2,7 +2,8 @@
 
 This is introduced in Module 02 and kept stable through Module 05: represent
 cleaning as immutable data and bind it into a pure ``RawDoc -> CleanDoc`` stage.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

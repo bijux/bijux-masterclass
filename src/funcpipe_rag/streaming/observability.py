@@ -2,7 +2,8 @@
 
 These helpers are intentionally sync and side-effect oriented: they let you
 observe streams (logging/metrics/snapshots) without changing the yielded values.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

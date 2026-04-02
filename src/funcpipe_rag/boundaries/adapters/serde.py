@@ -1,4 +1,4 @@
-"""Module 05 serialization contracts: Envelope + JSON/MessagePack + migrations (end-of-Module-08; adapters)."""
+"""Module 05 serialization contracts: Envelope + JSON/MessagePack + migrations (end-of-Module-09; adapters)."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Module 05 subsystem ADT: chunk metadata (end-of-Module-08; domain-modeling)."""
+"""Module 05 subsystem ADT: chunk metadata (end-of-Module-09; domain-modeling)."""
 
 from __future__ import annotations
 

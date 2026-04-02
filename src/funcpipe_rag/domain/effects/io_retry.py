@@ -3,7 +3,8 @@
 This is distinct from `funcpipe_rag.policies.retries`:
 - `policies.retries` is a pure retry engine for `Result`-returning functions over iterables.
 - `io_retry` wraps *effectful* `IOPlan[Result[T, ErrInfo]]` behaviours.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

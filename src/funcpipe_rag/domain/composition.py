@@ -1,4 +1,11 @@
-"""Module 07: reusable effect composition helpers."""
+"""Module 07: reusable effect composition helpers (end-of-Module-09).
+
+Module 09 note: this module is part of the Module 07 architecture layer
+(ports/adapters + effect descriptions). It is intentionally *not* the primary
+way Module 09 recommends building day-to-day pipelines; prefer stdlib-first
+iterator composition for new code unless you specifically need IOPlan-style
+effect descriptions.
+"""
 
 from __future__ import annotations
 

@@ -1,4 +1,6 @@
-"""Module 06: runtime-configurable pipelines via higher-order combinators (effects)."""
+"""Module 06: runtime-configurable pipelines via higher-order combinators (effects).
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

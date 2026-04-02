@@ -4,7 +4,8 @@ This adapter is resource-safe:
 - reads are implemented as a resource-owning iterator (generator + `with open`)
 - shells should use `contextlib.closing(...)` for deterministic close on partial consumption
 - writes are atomic via temp+fsync+rename
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 

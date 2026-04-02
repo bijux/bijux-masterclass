@@ -1,4 +1,4 @@
-"""Chunking adapters used by the public RAG APIs (end-of-Module-08).
+"""Chunking adapters used by the public RAG APIs (end-of-Module-09).
 
 `funcpipe_rag.rag.stages` holds the canonical pure stage implementations.
 This module provides generator-friendly wrappers used by the `rag` layer.

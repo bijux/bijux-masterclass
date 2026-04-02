@@ -1,4 +1,4 @@
-"""Infrastructure adapters implementing domain ports/capabilities (end-of-Module-08)."""
+"""Infrastructure adapters implementing domain ports/capabilities (end-of-Module-09)."""
 
 from .clock import MonotonicTestClock, SystemClock
 from .file_storage import FileStorage

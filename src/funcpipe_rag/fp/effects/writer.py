@@ -2,7 +2,8 @@
 
 Module 07 generalises the Writer log entry type to support structured logs
 (e.g. `domain.logging.LogEntry`) while preserving the Module 06 API.
-"""
+
+End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
