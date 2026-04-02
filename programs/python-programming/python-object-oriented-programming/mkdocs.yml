@@ -23,6 +23,9 @@ nav:
       - Learning Contract: guides/learning-contract.md
       - Orientation: module-00-orientation/index.md
       - Course Map: module-00-orientation/course-map.md
+      - First-Contact Map: module-00-orientation/first-contact-map.md
+      - Mid-Course Map: module-00-orientation/mid-course-map.md
+      - Mastery Map: module-00-orientation/mastery-map.md
   - Guides:
       - Module Promise Map: guides/module-promise-map.md
       - Module Checkpoints: guides/module-checkpoints.md
