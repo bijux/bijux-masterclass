@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so the final module becomes a review and
+sustainment guide instead of one more topic pile at the end of the course:
+
+- [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course review route
+- [Review Checklist](../reference/review-checklist.md) for the stable engineering bar
+- [Self-Review Prompts](../reference/self-review-prompts.md) for learner-side judgment checks
+- [Capstone Review Worksheet](../guides/capstone-review-worksheet.md) for the full claim-to-evidence route through FuncPipe
+
+Carry this question into the module:
+
+> Which design choices still pay for themselves under refactoring, performance pressure, team growth, and long-term review cost?
+
 This module is the long-term survival guide for the course. It focuses on how functional
 design choices age under performance pressure, team growth, changing contracts, and the
 need to prove behavior over time.

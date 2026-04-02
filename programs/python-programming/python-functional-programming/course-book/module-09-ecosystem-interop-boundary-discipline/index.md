@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so interop stays disciplined and does not erase
+the boundaries the earlier modules established:
+
+- [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course route into interop and sustainment
+- [Engineering Question Map](../guides/engineering-question-map.md) for framework and library pressure
+- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for interop symptoms that hide design regressions
+- [Capstone Map](../guides/capstone-map.md) for the CLI, distributed, and interop surfaces in FuncPipe
+
+Carry this question into the module:
+
+> How can this code touch ordinary Python libraries and frameworks without letting those integrations dissolve the core design contracts?
+
 This module answers a practical adoption question: how do you keep the course’s design
 discipline when the code has to touch real libraries, frameworks, data tools, and team
 conventions? The answer is not purity theater. It is deliberate interop.

@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so explicit context and composition stay tied to
+reviewable flow rather than container jargon:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge through failure and modelling pressure
+- [Engineering Question Map](../guides/engineering-question-map.md) for flow and context questions
+- [Boundary Review Prompts](../reference/boundary-review-prompts.md) for keep/change/reject pressure
+- [Capstone Map](../guides/capstone-map.md) for the context, result, and pipeline surfaces in FuncPipe
+
+Carry this question into the module:
+
+> Which context should remain explicit in the composition itself, and which abstraction would make the flow harder to inspect than ordinary Python dataflow?
+
 This module takes the data models from Module 05 and shows how dependent steps can be
 chained without tangling failure handling, configuration lookup, or local state updates.
 The emphasis is on readability, lawfulness, and explicit context.

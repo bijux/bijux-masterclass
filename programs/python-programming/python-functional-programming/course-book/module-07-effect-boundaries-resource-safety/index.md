@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so effect boundaries remain architectural
+contracts instead of turning into scattered adapter folklore:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the move from modelling into system pressure
+- [Review Checklist](../reference/review-checklist.md) for the engineering bar around boundaries
+- [Topic Boundaries](../reference/topic-boundaries.md) for the scope line around functional technique versus infrastructure design
+- [Capstone Map](../guides/capstone-map.md) for the boundaries, capabilities, and domain effect surfaces in FuncPipe
+
+Carry this question into the module:
+
+> Where should effects begin so the core remains testable and the boundary remains obvious to another reviewer?
+
 This module is where the course stops talking only about pure internals and starts asking
 how real systems touch files, clocks, databases, logs, and transactions without losing
 clarity. The emphasis is on explicit boundaries rather than wishful purity.

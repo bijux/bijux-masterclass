@@ -24,6 +24,20 @@ flowchart TD
 
 Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
 
+## Keep These Pages Open
+
+Use these support surfaces while reading so async coordination stays reviewable and does
+not quietly become magical concurrency vocabulary:
+
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge into effect and async pressure
+- [Review Checklist](../reference/review-checklist.md) for the engineering bar around fairness and observability
+- [Boundary Review Prompts](../reference/boundary-review-prompts.md) for pressure on async abstractions
+- [Capstone Map](../guides/capstone-map.md) for the async effect and runtime adapter surfaces in FuncPipe
+
+Carry this question into the module:
+
+> Which async behavior is being coordinated explicitly, and where would hidden scheduling or buffering make the system harder to reason about?
+
 This module treats async code as a coordination problem, not a style choice. The learner
 moves from effect boundaries to bounded concurrency, fairness, and testable async plans
 that do not smear runtime behavior across the whole codebase.
