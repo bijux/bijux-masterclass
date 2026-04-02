@@ -48,17 +48,40 @@ tour: verify ## Build the learner-facing proof bundle
 	@rm -rf $(TOUR_DIR)
 	@mkdir -p $(TOUR_DIR)/publish-v1
 	@$(DVC) status > $(TOUR_DIR)/status.txt
+	@$(DVC) remote list > $(TOUR_DIR)/remote.txt
 	@$(DVC) dag --dot > $(TOUR_DIR)/pipeline.dot
 	@cp dvc.yaml $(TOUR_DIR)/dvc.yaml
 	@cp dvc.lock $(TOUR_DIR)/dvc.lock
 	@cp params.yaml $(TOUR_DIR)/params.yaml
+	@cp PUBLISH_CONTRACT.md $(TOUR_DIR)/PUBLISH_CONTRACT.md
 	@cp metrics/metrics.json $(TOUR_DIR)/metrics.json
 	@cp publish/v1/manifest.json $(TOUR_DIR)/publish-v1/manifest.json
 	@cp publish/v1/metrics.json $(TOUR_DIR)/publish-v1/metrics.json
 	@cp publish/v1/params.yaml $(TOUR_DIR)/publish-v1/params.yaml
 	@cp publish/v1/data-profile.json $(TOUR_DIR)/publish-v1/data-profile.json
+	@cp publish/v1/model.json $(TOUR_DIR)/publish-v1/model.json
+	@cp publish/v1/predictions.csv $(TOUR_DIR)/publish-v1/predictions.csv
 	@cp publish/v1/report.md $(TOUR_DIR)/publish-v1/report.md
 	@cp TOUR.md $(TOUR_DIR)/TOUR.md
+	@printf '%s\n' \
+		'Executed proof route:' \
+		'  1. Read status.txt for DVC up-to-date state.' \
+		'  2. Read dvc.yaml and dvc.lock together.' \
+		'  3. Read publish-v1/manifest.json and PUBLISH_CONTRACT.md together.' \
+		'  4. Read publish-v1/metrics.json and publish-v1/params.yaml.' \
+		'  5. Read remote.txt when reviewing recovery assumptions.' > $(TOUR_DIR)/route.txt
+	@printf '%s\n' \
+		'Release boundary evidence:' \
+		'  publish-v1/manifest.json   inventory, hashes, and promoted training summary' \
+		'  publish-v1/metrics.json    promoted evaluation metrics' \
+		'  publish-v1/params.yaml     promoted control surface' \
+		'  publish-v1/report.md       human-readable review surface' \
+		'  PUBLISH_CONTRACT.md        meaning and trust limits for promoted files' > $(TOUR_DIR)/release-boundary.txt
+	@printf '%s\n' \
+		'Recovery evidence:' \
+		'  remote.txt                 configured DVC recovery source' \
+		'  status.txt                 repository state after verification' \
+		'  dvc.lock                   recorded execution state that publish/v1 came from' > $(TOUR_DIR)/recovery-evidence.txt
 	@echo "tour_dir=$(TOUR_DIR)" > $(TOUR_DIR)/bundle.env
 	@echo "publish_dir=$(TOUR_DIR)/publish-v1" >> $(TOUR_DIR)/bundle.env
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
