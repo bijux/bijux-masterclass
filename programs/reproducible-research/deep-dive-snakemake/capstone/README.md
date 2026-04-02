@@ -78,17 +78,22 @@ The capstone is designed as corroboration, not as the learner's first exposure t
 concept. It is most useful once a module has already made the idea legible in a smaller
 setting.
 
-| Program area | What the capstone lets you verify |
-| --- | --- |
-| Modules 01-02 | truthful file contracts, dynamic discovery, and durable discovery artifacts |
-| Modules 03-04 | profiles, CI-style gates, module boundaries, and executor-proof behavior |
-| Modules 05-06 | software boundaries, provenance, publish surfaces, and downstream contracts |
-| Modules 07-09 | repository architecture, operating-context drift, logs, benchmarks, and incident evidence |
-| Module 10 | workflow review, migration, governance, and tool-boundary judgment |
+| Program area | What the capstone lets you verify | Best first command |
+| --- | --- | --- |
+| Modules 01-02 | truthful file contracts, dynamic discovery, and durable discovery artifacts | `make walkthrough` |
+| Modules 03-04 | profiles, CI-style gates, module boundaries, and executor-proof behavior | `make tour` |
+| Modules 05-06 | software boundaries, provenance, publish surfaces, and downstream contracts | `make proof` |
+| Modules 07-09 | repository architecture, operating-context drift, logs, benchmarks, and incident evidence | `make proof`, then `make profile-audit` |
+| Module 10 | workflow review, migration, governance, and tool-boundary judgment | `make confirm` |
 
 If you are new to Snakemake, use this repository after you understand the module’s local
 exercise or mental model. The capstone should confirm understanding, not replace first
 contact teaching.
+
+The practical rule is simple: finish the module exercise first, then choose the smallest
+capstone route that answers the next honest question. `walkthrough` is for first
+contact, `tour` is for executed repository review, `proof` is for the larger
+corroboration bundle, and `confirm` is for the strongest stewardship pass.
 
 [Back to top](#top)
 

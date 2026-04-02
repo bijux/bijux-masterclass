@@ -93,21 +93,13 @@ Use `capstone/` when you want the raw executable workflow repository.
 
 ---
 
-## Best Defaults
+## Best Defaults by Module Arc
 
-If you are new:
-
-```sh
-make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-snakemake test
-```
-
-If you are reviewing the capstone deeply:
-
-```sh
-make -C capstone help
-make -C capstone verify
-make -C capstone confirm
-```
+| Module arc | Start here | Then use |
+| --- | --- | --- |
+| Modules 01-02 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-snakemake test` |
+| Modules 03-04 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
+| Modules 05-09 | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` |
+| Module 10 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `make -C capstone info` |
 
 [Back to top](#top)

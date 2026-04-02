@@ -44,20 +44,31 @@ capstone should confirm understanding, not replace first-contact learning.
 
 ---
 
+## Enter by Module Arc
+
+| Module arc | Why enter now | First honest capstone route |
+| --- | --- | --- |
+| Modules 01-02 | learn file contracts and discovery without drowning in repository detail | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
+| Modules 03-04 | see execution policy and repository architecture after the module has named them clearly | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` |
+| Modules 05-09 | verify larger boundaries such as publish trust, profiles, observability, and incident evidence | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
+| Module 10 | review the workflow as a long-lived governed product | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
+
+---
+
 ## Module-to-Capstone Route
 
-| Module | Learner goal | Capstone surfaces | Proof command |
+| Module | Learner goal | Capstone surfaces | First capstone command |
 | --- | --- | --- | --- |
-| 01 First Principles | understand truthful file contracts and stable targets | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make -C capstone walkthrough` |
-| 02 Dynamic DAGs | see checkpoint discovery become explicit and durable | `Snakefile`, `results/discovered_samples.json`, `publish/v1/discovered_samples.json` | `make -C capstone wf-run` |
-| 03 Production Operation | inspect policy surfaces and clean-room confirmation | `profiles/`, `Makefile`, `tests/selftest.sh` | `make -C capstone confirm` |
-| 04 Scaling Patterns | inspect modular rule files and repository interfaces | `workflow/rules/`, `FILE_API.md`, `TOUR.md` | `make -C capstone tour` |
-| 05 Rule Boundaries | inspect environments, helper code, and script boundaries | `workflow/envs/python.yaml`, `workflow/scripts/provenance.py`, `src/capstone/` | `make -C capstone test` |
-| 06 Publish Contracts | inspect stable outputs, manifests, and reports | `publish/v1/`, `workflow/rules/publish.smk`, `FILE_API.md` | `make -C capstone verify-artifacts` |
-| 07 Workflow Architecture | review how rules, helpers, and file APIs are split | `Snakefile`, `workflow/rules/`, `src/capstone/`, `FILE_API.md` | `snakemake --directory capstone --list-rules` |
-| 08 Operating Contexts | compare local, CI, and scheduler-oriented policy | `profiles/local/`, `profiles/ci/`, `profiles/slurm/`, `Makefile` | `snakemake --directory capstone --profile profiles/local -n` |
-| 09 Incident Response | inspect logs, benchmarks, and workflow-tour artifacts as evidence | `logs/`, `benchmarks/`, `artifacts/workflow-tour/`, tests | `make -C capstone tour` |
-| 10 Mastery | review the whole repository as a long-lived workflow product | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make -C capstone info && make -C capstone wf-dryrun` |
+| 01 First Principles | understand truthful file contracts and stable targets | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
+| 02 Dynamic DAGs | see checkpoint discovery become explicit and durable | `Snakefile`, `results/discovered_samples.json`, `publish/v1/discovered_samples.json` | `make PROGRAM=reproducible-research/deep-dive-snakemake test` |
+| 03 Production Operation | inspect policy surfaces and clean-room confirmation | `profiles/`, `Makefile`, `tests/selftest.sh` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` |
+| 04 Scaling Patterns | inspect modular rule files and repository interfaces | `workflow/rules/`, `FILE_API.md`, `TOUR.md` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` |
+| 05 Rule Boundaries | inspect environments, helper code, and script boundaries | `workflow/envs/python.yaml`, `workflow/scripts/provenance.py`, `src/capstone/` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
+| 06 Publish Contracts | inspect stable outputs, manifests, and reports | `publish/v1/`, `workflow/rules/publish.smk`, `FILE_API.md` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
+| 07 Workflow Architecture | review how rules, helpers, and file APIs are split | `Snakefile`, `workflow/rules/`, `src/capstone/`, `FILE_API.md` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
+| 08 Operating Contexts | compare local, CI, and scheduler-oriented policy | `profiles/local/`, `profiles/ci/`, `profiles/slurm/`, `Makefile` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` |
+| 09 Incident Response | inspect logs, benchmarks, and workflow-tour artifacts as evidence | `logs/`, `benchmarks/`, `artifacts/workflow-tour/`, tests | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
+| 10 Mastery | review the whole repository as a long-lived workflow product | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
 
 When the main question is repository ownership rather than a single module idea, use
 `capstone/ARCHITECTURE.md` first and then return to the row that matches your current module.

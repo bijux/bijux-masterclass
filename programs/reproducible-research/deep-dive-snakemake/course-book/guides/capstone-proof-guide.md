@@ -27,6 +27,18 @@ honest route to the capstone evidence that supports it.
 
 ---
 
+## Enter This Guide At The Right Time
+
+Use this guide once the module idea is already legible in its local exercise.
+
+Before that point, prefer `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`
+so the repository stays smaller than the concept you are learning.
+
+For Modules 05 to 10, this guide becomes the default route into the larger proof,
+publish, policy, and confirmation commands.
+
+---
+
 ## Recommended Route
 
 1. Read `capstone/PROOF_GUIDE.md`.
