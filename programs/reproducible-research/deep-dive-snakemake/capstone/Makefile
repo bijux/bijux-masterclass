@@ -6,14 +6,11 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
 # ---- knobs ----
-SNAKEMAKE ?= snakemake
 PROFILE   ?= profiles/local
 CORES     ?= all
 CONFIG    ?= config/config.yaml
 
-PYTHON    ?= python3
-PYTEST    ?= pytest
-RUFF      ?= ruff
+SYSTEM_PYTHON ?= $(if $(shell command -v python3.11 2>/dev/null),python3.11,python3)
 DOT       ?= dot
 
 # ---- artifacts sandbox (no root pollution) ----
@@ -41,9 +38,19 @@ WALKTHROUGH_DIR_ABS := $(abspath $(WALKTHROUGH_DIR))
 TOUR_DIR_ABS      := $(abspath $(TOUR_DIR))
 MANIFEST_ABS      := $(abspath $(MANIFEST))
 PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
+TOOLS_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake/capstone
+TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
+TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
+TOOLS_PY := $(TOOLS_BIN)/python
+TOOLS_PIP := $(TOOLS_PY) -m pip
+
+SNAKEMAKE ?= $(if $(wildcard $(TOOLS_BIN)/snakemake),$(TOOLS_BIN)/snakemake,snakemake)
+PYTHON ?= $(if $(wildcard $(TOOLS_PY)),$(TOOLS_PY),$(SYSTEM_PYTHON))
+PYTEST ?= $(if $(wildcard $(TOOLS_BIN)/pytest),$(TOOLS_BIN)/pytest,pytest)
+RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 
 # ---- phony ----
-.PHONY: help info \
+.PHONY: help info bootstrap bootstrap-confirm \
 	clean purge-dsstore \
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
@@ -55,12 +62,24 @@ PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 help: ## Show available targets
 	@awk 'BEGIN {FS=":.*##"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "\033[36m%-22s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
+bootstrap: ## Create the supported local toolchain and print the resolved versions
+	@$(SYSTEM_PYTHON) -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' || { echo "✘ bootstrap requires Python 3.11+ via SYSTEM_PYTHON=$(SYSTEM_PYTHON)"; exit 1; }
+	@rm -rf "$(TOOLS_VENV_DIR_ABS)"
+	@$(SYSTEM_PYTHON) -m venv "$(TOOLS_VENV_DIR_ABS)"
+	@$(TOOLS_PIP) install -U pip
+	@$(TOOLS_PIP) install "snakemake>=8" pytest ruff pyyaml jsonschema
+	@$(MAKE) info SNAKEMAKE="$(TOOLS_BIN)/snakemake" PYTHON="$(TOOLS_PY)" PYTEST="$(TOOLS_BIN)/pytest" RUFF="$(TOOLS_BIN)/ruff"
+
+bootstrap-confirm: bootstrap ## Create the supported toolchain and run clean-room confirmation
+	@$(MAKE) confirm SNAKEMAKE="$(TOOLS_BIN)/snakemake" PYTHON="$(TOOLS_PY)" PYTEST="$(TOOLS_BIN)/pytest" RUFF="$(TOOLS_BIN)/ruff"
+
 info: ## Print tool versions and key settings
 	@echo "SNAKEMAKE = $(SNAKEMAKE)"
 	@echo "PROFILE   = $(PROFILE)"
 	@echo "CORES     = $(CORES)"
 	@echo "CONFIG    = $(CONFIG)"
 	@echo "ARTIFACTS = $(ARTIFACTS_DIR_ABS)"
+	@echo "TOOLS_VENV = $(TOOLS_VENV_DIR_ABS)"
 	@echo
 	@command -v $(PYTHON) >/dev/null && $(PYTHON) --version || echo "python missing"
 	@command -v $(SNAKEMAKE) >/dev/null && $(SNAKEMAKE) --version || echo "snakemake missing"

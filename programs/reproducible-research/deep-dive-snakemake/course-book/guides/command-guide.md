@@ -81,6 +81,8 @@ Use `capstone/` when you want the raw executable workflow repository.
 | Command | What it does |
 | --- | --- |
 | `make help` | show public capstone targets |
+| `make bootstrap` | create the supported local toolchain and print the resolved versions |
+| `make bootstrap-confirm` | create the supported local toolchain and run the strongest clean-room confirmation route |
 | `make walkthrough` | build the learner-first reading bundle without executing the workflow |
 | `make wf-dryrun` | preview the execution plan with printed commands |
 | `make verify` | execute the workflow and validate the promoted contract |
@@ -97,6 +99,7 @@ Use `capstone/` when you want the raw executable workflow repository.
 
 | Module arc | Start here | Then use |
 | --- | --- | --- |
+| Fresh machine setup | `make -C capstone bootstrap-confirm` | `make -C capstone proof` |
 | Modules 01-02 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-snakemake test` |
 | Modules 03-04 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
 | Modules 05-09 | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` |

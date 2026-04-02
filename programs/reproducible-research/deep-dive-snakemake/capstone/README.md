@@ -33,6 +33,8 @@ A compact, end-to-end Snakemake workflow that demonstrates rigorous engineering 
 This project is designed to be **executed**, **studied**, and **extended** as a reference implementation.
 
 > The CI workflow executes full confirmation runs, including workflow execution and artifact validation.
+>
+> On a fresh machine, `make bootstrap-confirm` is the shortest supported setup-and-proof route.
 
 [Back to top](#top)
 
@@ -148,6 +150,7 @@ operational policy third, and publish governance last.
 Run these public entrypoints from the capstone directory:
 
 ```bash
+make bootstrap
 make walkthrough
 make selftest
 make verify-report
@@ -375,6 +378,9 @@ Add `-p` to print commands as they would be executed.
 
 **Note on Checkpoints**: The sample discovery checkpoint triggers DAG re-evaluation—an expected and intentional behavior visible in dry-runs.
 
+On a fresh machine, prefer `make bootstrap-confirm` before manual `snakemake` commands so
+the supported toolchain is created locally first.
+
 [Back to top](#top)
 
 ---
@@ -383,6 +389,8 @@ Add `-p` to print commands as they would be executed.
 
 | Category       | Target                  | Purpose                                                                 |
 |----------------|-------------------------|-------------------------------------------------------------------------|
+| Setup          | `make bootstrap`        | Create the supported local Snakemake toolchain and print resolved versions |
+|                | `make bootstrap-confirm` | Create the supported toolchain and run the strongest clean-room confirmation route |
 | Cleanup        | `make clean`            | Remove all generated state and outputs                                  |
 | Formatting     | `make fmt`, `make fmt-check` | Format and validate code formatting                                |
 | Linting        | `make lint`, `make check` | Static analysis and composite checks                                  |
@@ -400,7 +408,8 @@ Add `-p` to print commands as they would be executed.
 | Docker         | `make docker-build`     | Build container image                                                   |
 |                | `make docker-run`       | Execute workflow in container                                           |
 
-**Recommendation**: Use `make confirm` for confidence before commits or releases.
+**Recommendation**: Use `make bootstrap-confirm` on a fresh machine, then `make confirm`
+for ongoing confidence before commits or releases.
 
 [Back to top](#top)
 

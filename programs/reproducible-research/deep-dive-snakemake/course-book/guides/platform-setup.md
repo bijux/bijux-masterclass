@@ -67,14 +67,29 @@ Use these commands when you want docs or program-level verification.
 From `programs/reproducible-research/deep-dive-snakemake/capstone/`:
 
 ```sh
-make info
+make bootstrap
 make walkthrough
 make wf-dryrun
 ```
 
-That sequence confirms the visible toolchain, validates config when the optional Python
-dependencies are present, and proves the workflow can at least plan correctly before a
-full execution.
+That sequence creates the supported local toolchain under `artifacts/venv/`,
+prints the resolved versions, and proves the workflow can at least plan correctly before
+a full execution.
+
+[Back to top](#top)
+
+---
+
+## One-Command Truth Path
+
+On a fresh machine, the shortest honest setup-and-proof route is:
+
+```sh
+make bootstrap-confirm
+```
+
+That target creates the supported local toolchain and then runs the clean-room
+confirmation route without depending on a preinstalled global `snakemake`.
 
 [Back to top](#top)
 
@@ -86,12 +101,12 @@ From the capstone directory:
 
 ```sh
 make help
-make walkthrough
+make bootstrap
 make verify
 ```
 
-If `make verify` succeeds, the capstone can execute, publish its bundle, and validate the
-promoted artifacts.
+If `make bootstrap` and `make verify` both succeed, the capstone can execute, publish
+its bundle, and validate the promoted artifacts using the supported local toolchain.
 
 [Back to top](#top)
 
@@ -101,7 +116,8 @@ promoted artifacts.
 
 | Symptom | Likely cause | Fix |
 | --- | --- | --- |
-| `snakemake` missing in `make info` | Snakemake not installed in the active shell | install Snakemake 8+ or point `SNAKEMAKE` at the intended binary |
+| `make bootstrap` fails immediately | Python 3.11+ is missing or unavailable to `python3` | install Python 3.11+ and rerun `make bootstrap` |
+| `snakemake` missing in `make info` | no global Snakemake is installed and `make bootstrap` has not been run yet | run `make bootstrap` or point `SNAKEMAKE` at the intended binary |
 | config validation skips unexpectedly | `jsonschema` or `pyyaml` missing | install the missing Python packages if you want schema validation to execute |
 | `dag` or `rulegraph` fails | Graphviz `dot` missing | install Graphviz and rerun the target |
 | `verify` fails after a successful dry-run | runtime dependencies or filesystem assumptions differ from the planning surface | inspect `profiles/`, `config/`, and the failing rule logs before changing workflow code |
