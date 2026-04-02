@@ -81,4 +81,4 @@ You are ready to move into metaclasses when you can explain:
 - [Module Promise Map](../guides/module-promise-map.md)
 - [Module Checkpoints](../guides/module-checkpoints.md)
 - [Mechanism Selection](../guides/mechanism-selection.md)
-- [Capstone Map](../guides/capstone-map.md)
+- [Capstone Map](../capstone/capstone-map.md)

@@ -33,7 +33,7 @@ into durable review judgment instead of into one more list of dangerous tools:
 - [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course review route
 - [Boundary Review Prompts](../reference/boundary-review-prompts.md) for keep/change/reject decisions under governance pressure
 - [Review Checklist](../reference/review-checklist.md) for the stable engineering bar
-- [Capstone Proof Checklist](../guides/capstone-proof-checklist.md) for the final claim-to-proof route through the runtime
+- [Capstone Proof Checklist](../capstone/capstone-proof-checklist.md) for the final claim-to-proof route through the runtime
 
 Carry this question into the module:
 

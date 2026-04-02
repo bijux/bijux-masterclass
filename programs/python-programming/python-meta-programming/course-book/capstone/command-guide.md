@@ -23,7 +23,7 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 
 Use the smallest command that proves the specific claim you care about.
 
-Keep [Proof Ladder](proof-ladder.md) open while reading this page if you are not yet sure
+Keep [Proof Ladder](../guides/proof-ladder.md) open while reading this page if you are not yet sure
 how much proof the current question actually needs.
 
 ## From the repository root

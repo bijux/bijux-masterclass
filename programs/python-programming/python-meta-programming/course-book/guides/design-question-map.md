@@ -51,5 +51,5 @@ that teaches it.
 
 - [Pressure Routes](pressure-routes.md)
 - [Module Promise Map](module-promise-map.md)
-- [Capstone Map](capstone-map.md)
-- [Capstone Review Worksheet](capstone-review-worksheet.md)
+- [Capstone Map](../capstone/capstone-map.md)
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md)

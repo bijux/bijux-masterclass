@@ -90,8 +90,8 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 - [Mechanism Selection](mechanism-selection.md) when you need a problem-to-tool comparison
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence justified
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
-- [Command Guide](command-guide.md) when you need the executable route
-- [Capstone Map](capstone-map.md) and [Capstone File Guide](capstone-file-guide.md) when you want the repository route kept explicit
+- [Command Guide](../capstone/command-guide.md) when you need the executable route
+- [Capstone Map](../capstone/capstone-map.md) and [Capstone File Guide](../capstone/capstone-file-guide.md) when you want the repository route kept explicit
 
 ## Honest Expectation
 

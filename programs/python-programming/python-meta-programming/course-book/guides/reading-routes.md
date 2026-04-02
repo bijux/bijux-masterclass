@@ -35,7 +35,7 @@ Use this when metaprogramming is still more vocabulary than mechanism.
 2. Read [Module 01](../module-01-runtime-objects-object-model/index.md) through [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) in order.
 3. Stop and use [Practice Map](practice-map.md) after Module 03 before you continue into wrappers.
 4. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) through [Module 06](../module-06-class-customization-pre-metaclasses/index.md).
-5. Enter [Capstone Map](capstone-map.md) only after you can explain the lower-power alternative for each mechanism.
+5. Enter [Capstone Map](../capstone/capstone-map.md) only after you can explain the lower-power alternative for each mechanism.
 
 ## Route 2: Review Hotspots
 
@@ -55,7 +55,7 @@ Use this when the real question is field ownership, lookup order, or validation 
 1. Read [Module 06](../module-06-class-customization-pre-metaclasses/index.md).
 2. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md).
 3. Read [Module 08](../module-08-descriptor-systems-validation-framework-design/index.md).
-4. Use [Capstone Map](capstone-map.md) to inspect the descriptor-backed field surfaces.
+4. Use [Capstone Map](../capstone/capstone-map.md) to inspect the descriptor-backed field surfaces.
 
 ## Route 4: Class Creation and Governance
 
@@ -65,7 +65,7 @@ actually justified.
 1. Read [Module 09](../module-09-metaclass-design-class-creation/index.md).
 2. Read [Module 10](../module-10-runtime-governance-mastery-review/index.md).
 3. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Review Checklist](../reference/review-checklist.md) open while reading.
-4. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to force a lower-power alternative check.
+4. Use [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) to force a lower-power alternative check.
 
 ## Reading Rhythm
 

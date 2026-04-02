@@ -74,4 +74,4 @@ You are using the mastery route well when you can answer:
 - [Proof Ladder](../guides/proof-ladder.md)
 - [Review Checklist](../reference/review-checklist.md)
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md)
-- [Capstone Map](../guides/capstone-map.md)
+- [Capstone Map](../capstone/capstone-map.md)

@@ -69,7 +69,7 @@ metaclass each own one narrow boundary and the CLI exposes those boundaries with
 
 ## Best companion pages
 
-- [Capstone Guide](capstone.md) for the capstone's role in the course
+- [Capstone Guide](index.md) for the capstone's role in the course
 - [Capstone Map](capstone-map.md) for the module-to-repository route
 - [Capstone File Guide](capstone-file-guide.md) for file ownership
 - [Capstone Walkthrough](capstone-walkthrough.md) for a guided first reading pass

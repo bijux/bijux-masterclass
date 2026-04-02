@@ -33,7 +33,7 @@ reviewable and does not quietly collapse into magical field systems:
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the ownership route through descriptors
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for symptom-first review of descriptor overreach
 - [Boundary Review Prompts](../reference/boundary-review-prompts.md) for keep/change/reject pressure
-- [Capstone Architecture Guide](../guides/capstone-architecture-guide.md) for the descriptor-backed field architecture in the runtime
+- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for the descriptor-backed field architecture in the runtime
 
 Carry this question into the module:
 

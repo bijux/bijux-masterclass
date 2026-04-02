@@ -33,7 +33,7 @@ before the course escalates into descriptors or metaclasses:
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge through the middle of the course
 - [Mechanism Selection](../guides/mechanism-selection.md) for the lower-power comparison against metaclasses
 - [Module Checkpoints](../guides/module-checkpoints.md) for the exit bar before descriptors
-- [Capstone Architecture Guide](../guides/capstone-architecture-guide.md) for the generated constructor boundary in the runtime
+- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for the generated constructor boundary in the runtime
 
 Carry this question into the module:
 

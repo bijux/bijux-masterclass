@@ -33,7 +33,7 @@ attribute ownership rather than becoming pure lookup trivia:
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the ownership bridge into attribute control
 - [Mechanism Selection](../guides/mechanism-selection.md) for the boundary between wrappers, properties, and descriptors
 - [Topic Boundaries](../reference/topic-boundaries.md) for the course-wide scope line around descriptor use
-- [Capstone Map](../guides/capstone-map.md) for the field and constructor proof surfaces
+- [Capstone Map](../capstone/capstone-map.md) for the field and constructor proof surfaces
 
 Carry this question into the module:
 

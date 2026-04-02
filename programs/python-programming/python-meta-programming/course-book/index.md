@@ -66,14 +66,14 @@ The course moves from plain observation to invasive runtime control:
 
 ### One executable proof
 
-The [Capstone Guide](guides/capstone.md) points to a single plugin runtime that keeps the major
-mechanisms visible in one place. Use [Capstone Map](guides/capstone-map.md) and
-[Capstone File Guide](guides/capstone-file-guide.md) while reading.
+The [Capstone Guide](capstone/index.md) points to a single plugin runtime that keeps the major
+mechanisms visible in one place. Use [Capstone Map](capstone/capstone-map.md) and
+[Capstone File Guide](capstone/capstone-file-guide.md) while reading.
 
 ### Review judgment
 
 Use [Review Checklist](reference/review-checklist.md), [Practice Map](guides/practice-map.md), and
-[Capstone Proof Checklist](guides/capstone-proof-checklist.md) to keep the material pedagogic
+[Capstone Proof Checklist](capstone/capstone-proof-checklist.md) to keep the material pedagogic
 instead of ornamental.
 
 ## Best reading route
@@ -81,7 +81,7 @@ instead of ornamental.
 1. Start with [Start Here](guides/start-here.md) and [Course Guide](guides/course-guide.md).
 2. Read [Module 00](module-00-orientation/index.md) before the mechanism-heavy modules.
 3. Move through Modules 01 to 10 in order so each higher-power mechanism rests on a lower-power one.
-4. Bring in the [Capstone Guide](guides/capstone.md) and [Capstone Map](guides/capstone-map.md) once the current mechanism is clear enough to inspect in code.
+4. Bring in the [Capstone Guide](capstone/index.md) and [Capstone Map](capstone/capstone-map.md) once the current mechanism is clear enough to inspect in code.
 
 ## Module Table of Contents
 

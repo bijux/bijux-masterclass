@@ -36,7 +36,7 @@ Use this when the immediate pressure is decorator-heavy code that may be hiding 
 2. Read [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) for signatures, provenance, and evidence boundaries.
 3. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) for transparent wrapper mechanics.
 4. Read [Module 05](../module-05-decorator-design-policies-typing/index.md) for policy-heavy wrappers and where they stop being honest.
-5. Cross-check [Capstone Guide](capstone.md) and `capstone/src/incident_plugins/actions.py`.
+5. Cross-check [Capstone Guide](../capstone/index.md) and `capstone/src/incident_plugins/actions.py`.
 
 Use this route when the core question sounds like:
 
@@ -52,7 +52,7 @@ Use this when the real confusion is around properties, descriptors, validation, 
 2. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) for descriptor lookup and precedence.
 3. Read [Module 08](../module-08-descriptor-systems-validation-framework-design/index.md) for framework-shaped field systems and their limits.
 4. Keep [Mechanism Selection](mechanism-selection.md) open while reading.
-5. Cross-check [Capstone Map](capstone-map.md) and `capstone/src/incident_plugins/fields.py`.
+5. Cross-check [Capstone Map](../capstone/capstone-map.md) and `capstone/src/incident_plugins/fields.py`.
 
 Use this route when the core question sounds like:
 
@@ -84,7 +84,7 @@ Use this when the code already exists and you need a reliable order for inspecti
 2. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study stance.
 3. Read [Module 02](../module-02-runtime-observation-inspection/index.md) and [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) before touching higher-power hooks.
 4. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) and [Module 09](../module-09-metaclass-design-class-creation/index.md) once the observation layer is stable.
-5. Finish with [Module 10](../module-10-runtime-governance-mastery-review/index.md) and [Capstone Review Worksheet](capstone-review-worksheet.md).
+5. Finish with [Module 10](../module-10-runtime-governance-mastery-review/index.md) and [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md).
 
 Use this route when the core question sounds like:
 
@@ -100,7 +100,7 @@ Use this when you are authoring library code and need the design to stay inspect
 2. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) through [Module 06](../module-06-class-customization-pre-metaclasses/index.md) for lower-power customization.
 3. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) through [Module 09](../module-09-metaclass-design-class-creation/index.md) only where the lower-power alternatives genuinely fail.
 4. Keep [Mechanism Selection](mechanism-selection.md) and [Review Checklist](../reference/review-checklist.md) open while designing.
-5. Cross-check [Capstone Guide](capstone.md), [Capstone Map](capstone-map.md), and the tests under `capstone/tests/`.
+5. Cross-check [Capstone Guide](../capstone/index.md), [Capstone Map](../capstone/capstone-map.md), and the tests under `capstone/tests/`.
 
 Use this route when the core question sounds like:
 

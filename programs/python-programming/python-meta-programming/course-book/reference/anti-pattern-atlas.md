@@ -74,4 +74,4 @@ Use these with the atlas:
 - [Review Checklist](review-checklist.md) for reviewer questions
 - [Topic Boundaries](topic-boundaries.md) for what belongs inside this course
 - [Module Dependency Map](../guides/module-dependency-map.md) for where the idea is taught in sequence
-- [Capstone Map](../guides/capstone-map.md) for the module-aware repository route
+- [Capstone Map](../capstone/capstone-map.md) for the module-aware repository route

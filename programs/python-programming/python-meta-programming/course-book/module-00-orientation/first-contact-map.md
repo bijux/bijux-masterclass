@@ -74,4 +74,4 @@ You are ready to move into wrappers when you can explain:
 
 - [Module Promise Map](../guides/module-promise-map.md)
 - [Module Checkpoints](../guides/module-checkpoints.md)
-- [Capstone Map](../guides/capstone-map.md)
+- [Capstone Map](../capstone/capstone-map.md)

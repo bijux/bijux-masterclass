@@ -33,7 +33,7 @@ quietly turn into execution:
 - [First-Contact Map](../module-00-orientation/first-contact-map.md) for the foundation route through Modules 01 to 03
 - [Proof Ladder](../guides/proof-ladder.md) for the smallest honest proof route
 - [Practice Map](../guides/practice-map.md) for the read-inspect-prove rhythm
-- [Capstone Map](../guides/capstone-map.md) for the public observation surfaces in the runtime
+- [Capstone Map](../capstone/capstone-map.md) for the public observation surfaces in the runtime
 
 Carry this question into the module:
 

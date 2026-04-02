@@ -33,7 +33,7 @@ promise instead of turning into isolated runtime trivia:
 - [First-Contact Map](../module-00-orientation/first-contact-map.md) for the foundation route through Modules 01 to 03
 - [Module Promise Map](../guides/module-promise-map.md) for the plain-language module contract
 - [Module Checkpoints](../guides/module-checkpoints.md) for the exit bar before Module 02
-- [Capstone Map](../guides/capstone-map.md) for the matching runtime files and proof surfaces
+- [Capstone Map](../capstone/capstone-map.md) for the matching runtime files and proof surfaces
 
 Carry this question into the module:
 

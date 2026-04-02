@@ -85,5 +85,5 @@ This keeps the course tied to human questions instead of forcing the learner to 
 
 - Keep [Module Promise Map](../guides/module-promise-map.md) and [Module Checkpoints](../guides/module-checkpoints.md) open so each stage has a clear contract and exit bar.
 - Keep [Proof Ladder](../guides/proof-ladder.md) open so proof stays proportional to the question.
-- Keep [Capstone Map](../guides/capstone-map.md) open so the course remains attached to one executable system.
+- Keep [Capstone Map](../capstone/capstone-map.md) open so the course remains attached to one executable system.
 - Keep [Mid-Course Map](mid-course-map.md) open whenever the jump from observation to ownership feels too abrupt.

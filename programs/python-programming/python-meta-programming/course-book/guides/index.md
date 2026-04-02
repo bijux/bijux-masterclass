@@ -47,7 +47,7 @@ do not have to repeat that scaffolding.
 
 ## Use These For Commands And Proof
 
-- [Command Guide](command-guide.md) for the executable route
+- [Command Guide](../capstone/command-guide.md) for the executable route
 - [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current question
 - [Review Checklist](../reference/review-checklist.md) when you need the stable review bar
 - [Self-Review Prompts](../reference/self-review-prompts.md) when you want learner-side comprehension checks
@@ -58,18 +58,19 @@ do not have to repeat that scaffolding.
 
 ## Use These For Capstone Reading
 
-- [Capstone Guide](capstone.md) for the capstone’s role in the course
-- [Capstone Architecture Guide](capstone-architecture-guide.md) for ownership boundaries inside the runtime
-- [Capstone Map](capstone-map.md) for the module-to-repository route
-- [Capstone File Guide](capstone-file-guide.md) for file responsibilities
-- [Capstone Walkthrough](capstone-walkthrough.md) for the guided first pass through commands and files
-- [Capstone Proof Checklist](capstone-proof-checklist.md) for a bounded proof pass
-- [Capstone Review Worksheet](capstone-review-worksheet.md) for structured repository review
-- [Capstone Extension Guide](capstone-extension-guide.md) for safe evolution
+- [Capstone Guide](../capstone/index.md) for the capstone’s role in the course
+- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for ownership boundaries inside the runtime
+- [Capstone Map](../capstone/capstone-map.md) for the module-to-repository route
+- [Capstone File Guide](../capstone/capstone-file-guide.md) for file responsibilities
+- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for the guided first pass through commands and files
+- [Capstone Proof Checklist](../capstone/capstone-proof-checklist.md) for a bounded proof pass
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for structured repository review
+- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
 
 ## Keep The Layout Stable
 
 - `index.md` stays the course home
 - `guides/` stays the learner route and proof shelf
+- `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable runtime and review shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

@@ -34,7 +34,7 @@ proves it honestly enough to review.
 | --- | --- | --- | --- |
 | explain what happens at import time, class-definition time, instance time, and call time | Modules 01, 02, and 09; course map; first-contact map | `framework.py`, `plugins.py`, manifest output, registry output | [First-Contact Map](../module-00-orientation/first-contact-map.md) |
 | inspect runtime behavior without accidentally executing the wrong thing | Modules 02 and 03; practice map; proof ladder | `make manifest`, `make registry`, manifest and signatures output | [Proof Ladder](proof-ladder.md) |
-| preserve signatures, provenance, and reviewability when wrapping callables | Modules 03, 04, and 05; capstone walkthrough; command guide | `actions.py`, `make action`, `make trace`, `tests/test_runtime.py` | [Capstone Walkthrough](capstone-walkthrough.md) |
+| preserve signatures, provenance, and reviewability when wrapping callables | Modules 03, 04, and 05; capstone walkthrough; command guide | `actions.py`, `make action`, `make trace`, `tests/test_runtime.py` | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
 | choose honestly between plain code, decorators, descriptors, class decorators, and metaclasses | Modules 06 to 09; mechanism selection; anti-pattern atlas | `fields.py`, `framework.py`, `make field`, `make registry`, registry tests | [Mechanism Selection](mechanism-selection.md) |
 | review meta-heavy code for hidden state, global hooks, and unjustified runtime power | Module 10; mastery map; review checklist; topic boundaries | `make verify-report`, `make proof`, `tests/test_registry.py`, public manifest and trace evidence | [Mastery Map](../module-00-orientation/mastery-map.md) |
 
@@ -71,5 +71,5 @@ a return to the proof route.
 
 - [Course Guide](course-guide.md)
 - [Practice Map](practice-map.md)
-- [Capstone Map](capstone-map.md)
-- [Capstone Review Worksheet](capstone-review-worksheet.md)
+- [Capstone Map](../capstone/capstone-map.md)
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md)
