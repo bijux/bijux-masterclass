@@ -177,6 +177,8 @@ moving to executed proof in `TOUR.md`.
 
 Use `DOMAIN_GUIDE.md` when biological vocabulary or the sample-to-report story is the
 current blocker rather than Snakemake itself.
+Use `CHECKPOINT_GUIDE.md` when the discovery step feels magical and you want the
+smallest honest explanation of how the DAG becomes sample-aware.
 
 Use `make selftest` when the narrow question is determinism across core counts rather
 than full clean-room confirmation.
@@ -188,6 +190,8 @@ sample-processing steps, and published outputs mean.
 Use `WORKFLOW_STAGE_GUIDE.md` when the blocker is not vocabulary but stage ownership:
 which rule family owns discovery, per-sample processing, summarize/report work,
 publishing, or operating policy.
+Use `CHECKPOINT_GUIDE.md` when the core review question is how dynamic sample discovery
+becomes a durable artifact instead of hidden state.
 Use `ARCHITECTURE.md` when the question is about repository ownership.
 Use `WALKTHROUGH_GUIDE.md` when you need the first-contact route.
 Use `PUBLISH_REVIEW_GUIDE.md`, `PROFILE_AUDIT_GUIDE.md`, and `INCIDENT_REVIEW_GUIDE.md`

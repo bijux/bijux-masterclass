@@ -55,6 +55,7 @@ Use `make tour` later when you need executed proof artifacts.
 - `dryrun.txt` explains the declared plan before execution
 - copied profile and config files explain policy and validation inputs
 - copied scripts explain how config and publish checks are enforced
+- `CHECKPOINT_GUIDE.md` explains why dynamic discovery is visible rather than magical
 
 [Back to top](#top)
 
