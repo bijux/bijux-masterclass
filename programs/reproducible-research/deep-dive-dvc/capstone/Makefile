@@ -73,6 +73,10 @@ verify-report: repro ## Write a structured verification report for the published
 state-summary: verify ## Render the combined declaration, execution, and release summary
 	@$(INSPECT) state-summary --publish publish/v1 --metrics metrics/metrics.json --params params.yaml --lock dvc.lock
 
+.PHONY: stage-summary
+stage-summary: verify ## Render the declared and recorded stage contract summary
+	@$(INSPECT) stage-summary --pipeline dvc.yaml --lock dvc.lock
+
 .PHONY: release-summary
 release-summary: verify ## Render the promoted release summary
 	@$(INSPECT) release-summary --publish publish/v1
@@ -105,16 +109,18 @@ tour: verify ## Build the learner-facing proof bundle
 	@cp publish/v1/predictions.csv $(TOUR_DIR)/publish-v1/predictions.csv
 	@cp publish/v1/report.md $(TOUR_DIR)/publish-v1/report.md
 	@cp TOUR.md $(TOUR_DIR)/TOUR.md
+	@$(INSPECT) stage-summary --pipeline dvc.yaml --lock dvc.lock > $(TOUR_DIR)/stage-summary.json
 	@$(INSPECT) state-summary --publish publish/v1 --metrics metrics/metrics.json --params params.yaml --lock dvc.lock > $(TOUR_DIR)/state-summary.json
 	@$(INSPECT) release-summary --publish publish/v1 > $(TOUR_DIR)/release-summary.json
 	@$(INSPECT) review-queue --publish publish/v1 > $(TOUR_DIR)/review-queue.json
 	@printf '%s\n' \
 		'Executed proof route:' \
 		'  1. Read status.txt for DVC up-to-date state.' \
-		'  2. Read dvc.yaml and dvc.lock together.' \
-		'  3. Read publish-v1/manifest.json and PUBLISH_CONTRACT.md together.' \
-		'  4. Read publish-v1/metrics.json and publish-v1/params.yaml.' \
-		'  5. Read remote.txt when reviewing recovery assumptions.' > $(TOUR_DIR)/route.txt
+		'  2. Read stage-summary.json before comparing dvc.yaml and dvc.lock directly.' \
+		'  3. Read dvc.yaml and dvc.lock together.' \
+		'  4. Read publish-v1/manifest.json and PUBLISH_CONTRACT.md together.' \
+		'  5. Read publish-v1/metrics.json and publish-v1/params.yaml.' \
+		'  6. Read remote.txt when reviewing recovery assumptions.' > $(TOUR_DIR)/route.txt
 	@printf '%s\n' \
 		'Release boundary evidence:' \
 		'  publish-v1/manifest.json   inventory, hashes, and promoted training summary' \

@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from incident_escalation_capstone.common import write_json
-from incident_escalation_capstone.inspect import main, release_summary, review_queue, state_summary
+from incident_escalation_capstone.inspect import main, release_summary, review_queue, stage_summary, state_summary
 
 
 def _write_publish_fixture(base: Path) -> None:
@@ -77,6 +77,56 @@ def test_state_summary_combines_declaration_execution_and_publish_state(tmp_path
     assert summary["eval_rows"] == 6
 
 
+def test_stage_summary_reports_declared_and_recorded_stage_edges(tmp_path: Path) -> None:
+    (tmp_path / "dvc.yaml").write_text(
+        "\n".join(
+            [
+                "stages:",
+                "  prepare:",
+                "    deps:",
+                "      - data/raw/service_incidents.csv",
+                "    params:",
+                "      - split.seed",
+                "    outs:",
+                "      - data/derived/train.csv",
+                "  publish:",
+                "    deps:",
+                "      - metrics/metrics.json",
+                "    outs:",
+                "      - publish/v1",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "dvc.lock").write_text(
+        "\n".join(
+            [
+                "stages:",
+                "  prepare:",
+                "    deps:",
+                "      - path: data/raw/service_incidents.csv",
+                "    outs:",
+                "      - path: data/derived/train.csv",
+                "  publish:",
+                "    deps:",
+                "      - path: metrics/metrics.json",
+                "    outs:",
+                "      - path: publish/v1",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    summary = stage_summary(pipeline_path=tmp_path / "dvc.yaml", lock_path=tmp_path / "dvc.lock")
+
+    assert summary["stage_count"] == 2
+    assert summary["stages"][0]["stage_name"] == "prepare"
+    assert summary["stages"][0]["declared_params"] == ["split.seed"]
+    assert summary["stages"][1]["recorded_outs"] == ["publish/v1"]
+
+
 def test_review_queue_returns_false_positive_and_false_negative_rows(tmp_path: Path) -> None:
     _write_publish_fixture(tmp_path)
 
@@ -95,3 +145,29 @@ def test_cli_prints_release_summary_json(capsys, tmp_path: Path) -> None:
 
     assert exit_code == 0
     assert payload["artifact_count"] == 3
+
+
+def test_cli_prints_stage_summary_json(capsys, tmp_path: Path) -> None:
+    (tmp_path / "dvc.yaml").write_text(
+        "stages:\n  evaluate:\n    deps:\n      - models/model.json\n    outs:\n      - state/predictions.csv\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "dvc.lock").write_text(
+        "stages:\n  evaluate:\n    deps:\n      - path: models/model.json\n    outs:\n      - path: state/predictions.csv\n",
+        encoding="utf-8",
+    )
+
+    exit_code = main(
+        [
+            "stage-summary",
+            "--pipeline",
+            str(tmp_path / "dvc.yaml"),
+            "--lock",
+            str(tmp_path / "dvc.lock"),
+        ]
+    )
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert payload["stage_count"] == 1
+    assert payload["stages"][0]["stage_name"] == "evaluate"

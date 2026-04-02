@@ -23,6 +23,35 @@ def release_summary(publish_dir: Path) -> dict[str, object]:
     }
 
 
+def stage_summary(*, pipeline_path: Path, lock_path: Path) -> dict[str, object]:
+    pipeline_data = load_params(pipeline_path)
+    lock_data = load_params(lock_path)
+    pipeline_stages = pipeline_data["stages"]
+    locked_stages = lock_data["stages"]
+    stages = []
+
+    for stage_name, stage_def in pipeline_stages.items():
+        locked = locked_stages.get(stage_name, {})
+        stages.append(
+            {
+                "stage_name": stage_name,
+                "declared_deps": list(stage_def.get("deps", [])),
+                "declared_outs": list(stage_def.get("outs", [])),
+                "declared_params": list(stage_def.get("params", [])),
+                "declared_metrics": list(stage_def.get("metrics", [])),
+                "recorded_deps": [entry["path"] for entry in locked.get("deps", [])],
+                "recorded_outs": [entry["path"] for entry in locked.get("outs", [])],
+            }
+        )
+
+    return {
+        "pipeline_path": pipeline_path.as_posix(),
+        "lock_path": lock_path.as_posix(),
+        "stage_count": len(stages),
+        "stages": stages,
+    }
+
+
 def state_summary(*, publish_dir: Path, metrics_path: Path, params_path: Path, lock_path: Path) -> dict[str, object]:
     manifest = read_json(publish_dir / "manifest.json")
     metrics = read_json(metrics_path)
@@ -81,6 +110,11 @@ def main(argv: list[str] | None = None) -> int:
     release.add_argument("--publish", type=Path, required=True)
     release.set_defaults(handler=_handle_release_summary)
 
+    stage = subparsers.add_parser("stage-summary", help="Render a summary of declared and recorded stage contracts.")
+    stage.add_argument("--pipeline", type=Path, required=True)
+    stage.add_argument("--lock", type=Path, required=True)
+    stage.set_defaults(handler=_handle_stage_summary)
+
     state = subparsers.add_parser("state-summary", help="Render a summary of declaration, execution, and publish state.")
     state.add_argument("--publish", type=Path, required=True)
     state.add_argument("--metrics", type=Path, required=True)
@@ -100,6 +134,10 @@ def main(argv: list[str] | None = None) -> int:
 
 def _handle_release_summary(args: argparse.Namespace) -> dict[str, object]:
     return release_summary(args.publish)
+
+
+def _handle_stage_summary(args: argparse.Namespace) -> dict[str, object]:
+    return stage_summary(pipeline_path=args.pipeline, lock_path=args.lock)
 
 
 def _handle_state_summary(args: argparse.Namespace) -> dict[str, object]:

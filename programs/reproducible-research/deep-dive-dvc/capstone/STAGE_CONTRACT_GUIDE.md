@@ -42,6 +42,8 @@ name what belongs to that edge and what does not.
    - `evaluate.py`
    - `publish.py`
 
+Use `make stage-summary` when you want the repository to render that declared-versus-recorded comparison before you read the raw YAML yourself.
+
 ## Best review questions
 
 - Which params are declared at this stage instead of borrowed implicitly?
