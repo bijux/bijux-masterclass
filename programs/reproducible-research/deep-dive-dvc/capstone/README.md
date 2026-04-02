@@ -94,6 +94,7 @@ Run these from this directory:
 
 ```bash
 make verify
+make verify-report
 make confirm
 make recovery-drill
 make release-audit
@@ -110,6 +111,7 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 These commands answer different questions:
 
 - `make verify` checks that the current repository state matches the expected contract.
+- `make verify-report` writes a structured verification report under `artifacts/proof/reproducible-research/deep-dive-dvc/verify/`.
 - `make confirm` reruns the broader confirmation flow that the course points learners to.
 - `make recovery-drill` proves that a remote-backed restore still works after local loss.
 - `make release-audit` writes a focused release-boundary bundle under `artifacts/audit/reproducible-research/deep-dive-dvc/`.

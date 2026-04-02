@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 from pathlib import Path
 
 from incident_escalation_capstone.common import FEATURE_NAMES, load_params, read_json, sha256_file
 
 
-def verify_manifest(publish_dir: Path) -> None:
+def verify_manifest(publish_dir: Path) -> dict[str, object]:
     manifest = read_json(publish_dir / "manifest.json")
     artifacts = manifest["artifacts"]
     if not artifacts:
@@ -34,9 +35,14 @@ def verify_manifest(publish_dir: Path) -> None:
     paths = {entry["path"] for entry in artifacts}
     if paths != expected:
         raise ValueError(f"publish manifest must list exactly {sorted(expected)}, got {sorted(paths)}")
+    return {
+        "check": "manifest",
+        "artifact_paths": sorted(paths),
+        "artifact_count": len(artifacts),
+    }
 
 
-def verify_metrics(publish_dir: Path) -> None:
+def verify_metrics(publish_dir: Path) -> dict[str, object]:
     metrics = read_json(publish_dir / "metrics.json")
     for field in ("accuracy", "precision", "recall", "f1"):
         value = float(metrics[field])
@@ -51,9 +57,16 @@ def verify_metrics(publish_dir: Path) -> None:
     total = sum(int(matrix[name]) for name in ("true_positive", "false_positive", "true_negative", "false_negative"))
     if total != int(metrics["eval_rows"]):
         raise ValueError("confusion matrix totals must equal eval_rows")
+    return {
+        "check": "metrics",
+        "eval_rows": int(metrics["eval_rows"]),
+        "accuracy": float(metrics["accuracy"]),
+        "f1": float(metrics["f1"]),
+        "brier_score": float(metrics["brier_score"]),
+    }
 
 
-def verify_params(publish_dir: Path) -> None:
+def verify_params(publish_dir: Path) -> dict[str, object]:
     params = load_params(publish_dir / "params.yaml")
     for section in ("split", "training", "decision"):
         if section not in params:
@@ -61,9 +74,14 @@ def verify_params(publish_dir: Path) -> None:
     threshold = float(params["decision"]["threshold"])
     if not 0.0 <= threshold <= 1.0:
         raise ValueError("decision.threshold must be between 0 and 1")
+    return {
+        "check": "params",
+        "sections": ["split", "training", "decision"],
+        "decision_threshold": threshold,
+    }
 
 
-def verify_model(publish_dir: Path) -> None:
+def verify_model(publish_dir: Path) -> dict[str, object]:
     model = read_json(publish_dir / "model.json")
     feature_names = set(model["feature_names"])
     if feature_names != set(FEATURE_NAMES):
@@ -78,9 +96,15 @@ def verify_model(publish_dir: Path) -> None:
     for field in ("final_loss", "iterations", "l2", "learning_rate", "rows"):
         if field not in training:
             raise ValueError(f"model training metadata missing field: {field}")
+    return {
+        "check": "model",
+        "feature_count": len(feature_names),
+        "training_rows": int(training["rows"]),
+        "iterations": int(training["iterations"]),
+    }
 
 
-def verify_predictions(publish_dir: Path) -> None:
+def verify_predictions(publish_dir: Path) -> dict[str, object]:
     metrics = read_json(publish_dir / "metrics.json")
     with (publish_dir / "predictions.csv").open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
@@ -101,32 +125,62 @@ def verify_predictions(publish_dir: Path) -> None:
             raise ValueError("predictions.csv actual and predicted values must be binary")
         if not 0.0 <= probability <= 1.0:
             raise ValueError("predictions.csv probabilities must be between 0 and 1")
+    return {
+        "check": "predictions",
+        "rows": len(rows),
+        "headers": expected_headers,
+    }
 
 
-def verify_report(publish_dir: Path) -> None:
+def verify_report(publish_dir: Path) -> dict[str, object]:
     report = (publish_dir / "report.md").read_text(encoding="utf-8")
-    for heading in (
+    headings = [
         "# Incident Escalation Reference Report",
         "## Data Profile",
         "## Evaluation Metrics",
         "## Model Summary",
         "## Review Queue",
-    ):
+    ]
+    for heading in headings:
         if heading not in report:
             raise ValueError(f"report.md missing heading: {heading}")
+    return {
+        "check": "report",
+        "headings": headings,
+    }
+
+
+def verify_publish(publish_dir: Path) -> list[dict[str, object]]:
+    return [
+        verify_manifest(publish_dir),
+        verify_metrics(publish_dir),
+        verify_params(publish_dir),
+        verify_model(publish_dir),
+        verify_predictions(publish_dir),
+        verify_report(publish_dir),
+    ]
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--publish", type=Path, required=True)
+    parser.add_argument("--report", type=Path)
     args = parser.parse_args()
 
-    verify_manifest(args.publish)
-    verify_metrics(args.publish)
-    verify_params(args.publish)
-    verify_model(args.publish)
-    verify_predictions(args.publish)
-    verify_report(args.publish)
+    checks = verify_publish(args.publish)
+    if args.report is not None:
+        args.report.write_text(
+            json.dumps(
+                {
+                    "publish_dir": args.publish.resolve().as_posix(),
+                    "checks": checks,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
 
 
 if __name__ == "__main__":

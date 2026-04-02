@@ -13,6 +13,7 @@ DVC := $(VENV_PY) -m dvc
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-dvc
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
 RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
+VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
 
 .PHONY: help
 help: ## Show available targets
@@ -43,6 +44,18 @@ test: install ## Run the Python test suite
 .PHONY: verify
 verify: repro ## Validate the published artifact contract
 	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1
+
+.PHONY: verify-report
+verify-report: repro ## Write a structured verification report for the published contract
+	@rm -rf $(VERIFY_REPORT_DIR)
+	@mkdir -p $(VERIFY_REPORT_DIR)
+	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1 --report $(VERIFY_REPORT_DIR)/verify.json
+	@printf '%s\n' \
+		'Verification report route:' \
+		'  1. Read verify.json for the per-surface contract results.' \
+		'  2. Read publish/v1/manifest.json beside it when you need promoted file inventory.' \
+		'  3. Read publish/v1/report.md when you need the human-readable release story.' > $(VERIFY_REPORT_DIR)/route.txt
+	@echo "✔ wrote verification report to $(VERIFY_REPORT_DIR)"
 
 .PHONY: tour
 tour: verify ## Build the learner-facing proof bundle
