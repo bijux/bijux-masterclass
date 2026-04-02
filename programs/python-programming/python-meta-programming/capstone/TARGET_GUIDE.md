@@ -96,3 +96,4 @@ Read these with the target guide:
 * `WALKTHROUGH_GUIDE.md`
 * `PROOF_GUIDE.md`
 * `BUNDLE_GUIDE.md`
+* `SCENARIO_SELECTION_GUIDE.md`

@@ -54,3 +54,6 @@ before you dive into metaclasses, descriptors, and wrappers.
 - treating manifest output as if it proved runtime invocation by itself
 - skipping trace review and missing the recorded wrapper history
 - reading the whole capstone without one explicit learner-facing order
+
+Read [SCENARIO_SELECTION_GUIDE.md](SCENARIO_SELECTION_GUIDE.md) when the order is clear
+but the right starting route for the current question is not.

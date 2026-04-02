@@ -71,6 +71,7 @@ make proof
 - `PUBLIC_API_GUIDE.md` for the supported package surface
 - `TRACE_GUIDE.md` for the invocation-history review route
 - `BUNDLE_GUIDE.md` for the saved review routes and bundle inventory story
+- `SCENARIO_SELECTION_GUIDE.md` for choosing the smallest honest capstone route
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route
 - `PACKAGE_GUIDE.md` for the code-reading route
