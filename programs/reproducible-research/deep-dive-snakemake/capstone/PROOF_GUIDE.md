@@ -39,6 +39,15 @@ file, or artifact that defends it.
 | workflow execution remains deterministic across core counts | `make selftest` | `tests/selftest.sh`, `publish/v1/summary.json` |
 | clean-room confirmation protects the full repository contract | `make confirm` | `Makefile`, `tests/`, `publish/v1/` |
 
+## Route By Review Goal
+
+- Repository ownership: `ARCHITECTURE.md`
+- First contact and visible rule surface: `WALKTHROUGH_GUIDE.md`
+- Publish-boundary trust: `PUBLISH_REVIEW_GUIDE.md`
+- Profile and executor policy: `PROFILE_AUDIT_GUIDE.md`
+- Incident and determinism review: `INCIDENT_REVIEW_GUIDE.md`
+- Future changes: `EXTENSION_GUIDE.md`
+
 ## Best Reading Order
 
 1. `README.md`

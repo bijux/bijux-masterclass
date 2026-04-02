@@ -82,6 +82,8 @@ If you already know the course exists but are not sure which support page you ne
 
 Guided route: [Capstone Map](capstone-map.md)
 
+If you want the shortest stable proof route first, start with [Capstone Proof Guide](capstone-proof-guide.md).
+
 - After Module 01, inspect its explicit file contracts and stable publish boundary.
 - After Module 02, inspect the checkpoint and the way discovery is stabilized.
 - After Module 03, inspect profiles, retries, artifact verification, and proof targets.

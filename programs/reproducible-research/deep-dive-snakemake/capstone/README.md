@@ -155,6 +155,11 @@ than full clean-room confirmation.
 
 Use `PROOF_GUIDE.md` when you want the shortest route from a course claim to the target,
 file, or published artifact that proves it.
+Use `ARCHITECTURE.md` when the question is about repository ownership.
+Use `WALKTHROUGH_GUIDE.md` when you need the first-contact route.
+Use `PUBLISH_REVIEW_GUIDE.md`, `PROFILE_AUDIT_GUIDE.md`, and `INCIDENT_REVIEW_GUIDE.md`
+when the review question is more specific than "does the workflow run."
+Use `EXTENSION_GUIDE.md` when the question is where the next change should land.
 
 Use `make verify-report` when you want a durable publish-contract report under
 `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` rather than a single
@@ -242,6 +247,15 @@ Internal directories (`results/`, `logs/`, `benchmarks/`, `.snakemake/`) are not
 - Which workflow behavior changes when the executor changes, and which should not?
 - Where does sample discovery become explicit and durable instead of hidden?
 - Which outputs are safe for downstream consumers to trust?
+
+## Review Route By Question
+
+- Repository ownership: `ARCHITECTURE.md`
+- First contact without execution: `WALKTHROUGH_GUIDE.md`
+- Publish-boundary trust: `PUBLISH_REVIEW_GUIDE.md`
+- Execution-policy differences: `PROFILE_AUDIT_GUIDE.md`
+- Determinism and workflow incidents: `INCIDENT_REVIEW_GUIDE.md`
+- Future changes and repository growth: `EXTENSION_GUIDE.md`
 
 [Back to top](#top)
 

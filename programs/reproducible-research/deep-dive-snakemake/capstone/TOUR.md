@@ -73,3 +73,7 @@ make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour
 
 That order mirrors the course: repository contract, rule surface, planned DAG, resulting
 evidence, published interface, and reproducibility metadata.
+
+If that route feels too broad, step back to `WALKTHROUGH_GUIDE.md`. If it feels too
+narrow, continue into `PUBLISH_REVIEW_GUIDE.md` or `INCIDENT_REVIEW_GUIDE.md` depending
+on the question you are reviewing.

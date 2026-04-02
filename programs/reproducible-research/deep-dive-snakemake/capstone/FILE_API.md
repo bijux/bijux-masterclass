@@ -37,6 +37,9 @@ All JSON files:
 The per-sample intermediate files live under `results/{sample}/` and are
 documented here as well because they form the workflow contracts.
 
+Use `PUBLISH_REVIEW_GUIDE.md` when the question is not just what the files are, but why
+they deserve downstream trust.
+
 ## Results per sample (`results/{sample}/`)
 
 ### `qc_raw.json` / `qc_trimmed.json`
