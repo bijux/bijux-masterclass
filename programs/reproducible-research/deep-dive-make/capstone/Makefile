@@ -339,6 +339,22 @@ selftest-report:
 >     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
 >     MAKE="$(MAKE)" SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" $(TST_DIR)/run.sh
+>     cp SELFTEST_GUIDE.md "$(SELFTEST_REPORT_DIR_ABS)/SELFTEST_GUIDE.md"
+>     printf '%s\n' \
+>       'Selftest review route:' \
+>       '  1. Read summary.txt for the top-level verdict.' \
+>       '  2. Read SELFTEST_GUIDE.md for file meanings and review questions.' \
+>       '  3. Read settings.env for the runtime boundary.' \
+>       '  4. Compare serial.sum and parallel.sum for schedule equivalence.' \
+>       '  5. Read hidden-input.txt for the negative-proof result.' > "$(SELFTEST_REPORT_DIR_ABS)/route.txt"
+>     printf '%s\n' \
+>       'Bundle surfaces:' \
+>       '  SELFTEST_GUIDE.md  reading order and file meanings' \
+>       '  summary.txt        top-level verdict surface' \
+>       '  settings.env       runtime boundary and guardrail values' \
+>       '  serial.sum         serial artifact inventory' \
+>       '  parallel.sum       parallel artifact inventory' \
+>       '  hidden-input.txt   dishonest-input detection result' > "$(SELFTEST_REPORT_DIR_ABS)/bundle-guide.txt"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(SELFTEST_REPORT_DIR_ABS)" --output "$(SELFTEST_REPORT_DIR_ABS)/manifest.json"
 >     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR_ABS)"
 

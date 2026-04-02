@@ -81,6 +81,10 @@ The selftest also includes a lightweight trace-volume guardrail so observability
 not silently drift upward. The output is grouped into named steps so the learner can see
 which proof is running and why it matters.
 
+When you need a reviewable proof bundle instead of console output, run
+`make selftest-report`. That bundle now includes `SELFTEST_GUIDE.md` so the evidence
+files can be read in a deliberate order.
+
 [Back to top](#top)
 
 ---
