@@ -69,7 +69,7 @@ Choose this if you already work on a DVC repository.
 
 1. Read [`authority-map.md`](../reference/authority-map.md)
 2. Read [`module-01.md`](../module-01-why-reproducibility-fails/index.md)
-3. Read [`module-04.md`](../module-04.md)
+3. Read [`module-04.md`](../module-04-pipelines-as-truthful-dags/index.md)
 4. Read [`module-07.md`](../module-07.md)
 5. Read [`module-08.md`](../module-08.md)
 6. Use [`capstone-map.md`](capstone-map.md) to inspect the reference repository selectively
@@ -79,7 +79,7 @@ Choose this if you already work on a DVC repository.
 Choose this if your main concern is promotion, auditability, and long-lived state.
 
 1. Read [`evidence-boundary-guide.md`](../reference/evidence-boundary-guide.md)
-2. Read [`module-05.md`](../module-05.md)
+2. Read [`module-05.md`](../module-05-metrics-parameters-and-meaning/index.md)
 3. Read [`module-08.md`](../module-08.md)
 4. Read [`module-09.md`](../module-09.md)
 5. Read [`module-10.md`](../module-10.md)

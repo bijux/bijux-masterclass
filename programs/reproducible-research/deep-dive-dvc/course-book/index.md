@@ -80,9 +80,9 @@ Use this snapshot when you need the fastest sense of what the modules are doing:
 - [Module 01](module-01-why-reproducibility-fails/index.md) explains why common Git-and-script workflows still fail reproducibility.
 - [Module 02](module-02-data-identity-and-content-addressing/index.md) defines stable data identity through content addressing and state layers.
 - [Module 03](module-03-execution-environments-as-inputs/index.md) explains why execution environments are part of the declared input surface.
-- [Module 04](module-04.md) turns pipelines into truthful, inspectable execution graphs.
-- [Module 05](module-05.md) explains why parameters and metrics are semantic contracts, not just values.
-- [Module 06](module-06.md) formalizes experiments as controlled deviations instead of history damage.
+- [Module 04](module-04-pipelines-as-truthful-dags/index.md) turns pipelines into truthful, inspectable execution graphs.
+- [Module 05](module-05-metrics-parameters-and-meaning/index.md) explains why parameters and metrics are semantic contracts, not just values.
+- [Module 06](module-06-experiments-without-chaos/index.md) formalizes experiments as controlled deviations instead of history damage.
 - [Module 07](module-07.md) turns collaboration and CI into enforceable social contracts.
 - [Module 08](module-08.md) explains retention, recovery, and long-term survivability under time pressure.
 - [Module 09](module-09.md) defines promotion, release contracts, and the evidence needed for downstream trust.
