@@ -10,7 +10,7 @@
 ARTIFACTS_DIR ?= ../../../../artifacts
 DOCS_DIR   := docs
 VENV       ?= $(ARTIFACTS_DIR)/venv/python-programming/python-functional-programming/capstone
-PYTHON     ?= python3
+PYTHON     ?= $(shell command -v python3 2>/dev/null || command -v python 2>/dev/null)
 VENV_PY    := $(VENV)/bin/python
 VENV_PIP   := $(VENV_PY) -m pip
 RUFF       := $(VENV)/bin/ruff
