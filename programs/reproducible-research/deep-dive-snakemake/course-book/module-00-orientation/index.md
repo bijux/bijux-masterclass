@@ -222,3 +222,7 @@ Use [`module-checkpoints.md`](../guides/module-checkpoints.md) when you are deci
 current module is actually stable enough to justify entering the larger repository.
 
 [Back to top](#top)
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

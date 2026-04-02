@@ -917,3 +917,7 @@ rule gather:
 [7]: https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html "Distribution and Reproducibility - Snakemake - Read the Docs"
 [8]: https://github.com/snakemake/snakemake/issues/3860 "apptainer not recognized but singular command is #3860"
 [9]: https://snakemake.readthedocs.io/en/stable/executing/grouping.html "Job Grouping | Snakemake 9.14.4 documentation"
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

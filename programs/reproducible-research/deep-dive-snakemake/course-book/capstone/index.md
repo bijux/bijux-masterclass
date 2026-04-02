@@ -59,3 +59,7 @@ make -C capstone tour
 - What exactly does the checkpoint discover, and what does it never hide?
 - Which proof artifacts would you inspect before trusting a run?
 - Where would you extend the workflow without weakening the publish contract?
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between repository routes, review surfaces, and proof commands.

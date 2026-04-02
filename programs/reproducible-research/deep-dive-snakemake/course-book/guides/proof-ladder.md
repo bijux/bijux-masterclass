@@ -86,6 +86,6 @@ Use these with the ladder:
 * [`capstone/command-guide.md`](../capstone/command-guide.md) for command-layer boundaries
 * [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
 * [`capstone/capstone-map.md`](../capstone/capstone-map.md) for module-aware entry routes
-* [`workflow-glossary.md`](../reference/workflow-glossary.md) when the question is still too fuzzy to prove well
+* [`glossary.md`](../reference/glossary.md) when the question is still too fuzzy to prove well
 
 [Back to top](#top)

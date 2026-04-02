@@ -825,3 +825,7 @@ Scaling Snakemake is boundary engineering:
 3. **CI gates** kill entropy early.
 4. **Resources** must produce evidence artifacts; otherwise they are folklore.
 5. **Breaking changes** must be path/version changes, not “refactors”.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

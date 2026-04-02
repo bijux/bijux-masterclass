@@ -31,7 +31,7 @@ instead of a learner-entry guide.
 
 ## Vocabulary And Concepts
 
-* [Workflow Glossary](workflow-glossary.md)
+* [Glossary](glossary.md)
 * [Topic Boundaries](topic-boundaries.md)
 
 [Back to top](#top)
@@ -62,3 +62,7 @@ instead of a learner-entry guide.
 * [Completion Rubric](completion-rubric.md)
 
 [Back to top](#top)
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between standards, checklists, prompts, and boundary calls.

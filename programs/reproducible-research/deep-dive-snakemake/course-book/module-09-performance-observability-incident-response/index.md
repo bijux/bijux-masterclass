@@ -286,3 +286,7 @@ You pass this module only if you can demonstrate:
 * one tuning change that improves feedback without weakening workflow truth
 
 [Back to top](#top)
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

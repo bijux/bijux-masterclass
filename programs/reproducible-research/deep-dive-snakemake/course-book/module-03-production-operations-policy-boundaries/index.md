@@ -734,3 +734,7 @@ If you want production-grade Snakemake, stop optimizing rules first. Instead:
 [4]: https://snakemake.readthedocs.io/en/stable/snakefiles/storage.html "Storage support | Snakemake 9.14.4 documentation"
 [5]: https://snakemake.github.io/snakemake-plugin-catalog/plugins/storage/fs.html "Snakemake storage plugin: fs | Snakemake plugin catalog"
 [6]: https://snakemake.readthedocs.io/en/stable/snakefiles/best_practices.html "Best practices | Snakemake 9.14.4 documentation"
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
