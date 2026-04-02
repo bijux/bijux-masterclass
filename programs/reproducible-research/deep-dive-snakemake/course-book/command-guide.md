@@ -46,7 +46,9 @@ Use root-level commands when you want one entrypoint that works across programs.
 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | build the learner-first capstone walkthrough bundle |
 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | build the executed capstone proof bundle |
 | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | run the sanctioned learner-facing proof route |
+| `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | build the publish verification report bundle |
 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | package execution-policy review evidence |
+| `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-selftest` | run the determinism self-test route |
 | `make PROGRAM=reproducible-research/deep-dive-snakemake test` | run the course's main verification target |
 
 [Back to top](#top)

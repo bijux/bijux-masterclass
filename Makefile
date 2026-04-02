@@ -84,6 +84,18 @@ capstone-walkthrough: ## Run the selected program's learner-facing capstone walk
 capstone-tour: ## Run the selected program's learner-facing capstone tour
 	@$(RUN_PROGRAM) capstone-tour
 
+.PHONY: capstone-selftest
+capstone-selftest: ## Run the selected program's capstone determinism or convergence self-test
+	@$(RUN_PROGRAM) capstone-selftest
+
+.PHONY: capstone-verify-report
+capstone-verify-report: ## Build the selected program's capstone verification report bundle
+	@$(RUN_PROGRAM) capstone-verify-report
+
+.PHONY: capstone-profile-audit
+capstone-profile-audit: ## Build the selected program's capstone execution-policy audit bundle
+	@$(RUN_PROGRAM) capstone-profile-audit
+
 .PHONY: capstone-verify
 capstone-verify: ## Run the selected program's capstone contract verification
 	@$(RUN_PROGRAM) capstone-verify

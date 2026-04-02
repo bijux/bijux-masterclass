@@ -57,6 +57,12 @@ Use it when you care about a concept but want the fastest evidence route.
 | the publish boundary is reviewable as a durable contract | `make -C capstone verify-report` | `capstone/FILE_API.md`, `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` |
 | the repository can prove itself through one stronger end-to-end route | `make -C capstone confirm` | `capstone/Makefile`, `capstone/tests/` |
 | workflow incidents can be reviewed with narrower evidence than a full rewrite | `make -C capstone selftest` or `make -C capstone tour` | `capstone/tests/selftest.sh`, `capstone/logs/`, `artifacts/tour/reproducible-research/deep-dive-snakemake/` |
+
+The root-level equivalents for the specialized review bundles are:
+
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit`
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-selftest`
 | the executed workflow tour is reviewable as evidence | `make -C capstone tour` | `artifacts/make/workflow-tour/`, `capstone/TOUR.md` |
 
 [Back to top](#top)
