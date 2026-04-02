@@ -30,10 +30,10 @@ proves it well enough to review honestly.
 
 | Course outcome | Main learning activities | Primary capstone evidence | Best first route |
 | --- | --- | --- | --- |
-| separate pure transforms from effectful boundaries in ordinary Python systems | Modules 01, 02, and 07; refactoring guides; architecture review | `src/funcpipe_rag/fp/`, `src/funcpipe_rag/boundaries/`, `tests/unit/fp/`, `tests/unit/domain/` | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| separate pure transforms from effectful boundaries in ordinary Python systems | Modules 01, 02, and 07; refactoring guides; architecture review | `src/funcpipe_rag/fp/`, `src/funcpipe_rag/boundaries/`, `tests/unit/fp/`, `tests/unit/domain/` | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
 | design pipelines that stay configurable, lazy, and testable under growth | Modules 02, 03, and 06; foundations reading slices; proof matrix review | `src/funcpipe_rag/pipelines/`, `src/funcpipe_rag/streaming/`, `tests/unit/pipelines/`, `tests/unit/streaming/` | `make PROGRAM=python-programming/python-functional-programming test` |
 | model expected failures and domain states as data instead of tangled control flow | Modules 04, 05, and 06; review checklist; module refactoring guides | `src/funcpipe_rag/result/`, `src/funcpipe_rag/fp/validation.py`, `tests/unit/result/`, `tests/unit/fp/laws/` | [Proof Matrix](proof-matrix.md) |
-| move infrastructure behind explicit protocols, adapters, and async coordination layers | Modules 07 and 08; capstone map; extension guide | `src/funcpipe_rag/domain/`, `src/funcpipe_rag/infra/`, `src/funcpipe_rag/domain/effects/async_/`, `tests/unit/infra/adapters/` | [Capstone Map](capstone-map.md) |
+| move infrastructure behind explicit protocols, adapters, and async coordination layers | Modules 07 and 08; capstone map; extension guide | `src/funcpipe_rag/domain/`, `src/funcpipe_rag/infra/`, `src/funcpipe_rag/domain/effects/async_/`, `tests/unit/infra/adapters/` | [Capstone Map](../capstone/capstone-map.md) |
 | sustain a long-lived codebase with evidence, review standards, and migration discipline | Modules 09 and 10; proof guide; history guide; review worksheet | `PROOF_GUIDE.md`, `ARCHITECTURE.md`, `TOUR.md`, `module-reference-states/`, `_history/` | `make PROGRAM=python-programming/python-functional-programming proof` |
 
 ## What counts as learning activity here
@@ -69,5 +69,5 @@ It is a return to the proof route.
 
 - [Course Guide](course-guide.md)
 - [Proof Matrix](proof-matrix.md)
-- [Capstone Map](capstone-map.md)
-- [Capstone Review Worksheet](capstone-review-worksheet.md)
+- [Capstone Map](../capstone/capstone-map.md)
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md)

@@ -33,7 +33,7 @@ Take this route in order:
 2. Read `course-map.md` to see the four-course-arc structure.
 3. Read `../guides/course-guide.md` to understand how modules, guides, reference pages, and the capstone fit together.
 4. Read `../guides/funcpipe-rag-primer.md` so the capstone vocabulary is no longer friction.
-5. Read `../guides/capstone.md` to understand why the capstone is the executable proof for the course.
+5. Read `../capstone/index.md` to understand why the capstone is the executable proof for the course.
 6. Open `../../capstone/README.md` and scan the repository shape, working commands, and proof route.
 7. Run one small command: `make PROGRAM=python-programming/python-functional-programming capstone-test` or `make PROGRAM=python-programming/python-functional-programming capstone-tour`.
 
@@ -61,4 +61,4 @@ Before you start the first content module, you should be able to answer:
 - `course-orientation.md`
 - `../guides/start-here.md`
 - `../guides/funcpipe-rag-primer.md`
-- `../guides/capstone.md`
+- `../capstone/index.md`

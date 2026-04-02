@@ -51,9 +51,9 @@ effects into explicit contracts.
 8. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
 9. Read [Mid-Course Map](../module-00-orientation/mid-course-map.md) when you are leaving the semantic floor and entering failures, effects, and async pressure.
 10. Read [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need the smallest honest re-entry route.
-11. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
+11. Keep [FuncPipe Capstone Guide](../capstone/index.md) open while reading the full course.
 12. Use [Engineering Question Map](engineering-question-map.md) when your pressure is already concrete.
-13. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+13. Use [Command Guide](../capstone/command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](../capstone/capstone-map.md) when you want the executable route.
 
 ## Use The Arcs Deliberately
 
@@ -80,4 +80,4 @@ is easier to review than the alternatives.
 - [FuncPipe RAG Primer](funcpipe-rag-primer.md)
 - [Outcomes and Proof Map](outcomes-and-proof-map.md)
 - [Orientation](../module-00-orientation/index.md)
-- [FuncPipe Capstone Guide](capstone.md)
+- [FuncPipe Capstone Guide](../capstone/index.md)

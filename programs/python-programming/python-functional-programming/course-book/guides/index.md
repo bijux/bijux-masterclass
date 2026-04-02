@@ -24,7 +24,8 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 
 This directory collects the durable learner guides for the course. The course home
 explains what the course teaches. The guides explain how to study it, how to compare your
-work with the reference states, and how to inspect the capstone without guessing.
+work with the reference states, and when to cross into the dedicated `capstone/` shelf
+without guessing.
 
 ## Read These First
 
@@ -48,25 +49,26 @@ work with the reference states, and how to inspect the capstone without guessing
 
 ## Use These For Commands And Proof
 
-- [Command Guide](command-guide.md) for the executable surface
+- [Command Guide](../capstone/command-guide.md) for the executable surface
 - [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence
 - [Review Checklist](../reference/review-checklist.md), [Functional Anti-Pattern Atlas](../reference/anti-pattern-atlas.md), [Boundary Review Prompts](../reference/boundary-review-prompts.md), and [Self-Review Prompts](../reference/self-review-prompts.md) when you need a stable review bar
 
 ## Use These For Capstone Reading
 
-- [FuncPipe Capstone Guide](capstone.md) for the capstone’s role in the course
-- [Capstone Map](capstone-map.md) for the module-to-repository route
-- [Capstone File Guide](capstone-file-guide.md) for package-first reading
-- [Capstone Test Guide](capstone-test-guide.md) for test-first reading
-- [Capstone Review Worksheet](capstone-review-worksheet.md) for review prompts
-- [Capstone Architecture Guide](capstone-architecture-guide.md) for boundary ownership
-- [Capstone Walkthrough](capstone-walkthrough.md) for the human review story
-- [Capstone Proof Guide](capstone-proof-guide.md) for verification depth
-- [Capstone Extension Guide](capstone-extension-guide.md) for change placement
+- [FuncPipe Capstone Guide](../capstone/index.md) for the capstone’s role in the course
+- [Capstone Map](../capstone/capstone-map.md) for the module-to-repository route
+- [Capstone File Guide](../capstone/capstone-file-guide.md) for package-first reading
+- [Capstone Test Guide](../capstone/capstone-test-guide.md) for test-first reading
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for review prompts
+- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for boundary ownership
+- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for the human review story
+- [Capstone Proof Guide](../capstone/capstone-proof-guide.md) for verification depth
+- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for change placement
 
 ## Keep The Layout Stable
 
 - `index.md` stays the course home
 - `guides/` stays the learner route and proof shelf
+- `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable standards and checklist shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

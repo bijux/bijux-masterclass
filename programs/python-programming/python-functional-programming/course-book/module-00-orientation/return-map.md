@@ -43,9 +43,9 @@ boundary.
 
 | If you still trust yourself through... | Re-enter with... | Keep open... |
 | --- | --- | --- |
-| Modules 01 to 03 | [Mid-Course Map](mid-course-map.md) and Module 04 | [Proof Matrix](../guides/proof-matrix.md), [Capstone Map](../guides/capstone-map.md) |
+| Modules 01 to 03 | [Mid-Course Map](mid-course-map.md) and Module 04 | [Proof Matrix](../guides/proof-matrix.md), [Capstone Map](../capstone/capstone-map.md) |
 | Modules 04 to 06 | Module 07 and [Engineering Question Map](../guides/engineering-question-map.md) | [Boundary Review Prompts](../reference/boundary-review-prompts.md), [Review Checklist](../reference/review-checklist.md) |
-| Modules 07 to 08 | Module 09 and [Mastery Map](mastery-map.md) | [Outcomes and Proof Map](../guides/outcomes-and-proof-map.md), [FuncPipe Capstone Guide](../guides/capstone.md) |
+| Modules 07 to 08 | Module 09 and [Mastery Map](mastery-map.md) | [Outcomes and Proof Map](../guides/outcomes-and-proof-map.md), [FuncPipe Capstone Guide](../capstone/index.md) |
 | Module 09 or later | Module 10 and the capstone proof routes | [Self-Review Prompts](../reference/self-review-prompts.md), [Proof Matrix](../guides/proof-matrix.md) |
 
 ## Step 3: Use one proof route before resuming

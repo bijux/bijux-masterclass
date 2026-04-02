@@ -32,7 +32,7 @@ configuration and composition pressure:
 - [First-Contact Map](../module-00-orientation/first-contact-map.md) for the foundation route through the first three modules
 - [Module Promise Map](../guides/module-promise-map.md) for the module contract in one place
 - [Practice Map](../guides/practice-map.md) for the read-inspect-prove rhythm
-- [Capstone Map](../guides/capstone-map.md) for the configured pipeline surfaces in FuncPipe
+- [Capstone Map](../capstone/capstone-map.md) for the configured pipeline surfaces in FuncPipe
 
 Carry this question into the module:
 

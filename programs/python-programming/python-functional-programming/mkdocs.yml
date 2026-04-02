@@ -35,19 +35,19 @@ nav:
       - Module Checkpoints: guides/module-checkpoints.md
       - Engineering Question Map: guides/engineering-question-map.md
       - Practice Map: guides/practice-map.md
-      - Command Guide: guides/command-guide.md
       - History Guide: guides/history-guide.md
       - Proof Matrix: guides/proof-matrix.md
   - Capstone:
-      - FuncPipe Capstone Guide: guides/capstone.md
-      - Capstone Map: guides/capstone-map.md
-      - Capstone File Guide: guides/capstone-file-guide.md
-      - Capstone Test Guide: guides/capstone-test-guide.md
-      - Capstone Review Worksheet: guides/capstone-review-worksheet.md
-      - Capstone Architecture Guide: guides/capstone-architecture-guide.md
-      - Capstone Walkthrough: guides/capstone-walkthrough.md
-      - Capstone Proof Guide: guides/capstone-proof-guide.md
-      - Capstone Extension Guide: guides/capstone-extension-guide.md
+      - FuncPipe Capstone Guide: capstone/index.md
+      - Command Guide: capstone/command-guide.md
+      - Capstone Map: capstone/capstone-map.md
+      - Capstone File Guide: capstone/capstone-file-guide.md
+      - Capstone Test Guide: capstone/capstone-test-guide.md
+      - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+      - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
+      - Capstone Walkthrough: capstone/capstone-walkthrough.md
+      - Capstone Proof Guide: capstone/capstone-proof-guide.md
+      - Capstone Extension Guide: capstone/capstone-extension-guide.md
 
   - Reference:
       - Reference Home: reference/index.md

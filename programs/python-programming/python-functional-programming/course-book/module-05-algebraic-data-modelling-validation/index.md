@@ -32,7 +32,7 @@ domain states instead of turning into type-shape ornament:
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge through failures and modelling
 - [Engineering Question Map](../guides/engineering-question-map.md) for domain-pressure routing
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for symptom-first review of modelling mistakes
-- [Capstone Map](../guides/capstone-map.md) for the validation and domain-state surfaces in FuncPipe
+- [Capstone Map](../capstone/capstone-map.md) for the validation and domain-state surfaces in FuncPipe
 
 Carry this question into the module:
 

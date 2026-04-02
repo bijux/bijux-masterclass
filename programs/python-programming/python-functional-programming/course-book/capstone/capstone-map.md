@@ -27,7 +27,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 
 ## Capstone route
 
-- Start with [FuncPipe Capstone Guide](capstone.md) for the overall role and purpose.
+- Start with [FuncPipe Capstone Guide](index.md) for the overall role and purpose.
 - Read [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
 - Read the capstone's local [`PACKAGE_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/PACKAGE_GUIDE.md) when you are already inside the repository and want the same route locally.
 - Read [Capstone Test Guide](capstone-test-guide.md) when you want the test suite to function as a review map.

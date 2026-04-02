@@ -93,7 +93,7 @@ Move on once you can explain these three points:
 
 ## Best companion pages
 
-- [FuncPipe Capstone Guide](capstone.md)
-- [Capstone Map](capstone-map.md)
+- [FuncPipe Capstone Guide](../capstone/index.md)
+- [Capstone Map](../capstone/capstone-map.md)
 - [Proof Matrix](proof-matrix.md)
 - [Functional Glossary](../reference/glossary.md)

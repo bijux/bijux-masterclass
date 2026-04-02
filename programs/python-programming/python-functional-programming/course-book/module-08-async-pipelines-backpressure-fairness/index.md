@@ -32,7 +32,7 @@ not quietly become magical concurrency vocabulary:
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge into effect and async pressure
 - [Review Checklist](../reference/review-checklist.md) for the engineering bar around fairness and observability
 - [Boundary Review Prompts](../reference/boundary-review-prompts.md) for pressure on async abstractions
-- [Capstone Map](../guides/capstone-map.md) for the async effect and runtime adapter surfaces in FuncPipe
+- [Capstone Map](../capstone/capstone-map.md) for the async effect and runtime adapter surfaces in FuncPipe
 
 Carry this question into the module:
 

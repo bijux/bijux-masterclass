@@ -41,7 +41,7 @@ Use [Capstone Map](capstone-map.md) when you want the best next page for code re
 architecture review, walkthrough, or proof. That page now includes a module-by-module
 route to the first file, test, and command worth opening.
 
-If the retrieval domain itself feels noisy, read [FuncPipe RAG Primer](funcpipe-rag-primer.md)
+If the retrieval domain itself feels noisy, read [FuncPipe RAG Primer](../guides/funcpipe-rag-primer.md)
 first. It narrows the vocabulary so the capstone stays attached to the FP lesson instead
 of turning into a separate subject.
 

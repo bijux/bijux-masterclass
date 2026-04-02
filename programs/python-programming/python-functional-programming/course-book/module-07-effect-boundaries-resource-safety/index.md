@@ -32,7 +32,7 @@ contracts instead of turning into scattered adapter folklore:
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the move from modelling into system pressure
 - [Review Checklist](../reference/review-checklist.md) for the engineering bar around boundaries
 - [Topic Boundaries](../reference/topic-boundaries.md) for the scope line around functional technique versus infrastructure design
-- [Capstone Map](../guides/capstone-map.md) for the boundaries, capabilities, and domain effect surfaces in FuncPipe
+- [Capstone Map](../capstone/capstone-map.md) for the boundaries, capabilities, and domain effect surfaces in FuncPipe
 
 Carry this question into the module:
 

@@ -87,7 +87,7 @@ Modules 09 to 10 ask whether the design can survive a team and a production life
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
 - [History Guide](history-guide.md) when you need the generated comparison route
 - [Proof Matrix](proof-matrix.md) when you want the fastest route from a claim to executable evidence
-- [FuncPipe Capstone Guide](capstone.md) and [Capstone Map](capstone-map.md) when you want the repository route kept explicit
+- [FuncPipe Capstone Guide](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) when you want the repository route kept explicit
 
 ## Honest Expectation
 

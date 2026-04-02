@@ -127,4 +127,4 @@ Then inspect:
 - `module-promise-map.md`
 - `module-checkpoints.md`
 - `proof-matrix.md`
-- `capstone-map.md`
+- `capstone/capstone-map.md`

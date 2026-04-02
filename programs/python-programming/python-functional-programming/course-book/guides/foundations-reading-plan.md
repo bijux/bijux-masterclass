@@ -142,6 +142,6 @@ Can you explain where laziness stops being a win and starts needing explicit cle
 
 - [Start Here](start-here.md)
 - [Course Guide](course-guide.md)
-- [Capstone Map](capstone-map.md)
+- [Capstone Map](../capstone/capstone-map.md)
 - [Proof Matrix](proof-matrix.md)
 - [Functional Glossary](../reference/glossary.md)

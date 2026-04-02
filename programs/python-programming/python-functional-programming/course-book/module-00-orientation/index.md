@@ -78,7 +78,7 @@ you read. The course assumes engineering curiosity, not perfection.
 - Read the [Mastery Map](mastery-map.md) when you are returning with a design or review pressure.
 - Read the full [Course Orientation](course-orientation.md).
 - Read [How to Study This Course](how-to-study-this-course.md).
-- Keep the [FuncPipe Capstone Guide](../guides/capstone.md) open from the beginning, and keep [Start Here](../guides/start-here.md) available when you need the short learner route again.
+- Keep the [FuncPipe Capstone Guide](../capstone/index.md) open from the beginning, and keep [Start Here](../guides/start-here.md) available when you need the short learner route again.
 
 ## Capstone roadmap
 
@@ -93,7 +93,7 @@ The FuncPipe RAG capstone matures with the course:
 
 - Write a one-paragraph statement of what this course owns and what it explicitly does not try to teach.
 - Identify the prerequisite that feels least stable for you, then name the module where that gap would become expensive.
-- Open [Start Here](../guides/start-here.md) and [FuncPipe Capstone Guide](../guides/capstone.md), then note which route you will use for first contact and which route you will use for proof.
+- Open [Start Here](../guides/start-here.md) and [FuncPipe Capstone Guide](../capstone/index.md), then note which route you will use for first contact and which route you will use for proof.
 
 ## Closing criteria
 

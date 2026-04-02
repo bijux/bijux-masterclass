@@ -32,7 +32,7 @@ course promise and the capstone proof route:
 - [First-Contact Map](../module-00-orientation/first-contact-map.md) for the shortest stable entry route
 - [Module Promise Map](../guides/module-promise-map.md) for the plain-language contract of the module
 - [Module Checkpoints](../guides/module-checkpoints.md) for the exit bar before Module 02
-- [Capstone Map](../guides/capstone-map.md) for the matching core packages and proof surfaces
+- [Capstone Map](../capstone/capstone-map.md) for the matching core packages and proof surfaces
 
 Carry this question into the module:
 

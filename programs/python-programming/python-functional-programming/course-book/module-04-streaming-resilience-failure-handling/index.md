@@ -32,7 +32,7 @@ instead of turning into hidden retry folklore:
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge into failure and effect pressure
 - [Engineering Question Map](../guides/engineering-question-map.md) for pressure-first entry into the course
 - [Proof Matrix](../guides/proof-matrix.md) for the matching executable route
-- [Capstone Map](../guides/capstone-map.md) for the result, retry, and breaker surfaces in FuncPipe
+- [Capstone Map](../capstone/capstone-map.md) for the result, retry, and breaker surfaces in FuncPipe
 
 Carry this question into the module:
 
