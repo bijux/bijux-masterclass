@@ -75,6 +75,21 @@ test count.
 3. Finish with runtime checks, approval boundaries, and confidence ladders.
 4. Use the refactor chapter to reshape the capstone test suite around contracts instead of convenience.
 
+## Verification route by claim
+
+| If the claim is about... | Start with | Then compare |
+| --- | --- | --- |
+| lifecycle and invariant authority | `capstone/TEST_GUIDE.md` and lifecycle tests | `capstone/PROOF_GUIDE.md` |
+| replaceable policy behavior | evaluation tests | `policies.py` and `PACKAGE_GUIDE.md` |
+| learner-facing use cases | application or demo tests | `TOUR.md` and `TARGET_GUIDE.md` |
+| runtime or repository boundaries | runtime or unit-of-work tests | `ARCHITECTURE.md` and `EXTENSION_GUIDE.md` |
+
+## If verification still feels abstract
+
+- name the design claim before choosing the test family
+- ask which suite should fail first, not which suite is most impressive to run
+- compare one saved learner-facing bundle with one targeted suite so story and contract stay connected
+
 ## Common failure modes
 
 - testing internal method calls instead of externally visible behavior
@@ -94,6 +109,14 @@ test count.
 The monitoring capstone already includes unit and application tests. This module shows
 how to extend that suite toward stateful lifecycle coverage, repository contracts,
 property checks, and confidence layers that match real design risk.
+
+## Honest completion signal
+
+You are ready to move on when you can take one design claim from the capstone and answer:
+
+- which suite should fail first
+- which saved route best explains the same claim to a human reviewer
+- which proof route would be unnecessarily heavy for that question
 
 ## Closing criteria
 
