@@ -41,6 +41,7 @@ file, or artifact that defends it.
 | workflow execution remains deterministic across core counts | `make selftest` | `tests/selftest.sh`, `publish/v1/summary.json` |
 | clean-room confirmation protects the full repository contract | `make confirm` | `Makefile`, `tests/`, `publish/v1/` |
 | the capstone exposes one learner-facing bundled proof route | `make proof` | `tour`, `verify-report`, and `profile-audit` artifacts |
+| profile differences stay operational instead of semantic | `make profile-summary` | `scripts/profile_summary.py`, `profile-summary.json`, `profiles/` |
 
 ## Route By Review Goal
 

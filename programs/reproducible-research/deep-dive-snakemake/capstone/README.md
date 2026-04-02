@@ -169,6 +169,7 @@ make selftest
 make verify-report
 make publish-summary
 make profile-audit
+make profile-summary
 make tour
 make confirm
 ```
@@ -209,6 +210,8 @@ samples, public files, top screen hits, and provenance identity without opening 
 full publish bundle.
 Use `make profile-audit` when the question is about execution policy across local, CI,
 and cluster contexts rather than publish correctness alone.
+Use `make profile-summary` when you want one compact JSON that separates shared policy
+from profile-specific differences before you open the full profile audit bundle.
 
 Generated review bundles now keep the published workflow manifest and the bundle
 inventory separate: `publish-manifest.json` describes the published interface, while

@@ -55,7 +55,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
-	publish-summary \
+	publish-summary profile-summary \
 	verify-report profile-audit \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
@@ -206,6 +206,15 @@ profile-audit: validate-config ## Build the profile review bundle
 		'  Which resources are resolved differently across local, ci, and slurm?' > "$(PROFILE_AUDIT_DIR)/review-questions.txt"
 	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(PROFILE_AUDIT_DIR)" --output "$(PROFILE_AUDIT_DIR)/bundle-manifest.json"
 	@echo "✔ wrote profile audit bundle to $(PROFILE_AUDIT_DIR)"
+
+profile-summary: profile-audit ## Write a compact comparison of local, CI, and SLURM profiles
+	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
+	@$(PYTHON) scripts/profile_summary.py \
+		--local "$(PROFILE_AUDIT_DIR)/profiles/local.yaml" \
+		--ci "$(PROFILE_AUDIT_DIR)/profiles/ci.yaml" \
+		--slurm "$(PROFILE_AUDIT_DIR)/profiles/slurm.yaml" \
+		--out "$(PROFILE_AUDIT_DIR)/profile-summary.json"
+	@echo "✔ wrote profile summary to $(PROFILE_AUDIT_DIR)/profile-summary.json"
 
 # ---- high-level flows ----
 check: lint test wf-lint wf-dryrun validate-config ## Fast pre-flight (no workflow execution); NOT a formatting gate
