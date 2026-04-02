@@ -27,6 +27,12 @@ more honest next move.
 Use this page when the learner problem is easier to name than the module or mechanism
 that teaches it.
 
+## Use this map well
+
+- Start from the engineering question, not from the mechanism you think might answer it.
+- Choose one row first, not several at once.
+- Leave the page once one module range and one capstone cross-check are clear.
+
 ## Question to route table
 
 | If the question is... | Start with | Keep this guide open | Capstone cross-check |
@@ -46,6 +52,14 @@ that teaches it.
 2. Start with the smallest module range that answers that question.
 3. Keep one guide open so the route and exit bar stay visible.
 4. Use the capstone only after you can say what you are trying to confirm.
+
+## Good stopping point
+
+Stop with this map once you can say:
+
+- which exact question you are trying to answer
+- which module range owns that answer
+- which capstone surface is the first honest cross-check
 
 ## Good companion pages
 
