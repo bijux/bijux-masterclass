@@ -25,6 +25,16 @@ This map keeps the course attached to one executable system. The capstone is a p
 runtime for incident delivery adapters, and each major course mechanism has a clearly
 named home inside it.
 
+## Start by question
+
+| If you need to know... | Start with | Then inspect |
+| --- | --- | --- |
+| what the runtime exposes without execution | `make manifest` and `make registry` | `framework.py` and `capstone/docs/PLUGIN_RUNTIME_GUIDE.md` |
+| where wrapper behavior really lives | `capstone/docs/ACTION_GUIDE.md` | `actions.py` and `tests/test_runtime.py` |
+| where field ownership and validation live | `capstone/docs/FIELD_GUIDE.md` | `fields.py` and `tests/test_fields.py` |
+| whether class creation is honest | `capstone/docs/REGISTRY_GUIDE.md` | `framework.py` and `tests/test_registry.py` |
+| which route to hand to another reviewer | `capstone/docs/REVIEW_ROUTE_MAP.md` | `make inspect`, `make tour`, or `make verify-report` |
+
 ## Mechanism to file map
 
 - introspection and manifest export: `capstone/src/incident_plugins/framework.py`
@@ -56,11 +66,11 @@ named home inside it.
 
 ## Practical reading order
 
-1. Read `framework.py` for the metaclass and public manifest surface.
-2. Read `fields.py` for attribute ownership.
-3. Read `actions.py` for wrapper discipline.
-4. Read `plugins.py` for concrete plugin behavior.
-5. Read tests only after you know what each file claims to own.
+1. Start with one public surface such as `manifest`, `registry`, or `trace`.
+2. Read the matching local guide in `capstone/docs/` so the ownership claim is explicit.
+3. Read the owning file in `framework.py`, `fields.py`, `actions.py`, or `plugins.py`.
+4. Read the matching tests only after you know what the file is claiming to own.
+5. Escalate to saved bundles only when another reviewer needs the route preserved.
 
 ## Inspect, explain, prove
 
