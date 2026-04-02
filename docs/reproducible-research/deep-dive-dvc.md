@@ -1,28 +1,52 @@
 # Deep Dive DVC
 
-Deep Dive DVC teaches reproducibility as a question of state: how data,
-parameters, metrics, experiments, and recovery evidence acquire stable identity
-and remain trustworthy over time.
+Deep Dive DVC teaches reproducibility through state identity, declared experiments,
+promotion boundaries, and recovery discipline. It is the route to choose when filenames
+and notebooks are no longer enough to explain what result is authoritative.
 
-## Repository Location
+## Page Maps
 
-`programs/reproducible-research/deep-dive-dvc`
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  course["Course home"]
+  capstone["Capstone guide"]
 
-## What It Contains
+  family --> program --> course
+  course --> capstone
+```
 
-- A learner entry route and supporting course navigation pages in `course-book/`
-- A ten-module program guide in `course-book/`
-- A documented capstone entrypoint in `capstone/`
-- Local development entrypoints in `Makefile`
+```mermaid
+flowchart LR
+  overview["Read this overview"] --> start["Open Start Here or Course Home"]
+  start --> module["Study the state model, pipeline, or recovery pages"]
+  module --> capstone["Inspect the incident-escalation capstone"]
+  capstone --> compare["Return here when comparing with Make or Snakemake"]
+```
+
+## What This Program Covers
+
+- content-addressed data identity and state boundaries
+- truthful `dvc.yaml` pipelines with declared parameters and metrics
+- experiments, promotion, retention, and auditability
+- recovery drills that prove a result can be restored after loss
+
+## Local Catalog Route
+
+- Course home: [Program guide](../library/reproducible-research/deep-dive-dvc/course-book/index.md)
+- Learner entry: [Start Here](../library/reproducible-research/deep-dive-dvc/course-book/start-here.md)
+- Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-dvc/capstone/README.md)
 
 ## Local Commands
 
 ```bash
-make PROGRAM=reproducible-research/deep-dive-dvc docs-build
+make PROGRAM=reproducible-research/deep-dive-dvc docs-serve
 make PROGRAM=reproducible-research/deep-dive-dvc test
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 ```
 
-## Best First Reads
+## Honesty Boundary
 
-Start with `course-book/start-here.md`, then `course-book/module-00.md`, then
-`course-book/capstone-map.md`.
+This program is for readers who need exact answers to "what state exists", "what state
+is recoverable", and "what proof turns a reproducibility claim into an engineering contract".

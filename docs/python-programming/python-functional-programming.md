@@ -1,22 +1,51 @@
 # Python Functional Programming
 
-Python Functional Programming is a correctness-first deep dive into data-first
-composition, streaming pipelines, effect isolation, async backpressure, and
-functional design in production Python.
+Python Functional Programming teaches data-first composition, explicit effects, typed
+failure flow, and bounded async coordination for production Python systems.
 
-## Repository Location
+## Page Maps
 
-`programs/python-programming/python-functional-programming`
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  course["Course home"]
+  capstone["Capstone guide"]
 
-## What It Contains
+  family --> program --> course
+  course --> capstone
+```
 
-- A multi-module course book in `course-book/`
-- A runnable `funcpipe_rag` codebase in `src/`
-- Tests and tagged learning snapshots
+```mermaid
+flowchart LR
+  overview["Read this overview"] --> start["Open Orientation or Course Home"]
+  start --> module["Study the module that matches the pipeline or effect pressure"]
+  module --> capstone["Cross-check the FuncPipe RAG capstone"]
+  capstone --> compare["Return here when switching to OOP or meta-programming"]
+```
+
+## What This Program Covers
+
+- purity, substitution, and data-first API design
+- streaming, resilience, algebraic modelling, and explicit context
+- effect boundaries, async backpressure, interop, and long-lived refactoring
+- a capstone that proves the abstractions survive real package and test structure
+
+## Local Catalog Route
+
+- Course home: [Course home](../library/python-programming/python-functional-programming/course-book/index.md)
+- Learner entry: [Orientation](../library/python-programming/python-functional-programming/course-book/module-00-orientation/index.md)
+- Capstone guide: [Capstone README](../library/python-programming/python-functional-programming/capstone/README.md)
 
 ## Local Commands
 
 ```bash
-make PROGRAM=python-programming/python-functional-programming docs-build
+make PROGRAM=python-programming/python-functional-programming docs-serve
 make PROGRAM=python-programming/python-functional-programming test
+make PROGRAM=python-programming/python-functional-programming capstone-tour
 ```
+
+## Honesty Boundary
+
+This program is not trying to make Python pretend to be another language. It is for
+readers who want stronger reasoning about state, effects, async work, and operational boundaries in ordinary Python.

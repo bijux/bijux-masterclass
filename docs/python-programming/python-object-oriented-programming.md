@@ -1,24 +1,52 @@
 # Python Object-Oriented Programming
 
-Python Object-Oriented Programming teaches classes, state, collaboration, and
-evolution as explicit engineering contracts rather than loose style choices. It now
-follows a ten-module roadmap from object semantics through persistence, concurrency,
-verification, public APIs, and operational mastery.
+Python Object-Oriented Programming is the design-for-change program in the Python family.
+It treats objects, repositories, lifecycles, public APIs, and operational pressure as
+engineering contracts rather than style preferences.
 
-## Repository Location
+## Page Maps
 
-`programs/python-programming/python-object-oriented-programming`
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  course["Course home"]
+  capstone["Capstone guide"]
 
-## What It Contains
+  family --> program --> course
+  course --> capstone
+```
 
-- A ten-module course book in `course-book/`
-- A runnable monitoring-system capstone in `capstone/`
-- MkDocs-based documentation entrypoints
-- Local development entrypoints in `Makefile`
+```mermaid
+flowchart LR
+  overview["Read this overview"] --> start["Open Orientation or Course Home"]
+  start --> module["Study the module that matches the design pressure"]
+  module --> capstone["Cross-check the monitoring capstone"]
+  capstone --> compare["Return here when switching to FP or meta-programming"]
+```
+
+## What This Program Covers
+
+- object semantics, role assignment, state design, and aggregates
+- repositories, serialization, schema evolution, and concurrency boundaries
+- verification strategy, public API governance, and operational hardening
+- a ten-module route from object model fundamentals to production review
+
+## Local Catalog Route
+
+- Course home: [Course home](../library/python-programming/python-object-oriented-programming/course-book/index.md)
+- Learner entry: [Orientation](../library/python-programming/python-object-oriented-programming/course-book/module-00-orientation/index.md)
+- Capstone guide: [Capstone README](../library/python-programming/python-object-oriented-programming/capstone/README.md)
 
 ## Local Commands
 
 ```bash
-make PROGRAM=python-programming/python-object-oriented-programming docs-build
+make PROGRAM=python-programming/python-object-oriented-programming docs-serve
 make PROGRAM=python-programming/python-object-oriented-programming test
+make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm
 ```
+
+## Honesty Boundary
+
+This program is not a beginner introduction to `class` syntax. It is for readers who
+want explicit answers about invariants, ownership, evolution, and what object-oriented Python looks like under real change pressure.

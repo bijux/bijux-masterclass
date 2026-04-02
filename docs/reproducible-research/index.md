@@ -1,46 +1,63 @@
 # Reproducible Research
 
-This family contains programs about build graphs, workflow execution, state
-identity, publishing, verification, and operational reproducibility.
+This family collects programs about how systems declare state, build graphs, publish
+artifacts, and recover trustworthy results after change or failure.
 
-## Program Map
+## Family Maps
 
-The long-lived map for this family is:
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  make["Deep Dive Make"]
+  snakemake["Deep Dive Snakemake"]
+  dvc["Deep Dive DVC"]
 
-1. **How systems change**: Make
-2. **How state transitions scale**: Snakemake, Nextflow
-3. **What states are**: DVC
-4. **Where states execute**: containers and execution envelopes
-5. **How states survive time and authority**: CI, retention, recovery
-6. **How systems explain themselves**: observability and tracing
+  family --> make
+  family --> snakemake
+  family --> dvc
+```
 
-Current repository coverage:
+```mermaid
+flowchart LR
+  choose["Choose the system pressure"] --> build["Build graph honesty"]
+  choose --> workflow["Workflow orchestration"]
+  choose --> state["State identity and recovery"]
+  build --> make["Deep Dive Make"]
+  workflow --> snakemake["Deep Dive Snakemake"]
+  state --> dvc["Deep Dive DVC"]
+```
 
-- `deep-dive-make` covers local build-graph truthfulness.
-- `deep-dive-snakemake` covers workflow-scale orchestration.
-- `deep-dive-dvc` covers state identity, experiment lineage, and recovery.
+## How to Read This Family
 
-## Included Programs
+- Start with Deep Dive Make if you need a mental model for truthful dependency graphs.
+- Start with Deep Dive Snakemake if you need workflow-scale orchestration and publish boundaries.
+- Start with Deep Dive DVC if you need data identity, experiment lineage, and recovery contracts.
+- Move back through this family page when you want to compare how the three programs treat state and proof differently.
 
-### Deep Dive Make
+## Program Routes
 
-- Location: `programs/reproducible-research/deep-dive-make`
-- Focus: GNU Make as a truthful, parallel-safe build graph engine
-- Local entrypoints:
-  - `make PROGRAM=reproducible-research/deep-dive-make program-help`
-  - `make PROGRAM=reproducible-research/deep-dive-make test`
+### [Deep Dive Make](deep-dive-make.md)
 
-### Deep Dive Snakemake
+- Local course home: [Deep Dive Make course home](../library/reproducible-research/deep-dive-make/course-book/index.md)
+- Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/course-book/start-here.md)
+- Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-make/capstone/README.md)
 
-- Location: `programs/reproducible-research/deep-dive-snakemake`
-- Focus: Snakemake as a reproducible workflow engine with explicit contracts
-- Local entrypoints:
-  - `make PROGRAM=reproducible-research/deep-dive-snakemake program-help`
+### [Deep Dive Snakemake](deep-dive-snakemake.md)
 
-### Deep Dive DVC
+- Local course home: [Deep Dive Snakemake course home](../library/reproducible-research/deep-dive-snakemake/course-book/index.md)
+- Learner entry: [Start Here](../library/reproducible-research/deep-dive-snakemake/course-book/start-here.md)
+- Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-snakemake/capstone/README.md)
 
-- Location: `programs/reproducible-research/deep-dive-dvc`
-- Focus: DVC as the contract layer for data identity, experiment lineage, and recoverability
-- Local entrypoints:
-  - `make PROGRAM=reproducible-research/deep-dive-dvc program-help`
-  - `make PROGRAM=reproducible-research/deep-dive-dvc docs-build`
+### [Deep Dive DVC](deep-dive-dvc.md)
+
+- Local course home: [Deep Dive DVC course home](../library/reproducible-research/deep-dive-dvc/course-book/index.md)
+- Learner entry: [Start Here](../library/reproducible-research/deep-dive-dvc/course-book/start-here.md)
+- Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-dvc/capstone/README.md)
+
+## Local Commands
+
+```bash
+make docs-serve
+make PROGRAM=reproducible-research/deep-dive-snakemake docs-serve
+make PROGRAM=reproducible-research/deep-dive-dvc test
+```
