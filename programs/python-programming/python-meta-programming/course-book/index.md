@@ -32,6 +32,7 @@ code inspects, wraps, validates, or registers other code and objects.
 ## Start with these pages
 
 - [Start Here](guides/start-here.md)
+- [Guides Home](guides/index.md)
 - [Course Guide](guides/course-guide.md)
 - [Learning Contract](guides/learning-contract.md)
 - [Runtime Power Ladder](reference/runtime-power-ladder.md)
@@ -62,7 +63,7 @@ instead of ornamental.
 
 ## Module route
 
-- [Module 00](module-00.md) defines the reading discipline.
+- [Module 00](module-00-orientation/index.md) defines the reading discipline.
 - [Modules 01-03](module-01.md) through [module-03.md](module-03.md) build the object and inspection model.
 - [Modules 04-06](module-04.md) through [module-06.md](module-06.md) explain wrappers and class decorators.
 - [Modules 07-09](module-07.md) through [module-09.md](module-09.md) explain descriptors and metaclasses.

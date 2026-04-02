@@ -44,7 +44,7 @@ The course has four linked layers:
 ### Orientation
 
 - [Start Here](start-here.md) decides whether the course matches your current problem.
-- [Module 00](../module-00.md) defines the power ladder and the rules for reading the course.
+- [Module 00](../module-00-orientation/index.md) defines the power ladder and the rules for reading the course.
 
 ### Runtime mechanics
 

@@ -16,10 +16,11 @@ site_dir: ../../../artifacts/site/python-programming/python-meta-programming
 nav:
   - Start Here:
       - Course Home: index.md
+      - Guides Home: guides/index.md
       - Learner Entry: guides/start-here.md
       - Course Guide: guides/course-guide.md
       - Learning Contract: guides/learning-contract.md
-      - Orientation: module-00.md
+      - Orientation: module-00-orientation/index.md
       - Capstone Guide: guides/capstone.md
   - Course Reference:
       - Reference Home: reference/index.md
