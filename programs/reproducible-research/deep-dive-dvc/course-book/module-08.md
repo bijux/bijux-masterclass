@@ -14,6 +14,14 @@ This module elucidates the ultimate verity: **Reproducibility transcends initial
 
 **Prerequisites**: Comprehensive assimilation of Modules 01–07 is mandatory. Familiarity with DVC commands (e.g., `dvc gc`, `dvc push`), CI/CD pipelines, and storage management (e.g., S3/GCS) is presumed; review operational DVC guides if required.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| durability | "Which state must survive local loss?" | inspect the capstone remote and recovery drill directly |
+| retention | "Which history is worth keeping reproducible, and for how long?" | compare policy ideas to the repository's promoted surfaces |
+| maintenance discipline | "When is cleanup safe, and when is it destructive?" | use recovery evidence before trusting garbage collection |
+
 ## Why this module matters in the course
 
 This is the module that forces the learner to stop treating reproducibility as a setup
@@ -34,6 +42,8 @@ By the end of the module, you should be able to answer:
 - When does garbage collection become safe maintenance instead of silent history damage?
 
 If those answers are missing, the repository may be tidy but it is not durable.
+
+This module should make the learner more deliberate about time, not simply more cautious.
 
 ## What to inspect in the capstone
 

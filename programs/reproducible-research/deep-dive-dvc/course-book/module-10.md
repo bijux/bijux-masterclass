@@ -23,6 +23,14 @@ Use this module if you need to learn how to:
 * plan a migration that preserves trust while changing state boundaries
 * decide when DVC should keep owning a concern and when another system should take over
 
+### At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| repository review | "Which state contracts are broken today?" | use the capstone as a stewardship specimen once the rubric is clear |
+| migration safety | "How do I move boundaries without damaging trust?" | compare migration ideas to the capstone's current contracts |
+| tool boundaries | "What should DVC keep owning, and what belongs elsewhere?" | inspect the repository as part of a larger reproducibility system |
+
 Proof loop for this module:
 
 ```bash
@@ -37,6 +45,9 @@ Capstone corroboration:
 * inspect `capstone/dvc.lock`
 * inspect `capstone/publish/v1/`
 * inspect `capstone/Makefile`
+
+The course ends well only if the learner leaves with a repeatable review method, not just
+with a list of warnings.
 
 ---
 

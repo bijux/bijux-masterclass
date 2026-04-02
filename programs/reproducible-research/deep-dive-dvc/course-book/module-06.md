@@ -18,6 +18,14 @@ This module resolves a singular inquiry: **How can exploration proceed unencumbe
 
 **Prerequisites**: Thorough comprehension of Modules 01–05 is essential. Proficiency in DVC commands such as `dvc exp run`, `dvc exp diff`, and Git branching is recommended; consult DVC's experimentation documentation if clarification is required.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| comparable exploration | "What makes an experiment different but still comparable?" | use the capstone after baseline state already feels stable |
+| reversible change | "How do I explore without corrupting the main state story?" | inspect params, metrics, and publish state together |
+| declared variation | "Which experiment changes belong in the control surface?" | avoid treating local tweaks as legitimate lineage |
+
 ## Why this module matters in the course
 
 This is where many teams destroy the discipline they built in earlier modules. Once the
@@ -37,6 +45,8 @@ By the end of the module, you should be able to answer:
 - How do experiments stay reversible without cluttering or corrupting main history?
 
 If those answers are still weak, later promotion and governance rules will feel arbitrary.
+
+This module should make experimentation feel more disciplined, not less flexible.
 
 ## What to inspect in the capstone
 

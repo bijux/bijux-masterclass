@@ -16,6 +16,14 @@ This module confronts an inherent truth: **Reproducibility embodies a social agr
 
 **Prerequisites**: Proficiency in Modules 01–06 is imperative. Acquaintance with Git workflows, CI platforms (e.g., GitHub Actions, GitLab CI), and DVC remotes is advisable; reference pertinent documentation as necessary.
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| social contracts | "Which failures are coordination failures in disguise?" | inspect the capstone once you can already name the technical contract |
+| CI enforcement | "What should the system block instead of trusting memory?" | compare verification targets to human review expectations |
+| remote discipline | "What must another person be able to verify without private context?" | use `confirm` and `recovery-drill` as shared proof surfaces |
+
 ## Why this module matters in the course
 
 This is the moment where the course stops pretending that good tooling alone is enough.
@@ -36,6 +44,8 @@ By the end of the module, you should be able to answer:
 - How do remotes, reviews, and branch rules become part of the proof surface?
 
 If those answers remain informal, the repository is still depending on optimism.
+
+This module should make collaboration feel more explicit, not more ceremonial.
 
 ## What to inspect in the capstone
 

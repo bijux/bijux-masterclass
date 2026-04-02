@@ -22,6 +22,14 @@ Use this module if you need to learn how to:
 * define a stable release or publish contract around DVC-managed artifacts
 * decide which metadata, metrics, and manifests are necessary for auditability
 
+### At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| promotion boundary | "What exactly is being trusted downstream?" | inspect `publish/v1/` once baseline and experimental state are already distinct |
+| release evidence | "Which params, metrics, and manifests must travel with a promoted result?" | compare the publish bundle to `dvc.lock` and tracked metrics |
+| auditability | "Can another person defend this state later?" | use `verify` as the proof loop, not just as a convenience |
+
 Proof loop for this module:
 
 ```bash
@@ -36,6 +44,9 @@ Capstone corroboration:
 * inspect `capstone/params.yaml`
 * inspect `capstone/dvc.lock`
 * inspect `capstone/TOUR.md`
+
+The learner should leave this module able to say why promoted state is trusted more than
+baseline or exploratory state.
 
 ---
 
