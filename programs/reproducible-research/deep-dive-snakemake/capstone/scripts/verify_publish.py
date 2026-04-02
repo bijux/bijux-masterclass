@@ -51,6 +51,9 @@ def main() -> int:
         raise ValueError("report/index.html does not look like HTML")
 
     if args.report is not None:
+        required_paths = [
+            path.relative_to(publish_dir).as_posix() for path in required_files
+        ]
         args.report.write_text(
             json.dumps(
                 {
@@ -58,7 +61,7 @@ def main() -> int:
                     "checks": [
                         {
                             "check": "required_files",
-                            "files": [path.relative_to(publish_dir).as_posix() for path in required_files],
+                            "files": required_paths,
                         },
                         {
                             "check": "manifest",

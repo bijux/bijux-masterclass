@@ -98,9 +98,9 @@ The top level is now deliberate:
 
 ## How to use the capstone while reading
 
-Guided route: [Capstone Map](capstone-map.md)
+Guided route: [Capstone Map](guides/capstone-map.md)
 
-If you want the shortest stable proof route first, start with [Capstone Proof Guide](capstone-proof-guide.md).
+If you want the shortest stable proof route first, start with [Capstone Proof Guide](guides/capstone-proof-guide.md).
 
 - After Module 01, inspect its explicit file contracts and stable publish boundary.
 - After Module 02, inspect the checkpoint and the way discovery is stabilized.

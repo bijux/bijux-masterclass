@@ -46,7 +46,12 @@ def main() -> None:
     args = parse_args()
     bundle_dir = Path(args.bundle_dir)
     output = Path(args.output)
-    output.write_text(json.dumps(build_manifest(bundle_dir), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    manifest_text = json.dumps(
+        build_manifest(bundle_dir),
+        indent=2,
+        sort_keys=True,
+    )
+    output.write_text(f"{manifest_text}\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
