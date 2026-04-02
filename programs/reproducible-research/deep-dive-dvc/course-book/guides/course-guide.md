@@ -45,10 +45,13 @@ The top-level distinction is deliberate:
 Start with these pages in order:
 
 1. [`start-here.md`](start-here.md)
-2. [`module-00.md`](../module-00-orientation/index.md)
-3. [`learning-contract.md`](learning-contract.md)
-4. [`module-dependency-map.md`](../reference/module-dependency-map.md)
-5. [`platform-setup.md`](platform-setup.md) if you plan to run local proof commands
+2. [`pressure-routes.md`](pressure-routes.md)
+3. [`module-00.md`](../module-00-orientation/index.md)
+4. [`learning-contract.md`](learning-contract.md)
+5. [`module-promise-map.md`](module-promise-map.md)
+6. [`module-checkpoints.md`](module-checkpoints.md)
+7. [`module-dependency-map.md`](../reference/module-dependency-map.md)
+8. [`platform-setup.md`](platform-setup.md) if you plan to run local proof commands
 
 Then begin Module 01.
 
@@ -62,8 +65,11 @@ Use these pages when you already know the course but need a fast answer:
 
 * [`state-glossary.md`](../reference/state-glossary.md) for shared vocabulary
 * [`authority-map.md`](../reference/authority-map.md) for which layer settles a trust question
+* [`topic-boundaries.md`](../reference/topic-boundaries.md) for what the course centers and what it does not
+* [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) for common reproducibility smells
 * [`practice-map.md`](../reference/practice-map.md) for the right proof route
 * [`command-guide.md`](command-guide.md) for command boundaries
+* [`proof-ladder.md`](proof-ladder.md) for smallest-honest proof selection
 * [`proof-matrix.md`](proof-matrix.md) for claims-to-evidence routing
 * [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
 * [`capstone-map.md`](capstone-map.md) for module-to-repository routing
@@ -81,6 +87,7 @@ repository:
 * [`capstone-map.md`](capstone-map.md) for the module route
 * [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
 * [`repository-layer-guide.md`](repository-layer-guide.md) for authority and layer ownership
+* [`proof-ladder.md`](proof-ladder.md) for proportional proof choice
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md) for repository review
 * [`capstone-extension-guide.md`](capstone-extension-guide.md) for safe evolution
 
@@ -96,6 +103,8 @@ Use these pages when you care about maintainability, assessment, or stewardship:
 
 * [`module-dependency-map.md`](../reference/module-dependency-map.md)
 * [`learning-contract.md`](learning-contract.md)
+* [`module-promise-map.md`](module-promise-map.md)
+* [`module-checkpoints.md`](module-checkpoints.md)
 * [`practice-map.md`](../reference/practice-map.md)
 * [`completion-rubric.md`](../reference/completion-rubric.md)
 * [`proof-matrix.md`](proof-matrix.md)
@@ -124,16 +133,15 @@ Use these pages when you already know the question and want the fastest route:
 If you are learning:
 
 ```sh
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-dvc test
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
 ```
 
 If you are reviewing:
 
 ```sh
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
-make -C capstone confirm
-make -C capstone help
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 ```
 
 [Back to top](#top)

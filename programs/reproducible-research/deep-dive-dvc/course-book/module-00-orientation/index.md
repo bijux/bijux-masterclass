@@ -143,11 +143,12 @@ Use this if you are learning DVC from the ground up.
 
 Use this if you already operate a DVC repository.
 
-1. Module 04 for truthful pipeline behavior
-2. Module 07 for collaboration and CI contracts
-3. Module 08 for retention and recovery discipline
-4. Module 09 for promotion boundaries
-5. Module 10 for stewardship judgment
+1. [`pressure-routes.md`](../guides/pressure-routes.md) for the repair-first route
+2. Module 04 for truthful pipeline behavior
+3. Module 07 for collaboration and CI contracts
+4. Module 08 for retention and recovery discipline
+5. Module 09 for promotion boundaries
+6. Module 10 for stewardship judgment
 
 ### Reproducibility steward path
 
@@ -157,6 +158,7 @@ Use this if your role is auditability, release, or long-lived system ownership.
 2. Module 08 for durability and incident survival
 3. Module 09 for publish contracts
 4. Module 10 for migration and governance
+5. [`module-promise-map.md`](../guides/module-promise-map.md) for title-to-deliverable review
 
 ---
 
@@ -238,6 +240,9 @@ Use this page sequence when you enter the capstone:
 3. [`capstone-file-guide.md`](../guides/capstone-file-guide.md)
 4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
 5. `make -C capstone confirm` when you want the strongest built-in proof route
+
+Use [`module-checkpoints.md`](../guides/module-checkpoints.md) when you are deciding whether the
+current module is actually stable enough to justify entering the larger repository.
 
 Keep using the capstone to answer one question: when a result is challenged months later,
 which exact state can the repository recover, compare, and prove?

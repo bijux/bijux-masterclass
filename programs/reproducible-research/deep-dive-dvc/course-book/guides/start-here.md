@@ -67,18 +67,20 @@ Choose this if DVC still feels new.
 2. Read [`module-00.md`](../module-00-orientation/index.md)
 3. Read [`module-01.md`](../module-01-why-reproducibility-fails/index.md)
 4. Read [`module-02.md`](../module-02-data-identity-and-content-addressing/index.md)
-5. Enter the capstone only after the state-layer model feels clear
+5. Use [`module-checkpoints.md`](module-checkpoints.md) before moving on
+6. Enter the capstone only after the state-layer model feels clear
 
 ### Route 2: Repair An Existing Repository
 
 Choose this if you already work on a DVC repository.
 
-1. Read [`authority-map.md`](../reference/authority-map.md)
-2. Read [`module-01.md`](../module-01-why-reproducibility-fails/index.md)
-3. Read [`module-04.md`](../module-04-pipelines-as-truthful-dags/index.md)
-4. Read [`module-07.md`](../module-07-collaboration-ci-and-social-contracts/index.md)
-5. Read [`module-08.md`](../module-08-production-scale-and-incident-survival/index.md)
-6. Use [`capstone-map.md`](capstone-map.md) to inspect the reference repository selectively
+1. Read [`pressure-routes.md`](pressure-routes.md)
+2. Read [`authority-map.md`](../reference/authority-map.md)
+3. Read [`module-01.md`](../module-01-why-reproducibility-fails/index.md)
+4. Read [`module-04.md`](../module-04-pipelines-as-truthful-dags/index.md)
+5. Read [`module-07.md`](../module-07-collaboration-ci-and-social-contracts/index.md)
+6. Read [`module-08.md`](../module-08-production-scale-and-incident-survival/index.md)
+7. Use [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) and [`capstone-map.md`](capstone-map.md) to inspect the reference repository selectively
 
 ### Route 3: Reproducibility Stewardship
 
@@ -89,7 +91,8 @@ Choose this if your main concern is promotion, auditability, and long-lived stat
 3. Read [`module-08.md`](../module-08-production-scale-and-incident-survival/index.md)
 4. Read [`module-09.md`](../module-09-promotion-registry-boundaries-release-contracts-and-auditability/index.md)
 5. Read [`module-10.md`](../module-10-migration-governance-anti-patterns-and-dvc-tool-boundaries/index.md)
-6. Finish with the capstone review route
+6. Use [`module-promise-map.md`](module-promise-map.md) to keep the titles honest
+7. Finish with the capstone review route
 
 [Back to top](#top)
 
@@ -116,14 +119,8 @@ capstone as your main learning surface.
 From the repository root:
 
 ```bash
-make PROGRAM=reproducible-research/deep-dive-dvc test
-```
-
-From the capstone:
-
-```bash
-make -C capstone tour
-make -C capstone confirm
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
 ```
 
 Then use:
@@ -132,5 +129,6 @@ Then use:
 * [`module-00.md`](../module-00-orientation/index.md) when you want the full course arc
 * [`course-guide.md`](course-guide.md) when you want the right support page quickly
 * [`verification-route-guide.md`](../reference/verification-route-guide.md) when you need the right proof path after the first walkthrough
+* [`proof-ladder.md`](proof-ladder.md) when you are not sure how much proof is enough
 
 [Back to top](#top)
