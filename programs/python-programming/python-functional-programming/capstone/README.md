@@ -98,6 +98,7 @@ History route:
 
 Proof route:
 
+- `GUIDE_INDEX.md`
 - `PROOF_GUIDE.md`
 - `ARCHITECTURE.md`
 - `TOUR.md`
@@ -106,6 +107,7 @@ Proof route:
 
 ## Recommended review path
 
+- `GUIDE_INDEX.md` for the smallest route into the capstone doc set
 - `ARCHITECTURE.md` for the package map
 - `tests/` for the proof surface
 - `src/funcpipe_rag/` for package boundaries
