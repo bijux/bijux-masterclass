@@ -63,6 +63,7 @@ make proof
 
 ## Read it in this order
 
+- `PLUGIN_RUNTIME_GUIDE.md` for the vocabulary and timing model
 - `ARCHITECTURE.md` for ownership boundaries
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route
@@ -105,6 +106,9 @@ all interact here, so the implementation has to stay honest about:
 - `make verify-report` writes the executable verification report bundle with pytest output and public-surface evidence.
 - `make confirm` runs the strongest local executable confirmation route.
 - `make proof` builds the published learner-facing review route.
+
+Read [PLUGIN_RUNTIME_GUIDE.md](PLUGIN_RUNTIME_GUIDE.md) first when the runtime terms still
+feel fuzzier than the commands.
 
 ## Definition of done
 

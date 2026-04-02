@@ -70,3 +70,4 @@ metaclass, or ordinary runtime code.
 - Use `make tour` when you need the narrative route from inspection to invocation.
 - Use `make verify-report` when you need saved executable evidence alongside that route.
 - Use `EXTENSION_GUIDE.md` when the architecture question is really about change placement.
+- Use `PLUGIN_RUNTIME_GUIDE.md` when the main confusion is the runtime vocabulary and timing model itself.
