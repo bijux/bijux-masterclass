@@ -13,7 +13,7 @@ from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
-from funcpipe_rag.rag_types import Chunk
+from funcpipe_rag.core.rag_types import Chunk
 
 T = TypeVar("T")
 K = TypeVar("K", bound=object)
@@ -54,4 +54,3 @@ def structural_dedup_lazy(chunks: Iterable[Chunk]) -> Iterator[Chunk]:
 
 
 __all__ = ["DedupIterator", "structural_dedup_lazy"]
-

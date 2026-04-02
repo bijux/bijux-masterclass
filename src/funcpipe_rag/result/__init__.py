@@ -1,4 +1,4 @@
-"""Module 04: Result/Option and Result-stream utilities (end-of-Module-04).
+"""Module 04: Result/Option and Result-stream utilities (end-of-Module-05).
 
 This package groups:
 - `types`: Result/Option containers + ErrInfo
@@ -106,4 +106,3 @@ __all__ = [
     "all_ok_fail_fast",
     "collect_both",
 ]
-

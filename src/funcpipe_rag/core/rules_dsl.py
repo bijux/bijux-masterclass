@@ -6,7 +6,7 @@ import ast
 from typing import Any
 
 from funcpipe_rag.core.rules_lint import SafeVisitor
-from funcpipe_rag.rag_types import DocRule, RawDoc
+from funcpipe_rag.core.rag_types import DocRule, RawDoc
 
 
 def any_doc(_: RawDoc) -> bool:

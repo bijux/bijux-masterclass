@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 import hashlib
+import json
+from pathlib import Path
+
 import hypothesis.strategies as st
 from hypothesis.strategies import SearchStrategy
+import pytest
 
-from funcpipe_rag.rag_types import Chunk, RagEnv, RawDoc, TextNode, TreeDoc
+from funcpipe_rag.core.rag_types import Chunk, RagEnv, RawDoc, TextNode, TreeDoc
 
 
 def raw_doc_strategy() -> SearchStrategy[RawDoc]:
@@ -87,3 +91,18 @@ def pipeline_chunk_strategy(draw) -> Chunk:
 
     doc_id = draw(st.text(min_size=1))
     return Chunk(doc_id=doc_id, text=text, start=start, end=end, metadata={}, embedding=vec)
+
+
+@pytest.fixture
+def snapshot() -> object:
+    """Very small file-backed snapshot for deterministic schema outputs (Module 05)."""
+
+    snap_path = Path(__file__).parent / "_snapshots" / "chunk_model_schema.json"
+    if not snap_path.exists():
+        raise FileNotFoundError(
+            f"Missing snapshot file {snap_path}. Regenerate it by running "
+            "`python -c \"from funcpipe_rag.boundaries.pydantic_edges import ChunkModel; "
+            "import json; print(json.dumps(ChunkModel.model_json_schema(), sort_keys=True))\"` "
+            "and saving the output to that path."
+        )
+    return json.loads(snap_path.read_text(encoding="utf-8"))

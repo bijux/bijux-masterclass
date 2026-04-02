@@ -1,11 +1,11 @@
-"""Stack-safe, fully-lazy traversal of TreeDoc (end-of-Module-04)."""
+"""Stack-safe, fully-lazy traversal of TreeDoc (end-of-Module-05)."""
 
 from __future__ import annotations
 
 from collections import deque
 from collections.abc import Iterator
 
-from funcpipe_rag.rag_types import ChunkWithoutEmbedding, TextNode, TreeDoc
+from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, TextNode, TreeDoc
 
 Path = tuple[int, ...]
 

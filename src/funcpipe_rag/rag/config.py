@@ -1,4 +1,4 @@
-"""Configuration and dependency wiring for the end-of-Module-04 codebase.
+"""Configuration and dependency wiring for the RAG surface (end-of-Module-05).
 
 The config-as-data and dependency-wiring patterns are introduced in Module 02
 and extended in Module 03 with streaming entry points.
@@ -10,11 +10,11 @@ from dataclasses import dataclass
 from collections.abc import Iterable, Iterator
 from typing import Callable, Mapping, Protocol
 
-from funcpipe_rag.api.clean_cfg import CleanConfig, DEFAULT_CLEAN_CONFIG, RULES, make_cleaner
-from funcpipe_rag.api.types import DebugConfig, Observations, RagTaps
+from funcpipe_rag.rag.clean_cfg import CleanConfig, DEFAULT_CLEAN_CONFIG, RULES, make_cleaner
+from funcpipe_rag.rag.types import DebugConfig, Observations, RagTaps
 from funcpipe_rag.core.rules_pred import DEFAULT_RULES, RulesConfig
-from funcpipe_rag.pipeline_stages import embed_chunk
-from funcpipe_rag.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RagEnv, RawDoc
+from funcpipe_rag.rag.stages import embed_chunk
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RagEnv, RawDoc
 from funcpipe_rag.result import Err, Ok, Result
 
 
@@ -58,7 +58,7 @@ def make_rag_fn(
 ) -> Callable[[list[RawDoc]], tuple[list[Chunk], Observations]]:
     """Pure configurator: capture immutable config into a reusable callable."""
 
-    from funcpipe_rag.api.core import full_rag_api
+    from funcpipe_rag.rag.rag_api import full_rag_api
 
     config = RagConfig(env=RagEnv(chunk_size), keep=keep, clean=clean_cfg, debug=debug)
     deps = get_deps(config, taps=taps)
@@ -78,7 +78,7 @@ def make_gen_rag_fn(
 ) -> Callable[[Iterable[RawDoc]], Iterator[ChunkWithoutEmbedding]]:
     """Pure configurator: build a streaming docs -> chunk stream function (Module 03)."""
 
-    from funcpipe_rag.api.core import gen_bounded_chunks
+    from funcpipe_rag.rag.streaming_rag import gen_bounded_chunks
 
     config = RagConfig(env=RagEnv(chunk_size), keep=keep, clean=clean_cfg)
     deps = get_deps(config)

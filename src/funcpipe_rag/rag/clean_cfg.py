@@ -1,6 +1,6 @@
-"""Configuration-as-data for deterministic document cleaning (Modules 02–03).
+"""Configuration-as-data for deterministic document cleaning (Modules 02–05).
 
-This is introduced in Module 02 and kept stable through Module 04: represent
+This is introduced in Module 02 and kept stable through Module 05: represent
 cleaning as immutable data and bind it into a pure ``RawDoc -> CleanDoc`` stage.
 """
 
@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable
 
-from funcpipe_rag.rag_types import CleanDoc, RawDoc
+from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
 
 TextRule = Callable[[str], str]
 

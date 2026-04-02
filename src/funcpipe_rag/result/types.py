@@ -1,4 +1,4 @@
-"""Result/Option containers for pure, streaming-friendly error handling (end-of-Module-04)."""
+"""Result/Option containers for pure, streaming-friendly error handling (end-of-Module-05)."""
 
 from __future__ import annotations
 
@@ -159,7 +159,7 @@ class ErrInfo(NamedTuple):
 
     code: str
     msg: str
-    stage: str
+    stage: str = ""
     path: tuple[int, ...] = ()
     cause: BaseException | None = None
     ctx: Mapping[str, object] | None = None
@@ -168,11 +168,22 @@ class ErrInfo(NamedTuple):
 def make_errinfo(
     code: str,
     msg: str,
-    stage: str,
+    stage: str = "",
     path: tuple[int, ...] = (),
     cause: BaseException | None = None,
     ctx: Mapping[str, object] | None = None,
+    *,
+    exc: BaseException | None = None,
+    meta: Mapping[str, object] | None = None,
 ) -> ErrInfo:
+    if cause is not None and exc is not None:
+        raise ValueError("Provide only one of: cause, exc")
+    if ctx is not None and meta is not None:
+        raise ValueError("Provide only one of: ctx, meta")
+    if exc is not None:
+        cause = exc
+    if meta is not None:
+        ctx = meta
     if ctx is not None:
         if not isinstance(ctx, Mapping):
             raise ValueError("ErrInfo.ctx must be a mapping when provided")

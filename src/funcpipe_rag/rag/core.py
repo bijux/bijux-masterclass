@@ -1,4 +1,4 @@
-"""Core pipelines for the end-of-Module-04 codebase.
+"""Core pipelines for the end-of-Module-05 codebase.
 
 Module 02 established the pure, configurable API shapes.
 Module 03 extends the project with streaming helpers (boundedness, grouping,
@@ -8,6 +8,9 @@ behaviour when you materialize at the edge.
 Module 04 adds stack-safe tree traversal + folds, richer Result/Option types,
 memoization, per-record error handling, breakers, retries, resource safety, and
 structured error reporting for streaming pipelines.
+
+Module 05 introduces a type-driven toolkit (`funcpipe_rag.fp`) alongside
+this RAG-focused package (`funcpipe_rag.rag`).
 """
 
 from __future__ import annotations

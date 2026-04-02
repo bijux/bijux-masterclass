@@ -1,9 +1,9 @@
-"""Immutable value types for the FuncPipe RAG pipeline.
+"""Core domain value types for FuncPipe RAG (end-of-Module-05).
 
 All types are frozen dataclasses → instances are values:
-- They are hashable when `eq=True` (only Chunk needs it for deduplication)
-- They support structural equality
-- They are safe to use in sets, as dict keys, or inside other frozen dataclasses
+- They support structural equality.
+- They are safe to use as dict keys (only `Chunk` opts into `eq=True` for dedup).
+- They are safe to share across pure pipeline stages and lazy iterators.
 """
 
 from __future__ import annotations
@@ -17,10 +17,7 @@ TailPolicy = str
 
 @dataclass(frozen=True)
 class RawDoc:
-    """Raw document as read from the source dataset (CSV row).
-
-    No normalisation has been applied yet – this is the exact input shape.
-    """
+    """Raw document as read from the source dataset (CSV row)."""
 
     doc_id: str
     title: str
@@ -33,29 +30,22 @@ DocRule = Callable[[RawDoc], bool]
 
 @dataclass(frozen=True)
 class CleanDoc:
-    """Document after deterministic text normalisation.
-
-    The only field that changes is `abstract` (whitespace collapsed,
-    lower-cased, and stripped).  All other fields are carried unchanged.
-    """
+    """Document after deterministic text normalisation."""
 
     doc_id: str
     title: str
-    abstract: str          # normalised whitespace, lower-cased
+    abstract: str
     categories: str
 
 
 @dataclass(frozen=True)
 class ChunkWithoutEmbedding:
-    """A slice of a CleanDoc's abstract before embedding.
-
-    Offsets (`start`, `end`) are character indices into `CleanDoc.abstract`.
-    """
+    """A slice of a CleanDoc's abstract before embedding."""
 
     doc_id: str
-    text: str              # the actual slice of the abstract
-    start: int             # inclusive start offset in the original abstract
-    end: int               # exclusive end offset in the original abstract
+    text: str
+    start: int
+    end: int
     metadata: Mapping[str, object] = field(default_factory=dict, compare=False)
 
     def __post_init__(self) -> None:
@@ -73,14 +63,9 @@ class ChunkWithoutEmbedding:
 
 @dataclass(frozen=True, eq=True)
 class Chunk(ChunkWithoutEmbedding):
-    """Final chunk with a deterministic embedding vector.
+    """Final chunk with a deterministic embedding vector."""
 
-    `eq=True` is required so that two chunks with identical content
-    (doc_id, text, start, end, embedding) are considered equal and can
-    be deduplicated with a simple `set` or the canonical `structural_dedup_chunks`.
-    """
-
-    embedding: tuple[float, ...] = ()  # fixed length 16, each value in [0.0, 1.0]
+    embedding: tuple[float, ...] = ()
 
     def __post_init__(self) -> None:
         super().__post_init__()
@@ -147,3 +132,4 @@ __all__ = [
     "TextNode",
     "TreeDoc",
 ]
+

@@ -1,4 +1,4 @@
-"""Public API types for the end-of-Module-04 codebase.
+"""Public API types for the RAG surface (end-of-Module-05).
 
 Most of these types are introduced in Module 02 and extended in Module 03
 (notably tracing/stream observability).
@@ -9,7 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable, Mapping
 
-from funcpipe_rag.rag_types import Chunk, CleanDoc, RawDoc, DocRule
+from funcpipe_rag.core.rag_types import Chunk, CleanDoc, RawDoc, DocRule
 from funcpipe_rag.streaming import TraceLens
 
 TapDocs = Callable[[tuple[RawDoc, ...]], None]
@@ -44,7 +44,7 @@ class DebugConfig:
 
 @dataclass(frozen=True)
 class Observations:
-    """Deterministic summary for a RAG invocation (end-of-Module 04)."""
+    """Deterministic summary for a RAG invocation (end-of-Module 05)."""
 
     total_docs: int
     total_chunks: int

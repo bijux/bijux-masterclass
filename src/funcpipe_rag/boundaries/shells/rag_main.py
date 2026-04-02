@@ -1,22 +1,18 @@
-"""Thin orchestrator example for the end-of-Module-04 codebase.
-
-This boundary config + pure core + I/O edges shape is introduced in M02C10 and
-remains unchanged for Module 04.
-"""
+"""Thin orchestrator example for the end-of-Module-05 codebase."""
 
 from __future__ import annotations
 
 import argparse
 from dataclasses import replace
 
-from funcpipe_rag.api.clean_cfg import CleanConfig
-from funcpipe_rag.api.config import RagConfig, get_deps
-from funcpipe_rag.api.core import full_rag_api_docs
-from funcpipe_rag.api.types import DebugConfig
-from funcpipe_rag.app_config import AppConfig
-from funcpipe_rag.rag_types import Chunk, RawDoc, RagEnv
+from funcpipe_rag.boundaries.app_config import AppConfig
+from funcpipe_rag.boundaries.shells.rag_api_shell import FSReader, write_chunks_jsonl
+from funcpipe_rag.rag.clean_cfg import CleanConfig
+from funcpipe_rag.rag.config import RagConfig, get_deps
+from funcpipe_rag.rag.rag_api import full_rag_api_docs
+from funcpipe_rag.rag.types import DebugConfig
+from funcpipe_rag.core.rag_types import Chunk, RawDoc, RagEnv
 from funcpipe_rag.result import Err, Ok, Result, result_and_then, result_map
-from funcpipe_rag.shells.rag_api_shell import FSReader, write_chunks_jsonl
 
 
 def boundary_app_config(args: list[str]) -> Result[AppConfig, str]:

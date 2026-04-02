@@ -1,10 +1,10 @@
-"""Module 04: tree-safe recursion tools (end-of-Module-04).
+"""Module 04: tree-safe recursion tools (end-of-Module-05).
 
 Public surface:
 - Stack-safe preorder traversal (`flatten`, `iter_flatten_buffered`)
 - Safe folds/scans (`fold_tree_buffered`, `scan_tree`, ...)
 
-`TreeDoc` and `TextNode` live in `funcpipe_rag.rag_types`.
+`TreeDoc` and `TextNode` live in `funcpipe_rag.core.rag_types`.
 """
 
 from __future__ import annotations
@@ -48,4 +48,3 @@ __all__ = [
     "fold_count_length_maxdepth",
     "scan_count_length_maxdepth",
 ]
-

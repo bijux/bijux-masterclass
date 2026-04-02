@@ -1,4 +1,4 @@
-"""Tree folds and scans as safe recursion (end-of-Module-04)."""
+"""Tree folds and scans as safe recursion (end-of-Module-05)."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from collections import deque
 from collections.abc import Callable, Iterable, Iterator
 from typing import TypeVar
 
-from funcpipe_rag.rag_types import TreeDoc
+from funcpipe_rag.core.rag_types import TreeDoc
 
 R = TypeVar("R")
 T = TypeVar("T")

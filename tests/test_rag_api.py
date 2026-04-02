@@ -27,7 +27,7 @@ from funcpipe_rag import (
     structural_dedup_chunks,
 )
 from funcpipe_rag.core.rules_lint import assert_rule_is_safe_expr
-from funcpipe_rag.rag_types import RawDoc, RagEnv
+from funcpipe_rag.core.rag_types import RawDoc, RagEnv
 from funcpipe_rag.result import Result
 
 from .conftest import doc_list_strategy, env_strategy

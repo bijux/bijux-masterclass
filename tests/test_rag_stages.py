@@ -6,7 +6,7 @@ from hypothesis import given
 import hypothesis.strategies as st
 
 from funcpipe_rag import clean_doc, chunk_doc, embed_chunk, structural_dedup_chunks
-from funcpipe_rag.rag_types import ChunkWithoutEmbedding, RawDoc, RagEnv
+from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, RawDoc, RagEnv
 
 from .conftest import doc_list_strategy, env_strategy, pipeline_chunk_strategy, raw_doc_strategy
 
@@ -50,4 +50,3 @@ def test_structural_dedup_after_pipeline_is_fixed_point(docs: list[RawDoc], env:
     embedded = [embed_chunk(c) for cd in cleaned for c in chunk_doc(cd, env)]
     chunks = structural_dedup_chunks(embedded)
     assert structural_dedup_chunks(chunks) == chunks
-

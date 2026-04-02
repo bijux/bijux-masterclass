@@ -1,7 +1,7 @@
-"""Chunking adapters used by the public RAG APIs (end-of-Module-04).
+"""Chunking adapters used by the public RAG APIs (end-of-Module-05).
 
-`funcpipe_rag.pipeline_stages` holds the canonical pure chunking logic.
-This module provides generator-friendly wrappers used by the `api` layer.
+`funcpipe_rag.rag.stages` holds the canonical pure stage implementations.
+This module provides generator-friendly wrappers used by the `rag` layer.
 """
 
 from __future__ import annotations
@@ -10,12 +10,12 @@ from collections import deque
 from collections.abc import Iterable, Iterator
 from typing import TypeVar
 
-from funcpipe_rag.pipeline_stages import (
+from funcpipe_rag.rag.stages import (
     iter_chunk_doc,
     iter_chunk_spans,
     iter_overlapping_chunks_text,
 )
-from funcpipe_rag.rag_types import ChunkWithoutEmbedding, CleanDoc, RagEnv
+from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, CleanDoc, RagEnv
 
 T = TypeVar("T")
 
@@ -69,4 +69,3 @@ __all__ = [
     "gen_overlapping_chunks",
     "sliding_windows",
 ]
-

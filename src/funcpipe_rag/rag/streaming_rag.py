@@ -1,4 +1,4 @@
-"""Streaming RAG helpers (Module 03–04; end-of-Module-04).
+"""Streaming RAG helpers (Module 03+; end-of-Module-05).
 
 These functions keep the core pipeline lazy while optionally fencing work,
 grouping by doc, and tracing samples.
@@ -13,7 +13,7 @@ from typing import TypeVar
 
 from funcpipe_rag.core.rules_pred import eval_pred
 from funcpipe_rag.core.structural_dedup import structural_dedup_lazy
-from funcpipe_rag.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RawDoc
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RawDoc
 from funcpipe_rag.streaming import TraceLens, ensure_contiguous, trace_iter
 
 from .chunking import gen_chunk_doc

@@ -1,6 +1,6 @@
-"""funcpipe_rag – end-of-Module-04 codebase.
+"""funcpipe_rag – end-of-Module-05 codebase.
 
-This package is the consolidated project state at the end of Module 04:
+This package is the consolidated project state at the end of Module 05:
 - Immutable domain types
 - Pure pipeline stages + canonical structural de-duplication
 - Config-as-data + closure-based configurators
@@ -10,12 +10,17 @@ This package is the consolidated project state at the end of Module 04:
 - Tree-safe recursion (TreeDoc) with stack-safe flatten + folds (Module 04)
 - Result/Option for per-record failures + structured ErrInfo (Module 04)
 - Memoization, breakers, retries, resource safety, and error reports (Module 04)
+- Type-driven APIs: ADTs + functors/applicatives/monoids + serde + Pydantic edges (Module 05)
+
+Note: Module-05 type-driven utilities live in `funcpipe_rag.fp` (and boundary
+adapters in `funcpipe_rag.boundaries`). The RAG pipeline APIs live in
+`funcpipe_rag.rag`.
 """
 
 from __future__ import annotations
 
 # Domain value types – immutable, hashable where needed
-from .rag_types import (
+from .core.rag_types import (
     RawDoc,
     CleanDoc,
     ChunkWithoutEmbedding,
@@ -26,7 +31,7 @@ from .rag_types import (
 )
 
 # Pure pipeline stages – the building blocks
-from .pipeline_stages import (
+from .rag.stages import (
     clean_doc,
     chunk_doc,
     iter_chunk_spans,
@@ -54,7 +59,7 @@ from .fp import (
     tee,
 )
 
-# Modules 02–04 public API layer (end-of-Module-04)
+# Modules 02–04 public API layer (end-of-Module-05)
 from .result import (
     Result,
     Ok,
@@ -84,9 +89,9 @@ from .result import (
     result_map,
     result_and_then,
 )
-from .api.clean_cfg import CleanConfig, DEFAULT_CLEAN_CONFIG, make_cleaner
-from .api.types import DocRule, RagTaps, DebugConfig, Observations
-from .api.types import RagTraceV3, TraceLens
+from .rag.clean_cfg import CleanConfig, DEFAULT_CLEAN_CONFIG, make_cleaner
+from .rag.types import DocRule, RagTaps, DebugConfig, Observations
+from .rag.types import RagTraceV3, TraceLens
 from .core.rules_pred import (
     Pred,
     Eq,
@@ -112,7 +117,7 @@ from .core.rules_dsl import (
     parse_rule,
 )
 from .core.rules_lint import SafeVisitor, assert_rule_is_safe_expr
-from .api.config import (
+from .rag.config import (
     RagConfig,
     RagCoreDeps,
     RagBoundaryDeps,
@@ -122,7 +127,7 @@ from .api.config import (
     make_gen_rag_fn,
     boundary_rag_config,
 )
-from .api.core import (
+from .rag.core import (
     _trace_iter,
     gen_chunk_doc,
     gen_chunk_spans,
@@ -183,8 +188,8 @@ from .tree import (
     scan_count_length_maxdepth,
     scan_tree,
 )
-from .shells.rag_api_shell import FSReader, write_chunks_jsonl
-from .app_config import AppConfig
+from .boundaries.shells.rag_api_shell import FSReader, write_chunks_jsonl
+from .boundaries.app_config import AppConfig
 from .streaming import (
     Source,
     Transform,

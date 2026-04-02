@@ -1,4 +1,4 @@
-"""Structured error reports from Result streams (end-of-Module-04)."""
+"""Structured error reports from Result streams (end-of-Module-05)."""
 
 from __future__ import annotations
 

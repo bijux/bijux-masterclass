@@ -1,4 +1,4 @@
-"""RAG pipeline APIs (Module 02–04; end-of-Module-04).
+"""RAG pipeline APIs (Module 02–05; end-of-Module-05).
 
 This module contains the domain-specific core pipeline entry points:
 - a minimal lazy pipeline (`iter_rag`)
@@ -15,8 +15,8 @@ from typing import TypeVar
 from funcpipe_rag.core.rules_dsl import any_doc
 from funcpipe_rag.core.rules_pred import eval_pred
 from funcpipe_rag.fp import StageInstrumentation, ffilter, flatmap, fmap, instrument_stage
-from funcpipe_rag.pipeline_stages import embed_chunk, structural_dedup_chunks
-from funcpipe_rag.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, DocRule, RawDoc, RagEnv
+from funcpipe_rag.rag.stages import embed_chunk, structural_dedup_chunks
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, DocRule, RawDoc, RagEnv
 from funcpipe_rag.result import Err, Ok, Result
 
 from .chunking import gen_chunk_doc

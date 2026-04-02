@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Union
 
-from funcpipe_rag.rag_types import RawDoc
+from funcpipe_rag.core.rag_types import RawDoc
 
 
 @dataclass(frozen=True)

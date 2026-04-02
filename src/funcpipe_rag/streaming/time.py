@@ -1,4 +1,4 @@
-"""Time-aware pacing stages (Module 03, sync-only; end-of-Module-04).
+"""Time-aware pacing stages (Module 03, sync-only; end-of-Module-05).
 
 These helpers accept injected `clock` and `sleeper` callables to make timing
 deterministic and testable. In Module 03 they are synchronous and may block

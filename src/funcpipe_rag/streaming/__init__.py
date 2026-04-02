@@ -7,7 +7,7 @@ This package groups the Module-03 helpers by responsibility:
 - time-aware pacing
 - groupby contiguity guards
 
-RAG-specific streaming functions live in `funcpipe_rag.api.core`.
+RAG-specific streaming functions live in `funcpipe_rag.rag.streaming_rag`.
 """
 
 from __future__ import annotations

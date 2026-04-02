@@ -1,7 +1,7 @@
-"""Public APIs for the end-of-Module-04 codebase.
+"""RAG-specific APIs for the end-of-Module-05 codebase.
 
-Module 03 adds streaming helpers; Module 04 adds tree-safe recursion, Result/Option
-per-record failures, memoization, breakers/retries, and structured error reporting.
+`funcpipe_rag.fp` contains the module-05 type-driven toolkit. The RAG pipeline
+entrypoints live here instead.
 """
 
 from .types import DocRule, RagTaps, DebugConfig, Observations, TraceLens, RagTraceV3

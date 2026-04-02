@@ -1,29 +1,27 @@
-"""Pure, composable pipeline stages for the FuncPipe RAG implementation.
+"""Pure, composable RAG pipeline stages (end-of-Module-05).
 
-End-of-Module-04 codebase: these stages remain the stable, deterministic core
-used by the higher-level APIs (configs, rules, taps/probes, boundary shells),
-with Module 03 extending chunking with overlap and tail policies, and Module 04
-adding chunk metadata for tree/path provenance.
+These stages are deterministic and side-effect free. Higher-level APIs wire
+them together with configuration-as-data, taps/probes, and boundary adapters.
 """
 
 from __future__ import annotations
 
 import hashlib
-
 from collections.abc import Iterable, Iterator
 
-from funcpipe_rag.rag_types import (
-    RawDoc,
-    CleanDoc,
-    ChunkWithoutEmbedding,
+from funcpipe_rag.core.rag_types import (
     Chunk,
+    ChunkWithoutEmbedding,
+    CleanDoc,
     RagEnv,
+    RawDoc,
 )
 from funcpipe_rag.core.structural_dedup import structural_dedup_lazy
 
 
 def clean_doc(doc: RawDoc) -> CleanDoc:
     """Deterministically normalise whitespace and case in the abstract."""
+
     abstract = " ".join(doc.abstract.strip().lower().split())
     return CleanDoc(
         doc_id=doc.doc_id,
@@ -34,11 +32,8 @@ def clean_doc(doc: RawDoc) -> CleanDoc:
 
 
 def chunk_doc(doc: CleanDoc, env: RagEnv) -> list[ChunkWithoutEmbedding]:
-    """Split a cleaned document into fixed-size, non-overlapping chunks.
+    """Split a cleaned document into chunks (eager convenience wrapper)."""
 
-    The result is order-preserving and covers the entire abstract without gaps
-    or overlaps (except possibly a shorter final chunk).
-    """
     return list(iter_chunk_doc(doc, env))
 
 
@@ -50,22 +45,7 @@ def iter_overlapping_chunks_text(
     o: int = 0,
     tail_policy: str = "emit_short",
 ) -> Iterator[ChunkWithoutEmbedding]:
-    """Yield fixed-size chunks from raw text, with optional overlap and tail policy.
-
-    Args:
-        doc_id: Identifier to attach to each chunk.
-        text: Indexable string.
-        k: Chunk size (> 0).
-        o: Overlap size (0 <= o < k). Step = k - o.
-        tail_policy:
-            - "emit_short": emit a final shorter chunk if needed
-            - "drop": drop a final shorter tail
-            - "pad": right-pad final chunk with NUL ("\\0") to length k, and set end=i+k
-              (note: end may exceed len(text) under "pad")
-    """
-
-    # Module 03 extension: with the default settings (o=0, tail_policy="emit_short"),
-    # this is equivalent to the Module 01/02 non-overlapping chunking semantics.
+    """Yield fixed-size chunks from raw text, with optional overlap and tail policy."""
 
     if k <= 0 or not 0 <= o < k:
         raise ValueError("invalid chunk/overlap")
@@ -80,20 +60,20 @@ def iter_overlapping_chunks_text(
         short_tail = j > n
         if short_tail and tail_policy == "drop":
             break
+
         segment = text[i:j]
         if short_tail and tail_policy == "pad":
             segment = segment + "\0" * (k - len(segment))
             j = i + k
+
         if segment:
-            yield ChunkWithoutEmbedding(doc_id=doc_id, text=segment, start=i, end=j if tail_policy == "pad" else i + len(segment))
+            end = j if tail_policy == "pad" else i + len(segment)
+            yield ChunkWithoutEmbedding(doc_id=doc_id, text=segment, start=i, end=end)
         i += step
 
 
 def iter_chunk_spans(doc: CleanDoc, env: RagEnv) -> Iterator[tuple[int, int]]:
-    """Yield (start, end) chunk spans for a document.
-
-    Spans follow the same overlap/tail_policy semantics as ``iter_chunk_doc``.
-    """
+    """Yield (start, end) chunk spans for a document."""
 
     k = env.chunk_size
     o = env.overlap
@@ -125,16 +105,11 @@ def iter_chunk_doc(doc: CleanDoc, env: RagEnv) -> Iterator[ChunkWithoutEmbedding
 
 
 def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
-    """Produce a deterministic 16-dimensional embedding from chunk text.
+    """Produce a deterministic 16-dimensional embedding from chunk text."""
 
-    The embedding depends only on ``chunk.text`` and is stable across runs.
-    """
     digest = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
     step = 4
-    vector = tuple(
-        int(digest[i: i + step], 16) / (16 ** step - 1)
-        for i in range(0, len(digest), step)
-    )[:16]  # first 16 components of the SHA256-derived vector
+    vector = tuple(int(digest[i : i + step], 16) / (16**step - 1) for i in range(0, len(digest), step))[:16]
     return Chunk(
         doc_id=chunk.doc_id,
         text=chunk.text,
@@ -146,14 +121,8 @@ def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
 
 
 def structural_dedup_chunks(chunks: Iterable[Chunk]) -> list[Chunk]:
-    """Canonical deduplication: sort by (doc_id, start) then remove structural duplicates.
+    """Canonical deduplication: sort by (doc_id, start) then remove duplicates."""
 
-    This function is:
-    - Idempotent: f(f(x)) == f(x)
-    - Canonical: output depends only on the set of unique chunks, not input order
-    - Convergent: one pass reaches the fixed point
-
-    """
     ordered = sorted(chunks, key=lambda c: (c.doc_id, c.start))
     return list(structural_dedup_lazy(ordered))
 
@@ -167,3 +136,4 @@ __all__ = [
     "embed_chunk",
     "structural_dedup_chunks",
 ]
+

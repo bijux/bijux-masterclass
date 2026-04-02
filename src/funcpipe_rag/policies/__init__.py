@@ -1,4 +1,4 @@
-"""Module 04: cross-cutting policies and boundary helpers (end-of-Module-04).
+"""Module 04: cross-cutting policies and boundary helpers (end-of-Module-05).
 
 This package groups the non-domain-specific building blocks that shape how
 pipelines behave at the edges:
@@ -71,4 +71,3 @@ __all__ = [
     "fold_error_report",
     "report_to_jsonable",
 ]
-

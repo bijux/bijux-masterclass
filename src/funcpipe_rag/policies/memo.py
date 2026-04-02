@@ -1,4 +1,4 @@
-"""Memoization and caching for pure functions (end-of-Module-04)."""
+"""Memoization and caching for pure functions (end-of-Module-05)."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Hashable, Optional, ParamSpec, TypeVar, cast
 
-from funcpipe_rag.rag_types import ChunkWithoutEmbedding
+from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding
 
 K = TypeVar("K", bound=Hashable)
 V = TypeVar("V")

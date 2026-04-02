@@ -1,10 +1,12 @@
-"""Small, focused functional helpers for the end-of-Module-04 codebase.
+"""Small, focused functional helpers for the end-of-Module-05 codebase.
 
 This module intentionally stays minimal while supporting:
 - Left-to-right function composition
 - Lazy iterator combinators (map/filter/flatmap)
 - Observation-only taps and probes for debugging
 - Deterministic time injection helpers for streaming (Module 03)
+
+Import via `funcpipe_rag.fp` (package) or `funcpipe_rag.fp.combinators` (module).
 """
 
 from __future__ import annotations

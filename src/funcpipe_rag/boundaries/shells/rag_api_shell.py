@@ -1,4 +1,4 @@
-"""CSV-in / JSONL-out boundary shell for the end-of-Module-04 API."""
+"""CSV-in / JSONL-out boundary shell for the end-of-Module-05 API."""
 
 from __future__ import annotations
 
@@ -7,10 +7,10 @@ import json
 from dataclasses import asdict
 from typing import Iterable
 
-from funcpipe_rag.api.config import RagBoundaryDeps, RagConfig, Reader, get_deps
-from funcpipe_rag.api.core import full_rag_api
-from funcpipe_rag.api.types import Observations
-from funcpipe_rag.rag_types import Chunk, RawDoc
+from funcpipe_rag.rag.config import RagBoundaryDeps, RagConfig, Reader, get_deps
+from funcpipe_rag.rag.rag_api import full_rag_api
+from funcpipe_rag.rag.types import Observations
+from funcpipe_rag.core.rag_types import Chunk, RawDoc
 from funcpipe_rag.result import Err, Ok, Result
 
 
@@ -52,4 +52,4 @@ def run(input_path: str, output_path: str, *, config: RagConfig) -> Result[Obser
     return Ok(obs)
 
 
-__all__ = ["FSReader", "write_chunks_jsonl", "run"]
+__all__ = ["Reader", "FSReader", "write_chunks_jsonl", "run"]
