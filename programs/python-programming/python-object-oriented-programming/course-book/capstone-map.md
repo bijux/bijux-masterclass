@@ -32,6 +32,7 @@ Use it to decide where to go next when you want concrete proof for a course idea
 - Read [Capstone Architecture Guide](capstone-architecture-guide.md) when you are reviewing ownership and boundaries.
 - Read [Capstone Walkthrough](capstone-walkthrough.md) when you want the scenario flow from creation to incident publication.
 - Read [Capstone Proof Guide](capstone-proof-guide.md) when you want the verification route.
+- Use the local capstone guides `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`, `TARGET_GUIDE.md`, `INSPECTION_GUIDE.md`, and `EXTENSION_GUIDE.md` when you need a narrower review surface.
 
 ## Module-to-capstone bridge
 
@@ -42,4 +43,5 @@ Use it to decide where to go next when you want concrete proof for a course idea
 ## Review question
 
 At any point in the course, you should be able to answer: which capstone page shows the
-same decision pressure as the chapter I am reading right now?
+same decision pressure as the chapter I am reading right now, and which local command or
+bundle proves it?

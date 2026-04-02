@@ -44,5 +44,7 @@ Use this checklist when reviewing the capstone after a module or before extendin
 ## Proof
 
 - Which tests prove the current behavior?
-- Which command shows the scenario clearly to a human reader?
+- Which saved bundle shows the scenario clearly to a human reader?
+- Which saved bundle captures executable verification for later review?
 - Which file would you edit first for the change you are imagining?
+- Which extension guide would stop you from placing that change in the wrong boundary?

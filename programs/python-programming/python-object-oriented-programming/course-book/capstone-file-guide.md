@@ -47,6 +47,14 @@ alphabetically. The goal is to understand how the system is partitioned.
 - `read_models.py` and `projections.py` model downstream views derived from authoritative events.
 - `tests/` prove the course claims against behavior.
 
+## Matching local guides
+
+- Read `PACKAGE_GUIDE.md` when you want the code layout at the package boundary.
+- Read `TEST_GUIDE.md` when you want the fastest route from a claim to an executable check.
+- Read `TARGET_GUIDE.md` when you want the command-level review route.
+- Read `INSPECTION_GUIDE.md` when you want the learner-facing output route.
+- Read `EXTENSION_GUIDE.md` when you want to place a new feature in the right boundary.
+
 ## What this order prevents
 
 - starting in infrastructure and mistaking it for the core model

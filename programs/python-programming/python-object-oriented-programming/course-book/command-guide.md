@@ -31,6 +31,9 @@ make PROGRAM=python-programming/python-object-oriented-programming docs-build
 make PROGRAM=python-programming/python-object-oriented-programming test
 make PROGRAM=python-programming/python-object-oriented-programming demo
 make PROGRAM=python-programming/python-object-oriented-programming inspect
+make PROGRAM=python-programming/python-object-oriented-programming capstone-tour
+make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report
+make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm
 make PROGRAM=python-programming/python-object-oriented-programming proof
 ```
 
@@ -39,22 +42,25 @@ make PROGRAM=python-programming/python-object-oriented-programming proof
 ```bash
 make confirm
 make demo
-make inspect-summary
-make inspect-rules
-make inspect-history
+make inspect
+make tour
+make verify-report
 make proof
 ```
 
 ## How to choose the right command
 
 - Use `docs-serve` when you are reading and want the course-book locally.
-- Use `test` or `confirm` when you want executable confidence in the capstone.
-- Use `demo` when you want a human-readable walkthrough of the monitoring scenario.
-- Use `inspect` or the capstone inspection targets when you want the learner-facing snapshot without reading raw internals.
+- Use `test` when you want the raw executable suite without the review bundles.
+- Use `demo` when you want the walkthrough printed directly in the terminal.
+- Use `inspect` when you want a saved learner-facing inspection bundle with scenario, rules, and history outputs.
+- Use `capstone-tour` or `tour` when you want the saved walkthrough bundle for review or sharing.
+- Use `capstone-verify-report` or `verify-report` when you want test output and learner-facing state captured together.
+- Use `capstone-confirm` or `confirm` when you want the strongest program-approved confirmation route.
 - Use `proof` when you want the full course-sanctioned evidence route in one command.
 
 ## Honest rule
 
 If a course claim matters, there should be a command or test route that helps you inspect
-it. If you cannot name that route, use the capstone pages and module maps to find the
-right surface before moving on.
+it. If you cannot name that route, use the capstone pages, local guide files, and module
+maps to find the right surface before moving on.
