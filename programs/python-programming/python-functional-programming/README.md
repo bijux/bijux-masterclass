@@ -84,6 +84,7 @@ make PROGRAM=python-programming/python-functional-programming history-refresh
 
 Primary reading route:
 
+- `course-book/guides/index.md`
 - `course-book/guides/start-here.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
@@ -93,6 +94,7 @@ Primary reading route:
 ## Course shape
 
 - `course-book/` contains the published learning material.
+- `course-book/guides/` contains the durable learner and capstone guides.
 - `capstone/` contains the runnable FuncPipe RAG implementation, tests, and helper tooling.
 - `capstone/module-reference-states/` contains tracked end-of-module source states.
 - `capstone/_history/` is generated locally from module tags and worktrees.

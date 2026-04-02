@@ -54,6 +54,7 @@ By the end of the course, you should be able to:
 
 ## Start here
 
+- Read [Guides](guides/index.md) when you want the guide space itself to stay organized.
 - Read [Start Here](guides/start-here.md) for the shortest stable learner route.
 - Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
 - Keep [History Guide](guides/history-guide.md) nearby when you want the module-end comparison route.
