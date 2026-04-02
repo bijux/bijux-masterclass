@@ -52,11 +52,24 @@ From this directory:
 make confirm
 ```
 
+Or use the saved review routes:
+
+```bash
+make inspect
+make tour
+make verify-report
+make proof
+```
+
 ## Read it in this order
 
 - `ARCHITECTURE.md` for ownership boundaries
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route
+- `PACKAGE_GUIDE.md` for the code-reading route
+- `TEST_GUIDE.md` for the proof-reading route
+- `TARGET_GUIDE.md` and `INSPECTION_GUIDE.md` for the public review surface
+- `EXTENSION_GUIDE.md` for the safest change-placement route
 - `src/incident_plugins/` for the implementation
 - `tests/` for the proof surface
 
@@ -75,4 +88,12 @@ all interact here, so the implementation has to stay honest about:
 
 - `src/incident_plugins/` contains the framework and built-in plugins.
 - `tests/` contains executable verification for descriptors, registration, and runtime manifests.
-- `ARCHITECTURE.md`, `TOUR.md`, and `PROOF_GUIDE.md` turn the capstone into a learner-facing proof surface.
+- `ARCHITECTURE.md`, `TOUR.md`, `PROOF_GUIDE.md`, and the local guide set turn the capstone into a learner-facing review surface.
+
+## Review routes
+
+- `make inspect` writes the learner-facing inspection bundle with manifest and registry evidence.
+- `make tour` writes the learner-facing walkthrough bundle with manifest, registry, demo, and trace outputs.
+- `make verify-report` writes the executable verification report bundle with pytest output and public-surface evidence.
+- `make confirm` runs the strongest local executable confirmation route.
+- `make proof` builds the published learner-facing review route.

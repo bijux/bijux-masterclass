@@ -63,3 +63,10 @@ Owns concrete delivery adapters that make the abstractions tangible.
 The files are separated by mechanism rather than by framework convention alone. That
 lets the learner ask, file by file, which behavior belongs to a field, a wrapper, a
 metaclass, or ordinary runtime code.
+
+## Best review routes for architecture questions
+
+- Use `make inspect` when you need the public observable surface before opening source.
+- Use `make tour` when you need the narrative route from inspection to invocation.
+- Use `make verify-report` when you need saved executable evidence alongside that route.
+- Use `EXTENSION_GUIDE.md` when the architecture question is really about change placement.

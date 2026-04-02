@@ -39,6 +39,12 @@ make confirm
 This runs the regression suite proving field validation, registry determinism, manifest
 export, and runtime invocation behavior.
 
+## Saved review routes
+
+- `make inspect` writes the learner-facing inspection bundle.
+- `make tour` writes the learner-facing walkthrough bundle.
+- `make verify-report` writes executable proof together with public-surface evidence.
+
 ## Public-surface proof
 
 Run the public proof surface:
@@ -58,6 +64,14 @@ make trace
 
 These commands prove that the runtime shape and invocation path are inspectable from the
 public surface without opening private internals first.
+
+## Honest distinctions
+
+- `inspect` proves what the runtime exposes publicly before invocation.
+- `tour` proves that a human can follow one complete public review route.
+- `verify-report` proves that executable tests and public-surface evidence agree in one saved bundle.
+- `confirm` proves the strongest local regression surface.
+- `proof` publishes the full learner-facing review route.
 
 ## Review questions
 

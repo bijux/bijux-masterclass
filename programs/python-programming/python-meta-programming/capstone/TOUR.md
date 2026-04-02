@@ -25,6 +25,8 @@ flowchart TD
 <!-- page-maps:end -->
 
 Use this tour when you want a guided walk instead of jumping straight into the source.
+Use `make tour` when you want this route captured as a saved bundle rather than only
+reconstructed from one-off command output.
 
 ## Stop 1: `framework.py`
 
@@ -50,3 +52,11 @@ concrete enough to review like ordinary production code.
 
 Read tests last, not first. The tests are strongest when you already know which claim
 each source file is trying to own.
+
+## Best command route
+
+1. Run `make inspect` to inspect the public shape.
+2. Run `make demo` to see one concrete action result.
+3. Run `make trace` to see configuration and action history.
+4. Run `make tour` to save that full route for review.
+5. Run `make confirm` when you want the stronger executable proof.
