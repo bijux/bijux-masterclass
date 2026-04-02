@@ -100,6 +100,20 @@ The [Capstone Guide](capstone/index.md) points to a single plugin runtime that k
 mechanisms visible in one place. Use [Capstone Map](capstone/capstone-map.md) and
 [Capstone File Guide](capstone/capstone-file-guide.md) while reading.
 
+## Power ladder to capstone proof
+
+Use this table when the mechanism names feel abstract and you need one executable place
+to see what each rung looks like in practice.
+
+| Power rung | Primary modules | First capstone surface | Strongest first proof |
+| --- | --- | --- | --- |
+| observation and runtime evidence | [Modules 01-03](module-03-signatures-provenance-runtime-evidence/index.md) | [Capstone Guide](capstone/index.md), `make manifest`, `make registry` | `capstone/manifest.json` inside `make inspect` |
+| wrappers and transparent policy | [Modules 04-05](module-04-function-wrappers-transparent-decorators/index.md) | `capstone/src/incident_plugins/actions.py`, [Capstone Map](capstone/capstone-map.md) | `make trace` and `capstone/tests/test_runtime.py` |
+| lower-power class customization | [Module 06](module-06-class-customization-pre-metaclasses/index.md) | generated constructors in `capstone/src/incident_plugins/framework.py` | `make signatures` and `capstone/tests/test_runtime.py` |
+| descriptors and attribute ownership | [Modules 07-08](module-07-descriptors-lookup-attribute-control/index.md) | `capstone/src/incident_plugins/fields.py`, [Capstone File Guide](capstone/capstone-file-guide.md) | `make field` and `capstone/tests/test_fields.py` |
+| metaclass design and class creation | [Module 09](module-09-metaclass-design-class-creation/index.md) | registration in `capstone/src/incident_plugins/framework.py` | `make registry` and `capstone/tests/test_registry.py` |
+| runtime governance and review judgment | [Module 10](module-10-runtime-governance-mastery-review/index.md) | saved bundles from `make inspect`, `make tour`, and `make verify-report` | [Capstone Proof Checklist](capstone/capstone-proof-checklist.md) and `pytest.txt` |
+
 ### Review judgment
 
 Use [Review Checklist](reference/review-checklist.md), [Practice Map](guides/practice-map.md), and
