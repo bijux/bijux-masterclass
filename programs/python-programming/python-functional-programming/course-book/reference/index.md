@@ -37,3 +37,4 @@ course or the capstone.
 - [FP Standards](fp-standards.md) for the stable engineering rules that define acceptable functional design in this course
 - [Review Checklist](review-checklist.md) for code review and capstone inspection
 - [Self-Review Prompts](self-review-prompts.md) for turning module ideas into retrieval practice and design judgment
+- [Topic Boundaries](topic-boundaries.md) for deciding whether a question belongs in the course center, on its edge, or outside it

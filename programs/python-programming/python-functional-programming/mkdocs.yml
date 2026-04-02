@@ -46,6 +46,7 @@ nav:
       - FP Standards: reference/fp-standards.md
       - Review Checklist: reference/review-checklist.md
       - Self-Review Prompts: reference/self-review-prompts.md
+      - Topic Boundaries: reference/topic-boundaries.md
 
   - "Module 01: Purity and Substitution":
       - Overview: module-01-purity-and-substitution/index.md
