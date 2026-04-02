@@ -53,7 +53,7 @@ Use this page to choose the right route before reading modules at random.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
 4. Read [Module 00](../module-00-orientation/index.md) for the study model and capstone timing.
 5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-6. Keep [Boundary Map](../reference/boundary-map.md) and [Capstone Map](capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
+6. Keep [Boundary Map](../reference/boundary-map.md), [Workflow Modularization](workflow-modularization.md), and [Capstone Map](capstone-map.md) nearby, but enter the capstone only after the module idea is clear.
 
 ## Route By Pressure
 

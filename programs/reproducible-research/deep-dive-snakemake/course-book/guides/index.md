@@ -45,6 +45,7 @@ The rule is simple: open the smallest page that answers the next honest learner 
 ## Use These For Study Planning
 
 - [Pressure Routes](pressure-routes.md) when your route is shaped by repair, stewardship, or workflow pressure
+- [Workflow Modularization](workflow-modularization.md) when the question is how far to split the workflow architecture
 - [Module Promise Map](module-promise-map.md) when you want each module title translated into a learner contract
 - [Module Checkpoints](module-checkpoints.md) when you want a module-end exit bar before moving on
 - [Module Dependency Map](../reference/module-dependency-map.md) when you need the safe reading order explained

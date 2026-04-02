@@ -85,6 +85,7 @@ Modules 09 to 10 finish the course where long-lived workflows are judged:
 
 - [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
+- [Workflow Modularization](workflow-modularization.md) when you need a decision tool for repository splits
 - [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
 - [Boundary Map](../reference/boundary-map.md) when you need workflow versus policy separation
 - [Proof Ladder](proof-ladder.md) and [Proof Matrix](proof-matrix.md) when you need to size or route proof correctly
