@@ -49,4 +49,5 @@ inspection surfaces easy to trace.
 
 - read [ARCHITECTURE.md](ARCHITECTURE.md) for the wider boundary story
 - read [RULE_LIFECYCLE_GUIDE.md](RULE_LIFECYCLE_GUIDE.md) for the transition rules that emit the events
+- read [PROJECTION_GUIDE.md](PROJECTION_GUIDE.md) for the downstream state surfaces after those events land
 - read [PROOF_GUIDE.md](PROOF_GUIDE.md) when you want the route from event flow to stronger evidence
