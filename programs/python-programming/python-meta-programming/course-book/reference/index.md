@@ -25,15 +25,30 @@ Use this section when you need durable course standards rather than a reading ro
 These pages are meant to stay open while you review code, not only while you learn the
 module arc for the first time.
 
-## Pages in this section
+## Start with the decision you need to make
 
-- [Runtime Power Ladder](runtime-power-ladder.md) for the lowest-power decision rule
-- [Glossary](glossary.md) for shared course language
-- [Review Checklist](review-checklist.md) for code review judgment
-- [Self-Review Prompts](self-review-prompts.md) for learner-side readiness checks
-- [Boundary Review Prompts](boundary-review-prompts.md) for keep, change, or reject review calls
-- [Topic Boundaries](topic-boundaries.md) for what belongs at the center of this course
-- [Anti-Pattern Atlas](anti-pattern-atlas.md) for symptom-first review of clumsy metaprogramming ideas
+### "Should this use a stronger runtime mechanism at all?"
+
+- [Runtime Power Ladder](runtime-power-ladder.md)
+- [Topic Boundaries](topic-boundaries.md)
+- [Anti-Pattern Atlas](anti-pattern-atlas.md)
+
+### "How should I review or reject this design?"
+
+- [Review Checklist](review-checklist.md)
+- [Boundary Review Prompts](boundary-review-prompts.md)
+- [Self-Review Prompts](self-review-prompts.md)
+
+### "What does this course mean by this term?"
+
+- [Glossary](glossary.md)
+
+## Good use of this shelf
+
+- Bring one reference page into an active review question.
+- Compare the current code against the boundary on that page.
+- Leave with one keep, change, or reject decision.
+- Return to modules or capstone guides only after the decision is named.
 
 ## Directory glossary
 
