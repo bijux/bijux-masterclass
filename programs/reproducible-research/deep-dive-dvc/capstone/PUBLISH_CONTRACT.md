@@ -53,6 +53,9 @@ internal training story to understand what was promoted.
 
 Those questions still belong to the wider repository and its recorded execution state.
 
+Read [STATE_LAYER_GUIDE.md](STATE_LAYER_GUIDE.md) when the next question is why
+`publish/v1/` is authoritative for downstream review but not for the entire repository story.
+
 ## Best review route
 
 Use this order:

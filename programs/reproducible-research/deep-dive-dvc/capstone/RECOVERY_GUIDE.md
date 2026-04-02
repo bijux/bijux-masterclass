@@ -38,6 +38,9 @@ This guide exists because recovery is easy to talk about loosely and hard to eva
 - that experiments remain semantically comparable
 - that every local convenience file is reproducible or durable
 
+Read [STATE_LAYER_GUIDE.md](STATE_LAYER_GUIDE.md) when the main confusion is not the
+recovery sequence itself but which layer is authoritative before and after recovery.
+
 ## Best route
 
 1. Run `make recovery-drill` when you want the raw restore rehearsal.
