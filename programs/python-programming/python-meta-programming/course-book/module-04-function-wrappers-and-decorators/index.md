@@ -36,7 +36,8 @@ flowchart LR
 5. [Core 19: functools.wraps and Writing Your Own Identity-Preserving Wrapper](#core19)
 6. [Synthesis: Controlled Transformation of First-Class Functions](#synthesis)
 7. [Capstone: @cache - Didactic Memoization from Scratch](#capstone)
-8. [Glossary (Module 4)](#glossary)
+8. [Power Ladder Checkpoint](#power-checkpoint)
+9. [Glossary (Module 4)](#glossary)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -818,6 +819,15 @@ no_cache_fib.cache_clear()  # No-op
 Extend `@cache` with `typed=False` param: if True, key includes type(args)—prevents int/str mix (e.g., fib(1) != fib("1")). Test with fib(30) with/without—verify speedup.
 
 You have completed Module 4.
+
+<a id="power-checkpoint"></a>
+## Power Ladder Checkpoint
+
+- Stay with plain functions when the behavior can be named directly at the call site or composed without hidden wrapping.
+- Use a decorator when the concern is truly per-call or per-definition policy: timing, tracing, deprecation, caching, or instrumentation with preserved metadata.
+- Do not escalate to descriptors when the rule is about one callable rather than attribute access across many instances.
+- Do not escalate to metaclasses when the behavior can be attached after function definition without changing class creation semantics.
+- Before shipping a decorator, compare it against the [Runtime Power Ladder](../reference/runtime-power-ladder.md) and write down which lower rung almost worked.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

@@ -36,7 +36,8 @@ flowchart LR
 5. [Core 28: `@property` / `.setter` / `.deleter` — The Friendly Face of Descriptors](#core28)
 6. [Core 29: Runtime Type Hints as a Declarative Aid for Attribute Validation](#core29)
 7. [Capstone: `@frozen` — Surface Immutability + Optional Validation](#capstone)
-8. [Glossary (Module 6)](#glossary)
+8. [Power Ladder Checkpoint](#power-checkpoint)
+9. [Glossary (Module 6)](#glossary)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -766,6 +767,15 @@ try:
 except TypeError as e:
     print("Expected:", e)
 ```
+
+<a id="power-checkpoint"></a>
+## Power Ladder Checkpoint
+
+- Stay with plain classes when explicit methods and constructors already make the rule obvious.
+- Use a class decorator when the change happens after class creation and does not need to infect subclasses automatically.
+- Use `property` or a light descriptor when the invariant belongs to one attribute boundary rather than the whole class-creation pipeline.
+- Do not escalate to metaclasses when post-construction transformation, registration, or validation already works with class decorators and descriptors.
+- Re-check the [Runtime Power Ladder](../reference/runtime-power-ladder.md) before treating class customization as a reason to reach for a metaclass.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

@@ -36,7 +36,8 @@ flowchart LR
 5. [Core 34: First Reusable Descriptors: String(), Positive(), Email(), etc.](#core34)
 6. [Synthesis: Descriptors as the Real Attribute Engine](#synthesis)
 7. [Capstone: Quantity – Didactic Unit-Aware Length Descriptor](#capstone)
-8. [Glossary (Module 7)](#glossary)
+8. [Power Ladder Checkpoint](#power-checkpoint)
+9. [Glossary (Module 7)](#glossary)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -636,6 +637,15 @@ Bare numbers are interpreted as metres, regardless of the display_unit. The disp
 Add support for `Quantity("km")` as the display unit and a `.in_metres` property on `QuantityValue`. Then implement a second descriptor `Speed = Quantity("m/s")` and demonstrate why simple `*` between `Distance` and `Speed` would be incorrect without proper dimension tracking.
 
 You have completed Module 7.
+
+<a id="power-checkpoint"></a>
+## Power Ladder Checkpoint
+
+- Use a descriptor when the invariant truly belongs to attribute access itself and must work the same way across many instances.
+- Stay with `property` when one field on one class needs local validation or computed access and reuse pressure is still low.
+- Stay with a class decorator when the change is about class-wide wiring after creation rather than per-attribute lookup semantics.
+- Do not escalate to metaclasses when the real problem is still individual attribute behavior; metaclasses solve class creation, not field semantics.
+- Before adopting a reusable descriptor, compare it with the lower rungs in the [Runtime Power Ladder](../reference/runtime-power-ladder.md) and name the exact lookup rule it owns.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

@@ -37,7 +37,8 @@ flowchart LR
 6. [Core 48: Responsible Metaprogramming — Tracebacks, Performance, Globals, Monkey-Patching](#core48)
 7. [Core 49: Import Hooks & AST Transforms — Tooling-Grade, Not App-Grade](#core49)
 8. [Capstone: Plugin Architectures — Decorator vs Metaclass vs Import Hook](#capstone)
-9. [Glossary (Module 10)](#glossary)
+9. [Power Ladder Checkpoint](#power-checkpoint)
+10. [Glossary (Module 10)](#glossary)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -714,6 +715,15 @@ Extend the comparison by:
 * Adding mypy stubs for plugin APIs and verifying that each architecture remains type-checkable.
 
 You now understand metaclasses thoroughly — and exactly why you should almost never write one yourself.
+
+<a id="power-checkpoint"></a>
+## Power Ladder Checkpoint
+
+- Default to decorators for registration and callable policy when you need explicit, reversible behavior.
+- Escalate to metaclasses only for hierarchy-wide class-creation rules that cannot be owned after class creation.
+- Reserve import hooks and runtime-generated code for tooling-grade problems where explicit imports, entry points, or configuration are honestly insufficient.
+- Reject any higher-power mechanism that does not come with reset hooks, observability, and a proof route.
+- Use the [Runtime Power Ladder](../reference/runtime-power-ladder.md) as a review gate, not as optional background reading.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

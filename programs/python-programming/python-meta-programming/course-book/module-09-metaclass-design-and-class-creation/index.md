@@ -37,7 +37,8 @@ flowchart LR
 6. [Core 43: Metaclass `__new__` vs `__init__`](#core43)
 7. [Core 44: `__prepare__` — Declaration-Time Enforcement](#core44)
 8. [Capstone: `PluginMeta` — Automatic Plugin Registration](#capstone)
-9. [Glossary (Module 9)](#glossary)
+9. [Power Ladder Checkpoint](#power-checkpoint)
+10. [Glossary (Module 9)](#glossary)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -562,6 +563,15 @@ Extend the capstone:
 | **Signature injection**           | Attaching `__signature__` (or generating `__init__`) during class creation to control introspection and call semantics.            |
 | **Metaclass vs descriptor**       | Metaclasses coordinate class-level structure and invariants; descriptors implement per-attribute behavior once the class exists.   |
 | **Power ladder**                  | Heuristic: prefer plain code → descriptors → class decorators → metaclasses; metaclasses are the highest-magic, highest-risk tool. |
+
+<a id="power-checkpoint"></a>
+## Power Ladder Checkpoint
+
+- Use a metaclass only when the invariant belongs to class creation itself or must apply automatically across a subclass hierarchy.
+- Stay with class decorators when opt-in post-creation transformation is enough.
+- Stay with descriptors when the rule belongs to fields or methods on an already-created class.
+- Do not use a metaclass for registration alone when an explicit decorator or registry call would stay clearer and more reversible.
+- Run the [Runtime Power Ladder](../reference/runtime-power-ladder.md) questions before approving any metaclass in review.
 
 Proceed to **Module 10**.
 
