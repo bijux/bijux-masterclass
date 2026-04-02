@@ -77,7 +77,9 @@ These laws make logging **composable, predictable, and zero-cost in terms of pur
 | `Logger` capability (direct) | Yes        | No                  | Simple scripts | Minimal overhead         |
 | **Writer[Value, Logs]**    | No           | Yes                 | All cores      | **Canonical – pure, composable, testable** |
 
-**Verdict**: Use **Writer** everywhere in cores. Drain to a concrete `Logger` adapter (or file, Prometheus, etc.) only in the shell. Never print or log directly in domain code.
+**Verdict**: Default to **Writer** for the pure core surfaces in this course. Drain to a
+concrete `Logger` adapter (or file, Prometheus, etc.) in the shell, and treat direct
+logging inside domain code as a conscious exception rather than the baseline.
 
 ## 3. Public API – Structured Logging Helpers (`capstone/src/funcpipe_rag/domain/logging.py`)
 

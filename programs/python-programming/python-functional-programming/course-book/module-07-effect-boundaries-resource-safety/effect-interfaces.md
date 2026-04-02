@@ -82,7 +82,9 @@ The real power is adapter swappability, not interpreter proliferation.
 | Intent-based effects          | Medium     | No     | `effect` / `effects`       | Dispatcher style, rarely needed in new code |
 | Just thunks                   | Lowest     | No     | Stdlib `Callable`          | No named type, easy to misuse |
 
-**Verdict**: Use `IOPlan`. It is <60 LOC, composes cleanly with Core 1, and gives you everything you need for production.
+**Verdict**: In this capstone, `IOPlan` is the best default. It stays small, composes
+cleanly with the earlier cores, and covers the production pressures this repository is
+designed to prove.
 
 **Global error policy**: We fix `E = ErrInfo` everywhere. This is deliberate – it simplifies interop between `Result`, `Reader`, ports, and `IOPlan`. Per-subsystem error types are possible by parameterising `IOPlan[A, E]`, but we don’t need that complexity here.
 

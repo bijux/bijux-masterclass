@@ -76,7 +76,10 @@ You are now three steps away from a complete production-grade functional archite
 | Dynamic/conditional resources      | Yes     | Yes      | No           | `contextlib.ExitStack`               |
 | Streaming over file/DB             | Yes     | No       | Yes          | **Resource-owning iterator** + shell wraps in `closing(...)` |
 
-**Golden rule**: For streaming adapters, use a **resource-owning iterator** and always wrap it in `contextlib.closing` (or equivalent) in the shell. This is the only pattern that gives deterministic cleanup on partial consumption across all Python implementations.
+**Golden rule**: For the streaming adapters modeled in this course, use a
+**resource-owning iterator** and wrap it in `contextlib.closing` (or equivalent) in
+the shell. That keeps partial-consumption cleanup explicit and deterministic for the
+pattern we are teaching here.
 
 ## 3. Public API – No New Domain API
 
