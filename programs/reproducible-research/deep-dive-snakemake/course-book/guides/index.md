@@ -56,6 +56,7 @@ Use these first if you are entering the program or returning after a break:
 Use these when the question is about execution, proof, or command boundaries:
 
 * [Command Guide](command-guide.md)
+* [Proof Ladder](proof-ladder.md)
 * [Proof Matrix](proof-matrix.md)
 
 [Back to top](#top)
