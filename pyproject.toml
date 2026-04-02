@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "funcpipe-rag"
+version = "0.1.0"
+description = "FuncPipe RAG Builder (end of Module 09)"
+readme = "README.md"
+requires-python = ">=3.10,<4.0"
+license = { text = "MIT" }
+authors = [{ name = "Bijan Mousavi", email = "bijan@bijux.io" }]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = []
+
+[project.scripts]
+funcpipe-rag = "funcpipe_rag.boundaries.shells.cli:main"
+funcpipe-rag-review = "funcpipe_rag.boundaries.shells.review_cli:main"
+
+[project.optional-dependencies]
+docs = [
+  "mkdocs>=1.6,<2",
+  "mkdocs-material>=9.5,<10",
+  "pymdown-extensions>=10.8,<11",
+]
+dev = [
+  # testing
+  "pytest>=8.0.0",
+  "hypothesis>=6.0.0",
+  # lint/type-check
+  "ruff>=0.6.0",
+  "mypy>=1.10.0",
+  # module-05 deps (type-driven boundaries, serde, perf)
+  "typing-extensions>=4.9.0",
+  "pydantic>=2.7,<3",
+  "msgpack>=1.0,<2",
+  "numpy>=1.26,<3",
+  # build tool
+  "hatch>=1.15,<2",
+  # data stack
+  "pandas>=2.0,<3",
+  "kaggle>=1.6",
+  # MkDocs site (Material theme + common plugins)
+  "mkdocs>=1.6,<2",
+  "mkdocs-material>=9.5,<10",
+  "pymdown-extensions>=10.8,<11",
+  "mkdocs-git-revision-date-localized-plugin>=1.2,<2",
+  "mkdocs-minify-plugin>=0.8,<1",
+  "mkdocs-redirects>=1.2,<2",
+]
+
+[tool.hatch.build]
+include = [
+  "src/funcpipe_rag/**",
+  "README.md",
+  "pyproject.toml",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/funcpipe_rag"]
+include = ["src/funcpipe_rag/py.typed"]
+
+# Hatch env that installs the single 'dev' extra
+[tool.hatch.envs.dev]
+features = ["dev"]
+[tool.hatch.envs.dev.scripts]
+test = "pytest -q"
+cov = "pytest -q --cov=funcpipe_rag --cov-report=term-missing"
+
+[tool.hatch.envs.docs]
+features = ["docs"]
+[tool.hatch.envs.docs.scripts]
+serve = "mkdocs serve"
+build = "mkdocs build --strict"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
