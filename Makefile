@@ -120,6 +120,10 @@ capstone-validate-config: ## Validate the selected program's capstone configurat
 capstone-wf-dryrun: ## Print the selected program's capstone dry-run plan
 	@$(RUN_PROGRAM) capstone-wf-dryrun
 
+.PHONY: capstone-bootstrap-confirm
+capstone-bootstrap-confirm: ## Create the selected program's capstone toolchain and run clean-room confirmation
+	@$(RUN_PROGRAM) capstone-bootstrap-confirm
+
 .PHONY: capstone-selftest
 capstone-selftest: ## Run the selected program's capstone determinism or convergence self-test
 	@$(RUN_PROGRAM) capstone-selftest

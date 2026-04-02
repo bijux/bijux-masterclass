@@ -14,6 +14,9 @@ help: ## Show available targets
 docs-clean: ## Remove built site directory
 	rm -rf "$(SITE_DIR)"
 
+capstone-bootstrap-confirm: ## Create the supported capstone toolchain and run clean-room confirmation
+	$(MAKE) -C capstone bootstrap-confirm
+
 capstone-check: ## Run fast checks in capstone (format/lint/tests + lint workflow)
 	$(MAKE) -C capstone check
 
