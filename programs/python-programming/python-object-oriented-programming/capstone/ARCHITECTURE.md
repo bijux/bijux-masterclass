@@ -56,3 +56,20 @@ projections should stay derived so read concerns do not mutate authoritative sta
 - What would break if rule activation lived in the runtime instead of the aggregate?
 - What would become harder to trust if the read models were updated directly?
 - Which extension should modify `policies.py` without forcing a rewrite of `model.py`?
+
+## Change placement
+
+| If the change is... | Start in | Why |
+| --- | --- | --- |
+| a new rule lifecycle constraint | `model.py` | lifecycle authority belongs to the aggregate |
+| a new evaluation mode | `policies.py` | variation should stay replaceable instead of widening the aggregate |
+| a new sink or source integration | `runtime.py` | orchestration and adapters stay outside domain ownership |
+| a new read model | `projections.py` or `read_models.py` | derived views should stay downstream of events |
+| a persistence or rollback detail | `repository.py` | storage mechanics should adapt to the domain, not redefine it |
+
+## Anti-patterns this architecture rejects
+
+- runtime code deciding domain lifecycle transitions
+- projections mutating authoritative state
+- persistence concerns leaking into the aggregate's core rules
+- evaluation variability implemented as condition ladders spread across multiple files
