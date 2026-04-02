@@ -43,6 +43,7 @@ Use root-level commands when you want one entrypoint that works across programs.
 | `make PROGRAM=reproducible-research/deep-dive-make docs-build` | build the course docs in strict mode |
 | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | build the learner-facing walkthrough bundle |
 | `make PROGRAM=reproducible-research/deep-dive-make capstone-tour` | print the capstone reading route |
+| `make PROGRAM=reproducible-research/deep-dive-make proof` | build the sanctioned learner-facing proof bundle set |
 | `make PROGRAM=reproducible-research/deep-dive-make program-help` | show the program Makefile surface |
 
 [Back to top](#top)
@@ -60,6 +61,7 @@ surface.
 | `make test` | run the capstone selftest via the program surface |
 | `make capstone-walkthrough` | build the learner-facing walkthrough bundle |
 | `make capstone-tour` | print the capstone reading route |
+| `make proof` | build the sanctioned learner-facing proof bundle set |
 | `make capstone-hardened` | run the strongest built-in capstone verification |
 | `make clean` | clear program and capstone artifacts |
 
@@ -77,6 +79,7 @@ Use `capstone/` when you want the raw executable reference build.
 | `gmake walkthrough` | build the learner-facing walkthrough bundle |
 | `gmake tour` | print the recommended reading route |
 | `gmake selftest` | run convergence, equivalence, and negative checks |
+| `gmake proof` | write the sanctioned learner-facing proof bundle set |
 | `gmake hardened` | run the strongest capstone validation set |
 | `gmake repro` | list the failure-mode repro pack |
 
@@ -90,7 +93,7 @@ If you are new:
 
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-make capstone-tour
+make PROGRAM=reproducible-research/deep-dive-make proof
 make PROGRAM=reproducible-research/deep-dive-make test
 ```
 
@@ -98,7 +101,7 @@ If you are reviewing the capstone deeply:
 
 ```sh
 gmake -C capstone help
-gmake -C capstone selftest
+gmake -C capstone proof
 gmake -C capstone repro
 ```
 

@@ -51,7 +51,7 @@ typecheck: install-dev ## Run mypy on Python helper scripts
 
 # Capstone (GNU Make repository)
 .PHONY: capstone capstone-selftest capstone-hardened capstone-tour capstone-walkthrough \
-        capstone-contract-audit capstone-incident-audit capstone-clean
+        capstone-contract-audit capstone-incident-audit capstone-clean proof
 capstone: ## Build the capstone (writes ./all sentinel inside capstone)
 > $(MAKE) -C $(CAPSTONE_DIR) all
 
@@ -75,6 +75,9 @@ capstone-incident-audit: ## Build the capstone incident review bundle
 
 capstone-clean: ## Clean capstone outputs
 > $(MAKE) -C $(CAPSTONE_DIR) clean
+
+proof: ## Build the sanctioned learner-facing capstone proof bundle set
+> $(MAKE) -C $(CAPSTONE_DIR) proof
 
 # Convenience alias: "test" means the capstone's selftest.
 .PHONY: test

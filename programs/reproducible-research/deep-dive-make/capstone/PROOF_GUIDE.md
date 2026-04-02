@@ -32,6 +32,10 @@ This capstone is designed to prove build-system properties, not just compile a s
 program. Use this guide when you want the shortest route from a claim to the target, file,
 or failure surface that defends it.
 
+When you want one bounded review pass instead of a custom sequence, run `make proof`.
+That target writes the walkthrough, selftest report, contract audit, and incident audit
+bundles together.
+
 ---
 
 ## Claims And Their First Evidence
@@ -71,6 +75,7 @@ That route keeps contract and proof ahead of implementation detail.
 
 | Question | First target | Why |
 | --- | --- | --- |
+| what is the sanctioned end-to-end learner proof route | `make proof` | it writes the bounded bundle set used by the course-book review pages |
 | does the build still tell the truth after a successful run | `make selftest` | it checks convergence and negative hidden-input behavior |
 | which parts of the build are safe under `-j` | `make selftest` | it compares serial and parallel artifact hashes |
 | what is publicly supported for learners and reviewers | `make help` | it exposes the stable command surface |

@@ -46,7 +46,7 @@ DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
-.PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report walkthrough \
+.PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report proof walkthrough \
         contract-audit incident-audit clean submake-demo perf trace-count hardened show-origins FORCE \
         portability-audit eval-demo help tour
 
@@ -125,6 +125,7 @@ help:
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
 >     '  selftest-report   write the selftest evidence bundle to artifacts/' \
+>     '  proof             write the sanctioned learner-facing proof bundle set' \
 >     '  tour              print the recommended capstone walkthrough' \
 >     '  walkthrough       build the learner-facing walkthrough bundle' \
 >     '  contract-audit    build the public-contract review bundle' \
@@ -357,6 +358,14 @@ selftest-report:
 >       '  hidden-input.txt   dishonest-input detection result' > "$(SELFTEST_REPORT_DIR_ABS)/bundle-guide.txt"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(SELFTEST_REPORT_DIR_ABS)" --output "$(SELFTEST_REPORT_DIR_ABS)/manifest.json"
 >     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR_ABS)"
+
+proof: walkthrough selftest-report contract-audit incident-audit
+>     @printf '%s\n' \
+>       'PASS: wrote learner-facing proof bundles:' \
+>       "  walkthrough: $(WALKTHROUGH_DIR)" \
+>       "  selftest report: $(SELFTEST_REPORT_DIR_ABS)" \
+>       "  contract audit: $(CONTRACT_AUDIT_DIR)" \
+>       "  incident audit: $(INCIDENT_AUDIT_DIR)"
 
 # ---- quarantined rule-generation demo (optional) ----
 USE_EVAL ?= no
