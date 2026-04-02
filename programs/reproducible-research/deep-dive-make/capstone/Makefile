@@ -37,6 +37,7 @@ ARTIFACTS_DIR ?= ../../../../artifacts
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
 SELFTEST_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-make/selftest
+SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
 
 DEPFLAGS := -MMD -MP
 
@@ -277,10 +278,10 @@ selftest:
 >     MAKE="$(MAKE)" $(TST_DIR)/run.sh
 
 selftest-report:
->     rm -rf "$(SELFTEST_REPORT_DIR)"
->     mkdir -p "$(SELFTEST_REPORT_DIR)"
->     MAKE="$(MAKE)" SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR)" $(TST_DIR)/run.sh
->     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR)"
+>     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
+>     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
+>     MAKE="$(MAKE)" SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" $(TST_DIR)/run.sh
+>     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR_ABS)"
 
 # ---- quarantined rule-generation demo (optional) ----
 USE_EVAL ?= no
