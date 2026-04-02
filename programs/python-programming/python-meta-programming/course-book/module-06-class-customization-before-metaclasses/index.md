@@ -389,6 +389,7 @@ Attribute Lookup Precedence (obj.x)
 5. __getattr__ fallback or AttributeError
 
 Caption: @property is a data descriptor even without a setter → cannot be shadowed by obj.x = value.
+```
 
 ### Example 1: Standard property with validation
 

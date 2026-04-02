@@ -417,7 +417,6 @@ Design goals:
 
 ### Visual: metaclass-driven registry
 
-```text
 ```mermaid
 graph TD
   import["Module import"]

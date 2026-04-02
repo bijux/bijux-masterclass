@@ -515,6 +515,7 @@ Import hooks / AST transforms (blast radius)
 - Debuggers/profilers/IDEs need location preservation
 
 Caption: Use for tooling (coverage, tracing, macro systems), not typical app features.
+```
 
 ### 49.1 Minimal meta-path virtual module (reversible)
 
