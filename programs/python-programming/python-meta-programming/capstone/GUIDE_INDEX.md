@@ -78,6 +78,7 @@ local guide that matches the question you actually have.
 - `BUNDLE_MANIFEST_GUIDE.md`
 - `WALKTHROUGH_GUIDE.md`
 - `TOUR.md`
+- `REVIEW_ROUTE_MAP.md`
 
 ## Best next files after the guide index
 
