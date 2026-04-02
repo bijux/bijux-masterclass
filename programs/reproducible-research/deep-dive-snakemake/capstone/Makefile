@@ -24,6 +24,7 @@ WF_DIR        ?= $(ARTIFACTS_DIR)/workflow/reproducible-research/deep-dive-snake
 TMP_DIR       ?= $(ARTIFACTS_DIR)/tmp/reproducible-research/deep-dive-snakemake
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-snakemake
 TOUR_DIR      ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-snakemake
+VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-snakemake/verify
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -46,6 +47,7 @@ PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
+	verify-report \
 	check ci validate verify confirm selftest \
 	docker-build docker-run
 
@@ -126,6 +128,17 @@ verify-artifacts: ## Verify publish artifacts exist and are parseable (best-effo
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
 	@$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" \
 		2>&1 | tee "$(LINT_DIR_ABS)/verify_artifacts.log"
+
+verify-report: ## Write a structured publish verification report
+	@mkdir -p "$(VERIFY_REPORT_DIR)"
+	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
+	@$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" --report "$(VERIFY_REPORT_DIR)/verify.json"
+	@printf '%s\n' \
+		'Verification report route:' \
+		'  1. Read verify.json for the per-surface publish checks.' \
+		'  2. Read publish/v1/manifest.json beside it when you need the published inventory.' \
+		'  3. Read publish/v1/report/index.html when you need the human-readable review surface.' > "$(VERIFY_REPORT_DIR)/route.txt"
+	@echo "✔ wrote publish verification report to $(VERIFY_REPORT_DIR)"
 
 # ---- high-level flows ----
 check: lint test wf-lint wf-dryrun validate-config ## Fast pre-flight (no workflow execution); NOT a formatting gate

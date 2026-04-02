@@ -13,6 +13,7 @@ def load_json(path: Path) -> object:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--publish", type=Path, required=True)
+    parser.add_argument("--report", type=Path)
     args = parser.parse_args()
 
     publish_dir = args.publish
@@ -48,6 +49,42 @@ def main() -> int:
     report_html = (publish_dir / "report" / "index.html").read_text(encoding="utf-8")
     if "<html" not in report_html.lower():
         raise ValueError("report/index.html does not look like HTML")
+
+    if args.report is not None:
+        args.report.write_text(
+            json.dumps(
+                {
+                    "publish_dir": publish_dir.resolve().as_posix(),
+                    "checks": [
+                        {
+                            "check": "required_files",
+                            "files": [path.relative_to(publish_dir).as_posix() for path in required_files],
+                        },
+                        {
+                            "check": "manifest",
+                            "schema_version": int(manifest["schema_version"]),
+                            "file_count": len(manifest["files"]),
+                        },
+                        {
+                            "check": "discovery",
+                            "sample_count": len(discovered["samples"]),
+                        },
+                        {
+                            "check": "summary",
+                            "unit_count": len(summary["units"]),
+                        },
+                        {
+                            "check": "report",
+                            "contains_html_tag": True,
+                        },
+                    ],
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
 
     print("PASS: publish artifacts look sane")
     return 0

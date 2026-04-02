@@ -115,6 +115,7 @@ Run these public entrypoints from the capstone directory:
 ```bash
 make walkthrough
 make selftest
+make verify-report
 make tour
 make confirm
 ```
@@ -124,6 +125,10 @@ than full clean-room confirmation.
 
 Use `PROOF_GUIDE.md` when you want the shortest route from a course claim to the target,
 file, or published artifact that proves it.
+
+Use `make verify-report` when you want a durable publish-contract report under
+`artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` rather than a single
+console verdict.
 
 [Back to top](#top)
 
