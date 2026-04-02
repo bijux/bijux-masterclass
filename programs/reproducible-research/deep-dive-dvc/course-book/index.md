@@ -36,8 +36,8 @@ than overwhelm it.
 
 The top-level course-book now has three stable surfaces:
 
-- [`guides/`](guides/index.md) for learner routes, command choices, and capstone entry
-- [`reference/`](reference/index.md) for durable maps, glossary pages, and review standards
+- [`guides/`](guides/index.md) for learner routes, pressure routes, promise maps, checkpoints, and capstone entry
+- [`reference/`](reference/index.md) for durable maps, glossary pages, anti-pattern routing, and review standards
 - module pages for the core ten-module teaching arc
 
 ## Why this program exists
@@ -58,9 +58,10 @@ This program exists to close that gap.
 Choose one entry:
 
 1. If you are new to the program, start with [`start-here.md`](guides/start-here.md).
-2. If you need a stable route through support pages, use [`course-guide.md`](guides/course-guide.md).
-3. If you want the full program shape before reading modules, open [`module-00.md`](module-00-orientation/index.md).
-4. If you need the executable repository, start with [`readme-capstone.md`](guides/readme-capstone.md), not the raw capstone directory.
+2. If your route is shaped by urgency or stewardship pressure, use [`pressure-routes.md`](guides/pressure-routes.md).
+3. If you need a stable route through support pages, use [`course-guide.md`](guides/course-guide.md).
+4. If you want the full program shape before reading modules, open [`module-00.md`](module-00-orientation/index.md).
+5. If you need the executable repository, start with [`readme-capstone.md`](guides/readme-capstone.md), not the raw capstone directory.
 
 The learner path is deliberate:
 
@@ -85,17 +86,34 @@ Use this snapshot when you need the fastest sense of what the modules are doing:
 - [Capstone Guide](guides/readme-capstone.md) explains what the executable repository proves.
 - [Capstone Map](guides/capstone-map.md) shows which repository surfaces to inspect for each module.
 
+## Use These Support Pages First
+
+These are the pages that make the course easier to trust and easier to finish:
+
+| Need | Best page |
+| --- | --- |
+| first learner route | [`start-here.md`](guides/start-here.md) |
+| route under repair, stewardship, or recovery pressure | [`pressure-routes.md`](guides/pressure-routes.md) |
+| stable support hub | [`course-guide.md`](guides/course-guide.md) |
+| what each module title actually promises | [`module-promise-map.md`](guides/module-promise-map.md) |
+| whether you are ready to move on | [`module-checkpoints.md`](guides/module-checkpoints.md) |
+| smallest honest proof route | [`proof-ladder.md`](guides/proof-ladder.md) |
+| capstone entry by module | [`capstone-map.md`](guides/capstone-map.md) |
+
 ## Support Pages Worth Knowing Early
 
 These pages make the course easier to navigate:
 
 - [`learning-contract.md`](guides/learning-contract.md) clarifies what the course optimizes for and refuses to optimize for.
 - [`module-dependency-map.md`](reference/module-dependency-map.md) shows which concepts should be learned before others.
+- [`topic-boundaries.md`](reference/topic-boundaries.md) explains what the course treats as core and what it only touches at the boundary.
 - [`platform-setup.md`](guides/platform-setup.md) explains the local environment assumptions before you run proof commands.
 - [`practice-map.md`](reference/practice-map.md) maps each module to its main proof loop and capstone follow-up.
 - [`authority-map.md`](reference/authority-map.md) explains which layer of state settles which trust question.
 - [`evidence-boundary-guide.md`](reference/evidence-boundary-guide.md) explains what declaration, execution, promotion, and recovery evidence can and cannot prove.
+- [`anti-pattern-atlas.md`](reference/anti-pattern-atlas.md) routes common reproducibility smells to the right repair path.
 - [`command-guide.md`](guides/command-guide.md) explains where each command belongs.
+- [`proof-ladder.md`](guides/proof-ladder.md) explains how much proof is enough before you escalate.
 - [`guides/index.md`](guides/index.md) collects the full learner and capstone route in one place.
 - [`reference/index.md`](reference/index.md) collects the durable review maps in one place.
 
@@ -113,8 +131,19 @@ When entering the capstone, keep these pages open together:
 - [`capstone-map.md`](guides/capstone-map.md)
 - [`capstone-file-guide.md`](guides/capstone-file-guide.md)
 - [`repository-layer-guide.md`](guides/repository-layer-guide.md)
+- [`proof-ladder.md`](guides/proof-ladder.md)
 
 The capstone should answer the question: "What does this module look like in a real DVC repository?"
+
+## Review Surfaces
+
+When you are reviewing whether the course and capstone are actually coherent, use:
+
+* [`topic-boundaries.md`](reference/topic-boundaries.md)
+* [`anti-pattern-atlas.md`](reference/anti-pattern-atlas.md)
+* [`module-promise-map.md`](guides/module-promise-map.md)
+* [`module-checkpoints.md`](guides/module-checkpoints.md)
+* [`completion-rubric.md`](reference/completion-rubric.md)
 
 ## What The Course Is Trying To Prevent
 
