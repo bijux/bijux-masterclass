@@ -41,6 +41,21 @@ to finish reading. The goal is to improve judgment under change.
 - What extension should remain possible without editing the aggregate?
 - What runtime behavior must stay outside the domain?
 
+## Module-by-module rehearsal loop
+
+| Module range | Write this ownership sentence | Inspect this capstone surface | Prove it with |
+| --- | --- | --- | --- |
+| Modules 01-03 | "This object owns identity, value, or lifecycle meaning because..." | `model.py` and lifecycle tests | `make inspect` |
+| Modules 04-05 | "This boundary owns the invariant because..." | `ARCHITECTURE.md`, `read_models.py`, `runtime.py` | `make verify-report` |
+| Modules 06-07 | "This runtime or persistence concern stays outside the aggregate because..." | `repository.py`, `runtime.py`, unit-of-work tests | `make verify-report` |
+| Modules 08-10 | "This proof, public surface, or operational review belongs here because..." | `tests/`, proof guides, saved bundles | `make confirm` or `make proof` |
+
+## What to write down after practice
+
+- one owner you are more confident about than before
+- one boundary that still feels risky under change
+- one capstone file or bundle you would revisit first next time
+
 ## When to revisit a page
 
 - revisit Module 01 when equality, copying, or mutation feel fuzzy
