@@ -74,6 +74,7 @@ repository:
 * [`readme-capstone.md`](readme-capstone.md) for the repository contract
 * [`capstone-map.md`](capstone-map.md) for the module route
 * [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
+* [`repository-layer-guide.md`](repository-layer-guide.md) for authority and layer ownership
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md) for repository review
 * [`capstone-extension-guide.md`](capstone-extension-guide.md) for safe evolution
 

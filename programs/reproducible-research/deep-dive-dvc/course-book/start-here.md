@@ -28,7 +28,7 @@ flowchart LR
 <!-- page-maps:end -->
 
 Deep Dive DVC is not a command catalog. It is a course about making state explicit
-enough that another person can recover, compare, and defend results later.
+enough that another person can recover, compare, release, and defend results later.
 
 Use this page to pick the right entry route before you start reading modules out of
 sequence.
@@ -57,30 +57,33 @@ design trade-offs.
 
 Choose this if DVC still feels new.
 
-1. Read [`module-00.md`](module-00.md)
-2. Read [`module-01.md`](module-01.md)
-3. Read [`module-02.md`](module-02.md)
-4. Enter the capstone only after the state-layer model feels clear
+1. Read [`course-guide.md`](course-guide.md)
+2. Read [`module-00.md`](module-00.md)
+3. Read [`module-01.md`](module-01.md)
+4. Read [`module-02.md`](module-02.md)
+5. Enter the capstone only after the state-layer model feels clear
 
 ### Route 2: Repair An Existing Repository
 
 Choose this if you already work on a DVC repository.
 
-1. Skim [`module-00.md`](module-00.md)
-2. Read [`module-04.md`](module-04.md)
-3. Read [`module-07.md`](module-07.md)
-4. Read [`module-08.md`](module-08.md)
-5. Use [`capstone-map.md`](capstone-map.md) to inspect the reference repository selectively
+1. Read [`authority-map.md`](authority-map.md)
+2. Read [`module-01.md`](module-01.md)
+3. Read [`module-04.md`](module-04.md)
+4. Read [`module-07.md`](module-07.md)
+5. Read [`module-08.md`](module-08.md)
+6. Use [`capstone-map.md`](capstone-map.md) to inspect the reference repository selectively
 
 ### Route 3: Reproducibility Stewardship
 
 Choose this if your main concern is promotion, auditability, and long-lived state.
 
-1. Read [`module-05.md`](module-05.md)
-2. Read [`module-08.md`](module-08.md)
-3. Read [`module-09.md`](module-09.md)
-4. Read [`module-10.md`](module-10.md)
-5. Finish with the capstone review route
+1. Read [`evidence-boundary-guide.md`](evidence-boundary-guide.md)
+2. Read [`module-05.md`](module-05.md)
+3. Read [`module-08.md`](module-08.md)
+4. Read [`module-09.md`](module-09.md)
+5. Read [`module-10.md`](module-10.md)
+6. Finish with the capstone review route
 
 [Back to top](#top)
 
@@ -122,5 +125,6 @@ Then use:
 * [`capstone-map.md`](capstone-map.md) when you want the repository route by module
 * [`module-00.md`](module-00.md) when you want the full course arc
 * [`course-guide.md`](course-guide.md) when you want the right support page quickly
+* [`verification-route-guide.md`](verification-route-guide.md) when you need the right proof path after the first walkthrough
 
 [Back to top](#top)

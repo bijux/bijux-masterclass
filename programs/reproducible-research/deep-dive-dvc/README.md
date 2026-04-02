@@ -34,18 +34,18 @@ By the end of the program, you should be able to:
 - run experiments without turning baseline history into guesswork
 - define promotion, retention, and recovery rules that survive real team pressure
 
-## Reading contract
+## Learner route
 
-This is not a browse-at-random reference. The reading order matters:
+Use the course in this order:
 
-1. Learn why reproducibility fails before evaluating tools.
-2. Learn state identity before discussing pipelines and experiments.
-3. Learn truthful pipeline state before comparing metrics or promoting runs.
-4. Learn experiments before governance, CI, retention, and incident recovery.
-5. Continue into promotion, auditability, migration, and stewardship once the state model feels stable.
+1. `course-book/start-here.md`
+2. `course-book/course-guide.md`
+3. `course-book/learning-contract.md`
+4. `course-book/module-00.md`
+5. Modules `01` to `10` in order
+6. `course-book/readme-capstone.md` and `course-book/capstone-map.md` once the state model feels stable
 
-If you skip that order, later material will still be readable, but the operational
-trade-offs will feel procedural instead of principled.
+The route matters because the program is trying to build judgment, not only command recall.
 
 ## What this program covers
 
@@ -66,6 +66,8 @@ incident-escalation prediction workflow with:
 - declared parameters and tracked metrics
 - a stable `publish/v1/` boundary
 - a recovery drill that restores state from a DVC remote after cache loss
+- an experiments route that varies parameters without damaging the baseline contract
+- a release review route that keeps downstream trust smaller than the internal repository story
 
 The program should make that repository easier to reason about. The capstone should make
 the program’s claims harder to hand-wave.
@@ -77,12 +79,14 @@ From the repository root:
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc docs-serve
 make PROGRAM=reproducible-research/deep-dive-dvc test
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
 ```
 
 Run the capstone directly:
 
 ```bash
 make -C programs/reproducible-research/deep-dive-dvc/capstone confirm
+make -C programs/reproducible-research/deep-dive-dvc/capstone walkthrough
 ```
 
 ## Module map

@@ -30,8 +30,8 @@ make data, parameters, metrics, experiments, remotes, and recovery boundaries pr
 enough that another person can trust them months later.
 
 This course is designed as a guided route, not a loose pile of DVC notes. Start with the
-learner path that matches your role, then use the capstone only when the concept is
-already legible enough to benefit from executable proof.
+learner path that matches your role, then use the capstone when the concept is clear
+enough that executable proof will sharpen it rather than overwhelm it.
 
 ## Why this program exists
 
@@ -51,7 +51,7 @@ This program exists to close that gap.
 Choose one entry:
 
 1. If you are new to the program, start with [`start-here.md`](start-here.md).
-2. If you already know the course exists but need the right support page, use [`course-guide.md`](course-guide.md).
+2. If you need a stable route through support pages, use [`course-guide.md`](course-guide.md).
 3. If you want the full program shape before reading modules, open [`module-00.md`](module-00.md).
 4. If you need the executable repository, start with [`readme-capstone.md`](readme-capstone.md), not the raw capstone directory.
 
@@ -92,6 +92,8 @@ These pages make the course easier to navigate:
 - [`module-dependency-map.md`](module-dependency-map.md) shows which concepts should be learned before others.
 - [`platform-setup.md`](platform-setup.md) explains the local environment assumptions before you run proof commands.
 - [`practice-map.md`](practice-map.md) maps each module to its main proof loop and capstone follow-up.
+- [`authority-map.md`](authority-map.md) explains which layer of state settles which trust question.
+- [`evidence-boundary-guide.md`](evidence-boundary-guide.md) explains what declaration, execution, promotion, and recovery evidence can and cannot prove.
 - [`command-guide.md`](command-guide.md) explains where each command belongs.
 
 ## How To Use The Capstone While Reading
@@ -102,6 +104,12 @@ These pages make the course easier to navigate:
 - After Module 08, inspect the recovery drill and ask which state survives cache loss and why.
 - After Module 09, inspect `publish/v1/`, manifests, and promoted params or metrics as a release boundary.
 - In Module 10, use the capstone as a repository review specimen rather than a first-contact example.
+
+When entering the capstone, keep these pages open together:
+
+- [`capstone-map.md`](capstone-map.md)
+- [`capstone-file-guide.md`](capstone-file-guide.md)
+- [`repository-layer-guide.md`](repository-layer-guide.md)
 
 The capstone should answer the question: "What does this module look like in a real DVC repository?"
 
