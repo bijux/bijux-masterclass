@@ -20,22 +20,27 @@ plugins:
       include_dir: .
 
 nav:
-  - Home: index.md
-  - Start Here: start-here.md
-  - Learning Contract: learning-contract.md
-  - Program Outline: module-00.md
-  - Module Dependency Map: module-dependency-map.md
-  - Completion Rubric: completion-rubric.md
-  - Build-Graph Glossary: build-graph-glossary.md
-  - Concept Index: concept-index.md
-  - Practice Map: practice-map.md
-  - Incident Ladder: incident-ladder.md
-  - Public Targets: public-targets.md
-  - Capstone Map: capstone-map.md
-  - Capstone File Guide: capstone-file-guide.md
-  - Capstone Walkthrough: capstone-walkthrough.md
-  - Repro Catalog: repro-catalog.md
-  - Capstone Extension Guide: capstone-extension-guide.md
+  - Start Here:
+      - Home: index.md
+      - Course Guide: course-guide.md
+      - Learner Entry: start-here.md
+      - Learning Contract: learning-contract.md
+      - Program Outline: module-00.md
+  - Course Reference:
+      - Module Dependency Map: module-dependency-map.md
+      - Build-Graph Glossary: build-graph-glossary.md
+      - Concept Index: concept-index.md
+      - Practice Map: practice-map.md
+      - Public Targets: public-targets.md
+      - Incident Ladder: incident-ladder.md
+      - Completion Rubric: completion-rubric.md
+  - Capstone Reference:
+      - Capstone Map: capstone-map.md
+      - Capstone File Guide: capstone-file-guide.md
+      - Capstone Walkthrough: capstone-walkthrough.md
+      - Repro Catalog: repro-catalog.md
+      - Capstone Extension Guide: capstone-extension-guide.md
+      - Capstone Project: readme-capstone.md
   - Modules:
       - "01 — Foundations": module-01.md
       - "02 — Scaling": module-02.md
@@ -47,4 +52,3 @@ nav:
       - "08 — Release Engineering": module-08.md
       - "09 — Performance and Incident Response": module-09.md
       - "10 — Mastery": module-10.md
-  - Capstone Project: readme-capstone.md
