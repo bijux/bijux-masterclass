@@ -41,6 +41,7 @@ The rule is simple: open the smallest page that answers the next honest learner 
 Use these first if you are entering the program or returning after a break:
 
 * [Start Here](start-here.md)
+* [Module Promise Map](module-promise-map.md)
 * [Course Guide](course-guide.md)
 * [Platform Setup](platform-setup.md)
 * [Learning Contract](learning-contract.md)
