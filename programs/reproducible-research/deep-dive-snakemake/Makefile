@@ -32,12 +32,17 @@ capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	$(MAKE) -C capstone tour
 
+capstone-proof: ## Run the sanctioned learner-facing capstone proof route
+	$(MAKE) -C capstone proof
+
 capstone-profile-audit: ## Package execution profile review evidence
 	$(MAKE) -C capstone profile-audit
 
 check: capstone-check ## Run capstone fast checks
 
 test: check ## Run the course's default verification target
+
+proof: capstone-proof ## Run the course's sanctioned learner-facing proof route
 
 clean: docs-clean ## Remove common build artifacts
 	rm -rf "$(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake" .pytest_cache .ruff_cache

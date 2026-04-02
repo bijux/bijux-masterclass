@@ -49,7 +49,7 @@ PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
 	verify-report profile-audit \
-	check ci validate verify confirm selftest \
+	check ci validate verify confirm selftest proof \
 	docker-build docker-run
 
 help: ## Show available targets
@@ -174,6 +174,8 @@ verify: wf-run verify-artifacts ## Execute workflow then verify outputs
 confirm: clean purge-dsstore ci verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
+
+proof: tour verify-report profile-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p "$(WALKTHROUGH_DIR_ABS)/workflow/rules" "$(WALKTHROUGH_DIR_ABS)/profiles" "$(WALKTHROUGH_DIR_ABS)/scripts"

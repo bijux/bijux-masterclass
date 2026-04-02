@@ -45,6 +45,7 @@ Use root-level commands when you want one entrypoint that works across programs.
 | `make PROGRAM=reproducible-research/deep-dive-snakemake docs-build` | build the course docs in strict mode |
 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | build the learner-first capstone walkthrough bundle |
 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | build the executed capstone proof bundle |
+| `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | run the sanctioned learner-facing proof route |
 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | package execution-policy review evidence |
 | `make PROGRAM=reproducible-research/deep-dive-snakemake test` | run the course's main verification target |
 
@@ -63,6 +64,7 @@ surface.
 | `make test` | run the capstone fast verification suite via the program surface |
 | `make capstone-walkthrough` | build the learner-first walkthrough bundle |
 | `make capstone-tour` | build the executed capstone proof bundle |
+| `make proof` | run the sanctioned learner-facing proof route |
 | `make capstone-profile-audit` | package execution-policy review evidence |
 | `make clean` | remove program and capstone build artifacts |
 
@@ -82,6 +84,7 @@ Use `capstone/` when you want the raw executable workflow repository.
 | `make verify` | execute the workflow and validate the promoted contract |
 | `make confirm` | run formatting, tests, workflow checks, execution, and artifact validation |
 | `make tour` | build the executed proof bundle |
+| `make proof` | run the sanctioned learner-facing proof route |
 | `make profile-audit` | compare local, CI, and scheduler policy bundles |
 
 [Back to top](#top)

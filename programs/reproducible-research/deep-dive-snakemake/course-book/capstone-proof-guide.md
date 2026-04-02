@@ -44,6 +44,7 @@ honest route to the capstone evidence that supports it.
 - `make -C capstone tour` when you want executed workflow proof
 - `make -C capstone verify-report` when you want publish-boundary review
 - `make -C capstone profile-audit` when you want execution-policy review
+- `make -C capstone proof` when you want the sanctioned learner-facing route
 - `make -C capstone confirm` when you want clean-room contract confirmation
 
 [Back to top](#top)
