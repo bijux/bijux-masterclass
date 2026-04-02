@@ -4,6 +4,7 @@
   --bijux-border: rgba(49, 46, 129, 0.16);
   --bijux-panel: rgba(79, 70, 229, 0.05);
   --bijux-panel-strong: rgba(79, 70, 229, 0.08);
+  --bijux-map-shadow: 0 22px 54px rgba(30, 41, 89, 0.14);
   --bijux-surface-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0));
 }
 
@@ -74,13 +75,21 @@ button {
   overflow-x: auto;
 }
 
-.md-typeset .md-button {
-  border-radius: 999px;
+.bijux-map-frame {
+  background: linear-gradient(180deg, rgba(79, 70, 229, 0.09), rgba(99, 102, 241, 0.05));
+  border: 1px solid var(--bijux-border);
+  border-radius: 1.2rem;
+  box-shadow: var(--bijux-map-shadow);
+  overflow: hidden;
+  margin: 1.5rem 0 2rem;
 }
 
-.md-typeset .md-button--primary {
-  background: linear-gradient(135deg, #3949ab, #4f46e5);
-  border-color: transparent;
+.bijux-map-frame iframe {
+  display: block;
+  width: 100%;
+  min-height: 78vh;
+  border: 0;
+  background: #fff;
 }
 
 .bijux-panel-grid {
@@ -114,4 +123,42 @@ button {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin: 1rem 0 1.5rem;
+}
+
+.md-typeset .md-button {
+  border-radius: 999px;
+}
+
+.md-typeset .md-button--primary {
+  background: linear-gradient(135deg, #3949ab, #4f46e5);
+  border-color: transparent;
+}
+
+.bijux-media-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin: 1.5rem 0;
+}
+
+.bijux-media-card {
+  margin: 0;
+  background: var(--bijux-surface-gradient), var(--bijux-panel);
+  border: 1px solid var(--bijux-border);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--bijux-map-shadow);
+}
+
+.bijux-media-card img,
+.bijux-media-card video {
+  display: block;
+  width: 100%;
+  background: #0f172a;
+}
+
+.bijux-media-card figcaption {
+  padding: 0.9rem 1rem 1rem;
+  color: var(--bijux-muted);
+  font-size: 0.95rem;
 }
