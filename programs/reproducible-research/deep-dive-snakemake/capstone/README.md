@@ -192,6 +192,8 @@ which rule family owns discovery, per-sample processing, summarize/report work,
 publishing, or operating policy.
 Use `CHECKPOINT_GUIDE.md` when the core review question is how dynamic sample discovery
 becomes a durable artifact instead of hidden state.
+Use `EXACT_SOURCE_GUIDE.md` when the question is "which file should I read next" and you
+want the smallest honest route instead of a full repository tour.
 Use `ARCHITECTURE.md` when the question is about repository ownership.
 Use `WALKTHROUGH_GUIDE.md` when you need the first-contact route.
 Use `PUBLISH_REVIEW_GUIDE.md`, `PROFILE_AUDIT_GUIDE.md`, and `INCIDENT_REVIEW_GUIDE.md`
