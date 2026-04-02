@@ -28,6 +28,16 @@ leave with one design judgment.
 Use this page when the capstone repository feels busy and you need the ownership model in
 one place before reading more code.
 
+## Start by architecture question
+
+| If the architecture question is... | Start with | Then inspect |
+| --- | --- | --- |
+| what the public CLI can show without hidden work | public observation | `cli.py`, manifest helpers, and `make manifest` |
+| where wrapper behavior should stop | callable transformation | `actions.py` and `make trace` |
+| where validation really belongs | attribute contracts | `fields.py` and `test_fields.py` |
+| what must happen before the class exists | class-creation rules | `framework.py` and `test_registry.py` |
+| where realistic delivery behavior should stay concrete | concrete domain examples | `plugins.py`, `scenarios.py`, and `make plugin` |
+
 ## The capstone architecture in one sentence
 
 The capstone is a small plugin runtime where introspection, wrappers, descriptors, and a
@@ -66,6 +76,12 @@ metaclass each own one narrow boundary and the CLI exposes those boundaries with
 5. Read `src/incident_plugins/actions.py` for wrapper ownership.
 6. Read `src/incident_plugins/plugins.py` for concrete behavior only after the boundaries are clear.
 7. Read the matching tests to confirm the architecture story.
+
+## What not to do first
+
+- Do not start in `plugins.py` when the ownership question is still abstract.
+- Do not start in tests when the owning slice is not yet named.
+- Do not compare higher-power mechanisms until the lower-power alternative is explicit.
 
 ## Best companion pages
 
