@@ -121,6 +121,10 @@ These commands answer different questions:
 Every generated bundle now includes a `manifest.json` inventory so review can start from
 an explicit file list instead of manual guessing.
 
+The walkthrough bundle now includes the verifier implementation, verifier tests, and a
+sample promoted manifest/report so the learner can connect declaration, enforcement, and
+published evidence in one reading route.
+
 If you are unsure which route fits your question, use the course-book
 `verification-route-guide.md` page before defaulting to the strongest command.
 

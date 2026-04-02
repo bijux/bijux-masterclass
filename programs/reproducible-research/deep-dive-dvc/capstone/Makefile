@@ -132,21 +132,27 @@ release-audit: verify ## Build a focused release-boundary audit bundle
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@rm -rf $(WALKTHROUGH_DIR)
-	@mkdir -p $(WALKTHROUGH_DIR)
+	@mkdir -p $(WALKTHROUGH_DIR)/src/incident_escalation_capstone $(WALKTHROUGH_DIR)/tests $(WALKTHROUGH_DIR)/publish-v1
 	@cp README.md $(WALKTHROUGH_DIR)/README.md
 	@cp PUBLISH_CONTRACT.md $(WALKTHROUGH_DIR)/PUBLISH_CONTRACT.md
 	@cp dvc.yaml $(WALKTHROUGH_DIR)/dvc.yaml
 	@cp dvc.lock $(WALKTHROUGH_DIR)/dvc.lock
 	@cp params.yaml $(WALKTHROUGH_DIR)/params.yaml
 	@cp TOUR.md $(WALKTHROUGH_DIR)/TOUR.md
+	@cp src/incident_escalation_capstone/verify.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/verify.py
+	@cp tests/test_verify.py $(WALKTHROUGH_DIR)/tests/test_verify.py
+	@cp publish/v1/manifest.json $(WALKTHROUGH_DIR)/publish-v1/manifest.json
+	@cp publish/v1/report.md $(WALKTHROUGH_DIR)/publish-v1/report.md
 	@printf '%s\n' \
 		'1. Read README.md to understand the repository contract.' \
 		'2. Read PUBLISH_CONTRACT.md to understand the promoted boundary.' \
 		'3. Read dvc.yaml to inspect the declared pipeline.' \
 		'4. Read dvc.lock to compare recorded state against the declaration.' \
 		'5. Read params.yaml to see the declared control surface.' \
-		'6. Run make verify when you want executed proof.' \
-		'7. Run make tour when you want the full evidence bundle.' > $(WALKTHROUGH_DIR)/route.txt
+		'6. Read src/incident_escalation_capstone/verify.py and tests/test_verify.py to see how the contract is enforced.' \
+		'7. Read publish-v1/manifest.json and publish-v1/report.md as concrete promotion examples.' \
+		'8. Run make verify when you want executed proof.' \
+		'9. Run make tour when you want the full evidence bundle.' > $(WALKTHROUGH_DIR)/route.txt
 	@printf '%s\n' \
 		'Public entry commands:' \
 		'  make walkthrough' \
@@ -168,6 +174,10 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 		'  dvc.yaml              declared stage contract' \
 		'  dvc.lock              recorded execution state' \
 		'  params.yaml           control surface' \
+		'  verify.py             publish-contract enforcement logic' \
+		'  test_verify.py        contract regression coverage' \
+		'  publish-v1/manifest.json concrete promoted inventory' \
+		'  publish-v1/report.md  concrete review surface' \
 		'  TOUR.md               proof-bundle reading route' > $(WALKTHROUGH_DIR)/bundle-guide.txt
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(WALKTHROUGH_DIR) --output $(WALKTHROUGH_DIR)/manifest.json
 	@echo "✔ wrote learner-facing walkthrough to $(WALKTHROUGH_DIR)"
