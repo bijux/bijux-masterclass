@@ -37,6 +37,7 @@ files first. The goal is to make each inspection command answer one kind of ques
 | `make inspect-summary` | what policy state and open incidents exist right now |
 | `make inspect-rules` | which rules are draft, active, or retired |
 | `make inspect-history` | how incidents accumulated for each metric |
+| `make inspect-timeline` | what ordered scenario moments produced the current state |
 
 ## Recommended reading order
 
@@ -44,9 +45,10 @@ files first. The goal is to make each inspection command answer one kind of ques
 2. `summary.txt`
 3. `rules.txt`
 4. `history.txt`
+5. `timeline.txt`
 
-That order moves from the current high-level snapshot into lifecycle detail and then into
-incident history.
+That order moves from the current high-level snapshot into lifecycle detail, incident
+history, and finally the ordered scenario flow.
 
 ## What each route should teach
 
@@ -61,6 +63,7 @@ incident history.
 | `summary.txt` | what state and incidents a learner should understand first | whether the domain rules were enforced correctly under all behaviors |
 | `rules.txt` | which rules are draft, active, or retired | whether evaluation variability is placed in the right seam |
 | `history.txt` | which incidents were published and accumulated downstream | whether the history source remained non-authoritative in code |
+| `timeline.txt` | which ordered steps produced the saved scenario state | whether the runtime and aggregate boundaries are placed correctly under arbitrary change |
 
 ## Best follow-up choices
 

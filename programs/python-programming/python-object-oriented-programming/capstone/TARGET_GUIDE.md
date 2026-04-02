@@ -31,6 +31,7 @@ command for the question you actually have.
 | `confirm` | run the strongest local confirmation route |
 | `demo` | run the human-readable monitoring scenario |
 | `inspect` | build the learner-facing inspection bundle |
+| `inspect-timeline` | print the ordered scenario flow directly in the terminal |
 | `tour` | build the learner-facing walkthrough bundle |
 | `verify-report` | build the executable verification report bundle |
 | `proof` | run the full course-sanctioned evidence route |
@@ -68,6 +69,14 @@ Use:
 
 * `make inspect`
 * `INSPECTION_GUIDE.md`
+
+### If the question is "in what order did the teaching scenario happen?"
+
+Use:
+
+* `make inspect-timeline`
+* `SCENARIO_GUIDE.md`
+* `EVENT_FLOW_GUIDE.md`
 
 ### If the question is "what saved bundle proves the behavior?"
 

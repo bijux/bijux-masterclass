@@ -28,3 +28,16 @@ def test_history_command_reports_metric_history(capsys) -> None:
     assert "metric: cpu" in output
     assert "cpu-hot -> critical observed=0.95 threshold=0.9" in output
     assert "cpu-sustained -> warning observed=0.95 threshold=0.8" in output
+
+
+def test_timeline_command_reports_the_ordered_scenario_flow(capsys) -> None:
+    assert main(["timeline"]) == 0
+
+    output = capsys.readouterr().out
+    assert "step: register rules" in output
+    assert "step: activate rules" in output
+    assert "step: observe samples" in output
+    assert "step: published alerts" in output
+    assert "cpu-hot mode=threshold threshold=0.9 window=1" in output
+    assert "cpu  cpu-hot" not in output
+    assert "cpu cpu-hot -> critical observed=0.95 threshold=0.9" in output
