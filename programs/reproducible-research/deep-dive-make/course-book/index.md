@@ -1,4 +1,3 @@
-<a id="top"></a>
 # Deep Dive Make
 
 <!-- page-maps:start -->
@@ -18,90 +17,56 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  promise["Read the course promise, scope, and audience"] --> orientation["Open Module 00 to anchor the mental model"]
-  orientation --> modules["Move into the module sequence that matches your pressure"]
-  modules --> support["Use guides and reference pages when they answer a concrete question"]
-  modules --> capstone["Bring the capstone in after the current idea is clear"]
+  promise["Read the course promise and learner fit"] --> route["Choose one stable entry lane"]
+  route --> orientation["Anchor the mental model in Module 00"]
+  orientation --> modules["Read the modules in order"]
+  modules --> proof["Use guides, reference, and capstone only when they answer the current question"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so learners do not mistake the capstone or reference pages for the first stop.
+Read the first diagram as the shape of the whole book. Read the second diagram as the
+intended learner route so the capstone and support shelves do not become accidental first
+lessons.
 
-A ten-module program for learning **GNU Make as a declarative build-graph engine**. The
-course is organized around one idea: Make is valuable only when the build graph stays
-truthful under change, pressure, and review.
+Deep Dive Make teaches GNU Make as a build-graph engine whose claims must stay truthful
+under change, concurrency, publication pressure, and review. The goal is not to collect
+syntax. The goal is to build systems that another engineer can inspect, trust, and
+repair without folklore.
 
-The top-level course-book has three durable surfaces:
+## Use this course if
 
-- [`guides/`](guides/index.md) for learner routes, module promises, checkpoints, and capstone entry
-- [`reference/`](reference/index.md) for durable definitions, anti-pattern maps, and review aids
-- Modules `00` to `10` for the teaching arc itself
+- you want a correct graph model instead of memorized recipes
+- you inherited a brittle Make build and need a repair route you can defend
+- you already use Make in production but still get surprised by rebuilds, publication bugs, or `-j`
+- you review whether Make should keep owning a boundary at all
 
-> **At a glance**: beginner-to-mastery progression • minimal reproducible examples •
-> bounded proof routes • a runnable capstone that corroborates the claims.
-> **Quality bar**: every core assertion should be checkable with `--trace`, `-p`,
-> serial versus parallel equivalence, or one of the saved review bundles.
+## Do not use this course as
 
----
-## Why this program exists
+- a snippet catalog detached from graph semantics
+- a shell-programming substitute
+- a reason to keep Make after the boundary should move to another tool
 
-Many Make-based systems “work” by accident: undeclared inputs, phony ordering,
-wishful-thinking stamps, and parallel runs that silently change behavior. Deep Dive Make
-exists to replace folklore with a stricter contract:
+## Choose one starting lane
 
-- **truthful DAG**: all semantically real edges are declared
-- **atomic outputs**: artifacts appear only when valid
-- **parallel safety**: `-j` changes throughput, not meaning
-- **determinism**: repeated runs converge to the same state
-- **reviewable proof**: build claims can be corroborated with commands and bundles
+| If you are here because... | Start with | Stop when you can say... |
+| --- | --- | --- |
+| Make is still new | [Start Here](guides/start-here.md), [Course Guide](guides/course-guide.md), [Module 00](module-00-orientation/index.md) | what a truthful edge is and why the capstone is not your first lesson |
+| you need to repair an existing build | [Pressure Routes](guides/pressure-routes.md), [Module 04](module-04-rule-semantics-precedence-edge-cases/index.md), [Module 05](module-05-portability-hermeticity-failure-modes/index.md) | whether the current failure is graph truth, publication, portability, or incident pressure |
+| you steward a long-lived build system | [Course Guide](guides/course-guide.md), [Module 03](module-03-determinism-debugging-self-testing/index.md), [Module 07](module-07-build-architecture-layered-includes-apis/index.md) | which targets are public, which layers own meaning, and which proof route is proportionate |
 
-If the course is doing its job, learners leave with better judgment, not just more syntax.
-[Back to top](#top)
-
----
-## Start here
-If you are not sure where to begin, use [`start-here.md`](guides/start-here.md) before diving
-into the modules. It routes beginners, working maintainers, and build stewards to the
-right entry point so the capstone does not become an accidental first lesson.
-
-If your route is shaped by urgency rather than calm study, use
-[`pressure-routes.md`](guides/pressure-routes.md).
-
-[Back to top](#top)
-
----
-## Course guide
-Use [`course-guide.md`](guides/course-guide.md) when you need one page that groups the course
-surfaces by learner need: first entry, stable reference, capstone use, and review use.
-
-[Back to top](#top)
-
----
-## Learning contract
-Use [`learning-contract.md`](guides/learning-contract.md) as the stable reference for how this
-course teaches: concept, failure mode, repair, and proof. It makes the pedagogical bar
-explicit instead of leaving it scattered across modules.
-
-[Back to top](#top)
-
----
-## Use these support pages first
-
-These are the pages that make the course easier to trust and easier to finish:
+## Keep these support pages nearby
 
 | Need | Best page |
 | --- | --- |
-| first learner route | [`start-here.md`](guides/start-here.md) |
-| route under repair, stewardship, or incident pressure | [`pressure-routes.md`](guides/pressure-routes.md) |
-| stable support hub | [`course-guide.md`](guides/course-guide.md) |
-| what each module title actually promises | [`module-promise-map.md`](guides/module-promise-map.md) |
-| whether you are ready to move on | [`module-checkpoints.md`](guides/module-checkpoints.md) |
-| smallest honest proof route | [`proof-ladder.md`](guides/proof-ladder.md) |
-| capstone entry by module | [`capstone-map.md`](capstone/capstone-map.md) |
+| shortest stable entry | [Start Here](guides/start-here.md) |
+| route shaped by urgency | [Pressure Routes](guides/pressure-routes.md) |
+| stable support hub | [Course Guide](guides/course-guide.md) |
+| module titles translated into promises | [Module Promise Map](guides/module-promise-map.md) |
+| module exit bar | [Module Checkpoints](guides/module-checkpoints.md) |
+| smallest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
+| capstone entry by module and question | [Capstone Map](capstone/capstone-map.md) |
+| stable review shelf | [Reference](reference/index.md) |
 
-[Back to top](#top)
-
----
 ## Module Table of Contents
 
 | Module | Title | Why it matters |
@@ -118,104 +83,30 @@ These are the pages that make the course easier to trust and easier to finish:
 | [Module 09](module-09-performance-observability-incident-response/index.md) | Performance, Observability, and Incident Response | diagnoses build incidents with evidence rather than folklore |
 | [Module 10](module-10-migration-governance-tool-boundaries/index.md) | Migration, Governance, and Tool Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
 
----
-## How the guide is written
-Each module follows a consistent, engineering-first structure:
-> **Concept** → **Semantics** → **Failure signatures** → **Minimal repro** → **Repair pattern** → **Verification method**
-You are expected to distrust claims that cannot be checked. Where possible, the guide provides direct verification via:
-- `make --trace` (why something rebuilt)
-- `make -p` (expanded database: targets/vars/rules)
-- serial vs parallel equivalence checks (hashes, manifests, outputs)  
-[Back to top](#top)
+## How the capstone fits
 
----
-## Prerequisites
-You do not need prior Make mastery. You do need the ability to work comfortably in a shell.
-Required:
-- **GNU Make 4.3+**
-- **POSIX shell** (`/bin/sh`)
-- **C toolchain** (for the capstone exercises)
-**macOS note**: `/usr/bin/make` is BSD Make. Install GNU Make and use `gmake`:
-```sh
-brew install make
-```  
-### Required GNU Make Features (Minimum 4.3+)
-This program guide and capstone rely on GNU Make 4.3+ for full pattern fidelity:
+The capstone is the executable proof surface for the course. It should corroborate a
+module idea that is already legible, not replace first exposure.
 
-| Feature               | Introduced | Justification                                      |
-|-----------------------|------------|----------------------------------------------------|
-| Grouped targets `&:`  | 4.3        | Safe multi-output generators (single invocation)   |
-| Improved diagnostics  | 4.0+       | `--trace` and forensics (used extensively)         |
-| Parallel safety       | Ongoing    | Jobserver and ordering primitives                  |
+Use it in this order:
 
-Older versions may work for basic modules but lack key parallel-safe primitives. Fallbacks are discussed where relevant.  
-[Back to top](#top)
+1. learn the concept in the local module exercise
+2. choose the smallest honest route with [Proof Ladder](guides/proof-ladder.md)
+3. enter the repository through [Capstone Map](capstone/capstone-map.md) or [Command Guide](capstone/command-guide.md)
+4. escalate to stronger review only when the current question actually needs it
 
----
-## Verification via the capstone
+## Success signal
 
-The course is paired with an executable reference build in [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone). The capstone is not the first lesson. It is the corroboration surface once the module idea is already legible.
+The course home has done its job when you know:
 
-Use these routes in order:
+- where to start without browsing randomly
+- which support page answers the next question
+- why the capstone is a proof surface rather than a first-contact playground
+- why later modules are consequences of earlier graph truth and publication choices
 
-1. [`proof-ladder.md`](guides/proof-ladder.md) to size the proof correctly
-2. [`capstone-map.md`](capstone/capstone-map.md) to enter by module arc
-3. [`command-guide.md`](capstone/command-guide.md) when you need the exact command layer
+## Failure modes this course is designed to prevent
 
-From the repository root, the most useful first commands are:
-
-```sh
-make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-make inspect
-make PROGRAM=reproducible-research/deep-dive-make test
-```
-
-Use `gmake` inside `capstone/` on macOS.
-
-[Back to top](#top)
----
-## Diagnostics playbook
-When builds misbehave, start here:
-* **Unexpected rebuilds**: `make --trace <target>` (find the triggering edge)
-* **“It works on my machine” variables**: `make -p` and inspect `origin` / `flavor`
-* **Parallel-only failures**: suspect missing edges or non-atomic producers; compare serial/parallel outputs
-* **Generated headers / multi-output rules**: model producers explicitly; don’t rely on incidental order
-* **Portability / recursion / jobserver**: treat as correctness topics, not convenience features
-This program guide is designed to be both a curriculum and an operational reference.  
-[Back to top](#top)
----
-## Review surfaces
-
-When you are reviewing whether the course and capstone are actually coherent, use:
-
-* [`topic-boundaries.md`](reference/topic-boundaries.md)
-* [`anti-pattern-atlas.md`](reference/anti-pattern-atlas.md)
-* [`module-promise-map.md`](guides/module-promise-map.md)
-* [`module-checkpoints.md`](guides/module-checkpoints.md)
-* [`completion-rubric.md`](reference/completion-rubric.md)
-
-[Back to top](#top)
----
-## Repository links
-* Project overview: [`README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/README.md)
-* Capstone: [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone)
-* Validation workflow: [`.github/workflows/program-validation.yml`](https://github.com/bijux/bijux-masterclass/blob/master/.github/workflows/program-validation.yml)  
-[Back to top](#top)
----
-## Contributing
-Contributions are welcome when they improve **correctness**, **clarity**, or **reproducibility** (tight repros, sharper diagnostics, better exercises).
-Process:
-1. Fork and clone
-2. Make a focused change
-3. From the repository root, verify:
-   ```sh
-   make -C capstone selftest
-   ```
-   (or `gmake -C capstone selftest` on macOS)
-4. Open a PR against `main`, with a short “claim → proof” note  
-[Back to top](#top)
----
-## License
-MIT — see the repository root [`LICENSE`](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE). © 2025 Bijan Mousavi <bijan@bijux.io>.  
-
-[Back to top](#top)
+- treating Make as a shell shortcut instead of a graph contract
+- trusting a build because it ran once instead of because its edges and proofs are visible
+- using the capstone as first contact and confusing repository size with conceptual depth
+- jumping into governance or incident pages before the graph model is stable
