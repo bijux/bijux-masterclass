@@ -49,6 +49,7 @@ the action wrapper explicit about what metadata it adds and what callable shape 
 
 - `tests/test_registry.py` for preserved signatures and wrapped metadata
 - `tests/test_runtime.py` for recorded action history
+- `make action` when the question is one concrete exported action contract
 - `TRACE_GUIDE.md` when the public trace route is the clearest surface
 
 ## Best companion guides

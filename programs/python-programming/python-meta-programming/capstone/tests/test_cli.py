@@ -53,6 +53,18 @@ def test_field_command_renders_one_concrete_field_contract(capsys) -> None:
     assert captured["field"]["minimum"] == 8
 
 
+def test_action_command_renders_one_concrete_action_contract(capsys) -> None:
+    exit_code = main(["action", "delivery", "pager", "preview"])
+
+    captured = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert captured["plugin_name"] == "pager"
+    assert captured["action"]["name"] == "preview"
+    assert captured["action"]["returns"] == "str"
+    assert captured["action"]["signature"] == "(self, *, title: 'str', severity: 'str', summary: 'str') -> 'str'"
+
+
 def test_invoke_command_runs_a_plugin_action(capsys) -> None:
     exit_code = main(
         [
