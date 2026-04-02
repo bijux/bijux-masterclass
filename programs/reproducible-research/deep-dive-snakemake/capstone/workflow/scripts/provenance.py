@@ -1,6 +1,7 @@
 # workflow/scripts/provenance.py
 
 import datetime
+import importlib
 import json
 import platform
 import subprocess
@@ -13,14 +14,32 @@ def _utc_now_iso() -> str:
     return datetime.datetime.now(datetime.UTC).isoformat().replace("+00:00", "Z")
 
 
+def resolve_snakemake_version(python_executable: str) -> str:
+    try:
+        module = importlib.import_module("snakemake")
+        version = getattr(module, "__version__", "")
+        if version:
+            return str(version)
+    except Exception:
+        pass
+
+    try:
+        return (
+            subprocess.check_output(
+                [python_executable, "-c", "import snakemake; print(snakemake.__version__)"],
+                text=True,
+            )
+            .strip()
+        )
+    except Exception:
+        return "unknown"
+
+
 def main() -> None:
     # `snakemake` is an injected object (NOT the snakemake Python module).
     sm = snakemake  # type: ignore[name-defined]  # noqa: F821
 
-    try:
-        sm_version = str(sm.params.get("snakemake_version", "unknown"))
-    except Exception:
-        sm_version = "unknown"
+    sm_version = resolve_snakemake_version(sys.executable)
 
     try:
         git_commit = (
