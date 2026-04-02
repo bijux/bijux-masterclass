@@ -284,3 +284,7 @@ Rectify ambiguities before proceeding.
 ## Transition to Module 06
 
 Immutable data, explicit environments, truthful pipelines, and meaningful metrics established. Exploration now poses a novel challenge: **How to iterate without historical corruption?** Module 06 delineates experiments as disciplined deviations from the core contract.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

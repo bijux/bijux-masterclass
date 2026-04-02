@@ -347,3 +347,7 @@ The ultimate adversary emerges: **Time**.
 Enduring systems degrade, storage expands, attrition occurs, incidents transpire.
 
 Module 08 navigates production scalability and endurance, interfacing correctness with operational exigencies.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

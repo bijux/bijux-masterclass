@@ -101,3 +101,7 @@ make -C capstone source-bundle
 - Which parameter changes should invalidate comparisons?
 - Which artifacts are safe to promote to downstream consumers?
 - Which guarantees would disappear if the local cache were deleted today?
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between repository routes, review surfaces, and proof commands.

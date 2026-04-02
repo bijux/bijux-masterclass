@@ -92,7 +92,7 @@ trust claim without checking what authority that file actually has.
 
 The most useful companion pages for this map are:
 
-* [`state-glossary.md`](state-glossary.md)
+* [`glossary.md`](glossary.md)
 * [`module-02.md`](../module-02-data-identity-content-addressing/index.md)
 * [`module-08.md`](../module-08-recovery-scale-incident-survival/index.md)
 * [`capstone-map.md`](../capstone/capstone-map.md)

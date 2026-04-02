@@ -243,3 +243,7 @@ Proceed if these resonate intuitively.
 ## Transition to Module 04
 
 With immutable data identity and explicit environments secured, pipeline unpredictability endures due to misrepresented dependencies. Module 04 presents truthful directed acyclic graphs (DAGs)—pipelines that execute selectively and precisely, transforming reproducibility from aspirational to systematic.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

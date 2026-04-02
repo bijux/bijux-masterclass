@@ -279,3 +279,7 @@ You pass this module only if you can demonstrate:
 * a promotion flow that another reviewer can understand without private context
 
 [Back to top](#top)
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

@@ -194,7 +194,7 @@ Use these pages when you reach each milestone:
 | Milestone | Best support pages | Why these pages matter |
 | --- | --- | --- |
 | before Module 01 | `../guides/start-here.md`, `../guides/learning-contract.md`, `../reference/module-dependency-map.md` | establish the learner route and the pedagogical boundaries |
-| Modules 01-02 | `../reference/state-glossary.md`, `../reference/authority-map.md` | keep identity, authority, and layer language precise |
+| Modules 01-02 | `../reference/glossary.md`, `../reference/authority-map.md` | keep identity, authority, and layer language precise |
 | Modules 03-05 | `../reference/practice-map.md`, `../capstone/command-guide.md`, `../guides/proof-matrix.md` | connect pipeline and metric concepts to executable proof |
 | Modules 06-09 | `../capstone/capstone-map.md`, `../capstone/capstone-file-guide.md`, `../capstone/index.md` | move from concept to repository inspection without losing the teaching thread |
 | Module 10 and later review | `../reference/completion-rubric.md`, `../capstone/capstone-review-worksheet.md`, `../capstone/capstone-extension-guide.md` | assess the course and evolve the repository without weakening the contract |
@@ -259,3 +259,7 @@ Keep using the capstone to answer one question: when a result is challenged mont
 which exact state can the repository recover, compare, and prove?
 
 [Back to top](#top)
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

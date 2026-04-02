@@ -317,3 +317,7 @@ Resolve negotiability prior to advancement.
 Individual operations are now viable. However, systemic failures arise from interpersonal dynamics: omitted data pushes, forceful branch overwrites, main-branch experimentations.
 
 Module 07 addresses this reality: **Reproducibility constitutes a social challenge mitigated through technical mechanisms.**
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

@@ -317,3 +317,7 @@ Honest traversal of Modules 01–08 imparts comprehension of:
 - Temporal erosion of simplistic architectures.
 
 Beyond mere DVC utilization, one attains systemic reasoning on reproducibility—the paramount course yield.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

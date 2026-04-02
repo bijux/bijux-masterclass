@@ -296,3 +296,7 @@ Resolve uncertainties by rectifying the DAG before progression.
 ## Transition to Module 05
 
 Equipped to identify data, govern environments, and execute truthful pipelines, a profound challenge persists: **What do results signify?** Metrics fluctuate, parameters shift, and visualizations mislead. Module 05 introduces semantic contracts for equitable temporal comparisons.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
