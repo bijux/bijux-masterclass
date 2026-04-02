@@ -29,6 +29,11 @@ Use this page when you know what you want to verify but do not yet know which co
 the smallest honest one. The point of the ladder is to keep proof proportional to the
 question instead of defaulting to the largest route every time.
 
+## Two kinds of proof pressure
+
+- Human-review pressure: use levels 1 to 6 when the question is what a learner or reviewer can honestly inspect.
+- Executable-confidence pressure: use level 7 when the question is whether the runnable capstone still passes its strongest local confirmation route.
+
 ## Proof ladder
 
 | Level | Use this when you need to prove... | Command | Evidence you get |
@@ -82,6 +87,7 @@ Use `verify-report`, `proof`, or `confirm` when the question sounds like:
 - Do not jump to `confirm` when you need a learner-facing review bundle rather than test output.
 - Escalate from `inspect` to `tour` when you need source ownership, not just public runtime shape.
 - Escalate from `tour` to `verify-report` when you need executable confirmation instead of reading guidance.
+- Treat `confirm` as a different kind of pressure from the bundle routes: stronger confidence, but weaker learner-facing explanation.
 
 ## Success signal
 
