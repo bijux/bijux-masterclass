@@ -48,6 +48,7 @@ happens, how much memory is used, and where materialization becomes a conscious 
 - [Fan-In and Fan-Out](fan-in-and-fan-out.md)
 - [Time-Aware Streaming](time-aware-streaming.md)
 - [Custom Iterators](custom-iterators.md)
+- [Iterator Lifecycle and Cleanup](iterator-lifecycle-and-cleanup.md)
 - [Streaming Observability](streaming-observability.md)
 - [Refactoring Guide](refactoring-guide.md)
 

@@ -82,6 +82,7 @@ nav:
       - Fan-In and Fan-Out: module-03-iterators-and-lazy-dataflow/fan-in-and-fan-out.md
       - Time-Aware Streaming: module-03-iterators-and-lazy-dataflow/time-aware-streaming.md
       - Custom Iterators: module-03-iterators-and-lazy-dataflow/custom-iterators.md
+      - Iterator Lifecycle and Cleanup: module-03-iterators-and-lazy-dataflow/iterator-lifecycle-and-cleanup.md
       - Streaming Observability: module-03-iterators-and-lazy-dataflow/streaming-observability.md
       - Refactoring Guide: module-03-iterators-and-lazy-dataflow/refactoring-guide.md
 
