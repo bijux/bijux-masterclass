@@ -43,7 +43,37 @@ code inspects, wraps, validates, or registers other code and objects.
 - trick collecting
 - designs that still have a simpler explicit solution available
 
-## Start here
+## Choose your entry route
+
+### New learner to metaprogramming
+
+Use this when the vocabulary is still new and you need the safest honest ramp:
+
+1. [Start Here](guides/start-here.md)
+2. [Course Guide](guides/course-guide.md)
+3. [Module 00](module-00-orientation/index.md)
+4. [First-Contact Map](module-00-orientation/first-contact-map.md)
+
+### Reviewer under pressure
+
+Use this when you are inspecting an existing dynamic codebase and need judgment fast:
+
+1. [Start Here](guides/start-here.md)
+2. [Pressure Routes](guides/pressure-routes.md)
+3. [Runtime Power Ladder](reference/runtime-power-ladder.md)
+4. [Review Checklist](reference/review-checklist.md)
+
+### Library or framework builder
+
+Use this when the question is not "what does this mechanism do?" but "which mechanism
+should own this behavior?":
+
+1. [Course Guide](guides/course-guide.md)
+2. [Mechanism Selection](guides/mechanism-selection.md)
+3. [Module Dependency Map](guides/module-dependency-map.md)
+4. [Capstone Guide](capstone/index.md)
+
+## Keep these pages nearby
 
 - [Start Here](guides/start-here.md)
 - [Guides Home](guides/index.md)
