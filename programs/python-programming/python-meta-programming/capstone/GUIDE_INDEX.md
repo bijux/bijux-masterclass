@@ -67,6 +67,7 @@ local guide that matches the question you actually have.
 
 - `PROOF_GUIDE.md`
 - `TEST_GUIDE.md`
+- `TEST_READING_MAP.md`
 - `EXTENSION_GUIDE.md`
 - `MECHANISM_SELECTION_GUIDE.md`
 - `SOURCE_TO_PROOF_MAP.md`
