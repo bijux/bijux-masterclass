@@ -39,9 +39,10 @@ Use this guide when the question is no longer "did the pipeline run?" and is now
 1. `manifest.json` for inventory and integrity
 2. `data-profile.json` for the promoted population story
 3. `params.yaml` for the promoted control surface
-4. `metrics.json` for the promoted quantitative story
-5. `report.md` for the human-readable summary
-6. `predictions.csv` for deeper inspection
+4. `model.json` for the promoted scoring behavior
+5. `metrics.json` for the promoted quantitative story
+6. `report.md` for the human-readable summary
+7. `predictions.csv` for deeper inspection
 
 ## What this route proves
 

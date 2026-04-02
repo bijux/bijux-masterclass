@@ -63,13 +63,17 @@ Use this order:
 1. `manifest.json`
 2. `data-profile.json`
 3. `params.yaml`
-4. `metrics.json`
-5. `report.md`
-6. `predictions.csv`
-7. `release-summary.json` from the tour or release review bundle when you want the compact review surface
+4. `model.json`
+5. `metrics.json`
+6. `report.md`
+7. `predictions.csv`
+8. `release-summary.json` from the tour or release review bundle when you want the compact review surface
 
 That route moves from contract inventory into control surface, then into evaluation, then
 into record-level evidence.
+
+Read [MODEL_GUIDE.md](MODEL_GUIDE.md) when the next review question is what exact scoring
+behavior was promoted rather than only what metrics came out of it.
 
 Read [DATA_PROFILE_GUIDE.md](DATA_PROFILE_GUIDE.md) when the next review question is
 which population the promoted metrics and predictions actually describe.
