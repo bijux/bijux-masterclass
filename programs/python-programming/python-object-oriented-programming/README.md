@@ -61,7 +61,7 @@ By the end of the course, you should be able to:
 
 ## How to study this course well
 
-1. Start with the orientation material and course map instead of jumping to random topics.
+1. Start with `course-book/start-here.md`, then the orientation material and course map instead of jumping to random topics.
 2. Work through Modules 01 to 10 in order because the later modules assume earlier semantic and boundary decisions.
 3. Treat each module as a design checkpoint: read the overview, then the chapter sequence, then the refactor chapter.
 4. Use Modules 01 to 05 as the semantic and architectural base, then Modules 06 to 10 as the persistence, runtime, governance, and operational mastery arc.
@@ -87,6 +87,13 @@ Run the capstone directly:
 ```bash
 make -C programs/python-programming/python-object-oriented-programming/capstone confirm
 ```
+
+Primary reading route:
+
+- `course-book/start-here.md`
+- `course-book/index.md`
+- `course-book/module-00-orientation/index.md`
+- `course-book/capstone.md`
 
 ## How to know you are succeeding
 

@@ -58,6 +58,8 @@ This is not a browse-at-random reference. The course is designed as a sequence:
 If you skip that order, later chapters will still be readable, but the design trade-offs
 will feel arbitrary instead of principled.
 
+If you want the shortest stable entry route, start with [Start Here](start-here.md).
+
 ## Working model
 
 The course uses a monitoring-system domain as the running example. That domain is
@@ -111,6 +113,7 @@ By the end of the course, you should be able to:
 
 ## Reading order
 
+- Start with [Start Here](start-here.md).
 - Start with [Orientation](module-00-orientation/index.md).
 - Work through Modules 01 to 10 in order.
 - Use the [Capstone](capstone.md) to connect the prose to runnable code.
