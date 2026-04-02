@@ -48,6 +48,7 @@ than as a later concern owned by "infrastructure people."
 
 - Who owns files, sockets, connections, and cleanup obligations?
 - How do you group changes and failure boundaries coherently?
+- Which failures belong in the domain contract, and which belong at the system boundary?
 - What makes retries safe or unsafe?
 - Which modules are public contracts and which are implementation detail?
 - How do you add new behavior without quietly breaking old callers?
@@ -55,13 +56,14 @@ than as a later concern owned by "infrastructure people."
 ## Reading path
 
 1. Start with resource ownership and unit-of-work boundaries.
-2. Read cleanup, retries, and error propagation as one operational cluster.
+2. Read cleanup, domain errors, retries, and error propagation as one operational cluster.
 3. Then move to public API boundaries, smells, copying, and compatibility.
 4. Finish with the refactor chapter to test whether the design can evolve without collapse.
 
 ## Common failure modes
 
 - making callers responsible for cleanup details they cannot reliably remember
+- flattening all failures into generic exceptions with no recovery contract
 - retrying operations that are not idempotent and duplicating side effects
 - logging everywhere without deciding what contract the logs actually support
 - exposing internal modules as accidental public API
