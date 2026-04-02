@@ -1,4 +1,4 @@
-"""RAG pipeline APIs (Module 02–05; end-of-Module-05).
+"""RAG pipeline APIs (Module 02–06; end-of-Module-06).
 
 This module contains the domain-specific core pipeline entry points:
 - a minimal lazy pipeline (`iter_rag`)
@@ -169,7 +169,7 @@ def full_rag_api_path(
 
     docs_res = deps.reader.read_docs(path)
     if isinstance(docs_res, Err):
-        return docs_res
+        return Err(docs_res.error)
     chunks, obs = full_rag_api_docs(docs_res.value, config, deps.core)
     return Ok((chunks, obs))
 

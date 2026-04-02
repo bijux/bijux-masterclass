@@ -1,4 +1,4 @@
-"""Module 05 subsystem ADT: embeddings (end-of-Module-05)."""
+"""Module 05 subsystem ADT: embeddings (end-of-Module-06; domain-modeling)."""
 
 from __future__ import annotations
 

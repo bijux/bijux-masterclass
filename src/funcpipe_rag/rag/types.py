@@ -1,4 +1,4 @@
-"""Public API types for the RAG surface (end-of-Module-05).
+"""Public API types for the RAG surface (end-of-Module-06).
 
 Most of these types are introduced in Module 02 and extended in Module 03
 (notably tracing/stream observability).

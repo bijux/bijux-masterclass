@@ -1,4 +1,4 @@
-"""CSV-in / JSONL-out boundary shell for the end-of-Module-05 API."""
+"""CSV-in / JSONL-out boundary shell for the end-of-Module-06 API."""
 
 from __future__ import annotations
 
@@ -7,14 +7,14 @@ import json
 from dataclasses import asdict
 from typing import Iterable
 
-from funcpipe_rag.rag.config import RagBoundaryDeps, RagConfig, Reader, get_deps
+from funcpipe_rag.rag.config import DocsReader, RagBoundaryDeps, RagConfig, get_deps
 from funcpipe_rag.rag.rag_api import full_rag_api
 from funcpipe_rag.rag.types import Observations
 from funcpipe_rag.core.rag_types import Chunk, RawDoc
 from funcpipe_rag.result import Err, Ok, Result
 
 
-class FSReader(Reader):
+class FSReader(DocsReader):
     """Filesystem reader implementation (impure)."""
 
     def read_docs(self, path: str) -> Result[list[RawDoc], str]:
@@ -44,12 +44,12 @@ def run(input_path: str, output_path: str, *, config: RagConfig) -> Result[Obser
     deps = RagBoundaryDeps(core=get_deps(config), reader=reader)
     docs_res = deps.reader.read_docs(input_path)
     if isinstance(docs_res, Err):
-        return docs_res
+        return Err(docs_res.error)
     chunks, obs = full_rag_api(docs_res.value, config, deps.core)
     write_res = write_chunks_jsonl(output_path, chunks)
     if isinstance(write_res, Err):
-        return write_res
+        return Err(write_res.error)
     return Ok(obs)
 
 
-__all__ = ["Reader", "FSReader", "write_chunks_jsonl", "run"]
+__all__ = ["DocsReader", "FSReader", "write_chunks_jsonl", "run"]

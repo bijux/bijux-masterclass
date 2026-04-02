@@ -1,4 +1,4 @@
-"""Module 05 functors: curried mapping over Option, Result, and sequences (end-of-Module-05)."""
+"""Module 05 functors: curried mapping over Option, Result, and sequences (end-of-Module-06)."""
 
 from __future__ import annotations
 
@@ -50,7 +50,7 @@ def result_try_map(
 ) -> Callable[[Result[T, ErrInfo]], Result[U, ErrInfo]]:
     def _inner(res: Result[T, ErrInfo]) -> Result[U, ErrInfo]:
         if isinstance(res, Err):
-            return res
+            return Err(res.error)
         try:
             return Ok(f(res.value))
         except Exception as exc:

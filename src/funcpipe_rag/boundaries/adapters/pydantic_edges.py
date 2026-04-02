@@ -1,4 +1,4 @@
-"""Module 05 Pydantic-at-the-edges models and codecs (end-of-Module-05)."""
+"""Module 05 Pydantic-at-the-edges models and codecs (end-of-Module-06; adapters)."""
 
 from __future__ import annotations
 

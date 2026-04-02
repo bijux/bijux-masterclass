@@ -1,4 +1,4 @@
-"""RAG-specific APIs for the end-of-Module-05 codebase.
+"""RAG-specific APIs for the end-of-Module-06 codebase.
 
 `funcpipe_rag.fp` contains the module-05 type-driven toolkit. The RAG pipeline
 entrypoints live here instead.
@@ -10,7 +10,7 @@ from .config import (
     RagConfig,
     RagCoreDeps,
     RagBoundaryDeps,
-    Reader,
+    DocsReader,
     get_deps,
     make_rag_fn,
     make_gen_rag_fn,
@@ -50,7 +50,7 @@ __all__ = [
     "make_cleaner",
     "RagConfig",
     "RagCoreDeps",
-    "Reader",
+    "DocsReader",
     "RagBoundaryDeps",
     "get_deps",
     "make_rag_fn",

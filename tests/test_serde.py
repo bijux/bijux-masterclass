@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from funcpipe_rag.fp.core import Err, ErrInfo, NoneVal, Ok, Some
-from funcpipe_rag.boundaries.serde import (
+from funcpipe_rag.boundaries.adapters.serde import (
     Envelope,
     MIGRATORS,
     dec_option,

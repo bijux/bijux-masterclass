@@ -1,4 +1,4 @@
-"""Module 05 monoids and semigroups: associative aggregation with identities (end-of-Module-05)."""
+"""Module 05 monoids and semigroups: associative aggregation with identities (end-of-Module-06)."""
 
 from __future__ import annotations
 

@@ -4,7 +4,7 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from funcpipe_rag.result import Err, Nothing, Ok, Some
+from funcpipe_rag.result import Err, NoneVal, Ok, Some, NONE
 
 
 @given(x=st.integers())
@@ -69,4 +69,5 @@ def test_some_none_forbidden() -> None:
 
 
 def test_to_option_on_err() -> None:
-    assert Err("x").to_option() == Nothing()
+    assert Err("x").to_option() == NONE
+    assert isinstance(Err("x").to_option(), NoneVal)

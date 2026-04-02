@@ -1,4 +1,4 @@
-"""Application-level boundary config (end-of-Module-05)."""
+"""Application-level boundary config (end-of-Module-06)."""
 
 from __future__ import annotations
 
@@ -15,4 +15,3 @@ class AppConfig:
 
 
 __all__ = ["AppConfig"]
-

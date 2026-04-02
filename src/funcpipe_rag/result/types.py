@@ -1,34 +1,61 @@
-"""Result/Option containers for pure, streaming-friendly error handling (end-of-Module-05)."""
+"""Result/Option containers for pure, streaming-friendly error handling (end-of-Module-06).
+
+Module 06 extends the ADTs with:
+- Canonical instance methods (`map`, `map_err`, `and_then`, `ap`) for lawful composition
+- Boundary-friendly helpers (`or_else`, `tap`)
+- A unified Option encoding (`Some[T] | NoneVal`) with a stable singleton `NONE`
+"""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Callable, Generic, Mapping, NamedTuple, TypeAlias, TypeGuard, TypeVar
+from typing import Any, Callable, Generic, Mapping, NamedTuple, TypeAlias, TypeGuard, TypeVar, cast
 
 T = TypeVar("T")
 U = TypeVar("U")
+V = TypeVar("V")
 E = TypeVar("E")
 F = TypeVar("F")
 
 
+def curry2(f: Callable[[T, U], V]) -> Callable[[T], Callable[[U], V]]:
+    return lambda x: lambda y: f(x, y)
+
+
 @dataclass(frozen=True)
-class Ok(Generic[T]):
+class Ok(Generic[T, E]):
     value: T
 
-    def map(self, f: Callable[[T], U]) -> "Ok[U]":
-        return Ok(f(self.value))
-
-    def map_err(self, f: Callable[[E], F]) -> "Ok[T]":
-        _ = f
-        return self
-
-    def bind(self, f: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
+    def and_then(self, f: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
         return f(self.value)
 
-    def recover(self, f: Callable[[E], T]) -> "Ok[T]":
+    def bind(self, f: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
+        return self.and_then(f)
+
+    def map(self, f: Callable[[T], U]) -> "Result[U, E]":
+        return Ok(f(self.value))
+
+    def map_err(self, f: Callable[[E], F]) -> "Result[T, F]":
         _ = f
+        return cast("Result[T, F]", self)
+
+    def ap(self, arg: "Result[U, E]") -> "Result[V, E]":
+        if isinstance(arg, Err):
+            return arg  # type: ignore[return-value]
+        func = cast(Callable[[U], V], self.value)
+        return Ok(func(arg.value))
+
+    def or_else(self, _: Callable[[E], T]) -> T:
+        return self.value
+
+    def tap(self, side: Callable[[T], None]) -> "Ok[T, E]":
+        side(self.value)
         return self
+
+    def recover(self, f: Callable[[E], T]) -> "Result[T, E]":
+        _ = f
+        return cast("Result[T, E]", self)
 
     def unwrap_or(self, default: T) -> T:
         _ = default
@@ -39,38 +66,49 @@ class Ok(Generic[T]):
 
 
 @dataclass(frozen=True)
-class Err(Generic[E]):
+class Err(Generic[T, E]):
     error: E
 
-    def map(self, f: Callable[[T], U]) -> "Err[E]":
-        _ = f
-        return self
+    def and_then(self, _: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
+        return cast("Result[U, E]", self)
 
-    def map_err(self, f: Callable[[E], F]) -> "Err[F]":
+    def bind(self, f: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
+        _ = f
+        return cast("Result[U, E]", self)
+
+    def map(self, _: Callable[[T], U]) -> "Result[U, E]":
+        return cast("Result[U, E]", self)
+
+    def map_err(self, f: Callable[[E], F]) -> "Result[T, F]":
         return Err(f(self.error))
 
-    def bind(self, f: Callable[[T], "Result[U, E]"]) -> "Err[E]":
-        _ = f
+    def ap(self, _: "Result[Any, E]") -> "Result[V, E]":
+        return cast("Result[V, E]", self)
+
+    def or_else(self, op: Callable[[E], T]) -> T:
+        return op(self.error)
+
+    def tap(self, _: Callable[[T], None]) -> "Err[T, E]":
         return self
 
-    def recover(self, f: Callable[[E], T]) -> Ok[T]:
+    def recover(self, f: Callable[[E], T]) -> "Result[T, E]":
         return Ok(f(self.error))
 
     def unwrap_or(self, default: T) -> T:
         return default
 
     def to_option(self) -> "Option[T]":
-        return Nothing()
+        return NONE
 
 
-Result: TypeAlias = Ok[T] | Err[E]
+Result: TypeAlias = Ok[T, E] | Err[T, E]
 
 
-def is_ok(r: Result[T, E]) -> TypeGuard[Ok[T]]:
+def is_ok(r: Result[T, E]) -> TypeGuard[Ok[T, E]]:
     return isinstance(r, Ok)
 
 
-def is_err(r: Result[T, E]) -> TypeGuard[Err[E]]:
+def is_err(r: Result[T, E]) -> TypeGuard[Err[T, E]]:
     return isinstance(r, Err)
 
 
@@ -94,40 +132,72 @@ def unwrap_or(r: Result[T, E], default: T) -> T:
     return r.unwrap_or(default)
 
 
+def liftA2(f: Callable[[T, U], V], a: Result[T, E], b: Result[U, E]) -> Result[V, E]:
+    """Lift a pure 2-arg function into Results (fail-fast applicative)."""
+
+    return a.map(curry2(f)).ap(b)
+
+
 @dataclass(frozen=True)
 class Some(Generic[T]):
     value: T
 
     def __post_init__(self) -> None:
         if self.value is None:
-            raise ValueError("Some(None) forbidden – use Nothing()")
+            raise ValueError("Some(None) forbidden – use NoneVal() / NONE")
 
     def map(self, f: Callable[[T], U]) -> "Option[U]":
         return Some(f(self.value))
 
-    def bind(self, f: Callable[[T], "Option[U]"]) -> "Option[U]":
+    def and_then(self, f: Callable[[T], "Option[U]"]) -> "Option[U]":
         return f(self.value)
+
+    def bind(self, f: Callable[[T], "Option[U]"]) -> "Option[U]":
+        return self.and_then(f)
+
+    def unwrap_or(self, default: T) -> T:
+        _ = default
+        return self.value
 
     def unwrap_or_else(self, default: Callable[[], T]) -> T:
         _ = default
         return self.value
 
+    def or_else(self, _: Callable[[], T]) -> T:
+        return self.value
+
+    def tap(self, side: Callable[[T], None]) -> "Some[T]":
+        side(self.value)
+        return self
+
 
 @dataclass(frozen=True)
-class Nothing(Generic[T]):
-    def map(self, f: Callable[[T], U]) -> "Option[U]":
-        _ = f
-        return Nothing()
+class NoneVal:
+    def map(self, _: Callable[[Any], U]) -> "Option[U]":
+        return self
 
-    def bind(self, f: Callable[[T], "Option[U]"]) -> "Option[U]":
+    def and_then(self, _: Callable[[Any], "Option[U]"]) -> "Option[U]":
+        return self
+
+    def bind(self, f: Callable[[Any], "Option[U]"]) -> "Option[U]":
         _ = f
-        return Nothing()
+        return self
+
+    def unwrap_or(self, default: T) -> T:
+        return default
 
     def unwrap_or_else(self, default: Callable[[], T]) -> T:
         return default()
 
+    def or_else(self, op: Callable[[], T]) -> T:
+        return op()
 
-Option: TypeAlias = Some[T] | Nothing[T]
+    def tap(self, _: Callable[[Any], None]) -> "NoneVal":
+        return self
+
+
+NONE: NoneVal = NoneVal()
+Option: TypeAlias = Some[T] | NoneVal
 
 
 def to_option(r: Result[T, E]) -> Option[T]:
@@ -138,8 +208,8 @@ def is_some(o: Option[T]) -> TypeGuard[Some[T]]:
     return isinstance(o, Some)
 
 
-def is_nothing(o: Option[T]) -> TypeGuard[Nothing[T]]:
-    return isinstance(o, Nothing)
+def is_none(o: Option[T]) -> TypeGuard[NoneVal]:
+    return isinstance(o, NoneVal)
 
 
 def map_option(f: Callable[[T], U], o: Option[T]) -> Option[U]:
@@ -152,6 +222,14 @@ def bind_option(f: Callable[[T], Option[U]], o: Option[T]) -> Option[U]:
 
 def unwrap_or_else(o: Option[T], default: Callable[[], T]) -> T:
     return o.unwrap_or_else(default)
+
+
+def option_from_nullable(x: T | None) -> Option[T]:
+    return NONE if x is None else Some(x)
+
+
+def option_to_nullable(o: Option[T]) -> T | None:
+    return o.value if isinstance(o, Some) else None
 
 
 class ErrInfo(NamedTuple):
@@ -205,6 +283,8 @@ __all__ = [
     "Result",
     "Ok",
     "Err",
+    "curry2",
+    "liftA2",
     "ErrInfo",
     "make_errinfo",
     "is_ok",
@@ -217,12 +297,15 @@ __all__ = [
     "to_option",
     "Option",
     "Some",
-    "Nothing",
+    "NoneVal",
+    "NONE",
     "is_some",
-    "is_nothing",
+    "is_none",
     "map_option",
     "bind_option",
     "unwrap_or_else",
+    "option_from_nullable",
+    "option_to_nullable",
     "result_map",
     "result_and_then",
 ]

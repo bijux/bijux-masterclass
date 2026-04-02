@@ -1,4 +1,4 @@
-"""Core domain value types for FuncPipe RAG (end-of-Module-05).
+"""Core domain value types for FuncPipe RAG (end-of-Module-06).
 
 All types are frozen dataclasses → instances are values:
 - They support structural equality.
@@ -132,4 +132,3 @@ __all__ = [
     "TextNode",
     "TreeDoc",
 ]
-

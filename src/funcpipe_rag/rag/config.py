@@ -1,4 +1,4 @@
-"""Configuration and dependency wiring for the RAG surface (end-of-Module-05).
+"""Configuration and dependency wiring for the RAG surface (end-of-Module-06).
 
 The config-as-data and dependency-wiring patterns are introduced in Module 02
 and extended in Module 03 with streaming entry points.
@@ -18,7 +18,7 @@ from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, 
 from funcpipe_rag.result import Err, Ok, Result
 
 
-class Reader(Protocol):
+class DocsReader(Protocol):
     def read_docs(self, path: str) -> Result[list[RawDoc], str]: ...
 
 
@@ -40,7 +40,7 @@ class RagCoreDeps:
 @dataclass(frozen=True)
 class RagBoundaryDeps:
     core: RagCoreDeps
-    reader: Reader
+    reader: DocsReader
 
 
 def get_deps(config: RagConfig, *, taps: RagTaps | None = None) -> RagCoreDeps:
@@ -109,7 +109,7 @@ def boundary_rag_config(raw: Mapping[str, object]) -> Result[RagConfig, str]:
 
 
 __all__ = [
-    "Reader",
+    "DocsReader",
     "RagConfig",
     "RagCoreDeps",
     "RagBoundaryDeps",

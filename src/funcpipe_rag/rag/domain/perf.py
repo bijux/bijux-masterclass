@@ -1,4 +1,4 @@
-"""Module 05 hybrid performance path: optimized batches with equivalence checks (end-of-Module-05)."""
+"""Module 05 hybrid performance path: optimized batches with equivalence checks (end-of-Module-06; domain-modeling)."""
 
 from __future__ import annotations
 
@@ -10,12 +10,13 @@ from uuid import UUID
 import numpy as np
 from numpy.typing import NDArray
 
-from .domain import Chunk, assemble
+from funcpipe_rag.fp.error import ErrInfo
+from funcpipe_rag.fp.validation import Validation, VSuccess, v_success
+
+from .chunk import Chunk, assemble
 from .embedding import Embedding
 from .metadata import ChunkMetadata
 from .text import ChunkText
-from .validation import Validation, VSuccess, v_success
-from .error import ErrInfo
 
 __all__ = [
     "OBatch",

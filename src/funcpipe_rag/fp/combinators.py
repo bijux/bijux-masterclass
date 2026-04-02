@@ -1,4 +1,4 @@
-"""Small, focused functional helpers for the end-of-Module-05 codebase.
+"""Small, focused functional helpers for the end-of-Module-06 codebase.
 
 This module intentionally stays minimal while supporting:
 - Left-to-right function composition

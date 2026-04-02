@@ -1,13 +1,23 @@
-"""Module 05 core ADTs (products + tagged sums) and stable JSON helpers (end-of-Module-05)."""
+"""Module 05 core ADTs (products + tagged sums) and stable JSON helpers (end-of-Module-06)."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Generic, Iterable, Literal, Mapping, Sequence, TypeAlias, TypeVar
 
 from .error import ErrorCode
-from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result, make_errinfo as _make_errinfo
+from funcpipe_rag.result.types import (
+    Err,
+    ErrInfo,
+    NoneVal,
+    Ok,
+    Option,
+    Result,
+    Some,
+    NONE,
+    make_errinfo as _make_errinfo,
+)
 
 T = TypeVar("T")
 U = TypeVar("U")
@@ -121,19 +131,9 @@ def chunk_state_from_dict(d: Mapping[str, JSON]) -> ChunkState:
     raise ValueError(f"unknown kind {kind!r}")
 
 
-@dataclass(frozen=True, slots=True)
-class Some(Generic[T]):
-    value: T
-    kind: Literal["some"] = field(default="some", init=False)
-
-
-@dataclass(frozen=True, slots=True)
-class NoneVal:
-    kind: Literal["none"] = field(default="none", init=False)
-
-
-NONE: NoneVal = NoneVal()
-Option: TypeAlias = Some[T] | NoneVal
+#
+# Option is re-exported from `funcpipe_rag.result.types` so the codebase uses a
+# single Option encoding everywhere.
 
 
 @dataclass(frozen=True, slots=True)

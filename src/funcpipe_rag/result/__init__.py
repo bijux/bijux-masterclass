@@ -1,4 +1,4 @@
-"""Module 04: Result/Option and Result-stream utilities (end-of-Module-05).
+"""Result/Option and Result-stream utilities (end-of-Module-06).
 
 This package groups:
 - `types`: Result/Option containers + ErrInfo
@@ -9,17 +9,20 @@ This package groups:
 from __future__ import annotations
 
 from .types import (
+    curry2,
     Err,
     ErrInfo,
-    Nothing,
+    NoneVal,
+    NONE,
     Ok,
     Option,
     Result,
     Some,
+    liftA2,
     bind_option,
     bind_result,
     is_err,
-    is_nothing,
+    is_none,
     is_ok,
     is_some,
     make_errinfo,
@@ -32,6 +35,8 @@ from .types import (
     to_option,
     unwrap_or,
     unwrap_or_else,
+    option_from_nullable,
+    option_to_nullable,
 )
 from .stream import (
     filter_err,
@@ -62,6 +67,8 @@ __all__ = [
     "Result",
     "Ok",
     "Err",
+    "curry2",
+    "liftA2",
     "ErrInfo",
     "make_errinfo",
     "is_ok",
@@ -74,12 +81,15 @@ __all__ = [
     "to_option",
     "Option",
     "Some",
-    "Nothing",
+    "NoneVal",
+    "NONE",
     "is_some",
-    "is_nothing",
+    "is_none",
     "map_option",
     "bind_option",
     "unwrap_or_else",
+    "option_from_nullable",
+    "option_to_nullable",
     "result_map",
     "result_and_then",
 

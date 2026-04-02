@@ -1,4 +1,4 @@
-"""Fan-out helpers for splitting streams (Module 03, end-of-Module-05)."""
+"""Fan-out helpers for splitting streams (Module 03, end-of-Module-06)."""
 
 from __future__ import annotations
 

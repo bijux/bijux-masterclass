@@ -1,12 +1,13 @@
-"""Functional programming utilities for the end-of-Module-05 codebase.
+"""Functional programming utilities for the end-of-Module-06 codebase.
 
 This package groups two related layers:
 - Module 02–03: small iterator/pipeline combinators and instrumentation helpers.
 - Module 05: type-driven utilities (ADTs, functors, applicatives, monoids, etc.).
+- Module 06: monadic programming (Reader/State/Writer), layering helpers, and configurable pipelines.
 
 Module 02–03 helpers are re-exported at the package root for convenience.
 Module 05 functionality is organized into submodules (e.g. `functor`,
-`validation`, `monoid`).
+`validation`, `monoid`). Module 06 effect helpers live in `funcpipe_rag.fp.effects`.
 """
 
 from .combinators import (
@@ -24,6 +25,31 @@ from .combinators import (
     producer_pipeline,
     tee,
 )
+from .effects import (
+    Reader,
+    State,
+    Writer,
+    ask,
+    asks,
+    censor,
+    get,
+    listen,
+    local,
+    modify,
+    put,
+    run_state,
+    run_writer,
+    tell,
+    tell_many,
+    toggle_logging,
+    toggle_metrics,
+    toggle_validation,
+    transpose_option_result,
+    transpose_result_option,
+    wr_and_then,
+    wr_map,
+    wr_pure,
+)
 
 __all__ = [
     "identity",
@@ -39,5 +65,28 @@ __all__ = [
     "StageInstrumentation",
     "instrument_stage",
     "FakeTime",
+    # Module 06: monads + layering + configurable pipelines
+    "Reader",
+    "ask",
+    "asks",
+    "local",
+    "State",
+    "get",
+    "put",
+    "modify",
+    "run_state",
+    "Writer",
+    "tell",
+    "tell_many",
+    "listen",
+    "censor",
+    "run_writer",
+    "wr_pure",
+    "wr_map",
+    "wr_and_then",
+    "transpose_result_option",
+    "transpose_option_result",
+    "toggle_validation",
+    "toggle_logging",
+    "toggle_metrics",
 ]
-

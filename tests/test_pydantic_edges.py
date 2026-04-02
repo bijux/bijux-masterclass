@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 from hypothesis import given, strategies as st
 
-from funcpipe_rag.boundaries.pydantic_edges import ChunkModel, deserialize_model, serialize_model
+from funcpipe_rag.boundaries.adapters.pydantic_edges import ChunkModel, deserialize_model, serialize_model
 
 nonfinite = st.sampled_from([float("nan"), float("inf"), float("-inf")])
 

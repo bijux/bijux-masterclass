@@ -1,4 +1,4 @@
-"""Core pipelines for the end-of-Module-05 codebase.
+"""Core pipelines for the end-of-Module-06 codebase.
 
 Module 02 established the pure, configurable API shapes.
 Module 03 extends the project with streaming helpers (boundedness, grouping,
@@ -39,7 +39,8 @@ from funcpipe_rag.streaming import multicast, throttle, trace_iter as _trace_ite
 from funcpipe_rag.result import (
     Err,
     ErrInfo,
-    Nothing,
+    NoneVal,
+    NONE,
     Ok,
     Option,
     Result,
@@ -49,7 +50,7 @@ from funcpipe_rag.result import (
     filter_err,
     filter_ok,
     is_err,
-    is_nothing,
+    is_none,
     is_ok,
     is_some,
     make_errinfo,
@@ -64,6 +65,8 @@ from funcpipe_rag.result import (
     to_option,
     unwrap_or,
     unwrap_or_else,
+    option_from_nullable,
+    option_to_nullable,
 )
 from funcpipe_rag.result import (
     ResultsBoth,
@@ -163,12 +166,15 @@ __all__ = [
     "to_option",
     "Option",
     "Some",
-    "Nothing",
+    "NoneVal",
+    "NONE",
     "is_some",
-    "is_nothing",
+    "is_none",
     "map_option",
     "bind_option",
     "unwrap_or_else",
+    "option_from_nullable",
+    "option_to_nullable",
     "map_result_iter",
     "filter_ok",
     "filter_err",

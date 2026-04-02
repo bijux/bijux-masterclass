@@ -1,4 +1,4 @@
-"""Pure, composable RAG pipeline stages (end-of-Module-05).
+"""Pure, composable RAG pipeline stages (end-of-Module-06).
 
 These stages are deterministic and side-effect free. Higher-level APIs wire
 them together with configuration-as-data, taps/probes, and boundary adapters.
@@ -136,4 +136,3 @@ __all__ = [
     "embed_chunk",
     "structural_dedup_chunks",
 ]
-

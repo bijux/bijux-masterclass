@@ -1,6 +1,6 @@
-"""funcpipe_rag – end-of-Module-05 codebase.
+"""funcpipe_rag – end-of-Module-06 codebase.
 
-This package is the consolidated project state at the end of Module 05:
+This package is the consolidated project state at the end of Module 06:
 - Immutable domain types
 - Pure pipeline stages + canonical structural de-duplication
 - Config-as-data + closure-based configurators
@@ -11,8 +11,10 @@ This package is the consolidated project state at the end of Module 05:
 - Result/Option for per-record failures + structured ErrInfo (Module 04)
 - Memoization, breakers, retries, resource safety, and error reports (Module 04)
 - Type-driven APIs: ADTs + functors/applicatives/monoids + serde + Pydantic edges (Module 05)
+- Module 06: monadic helpers (Reader/State/Writer), container layering helpers, configurable pipelines,
+  and boundary exception bridging.
 
-Note: Module-05 type-driven utilities live in `funcpipe_rag.fp` (and boundary
+Note: Module-05+ type-driven utilities live in `funcpipe_rag.fp` (and boundary
 adapters in `funcpipe_rag.boundaries`). The RAG pipeline APIs live in
 `funcpipe_rag.rag`.
 """
@@ -46,6 +48,9 @@ from .core.structural_dedup import DedupIterator, structural_dedup_lazy
 from .fp import (
     FakeTime,
     StageInstrumentation,
+    Reader,
+    State,
+    Writer,
     compose,
     flow,
     ffilter,
@@ -57,9 +62,29 @@ from .fp import (
     probe,
     producer_pipeline,
     tee,
+    ask,
+    asks,
+    local,
+    get,
+    put,
+    modify,
+    run_state,
+    tell,
+    tell_many,
+    listen,
+    censor,
+    run_writer,
+    wr_pure,
+    wr_map,
+    wr_and_then,
+    transpose_result_option,
+    transpose_option_result,
+    toggle_validation,
+    toggle_logging,
+    toggle_metrics,
 )
 
-# Modules 02–04 public API layer (end-of-Module-05)
+# Modules 02–06 public API layer (end-of-Module-06)
 from .result import (
     Result,
     Ok,
@@ -76,9 +101,10 @@ from .result import (
     to_option,
     Option,
     Some,
-    Nothing,
+    NoneVal,
+    NONE,
     is_some,
-    is_nothing,
+    is_none,
     map_option,
     bind_option,
     unwrap_or_else,
@@ -88,6 +114,8 @@ from .result import (
     partition_results,
     result_map,
     result_and_then,
+    option_from_nullable,
+    option_to_nullable,
 )
 from .rag.clean_cfg import CleanConfig, DEFAULT_CLEAN_CONFIG, make_cleaner
 from .rag.types import DocRule, RagTaps, DebugConfig, Observations
@@ -121,7 +149,7 @@ from .rag.config import (
     RagConfig,
     RagCoreDeps,
     RagBoundaryDeps,
-    Reader,
+    DocsReader,
     get_deps,
     make_rag_fn,
     make_gen_rag_fn,
@@ -190,6 +218,14 @@ from .tree import (
 )
 from .boundaries.shells.rag_api_shell import FSReader, write_chunks_jsonl
 from .boundaries.app_config import AppConfig
+from .boundaries.adapters.exception_bridge import (
+    UnexpectedFailure,
+    result_map_try,
+    try_result,
+    unexpected_fail,
+    v_map_try,
+    v_try,
+)
 from .streaming import (
     Source,
     Transform,
@@ -272,12 +308,15 @@ __all__ = [
     "to_option",
     "Option",
     "Some",
-    "Nothing",
+    "NoneVal",
+    "NONE",
     "is_some",
-    "is_nothing",
+    "is_none",
     "map_option",
     "bind_option",
     "unwrap_or_else",
+    "option_from_nullable",
+    "option_to_nullable",
     "map_result_iter",
     "filter_ok",
     "filter_err",
@@ -396,7 +435,7 @@ __all__ = [
     "RagTraceV3",
     "RagConfig",
     "RagCoreDeps",
-    "Reader",
+    "DocsReader",
     "RagBoundaryDeps",
     "get_deps",
     "make_rag_fn",
@@ -424,6 +463,37 @@ __all__ = [
     "FSReader",
     "write_chunks_jsonl",
     "AppConfig",
+
+    # Module 06: monads, layering, configurable pipelines, boundary exception bridge
+    "Reader",
+    "State",
+    "Writer",
+    "ask",
+    "asks",
+    "local",
+    "get",
+    "put",
+    "modify",
+    "run_state",
+    "tell",
+    "tell_many",
+    "listen",
+    "censor",
+    "run_writer",
+    "wr_pure",
+    "wr_map",
+    "wr_and_then",
+    "transpose_result_option",
+    "transpose_option_result",
+    "toggle_validation",
+    "toggle_logging",
+    "toggle_metrics",
+    "try_result",
+    "result_map_try",
+    "v_try",
+    "v_map_try",
+    "UnexpectedFailure",
+    "unexpected_fail",
 
     # Module 03: generic streaming helpers
     "Source",
