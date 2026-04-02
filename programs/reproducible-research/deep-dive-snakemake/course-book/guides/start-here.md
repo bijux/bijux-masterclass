@@ -58,8 +58,8 @@ workflow behaves under pressure.
 Choose this if Snakemake still feels new.
 
 1. Read [`module-00-orientation/index.md`](../module-00-orientation/index.md)
-2. Read [`module-01.md`](../module-01.md)
-3. Read [`module-02.md`](../module-02.md)
+2. Read [`module-01-file-contracts-and-the-workflow-dag/index.md`](../module-01-file-contracts-and-the-workflow-dag/index.md)
+3. Read [`module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md`](../module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md)
 4. Enter the capstone only after file contracts and dynamic DAG basics feel clear
 
 ### Route 2: Repair An Existing Workflow
@@ -67,7 +67,7 @@ Choose this if Snakemake still feels new.
 Choose this if you already maintain a Snakemake repository.
 
 1. Skim [`module-00-orientation/index.md`](../module-00-orientation/index.md)
-2. Read [`module-03.md`](../module-03.md)
+2. Read [`module-03-production-operations-and-policy-boundaries/index.md`](../module-03-production-operations-and-policy-boundaries/index.md)
 3. Read [`module-04.md`](../module-04.md)
 4. Read [`module-08.md`](../module-08.md)
 5. Use [`capstone-map.md`](capstone-map.md) to inspect the reference workflow selectively

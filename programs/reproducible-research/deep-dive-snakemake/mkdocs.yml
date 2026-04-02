@@ -53,11 +53,11 @@ nav:
       - Capstone Extension Guide: guides/capstone-extension-guide.md
       - Capstone Overview: guides/readme-capstone.md
   - "Module 01: File Contracts":
-      - Overview: module-01.md
+      - Overview: module-01-file-contracts-and-the-workflow-dag/index.md
   - "Module 02: Dynamic DAGs":
-      - Overview: module-02.md
+      - Overview: module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md
   - "Module 03: Production Operation":
-      - Overview: module-03.md
+      - Overview: module-03-production-operations-and-policy-boundaries/index.md
   - "Module 04: Scaling Boundaries":
       - Overview: module-04.md
   - "Module 05: Rule Boundaries":
