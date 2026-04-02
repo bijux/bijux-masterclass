@@ -31,15 +31,14 @@ flowchart LR
 
 ## Purpose of this Module
 
-If reproducibility were confined to technical dimensions, the constructs established in Modules 02–06 would suffice.
+This module makes the social side of reproducibility explicit. By now the learner knows
+how the repository should behave technically. The next question is whether more than one
+person can preserve those rules under review pressure, CI shortcuts, and ordinary team
+turnover.
 
-They do not.
-
-Empirical failures in operational contexts predominantly arise from human factors: overlooked data uploads, experiments conducted on the primary branch, forceful historical overwrites, presumptions of continuous integration (CI) optionality, or personnel departures.
-
-This module confronts an inherent truth: **Reproducibility embodies a social agreement, upheld through technical safeguards.** DVC furnishes the apparatuses, CI imparts compulsion, yet human adherence dictates efficacy.
-
-**Prerequisites**: Proficiency in Modules 01–06 is imperative. Acquaintance with Git workflows, CI platforms (e.g., GitHub Actions, GitLab CI), and DVC remotes is advisable; reference pertinent documentation as necessary.
+Use this module to see collaboration, CI, and remote discipline as part of the proof
+surface rather than as optional process overhead. If a second maintainer cannot verify
+the same state story without private context, the repository is still too fragile.
 
 ## At a Glance
 

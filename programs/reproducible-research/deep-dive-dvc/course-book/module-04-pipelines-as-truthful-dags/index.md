@@ -31,11 +31,14 @@ flowchart LR
 
 ## Purpose of this Module
 
-Having solidified the principles of immutable data identity (Module 02) and environments as explicit inputs (Module 03), machine learning (ML) pipelines frequently exhibit erratic behavior: stages may rerun despite inconsequential alterations or fail to rerun amid critical modifications, prompting reliance on commands like `dvc repro` without assured outcomes.
+This module turns state literacy into execution literacy. Once identity and environment
+boundaries are clear, the next question is whether the pipeline tells the truth about
+what actually influences each stage.
 
-This module delineates the root causes of such inconsistencies and prescribes methodologies for their resolution. Its pivotal assertion is: **A pipeline attains reproducibility solely when its execution graph is truthful**, wherein truthfulness entails comprehensive declaration of influential dependencies, meticulous recording of outputs, and eschewal of unstated assumptions. Adherence to this paradigm renders pipeline operations predictable, verifiable, and interpretable.
-
-**Prerequisites**: Proficiency in Modules 01–03 is indispensable. Familiarity with directed acyclic graphs (DAGs), basic DVC commands (e.g., `dvc add`), and YAML syntax is advantageous; consult DVC documentation if required.
+Use this module to learn what a truthful DVC graph looks like: declared dependencies,
+declared outputs, declared parameters, and rerun behavior that follows those declarations
+instead of private assumptions. If that graph is not truthful, later metrics and
+promotion rules will be defending the wrong state story.
 
 ## At a Glance
 

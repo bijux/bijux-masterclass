@@ -31,15 +31,15 @@ flowchart LR
 
 ## Purpose of this Module
 
-With immutable data identity (Module 02), explicit execution environments (Module 03), and truthful pipeline execution (Module 04) now in place, many teams conclude they have achieved reproducibility.
+This module addresses the failure that survives even after execution becomes repeatable:
+two runs can be mechanically comparable while still meaning different things.
 
-They have not.
+Use this module to learn how parameters and metrics become semantic contracts. The
+question is no longer only "Did the pipeline run?" but "Are these numbers still
+describing the same reality, under the same controls, in a way another reviewer can
+trust?"
 
-Reproducibility transcends mechanical execution—it demands **semantic integrity** in interpretation.
-
-This module confronts the most insidious failure in ML systems: **outcomes that are mechanically reproducible yet semantically void**. DVC assures consistent pipeline execution but cannot ensure equivalence in *meaning*. That onus rests with you.
-
-**Prerequisites**: Mastery of Modules 01–04 is required. Familiarity with metric logging (e.g., JSON/CSV outputs) and parameter management in YAML is beneficial; review DVC's `params.yaml` and `metrics` features if needed.
+If that distinction stays fuzzy, experiment review and promotion will become theater.
 
 ---
 

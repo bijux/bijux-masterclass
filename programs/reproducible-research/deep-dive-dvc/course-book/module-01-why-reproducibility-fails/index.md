@@ -31,19 +31,18 @@ flowchart LR
 
 ## Purpose of this Module
 
-Professionals often turn to DVC not out of an abstract interest in reproducibility, but because a practical issue has arisen: a result cannot be regenerated, a model's metrics have shifted inexplicably, a colleague obtains different outcomes from identical code, or a report proves indefensible months later.
+This module starts from the failure surface, not from the tool. Before DVC can make
+sense, the learner has to see why ordinary Git-plus-script workflows still leave teams
+unable to recover, compare, or defend results later.
 
-This module serves three essential objectives:
+Use this module to answer three questions clearly:
 
-1. **Highlight the challenges explicitly**: It demonstrates why contemporary machine learning (ML) workflows inherently compromise reproducibility.
+1. What usually breaks first when a workflow claims reproducibility but cannot defend it?
+2. Why are Git, notebooks, and ad hoc scripts helpful but insufficient?
+3. What problem does DVC solve, and what problem remains outside its authority?
 
-2. **Refine conceptual frameworks**: It clarifies why familiar tools such as Git, Jupyter notebooks, and standalone scripts appear adequate but ultimately fall short.
-
-3. **Delineate the scope precisely**: Prior to exploring DVC, it defines the achievable forms of reproducibility, their limitations, and the role of supporting tools.
-
-Upon completion, you should possess a definitive response to: *What problem does DVC address, and what issues does it deliberately exclude?* If this remains ambiguous, subsequent modules may seem disconnected.
-
-**Prerequisites**: Familiarity with basic Git operations and ML workflows is assumed. If needed, review Git fundamentals before proceeding.
+If those answers stay vague, the rest of the course will feel like features instead of a
+coherent state model.
 
 ---
 

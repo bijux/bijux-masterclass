@@ -27,28 +27,19 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-The last step in learning DVC is not one more command. It is judgment. Mature state
-management means reviewing an existing repository without wishful thinking, deciding which
-state boundaries must remain stable, migrating them without damaging trust, and knowing
-where DVC should remain the authority versus where another system should own a concern.
+## Purpose of this Module
 
-This module is about that kind of judgment: long-lived governance, safe migration,
-anti-pattern recognition, and the practical boundaries of DVC as part of a larger
-reproducibility system.
+The last step in learning DVC is judgment. This module is about reviewing a repository
+without wishful thinking, migrating state boundaries without breaking trust, and knowing
+where DVC should remain authoritative versus where another system should take over.
 
-### Before You Begin
+Use this module to answer the stewardship questions the earlier modules prepare for:
 
-This module works best after the rest of the program. It assumes the learner already
-understands data identity, environments, truthful pipelines, metrics, experiments,
-collaboration, recovery, and promotion.
+* Which state contracts are broken or underspecified today?
+* How do you change boundaries without losing recoverability or auditability?
+* Which problems should stay inside DVC, and which belong to a different tool or layer?
 
-Use this module if you need to learn how to:
-
-* review a DVC repository in contract language instead of only style language
-* plan a migration that preserves trust while changing state boundaries
-* decide when DVC should keep owning a concern and when another system should take over
-
-### At a Glance
+## At a Glance
 
 | Focus | Learner question | Capstone timing |
 | --- | --- | --- |

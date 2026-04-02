@@ -31,15 +31,16 @@ flowchart LR
 
 ## Purpose of this Module
 
-Building upon Module 01's examination of reproducibility failures, this module articulates the initial foundational requirement for remediation:
+This module makes the first non-negotiable rule explicit: paths are not identity. A
+reproducible system needs a way to say what a datum is, not only where it happened to
+live when someone last touched it.
 
-> **Data must possess a stable, immutable identity independent of filenames, paths, machines, or human intent.**
+Use this module to shift from location-based thinking to identity-based thinking. By the
+end, you should be able to explain why content addressing, caches, remotes, and recovery
+boundaries are all part of the same trust story.
 
-Absent this, subsequent assurances erode: pipelines execute erratically, experiments yield incomparable outcomes, teams dispute data versions, and historical verification falters.
-
-This module comprehensively addresses: *How does DVC delineate "the same data," and why does this delineation uniquely support scalability?* It elucidates not merely DVC's mechanisms but the inherent deficiencies of alternative approaches.
-
-**Prerequisites**: Completion of Module 01 is essential. Basic familiarity with Git commands and cryptographic hashing concepts is recommended; if unfamiliar, consult relevant resources prior to proceeding.
+If that foundation is weak, later lessons about pipelines and experiments will rest on
+the wrong assumption that filenames preserve truth.
 
 ## Why this module matters in the course
 

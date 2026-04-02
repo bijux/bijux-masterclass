@@ -27,27 +27,19 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Recoverable state is not automatically trusted state. A DVC repository becomes far more
-useful when a team can answer which artifacts are experimental, which are baseline, which
-are promoted for downstream use, and which pieces of evidence must travel with a release
-so another person can review or restore it later.
+## Purpose of this Module
 
-This module is about the point where state management becomes product management:
-promotion rules, release contracts, registry-style boundaries, audit evidence, and the
-difference between "we have the files" and "we can defend this exact state."
+Recoverable state is not automatically trusted state. This module is where the learner
+separates exploratory, baseline, and promoted state and learns why downstream trust
+requires a deliberately smaller contract than the internal repository story.
 
-### Before You Begin
+Use this module to answer three questions clearly:
 
-This module works best after Modules 01-08, especially the parts on truthful pipelines,
-metrics, experiments, collaboration, and recovery.
+* What exactly is being promoted for downstream use?
+* Which params, metrics, manifests, and files must travel with that promotion?
+* What evidence would another reviewer need to defend the released state later?
 
-Use this module if you need to learn how to:
-
-* distinguish exploratory state from promoted state
-* define a stable release or publish contract around DVC-managed artifacts
-* decide which metadata, metrics, and manifests are necessary for auditability
-
-### At a Glance
+## At a Glance
 
 | Focus | Learner question | Capstone timing |
 | --- | --- | --- |

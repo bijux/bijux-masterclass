@@ -31,13 +31,13 @@ flowchart LR
 
 ## Purpose of this Module
 
-Concluding at Module 07 equips one to construct a system viable in the immediate term.
+This module treats time as part of the system design. A repository can be disciplined
+today and still become untrustworthy through retention mistakes, remote migration, cache
+loss, maintainer turnover, or slow policy drift.
 
-Module 08 addresses the exigencies of sustained operation: functionality must persist through subsequent quarters, iterative releases, personnel transitions, storage relocations, and unforeseen disruptions.
-
-This module elucidates the ultimate verity: **Reproducibility transcends initial configuration; it constitutes an ongoing maintenance endeavor.** Numerous ostensibly successful DVC implementations falter subtly here—not from conceptual flaws, but from neglecting time as an adversarial force.
-
-**Prerequisites**: Comprehensive assimilation of Modules 01–07 is mandatory. Familiarity with DVC commands (e.g., `dvc gc`, `dvc push`), CI/CD pipelines, and storage management (e.g., S3/GCS) is presumed; review operational DVC guides if required.
+Use this module to learn what long-lived trust requires: durability boundaries, recovery
+rehearsal, retention choices, and cleanup rules that preserve the state you still need to
+defend. If those choices are implicit, the repository is only temporarily reproducible.
 
 ## At a Glance
 

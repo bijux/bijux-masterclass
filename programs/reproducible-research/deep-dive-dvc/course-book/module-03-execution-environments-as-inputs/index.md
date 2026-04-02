@@ -31,11 +31,14 @@ flowchart LR
 
 ## Purpose of this Module
 
-Having established immutable data identity and recoverable historical versions in prior modules, along with verifiable byte usage, discrepancies in results may still arise. This module elucidates the underlying reasons and, crucially, clarifies that such issues do not stem from deficiencies in DVC itself.
+By this point the learner knows that stable data identity matters and that bytes can be
+recovered. This module deals with the next surprise: even when code and data look stable,
+results can still drift because the execution environment is part of the input surface.
 
-The central assertion, though potentially disconcerting, is inescapable: **Code combined with data does not fully encapsulate an experiment; the execution environment constitutes an additional input.** Until this element is explicitly addressed, reproducibility remains tentative and potentially deceptive.
-
-**Prerequisites**: Completion of Modules 01 and 02 is required. Proficiency in basic ML scripting and familiarity with containerization concepts (e.g., Docker) will enhance comprehension; review these if necessary.
+The teaching goal is simple: stop treating the runtime boundary as background luck. When
+this module lands, the learner should be able to say which parts of the environment must
+be declared, which parts DVC can record indirectly, and which parts still need outside
+governance.
 
 ---
 

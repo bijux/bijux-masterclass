@@ -31,17 +31,13 @@ flowchart LR
 
 ## Purpose of this Module
 
-Upon concluding Module 05, a robust framework emerges: immutable data identity, explicit environmental inputs, truthful directed acyclic graphs (DAGs) for pipelines, and metrics with enduring significance.
+This module is where the course stops treating reproducibility as only preservation and
+starts treating it as controlled change. A trustworthy baseline is valuable only if a
+team can explore without damaging the history that made the baseline trustworthy.
 
-The system is now fundamentally sound.
-
-Yet, the subsequent challenge introduces inherent risks: **the imperative to introduce modifications**. This encompasses trials of novel parameters, evaluations of additional features, refinements to preprocessing, and investigations of hypotheses.
-
-Exploration is indispensable for advancement; however, unmanaged exploration undermines integrity.
-
-This module resolves a singular inquiry: **How can exploration proceed unencumbered while safeguarding reproducibility, historical fidelity, and institutional trust?**
-
-**Prerequisites**: Thorough comprehension of Modules 01–05 is essential. Proficiency in DVC commands such as `dvc exp run`, `dvc exp diff`, and Git branching is recommended; consult DVC's experimentation documentation if clarification is required.
+Use this module to answer one practical question: how do you let experiments vary the
+system while keeping lineage, comparability, and reversal intact? If the answer is still
+"we tried a few things locally," the repository is not ready for promotion or review.
 
 ## At a Glance
 
