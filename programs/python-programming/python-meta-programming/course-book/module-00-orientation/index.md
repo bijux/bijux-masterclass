@@ -1,4 +1,4 @@
-# Module 00: Orientation
+# Module 00: Orientation and Reading Discipline
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 00"]
-  page["Module 00: Orientation"]
+  page["Module 00: Orientation and Reading Discipline"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

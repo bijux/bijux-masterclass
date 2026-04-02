@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 6: Class Decorators, `@property`, and the Typing Bridge
+# Module 06: Class Customization Before Metaclasses
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 06"]
-  page["Module 6: Class Decorators, `@property`, and the Typing Bridge"]
+  page["Module 06: Class Customization Before Metaclasses"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

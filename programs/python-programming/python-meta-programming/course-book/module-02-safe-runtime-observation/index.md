@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 2: Basic Introspection — Looking Without Breaking
+# Module 02: Safe Runtime Observation
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 02"]
-  page["Module 2: Basic Introspection — Looking Without Breaking"]
+  page["Module 02: Safe Runtime Observation"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

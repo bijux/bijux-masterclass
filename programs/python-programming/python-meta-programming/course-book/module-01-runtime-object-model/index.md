@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 1: Everything Is an Object
+# Module 01: Runtime Object Model
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 01"]
-  page["Module 1: Everything Is an Object"]
+  page["Module 01: Runtime Object Model"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

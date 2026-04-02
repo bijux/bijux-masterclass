@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 9: Metaclasses — When Everything Else Is Not Enough
+# Module 09: Metaclass Design and Class Creation
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 09"]
-  page["Module 9: Metaclasses — When Everything Else Is Not Enough"]
+  page["Module 09: Metaclass Design and Class Creation"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

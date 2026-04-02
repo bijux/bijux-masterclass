@@ -1,4 +1,4 @@
-# Module 11: Mastery Review
+# Module 10 Review: Mastery Review
 
 
 <!-- page-maps:start -->
@@ -8,8 +8,8 @@
 graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
-  section["Module 11"]
-  page["Module 11: Mastery Review"]
+  section["Module 10 Review"]
+  page["Module 10 Review: Mastery Review"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,7 +25,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-You have now moved through the full runtime ladder: observation, wrapping, attribute
+You have now moved through the full runtime ladder inside this course: observation, wrapping, attribute
 control, class creation, and governance. This final module exists to turn that material
 into review judgment and explicit exit criteria.
 

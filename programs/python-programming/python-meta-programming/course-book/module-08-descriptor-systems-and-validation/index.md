@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 8: The Descriptor Protocol – The True Engine (Part 2 – Framework Grade)
+# Module 08: Descriptor Systems and Validation
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 08"]
-  page["Module 8: The Descriptor Protocol – The True Engine (Part 2 – Framework Grade)"]
+  page["Module 08: Descriptor Systems and Validation"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

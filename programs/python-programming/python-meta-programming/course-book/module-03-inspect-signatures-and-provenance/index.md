@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 3: The `inspect` Module — Python’s Built-in Endoscope
+# Module 03: `inspect`, Signatures, and Provenance
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 03"]
-  page["Module 3: The `inspect` Module — Python’s Built-in Endoscope"]
+  page["Module 03: `inspect`, Signatures, and Provenance"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

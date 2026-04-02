@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 7: The Descriptor Protocol – The True Engine (Part 1)
+# Module 07: Descriptor Mechanics and Attribute Lookup
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 07"]
-  page["Module 7: The Descriptor Protocol – The True Engine (Part 1)"]
+  page["Module 07: Descriptor Mechanics and Attribute Lookup"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

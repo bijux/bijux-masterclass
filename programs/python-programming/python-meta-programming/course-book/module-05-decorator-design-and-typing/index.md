@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 5: Decorators Level 2 – Real-World & Typing-Aware
+# Module 05: Decorator Design, Policies, and Typing
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 05"]
-  page["Module 5: Decorators Level 2 – Real-World & Typing-Aware"]
+  page["Module 05: Decorator Design, Policies, and Typing"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

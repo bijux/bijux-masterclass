@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 10: Runtime Governance and Responsibility
+# Module 10: Runtime Governance and Mastery
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 10"]
-  page["Module 10: Runtime Governance and Responsibility"]
+  page["Module 10: Runtime Governance and Mastery"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

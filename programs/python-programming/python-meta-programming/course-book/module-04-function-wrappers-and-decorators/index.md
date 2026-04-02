@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 4: Decorators Level 1 – Function Transformation Basics
+# Module 04: Function Wrappers and Transparent Decorators
 
 
 <!-- page-maps:start -->
@@ -10,7 +10,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Module 04"]
-  page["Module 4: Decorators Level 1 – Function Transformation Basics"]
+  page["Module 04: Function Wrappers and Transparent Decorators"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
