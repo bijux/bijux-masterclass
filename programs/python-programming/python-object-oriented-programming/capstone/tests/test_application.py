@@ -5,7 +5,14 @@ from datetime import datetime
 import pytest
 
 from service_monitoring import DomainError, MetricName, MetricSample, MonitoringApplication, RuleRegistration
-from service_monitoring.scenario import DEFAULT_RULE_REGISTRATIONS, DEFAULT_SAMPLES, DEFAULT_POLICY_ID, build_default_observation
+from service_monitoring.scenario import (
+    DEFAULT_POLICY_ID,
+    DEFAULT_RULE_REGISTRATIONS,
+    DEFAULT_SAMPLES,
+    RETIREMENT_REASON,
+    build_default_observation,
+    build_retirement_review,
+)
 
 
 def test_application_supports_a_full_monitoring_workflow() -> None:
@@ -78,3 +85,13 @@ def test_default_scenario_contract_stays_stable() -> None:
     assert len(DEFAULT_SAMPLES) == 3
     assert observation.cycle_report.alerts_published == 2
     assert observation.snapshot.summary.active_rule_ids == ("cpu-hot", "cpu-sustained")
+
+
+def test_retirement_scenario_contract_stays_stable() -> None:
+    review = build_retirement_review()
+
+    assert "disk-hot" in review.active_snapshot.open_incidents
+    assert review.retired_snapshot.summary.retired_rule_ids == ("disk-hot",)
+    assert review.retired_snapshot.open_incidents == {}
+    assert review.retired_snapshot.incident_history["disk"][0].rule_id == "disk-hot"
+    assert review.retired_reason == RETIREMENT_REASON
