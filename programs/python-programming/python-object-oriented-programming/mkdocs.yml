@@ -22,6 +22,7 @@ nav:
       - Course Guide: guides/course-guide.md
       - Learning Contract: guides/learning-contract.md
       - Module Promise Map: guides/module-promise-map.md
+      - Module Checkpoints: guides/module-checkpoints.md
       - Module Dependency Map: guides/module-dependency-map.md
       - Practice Map: guides/practice-map.md
       - Command Guide: guides/command-guide.md
