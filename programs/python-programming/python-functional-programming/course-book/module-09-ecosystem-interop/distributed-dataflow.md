@@ -26,13 +26,13 @@ flowchart LR
 
 **Module 09**
 > **Core question:**
-> How do you adapt distributed/dataflow systems like Dask or Apache Beam to functional programming principles in FuncPipe, using pure transforms, lazy graphs, explicit sinks, and stateful operators with algebraic contracts to maintain composability, purity, and testability for large-scale pipelines?
+> How do you reason about distributed execution seams without pretending the default FuncPipe capstone already ships a distributed backend, while still preserving the same functional contracts you would need if one were added later?
 
-In this core, we delve into adapting distributed and dataflow systems to a functional programming (FP) style within the FuncPipe RAG Builder (now at `funcpipe-rag-09`). Distributed systems are essential for handling data volumes that exceed single-machine capabilities, but they introduce complexities like work duplication from retries, shuffles for joins, nondeterminism from scheduling, and floating-point drift in aggregations that can undermine FP's emphasis on purity and predictability. Dask excels in Python-native lazy computation through task graphs, allowing you to parallelize code with familiar APIs like `dask.delayed` for custom tasks or `dask.bag` for unstructured data collections—ideal for quick prototyping and integration with existing Python ecosystems. Apache Beam, in contrast, provides a unified model for portable pipelines using PTransforms and PCollections, enabling the same code to run on various backends (e.g., local DirectRunner, Google Dataflow, Apache Flink, or Apache Spark), which is invaluable for cross-platform deployments.
+In this core, the most important honesty rule comes first: the shipped repository does not include a working Dask or Beam backend. What it does include is the architectural seam where one could be added without rewriting the course's pure helpers, pipeline assembly, or review story. That means the learner route here is about design discipline before implementation breadth: what contracts a distributed boundary would need, what kinds of operators remain lawful under partitioning and retries, and how to keep optional backends from polluting the default proof surface.
 
 To align these systems with FP, we model pipelines as lazy graphs of operators, where each operator has an explicit algebraic contract that guarantees correct behavior under distribution (e.g., associativity for reductions to allow parallel aggregation without order-dependence). We focus on pure transforms (stateless functions operating on individual elements or partitions without side effects), explicit sinks (final steps confined to I/O, such as writing results to files or databases, with idempotence guarantees), and simple stateful operators (like combines with monoids for aggregations). Pipelines are configured via data structures (e.g., YAML specifying operator sequence, contracts like monoids, runner/backend settings, resources, serialization rules, and materialization points), seamlessly integrating with FuncPipe's ADTs (e.g., mapping FPResult over partitions to handle per-element failures). We refactor the RAG ingestion process (e.g., processing massive document sets into embeddings) into these distributed FP pipelines, verifying equivalence to local versions and laws like purity (fixed inputs yield identical outputs under a fixed scheduler) and associativity for reducers.
 
-Dependencies: `pip install dask[distributed] apache-beam`; tradeoffs: Dask's simplicity for Python-centric workflows vs Beam's portability across languages and runners; sharp edges: Dask's partition locality favors low-shuffle ops while Beam's shuffles enable joins but incur costs—test with local schedulers to catch issues early, and ensure purity by avoiding mutable globals or time-dependent logic in transforms.
+If you later build this seam out locally, Dask is usually the closer Python-native fit and Beam is the broader portability fit. But those are extension decisions, not current learner obligations in this repo.
 
 **Motivation Bug:** Imperative distributed code often embeds effects (e.g., I/O or state mutation) directly in computation steps, leading to non-reproducible runs, hard-to-test graphs, and failures under retries or shuffles. FP style enforces a clear boundary: pure, composable transforms build the graph lazily, while effects are confined to idempotent sinks, enabling reliable scaling without sacrificing testability or debuggability.
 
@@ -44,15 +44,15 @@ Dependencies: `pip install dask[distributed] apache-beam`; tradeoffs: Dask's sim
 - **Composability:** Graphs are built as sequences of typed operators (e.g., Map, FlatMap, Combine); each operator declares its contract (e.g., monoid for reductions) to ensure associativity/commutativity under reordering.
 - **Laziness:** Construct the graph without execution; trigger compute/submit only at the end (Dask.compute, Beam.run) or explicit materialization points.
 - **Semantics:** Laws like purity (a transform on fixed inputs is deterministic under a fixed scheduler); equivalence (distributed graph == local execution up to partitioning, ordering, and batching, given operator contracts); idempotence for sinks (repeat writes produce the same result or are transactional); verified via property tests with local runners and keyed/tolerant comparisons.
-- **Integration:** Map RAG stages (clean, chunk, embed) to operators; propagate FPResult for per-element failures; use Beam coders or Dask serialization for ADTs; test graphs locally before scaling.
-- **Mypy Config:** --strict; dask/beam typing optional.
+- **Integration:** Keep distributed backends behind explicit compilers or adapters so the shipped local proof route stays unchanged.
+- **Mypy Config:** --strict on the local seam; optional backend imports stay guarded.
 
 **Audience:** Engineers scaling FP pipelines to distributed systems, needing pure transforms in dataflows while handling state, shuffles, and failures gracefully.
 
 **Outcome:**
-1. Define operator IR with algebraic contracts for distributed FP.
-2. Build and run RAG pipelines on Dask/Beam with pure operators and sinks.
-3. Prove equivalence/laws with keyed, tolerant tests.
+1. Define the operator and sink contracts a distributed backend would have to preserve.
+2. Identify where Dask or Beam could attach without changing the local proof route.
+3. Judge whether a distributed backend belongs in the repository at all before implementing one.
 ---
 ## 1. Laws & Invariants
 | Law | Description | Enforcement |
@@ -68,14 +68,14 @@ These laws ensure distributed layers don't break FP properties. Enforcement uses
 ## 2. Decision Table
 | Scenario | Portability Needed | Data Type | Recommended |
 |-----------------------|--------------------|-----------|-------------|
+| Default learner route in this repo | N/A | Local review and proof | stay on the shipped local pipeline |
 | Python-only scale | No | Arrays/DF | Dask DataFrame |
 | Python-only scale | No | Unstructured | Dask Bag |
 | Custom tasks | No | Any | Dask Delayed |
 | Multi-lang/runners | Yes | General | Beam |
-| Lazy graphs | Any | Any | Both |
-| FP purity focus | Any | Any | Both with pure DoFn |
+| Lazy graphs with explicit extension work | Any | Any | choose one backend and keep it behind the seam |
 
-**Dask for ease, Beam for portability.**
+**Do not add a distributed backend just because the domain could justify one. Add it only when the existing local proof route is no longer enough.**
 ---
 ## 3. Public API (Graph Builders & Transforms)
 Builders as funcs. Guard imports. We define an intermediate representation (IR) for operators with algebraic contracts to ensure composability and validation before backend mapping.
@@ -84,6 +84,11 @@ Builders as funcs. Guard imports. We define an intermediate representation (IR) 
 - Dask/Beam are optional and not part of this repo’s default dependency set.
 - This repo includes an import-guarded extension seam stub for compilers at `capstone/src/funcpipe_rag/pipelines/distributed.py`.
 - That file is intentionally a boundary marker: it documents where distributed backends would attach without claiming that Dask or Beam are part of the default proof route.
+
+**Canonical learner route:**
+- Open `capstone/src/funcpipe_rag/pipelines/distributed.py` to see the seam.
+- Keep reading the local pipeline and proof surfaces as the canonical implementation.
+- Treat the code below as design scaffolding for an optional backend, not as a promise that this repo already ships one.
 
 ```python
 from typing import Callable, TypeVar, Any, List, Dict, Optional, Literal, Union

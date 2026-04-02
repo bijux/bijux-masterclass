@@ -54,6 +54,12 @@ change.
 - keep the compatibility layer thin enough that the core model remains semantically stable
 - prove that the bridge preserves the same contract the course is teaching
 
+## If the change adds a distributed backend
+
+- prefer `pipelines/distributed.py` as the attachment point instead of spreading backend logic through the local pipeline
+- keep Dask or Beam optional until the repository is ready to carry them as part of the default proof contract
+- preserve the local proof route so the course still has one canonical implementation surface
+
 ## Final review question
 
 If another engineer read this change six months later, would they be able to see why it
