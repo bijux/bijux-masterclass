@@ -20,6 +20,14 @@ test: ## Run the capstone confirmation suite
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	@$(RUN_CAPSTONE) tour
 
+.PHONY: capstone-platform-report
+capstone-platform-report: ## Print the supported Python, Git, and DVC versions
+	@$(RUN_CAPSTONE) platform-report
+
+.PHONY: capstone-repro
+capstone-repro: ## Execute the capstone DVC pipeline
+	@$(RUN_CAPSTONE) repro
+
 .PHONY: capstone-verify-report
 capstone-verify-report: ## Build the capstone verification report bundle
 	@$(RUN_CAPSTONE) verify-report
@@ -60,6 +68,10 @@ capstone-release-review: ## Build the capstone release review bundle
 capstone-recovery-audit: ## Build the capstone remote-recovery audit bundle
 	@$(RUN_CAPSTONE) recovery-audit
 
+.PHONY: capstone-recovery-drill
+capstone-recovery-drill: ## Rebuild the workspace from the remote after cache loss
+	@$(RUN_CAPSTONE) recovery-drill
+
 .PHONY: capstone-recovery-review
 capstone-recovery-review: ## Build the capstone remote recovery review bundle
 	@$(RUN_CAPSTONE) recovery-review
@@ -67,6 +79,10 @@ capstone-recovery-review: ## Build the capstone remote recovery review bundle
 .PHONY: capstone-experiment-review
 capstone-experiment-review: ## Build the capstone experiment comparison bundle
 	@$(RUN_CAPSTONE) experiment-review
+
+.PHONY: capstone-source-bundle
+capstone-source-bundle: ## Build the capstone tracked-source release bundle
+	@$(RUN_CAPSTONE) source-bundle
 
 .PHONY: clean
 clean: ## Remove build artifacts

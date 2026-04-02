@@ -100,6 +100,14 @@ capstone-walkthrough: ## Run the selected program's learner-facing capstone walk
 capstone-tour: ## Run the selected program's learner-facing capstone tour
 	@$(RUN_PROGRAM) capstone-tour
 
+.PHONY: capstone-platform-report
+capstone-platform-report: ## Print the selected program's supported toolchain versions
+	@$(RUN_PROGRAM) capstone-platform-report
+
+.PHONY: capstone-repro
+capstone-repro: ## Execute the selected program's capstone pipeline
+	@$(RUN_PROGRAM) capstone-repro
+
 .PHONY: capstone-selftest
 capstone-selftest: ## Run the selected program's capstone determinism or convergence self-test
 	@$(RUN_PROGRAM) capstone-selftest
@@ -115,6 +123,30 @@ capstone-incident-audit: ## Build the selected program's capstone incident revie
 .PHONY: capstone-verify-report
 capstone-verify-report: ## Build the selected program's capstone verification report bundle
 	@$(RUN_PROGRAM) capstone-verify-report
+
+.PHONY: capstone-release-audit
+capstone-release-audit: ## Build the selected program's capstone release audit bundle
+	@$(RUN_PROGRAM) capstone-release-audit
+
+.PHONY: capstone-release-review
+capstone-release-review: ## Build the selected program's capstone release review bundle
+	@$(RUN_PROGRAM) capstone-release-review
+
+.PHONY: capstone-recovery-audit
+capstone-recovery-audit: ## Build the selected program's capstone recovery audit bundle
+	@$(RUN_PROGRAM) capstone-recovery-audit
+
+.PHONY: capstone-recovery-drill
+capstone-recovery-drill: ## Run the selected program's capstone recovery drill
+	@$(RUN_PROGRAM) capstone-recovery-drill
+
+.PHONY: capstone-recovery-review
+capstone-recovery-review: ## Build the selected program's capstone recovery review bundle
+	@$(RUN_PROGRAM) capstone-recovery-review
+
+.PHONY: capstone-experiment-review
+capstone-experiment-review: ## Build the selected program's capstone experiment review bundle
+	@$(RUN_PROGRAM) capstone-experiment-review
 
 .PHONY: capstone-profile-audit
 capstone-profile-audit: ## Build the selected program's capstone execution-policy audit bundle
