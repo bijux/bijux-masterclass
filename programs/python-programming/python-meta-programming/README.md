@@ -1,6 +1,6 @@
-# Python Meta-Programming
+# Python Metaprogramming
 
-Python Meta-Programming is the runtime-judgment course in the `python-programming`
+Python Metaprogramming is the runtime-judgment course in the `python-programming`
 family. It teaches introspection, decorators, descriptors, and metaclasses as tools
 that must earn their complexity through observability, testability, and clear ownership.
 

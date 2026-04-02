@@ -8,7 +8,7 @@
 ```mermaid
 graph LR
   family["Python Programming"]
-  program["Python Meta-Programming"]
+  program["Python Metaprogramming"]
   section["Module 01"]
   page["Module 01: Runtime Object Model"]
   capstone["Capstone evidence"]

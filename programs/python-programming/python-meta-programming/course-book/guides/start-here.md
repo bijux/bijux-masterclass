@@ -6,7 +6,7 @@
 ```mermaid
 graph LR
   family["Python Programming"]
-  program["Python Meta-Programming"]
+  program["Python Metaprogramming"]
   section["Start Here"]
   page["Start Here"]
   route["Course guide and modules"]

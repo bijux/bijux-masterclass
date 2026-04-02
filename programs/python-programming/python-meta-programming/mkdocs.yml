@@ -1,6 +1,6 @@
 INHERIT: ../../../mkdocs.shared.yml
 
-site_name: Python Meta-Programming
+site_name: Python Metaprogramming
 site_description: >-
   A correctness-first course-book on Python metaprogramming: introspection, decorators,
   descriptors, and metaclasses—without magical handwaving.
