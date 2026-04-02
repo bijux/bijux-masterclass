@@ -67,9 +67,7 @@ make PROGRAM=python-programming/python-functional-programming capstone-tour
 From this directory:
 
 ```bash
-make install
-make test
-make tour
+make proof
 ```
 
 Proof route:

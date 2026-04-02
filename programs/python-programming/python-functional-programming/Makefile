@@ -24,6 +24,10 @@ test: ## Run the capstone test suite
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	@$(RUN_CAPSTONE) tour
 
+.PHONY: proof
+proof: ## Run the full capstone proof route
+	@$(RUN_CAPSTONE) proof
+
 .PHONY: build
 build: ## Build capstone distribution artifacts
 	@$(RUN_CAPSTONE) build

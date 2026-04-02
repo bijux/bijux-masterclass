@@ -32,6 +32,7 @@ make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming docs-serve
 make PROGRAM=python-programming/python-functional-programming docs-build
 make PROGRAM=python-programming/python-functional-programming capstone-tour
+make PROGRAM=python-programming/python-functional-programming proof
 ```
 
 ## Stable commands from the capstone directory
@@ -40,6 +41,7 @@ make PROGRAM=python-programming/python-functional-programming capstone-tour
 make install
 make test
 make tour
+make proof
 ```
 
 ## How to choose the right command
@@ -48,6 +50,7 @@ make tour
 - Use `install` before your first capstone run or when the environment changed.
 - Use `test` when you want executable confidence in the codebase.
 - Use `capstone-tour` or `tour` when you want the learner-facing proof bundle.
+- Use `proof` when you want the sanctioned end-to-end evidence route in one command.
 
 ## Honest rule
 

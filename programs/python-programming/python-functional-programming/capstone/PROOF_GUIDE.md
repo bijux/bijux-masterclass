@@ -29,6 +29,7 @@ because the learner can inspect behavior and review artifacts directly.
 
 - `make test` runs the executable test suite.
 - `make tour` builds the learner-facing proof bundle.
+- `make proof` runs the sanctioned end-to-end route.
 
 ## What each route proves
 
@@ -43,6 +44,6 @@ that the project remains inspectable as a human learning artifact. You need both
 ## Best review pattern
 
 1. State the claim you want to check.
-2. Choose the route that produces the closest evidence.
+2. Choose the route that produces the closest evidence, or use `make proof` for the full route.
 3. Inspect the relevant package or guide.
 4. Decide whether the evidence matches the claim or only hints at it.
