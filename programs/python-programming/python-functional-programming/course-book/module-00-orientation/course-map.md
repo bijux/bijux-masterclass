@@ -46,6 +46,9 @@ Modules 04 to 06 turn functional style into something that can survive domain pr
 
 Leave this arc able to represent failure and validation without hiding them inside control flow.
 
+Read [Mid-Course Map](mid-course-map.md) when you want the shortest bridge from the
+semantic floor into this arc and the next one.
+
 ### Arc 3: effect boundaries and async pressure
 
 Modules 07 to 08 move from local reasoning to system boundaries.
@@ -86,6 +89,7 @@ Keep the FuncPipe RAG capstone open while reading the map.
 
 - `index.md`
 - `first-contact-map.md`
+- `mid-course-map.md`
 - `mastery-map.md`
 - `course-orientation.md`
 - `how-to-study-this-course.md`
