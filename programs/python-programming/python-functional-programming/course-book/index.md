@@ -55,6 +55,7 @@ By the end of the course, you should be able to:
 ## Start here
 
 - Read [Start Here](start-here.md) for the shortest stable learner route.
+- Continue with [Course Guide](course-guide.md) and [Learning Contract](learning-contract.md).
 - Read the [Orientation overview](module-00-orientation/index.md).
 - Keep the [FuncPipe Capstone Guide](capstone.md) open from the beginning.
 - Work through the modules in order. The sequence is deliberate.
