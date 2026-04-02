@@ -46,9 +46,10 @@ teaching.
 Use this after Module 02 or 03.
 
 1. `make -C capstone help`
-2. read `capstone/Makefile`
-3. read `capstone/tests/run.sh`
-4. run `make -C capstone selftest`
+2. `make -C capstone walkthrough`
+3. read `capstone/Makefile`
+4. read `capstone/tests/run.sh`
+5. run `make -C capstone selftest`
 
 ### Route B: Generator and boundary study
 
@@ -111,9 +112,10 @@ Use this during Modules 07-10.
 If you want a sane first walkthrough, use this order:
 
 1. Read `capstone/Makefile` from the public targets down to the build rules.
-2. Read `capstone/mk/objects.mk` and `capstone/mk/stamps.mk` to see discovery and modeled inputs.
-3. Read `capstone/tests/run.sh` to see what the build is actually required to prove.
-4. Run `make -C capstone selftest` and compare the output to the course claims.
+2. Run `make -C capstone walkthrough` to materialize the learner-first bundle.
+3. Read `capstone/mk/objects.mk` and `capstone/mk/stamps.mk` to see discovery and modeled inputs.
+4. Read `capstone/tests/run.sh` to see what the build is actually required to prove.
+5. Run `make -C capstone selftest` and compare the output to the course claims.
 
 This route keeps the learner focused on contract first, mechanics second.
 

@@ -20,6 +20,7 @@ These live in `programs/reproducible-research/deep-dive-make/Makefile`.
 | `capstone` | build the capstone | you want artifacts without the full selftest |
 | `capstone-selftest` | run the capstone proof harness | you are validating the reference build |
 | `capstone-hardened` | run selftest plus audits and runtime checks | you want the strongest built-in validation |
+| `capstone-walkthrough` | build the learner-facing walkthrough bundle | you want the bounded first-pass capstone route |
 | `capstone-clean` | clear capstone outputs | you need a clean build state |
 
 [Back to top](#top)
@@ -35,7 +36,8 @@ These live in `capstone/Makefile`.
 | `all` | build the main executable and dynamic binaries, then converge |
 | `test` | run runtime behavior checks on built artifacts |
 | `selftest` | prove convergence, serial/parallel equivalence, and a negative hidden-input case |
-| `tour` | print the recommended first walkthrough |
+| `walkthrough` | write the learner-facing walkthrough bundle |
+| `tour` | print the recommended first reading route |
 | `discovery-audit` | assert deterministic discovery order |
 | `repro` | print the repro pack entrypoints |
 | `attest` | write evidence without contaminating artifact identity |
@@ -57,6 +59,7 @@ Treat these as stable entrypoints:
 * capstone `selftest`
 * capstone `hardened`
 * capstone `help`
+* capstone `walkthrough`
 * capstone `tour`
 
 Treat internal helper rules and file-specific recipes as implementation detail unless they
@@ -71,6 +74,7 @@ are explicitly documented here or in `help`.
 If you are new to the course:
 
 ```sh
+make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
 make -C capstone help
 make -C capstone tour
 make -C capstone selftest

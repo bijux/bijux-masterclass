@@ -16,7 +16,8 @@ Use root-level commands when you want one entrypoint that works across programs.
 | --- | --- |
 | `make PROGRAM=reproducible-research/deep-dive-make test` | run the course's main verification target |
 | `make PROGRAM=reproducible-research/deep-dive-make docs-build` | build the course docs in strict mode |
-| `make PROGRAM=reproducible-research/deep-dive-make capstone-tour` | print the learner-facing capstone walkthrough |
+| `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | build the learner-facing walkthrough bundle |
+| `make PROGRAM=reproducible-research/deep-dive-make capstone-tour` | print the capstone reading route |
 | `make PROGRAM=reproducible-research/deep-dive-make program-help` | show the program Makefile surface |
 
 [Back to top](#top)
@@ -32,7 +33,8 @@ surface.
 | --- | --- |
 | `make help` | show program-level targets |
 | `make test` | run the capstone selftest via the program surface |
-| `make capstone-tour` | print the capstone walkthrough |
+| `make capstone-walkthrough` | build the learner-facing walkthrough bundle |
+| `make capstone-tour` | print the capstone reading route |
 | `make capstone-hardened` | run the strongest built-in capstone verification |
 | `make clean` | clear program and capstone artifacts |
 
@@ -47,7 +49,8 @@ Use `capstone/` when you want the raw executable reference build.
 | Command | What it does |
 | --- | --- |
 | `gmake help` | show public capstone targets on macOS |
-| `gmake tour` | print the recommended walkthrough order |
+| `gmake walkthrough` | build the learner-facing walkthrough bundle |
+| `gmake tour` | print the recommended reading route |
 | `gmake selftest` | run convergence, equivalence, and negative checks |
 | `gmake hardened` | run the strongest capstone validation set |
 | `gmake repro` | list the failure-mode repro pack |
@@ -61,6 +64,7 @@ Use `capstone/` when you want the raw executable reference build.
 If you are new:
 
 ```sh
+make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-make capstone-tour
 make PROGRAM=reproducible-research/deep-dive-make test
 ```

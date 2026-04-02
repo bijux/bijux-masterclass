@@ -13,11 +13,12 @@ step.
 
 Use this when you want the minimum useful capstone pass.
 
-1. Run `make -C capstone help`
-2. Read `capstone/Makefile` and identify the public targets
-3. Read `capstone/tests/run.sh` and list the invariants it proves
-4. Run `make -C capstone selftest`
-5. Inspect one repro under `capstone/repro/`
+1. Run `make -C capstone walkthrough`
+2. Run `make -C capstone help`
+3. Read `capstone/Makefile` and identify the public targets
+4. Read `capstone/tests/run.sh` and list the invariants it proves
+5. Run `make -C capstone selftest`
+6. Inspect one repro under `capstone/repro/`
 
 Goal: leave with a clear picture of what the capstone promises and how it proves it.
 
