@@ -65,6 +65,13 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 - [Object Design Checklist](reference/object-design-checklist.md)
 - [Boundary Review Prompts](reference/boundary-review-prompts.md)
 
+## Guides
+
+- [Guides Home](guides/index.md)
+- [Start Here](guides/start-here.md)
+- [Course Guide](guides/course-guide.md)
+- [Learning Contract](guides/learning-contract.md)
+
 ## Working model
 
 The course uses a monitoring-system domain as the running example. That domain is

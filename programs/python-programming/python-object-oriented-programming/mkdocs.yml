@@ -16,6 +16,7 @@ site_dir: ../../../artifacts/site/python-programming/python-object-oriented-prog
 
 nav:
   - Start Here:
+      - Guides Home: guides/index.md
       - Start Here: guides/start-here.md
       - Course Home: index.md
       - Course Guide: guides/course-guide.md
