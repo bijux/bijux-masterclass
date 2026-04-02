@@ -51,7 +51,7 @@ Proof loop for this module:
 ```bash
 dvc status
 dvc metrics diff
-make -C capstone verify
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
 ```
 
 Capstone corroboration:

@@ -55,8 +55,8 @@ the same state story without private context, the repository is still too fragil
 
 ## Verification route
 
-- Run `make -C capstone confirm` to inspect the strongest shared proof route the capstone already exposes.
-- Run `make -C capstone recovery-audit` when you want remote-backed evidence of repository restoration under shared stewardship.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` to inspect the strongest shared proof route the capstone already exposes.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-audit` when you want remote-backed evidence of repository restoration under shared stewardship.
 - Use the module’s invariants checklist to decide whether the repository depends on disciplined people alone or on enforceable contracts.
 
 ## Why this module matters in the course

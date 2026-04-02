@@ -56,7 +56,7 @@ promotion rules will be defending the wrong state story.
 ## Verification route
 
 - Inspect `capstone/dvc.yaml`, `capstone/dvc.lock`, and `capstone/params.yaml` together instead of reading any one file in isolation.
-- Run `make -C capstone verify-report` once you can already predict why the pipeline should rerun or stay stable.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` once you can already predict why the pipeline should rerun or stay stable.
 - Explain one stage in terms of its declared dependencies, parameters, outputs, and recorded lock evidence before moving on.
 
 ## Why this module matters in the course

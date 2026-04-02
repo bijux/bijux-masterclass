@@ -54,7 +54,7 @@ defend. If those choices are implicit, the repository is only temporarily reprod
 
 ## Verification route
 
-- Run `make -C capstone recovery-audit` to inspect the remote-backed restore route and the evidence it captures.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-audit` to inspect the remote-backed restore route and the evidence it captures.
 - Compare the module’s retention ideas against the capstone’s promoted bundle, lock state, and recovery artifacts.
 - Use the final invariants checklist to decide whether the repository is only tidy today or actually durable over time.
 

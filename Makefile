@@ -108,6 +108,10 @@ capstone-platform-report: ## Print the selected program's supported toolchain ve
 capstone-repro: ## Execute the selected program's capstone pipeline
 	@$(RUN_PROGRAM) capstone-repro
 
+.PHONY: capstone-state-summary
+capstone-state-summary: ## Render the selected program's capstone state summary
+	@$(RUN_PROGRAM) capstone-state-summary
+
 .PHONY: capstone-selftest
 capstone-selftest: ## Run the selected program's capstone determinism or convergence self-test
 	@$(RUN_PROGRAM) capstone-selftest

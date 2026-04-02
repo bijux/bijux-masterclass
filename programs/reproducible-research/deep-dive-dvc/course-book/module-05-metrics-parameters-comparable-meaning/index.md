@@ -61,7 +61,7 @@ The main outcome of this module is not more measurement. It is better comparabil
 ## Verification route
 
 - Inspect `capstone/params.yaml`, `capstone/metrics/metrics.json`, and `capstone/publish/v1/metrics.json` together as one comparison surface.
-- Run `make -C capstone release-audit` when you want the promoted params and metrics bundled with the release contract.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-audit` when you want the promoted params and metrics bundled with the release contract.
 - Use the invariants checklist at the end of the module to decide whether the metrics in front of you are still semantically comparable.
 
 ---

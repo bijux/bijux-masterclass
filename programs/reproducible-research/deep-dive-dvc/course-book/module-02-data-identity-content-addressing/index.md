@@ -82,7 +82,7 @@ If those answers are still fuzzy, pause here before moving on to pipeline semant
 ## Verification route
 
 - Inspect `capstone/dvc.lock`, the local cache, and the configured remote together so each state layer has a concrete artifact.
-- Run `make -C capstone state-summary` after the module’s state layers feel legible.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-state-summary` after the module’s state layers feel legible.
 - Confirm that you can explain which copy is mutable, which copy is authoritative, and which copy is only a recovery source before moving on.
 
 ## What to inspect in the capstone

@@ -57,8 +57,8 @@ reference repository in `capstone/`.
 
 ## Verification route
 
-- Run `make -C capstone platform-report` to confirm the supported Python, Git, and DVC versions before you trust later proof routes.
-- Run `make -C capstone walkthrough` when you want the first learner-facing repository tour.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-platform-report` to confirm the supported Python, Git, and DVC versions before you trust later proof routes.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` when you want the first learner-facing repository tour.
 - Use `../guides/module-checkpoints.md` to decide whether you are ready to enter the capstone or should stay with the smaller module model first.
 
 ---
@@ -250,7 +250,7 @@ Use this page sequence when you enter the capstone:
 2. [`capstone-map.md`](../capstone/capstone-map.md)
 3. [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
-5. `make -C capstone confirm` when you want the strongest built-in proof route
+5. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` when you want the strongest built-in proof route
 
 Use [`module-checkpoints.md`](../guides/module-checkpoints.md) when you are deciding whether the
 current module is actually stable enough to justify entering the larger repository.

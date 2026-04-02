@@ -57,7 +57,7 @@ governance.
 
 ## Verification route
 
-- Run `make -C capstone platform-report` and inspect the reported Python, Git, and DVC versions as concrete environment evidence.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-platform-report` and inspect the reported Python, Git, and DVC versions as concrete environment evidence.
 - Compare the module’s environment boundary claims with the capstone’s declared install and runtime surface.
 - State clearly which environment facts DVC tracks, which ones it only influences indirectly, and which ones must be governed elsewhere.
 

@@ -54,7 +54,7 @@ system while keeping lineage, comparability, and reversal intact? If the answer 
 
 ## Verification route
 
-- Run `make -C capstone experiment-review` to inspect baseline params, baseline metrics, and comparable experiment records together.
+- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` to inspect baseline params, baseline metrics, and comparable experiment records together.
 - Compare one candidate experiment against the baseline and decide whether it is reversible, comparable, and ready for promotion review.
 - Use the invariants checklist at the end of the module as the exit bar before moving into collaboration and CI policy.
 

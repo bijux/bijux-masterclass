@@ -51,7 +51,7 @@ Proof loop for this module:
 ```bash
 dvc status
 dvc repro -n
-make -C capstone confirm
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 ```
 
 Capstone corroboration:
