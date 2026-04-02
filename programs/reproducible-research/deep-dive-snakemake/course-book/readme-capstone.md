@@ -24,6 +24,7 @@ course’s strongest claims become runnable:
 ## Core commands
 
 ```bash
+make -C capstone walkthrough
 make -C capstone wf-dryrun
 make -C capstone verify
 make -C capstone confirm

@@ -22,6 +22,7 @@ LINT_DIR      ?= $(ARTIFACTS_DIR)/lint
 TEST_DIR      ?= $(ARTIFACTS_DIR)/test
 WF_DIR        ?= $(ARTIFACTS_DIR)/workflow
 TMP_DIR       ?= $(ARTIFACTS_DIR)/tmp
+WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/workflow-walkthrough
 TOUR_DIR      ?= $(ARTIFACTS_DIR)/workflow-tour
 
 # ---- workflow outputs ----
@@ -34,6 +35,7 @@ LINT_DIR_ABS      := $(abspath $(LINT_DIR))
 TEST_DIR_ABS      := $(abspath $(TEST_DIR))
 WF_DIR_ABS        := $(abspath $(WF_DIR))
 TMP_DIR_ABS       := $(abspath $(TMP_DIR))
+WALKTHROUGH_DIR_ABS := $(abspath $(WALKTHROUGH_DIR))
 TOUR_DIR_ABS      := $(abspath $(TOUR_DIR))
 MANIFEST_ABS      := $(abspath $(MANIFEST))
 PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
@@ -43,7 +45,7 @@ PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 	clean purge-dsstore \
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
-	validate-config verify-artifacts tour \
+	validate-config verify-artifacts walkthrough tour \
 	check ci validate verify confirm \
 	docker-build docker-run
 
@@ -166,6 +168,21 @@ validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
 confirm: clean purge-dsstore ci verify ## Clean-room confirmation (strict)
 
+walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
+	@mkdir -p "$(WALKTHROUGH_DIR_ABS)"
+	$(SNAKEMAKE) --list-rules > "$(WALKTHROUGH_DIR_ABS)/list-rules.txt"
+	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(WALKTHROUGH_DIR_ABS)/dryrun.txt"
+	cp README.md "$(WALKTHROUGH_DIR_ABS)/README.md"
+	cp FILE_API.md "$(WALKTHROUGH_DIR_ABS)/FILE_API.md"
+	cp TOUR.md "$(WALKTHROUGH_DIR_ABS)/TOUR.md"
+	@printf '%s\n' \
+		'1. Read README.md to understand the repository contract.' \
+		'2. Read list-rules.txt to see the visible workflow surface.' \
+		'3. Read dryrun.txt to inspect the planned jobs without execution.' \
+		'4. Read FILE_API.md to see which outputs are public contracts.' \
+		'5. Run make tour when you want executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
+	@echo "✔ wrote workflow walkthrough to $(WALKTHROUGH_DIR_ABS)"
+
 tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bundle
 	@mkdir -p "$(TOUR_DIR_ABS)"
 	$(SNAKEMAKE) --list-rules > "$(TOUR_DIR_ABS)/list-rules.txt"
@@ -175,6 +192,7 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 	cp FILE_API.md "$(TOUR_DIR_ABS)/FILE_API.md"
 	cp "$(MANIFEST_ABS)" "$(TOUR_DIR_ABS)/manifest.json"
 	cp "$(PUBLISH_DIR_ABS)/provenance.json" "$(TOUR_DIR_ABS)/provenance.json"
+	cp README.md "$(TOUR_DIR_ABS)/README.md"
 	cp TOUR.md "$(TOUR_DIR_ABS)/TOUR.md"
 	@echo "✔ wrote workflow tour to $(TOUR_DIR_ABS)"
 

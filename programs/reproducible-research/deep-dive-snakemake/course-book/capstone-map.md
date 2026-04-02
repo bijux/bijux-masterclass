@@ -23,7 +23,7 @@ capstone should confirm understanding, not replace first-contact learning.
 
 | Module | Learner goal | Capstone surfaces | Proof command |
 | --- | --- | --- | --- |
-| 01 First Principles | understand truthful file contracts and stable targets | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make -C capstone wf-dryrun` |
+| 01 First Principles | understand truthful file contracts and stable targets | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make -C capstone walkthrough` |
 | 02 Dynamic DAGs | see checkpoint discovery become explicit and durable | `Snakefile`, `results/discovered_samples.json`, `publish/v1/discovered_samples.json` | `make -C capstone wf-run` |
 | 03 Production Operation | inspect policy surfaces and clean-room confirmation | `profiles/`, `Makefile`, `tests/selftest.sh` | `make -C capstone confirm` |
 | 04 Scaling Patterns | inspect modular rule files and repository interfaces | `workflow/rules/`, `FILE_API.md`, `TOUR.md` | `make -C capstone tour` |
@@ -42,10 +42,11 @@ capstone should confirm understanding, not replace first-contact learning.
 
 If you want one sane first walkthrough, use this order:
 
-1. Read `Snakefile` to see the entrypoint and default target.
-2. Read `workflow/rules/common.smk` and then the rule-family files.
-3. Read `FILE_API.md` to see what downstream consumers are actually allowed to trust.
-4. Run `make -C capstone wf-dryrun` and then `make -C capstone verify` when you want executable proof.
+1. Run `make -C capstone walkthrough` to generate the learner-first reading bundle.
+2. Read `Snakefile` to see the entrypoint and default target.
+3. Read `workflow/rules/common.smk` and then the rule-family files.
+4. Read `FILE_API.md` to see what downstream consumers are actually allowed to trust.
+5. Run `make -C capstone tour` and then `make -C capstone verify` when you want executed proof.
 
 This order keeps contract and repository shape ahead of implementation detail.
 

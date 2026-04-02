@@ -1,9 +1,13 @@
 # Workflow Tour
 
-This tour is the learner-facing entrypoint for the Snakemake capstone. It creates a proof
-bundle under `artifacts/workflow-tour/` so you can inspect the workflow the same way the
-course asks you to reason about it: through declared rules, planned jobs, published outputs,
-and summary evidence.
+This tour is the executed proof route for the Snakemake capstone. It creates a bundle
+under `artifacts/workflow-tour/` so you can inspect the workflow the same way the course
+asks you to reason about it: through declared rules, planned jobs, real execution,
+published outputs, and summary evidence.
+
+If you want a lighter first step, run `make walkthrough` first. That bundle focuses on
+the repository guide, rule list, dry-run plan, and public file contract without executing
+the workflow.
 
 ## What the tour produces
 
@@ -20,21 +24,25 @@ and summary evidence.
 From the capstone directory:
 
 ```bash
+make walkthrough
 make tour
 ```
 
 From the repository root:
 
 ```bash
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour
 ```
 
 ## What to inspect first
 
-1. `list-rules.txt`
-2. `dryrun.txt`
-3. `summary.txt`
-4. `manifest.json`
-5. `provenance.json`
+1. `README.md`
+2. `list-rules.txt`
+3. `dryrun.txt`
+4. `summary.txt`
+5. `manifest.json`
+6. `provenance.json`
 
-That order mirrors the course: rule surface, planned DAG, resulting evidence, published interface, and reproducibility metadata.
+That order mirrors the course: repository contract, rule surface, planned DAG, resulting
+evidence, published interface, and reproducibility metadata.

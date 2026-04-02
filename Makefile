@@ -42,6 +42,10 @@ docs-serve: series-docs-install ## Serve docs for the selected program
 test: ## Run tests for the selected program
 	@$(RUN_PROGRAM) test
 
+.PHONY: capstone-walkthrough
+capstone-walkthrough: ## Run the selected program's learner-facing capstone walkthrough
+	@$(RUN_PROGRAM) capstone-walkthrough
+
 .PHONY: capstone-tour
 capstone-tour: ## Run the selected program's learner-facing capstone tour
 	@$(RUN_PROGRAM) capstone-tour

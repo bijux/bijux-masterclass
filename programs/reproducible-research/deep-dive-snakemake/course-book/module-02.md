@@ -104,6 +104,7 @@ You will be able to:
 * use wildcard constraints to prevent ambiguous matching,
 * prove that your DAG size equals your metadata size (no hidden multiplication).
 
+<a id="core-1--wildcard-mastery-metadata-driven-expansion-without-explosions"></a>
 ## 1.1 Definition
 
 **Metadata-driven expansion** means: you compute *the exact list of targets* from structured metadata (sample sheet), validate it, and only then hand it to Snakemake (typically via `rule all` / `rule targets`).
@@ -248,6 +249,7 @@ You will be able to:
 * demonstrate a “moving target” anti-pattern and repair it,
 * prove that the discovered set is stable across repeated runs.
 
+<a id="core-2--checkpoints-dynamic-dags-done-safely-and-when-theyre-a-smell"></a>
 ## 2.1 Definition
 
 A **checkpoint** is a rule that allows Snakemake to **re-evaluate part of the DAG after some data exists**. This is for cases where the downstream targets cannot be known at parse time. ([snakemake.readthedocs.io][2])
@@ -405,6 +407,7 @@ You will be able to:
 * use `--list-changes` and rule `version:` to force evidence-based reruns,
 * generate an HTML report as a reproducible audit artifact.
 
+<a id="core-3--data-integrity-and-provenance-as-first-class-outputs"></a>
 ## 3.1 Definition
 
 Integrity means: **outputs correspond to specific inputs + code + parameters + software**.
@@ -511,6 +514,7 @@ You will be able to:
 * reason about containers vs conda as a reproducibility/performance tradeoff,
 * prove that your software stack is stable across machines.
 
+<a id="core-4--environments-and-containers-reproducibility-without-slowness"></a>
 ## 4.1 The flag reality (don’t guess)
 
 From the CLI docs:
@@ -604,6 +608,7 @@ You will be able to:
 * understand job grouping and where it actually matters,
 * reduce filesystem pressure by changing DAG shape (not by “more threads”).
 
+<a id="core-5--performance-patterns-dag-shape-scheduler-load-and-io"></a>
 ## 5.1 The dominant performance killer: overhead
 
 In real pipelines, you often pay more for:
@@ -660,6 +665,7 @@ Your performance changes are real only if you can show:
 
 ---
 
+<a id="appendix-a--minimal-lab-setup"></a>
 # Appendix A — Minimal Lab Setup
 
 Create this structure (exact):
@@ -690,6 +696,7 @@ Populate:
 
 ---
 
+<a id="appendix-b--debugging-playbook-what-you-see--what-it-means--first-fix"></a>
 # Appendix B — Debugging Playbook: What You See → What It Means → First Fix
 
 | What you see                             | Run this                                              | Expected evidence               | Likely cause                                       | First fix                                                             |
@@ -704,6 +711,7 @@ CLI evidence tools (`--summary`, `--detailed-summary`, `--list-changes`, `--repo
 
 ---
 
+<a id="appendix-c--exercises"></a>
 # Appendix C — Exercises
 
 Each exercise requires:
@@ -746,6 +754,7 @@ Each exercise requires:
 
 ---
 
+<a id="appendix-d--reference-workflow-complete-runnable-baseline"></a>
 # Appendix D — Reference Workflow (Complete, Runnable Baseline)
 
 If you want **one copy-paste file** that exercises Module 02 patterns (metadata targets + checkpoint discovery + provenance hooks), use this **single Snakefile**:

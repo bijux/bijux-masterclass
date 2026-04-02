@@ -236,6 +236,15 @@ Runtime-generated:
 
 ## Quick Start
 
+### First Walkthrough
+```bash
+make walkthrough
+```
+
+Builds a light learner-facing bundle under `artifacts/workflow-walkthrough/` with the
+repository guide, public file contract, rule list, dry-run plan, and a suggested reading
+route. Use this first when you want to understand workflow shape before executing it.
+
 ### Full Clean-Room Execution with Verification
 ```bash
 make clean verify
@@ -256,16 +265,16 @@ Displays planned jobs and commands without execution.
 
 ## Workflow Tour
 
-Generate the learner-facing proof bundle:
+Generate the executed learner-facing proof bundle:
 
 ```bash
 make tour
 ```
 
-This writes a stable bundle under `artifacts/workflow-tour/` containing the rule list,
-dry-run plan, execution log, summary, publish manifest, provenance record, and a copy
-of the file contract. Use it when you want to study the workflow as evidence rather than
-only as code.
+This writes a stable bundle under `artifacts/workflow-tour/` containing the repository
+guide, rule list, dry-run plan, execution log, summary, publish manifest, provenance
+record, and a copy of the file contract. Use `make walkthrough` first when you want a
+lighter orientation, then `make tour` when you want executed evidence.
 
 [Back to top](#top)
 
@@ -297,11 +306,13 @@ Add `-p` to print commands as they would be executed.
 | Testing        | `make test`, `make ci`  | Unit tests and CI-style gate                                            |
 | Workflow       | `make wf-lint`          | Snakemake lint                                                          |
 |                | `make wf-dryrun`        | Preview execution plan                                                  |
-|                | `make run`              | Execute workflow                                                        |
+|                | `make wf-run`           | Execute workflow                                                        |
+|                | `make walkthrough`      | Build the learner-first non-executing walkthrough bundle                |
 |                | `make dag` / `make rulegraph` | Generate visualizations                                      |
 | Validation     | `make validate-config`  | Schema validation                                                       |
 |                | `make verify-artifacts` | Parse and sanity-check published outputs                                |
 |                | `make verify`           | Full run + artifact verification                                        |
+|                | `make tour`             | Build the executed workflow proof bundle                                |
 |                | `make confirm`          | Strongest gate: clean + checks + tests + lint + dry-run + run + verify  |
 | Docker         | `make docker-build`     | Build container image                                                   |
 |                | `make docker-run`       | Execute workflow in container                                           |
