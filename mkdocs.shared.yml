@@ -1,24 +1,35 @@
+strict: true
+use_directory_urls: true
+dev_addr: 127.0.0.1:8000
+
 theme:
   name: material
   language: en
+  font: false
   icon:
     repo: fontawesome/brands/github
   features:
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
+    - navigation.indexes
+    - navigation.path
+    - navigation.tracking
+    - navigation.instant
     - navigation.top
+    - navigation.footer
     - toc.follow
     - search.suggest
     - search.highlight
+    - content.tabs.link
+    - content.code.annotate
     - content.code.copy
+    - content.code.select
+    - content.action.edit
   palette:
     - scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+      primary: indigo
+      accent: indigo
 
 plugins:
   - search
@@ -26,6 +37,7 @@ plugins:
 markdown_extensions:
   - admonition
   - attr_list
+  - def_list
   - footnotes
   - md_in_html
   - tables
@@ -56,6 +68,6 @@ extra:
       link: https://github.com/bijux
 
 extra_javascript:
-  - https://unpkg.com/mermaid@11/dist/mermaid.min.js
+  - https://unpkg.com/mermaid@11.6.0/dist/mermaid.min.js
 
 copyright: "© 2025 Bijan Mousavi <bijan@bijux.io>"
