@@ -44,3 +44,19 @@ evidence in the capstone.
 - Modules 01-03: start with `make inspect` and lifecycle-oriented tests.
 - Modules 04-07: prefer `make verify-report` when aggregate, repository, or runtime boundaries are the claim.
 - Modules 08-10: use `make confirm` or `make proof` when the question is full-system trust rather than one narrow behavior.
+
+## Claim to proof map
+
+| If the claim is about... | Inspect first | Best proof route |
+| --- | --- | --- |
+| value semantics, lifecycle rules, or aggregate ownership | `tests/test_policy_lifecycle.py` | `make inspect` |
+| replaceable evaluation behavior | `tests/test_policy_evaluation.py` | `make verify-report` |
+| runtime orchestration versus domain ownership | `tests/test_runtime.py` and `application.py` | `make tour` or `make verify-report` |
+| public learner-facing behavior | `tests/test_application.py` and `tests/test_demo.py` | `make inspect` or `make tour` |
+| full-system trust and saved executable evidence | saved verification bundle plus `PROOF_GUIDE.md` | `make confirm` or `make proof` |
+
+## Smallest honest proof by question
+
+- If the question is architectural, start with guides and targeted tests before `confirm`.
+- If the question is behavioral, start with the smallest saved bundle or test that exercises the claimed behavior.
+- If the question is course-level trust, escalate to `make proof` only after the narrower claims are already clear.
