@@ -34,12 +34,15 @@ MK_DIR  := mk
 TST_DIR := tests
 REP_DIR := repro
 ARTIFACTS_DIR ?= ../../../../artifacts
+REPO_ROOT := $(abspath ../../../../)
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
 SELFTEST_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-make/selftest
 CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
 INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
+SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-make
+SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-make-capstone-source.tar.gz
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
 REPRO_CASE ?= $(REP_DIR)/05-mkdir-race.mk
 
@@ -465,6 +468,33 @@ hardened: selftest discovery-audit attest test
 
 confirm: hardened
 >     @echo "PASS: confirm route completed"
+
+# ---- source baseline ----
+source-baseline-check:
+>     @paths=''; \
+>     for path in build stamps app all dist.tar.gz; do \
+>         if [ -e "$$path" ]; then \
+>             paths="$$paths./$$path\n"; \
+>         fi; \
+>     done; \
+>     tmp_paths="$$(find . -type f -print | grep -E '(\.tmp(\..*)?|\.d\.tmp|\.tmp\.d)$$' || true)"; \
+>     if [ -n "$$tmp_paths" ]; then \
+>         paths="$$paths$$tmp_paths"; \
+>     fi; \
+>     if [ -n "$$paths" ]; then \
+>         printf '%s\n' 'FAIL: source bundle would include local build state:' "$$paths" >&2; \
+>         exit 1; \
+>     fi; \
+>     printf '%s\n' 'PASS: source baseline contains no local build state'
+
+source-bundle: source-baseline-check
+>     mkdir -p "$(SOURCE_BUNDLE_DIR)"
+>     $(PYTHON) "$(REPO_ROOT)/scripts/build_clean_source_bundle.py" \
+>         --repo-root "$(REPO_ROOT)" \
+>         --source-dir "$(CURDIR)" \
+>         --output "$(abspath $(SOURCE_BUNDLE_PATH))" \
+>         --prefix deep-dive-make-capstone
+>     printf 'PASS: wrote %s\n' "$(abspath $(SOURCE_BUNDLE_PATH))"
 
 # ---- precedence introspection ----
 show:
