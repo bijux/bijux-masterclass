@@ -34,6 +34,7 @@ nav:
       - Command Guide: guides/command-guide.md
       - Proof Matrix: guides/proof-matrix.md
       - Build-Graph Glossary: reference/build-graph-glossary.md
+      - Topic Boundaries: reference/topic-boundaries.md
       - Concept Index: reference/concept-index.md
       - Practice Map: reference/practice-map.md
       - Public Targets: reference/public-targets.md

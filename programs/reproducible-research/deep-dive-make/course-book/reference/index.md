@@ -40,6 +40,7 @@ standards.
 
 - [Module Dependency Map](module-dependency-map.md) for concept order and safe reading sequence
 - [Build-Graph Glossary](build-graph-glossary.md) for durable terminology
+- [Topic Boundaries](topic-boundaries.md) for what the course treats as core, supporting, and boundary material
 - [Concept Index](concept-index.md) for locating where an idea is taught
 - [Practice Map](practice-map.md) for module-to-proof routing
 - [Public Targets](public-targets.md) for stable command surfaces
