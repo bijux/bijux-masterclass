@@ -13,3 +13,4 @@ env/
 site/
 docs/library/
 *.egg-info/
+programs/python-programming/python-functional-programming/capstone/_history/

@@ -80,6 +80,18 @@ inspect: ## Inspect the selected program's learner-facing capstone state
 proof: ## Run the selected program's strongest learner-facing proof route
 	@$(RUN_PROGRAM) proof
 
+.PHONY: history-refresh
+history-refresh: ## Build the selected program's generated module history worktrees
+	@$(RUN_PROGRAM) history-refresh
+
+.PHONY: history-clean
+history-clean: ## Remove the selected program's generated module history worktrees
+	@$(RUN_PROGRAM) history-clean
+
+.PHONY: history-freeze-code
+history-freeze-code: ## Freeze the selected program's generated module history worktrees
+	@$(RUN_PROGRAM) history-freeze-code
+
 .PHONY: capstone-walkthrough
 capstone-walkthrough: ## Run the selected program's learner-facing capstone walkthrough
 	@$(RUN_PROGRAM) capstone-walkthrough

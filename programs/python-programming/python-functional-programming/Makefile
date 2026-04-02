@@ -52,25 +52,21 @@ build: ## Build capstone distribution artifacts
 lint: ## Run capstone linting and type checks
 	@$(RUN_CAPSTONE) lint
 
-.PHONY: snapshots
-snapshots: ## Export tagged module snapshots
-	@$(RUN_CAPSTONE) snapshots
+.PHONY: history-refresh
+history-refresh: ## Build local module tags and generated worktrees
+	@$(RUN_CAPSTONE) history-refresh
 
-.PHONY: worktrees
-worktrees: ## Create detached worktrees for tagged modules
-	@$(RUN_CAPSTONE) worktrees
-
-.PHONY: clean-history
-clean-history: ## Remove generated worktrees and snapshots
-	@$(RUN_CAPSTONE) clean-history
+.PHONY: history-clean
+history-clean: ## Remove generated module history worktrees
+	@$(RUN_CAPSTONE) history-clean
 
 .PHONY: module-md
 module-md: ## Concatenate module markdown sources into capstone/all-cores
 	@$(RUN_CAPSTONE) module-md
 
-.PHONY: module-funcpipe
-module-funcpipe: ## Freeze tagged snapshots into capstone/all-cores
-	@$(RUN_CAPSTONE) module-funcpipe
+.PHONY: history-freeze-code
+history-freeze-code: ## Freeze generated module worktrees into capstone/all-cores
+	@$(RUN_CAPSTONE) history-freeze-code
 
 .PHONY: freeze-codebase
 freeze-codebase: ## Export the current capstone codebase into markdown

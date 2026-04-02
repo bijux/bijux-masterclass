@@ -34,7 +34,8 @@ with executable code, tests, and operational boundaries.
 
 - `src/funcpipe_rag/` contains the application packages and architecture seams
 - `tests/` contains law checks, behavior checks, and integration proof
-- `history/` preserves earlier snapshots used by the course narrative
+- `module-reference-states/` stores the tracked end-of-module source states
+- `_history/` is generated locally from module tags and worktrees
 - `scripts/` contains helper utilities used by the project workflow
 
 ## How to read this codebase
@@ -74,7 +75,14 @@ make inspect
 make verify-report
 make confirm
 make proof
+make history-refresh
 ```
+
+History route:
+
+- `make history-refresh` rebuilds local module tags and `_history/worktrees/module-XX`
+- `_history/route.txt` records the generated module-to-tag map
+- `module-reference-states/` is the tracked source of truth for Modules 01 to 09
 
 Proof route:
 

@@ -37,6 +37,8 @@ make PROGRAM=python-programming/python-functional-programming capstone-tour
 make PROGRAM=python-programming/python-functional-programming capstone-verify-report
 make PROGRAM=python-programming/python-functional-programming capstone-confirm
 make PROGRAM=python-programming/python-functional-programming proof
+make PROGRAM=python-programming/python-functional-programming history-refresh
+make PROGRAM=python-programming/python-functional-programming history-clean
 ```
 
 ## Stable commands from the capstone directory
@@ -50,6 +52,8 @@ make tour
 make verify-report
 make confirm
 make proof
+make history-refresh
+make history-clean
 ```
 
 ## How to choose the right command
@@ -63,6 +67,8 @@ make proof
 - Use `capstone-verify-report` or `verify-report` when you want a durable review bundle with executed test output.
 - Use `capstone-confirm` or `confirm` when you want the strictest public confirmation route for this capstone.
 - Use `proof` when you want the sanctioned end-to-end evidence route in one command.
+- Use `history-refresh` when you want fresh module tags plus `_history/worktrees/module-XX` for module-by-module comparison.
+- Use `history-clean` when you want to remove the generated history surface and rebuild it from scratch later.
 
 ## Honest rule
 

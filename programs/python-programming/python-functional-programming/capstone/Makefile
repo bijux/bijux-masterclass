@@ -2,7 +2,7 @@
 
 # ===== Basics =====
 .PHONY: install test build lint clean clean-all venv demo inspect verify-report tour proof confirm \
-        worktrees snapshots clean-history module-md module-funcpipe freeze-codebase \
+        history-refresh history-clean history-freeze-code module-md freeze-codebase \
         help
 
 .DEFAULT_GOAL := install
@@ -130,51 +130,15 @@ clean-all: clean ## Remove additional generated caches
 # ===== Git history utilities =====
 
 MODULES       := 01 02 03 04 05 06 07 08 09 10
-HISTORY_DIR   := history
+HISTORY_DIR   := _history
 WORKTREES_DIR := $(HISTORY_DIR)/worktrees
-SNAPSHOTS_DIR := $(HISTORY_DIR)/snapshots
 FREEZE_OUT    ?= all-cores/funcpipe-rag-all-code.md
 
-# Export src + tests from each tag into history/snapshots/module-XX/
-snapshots: ## Export tagged module snapshots into history/snapshots
-	@set -e; \
-	mkdir -p "$(SNAPSHOTS_DIR)"; \
-	for m in $(MODULES); do \
-		tag="module-$$m"; \
-		if git rev-parse -q --verify "refs/tags/$$tag" >/dev/null; then \
-			dest="$(SNAPSHOTS_DIR)/$$tag"; \
-			echo ">> Generating snapshot $$dest from $$tag"; \
-			rm -rf "$$dest"; \
-			mkdir -p "$$dest"; \
-			git archive "$$tag" src tests | tar -x -C "$$dest"; \
-		else \
-			echo "!! Warning: Missing tag $$tag (skipping snapshot)"; \
-		fi; \
-	done
+history-refresh: ## Build local module tags and generated worktrees under _history
+	$(PYTHON) scripts/build_module_history.py --out-dir $(HISTORY_DIR)
 
-# (optional) handy alias
-snapshot: snapshots ## Alias for snapshots
-
-# Create detached worktrees at module tags (if you still want this)
-worktrees: ## Create detached worktrees for module tags
-	@mkdir -p "$(WORKTREES_DIR)"; \
-	for m in $(MODULES); do \
-		tag="module-$$m"; \
-		dir="$(WORKTREES_DIR)/$$tag"; \
-		if git rev-parse -q --verify "refs/tags/$$tag" >/dev/null; then \
-			if [ ! -d "$$dir" ]; then \
-				echo ">> Creating worktree $$dir @ $$tag"; \
-				git worktree add --detach "$$dir" "$$tag"; \
-			else \
-				echo "== Worktree exists: $$dir (already there)"; \
-			fi; \
-		else \
-			echo "!! Warning: Missing tag $$tag (skipping worktree)"; \
-		fi; \
-	done
-
-clean-history: ## Remove generated history worktrees and snapshots
-	@rm -rf "$(WORKTREES_DIR)" "$(SNAPSHOTS_DIR)"; \
+history-clean: ## Remove generated module history worktrees and metadata
+	@rm -rf "$(HISTORY_DIR)"; \
 	git worktree prune
 
 # Concatenate all core markdowns per module into all-cores/
@@ -209,17 +173,17 @@ module-md: ## Concatenate module markdown sources into all-cores
 	done
 
 
-# Freeze each snapshot module (history/snapshots/module-XX) into all-cores/
-module-funcpipe: snapshots ## Freeze tagged snapshots into all-cores markdown bundles
+# Freeze each generated module worktree (_history/worktrees/module-XX) into all-cores/
+history-freeze-code: history-refresh ## Freeze generated module worktrees into all-cores markdown bundles
 	@set -e; \
 	mkdir -p all-cores; \
-	for base in history/snapshots/module-[0-9][0-9]; do \
+	for base in _history/worktrees/module-[0-9][0-9]; do \
 		if [ -d "$$base" ]; then \
 			num="$${base##*/module-}"; \
-			out="all-cores/funcpipe-rag-all-code-module-$$num-snapshot.md"; \
+			out="all-cores/funcpipe-rag-all-code-module-$$num-reference-state.md"; \
 			echo ">> $$out"; \
 			{ \
-				echo "# funcpipe-rag snapshot module $$num"; \
+				echo "# funcpipe-rag module $$num reference state"; \
 				echo; \
 				echo "## Tree (src and tests)"; \
 				echo '```text'; \
