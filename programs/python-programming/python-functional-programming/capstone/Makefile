@@ -1,7 +1,7 @@
 # Makefile for funcpipe-rag
 
 # ===== Basics =====
-.PHONY: install test build lint clean clean-all venv demo inspect verify-report tour proof confirm \
+.PHONY: install test build lint clean clean-all venv rebuild-venv demo inspect verify-report tour proof confirm \
         history-refresh history-verify history-clean history-freeze-code module-md freeze-codebase \
         help
 
@@ -12,7 +12,7 @@ DOCS_DIR   := docs
 VENV       ?= $(ARTIFACTS_DIR)/venv/python-programming/python-functional-programming/capstone
 PYTHON     ?= python3
 VENV_PY    := $(VENV)/bin/python
-VENV_PIP   := $(VENV)/bin/pip
+VENV_PIP   := $(VENV_PY) -m pip
 RUFF       := $(VENV)/bin/ruff
 MYPY       := $(VENV)/bin/mypy
 PYTEST     := $(VENV)/bin/pytest
@@ -31,16 +31,18 @@ $(VENV_PY):
 
 venv: $(VENV_PY) ## Create the local virtual environment
 
+rebuild-venv: ## Recreate the local virtual environment in place
+	$(PYTHON) -m venv --clear $(VENV)
+	$(VENV_PIP) install -U pip
+
 install: venv ## Install development dependencies
 	@set -e; \
 	$(VENV_PIP) install -e '.[dev]' || { \
-		rm -rf $(VENV); \
-		$(MAKE) venv; \
+		$(MAKE) rebuild-venv; \
 		$(VENV_PIP) install -e '.[dev]'; \
 	}; \
 	test -x $(RUFF) && test -x $(MYPY) && test -x $(PYTEST) && test -x $(HATCH) || { \
-		rm -rf $(VENV); \
-		$(MAKE) venv; \
+		$(MAKE) rebuild-venv; \
 		$(VENV_PIP) install -e '.[dev]'; \
 	}
 
