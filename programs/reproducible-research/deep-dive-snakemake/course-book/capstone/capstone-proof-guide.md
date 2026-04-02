@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Capstone Proof Guide
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,59 +13,49 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Do you need one bounded proof route?"] --> route["Choose the narrowest honest command"]
+  route --> inspect["Inspect the matching evidence surface"]
+  inspect --> next_move["Escalate only if the claim changes"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this guide is for one bounded proof route, not
+for whole-repository study. Read the second diagram as the rule: choose the narrowest
+honest command, inspect the matching evidence, then escalate only if the claim changes.
 
 Use this page when a module makes a Snakemake design claim and you want the shortest
 honest route to the capstone evidence that supports it.
 
----
-
-## Enter This Guide At The Right Time
+## Enter this guide at the right time
 
 Use this guide once the module idea is already legible in its local exercise.
 
-Before that point, prefer `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`
-so the repository stays smaller than the concept you are learning.
+Before that point, prefer [Capstone Walkthrough](capstone-walkthrough.md) so the
+repository stays smaller than the concept you are learning.
 
-For Modules 05 to 10, this guide becomes the default route into the larger proof,
-publish, policy, and confirmation commands.
+## Start by proof need
 
----
+| If you need to prove... | Start here | Escalate only if needed |
+| --- | --- | --- |
+| repository shape without execution | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `capstone-tour` |
+| executed workflow behavior | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `proof` |
+| publish-boundary trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `capstone-confirm` |
+| execution-policy differences | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | `proof` |
+| steward-level confidence | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `capstone-confirm` |
 
-## Recommended Route
+## Bounded proof pass
 
 1. Read `capstone/docs/PROOF_GUIDE.md`.
 2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command.
 3. Run that command from the capstone or course root.
-4. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to record what the evidence actually proves.
+4. Record what the evidence proves before opening a stronger route.
 
-[Back to top](#top)
+## Good stopping point
 
----
+Stop when you can say:
 
-## Strongest Default Routes
+- which command gave the narrowest honest answer
+- which evidence surface actually settled the claim
+- why a broader route would be unnecessary unless the claim changed
 
-- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` when you want first-contact evidence without execution
-- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` when you want executed workflow proof
-- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` when you want publish-boundary review
-- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` when you want execution-policy review
-- `make PROGRAM=reproducible-research/deep-dive-snakemake proof` when you want the sanctioned learner-facing route
-- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` when you want clean-room contract confirmation
-
-[Back to top](#top)
-
----
-
-## What A Good Proof Review Can Answer
-
-- which command gives the narrowest honest answer to the question you have
-- which files are proving workflow meaning versus publish trust versus operating policy
-- when a broader route is necessary because the narrower route is no longer enough
-
-[Back to top](#top)
+If you cannot say those three things, repeat the bounded route before escalating.
