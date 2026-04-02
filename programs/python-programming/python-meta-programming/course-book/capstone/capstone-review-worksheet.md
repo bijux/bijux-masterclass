@@ -23,6 +23,15 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 
 Use this worksheet while reviewing or extending the capstone.
 
+## Bounded review pass
+
+Use this worksheet in this order:
+
+1. Name one claim under review.
+2. Name one owning file.
+3. Name one public command or saved bundle that exposes the claim.
+4. Decide whether the result is keep, change, or reject.
+
 ## Behavior claims
 
 - Which file owns class-definition-time behavior?
@@ -57,3 +66,12 @@ Use this worksheet while reviewing or extending the capstone.
 - Modules 06-08: Which field rule belongs on attribute access rather than object construction?
 - Module 09: Which invariant truly belongs at class-definition time?
 - Module 10 and mastery review: Which public command gives the clearest review evidence for this claim?
+
+## Good stopping point
+
+Stop the worksheet once you can record:
+
+- one claim
+- one owner
+- one proof route
+- one judgment
