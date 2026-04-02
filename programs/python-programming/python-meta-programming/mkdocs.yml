@@ -22,6 +22,8 @@ nav:
       - Runtime Power Ladder: runtime-power-ladder.md
       - Module Dependency Map: module-dependency-map.md
       - Practice Map: practice-map.md
+      - Runtime Glossary: runtime-glossary.md
+      - Review Checklist: review-checklist.md
       - Orientation: module-00.md
       - Capstone Guide: capstone.md
   - "Module 01: Everything Is an Object": module-01.md
