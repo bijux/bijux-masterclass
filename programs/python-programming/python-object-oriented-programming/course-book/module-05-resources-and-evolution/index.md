@@ -73,6 +73,15 @@ than as a later concern owned by "infrastructure people."
 3. Then move to public API boundaries, smells, copying, and compatibility.
 4. Finish with the refactor chapter to test whether the design can evolve without collapse.
 
+## Review route for failure ownership
+
+1. Inspect `capstone/ARCHITECTURE.md` and `capstone/EXTENSION_GUIDE.md`.
+2. Read `src/service_monitoring/runtime.py` and `src/service_monitoring/repository.py`.
+3. Inspect the unit-of-work and runtime test surfaces before escalating to the strongest proof route.
+
+Use that route to keep one distinction explicit: domain truth should stay in the model,
+while retries, cleanup, publication, and rollback stay reviewable at the surrounding boundary.
+
 ## Common failure modes
 
 - making callers responsible for cleanup details they cannot reliably remember
@@ -94,6 +103,14 @@ The capstone's in-memory unit of work, runtime facade, and repository boundary a
 small on purpose, but they model the pressure this module is about: who owns failure,
 who commits change, which surfaces are public, and how new rule behavior can be added
 without rewriting the rest of the system.
+
+## Honest completion signal
+
+You are ready to move on when you can name:
+
+- who owns cleanup for one change path
+- where retry policy may live without redefining domain meaning
+- which compatibility promise belongs to the public surface rather than the repository internals
 
 ## Closing criteria
 
