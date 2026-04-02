@@ -81,6 +81,9 @@ public surface without opening private internals first.
 - Metaclass module: pair `registry` output with `tests/test_registry.py`.
 - Governance and mastery: use `inspect`, `tour`, and `verify-report` as the final human review surface.
 
+Use [REGISTRY_GUIDE.md](REGISTRY_GUIDE.md) when the metaclass proof question is mainly
+about deterministic registration and duplicate handling.
+
 ## Review questions
 
 - Which proof demonstrates definition-time behavior?

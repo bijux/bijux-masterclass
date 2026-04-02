@@ -62,6 +62,7 @@ instead of letting them blur into invocation proof.
 - Go to `WALKTHROUGH_GUIDE.md` when you need one concrete invocation story.
 - Go to `TEST_GUIDE.md` when you need precise executable proof for a claim the bundle only suggests.
 - Go to `PROOF_GUIDE.md` when you need the strongest review route.
+- Go to `REGISTRY_GUIDE.md` when the next question is why a plugin is or is not registered at all.
 
 ## What this guide prevents
 
