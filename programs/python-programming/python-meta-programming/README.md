@@ -42,7 +42,10 @@ By the end of the course, you should be able to:
 
 ## Course shape
 
-- `course-book/` follows one stable shape: `guides/`, `reference/`, `module-00-orientation/`, and Modules `01` to `10`
+- `course-book/guides/` contains learner routes, question maps, checkpoints, and proof ladders.
+- `course-book/capstone/` contains repository entry pages, architecture routes, walkthroughs, and review checklists.
+- `course-book/reference/` contains durable maps, glossaries, and review standards.
+- `course-book/module-00-orientation/` plus Modules `01` to `10` contain the core teaching arc.
 - `capstone/` contains the executable incident-plugin runtime used to prove the course claims
 - `Makefile` exposes stable program-level commands from the monorepo root
 
