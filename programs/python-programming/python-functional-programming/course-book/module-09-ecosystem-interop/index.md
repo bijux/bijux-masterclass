@@ -1,4 +1,4 @@
-# Module 09: Ecosystem Interop and Boundary Discipline and Boundary Discipline
+# Module 09: Ecosystem Interop and Boundary Discipline
 
 
 <!-- page-maps:start -->

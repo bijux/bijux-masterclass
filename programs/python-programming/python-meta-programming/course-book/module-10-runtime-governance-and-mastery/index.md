@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 10: Runtime Governance and Mastery Review Review
+# Module 10: Runtime Governance and Mastery Review
 
 
 <!-- page-maps:start -->

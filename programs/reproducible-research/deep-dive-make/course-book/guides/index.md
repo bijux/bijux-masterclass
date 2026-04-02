@@ -30,7 +30,7 @@ one module chapter.
 - [Start Here](start-here.md) for the shortest honest entry route
 - [Course Guide](course-guide.md) for the full module arc and support-page roles
 - [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
-- [Module 00: Orientation and Study Strategy](../module-00-orientation/index.md) for the full course shape
+- [Module 00: Orientation and Study Practice](../module-00-orientation/index.md) for the full course shape
 - [Platform Setup](platform-setup.md) before you run local proof commands
 
 ## Use These For Study Planning

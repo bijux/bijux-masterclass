@@ -1,5 +1,5 @@
 <a id="top"></a>
-# Module 02: Safe Runtime Observation and Inspection and Inspection
+# Module 02: Safe Runtime Observation and Inspection
 
 
 <!-- page-maps:start -->

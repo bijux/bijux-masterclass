@@ -1,4 +1,4 @@
-# Module 05: Algebraic Data Modelling and Validation and Validation
+# Module 05: Algebraic Data Modelling and Validation
 
 
 <!-- page-maps:start -->

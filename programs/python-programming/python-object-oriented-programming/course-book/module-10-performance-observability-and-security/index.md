@@ -1,4 +1,4 @@
-# Module 10: Performance, Observability, and Security Review Review
+# Module 10: Performance, Observability, and Security Review
 
 
 <!-- page-maps:start -->

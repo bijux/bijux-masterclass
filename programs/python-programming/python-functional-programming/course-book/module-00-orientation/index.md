@@ -1,4 +1,4 @@
-# Module 00: Orientation and Study Practice and Study Practice
+# Module 00: Orientation and Study Practice
 
 
 <!-- page-maps:start -->
