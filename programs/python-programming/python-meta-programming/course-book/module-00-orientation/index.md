@@ -60,6 +60,12 @@ Read the modules in order. Each one establishes a boundary the next one depends 
 
 This ordering matters because metaprogramming only becomes trustworthy when you can compare each tool to the simpler tool below it.
 
+## Orientation companions
+
+Use these pages with this module when you want the course shape to stay visible:
+
+- [Course Map](course-map.md) for the whole ten-module arc
+
 ## What the capstone proves
 
 [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/python-programming/python-meta-programming/capstone)

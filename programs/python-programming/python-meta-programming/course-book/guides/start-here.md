@@ -43,13 +43,14 @@ and easier to justify than a simpler alternative.
 2. Read [Course Guide](course-guide.md) for the module arc and page roles.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
 4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.
-5. Use [Pressure Routes](pressure-routes.md) when you are entering from a code review or framework problem.
-6. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
-7. Keep [Module Promise Map](module-promise-map.md) open so each module stays attached to one clear promise.
-8. Use [Module Checkpoints](module-checkpoints.md) at the end of each module so you know whether the current idea actually landed.
-9. Keep [Proof Ladder](proof-ladder.md) open so you can choose the smallest honest command for the current question.
-10. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
-11. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
+5. Read [Course Map](../module-00-orientation/course-map.md) so the full course arc stays visible from the start.
+6. Use [Pressure Routes](pressure-routes.md) when you are entering from a code review or framework problem.
+7. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
+8. Keep [Module Promise Map](module-promise-map.md) open so each module stays attached to one clear promise.
+9. Use [Module Checkpoints](module-checkpoints.md) at the end of each module so you know whether the current idea actually landed.
+10. Keep [Proof Ladder](proof-ladder.md) open so you can choose the smallest honest command for the current question.
+11. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
+12. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
 
 ## Route By Pressure
 
