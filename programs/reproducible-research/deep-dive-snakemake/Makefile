@@ -23,11 +23,17 @@ capstone-confirm: ## Full clean-room confirmation in capstone (runs workflow + v
 capstone-selftest: ## Determinism proof in capstone (compares published output across core counts)
 	$(MAKE) -C capstone selftest
 
+capstone-verify-report: ## Write a structured publish verification report bundle
+	$(MAKE) -C capstone verify-report
+
 capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	$(MAKE) -C capstone walkthrough
 
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	$(MAKE) -C capstone tour
+
+capstone-profile-audit: ## Package execution profile review evidence
+	$(MAKE) -C capstone profile-audit
 
 check: capstone-check ## Run capstone fast checks
 
