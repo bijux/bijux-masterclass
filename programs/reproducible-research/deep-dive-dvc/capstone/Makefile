@@ -391,6 +391,11 @@ confirm: verify test recovery-drill ## Run the full capstone verification suite
 clean-generated: ## Remove generated pipeline outputs
 	@rm -rf data/derived metrics models publish state
 
+.PHONY: source-baseline-clean
+source-baseline-clean: clean-generated ## Remove local-only state that must not ship in a source bundle
+	@rm -rf .dvc-remote .pytest_cache .dvc/cache __pycache__ src/incident_escalation_capstone.egg-info
+	@find . -type d -name "__pycache__" -prune -exec rm -rf {} +
+
 .PHONY: clean
 clean: clean-generated ## Remove local virtual environment and caches
 	@rm -rf $(VENV_DIR) .pytest_cache .dvc/cache __pycache__ src/incident_escalation_capstone.egg-info
