@@ -75,13 +75,13 @@ capstone-incident-audit: ## Build the capstone incident review bundle
 > $(MAKE) -C $(CAPSTONE_DIR) incident-audit
 
 capstone-verify-report: ## Build the capstone verification report bundle
-> $(MAKE) -C $(CAPSTONE_DIR) selftest-report
+> $(MAKE) -C $(CAPSTONE_DIR) verify-report
 
 capstone-profile-audit: ## Build the capstone execution-profile audit bundle
 > $(MAKE) -C $(CAPSTONE_DIR) profile-audit
 
 capstone-confirm: ## Run the capstone's strongest confirmation route
-> $(MAKE) -C $(CAPSTONE_DIR) hardened
+> $(MAKE) -C $(CAPSTONE_DIR) confirm
 
 capstone-clean: ## Clean capstone outputs
 > $(MAKE) -C $(CAPSTONE_DIR) clean
@@ -90,7 +90,7 @@ demo: ## Build the learner-facing capstone walkthrough bundle
 > $(MAKE) -C $(CAPSTONE_DIR) walkthrough
 
 inspect: ## Build the learner-facing capstone inspection bundle
-> $(MAKE) -C $(CAPSTONE_DIR) contract-audit
+> $(MAKE) -C $(CAPSTONE_DIR) inspect
 
 proof: ## Build the sanctioned learner-facing capstone proof bundle set
 > $(MAKE) -C $(CAPSTONE_DIR) proof

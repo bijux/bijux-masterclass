@@ -47,8 +47,8 @@ DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
-.PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report proof walkthrough \
-        contract-audit incident-audit clean submake-demo perf trace-count hardened show-origins FORCE \
+.PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
+        contract-audit inspect incident-audit clean submake-demo perf trace-count hardened confirm show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -126,12 +126,15 @@ help:
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
 >     '  selftest-report   write the selftest evidence bundle to artifacts/' \
+>     '  verify-report     alias for selftest-report with shared catalog naming' \
 >     '  proof             write the sanctioned learner-facing proof bundle set' \
 >     '  tour              print the recommended capstone walkthrough' \
 >     '  walkthrough       build the learner-facing walkthrough bundle' \
 >     '  contract-audit    build the public-contract review bundle' \
+>     '  inspect           alias for contract-audit with learner review naming' \
 >     '  incident-audit    build an executed failure review bundle (REPRO_CASE=...)' \
 >     '  profile-audit     build the execution-profile review bundle' \
+>     '  confirm           alias for hardened with shared catalog naming' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
 >     '  repro             show how to run the race repro pack' \
 >     '  attest            write build/attest.txt (not a dependency of all)' \
@@ -255,6 +258,9 @@ contract-audit:
 >       '  Which discovery assumptions are explicit enough to audit?' > "$(CONTRACT_AUDIT_DIR)/review-questions.txt"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(CONTRACT_AUDIT_DIR)" --output "$(CONTRACT_AUDIT_DIR)/manifest.json"
 >     @echo "PASS: wrote contract audit to $(CONTRACT_AUDIT_DIR)"
+
+inspect: contract-audit
+>     @echo "PASS: inspect route completed via $(CONTRACT_AUDIT_DIR)"
 
 incident-audit:
 >     rm -rf "$(INCIDENT_AUDIT_DIR)"
@@ -387,6 +393,9 @@ selftest-report:
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(SELFTEST_REPORT_DIR_ABS)" --output "$(SELFTEST_REPORT_DIR_ABS)/manifest.json"
 >     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR_ABS)"
 
+verify-report: selftest-report
+>     @echo "PASS: verify-report completed via $(SELFTEST_REPORT_DIR_ABS)"
+
 proof: walkthrough selftest-report contract-audit incident-audit
 >     @printf '%s\n' \
 >       'PASS: wrote learner-facing proof bundles:' \
@@ -433,6 +442,9 @@ trace-count:
 hardened: selftest discovery-audit attest test
 >     @$(MAKE) -q all || { echo "FAIL: non-convergent" >&2; exit 1; }
 >     @echo "PASS: hardened invariants"
+
+confirm: hardened
+>     @echo "PASS: confirm route completed"
 
 # ---- precedence introspection ----
 show-origins:
