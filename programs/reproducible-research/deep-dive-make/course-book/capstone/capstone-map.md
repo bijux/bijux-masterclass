@@ -41,7 +41,7 @@ Return to the module first if:
 | what this repository promises | [Capstone Guide](index.md) | [Capstone Walkthrough](capstone-walkthrough.md) |
 | which repository surface matches the current module | the table below | [Command Guide](command-guide.md) |
 | which command should prove the current claim | [Command Guide](command-guide.md) | [Capstone Proof Checklist](capstone-proof-checklist.md) |
-| which files own the behavior | [Capstone File Guide](capstone-file-guide.md) | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| which files own the behavior | [Capstone File Guide](capstone-file-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | whether the whole repository holds together as a specimen | [Capstone Review Worksheet](capstone-review-worksheet.md) | [Capstone Extension Guide](capstone-extension-guide.md) |
 
 ## Choose the route by module arc
@@ -50,7 +50,7 @@ Return to the module first if:
 | --- | --- | --- |
 | Modules 01-02 | truthful edges, atomic publication, and one parallel race you can explain | [Capstone Walkthrough](capstone-walkthrough.md) |
 | Modules 03-05 | selftests, public targets, portability boundaries, and one negative proof | [Command Guide](command-guide.md) then [Capstone Proof Checklist](capstone-proof-checklist.md) |
-| Modules 06-08 | generator boundaries, layered `mk/` design, and release surfaces | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| Modules 06-08 | generator boundaries, layered `mk/` design, and release surfaces | [Capstone File Guide](capstone-file-guide.md) |
 | Modules 09-10 | incident judgment, stewardship review, and migration boundaries | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
 ## Module-to-capstone map
