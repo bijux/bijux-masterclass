@@ -60,17 +60,19 @@ Choose this if Snakemake still feels new.
 1. Read [`module-00-orientation/index.md`](../module-00-orientation/index.md)
 2. Read [`module-01-file-contracts-and-the-workflow-dag/index.md`](../module-01-file-contracts-and-the-workflow-dag/index.md)
 3. Read [`module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md`](../module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md)
-4. Enter the capstone only after file contracts and dynamic DAG basics feel clear
+4. Use [`module-checkpoints.md`](module-checkpoints.md) before moving on
+5. Enter the capstone only after file contracts and dynamic DAG basics feel clear
 
 ### Route 2: Repair An Existing Workflow
 
 Choose this if you already maintain a Snakemake repository.
 
-1. Skim [`module-00-orientation/index.md`](../module-00-orientation/index.md)
-2. Read [`module-03-production-operations-and-policy-boundaries/index.md`](../module-03-production-operations-and-policy-boundaries/index.md)
-3. Read [`module-04-scaling-workflows-and-interface-boundaries/index.md`](../module-04-scaling-workflows-and-interface-boundaries/index.md)
-4. Read [`module-08-operating-contexts-and-execution-policy/index.md`](../module-08-operating-contexts-and-execution-policy/index.md)
-5. Use [`capstone-map.md`](capstone-map.md) to inspect the reference workflow selectively
+1. Read [`pressure-routes.md`](pressure-routes.md)
+2. Skim [`module-00-orientation/index.md`](../module-00-orientation/index.md)
+3. Read [`module-03-production-operations-and-policy-boundaries/index.md`](../module-03-production-operations-and-policy-boundaries/index.md)
+4. Read [`module-04-scaling-workflows-and-interface-boundaries/index.md`](../module-04-scaling-workflows-and-interface-boundaries/index.md)
+5. Read [`module-08-operating-contexts-and-execution-policy/index.md`](../module-08-operating-contexts-and-execution-policy/index.md)
+6. Use [`anti-pattern-atlas.md`](../reference/anti-pattern-atlas.md) and [`capstone-map.md`](capstone-map.md) to inspect the reference workflow selectively
 
 ### Route 3: Workflow Stewardship
 
@@ -80,7 +82,8 @@ Choose this if your main concern is architecture, publish boundaries, and long-l
 2. Read [`module-07-workflow-architecture-and-file-apis/index.md`](../module-07-workflow-architecture-and-file-apis/index.md)
 3. Read [`module-09-observability-performance-and-incident-response/index.md`](../module-09-observability-performance-and-incident-response/index.md)
 4. Read [`module-10-governance-migration-and-tool-boundaries/index.md`](../module-10-governance-migration-and-tool-boundaries/index.md)
-5. Finish with the capstone review route
+5. Use [`module-promise-map.md`](module-promise-map.md) to keep the titles honest
+6. Finish with the capstone review route
 
 [Back to top](#top)
 
@@ -107,15 +110,8 @@ the capstone as your main learning surface.
 From the repository root:
 
 ```bash
-make PROGRAM=reproducible-research/deep-dive-snakemake program-help
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour
-```
-
-From the capstone:
-
-```bash
-make walkthrough
-make wf-dryrun
 ```
 
 Then use:
@@ -123,5 +119,6 @@ Then use:
 * [`capstone-map.md`](capstone-map.md) when you want the repository route by module
 * [`module-00-orientation/index.md`](../module-00-orientation/index.md) when you want the full course arc
 * [`course-guide.md`](course-guide.md) when you want the right support page quickly
+* [`proof-ladder.md`](proof-ladder.md) when you are not sure how much proof is enough
 
 [Back to top](#top)

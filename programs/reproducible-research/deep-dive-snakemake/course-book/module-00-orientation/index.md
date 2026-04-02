@@ -144,11 +144,12 @@ Use this if you are learning Snakemake from the ground up.
 
 Use this if you already operate a Snakemake repository.
 
-1. Module 03 for production operation
-2. Module 04 for scaling and interfaces
-3. Module 08 for operating-context drift
-4. Module 09 for observability and incidents
-5. Module 10 for stewardship judgment
+1. [`pressure-routes.md`](../guides/pressure-routes.md) for the repair-first route
+2. Module 03 for production operation
+3. Module 04 for scaling and interfaces
+4. Module 08 for operating-context drift
+5. Module 09 for observability and incidents
+6. Module 10 for stewardship judgment
 
 ### Workflow steward path
 
@@ -158,6 +159,7 @@ Use this if your main concern is architecture, publishing, and long-lived workfl
 2. Module 07 for repository architecture
 3. Module 08 for policy and operating boundaries
 4. Module 10 for governance and migration
+5. [`module-promise-map.md`](../guides/module-promise-map.md) for title-to-deliverable review
 
 ---
 
@@ -216,5 +218,8 @@ restore the smaller workflow model first.
 
 Use the capstone to answer this question repeatedly: if a workflow behavior changed
 tomorrow, which file or boundary should absorb that change, and why?
+
+Use [`module-checkpoints.md`](../guides/module-checkpoints.md) when you are deciding whether the
+current module is actually stable enough to justify entering the larger repository.
 
 [Back to top](#top)
