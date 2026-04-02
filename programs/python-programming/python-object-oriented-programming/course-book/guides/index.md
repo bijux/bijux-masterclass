@@ -49,7 +49,7 @@ module tree can stay focused on long-lived content.
 
 - [Command Guide](command-guide.md) for the executable route
 - [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
-- [Object Design Checklist](../reference/object-design-checklist.md) and [Boundary Review Prompts](../reference/boundary-review-prompts.md) for stable review bars
+- [Object Design Checklist](../reference/object-design-checklist.md), [Self-Review Prompts](../reference/self-review-prompts.md), and [Boundary Review Prompts](../reference/boundary-review-prompts.md) for stable review bars
 
 ## Use These For Capstone Reading
 
