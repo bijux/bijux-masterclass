@@ -84,6 +84,6 @@ Use these pages with this map:
 * [`workflow-glossary.md`](workflow-glossary.md)
 * [`module-03.md`](module-03.md)
 * [`module-06.md`](module-06.md)
-* [`capstone-map.md`](capstone-map.md)
+* [`capstone-map.md`](guides/capstone-map.md)
 
 [Back to top](#top)

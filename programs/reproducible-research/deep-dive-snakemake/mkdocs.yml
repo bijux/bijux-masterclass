@@ -24,32 +24,32 @@ plugins:
 nav:
   - Start Here:
       - Course Home: index.md
-      - Course Guide: course-guide.md
-      - Learner Entry: start-here.md
-      - Platform Setup: platform-setup.md
-      - Learning Contract: learning-contract.md
+      - Course Guide: guides/course-guide.md
+      - Learner Entry: guides/start-here.md
+      - Platform Setup: guides/platform-setup.md
+      - Learning Contract: guides/learning-contract.md
       - Program Outline: module-00.md
   - Course Reference:
       - Module Dependency Map: module-dependency-map.md
       - Boundary Map: boundary-map.md
       - Workflow Glossary: workflow-glossary.md
       - Practice Map: practice-map.md
-      - Command Guide: command-guide.md
-      - Proof Matrix: proof-matrix.md
-      - Publish Review Guide: publish-review-guide.md
-      - Profile Audit Guide: profile-audit-guide.md
-      - Incident Review Guide: incident-review-guide.md
+      - Command Guide: guides/command-guide.md
+      - Proof Matrix: guides/proof-matrix.md
+      - Publish Review Guide: guides/publish-review-guide.md
+      - Profile Audit Guide: guides/profile-audit-guide.md
+      - Incident Review Guide: guides/incident-review-guide.md
       - Completion Rubric: completion-rubric.md
   - Capstone Route:
-      - Capstone File Guide: capstone-file-guide.md
-      - Capstone Architecture Guide: capstone-architecture-guide.md
+      - Capstone File Guide: guides/capstone-file-guide.md
+      - Capstone Architecture Guide: guides/capstone-architecture-guide.md
       - Repository Layer Guide: repository-layer-guide.md
-      - Capstone Map: capstone-map.md
-      - Capstone Proof Guide: capstone-proof-guide.md
-      - Capstone Walkthrough: capstone-walkthrough.md
-      - Capstone Review Worksheet: capstone-review-worksheet.md
-      - Capstone Extension Guide: capstone-extension-guide.md
-      - Capstone Overview: readme-capstone.md
+      - Capstone Map: guides/capstone-map.md
+      - Capstone Proof Guide: guides/capstone-proof-guide.md
+      - Capstone Walkthrough: guides/capstone-walkthrough.md
+      - Capstone Review Worksheet: guides/capstone-review-worksheet.md
+      - Capstone Extension Guide: guides/capstone-extension-guide.md
+      - Capstone Overview: guides/readme-capstone.md
   - "Module 01: File Contracts":
       - Overview: module-01.md
   - "Module 02: Dynamic DAGs":

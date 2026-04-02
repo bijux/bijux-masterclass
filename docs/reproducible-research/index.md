@@ -50,7 +50,7 @@ flowchart LR
 ### [Deep Dive Snakemake](deep-dive-snakemake.md)
 
 - Local course home: [Deep Dive Snakemake course home](../library/reproducible-research/deep-dive-snakemake/course-book/index.md)
-- Learner entry: [Start Here](../library/reproducible-research/deep-dive-snakemake/course-book/start-here.md)
+- Learner entry: [Start Here](../library/reproducible-research/deep-dive-snakemake/course-book/guides/start-here.md)
 - Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-snakemake/capstone/README.md)
 
 ### [Deep Dive DVC](deep-dive-dvc.md)

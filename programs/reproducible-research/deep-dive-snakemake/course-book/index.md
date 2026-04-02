@@ -56,12 +56,12 @@ feel arbitrary instead of principled.
 
 ## Start here
 
-If you are not sure where to begin, use [`start-here.md`](start-here.md) before diving
+If you are not sure where to begin, use [`start-here.md`](guides/start-here.md) before diving
 into the modules. It routes beginners, working maintainers, and workflow stewards to the
 right entry path so the capstone does not become an accidental first lesson.
 
 If you already know the course exists but are not sure which support page you need, use
-[`course-guide.md`](course-guide.md) as the stable hub.
+[`course-guide.md`](guides/course-guide.md) as the stable hub.
 
 ## What each module contributes
 

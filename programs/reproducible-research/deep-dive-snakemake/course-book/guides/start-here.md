@@ -57,29 +57,29 @@ workflow behaves under pressure.
 
 Choose this if Snakemake still feels new.
 
-1. Read [`module-00.md`](module-00.md)
-2. Read [`module-01.md`](module-01.md)
-3. Read [`module-02.md`](module-02.md)
+1. Read [`module-00.md`](../module-00.md)
+2. Read [`module-01.md`](../module-01.md)
+3. Read [`module-02.md`](../module-02.md)
 4. Enter the capstone only after file contracts and dynamic DAG basics feel clear
 
 ### Route 2: Repair An Existing Workflow
 
 Choose this if you already maintain a Snakemake repository.
 
-1. Skim [`module-00.md`](module-00.md)
-2. Read [`module-03.md`](module-03.md)
-3. Read [`module-04.md`](module-04.md)
-4. Read [`module-08.md`](module-08.md)
+1. Skim [`module-00.md`](../module-00.md)
+2. Read [`module-03.md`](../module-03.md)
+3. Read [`module-04.md`](../module-04.md)
+4. Read [`module-08.md`](../module-08.md)
 5. Use [`capstone-map.md`](capstone-map.md) to inspect the reference workflow selectively
 
 ### Route 3: Workflow Stewardship
 
 Choose this if your main concern is architecture, publish boundaries, and long-lived operations.
 
-1. Read [`module-06.md`](module-06.md)
-2. Read [`module-07.md`](module-07.md)
-3. Read [`module-09.md`](module-09.md)
-4. Read [`module-10.md`](module-10.md)
+1. Read [`module-06.md`](../module-06.md)
+2. Read [`module-07.md`](../module-07.md)
+3. Read [`module-09.md`](../module-09.md)
+4. Read [`module-10.md`](../module-10.md)
 5. Finish with the capstone review route
 
 [Back to top](#top)
@@ -121,7 +121,7 @@ make wf-dryrun
 Then use:
 
 * [`capstone-map.md`](capstone-map.md) when you want the repository route by module
-* [`module-00.md`](module-00.md) when you want the full course arc
+* [`module-00.md`](../module-00.md) when you want the full course arc
 * [`course-guide.md`](course-guide.md) when you want the right support page quickly
 
 [Back to top](#top)

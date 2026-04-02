@@ -30,7 +30,7 @@ rather than about rule contracts alone.
 
 1. Read `capstone/PROFILE_AUDIT_GUIDE.md`.
 2. Run `make -C capstone profile-audit` or the course-level equivalent.
-3. Compare the resulting bundle with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Boundary Map](boundary-map.md).
+3. Compare the resulting bundle with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Boundary Map](../boundary-map.md).
 
 [Back to top](#top)
 
