@@ -24,6 +24,7 @@ plugins:
 nav:
   - Start Here:
       - Course Home: index.md
+      - Learner Entry: start-here.md
       - Program Outline: module-00.md
       - Capstone Map: capstone-map.md
       - Capstone Overview: readme-capstone.md

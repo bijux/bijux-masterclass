@@ -29,6 +29,12 @@ This is not a browse-at-random reference. The learner path is deliberate:
 If you skip that order, later material will still be readable, but the trade-offs will
 feel arbitrary instead of principled.
 
+## Start here
+
+If you are not sure where to begin, use [`start-here.md`](start-here.md) before diving
+into the modules. It routes beginners, working maintainers, and workflow stewards to the
+right entry path so the capstone does not become an accidental first lesson.
+
 ## What each module contributes
 
 - [Module 00](module-00.md) establishes the full program map and capstone relationship.
