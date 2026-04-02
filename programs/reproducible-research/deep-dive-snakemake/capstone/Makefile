@@ -9,6 +9,7 @@ SHELL := /bin/bash
 PROFILE   ?= profiles/local
 CORES     ?= all
 CONFIG    ?= config/config.yaml
+DOCS_DIR  := docs
 
 SYSTEM_PYTHON ?= $(if $(shell command -v python3.11 2>/dev/null),python3.11,python3)
 DOT       ?= dot
@@ -180,8 +181,8 @@ verify-artifacts: ## Verify publish artifacts exist and are parseable (best-effo
 verify-report: verify ## Write a structured publish verification report
 	@mkdir -p "$(VERIFY_REPORT_DIR)/report"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
-	@cp FILE_API.md "$(VERIFY_REPORT_DIR)/FILE_API.md"
-	@cp PUBLISH_REVIEW_GUIDE.md "$(VERIFY_REPORT_DIR)/PUBLISH_REVIEW_GUIDE.md"
+	@cp $(DOCS_DIR)/FILE_API.md "$(VERIFY_REPORT_DIR)/FILE_API.md"
+	@cp $(DOCS_DIR)/PUBLISH_REVIEW_GUIDE.md "$(VERIFY_REPORT_DIR)/PUBLISH_REVIEW_GUIDE.md"
 	@cp README.md "$(VERIFY_REPORT_DIR)/README.md"
 	@cp "$(PUBLISH_DIR_ABS)/manifest.json" "$(VERIFY_REPORT_DIR)/manifest.json"
 	@cp "$(PUBLISH_DIR_ABS)/discovered_samples.json" "$(VERIFY_REPORT_DIR)/discovered_samples.json"
@@ -297,15 +298,15 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	$(SNAKEMAKE) --list-rules > "$(WALKTHROUGH_DIR_ABS)/list-rules.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(WALKTHROUGH_DIR_ABS)/dryrun.txt"
 	cp README.md "$(WALKTHROUGH_DIR_ABS)/README.md"
-	cp DOMAIN_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/DOMAIN_GUIDE.md"
-	cp WORKFLOW_STAGE_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/WORKFLOW_STAGE_GUIDE.md"
-	cp CHECKPOINT_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/CHECKPOINT_GUIDE.md"
-	cp EXACT_SOURCE_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/EXACT_SOURCE_GUIDE.md"
-	cp ARCHITECTURE.md "$(WALKTHROUGH_DIR_ABS)/ARCHITECTURE.md"
-	cp WALKTHROUGH_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/WALKTHROUGH_GUIDE.md"
-	cp PROOF_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/PROOF_GUIDE.md"
+	cp $(DOCS_DIR)/DOMAIN_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/DOMAIN_GUIDE.md"
+	cp $(DOCS_DIR)/WORKFLOW_STAGE_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/WORKFLOW_STAGE_GUIDE.md"
+	cp $(DOCS_DIR)/CHECKPOINT_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/CHECKPOINT_GUIDE.md"
+	cp $(DOCS_DIR)/EXACT_SOURCE_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/EXACT_SOURCE_GUIDE.md"
+	cp $(DOCS_DIR)/ARCHITECTURE.md "$(WALKTHROUGH_DIR_ABS)/ARCHITECTURE.md"
+	cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/WALKTHROUGH_GUIDE.md"
+	cp $(DOCS_DIR)/PROOF_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/PROOF_GUIDE.md"
 	cp Snakefile "$(WALKTHROUGH_DIR_ABS)/Snakefile"
-	cp FILE_API.md "$(WALKTHROUGH_DIR_ABS)/FILE_API.md"
+	cp $(DOCS_DIR)/FILE_API.md "$(WALKTHROUGH_DIR_ABS)/FILE_API.md"
 	cp config/config.yaml "$(WALKTHROUGH_DIR_ABS)/config.yaml"
 	cp config/schema.yaml "$(WALKTHROUGH_DIR_ABS)/schema.yaml"
 	cp workflow/rules/common.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/common.smk"
@@ -320,7 +321,7 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	cp profiles/slurm/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/slurm/config.yaml"
 	cp scripts/validate_config.py "$(WALKTHROUGH_DIR_ABS)/scripts/validate_config.py"
 	cp scripts/verify_publish.py "$(WALKTHROUGH_DIR_ABS)/scripts/verify_publish.py"
-	cp TOUR.md "$(WALKTHROUGH_DIR_ABS)/TOUR.md"
+	cp $(DOCS_DIR)/TOUR.md "$(WALKTHROUGH_DIR_ABS)/TOUR.md"
 	@printf '%s\n' \
 		'1. Read DOMAIN_GUIDE.md if the sample story or biological vocabulary is still fuzzy.' \
 		'2. Read README.md for the repository contract and WORKFLOW_STAGE_GUIDE.md for stage ownership.' \
@@ -364,18 +365,18 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) --summary > "$(TOUR_DIR_ABS)/summary.txt"
 	$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" > "$(TOUR_DIR_ABS)/verify.txt"
 	cp README.md "$(TOUR_DIR_ABS)/README.md"
-	cp DOMAIN_GUIDE.md "$(TOUR_DIR_ABS)/DOMAIN_GUIDE.md"
-	cp WORKFLOW_STAGE_GUIDE.md "$(TOUR_DIR_ABS)/WORKFLOW_STAGE_GUIDE.md"
-	cp CHECKPOINT_GUIDE.md "$(TOUR_DIR_ABS)/CHECKPOINT_GUIDE.md"
-	cp EXACT_SOURCE_GUIDE.md "$(TOUR_DIR_ABS)/EXACT_SOURCE_GUIDE.md"
-	cp ARCHITECTURE.md "$(TOUR_DIR_ABS)/ARCHITECTURE.md"
+	cp $(DOCS_DIR)/DOMAIN_GUIDE.md "$(TOUR_DIR_ABS)/DOMAIN_GUIDE.md"
+	cp $(DOCS_DIR)/WORKFLOW_STAGE_GUIDE.md "$(TOUR_DIR_ABS)/WORKFLOW_STAGE_GUIDE.md"
+	cp $(DOCS_DIR)/CHECKPOINT_GUIDE.md "$(TOUR_DIR_ABS)/CHECKPOINT_GUIDE.md"
+	cp $(DOCS_DIR)/EXACT_SOURCE_GUIDE.md "$(TOUR_DIR_ABS)/EXACT_SOURCE_GUIDE.md"
+	cp $(DOCS_DIR)/ARCHITECTURE.md "$(TOUR_DIR_ABS)/ARCHITECTURE.md"
 	cp Snakefile "$(TOUR_DIR_ABS)/Snakefile"
-	cp PROOF_GUIDE.md "$(TOUR_DIR_ABS)/PROOF_GUIDE.md"
-	cp FILE_API.md "$(TOUR_DIR_ABS)/FILE_API.md"
-	cp PUBLISH_REVIEW_GUIDE.md "$(TOUR_DIR_ABS)/PUBLISH_REVIEW_GUIDE.md"
-	cp PROFILE_AUDIT_GUIDE.md "$(TOUR_DIR_ABS)/PROFILE_AUDIT_GUIDE.md"
-	cp INCIDENT_REVIEW_GUIDE.md "$(TOUR_DIR_ABS)/INCIDENT_REVIEW_GUIDE.md"
-	cp EXTENSION_GUIDE.md "$(TOUR_DIR_ABS)/EXTENSION_GUIDE.md"
+	cp $(DOCS_DIR)/PROOF_GUIDE.md "$(TOUR_DIR_ABS)/PROOF_GUIDE.md"
+	cp $(DOCS_DIR)/FILE_API.md "$(TOUR_DIR_ABS)/FILE_API.md"
+	cp $(DOCS_DIR)/PUBLISH_REVIEW_GUIDE.md "$(TOUR_DIR_ABS)/PUBLISH_REVIEW_GUIDE.md"
+	cp $(DOCS_DIR)/PROFILE_AUDIT_GUIDE.md "$(TOUR_DIR_ABS)/PROFILE_AUDIT_GUIDE.md"
+	cp $(DOCS_DIR)/INCIDENT_REVIEW_GUIDE.md "$(TOUR_DIR_ABS)/INCIDENT_REVIEW_GUIDE.md"
+	cp $(DOCS_DIR)/EXTENSION_GUIDE.md "$(TOUR_DIR_ABS)/EXTENSION_GUIDE.md"
 	cp config/config.yaml "$(TOUR_DIR_ABS)/config.yaml"
 	cp config/schema.yaml "$(TOUR_DIR_ABS)/schema.yaml"
 	cp workflow/rules/common.smk "$(TOUR_DIR_ABS)/workflow/rules/common.smk"
@@ -391,7 +392,7 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 	cp "$(PUBLISH_DIR_ABS)/summary.json" "$(TOUR_DIR_ABS)/summary.json"
 	cp "$(PUBLISH_DIR_ABS)/summary.tsv" "$(TOUR_DIR_ABS)/summary.tsv"
 	cp "$(PUBLISH_DIR_ABS)/report/index.html" "$(TOUR_DIR_ABS)/report/index.html"
-	cp TOUR.md "$(TOUR_DIR_ABS)/TOUR.md"
+	cp $(DOCS_DIR)/TOUR.md "$(TOUR_DIR_ABS)/TOUR.md"
 	@printf '%s\n' \
 		'Executed review route:' \
 		'  1. Read README.md and DOMAIN_GUIDE.md to reset the repository and domain contract.' \

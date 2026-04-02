@@ -31,7 +31,7 @@ stable published contract and how is it defended?"
 
 ## Recommended Route
 
-1. Read `capstone/PUBLISH_REVIEW_GUIDE.md`.
+1. Read `capstone/docs/PUBLISH_REVIEW_GUIDE.md`.
 2. Run `make -C capstone verify-report` or the course-level equivalent.
 3. Compare the report bundle with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Proof Matrix](../guides/proof-matrix.md).
 

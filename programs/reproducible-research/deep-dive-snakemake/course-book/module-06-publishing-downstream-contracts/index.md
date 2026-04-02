@@ -60,9 +60,9 @@ snakemake publish/v1/manifest.json
 Capstone corroboration:
 
 * inspect `capstone/publish/v1/`
-* inspect `capstone/FILE_API.md`
+* inspect `capstone/docs/FILE_API.md`
 * inspect `capstone/workflow/rules/publish.smk`
-* inspect `capstone/TOUR.md`
+* inspect `capstone/docs/TOUR.md`
 
 ## At a Glance
 

@@ -31,7 +31,7 @@ pressure, or workflow debugging with evidence instead of intuition.
 
 ## Recommended Route
 
-1. Read `capstone/INCIDENT_REVIEW_GUIDE.md`.
+1. Read `capstone/docs/INCIDENT_REVIEW_GUIDE.md`.
 2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command for the current symptom.
 3. Compare the result with [Profile Audit Guide](profile-audit-guide.md) and [Publish Review Guide](publish-review-guide.md) if the problem spans multiple boundaries.
 

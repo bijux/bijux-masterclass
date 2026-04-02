@@ -31,7 +31,7 @@ than as a fully executed proof bundle.
 
 ## Recommended Route
 
-1. Read `capstone/WALKTHROUGH_GUIDE.md`.
+1. Read `capstone/docs/WALKTHROUGH_GUIDE.md`.
 2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`.
 3. Read the copied `Snakefile`, rule files, `list-rules.txt`, and `dryrun.txt` in that order.
 4. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to write down what is visible before execution.

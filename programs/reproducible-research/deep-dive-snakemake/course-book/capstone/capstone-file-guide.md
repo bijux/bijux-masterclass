@@ -41,9 +41,9 @@ file level.
 | `capstone/workflow/rules/common.smk` | establishes shared functions, path logic, and workflow-wide conventions |
 | `capstone/workflow/rules/preprocess.smk` | contains discovery and per-sample processing contracts |
 | `capstone/workflow/rules/publish.smk` | defines the stable publish boundary and integrity evidence |
-| `capstone/FILE_API.md` | documents which files are public contracts and which remain internal |
+| `capstone/docs/FILE_API.md` | documents which files are public contracts and which remain internal |
 | `capstone/Makefile` | exposes the learner-facing proof and verification commands |
-| `capstone/TOUR.md` | explains the repository as a guided review surface rather than only a runnable workflow |
+| `capstone/docs/TOUR.md` | explains the repository as a guided review surface rather than only a runnable workflow |
 
 [Back to top](#top)
 
@@ -75,7 +75,7 @@ file level.
 4. `capstone/workflow/rules/preprocess.smk`
 5. `capstone/workflow/rules/summarize_report.smk`
 6. `capstone/workflow/rules/publish.smk`
-7. `capstone/FILE_API.md`
+7. `capstone/docs/FILE_API.md`
 8. `capstone/Makefile`
 9. `capstone/profiles/`
 10. `capstone/tests/`

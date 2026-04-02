@@ -38,7 +38,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | the workflow exposes its public rule surface clearly | `make -C capstone walkthrough` | `capstone/Snakefile`, `artifacts/make/workflow-walkthrough/list-rules.txt` |
 | dynamic discovery becomes explicit evidence instead of a hidden side effect | `make -C capstone verify` | `capstone/results/discovered_samples.json`, `capstone/publish/v1/discovered_samples.json` |
 | profiles change execution policy without changing workflow meaning | `make -C capstone wf-dryrun PROFILE=profiles/local` and `PROFILE=profiles/ci` | `capstone/profiles/`, `capstone/Makefile` |
-| promoted outputs are smaller than the full internal repository state | `make -C capstone tour` | `capstone/FILE_API.md`, `capstone/publish/v1/`, `capstone/results/` |
+| promoted outputs are smaller than the full internal repository state | `make -C capstone tour` | `capstone/docs/FILE_API.md`, `capstone/publish/v1/`, `capstone/results/` |
 
 [Back to top](#top)
 
@@ -51,7 +51,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | the workflow validates configuration before execution | `make -C capstone validate-config` | `capstone/config/config.yaml`, `capstone/config/schema.yaml` |
 | the workflow can explain its plan before a run | `make -C capstone wf-dryrun` | `artifacts/make/workflow-walkthrough/dryrun.txt`, `capstone/workflow/rules/` |
 | the publish bundle can defend itself after execution | `make -C capstone verify-artifacts` | `capstone/publish/v1/manifest.json`, `capstone/publish/v1/provenance.json` |
-| the publish boundary is reviewable as a durable contract | `make -C capstone verify-report` | `capstone/FILE_API.md`, `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` |
+| the publish boundary is reviewable as a durable contract | `make -C capstone verify-report` | `capstone/docs/FILE_API.md`, `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` |
 | the repository can prove itself through one stronger end-to-end route | `make -C capstone confirm` | `capstone/Makefile`, `capstone/tests/` |
 | workflow incidents can be reviewed with narrower evidence than a full rewrite | `make -C capstone selftest` or `make -C capstone tour` | `capstone/tests/selftest.sh`, `capstone/logs/`, `artifacts/tour/reproducible-research/deep-dive-snakemake/` |
 
@@ -60,7 +60,7 @@ The root-level equivalents for the specialized review bundles are:
 - `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`
 - `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit`
 - `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-selftest`
-| the executed workflow tour is reviewable as evidence | `make -C capstone tour` | `artifacts/make/workflow-tour/`, `capstone/TOUR.md` |
+| the executed workflow tour is reviewable as evidence | `make -C capstone tour` | `artifacts/make/workflow-tour/`, `capstone/docs/TOUR.md` |
 
 [Back to top](#top)
 
@@ -72,7 +72,7 @@ The root-level equivalents for the specialized review bundles are:
 | --- | --- | --- |
 | where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `capstone/README.md` |
 | what does this workflow claim it will build | `make -C capstone wf-dryrun` | `capstone/Snakefile` |
-| what exactly is public for downstream trust | `make -C capstone verify-artifacts` | `capstone/FILE_API.md` |
+| what exactly is public for downstream trust | `make -C capstone verify-artifacts` | `capstone/docs/FILE_API.md` |
 | which surface explains dynamic discovery honestly | `make -C capstone verify` | `capstone/workflow/rules/preprocess.smk` |
 | what would I inspect before migration | `make -C capstone confirm` | `capstone/README.md` |
 

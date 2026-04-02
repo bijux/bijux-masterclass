@@ -111,7 +111,7 @@ make source-baseline-check
 make source-bundle
 ```
 
-Then read `SOURCE_BASELINE_GUIDE.md` before distributing the archive.
+Then read [`SOURCE_BASELINE_GUIDE.md`](docs/SOURCE_BASELINE_GUIDE.md) before distributing the archive.
 
 [Back to top](#top)
 
@@ -333,12 +333,41 @@ Internal directories (`results/`, `logs/`, `benchmarks/`, `.snakemake/`) are not
 
 ## Review Route By Question
 
-- Repository ownership: `ARCHITECTURE.md`
-- First contact without execution: `WALKTHROUGH_GUIDE.md`
-- Publish-boundary trust: `PUBLISH_REVIEW_GUIDE.md`
-- Execution-policy differences: `PROFILE_AUDIT_GUIDE.md`
-- Determinism and workflow incidents: `INCIDENT_REVIEW_GUIDE.md`
-- Future changes and repository growth: `EXTENSION_GUIDE.md`
+- Repository ownership: [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- First contact without execution: [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md)
+- Publish-boundary trust: [`PUBLISH_REVIEW_GUIDE.md`](docs/PUBLISH_REVIEW_GUIDE.md)
+- Execution-policy differences: [`PROFILE_AUDIT_GUIDE.md`](docs/PROFILE_AUDIT_GUIDE.md)
+- Determinism and workflow incidents: [`INCIDENT_REVIEW_GUIDE.md`](docs/INCIDENT_REVIEW_GUIDE.md)
+- Future changes and repository growth: [`EXTENSION_GUIDE.md`](docs/EXTENSION_GUIDE.md)
+
+[Back to top](#top)
+
+---
+
+## Documentation set
+
+All capstone documentation lives under [`docs/`](docs/). Use this index when you want
+the full guide surface from one place:
+
+- [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+- [`CHECKPOINT_GUIDE.md`](docs/CHECKPOINT_GUIDE.md)
+- [`CONFIG_CONTRACT_GUIDE.md`](docs/CONFIG_CONTRACT_GUIDE.md)
+- [`DOMAIN_GUIDE.md`](docs/DOMAIN_GUIDE.md)
+- [`EXACT_SOURCE_GUIDE.md`](docs/EXACT_SOURCE_GUIDE.md)
+- [`EXECUTION_EVIDENCE_GUIDE.md`](docs/EXECUTION_EVIDENCE_GUIDE.md)
+- [`EXTENSION_GUIDE.md`](docs/EXTENSION_GUIDE.md)
+- [`FILE_API.md`](docs/FILE_API.md)
+- [`INCIDENT_REVIEW_GUIDE.md`](docs/INCIDENT_REVIEW_GUIDE.md)
+- [`MODULE_BOUNDARY_GUIDE.md`](docs/MODULE_BOUNDARY_GUIDE.md)
+- [`PROFILE_AUDIT_GUIDE.md`](docs/PROFILE_AUDIT_GUIDE.md)
+- [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md)
+- [`PUBLISH_REVIEW_GUIDE.md`](docs/PUBLISH_REVIEW_GUIDE.md)
+- [`RESULTS_BOUNDARY_GUIDE.md`](docs/RESULTS_BOUNDARY_GUIDE.md)
+- [`REVIEW_ROUTE_GUIDE.md`](docs/REVIEW_ROUTE_GUIDE.md)
+- [`SOURCE_BASELINE_GUIDE.md`](docs/SOURCE_BASELINE_GUIDE.md)
+- [`TOUR.md`](docs/TOUR.md)
+- [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md)
+- [`WORKFLOW_STAGE_GUIDE.md`](docs/WORKFLOW_STAGE_GUIDE.md)
 
 [Back to top](#top)
 

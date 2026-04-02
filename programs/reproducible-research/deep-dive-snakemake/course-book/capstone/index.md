@@ -40,7 +40,7 @@ course’s strongest claims become runnable:
 ## Best entrypoints
 
 - Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-snakemake/capstone/README.md)
-- Publish contract: [`capstone/FILE_API.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-snakemake/capstone/FILE_API.md)
+- Publish contract: [`capstone/docs/FILE_API.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-snakemake/capstone/docs/FILE_API.md)
 - Workflow root: [`capstone/Snakefile`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-snakemake/capstone/Snakefile)
 
 ## Core commands

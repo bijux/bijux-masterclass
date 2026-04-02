@@ -82,7 +82,7 @@ Use the question, not your anxiety level, to choose the route:
 | 10 Mastery | review the whole repository as a long-lived workflow product | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
 
 When the main question is repository ownership rather than a single module idea, use
-`capstone/ARCHITECTURE.md` first and then return to the row that matches your current module.
+`capstone/docs/ARCHITECTURE.md` first and then return to the row that matches your current module.
 
 [Back to top](#top)
 
