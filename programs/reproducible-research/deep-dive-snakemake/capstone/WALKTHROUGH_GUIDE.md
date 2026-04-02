@@ -30,7 +30,8 @@ flowchart LR
 
 This guide explains the lightest honest entry into the capstone. The walkthrough bundle
 exists for first contact: it shows the visible rule surface, dry-run plan, policy files,
-and contract-enforcement scripts before the learner has to reason about full execution.
+contract-enforcement scripts, and the core study guides before the learner has to reason
+about full execution.
 
 ---
 
@@ -51,6 +52,7 @@ Use `make tour` later when you need executed proof artifacts.
 ## What The Bundle Is For
 
 - `README.md` explains the repository contract
+- `DOMAIN_GUIDE.md`, `WORKFLOW_STAGE_GUIDE.md`, and `CHECKPOINT_GUIDE.md` explain the smallest human-first story
 - `Snakefile`, copied rule files, and `list-rules.txt` explain visible workflow meaning
 - `dryrun.txt` explains the declared plan before execution
 - copied profile and config files explain policy and validation inputs
@@ -64,11 +66,11 @@ Use `make tour` later when you need executed proof artifacts.
 ## Best Review Order
 
 1. `README.md`
-2. `route.txt`
-3. `Snakefile`
-4. `list-rules.txt`
-5. `dryrun.txt`
-6. `FILE_API.md`
+2. `DOMAIN_GUIDE.md` and `WORKFLOW_STAGE_GUIDE.md`
+3. `route.txt`
+4. `CHECKPOINT_GUIDE.md` and `Snakefile`
+5. `list-rules.txt` and `dryrun.txt`
+6. `ARCHITECTURE.md`, `EXACT_SOURCE_GUIDE.md`, and `FILE_API.md`
 7. `commands.txt` and `review-questions.txt`
 
 [Back to top](#top)

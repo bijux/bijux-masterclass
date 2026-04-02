@@ -197,10 +197,22 @@ selftest: ## Prove deterministic publish behavior across core counts
 proof: tour verify-report profile-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
-	@mkdir -p "$(WALKTHROUGH_DIR_ABS)/workflow/rules" "$(WALKTHROUGH_DIR_ABS)/profiles" "$(WALKTHROUGH_DIR_ABS)/scripts"
+	@mkdir -p \
+		"$(WALKTHROUGH_DIR_ABS)/workflow/rules" \
+		"$(WALKTHROUGH_DIR_ABS)/workflow/modules/qc_module" \
+		"$(WALKTHROUGH_DIR_ABS)/workflow/modules/screen_module" \
+		"$(WALKTHROUGH_DIR_ABS)/workflow/scripts" \
+		"$(WALKTHROUGH_DIR_ABS)/profiles" \
+		"$(WALKTHROUGH_DIR_ABS)/scripts"
 	$(SNAKEMAKE) --list-rules > "$(WALKTHROUGH_DIR_ABS)/list-rules.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(WALKTHROUGH_DIR_ABS)/dryrun.txt"
 	cp README.md "$(WALKTHROUGH_DIR_ABS)/README.md"
+	cp DOMAIN_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/DOMAIN_GUIDE.md"
+	cp WORKFLOW_STAGE_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/WORKFLOW_STAGE_GUIDE.md"
+	cp CHECKPOINT_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/CHECKPOINT_GUIDE.md"
+	cp EXACT_SOURCE_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/EXACT_SOURCE_GUIDE.md"
+	cp ARCHITECTURE.md "$(WALKTHROUGH_DIR_ABS)/ARCHITECTURE.md"
+	cp WALKTHROUGH_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/WALKTHROUGH_GUIDE.md"
 	cp PROOF_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/PROOF_GUIDE.md"
 	cp Snakefile "$(WALKTHROUGH_DIR_ABS)/Snakefile"
 	cp FILE_API.md "$(WALKTHROUGH_DIR_ABS)/FILE_API.md"
@@ -210,21 +222,27 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	cp workflow/rules/preprocess.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/preprocess.smk"
 	cp workflow/rules/summarize_report.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/summarize_report.smk"
 	cp workflow/rules/publish.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/publish.smk"
+	cp workflow/modules/qc_module/Snakefile "$(WALKTHROUGH_DIR_ABS)/workflow/modules/qc_module/Snakefile"
+	cp workflow/modules/screen_module/Snakefile "$(WALKTHROUGH_DIR_ABS)/workflow/modules/screen_module/Snakefile"
+	cp workflow/scripts/provenance.py "$(WALKTHROUGH_DIR_ABS)/workflow/scripts/provenance.py"
 	cp profiles/local/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/local.yaml"
 	cp profiles/ci/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/ci.yaml"
+	cp profiles/slurm/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/slurm.yaml"
 	cp scripts/validate_config.py "$(WALKTHROUGH_DIR_ABS)/scripts/validate_config.py"
 	cp scripts/verify_publish.py "$(WALKTHROUGH_DIR_ABS)/scripts/verify_publish.py"
 	cp TOUR.md "$(WALKTHROUGH_DIR_ABS)/TOUR.md"
 	@printf '%s\n' \
-		'1. Read README.md to understand the repository contract.' \
-		'2. Read PROOF_GUIDE.md to map claims to workflow evidence.' \
-		'3. Read Snakefile and the copied rule files for the workflow shape and module boundaries.' \
-		'4. Read list-rules.txt and dryrun.txt to inspect the visible rule surface and plan.' \
-		'5. Read profiles/local.yaml and profiles/ci.yaml to separate workflow meaning from execution policy.' \
-		'6. Read scripts/validate_config.py and scripts/verify_publish.py to see how config and publish contracts are enforced.' \
-		'7. Read FILE_API.md to see which outputs are public contracts.' \
-		'8. Run make selftest when you want deterministic execution proof.' \
-		'9. Run make tour when you want executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
+		'1. Read DOMAIN_GUIDE.md if the sample story or biological vocabulary is still fuzzy.' \
+		'2. Read README.md for the repository contract and WORKFLOW_STAGE_GUIDE.md for stage ownership.' \
+		'3. Read CHECKPOINT_GUIDE.md and Snakefile to see how discovery becomes a durable artifact.' \
+		'4. Read the copied rule files, module Snakefiles, and list-rules.txt for visible workflow meaning.' \
+		'5. Read dryrun.txt to inspect the declared plan before execution.' \
+		'6. Read ARCHITECTURE.md and EXACT_SOURCE_GUIDE.md when the next file is not obvious.' \
+		'7. Read profiles/*.yaml, config.yaml, and schema.yaml to separate workflow meaning from policy.' \
+		'8. Read workflow/scripts/provenance.py and scripts/*.py to see how provenance, config, and publish checks are enforced.' \
+		'9. Read FILE_API.md to see which outputs are public contracts.' \
+		'10. Run make selftest when the next honest question is determinism.' \
+		'11. Run make tour when you need executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
 	@printf '%s\n' \
 		'Public entry commands:' \
 		'  make walkthrough' \
@@ -235,8 +253,9 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 		'  make tour' > "$(WALKTHROUGH_DIR_ABS)/commands.txt"
 	@printf '%s\n' \
 		'Review questions:' \
-		'  Which files define the durable public workflow contract?' \
+		'  Which file should a first-time learner read before touching the workflow itself?' \
 		'  Where does dynamic discovery become explicit and reviewable?' \
+		'  Which layer owns workflow meaning, operating policy, and downstream trust?' \
 		'  Which published outputs are safe for downstream trust?' \
 		'  Which guarantees come from clean-room confirmation rather than a dry-run?' > "$(WALKTHROUGH_DIR_ABS)/review-questions.txt"
 	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(WALKTHROUGH_DIR_ABS)" --output "$(WALKTHROUGH_DIR_ABS)/bundle-manifest.json"
