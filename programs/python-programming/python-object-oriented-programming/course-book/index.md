@@ -114,6 +114,7 @@ By the end of the course, you should be able to:
 ## Reading order
 
 - Start with [Start Here](start-here.md).
+- Continue with [Course Guide](course-guide.md) and [Learning Contract](learning-contract.md).
 - Start with [Orientation](module-00-orientation/index.md).
 - Work through Modules 01 to 10 in order.
 - Use the [Capstone](capstone.md) to connect the prose to runnable code.
