@@ -38,6 +38,14 @@ Capstone corroboration:
 * inspect `capstone/Makefile` targets such as `wf-dryrun`, `verify`, and `tour`
 * inspect `capstone/tests/test_workflow_integration.py`
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| workflow cost model | "Is this run slow because of planning, scheduling, storage, or the actual tool?" | inspect the capstone after you can name the likely cost class first |
+| observability surfaces | "Which logs, benchmarks, and summaries actually help explain what happened?" | compare `logs/`, `benchmarks/`, and dry-run output together |
+| incident response | "What evidence should I collect before changing the workflow?" | use verification and tour targets as the review path |
+
 ---
 
 <a id="toc"></a>

@@ -38,6 +38,14 @@ Capstone corroboration:
 * inspect `capstone/profiles/`
 * inspect `capstone/tests/` and `capstone/Makefile`
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| evidence-first review | "What should I inspect before I suggest a redesign?" | use the capstone only after you can describe its current contract honestly |
+| boundary-safe migration | "Which single boundary can move without making the rest of the workflow vague?" | compare file API, profiles, and tests together before proposing change |
+| governance | "Which review rules keep this workflow healthy two years from now?" | use the capstone as a small governance example, not only a build demo |
+
 ---
 
 <a id="toc"></a>

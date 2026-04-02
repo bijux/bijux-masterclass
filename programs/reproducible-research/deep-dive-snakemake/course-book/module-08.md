@@ -37,6 +37,14 @@ Capstone corroboration:
 * inspect `capstone/profiles/slurm/config.yaml`
 * inspect `capstone/Makefile`
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| profiles as policy | "Which settings may change execution context without changing workflow meaning?" | inspect profile files only after the policy-versus-semantics split is explicit |
+| executor and storage boundaries | "What should stay true when the workflow moves from local runs to CI or SLURM?" | compare local, CI, and SLURM surfaces side by side |
+| failure discipline | "Which retries or staging choices are operational help, and which would hide a correctness problem?" | use the capstone when you are ready to read policy as evidence |
+
 ---
 
 <a id="toc"></a>

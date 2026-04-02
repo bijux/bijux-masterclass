@@ -37,6 +37,14 @@ Capstone corroboration:
 * inspect `capstone/FILE_API.md`
 * inspect `capstone/TOUR.md`
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| repository boundaries | "Where should a maintainer look first to understand the workflow shape?" | inspect the capstone after the routing-versus-implementation distinction is clear |
+| file APIs | "Which paths are a public promise and which are only implementation detail?" | compare the workflow tree with `FILE_API.md` deliberately |
+| reuse without hiding meaning | "How do we reduce duplication without turning the workflow into a private framework?" | use the capstone once module boundaries already feel reviewable |
+
 ---
 
 <a id="toc"></a>

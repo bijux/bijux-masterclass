@@ -36,6 +36,14 @@ Capstone corroboration:
 * inspect `capstone/workflow/rules/publish.smk`
 * inspect `capstone/TOUR.md`
 
+## At a Glance
+
+| Focus | Learner question | Capstone timing |
+| --- | --- | --- |
+| publish boundaries | "Which files are internal workflow state, and which files are safe for others to trust?" | inspect `publish/v1/` only after the internal-versus-public split is explicit |
+| versioned contracts | "How do downstream users know what changed and what remained stable?" | compare publish structure and the file API together |
+| proof artifacts | "Which manifests and reports defend the published bundle without becoming the contract themselves?" | use the capstone when you are ready to review evidence surfaces intentionally |
+
 ---
 
 <a id="toc"></a>
