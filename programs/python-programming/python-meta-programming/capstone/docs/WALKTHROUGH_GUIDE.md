@@ -25,6 +25,11 @@ Use this guide when you want the capstone as a human review route rather than as
 of advanced Python mechanisms. The goal is to see the runtime from the public surface
 before you dive into metaclasses, descriptors, and wrappers.
 
+## First pass versus deeper pass
+
+- First pass: stop after `make trace` if the goal is to understand one honest public story from schema to invocation history.
+- Deeper pass: add `make confirm` only when the question becomes executable confidence rather than learner-facing explanation.
+
 ## Recommended walkthrough
 
 1. Run `make manifest` to inspect the observable plugin schema.
@@ -54,6 +59,11 @@ before you dive into metaclasses, descriptors, and wrappers.
 - treating manifest output as if it proved runtime invocation by itself
 - skipping trace review and missing the recorded wrapper history
 - reading the whole capstone without one explicit learner-facing order
+
+## Good stopping point
+
+Stop when you can explain one plugin action from public manifest to trace output without
+opening the entire source tree or defaulting to the full test route.
 
 Read [SCENARIO_SELECTION_GUIDE.md](SCENARIO_SELECTION_GUIDE.md) when the order is clear
 but the right starting route for the current question is not.
