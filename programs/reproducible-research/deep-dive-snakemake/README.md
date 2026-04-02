@@ -41,9 +41,20 @@ This repository offers a structured beginner-to-mastery path through Snakemake s
 
 The repository now separates three surfaces clearly:
 
-- `course-book/guides/` for learner entry, study routes, and capstone reading routes
-- `course-book/reference/` for stable maps, glossary pages, and review checklists
+- `course-book/guides/` for learner entry, pressure routes, promise maps, checkpoints, and capstone reading routes
+- `course-book/reference/` for stable maps, glossary pages, anti-pattern routing, and review checklists
 - `course-book/module-00-orientation/` through `course-book/module-10-*/` for the actual learning arc
+
+Use the course in this order:
+
+1. `course-book/guides/start-here.md`
+2. `course-book/guides/pressure-routes.md`
+3. `course-book/guides/course-guide.md`
+4. `course-book/guides/module-promise-map.md`
+5. `course-book/guides/module-checkpoints.md`
+6. `course-book/module-00-orientation/index.md`
+7. Modules `01` to `10` in order
+8. `course-book/guides/proof-ladder.md` and `course-book/guides/capstone-map.md` once the local model is clear
 
 [Back to top](#top)
 
@@ -91,6 +102,16 @@ Read on the website: https://bijux.io/bijux-masterclass/reproducible-research/de
 - checksummed manifest and artifact sanity checks
 - a Make-driven verification flow
 
+### 3) Review surfaces that keep the course honest
+
+The course now includes dedicated support pages for:
+
+- topic boundaries and blind spots
+- module promise tracking
+- module-end checkpoints
+- anti-pattern routing
+- proof sizing and capstone escalation
+
 [Back to top](#top)
 
 ---
@@ -124,12 +145,15 @@ Open the local URL displayed by MkDocs.
 ### Run the capstone reference workflow
 
 ```bash
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour
 make PROGRAM=reproducible-research/deep-dive-snakemake test
 ```
 
 This executes formatting/linting/tests, a dry-run, full workflow execution, and artifact validation.
 
-Successful completion confirms the workflow's contract on your system.
+Use `capstone-walkthrough` first, `capstone-tour` when you need an executed repository
+route, and `test` for the ordinary proof pass.
 
 [Back to top](#top)
 
@@ -137,10 +161,10 @@ Successful completion confirms the workflow's contract on your system.
 
 ## How to study this program well
 
-1. Start with `course-book/guides/start-here.md`, then `course-book/module-00-orientation/index.md`.
-2. Work through Modules 01 to 10 in order because later workflow patterns depend on earlier file-contract discipline.
-3. Treat each module as a design checkpoint: read the overview, then the detailed module body, then inspect the capstone for the same idea.
-4. Use `course-book/guides/capstone-map.md` and `course-book/guides/proof-matrix.md` when you need to enter the reference workflow deliberately instead of browsing randomly.
+1. Start with `course-book/guides/start-here.md`, then `course-book/guides/pressure-routes.md` if your context is not calm first-contact study.
+2. Use `course-book/guides/module-promise-map.md` and `course-book/guides/module-checkpoints.md` to keep the module arc honest as you go.
+3. Work through Modules 01 to 10 in order because later workflow patterns depend on earlier file-contract discipline.
+4. Use `course-book/guides/proof-ladder.md`, `course-book/guides/capstone-map.md`, and `course-book/guides/proof-matrix.md` when you need to enter the reference workflow deliberately instead of browsing randomly.
 5. Re-run the capstone proof targets regularly so the workflow stays executable in your head, not only in prose.
 6. Use dry-runs, summaries, and proof artifacts as learning tools, not only as debugging tools.
 
