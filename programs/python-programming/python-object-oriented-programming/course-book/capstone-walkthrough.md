@@ -25,7 +25,7 @@ alone.
 
 ## Recommended route
 
-1. Read [capstone/TOUR.md](../capstone/TOUR.md).
+1. Read `capstone/TOUR.md`.
 2. Run `make demo` in the capstone directory.
 3. Compare the printed cycle report and snapshot with the ownership claims in [Capstone Architecture Guide](capstone-architecture-guide.md).
 4. Revisit the relevant module chapter if the flow feels surprising.

@@ -25,10 +25,11 @@ evidence in the capstone.
 
 ## Proof route
 
-1. Read [capstone/PROOF_GUIDE.md](../capstone/PROOF_GUIDE.md).
+1. Read `capstone/PROOF_GUIDE.md`.
 2. Run `make confirm` for executable verification.
 3. Run `make demo` for a human-readable scenario.
-4. Use [Capstone Review Checklist](capstone-review-checklist.md) to decide whether the evidence is strong enough.
+4. Run `make proof` when you want the sanctioned end-to-end route.
+5. Use [Capstone Review Checklist](capstone-review-checklist.md) to decide whether the evidence is strong enough.
 
 ## What you should be able to answer after proof review
 

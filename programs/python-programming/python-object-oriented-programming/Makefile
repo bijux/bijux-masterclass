@@ -16,6 +16,19 @@ help: ## Show available targets
 test: ## Run the capstone confirmation suite
 	@$(RUN_CAPSTONE) confirm
 
+.PHONY: demo
+demo: ## Run the capstone scenario walkthrough
+	@$(RUN_CAPSTONE) demo
+
+.PHONY: inspect
+inspect: ## Inspect the capstone learner-facing state
+	@$(RUN_CAPSTONE) inspect-summary
+	@$(RUN_CAPSTONE) inspect-history
+
+.PHONY: proof
+proof: ## Run the full capstone proof route
+	@$(RUN_CAPSTONE) proof
+
 .PHONY: clean
 clean: ## Remove build artifacts
 	@rm -rf $(COURSE_VENV_DIR) $(SITE_DIR) .pytest_cache .ruff_cache .mypy_cache

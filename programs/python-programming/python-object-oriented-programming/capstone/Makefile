@@ -19,6 +19,21 @@ confirm: test ## Run the executable validation suite
 demo: ## Run the capstone scenario walkthrough
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo
 
+.PHONY: inspect-summary
+inspect-summary: ## Inspect the scenario summary
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary
+
+.PHONY: inspect-rules
+inspect-rules: ## Inspect the rule lifecycle summary
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rules
+
+.PHONY: inspect-history
+inspect-history: ## Inspect incident history by metric
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history
+
+.PHONY: proof
+proof: confirm demo inspect-summary inspect-history ## Run the full learner proof route
+
 .PHONY: clean
 clean: ## Remove generated caches
 	@rm -rf .pytest_cache

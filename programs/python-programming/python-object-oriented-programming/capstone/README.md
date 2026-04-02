@@ -54,13 +54,13 @@ The scenario is deliberately human and operational:
 From this directory:
 
 ```bash
-make confirm
+make proof
 ```
 
 Or from the repository root:
 
 ```bash
-make PROGRAM=python-programming/python-object-oriented-programming test
+make PROGRAM=python-programming/python-object-oriented-programming proof
 ```
 
 Proof and review route:

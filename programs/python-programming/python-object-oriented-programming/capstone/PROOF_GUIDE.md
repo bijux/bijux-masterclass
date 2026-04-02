@@ -29,6 +29,8 @@ because the learner can inspect behavior directly.
 
 - `make confirm` runs the executable test suite.
 - `make demo` runs the human-readable monitoring scenario.
+- `make inspect-summary` and `make inspect-history` expose learner-facing review surfaces.
+- `make proof` runs the sanctioned end-to-end route.
 
 ## What each route proves
 
@@ -43,6 +45,6 @@ proves that the system remains understandable as a story. You need both.
 ## Best review pattern
 
 1. State the claim you want to check.
-2. Choose the command that produces the closest evidence.
+2. Choose the command that produces the closest evidence, or use `make proof` for the full route.
 3. Inspect the relevant code file.
 4. Decide whether the evidence matches the design claim or only hints at it.

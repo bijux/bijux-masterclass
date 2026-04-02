@@ -64,6 +64,18 @@ endif
 test: ## Run tests for the selected program
 	@$(RUN_PROGRAM) test
 
+.PHONY: demo
+demo: ## Run the selected program's learner-facing capstone walkthrough
+	@$(RUN_PROGRAM) demo
+
+.PHONY: inspect
+inspect: ## Inspect the selected program's learner-facing capstone state
+	@$(RUN_PROGRAM) inspect
+
+.PHONY: proof
+proof: ## Run the selected program's strongest learner-facing proof route
+	@$(RUN_PROGRAM) proof
+
 .PHONY: capstone-walkthrough
 capstone-walkthrough: ## Run the selected program's learner-facing capstone walkthrough
 	@$(RUN_PROGRAM) capstone-walkthrough
