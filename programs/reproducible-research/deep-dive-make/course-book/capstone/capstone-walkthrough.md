@@ -40,9 +40,9 @@ step.
 Use this when you want the minimum useful capstone pass.
 
 1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough`
-2. Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/WALKTHROUGH_GUIDE.md)
+2. Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/WALKTHROUGH_GUIDE.md)
 3. Run `make PROGRAM=reproducible-research/deep-dive-make inspect`
-4. Read `capstone/Makefile` and identify the public targets with the local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/TARGET_GUIDE.md)
+4. Read `capstone/Makefile` and identify the public targets with the local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/TARGET_GUIDE.md)
 5. Read `capstone/tests/run.sh` and list the invariants it proves
 6. Run `make PROGRAM=reproducible-research/deep-dive-make test`
 7. Inspect one repro under `capstone/repro/`
@@ -57,7 +57,7 @@ Goal: leave with a clear picture of what the capstone promises and how it proves
 
 Use this after Modules 03-06.
 
-1. Read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/ARCHITECTURE.md)
+1. Read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/ARCHITECTURE.md)
 2. Follow object discovery in `capstone/mk/objects.mk`
 3. Follow modeled inputs in `capstone/mk/stamps.mk`
 4. Trace generated header production from `scripts/gen_dynamic_h.py`
@@ -74,8 +74,8 @@ Goal: see how truthful graph modeling survives a more realistic repository.
 
 Use this during Modules 07-10.
 
-1. Read the capstone's local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/TARGET_GUIDE.md)
-2. Read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/ARCHITECTURE.md)
+1. Read the capstone's local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/TARGET_GUIDE.md)
+2. Read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/ARCHITECTURE.md)
 3. Read `capstone/mk/*.mk` for layer responsibilities
 4. Inspect `capstone/scripts/mkdist.py` for release boundary design
 5. Review `capstone/repro/` as migration-risk examples

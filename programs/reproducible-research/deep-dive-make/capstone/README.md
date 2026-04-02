@@ -250,7 +250,7 @@ If you are still unsure, use this escalation order:
 6. `make confirm`
 
 When the question is "can I distribute this capstone as source right now?", use
-`SOURCE_BASELINE_GUIDE.md` together with `gmake source-baseline-check` and
+[`SOURCE_BASELINE_GUIDE.md`](docs/SOURCE_BASELINE_GUIDE.md) together with `gmake source-baseline-check` and
 `gmake source-bundle`.
 [Back to top](#top)
 
@@ -280,7 +280,7 @@ The intent is to model a “real” build in miniature: the same failure modes s
 
 ---
 ## Proof guide
-Use [the capstone `PROOF_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/PROOF_GUIDE.md)
+Use [the capstone `PROOF_GUIDE.md`](docs/PROOF_GUIDE.md)
 when you want the shortest route from a capstone claim to the target, file, or failure
 surface that proves it.
 
@@ -292,13 +292,13 @@ When a proof surface points you to a generated bundle, inspect that bundle's
 
 The local guide set is intentionally small and non-overlapping:
 
-* `WALKTHROUGH_GUIDE.md` for first-pass reading order
-* `TARGET_GUIDE.md` for stable target selection
-* `ARCHITECTURE.md` for layer ownership
-* `SELFTEST_GUIDE.md` for saved selftest evidence
-* `CONTRACT_AUDIT_GUIDE.md` for public-boundary review
-* `INCIDENT_REVIEW_GUIDE.md` for executed failure review
-* `PROFILE_AUDIT_GUIDE.md` for execution-policy review
+* [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md) for first-pass reading order
+* [`TARGET_GUIDE.md`](docs/TARGET_GUIDE.md) for stable target selection
+* [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) for layer ownership
+* [`SELFTEST_GUIDE.md`](docs/SELFTEST_GUIDE.md) for saved selftest evidence
+* [`CONTRACT_AUDIT_GUIDE.md`](docs/CONTRACT_AUDIT_GUIDE.md) for public-boundary review
+* [`INCIDENT_REVIEW_GUIDE.md`](docs/INCIDENT_REVIEW_GUIDE.md) for executed failure review
+* [`PROFILE_AUDIT_GUIDE.md`](docs/PROFILE_AUDIT_GUIDE.md) for execution-policy review
 
 [Back to top](#top)
 
@@ -338,9 +338,27 @@ Best first route:
 
 That route moves from obvious concurrency failure into subtler graph-modeling mistakes.
 
-Use [the capstone `REPRO_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/REPRO_GUIDE.md)
+Use [the capstone `REPRO_GUIDE.md`](docs/REPRO_GUIDE.md)
 when you want the failure classes organized by what they teach rather than by filename
 alone.
+
+[Back to top](#top)
+
+---
+## Documentation set
+All capstone documentation lives under [`docs/`](docs/). Use this index when you want
+the full guide surface from one place:
+
+* [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+* [`CONTRACT_AUDIT_GUIDE.md`](docs/CONTRACT_AUDIT_GUIDE.md)
+* [`INCIDENT_REVIEW_GUIDE.md`](docs/INCIDENT_REVIEW_GUIDE.md)
+* [`PROFILE_AUDIT_GUIDE.md`](docs/PROFILE_AUDIT_GUIDE.md)
+* [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md)
+* [`REPRO_GUIDE.md`](docs/REPRO_GUIDE.md)
+* [`SELFTEST_GUIDE.md`](docs/SELFTEST_GUIDE.md)
+* [`SOURCE_BASELINE_GUIDE.md`](docs/SOURCE_BASELINE_GUIDE.md)
+* [`TARGET_GUIDE.md`](docs/TARGET_GUIDE.md)
+* [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md)
 
 [Back to top](#top)
 

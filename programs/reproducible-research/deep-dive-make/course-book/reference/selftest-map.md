@@ -53,7 +53,7 @@ That distinction is why the course keeps returning to `selftest` when it talks a
 proof, not only compilation.
 When you need that proof preserved as a review bundle, use
 `make PROGRAM=reproducible-research/deep-dive-make capstone-verify-report` and read the
-capstone's local [`SELFTEST_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/SELFTEST_GUIDE.md).
+capstone's local [`SELFTEST_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/SELFTEST_GUIDE.md).
 
 [Back to top](#top)
 

@@ -107,8 +107,8 @@ Use the question, not your anxiety level, to choose the route:
 Use this after Module 02 or 03.
 
 1. `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough`
-2. read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/WALKTHROUGH_GUIDE.md)
-3. read the capstone's local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/TARGET_GUIDE.md)
+2. read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/WALKTHROUGH_GUIDE.md)
+3. read the capstone's local [`TARGET_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/TARGET_GUIDE.md)
 4. read `capstone/Makefile` and `capstone/tests/run.sh`
 5. run `make PROGRAM=reproducible-research/deep-dive-make test`
 
@@ -119,7 +119,7 @@ Use this during Module 06.
 1. read `capstone/scripts/gen_dynamic_h.py`
 2. trace `build/include/dynamic.h` from `capstone/Makefile`
 3. inspect `capstone/mk/stamps.mk`
-4. read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/ARCHITECTURE.md)
+4. read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/ARCHITECTURE.md)
 5. run `gmake -C capstone --trace dyn`
 
 ### Route C: Architecture and stewardship review for Modules 07-10
@@ -127,7 +127,7 @@ Use this during Module 06.
 Use this during Modules 07-10.
 
 1. run `make PROGRAM=reproducible-research/deep-dive-make inspect`
-2. read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/ARCHITECTURE.md)
+2. read the capstone's local [`ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/ARCHITECTURE.md)
 3. read `capstone/mk/*.mk` in dependency order
 4. inspect `capstone/repro/`
 5. run `gmake -C capstone -p > build/review.dump`
@@ -177,7 +177,7 @@ Use this during Modules 07-10.
 If you want a sane first walkthrough, use this order:
 
 1. Read `capstone/Makefile` from the public targets down to the build rules.
-2. Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/WALKTHROUGH_GUIDE.md).
+2. Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/docs/WALKTHROUGH_GUIDE.md).
 3. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` to materialize the learner-first bundle.
 4. Read `capstone/mk/objects.mk` and `capstone/mk/stamps.mk` to see discovery and modeled inputs.
 5. Read `capstone/tests/run.sh` to see what the build is actually required to prove.
