@@ -16,12 +16,32 @@ help: ## Show available targets
 test: ## Run the capstone confirmation suite
 	@$(RUN_CAPSTONE) confirm
 
+.PHONY: demo
+demo: ## Run one learner-facing capstone invocation
+	@$(RUN_CAPSTONE) demo
+
+.PHONY: inspect
+inspect: ## Inspect the capstone learner-facing public surface
+	@$(RUN_CAPSTONE) inspect
+
 .PHONY: capstone-tour
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	@$(RUN_CAPSTONE) tour
 
-.PHONY: capstone-proof
-capstone-proof: ## Run the full capstone proof route
+.PHONY: capstone-walkthrough
+capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
+	@$(RUN_CAPSTONE) tour
+
+.PHONY: capstone-verify-report
+capstone-verify-report: ## Build the capstone verification report bundle
+	@$(RUN_CAPSTONE) verify-report
+
+.PHONY: capstone-confirm
+capstone-confirm: ## Run the capstone's strongest confirmation route
+	@$(RUN_CAPSTONE) confirm
+
+.PHONY: proof
+proof: ## Run the full capstone proof route
 	@$(RUN_CAPSTONE) proof
 
 .PHONY: capstone-manifest

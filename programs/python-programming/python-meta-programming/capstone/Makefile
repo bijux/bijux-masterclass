@@ -44,8 +44,14 @@ trace: ## Trace one delivery action and its recorded history
 		--arg "severity=critical" \
 		--arg "summary=worker backlog growing"
 
+.PHONY: inspect
+inspect: manifest registry ## Inspect the public runtime surface
+
 .PHONY: proof
 proof: confirm manifest registry demo trace ## Run the full public proof route
+
+.PHONY: verify-report
+verify-report: confirm ## Build the structured capstone verification report
 
 .PHONY: tour
 tour: proof ## Build the learner-facing proof bundle
