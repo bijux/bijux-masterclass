@@ -47,6 +47,7 @@ nav:
       - Runtime Glossary: reference/runtime-glossary.md
       - Review Checklist: reference/review-checklist.md
       - Self-Review Prompts: reference/self-review-prompts.md
+      - Boundary Review Prompts: reference/boundary-review-prompts.md
       - Topic Boundaries: reference/topic-boundaries.md
       - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
   - Capstone:

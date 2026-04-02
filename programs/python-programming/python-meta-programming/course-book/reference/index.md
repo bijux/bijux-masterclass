@@ -31,5 +31,6 @@ module arc for the first time.
 - [Runtime Glossary](runtime-glossary.md) for shared course language
 - [Review Checklist](review-checklist.md) for code review judgment
 - [Self-Review Prompts](self-review-prompts.md) for learner-side readiness checks
+- [Boundary Review Prompts](boundary-review-prompts.md) for keep, change, or reject review calls
 - [Topic Boundaries](topic-boundaries.md) for what belongs at the center of this course
 - [Anti-Pattern Atlas](anti-pattern-atlas.md) for symptom-first review of clumsy metaprogramming ideas
