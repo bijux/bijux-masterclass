@@ -137,6 +137,10 @@ Generated review bundles now keep the published workflow manifest and the bundle
 inventory separate: `publish-manifest.json` describes the published interface, while
 `bundle-manifest.json` describes what the bundle copied for review.
 
+The walkthrough bundle now also includes representative rule files, profile files, and
+the config/publish enforcement scripts so the learner can inspect workflow meaning,
+execution policy, and contract enforcement together.
+
 [Back to top](#top)
 
 ---

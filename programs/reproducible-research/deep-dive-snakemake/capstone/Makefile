@@ -176,7 +176,7 @@ selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
-	@mkdir -p "$(WALKTHROUGH_DIR_ABS)"
+	@mkdir -p "$(WALKTHROUGH_DIR_ABS)/workflow/rules" "$(WALKTHROUGH_DIR_ABS)/profiles" "$(WALKTHROUGH_DIR_ABS)/scripts"
 	$(SNAKEMAKE) --list-rules > "$(WALKTHROUGH_DIR_ABS)/list-rules.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(WALKTHROUGH_DIR_ABS)/dryrun.txt"
 	cp README.md "$(WALKTHROUGH_DIR_ABS)/README.md"
@@ -185,18 +185,25 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	cp FILE_API.md "$(WALKTHROUGH_DIR_ABS)/FILE_API.md"
 	cp config/config.yaml "$(WALKTHROUGH_DIR_ABS)/config.yaml"
 	cp config/schema.yaml "$(WALKTHROUGH_DIR_ABS)/schema.yaml"
-	mkdir -p "$(WALKTHROUGH_DIR_ABS)/workflow/rules"
 	cp workflow/rules/common.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/common.smk"
+	cp workflow/rules/preprocess.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/preprocess.smk"
+	cp workflow/rules/summarize_report.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/summarize_report.smk"
 	cp workflow/rules/publish.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/publish.smk"
+	cp profiles/local/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/local.yaml"
+	cp profiles/ci/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/ci.yaml"
+	cp scripts/validate_config.py "$(WALKTHROUGH_DIR_ABS)/scripts/validate_config.py"
+	cp scripts/verify_publish.py "$(WALKTHROUGH_DIR_ABS)/scripts/verify_publish.py"
 	cp TOUR.md "$(WALKTHROUGH_DIR_ABS)/TOUR.md"
 	@printf '%s\n' \
 		'1. Read README.md to understand the repository contract.' \
 		'2. Read PROOF_GUIDE.md to map claims to workflow evidence.' \
-		'3. Read Snakefile and workflow/rules/common.smk for the public workflow shape.' \
+		'3. Read Snakefile and the copied rule files for the workflow shape and module boundaries.' \
 		'4. Read list-rules.txt and dryrun.txt to inspect the visible rule surface and plan.' \
-		'5. Read FILE_API.md to see which outputs are public contracts.' \
-		'6. Run make selftest when you want deterministic execution proof.' \
-		'7. Run make tour when you want executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
+		'5. Read profiles/local.yaml and profiles/ci.yaml to separate workflow meaning from execution policy.' \
+		'6. Read scripts/validate_config.py and scripts/verify_publish.py to see how config and publish contracts are enforced.' \
+		'7. Read FILE_API.md to see which outputs are public contracts.' \
+		'8. Run make selftest when you want deterministic execution proof.' \
+		'9. Run make tour when you want executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
 	@printf '%s\n' \
 		'Public entry commands:' \
 		'  make walkthrough' \
