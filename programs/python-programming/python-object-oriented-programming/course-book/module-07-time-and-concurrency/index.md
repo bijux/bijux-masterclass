@@ -76,6 +76,22 @@ plumbing to bolt on later.
 3. Then study async bridges, cancellation, and API design as one boundary cluster.
 4. Finish with the refactor chapter to see the runtime gain temporal discipline without losing readability.
 
+## Review route for time pressure
+
+1. Read `src/service_monitoring/runtime.py`.
+2. Compare it with `capstone/TOUR.md` and `capstone/ARCHITECTURE.md`.
+3. Use the runtime tests after you can already say which object should remain ignorant of time, retries, or async concerns.
+
+This route keeps a common mistake visible: once time pressure appears, teams often let
+every object learn about clocks, cancellation, or scheduling, even when only the runtime
+boundary should absorb that complexity.
+
+## Questions to keep explicit
+
+- Which clock or timeout belongs to the runtime boundary rather than the aggregate?
+- Which operation becomes dangerous if retries or cancellation are hidden inside the model?
+- Which async bridge should stay at the edge instead of widening every public method?
+
 ## Common failure modes
 
 - using wall-clock time where monotonic time is required
@@ -95,6 +111,15 @@ plumbing to bolt on later.
 The monitoring capstone already evaluates live samples and emits incidents. This module
 shows how that runtime could grow scheduled polling, worker queues, time-based rules,
 and async adapters while preserving aggregate ownership and explicit boundaries.
+
+## Honest completion signal
+
+You are ready to move on when you can point to one proposed concurrency or timing change
+and explain:
+
+- which boundary should absorb it
+- which objects should stay unaware of it
+- which proof surface should fail first if the pressure leaks inward
 
 ## Closing criteria
 
