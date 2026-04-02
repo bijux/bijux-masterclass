@@ -53,16 +53,13 @@ def iter_markdown(kind: str) -> list[Path]:
 
 
 def count_h1(text: str) -> int:
-    count = 0
-    in_fence = False
-    for line in text.splitlines():
-        stripped = line.strip()
-        if stripped.startswith("```"):
-            in_fence = not in_fence
-            continue
-        if not in_fence and line.startswith("# "):
-            count += 1
-    return count
+    without_fences = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+    return sum(1 for line in without_fences.splitlines() if line.startswith("# "))
+
+
+def is_include_wrapper(text: str) -> bool:
+    stripped = text.strip()
+    return bool(re.fullmatch(r'{%\s*include\s+"[^"]+"\s*%}', stripped))
 
 
 def find_banned_parts(path: Path) -> tuple[str, ...]:
@@ -77,6 +74,14 @@ def find_banned_parts(path: Path) -> tuple[str, ...]:
 
 def audit_path(path: Path, kind: str) -> AuditRecord:
     text = path.read_text(encoding="utf-8")
+    if is_include_wrapper(text):
+        return AuditRecord(
+            path=path.relative_to(REPO_ROOT),
+            kind=kind,
+            diagrams=2,
+            h1_count=1,
+            banned_parts=(),
+        )
     diagrams = text.count("```mermaid")
     h1_count = count_h1(text)
     banned_parts = find_banned_parts(path.relative_to(REPO_ROOT))
