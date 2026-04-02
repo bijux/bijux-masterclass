@@ -37,8 +37,13 @@ flowchart LR
 6. [Core 3: Metaclass `__new__` vs `__init__`](#core43)
 7. [Core 4: `__prepare__` — Declaration-Time Enforcement](#core44)
 8. [Capstone: `PluginMeta` — Automatic Plugin Registration](#capstone)
-9. [Power Ladder Checkpoint](#power-checkpoint)
-10. [Glossary (Module 9)](#glossary)
+9. [Learning outcomes](#learning-outcomes)
+10. [Common failure modes](#common-failure-modes)
+11. [Exercises](#exercises)
+12. [Self-test](#self-test)
+13. [Closing criteria](#closing-criteria)
+14. [Power Ladder Checkpoint](#power-checkpoint)
+15. [Glossary (Module 9)](#glossary)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -524,6 +529,52 @@ Extend the capstone:
 1. Add `priority: int = 0` and sort by `(-priority, name)`.
 2. Add `disable(name: str, group: str)` to remove an entry.
 3. Add tests that call `PluginMeta.clear()` between runs.
+
+<a id="learning-outcomes"></a>
+## Learning outcomes
+
+By the end of this module, you should be able to:
+
+- Explain the full class-creation pipeline from metaclass resolution through `__prepare__`, `__new__`, and `__init__`.
+- Distinguish what belongs in manual `type(...)` construction, metaclass `__new__`, metaclass `__init__`, or a lower-power tool.
+- Predict common metaclass conflict cases and explain why "just combine them" is often unsafe.
+- Recognize when declaration-time enforcement is genuinely required instead of retrofitting checks after class creation.
+- Build a metaclass example that stays deterministic, resettable, and honest about import-time side effects.
+
+<a id="common-failure-modes"></a>
+## Common failure modes
+
+- Using a metaclass for automatic registration when an explicit decorator or registry call would stay clearer and easier to reverse.
+- Putting expensive work in class creation and then acting surprised when imports become slow or order-dependent.
+- Mutating class structure in metaclass `__init__` even though the important namespace decisions needed to happen earlier in `__new__` or `__prepare__`.
+- Ignoring metaclass conflicts until multiple inheritance appears, then treating a joint metaclass as a mechanical fix instead of a semantic design choice.
+- Shipping a global registry without reset hooks, duplicate handling, or deterministic ordering for tests.
+
+<a id="exercises"></a>
+## Exercises
+
+- Rebuild one capstone example as a class decorator and write down exactly what behavior you lose without a metaclass.
+- Implement a tiny `OrderedMeta` that captures declaration order via `__prepare__`, then compare it with what plain class dictionaries already guarantee in modern Python.
+- Add a metaclass conflict on purpose, explain the failure message, and document the minimum safe conditions for a shared joint metaclass.
+- Extend `PluginMeta` with explicit enable/disable policy while preserving deterministic ordering and a reset path for tests.
+
+<a id="self-test"></a>
+## Self-test
+
+- Can you explain why `__prepare__` is the only hook that can see assignments during class body execution?
+- Can you name one rule in your codebase that truly belongs to class creation and one that does not?
+- Can you explain why import-time side effects make metaclass designs harder to test and reason about?
+- Can you justify the capstone metaclass against a decorator-based alternative without appealing to "power" or "magic"?
+
+<a id="closing-criteria"></a>
+## Closing criteria
+
+You are ready for Module 10 when you can defend a metaclass decision with concrete ownership rules:
+
+- The invariant must belong to class creation itself or to every subclass in the hierarchy.
+- Lower-power tools must have been considered and rejected for a specific, named reason.
+- Import-time effects, reset hooks, and ordering guarantees must be explicit in the design.
+- The behavior must remain inspectable enough that a reviewer can explain what happens without reverse-engineering hidden state.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
