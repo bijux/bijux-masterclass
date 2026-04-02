@@ -39,6 +39,7 @@ nav:
       - Completion Rubric: completion-rubric.md
   - Capstone Route:
       - Capstone File Guide: capstone-file-guide.md
+      - Capstone Architecture Guide: capstone-architecture-guide.md
       - Repository Layer Guide: repository-layer-guide.md
       - Capstone Map: capstone-map.md
       - Capstone Review Worksheet: capstone-review-worksheet.md

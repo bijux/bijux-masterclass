@@ -59,6 +59,9 @@ capstone should confirm understanding, not replace first-contact learning.
 | 09 Incident Response | inspect logs, benchmarks, and workflow-tour artifacts as evidence | `logs/`, `benchmarks/`, `artifacts/workflow-tour/`, tests | `make -C capstone tour` |
 | 10 Mastery | review the whole repository as a long-lived workflow product | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make -C capstone info && make -C capstone wf-dryrun` |
 
+When the main question is repository ownership rather than a single module idea, use
+`capstone/ARCHITECTURE.md` first and then return to the row that matches your current module.
+
 [Back to top](#top)
 
 ---
@@ -89,6 +92,9 @@ This order keeps contract and repository shape ahead of implementation detail.
 | How are policy and semantics separated? | inspect `profiles/` | `Makefile`, `Snakefile` |
 | Where do helper-code boundaries live? | inspect `src/capstone/` | `workflow/scripts/`, `workflow/envs/` |
 | How would I review this workflow before migration? | `make -C capstone tour` | `FILE_API.md`, `profiles/`, `tests/`, `Makefile` |
+
+Use [Capstone Architecture Guide](capstone-architecture-guide.md) when the review question
+is about repository layers rather than about one output or command.
 
 [Back to top](#top)
 
