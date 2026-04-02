@@ -41,9 +41,16 @@ Use root-level commands when you want one entrypoint that works across programs.
 | --- | --- |
 | `make PROGRAM=reproducible-research/deep-dive-make test` | run the course's main verification target |
 | `make PROGRAM=reproducible-research/deep-dive-make docs-build` | build the course docs in strict mode |
+| `make PROGRAM=reproducible-research/deep-dive-make demo` | build the learner-facing capstone walkthrough bundle |
+| `make PROGRAM=reproducible-research/deep-dive-make inspect` | build the learner-facing capstone inspection bundle |
 | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | build the learner-facing walkthrough bundle |
 | `make PROGRAM=reproducible-research/deep-dive-make capstone-tour` | print the capstone reading route |
 | `make PROGRAM=reproducible-research/deep-dive-make proof` | build the sanctioned learner-facing proof bundle set |
+| `make PROGRAM=reproducible-research/deep-dive-make capstone-contract-audit` | build the public-contract review bundle |
+| `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` | build the incident review bundle |
+| `make PROGRAM=reproducible-research/deep-dive-make capstone-verify-report` | build the selftest verification report bundle |
+| `make PROGRAM=reproducible-research/deep-dive-make capstone-profile-audit` | build the execution-profile review bundle |
+| `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` | run the capstone's strongest confirmation route |
 | `make PROGRAM=reproducible-research/deep-dive-make program-help` | show the program Makefile surface |
 
 [Back to top](#top)
@@ -59,9 +66,14 @@ surface.
 | --- | --- |
 | `make help` | show program-level targets |
 | `make test` | run the capstone selftest via the program surface |
+| `make demo` | build the learner-facing capstone walkthrough bundle |
+| `make inspect` | build the learner-facing capstone inspection bundle |
 | `make capstone-walkthrough` | build the learner-facing walkthrough bundle |
 | `make capstone-tour` | print the capstone reading route |
 | `make proof` | build the sanctioned learner-facing proof bundle set |
+| `make capstone-verify-report` | build the selftest verification report bundle |
+| `make capstone-profile-audit` | build the execution-profile review bundle |
+| `make capstone-confirm` | run the capstone's strongest confirmation route |
 | `make capstone-hardened` | run the strongest built-in capstone verification |
 | `make clean` | clear program and capstone artifacts |
 
@@ -80,6 +92,8 @@ Use `capstone/` when you want the raw executable reference build.
 | `gmake tour` | print the recommended reading route |
 | `gmake selftest` | run convergence, equivalence, and negative checks |
 | `gmake proof` | write the sanctioned learner-facing proof bundle set |
+| `gmake selftest-report` | write the selftest verification report bundle |
+| `gmake profile-audit` | write the execution-profile review bundle |
 | `gmake hardened` | run the strongest capstone validation set |
 | `gmake repro` | list the failure-mode repro pack |
 
@@ -94,6 +108,7 @@ If you are new:
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-make proof
+make PROGRAM=reproducible-research/deep-dive-make inspect
 make PROGRAM=reproducible-research/deep-dive-make test
 ```
 

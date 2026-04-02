@@ -225,8 +225,9 @@ The intent is to model a “real” build in miniature: the same failure modes s
 
 ---
 ## Proof guide
-Use [`PROOF_GUIDE.md`](PROOF_GUIDE.md) when you want the shortest route from a capstone
-claim to the target, file, or failure surface that proves it.
+Use [the capstone `PROOF_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/PROOF_GUIDE.md)
+when you want the shortest route from a capstone claim to the target, file, or failure
+surface that proves it.
 
 That guide complements this README by answering a narrower question: not "what is this
 repository?", but "where do I inspect when I need evidence now?"
@@ -272,8 +273,9 @@ Best first route:
 
 That route moves from obvious concurrency failure into subtler graph-modeling mistakes.
 
-Use [`REPRO_GUIDE.md`](REPRO_GUIDE.md) when you want the failure classes organized by what
-they teach rather than by filename alone.
+Use [the capstone `REPRO_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-make/capstone/REPRO_GUIDE.md)
+when you want the failure classes organized by what they teach rather than by filename
+alone.
 
 [Back to top](#top)
 

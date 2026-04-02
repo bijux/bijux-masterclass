@@ -39,6 +39,7 @@ TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
 SELFTEST_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-make/selftest
 CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
 INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
+PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
 REPRO_CASE ?= $(REP_DIR)/05-mkdir-race.mk
 
@@ -48,7 +49,7 @@ DEPFLAGS := -MMD -MP
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report proof walkthrough \
         contract-audit incident-audit clean submake-demo perf trace-count hardened show-origins FORCE \
-        portability-audit eval-demo help tour
+        portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
 -include config.mk
@@ -130,6 +131,7 @@ help:
 >     '  walkthrough       build the learner-facing walkthrough bundle' \
 >     '  contract-audit    build the public-contract review bundle' \
 >     '  incident-audit    build an executed failure review bundle (REPRO_CASE=...)' \
+>     '  profile-audit     build the execution-profile review bundle' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
 >     '  repro             show how to run the race repro pack' \
 >     '  attest            write build/attest.txt (not a dependency of all)' \
@@ -280,6 +282,31 @@ incident-audit:
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(INCIDENT_AUDIT_DIR)" --output "$(INCIDENT_AUDIT_DIR)/manifest.json"
 >     @echo "PASS: wrote incident audit to $(INCIDENT_AUDIT_DIR)"
 
+profile-audit:
+>     rm -rf "$(PROFILE_AUDIT_DIR)"
+>     mkdir -p "$(PROFILE_AUDIT_DIR)/mk"
+>     cp README.md "$(PROFILE_AUDIT_DIR)/README.md"
+>     cp PROOF_GUIDE.md "$(PROFILE_AUDIT_DIR)/PROOF_GUIDE.md"
+>     cp Makefile "$(PROFILE_AUDIT_DIR)/Makefile"
+>     cp $(MK_DIR)/contract.mk "$(PROFILE_AUDIT_DIR)/mk/contract.mk"
+>     $(MAKE) help > "$(PROFILE_AUDIT_DIR)/help.txt"
+>     $(MAKE) portability-audit > "$(PROFILE_AUDIT_DIR)/portability.txt"
+>     $(MAKE) show-origins > "$(PROFILE_AUDIT_DIR)/origins.txt"
+>     printf '%s\n' \
+>       'Profile audit route:' \
+>       '  1. Read portability.txt for tool, shell, and feature assumptions.' \
+>       '  2. Read mk/contract.mk for the declared boundary and policy surface.' \
+>       '  3. Read help.txt to separate stable targets from internal mechanics.' \
+>       '  4. Read origins.txt when you need to review variable precedence.' \
+>       '  5. Read PROOF_GUIDE.md if you need the matching claim-to-evidence route.' > "$(PROFILE_AUDIT_DIR)/route.txt"
+>     printf '%s\n' \
+>       'Review questions:' \
+>       '  Which runtime assumptions are explicit enough to audit before execution?' \
+>       '  Which features depend on GNU Make rather than POSIX shell alone?' \
+>       '  Which variable sources would matter if another environment overrides them?' > "$(PROFILE_AUDIT_DIR)/review-questions.txt"
+>     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(PROFILE_AUDIT_DIR)" --output "$(PROFILE_AUDIT_DIR)/manifest.json"
+>     @echo "PASS: wrote profile audit to $(PROFILE_AUDIT_DIR)"
+
 # ---- CI-style entrypoints ----
 lint:
 >     $(call require_tool,clang-tidy)
@@ -319,7 +346,8 @@ discovery-audit:
 
 # ---- attestations without contaminating outputs ----
 attest: all | $(BLD_DIR)/
->     $(call atomic_write,$(BLD_DIR)/attest.txt, \
+>     tmp="$(BLD_DIR)/attest.txt.tmp.$$"; \
+>     { \
 >       printf 'MAKE=%s\n' "$$($(MAKE) --version | head -1)"; \
 >       printf 'OS=%s\n' "$(UNAME_S)"; \
 >       printf 'CC=%s\n' "$(CC)"; \
@@ -330,7 +358,7 @@ attest: all | $(BLD_DIR)/
 >       printf 'TZ=%s\nLC_ALL=%s\n' "$${TZ:-}" "$${LC_ALL:-}"; \
 >       cat $(BLD_DIR)/flags.stamp; \
 >       test -f stamps/tool/cc.txt && { echo '---'; head -5 stamps/tool/cc.txt; } || true; \
->     )
+>     } > "$$tmp" && mv -f "$$tmp" "$(BLD_DIR)/attest.txt" || { rm -f "$$tmp"; exit 1; }
 
 # ---- universal truth command ----
 selftest:

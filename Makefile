@@ -88,6 +88,14 @@ capstone-tour: ## Run the selected program's learner-facing capstone tour
 capstone-selftest: ## Run the selected program's capstone determinism or convergence self-test
 	@$(RUN_PROGRAM) capstone-selftest
 
+.PHONY: capstone-contract-audit
+capstone-contract-audit: ## Build the selected program's capstone public-contract audit bundle
+	@$(RUN_PROGRAM) capstone-contract-audit
+
+.PHONY: capstone-incident-audit
+capstone-incident-audit: ## Build the selected program's capstone incident review bundle
+	@$(RUN_PROGRAM) capstone-incident-audit
+
 .PHONY: capstone-verify-report
 capstone-verify-report: ## Build the selected program's capstone verification report bundle
 	@$(RUN_PROGRAM) capstone-verify-report

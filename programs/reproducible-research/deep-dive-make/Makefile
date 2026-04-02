@@ -51,7 +51,8 @@ typecheck: install-dev ## Run mypy on Python helper scripts
 
 # Capstone (GNU Make repository)
 .PHONY: capstone capstone-selftest capstone-hardened capstone-tour capstone-walkthrough \
-        capstone-contract-audit capstone-incident-audit capstone-clean proof
+        capstone-contract-audit capstone-incident-audit capstone-verify-report \
+        capstone-profile-audit capstone-confirm capstone-clean demo inspect proof
 capstone: ## Build the capstone (writes ./all sentinel inside capstone)
 > $(MAKE) -C $(CAPSTONE_DIR) all
 
@@ -73,8 +74,23 @@ capstone-contract-audit: ## Build the capstone public-contract audit bundle
 capstone-incident-audit: ## Build the capstone incident review bundle
 > $(MAKE) -C $(CAPSTONE_DIR) incident-audit
 
+capstone-verify-report: ## Build the capstone verification report bundle
+> $(MAKE) -C $(CAPSTONE_DIR) selftest-report
+
+capstone-profile-audit: ## Build the capstone execution-profile audit bundle
+> $(MAKE) -C $(CAPSTONE_DIR) profile-audit
+
+capstone-confirm: ## Run the capstone's strongest confirmation route
+> $(MAKE) -C $(CAPSTONE_DIR) hardened
+
 capstone-clean: ## Clean capstone outputs
 > $(MAKE) -C $(CAPSTONE_DIR) clean
+
+demo: ## Build the learner-facing capstone walkthrough bundle
+> $(MAKE) -C $(CAPSTONE_DIR) walkthrough
+
+inspect: ## Build the learner-facing capstone inspection bundle
+> $(MAKE) -C $(CAPSTONE_DIR) contract-audit
 
 proof: ## Build the sanctioned learner-facing capstone proof bundle set
 > $(MAKE) -C $(CAPSTONE_DIR) proof
