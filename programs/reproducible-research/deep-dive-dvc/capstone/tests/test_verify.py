@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from incident_escalation_capstone.common import sha256_file, write_json
-from incident_escalation_capstone.verify import verify_manifest, verify_metrics
+from incident_escalation_capstone.verify import verify_manifest, verify_metrics, verify_report
 
 
 def test_verify_manifest_accepts_matching_hashes(tmp_path: Path) -> None:
@@ -38,3 +38,14 @@ def test_verify_metrics_rejects_out_of_range_values(tmp_path: Path) -> None:
         assert "accuracy" in str(exc)
     else:
         raise AssertionError("verify_metrics should reject invalid values")
+
+
+def test_verify_report_requires_review_sections(tmp_path: Path) -> None:
+    (tmp_path / "report.md").write_text("# Incident Escalation Reference Report\n", encoding="utf-8")
+
+    try:
+        verify_report(tmp_path)
+    except ValueError as exc:
+        assert "missing heading" in str(exc)
+    else:
+        raise AssertionError("verify_report should reject incomplete reports")
