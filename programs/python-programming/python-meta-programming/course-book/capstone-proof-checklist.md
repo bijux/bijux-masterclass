@@ -45,17 +45,19 @@ than only "having some tests."
 2. Read `capstone/tests/test_runtime.py`.
 3. Read `capstone/tests/test_registry.py`.
 4. Read `capstone/tests/test_fields.py`.
+5. Read `capstone/tests/test_cli.py`.
 
 ## Stronger proof route
 
-After the CLI lands in this course, also:
+Also:
 
-- export the manifest from the public surface
-- invoke one delivery action from the CLI
-- compare CLI output with the underlying test expectations
+- run `make PROGRAM=python-programming/python-meta-programming inspect`
+- run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`
+- compare the saved bundle outputs with the underlying test expectations
 
 ## Questions to answer
 
 - Which proof confirms definition-time work rather than runtime work?
 - Which proof confirms preserved metadata rather than only produced output?
+- Which saved bundle is strongest for a human review without rerunning commands?
 - Which proof would fail first if the design became more magical?

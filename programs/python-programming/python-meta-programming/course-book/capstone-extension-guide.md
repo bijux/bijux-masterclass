@@ -59,3 +59,4 @@ Every extension should answer:
 - why this layer owns the change
 - why a lower-power layer was insufficient
 - what new proof was added to keep the runtime observable
+- which local capstone guide or review bundle changed as a result

@@ -48,6 +48,14 @@ named home inside it.
 - [Module 09](module-09.md): inspect registration and class-definition-time invariants
 - [Modules 10-11](module-10.md): inspect whether the public surface remains observable and governable
 
+## Local review guides
+
+- Use `capstone/PACKAGE_GUIDE.md` when you need a code-reading route.
+- Use `capstone/TEST_GUIDE.md` when you need the shortest proof route.
+- Use `capstone/WALKTHROUGH_GUIDE.md` when you need the public-surface narrative order.
+- Use `capstone/TARGET_GUIDE.md` when you need the smallest honest command.
+- Use `capstone/INSPECTION_GUIDE.md` and `capstone/EXTENSION_GUIDE.md` when the question is review depth or change placement.
+
 ## Practical reading order
 
 1. Read `framework.py` for the metaclass and public manifest surface.

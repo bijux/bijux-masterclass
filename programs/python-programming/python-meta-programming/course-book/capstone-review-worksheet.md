@@ -33,6 +33,7 @@ Use this worksheet while reviewing or extending the capstone.
 - Which file owns class-definition-time behavior?
 - Which file owns attribute validation?
 - Which file owns runtime invocation and public manifest output?
+- Which saved bundle would let another reviewer verify that claim later?
 
 ## Ownership questions
 
@@ -45,9 +46,11 @@ Use this worksheet while reviewing or extending the capstone.
 - Which design choice is hardest to debug if a test starts failing at import time?
 - Where could hidden global state leak between tests or plugins?
 - Which part would become unsafe first if someone tried to add dynamic execution?
+- Which public command would start lying first if observability regressed?
 
 ## Extension prompts
 
 - Add one new plugin without changing the metaclass.
 - Add one new field type without changing concrete plugins.
 - Add one new action-oriented proof without changing the registry contract.
+- Decide which local guide would have to change after each extension.
