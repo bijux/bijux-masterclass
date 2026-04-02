@@ -29,6 +29,9 @@ flowchart LR
 This map connects the course narrative to the real package layout of the capstone. Use it
 when a module introduces a new idea and you want to find the concrete code that carries it.
 
+The architecture is only useful if it keeps one distinction readable: which packages stay
+descriptive and which packages are allowed to execute concrete effects.
+
 ## Core package groups
 
 | Area | Packages | Why it exists | Closest course modules |
@@ -62,3 +65,9 @@ when a module introduces a new idea and you want to find the concrete code that 
 - Which package owns retries, cleanup, and orchestration?
 - Which interfaces are capabilities, and which modules are concrete adapters?
 - Which claims in the course can I verify directly in the tests?
+
+## Architecture review questions
+
+- If a new effect entered the system tomorrow, where would it be described and where would it be executed?
+- If a pipeline rule changed, which package should absorb the change without forcing adapter churn?
+- If an interop helper disappeared, which packages should remain semantically untouched?

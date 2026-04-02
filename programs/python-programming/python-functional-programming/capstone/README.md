@@ -80,6 +80,9 @@ make tour
 - `TOUR.md` for the generated review bundle
 - `pyproject.toml` for the executable project contract
 
+Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
+effects, or orchestration should live.
+
 ## Course connection
 
 Use this repository as a running mirror of the course:
