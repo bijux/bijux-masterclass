@@ -66,18 +66,35 @@ def prefixed_nav(items: list[Any], prefix: str) -> list[Any]:
     return prefixed
 
 
-def capstone_nav(program_dir: Path, family_slug: str, program_slug: str) -> list[dict[str, str]]:
+def capstone_nav(program_dir: Path, family_slug: str, program_slug: str) -> list[Any]:
     capstone_dir = program_dir / "capstone"
-    markdown_files = sorted(
-        capstone_dir.glob("*.md"),
+    readme_path = capstone_dir / "README.md"
+    docs_dir = capstone_dir / "docs"
+    docs_files = sorted(
+        docs_dir.glob("*.md"),
         key=lambda path: (CAPSTONE_ORDER.get(path.stem, 999), path.stem),
     )
-    return [
-        {
-            first_h1(path): f"library/{family_slug}/{program_slug}/capstone/{path.name}",
-        }
-        for path in markdown_files
-    ]
+
+    nav: list[Any] = []
+    if readme_path.exists():
+        nav.append(
+            {
+                first_h1(readme_path): f"library/{family_slug}/{program_slug}/capstone/{readme_path.name}",
+            }
+        )
+    if docs_files:
+        nav.append(
+            {
+                "Capstone Docs": [
+                    {
+                        first_h1(path): f"library/{family_slug}/{program_slug}/capstone/docs/{path.name}",
+                    }
+                    for path in docs_files
+                ]
+            }
+        )
+
+    return nav
 
 
 def root_nav(source_nav: list[Any]) -> list[Any]:
