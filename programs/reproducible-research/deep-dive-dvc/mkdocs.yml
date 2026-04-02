@@ -25,9 +25,11 @@ nav:
       - "Learner Entry": start-here.md
       - "Learning Contract": learning-contract.md
       - "Program Outline": module-00.md
+  - Course Reference:
       - "Module Dependency Map": module-dependency-map.md
       - "State Glossary": state-glossary.md
       - "Practice Map": practice-map.md
+  - Capstone Route:
       - "Capstone Guide": readme-capstone.md
       - "Capstone Map": capstone-map.md
       - "Capstone File Guide": capstone-file-guide.md
