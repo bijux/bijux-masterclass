@@ -39,6 +39,7 @@ nav:
       - Completion Rubric: completion-rubric.md
   - Capstone Route:
       - Capstone File Guide: capstone-file-guide.md
+      - Repository Layer Guide: repository-layer-guide.md
       - Capstone Map: capstone-map.md
       - Capstone Overview: readme-capstone.md
   - "Module 01: File Contracts":
