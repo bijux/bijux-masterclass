@@ -138,7 +138,9 @@ def verify_report(publish_dir: Path) -> dict[str, object]:
         "# Incident Escalation Reference Report",
         "## Data Profile",
         "## Evaluation Metrics",
-        "## Model Summary",
+        "## Decision Policy",
+        "## Training Summary",
+        "## Release Boundary",
         "## Review Queue",
     ]
     for heading in headings:

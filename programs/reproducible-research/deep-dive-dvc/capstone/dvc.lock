@@ -1,10 +1,11 @@
 schema: '2.0'
 stages:
   prepare:
-    cmd: ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.prepare --params 
-      params.yaml --raw data/raw/service_incidents.csv --train 
-      data/derived/train.csv --eval data/derived/eval.csv --profile 
-      state/data_profile.json
+    cmd: 
+      ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python
+      -m incident_escalation_capstone.prepare --params params.yaml --raw 
+      data/raw/service_incidents.csv --train data/derived/train.csv --eval 
+      data/derived/eval.csv --profile state/data_profile.json
     deps:
     - path: data/raw/service_incidents.csv
       hash: md5
@@ -37,8 +38,10 @@ stages:
       md5: 268347f2691e6151025d2129cea2a208
       size: 397
   fit:
-    cmd: ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.fit --params 
-      params.yaml --train data/derived/train.csv --model models/model.json
+    cmd: 
+      ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python
+      -m incident_escalation_capstone.fit --params params.yaml --train 
+      data/derived/train.csv --model models/model.json
     deps:
     - path: data/derived/train.csv
       hash: md5
@@ -63,9 +66,11 @@ stages:
       md5: 0a1360d8f1af4c75d589982302028b1b
       size: 1155
   evaluate:
-    cmd: ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.evaluate --params 
-      params.yaml --eval data/derived/eval.csv --model models/model.json 
-      --predictions state/predictions.csv --metrics metrics/metrics.json
+    cmd: 
+      ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python
+      -m incident_escalation_capstone.evaluate --params params.yaml --eval 
+      data/derived/eval.csv --model models/model.json --predictions 
+      state/predictions.csv --metrics metrics/metrics.json
     deps:
     - path: data/derived/eval.csv
       hash: md5
@@ -100,10 +105,12 @@ stages:
       md5: 0c407dc5f310268042d4a5f67d3ee4c7
       size: 250
   publish:
-    cmd: ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python -m incident_escalation_capstone.publish --params 
-      params.yaml --profile state/data_profile.json --model models/model.json 
-      --metrics metrics/metrics.json --predictions state/predictions.csv 
-      --publish publish/v1
+    cmd: 
+      ../../../../artifacts/venv/reproducible-research/deep-dive-dvc/capstone/bin/python
+      -m incident_escalation_capstone.publish --params params.yaml --profile 
+      state/data_profile.json --model models/model.json --metrics 
+      metrics/metrics.json --predictions state/predictions.csv --publish 
+      publish/v1
     deps:
     - path: metrics/metrics.json
       hash: md5
@@ -123,8 +130,8 @@ stages:
       size: 2189
     - path: src/incident_escalation_capstone/publish.py
       hash: md5
-      md5: a79b2d19cac6a66dcd963c3bccf59964
-      size: 4101
+      md5: fbe81aa2ef73c69744a3d8f31c75bba3
+      size: 4647
     - path: state/data_profile.json
       hash: md5
       md5: 268347f2691e6151025d2129cea2a208
@@ -136,6 +143,6 @@ stages:
     outs:
     - path: publish/v1
       hash: md5
-      md5: 98f1e1a41672e088a223a75e5f60ee44.dir
-      size: 3803
+      md5: 858c2935278a308678c9440d7d190592.dir
+      size: 4131
       nfiles: 7
