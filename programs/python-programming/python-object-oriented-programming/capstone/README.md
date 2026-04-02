@@ -79,6 +79,7 @@ Review and proof routes:
 
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)
+- [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md)
 - [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md)
 - [TOUR.md](TOUR.md)
 - [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
@@ -92,11 +93,12 @@ Review and proof routes:
 If this is your first honest pass through the capstone, use this order:
 
 1. Read this README until the scenario and review routes make sense.
-2. Run `make demo`.
-3. Read [TOUR.md](TOUR.md).
-4. Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md).
-5. Run `make inspect`.
-6. Open [PROOF_GUIDE.md](PROOF_GUIDE.md) only after you can already name the likely owner of one behavior.
+2. Read [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md).
+3. Run `make demo`.
+4. Read [TOUR.md](TOUR.md).
+5. Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md).
+6. Run `make inspect`.
+7. Open [PROOF_GUIDE.md](PROOF_GUIDE.md) only after you can already name the likely owner of one behavior.
 
 ## Review routes
 
@@ -110,7 +112,7 @@ If this is your first honest pass through the capstone, use this order:
 
 | If you want to... | Start with | Then |
 | --- | --- | --- |
-| understand the domain before reading code | this README and `make demo` | `TOUR.md` |
+| understand the domain before reading code | this README and `DOMAIN_GUIDE.md` | `make demo` and `TOUR.md` |
 | inspect ownership boundaries file by file | `PACKAGE_GUIDE.md` | `ARCHITECTURE.md` |
 | confirm one design claim with evidence | `PROOF_GUIDE.md` | `make inspect` or `make verify-report` |
 | review the full capstone as a learner-facing artifact | `make tour` | `make proof` |
@@ -119,6 +121,7 @@ If this is your first honest pass through the capstone, use this order:
 ## What a good first read should settle
 
 - what the system is modeling in plain operational language
+- what the main domain terms mean before the file tree gets involved
 - where the learner-facing application surface ends
 - which object is authoritative for lifecycle and rule state
 - which routes are for inspection, walkthrough, verification, and full proof

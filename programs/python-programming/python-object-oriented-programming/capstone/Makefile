@@ -31,13 +31,14 @@ tour: ## Build the learner-facing walkthrough bundle
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo > $(TOUR_DIR)/walkthrough.txt
 	@cp README.md $(TOUR_DIR)/README.md
 	@cp TOUR.md $(TOUR_DIR)/TOUR.md
+	@cp DOMAIN_GUIDE.md $(TOUR_DIR)/DOMAIN_GUIDE.md
 	@cp WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
 	@cp ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
 	@cp TARGET_GUIDE.md $(TOUR_DIR)/TARGET_GUIDE.md
 	@printf '%s\n' \
 		'Walkthrough route:' \
 		'  1. Read walkthrough.txt for the scenario output.' \
-		'  2. Read TOUR.md for the narrative sequence.' \
+		'  2. Read DOMAIN_GUIDE.md and TOUR.md for the vocabulary and narrative sequence.' \
 		'  3. Read WALKTHROUGH_GUIDE.md and TARGET_GUIDE.md for the command and file route.' \
 		'  4. Read ARCHITECTURE.md when you need object ownership while following the story.' \
 		> $(TOUR_DIR)/route.txt
@@ -65,6 +66,7 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(INSPECT_DIR)/history.txt
 	@cp README.md $(INSPECT_DIR)/README.md
 	@cp ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
+	@cp DOMAIN_GUIDE.md $(INSPECT_DIR)/DOMAIN_GUIDE.md
 	@cp PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
 	@cp TARGET_GUIDE.md $(INSPECT_DIR)/TARGET_GUIDE.md
 	@cp INSPECTION_GUIDE.md $(INSPECT_DIR)/INSPECTION_GUIDE.md
@@ -74,7 +76,7 @@ inspect: ## Build the capstone learner-facing inspection bundle
 		'  1. Read summary.txt for the current policy and open incident state.' \
 		'  2. Read rules.txt for rule lifecycle state.' \
 		'  3. Read history.txt for metric-level incident history.' \
-		'  4. Read INSPECTION_GUIDE.md, PACKAGE_GUIDE.md, and TARGET_GUIDE.md to connect the outputs to the code.' \
+		'  4. Read DOMAIN_GUIDE.md, INSPECTION_GUIDE.md, PACKAGE_GUIDE.md, and TARGET_GUIDE.md to connect the outputs to the code.' \
 		> $(INSPECT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
 	@echo "wrote learner-facing inspection bundle to $(INSPECT_DIR)"
