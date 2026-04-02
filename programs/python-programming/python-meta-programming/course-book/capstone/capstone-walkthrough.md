@@ -28,6 +28,16 @@ or test.
 Use this page when you want the first honest tour through the capstone without turning it
 into a file dump.
 
+## First pass versus deeper pass
+
+### First pass
+
+Use stops 1 to 4 when the goal is to understand the runtime from the public surface.
+
+### Deeper pass
+
+Use stops 5 and 6 only after the earlier stops no longer settle the question.
+
 ## Walkthrough stop 1: Observe before execution
 
 - Run `make manifest` or inspect the saved `manifest.json` from `make inspect`.
@@ -83,3 +93,11 @@ into a file dump.
 - Stop at the first walkthrough step that settles the current question.
 - Escalate from one stop to the next only when the earlier output no longer proves enough.
 - Move to [Capstone Architecture Guide](capstone-architecture-guide.md) when the question is about ownership rather than order.
+
+## Good stopping point
+
+Stop with this walkthrough once you can say:
+
+- which public step settled the current question
+- which owning file you would open next only if needed
+- which later stop you deliberately did not need yet
