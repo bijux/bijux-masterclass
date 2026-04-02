@@ -32,6 +32,7 @@ nav:
   - Guides:
       - Module Dependency Map: guides/module-dependency-map.md
       - Module Promise Map: guides/module-promise-map.md
+      - Module Checkpoints: guides/module-checkpoints.md
       - Practice Map: guides/practice-map.md
       - Command Guide: guides/command-guide.md
       - History Guide: guides/history-guide.md

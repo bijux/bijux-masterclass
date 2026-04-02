@@ -82,6 +82,7 @@ Modules 09 to 10 ask whether the design can survive a team and a production life
 
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence justified
 - [Module Promise Map](module-promise-map.md) when you want the promise and evidence route for each module
+- [Module Checkpoints](module-checkpoints.md) when you need exit criteria before moving on
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
 - [History Guide](history-guide.md) when you need the generated comparison route
 - [Proof Matrix](proof-matrix.md) when you want the fastest route from a claim to executable evidence
