@@ -46,12 +46,13 @@ Use the smallest honest route for the question you have:
 
 If you are new to this capstone, the best first route is:
 
-1. Run `make manifest`.
-2. Read `GUIDE_INDEX.md`.
-3. Read `PLUGIN_RUNTIME_GUIDE.md`.
-4. Read `ARCHITECTURE.md`.
-5. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
-6. Read the matching tests.
+1. Read `FIRST_SESSION_GUIDE.md`.
+2. Run `make manifest`.
+3. Read `GUIDE_INDEX.md`.
+4. Read `PLUGIN_RUNTIME_GUIDE.md`.
+5. Read `ARCHITECTURE.md`.
+6. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
+7. Read the matching tests.
 
 ## What it models
 
