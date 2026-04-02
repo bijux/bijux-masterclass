@@ -30,6 +30,11 @@ tour: ## Build the learner-facing walkthrough bundle
 	@mkdir -p $(TOUR_DIR)
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo > $(TOUR_DIR)/walkthrough.txt
 	@cp README.md $(TOUR_DIR)/README.md
+	@cp GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
+	@cp FIRST_SESSION_GUIDE.md $(TOUR_DIR)/FIRST_SESSION_GUIDE.md
+	@cp COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
+	@cp OWNERSHIP_BOUNDARIES.md $(TOUR_DIR)/OWNERSHIP_BOUNDARIES.md
+	@cp SCENARIO_BOUNDARY_MAP.md $(TOUR_DIR)/SCENARIO_BOUNDARY_MAP.md
 	@cp TOUR.md $(TOUR_DIR)/TOUR.md
 	@cp DOMAIN_GUIDE.md $(TOUR_DIR)/DOMAIN_GUIDE.md
 	@cp SCENARIO_GUIDE.md $(TOUR_DIR)/SCENARIO_GUIDE.md
@@ -50,10 +55,11 @@ tour: ## Build the learner-facing walkthrough bundle
 	@cp TARGET_GUIDE.md $(TOUR_DIR)/TARGET_GUIDE.md
 	@printf '%s\n' \
 		'Walkthrough route:' \
-		'  1. Read walkthrough.txt for the scenario output.' \
-		'  2. Read DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, and TOUR.md for the vocabulary, fixed inputs, lifecycle, and narrative sequence.' \
-		'  3. Read WALKTHROUGH_GUIDE.md, EVENT_FLOW_GUIDE.md, and TARGET_GUIDE.md for the command and file route.' \
-		'  4. Read ARCHITECTURE.md when you need object ownership while following the story.' \
+		'  1. Read GUIDE_INDEX.md and FIRST_SESSION_GUIDE.md for the smallest local route.' \
+		'  2. Read walkthrough.txt for the scenario output.' \
+		'  3. Read DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, OWNERSHIP_BOUNDARIES.md, and TOUR.md for the vocabulary, authority model, lifecycle, and narrative sequence.' \
+		'  4. Read SCENARIO_BOUNDARY_MAP.md, WALKTHROUGH_GUIDE.md, EVENT_FLOW_GUIDE.md, TARGET_GUIDE.md, and COMMAND_GUIDE.md for the scenario and command route.' \
+		'  5. Read ARCHITECTURE.md when you need object ownership while following the story.' \
 		> $(TOUR_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/manifest.json
 	@echo "wrote learner-facing walkthrough bundle to $(TOUR_DIR)"
@@ -98,6 +104,11 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rate-of-change > $(INSPECT_DIR)/rate_of_change.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli snapshot-json > $(INSPECT_DIR)/snapshot.json
 	@cp README.md $(INSPECT_DIR)/README.md
+	@cp GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
+	@cp FIRST_SESSION_GUIDE.md $(INSPECT_DIR)/FIRST_SESSION_GUIDE.md
+	@cp COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
+	@cp OWNERSHIP_BOUNDARIES.md $(INSPECT_DIR)/OWNERSHIP_BOUNDARIES.md
+	@cp SCENARIO_BOUNDARY_MAP.md $(INSPECT_DIR)/SCENARIO_BOUNDARY_MAP.md
 	@cp ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
 	@cp DOMAIN_GUIDE.md $(INSPECT_DIR)/DOMAIN_GUIDE.md
 	@cp SCENARIO_GUIDE.md $(INSPECT_DIR)/SCENARIO_GUIDE.md
@@ -118,10 +129,11 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@cp EXTENSION_GUIDE.md $(INSPECT_DIR)/EXTENSION_GUIDE.md
 	@printf '%s\n' \
 		'Inspection route:' \
-		'  1. Read summary.txt for the current policy and open incident state.' \
-		'  2. Read rules.txt for rule lifecycle state.' \
-		'  3. Read history.txt, timeline.txt, retirement.txt, rate_of_change.txt, and snapshot.json for shipped scenario variants and the structured state surface.' \
-		'  4. Read DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, RATE_OF_CHANGE_SCENARIO_GUIDE.md, INSPECTION_GUIDE.md, PACKAGE_GUIDE.md, and TARGET_GUIDE.md to connect the outputs to the code.' \
+		'  1. Read GUIDE_INDEX.md, FIRST_SESSION_GUIDE.md, and COMMAND_GUIDE.md for the smallest local route.' \
+		'  2. Read summary.txt for the current policy and open incident state.' \
+		'  3. Read rules.txt for rule lifecycle state.' \
+		'  4. Read history.txt, timeline.txt, retirement.txt, rate_of_change.txt, and snapshot.json for shipped scenario variants and the structured state surface.' \
+		'  5. Read OWNERSHIP_BOUNDARIES.md, SCENARIO_BOUNDARY_MAP.md, DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, RATE_OF_CHANGE_SCENARIO_GUIDE.md, INSPECTION_GUIDE.md, PACKAGE_GUIDE.md, and TARGET_GUIDE.md to connect the outputs to the code.' \
 		> $(INSPECT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
 	@echo "wrote learner-facing inspection bundle to $(INSPECT_DIR)"
@@ -138,6 +150,11 @@ verify-report: ## Build the capstone verification report bundle
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rate-of-change > $(VERIFY_REPORT_DIR)/rate_of_change.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli snapshot-json > $(VERIFY_REPORT_DIR)/snapshot.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
+	@cp GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
+	@cp FIRST_SESSION_GUIDE.md $(VERIFY_REPORT_DIR)/FIRST_SESSION_GUIDE.md
+	@cp COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
+	@cp OWNERSHIP_BOUNDARIES.md $(VERIFY_REPORT_DIR)/OWNERSHIP_BOUNDARIES.md
+	@cp SCENARIO_BOUNDARY_MAP.md $(VERIFY_REPORT_DIR)/SCENARIO_BOUNDARY_MAP.md
 	@cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
 	@cp TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
 	@cp EVENT_FLOW_GUIDE.md $(VERIFY_REPORT_DIR)/EVENT_FLOW_GUIDE.md
@@ -153,10 +170,11 @@ verify-report: ## Build the capstone verification report bundle
 	@cp INSPECTION_GUIDE.md $(VERIFY_REPORT_DIR)/INSPECTION_GUIDE.md
 	@printf '%s\n' \
 		'Verification route:' \
-		'  1. Read pytest.txt for executable confirmation.' \
-		'  2. Read summary.txt, history.txt, timeline.txt, retirement.txt, rate_of_change.txt, and snapshot.json for the learner-facing state, variants, and structured snapshot captured alongside the tests.' \
-		'  3. Read PROOF_GUIDE.md and EVENT_FLOW_GUIDE.md for claim-to-evidence and event-to-artifact routing.' \
-		'  4. Read TEST_GUIDE.md, WALKTHROUGH_GUIDE.md, INSPECTION_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, and RATE_OF_CHANGE_SCENARIO_GUIDE.md for the matching human review path.' \
+		'  1. Read GUIDE_INDEX.md, FIRST_SESSION_GUIDE.md, and COMMAND_GUIDE.md for the local route into the saved bundle.' \
+		'  2. Read pytest.txt for executable confirmation.' \
+		'  3. Read summary.txt, history.txt, timeline.txt, retirement.txt, rate_of_change.txt, and snapshot.json for the learner-facing state, variants, and structured snapshot captured alongside the tests.' \
+		'  4. Read PROOF_GUIDE.md, OWNERSHIP_BOUNDARIES.md, SCENARIO_BOUNDARY_MAP.md, and EVENT_FLOW_GUIDE.md for claim-to-evidence and authority routing.' \
+		'  5. Read TEST_GUIDE.md, WALKTHROUGH_GUIDE.md, INSPECTION_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, and RATE_OF_CHANGE_SCENARIO_GUIDE.md for the matching human review path.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "wrote capstone verification report to $(VERIFY_REPORT_DIR)"
