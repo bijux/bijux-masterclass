@@ -1,4 +1,4 @@
-"""Infrastructure adapters implementing domain ports/capabilities (end-of-Module-07)."""
+"""Infrastructure adapters implementing domain ports/capabilities (end-of-Module-08)."""
 
 from .clock import MonotonicTestClock, SystemClock
 from .file_storage import FileStorage
@@ -15,4 +15,3 @@ __all__ = [
     "ConsoleLogger",
     "CollectingLogger",
 ]
-

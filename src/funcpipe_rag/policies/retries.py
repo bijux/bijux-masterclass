@@ -1,4 +1,4 @@
-"""Pure retry engine with policies for Result-returning functions (end-of-Module-07)."""
+"""Pure retry engine with policies for Result-returning functions (end-of-Module-08)."""
 
 from __future__ import annotations
 

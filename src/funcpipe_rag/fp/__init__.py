@@ -1,4 +1,4 @@
-"""Functional programming utilities for the end-of-Module-07 codebase.
+"""Functional programming utilities for the end-of-Module-08 codebase.
 
 This package groups two related layers:
 - Module 02–03: small iterator/pipeline combinators and instrumentation helpers.

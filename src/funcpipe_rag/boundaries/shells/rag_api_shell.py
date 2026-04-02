@@ -1,4 +1,4 @@
-"""CSV-in / JSONL-out boundary shell for the end-of-Module-07 API."""
+"""CSV-in / JSONL-out boundary shell for the end-of-Module-08 API."""
 
 from __future__ import annotations
 

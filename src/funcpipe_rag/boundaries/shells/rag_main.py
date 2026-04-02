@@ -1,4 +1,4 @@
-"""Thin orchestrator example for the end-of-Module-07 codebase."""
+"""Thin orchestrator example for the end-of-Module-08 codebase."""
 
 from __future__ import annotations
 

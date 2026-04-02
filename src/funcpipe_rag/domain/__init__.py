@@ -1,4 +1,4 @@
-"""Pure, production-facing architecture primitives (end-of-Module-07).
+"""Pure, production-facing architecture primitives (end-of-Module-08).
 
 Module 07 introduces a production architecture around the existing pure core:
 - Capability protocols (typed `Protocol`s)

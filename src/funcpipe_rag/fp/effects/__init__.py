@@ -1,4 +1,4 @@
-"""Module 06: effect-encoding utilities (end-of-Module-07).
+"""Module 06: effect-encoding utilities (end-of-Module-08).
 
 This subpackage groups the "small monads" and effect helpers introduced in
 Module 06:

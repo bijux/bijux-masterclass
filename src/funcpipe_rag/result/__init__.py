@@ -1,4 +1,4 @@
-"""Result/Option and Result-stream utilities (end-of-Module-07).
+"""Result/Option and Result-stream utilities (end-of-Module-08).
 
 This package groups:
 - `types`: Result/Option containers + ErrInfo

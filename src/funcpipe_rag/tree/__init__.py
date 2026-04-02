@@ -1,4 +1,4 @@
-"""Module 04: tree-safe recursion tools (end-of-Module-07).
+"""Module 04: tree-safe recursion tools (end-of-Module-08).
 
 Public surface:
 - Stack-safe preorder traversal (`flatten`, `iter_flatten_buffered`)

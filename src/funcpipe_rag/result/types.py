@@ -1,4 +1,4 @@
-"""Result/Option containers for pure, streaming-friendly error handling (end-of-Module-07).
+"""Result/Option containers for pure, streaming-friendly error handling (end-of-Module-08).
 
 Module 06 extends the ADTs with:
 - Canonical instance methods (`map`, `map_err`, `and_then`, `ap`) for lawful composition
@@ -241,6 +241,48 @@ class ErrInfo(NamedTuple):
     path: tuple[int, ...] = ()
     cause: BaseException | None = None
     ctx: Mapping[str, object] | None = None
+
+    @staticmethod
+    def from_exception(
+        exc: BaseException,
+        *,
+        code: str = "UNEXPECTED",
+        msg: str | None = None,
+        stage: str = "",
+        path: tuple[int, ...] = (),
+        ctx: Mapping[str, object] | None = None,
+        meta: Mapping[str, object] | None = None,
+    ) -> "ErrInfo":
+        return make_errinfo(
+            code=code,
+            msg=msg or str(exc),
+            stage=stage,
+            path=path,
+            exc=exc,
+            ctx=ctx,
+            meta=meta,
+        )
+
+    @staticmethod
+    def from_exc(
+        exc: BaseException,
+        *,
+        code: str = "UNEXPECTED",
+        msg: str | None = None,
+        stage: str = "",
+        path: tuple[int, ...] = (),
+        ctx: Mapping[str, object] | None = None,
+        meta: Mapping[str, object] | None = None,
+    ) -> "ErrInfo":
+        return ErrInfo.from_exception(
+            exc,
+            code=code,
+            msg=msg,
+            stage=stage,
+            path=path,
+            ctx=ctx,
+            meta=meta,
+        )
 
 
 def make_errinfo(

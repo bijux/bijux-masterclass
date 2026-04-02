@@ -1,6 +1,6 @@
-"""funcpipe_rag – end-of-Module-07 codebase.
+"""funcpipe_rag – end-of-Module-08 codebase.
 
-This package is the consolidated project state at the end of Module 07:
+This package is the consolidated project state at the end of Module 08:
 - Immutable domain types
 - Pure pipeline stages + canonical structural de-duplication
 - Config-as-data + closure-based configurators
@@ -15,6 +15,9 @@ This package is the consolidated project state at the end of Module 07:
   and boundary exception bridging.
 - Module 07: ports/capabilities, deferred IO plans (`IOPlan`), structured logs as pure data (Writer),
   idempotent behaviours, retry wrappers, and Session/Tx bracketing.
+- Module 08: async effect descriptions (`AsyncPlan`/`AsyncGen`), bounded concurrency + backpressure,
+  retry/timeout policies as data (with deterministic fake-time testing hooks), fairness + rate limiting,
+  and async stream chunking/batching helpers.
 
 Note: Module-05+ type-driven utilities live in `funcpipe_rag.fp` (and boundary
 adapters in `funcpipe_rag.boundaries`). The RAG pipeline APIs live in
@@ -23,6 +26,8 @@ with concrete adapters in `funcpipe_rag.infra.adapters`.
 """
 
 from __future__ import annotations
+
+from typing_extensions import assert_never
 
 # Domain value types – immutable, hashable where needed
 from .core.rag_types import (
@@ -87,7 +92,7 @@ from .fp import (
     toggle_metrics,
 )
 
-# Modules 02–07 public API layer (end-of-Module-07)
+# Modules 02–08 public API layer (end-of-Module-08)
 from .result import (
     Result,
     Ok,
@@ -260,6 +265,7 @@ from .streaming import (
 
 
 __all__ = [
+    "assert_never",
     # Types
     "RawDoc",
     "CleanDoc",

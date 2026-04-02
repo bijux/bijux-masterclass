@@ -1,4 +1,4 @@
-"""Module 05 hybrid performance path: optimized batches with equivalence checks (end-of-Module-07; domain-modeling)."""
+"""Module 05 hybrid performance path: optimized batches with equivalence checks (end-of-Module-08; domain-modeling)."""
 
 from __future__ import annotations
 

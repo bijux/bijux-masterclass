@@ -1,4 +1,4 @@
-"""Stack-safe, fully-lazy traversal of TreeDoc (end-of-Module-07)."""
+"""Stack-safe, fully-lazy traversal of TreeDoc (end-of-Module-08)."""
 
 from __future__ import annotations
 

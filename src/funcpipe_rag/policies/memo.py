@@ -1,4 +1,4 @@
-"""Memoization and caching for pure functions (end-of-Module-07)."""
+"""Memoization and caching for pure functions (end-of-Module-08)."""
 
 from __future__ import annotations
 
