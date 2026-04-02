@@ -28,6 +28,14 @@ The guides surface holds the learner routes for Deep Dive DVC. Use these pages w
 need sequence, entry points, capstone reading order, or review checklists rather than a
 single stable definition.
 
+Use them in this order when you are new to the program:
+
+1. [Start Here](start-here.md)
+2. [Course Guide](course-guide.md)
+3. [Learning Contract](learning-contract.md)
+4. [Module 00: Orientation and Study Strategy](../module-00-orientation/index.md)
+5. the ten module directories in order
+
 ## Start With These Pages
 
 - [Start Here](start-here.md) if you need the right entry path

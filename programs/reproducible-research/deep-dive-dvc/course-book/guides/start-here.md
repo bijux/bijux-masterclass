@@ -33,6 +33,12 @@ enough that another person can recover, compare, release, and defend results lat
 Use this page to pick the right entry route before you start reading modules out of
 sequence.
 
+If you are unsure which supporting surface to trust:
+
+- use [`guides/index.md`](index.md) for learner routes
+- use [`reference/index.md`](../reference/index.md) for durable maps and glossary pages
+- use the module directories for the core teaching arc
+
 ---
 
 ## Who This Course Helps Most

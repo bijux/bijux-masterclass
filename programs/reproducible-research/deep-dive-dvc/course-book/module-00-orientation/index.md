@@ -1,6 +1,6 @@
 <a id="top"></a>
 
-# Deep Dive DVC: Program Outline
+# Module 00 — Orientation and Study Strategy
 
 
 <!-- page-maps:start -->
@@ -11,7 +11,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
   section["Module 00"]
-  page["Deep Dive DVC: Program Outline"]
+  page["Module 00 — Orientation and Study Strategy"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

@@ -32,6 +32,12 @@ the right surface quickly.
 
 This guide groups the course by the question you are trying to answer.
 
+The top-level distinction is deliberate:
+
+- `guides/` pages choose routes and proof surfaces
+- `reference/` pages settle recurring trust questions
+- module directories do the main teaching work
+
 ---
 
 ## If You Are New Here

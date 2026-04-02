@@ -42,10 +42,16 @@ Use the course in this order:
 2. `course-book/guides/index.md`
 3. `course-book/guides/course-guide.md`
 4. `course-book/module-00-orientation/index.md`
-5. Modules `01` to `10` in order
+5. Modules `01` to `10` in order, following the state, execution, collaboration, and governance arc
 6. `course-book/guides/readme-capstone.md` and `course-book/guides/capstone-map.md` once the state model feels stable
 
 The route matters because the program is trying to build judgment, not only command recall.
+
+The course-book now has three stable top-level surfaces:
+
+- `guides/` for learner routes, proof selection, and capstone entry
+- `reference/` for durable maps, glossary pages, and review standards
+- `module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
 
 ## What this program covers
 
@@ -91,7 +97,7 @@ make -C programs/reproducible-research/deep-dive-dvc/capstone walkthrough
 
 ## Module map
 
-- `00` Program outline
+- `00` Orientation and study strategy
 - `01` Why reproducibility fails
 - `02` Data identity and content addressing
 - `03` Execution environments as inputs
@@ -101,7 +107,7 @@ make -C programs/reproducible-research/deep-dive-dvc/capstone walkthrough
 - `07` Collaboration, CI, and social contracts
 - `08` Production, scale, and incident survival
 - `09` Promotion, registry boundaries, release contracts, and auditability
-- `10` Mastery: migration, governance, anti-patterns, and tool boundaries
+- `10` Migration, governance, anti-patterns, and DVC tool boundaries
 
 ## License
 
