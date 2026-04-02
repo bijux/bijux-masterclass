@@ -35,6 +35,9 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 - Read [Capstone Walkthrough](capstone-walkthrough.md) when you want the learner-facing tour story.
 - Read the capstone's local [`WALKTHROUGH_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/python-programming/python-functional-programming/capstone/WALKTHROUGH_GUIDE.md) when you want the repository itself to provide the first-pass reading order.
 - Read [Capstone Proof Guide](capstone-proof-guide.md) when you want the verification route.
+- Use `make PROGRAM=python-programming/python-functional-programming inspect` when you need the shortest inspection route before choosing a deeper guide.
+- Use `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you need a saved review bundle instead of only console output.
+- Use `make PROGRAM=python-programming/python-functional-programming capstone-confirm` when you need the strongest published confirmation route.
 - Read [Capstone Extension Guide](capstone-extension-guide.md) when you want to decide where a new change belongs.
 
 ## Module-to-capstone bridge

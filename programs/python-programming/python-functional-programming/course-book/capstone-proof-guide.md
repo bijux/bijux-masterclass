@@ -8,7 +8,7 @@
 graph LR
   chapter["Module lesson"] --> proof["Capstone Proof Guide"]
   proof --> local["capstone/PROOF_GUIDE.md"]
-  local --> commands["test and tour commands"]
+  local --> commands["inspect, verify-report, and proof commands"]
 ```
 
 ```mermaid
@@ -26,11 +26,13 @@ the capstone.
 ## Proof route
 
 1. Read `capstone/PROOF_GUIDE.md`.
-2. Run `make PROGRAM=python-programming/python-functional-programming test` for executable verification.
-3. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` for the learner-facing proof bundle.
-4. Read [Capstone Test Guide](capstone-test-guide.md) when you need a stable route through the test surface.
-5. Run `make PROGRAM=python-programming/python-functional-programming proof` when you want the sanctioned end-to-end route.
-6. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to decide whether the evidence is strong enough.
+2. Run `make PROGRAM=python-programming/python-functional-programming inspect` when you need the fastest inventory of package, test, and guide ownership.
+3. Run `make PROGRAM=python-programming/python-functional-programming test` for direct executable verification.
+4. Run `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you want a review bundle with the executed test record.
+5. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` for the learner-facing proof bundle.
+6. Run `make PROGRAM=python-programming/python-functional-programming proof` when you want the sanctioned end-to-end route.
+7. Run `make PROGRAM=python-programming/python-functional-programming capstone-confirm` when you want the strictest confirmation route exposed by the catalog.
+8. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to decide whether the evidence is strong enough.
 
 ## What you should be able to answer after proof review
 

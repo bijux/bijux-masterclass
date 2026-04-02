@@ -31,12 +31,14 @@ the experience into random file browsing.
 
 ## Recommended first route
 
-1. Run `make tour`.
-2. Read `TOUR.md` for the bundle purpose and reading order.
-3. Read `pytest.txt` for the proof surface that currently passes.
-4. Read `focus-areas.txt` for the package groups that matter most to the course.
-5. Read `package-tree.txt` and `test-tree.txt` to place those focus areas inside the full repository.
-6. Move into `PACKAGE_GUIDE.md` and `TEST_GUIDE.md` when one part of the repository now matters more than the rest.
+1. Run `make inspect` if you need the fastest inventory before running the heavier proof routes.
+2. Run `make tour`.
+3. Read `TOUR.md` for the bundle purpose and reading order.
+4. Read `pytest.txt` for the proof surface that currently passes.
+5. Read `focus-areas.txt` for the package groups that matter most to the course.
+6. Read `package-tree.txt` and `test-tree.txt` to place those focus areas inside the full repository.
+7. Run `make verify-report` when you need the executed test record preserved as a review bundle.
+8. Move into `PACKAGE_GUIDE.md` and `TEST_GUIDE.md` when one part of the repository now matters more than the rest.
 
 ## What this walkthrough should teach
 

@@ -36,6 +36,8 @@ through the bundle instead of deciding the reading order yourself.
 
 The tour is not just a convenience export. It is the shortest path from course prose to
 inspectable evidence when you want a human-readable review route.
+Use `make inspect` first when you need a smaller inventory bundle, and use
+`make verify-report` when you need to preserve the executed test result alongside the tour.
 
 ## What the tour produces
 
@@ -46,6 +48,7 @@ inspectable evidence when you want a human-readable review route.
 - `focus-areas.txt`: the packages most relevant to course milestones
 - `README.md`: the repository guide for the capstone
 - `pyproject.toml`: the executable project contract
+- `manifest.json`: the stable inventory of the generated bundle
 
 ## How to run it
 
@@ -60,6 +63,12 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-functional-programming capstone-tour
 ```
+
+Neighbor routes:
+
+- `make inspect` for the fastest inspection bundle
+- `make verify-report` for the saved verification bundle
+- `make confirm` for the strictest combined route
 
 ## What to inspect first
 

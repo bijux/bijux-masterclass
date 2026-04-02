@@ -60,13 +60,19 @@ From the repository root:
 
 ```bash
 make PROGRAM=python-programming/python-functional-programming install
+make PROGRAM=python-programming/python-functional-programming inspect
 make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming capstone-tour
+make PROGRAM=python-programming/python-functional-programming capstone-verify-report
+make PROGRAM=python-programming/python-functional-programming capstone-confirm
 ```
 
 From this directory:
 
 ```bash
+make inspect
+make verify-report
+make confirm
 make proof
 ```
 
@@ -75,6 +81,7 @@ Proof route:
 - `PROOF_GUIDE.md`
 - `ARCHITECTURE.md`
 - `TOUR.md`
+- `WALKTHROUGH_GUIDE.md`
 - `EXTENSION_GUIDE.md`
 
 ## Recommended review path
@@ -87,6 +94,8 @@ Proof route:
 
 Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
 effects, or orchestration should live.
+Use `PROOF_GUIDE.md` when you need to choose between fast inspection, saved review output,
+and the strongest confirmation route.
 Use `TOUR.md` when you want the shortest human-readable route through the proof bundle.
 
 ## Course connection
