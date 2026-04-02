@@ -51,10 +51,10 @@ The route matters because the program is trying to build judgment, not only comm
 
 The course-book now has four stable top-level surfaces:
 
-- `guides/` for learner routes, proof selection, and capstone entry
-- `capstone/` for repository entry, command routing, recovery review, and release review
-- `reference/` for durable maps, glossary pages, and review standards
-- `module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
+- `course-book/guides/` for learner routes, proof selection, and reading pressure
+- `course-book/capstone/` for repository entry, command routing, recovery review, and release review
+- `course-book/reference/` for durable maps, glossary pages, and review standards
+- `course-book/module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
 
 If you are choosing where to enter, use:
 
