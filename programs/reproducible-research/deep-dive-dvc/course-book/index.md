@@ -1,6 +1,5 @@
 # Deep Dive DVC
 
-
 <!-- page-maps:start -->
 ## Course Shape
 
@@ -18,63 +17,55 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  promise["Read the course promise, scope, and audience"] --> orientation["Open Module 00 to anchor the mental model"]
-  orientation --> modules["Move into the module sequence that matches your pressure"]
-  modules --> support["Use guides and reference pages when they answer a concrete question"]
-  modules --> capstone["Bring the capstone in after the current idea is clear"]
+  promise["Read the course promise and learner fit"] --> route["Choose one stable entry lane"]
+  route --> orientation["Anchor the state model in Module 00"]
+  orientation --> modules["Read the modules in order"]
+  modules --> proof["Use guides, reference, and capstone only when they answer the current question"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so learners do not mistake the capstone or reference pages for the first stop.
+Read the first diagram as the shape of the whole book. Read the second diagram as the
+intended learner route so the capstone and support shelves do not become accidental first
+lessons.
 
-Deep Dive DVC teaches reproducibility as a discipline of explicit state. The goal is to
-make data, parameters, metrics, experiments, remotes, and recovery boundaries precise
-enough that another person can trust them months later.
+Deep Dive DVC teaches reproducibility as a discipline of explicit state. The goal is not
+to memorize commands. The goal is to make data, parameters, metrics, experiments,
+promotion, and recovery boundaries precise enough that another person can trust them
+later.
 
-This course is designed as a guided route, not a loose pile of DVC notes. Start with the
-learner path that matches your role, move through the ten modules in order, and use the
-capstone when the concept is clear enough that executable proof will sharpen it rather
-than overwhelm it.
+## Use this course if
 
-The top-level course-book now has three stable surfaces:
+- you want a state model instead of a command catalog
+- you inherited a repository where data, params, metrics, or experiments feel muddy
+- you already use DVC but still cannot say which state is authoritative
+- you review whether a repository can survive handoff, release, and recovery pressure
 
-- [`guides/`](guides/index.md) for learner routes, pressure routes, promise maps, checkpoints, and capstone entry
-- [`reference/`](reference/index.md) for durable maps, glossary pages, anti-pattern routing, and review standards
-- module pages for the core ten-module teaching arc
+## Do not use this course as
 
-## Why this program exists
+- a quick command reminder detached from state meaning
+- tooling advice before the repository's trust boundaries are clear
+- a reason to treat remotes, metrics, publish artifacts, and baseline state as interchangeable
 
-Many teams can rerun a pipeline once and still fail reproducibility in every way that
-matters:
+## Choose one starting lane
 
-- the dataset path is stable but the bytes are not
-- the pipeline reruns but nobody can explain which inputs changed
-- metrics are logged but no longer mean the same thing
-- experiments exist but baseline history and promotion rules are muddy
-- a remote failure or cache loss turns "tracked" state into folklore
+| If you are here because... | Start with | Stop when you can say... |
+| --- | --- | --- |
+| DVC is still new | [Start Here](guides/start-here.md), [Course Guide](guides/course-guide.md), [Module 00](module-00-orientation/index.md) | which state layers exist and why the capstone is not your first lesson |
+| you need to repair an existing repository | [Pressure Routes](guides/pressure-routes.md), [Module 01](module-01-reproducibility-failures-real-teams/index.md), [Module 04](module-04-truthful-pipelines-declared-dependencies/index.md) | whether the problem is state identity, pipeline truth, collaboration drift, or recovery |
+| you steward a long-lived repository | [Course Guide](guides/course-guide.md), [Module 05](module-05-metrics-parameters-comparable-meaning/index.md), [Module 09](module-09-promotion-registry-boundaries-auditability/index.md) | which surfaces are authoritative, which are promotable, and which proof route is proportionate |
 
-This program exists to close that gap.
+## Keep these support pages nearby
 
-## Start here
-
-Choose one entry:
-
-1. If you are new to the program, start with [`start-here.md`](guides/start-here.md).
-2. If your route is shaped by urgency or stewardship pressure, use [`pressure-routes.md`](guides/pressure-routes.md).
-3. If you need a stable route through support pages, use [`course-guide.md`](guides/course-guide.md).
-4. If you want the full program shape before reading modules, open [`module-00.md`](module-00-orientation/index.md).
-5. If you need the executable repository, start with [`readme-capstone.md`](capstone/index.md), not the raw capstone directory.
-
-The learner path is deliberate:
-
-1. Start with why reproducibility fails.
-2. Learn state identity before pipeline execution.
-3. Learn pipeline truth before metric comparison and experimentation.
-4. Learn experimentation before governance, retention, and incident survival.
-5. Continue into promotion, auditability, migration, and stewardship after the core state model is stable.
-
-If you skip that order, later modules will still be readable, but their rules will feel
-administrative instead of necessary.
+| Need | Best page |
+| --- | --- |
+| shortest stable entry | [Start Here](guides/start-here.md) |
+| route shaped by urgency | [Pressure Routes](guides/pressure-routes.md) |
+| stable support hub | [Course Guide](guides/course-guide.md) |
+| module titles translated into promises | [Module Promise Map](guides/module-promise-map.md) |
+| module exit bar | [Module Checkpoints](guides/module-checkpoints.md) |
+| state change and comparison rules | [Truth Contracts](guides/truth-contracts.md) |
+| smallest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
+| capstone entry by module and question | [Capstone Map](capstone/capstone-map.md) |
 
 ## Module Table of Contents
 
@@ -92,96 +83,30 @@ administrative instead of necessary.
 | [Module 09](module-09-promotion-registry-boundaries-auditability/index.md) | Promotion, Registry Boundaries, and Auditability | treats release and registry state as explicit trust boundaries |
 | [Module 10](module-10-migration-governance-dvc-boundaries/index.md) | Migration, Governance, and DVC Boundaries | finishes with stewardship, migration, and tool-boundary judgment |
 
-## Use These Support Pages First
+## How the capstone fits
 
-These are the pages that make the course easier to trust and easier to finish:
+The capstone is the executable proof surface for the course. It should corroborate a
+module idea that is already legible, not replace first exposure.
 
-| Need | Best page |
-| --- | --- |
-| first learner route | [`start-here.md`](guides/start-here.md) |
-| route under repair, stewardship, or recovery pressure | [`pressure-routes.md`](guides/pressure-routes.md) |
-| stable support hub | [`course-guide.md`](guides/course-guide.md) |
-| what each module title actually promises | [`module-promise-map.md`](guides/module-promise-map.md) |
-| whether you are ready to move on | [`module-checkpoints.md`](guides/module-checkpoints.md) |
-| smallest honest proof route | [`proof-ladder.md`](guides/proof-ladder.md) |
-| capstone entry by module | [`capstone-map.md`](capstone/capstone-map.md) |
+Use it in this order:
 
-## Support Pages Worth Knowing Early
+1. learn the concept in the local module exercise
+2. choose the smallest honest route with [Proof Ladder](guides/proof-ladder.md)
+3. enter the repository through [Capstone Map](capstone/capstone-map.md) or [Command Guide](capstone/command-guide.md)
+4. escalate to stronger review only when the current question actually needs it
 
-These pages make the course easier to navigate:
+## Success signal
 
-- [`learning-contract.md`](guides/learning-contract.md) clarifies what the course optimizes for and refuses to optimize for.
-- [`module-dependency-map.md`](reference/module-dependency-map.md) shows which concepts should be learned before others.
-- [`topic-boundaries.md`](reference/topic-boundaries.md) explains what the course treats as core and what it only touches at the boundary.
-- [`platform-setup.md`](guides/platform-setup.md) explains the local environment assumptions before you run proof commands.
-- [`practice-map.md`](reference/practice-map.md) maps each module to its main proof loop and capstone follow-up.
-- [`authority-map.md`](reference/authority-map.md) explains which layer of state settles which trust question.
-- [`evidence-boundary-guide.md`](reference/evidence-boundary-guide.md) explains what declaration, execution, promotion, and recovery evidence can and cannot prove.
-- [`anti-pattern-atlas.md`](reference/anti-pattern-atlas.md) routes common reproducibility smells to the right repair path.
-- [`command-guide.md`](capstone/command-guide.md) explains where each command belongs.
-- [`proof-ladder.md`](guides/proof-ladder.md) explains how much proof is enough before you escalate.
-- [`guides/index.md`](guides/index.md) collects the full learner and capstone route in one place.
-- [`reference/index.md`](reference/index.md) collects the durable review maps in one place.
+The course home has done its job when you know:
 
-## How To Use The Capstone While Reading
+- where to start without random browsing
+- which support page answers the next question
+- why the capstone is a proof surface rather than a first-contact playground
+- why later modules are consequences of earlier state identity and pipeline-truth choices
 
-- After Module 02, inspect how the repository separates workspace state, cache state, and publish state.
-- After Module 04, inspect the `dvc.yaml` stages and ask whether every influential edge is declared.
-- After Module 06, inspect how parameter changes create comparable experiment runs without mutating the baseline.
-- After Module 08, inspect the recovery drill and ask which state survives cache loss and why.
-- After Module 09, inspect `publish/v1/`, manifests, and promoted params or metrics as a release boundary.
-- In Module 10, use the capstone as a repository review specimen rather than a first-contact example.
-
-When entering the capstone, keep these pages open together:
-
-- [`capstone-map.md`](capstone/capstone-map.md)
-- [`capstone-file-guide.md`](capstone/capstone-file-guide.md)
-- [`repository-layer-guide.md`](capstone/repository-layer-guide.md)
-- [`proof-ladder.md`](guides/proof-ladder.md)
-
-The capstone should answer the question: "What does this module look like in a real DVC repository?"
-
-## Review Surfaces
-
-When you are reviewing whether the course and capstone are actually coherent, use:
-
-* [`topic-boundaries.md`](reference/topic-boundaries.md)
-* [`anti-pattern-atlas.md`](reference/anti-pattern-atlas.md)
-* [`module-promise-map.md`](guides/module-promise-map.md)
-* [`module-checkpoints.md`](guides/module-checkpoints.md)
-* [`completion-rubric.md`](reference/completion-rubric.md)
-
-## What The Course Is Trying To Prevent
+## Failure modes this course is designed to prevent
 
 - treating paths as identity
-- comparing metrics whose meaning has drifted
-- running pipelines with undeclared parameters or environment assumptions
-- using experiments without promotion rules
-- promoting state without the evidence needed to defend it later
-- letting migration or retention policy silently damage authoritative history
-- trusting remotes and recovery stories that were never rehearsed
-
-## Working Locally
-
-From the repository root:
-
-```bash
-make PROGRAM=reproducible-research/deep-dive-dvc docs-serve
-make PROGRAM=reproducible-research/deep-dive-dvc test
-```
-
-## Repository Layout
-
-```mermaid
-graph TD
-  root["bijux-masterclass/programs/reproducible-research/deep-dive-dvc/"]
-  root --> book["course-book/"]
-  root --> capstone["capstone/"]
-  root --> makefile["Makefile"]
-  root --> mkdocs["mkdocs.yml"]
-  root --> readme["README.md"]
-  book --> orientation["module-00-orientation/index.md"]
-  book --> modules["module-01-.../index.md to module-10-.../index.md"]
-  book --> capmap["capstone/capstone-map.md"]
-  capstone --> capreadme["README.md"]
-```
+- trusting a rerun without being able to explain which state changed
+- using the capstone as first contact and confusing repository size with conceptual clarity
+- treating promotion, recovery, and governance as paperwork instead of consequences of earlier state contracts
