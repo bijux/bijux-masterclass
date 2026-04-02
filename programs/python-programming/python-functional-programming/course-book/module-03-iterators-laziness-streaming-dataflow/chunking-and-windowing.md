@@ -275,7 +275,8 @@ def gen_rag_chunks(docs: Iterable[RawDoc], env: RagEnv) -> Iterator[ChunkWithout
     )
 ```
 
-**Wins:** Perfect coverage with overlap; bounded memory; streaming per-doc ops.
+**Wins:** Full coverage under the supported overlap policies; bounded memory; streaming
+per-doc ops.
 
 **Complexity:**
 | Pattern          | Time          | Aux Space       | Notes                              |
@@ -303,7 +304,8 @@ for doc_id, grp in grouped:
 
 ## 5. Equational Reasoning: Substitution Exercise
 
-**Hand Exercise:** Inline overlapping chunker → yields with perfect reconstruction under emit_short/pad.
+**Hand Exercise:** Inline overlapping chunker → yields exact reconstruction under
+`emit_short` and `pad`.
 
 **Bug Hunt:** Eager materialises all chunks; streaming emits on demand with bounded work.
 
@@ -364,7 +366,7 @@ def test_sliding_window_demand_and_coverage(data, w):
     assert len(windows) == expected_windows
     assert pulls <= len(windows) + (w - 1)
 
-    # perfect reconstruction when len(data) >= w
+    # exact reconstruction when len(data) >= w
     if len(data) >= w:
         recon = list(windows[0])
         recon.extend(win[-1] for win in windows[1:])
@@ -394,14 +396,17 @@ Non-contiguous keys (sort first, paying O(n log n)); truly random access (materi
 1. Window aux space? → **O(w).**  
 2. Groupby needs contiguous keys? → **Yes — guard or sort.**  
 3. Chunking slices per chunk? → **Exactly one.**  
-4. Coverage with overlap? → **Perfect under emit_short/pad.**  
+4. Coverage with overlap? → **Exact under emit_short/pad.**  
 5. Demand for n windows? → **≤ n + (w-1).**
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Find any remaining list-building aggregation in your codebase — it is now obsolete.
+**Reflect:** Find any remaining list-building aggregation in your codebase and decide
+whether a streaming form would now be clearer or safer.
 
-**Project Exercise:** Add overlap=128 and tail_policy="emit_short" to your RAG env. Verify perfect reconstruction on a sample abstract and that memory stays flat on the 10k dataset.
+**Project Exercise:** Add overlap=128 and tail_policy="emit_short" to your RAG env.
+Verify exact reconstruction on a sample abstract and that memory stays flat on the 10k
+dataset.
 
 **Continue with:** [Infinite Sequences Safely](../module-03-iterators-laziness-streaming-dataflow/infinite-sequences-safely.md)
 

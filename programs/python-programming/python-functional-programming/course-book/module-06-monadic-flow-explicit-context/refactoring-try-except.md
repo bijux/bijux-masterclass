@@ -78,7 +78,7 @@ All equivalence properties run in CI. A single divergence fails the build.
 
 ## 3. Public API – No new helpers (use everything from previous cores)
 
-You already have everything you need:
+You already have the main building blocks you need:
 
 - `.map`, `.and_then`, `.ap` on `Result`
 - `.map`, `.and_then` on `Option`

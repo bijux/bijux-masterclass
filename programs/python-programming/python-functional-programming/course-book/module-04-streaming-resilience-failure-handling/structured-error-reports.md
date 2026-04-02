@@ -43,7 +43,7 @@ You can now process real-world messy data at scale with:
 - Zero lost records on failures
 - Zero resource leaks
 - Zero wasted work on doomed runs
-- Perfect structured error reports
+- Clear, structured error reports
 
 This is production-grade functional data processing in Python — the kind that ships to millions of documents and survives anything the real world throws at it.
 
@@ -360,7 +360,7 @@ You can now process real-world data at scale with:
 - Zero lost records on failures
 - Zero resource leaks
 - Zero wasted work on doomed runs
-- Perfect structured error reports
+- Clear, structured error reports
 
 This is production-grade functional data processing in Python — the kind that ships to millions of documents and survives anything the real world throws at it.
 

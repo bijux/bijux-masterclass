@@ -148,7 +148,8 @@ Swap in a mock → instant sync tests.
 
 ## Why Pure Protocols + Thin Async Adapter Classes? (Three bullets every engineer should internalise)
 - **Zero vendor lock-in**: Swap OpenAI ↔ Cohere ↔ local Ollama with a one-line factory change.
-- **Perfect testability**: Implement the protocol synchronously with fakes → no event loop in 99 % of tests.
+- **Strong testability**: Implement the protocol synchronously with fakes so most tests
+  stay out of the event loop.
 - **Full resilience composability**: All policies (retry/timeout/rate-limit/fairness) applied uniformly outside the adapter.
 
 Adapter methods must never be `async def` — they always return an `AsyncAction` thunk (fresh coroutine factory). This is the law that keeps us pure.

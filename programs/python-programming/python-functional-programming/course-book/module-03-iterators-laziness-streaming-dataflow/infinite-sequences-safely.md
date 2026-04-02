@@ -364,7 +364,8 @@ Everything else → fence aggressively.
 
 ## 9. Post-Core Reflection & Exercise
 
-**Reflect:** Audit every iterator consumption in your codebase — any without a fence is now a latent DoS bug.
+**Reflect:** Audit every iterator consumption in your codebase and flag the ones that
+still need an explicit fence or termination argument.
 
 **Project Exercise:** Add `max_chunks=10_000` and `min_doc_len=500` defaults to your RAG config. Verify on a malicious 1 TB simulated input that the pipeline terminates in < 1 second.
 
