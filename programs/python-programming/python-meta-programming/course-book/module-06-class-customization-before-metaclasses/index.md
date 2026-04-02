@@ -45,22 +45,28 @@ flowchart LR
 <a id="introduction"></a>
 ## Introduction
 
-This module moves from function decorators (Modules 4–5) to **class-level metaprogramming**:
+This module is the bridge between function-level wrappers and the deeper attribute
+machinery that follows. The through-line is simple: before you reach for descriptors or
+metaclasses, you need to know how much control a fully created class already gives you.
+Class decorators, `@dataclass`, `@property`, and shallow type-hint-driven validation cover
+more ground than many meta-heavy designs admit.
 
-* **Class decorators**: transform a *fully created* class (`C = decorator(C)`).
-* **`@property`**: the friendly entry point to the **descriptor protocol**.
-* **Runtime type hints**: use `typing.get_type_hints` as a declarative schema for **shallow** runtime validation.
+That makes this module a discipline check as much as a mechanics lesson. The aim is not
+to collect class tricks. The aim is to learn where class customization can stay explicit,
+local, and reversible before the course moves into descriptor-level control.
+
+Keep one question in view while reading:
+
+> Can this class-level behavior stay honest after class creation, or am I already pushing toward descriptor or metaclass territory?
+
+The answer matters because the capstone uses all three boundaries in different places:
+wrappers on actions, descriptors on configuration fields, and a metaclass on plugin
+registration. This module is where those ownership lines start becoming visible.
 
 Design stance:
 
-> Prefer descriptors, class decorators, or explicit helper methods for attribute management.
-> Treat custom `__setattr__` as a last resort, only for tightly controlled hierarchies.
-
-Conventions in this book:
-
-* ` ```python` fences are runnable.
-* Any line expected to raise is wrapped in `try/except` and prints `Expected: ...`.
-* Pseudo-code is in ` ```text` fences.
+> Prefer class decorators, properties, descriptors, or explicit helpers over custom `__setattr__`.
+> Reach for higher-power hooks only when the lower one cannot own the invariant cleanly.
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 

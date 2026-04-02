@@ -43,30 +43,33 @@ flowchart LR
 ---
 
 <a id="introduction"></a>
-## Introduction   
+## Introduction
 
-Building on Module 1’s foundation—functions as first-class, metadata-rich callables—and Modules 2–3’s introspection tools for safe attribute probing and signature inspection, we now move to the first truly *transforming* layer of metaprogramming: decorators. A decorator is a callable that takes a function (the decoratee) and returns a new callable with augmented behaviour; the `@decorator` syntax is just `f = decorator(f)` written declaratively. This mechanism lets you inject cross-cutting concerns such as logging, timing, validation, and memoization cleanly, without editing the original function body.
+This is the first module where metaprogramming stops observing runtime behavior and starts
+changing it. That is why decorators need a stricter teaching stance than introspection:
+the syntax is light, but the costs are easy to hide. A decorator can erase signatures,
+bury tracebacks, capture mutable state, or quietly change call semantics unless the
+wrapper stays honest about what it owns.
 
-(Typing aside: writing decorators that keep static type checkers happy is non-trivial. Python 3.10’s `ParamSpec` and `Concatenate` (PEP 612) allow decorators to preserve the original function’s parameter types in type-checker land. This module stays focused on runtime mechanics; decorator typing patterns are taken up briefly in Module 5 and in more depth in later volumes.)
+The purpose of this module is to make decorator mechanics explicit enough that you can
+see those costs before they become library folklore. You will build from closures and
+`@decorator` desugaring to real wrappers such as `@timer`, `@once`, and `@deprecated`,
+then close on `functools.wraps` as a correctness requirement rather than a style flourish.
 
-This module develops decorators through four practical pillars:
+Keep one question in view while reading:
 
-- **Core 16: Nested functions** – functions that return functions; closures as the mechanical basis for decorators.  
-- **Core 17: `@decorator` syntax** – `@d` and `@d1 @d2` as `f = d(f)` / `f = d1(d2(f))`.  
-- **Core 18: First real decorators** – `@timer`, `@once`, `@deprecated` as practical, stateful examples.  
-- **Core 19: `functools.wraps`** – identity-preserving wrappers that keep names, docs, and signatures intact.  
+> Is this wrapper still a transparent function transformation, or has it become a small runtime policy engine?
 
-The capstone introduces a didactic `@cache` decorator: a manual, single-threaded memoization layer that intentionally stops short of production quality and serves as a contrast class to `functools.lru_cache`.
+That question matters because the capstone uses wrapper discipline as part of its public
+surface. Action decorators record history and preserve signatures at the same time. If the
+module does not teach that boundary clearly, the capstone starts looking magical instead
+of reviewable.
 
-Each core follows the standard structure introduced in the book’s introduction.
+Risk boundary for this module:
 
-We also make the risk profile explicit:
-
-- Simple decorators (`@timer`, `@deprecated`, thin wrappers with `@wraps`) are generally safe in library and application code when they remain transparent and side-effect-free apart from their advertised concern.  
-- Stateful decorators (`@once`, `@cache`, retries, rate-limits) change semantics and can interact badly with concurrency, recursion, and mutability. These must be treated as *small frameworks*, designed with clear contracts and explicit limitations, not as throwaway syntactic sugar.  
-- All stateful patterns shown in this module are **single-threaded and synchronous**; they deliberately ignore locks, async/await, and process-level coordination. Concurrency-safe and async-aware variants are deferred to later volumes.
-
-The goal is to make you fluent with decorator mechanics (nested functions, `@` syntax, wrapping, identity preservation) and disciplined about their use: you should be able to read and write decorators that are transparent, introspection-friendly, and honest about their costs, and to recognise immediately when a decorator has crossed the line from “thin wrapper” into “small framework” with semantic and concurrency implications.
+- thin wrappers are acceptable when they preserve metadata and advertise their behavior
+- stateful wrappers must be treated as policy surfaces with explicit limits
+- all examples here remain synchronous and single-process on purpose so the runtime cost stays visible
 
 ## Why this module matters in the course
 

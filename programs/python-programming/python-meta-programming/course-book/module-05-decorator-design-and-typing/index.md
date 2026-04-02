@@ -43,26 +43,35 @@ flowchart LR
 ---
 
 <a id="introduction"></a>
-## Introduction   
+## Introduction
 
-Extending the basic decorator mechanics from Module 4—nested functions, `@decorator` syntax, and identity-preserving wrappers—this module moves into *production-shaped* patterns: configurable decorator factories, resilience wrappers (retry, timeout, rate limiting), and annotation-aware validation. All implementations in this module are deliberately **single-threaded, synchronous, and not safe under concurrency or async**; they are didactic patterns, not drop-in production utilities.
+Module 04 established the mechanical truth of wrappers. This module asks the harder
+question: what happens when the wrapper starts carrying policy? Retries, timeouts,
+rate limits, validation, and caching all sound like ordinary decorator use until you
+review the failure modes. At that point a decorator is no longer just syntax around a
+function. It becomes a contract about time, errors, state, and metadata.
 
-(Static typing of these decorators—ParamSpec/Concatenate, protocol-aware decorators, mypy plugins—is postponed to Volume II.)
+That is why this module is organized around design pressure rather than novelty. You will
+work through decorator factories, resilience wrappers, runtime use of annotations, and the
+shape of `lru_cache`-style behavior, but the real lesson is where these patterns stop being
+transparent. The goal is not to imitate production frameworks. The goal is to learn which
+parts of those frameworks are honest enough to borrow and which ones require stronger
+governance than a course module should pretend to provide.
 
-This module develops the second tier of decorator usage through four pillars:
+Keep one question in view while reading:
 
-- **Core 21: Decorator factories** – parameterised decorators via higher-order functions.  
-- **Core 22: Resilience patterns** – `@retry`, `@timeout`, `@rate_limited` in a single-threaded, sync setting.  
-- **Core 23: Annotation-aware wrappers** – using `typing.get_type_hints` inside decorators.  
-- **Core 24: `functools.lru_cache` from the outside** – how real caches behave and what knobs they expose.  
+> Which part of this behavior belongs in a wrapper, and which part belongs in an explicit object or service boundary instead?
 
-The capstone builds `@validated`: a *partial* runtime type contract checker for common hints (plain classes, `Union`, `Optional`, `Any`) that is explicitly **not** a full runtime type system. Throughout, we emphasise three boundaries:
+The capstone uses this distinction directly. Its action wrappers stay narrow, while schema
+and registration rules live elsewhere. If this module collapses those roles together, the
+overall course starts teaching “decorators can do anything” instead of “decorators should
+own only callable transformation.”
 
-- **Concurrency:** patterns shown here ignore threading, multiprocessing, and async—Volume II will revisit them with proper locking and async primitives.  
-- **Typing:** we only handle a tractable subset of type hints in Volume I; mypy plugins and full static integration live in Volume II.  
-- **Introspection:** all decorators continue to cooperate with `inspect` and `functools.wraps`, preserving signatures and metadata wherever possible.
+Risk boundary for this module:
 
-By the conclusion, you will be able to develop resilient, configurable, and type-aware decorators that remain transparent to introspection tools while understanding exactly where their limitations lie.
+- policy wrappers must preserve signatures and metadata if they expect tooling trust
+- type-hint-driven behavior stays partial and reviewable rather than pretending to be a full type system
+- examples remain synchronous and single-process so design costs are visible instead of hidden behind infrastructure
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
