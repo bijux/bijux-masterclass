@@ -195,6 +195,10 @@ These commands answer different questions:
 Every generated bundle now includes a `manifest.json` inventory so review can start from
 an explicit file list instead of manual guessing.
 
+The verification report bundle now also carries the promoted profile, model, manifest,
+and threshold summaries together with the verifier implementation and its regression
+coverage, so contract checking can be reviewed as both evidence and code.
+
 The walkthrough bundle now includes the verifier implementation, verifier tests, and a
 sample promoted manifest/report so the learner can connect declaration, enforcement, and
 published evidence in one reading route.

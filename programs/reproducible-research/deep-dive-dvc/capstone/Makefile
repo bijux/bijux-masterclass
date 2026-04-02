@@ -59,13 +59,38 @@ verify: repro ## Validate the published artifact contract
 .PHONY: verify-report
 verify-report: repro ## Write a structured verification report for the published contract
 	@rm -rf $(VERIFY_REPORT_DIR)
-	@mkdir -p $(VERIFY_REPORT_DIR)
+	@mkdir -p $(VERIFY_REPORT_DIR)/publish-v1 $(VERIFY_REPORT_DIR)/src/incident_escalation_capstone $(VERIFY_REPORT_DIR)/tests
 	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1 --report $(VERIFY_REPORT_DIR)/verify.json
+	@$(INSPECT) manifest-summary --publish publish/v1 > $(VERIFY_REPORT_DIR)/manifest-summary.json
+	@$(INSPECT) profile-summary --publish publish/v1 > $(VERIFY_REPORT_DIR)/profile-summary.json
+	@$(INSPECT) model-summary --publish publish/v1 > $(VERIFY_REPORT_DIR)/model-summary.json
+	@$(INSPECT) threshold-review --publish publish/v1 > $(VERIFY_REPORT_DIR)/threshold-review.json
+	@$(INSPECT) stage-summary --pipeline dvc.yaml --lock dvc.lock > $(VERIFY_REPORT_DIR)/stage-summary.json
+	@cp publish/v1/manifest.json $(VERIFY_REPORT_DIR)/publish-v1/manifest.json
+	@cp publish/v1/data-profile.json $(VERIFY_REPORT_DIR)/publish-v1/data-profile.json
+	@cp publish/v1/model.json $(VERIFY_REPORT_DIR)/publish-v1/model.json
+	@cp publish/v1/metrics.json $(VERIFY_REPORT_DIR)/publish-v1/metrics.json
+	@cp publish/v1/params.yaml $(VERIFY_REPORT_DIR)/publish-v1/params.yaml
+	@cp publish/v1/predictions.csv $(VERIFY_REPORT_DIR)/publish-v1/predictions.csv
+	@cp publish/v1/report.md $(VERIFY_REPORT_DIR)/publish-v1/report.md
+	@cp PUBLISH_CONTRACT.md $(VERIFY_REPORT_DIR)/PUBLISH_CONTRACT.md
+	@cp DATA_PROFILE_GUIDE.md $(VERIFY_REPORT_DIR)/DATA_PROFILE_GUIDE.md
+	@cp MODEL_GUIDE.md $(VERIFY_REPORT_DIR)/MODEL_GUIDE.md
+	@cp PREDICTION_REVIEW_GUIDE.md $(VERIFY_REPORT_DIR)/PREDICTION_REVIEW_GUIDE.md
+	@cp src/incident_escalation_capstone/verify.py $(VERIFY_REPORT_DIR)/src/incident_escalation_capstone/verify.py
+	@cp tests/test_verify.py $(VERIFY_REPORT_DIR)/tests/test_verify.py
 	@printf '%s\n' \
 		'Verification report route:' \
 		'  1. Read verify.json for the per-surface contract results.' \
-		'  2. Read publish/v1/manifest.json beside it when you need promoted file inventory.' \
-		'  3. Read publish/v1/report.md when you need the human-readable release story.' > $(VERIFY_REPORT_DIR)/route.txt
+		'  2. Read manifest-summary.json, profile-summary.json, and model-summary.json for the promoted inventory, population, and scoring summaries.' \
+		'  3. Read threshold-review.json when the decision line or borderline rows matter.' \
+		'  4. Read publish-v1/manifest.json, publish-v1/report.md, and PUBLISH_CONTRACT.md for the full promoted boundary.' \
+		'  5. Read src/incident_escalation_capstone/verify.py and tests/test_verify.py when you need the enforcement route.' > $(VERIFY_REPORT_DIR)/route.txt
+	@printf '%s\n' \
+		'Verification questions:' \
+		'  Which promoted surfaces are explicitly verified?' \
+		'  Which promoted summaries make the verify output easier to interpret?' \
+		'  Which release questions still require broader repository evidence?' > $(VERIFY_REPORT_DIR)/review-questions.txt
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "✔ wrote verification report to $(VERIFY_REPORT_DIR)"
 
