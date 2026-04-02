@@ -47,6 +47,7 @@ If you keep those questions in view, the modules feel cumulative instead of deco
 3. Read [Course Guide](course-guide.md) to understand the course structure.
 4. Read [Learning Contract](learning-contract.md) before Module 01.
 5. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
+6. Use [Command Guide](command-guide.md) and [Capstone Map](capstone-map.md) when you want the executable route.
 
 ## What to avoid
 

@@ -40,6 +40,9 @@ The capstone demonstrates a system where:
 - infrastructure is organized behind protocols and adapters
 - async coordination is bounded, testable, and inspectable
 
+Use [Capstone Map](capstone-map.md) when you want the best next page for code reading,
+architecture review, walkthrough, or proof.
+
 ## What the learner should do with it
 
 Use the capstone as evidence, not just as a runnable project:
