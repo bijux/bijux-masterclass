@@ -130,7 +130,7 @@ graph TD
   lab --> profiles["profiles/"]
   lab --> ci["ci/"]
   config --> configYaml["config.yaml"]
-  config --> schemaYaml["config.schema.yaml"]
+  config --> schemaYaml["schema.yaml"]
   config --> schemas["schemas/"]
   schemas --> refSchema["ref.schema.yaml"]
   schemas --> brokenSchema["broken.schema.yaml"]
@@ -145,11 +145,11 @@ graph TD
   rules --> entropy["entropy.smk"]
   rules --> resources["resources.smk"]
   profiles --> local["local/"]
-  local --> profileConfig["config.v9+.yaml"]
+  local --> profileConfig["config.yaml"]
   ci --> gate["gate.sh"]
 ```
 
-### `profiles/local/config.v9+.yaml`
+### `profiles/local/config.yaml`
 
 ```yaml
 executor: local
@@ -165,7 +165,7 @@ results_prefix: "results/v1"
 samples: ["A", "B"]
 ```
 
-### `config/config.schema.yaml`
+### `config/schema.yaml`
 
 ```yaml
 type: object
@@ -328,7 +328,7 @@ rule consumer_all:
 from snakemake.utils import validate
 
 configfile: "config/config.yaml"
-validate(config, "config/config.schema.yaml")
+validate(config, "config/schema.yaml")
 
 module provider:
     snakefile: "modules/provider/Snakefile"
@@ -730,7 +730,7 @@ Provide:
 from snakemake.utils import validate
 
 configfile: "config/config.yaml"
-validate(config, "config/config.schema.yaml")
+validate(config, "config/schema.yaml")
 
 include: "workflow/rules/consumer.smk"
 include: "workflow/rules/entropy.smk"
@@ -757,7 +757,7 @@ rule all:
 from snakemake.utils import validate
 
 configfile: "config/config.yaml"
-validate(config, "config/config.schema.yaml")
+validate(config, "config/schema.yaml")
 
 SAMPLES = config["samples"]
 P = config["results_prefix"]
