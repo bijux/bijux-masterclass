@@ -78,9 +78,13 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming test
+make PROGRAM=python-programming/python-functional-programming capstone-test
 make PROGRAM=python-programming/python-functional-programming docs-serve
 make PROGRAM=python-programming/python-functional-programming history-refresh
 ```
+
+At the course level, `test` is the strongest published proof route and delegates to the
+capstone's `confirm` target. Use `capstone-test` when you only want the pytest suite.
 
 Primary reading route:
 

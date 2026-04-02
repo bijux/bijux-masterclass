@@ -63,6 +63,7 @@ From the repository root:
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming inspect
 make PROGRAM=python-programming/python-functional-programming test
+make PROGRAM=python-programming/python-functional-programming capstone-test
 make PROGRAM=python-programming/python-functional-programming capstone-tour
 make PROGRAM=python-programming/python-functional-programming capstone-verify-report
 make PROGRAM=python-programming/python-functional-programming capstone-confirm
@@ -71,12 +72,18 @@ make PROGRAM=python-programming/python-functional-programming capstone-confirm
 From this directory:
 
 ```bash
+make test
 make inspect
 make verify-report
 make confirm
 make proof
 make history-refresh
 ```
+
+From the repository root, `make PROGRAM=python-programming/python-functional-programming test`
+is the strongest published course-level proof route and delegates here to `make confirm`.
+Use `capstone-test` when you only want the pytest suite without the extra confirmation
+bundles.
 
 History route:
 

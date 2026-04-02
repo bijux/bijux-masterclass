@@ -29,6 +29,11 @@ This page maps the course's main design claims to the capstone surface that prov
 Use it whenever a module makes an important claim and you want the shortest honest route
 to evidence instead of browsing the repository at random.
 
+At the course level, `make PROGRAM=python-programming/python-functional-programming test`
+now delegates to the capstone's `confirm` target so the default proof route matches the
+strongest published confirmation surface. Use `capstone-test` when you only need the raw
+pytest suite.
+
 ## Core design claims
 
 | Claim | Best first route | Best first surface |

@@ -17,7 +17,11 @@ install: ## Install capstone development dependencies
 	@$(RUN_CAPSTONE) install
 
 .PHONY: test
-test: ## Run the capstone test suite
+test: ## Run the strongest published course confirmation route
+	@$(RUN_CAPSTONE) confirm
+
+.PHONY: capstone-test
+capstone-test: ## Run only the capstone unit and integration test suite
 	@$(RUN_CAPSTONE) test
 
 .PHONY: demo

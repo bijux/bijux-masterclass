@@ -29,6 +29,7 @@ Use it whenever you want to connect a course claim to runnable evidence.
 ```bash
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming test
+make PROGRAM=python-programming/python-functional-programming capstone-test
 make PROGRAM=python-programming/python-functional-programming demo
 make PROGRAM=python-programming/python-functional-programming inspect
 make PROGRAM=python-programming/python-functional-programming docs-serve
@@ -60,12 +61,13 @@ make history-clean
 
 - Use `docs-serve` when you are reading the course-book locally.
 - Use `install` before your first capstone run or when the environment changed.
-- Use `test` when you want executable confidence in the codebase.
+- Use `test` when you want the strongest published course-level confirmation route.
+- Use `capstone-test` when you only want the capstone pytest suite without the full confirmation bundle.
 - Use `demo` when you want the learner-facing walkthrough route with the shared catalog verb.
 - Use `inspect` when you want the quickest inventory of packages, tests, and proof guides.
 - Use `capstone-tour` or `tour` when you want the learner-facing proof bundle.
 - Use `capstone-verify-report` or `verify-report` when you want a durable review bundle with executed test output.
-- Use `capstone-confirm` or `confirm` when you want the strictest public confirmation route for this capstone.
+- Use `capstone-confirm` or `confirm` when you want the strictest public confirmation route from inside the capstone itself.
 - Use `proof` when you want the sanctioned end-to-end evidence route in one command.
 - Use `history-refresh` when you want fresh module tags plus `_history/worktrees/module-XX` for module-by-module comparison.
 - Use `history-clean` when you want to remove the generated history surface, the local module tags, and the generated history branch before rebuilding from scratch.

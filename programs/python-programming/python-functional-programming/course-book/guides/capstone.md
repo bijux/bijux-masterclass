@@ -78,6 +78,7 @@ From the repository root:
 ```bash
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming test
+make PROGRAM=python-programming/python-functional-programming capstone-test
 make PROGRAM=python-programming/python-functional-programming capstone-tour
 ```
 
@@ -88,6 +89,10 @@ make install
 make test
 make tour
 ```
+
+At the repository root, `test` is the full course confirmation route and maps to the
+capstone's `confirm` target. Use `capstone-test` from the root, or `make test` inside the
+capstone, when the narrower question is only the pytest suite.
 
 ## Review questions
 
