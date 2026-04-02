@@ -21,9 +21,10 @@ Most Makefiles “work” until they don’t: hidden inputs, phony ordering, sta
 
 This is a practical step toward *real* understanding of Make: what it guarantees, what it does not, and how to design Makefiles that remain correct as projects grow.
 
-The course-book now has three stable surfaces:
+The course-book now has four stable surfaces:
 
 - `course-book/guides/` for learner routes, module promises, checkpoints, and capstone entry
+- `course-book/capstone/` for repository entry, command routing, review worksheets, and proof reading
 - `course-book/reference/` for durable review maps, glossaries, standards, and anti-patterns
 - `course-book/module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
 
@@ -36,7 +37,7 @@ Use the course in this order:
 5. `course-book/guides/module-checkpoints.md`
 6. `course-book/module-00-orientation/index.md`
 7. Modules `01` to `10` in order
-8. `course-book/guides/proof-ladder.md` and `course-book/guides/capstone-map.md` once the local model is clear
+8. `course-book/guides/proof-ladder.md`, `course-book/capstone/index.md`, and `course-book/capstone/capstone-map.md` once the local model is clear
 
 ## Module map
 
