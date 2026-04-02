@@ -43,6 +43,8 @@ file, or artifact that defends it.
 
 ## Route By Review Goal
 
+- Domain vocabulary and sample-to-report story: `DOMAIN_GUIDE.md`
+- Stage ownership and first proof surface: `WORKFLOW_STAGE_GUIDE.md`
 - Repository ownership: `ARCHITECTURE.md`
 - First contact and visible rule surface: `WALKTHROUGH_GUIDE.md`
 - Publish-boundary trust: `PUBLISH_REVIEW_GUIDE.md`

@@ -185,6 +185,9 @@ Use `PROOF_GUIDE.md` when you want the shortest route from a course claim to the
 file, or published artifact that proves it.
 Use `DOMAIN_GUIDE.md` when you need the smallest honest explanation of what the dataset,
 sample-processing steps, and published outputs mean.
+Use `WORKFLOW_STAGE_GUIDE.md` when the blocker is not vocabulary but stage ownership:
+which rule family owns discovery, per-sample processing, summarize/report work,
+publishing, or operating policy.
 Use `ARCHITECTURE.md` when the question is about repository ownership.
 Use `WALKTHROUGH_GUIDE.md` when you need the first-contact route.
 Use `PUBLISH_REVIEW_GUIDE.md`, `PROFILE_AUDIT_GUIDE.md`, and `INCIDENT_REVIEW_GUIDE.md`
