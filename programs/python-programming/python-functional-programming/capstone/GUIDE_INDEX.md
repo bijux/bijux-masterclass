@@ -31,6 +31,7 @@ time.
 - `ARCHITECTURE.md`
 - `EXTENSION_GUIDE.md`
 - `TEST_GUIDE.md`
+- `SOURCE_TO_PROOF_MAP.md`
 
 ## If you only need one next file
 
@@ -44,6 +45,7 @@ Choose based on the question you have:
 - "What did a command or artifact actually expose?" -> `PUBLIC_SURFACE_MAP.md`
 - "What is the shortest human reading route?" -> `WALKTHROUGH_GUIDE.md`
 - "Where should a change go?" -> `EXTENSION_GUIDE.md`
+- "How do I prove a package or boundary change?" -> `SOURCE_TO_PROOF_MAP.md`
 
 ## Best next file after this one
 
