@@ -49,6 +49,7 @@ file, or artifact that defends it.
 - Stage ownership and first proof surface: `WORKFLOW_STAGE_GUIDE.md`
 - Checkpoint and dynamic DAG review: `CHECKPOINT_GUIDE.md`
 - Exact file routing for a concrete question: `EXACT_SOURCE_GUIDE.md`
+- Choosing the right guide, command, or bundle: `REVIEW_ROUTE_GUIDE.md`
 - Repository ownership: `ARCHITECTURE.md`
 - First contact and visible rule surface: `WALKTHROUGH_GUIDE.md`
 - Publish-boundary trust: `PUBLISH_REVIEW_GUIDE.md`

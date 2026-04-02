@@ -60,4 +60,7 @@ one vague question about whether the pipeline "works."
 - Which evidence would you inspect before changing the workflow itself?
 - Which boundary would you distrust first if serial and parallel publish results diverged?
 
+Use `REVIEW_ROUTE_GUIDE.md` when you need to decide whether this is really an incident
+review question or a publish, profile, or stewardship question instead.
+
 [Back to top](#top)

@@ -196,6 +196,8 @@ Use `CHECKPOINT_GUIDE.md` when the core review question is how dynamic sample di
 becomes a durable artifact instead of hidden state.
 Use `EXACT_SOURCE_GUIDE.md` when the question is "which file should I read next" and you
 want the smallest honest route instead of a full repository tour.
+Use `REVIEW_ROUTE_GUIDE.md` when the question is not about one file but about choosing
+the right guide, command, or bundle for the current review goal.
 Use `ARCHITECTURE.md` when the question is about repository ownership.
 Use `WALKTHROUGH_GUIDE.md` when you need the first-contact route.
 Use `PUBLISH_REVIEW_GUIDE.md`, `PROFILE_AUDIT_GUIDE.md`, and `INCIDENT_REVIEW_GUIDE.md`
