@@ -46,11 +46,11 @@ Use the smallest honest route for the question you have:
 
 If you are new to this capstone, the best first route is:
 
-1. Read `FIRST_SESSION_GUIDE.md`.
+1. Read [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md).
 2. Run `make manifest`.
-3. Read `GUIDE_INDEX.md`.
-4. Read `PLUGIN_RUNTIME_GUIDE.md`.
-5. Read `ARCHITECTURE.md`.
+3. Read [GUIDE_INDEX.md](docs/GUIDE_INDEX.md).
+4. Read [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md).
+5. Read [ARCHITECTURE.md](docs/ARCHITECTURE.md).
 6. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
 7. Read the matching tests.
 
@@ -90,42 +90,56 @@ make proof
 
 ## Documentation set
 
-All supporting capstone guides live under `docs/`. The root stays focused on the
-entry route while still linking the complete local documentation set:
+All supporting capstone guides live under `docs/`. Start from the group that matches
+your pressure instead of reading the full list in alphabetical order.
 
-- [ACTION_GUIDE.md](docs/ACTION_GUIDE.md)
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [BUNDLE_GUIDE.md](docs/BUNDLE_GUIDE.md)
-- [BUNDLE_MANIFEST_GUIDE.md](docs/BUNDLE_MANIFEST_GUIDE.md)
-- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
-- [CONSTRUCTOR_GUIDE.md](docs/CONSTRUCTOR_GUIDE.md)
-- [DEFINITION_TIME_GUIDE.md](docs/DEFINITION_TIME_GUIDE.md)
-- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
-- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
-- [FIELD_GUIDE.md](docs/FIELD_GUIDE.md)
+### First-pass orientation
+
 - [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md)
 - [GUIDE_INDEX.md](docs/GUIDE_INDEX.md)
-- [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
-- [MANIFEST_GUIDE.md](docs/MANIFEST_GUIDE.md)
-- [MECHANISM_SELECTION_GUIDE.md](docs/MECHANISM_SELECTION_GUIDE.md)
-- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
-- [PLUGIN_CATALOG.md](docs/PLUGIN_CATALOG.md)
 - [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md)
-- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
+
+### Public surface and command choice
+
+- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
+- [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
+- [MANIFEST_GUIDE.md](docs/MANIFEST_GUIDE.md)
+- [REGISTRY_GUIDE.md](docs/REGISTRY_GUIDE.md)
 - [PUBLIC_API_GUIDE.md](docs/PUBLIC_API_GUIDE.md)
 - [PUBLIC_SURFACE_MAP.md](docs/PUBLIC_SURFACE_MAP.md)
-- [REGISTRY_GUIDE.md](docs/REGISTRY_GUIDE.md)
-- [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md)
+
+### Mechanism and ownership guides
+
+- [ACTION_GUIDE.md](docs/ACTION_GUIDE.md)
+- [CONSTRUCTOR_GUIDE.md](docs/CONSTRUCTOR_GUIDE.md)
+- [DEFINITION_TIME_GUIDE.md](docs/DEFINITION_TIME_GUIDE.md)
+- [FIELD_GUIDE.md](docs/FIELD_GUIDE.md)
+- [MECHANISM_SELECTION_GUIDE.md](docs/MECHANISM_SELECTION_GUIDE.md)
+- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
 - [SCENARIO_GUIDE.md](docs/SCENARIO_GUIDE.md)
 - [SCENARIO_SELECTION_GUIDE.md](docs/SCENARIO_SELECTION_GUIDE.md)
 - [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
 - [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md)
-- [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
+
+### Review, proof, and saved bundles
+
+- [BUNDLE_GUIDE.md](docs/BUNDLE_GUIDE.md)
+- [BUNDLE_MANIFEST_GUIDE.md](docs/BUNDLE_MANIFEST_GUIDE.md)
+- [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
+- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
+- [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md)
 - [TEST_GUIDE.md](docs/TEST_GUIDE.md)
 - [TEST_READING_MAP.md](docs/TEST_READING_MAP.md)
 - [TOUR.md](docs/TOUR.md)
 - [TRACE_GUIDE.md](docs/TRACE_GUIDE.md)
 - [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
+
+### Concrete runtime examples
+
+- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
+- [PLUGIN_CATALOG.md](docs/PLUGIN_CATALOG.md)
 
 ## Read it by question
 
