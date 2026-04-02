@@ -24,6 +24,8 @@ nav:
       - Practice Map: practice-map.md
       - Runtime Glossary: runtime-glossary.md
       - Review Checklist: review-checklist.md
+      - Capstone Map: capstone-map.md
+      - Capstone File Guide: capstone-file-guide.md
       - Orientation: module-00.md
       - Capstone Guide: capstone.md
   - "Module 01: Everything Is an Object": module-01.md
