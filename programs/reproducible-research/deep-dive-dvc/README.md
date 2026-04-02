@@ -45,13 +45,14 @@ Use the course in this order:
 5. `course-book/guides/module-promise-map.md` and `course-book/guides/module-checkpoints.md` to keep the module promises and exit bars visible
 6. `course-book/module-00-orientation/index.md`
 7. Modules `01` to `10` in order, following the state, execution, collaboration, and governance arc
-8. `course-book/guides/readme-capstone.md`, `course-book/guides/capstone-map.md`, and `course-book/guides/proof-ladder.md` once the state model feels stable
+8. `course-book/capstone/index.md`, `course-book/capstone/capstone-map.md`, and `course-book/guides/proof-ladder.md` once the state model feels stable
 
 The route matters because the program is trying to build judgment, not only command recall.
 
-The course-book now has three stable top-level surfaces:
+The course-book now has four stable top-level surfaces:
 
 - `guides/` for learner routes, proof selection, and capstone entry
+- `capstone/` for repository entry, command routing, recovery review, and release review
 - `reference/` for durable maps, glossary pages, and review standards
 - `module-00-orientation/` plus Modules `01` to `10` for the core teaching arc
 
