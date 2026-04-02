@@ -3,6 +3,11 @@
 This family collects programs about how systems declare state, build graphs, publish
 artifacts, and recover trustworthy results after change or failure.
 
+<div class="bijux-callout">
+  Expand a program in the sidebar to browse its whole ordered course-book and capstone
+  set. The overview routes here help you choose; the sidebar holds the full library.
+</div>
+
 ## Family Maps
 
 ```mermaid
@@ -53,6 +58,21 @@ flowchart LR
 - Local course home: [Deep Dive DVC course home](../library/reproducible-research/deep-dive-dvc/course-book/index.md)
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-dvc/course-book/start-here.md)
 - Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-dvc/capstone/README.md)
+
+<div class="bijux-panel-grid">
+  <div class="bijux-panel">
+    <h3>Build Graph Honesty</h3>
+    <p>Open the Make tree when you need explicit dependency semantics, reviewable targets, and release-safe operational practice.</p>
+  </div>
+  <div class="bijux-panel">
+    <h3>Workflow Orchestration</h3>
+    <p>Open the Snakemake tree when you need workflow-scale execution, publish review, and incident-aware pipeline design.</p>
+  </div>
+  <div class="bijux-panel">
+    <h3>State and Recovery</h3>
+    <p>Open the DVC tree when you need data identity, experiment comparison, release review, and recovery contracts.</p>
+  </div>
+</div>
 
 ## Local Commands
 

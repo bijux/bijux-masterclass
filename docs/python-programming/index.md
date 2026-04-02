@@ -4,6 +4,11 @@ This family collects long-form Python courses about semantics, runtime boundarie
 how to keep a design understandable when a codebase grows more state, more abstraction,
 or more runtime power.
 
+<div class="bijux-callout">
+  Expand a program in the sidebar to open its full course-book and capstone tree. The
+  overview pages below are the short routing layer, not the whole library.
+</div>
+
 ## Family Maps
 
 ```mermaid
@@ -54,6 +59,21 @@ flowchart LR
 - Local course home: [Course home](../library/python-programming/python-meta-programming/course-book/index.md)
 - Learner entry: [Orientation](../library/python-programming/python-meta-programming/course-book/module-00.md)
 - Capstone guide: [Capstone README](../library/python-programming/python-meta-programming/capstone/README.md)
+
+<div class="bijux-panel-grid">
+  <div class="bijux-panel">
+    <h3>Object Boundaries</h3>
+    <p>Open the OOP program tree when you need aggregates, invariants, lifecycle design, and operational review routes.</p>
+  </div>
+  <div class="bijux-panel">
+    <h3>Functional Discipline</h3>
+    <p>Open the functional program tree when you need purity, effect isolation, and pipeline-oriented proof surfaces.</p>
+  </div>
+  <div class="bijux-panel">
+    <h3>Runtime Power</h3>
+    <p>Open the metaprogramming tree when you need descriptors, decorators, metaclasses, and explicit public-surface review.</p>
+  </div>
+</div>
 
 ## Local Commands
 

@@ -5,6 +5,12 @@ is intentionally a learner-facing surface, not only a repository index: it mirro
 checked-in course books and capstone guides so you can move between programs without
 switching documentation systems.
 
+<div class="bijux-callout">
+  <strong>Use the left navigation as the full library.</strong>
+  The family overview pages are only the front door. Each program now expands into its
+  full ordered course-book tree and capstone guide set directly inside the root docs site.
+</div>
+
 ## Catalog Maps
 
 ```mermaid
@@ -42,8 +48,24 @@ flowchart LR
 
 - Start with the family page when you know the problem space but not the specific program.
 - Start with the program page when you already know which course you want.
-- Use the local course-home and capstone links on each program page instead of jumping to GitHub first.
+- Use the expanded sidebar sections to move through the full ordered course-book and capstone pages without leaving the root site.
+- Use the local course-home and capstone links on each program page when you want the shortest entry route.
 - Use the root search when you want one result list across all six course books and capstone guides.
+
+<div class="bijux-panel-grid">
+  <div class="bijux-panel">
+    <h3>Family Overviews</h3>
+    <p>Use the family pages to decide which course matches the design pressure you are facing.</p>
+  </div>
+  <div class="bijux-panel">
+    <h3>Program Trees</h3>
+    <p>Open one program in the sidebar to see the full ordered course-book and capstone navigation.</p>
+  </div>
+  <div class="bijux-panel">
+    <h3>Search Across Everything</h3>
+    <p>Root search now spans the synced library, so one query can find a concept across all six programs.</p>
+  </div>
+</div>
 
 ## Program Families
 
