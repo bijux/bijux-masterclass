@@ -59,4 +59,5 @@ These routes turn the course into repeatable study sessions instead of a pile of
 
 - pair this page with [Practice Map](practice-map.md) when you want each session tied to rehearsal
 - pair this page with [Pressure Routes](pressure-routes.md) when the best route depends on the problem you are under
+- pair this page with [Systems Route](systems-route.md) when the second half of the course is the main source of density
 - pair this page with [Capstone Proof Guide](capstone-proof-guide.md) when the session is mainly about confidence rather than reading
