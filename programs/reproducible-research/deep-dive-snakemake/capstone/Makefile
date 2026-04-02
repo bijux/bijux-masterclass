@@ -46,7 +46,7 @@ PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
-	check ci validate verify confirm \
+	check ci validate verify confirm selftest \
 	docker-build docker-run
 
 help: ## Show available targets
@@ -167,6 +167,8 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
 confirm: clean purge-dsstore ci verify ## Clean-room confirmation (strict)
+selftest: ## Prove deterministic publish behavior across core counts
+	@/bin/bash tests/selftest.sh
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p "$(WALKTHROUGH_DIR_ABS)"
@@ -180,7 +182,8 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 		'2. Read list-rules.txt to see the visible workflow surface.' \
 		'3. Read dryrun.txt to inspect the planned jobs without execution.' \
 		'4. Read FILE_API.md to see which outputs are public contracts.' \
-		'5. Run make tour when you want executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
+		'5. Run make selftest when you want deterministic execution proof.' \
+		'6. Run make tour when you want executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
 	@echo "✔ wrote workflow walkthrough to $(WALKTHROUGH_DIR_ABS)"
 
 tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bundle

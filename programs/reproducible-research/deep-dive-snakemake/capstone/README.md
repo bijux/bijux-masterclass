@@ -110,6 +110,18 @@ Start in this order:
 That order mirrors the program: file contracts first, dynamic behavior second,
 operational policy third, and publish governance last.
 
+Run these public entrypoints from the capstone directory:
+
+```bash
+make walkthrough
+make selftest
+make tour
+make confirm
+```
+
+Use `make selftest` when the narrow question is determinism across core counts rather
+than full clean-room confirmation.
+
 [Back to top](#top)
 
 ---

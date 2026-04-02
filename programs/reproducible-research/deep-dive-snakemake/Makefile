@@ -20,6 +20,9 @@ capstone-check: ## Run fast checks in capstone (format/lint/tests + lint workflo
 capstone-confirm: ## Full clean-room confirmation in capstone (runs workflow + verifies artifacts)
 	$(MAKE) -C capstone confirm
 
+capstone-selftest: ## Determinism proof in capstone (compares published output across core counts)
+	$(MAKE) -C capstone selftest
+
 capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	$(MAKE) -C capstone walkthrough
 
