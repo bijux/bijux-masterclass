@@ -372,8 +372,8 @@ Everything else → fence aggressively.
 
 ### Repository Alignment
 
-- Implementation: `module-03/funcpipe-rag-03/src/funcpipe_rag/api/core.py::safe_rag_pipeline`, `gen_bounded_chunks`.
-- Tests: `module-03/funcpipe-rag-03/tests/test_module_03.py::test_fencing_demand_exact`, `::test_fencing_infinite_safe`.
+- Implementation: `capstone/src/funcpipe_rag/rag/streaming_rag.py::safe_rag_pipeline`, `gen_bounded_chunks`.
+- Tests: `capstone/tests/unit/streaming/test_streaming.py::test_make_gen_rag_fn_equivalence` and `::test_fork2_lockstep_mismatch_raises` for the bounded-iterator guardrails used around the pipeline.
 
 ## itertools Decision Table – Use This
 

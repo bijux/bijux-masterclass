@@ -400,8 +400,8 @@ For mutable state; use custom.
 
 ### Repository Alignment
 
-- Implementation: `module-03/funcpipe-rag-03/src/funcpipe_rag/api/core.py::stream_chunks`, `gen_stream_embedded`, `gen_stream_deduped`.
-- Tests: `module-03/funcpipe-rag-03/tests/test_module_03.py::test_stream_helpers_round_trip`.
+- Implementation: `capstone/src/funcpipe_rag/rag/streaming_rag.py::stream_chunks`, `gen_stream_embedded`, `gen_stream_deduped`.
+- Tests: `capstone/tests/unit/streaming/test_streaming.py::test_make_gen_rag_fn_equivalence` and `capstone/tests/unit/rag/test_api.py::test_iter_rag_core_deterministic`.
 
 ## itertools Decision Table – Use This
 

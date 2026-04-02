@@ -407,8 +407,8 @@ Non-contiguous keys (sort first, paying O(n log n)); truly random access (materi
 
 ### Repository Alignment
 
-- Implementation: `module-03/funcpipe-rag-03/src/funcpipe_rag/api/core.py::gen_overlapping_chunks`, `sliding_windows`, `gen_grouped_chunks`.
-- Tests: `module-03/funcpipe-rag-03/tests/test_module_03.py::test_overlapping_coverage`, `::test_sliding_demand`.
+- Implementation: `capstone/src/funcpipe_rag/rag/chunking.py::gen_overlapping_chunks`, `sliding_windows`, plus `capstone/src/funcpipe_rag/rag/streaming_rag.py::gen_grouped_chunks`.
+- Tests: `capstone/tests/unit/streaming/test_streaming.py::test_overlapping_coverage_emit_short`, `::test_overlapping_coverage_pad`, and `::test_sliding_windows_demand_bound`.
 
 ## itertools Decision Table – Use This
 
