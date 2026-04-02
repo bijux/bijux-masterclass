@@ -83,6 +83,7 @@ Review and proof routes:
 - [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md)
 - [RULE_LIFECYCLE_GUIDE.md](RULE_LIFECYCLE_GUIDE.md)
 - [EVENT_FLOW_GUIDE.md](EVENT_FLOW_GUIDE.md)
+- [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md)
 - [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md)
 - [TOUR.md](TOUR.md)
 - [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
@@ -113,6 +114,9 @@ If this is your first honest pass through the capstone, use this order:
 - `make verify-report` writes the executable verification report bundle with test results and captured state.
 - `make confirm` runs the strongest local confirmation route.
 - `make proof` builds the published learner-facing review route.
+
+Use [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md) when you want the relationship between those saved
+directories kept explicit.
 
 ## Route by reader goal
 

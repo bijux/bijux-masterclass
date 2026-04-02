@@ -115,4 +115,5 @@ Read these with the target guide:
 * `WALKTHROUGH_GUIDE.md`
 * `PROOF_GUIDE.md`
 * `INSPECTION_GUIDE.md`
+* `BUNDLE_GUIDE.md`
 * `EXTENSION_GUIDE.md`

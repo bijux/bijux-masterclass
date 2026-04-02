@@ -48,6 +48,9 @@ judgment. Tests prove behavioral contracts precisely. Walkthrough and inspection
 prove that the system remains understandable as a story and as a state surface. You need
 both.
 
+Use [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md) when the proof route is clear but the saved
+directory structure is not.
+
 ## Best review pattern
 
 1. State the claim you want to check.
