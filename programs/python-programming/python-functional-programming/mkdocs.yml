@@ -24,18 +24,18 @@ nav:
       - Command Guide: guides/command-guide.md
       - History Guide: guides/history-guide.md
       - Proof Matrix: guides/proof-matrix.md
-      - Capstone Map: capstone-map.md
-      - Capstone File Guide: capstone-file-guide.md
-      - Capstone Test Guide: capstone-test-guide.md
-      - Capstone Review Worksheet: capstone-review-worksheet.md
-      - Capstone Architecture Guide: capstone-architecture-guide.md
-      - Capstone Walkthrough: capstone-walkthrough.md
-      - Capstone Proof Guide: capstone-proof-guide.md
-      - Capstone Extension Guide: capstone-extension-guide.md
+      - Capstone Map: guides/capstone-map.md
+      - Capstone File Guide: guides/capstone-file-guide.md
+      - Capstone Test Guide: guides/capstone-test-guide.md
+      - Capstone Review Worksheet: guides/capstone-review-worksheet.md
+      - Capstone Architecture Guide: guides/capstone-architecture-guide.md
+      - Capstone Walkthrough: guides/capstone-walkthrough.md
+      - Capstone Proof Guide: guides/capstone-proof-guide.md
+      - Capstone Extension Guide: guides/capstone-extension-guide.md
       - Orientation Overview: module-00-orientation/index.md
       - Course Orientation: module-00-orientation/course-orientation.md
       - How to Study This Course: module-00-orientation/how-to-study-this-course.md
-      - FuncPipe Capstone Guide: capstone.md
+      - FuncPipe Capstone Guide: guides/capstone.md
 
   - "Module 01: Purity and Substitution":
       - Overview: module-01-purity-and-substitution/index.md

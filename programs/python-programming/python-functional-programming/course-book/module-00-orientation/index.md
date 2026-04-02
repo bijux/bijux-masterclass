@@ -67,7 +67,7 @@ you read. The course assumes engineering curiosity, not perfection.
 
 - Read the full [Course Orientation](course-orientation.md).
 - Read [How to Study This Course](how-to-study-this-course.md).
-- Keep the [FuncPipe Capstone Guide](../capstone.md) open from the beginning, and keep [Start Here](../guides/start-here.md) available when you need the short learner route again.
+- Keep the [FuncPipe Capstone Guide](../guides/capstone.md) open from the beginning, and keep [Start Here](../guides/start-here.md) available when you need the short learner route again.
 
 ## Capstone roadmap
 
