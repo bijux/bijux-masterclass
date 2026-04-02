@@ -17,11 +17,20 @@ docs-clean: ## Remove built site directory
 capstone-check: ## Run fast checks in capstone (format/lint/tests + lint workflow)
 	$(MAKE) -C capstone check
 
+capstone-validate-config: ## Validate capstone workflow configuration without executing the workflow
+	$(MAKE) -C capstone validate-config
+
+capstone-wf-dryrun: ## Print the capstone workflow plan without executing jobs
+	$(MAKE) -C capstone wf-dryrun
+
 capstone-confirm: ## Full clean-room confirmation in capstone (runs workflow + verifies artifacts)
 	$(MAKE) -C capstone confirm
 
 capstone-selftest: ## Determinism proof in capstone (compares published output across core counts)
 	$(MAKE) -C capstone selftest
+
+capstone-verify-artifacts: ## Verify that the published capstone artifacts are complete and parseable
+	$(MAKE) -C capstone verify-artifacts
 
 capstone-verify-report: ## Write a structured publish verification report bundle
 	$(MAKE) -C capstone verify-report

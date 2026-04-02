@@ -112,6 +112,14 @@ capstone-repro: ## Execute the selected program's capstone pipeline
 capstone-state-summary: ## Render the selected program's capstone state summary
 	@$(RUN_PROGRAM) capstone-state-summary
 
+.PHONY: capstone-validate-config
+capstone-validate-config: ## Validate the selected program's capstone configuration
+	@$(RUN_PROGRAM) capstone-validate-config
+
+.PHONY: capstone-wf-dryrun
+capstone-wf-dryrun: ## Print the selected program's capstone dry-run plan
+	@$(RUN_PROGRAM) capstone-wf-dryrun
+
 .PHONY: capstone-selftest
 capstone-selftest: ## Run the selected program's capstone determinism or convergence self-test
 	@$(RUN_PROGRAM) capstone-selftest
@@ -127,6 +135,10 @@ capstone-incident-audit: ## Build the selected program's capstone incident revie
 .PHONY: capstone-verify-report
 capstone-verify-report: ## Build the selected program's capstone verification report bundle
 	@$(RUN_PROGRAM) capstone-verify-report
+
+.PHONY: capstone-verify-artifacts
+capstone-verify-artifacts: ## Verify the selected program's published capstone artifacts
+	@$(RUN_PROGRAM) capstone-verify-artifacts
 
 .PHONY: capstone-release-audit
 capstone-release-audit: ## Build the selected program's capstone release audit bundle
