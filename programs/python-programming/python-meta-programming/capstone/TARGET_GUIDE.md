@@ -1,0 +1,89 @@
+# Target Guide
+
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  help["make help"] --> targets["Public targets"]
+  targets --> inspect["manifest, registry, inspect"]
+  targets --> run["demo, trace, tour"]
+  targets --> verify["verify-report, confirm, proof"]
+```
+
+```mermaid
+flowchart LR
+  question["Pick the question you have"] --> target["Choose the smallest honest target"]
+  target --> output["Inspect the output or saved bundle"]
+  output --> owner["Name the owning file or boundary"]
+  owner --> answer["Return to the course with a concrete answer"]
+```
+<!-- page-maps:end -->
+
+Use this guide when `make help` shows several commands but the right one is still not
+obvious. The goal is not target memorization. The goal is choosing the smallest honest
+route for the claim you need to check.
+
+## Stable targets
+
+| Target | What it is for |
+| --- | --- |
+| `manifest` | inspect the observable plugin schema without execution |
+| `registry` | inspect the registered plugins without opening private internals |
+| `demo` | invoke one realistic delivery action |
+| `trace` | inspect one invocation together with configuration and action history |
+| `inspect` | build the saved learner-facing inspection bundle |
+| `tour` | build the saved walkthrough bundle |
+| `verify-report` | build the saved executable verification report |
+| `confirm` | run the strongest local confirmation route |
+| `proof` | build the published learner-facing review route |
+
+## Fast target selection
+
+### If the question is "what does the runtime publicly expose?"
+
+Use:
+
+* `make manifest`
+* `make registry`
+
+### If the question is "what happens when one action is invoked?"
+
+Use:
+
+* `make demo`
+* `make trace`
+
+### If the question is "what can I review later without rerunning commands?"
+
+Use:
+
+* `make inspect`
+* `make tour`
+* `make verify-report`
+
+### If the question is "what is the strongest local proof?"
+
+Use:
+
+* `make confirm`
+* `make proof`
+
+## Important distinctions
+
+- `manifest` versus `registry`
+  `manifest` explains schema and action metadata; `registry` explains which plugins are currently registered.
+- `demo` versus `trace`
+  `demo` shows one result; `trace` shows result, configuration, and recorded action history together.
+- `confirm` versus `proof`
+  `confirm` is the strongest local confirmation route; `proof` publishes the full learner-facing review route.
+
+## Best companion guides
+
+Read these with the target guide:
+
+* `PACKAGE_GUIDE.md`
+* `TEST_GUIDE.md`
+* `WALKTHROUGH_GUIDE.md`
+* `PROOF_GUIDE.md`
