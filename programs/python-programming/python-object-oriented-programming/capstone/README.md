@@ -81,6 +81,7 @@ Review and proof routes:
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md)
 - [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md)
+- [RULE_LIFECYCLE_GUIDE.md](RULE_LIFECYCLE_GUIDE.md)
 - [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md)
 - [TOUR.md](TOUR.md)
 - [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
@@ -97,10 +98,11 @@ If this is your first honest pass through the capstone, use this order:
 2. Read [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md).
 3. Read [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md).
 4. Run `make demo`.
-5. Read [TOUR.md](TOUR.md).
-6. Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md).
-7. Run `make inspect`.
-8. Open [PROOF_GUIDE.md](PROOF_GUIDE.md) only after you can already name the likely owner of one behavior.
+5. Read [RULE_LIFECYCLE_GUIDE.md](RULE_LIFECYCLE_GUIDE.md).
+6. Read [TOUR.md](TOUR.md).
+7. Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md).
+8. Run `make inspect`.
+9. Open [PROOF_GUIDE.md](PROOF_GUIDE.md) only after you can already name the likely owner of one behavior.
 
 ## Review routes
 
@@ -114,7 +116,7 @@ If this is your first honest pass through the capstone, use this order:
 
 | If you want to... | Start with | Then |
 | --- | --- | --- |
-| understand the domain before reading code | this README and `DOMAIN_GUIDE.md` | `make demo` and `TOUR.md` |
+| understand the domain before reading code | this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make demo` and `TOUR.md` |
 | inspect ownership boundaries file by file | `PACKAGE_GUIDE.md` | `ARCHITECTURE.md` |
 | confirm one design claim with evidence | `PROOF_GUIDE.md` | `make inspect` or `make verify-report` |
 | review the full capstone as a learner-facing artifact | `make tour` | `make proof` |
