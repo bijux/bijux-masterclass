@@ -34,6 +34,7 @@ make PROGRAM=python-programming/python-meta-programming docs-build
 make PROGRAM=python-programming/python-meta-programming test
 make PROGRAM=python-programming/python-meta-programming demo
 make PROGRAM=python-programming/python-meta-programming inspect
+make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
 make PROGRAM=python-programming/python-meta-programming proof
 make PROGRAM=python-programming/python-meta-programming capstone-tour
 make PROGRAM=python-programming/python-meta-programming capstone-verify-report
@@ -76,7 +77,8 @@ make verify-report
 - `demo`: invoke one realistic plugin action directly in the terminal
 - `trace`: inspect result, configuration, and action history together
 - `inspect`: build the saved learner-facing inspection bundle
-- `tour`: write the learner-facing walkthrough bundle into `artifacts/`
+- `capstone-walkthrough` from the repository root, or `tour` inside `capstone/`, writes the learner-facing walkthrough bundle into `artifacts/`
+- `capstone-tour`: use the same saved walkthrough bundle when you are moving through the proof ladder rather than the first-pass reading route
 - `verify-report`: write the executable verification report bundle into `artifacts/`
 - `confirm`: strongest local executable proof through pytest
 - `proof`: full published review route with saved bundles
@@ -85,5 +87,5 @@ make verify-report
 
 1. Start with `manifest`, `registry`, `plugin`, `field`, `action`, or `signatures` when the question is about public shape.
 2. Move to `demo` or `trace` when the question is about one concrete runtime behavior.
-3. Move to `inspect` or `tour` when the question is about guided study or source ownership.
+3. Move to `inspect` or `capstone-walkthrough` when the question is about guided study or source ownership.
 4. Move to `verify-report`, `proof`, or `confirm` when the question is about executable confidence.
