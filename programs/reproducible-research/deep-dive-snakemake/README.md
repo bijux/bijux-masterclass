@@ -149,6 +149,10 @@ This executes formatting/linting/tests, a dry-run, full workflow execution, and 
 Use `capstone-walkthrough` first, `capstone-tour` when you need an executed repository
 route, and `test` for the ordinary proof pass.
 
+On a fresh machine, prefer `cd capstone && make bootstrap-confirm` before relying on any
+global `snakemake` install. The exact setup contract lives in
+`course-book/guides/platform-setup.md`.
+
 [Back to top](#top)
 
 ---

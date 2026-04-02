@@ -36,6 +36,11 @@ Use [`../reference/version-support-guide.md`](../reference/version-support-guide
 you need the longer-lived support contract and drift rules instead of just the initial
 setup sequence.
 
+Network note:
+
+- `make install` requires network access the first time because it creates the virtual environment and installs DVC plus the capstone package.
+- After that environment exists, the ordinary capstone proof routes are local filesystem workflows unless you deliberately exercise recovery routes that depend on the configured `.dvc-remote/`.
+
 ---
 
 ## Minimum Tooling
@@ -80,6 +85,10 @@ make repro
 That sequence creates the virtual environment, installs DVC plus the capstone package,
 prints the supported Python, Git, and DVC versions, initializes `.dvc/`, and configures
 the local training remote.
+
+On a fresh machine, expect `make install` to be the network-dependent step. If you are
+offline, reuse a previously prepared environment instead of assuming the setup flow can
+recreate itself.
 
 [Back to top](#top)
 

@@ -107,6 +107,11 @@ make -C programs/reproducible-research/deep-dive-dvc/capstone confirm
 make -C programs/reproducible-research/deep-dive-dvc/capstone walkthrough
 ```
 
+`make install` inside the capstone is the network-dependent setup step because it creates
+the managed virtual environment and installs DVC there. Use
+`course-book/guides/platform-setup.md` and `course-book/reference/version-support-guide.md`
+when you need the exact support contract before running proof commands.
+
 ## Module map
 
 - `00` Orientation and study strategy

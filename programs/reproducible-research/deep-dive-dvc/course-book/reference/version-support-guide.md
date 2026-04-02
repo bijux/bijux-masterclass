@@ -45,6 +45,10 @@ These are the supported boundaries for the course and capstone:
 The support promise is tied to the capstone-managed environment, not to whichever
 system-level `dvc` binary happens to be installed on the machine.
 
+The support promise also assumes you distinguish setup-time network requirements from
+normal proof routes: creating the environment through `make install` needs package
+downloads, while ordinary local verification after setup does not.
+
 [Back to top](#top)
 
 ---
