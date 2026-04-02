@@ -72,6 +72,12 @@ make test
 make tour
 ```
 
+Proof route:
+
+- `PROOF_GUIDE.md`
+- `ARCHITECTURE.md`
+- `TOUR.md`
+
 ## Recommended review path
 
 - `ARCHITECTURE.md` for the package map
