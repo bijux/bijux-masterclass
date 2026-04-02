@@ -30,6 +30,7 @@ work with the reference states, and how to inspect the capstone without guessing
 - [Start Here](start-here.md) for the shortest honest entry route
 - [Course Guide](course-guide.md) for the module arc and support-page roles
 - [Foundations Reading Plan](foundations-reading-plan.md) for a lower-density route through Modules 01 to 03
+- [FuncPipe RAG Primer](funcpipe-rag-primer.md) for the smallest capstone-domain vocabulary needed to study the course
 - [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
 - [Orientation Overview](../module-00-orientation/index.md) for the full course shape
 - [Course Orientation](../module-00-orientation/course-orientation.md) and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md) for the reading rhythm

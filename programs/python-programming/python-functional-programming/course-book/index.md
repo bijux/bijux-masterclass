@@ -58,6 +58,7 @@ By the end of the course, you should be able to:
 - Read [Start Here](guides/start-here.md) for the shortest stable learner route.
 - Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
 - Use [Foundations Reading Plan](guides/foundations-reading-plan.md) when you want a paced route through Modules 01 to 03.
+- Use [FuncPipe RAG Primer](guides/funcpipe-rag-primer.md) when the capstone domain is unfamiliar and you want the smallest useful vocabulary set.
 - Keep [History Guide](guides/history-guide.md) nearby when you want the module-end comparison route.
 - Read the [Orientation overview](module-00-orientation/index.md).
 - Keep [Proof Matrix](guides/proof-matrix.md) nearby when you want the fastest route from course claims to executable evidence.

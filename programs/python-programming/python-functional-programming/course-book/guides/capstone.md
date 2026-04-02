@@ -43,6 +43,10 @@ The capstone demonstrates a system where:
 Use [Capstone Map](capstone-map.md) when you want the best next page for code reading,
 architecture review, walkthrough, or proof.
 
+If the retrieval domain itself feels noisy, read [FuncPipe RAG Primer](funcpipe-rag-primer.md)
+first. It narrows the vocabulary so the capstone stays attached to the FP lesson instead
+of turning into a separate subject.
+
 ## What the learner should do with it
 
 Use the capstone as evidence, not just as a runnable project:
