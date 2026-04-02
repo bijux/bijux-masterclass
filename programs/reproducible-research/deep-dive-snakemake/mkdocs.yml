@@ -67,8 +67,8 @@ nav:
   - "Module 07: Workflow Architecture":
       - Overview: module-07-workflow-architecture-and-file-apis/index.md
   - "Module 08: Operating Contexts":
-      - Overview: module-08.md
+      - Overview: module-08-operating-contexts-and-execution-policy/index.md
   - "Module 09: Incident Response":
-      - Overview: module-09.md
+      - Overview: module-09-observability-performance-and-incident-response/index.md
   - "Module 10: Mastery":
-      - Overview: module-10.md
+      - Overview: module-10-governance-migration-and-tool-boundaries/index.md

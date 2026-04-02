@@ -76,9 +76,9 @@ and [`reference/index.md`](reference/index.md) when you want the stable review s
 - [Module 05](module-05-software-boundaries-and-reproducible-rules/index.md) teaches software stacks, scripts, wrappers, and reproducible rule boundaries.
 - [Module 06](module-06-publishing-and-downstream-contracts/index.md) teaches versioned publishing, reports, and downstream workflow contracts.
 - [Module 07](module-07-workflow-architecture-and-file-apis/index.md) teaches workflow architecture, modules, file APIs, and reusable boundaries.
-- [Module 08](module-08.md) deepens profiles, executors, storage, and staging as operating-context boundaries.
-- [Module 09](module-09.md) teaches performance, observability, and workflow incident response.
-- [Module 10](module-10.md) finishes with governance, migration, anti-patterns, and tool-boundary judgment.
+- [Module 08](module-08-operating-contexts-and-execution-policy/index.md) deepens profiles, executors, storage, and staging as operating-context boundaries.
+- [Module 09](module-09-observability-performance-and-incident-response/index.md) teaches performance, observability, and workflow incident response.
+- [Module 10](module-10-governance-migration-and-tool-boundaries/index.md) finishes with governance, migration, anti-patterns, and tool-boundary judgment.
 - [Capstone](readme-capstone.md) provides the executable reference workflow that keeps the program honest.
 
 ## How to use the capstone while reading

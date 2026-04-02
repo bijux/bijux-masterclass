@@ -69,7 +69,7 @@ Choose this if you already maintain a Snakemake repository.
 1. Skim [`module-00-orientation/index.md`](../module-00-orientation/index.md)
 2. Read [`module-03-production-operations-and-policy-boundaries/index.md`](../module-03-production-operations-and-policy-boundaries/index.md)
 3. Read [`module-04-scaling-workflows-and-interface-boundaries/index.md`](../module-04-scaling-workflows-and-interface-boundaries/index.md)
-4. Read [`module-08.md`](../module-08.md)
+4. Read [`module-08-operating-contexts-and-execution-policy/index.md`](../module-08-operating-contexts-and-execution-policy/index.md)
 5. Use [`capstone-map.md`](capstone-map.md) to inspect the reference workflow selectively
 
 ### Route 3: Workflow Stewardship
@@ -78,8 +78,8 @@ Choose this if your main concern is architecture, publish boundaries, and long-l
 
 1. Read [`module-06-publishing-and-downstream-contracts/index.md`](../module-06-publishing-and-downstream-contracts/index.md)
 2. Read [`module-07-workflow-architecture-and-file-apis/index.md`](../module-07-workflow-architecture-and-file-apis/index.md)
-3. Read [`module-09.md`](../module-09.md)
-4. Read [`module-10.md`](../module-10.md)
+3. Read [`module-09-observability-performance-and-incident-response/index.md`](../module-09-observability-performance-and-incident-response/index.md)
+4. Read [`module-10-governance-migration-and-tool-boundaries/index.md`](../module-10-governance-migration-and-tool-boundaries/index.md)
 5. Finish with the capstone review route
 
 [Back to top](#top)
