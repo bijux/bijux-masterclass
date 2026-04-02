@@ -35,6 +35,7 @@ nav:
       - Module Dependency Map: reference/module-dependency-map.md
       - Boundary Map: reference/boundary-map.md
       - Workflow Glossary: reference/workflow-glossary.md
+      - Topic Boundaries: reference/topic-boundaries.md
       - Practice Map: reference/practice-map.md
       - Command Guide: guides/command-guide.md
       - Proof Matrix: guides/proof-matrix.md
