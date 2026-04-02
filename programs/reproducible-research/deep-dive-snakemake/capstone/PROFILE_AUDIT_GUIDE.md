@@ -32,6 +32,9 @@ This guide explains how to review execution policy honestly. The key question is
 whether the profiles differ. The key question is whether they differ only in policy, not
 in workflow meaning.
 
+Use `CONFIG_CONTRACT_GUIDE.md` first when the confusion is about config truth in
+general, not profile comparison specifically.
+
 ---
 
 ## Primary Review Route

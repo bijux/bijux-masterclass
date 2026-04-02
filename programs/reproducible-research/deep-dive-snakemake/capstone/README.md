@@ -192,6 +192,9 @@ sample-processing steps, and published outputs mean.
 Use `WORKFLOW_STAGE_GUIDE.md` when the blocker is not vocabulary but stage ownership:
 which rule family owns discovery, per-sample processing, summarize/report work,
 publishing, or operating policy.
+Use `CONFIG_CONTRACT_GUIDE.md` when the blocker is configuration truth: what lives in
+`config.yaml`, what `Snakefile` defaults inject, what profiles change, and what
+provenance finally records.
 Use `CHECKPOINT_GUIDE.md` when the core review question is how dynamic sample discovery
 becomes a durable artifact instead of hidden state.
 Use `EXACT_SOURCE_GUIDE.md` when the question is "which file should I read next" and you
