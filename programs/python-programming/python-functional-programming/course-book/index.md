@@ -57,6 +57,7 @@ By the end of the course, you should be able to:
 - Read [Guides](guides/index.md) when you want the guide space itself to stay organized.
 - Read [Start Here](guides/start-here.md) for the shortest stable learner route.
 - Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
+- Use [Foundations Reading Plan](guides/foundations-reading-plan.md) when you want a paced route through Modules 01 to 03.
 - Keep [History Guide](guides/history-guide.md) nearby when you want the module-end comparison route.
 - Read the [Orientation overview](module-00-orientation/index.md).
 - Keep [Proof Matrix](guides/proof-matrix.md) nearby when you want the fastest route from course claims to executable evidence.

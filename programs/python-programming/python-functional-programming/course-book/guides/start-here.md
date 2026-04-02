@@ -45,10 +45,11 @@ effects into explicit contracts.
 
 1. Read [Course Home](../index.md) for the course promise and module arc.
 2. Read [Course Guide](course-guide.md) for the module sequence and page roles.
-3. Read [Learning Contract](learning-contract.md) before you start Module 01.
-4. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
-5. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
-6. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+3. Read [Foundations Reading Plan](foundations-reading-plan.md) if you want a paced route through Modules 01 to 03.
+4. Read [Learning Contract](learning-contract.md) before you start Module 01.
+5. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
+6. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
+7. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
 
 ## Use The Arcs Deliberately
 
@@ -67,5 +68,6 @@ is easier to review than the alternatives.
 
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)
+- [Foundations Reading Plan](foundations-reading-plan.md)
 - [Orientation](../module-00-orientation/index.md)
 - [FuncPipe Capstone Guide](capstone.md)
