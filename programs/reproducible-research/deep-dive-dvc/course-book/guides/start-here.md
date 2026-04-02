@@ -59,8 +59,8 @@ Choose this if DVC still feels new.
 
 1. Read [`course-guide.md`](course-guide.md)
 2. Read [`module-00.md`](../module-00-orientation/index.md)
-3. Read [`module-01.md`](../module-01.md)
-4. Read [`module-02.md`](../module-02.md)
+3. Read [`module-01.md`](../module-01-why-reproducibility-fails/index.md)
+4. Read [`module-02.md`](../module-02-data-identity-and-content-addressing/index.md)
 5. Enter the capstone only after the state-layer model feels clear
 
 ### Route 2: Repair An Existing Repository
@@ -68,7 +68,7 @@ Choose this if DVC still feels new.
 Choose this if you already work on a DVC repository.
 
 1. Read [`authority-map.md`](../reference/authority-map.md)
-2. Read [`module-01.md`](../module-01.md)
+2. Read [`module-01.md`](../module-01-why-reproducibility-fails/index.md)
 3. Read [`module-04.md`](../module-04.md)
 4. Read [`module-07.md`](../module-07.md)
 5. Read [`module-08.md`](../module-08.md)

@@ -77,9 +77,9 @@ administrative instead of necessary.
 Use this snapshot when you need the fastest sense of what the modules are doing:
 
 - [Module 00](module-00-orientation/index.md) defines the study strategy, the family context, and the capstone route.
-- [Module 01](module-01.md) explains why common Git-and-script workflows still fail reproducibility.
-- [Module 02](module-02.md) defines stable data identity through content addressing and state layers.
-- [Module 03](module-03.md) explains why execution environments are part of the declared input surface.
+- [Module 01](module-01-why-reproducibility-fails/index.md) explains why common Git-and-script workflows still fail reproducibility.
+- [Module 02](module-02-data-identity-and-content-addressing/index.md) defines stable data identity through content addressing and state layers.
+- [Module 03](module-03-execution-environments-as-inputs/index.md) explains why execution environments are part of the declared input surface.
 - [Module 04](module-04.md) turns pipelines into truthful, inspectable execution graphs.
 - [Module 05](module-05.md) explains why parameters and metrics are semantic contracts, not just values.
 - [Module 06](module-06.md) formalizes experiments as controlled deviations instead of history damage.
@@ -151,7 +151,7 @@ graph TD
   root --> mkdocs["mkdocs.yml"]
   root --> readme["README.md"]
   book --> orientation["module-00-orientation/index.md"]
-  book --> modules["module-01.md ... module-10.md"]
+  book --> modules["module-01-.../index.md to module-10-.../index.md"]
   book --> capmap["guides/capstone-map.md"]
   capstone --> capreadme["README.md"]
 ```

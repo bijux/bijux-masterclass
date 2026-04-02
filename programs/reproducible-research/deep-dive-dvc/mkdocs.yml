@@ -51,9 +51,9 @@ nav:
       - "Capstone Review Worksheet": guides/capstone-review-worksheet.md
       - "Release Audit Checklist": guides/release-audit-checklist.md
       - "Capstone Extension Guide": guides/capstone-extension-guide.md
-  - "Module 01: Why Reproducibility Fails": module-01.md
-  - "Module 02: Data Identity and Content Addressing": module-02.md
-  - "Module 03: Execution Environments as Inputs": module-03.md
+  - "Module 01: Why Reproducibility Fails": module-01-why-reproducibility-fails/index.md
+  - "Module 02: Data Identity and Content Addressing": module-02-data-identity-and-content-addressing/index.md
+  - "Module 03: Execution Environments as Inputs": module-03-execution-environments-as-inputs/index.md
   - "Module 04: Pipelines as Truthful DAGs": module-04.md
   - "Module 05: Metrics, Parameters, and Meaning": module-05.md
   - "Module 06: Experiments Without Chaos": module-06.md
