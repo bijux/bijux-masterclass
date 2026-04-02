@@ -39,6 +39,7 @@ Use them in this order when you are new to the program:
 ## Start With These Pages
 
 - [Start Here](start-here.md) if you need the right entry path
+- [Module Promise Map](module-promise-map.md) if you want each module title translated into an explicit learner contract
 - [Course Guide](course-guide.md) if you want the fastest route to the right support page
 - [Learning Contract](learning-contract.md) if you want the pedagogical boundaries first
 - [Platform Setup](platform-setup.md) if you plan to run the proof surfaces locally
