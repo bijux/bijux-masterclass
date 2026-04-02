@@ -62,6 +62,15 @@ If those still feel shaky, slow down and treat [Orientation](../module-00-orient
 6. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
 7. Use [Proof Ladder](proof-ladder.md), [Command Guide](command-guide.md), and [Capstone Map](capstone-map.md) when you want the executable route.
 
+## Choose a reading mode before you continue
+
+- Choose a foundation route if you are still learning how ownership, identity, lifecycle, and collaboration fit together.
+- Choose a diagnosis route if one real design problem is already in front of you and you need the narrowest honest module.
+- Choose a review route if the design already exists and your main question is whether it deserves confidence.
+
+The course is easier to trust when you decide which mode you are in before opening more
+pages.
+
 ## If you have one hour
 
 1. Read [Course Home](../index.md).
@@ -69,6 +78,13 @@ If those still feel shaky, slow down and treat [Orientation](../module-00-orient
 3. Read [Module Promise Map](module-promise-map.md).
 4. Choose one row from [Pressure Routes](pressure-routes.md).
 5. End with [Capstone](capstone.md) or [Capstone Map](capstone-map.md), not the strongest proof command.
+
+## If you are tired but still want honest progress
+
+1. Read one module overview only.
+2. Read one support page that narrows the question: [Design Question Map](design-question-map.md), [Pressure Routes](pressure-routes.md), or [Module Checkpoints](module-checkpoints.md).
+3. Inspect one capstone surface named by that page.
+4. Stop after you can say which boundary owns the behavior.
 
 ## Use The Arcs Deliberately
 

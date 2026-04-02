@@ -40,6 +40,17 @@ surface tied together.
 - revisit earlier modules when a later topic feels arbitrary
 - use the capstone as a design proof, not only as an implementation example
 
+## Reading modes
+
+Use one of these modes deliberately instead of blending them together:
+
+- foundation mode: read the overview, chapter sequence, and checkpoint pages in order when the topic is still new
+- diagnosis mode: start from one design pressure or ownership question, then use the guide maps to find the narrowest module and capstone surface
+- review mode: inspect the capstone guide, package boundary, and proof route first when you are auditing an existing design rather than learning the topic for the first time
+
+If you switch modes, name it explicitly. The course feels clumsy when a learner tries to
+review architecture with foundation-level gaps still unresolved.
+
 ## What progress looks like
 
 Progress in this course is not "I have seen this pattern before." Progress is:
@@ -61,6 +72,21 @@ Progress in this course is not "I have seen this pattern before." Progress is:
 2. Reduce the question to one ownership decision.
 3. Inspect the corresponding capstone surface.
 4. Re-run the executable proof and compare the result with the prose claim.
+
+## Common self-defeating habits
+
+- reading three modules ahead without checking whether the current ownership claim is settled
+- using a proof command to escape a confusing chapter instead of clarifying the question first
+- copying the capstone structure into memory without naming what each boundary protects
+- treating later governance modules as if they can repair unclear object semantics from the early modules
+
+## Recovery route when progress turns fuzzy
+
+1. Return to the current module overview and checkpoint page.
+2. Write one sentence beginning with `This object owns...`.
+3. Open one capstone file that should make that sentence concrete.
+4. Run the smallest route that can confirm or disprove the sentence.
+5. Continue only after the sentence survives inspection.
 
 ## Minimum honest route
 
