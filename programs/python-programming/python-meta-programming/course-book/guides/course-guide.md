@@ -83,6 +83,8 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 - [Module Checkpoints](module-checkpoints.md) when you need a concrete exit bar before moving on
 - [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current claim
 - [Runtime Power Ladder](../reference/runtime-power-ladder.md) when you need the governing review model
+- [Topic Boundaries](../reference/topic-boundaries.md) when you need to decide what belongs inside the course center
+- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) when you are recognizing a smell before you can name the mechanism
 - [Mechanism Selection](mechanism-selection.md) when you need a problem-to-tool comparison
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence justified
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place

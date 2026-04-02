@@ -129,6 +129,8 @@ Primary reading route:
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
 - `course-book/guides/capstone.md`
+- `course-book/reference/topic-boundaries.md`
+- `course-book/reference/anti-pattern-atlas.md`
 
 ## License
 
