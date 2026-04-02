@@ -9,6 +9,15 @@ The project models a service-operations problem: predict whether a production in
 will escalate based on backlog age, reopen history, integration breadth, customer tier,
 weekend handoff, and severity.
 
+## Who should start here
+
+Start here if you already understand the course concept you are studying and now want to
+inspect it in a realistic DVC repository.
+
+Do **not** start here if state layers, pipeline truth, or publish boundaries still feel
+abstract. In that case, use the course modules first and come back when you want a proof
+surface rather than first exposure.
+
 ## Where this capstone fits in the program
 
 Use this repository lightly in the early modules and heavily once the program reaches
@@ -42,6 +51,21 @@ claims:
 
 If those properties are not legible here, the larger program’s claims should be treated
 with suspicion.
+
+## Recommended first walkthrough
+
+Use this order the first time you enter the capstone:
+
+1. `make walkthrough`
+2. read `README.md`
+3. read `dvc.yaml`
+4. read `dvc.lock`
+5. run `make verify`
+6. run `make tour`
+7. inspect `publish/v1/manifest.json`
+
+That route keeps the learner focused on contract first, then declared state, then
+recorded state, then promoted evidence.
 
 ## Core workflow
 
@@ -78,6 +102,19 @@ These commands answer different questions:
 - `make confirm` reruns the broader confirmation flow that the course points learners to.
 - `make recovery-drill` proves that a remote-backed restore still works after local loss.
 - `make tour` writes a learner-facing proof bundle under `artifacts/tour/reproducible-research/deep-dive-dvc/`.
+
+## What `confirm` proves
+
+`make confirm` is the strongest built-in verification target in this repository.
+
+It combines:
+
+* `make verify` for promoted artifact contract validation
+* `make test` for code-level behavior checks
+* `make recovery-drill` for remote-backed restoration after local loss
+
+That means `confirm` is not just a smoke test. It is the shortest path to asking whether
+the repository can still defend and restore its state honestly.
 
 ## How to review this repository
 

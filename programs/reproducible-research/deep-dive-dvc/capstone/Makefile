@@ -62,6 +62,22 @@ tour: verify ## Build the learner-facing proof bundle
 	@echo "publish_dir=$(TOUR_DIR)/publish-v1" >> $(TOUR_DIR)/bundle.env
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
+.PHONY: walkthrough
+walkthrough: ## Print the recommended first capstone walkthrough
+	@printf '%s\n' \
+		'Capstone walkthrough:' \
+		'  1. read README.md for the repository contract' \
+		'  2. read dvc.yaml and then dvc.lock' \
+		'  3. inspect params.yaml and metrics/metrics.json' \
+		'  4. run make verify' \
+		'  5. run make tour' \
+		'  6. inspect publish/v1/manifest.json and publish/v1/report.md' \
+		'' \
+		'Focused proof targets:' \
+		'  make verify         validate the promoted artifact contract' \
+		'  make confirm        run verify, tests, and recovery drill' \
+		'  make recovery-drill prove remote-backed restoration after loss'
+
 .PHONY: push
 push: repro ## Push tracked artifacts to the local training remote
 	@$(DVC) push

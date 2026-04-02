@@ -20,6 +20,7 @@ publish boundary.
 From the capstone directory:
 
 ```bash
+make walkthrough
 make tour
 ```
 
@@ -40,3 +41,8 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
 
 That order mirrors the course: declared graph, recorded execution, declared inputs,
 measured outcome, promoted interface, and human-readable report.
+
+## What this tour does not replace
+
+The tour is corroboration, not first-contact teaching. If state identity, promotion, or
+recovery still feels abstract, return to the course module first and then come back.
