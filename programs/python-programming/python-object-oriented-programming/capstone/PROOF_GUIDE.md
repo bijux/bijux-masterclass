@@ -56,6 +56,22 @@ both.
 4. Inspect the relevant code file.
 5. Decide whether the evidence matches the design claim or only hints at it.
 
+## Claim matrix
+
+| If the claim is about... | Inspect first | Best route |
+| --- | --- | --- |
+| lifecycle and invariant ownership | `tests/test_policy_lifecycle.py` | `make inspect` |
+| replaceable evaluation behavior | `tests/test_policy_evaluation.py` | `make verify-report` |
+| runtime orchestration and adapter boundaries | `tests/test_runtime.py` and `TOUR.md` | `make tour` or `make verify-report` |
+| learner-facing use cases | `tests/test_application.py` and `tests/test_demo.py` | `make demo` or `make tour` |
+| whole-capstone trust and saved evidence | the generated verification bundle | `make confirm` or `make proof` |
+
+## Review question after each route
+
+- Which object or boundary owned the proven behavior?
+- Which saved artifact or test was strongest?
+- Which route would fail first if the design drifted?
+
 ## Route by course stage
 
 - Semantic floor: start with `make inspect` and the lifecycle-oriented tests.
