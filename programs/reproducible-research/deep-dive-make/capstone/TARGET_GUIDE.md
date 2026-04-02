@@ -42,6 +42,8 @@ smallest honest command.
 | `all` | main build outputs and convergence sentinel | you need the ordinary build result |
 | `show` | `CFLAGS` origin, flavor, and raw value | you are inspecting precedence without environment override |
 | `show-e` | `CFLAGS` origin, flavor, and raw value under `-e` | you are proving the environment-override branch from Module 04 |
+| `source-baseline-check` | release-safety check for local build residue | you need to prove the working tree is safe to package as source |
+| `source-bundle` | tracked-source archive under `artifacts/dist/` | you need a clean learner or review distribution |
 | `test` | runtime behavior checks | you need product-facing validation |
 | `selftest` | convergence, schedule equivalence, and negative hidden-input checks | you need build-system proof |
 | `walkthrough` | learner-first walkthrough bundle | you need a bounded first pass |
@@ -73,6 +75,14 @@ Use:
 * `make show`
 * `make show-e`
 * `make show-origins`
+
+### If the question is "can I publish this repository as source?"
+
+Use:
+
+* `make clean`
+* `make source-baseline-check`
+* `make source-bundle`
 
 ### If the question is "is the graph still honest?"
 
@@ -117,6 +127,9 @@ Do not confuse these pairs:
 * `show` versus `show-e`
   `show` reports file and command-line precedence under the normal rules. `show-e`
   reruns the same introspection with GNU Make's environment-override mode.
+* `clean` versus `source-bundle`
+  `clean` removes generated build state. `source-bundle` proves the tree is clean and
+  writes the tracked-source archive you can actually distribute.
 * `tour` versus `walkthrough`
   `tour` is the shortest review route. `walkthrough` writes the bounded first-pass bundle.
 * `selftest-report` versus `proof`
@@ -141,5 +154,6 @@ Use these with the target guide:
 * `CONTRACT_AUDIT_GUIDE.md`
 * `INCIDENT_REVIEW_GUIDE.md`
 * `PROFILE_AUDIT_GUIDE.md`
+* `SOURCE_BASELINE_GUIDE.md`
 
 [Back to top](#top)

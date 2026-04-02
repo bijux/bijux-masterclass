@@ -63,6 +63,9 @@ Use the capstone differently as the course advances:
 | Modules 07-08 | [Recovery Review Guide](recovery-review-guide.md) | `make -C capstone confirm` or `make -C capstone recovery-review` | inspect what another maintainer can verify and restore under pressure |
 | Modules 09-10 | [Release Review Guide](release-review-guide.md) | `make -C capstone release-review` or `make -C capstone confirm` | review promoted trust surfaces, governance, and repository stewardship |
 
+If the pressure is "can I hand someone a clean source artifact?", start with
+`capstone/SOURCE_BASELINE_GUIDE.md` and run `make -C capstone source-bundle`.
+
 ## Best entrypoints
 
 - Capstone map: [capstone-map.md](capstone-map.md)
@@ -89,6 +92,7 @@ make -C capstone release-review
 make -C capstone recovery-review
 make -C capstone confirm
 make -C capstone tour
+make -C capstone source-bundle
 ```
 
 ## What to inspect during review

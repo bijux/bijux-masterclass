@@ -100,6 +100,16 @@ gmake CFLAGS=CLI show
 
 Those targets expose the current `CFLAGS` origin, flavor, and raw value without asking
 you to create a scratch Makefile first.
+
+If you need a clean learner or review archive instead of a working-tree zip, use:
+
+```sh
+gmake clean
+gmake source-baseline-check
+gmake source-bundle
+```
+
+Then read `SOURCE_BASELINE_GUIDE.md` before distributing the resulting archive.
 [Back to top](#top)
 
 ---
@@ -172,6 +182,8 @@ These are the stable entrypoints you can rely on and extend:
 | `help` | Print available targets and key knobs. | Discoverability. |
 | `show` | Print `CFLAGS` origin, flavor, and raw value. | Variable-precedence inspection. |
 | `show-e` | Re-run `show` with environment override enabled. | Module 04 precedence proof. |
+| `source-baseline-check` | Fail if local build residue would leak into a source archive. | Publish-source hygiene. |
+| `source-bundle` | Write a tracked-source archive from repository state. | Clean learner or review distribution. |
 | `tour` | Print the recommended walkthrough order. | Faster onboarding into the capstone. |
 | `walkthrough` | Write the learner-facing walkthrough bundle. | Durable first-pass reading route. |
 | `contract-audit` | Write the public-contract review bundle. | Review entrypoints and boundaries before the strongest proof path. |
@@ -236,6 +248,10 @@ If you are still unsure, use this escalation order:
 4. `make verify-report`
 5. `make proof`
 6. `make confirm`
+
+When the question is "can I distribute this capstone as source right now?", use
+`SOURCE_BASELINE_GUIDE.md` together with `gmake source-baseline-check` and
+`gmake source-bundle`.
 [Back to top](#top)
 
 ---

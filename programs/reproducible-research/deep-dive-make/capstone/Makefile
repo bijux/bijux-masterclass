@@ -128,6 +128,8 @@ help:
 >     '  all               build app + dynamic bins (also writes ./all sentinel)' \
 >     '  show              print CFLAGS origin, flavor, and raw value' \
 >     '  show-e            rerun show with environment override enabled' \
+>     '  source-baseline-check fail if local build state would contaminate a source bundle' \
+>     '  source-bundle     write a tracked-source archive for learner or review distribution' \
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
 >     '  selftest-report   write the selftest evidence bundle to artifacts/' \

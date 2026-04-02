@@ -77,11 +77,13 @@ make install
 make platform-report
 make dvc-init
 make repro
+make source-baseline-check
 ```
 
 That sequence creates the virtual environment, installs DVC plus the capstone package,
 prints the supported Python, Git, and DVC versions, initializes `.dvc/`, and configures
-the local training remote.
+the local training remote. `make source-baseline-check` is the fast publish-safety check
+when you need to know whether local-only state would leak into a source archive.
 
 On a fresh machine, expect `make install` to be the network-dependent step. If you are
 offline, reuse a previously prepared environment instead of assuming the setup flow can
@@ -105,6 +107,13 @@ make verify
 If `make platform-report` and `make verify` both succeed, the capstone is running inside
 the supported toolchain and can validate the publish bundle and read the configured
 remote-backed state surfaces.
+
+If you also need a clean learner or review archive, continue with:
+
+```sh
+make source-baseline-clean
+make source-bundle
+```
 
 [Back to top](#top)
 

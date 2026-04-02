@@ -76,6 +76,7 @@ repository:
 - `MODEL_GUIDE.md` explains how to read the promoted scoring artifact before trusting release conclusions.
 - `PREDICTION_REVIEW_GUIDE.md` explains how to review promoted row-level outcomes, mistakes, and borderline cases.
 - `REVIEW_ROUTE_GUIDE.md` explains how to choose the smallest honest capstone route for a given review question.
+- `SOURCE_BASELINE_GUIDE.md` explains how to build a clean tracked-source archive instead of trusting a dirty working-tree zip.
 - `src/incident_escalation_capstone/` contains the pipeline implementation.
 - `params.yaml` is the declared control surface for splitting, training, and decision policy.
 - `dvc.yaml` and `dvc.lock` define and prove the pipeline execution graph.
@@ -128,6 +129,16 @@ Use this order the first time you enter the capstone:
 That route keeps the learner focused on contract first, then declared state, then
 recorded state, then promoted evidence.
 
+If you need a clean learner or review source archive, run:
+
+```bash
+make source-baseline-clean
+make source-baseline-check
+make source-bundle
+```
+
+Then read `SOURCE_BASELINE_GUIDE.md` before distributing the resulting archive.
+
 ## Core workflow
 
 From this directory:
@@ -167,6 +178,7 @@ make confirm
 make recovery-drill
 make recovery-review
 make tour
+make source-bundle
 ```
 
 Or use the repository root when you want stable program-level entrypoints:
@@ -192,6 +204,7 @@ These commands answer different questions:
 - `make recovery-review` writes a durable bundle for the remote-backed restore under `artifacts/audit/reproducible-research/deep-dive-dvc/recovery/`.
 - `make walkthrough` writes the learner-first reading bundle under `artifacts/walkthrough/reproducible-research/deep-dive-dvc/`.
 - `make tour` writes a learner-facing proof bundle under `artifacts/tour/reproducible-research/deep-dive-dvc/`.
+- `make source-bundle` writes a tracked-source archive under `artifacts/dist/reproducible-research/deep-dive-dvc/`.
 
 Every generated bundle now includes a `manifest.json` inventory so review can start from
 an explicit file list instead of manual guessing.
