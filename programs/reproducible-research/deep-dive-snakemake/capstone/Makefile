@@ -43,6 +43,9 @@ TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
 TOOLS_PY := $(TOOLS_BIN)/python
 TOOLS_PIP := $(TOOLS_PY) -m pip
+REPO_ROOT := $(abspath ../../../..)
+SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-snakemake
+SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-snakemake-capstone.tar.gz
 
 SNAKEMAKE ?= $(if $(wildcard $(TOOLS_BIN)/snakemake),$(TOOLS_BIN)/snakemake,snakemake)
 PYTHON ?= $(if $(wildcard $(TOOLS_PY)),$(TOOLS_PY),$(SYSTEM_PYTHON))
@@ -51,7 +54,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 
 # ---- phony ----
 .PHONY: help info bootstrap bootstrap-confirm \
-	clean purge-dsstore \
+	clean purge-dsstore source-baseline-clean source-baseline-check source-bundle \
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
@@ -92,6 +95,30 @@ clean: ## Remove build/run artifacts (keeps git-tracked files)
 	rm -rf "$(LINT_DIR_ABS)" "$(TEST_DIR_ABS)" "$(WF_DIR_ABS)" "$(TMP_DIR_ABS)" "$(WALKTHROUGH_DIR_ABS)" "$(TOUR_DIR_ABS)" .ruff_cache
 	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
 	@true
+
+source-baseline-clean: clean ## Remove local-only state that must not ship in a source bundle
+	@true
+
+source-baseline-check: ## Fail if local-only state would contaminate a source bundle
+	@paths="$$(find . \
+		\( -path './.snakemake' -o -path './publish' -o -path './results' -o -path './logs' \
+		   -o -path './benchmarks' -o -path './.pytest_cache' -o -path './.ruff_cache' \
+		   -o -name '__pycache__' -o -name 'dag.png' -o -name 'rulegraph.png' \) \
+		-prune -print | sort)"; \
+	if [ -n "$$paths" ]; then \
+		printf '%s\n' 'FAIL: source bundle would include local-only state:' "$$paths" >&2; \
+		exit 1; \
+	fi; \
+	printf '%s\n' 'PASS: source baseline contains no local-only state'
+
+source-bundle: source-baseline-check ## Build a tracked-source bundle for release or learner download
+	@mkdir -p "$(SOURCE_BUNDLE_DIR)"
+	@$(PYTHON) "$(REPO_ROOT)/scripts/build_clean_source_bundle.py" \
+		--repo-root "$(REPO_ROOT)" \
+		--source-dir "$(CURDIR)" \
+		--output "$(abspath $(SOURCE_BUNDLE_PATH))" \
+		--prefix deep-dive-snakemake-capstone
+	@printf 'PASS: wrote %s\n' "$(abspath $(SOURCE_BUNDLE_PATH))"
 
 purge-dsstore: ## Delete .DS_Store everywhere (also add to .gitignore)
 	find . -name ".DS_Store" -type f -delete

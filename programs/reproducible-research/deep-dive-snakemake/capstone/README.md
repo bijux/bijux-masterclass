@@ -103,6 +103,16 @@ If you are still unsure, use this escalation order:
 5. `make proof`
 6. `make confirm`
 
+If you need a clean learner or review download instead of a working tree, run:
+
+```bash
+make source-baseline-clean
+make source-baseline-check
+make source-bundle
+```
+
+Then read `SOURCE_BASELINE_GUIDE.md` before distributing the archive.
+
 [Back to top](#top)
 
 ---
@@ -175,6 +185,7 @@ make results-summary
 make evidence-summary
 make tour
 make confirm
+make source-bundle
 ```
 
 Use `WALKTHROUGH_GUIDE.md` when you want the lightest honest repository route before
@@ -216,6 +227,8 @@ Use `WALKTHROUGH_GUIDE.md` when you need the first-contact route.
 Use `PUBLISH_REVIEW_GUIDE.md`, `PROFILE_AUDIT_GUIDE.md`, and `INCIDENT_REVIEW_GUIDE.md`
 when the review question is more specific than "does the workflow run."
 Use `EXTENSION_GUIDE.md` when the question is where the next change should land.
+Use `SOURCE_BASELINE_GUIDE.md` when the question is what belongs in a clean learner or
+review distribution instead of a local working tree.
 
 Use `make verify-report` when you want a durable publish-contract report under
 `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` rather than a single
@@ -233,6 +246,9 @@ Use `make profile-audit` when the question is about execution policy across loca
 and cluster contexts rather than publish correctness alone.
 Use `make profile-summary` when you want one compact JSON that separates shared policy
 from profile-specific differences before you open the full profile audit bundle.
+Use `make source-bundle` when you need a tracked-source archive under
+`artifacts/dist/reproducible-research/deep-dive-snakemake/` rather than a working-tree
+snapshot.
 
 Generated review bundles now keep the published workflow manifest and the bundle
 inventory separate: `publish-manifest.json` describes the published interface, while
