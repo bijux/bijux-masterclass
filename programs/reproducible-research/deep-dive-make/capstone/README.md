@@ -21,6 +21,7 @@ The capstone is the executable reference build for **Deep Dive Make**: a compact
 - [What it builds](#what-it-builds)
 - [Where it fits in the program](#where-it-fits-in-the-program)
 - [Architecture](#architecture)
+- [Proof guide](#proof-guide)
 - [Platform notes](#platform-notes)
 - [Repro pack](#repro-pack)
 - [Links into the program guide](#links-into-the-program-guide)
@@ -91,7 +92,8 @@ Use this order the first time you enter the capstone:
 3. read `Makefile`
 4. read `tests/run.sh`
 5. run `make selftest`
-6. inspect one file under `repro/`
+6. read `PROOF_GUIDE.md`
+7. inspect one file under `repro/`
 
 That route keeps the learner focused on public contract first, proof harness second, and
 failure teaching material third.
@@ -179,6 +181,16 @@ graph TD
   mk --> rulesEval["rules_eval.mk"]
 ```
 The intent is to model a “real” build in miniature: the same failure modes show up, but the surface area stays small enough to audit.  
+[Back to top](#top)
+
+---
+## Proof guide
+Use [`PROOF_GUIDE.md`](PROOF_GUIDE.md) when you want the shortest route from a capstone
+claim to the target, file, or failure surface that proves it.
+
+That guide complements this README by answering a narrower question: not "what is this
+repository?", but "where do I inspect when I need evidence now?"
+
 [Back to top](#top)
 
 ---
