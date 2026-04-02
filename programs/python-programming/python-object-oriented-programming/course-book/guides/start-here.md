@@ -2,27 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  family["Python Programming"]
-  program["Python Object-Oriented Programming"]
-  section["Start Here"]
-  page["Start Here"]
-  next["Course home"]
-
-  family --> program --> section --> page --> next
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Start Here"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  contract["Read the learner contract"] --> map["Inspect the course and capstone maps"]
-  map --> rhythm["Adopt the reading and practice rhythm"]
-  rhythm --> build["Work through Modules 01 to 10 in order"]
-  build --> prove["Use the capstone and proof commands to verify understanding"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This page is the shortest honest route into the course. Read it before browsing the
 module tree. The subject is not class syntax. The subject is how Python object models
