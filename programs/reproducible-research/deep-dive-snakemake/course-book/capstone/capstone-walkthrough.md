@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Capstone Walkthrough
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,35 +13,52 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Do you need a first pass or a deeper review?"] --> route["Choose one walkthrough depth"]
+  route --> inspect["Read the matching guide and artifact"]
+  inspect --> next_move["Stop when one honest workflow story is visible"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this page gives the capstone a teaching route,
+not just a repository map. Read the second diagram as the rule: choose one walkthrough
+depth, read the matching guide and artifact, then stop when one honest workflow story is
+visible.
 
-Use this page when you want the capstone as a guided first-contact repository tour rather
-than as a fully executed proof bundle.
+## First pass versus deeper pass
 
----
+- First pass: use the learner-first route when you need one bounded workflow story from file contract to executed proof.
+- Deeper pass: use the longer routes only when the question changes from entry to policy, publish, or stewardship review.
 
-## Recommended Route
+## 30-minute first pass
 
 1. Read `capstone/docs/WALKTHROUGH_GUIDE.md`.
 2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`.
 3. Read the copied `Snakefile`, rule files, `list-rules.txt`, and `dryrun.txt` in that order.
-4. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to write down what is visible before execution.
+4. Read `capstone/docs/FILE_API.md`.
+5. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to record what is visible before execution.
 
-[Back to top](#top)
+Goal: leave with a clear picture of what the workflow claims to build, where dynamic
+discovery is declared, and which files are public contracts.
 
----
+## Executed workflow pass
 
-## What The Walkthrough Should Teach
+Use this only after the first pass is clear.
 
-- what the workflow claims to build before it runs
-- where dynamic discovery is declared rather than hidden
-- which files are public contracts and which files are only review aids
-- which next command should deepen the review once first contact is clear
+1. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour`.
+2. Read the executed proof bundle.
+3. Compare the bundle's publish artifacts against `FILE_API.md`.
+4. Follow one rule family back into `workflow/rules/`.
 
-[Back to top](#top)
+Goal: see how the planned workflow becomes executed evidence without losing contract
+clarity.
+
+## Good stopping point
+
+Stop when you can explain one complete workflow story:
+
+- the public contract you started from
+- the rule or artifact that makes the contract visible
+- the next command that would strengthen the claim only if needed
+
+If you cannot tell that story yet, do not widen the walkthrough. Repeat the smaller
+pass.
