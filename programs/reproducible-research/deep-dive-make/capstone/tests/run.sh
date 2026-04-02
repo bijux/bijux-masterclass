@@ -5,6 +5,7 @@ MAKE_BIN="${MAKE:-make}"
 
 fail() { echo "selftest: FAIL: $*" >&2; exit 1; }
 pass() { echo "selftest: PASS: $*"; }
+step() { echo "selftest: STEP: $*"; }
 
 hash_cmd() {
   if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
@@ -32,57 +33,57 @@ export DEBUG=0
 TRACE_MAX="${TRACE_MAX:-500}"
 
 # 1) Convergence
-echo "Running convergence check..."
+step "convergence"
 "$MAKE_BIN" clean >/dev/null
 "$MAKE_BIN" -j1 all >/dev/null
 "$MAKE_BIN" -q all || fail "convergence: repo not up-to-date after build (exit $(($?)))"
 pass "convergence"
 
 # 2) Serial vs parallel equivalence
-echo "Running serial/parallel equivalence check..."
+step "serial-parallel equivalence"
 "$MAKE_BIN" clean >/dev/null
 "$MAKE_BIN" -j1 all >/dev/null
-echo "Computing serial hash..."
+echo "selftest: INFO: computing serial artifact hash"
 # Hash all artifacts (intermediates + executables for full equivalence)
-echo "  Listing files..."
+echo "selftest: INFO: listing serial artifacts"
 find build -type f \( -name '*.o' -o -name '*.d' -o -name 'flags.stamp' \) -print | sort > filelist.tmp
-echo "  Hashing files..."
+echo "selftest: INFO: hashing serial artifacts"
 while IFS= read -r f; do hash_cmd "$f"; done < filelist.tmp > serial_hash.tmp
 rm -f filelist.tmp
 # Note: some compilers introduce nondeterminism (debug info paths, timestamps).
 # The capstone uses -frandom-seed and fixed flags to minimize this.
 hash_cmd app build/include/dynamic.h build/bin/dyn1 build/bin/dyn2 >> serial_hash.tmp
-echo "  Sorting hashes..."
+echo "selftest: INFO: sorting serial hashes"
 LC_ALL=C sort serial_hash.tmp > serial.sum
 rm -f serial_hash.tmp
-echo "Serial hash complete."
+echo "selftest: INFO: serial hash complete"
 
 "$MAKE_BIN" clean >/dev/null
-echo "Running parallel build..."
+echo "selftest: INFO: running bounded parallel build"
 # Bounded parallelism + timeout to expose concurrency defects safely
 if command -v timeout >/dev/null 2>&1; then
   timeout 30 "$MAKE_BIN" -j2 all >/dev/null || fail "parallel build timeout (consider reducing -j)"
 else
   "$MAKE_BIN" -j2 all >/dev/null  # Fallback; monitor manually
 fi
-echo "Computing parallel hash..."
+echo "selftest: INFO: computing parallel artifact hash"
 # Mirror serial hashing for symmetry
-echo "  Listing files..."
+echo "selftest: INFO: listing parallel artifacts"
 find build -type f \( -name '*.o' -o -name '*.d' -o -name 'flags.stamp' \) -print | sort > filelist.tmp
-echo "  Hashing files..."
+echo "selftest: INFO: hashing parallel artifacts"
 while IFS= read -r f; do hash_cmd "$f"; done < filelist.tmp > parallel_hash.tmp
 rm -f filelist.tmp
 hash_cmd app build/include/dynamic.h build/bin/dyn1 build/bin/dyn2 >> parallel_hash.tmp
-echo "  Sorting hashes..."
+echo "selftest: INFO: sorting parallel hashes"
 LC_ALL=C sort parallel_hash.tmp > parallel.sum
 rm -f parallel_hash.tmp
-echo "Parallel hash complete."
+echo "selftest: INFO: parallel hash complete"
 
 diff -u serial.sum parallel.sum >/dev/null || fail "serial/parallel: artifact mismatch"
 pass "serial-parallel equivalence"
 
 # Performance baseline guardrail (trace expansions <500)
-echo "Running performance baseline check..."
+step "trace guardrail"
 TRACE_LINES=$("$MAKE_BIN" --trace -n all 2>&1 | wc -l)
 if [ "$TRACE_MAX" -ne 0 ] && [ "$TRACE_LINES" -gt "$TRACE_MAX" ]; then
   fail "performance: trace lines exceed TRACE_MAX=$TRACE_MAX (got $TRACE_LINES). Use: make trace-count; and see: make perf. (TRACE_MAX is a guardrail; set TRACE_MAX=0 to disable.)"
@@ -90,7 +91,7 @@ fi
 pass "performance: trace within TRACE_MAX=$TRACE_MAX"
 
 # 3) Negative test: hidden input must break convergence
-echo "Running negative test check..."
+step "hidden input detection"
 test -f config.mk || : > config.mk
 cp config.mk config.mk.bak
 printf '%s\n' '' 'CPPFLAGS += -DHIDDEN_TS=$(shell date +%s)' >> config.mk
@@ -104,3 +105,4 @@ fi
 pass "negative: hidden input detected (non-convergence)"
 
 mv config.mk.bak config.mk
+echo "selftest: PASS: all checks completed"

@@ -77,7 +77,8 @@ It checks three things:
 | negative hidden-input case | an intentionally hidden input breaks convergence | the proof harness can detect lies instead of only happy paths |
 
 The selftest also includes a lightweight trace-volume guardrail so observability costs do
-not silently drift upward.
+not silently drift upward. The output is grouped into named steps so the learner can see
+which proof is running and why it matters.
 
 [Back to top](#top)
 
