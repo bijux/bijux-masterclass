@@ -130,6 +130,10 @@ Use `make verify-report` when you want a durable publish-contract report under
 `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` rather than a single
 console verdict.
 
+Generated review bundles now keep the published workflow manifest and the bundle
+inventory separate: `publish-manifest.json` describes the published interface, while
+`bundle-manifest.json` describes what the bundle copied for review.
+
 [Back to top](#top)
 
 ---

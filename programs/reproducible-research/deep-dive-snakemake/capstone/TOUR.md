@@ -15,9 +15,10 @@ the workflow.
 - `dryrun.txt`: the planned jobs and commands without executing them
 - `run.txt`: the execution log from the real workflow run
 - `summary.txt`: Snakemake’s summary view after the run
-- `manifest.json`: the stable publish boundary inventory
+- `publish-manifest.json`: the stable publish boundary inventory
 - `provenance.json`: the reproducibility record for the run
 - `FILE_API.md`: the documented publish contract copied into the bundle
+- `bundle-manifest.json`: the inventory of files packaged into the review bundle itself
 
 ## How to use it
 
@@ -41,7 +42,7 @@ make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour
 2. `list-rules.txt`
 3. `dryrun.txt`
 4. `summary.txt`
-5. `manifest.json`
+5. `publish-manifest.json`
 6. `provenance.json`
 
 That order mirrors the course: repository contract, rule surface, planned DAG, resulting

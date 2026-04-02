@@ -129,7 +129,7 @@ verify-artifacts: ## Verify publish artifacts exist and are parseable (best-effo
 	@$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" \
 		2>&1 | tee "$(LINT_DIR_ABS)/verify_artifacts.log"
 
-verify-report: ## Write a structured publish verification report
+verify-report: verify ## Write a structured publish verification report
 	@mkdir -p "$(VERIFY_REPORT_DIR)"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
 	@$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" --report "$(VERIFY_REPORT_DIR)/verify.json"
@@ -138,6 +138,7 @@ verify-report: ## Write a structured publish verification report
 		'  1. Read verify.json for the per-surface publish checks.' \
 		'  2. Read publish/v1/manifest.json beside it when you need the published inventory.' \
 		'  3. Read publish/v1/report/index.html when you need the human-readable review surface.' > "$(VERIFY_REPORT_DIR)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(VERIFY_REPORT_DIR)" --output "$(VERIFY_REPORT_DIR)/bundle-manifest.json"
 	@echo "✔ wrote publish verification report to $(VERIFY_REPORT_DIR)"
 
 # ---- high-level flows ----
@@ -186,6 +187,7 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 		'  Where does dynamic discovery become explicit and reviewable?' \
 		'  Which published outputs are safe for downstream trust?' \
 		'  Which guarantees come from clean-room confirmation rather than a dry-run?' > "$(WALKTHROUGH_DIR_ABS)/review-questions.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(WALKTHROUGH_DIR_ABS)" --output "$(WALKTHROUGH_DIR_ABS)/bundle-manifest.json"
 	@echo "✔ wrote workflow walkthrough to $(WALKTHROUGH_DIR_ABS)"
 
 tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bundle
@@ -198,7 +200,7 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 	cp Snakefile "$(TOUR_DIR_ABS)/Snakefile"
 	cp PROOF_GUIDE.md "$(TOUR_DIR_ABS)/PROOF_GUIDE.md"
 	cp FILE_API.md "$(TOUR_DIR_ABS)/FILE_API.md"
-	cp "$(MANIFEST_ABS)" "$(TOUR_DIR_ABS)/manifest.json"
+	cp "$(MANIFEST_ABS)" "$(TOUR_DIR_ABS)/publish-manifest.json"
 	cp "$(PUBLISH_DIR_ABS)/provenance.json" "$(TOUR_DIR_ABS)/provenance.json"
 	cp "$(PUBLISH_DIR_ABS)/summary.json" "$(TOUR_DIR_ABS)/summary.json"
 	cp README.md "$(TOUR_DIR_ABS)/README.md"
@@ -208,13 +210,14 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 		'  1. Read verify.txt for publish-contract sanity results.' \
 		'  2. Read list-rules.txt and dryrun.txt for declared workflow shape.' \
 		'  3. Read summary.txt and run.txt for executed workflow evidence.' \
-		'  4. Read manifest.json, summary.json, and provenance.json together.' \
+		'  4. Read publish-manifest.json, summary.json, and provenance.json together.' \
 		'  5. Read FILE_API.md and PROOF_GUIDE.md to interpret the published boundary.' > "$(TOUR_DIR_ABS)/route.txt"
 	@printf '%s\n' \
 		'Review questions:' \
 		'  Which workflow claims are visible before execution, and which only after execution?' \
 		'  Which publish artifacts would you trust downstream without reading logs?' \
 		'  Which behavior is tied to workflow design rather than executor choice?' > "$(TOUR_DIR_ABS)/review-questions.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(TOUR_DIR_ABS)" --output "$(TOUR_DIR_ABS)/bundle-manifest.json"
 	@echo "✔ wrote workflow tour to $(TOUR_DIR_ABS)"
 
 # ---- docker ----
