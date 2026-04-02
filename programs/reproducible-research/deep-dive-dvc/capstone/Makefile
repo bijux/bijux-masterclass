@@ -233,25 +233,39 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@rm -rf $(WALKTHROUGH_DIR)
 	@mkdir -p $(WALKTHROUGH_DIR)/src/incident_escalation_capstone $(WALKTHROUGH_DIR)/tests $(WALKTHROUGH_DIR)/publish-v1
 	@cp README.md $(WALKTHROUGH_DIR)/README.md
+	@cp DOMAIN_GUIDE.md $(WALKTHROUGH_DIR)/DOMAIN_GUIDE.md
+	@cp STAGE_CONTRACT_GUIDE.md $(WALKTHROUGH_DIR)/STAGE_CONTRACT_GUIDE.md
+	@cp STATE_LAYER_GUIDE.md $(WALKTHROUGH_DIR)/STATE_LAYER_GUIDE.md
+	@cp CONTROL_SURFACE_GUIDE.md $(WALKTHROUGH_DIR)/CONTROL_SURFACE_GUIDE.md
+	@cp ARCHITECTURE.md $(WALKTHROUGH_DIR)/ARCHITECTURE.md
 	@cp PUBLISH_CONTRACT.md $(WALKTHROUGH_DIR)/PUBLISH_CONTRACT.md
 	@cp dvc.yaml $(WALKTHROUGH_DIR)/dvc.yaml
 	@cp dvc.lock $(WALKTHROUGH_DIR)/dvc.lock
 	@cp params.yaml $(WALKTHROUGH_DIR)/params.yaml
 	@cp TOUR.md $(WALKTHROUGH_DIR)/TOUR.md
+	@cp src/incident_escalation_capstone/prepare.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/prepare.py
+	@cp src/incident_escalation_capstone/fit.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/fit.py
+	@cp src/incident_escalation_capstone/evaluate.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/evaluate.py
+	@cp src/incident_escalation_capstone/publish.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/publish.py
+	@cp src/incident_escalation_capstone/inspect.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/inspect.py
 	@cp src/incident_escalation_capstone/verify.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/verify.py
+	@cp tests/test_prepare.py $(WALKTHROUGH_DIR)/tests/test_prepare.py
+	@cp tests/test_inspect.py $(WALKTHROUGH_DIR)/tests/test_inspect.py
 	@cp tests/test_verify.py $(WALKTHROUGH_DIR)/tests/test_verify.py
 	@cp publish/v1/manifest.json $(WALKTHROUGH_DIR)/publish-v1/manifest.json
 	@cp publish/v1/report.md $(WALKTHROUGH_DIR)/publish-v1/report.md
 	@printf '%s\n' \
 		'1. Read README.md to understand the repository contract.' \
-		'2. Read PUBLISH_CONTRACT.md to understand the promoted boundary.' \
-		'3. Read dvc.yaml to inspect the declared pipeline.' \
-		'4. Read dvc.lock to compare recorded state against the declaration.' \
-		'5. Read params.yaml to see the declared control surface.' \
-		'6. Read src/incident_escalation_capstone/verify.py and tests/test_verify.py to see how the contract is enforced.' \
-		'7. Read publish-v1/manifest.json and publish-v1/report.md as concrete promotion examples.' \
-		'8. Run make verify when you want executed proof.' \
-		'9. Run make tour when you want the full evidence bundle.' > $(WALKTHROUGH_DIR)/route.txt
+		'2. Read DOMAIN_GUIDE.md, STAGE_CONTRACT_GUIDE.md, STATE_LAYER_GUIDE.md, and CONTROL_SURFACE_GUIDE.md to understand the repository model before reading code.' \
+		'3. Read PUBLISH_CONTRACT.md to understand the promoted boundary.' \
+		'4. Read dvc.yaml to inspect the declared pipeline.' \
+		'5. Read dvc.lock to compare recorded state against the declaration.' \
+		'6. Read params.yaml to see the declared control surface.' \
+		'7. Read prepare.py, fit.py, evaluate.py, publish.py, inspect.py, and verify.py in stage order.' \
+		'8. Read the matching tests to see how the contracts are enforced.' \
+		'9. Read publish-v1/manifest.json and publish-v1/report.md as concrete promotion examples.' \
+		'10. Run make verify when you want executed proof.' \
+		'11. Run make tour when you want the full evidence bundle.' > $(WALKTHROUGH_DIR)/route.txt
 	@printf '%s\n' \
 		'Public entry commands:' \
 		'  make walkthrough' \
@@ -269,11 +283,23 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@printf '%s\n' \
 		'Walkthrough bundle surfaces:' \
 		'  README.md             repository contract and learner entry rule' \
+		'  DOMAIN_GUIDE.md       operational problem and data vocabulary' \
+		'  STAGE_CONTRACT_GUIDE.md stage-by-stage ownership boundaries' \
+		'  STATE_LAYER_GUIDE.md  authority map for repository state layers' \
+		'  CONTROL_SURFACE_GUIDE.md params-and-metrics comparability rules' \
+		'  ARCHITECTURE.md       file-level ownership route' \
 		'  PUBLISH_CONTRACT.md   promoted boundary and trust limits' \
 		'  dvc.yaml              declared stage contract' \
 		'  dvc.lock              recorded execution state' \
 		'  params.yaml           control surface' \
+		'  prepare.py            split and profile stage implementation' \
+		'  fit.py                model-training stage implementation' \
+		'  evaluate.py           metrics and predictions stage implementation' \
+		'  publish.py            promotion stage implementation' \
+		'  inspect.py            learner-facing summary routes' \
 		'  verify.py             publish-contract enforcement logic' \
+		'  test_prepare.py       split and profile regression coverage' \
+		'  test_inspect.py       summary-route regression coverage' \
 		'  test_verify.py        contract regression coverage' \
 		'  publish-v1/manifest.json concrete promoted inventory' \
 		'  publish-v1/report.md  concrete review surface' \

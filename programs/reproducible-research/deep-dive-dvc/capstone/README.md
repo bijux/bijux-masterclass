@@ -184,6 +184,10 @@ The walkthrough bundle now includes the verifier implementation, verifier tests,
 sample promoted manifest/report so the learner can connect declaration, enforcement, and
 published evidence in one reading route.
 
+It now also includes the stage guides, the main stage implementations, and the matching
+inspection and preparation tests so the learner can review the repository in stage order
+without reconstructing that file route by hand.
+
 If you are unsure which route fits your question, use
 `course-book/reference/verification-route-guide.md` before defaulting to the strongest
 command.
