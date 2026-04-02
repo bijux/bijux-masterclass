@@ -128,3 +128,7 @@ three of these without guessing:
 
 You should finish this module able to design aggregate roots, projections, policies,
 and adapters that preserve coherence without creating god objects.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

@@ -130,3 +130,7 @@ and explain:
 
 You should finish this module able to design Python object systems that remain clear,
 testable, and safe when clocks, worker concurrency, and async integration pressure are real.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

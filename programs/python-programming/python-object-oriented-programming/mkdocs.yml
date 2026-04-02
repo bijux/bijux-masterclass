@@ -48,7 +48,7 @@ nav:
 
   - Reference:
       - Reference Home: reference/index.md
-      - Object Design Glossary: reference/glossary.md
+      - Glossary: reference/glossary.md
       - Object Design Checklist: reference/object-design-checklist.md
       - Self-Review Prompts: reference/self-review-prompts.md
       - Boundary Review Prompts: reference/boundary-review-prompts.md

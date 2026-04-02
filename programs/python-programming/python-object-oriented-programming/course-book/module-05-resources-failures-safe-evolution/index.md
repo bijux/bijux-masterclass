@@ -121,3 +121,7 @@ You are ready to move on when you can name:
 
 You should finish this module able to shape object-oriented Python systems that stay
 operable and maintainable under long-term change rather than only under greenfield conditions.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

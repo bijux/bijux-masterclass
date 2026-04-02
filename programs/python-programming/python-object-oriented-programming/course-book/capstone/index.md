@@ -158,3 +158,7 @@ The capstone keeps the course honest. If a chapter claims that aggregates should
 invariants, that strategies should carry evaluation variability, or that projections
 should stay downstream of events, the code here shows that shape directly and the tests
 enforce it.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between repository routes, review surfaces, and proof commands.

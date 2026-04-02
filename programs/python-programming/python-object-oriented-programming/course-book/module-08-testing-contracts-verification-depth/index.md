@@ -128,3 +128,7 @@ You are ready to move on when you can take one design claim from the capstone an
 You should finish this module able to construct a verification strategy that matches the
 semantic and operational risk of an object-oriented Python codebase rather than relying
 on one default style of test everywhere.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

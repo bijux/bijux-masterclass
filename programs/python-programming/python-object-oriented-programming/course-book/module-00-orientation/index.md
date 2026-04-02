@@ -123,3 +123,7 @@ The monitoring-system capstone matures with the course:
 - You can explain what this course treats as object-oriented design discipline rather than syntax familiarity.
 - You know which guide to revisit when you need the course map, the module promise map, or the checkpoint bar.
 - You can describe how the capstone grows from semantic example to operational review surface across the ten modules.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

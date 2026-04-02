@@ -107,3 +107,7 @@ variability, and why the runtime facade should coordinate without absorbing doma
 
 You should finish this module able to decompose object-heavy code into explicit
 roles with cleaner cohesion and more stable collaboration boundaries.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

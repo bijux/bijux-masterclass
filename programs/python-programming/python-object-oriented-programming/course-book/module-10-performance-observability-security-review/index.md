@@ -129,3 +129,7 @@ You are ready to finish the course when you can review one operational change an
 
 You should finish this module able to review and harden an object-oriented Python system
 for production use while preserving the semantic discipline built through the earlier modules.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

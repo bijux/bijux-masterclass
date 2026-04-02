@@ -101,3 +101,7 @@ rules are explicit, and because invalid inputs are rejected at the edges of obje
 
 You should finish this module able to model lifecycles, validation rules, and null
 semantics with fewer hidden states and fewer ad hoc runtime checks.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.

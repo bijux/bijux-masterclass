@@ -128,3 +128,7 @@ You are ready to move on when you can choose one capstone seam and explain:
 
 You should finish this module able to define and defend a public object-oriented Python
 surface that supports customization, versioned change, and reviewable extension rules.
+
+## Directory glossary
+
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
