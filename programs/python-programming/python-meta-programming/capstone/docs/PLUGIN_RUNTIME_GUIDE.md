@@ -24,6 +24,20 @@ Use this guide when the capstone feels technically correct but the vocabulary is
 too implicit. The goal is to make the runtime model explicit before you reason about
 metaclasses, descriptors, wrappers, or CLI routes.
 
+## Start from time, not from mechanism names
+
+If the course feels abstract, ask this first:
+
+- class-definition time: what gets collected, generated, or registered before instances exist?
+- runtime: what happens only after configuration is provided and an action is invoked?
+- inspection time: what can you see publicly without running plugin behavior?
+
+Then use the matching route:
+
+- run `make registry` or `make signatures` for class-definition questions
+- run `make trace` for runtime questions
+- run `make manifest` for inspection-time questions
+
 ## Core terms
 
 | Term | Meaning in this capstone | Owning surface |
@@ -50,6 +64,14 @@ metaclasses, descriptors, wrappers, or CLI routes.
 - which behavior belongs to the action wrapper rather than the CLI
 - which public outputs are observational metadata rather than invocation proof
 - which plugin names and groups are stable enough to review from the public surface
+
+## Good stopping point
+
+Stop with this guide once you can answer:
+
+- what exists before any instance is created
+- what only appears after one action is invoked
+- what the public CLI can reveal without invoking plugin work
 
 ## Best companion guides
 
