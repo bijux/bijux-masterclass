@@ -35,7 +35,7 @@ before incident, profile, or migration questions.
 5. Inspect `artifacts/audit/reproducible-research/deep-dive-make/contract/`.
 6. Inspect `artifacts/audit/reproducible-research/deep-dive-make/incident/`.
 7. Inspect `artifacts/audit/reproducible-research/deep-dive-make/profile/`.
-8. Run `gmake -C capstone repro`.
+8. If you still need failure-class study after the bounded proof route, step down into `programs/reproducible-research/deep-dive-make/capstone/` and run `gmake repro`.
 
 ## Questions this proof pass should answer
 

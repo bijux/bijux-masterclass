@@ -93,12 +93,13 @@ Before merging a capstone change, confirm:
 ## Best Commands To Re-Run
 
 ```sh
-gmake -C capstone help
-gmake -C capstone tour
-gmake -C capstone repro
-gmake -C capstone selftest
+make PROGRAM=reproducible-research/deep-dive-make program-help
+make PROGRAM=reproducible-research/deep-dive-make capstone-tour
+make PROGRAM=reproducible-research/deep-dive-make proof
+make PROGRAM=reproducible-research/deep-dive-make test
 ```
 
-Use GNU Make on macOS so the course contract is being tested against the intended tool.
+Use GNU Make on macOS only when you intentionally step down into the raw `capstone/`
+reference build.
 
 [Back to top](#top)

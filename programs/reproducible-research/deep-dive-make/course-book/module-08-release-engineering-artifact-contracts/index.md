@@ -67,7 +67,7 @@ Capstone corroboration:
 
 * inspect `dist` and `attest` in `capstone/Makefile`
 * inspect packaging helper flow under `capstone/scripts/`
-* compare release-oriented outputs after `make -C capstone hardened`
+* compare release-oriented outputs after `make PROGRAM=reproducible-research/deep-dive-make capstone-hardened`
 
 If `dist` still means "do a lot of shell stuff," stay in the local exercise until it
 means one clear contract.

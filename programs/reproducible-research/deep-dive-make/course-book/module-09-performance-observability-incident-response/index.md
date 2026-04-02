@@ -65,8 +65,8 @@ make -p > build/make.dump
 
 Capstone corroboration:
 
-* run `make -C capstone trace-count`
-* run `make -C capstone discovery-audit`
+* run `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit`
+* run `make PROGRAM=reproducible-research/deep-dive-make capstone-discovery-audit`
 * inspect `capstone/tests/run.sh` for measurement guardrails
 
 This module is successful when the learner can separate symptoms from causes before

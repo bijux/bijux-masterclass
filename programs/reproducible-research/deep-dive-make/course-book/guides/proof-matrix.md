@@ -36,12 +36,16 @@ Use it when you know what concept you care about but want the fastest evidence r
 
 ## Core Build Claims
 
+Start with the repository-root commands below. Step down into
+`programs/reproducible-research/deep-dive-make/capstone/` only when a row names the raw
+reference build directly.
+
 | Claim | Command | File surfaces |
 | --- | --- | --- |
 | the capstone has a bounded first-pass reading route | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `course-book/capstone/index.md`, `artifacts/walkthrough/reproducible-research/deep-dive-make/` |
-| the graph converges after a successful build | `gmake -C capstone selftest` | `capstone/Makefile`, `capstone/tests/run.sh` |
-| parallelism does not change artifact meaning | `gmake -C capstone selftest` | `capstone/tests/run.sh`, `capstone/repro/` |
-| discovery is deterministic | `gmake -C capstone discovery-audit` | `capstone/mk/objects.mk` |
+| the graph converges after a successful build | `make PROGRAM=reproducible-research/deep-dive-make test` | `capstone/Makefile`, `capstone/tests/run.sh` |
+| parallelism does not change artifact meaning | `make PROGRAM=reproducible-research/deep-dive-make test` | `capstone/tests/run.sh`, `capstone/repro/` |
+| discovery is deterministic | `make PROGRAM=reproducible-research/deep-dive-make capstone-discovery-audit` | `capstone/mk/objects.mk` |
 | hidden inputs are modeled explicitly | `gmake -C capstone --trace all` | `capstone/mk/stamps.mk` |
 | generated files are treated as graph nodes | `gmake -C capstone --trace dyn` | `capstone/Makefile`, `capstone/scripts/gen_dynamic_h.py` |
 
@@ -53,11 +57,11 @@ Use it when you know what concept you care about but want the fastest evidence r
 
 | Claim | Command | File surfaces |
 | --- | --- | --- |
-| the build has a stable public API | `gmake -C capstone help` | `capstone/Makefile` |
+| the build has a stable public API | `make PROGRAM=reproducible-research/deep-dive-make program-help` | `capstone/Makefile` |
 | the layered `mk/*.mk` structure has explicit responsibilities | inspect [`mk-layer-guide.md`](../reference/mk-layer-guide.md) | `capstone/mk/*.mk` |
 | artifact boundaries are smaller than the whole repository | inspect [`artifact-boundary-guide.md`](../reference/artifact-boundary-guide.md) | `capstone/build/`, `capstone/repro/`, `capstone/tests/` |
 | the build can explain rebuild behavior | `gmake -C capstone --trace all` | `capstone/Makefile`, `capstone/mk/*.mk` |
-| the build declares portability boundaries | `gmake -C capstone portability-audit` | `capstone/mk/contract.mk` |
+| the build declares portability boundaries | `make PROGRAM=reproducible-research/deep-dive-make capstone-portability-audit` | `capstone/mk/contract.mk` |
 | the build produces non-contaminating evidence | `gmake -C capstone attest` | `capstone/Makefile`, `build/attest.txt` |
 | the repro pack teaches real failure classes | `gmake -C capstone repro` | `capstone/repro/`, `repro-catalog.md` |
 
@@ -71,8 +75,8 @@ Use it when you know what concept you care about but want the fastest evidence r
 | --- | --- | --- |
 | where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `course-book/capstone/index.md` |
 | why did this rebuild | `gmake -C capstone --trace all` | `capstone/mk/stamps.mk` |
-| why is `-j` unsafe | `gmake -C capstone selftest` | `capstone/repro/01-shared-log.mk` |
-| where is the build API | `gmake -C capstone help` | `capstone/Makefile` |
+| why is `-j` unsafe | `make PROGRAM=reproducible-research/deep-dive-make test` | `capstone/repro/01-shared-log.mk` |
+| where is the build API | `make PROGRAM=reproducible-research/deep-dive-make program-help` | `capstone/Makefile` |
 | how is code generation modeled | `gmake -C capstone --trace dyn` | `capstone/scripts/gen_dynamic_h.py` |
 | what would I review before migration | `gmake -C capstone -p > build/review.dump` | `capstone/mk/` |
 

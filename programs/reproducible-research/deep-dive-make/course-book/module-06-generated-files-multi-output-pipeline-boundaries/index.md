@@ -68,7 +68,7 @@ Capstone corroboration:
 
 * inspect generated-header flow in `capstone/Makefile`
 * inspect boundary modeling in `capstone/mk/stamps.mk`
-* run `make -C capstone selftest`
+* run `make PROGRAM=reproducible-research/deep-dive-make test`
 
 If the capstone feels too large here, return to the small generator playground and make
 the stale-file story legible there first.

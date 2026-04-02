@@ -652,11 +652,10 @@ Use capstone to validate, not to learn the basics.
 ### Runbook (repo root)
 
 ```sh
-make -C capstone portability-audit
-make -C capstone selftest
-make -C capstone attest
-make -C capstone trace-count
-make -C capstone perf
+make PROGRAM=reproducible-research/deep-dive-make capstone-portability-audit
+make PROGRAM=reproducible-research/deep-dive-make test
+make PROGRAM=reproducible-research/deep-dive-make capstone-verify-report
+make PROGRAM=reproducible-research/deep-dive-make capstone-hardened
 ```
 
 ### Where to look (file map)

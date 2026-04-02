@@ -66,7 +66,7 @@ Capstone corroboration:
 
 * inspect target boundaries in `capstone/Makefile`
 * inspect layer separation in `capstone/mk/*.mk`
-* use `make -C capstone help`
+* use `make PROGRAM=reproducible-research/deep-dive-make program-help`
 
 The module is doing its job only if you can point to a layer boundary and explain why it
 exists without appealing to habit.

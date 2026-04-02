@@ -49,7 +49,7 @@ Use this only after Modules 06-08.
 2. Follow discovery in `capstone/mk/objects.mk`.
 3. Follow modeled hidden inputs in `capstone/mk/stamps.mk`.
 4. Trace generated-header production from `capstone/scripts/gen_dynamic_h.py`.
-5. Run `gmake -C capstone --trace dyn`.
+5. From `programs/reproducible-research/deep-dive-make/capstone/`, run `gmake --trace dyn`.
 
 Goal: see how truthful graph modeling survives a repository with layers, generation, and
 publication boundaries.

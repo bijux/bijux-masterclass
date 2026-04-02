@@ -107,9 +107,9 @@ If you are new to the course:
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-make inspect
-gmake -C capstone help
-gmake -C capstone tour
-gmake -C capstone selftest
+make PROGRAM=reproducible-research/deep-dive-make program-help
+make PROGRAM=reproducible-research/deep-dive-make capstone-tour
+make PROGRAM=reproducible-research/deep-dive-make test
 ```
 
 If you are reviewing the course as a system:

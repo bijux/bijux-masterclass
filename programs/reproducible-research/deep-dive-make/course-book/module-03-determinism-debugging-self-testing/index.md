@@ -976,15 +976,16 @@ Capstone is the runnable cross-check for the invariants and workflows above. Cur
 ### 9.1 What to run (from repo root)
 
 ```sh
-make -C capstone help
-make -C capstone selftest
-make -C capstone discovery-audit
-make -C capstone attest
-make -C capstone portability-audit
-make -C capstone USE_EVAL=yes eval-demo
+make PROGRAM=reproducible-research/deep-dive-make program-help
+make PROGRAM=reproducible-research/deep-dive-make test
+make PROGRAM=reproducible-research/deep-dive-make capstone-discovery-audit
+make PROGRAM=reproducible-research/deep-dive-make capstone-portability-audit
+make PROGRAM=reproducible-research/deep-dive-make capstone-confirm
 ```
 
-(These entrypoints mirror the intended CI contract and DSL quarantine behavior.)
+(These entrypoints mirror the intended CI contract. If you need the quarantined `eval`
+demo itself, step down into `programs/reproducible-research/deep-dive-make/capstone/`
+and run `gmake USE_EVAL=yes eval-demo` there.)
 
 ### 9.2 Where each core lives (capstone map)
 
