@@ -22,6 +22,7 @@ nav:
       - Module Dependency Map: module-dependency-map.md
       - Practice Map: practice-map.md
       - Command Guide: command-guide.md
+      - History Guide: history-guide.md
       - Proof Matrix: proof-matrix.md
       - Capstone Map: capstone-map.md
       - Capstone File Guide: capstone-file-guide.md
@@ -48,6 +49,7 @@ nav:
       - Isolating Side Effects: module-01-purity-and-substitution/isolating-side-effects.md
       - Equational Reasoning: module-01-purity-and-substitution/equational-reasoning.md
       - Idempotent Transforms: module-01-purity-and-substitution/idempotent-transforms.md
+      - Refactoring Guide: module-01-purity-and-substitution/refactoring-guide.md
 
   - "Module 02: Data-First APIs and Expression Style":
       - Overview: module-02-data-first-apis-and-expression-style/index.md
@@ -61,6 +63,7 @@ nav:
       - Tiny Function DSLs: module-02-data-first-apis-and-expression-style/tiny-function-dsls.md
       - Debugging Compositions: module-02-data-first-apis-and-expression-style/debugging-compositions.md
       - Imperative to FP Refactor: module-02-data-first-apis-and-expression-style/imperative-to-fp-refactor.md
+      - Refactoring Guide: module-02-data-first-apis-and-expression-style/refactoring-guide.md
 
   - "Module 03: Iterators and Lazy Dataflow":
       - Overview: module-03-iterators-and-lazy-dataflow/index.md
@@ -74,6 +77,7 @@ nav:
       - Time-Aware Streaming: module-03-iterators-and-lazy-dataflow/time-aware-streaming.md
       - Custom Iterators: module-03-iterators-and-lazy-dataflow/custom-iterators.md
       - Streaming Observability: module-03-iterators-and-lazy-dataflow/streaming-observability.md
+      - Refactoring Guide: module-03-iterators-and-lazy-dataflow/refactoring-guide.md
 
   - "Module 04: Resilience and Streaming Failures":
       - Overview: module-04-resilience-and-streaming-failures/index.md
@@ -87,6 +91,7 @@ nav:
       - Resource-Aware Streams: module-04-resilience-and-streaming-failures/resource-aware-streams.md
       - Functional Retries: module-04-resilience-and-streaming-failures/functional-retries.md
       - Structured Error Reports: module-04-resilience-and-streaming-failures/structured-error-reports.md
+      - Refactoring Guide: module-04-resilience-and-streaming-failures/refactoring-guide.md
 
   - "Module 05: Algebraic Data Modelling":
       - Overview: module-05-algebraic-data-modelling/index.md
@@ -100,6 +105,7 @@ nav:
       - Serialization Beyond Pydantic: module-05-algebraic-data-modelling/serialization-beyond-pydantic.md
       - Compositional Domain Models: module-05-algebraic-data-modelling/compositional-domain-models.md
       - ADT Performance: module-05-algebraic-data-modelling/adt-performance.md
+      - Refactoring Guide: module-05-algebraic-data-modelling/refactoring-guide.md
 
   - "Module 06: Monadic Flow and Explicit Context":
       - Overview: module-06-monadic-flow-and-explicit-context/index.md
@@ -113,6 +119,7 @@ nav:
       - Writer Pattern: module-06-monadic-flow-and-explicit-context/writer-pattern.md
       - Refactoring try/except: module-06-monadic-flow-and-explicit-context/refactoring-try-except.md
       - Configurable Pipelines: module-06-monadic-flow-and-explicit-context/configurable-pipelines.md
+      - Refactoring Guide: module-06-monadic-flow-and-explicit-context/refactoring-guide.md
 
   - "Module 07: Effect Boundaries and Resource Safety":
       - Overview: module-07-effect-boundaries-and-resource-safety/index.md
@@ -126,6 +133,7 @@ nav:
       - Idempotent Effects: module-07-effect-boundaries-and-resource-safety/idempotent-effects.md
       - Sessions and Transactions: module-07-effect-boundaries-and-resource-safety/sessions-and-transactions.md
       - Incremental Migration: module-07-effect-boundaries-and-resource-safety/incremental-migration.md
+      - Refactoring Guide: module-07-effect-boundaries-and-resource-safety/refactoring-guide.md
 
   - "Module 08: Async FuncPipe and Backpressure":
       - Overview: module-08-async-funcpipe-and-backpressure/index.md
@@ -139,6 +147,7 @@ nav:
       - Async Service Integrations: module-08-async-funcpipe-and-backpressure/async-service-integrations.md
       - Async Chunking: module-08-async-funcpipe-and-backpressure/async-chunking.md
       - Async Pipeline Laws: module-08-async-funcpipe-and-backpressure/async-pipeline-laws.md
+      - Refactoring Guide: module-08-async-funcpipe-and-backpressure/refactoring-guide.md
 
   - "Module 09: Ecosystem Interop":
       - Overview: module-09-ecosystem-interop/index.md
@@ -152,6 +161,7 @@ nav:
       - Functional Facades: module-09-ecosystem-interop/functional-facades.md
       - Cross-Process Composition: module-09-ecosystem-interop/cross-process-composition.md
       - Team Adoption: module-09-ecosystem-interop/team-adoption.md
+      - Refactoring Guide: module-09-ecosystem-interop/refactoring-guide.md
 
   - "Module 10: Refactoring and Sustainment":
       - Overview: module-10-refactoring-and-sustainment/index.md
@@ -165,6 +175,7 @@ nav:
       - Versioning and Migration: module-10-refactoring-and-sustainment/versioning-and-migration.md
       - Governance: module-10-refactoring-and-sustainment/governance.md
       - Capstone Delivery: module-10-refactoring-and-sustainment/capstone-delivery.md
+      - Refactoring Guide: module-10-refactoring-and-sustainment/refactoring-guide.md
 
   - Reference:
       - FP Standards: reference/fp-standards.md

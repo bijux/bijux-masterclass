@@ -68,7 +68,7 @@ make history-clean
 - Use `capstone-confirm` or `confirm` when you want the strictest public confirmation route for this capstone.
 - Use `proof` when you want the sanctioned end-to-end evidence route in one command.
 - Use `history-refresh` when you want fresh module tags plus `_history/worktrees/module-XX` for module-by-module comparison.
-- Use `history-clean` when you want to remove the generated history surface and rebuild it from scratch later.
+- Use `history-clean` when you want to remove the generated history surface, the local module tags, and the generated history branch before rebuilding from scratch.
 
 ## Honest rule
 

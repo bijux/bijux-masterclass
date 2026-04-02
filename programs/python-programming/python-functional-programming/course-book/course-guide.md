@@ -67,6 +67,18 @@ Modules 09 to 10 ask whether the design can survive a team and a production life
 - Modules 07 to 08 explain its shells, adapters, policies, and async coordination layers.
 - Modules 09 to 10 explain its interop surfaces, review workflow, and sustainment story.
 
+## Module-end comparison route
+
+Every module should end with the same honest routine:
+
+1. read the module's `refactoring-guide.md`
+2. run `make PROGRAM=python-programming/python-functional-programming history-refresh` if the local history surface is missing or stale
+3. compare your work with `_history/worktrees/module-XX`
+4. name the boundary you are trying to preserve before moving to the next module
+
+Use [History Guide](history-guide.md) when you need the generated tag and worktree rules,
+not just the study order.
+
 ## Honest expectation
 
 If you rush, the course will feel heavier than necessary. If you read it in order and
@@ -75,5 +87,6 @@ boundary decisions instead of unrelated advanced techniques.
 
 Use [Module Dependency Map](module-dependency-map.md) when you need to understand why the
 sequence is shaped this way, use [Practice Map](practice-map.md) to keep each module tied
-to code and verification, and use [Proof Matrix](proof-matrix.md) when you need the
+to code and verification, use [History Guide](history-guide.md) when you need the
+generated comparison route, and use [Proof Matrix](proof-matrix.md) when you need the
 shortest route from a design claim to capstone evidence.

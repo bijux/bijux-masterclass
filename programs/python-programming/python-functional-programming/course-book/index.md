@@ -56,6 +56,7 @@ By the end of the course, you should be able to:
 
 - Read [Start Here](start-here.md) for the shortest stable learner route.
 - Continue with [Course Guide](course-guide.md) and [Learning Contract](learning-contract.md).
+- Keep [History Guide](history-guide.md) nearby when you want the module-end comparison route.
 - Read the [Orientation overview](module-00-orientation/index.md).
 - Keep [Proof Matrix](proof-matrix.md) nearby when you want the fastest route from course claims to executable evidence.
 - Keep the [FuncPipe Capstone Guide](capstone.md) open from the beginning.
@@ -91,7 +92,7 @@ Use it to answer practical questions:
 
 - Read each module overview before touching its lessons.
 - Work through the lessons in order unless you are deliberately reviewing.
-- After every module, inspect the matching capstone surfaces before moving on.
+- After every module, read the matching `refactoring-guide.md` and compare against `_history/worktrees/module-XX`.
 - Treat refactor, law, and review chapters as checkpoints rather than optional extras.
 
 ## Common failure modes this course is trying to prevent

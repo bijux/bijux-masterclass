@@ -31,7 +31,8 @@ finish reading. The goal is to improve judgment under change.
 3. Pause after each major concept and write one sentence beginning with: "This boundary exists because..."
 4. Inspect the capstone package or guide that expresses that boundary.
 5. Run or review the matching executable proof.
-6. Rephrase the lesson in terms of change: what becomes easier to refactor or review now?
+6. Compare your understanding with `_history/worktrees/module-XX` when the module ends.
+7. Rephrase the lesson in terms of change: what becomes easier to refactor or review now?
 
 ## Questions that travel across modules
 

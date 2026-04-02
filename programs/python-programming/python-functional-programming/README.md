@@ -79,6 +79,7 @@ From the repository root:
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming docs-serve
+make PROGRAM=python-programming/python-functional-programming history-refresh
 ```
 
 Primary reading route:
@@ -86,12 +87,15 @@ Primary reading route:
 - `course-book/start-here.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
+- `course-book/history-guide.md`
 - `course-book/capstone.md`
 
 ## Course shape
 
 - `course-book/` contains the published learning material.
 - `capstone/` contains the runnable FuncPipe RAG implementation, tests, and helper tooling.
+- `capstone/module-reference-states/` contains tracked end-of-module source states.
+- `capstone/_history/` is generated locally from module tags and worktrees.
 - `Makefile` exposes stable course-level entrypoints from the monorepo root.
 
 ## Module map
