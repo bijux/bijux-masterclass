@@ -37,6 +37,12 @@ all exercised in runnable code instead of only in chapter prose.
 - reviewing where domain logic ends and orchestration begins
 - proving one design claim with the smallest honest command or saved bundle
 
+## Do not use this capstone for
+
+- memorizing file names before you know which boundary you are reviewing
+- jumping straight to the strongest proof route when the question is still vague
+- treating the runtime or CLI as if they were the source of domain authority
+
 The scenario is deliberately human and operational:
 
 - a team defines monitoring rules for a service
@@ -81,6 +87,17 @@ Review and proof routes:
 - [INSPECTION_GUIDE.md](INSPECTION_GUIDE.md)
 - [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md)
 
+## First session route
+
+If this is your first honest pass through the capstone, use this order:
+
+1. Read this README until the scenario and review routes make sense.
+2. Run `make demo`.
+3. Read [TOUR.md](TOUR.md).
+4. Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md).
+5. Run `make inspect`.
+6. Open [PROOF_GUIDE.md](PROOF_GUIDE.md) only after you can already name the likely owner of one behavior.
+
 ## Review routes
 
 - `make inspect` writes a learner-facing inspection bundle with summary, lifecycle, and history outputs.
@@ -99,6 +116,13 @@ Review and proof routes:
 | review the full capstone as a learner-facing artifact | `make tour` | `make proof` |
 | run the strongest local confirmation route | `make confirm` | `make proof` if you need the published bundle |
 
+## What a good first read should settle
+
+- what the system is modeling in plain operational language
+- where the learner-facing application surface ends
+- which object is authoritative for lifecycle and rule state
+- which routes are for inspection, walkthrough, verification, and full proof
+
 ## Guided review route
 
 | Review question | Inspect first | What to conclude | Strongest proof route |
@@ -109,6 +133,13 @@ Review and proof routes:
 | Can the current design be reviewed as a learner-facing artifact instead of just a code dump? | `TOUR.md`, `INSPECTION_GUIDE.md`, `PROOF_GUIDE.md` | The capstone remains legible as a guided reference path | `make proof` |
 
 Use this order repeatedly: inspect the named files, state the ownership claim, then run the smallest route that produces matching evidence.
+
+## Common first-read mistakes
+
+- starting in `runtime.py` before the scenario and aggregate are clear
+- treating the tests as the only explanation of the design
+- using `make proof` before the lighter routes have made the boundaries legible
+- reading the read models as if they defined the authoritative state
 
 ## Inspect, explain, prove
 
