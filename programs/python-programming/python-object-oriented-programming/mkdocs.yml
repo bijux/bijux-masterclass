@@ -67,6 +67,7 @@ nav:
       - Services versus Stateful Entities: module-02-design-and-layering/services-versus-stateful-entities.md
       - Domain, Application, and Infrastructure Layers: module-02-design-and-layering/domain-application-and-infrastructure-layers.md
       - Inheritance and Fragile Base Classes: module-02-design-and-layering/inheritance-and-fragile-base-classes.md
+      - Cooperative Inheritance, MRO, and Mixins: module-02-design-and-layering/cooperative-inheritance-mro-and-mixins.md
       - Template Method and Small Hierarchies: module-02-design-and-layering/template-method-and-small-hierarchies.md
       - Duck Typing, ABCs, and Protocols: module-02-design-and-layering/duck-typing-abcs-and-protocols.md
       - "Checkpoint: Layered Design with Small Hierarchies": module-02-design-and-layering/refactor-layered-design-with-small-hierarchies.md

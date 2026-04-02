@@ -49,6 +49,7 @@ should collaborate without turning the system into framework theater.
 
 - Which responsibilities belong inside an object and which should move out?
 - Why should composition be the default and inheritance the exception?
+- How do `super()`, mixins, and MRO affect whether inheritance is reviewable at all?
 - When do semantic wrapper types improve correctness?
 - How do duck typing, ABCs, and protocols fit different design pressures?
 - How do you layer a Python system without turning it into framework theater?
@@ -56,7 +57,7 @@ should collaborate without turning the system into framework theater.
 ## Reading path
 
 1. Start with responsibilities, cohesion, and object smells.
-2. Compare composition, inheritance, and semantic wrapper types before looking at layering.
+2. Compare composition, inheritance, cooperative inheritance, and semantic wrapper types before looking at layering.
 3. Read interfaces and protocols after the role boundaries are clear.
 4. Finish with the refactor chapter to see a thin layered design emerge from concrete pressure.
 
@@ -64,6 +65,7 @@ should collaborate without turning the system into framework theater.
 
 - placing behavior wherever the current developer happens to be editing
 - reaching for inheritance to reuse code that should have been composed
+- using mixins or `super()` without being able to explain the full call chain
 - using raw strings and integers where domain meaning should be explicit
 - creating a service layer so broad that it becomes a second god object
 - introducing layers by directory naming alone without real boundary discipline
