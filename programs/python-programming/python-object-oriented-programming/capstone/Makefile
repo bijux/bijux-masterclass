@@ -3,6 +3,11 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 PYTHON ?= python3
+ARTIFACTS_DIR ?= ../../../../artifacts
+INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-object-oriented-programming
+TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/python-programming/python-object-oriented-programming
+VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-object-oriented-programming
+WRITE_BUNDLE_MANIFEST := $(PYTHON) scripts/write_bundle_manifest.py
 
 .PHONY: help
 help: ## Show available targets
@@ -10,17 +15,34 @@ help: ## Show available targets
 
 .PHONY: test
 test: ## Run the capstone test suite
-	@$(PYTHON) -m pytest
+	@PYTHONPATH=src $(PYTHON) -m pytest -q
 
 .PHONY: confirm
-confirm: test ## Run the executable validation suite
+confirm: test proof ## Run the executable validation suite
 
 .PHONY: demo
 demo: ## Run the capstone scenario walkthrough
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo
 
 .PHONY: tour
-tour: demo ## Run the learner-facing walkthrough route
+tour: ## Build the learner-facing walkthrough bundle
+	@rm -rf $(TOUR_DIR)
+	@mkdir -p $(TOUR_DIR)
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo > $(TOUR_DIR)/walkthrough.txt
+	@cp README.md $(TOUR_DIR)/README.md
+	@cp TOUR.md $(TOUR_DIR)/TOUR.md
+	@cp WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
+	@cp ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
+	@cp TARGET_GUIDE.md $(TOUR_DIR)/TARGET_GUIDE.md
+	@printf '%s\n' \
+		'Walkthrough route:' \
+		'  1. Read walkthrough.txt for the scenario output.' \
+		'  2. Read TOUR.md for the narrative sequence.' \
+		'  3. Read WALKTHROUGH_GUIDE.md and TARGET_GUIDE.md for the command and file route.' \
+		'  4. Read ARCHITECTURE.md when you need object ownership while following the story.' \
+		> $(TOUR_DIR)/route.txt
+	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/manifest.json
+	@echo "wrote learner-facing walkthrough bundle to $(TOUR_DIR)"
 
 .PHONY: inspect-summary
 inspect-summary: ## Inspect the scenario summary
@@ -35,12 +57,54 @@ inspect-history: ## Inspect incident history by metric
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history
 
 .PHONY: inspect
-inspect: inspect-summary inspect-rules inspect-history ## Inspect the capstone learner-facing state
+inspect: ## Build the capstone learner-facing inspection bundle
+	@rm -rf $(INSPECT_DIR)
+	@mkdir -p $(INSPECT_DIR)
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary > $(INSPECT_DIR)/summary.txt
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rules > $(INSPECT_DIR)/rules.txt
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(INSPECT_DIR)/history.txt
+	@cp README.md $(INSPECT_DIR)/README.md
+	@cp ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
+	@cp PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
+	@cp TARGET_GUIDE.md $(INSPECT_DIR)/TARGET_GUIDE.md
+	@cp INSPECTION_GUIDE.md $(INSPECT_DIR)/INSPECTION_GUIDE.md
+	@cp EXTENSION_GUIDE.md $(INSPECT_DIR)/EXTENSION_GUIDE.md
+	@printf '%s\n' \
+		'Inspection route:' \
+		'  1. Read summary.txt for the current policy and open incident state.' \
+		'  2. Read rules.txt for rule lifecycle state.' \
+		'  3. Read history.txt for metric-level incident history.' \
+		'  4. Read INSPECTION_GUIDE.md, PACKAGE_GUIDE.md, and TARGET_GUIDE.md to connect the outputs to the code.' \
+		> $(INSPECT_DIR)/route.txt
+	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
+	@echo "wrote learner-facing inspection bundle to $(INSPECT_DIR)"
+
+.PHONY: verify-report
+verify-report: ## Build the capstone verification report bundle
+	@rm -rf $(VERIFY_REPORT_DIR)
+	@mkdir -p $(VERIFY_REPORT_DIR)
+	@PYTHONPATH=src $(PYTHON) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary > $(VERIFY_REPORT_DIR)/summary.txt
+	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(VERIFY_REPORT_DIR)/history.txt
+	@cp README.md $(VERIFY_REPORT_DIR)/README.md
+	@cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
+	@cp TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
+	@cp WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
+	@cp INSPECTION_GUIDE.md $(VERIFY_REPORT_DIR)/INSPECTION_GUIDE.md
+	@printf '%s\n' \
+		'Verification route:' \
+		'  1. Read pytest.txt for executable confirmation.' \
+		'  2. Read summary.txt and history.txt for the learner-facing state captured alongside the tests.' \
+		'  3. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
+		'  4. Read TEST_GUIDE.md, WALKTHROUGH_GUIDE.md, and INSPECTION_GUIDE.md for the matching human review path.' \
+		> $(VERIFY_REPORT_DIR)/route.txt
+	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
+	@echo "wrote capstone verification report to $(VERIFY_REPORT_DIR)"
 
 .PHONY: proof
-proof: confirm tour inspect ## Run the full learner proof route
+proof: inspect tour verify-report ## Run the full learner proof route
 
 .PHONY: clean
 clean: ## Remove generated caches
-	@rm -rf .pytest_cache
+	@rm -rf .pytest_cache $(INSPECT_DIR) $(TOUR_DIR) $(VERIFY_REPORT_DIR)
 	@find . -type d -name "__pycache__" -prune -exec rm -rf {} +
