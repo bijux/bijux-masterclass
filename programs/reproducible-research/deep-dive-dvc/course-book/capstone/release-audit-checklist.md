@@ -29,11 +29,11 @@ specific than "is this promoted contract safe to trust downstream?"
 
 ## Bounded release audit
 
-1. Run `make -C capstone verify`.
+1. Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify`.
 2. Inspect `capstone/publish/v1/manifest.json`.
 3. Inspect `capstone/publish/v1/metrics.json` and `capstone/publish/v1/params.yaml`.
 4. Compare the promoted bundle against `capstone/dvc.lock`.
-5. Run `make -C capstone release-review` only if the release boundary still feels unclear.
+5. Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` only if the release boundary still feels unclear.
 
 ## Questions this audit should answer
 

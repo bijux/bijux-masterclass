@@ -74,10 +74,10 @@ These changes need stronger review:
 
 After any meaningful capstone change, rerun:
 
-1. `make -C capstone walkthrough`
-2. `make -C capstone verify`
-3. `make -C capstone recovery-drill`
-4. `make -C capstone tour`
+1. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
+2. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify`
+3. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill`
+4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour`
 
 If any of those results become harder to explain, the repository likely got worse even if
 it still runs.

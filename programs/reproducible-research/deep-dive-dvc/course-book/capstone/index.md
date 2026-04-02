@@ -58,13 +58,13 @@ Use the capstone differently as the course advances:
 
 | Learning stage | Best starting page | Best first command | Why this is the right entry |
 | --- | --- | --- | --- |
-| Modules 01-03 | [Capstone Map](capstone-map.md) | `make -C capstone walkthrough` | keep the repository as a specimen while the state model is still forming |
-| Modules 04-06 | [Repository Layer Guide](repository-layer-guide.md) | `make -C capstone repro` or `make -C capstone verify` | inspect truthful execution, params, metrics, and experiment boundaries directly |
-| Modules 07-08 | [Recovery Review Guide](recovery-review-guide.md) | `make -C capstone confirm` or `make -C capstone recovery-review` | inspect what another maintainer can verify and restore under pressure |
-| Modules 09-10 | [Release Review Guide](release-review-guide.md) | `make -C capstone release-review` or `make -C capstone confirm` | review promoted trust surfaces, governance, and repository stewardship |
+| Modules 01-03 | [Capstone Map](capstone-map.md) | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | keep the repository as a specimen while the state model is still forming |
+| Modules 04-06 | [Repository Layer Guide](repository-layer-guide.md) | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-repro` or `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | inspect truthful execution, params, metrics, and experiment boundaries directly |
+| Modules 07-08 | [Recovery Review Guide](recovery-review-guide.md) | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` or `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | inspect what another maintainer can verify and restore under pressure |
+| Modules 09-10 | [Release Review Guide](release-review-guide.md) | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` or `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | review promoted trust surfaces, governance, and repository stewardship |
 
 If the pressure is "can I hand someone a clean source artifact?", start with
-[Capstone File Guide](capstone-file-guide.md) and run `make -C capstone source-bundle`.
+[Capstone File Guide](capstone-file-guide.md) and run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-source-bundle`.
 
 ## Best entrypoints
 
@@ -83,15 +83,15 @@ If the pressure is "can I hand someone a clean source artifact?", start with
 ## Core commands
 
 ```bash
-make -C capstone walkthrough
-make -C capstone repro
-make -C capstone verify
-make -C capstone experiment-review
-make -C capstone release-review
-make -C capstone recovery-review
-make -C capstone confirm
-make -C capstone tour
-make -C capstone source-bundle
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-repro
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-source-bundle
 ```
 
 ## What to inspect during review

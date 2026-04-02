@@ -39,10 +39,10 @@ directory. The layers exist so learners do not have to guess where a command bel
 
 | If the job is... | Start here | Do not start with |
 | --- | --- | --- |
-| first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `make -C capstone confirm` |
-| current-state verification | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make -C capstone tour` |
-| experiment comparison | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | `make -C capstone confirm` |
-| release-boundary review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | random `make -C capstone` exploration |
+| first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
+| current-state verification | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` |
+| experiment comparison | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
+| release-boundary review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | random `make PROGRAM=reproducible-research/deep-dive-dvc ...` exploration |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` |
 
 ## Repository root

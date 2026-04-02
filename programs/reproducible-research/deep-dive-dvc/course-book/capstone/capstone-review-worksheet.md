@@ -30,7 +30,7 @@ artifact.
 
 1. Read `capstone/dvc.yaml`, `capstone/dvc.lock`, and `capstone/params.yaml`.
 2. Inspect `capstone/publish/v1/` and `capstone/publish/v1/manifest.json`.
-3. Review the recovery route through `make -C capstone recovery-review`.
+3. Review the recovery route through `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review`.
 4. Read the matching guides only if one of those surfaces stays unclear.
 
 ## Questions this pass should answer
