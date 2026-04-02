@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Capstone Review Worksheet
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,95 +13,46 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["Do you need one repository-level judgment?"] --> route["Run the bounded review pass"]
+  route --> inspect["Inspect the state, publish, and recovery surfaces in order"]
+  inspect --> judgment["Leave with one explicit repository judgment"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this worksheet is for one repository-level
+review pass, not for first contact. Read the second diagram as the rule: inspect the
+state, publish, and recovery surfaces in order, then leave with one explicit judgment.
 
 Use this worksheet when reviewing the DVC capstone as a repository, not only as a lesson
 artifact.
 
-The point is to make review concrete enough that another maintainer could compare your
-judgment with the same evidence.
+## Bounded review pass
 
----
+1. Read `capstone/dvc.yaml`, `capstone/dvc.lock`, and `capstone/params.yaml`.
+2. Inspect `capstone/publish/v1/` and `capstone/publish/v1/manifest.json`.
+3. Review the recovery route through `make -C capstone recovery-review`.
+4. Read the matching guides only if one of those surfaces stays unclear.
 
-## Repository Contract
+## Questions this pass should answer
 
-Answer these first:
+- which state is authoritative for replay, comparison, and downstream trust
+- whether declared pipeline state and recorded execution state still agree
+- whether the promoted contract is smaller and clearer than the internal repository
+- what recovery depends on locally and what depends on the remote
 
-1. What is the repository claiming to track and defend?
-2. Which state is authoritative for replay, comparison, and downstream trust?
-3. Which files define the promoted contract?
+## Good stopping point
 
-[Back to top](#top)
+Stop when you can write one explicit judgment in your own words:
 
----
+- trust the repository contract as-is
+- trust it with one named boundary to revisit
+- do not trust it yet because one specific state or recovery surface is still missing
 
-## Pipeline Truth
+If you cannot make one of those judgments, repeat the bounded pass before widening the
+review surface.
 
-Review these surfaces together:
+## Best follow-up routes
 
-* `capstone/dvc.yaml`
-* `capstone/dvc.lock`
-* `capstone/params.yaml`
-
-Write down:
-
-1. which stages declare meaningful dependencies
-2. which params change execution meaning
-3. whether the lock evidence looks consistent with the declaration
-
-[Back to top](#top)
-
----
-
-## Publish Boundary
-
-Review these surfaces together:
-
-* `capstone/publish/v1/`
-* `capstone/publish/v1/manifest.json`
-* `capstone/publish/v1/report.md`
-
-Write down:
-
-1. which artifacts are safe for downstream trust
-2. which artifacts remain internal repository state
-3. whether the promoted contract is smaller and clearer than the whole repository
-
-[Back to top](#top)
-
----
-
-## Recovery And Durability
-
-Review these surfaces together:
-
-* `make -C capstone recovery-drill`
-* the local DVC remote configuration
-* the published bundle after restoration
-
-Write down:
-
-1. what survives local cache loss
-2. which guarantees depend on the remote
-3. what evidence proves restoration succeeded
-
-[Back to top](#top)
-
----
-
-## Final Review Questions
-
-Finish with these:
-
-* what is the repository's strongest design choice
-* what is the most fragile boundary
-* what would you inspect first before approving a migration
-* what would you refuse to change without new evidence
-
-[Back to top](#top)
+- Read [Capstone File Guide](capstone-file-guide.md) when the open question is file ownership.
+- Read [Release Audit Checklist](release-audit-checklist.md) when the open question is downstream trust.
+- Read [Recovery Review Guide](recovery-review-guide.md) when the open question is restore evidence.
