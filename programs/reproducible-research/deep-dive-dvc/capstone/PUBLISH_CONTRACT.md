@@ -63,6 +63,7 @@ Use this order:
 4. `report.md`
 5. `predictions.csv`
 6. `data-profile.json`
+7. `release-summary.json` from the tour or release review bundle when you want the compact review surface
 
 That route moves from contract inventory into control surface, then into evaluation, then
 into record-level evidence.

@@ -53,10 +53,10 @@ capstone should confirm understanding, not replace first-contact learning.
 | 03 Environments as Inputs | inspect the runtime boundary instead of treating it as luck | `Makefile`, `pyproject.toml`, `src/incident_escalation_capstone/` | `make -C capstone test` |
 | 04 Truthful DAGs | inspect declared stage edges and recorded execution state | `dvc.yaml`, `dvc.lock`, `state/data_profile.json` | `make -C capstone repro` |
 | 05 Metrics and Parameters | inspect declared controls and semantic comparison surfaces | `params.yaml`, `metrics/metrics.json`, `publish/v1/metrics.json` | `make -C capstone verify` |
-| 06 Experiments | vary the control surface without mutating the baseline contract | `params.yaml`, `metrics/`, `publish/v1/` | `dvc exp run --cwd capstone` |
+| 06 Experiments | vary the control surface without mutating the baseline contract | `params.yaml`, `metrics/`, `publish/v1/`, experiment comparison bundle | `make -C capstone experiment-review` |
 | 07 Collaboration and CI | inspect verification gates and reproducibility checks another person can run | `Makefile`, `tests/`, `TOUR.md` | `make -C capstone confirm` |
-| 08 Incident Survival | rehearse cache loss and remote-backed restoration | `.dvc-remote/`, `publish/v1/`, recovery targets | `make -C capstone recovery-drill` |
-| 09 Promotion and Auditability | inspect the promoted interface and the evidence that defends it | `publish/v1/`, `publish/v1/manifest.json`, `publish/v1/params.yaml`, `dvc.lock` | `make -C capstone tour` |
+| 08 Incident Survival | rehearse cache loss and remote-backed restoration | `.dvc-remote/`, `publish/v1/`, recovery targets, recovery review bundle | `make -C capstone recovery-review` |
+| 09 Promotion and Auditability | inspect the promoted interface and the evidence that defends it | `publish/v1/`, `publish/v1/manifest.json`, `publish/v1/params.yaml`, `dvc.lock`, release review bundle | `make -C capstone release-review` |
 | 10 Mastery | review the full repository as a long-lived stewardship specimen | `README.md`, `dvc.yaml`, `dvc.lock`, `Makefile`, `publish/v1/` | `make -C capstone confirm` |
 
 [Back to top](#top)
@@ -86,9 +86,10 @@ This order keeps state identity and contract meaning ahead of mechanics.
 | --- | --- | --- |
 | Why is this repository more than a data sync folder? | `make -C capstone tour` | `README.md`, `dvc.yaml`, `dvc.lock` |
 | What exactly is tracked as state? | `make -C capstone verify` | `params.yaml`, `metrics/`, `publish/v1/` |
+| How should I compare experiment candidates? | `make -C capstone experiment-review` | `params.yaml`, `metrics.json`, `exp-show.txt` |
 | How would I inspect the truthful pipeline? | `make -C capstone repro` | `dvc.yaml`, `dvc.lock`, `state/` |
-| Which outputs are safe for downstream trust? | inspect `publish/v1/` | `publish/v1/manifest.json`, `publish/v1/report.md` |
-| How does recovery survive local loss? | `make -C capstone recovery-drill` | `.dvc-remote/`, `publish/v1/`, `Makefile` |
+| Which outputs are safe for downstream trust? | `make -C capstone release-review` | `publish/v1/manifest.json`, `publish/v1/report.md` |
+| How does recovery survive local loss? | `make -C capstone recovery-review` | `.dvc-remote/`, `publish/v1/`, `Makefile` |
 | What would I review before migration? | `make -C capstone confirm` | `README.md`, `dvc.yaml`, `dvc.lock`, `Makefile` |
 
 [Back to top](#top)

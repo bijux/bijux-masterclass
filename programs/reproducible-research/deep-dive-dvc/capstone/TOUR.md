@@ -43,6 +43,9 @@ suggested reading route without executing the workflow.
 - `dvc.lock`: the recorded state transition after execution
 - `params.yaml`: the declared control surface for the run
 - `metrics.json`: the tracked evaluation result
+- `state-summary.json`: the combined declaration, execution, and release summary
+- `release-summary.json`: the promoted release summary
+- `review-queue.json`: the structured prediction review queue
 - `publish-v1/`: the promoted artifact bundle that downstream consumers should trust
 
 ## How to run it
@@ -69,8 +72,11 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 3. `dvc.lock`
 4. `params.yaml`
 5. `metrics.json`
-6. `publish-v1/manifest.json`
-7. `publish-v1/report.md`
+6. `state-summary.json`
+7. `release-summary.json`
+8. `review-queue.json`
+9. `publish-v1/manifest.json`
+10. `publish-v1/report.md`
 
 That order mirrors the course: repository contract, declared graph, recorded execution,
 declared inputs, measured outcome, promoted interface, and human-readable report.
