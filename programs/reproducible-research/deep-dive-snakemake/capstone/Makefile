@@ -55,7 +55,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
-	publish-summary profile-summary config-summary \
+	publish-summary profile-summary config-summary results-summary \
 	verify-report profile-audit \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
@@ -224,6 +224,15 @@ config-summary: verify ## Write a compact summary of the materialized workflow c
 		--provenance "$(PUBLISH_DIR_ABS)/provenance.json" \
 		--out "$(VERIFY_REPORT_DIR)/config-summary.json"
 	@echo "✔ wrote config summary to $(VERIFY_REPORT_DIR)/config-summary.json"
+
+results-summary: verify ## Write a compact summary of internal per-sample result surfaces
+	@mkdir -p "$(VERIFY_REPORT_DIR)"
+	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
+	@$(PYTHON) scripts/results_summary.py \
+		--results-dir "results" \
+		--summary-json "$(PUBLISH_DIR_ABS)/summary.json" \
+		--out "$(VERIFY_REPORT_DIR)/results-summary.json"
+	@echo "✔ wrote results summary to $(VERIFY_REPORT_DIR)/results-summary.json"
 
 # ---- high-level flows ----
 check: lint test wf-lint wf-dryrun validate-config ## Fast pre-flight (no workflow execution); NOT a formatting gate

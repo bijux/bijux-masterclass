@@ -76,6 +76,9 @@ belongs in `publish/v1/`.
 4. `publish/v1/`
 5. `PUBLISH_REVIEW_GUIDE.md`
 
+Run `make results-summary` when you want one compact artifact that says which per-sample
+internal surfaces exist and how they connect to the published highlights.
+
 ---
 
 ## Review Questions
@@ -84,4 +87,3 @@ belongs in `publish/v1/`.
 - Which internal file explains how a published field was derived?
 - Which publish file would another consumer be safest to depend on first?
 - Which boundary would you inspect first if someone tried to promote a new artifact?
-
