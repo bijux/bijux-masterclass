@@ -77,6 +77,7 @@ Proof route:
 - `PROOF_GUIDE.md`
 - `ARCHITECTURE.md`
 - `TOUR.md`
+- `EXTENSION_GUIDE.md`
 
 ## Recommended review path
 

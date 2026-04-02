@@ -32,6 +32,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 - Read [Capstone Architecture Guide](capstone-architecture-guide.md) when you are reviewing package boundaries.
 - Read [Capstone Walkthrough](capstone-walkthrough.md) when you want the learner-facing tour story.
 - Read [Capstone Proof Guide](capstone-proof-guide.md) when you want the verification route.
+- Read [Capstone Extension Guide](capstone-extension-guide.md) when you want to decide where a new change belongs.
 
 ## Module-to-capstone bridge
 
