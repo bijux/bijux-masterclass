@@ -30,5 +30,6 @@ module arc for the first time.
 - [Runtime Power Ladder](runtime-power-ladder.md) for the lowest-power decision rule
 - [Runtime Glossary](runtime-glossary.md) for shared course language
 - [Review Checklist](review-checklist.md) for code review judgment
+- [Self-Review Prompts](self-review-prompts.md) for learner-side readiness checks
 - [Topic Boundaries](topic-boundaries.md) for what belongs at the center of this course
 - [Anti-Pattern Atlas](anti-pattern-atlas.md) for symptom-first review of clumsy metaprogramming ideas

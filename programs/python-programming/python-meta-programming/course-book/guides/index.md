@@ -50,6 +50,7 @@ do not have to repeat that scaffolding.
 - [Command Guide](command-guide.md) for the executable route
 - [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current question
 - [Review Checklist](../reference/review-checklist.md) when you need the stable review bar
+- [Self-Review Prompts](../reference/self-review-prompts.md) when you want learner-side comprehension checks
 - [Topic Boundaries](../reference/topic-boundaries.md) when you need the scope boundary
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) when you need a symptom-first failure map
 - [Runtime Glossary](../reference/runtime-glossary.md) when the vocabulary itself is the blocker
