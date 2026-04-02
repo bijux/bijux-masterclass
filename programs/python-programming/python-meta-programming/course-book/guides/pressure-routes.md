@@ -28,6 +28,16 @@ concrete design or review decision.
 Use this page when you are entering the course from a real code review, framework change,
 or debugging problem instead of from a full front-to-back reading plan.
 
+## Pressure to first proof surface
+
+| Pressure | First capstone surface | Escalate with |
+| --- | --- | --- |
+| wrapper honesty | `make trace`, `capstone/src/incident_plugins/actions.py` | `capstone/tests/test_runtime.py` |
+| attribute validation and field ownership | `make field`, `capstone/src/incident_plugins/fields.py` | `capstone/tests/test_fields.py` |
+| metaclass justification | `make registry`, `capstone/src/incident_plugins/framework.py` | `capstone/tests/test_registry.py` |
+| inherited dynamic system | `make inspect`, then `manifest.json` and `registry.json` | `capstone/tests/` and `make verify-report` |
+| framework design under change | `make inspect` and [Capstone Guide](../capstone/index.md) | `make verify-report` and [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+
 ## Route 1: Review a Wrapper Without Losing Provenance
 
 Use this when the immediate pressure is decorator-heavy code that may be hiding the callable it wrapped.
@@ -43,6 +53,11 @@ Use this route when the core question sounds like:
 - Did this decorator preserve the original callable's signature and metadata?
 - Is this wrapper still a function transformation, or is it secretly a runtime policy layer?
 - Would a small explicit object be easier to review than another decorator?
+
+Smallest executable follow-up:
+
+- Run `make PROGRAM=python-programming/python-meta-programming capstone-trace`.
+- Read `capstone/docs/TRACE_GUIDE.md`.
 
 ## Route 2: Untangle Attribute Validation and Field Ownership
 
@@ -60,6 +75,11 @@ Use this route when the core question sounds like:
 - Why is one field shadowable while another always wins over instance state?
 - Is this descriptor still a field contract, or has it become a hidden framework?
 
+Smallest executable follow-up:
+
+- From `capstone/`, run `make field`.
+- Read `capstone/docs/FIELD_GUIDE.md`.
+
 ## Route 3: Decide Whether a Metaclass Is Actually Justified
 
 Use this when a design is proposing class-creation hooks, registries, or import-time behavior.
@@ -75,6 +95,11 @@ Use this route when the core question sounds like:
 - What must happen before the class exists?
 - Could a class decorator or explicit registration function own this more honestly?
 - Is the metaclass deterministic, resettable in tests, and easy to inspect?
+
+Smallest executable follow-up:
+
+- From `capstone/`, run `make registry`.
+- Read `capstone/docs/REGISTRY_GUIDE.md`.
 
 ## Route 4: Inherit a Dynamic Codebase Without Trusting Its Magic
 
@@ -92,6 +117,11 @@ Use this route when the core question sounds like:
 - Which dynamic behaviors happen at import time instead of call time?
 - Which parts of this design should stay, and which parts should be redesigned downward?
 
+Smallest executable follow-up:
+
+- Run `make PROGRAM=python-programming/python-meta-programming inspect`.
+- Read `capstone/docs/INSPECTION_GUIDE.md`.
+
 ## Route 5: Build a Small Framework Without Teaching the Wrong Lesson
 
 Use this when you are authoring library code and need the design to stay inspectable for future maintainers.
@@ -107,6 +137,11 @@ Use this route when the core question sounds like:
 - Which mechanism owns this invariant with the smallest blast radius?
 - Will a maintainer be able to inspect this behavior without executing business code?
 - Does the design stay testable once multiple plugins or extension points exist?
+
+Smallest executable follow-up:
+
+- Run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`.
+- Read `capstone/docs/EXTENSION_GUIDE.md`.
 
 ## Success Signal
 
