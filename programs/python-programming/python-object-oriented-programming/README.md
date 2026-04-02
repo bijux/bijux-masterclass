@@ -54,7 +54,10 @@ By the end of the course, you should be able to:
 
 ## Course structure
 
-- `course-book/` uses one stable shape: `guides/`, `reference/`, `module-00-orientation/`, and Modules `01` to `10`.
+- `course-book/guides/` contains learner routes, promise maps, checkpoints, and proof ladders.
+- `course-book/capstone/` contains repository entry pages, architecture routes, file guides, and review checklists.
+- `course-book/reference/` contains durable maps, glossaries, and review standards.
+- `course-book/module-00-orientation/` plus Modules `01` to `10` contain the core teaching arc.
 - `capstone/` contains a runnable monitoring-system reference implementation with
   aggregates, evaluation strategies, read models, and a runtime facade.
 - `Makefile` exposes stable course-level entrypoints inside the monorepo.
