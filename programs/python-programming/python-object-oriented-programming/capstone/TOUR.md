@@ -27,6 +27,9 @@ This guide explains the capstone as a narrative, not only as a file tree. Read i
 or after running `make demo`. Use `make tour` when you want this narrative captured as a
 bundle instead of only printed once in the terminal.
 
+Keep [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md) nearby if you want the fixed rules, samples,
+and expected outputs visible while following the story.
+
 ## Scenario route
 
 1. Create one monitoring policy.

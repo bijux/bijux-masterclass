@@ -6,31 +6,34 @@ from .application import MonitoringApplication, ObservationResult, RuleRegistrat
 from .model import MetricName, MetricSample
 
 DEFAULT_POLICY_ID = "service-monitoring"
+DEFAULT_RULE_REGISTRATIONS: tuple[RuleRegistration, ...] = (
+    RuleRegistration(
+        rule_id="cpu-hot",
+        metric_name="cpu",
+        threshold=0.9,
+        severity="critical",
+    ),
+    RuleRegistration(
+        rule_id="cpu-sustained",
+        metric_name="cpu",
+        threshold=0.8,
+        severity="warning",
+        window=3,
+        evaluation_mode="consecutive",
+    ),
+)
+DEFAULT_SAMPLES: tuple[MetricSample, ...] = (
+    MetricSample(datetime(2026, 4, 2, 9, 0, 0), MetricName("cpu"), 0.82),
+    MetricSample(datetime(2026, 4, 2, 9, 1, 0), MetricName("cpu"), 0.93),
+    MetricSample(datetime(2026, 4, 2, 9, 2, 0), MetricName("cpu"), 0.95),
+)
 
 
 def build_default_application() -> MonitoringApplication:
     app = MonitoringApplication()
     app.create_policy(DEFAULT_POLICY_ID)
-    app.register_rule(
-        DEFAULT_POLICY_ID,
-        RuleRegistration(
-            rule_id="cpu-hot",
-            metric_name="cpu",
-            threshold=0.9,
-            severity="critical",
-        ),
-    )
-    app.register_rule(
-        DEFAULT_POLICY_ID,
-        RuleRegistration(
-            rule_id="cpu-sustained",
-            metric_name="cpu",
-            threshold=0.8,
-            severity="warning",
-            window=3,
-            evaluation_mode="consecutive",
-        ),
-    )
+    for registration in DEFAULT_RULE_REGISTRATIONS:
+        app.register_rule(DEFAULT_POLICY_ID, registration)
     app.activate_rule(DEFAULT_POLICY_ID, "cpu-hot")
     app.activate_rule(DEFAULT_POLICY_ID, "cpu-sustained")
     return app
@@ -38,11 +41,4 @@ def build_default_application() -> MonitoringApplication:
 
 def build_default_observation() -> ObservationResult:
     app = build_default_application()
-    return app.observe_samples(
-        DEFAULT_POLICY_ID,
-        [
-            MetricSample(datetime(2026, 4, 2, 9, 0, 0), MetricName("cpu"), 0.82),
-            MetricSample(datetime(2026, 4, 2, 9, 1, 0), MetricName("cpu"), 0.93),
-            MetricSample(datetime(2026, 4, 2, 9, 2, 0), MetricName("cpu"), 0.95),
-        ],
-    )
+    return app.observe_samples(DEFAULT_POLICY_ID, list(DEFAULT_SAMPLES))

@@ -5,6 +5,7 @@ from datetime import datetime
 import pytest
 
 from service_monitoring import DomainError, MetricName, MetricSample, MonitoringApplication, RuleRegistration
+from service_monitoring.scenario import DEFAULT_RULE_REGISTRATIONS, DEFAULT_SAMPLES, DEFAULT_POLICY_ID, build_default_observation
 
 
 def test_application_supports_a_full_monitoring_workflow() -> None:
@@ -63,3 +64,16 @@ def test_application_blocks_duplicate_policy_creation() -> None:
 
     with pytest.raises(DomainError):
         app.create_policy("policy-dup")
+
+
+def test_default_scenario_contract_stays_stable() -> None:
+    observation = build_default_observation()
+
+    assert DEFAULT_POLICY_ID == "service-monitoring"
+    assert tuple(rule.rule_id for rule in DEFAULT_RULE_REGISTRATIONS) == (
+        "cpu-hot",
+        "cpu-sustained",
+    )
+    assert len(DEFAULT_SAMPLES) == 3
+    assert observation.cycle_report.alerts_published == 2
+    assert observation.snapshot.summary.active_rule_ids == ("cpu-hot", "cpu-sustained")

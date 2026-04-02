@@ -80,6 +80,7 @@ Review and proof routes:
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md)
+- [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md)
 - [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md)
 - [TOUR.md](TOUR.md)
 - [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
@@ -94,11 +95,12 @@ If this is your first honest pass through the capstone, use this order:
 
 1. Read this README until the scenario and review routes make sense.
 2. Read [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md).
-3. Run `make demo`.
-4. Read [TOUR.md](TOUR.md).
-5. Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md).
-6. Run `make inspect`.
-7. Open [PROOF_GUIDE.md](PROOF_GUIDE.md) only after you can already name the likely owner of one behavior.
+3. Read [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md).
+4. Run `make demo`.
+5. Read [TOUR.md](TOUR.md).
+6. Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md).
+7. Run `make inspect`.
+8. Open [PROOF_GUIDE.md](PROOF_GUIDE.md) only after you can already name the likely owner of one behavior.
 
 ## Review routes
 
