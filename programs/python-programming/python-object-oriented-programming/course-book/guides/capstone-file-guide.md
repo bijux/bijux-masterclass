@@ -47,6 +47,16 @@ alphabetically. The goal is to understand how the system is partitioned.
 - `read_models.py` and `projections.py` model downstream views derived from authoritative events.
 - `tests/` prove the course claims against behavior.
 
+## Question to file map
+
+| If the question is... | Start here | Then inspect |
+| --- | --- | --- |
+| Which object actually owns the rule lifecycle? | `model.py` | `tests/test_policy_lifecycle.py` |
+| Where does evaluation variation belong? | `policies.py` | `tests/test_policy_evaluation.py` |
+| What is learner-facing versus internal orchestration? | `application.py` | `runtime.py` and `tests/test_application.py` |
+| Where would persistence or rollback concerns land? | `repository.py` | `tests/test_unit_of_work.py` |
+| Which views are derived instead of authoritative? | `read_models.py` and `projections.py` | `tests/test_runtime.py` |
+
 ## Matching local guides
 
 - Read `PACKAGE_GUIDE.md` when you want the code layout at the package boundary.
@@ -68,3 +78,9 @@ alphabetically. The goal is to understand how the system is partitioned.
 - treating projections as authoritative
 - confusing orchestration with domain behavior
 - missing where a new feature should land
+
+## Common reading mistakes
+
+- Starting with `runtime.py` and assuming the domain lives there.
+- Treating tests as a final destination instead of a way to confirm file ownership claims.
+- Reading projections before you know which events or aggregate rules they derive from.
