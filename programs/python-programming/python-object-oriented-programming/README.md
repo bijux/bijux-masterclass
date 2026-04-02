@@ -85,10 +85,10 @@ Run the course-level verification target:
 make PROGRAM=python-programming/python-object-oriented-programming test
 ```
 
-Run the capstone directly:
+Run the strongest published capstone route:
 
 ```bash
-make -C programs/python-programming/python-object-oriented-programming/capstone confirm
+make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm
 ```
 
 Primary reading route:
