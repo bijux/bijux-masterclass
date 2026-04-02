@@ -99,6 +99,7 @@ Primary reading route:
 - `course-book/module-00-orientation/index.md`
 - `course-book/guides/history-guide.md`
 - `course-book/capstone/index.md`
+- `course-book/capstone/capstone-map.md`
 
 ## Course shape
 
