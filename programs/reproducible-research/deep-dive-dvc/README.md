@@ -102,14 +102,14 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 ```
 
-Run the capstone directly:
+Run the published capstone routes from the repository root:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone confirm
-make -C programs/reproducible-research/deep-dive-dvc/capstone walkthrough
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
 ```
 
-`make install` inside the capstone is the network-dependent setup step because it creates
+`make install` inside `programs/reproducible-research/deep-dive-dvc/capstone/` is the network-dependent setup step because it creates
 the managed virtual environment and installs DVC there. Use
 `course-book/guides/platform-setup.md` and `course-book/reference/version-support-guide.md`
 when you need the exact support contract before running proof commands.
