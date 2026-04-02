@@ -99,6 +99,9 @@ of that same first-contact route.
 Use [Capstone Architecture Guide](capstone-architecture-guide.md) when the review question
 is about repository layers rather than about one output or command.
 
+Use [Capstone Proof Guide](capstone-proof-guide.md) when you want help choosing the
+narrowest honest proof route before you run anything.
+
 [Back to top](#top)
 
 ---
