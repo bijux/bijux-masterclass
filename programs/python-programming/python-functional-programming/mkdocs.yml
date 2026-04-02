@@ -58,6 +58,7 @@ nav:
       - Overview: module-02-data-first-apis-and-expression-style/index.md
       - Closures & Partials: module-02-data-first-apis-and-expression-style/closures-and-partials.md
       - Expression-Oriented Python: module-02-data-first-apis-and-expression-style/expression-oriented-python.md
+      - Expression Review and Trade-Offs: module-02-data-first-apis-and-expression-style/expression-review-and-tradeoffs.md
       - Introducing Laziness: module-02-data-first-apis-and-expression-style/introducing-laziness.md
       - FP-Friendly APIs: module-02-data-first-apis-and-expression-style/fp-friendly-apis.md
       - Effect Boundaries: module-02-data-first-apis-and-expression-style/effect-boundaries.md

@@ -40,6 +40,7 @@ leaking globals or control flags.
 
 - [Closures and Partials](closures-and-partials.md)
 - [Expression-Oriented Python](expression-oriented-python.md)
+- [Expression Review and Trade-Offs](expression-review-and-tradeoffs.md)
 - [Introducing Laziness](introducing-laziness.md)
 - [FP-Friendly APIs](fp-friendly-apis.md)
 - [Effect Boundaries](effect-boundaries.md)
