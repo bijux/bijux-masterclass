@@ -33,6 +33,7 @@ local guide that matches the question you actually have.
 ### "What is this project, and how should I enter it?"
 
 - `README.md`
+- `FIRST_SESSION_GUIDE.md`
 - `GUIDE_INDEX.md`
 - `PLUGIN_RUNTIME_GUIDE.md`
 
@@ -83,9 +84,9 @@ local guide that matches the question you actually have.
 ## Best next files after the guide index
 
 1. `README.md`
-2. `ARCHITECTURE.md`
-3. `COMMAND_GUIDE.md`
-4. `DESIGN_BOUNDARIES.md`
+2. `FIRST_SESSION_GUIDE.md`
+3. `ARCHITECTURE.md`
+4. `COMMAND_GUIDE.md`
 
-That route gives the learner the project promise, the ownership model, the command route,
-and the file route before they drop into code.
+That route gives the learner the project promise, the first-session route, the ownership
+model, and the command route before they drop into code.

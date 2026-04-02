@@ -84,6 +84,7 @@ Use these when you need the broadest local confidence:
 ## Best companion guides
 
 - `GUIDE_INDEX.md`
+- `PUBLIC_SURFACE_MAP.md`
 - `TARGET_GUIDE.md`
 - `PROOF_GUIDE.md`
 - `TEST_GUIDE.md`

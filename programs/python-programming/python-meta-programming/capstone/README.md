@@ -95,6 +95,7 @@ make proof
 - `make manifest`
 - `make registry`
 - `COMMAND_GUIDE.md`
+- `PUBLIC_SURFACE_MAP.md`
 - `MANIFEST_GUIDE.md`
 - `REGISTRY_GUIDE.md`
 - `TARGET_GUIDE.md`
@@ -105,6 +106,7 @@ make proof
 - `DESIGN_BOUNDARIES.md`
 - `PACKAGE_GUIDE.md`
 - `SOURCE_GUIDE.md`
+- `SOURCE_TO_PROOF_MAP.md`
 - `src/incident_plugins/actions.py`
 - `src/incident_plugins/fields.py`
 - `src/incident_plugins/framework.py`
@@ -120,9 +122,11 @@ make proof
 
 ### "How do I review the full learner-facing route?"
 
+- `FIRST_SESSION_GUIDE.md`
 - `make inspect`
 - `make tour`
 - `INSPECTION_GUIDE.md`
+- `REVIEW_ROUTE_MAP.md`
 - `WALKTHROUGH_GUIDE.md`
 - `TOUR.md`
 
@@ -132,6 +136,7 @@ make proof
 - `make proof`
 - `make confirm`
 - `TEST_GUIDE.md`
+- `TEST_READING_MAP.md`
 - `PROOF_GUIDE.md`
 
 ## Read it by course stage
@@ -179,8 +184,13 @@ feel fuzzier than the commands.
 
 ## Best companion guides
 
+- `FIRST_SESSION_GUIDE.md` for the smallest honest first pass
 - `GUIDE_INDEX.md` for the smallest local route into the doc set
 - `COMMAND_GUIDE.md` for local command selection and artifact locations
+- `PUBLIC_SURFACE_MAP.md` for connecting commands, outputs, and owning files
+- `SOURCE_TO_PROOF_MAP.md` for change-to-proof alignment
+- `TEST_READING_MAP.md` for finding the first proof file by question
+- `REVIEW_ROUTE_MAP.md` for choosing the right local route, command, and bundle
 - `ARCHITECTURE.md` for ownership boundaries
 - `DESIGN_BOUNDARIES.md` for what each mechanism owns and what it should not own
 - `PLUGIN_RUNTIME_GUIDE.md` for the timing model
