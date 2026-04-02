@@ -15,6 +15,7 @@ site_dir: ../../../artifacts/site/python-programming/python-functional-programmi
 
 nav:
   - Start Here:
+      - Start Here: start-here.md
       - Course Home: index.md
       - Orientation Overview: module-00-orientation/index.md
       - Course Orientation: module-00-orientation/course-orientation.md
