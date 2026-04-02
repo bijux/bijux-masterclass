@@ -39,6 +39,7 @@ local guide that matches the question you actually have.
 ### "Which file owns which mechanism?"
 
 - `ARCHITECTURE.md`
+- `DESIGN_BOUNDARIES.md`
 - `PACKAGE_GUIDE.md`
 - `SOURCE_GUIDE.md`
 
@@ -80,7 +81,7 @@ local guide that matches the question you actually have.
 1. `README.md`
 2. `ARCHITECTURE.md`
 3. `COMMAND_GUIDE.md`
-4. `PACKAGE_GUIDE.md`
+4. `DESIGN_BOUNDARIES.md`
 
 That route gives the learner the project promise, the ownership model, the command route,
 and the file route before they drop into code.

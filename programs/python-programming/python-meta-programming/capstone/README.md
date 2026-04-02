@@ -101,6 +101,7 @@ make proof
 ### "Where do wrappers, fields, and class creation live?"
 
 - `ARCHITECTURE.md`
+- `DESIGN_BOUNDARIES.md`
 - `PACKAGE_GUIDE.md`
 - `SOURCE_GUIDE.md`
 - `src/incident_plugins/actions.py`
@@ -180,6 +181,7 @@ feel fuzzier than the commands.
 - `GUIDE_INDEX.md` for the smallest local route into the doc set
 - `COMMAND_GUIDE.md` for local command selection and artifact locations
 - `ARCHITECTURE.md` for ownership boundaries
+- `DESIGN_BOUNDARIES.md` for what each mechanism owns and what it should not own
 - `PLUGIN_RUNTIME_GUIDE.md` for the timing model
 - `MECHANISM_SELECTION_GUIDE.md` for change placement
 - `SCENARIO_SELECTION_GUIDE.md` for smallest-route selection
