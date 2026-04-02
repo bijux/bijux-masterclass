@@ -67,11 +67,11 @@ This core includes two kinds of snippets:
 2) **Hypothetical pre-refactor snippets (illustration only)**  
    These are intentionally “bad” or “in-between” states used to teach refactoring. They are not meant to match a real snapshot 1:1. They are labeled as **Hypothetical pre-refactor** and are refactored into the real Module 02 API across this module.
 
-If you want a **real, runnable Module 01 codebase**, use the `module-01` git tag in a worktree:
+If you want a **real, runnable Module 01 codebase**, refresh the generated history route first:
 
-- `make worktrees`
-- Module 01 path: `capstone/history/worktrees/module-01/`
-- Import path for Module 01: `capstone/history/worktrees/module-01/src/` (use `PYTHONPATH` when running examples there)
+- `make PROGRAM=python-programming/python-functional-programming history-refresh`
+- Module 01 path: `capstone/_history/worktrees/module-01/`
+- Import path for Module 01: `capstone/_history/worktrees/module-01/src/` (use `PYTHONPATH` when running examples there)
 
 Module 01 uses the same import name (`import funcpipe_rag`), so run it from the Module 01 worktree (or set `PYTHONPATH`) to avoid mixing versions.
 

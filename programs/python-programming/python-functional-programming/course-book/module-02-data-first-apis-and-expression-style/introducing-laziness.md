@@ -59,11 +59,11 @@ We continue the **running project** from `m02-rag.md`—extending the FuncPipe R
 
 Some “before” snippets in this core are **hypothetical pre-refactor** examples used for contrast. They are labeled accordingly and are not meant to exactly match a real snapshot. We refactor these shapes into the real Module 02 API as the module progresses.
 
-For a **real, runnable Module 01 codebase**, use the `module-01` tag worktree:
+For a **real, runnable Module 01 codebase**, refresh the generated history route first:
 
-- `make worktrees`
-- Module 01 path: `capstone/history/worktrees/module-01/`
-- Import path for Module 01: `capstone/history/worktrees/module-01/src/`
+- `make PROGRAM=python-programming/python-functional-programming history-refresh`
+- Module 01 path: `capstone/_history/worktrees/module-01/`
+- Import path for Module 01: `capstone/_history/worktrees/module-01/src/`
 
 ## 1. Conceptual Foundation
 

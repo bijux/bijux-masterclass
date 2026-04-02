@@ -48,6 +48,7 @@ ornamental instead of necessary.
 - [Isolating Side Effects](isolating-side-effects.md)
 - [Equational Reasoning](equational-reasoning.md)
 - [Idempotent Transforms](idempotent-transforms.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -58,4 +59,6 @@ ornamental instead of necessary.
 ## Before moving on
 
 You should be able to explain why a function is pure, why that matters for substitution,
-and where a thin effect wrapper belongs when purity is impossible.
+and where a thin effect wrapper belongs when purity is impossible. Use
+[Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-01` before moving forward.

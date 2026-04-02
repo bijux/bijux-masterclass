@@ -48,6 +48,7 @@ happens, how much memory is used, and where materialization becomes a conscious 
 - [Time-Aware Streaming](time-aware-streaming.md)
 - [Custom Iterators](custom-iterators.md)
 - [Streaming Observability](streaming-observability.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -59,3 +60,5 @@ happens, how much memory is used, and where materialization becomes a conscious 
 
 You should be able to explain why laziness changes error handling, resource management,
 and review strategy before the course introduces typed failures and resilience patterns.
+Use [Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-03` before moving forward.

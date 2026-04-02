@@ -48,6 +48,7 @@ leaking globals or control flags.
 - [Tiny Function DSLs](tiny-function-dsls.md)
 - [Debugging Compositions](debugging-compositions.md)
 - [Imperative to FP Refactor](imperative-to-fp-refactor.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -59,4 +60,5 @@ leaking globals or control flags.
 
 You should be able to explain how data-first APIs stay configurable without turning into
 dependency soup, and where laziness starts to become a design obligation rather than an
-implementation trick.
+implementation trick. Use [Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-02` before moving forward.
