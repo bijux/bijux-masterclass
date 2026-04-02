@@ -43,6 +43,7 @@ nav:
       - "Capstone File Guide": capstone-file-guide.md
       - "Repository Layer Guide": repository-layer-guide.md
       - "Experiment Review Guide": experiment-review-guide.md
+      - "Release Review Guide": release-review-guide.md
       - "Recovery Review Guide": recovery-review-guide.md
       - "Capstone Review Worksheet": capstone-review-worksheet.md
       - "Release Audit Checklist": release-audit-checklist.md
