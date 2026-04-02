@@ -68,7 +68,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | what exactly changed between declaration and recorded execution | `make -C capstone walkthrough` | `capstone/dvc.lock` |
 | which parameters are safe to compare across runs | `make -C capstone verify` | `capstone/params.yaml` |
 | which artifacts are safe for downstream trust | `make -C capstone tour` | `capstone/publish/v1/manifest.json` |
-| which state survives local cache loss | `make -C capstone recovery-drill` | `capstone/README.md` |
+| which state survives local cache loss | `make -C capstone recovery-drill` | `course-book/capstone/index.md` |
 | which verification route fits my question | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `course-book/reference/verification-route-guide.md` |
 | what should I inspect before migration | `make -C capstone confirm` | `capstone/dvc.yaml` |
 | how should I read the repository layers | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/repository-layer-guide.md` |

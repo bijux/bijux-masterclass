@@ -71,7 +71,7 @@ proof or a recovery drill for the whole repository contract.
 Use this order if you are unsure where to start:
 
 1. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
-2. read `capstone/README.md`
+2. read `course-book/capstone/index.md`
 3. read `capstone/dvc.yaml` and `capstone/dvc.lock`
 4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify`
 5. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report`

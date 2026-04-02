@@ -59,7 +59,7 @@ Capstone corroboration:
 * inspect `capstone/publish/v1/`
 * inspect `capstone/params.yaml`
 * inspect `capstone/dvc.lock`
-* inspect `capstone/docs/TOUR.md`
+* inspect [Release Review Guide](../capstone/release-review-guide.md)
 
 The learner should leave this module able to say why promoted state is trusted more than
 baseline or exploratory state.
