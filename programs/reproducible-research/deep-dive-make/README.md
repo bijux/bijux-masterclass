@@ -69,6 +69,7 @@ From the monorepo root:
 
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make test
+make PROGRAM=reproducible-research/deep-dive-make capstone-tour
 ```
 
 ### macOS (GNU Make via Homebrew)
@@ -76,6 +77,7 @@ make PROGRAM=reproducible-research/deep-dive-make test
 ```sh
 brew install make
 make PROGRAM=reproducible-research/deep-dive-make test
+make PROGRAM=reproducible-research/deep-dive-make capstone-tour
 ```
 
 If `selftest` passes, you’ve validated the capstone’s contract on your machine.

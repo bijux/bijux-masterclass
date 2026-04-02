@@ -50,7 +50,7 @@ typecheck: install-dev ## Run mypy on Python helper scripts
 > $(MYPY) $(PY_LINT_PATHS)
 
 # Capstone (GNU Make repository)
-.PHONY: capstone capstone-selftest capstone-hardened capstone-clean
+.PHONY: capstone capstone-selftest capstone-hardened capstone-tour capstone-clean
 capstone: ## Build the capstone (writes ./all sentinel inside capstone)
 > $(MAKE) -C $(CAPSTONE_DIR) all
 
@@ -59,6 +59,9 @@ capstone-selftest: ## Capstone selftest (convergence + parallel determinism + ne
 
 capstone-hardened: ## Capstone hardened invariants (selftest + audits + attest + runtime tests)
 > $(MAKE) -C $(CAPSTONE_DIR) hardened
+
+capstone-tour: ## Print the capstone walkthrough from the program directory
+> $(MAKE) -C $(CAPSTONE_DIR) tour
 
 capstone-clean: ## Clean capstone outputs
 > $(MAKE) -C $(CAPSTONE_DIR) clean
