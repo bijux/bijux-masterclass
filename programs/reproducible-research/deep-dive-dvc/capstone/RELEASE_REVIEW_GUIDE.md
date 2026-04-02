@@ -53,3 +53,6 @@ Use this guide when the question is no longer "did the pipeline run?" and is now
 - that every internal experiment has been reviewed
 - that the local cache is durable
 - that the publish bundle replaces `dvc.lock` for internal provenance questions
+
+Read [CONTROL_SURFACE_GUIDE.md](CONTROL_SURFACE_GUIDE.md) when a release question is
+really a comparability question about params, thresholding, or metric movement.
