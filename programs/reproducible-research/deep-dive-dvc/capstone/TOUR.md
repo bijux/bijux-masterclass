@@ -33,6 +33,7 @@ From the repository root:
 ```bash
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 ```
 
 ## What to inspect first

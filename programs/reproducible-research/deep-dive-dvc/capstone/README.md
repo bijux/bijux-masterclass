@@ -97,6 +97,13 @@ make recovery-drill
 make tour
 ```
 
+Or use the repository root when you want stable program-level entrypoints:
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
+```
+
 These commands answer different questions:
 
 - `make verify` checks that the current repository state matches the expected contract.
@@ -104,6 +111,9 @@ These commands answer different questions:
 - `make recovery-drill` proves that a remote-backed restore still works after local loss.
 - `make walkthrough` writes the learner-first reading bundle under `artifacts/walkthrough/reproducible-research/deep-dive-dvc/`.
 - `make tour` writes a learner-facing proof bundle under `artifacts/tour/reproducible-research/deep-dive-dvc/`.
+
+If you are unsure which route fits your question, use the course-book
+`verification-route-guide.md` page before defaulting to the strongest command.
 
 ## What `confirm` proves
 

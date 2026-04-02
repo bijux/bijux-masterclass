@@ -20,6 +20,8 @@ Use root-level commands when you want one entrypoint that works across programs.
 | `make PROGRAM=reproducible-research/deep-dive-dvc docs-build` | build the course docs in strict mode |
 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | build the learner-first capstone walkthrough bundle |
 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | build the executed capstone proof bundle |
+| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | validate the promoted contract through the public root surface |
+| `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | run the strongest repository-wide capstone proof route |
 | `make PROGRAM=reproducible-research/deep-dive-dvc test` | run the course's main verification target |
 
 [Back to top](#top)
@@ -37,6 +39,8 @@ surface.
 | `make test` | run the capstone confirmation suite via the program surface |
 | `make capstone-walkthrough` | build the learner-first walkthrough bundle |
 | `make capstone-tour` | build the executed capstone proof bundle |
+| `make capstone-verify` | run the capstone contract verification route |
+| `make capstone-confirm` | run the strongest capstone confirmation route |
 | `make clean` | remove program and capstone build artifacts |
 
 [Back to top](#top)
@@ -67,15 +71,18 @@ If you are new:
 
 ```sh
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-dvc test
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
 ```
 
 If you are reviewing the capstone deeply:
 
 ```sh
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 make -C capstone help
-make -C capstone verify
-make -C capstone confirm
 ```
+
+Use [`verification-route-guide.md`](verification-route-guide.md) when you need to choose
+between `walkthrough`, `verify`, `confirm`, `recovery-drill`, and `tour`.
 
 [Back to top](#top)
