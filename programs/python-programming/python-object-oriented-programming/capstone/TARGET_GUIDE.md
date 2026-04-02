@@ -34,6 +34,7 @@ command for the question you actually have.
 | `inspect-timeline` | print the ordered scenario flow directly in the terminal |
 | `inspect-retirement` | print the retirement scenario before-and-after state |
 | `inspect-rate-of-change` | print the alternate evaluation-mode scenario |
+| `inspect-json` | print the default scenario as stable JSON |
 | `tour` | build the learner-facing walkthrough bundle |
 | `verify-report` | build the executable verification report bundle |
 | `proof` | run the full course-sanctioned evidence route |
@@ -95,6 +96,14 @@ Use:
 * `make inspect-rate-of-change`
 * `RATE_OF_CHANGE_SCENARIO_GUIDE.md`
 * `TEST_GUIDE.md`
+
+### If the question is "can I diff or script the same scenario state?"
+
+Use:
+
+* `make inspect-json`
+* `INSPECTION_GUIDE.md`
+* `BUNDLE_GUIDE.md`
 
 ### If the question is "what saved bundle proves the behavior?"
 

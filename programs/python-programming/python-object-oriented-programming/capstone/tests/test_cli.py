@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from service_monitoring.cli import main
 
 
@@ -70,3 +72,12 @@ def test_rate_of_change_command_reports_the_alternate_mode(capsys) -> None:
     assert "alerts_published: 1" in output
     assert "open_incidents: ['latency-spike']" in output
     assert "observed_value=0.26" in output
+
+
+def test_snapshot_json_command_reports_a_machine_readable_snapshot(capsys) -> None:
+    assert main(["snapshot-json"]) == 0
+
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["cycle_report"]["alerts_published"] == 2
+    assert payload["snapshot"]["summary"]["policy_id"] == "service-monitoring"
+    assert sorted(payload["snapshot"]["open_incidents"]) == ["cpu-hot", "cpu-sustained"]

@@ -121,6 +121,7 @@ If this is your first honest pass through the capstone, use this order:
 - `make inspect-timeline` prints the ordered scenario flow when you need sequence before proofs.
 - `make inspect-retirement` prints the before-and-after retirement scenario when you need full lifecycle cleanup in one route.
 - `make inspect-rate-of-change` prints the alternate evaluation-mode scenario when you need a policy-seam example.
+- `make inspect-json` prints the default scenario as stable structured JSON when you need a machine-readable review surface.
 - `make tour` writes the walkthrough bundle with the scenario story and matching local guides.
 - `make verify-report` writes the executable verification report bundle with test results and captured state.
 - `make confirm` runs the strongest local confirmation route.

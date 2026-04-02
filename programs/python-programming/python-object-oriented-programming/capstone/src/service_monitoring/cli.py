@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import json
+from dataclasses import asdict
 from collections.abc import Sequence
 
 from .scenario import (
@@ -24,6 +26,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("timeline", help="Show the scenario as an ordered event timeline.")
     subparsers.add_parser("retirement", help="Show the retirement scenario before and after state.")
     subparsers.add_parser("rate-of-change", help="Show the alternate evaluation-mode scenario.")
+    subparsers.add_parser("snapshot-json", help="Show the default scenario as stable JSON.")
     return parser
 
 
@@ -106,6 +109,19 @@ def main(argv: Sequence[str] | None = None) -> int:
             f" severity={incident.severity}"
             f" observed_value={incident.observed_value}"
             f" threshold={incident.threshold}"
+        )
+        return 0
+
+    if args.command == "snapshot-json":
+        print(
+            json.dumps(
+                {
+                    "cycle_report": asdict(observation.cycle_report),
+                    "snapshot": asdict(observation.snapshot),
+                },
+                indent=2,
+                sort_keys=True,
+            )
         )
         return 0
 
