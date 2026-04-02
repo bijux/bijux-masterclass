@@ -29,6 +29,13 @@ This final module brings object-oriented Python design into operational reality.
 teaches how to measure object cost, add observability that clarifies behavior, harden
 trust boundaries, and review the full capstone with production-grade judgment.
 
+Keep one question in view while reading:
+
+> Which operational pressure can change the shape of the design safely, and which one would quietly corrupt the ownership model if handled carelessly?
+
+That question is what turns operational hardening into the final design audit instead of
+an unrelated production checklist.
+
 ## Why this module matters
 
 Well-structured code can still fail in production if it:

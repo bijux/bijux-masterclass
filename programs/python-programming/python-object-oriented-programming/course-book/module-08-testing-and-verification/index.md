@@ -29,6 +29,12 @@ Strong object models still need executable proof. This module turns testing from
 generic quality ritual into a design tool for verifying state transitions, repository
 contracts, adapter behavior, and long-term confidence in an object-oriented Python system.
 
+Keep one question in view while reading:
+
+> Which test would fail first if this ownership boundary or lifecycle rule stopped being true?
+
+That question turns verification into design evidence instead of test-count theater.
+
 ## Why this module matters
 
 Object-heavy systems often fail in ways that shallow unit tests miss:

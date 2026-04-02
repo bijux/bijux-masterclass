@@ -29,6 +29,12 @@ Long-lived Python systems need more than internal cleanliness. They need clear p
 entrypoints, stable extension seams, and governance around what may change without
 breaking consumers. This module treats extensibility as a disciplined contract.
 
+Keep one question in view while reading:
+
+> What is the narrowest surface that can be made public without letting consumers or plugins reach past the intended ownership boundary?
+
+That question is what keeps extensibility from turning into unmanaged surface area.
+
 ## Why this module matters
 
 Without API discipline, object-oriented systems decay in familiar ways:
