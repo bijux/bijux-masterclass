@@ -28,8 +28,9 @@ the capstone.
 1. Read `capstone/PROOF_GUIDE.md`.
 2. Run `make PROGRAM=python-programming/python-functional-programming test` for executable verification.
 3. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` for the learner-facing proof bundle.
-4. Run `make PROGRAM=python-programming/python-functional-programming proof` when you want the sanctioned end-to-end route.
-5. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to decide whether the evidence is strong enough.
+4. Read [Capstone Test Guide](capstone-test-guide.md) when you need a stable route through the test surface.
+5. Run `make PROGRAM=python-programming/python-functional-programming proof` when you want the sanctioned end-to-end route.
+6. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to decide whether the evidence is strong enough.
 
 ## What you should be able to answer after proof review
 
