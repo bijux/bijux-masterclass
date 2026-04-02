@@ -38,6 +38,7 @@ surface tied together.
 - keep asking which object owns the current invariant
 - inspect code and tests when the prose makes a design claim
 - revisit earlier modules when a later topic feels arbitrary
+- use the capstone as a design proof, not only as an implementation example
 
 ## What progress looks like
 
@@ -60,3 +61,13 @@ Progress in this course is not "I have seen this pattern before." Progress is:
 2. Reduce the question to one ownership decision.
 3. Inspect the corresponding capstone surface.
 4. Re-run the executable proof and compare the result with the prose claim.
+
+## Minimum honest route
+
+If time is tight, do this instead of random skipping:
+
+1. Read the current module overview.
+2. Read only the chapter sequence that supports that overview.
+3. Inspect one matching capstone file.
+4. Run one matching proof command.
+5. Write one sentence beginning with: `This object owns...`

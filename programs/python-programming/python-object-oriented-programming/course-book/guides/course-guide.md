@@ -26,7 +26,7 @@ that survive integration, change, and operational stress.
 
 ## The three arcs
 
-## Semantic floor
+### Semantic floor
 
 Modules 01 to 03 establish the language of the course:
 
@@ -36,7 +36,7 @@ Modules 01 to 03 establish the language of the course:
 
 Without this floor, later architecture advice turns into memorized slogans.
 
-## Collaboration and evolution
+### Collaboration and evolution
 
 Modules 04 to 07 move from single objects to systems:
 
@@ -47,7 +47,7 @@ Modules 04 to 07 move from single objects to systems:
 
 This is where many OOP courses become hand-wavy. This course tries to stay concrete.
 
-## Confidence and governance
+### Confidence and governance
 
 Modules 08 to 10 ask whether the model can be trusted:
 
@@ -70,3 +70,16 @@ ownership decisions instead of unrelated advanced topics.
 Use [Module Dependency Map](module-dependency-map.md) when you need to understand why the
 sequence is shaped this way, and use [Practice Map](practice-map.md) to keep each module
 tied to code and verification.
+
+## Ten-module route in one sentence each
+
+- Module 01 defines what a Python object means semantically.
+- Module 02 decides where behavior and boundaries belong.
+- Module 03 turns state and lifecycle into explicit contracts.
+- Module 04 explains how multiple objects stay coherent together.
+- Module 05 keeps that model survivable under cleanup, failure, and change.
+- Module 06 extends the model across storage and serialized boundaries.
+- Module 07 adds time, workers, retries, and async pressure without losing ownership.
+- Module 08 proves the design with tests that match real contracts.
+- Module 09 decides what becomes public and extensible.
+- Module 10 reviews whether the whole system is operationally trustworthy.

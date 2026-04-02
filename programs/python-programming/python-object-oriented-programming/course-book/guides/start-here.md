@@ -44,10 +44,16 @@ If you keep those questions in view, the modules feel cumulative instead of scat
 
 1. Read [Course Home](../index.md) for the course promise and module arc.
 2. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
-3. Read [Course Guide](course-guide.md) to understand the three-arc structure.
+3. Read [Course Guide](course-guide.md) to understand the semantic, systems, and governance arcs.
 4. Read [Learning Contract](learning-contract.md) before you start Module 01.
-5. Keep [Capstone](capstone.md) open while reading Modules 04 to 10.
+5. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
 6. Use [Command Guide](command-guide.md) and [Capstone Map](capstone-map.md) when you want the executable route.
+
+## When to use each arc
+
+- Modules 01-03: use them when object semantics, equality, or state design feel fuzzy.
+- Modules 04-07: use them when the main difficulty is collaboration, persistence, or runtime pressure.
+- Modules 08-10: use them when the design already exists and you need to decide whether it is trustworthy under tests, public use, and operations.
 
 ## What to avoid
 
