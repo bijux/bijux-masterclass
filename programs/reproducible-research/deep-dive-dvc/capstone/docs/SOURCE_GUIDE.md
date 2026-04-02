@@ -40,6 +40,6 @@ fatiguing.
 
 ## Best companion guides
 
-- read [ARCHITECTURE.md](ARCHITECTURE.md) when you still need the higher-level ownership map first
-- read [STAGE_CONTRACT_GUIDE.md](STAGE_CONTRACT_GUIDE.md) when the question is stage ownership more than file ownership
-- read [TOUR.md](TOUR.md) when you want the same code route turned into a proof-reading route
+- read [ARCHITECTURE.md](../ARCHITECTURE.md) when you still need the higher-level ownership map first
+- read [STAGE_CONTRACT_GUIDE.md](../STAGE_CONTRACT_GUIDE.md) when the question is stage ownership more than file ownership
+- read [TOUR.md](../TOUR.md) when you want the same code route turned into a proof-reading route

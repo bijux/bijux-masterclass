@@ -64,7 +64,7 @@ Use the capstone differently as the course advances:
 | Modules 09-10 | [Release Review Guide](release-review-guide.md) | `make -C capstone release-review` or `make -C capstone confirm` | review promoted trust surfaces, governance, and repository stewardship |
 
 If the pressure is "can I hand someone a clean source artifact?", start with
-`capstone/SOURCE_BASELINE_GUIDE.md` and run `make -C capstone source-bundle`.
+`capstone/docs/SOURCE_BASELINE_GUIDE.md` and run `make -C capstone source-bundle`.
 
 ## Best entrypoints
 
@@ -73,10 +73,10 @@ If the pressure is "can I hand someone a clean source artifact?", start with
 - Repository layer guide: [repository-layer-guide.md](repository-layer-guide.md)
 - Verification route guide: [../reference/verification-route-guide.md](../reference/verification-route-guide.md)
 - Repository guide: [`capstone/README.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/README.md)
-- Repository architecture: [`capstone/ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/ARCHITECTURE.md)
-- Experiment route: [`capstone/EXPERIMENT_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/EXPERIMENT_GUIDE.md)
-- Recovery route: [`capstone/RECOVERY_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/RECOVERY_GUIDE.md)
-- Release route: [`capstone/RELEASE_REVIEW_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/RELEASE_REVIEW_GUIDE.md)
+- Repository architecture: [`capstone/docs/ARCHITECTURE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/docs/ARCHITECTURE.md)
+- Experiment route: [`capstone/docs/EXPERIMENT_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/docs/EXPERIMENT_GUIDE.md)
+- Recovery route: [`capstone/docs/RECOVERY_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/docs/RECOVERY_GUIDE.md)
+- Release route: [`capstone/docs/RELEASE_REVIEW_GUIDE.md`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/docs/RELEASE_REVIEW_GUIDE.md)
 - Pipeline graph: [`capstone/dvc.yaml`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/dvc.yaml)
 - Declared inputs: [`capstone/params.yaml`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/params.yaml)
 - Verification logic: [`capstone/src/incident_escalation_capstone/verify.py`](https://github.com/bijux/bijux-masterclass/blob/master/programs/reproducible-research/deep-dive-dvc/capstone/src/incident_escalation_capstone/verify.py)

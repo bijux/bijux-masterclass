@@ -35,5 +35,5 @@ story is real rather than aspirational.
 1. Read [Authority Map](../reference/authority-map.md).
 2. Run `make -C capstone recovery-drill`.
 3. Run `make -C capstone recovery-review`.
-4. Read `capstone/RECOVERY_GUIDE.md`.
+4. Read `capstone/docs/RECOVERY_GUIDE.md`.
 5. Inspect the recovery bundle beside [Evidence Boundary Guide](../reference/evidence-boundary-guide.md).

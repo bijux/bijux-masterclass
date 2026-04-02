@@ -45,6 +45,6 @@ recorded execution state, promoted review state, and remote-backed recovery stat
 
 ## Best companion guides
 
-- read [RECOVERY_GUIDE.md](RECOVERY_GUIDE.md) when the next question is remote-backed durability
-- read [PUBLISH_CONTRACT.md](PUBLISH_CONTRACT.md) when the next question is downstream trust
-- read [STAGE_CONTRACT_GUIDE.md](STAGE_CONTRACT_GUIDE.md) when the next question is which stage should own a change in state
+- read [RECOVERY_GUIDE.md](../RECOVERY_GUIDE.md) when the next question is remote-backed durability
+- read [PUBLISH_CONTRACT.md](../PUBLISH_CONTRACT.md) when the next question is downstream trust
+- read [STAGE_CONTRACT_GUIDE.md](../STAGE_CONTRACT_GUIDE.md) when the next question is which stage should own a change in state

@@ -3,6 +3,7 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 PYTHON ?= python3
+DOCS_DIR := docs
 ARTIFACTS_DIR ?= ../../../../artifacts
 REPO_ROOT := $(abspath ../../../../)
 VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-dvc/capstone
@@ -76,10 +77,10 @@ verify-report: repro ## Write a structured verification report for the published
 	@cp publish/v1/params.yaml $(VERIFY_REPORT_DIR)/publish-v1/params.yaml
 	@cp publish/v1/predictions.csv $(VERIFY_REPORT_DIR)/publish-v1/predictions.csv
 	@cp publish/v1/report.md $(VERIFY_REPORT_DIR)/publish-v1/report.md
-	@cp PUBLISH_CONTRACT.md $(VERIFY_REPORT_DIR)/PUBLISH_CONTRACT.md
-	@cp DATA_PROFILE_GUIDE.md $(VERIFY_REPORT_DIR)/DATA_PROFILE_GUIDE.md
-	@cp MODEL_GUIDE.md $(VERIFY_REPORT_DIR)/MODEL_GUIDE.md
-	@cp PREDICTION_REVIEW_GUIDE.md $(VERIFY_REPORT_DIR)/PREDICTION_REVIEW_GUIDE.md
+	@cp $(DOCS_DIR)/PUBLISH_CONTRACT.md $(VERIFY_REPORT_DIR)/PUBLISH_CONTRACT.md
+	@cp $(DOCS_DIR)/DATA_PROFILE_GUIDE.md $(VERIFY_REPORT_DIR)/DATA_PROFILE_GUIDE.md
+	@cp $(DOCS_DIR)/MODEL_GUIDE.md $(VERIFY_REPORT_DIR)/MODEL_GUIDE.md
+	@cp $(DOCS_DIR)/PREDICTION_REVIEW_GUIDE.md $(VERIFY_REPORT_DIR)/PREDICTION_REVIEW_GUIDE.md
 	@cp src/incident_escalation_capstone/verify.py $(VERIFY_REPORT_DIR)/src/incident_escalation_capstone/verify.py
 	@cp tests/test_verify.py $(VERIFY_REPORT_DIR)/tests/test_verify.py
 	@printf '%s\n' \
@@ -139,11 +140,11 @@ tour: verify ## Build the learner-facing proof bundle
 	@cp dvc.yaml $(TOUR_DIR)/dvc.yaml
 	@cp dvc.lock $(TOUR_DIR)/dvc.lock
 	@cp params.yaml $(TOUR_DIR)/params.yaml
-	@cp PUBLISH_CONTRACT.md $(TOUR_DIR)/PUBLISH_CONTRACT.md
-	@cp ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
-	@cp EXPERIMENT_GUIDE.md $(TOUR_DIR)/EXPERIMENT_GUIDE.md
-	@cp RECOVERY_GUIDE.md $(TOUR_DIR)/RECOVERY_GUIDE.md
-	@cp RELEASE_REVIEW_GUIDE.md $(TOUR_DIR)/RELEASE_REVIEW_GUIDE.md
+	@cp $(DOCS_DIR)/PUBLISH_CONTRACT.md $(TOUR_DIR)/PUBLISH_CONTRACT.md
+	@cp $(DOCS_DIR)/ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
+	@cp $(DOCS_DIR)/EXPERIMENT_GUIDE.md $(TOUR_DIR)/EXPERIMENT_GUIDE.md
+	@cp $(DOCS_DIR)/RECOVERY_GUIDE.md $(TOUR_DIR)/RECOVERY_GUIDE.md
+	@cp $(DOCS_DIR)/RELEASE_REVIEW_GUIDE.md $(TOUR_DIR)/RELEASE_REVIEW_GUIDE.md
 	@cp metrics/metrics.json $(TOUR_DIR)/metrics.json
 	@cp publish/v1/manifest.json $(TOUR_DIR)/publish-v1/manifest.json
 	@cp publish/v1/metrics.json $(TOUR_DIR)/publish-v1/metrics.json
@@ -152,7 +153,7 @@ tour: verify ## Build the learner-facing proof bundle
 	@cp publish/v1/model.json $(TOUR_DIR)/publish-v1/model.json
 	@cp publish/v1/predictions.csv $(TOUR_DIR)/publish-v1/predictions.csv
 	@cp publish/v1/report.md $(TOUR_DIR)/publish-v1/report.md
-	@cp TOUR.md $(TOUR_DIR)/TOUR.md
+	@cp $(DOCS_DIR)/TOUR.md $(TOUR_DIR)/TOUR.md
 	@$(INSPECT) manifest-summary --publish publish/v1 > $(TOUR_DIR)/manifest-summary.json
 	@$(INSPECT) profile-summary --publish publish/v1 > $(TOUR_DIR)/profile-summary.json
 	@$(INSPECT) model-summary --publish publish/v1 > $(TOUR_DIR)/model-summary.json
@@ -190,10 +191,10 @@ tour: verify ## Build the learner-facing proof bundle
 release-audit: verify ## Build a focused release-boundary audit bundle
 	@rm -rf $(RELEASE_AUDIT_DIR)
 	@mkdir -p $(RELEASE_AUDIT_DIR)/publish-v1
-	@cp PUBLISH_CONTRACT.md $(RELEASE_AUDIT_DIR)/PUBLISH_CONTRACT.md
-	@cp DATA_PROFILE_GUIDE.md $(RELEASE_AUDIT_DIR)/DATA_PROFILE_GUIDE.md
-	@cp MODEL_GUIDE.md $(RELEASE_AUDIT_DIR)/MODEL_GUIDE.md
-	@cp PREDICTION_REVIEW_GUIDE.md $(RELEASE_AUDIT_DIR)/PREDICTION_REVIEW_GUIDE.md
+	@cp $(DOCS_DIR)/PUBLISH_CONTRACT.md $(RELEASE_AUDIT_DIR)/PUBLISH_CONTRACT.md
+	@cp $(DOCS_DIR)/DATA_PROFILE_GUIDE.md $(RELEASE_AUDIT_DIR)/DATA_PROFILE_GUIDE.md
+	@cp $(DOCS_DIR)/MODEL_GUIDE.md $(RELEASE_AUDIT_DIR)/MODEL_GUIDE.md
+	@cp $(DOCS_DIR)/PREDICTION_REVIEW_GUIDE.md $(RELEASE_AUDIT_DIR)/PREDICTION_REVIEW_GUIDE.md
 	@cp publish/v1/manifest.json $(RELEASE_AUDIT_DIR)/publish-v1/manifest.json
 	@cp publish/v1/data-profile.json $(RELEASE_AUDIT_DIR)/publish-v1/data-profile.json
 	@cp publish/v1/metrics.json $(RELEASE_AUDIT_DIR)/publish-v1/metrics.json
@@ -241,9 +242,9 @@ recovery-audit: push ## Capture the remote-backed recovery route as a review bun
 	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1 --report $(RECOVERY_AUDIT_DIR)/verify.json
 	@$(DVC) status > $(RECOVERY_AUDIT_DIR)/after-status.txt
 	@cp dvc.lock $(RECOVERY_AUDIT_DIR)/dvc.lock
-	@cp RECOVERY_GUIDE.md $(RECOVERY_AUDIT_DIR)/RECOVERY_GUIDE.md
-	@cp STATE_LAYER_GUIDE.md $(RECOVERY_AUDIT_DIR)/STATE_LAYER_GUIDE.md
-	@cp PUBLISH_CONTRACT.md $(RECOVERY_AUDIT_DIR)/PUBLISH_CONTRACT.md
+	@cp $(DOCS_DIR)/RECOVERY_GUIDE.md $(RECOVERY_AUDIT_DIR)/RECOVERY_GUIDE.md
+	@cp $(DOCS_DIR)/STATE_LAYER_GUIDE.md $(RECOVERY_AUDIT_DIR)/STATE_LAYER_GUIDE.md
+	@cp $(DOCS_DIR)/PUBLISH_CONTRACT.md $(RECOVERY_AUDIT_DIR)/PUBLISH_CONTRACT.md
 	@cp publish/v1/manifest.json $(RECOVERY_AUDIT_DIR)/publish-v1/manifest.json
 	@cp publish/v1/data-profile.json $(RECOVERY_AUDIT_DIR)/publish-v1/data-profile.json
 	@cp publish/v1/model.json $(RECOVERY_AUDIT_DIR)/publish-v1/model.json
@@ -302,16 +303,16 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@rm -rf $(WALKTHROUGH_DIR)
 	@mkdir -p $(WALKTHROUGH_DIR)/src/incident_escalation_capstone $(WALKTHROUGH_DIR)/tests $(WALKTHROUGH_DIR)/publish-v1
 	@cp README.md $(WALKTHROUGH_DIR)/README.md
-	@cp DOMAIN_GUIDE.md $(WALKTHROUGH_DIR)/DOMAIN_GUIDE.md
-	@cp STAGE_CONTRACT_GUIDE.md $(WALKTHROUGH_DIR)/STAGE_CONTRACT_GUIDE.md
-	@cp STATE_LAYER_GUIDE.md $(WALKTHROUGH_DIR)/STATE_LAYER_GUIDE.md
-	@cp CONTROL_SURFACE_GUIDE.md $(WALKTHROUGH_DIR)/CONTROL_SURFACE_GUIDE.md
-	@cp ARCHITECTURE.md $(WALKTHROUGH_DIR)/ARCHITECTURE.md
-	@cp PUBLISH_CONTRACT.md $(WALKTHROUGH_DIR)/PUBLISH_CONTRACT.md
+	@cp $(DOCS_DIR)/DOMAIN_GUIDE.md $(WALKTHROUGH_DIR)/DOMAIN_GUIDE.md
+	@cp $(DOCS_DIR)/STAGE_CONTRACT_GUIDE.md $(WALKTHROUGH_DIR)/STAGE_CONTRACT_GUIDE.md
+	@cp $(DOCS_DIR)/STATE_LAYER_GUIDE.md $(WALKTHROUGH_DIR)/STATE_LAYER_GUIDE.md
+	@cp $(DOCS_DIR)/CONTROL_SURFACE_GUIDE.md $(WALKTHROUGH_DIR)/CONTROL_SURFACE_GUIDE.md
+	@cp $(DOCS_DIR)/ARCHITECTURE.md $(WALKTHROUGH_DIR)/ARCHITECTURE.md
+	@cp $(DOCS_DIR)/PUBLISH_CONTRACT.md $(WALKTHROUGH_DIR)/PUBLISH_CONTRACT.md
 	@cp dvc.yaml $(WALKTHROUGH_DIR)/dvc.yaml
 	@cp dvc.lock $(WALKTHROUGH_DIR)/dvc.lock
 	@cp params.yaml $(WALKTHROUGH_DIR)/params.yaml
-	@cp TOUR.md $(WALKTHROUGH_DIR)/TOUR.md
+	@cp $(DOCS_DIR)/TOUR.md $(WALKTHROUGH_DIR)/TOUR.md
 	@cp src/incident_escalation_capstone/prepare.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/prepare.py
 	@cp src/incident_escalation_capstone/fit.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/fit.py
 	@cp src/incident_escalation_capstone/evaluate.py $(WALKTHROUGH_DIR)/src/incident_escalation_capstone/evaluate.py

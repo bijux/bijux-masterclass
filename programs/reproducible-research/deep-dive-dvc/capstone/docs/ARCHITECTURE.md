@@ -46,7 +46,7 @@ is verified.
 - `publish.py` writes the downstream review bundle.
 - `verify.py` checks whether the promoted bundle satisfies the release contract.
 
-Use [STAGE_CONTRACT_GUIDE.md](STAGE_CONTRACT_GUIDE.md) when the next question is not
+Use [STAGE_CONTRACT_GUIDE.md](../STAGE_CONTRACT_GUIDE.md) when the next question is not
 only which file owns a behavior, but which DVC stage boundary should own it.
 
 ### Review surfaces
@@ -61,8 +61,8 @@ The course is about authority and evidence. This capstone only teaches that well
 learner can point to the exact file that owns declaration, execution, promotion, or
 verification.
 
-Use [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the architecture is clear but the learner
+Use [SOURCE_GUIDE.md](../SOURCE_GUIDE.md) when the architecture is clear but the learner
 still needs the fastest exact route from one question to one file and proof surface.
 
-Use [CHANGE_PLACEMENT_GUIDE.md](CHANGE_PLACEMENT_GUIDE.md) when the main pressure is no
+Use [CHANGE_PLACEMENT_GUIDE.md](../CHANGE_PLACEMENT_GUIDE.md) when the main pressure is no
 longer reading the current design, but deciding where a new responsibility should live.

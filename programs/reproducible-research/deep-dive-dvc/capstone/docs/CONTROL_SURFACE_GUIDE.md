@@ -46,6 +46,6 @@ to inspect borderline promoted predictions instead of only aggregate metrics.
 
 ## Best companion guides
 
-- read [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md) when the next question is how to run and compare a changed candidate
-- read [RELEASE_REVIEW_GUIDE.md](RELEASE_REVIEW_GUIDE.md) when the next question is whether a changed candidate deserves downstream trust
-- read [PUBLISH_CONTRACT.md](PUBLISH_CONTRACT.md) when the next question is which control surfaces are preserved in `publish/v1/`
+- read [EXPERIMENT_GUIDE.md](../EXPERIMENT_GUIDE.md) when the next question is how to run and compare a changed candidate
+- read [RELEASE_REVIEW_GUIDE.md](../RELEASE_REVIEW_GUIDE.md) when the next question is whether a changed candidate deserves downstream trust
+- read [PUBLISH_CONTRACT.md](../PUBLISH_CONTRACT.md) when the next question is which control surfaces are preserved in `publish/v1/`

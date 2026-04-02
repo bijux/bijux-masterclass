@@ -50,7 +50,7 @@ Use this guide when the question is no longer "did the pipeline run?" and is now
 - the downstream control surface is small and reviewable
 - the release bundle can be defended without forcing a reviewer through the entire repository
 
-Read [PREDICTION_REVIEW_GUIDE.md](PREDICTION_REVIEW_GUIDE.md) when the release question
+Read [PREDICTION_REVIEW_GUIDE.md](../PREDICTION_REVIEW_GUIDE.md) when the release question
 depends on concrete false negatives, false positives, or borderline promoted rows.
 
 ## What this route does not prove
@@ -59,5 +59,5 @@ depends on concrete false negatives, false positives, or borderline promoted row
 - that the local cache is durable
 - that the publish bundle replaces `dvc.lock` for internal provenance questions
 
-Read [CONTROL_SURFACE_GUIDE.md](CONTROL_SURFACE_GUIDE.md) when a release question is
+Read [CONTROL_SURFACE_GUIDE.md](../CONTROL_SURFACE_GUIDE.md) when a release question is
 really a comparability question about params, thresholding, or metric movement.

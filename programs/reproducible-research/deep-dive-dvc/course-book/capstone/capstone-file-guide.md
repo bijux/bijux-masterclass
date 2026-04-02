@@ -37,15 +37,15 @@ file level.
 | File | Why it matters |
 | --- | --- |
 | `capstone/README.md` | defines the repository contract and the proof questions it is trying to answer |
-| `capstone/ARCHITECTURE.md` | explains which files own declaration, execution, promotion, and verification |
+| `capstone/docs/ARCHITECTURE.md` | explains which files own declaration, execution, promotion, and verification |
 | `capstone/dvc.yaml` | declares the pipeline graph and stage boundaries |
 | `capstone/dvc.lock` | records executed state and declared evidence |
 | `capstone/params.yaml` | defines the parameter surface that controls comparable runs |
 | `capstone/Makefile` | exposes the learner-facing verification and recovery targets |
-| `capstone/EXPERIMENT_GUIDE.md` | explains how to inspect comparable experiment changes without mutating the baseline story |
-| `capstone/RECOVERY_GUIDE.md` | explains what the restore drill proves and what it does not prove |
-| `capstone/RELEASE_REVIEW_GUIDE.md` | explains how to review the promoted boundary as a downstream contract |
-| `capstone/TOUR.md` | explains the proof bundle generated for learners and reviewers |
+| `capstone/docs/EXPERIMENT_GUIDE.md` | explains how to inspect comparable experiment changes without mutating the baseline story |
+| `capstone/docs/RECOVERY_GUIDE.md` | explains what the restore drill proves and what it does not prove |
+| `capstone/docs/RELEASE_REVIEW_GUIDE.md` | explains how to review the promoted boundary as a downstream contract |
+| `capstone/docs/TOUR.md` | explains the proof bundle generated for learners and reviewers |
 | `capstone/publish/v1/manifest.json` | demonstrates the promoted release evidence boundary |
 
 [Back to top](#top)
@@ -76,8 +76,8 @@ file level.
 3. `capstone/dvc.lock`
 4. `capstone/params.yaml`
 5. `capstone/Makefile`
-6. `capstone/EXPERIMENT_GUIDE.md`, `capstone/RECOVERY_GUIDE.md`, and `capstone/RELEASE_REVIEW_GUIDE.md`
-7. `capstone/TOUR.md`
+6. `capstone/docs/EXPERIMENT_GUIDE.md`, `capstone/docs/RECOVERY_GUIDE.md`, and `capstone/docs/RELEASE_REVIEW_GUIDE.md`
+7. `capstone/docs/TOUR.md`
 8. `capstone/publish/v1/manifest.json`
 
 That order keeps the learner anchored in contract, then declared graph, then recorded

@@ -35,7 +35,7 @@ yet at the ownership level.
 ## Best reading order
 
 1. Read `capstone/README.md`.
-2. Read `capstone/ARCHITECTURE.md`.
+2. Read `capstone/docs/ARCHITECTURE.md`.
 3. Read `capstone/dvc.yaml` and `capstone/dvc.lock`.
 4. Read one implementation file from `src/incident_escalation_capstone/`.
 5. Run the proof command that matches the question you are asking.

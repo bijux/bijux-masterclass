@@ -82,7 +82,7 @@ If you want one sane first walkthrough, use this order:
 2. Read `capstone/README.md` to understand the contract the repository is trying to keep.
 3. Read `capstone/dvc.yaml` and then `capstone/dvc.lock` to compare declared versus recorded state.
 4. Read `capstone/params.yaml` and `capstone/metrics/metrics.json` to see what comparisons are allowed to mean.
-5. Read `capstone/publish/v1/` and `capstone/TOUR.md` to inspect the promoted contract and proof bundle.
+5. Read `capstone/publish/v1/` and `capstone/docs/TOUR.md` to inspect the promoted contract and proof bundle.
 6. Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` when you want the strongest executable proof instead of a prose tour.
 
 This order keeps state identity and contract meaning ahead of mechanics.

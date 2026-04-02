@@ -137,7 +137,7 @@ make source-baseline-check
 make source-bundle
 ```
 
-Then read `SOURCE_BASELINE_GUIDE.md` before distributing the resulting archive.
+Then read [`SOURCE_BASELINE_GUIDE.md`](docs/SOURCE_BASELINE_GUIDE.md) before distributing the resulting archive.
 
 ## Core workflow
 
@@ -233,8 +233,32 @@ If you are still unsure, use this escalation order:
 4. `make experiment-review` or `make recovery-review` or `make release-review`
 5. `make confirm`
 
-Read [REVIEW_ROUTE_GUIDE.md](REVIEW_ROUTE_GUIDE.md) when the main difficulty is not a
+Read [REVIEW_ROUTE_GUIDE.md](docs/REVIEW_ROUTE_GUIDE.md) when the main difficulty is not a
 missing proof surface, but choosing the right one without over-escalating.
+
+## Documentation set
+
+All capstone documentation lives under [`docs/`](docs/). Use this index when you want
+the full guide surface from one place:
+
+* [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+* [`BUNDLE_MANIFEST_GUIDE.md`](docs/BUNDLE_MANIFEST_GUIDE.md)
+* [`CHANGE_PLACEMENT_GUIDE.md`](docs/CHANGE_PLACEMENT_GUIDE.md)
+* [`CONTROL_SURFACE_GUIDE.md`](docs/CONTROL_SURFACE_GUIDE.md)
+* [`DATA_PROFILE_GUIDE.md`](docs/DATA_PROFILE_GUIDE.md)
+* [`DOMAIN_GUIDE.md`](docs/DOMAIN_GUIDE.md)
+* [`EXPERIMENT_GUIDE.md`](docs/EXPERIMENT_GUIDE.md)
+* [`MODEL_GUIDE.md`](docs/MODEL_GUIDE.md)
+* [`PREDICTION_REVIEW_GUIDE.md`](docs/PREDICTION_REVIEW_GUIDE.md)
+* [`PUBLISH_CONTRACT.md`](docs/PUBLISH_CONTRACT.md)
+* [`RECOVERY_GUIDE.md`](docs/RECOVERY_GUIDE.md)
+* [`RELEASE_REVIEW_GUIDE.md`](docs/RELEASE_REVIEW_GUIDE.md)
+* [`REVIEW_ROUTE_GUIDE.md`](docs/REVIEW_ROUTE_GUIDE.md)
+* [`SOURCE_BASELINE_GUIDE.md`](docs/SOURCE_BASELINE_GUIDE.md)
+* [`SOURCE_GUIDE.md`](docs/SOURCE_GUIDE.md)
+* [`STAGE_CONTRACT_GUIDE.md`](docs/STAGE_CONTRACT_GUIDE.md)
+* [`STATE_LAYER_GUIDE.md`](docs/STATE_LAYER_GUIDE.md)
+* [`TOUR.md`](docs/TOUR.md)
 
 ## What `confirm` proves
 
