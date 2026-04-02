@@ -12,6 +12,7 @@ capstone doc set reviewable instead of making learners rescan the README every t
 
 ## If you want the ownership route
 
+- `OWNERSHIP_BOUNDARIES.md`
 - `ARCHITECTURE.md`
 - `PACKAGE_GUIDE.md`
 - `SOURCE_GUIDE.md`
