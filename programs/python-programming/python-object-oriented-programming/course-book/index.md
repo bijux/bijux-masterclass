@@ -18,6 +18,7 @@ This course is organized around harder questions:
 - Where do invariants live when multiple objects collaborate?
 - How do you keep object-heavy systems from becoming tangled or brittle?
 - How do you evolve APIs, storage, and behaviors without breaking callers?
+- How do you add runtime pressure, verification depth, and operational hardening without losing design clarity?
 
 ## Reading contract
 
@@ -26,7 +27,8 @@ This is not a browse-at-random reference. The course is designed as a sequence:
 1. Learn the object model before discussing architecture.
 2. Learn role assignment before discussing state transitions.
 3. Learn state transitions before discussing aggregates and cross-object invariants.
-4. Learn collaboration boundaries before discussing resources and long-term evolution.
+4. Learn collaboration boundaries before discussing persistence, time, and verification.
+5. Learn public API and operational hardening after the internal model is stable.
 
 If you skip that order, later chapters will still be readable, but the design trade-offs
 will feel arbitrary instead of principled.
@@ -52,7 +54,9 @@ By the end of the course, you should be able to:
 - choose composition, inheritance, protocols, or plain functions deliberately
 - design state transitions so illegal states are difficult to construct
 - enforce cross-object invariants through aggregate roots and disciplined APIs
-- keep operational concerns like resources, logging, retries, and compatibility explicit
+- evolve storage, codecs, and compatibility boundaries without flattening the domain
+- keep time, concurrency, logging, retries, and observability explicit
+- publish public APIs and extension points that remain governable under change
 
 ## What each module contributes
 
@@ -62,6 +66,11 @@ By the end of the course, you should be able to:
 - [Module 03](module-03-state-and-typestate/index.md) turns state transitions, validation, and typestate into explicit design work.
 - [Module 04](module-04-aggregates-and-collaboration/index.md) moves from single-object correctness to coherent collaboration boundaries.
 - [Module 05](module-05-resources-and-evolution/index.md) focuses on survivability: cleanup, failure handling, compatibility, and change.
+- [Module 06](module-06-persistence-and-schema-evolution/index.md) adds repositories, serialization, conflicts, and schema evolution.
+- [Module 07](module-07-time-and-concurrency/index.md) adds clocks, schedulers, queues, async bridges, and concurrency-safe runtime boundaries.
+- [Module 08](module-08-testing-and-verification/index.md) turns verification into a design discipline with contracts, properties, and confidence layers.
+- [Module 09](module-09-public-apis-and-extension-governance/index.md) defines the public surface, extension seams, and governance rules for long-lived reuse.
+- [Module 10](module-10-performance-observability-and-security/index.md) closes the course with measurement, observability, security, and full capstone review.
 - [Capstone](capstone.md) provides the executable slice that keeps the prose honest.
 
 ## Common failure modes this course is trying to prevent
@@ -72,11 +81,13 @@ By the end of the course, you should be able to:
 - scattering invariants across multiple objects with no clear owner
 - mixing domain rules, orchestration, persistence, and integrations in the same class
 - introducing "small" changes that silently widen public API or lifecycle obligations
+- letting serialized shapes, async wrappers, or plugin hooks bypass the intended boundaries
+- optimizing or instrumenting the system in ways that quietly change semantics or expose secrets
 
 ## Reading order
 
 - Start with [Orientation](module-00-orientation/index.md).
-- Work through Modules 01 to 05 in order.
+- Work through Modules 01 to 10 in order.
 - Use the [Capstone](capstone.md) to connect the prose to runnable code.
 
 ## Expected learner rhythm

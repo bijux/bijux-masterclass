@@ -35,6 +35,11 @@ clearer after each module.
 - After Module 03, inspect lifecycle states and validation boundaries.
 - After Module 04, inspect aggregate ownership, events, and projections.
 - After Module 05, inspect unit-of-work boundaries, failure handling, and extension pressure.
+- After Module 06, inspect how repositories and codecs could persist the model without weakening invariants.
+- After Module 07, inspect where clocks, schedulers, queues, and async adapters should sit relative to the aggregate.
+- After Module 08, inspect whether the current tests prove contracts, lifecycles, and public behavior clearly enough.
+- After Module 09, inspect which parts of the code should become the supported public facade and extension seam.
+- After Module 10, review the whole capstone for hot paths, observability, trust boundaries, and operational readiness.
 
 ## Run it
 

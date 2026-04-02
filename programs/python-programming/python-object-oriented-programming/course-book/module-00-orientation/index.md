@@ -17,7 +17,9 @@ This course is a structured deep dive into those boundaries.
 - A semantics-first guide to Python objects and the data model
 - A design guide for responsibilities, collaboration, and layering
 - A state-modeling guide for validation, typestate, and lifecycle transitions
-- A systems guide for aggregates, events, projections, and operational evolution
+- A systems guide for aggregates, repositories, events, projections, and runtime boundaries
+- A verification and governance guide for public APIs, extension seams, and long-lived change
+- An operational hardening guide for performance, observability, security, and production review
 
 ## Recommended prerequisites
 
@@ -63,3 +65,8 @@ The monitoring-system capstone matures with the course:
 - Module 03 explains its lifecycle states, validation boundaries, and null-avoidance choices.
 - Module 04 explains its aggregate root, domain events, projections, and collaboration surfaces.
 - Module 05 explains its unit of work, cleanup obligations, and compatibility pressure under change.
+- Module 06 shows how repositories, codecs, and schema upgrades can be added without flattening the model.
+- Module 07 shows how clocks, queues, schedulers, and async adapters stay outside aggregate ownership.
+- Module 08 turns the capstone tests into a contract-driven verification story instead of a loose example set.
+- Module 09 explains how the capstone could expose a stable facade and governed extension seams.
+- Module 10 reviews the full design for performance, observability, trust boundaries, and operational readiness.

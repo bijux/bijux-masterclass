@@ -29,7 +29,9 @@ By the end of the course, you should be able to:
 - separate values, entities, services, policies, and adapters without role confusion
 - make invalid states and illegal transitions harder to construct
 - design aggregates and projections that preserve invariants under change
-- evolve an object-oriented codebase without smuggling operational concerns into domain logic
+- evolve persistence, public APIs, and serialized contracts without flattening the domain
+- add time, concurrency, async, and verification pressure without losing ownership clarity
+- review performance, observability, and security trade-offs without abandoning Pythonic design
 
 ## What this course covers
 
@@ -38,6 +40,11 @@ By the end of the course, you should be able to:
 - State design: properties, dataclasses, validation, null-handling, and typestate
 - Collaboration: aggregates, domain events, projections, adapters, and strategy objects
 - Operational survival: resource ownership, unit of work, compatibility, and refactoring
+- Persistence: repositories, mapping, serialization, versioning, conflicts, and migration
+- Runtime pressure: clocks, scheduling, queues, threads, async bridges, and safe retries
+- Verification: behavioral tests, property checks, contract suites, and confidence ladders
+- Extensibility: public APIs, facades, capability protocols, plugins, and governance
+- Operational mastery: measurement, observability, trust boundaries, secure defaults, and capstone hardening
 
 ## Recommended background
 
@@ -55,10 +62,11 @@ By the end of the course, you should be able to:
 ## How to study this course well
 
 1. Start with the orientation material and course map instead of jumping to random topics.
-2. Work through Modules 01 to 05 in order because later design choices depend on earlier semantics.
+2. Work through Modules 01 to 10 in order because the later modules assume earlier semantic and boundary decisions.
 3. Treat each module as a design checkpoint: read the overview, then the chapter sequence, then the refactor chapter.
-4. Keep the capstone open while reading so the abstractions stay grounded in one coherent domain.
-5. Run the verification targets after major reading blocks to keep the code and prose mentally connected.
+4. Use Modules 01 to 05 as the semantic and architectural base, then Modules 06 to 10 as the persistence, runtime, governance, and operational mastery arc.
+5. Keep the capstone open while reading so the abstractions stay grounded in one coherent domain.
+6. Run the verification targets after major reading blocks to keep the code and prose mentally connected.
 
 ## Quickstart
 
@@ -95,6 +103,11 @@ make -C programs/python-programming/python-object-oriented-programming/capstone 
 - `03` State, validation, dataclasses, and typestate
 - `04` Aggregates, events, projections, and collaboration
 - `05` Resource ownership, failure handling, and long-term evolution
+- `06` Persistence, repositories, serialization, and schema evolution
+- `07` Time, scheduling, concurrency, and async boundaries
+- `08` Testing, verification, contracts, and confidence
+- `09` Public APIs, extension points, plugins, and governance
+- `10` Performance, observability, security, and capstone mastery
 
 ## Capstone promise
 

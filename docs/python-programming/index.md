@@ -8,7 +8,7 @@ models, explicit contracts, and maintainable abstractions.
 ### Python Object-Oriented Programming
 
 - Location: `programs/python-programming/python-object-oriented-programming`
-- Focus: object semantics, responsibilities, state design, aggregates, and system evolution
+- Focus: object semantics, responsibilities, state design, aggregates, persistence, verification, and operational evolution
 
 ### Python Functional Programming
 

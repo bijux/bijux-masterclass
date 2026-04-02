@@ -2,7 +2,8 @@
 
 This map shows the full progression of the course. The sequence is deliberate:
 start with the Python object model, move into responsibility and layering, then
-into state design, collaboration boundaries, and finally operational survival.
+into state design, collaboration boundaries, persistence, runtime pressure,
+verification, public APIs, and finally operational mastery.
 
 The running example is a monitoring system. Each module sharpens that system from
 ad hoc scripts into a design with explicit value types, aggregate roots, lifecycle
@@ -157,3 +158,183 @@ Add a non-trivial feature (e.g. new rule type or new metric dimension) to the mo
 – without breaking existing callers or stored data,
 – after cleaning up key smells,
 – with explicit tests for compatibility, logs, and resource correctness.
+
+---
+
+## Module 6 – Persistence, Repositories, Serialization, and Schema Evolution
+
+**Theme:** Keep rich object models intact when they cross storage and wire boundaries: repositories, codecs, conflicts, migrations, and compatibility.
+
+**Core 51 – Repository Contracts and Aggregate Rehydration**
+Define repositories in aggregate language; rehydrate through domain invariants instead of treating persistence as loose row assembly.
+
+**Core 52 – Mapping Domain Objects to Storage Models**
+Separate semantic domain types from storage records; convert raw primitives at the boundary rather than widening the whole codebase.
+
+**Core 53 – Serialization Boundaries and Explicit Codecs**
+Use boundary codecs for JSON, files, or messages so serialized forms become reviewable contracts instead of scattered convenience methods.
+
+**Core 54 – Snapshots, Events, and Rebuild Trade-Offs**
+Choose when snapshots, stored events, or a hybrid model make sense; distinguish audit value from unnecessary event-sourcing theater.
+
+**Core 55 – Schema Versioning and Upcasters**
+Add explicit format versions and small upcasters so older persisted payloads can evolve safely without infecting the domain model.
+
+**Core 56 – Optimistic Concurrency and Conflict Detection**
+Handle stale writes with explicit version tokens and surface conflicts as real application behavior instead of silent overwrite.
+
+**Core 57 – Transactional Boundaries and Outbox Thinking**
+Keep save-and-publish workflows coherent; persist publication intent with state changes so downstream delivery does not drift from the source of truth.
+
+**Core 58 – Persistence Tests and Backend Swappability**
+Use contract suites to prove repository implementations preserve the same semantic guarantees across in-memory, file-backed, and database-backed variants.
+
+**Core 59 – Migrating Stored Data without Domain Corruption**
+Treat migrations as reviewed production code; keep one-off repair logic separate from everyday loading and validate semantics after structural change.
+
+**Core 60 – Refactor 5: Repositories, Codecs, and Schema Evolution**
+Extend the monitoring system with storage-aware boundaries, versioned codecs, conflict detection, and migration paths without flattening aggregate ownership.
+
+---
+
+## Module 7 – Time, Scheduling, Concurrency, and Async Boundaries
+
+**Theme:** Model clocks, worker coordination, and async integration explicitly so concurrency pressure sharpens design instead of dissolving it.
+
+**Core 61 – Clocks, Timezones, and Monotonic Time**
+Separate wall-clock timestamps from elapsed-time measurement; inject clocks so temporal behavior stays testable and reviewable.
+
+**Core 62 – Deadlines, Timeouts, and Expiration Policies**
+Model durations, deadlines, and time-based business rules explicitly instead of scattering raw integers and hidden `now()` calls.
+
+**Core 63 – Schedulers, Timers, and Coordination Objects**
+Keep polling cadence and delayed work in orchestration objects so domain entities do not become timer-driven mini-frameworks.
+
+**Core 64 – Threads, Locks, and Owned Mutation**
+Choose explicit mutation ownership, synchronization boundaries, or ownership transfer rather than relying on incidental thread safety.
+
+**Core 65 – Queues, Workers, and Backpressure Boundaries**
+Use queues as ownership and capacity boundaries; define what happens when workers fall behind or crash.
+
+**Core 66 – `asyncio` Tasks and Sync-Async Bridges**
+Bridge async adapters to synchronous domain logic cleanly; make blocking behavior visible and keep async concerns near the boundary.
+
+**Core 67 – Cancellation, Retries, and Resumable Operations**
+Treat cancellation and retry as part of the behavioral contract; model resumable work with explicit state markers and safe boundaries.
+
+**Core 68 – Concurrency-Safe Caches and Memoization**
+Cache only what you can explain; define invalidation, freshness, and synchronization instead of assuming memoization is harmless.
+
+**Core 69 – Designing Thread-Aware and Async-Aware APIs**
+Expose concurrency expectations clearly through public interfaces so callers know what blocks, what awaits, and what owns background work.
+
+**Core 70 – Refactor 6: Runtime around Time and Concurrency Boundaries**
+Reshape the monitoring runtime around clocks, schedulers, queues, and async adapters while keeping aggregate logic explicit and synchronous.
+
+---
+
+## Module 8 – Testing, Verification, Contracts, and Confidence
+
+**Theme:** Turn verification into an architectural discipline: behavior-first tests, lifecycle coverage, property checks, and confidence layers.
+
+**Core 71 – Behavior-First Tests for Domain Objects**
+Assert on domain outcomes, state changes, events, and errors instead of internal call choreography.
+
+**Core 72 – Stateful Testing and Transition Coverage**
+Verify lifecycles through sequences of operations so history-dependent bugs and illegal transitions stay visible.
+
+**Core 73 – Contract Tests for Repositories and Adapters**
+Define shared semantic suites for interchangeable boundaries; stop backend drift before it becomes production inconsistency.
+
+**Core 74 – Property-Based Testing for Object Models**
+Use generated inputs and sequences to probe invariants, round-trips, equality laws, and state-machine behavior.
+
+**Core 75 – Fixtures, Builders, and Test Data Ownership**
+Keep setup readable and local; use builders and fixtures to reduce noise without hiding the real conditions that matter to each test.
+
+**Core 76 – Fakes, Stubs, Spies, and When Mocks Hurt**
+Choose doubles deliberately; prefer fakes and contracts when stateful behavior matters and reserve strict interaction mocks for true protocol checks.
+
+**Core 77 – Runtime Contracts, Assertions, and Defensive Checks**
+Use assertions and boundary checks to localize corruption and programming mistakes without pretending they replace a broader verification strategy.
+
+**Core 78 – Golden Files, Snapshots, and Approval Boundaries**
+Snapshot stable public outputs only; treat approvals as contract review rather than routine churn.
+
+**Core 79 – Integration Suites and Confidence Ladders**
+Map test layers to risk so unit, contract, integration, and scenario suites each prove something distinct and honest.
+
+**Core 80 – Refactor 7: Tests toward Contract-Driven Confidence**
+Rebuild the monitoring test strategy around lifecycle sequences, repository contracts, property checks, and stable public-output verification.
+
+---
+
+## Module 9 – Public APIs, Extension Points, Plugins, and Governance
+
+**Theme:** Decide what is public, how customization happens, and which governance rules keep extension seams safe over time.
+
+**Core 81 – Facades, Entrypoints, and Public Surface Area**
+Define the stable import and command surfaces consumers should rely on so internal modules can keep evolving.
+
+**Core 82 – Capability Protocols and Stable Extension Points**
+Expose narrow capabilities for custom behavior instead of letting plugins or adapters reach into private state.
+
+**Core 83 – Plugin Discovery, Registration, and Sandboxing**
+Add plugin support only with explicit discovery, validation, lifecycle, and trust rules; distinguish convenience extensibility from real isolation.
+
+**Core 84 – Deprecation, Versioning, and Removal Policy**
+Treat public methods, modules, and behaviors as lifecycle-managed surfaces with explicit migration guidance and compatibility windows.
+
+**Core 85 – Documentation, Examples, and Executable API Promises**
+Use examples to teach the intended surface and keep them executable so the public path stays aligned with the code.
+
+**Core 86 – Import Boundaries and Layer Enforcement**
+Define which layers may import which others and reinforce those rules with package structure, tooling, and review discipline.
+
+**Core 87 – Architectural Decision Records and Change Control**
+Capture why important public and extension decisions were made so future changes are reviewed against intent, not memory.
+
+**Core 88 – Review Checklists for Extension Safety**
+Give reviewers a reusable way to evaluate compatibility, failure semantics, and invariant protection before exporting a new seam.
+
+**Core 89 – Third-Party Integration Contracts and Compatibility Suites**
+Protect external integrations with suites that cover shape, behavior, timing, and supported workflows rather than one happy path.
+
+**Core 90 – Refactor 8: Public API for Safe Customization**
+Expose the monitoring system through a narrow facade with documented extension protocols, compatibility expectations, and executable usage examples.
+
+---
+
+## Module 10 – Performance, Observability, Security, and Capstone Mastery
+
+**Theme:** Review and harden the whole system under production pressure: measure first, observe meaningfully, defend trust boundaries, and operate with discipline.
+
+**Core 91 – Measuring Allocation Costs and Object Hot Paths**
+Identify real hot paths and allocation pressure before changing object design for speed.
+
+**Core 92 – Profiling before Optimization**
+Use profiling data to translate slowdown into architectural causes and justify optimizations with evidence instead of folklore.
+
+**Core 93 – Caching, Batching, and Lazy Work**
+Apply performance techniques deliberately, documenting the freshness, timing, and failure semantics they change.
+
+**Core 94 – Observability Signals for Object Systems**
+Add logs, metrics, and traces at design boundaries so operators can understand object collaboration under load and failure.
+
+**Core 95 – Safe Serialization, Secrets, and Trust Boundaries**
+Keep secrets out of representations, favor explicit codecs, and treat serialization as a security-sensitive boundary.
+
+**Core 96 – Input Hardening and Secure Defaults**
+Use strict validation and safer defaults so boundary objects reject dangerous or ambiguous input before work begins.
+
+**Core 97 – Operational Readiness, Runbooks, and Failure Drills**
+Write runbooks and rehearse incidents that the architecture predicts, keeping recovery aligned with domain and public contracts.
+
+**Core 98 – Capstone Architecture Review**
+Evaluate the monitoring system as a full design: strengths, pressure points, observability needs, trust boundaries, and future risk.
+
+**Core 99 – Capstone Hardening and Extension Strategy**
+Plan the next increments of persistence, runtime, API, and security improvement as small, reviewable, verification-backed changes.
+
+**Core 100 – Final Mastery Checkpoint**
+Use the ten-module roadmap to judge whether you can explain, evolve, verify, observe, secure, and operate an object-oriented Python system coherently.

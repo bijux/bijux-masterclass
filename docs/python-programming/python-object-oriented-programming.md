@@ -1,7 +1,9 @@
 # Python Object-Oriented Programming
 
 Python Object-Oriented Programming teaches classes, state, collaboration, and
-evolution as explicit engineering contracts rather than loose style choices.
+evolution as explicit engineering contracts rather than loose style choices. It now
+follows a ten-module roadmap from object semantics through persistence, concurrency,
+verification, public APIs, and operational mastery.
 
 ## Repository Location
 
@@ -9,7 +11,7 @@ evolution as explicit engineering contracts rather than loose style choices.
 
 ## What It Contains
 
-- A long-form course book in `course-book/`
+- A ten-module course book in `course-book/`
 - A runnable monitoring-system capstone in `capstone/`
 - MkDocs-based documentation entrypoints
 - Local development entrypoints in `Makefile`
