@@ -54,3 +54,6 @@ Every extension should answer:
 - why this file owns the change
 - why a lower-power hook was not enough
 - which proof keeps the new behavior visible instead of magical
+
+Read [MECHANISM_SELECTION_GUIDE.md](MECHANISM_SELECTION_GUIDE.md) when the main extension
+decision is still which metaprogramming mechanism deserves the change.

@@ -77,6 +77,7 @@ make proof
 - `TRACE_GUIDE.md` for the invocation-history review route
 - `BUNDLE_GUIDE.md` for the saved review routes and bundle inventory story
 - `BUNDLE_MANIFEST_GUIDE.md` for exact saved-bundle inventory review
+- `MECHANISM_SELECTION_GUIDE.md` for choosing between descriptor, decorator, metaclass, plugin, and CLI changes
 - `SCENARIO_SELECTION_GUIDE.md` for choosing the smallest honest capstone route
 - `TOUR.md` for a guided file-by-file walk
 - `PROOF_GUIDE.md` for the repeatable verification route

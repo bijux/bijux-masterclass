@@ -46,3 +46,4 @@ metaprogramming question you actually have.
 - read [TARGET_GUIDE.md](TARGET_GUIDE.md) when you want the command list restated at the target level
 - read [PROOF_GUIDE.md](PROOF_GUIDE.md) when the route question is really a proof-strength question
 - read [WALKTHROUGH_GUIDE.md](WALKTHROUGH_GUIDE.md) when you want one staged review order instead of route choice
+- read [MECHANISM_SELECTION_GUIDE.md](MECHANISM_SELECTION_GUIDE.md) when the route is clear but the ownership mechanism is not
