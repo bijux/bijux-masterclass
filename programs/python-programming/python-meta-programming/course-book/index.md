@@ -49,6 +49,7 @@ code inspects, wraps, validates, or registers other code and objects.
 - [Guides Home](guides/index.md)
 - [Course Guide](guides/course-guide.md)
 - [Learning Contract](guides/learning-contract.md)
+- [Return Map](module-00-orientation/return-map.md)
 - [Runtime Power Ladder](reference/runtime-power-ladder.md)
 
 ## What the course is organized around

@@ -47,13 +47,14 @@ and easier to justify than a simpler alternative.
 6. Read [First-Contact Map](../module-00-orientation/first-contact-map.md) if you want the minimum honest entry route through the foundations.
 7. Read [Mid-Course Map](../module-00-orientation/mid-course-map.md) when you are leaving the observation modules and entering wrappers, descriptors, and class customization.
 8. Read [Mastery Map](../module-00-orientation/mastery-map.md) when you are entering from a review or extension question instead of from first contact.
-9. Use [Pressure Routes](pressure-routes.md) when you are entering from a code review or framework problem.
-10. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
-11. Keep [Module Promise Map](module-promise-map.md) open so each module stays attached to one clear promise.
-12. Use [Module Checkpoints](module-checkpoints.md) at the end of each module so you know whether the current idea actually landed.
-13. Keep [Proof Ladder](proof-ladder.md) open so you can choose the smallest honest command for the current question.
-14. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
-15. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
+9. Read [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need to find the last stable module boundary again.
+10. Use [Pressure Routes](pressure-routes.md) when you are entering from a code review or framework problem.
+11. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
+12. Keep [Module Promise Map](module-promise-map.md) open so each module stays attached to one clear promise.
+13. Use [Module Checkpoints](module-checkpoints.md) at the end of each module so you know whether the current idea actually landed.
+14. Keep [Proof Ladder](proof-ladder.md) open so you can choose the smallest honest command for the current question.
+15. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
+16. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
 
 ## Route By Pressure
 
@@ -86,6 +87,7 @@ By the end of the course, you should be able to explain:
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)
 - [Pressure Routes](pressure-routes.md)
+- [Return Map](../module-00-orientation/return-map.md)
 - [Module Promise Map](module-promise-map.md)
 - [Module Checkpoints](module-checkpoints.md)
 - [Module 00](../module-00-orientation/index.md)
