@@ -186,10 +186,10 @@ publish-summary: verify ## Write a compact publish-boundary summary
 
 profile-audit: validate-config ## Build the profile review bundle
 	@rm -rf "$(PROFILE_AUDIT_DIR)"
-	@mkdir -p "$(PROFILE_AUDIT_DIR)/profiles"
-	cp profiles/local/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/local.yaml"
-	cp profiles/ci/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/ci.yaml"
-	cp profiles/slurm/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/slurm.yaml"
+	@mkdir -p "$(PROFILE_AUDIT_DIR)/profiles/local" "$(PROFILE_AUDIT_DIR)/profiles/ci" "$(PROFILE_AUDIT_DIR)/profiles/slurm"
+	cp profiles/local/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/local/config.yaml"
+	cp profiles/ci/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/ci/config.yaml"
+	cp profiles/slurm/config.yaml "$(PROFILE_AUDIT_DIR)/profiles/slurm/config.yaml"
 	$(SNAKEMAKE) --profile profiles/local --cores $(CORES) --configfile $(CONFIG) -n -p > "$(PROFILE_AUDIT_DIR)/local-dryrun.txt"
 	$(SNAKEMAKE) --profile profiles/ci --cores $(CORES) --configfile $(CONFIG) -n -p > "$(PROFILE_AUDIT_DIR)/ci-dryrun.txt"
 	$(SNAKEMAKE) --profile profiles/slurm --cores $(CORES) --configfile $(CONFIG) -n -p > "$(PROFILE_AUDIT_DIR)/slurm-dryrun.txt"
@@ -210,9 +210,9 @@ profile-audit: validate-config ## Build the profile review bundle
 profile-summary: profile-audit ## Write a compact comparison of local, CI, and SLURM profiles
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
 	@$(PYTHON) scripts/profile_summary.py \
-		--local "$(PROFILE_AUDIT_DIR)/profiles/local.yaml" \
-		--ci "$(PROFILE_AUDIT_DIR)/profiles/ci.yaml" \
-		--slurm "$(PROFILE_AUDIT_DIR)/profiles/slurm.yaml" \
+		--local "$(PROFILE_AUDIT_DIR)/profiles/local/config.yaml" \
+		--ci "$(PROFILE_AUDIT_DIR)/profiles/ci/config.yaml" \
+		--slurm "$(PROFILE_AUDIT_DIR)/profiles/slurm/config.yaml" \
 		--out "$(PROFILE_AUDIT_DIR)/profile-summary.json"
 	@echo "✔ wrote profile summary to $(PROFILE_AUDIT_DIR)/profile-summary.json"
 
@@ -263,7 +263,9 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 		"$(WALKTHROUGH_DIR_ABS)/workflow/modules/qc_module" \
 		"$(WALKTHROUGH_DIR_ABS)/workflow/modules/screen_module" \
 		"$(WALKTHROUGH_DIR_ABS)/workflow/scripts" \
-		"$(WALKTHROUGH_DIR_ABS)/profiles" \
+		"$(WALKTHROUGH_DIR_ABS)/profiles/local" \
+		"$(WALKTHROUGH_DIR_ABS)/profiles/ci" \
+		"$(WALKTHROUGH_DIR_ABS)/profiles/slurm" \
 		"$(WALKTHROUGH_DIR_ABS)/scripts"
 	$(SNAKEMAKE) --list-rules > "$(WALKTHROUGH_DIR_ABS)/list-rules.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(WALKTHROUGH_DIR_ABS)/dryrun.txt"
@@ -286,9 +288,9 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	cp workflow/modules/qc_module/Snakefile "$(WALKTHROUGH_DIR_ABS)/workflow/modules/qc_module/Snakefile"
 	cp workflow/modules/screen_module/Snakefile "$(WALKTHROUGH_DIR_ABS)/workflow/modules/screen_module/Snakefile"
 	cp workflow/scripts/provenance.py "$(WALKTHROUGH_DIR_ABS)/workflow/scripts/provenance.py"
-	cp profiles/local/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/local.yaml"
-	cp profiles/ci/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/ci.yaml"
-	cp profiles/slurm/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/slurm.yaml"
+	cp profiles/local/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/local/config.yaml"
+	cp profiles/ci/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/ci/config.yaml"
+	cp profiles/slurm/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/slurm/config.yaml"
 	cp scripts/validate_config.py "$(WALKTHROUGH_DIR_ABS)/scripts/validate_config.py"
 	cp scripts/verify_publish.py "$(WALKTHROUGH_DIR_ABS)/scripts/verify_publish.py"
 	cp TOUR.md "$(WALKTHROUGH_DIR_ABS)/TOUR.md"
@@ -299,7 +301,7 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 		'4. Read the copied rule files, module Snakefiles, and list-rules.txt for visible workflow meaning.' \
 		'5. Read dryrun.txt to inspect the declared plan before execution.' \
 		'6. Read ARCHITECTURE.md and EXACT_SOURCE_GUIDE.md when the next file is not obvious.' \
-		'7. Read profiles/*.yaml, config.yaml, and schema.yaml to separate workflow meaning from policy.' \
+		'7. Read profiles/*/config.yaml, config.yaml, and schema.yaml to separate workflow meaning from policy.' \
 		'8. Read workflow/scripts/provenance.py and scripts/*.py to see how provenance, config, and publish checks are enforced.' \
 		'9. Read FILE_API.md to see which outputs are public contracts.' \
 		'10. Run make selftest when the next honest question is determinism.' \
@@ -325,7 +327,9 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bundle
 	@mkdir -p \
 		"$(TOUR_DIR_ABS)/workflow/rules" \
-		"$(TOUR_DIR_ABS)/profiles" \
+		"$(TOUR_DIR_ABS)/profiles/local" \
+		"$(TOUR_DIR_ABS)/profiles/ci" \
+		"$(TOUR_DIR_ABS)/profiles/slurm" \
 		"$(TOUR_DIR_ABS)/report"
 	$(SNAKEMAKE) --list-rules > "$(TOUR_DIR_ABS)/list-rules.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(TOUR_DIR_ABS)/dryrun.txt"
@@ -351,9 +355,9 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 	cp workflow/rules/preprocess.smk "$(TOUR_DIR_ABS)/workflow/rules/preprocess.smk"
 	cp workflow/rules/summarize_report.smk "$(TOUR_DIR_ABS)/workflow/rules/summarize_report.smk"
 	cp workflow/rules/publish.smk "$(TOUR_DIR_ABS)/workflow/rules/publish.smk"
-	cp profiles/local/config.yaml "$(TOUR_DIR_ABS)/profiles/local.yaml"
-	cp profiles/ci/config.yaml "$(TOUR_DIR_ABS)/profiles/ci.yaml"
-	cp profiles/slurm/config.yaml "$(TOUR_DIR_ABS)/profiles/slurm.yaml"
+	cp profiles/local/config.yaml "$(TOUR_DIR_ABS)/profiles/local/config.yaml"
+	cp profiles/ci/config.yaml "$(TOUR_DIR_ABS)/profiles/ci/config.yaml"
+	cp profiles/slurm/config.yaml "$(TOUR_DIR_ABS)/profiles/slurm/config.yaml"
 	cp "$(MANIFEST_ABS)" "$(TOUR_DIR_ABS)/publish-manifest.json"
 	cp "$(PUBLISH_DIR_ABS)/discovered_samples.json" "$(TOUR_DIR_ABS)/discovered_samples.json"
 	cp "$(PUBLISH_DIR_ABS)/provenance.json" "$(TOUR_DIR_ABS)/provenance.json"

@@ -42,7 +42,7 @@ general, not profile comparison specifically.
 1. Run `make profile-audit`.
 2. Run `make profile-summary` when you want the shortest comparison of shared and differing settings.
 3. Read `route.txt`, `review-questions.txt`, and `profile-summary.json`.
-4. Compare `profiles/local.yaml`, `profiles/ci.yaml`, and `profiles/slurm.yaml`.
+4. Compare `profiles/local/config.yaml`, `profiles/ci/config.yaml`, and `profiles/slurm/config.yaml`.
 5. Compare `local-dryrun.txt`, `ci-dryrun.txt`, and `slurm-dryrun.txt`.
 
 [Back to top](#top)
