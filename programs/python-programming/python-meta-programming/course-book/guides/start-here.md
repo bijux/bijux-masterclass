@@ -37,24 +37,23 @@ and easier to justify than a simpler alternative.
 - you want clever tricks without the debugging and maintenance costs
 - the problem can still be solved honestly with plain functions, plain classes, or explicit composition
 
-## Best Reading Route
+## Stable first route
 
-1. Read [Course Home](../index.md) for the course promise and support surfaces.
+Use this route when you are new to the course and want the smallest honest sequence:
+
+1. Read [Course Home](../index.md) for the promise, audience, and entry choices.
 2. Read [Course Guide](course-guide.md) for the module arc and page roles.
-3. Read [Learning Contract](learning-contract.md) before you start Module 01.
+3. Read [Learning Contract](learning-contract.md) so the study bar is explicit before the dense modules begin.
 4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.
-5. Read [Course Map](../module-00-orientation/course-map.md) so the full course arc stays visible from the start.
-6. Read [First-Contact Map](../module-00-orientation/first-contact-map.md) if you want the minimum honest entry route through the foundations.
-7. Read [Mid-Course Map](../module-00-orientation/mid-course-map.md) when you are leaving the observation modules and entering wrappers, descriptors, and class customization.
-8. Read [Mastery Map](../module-00-orientation/mastery-map.md) when you are entering from a review or extension question instead of from first contact.
-9. Read [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need to find the last stable module boundary again.
-10. Use [Pressure Routes](pressure-routes.md) when you are entering from a code review or framework problem.
-11. Use [Reading Routes](reading-routes.md) if you want a slower path through the denser modules.
-12. Keep [Module Promise Map](module-promise-map.md) open so each module stays attached to one clear promise.
-13. Use [Module Checkpoints](module-checkpoints.md) at the end of each module so you know whether the current idea actually landed.
-14. Keep [Proof Ladder](proof-ladder.md) open so you can choose the smallest honest command for the current question.
-15. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) and [Mechanism Selection](mechanism-selection.md) open while reading so every stronger hook is judged against a lower-power alternative.
-16. Use [Capstone Map](../capstone/capstone-map.md) and [Capstone Guide](../capstone/index.md) when you want the executable route.
+5. Read [First-Contact Map](../module-00-orientation/first-contact-map.md) if you want the shortest route through the foundations.
+6. Start [Module 01](../module-01-runtime-objects-object-model/index.md) once you can explain what the course means by lower-power and higher-power hooks.
+
+## Switch routes when the pressure changes
+
+- Use [Pressure Routes](pressure-routes.md) when you are entering from a code review, framework change, or debugging problem.
+- Use [Reading Routes](reading-routes.md) when you want a slower or mechanism-shaped sequence instead of the default path.
+- Use [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need the last stable module boundary.
+- Use [Capstone Guide](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) once the current module claim is clear enough to inspect in executable code.
 
 ## Route By Pressure
 
@@ -82,13 +81,9 @@ By the end of the course, you should be able to explain:
 - why a descriptor owns an invariant better than a decorator in some cases
 - when a metaclass is justified and when it is only hiding design confusion
 
-## First Pages To Keep Open
+## First pages to keep open
 
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)
-- [Pressure Routes](pressure-routes.md)
-- [Return Map](../module-00-orientation/return-map.md)
-- [Module Promise Map](module-promise-map.md)
-- [Module Checkpoints](module-checkpoints.md)
 - [Module 00](../module-00-orientation/index.md)
-- [Capstone Guide](../capstone/index.md)
+- [Runtime Power Ladder](../reference/runtime-power-ladder.md)
