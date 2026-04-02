@@ -74,6 +74,12 @@ test count.
 3. Finish with runtime checks, approval boundaries, and confidence ladders.
 4. Use the refactor chapter to reshape the capstone test suite around contracts instead of convenience.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want each verification claim tied to one evidence route.
+- `../guides/proof-ladder.md` when you need to size proof honestly instead of defaulting to the strongest route.
+- `../reference/self-review-prompts.md` when you want to test whether a proof claim now sounds like a design judgment instead of a testing slogan.
+
 ## Verification route by claim
 
 | If the claim is about... | Start with | Then compare |

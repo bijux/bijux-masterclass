@@ -75,6 +75,12 @@ made the system understandable in the first place.
 3. Finish with runbooks, capstone review, and the final mastery checkpoint.
 4. Treat the closing chapters as a full-system audit, not just another feature pass.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want the final operational promise tied directly to proof.
+- `../guides/proof-ladder.md` when you need to choose the smallest honest audit route.
+- `../reference/self-review-prompts.md` when you want the final review to sound like a production design audit instead of a checklist recital.
+
 ## Operational audit route
 
 1. Start with `capstone/INSPECTION_GUIDE.md` and `capstone/TARGET_GUIDE.md`.

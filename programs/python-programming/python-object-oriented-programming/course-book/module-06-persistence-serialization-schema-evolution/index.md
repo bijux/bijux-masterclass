@@ -73,6 +73,12 @@ semantics instead of flattening them away.
 3. Move into transactional publication, testing, and migration strategy after the storage boundary is clear.
 4. Finish with the refactor chapter to see persistence added without corrupting the domain.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want the persistence promise tied to one evidence route.
+- `../guides/capstone-map.md` when you want the repository and proof surfaces kept explicit.
+- `../reference/self-review-prompts.md` when you want to test whether storage translation and domain meaning still sound separable.
+
 ## First review route for storage boundaries
 
 1. Read `src/service_monitoring/repository.py`.

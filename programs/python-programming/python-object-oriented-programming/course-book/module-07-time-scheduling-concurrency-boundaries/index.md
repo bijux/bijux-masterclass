@@ -75,6 +75,12 @@ plumbing to bolt on later.
 3. Then study async bridges, cancellation, and API design as one boundary cluster.
 4. Finish with the refactor chapter to see the runtime gain temporal discipline without losing readability.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want the time and concurrency promise tied to a proof route.
+- `../guides/pressure-routes.md` when runtime pressure is competing with earlier ownership questions.
+- `../reference/self-review-prompts.md` when you want to test whether clocks, cancellation, and retries still sound like boundary decisions.
+
 ## Review route for time pressure
 
 1. Read `src/service_monitoring/runtime.py`.

@@ -74,6 +74,12 @@ into an ungoverned surface area.
 3. Finish with import discipline, review governance, and compatibility suites.
 4. Use the refactor chapter to expose a clean capstone API without leaking internals.
 
+## Keep these support surfaces open
+
+- `../guides/outcomes-and-proof-map.md` when you want the public-surface promise tied to evidence.
+- `../guides/design-question-map.md` when the real problem is seam ownership rather than public API vocabulary.
+- `../reference/self-review-prompts.md` when you want to test whether a seam deserves publication or should stay private.
+
 ## Public surface review route
 
 1. Read `src/service_monitoring/application.py`.
