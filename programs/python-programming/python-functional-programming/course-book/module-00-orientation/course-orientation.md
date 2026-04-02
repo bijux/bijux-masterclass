@@ -1,5 +1,30 @@
 # Functional Programming Course Orientation
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Orientation"]
+  page["Functional Programming Course Orientation"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Python Functional Programming is a course about **discipline**, not ornament. It teaches
 how to use functional ideas to make Python systems more predictable under refactoring,
 testing, concurrency, and operational change.

@@ -1,5 +1,30 @@
 # Schedulers, Timers, and Coordination Objects
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Time And Concurrency"]
+  page["Schedulers, Timers, and Coordination Objects"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 Coordinate periodic or delayed work without smuggling scheduling concerns into domain

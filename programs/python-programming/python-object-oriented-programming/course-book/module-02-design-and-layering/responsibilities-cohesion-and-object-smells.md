@@ -1,5 +1,30 @@
 # Responsibilities, Cohesion, and Object Smells
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Responsibilities, Cohesion, and Object Smells"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core introduces responsibility-driven design (RDD) as the foundation for Module 2, shifting focus from isolated objects to their roles in collaboration. Employ CRC (Class-Responsibility-Collaboration) thinking to assign precise responsibilities, ensuring high cohesion within classes and low coupling between them. Identify common smells—God objects, feature envy, and low cohesion—and demonstrate refactoring techniques to split or merge classes based on functional responsibilities rather than superficial attributes. Building on Module 1's semantics, this establishes disciplined object collaboration in the monitoring domain, where `RuleEvaluator` focuses on pure evaluation without side effects, and `ReportAggregator` owns summary computations. Note: `Alert` is simplified here with a string rule label; full entity semantics (referencing a `Rule` instance) are restored in Module 3.

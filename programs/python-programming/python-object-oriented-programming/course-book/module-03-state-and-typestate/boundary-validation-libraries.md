@@ -1,5 +1,30 @@
 # Boundary Validation Libraries: Where Pydantic and Friends Belong
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["State And Typestate"]
+  page["Boundary Validation Libraries: Where Pydantic and Friends Belong"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 Use validation libraries (Pydantic, attrs validators, Marshmallow, etc.) **at the boundary**, not in the core domain.

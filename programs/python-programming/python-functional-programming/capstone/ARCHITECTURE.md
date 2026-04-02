@@ -1,5 +1,31 @@
 # FuncPipe Architecture Map
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  guide["Capstone docs"]
+  section["ARCHITECTURE"]
+  page["FuncPipe Architecture Map"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 This map connects the course narrative to the real package layout of the capstone. Use it
 when a module introduces a new idea and you want to find the concrete code that carries it.
 

@@ -1,5 +1,30 @@
 # Refactor 2: Configs and Rules → Dataclasses, Null-Safe APIs, Typestate & Hypothesis
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["State And Typestate"]
+  page["Refactor 2: Configs and Rules → Dataclasses, Null-Safe APIs, Typestate & Hypothesis"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Goal
 
 Apply Module 3 as an engineering refactor: make the monitoring system’s configuration and rule model *structurally correct*.

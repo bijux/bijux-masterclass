@@ -1,4 +1,29 @@
 # CLI and Config Pipelines
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Ecosystem Interop"]
+  page["CLI and Config Pipelines"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 09**
 > **Core question:**  
 > How do you integrate command-line interfaces with FuncPipe using Click or Typer to create config-driven entry points that delegate to pure pipelines, support overrides, and maintain testability while separating CLI concerns from core logic?

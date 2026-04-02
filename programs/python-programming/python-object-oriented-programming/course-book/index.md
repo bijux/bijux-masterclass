@@ -1,5 +1,30 @@
 # Python Object-Oriented Programming
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Course home"]
+  page["Python Object-Oriented Programming"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This course teaches object-oriented Python as a discipline of explicit semantics,
 clear responsibilities, and long-lived system boundaries. The focus is not on class
 syntax in isolation. The focus is on how object models behave under mutation,

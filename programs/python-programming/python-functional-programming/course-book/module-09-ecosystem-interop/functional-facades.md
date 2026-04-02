@@ -1,4 +1,29 @@
 # Functional Facades
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Ecosystem Interop"]
+  page["Functional Facades"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 09**
 > **Core question:**
 > How do you wrap imperative, side-effectful libraries in pure functional facades that return effect descriptions (not executed effects), expose algebraic ports with enforced contracts (e.g., keyed elements for idempotence), and normalize errors/resources into rich domain ADTs, enabling seamless integration into FuncPipe while preserving purity, composability, and testability?

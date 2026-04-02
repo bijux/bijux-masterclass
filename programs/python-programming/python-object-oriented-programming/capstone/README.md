@@ -1,5 +1,31 @@
 # Python Object-Oriented Programming Capstone
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  guide["Capstone docs"]
+  section["README"]
+  page["Python Object-Oriented Programming Capstone"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 This capstone is a compact monitoring-system reference implementation. It exists to
 make the course concrete: value objects, entities, rule lifecycles, aggregate roots,
 evaluation policies, read models, runtime adapters, and unit-of-work boundaries are

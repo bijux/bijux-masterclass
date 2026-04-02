@@ -1,5 +1,30 @@
 # Inheritance: Legit Use Cases and the Fragile Base Class Problem
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Inheritance: Legit Use Cases and the Fragile Base Class Problem"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core examines inheritance as a structural tool in Python, highlighting legitimate applications—such as defining substitutable subtypes, constructing small hierarchies, and implementing template base classes—while exposing its inherent risks, including the fragile base class problem. In the monitoring domain, inheritance proves useful for a modest hierarchy of rule evaluators (for example, `ThresholdRule` and `RateRule` extending a common `BaseRule` for shared evaluation logic), but only when changes to the base do not unpredictably disrupt subclasses. Demonstrate failure modes through concrete examples: base modifications breaking subclass behavior (via regression tests) and brittle test suites. Extending M02C16's layered architecture, integrate a small, justified inheritance hierarchy into the domain layer, enforcing substitutability via explicit contracts and avoiding over-reliance on composition where inheritance suffices for polymorphic templates. Note: Inheritance remains subordinate to composition (from M02C12); apply it sparingly, with runtime assertions and static type checks to mitigate fragility. This hierarchy simplifies shared normalization and conversion over the M02C16 strategy pattern by centralizing template orchestration in a single base, reducing duplicate code in callers that would otherwise repeat these steps across strategies—though the marginal benefit here is modest, illustrating that inheritance's value must be weighed against increased coupling.

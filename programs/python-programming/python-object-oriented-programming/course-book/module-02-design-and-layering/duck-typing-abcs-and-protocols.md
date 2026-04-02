@@ -1,5 +1,30 @@
 # Interfaces in Python: Duck Typing, ABCs, Protocols (Prescriptive Choices)
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Interfaces in Python: Duck Typing, ABCs, Protocols (Prescriptive Choices)"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core examines Python's interface mechanisms—duck typing, Abstract Base Classes (ABCs), and typing Protocols—as prescriptive tools for defining collaboration contracts without rigid class hierarchies. Duck typing supports simple, internal collaborations where method presence implies compatibility; ABCs provide runtime enforcement for pluggable extensions, such as plugin systems; Protocols facilitate static type checking for hints without requiring inheritance. In the monitoring domain, apply these to the M02C18 rule evaluators: a `RuleEvaluator` Protocol for static hints in core use cases (satisfied structurally by both the `BaseRule` hierarchy and ad-hoc implementations); and a `RulePlugin` ABC for runtime plugin registration (a distinct role with additional metadata, using virtual subclass registration for third-party compatibility). Guideline: Assign one mechanism per collaboration role—Protocol for core domain hints, ABC for extension points—to minimize coupling and avoid mixing, while permitting supersets in layered roles (e.g., ABCs building on Protocol shapes via composition). Extending M02C18's template hierarchy, this core defines interfaces for evaluation, illustrating each mechanism's strengths and avoiding overkill, thereby reducing ad-hoc dependencies in M02C16's orchestrator.

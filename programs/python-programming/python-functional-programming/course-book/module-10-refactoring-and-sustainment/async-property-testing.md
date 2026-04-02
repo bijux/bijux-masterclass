@@ -1,5 +1,30 @@
 # Async Property Testing
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Refactoring And Sustainment"]
+  page["Async Property Testing"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 10**
 > **Core question:**  
 > How do you use property-based testing with Hypothesis to verify laws in async and streaming pipelines, using strategies for iterators/generators and faked I/O/time/executors to ensure determinism and avoid flakiness?

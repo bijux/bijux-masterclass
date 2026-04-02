@@ -1,4 +1,29 @@
 # Team Adoption
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Ecosystem Interop"]
+  page["Team Adoption"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 09**
 > **Core question:**  
 > How do you establish coding standards, recognize key patterns, and implement review guidelines to facilitate team adoption of FP-style Python, ensuring consistent, maintainable, and high-quality functional code in projects like FuncPipe?

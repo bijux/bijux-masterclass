@@ -1,5 +1,30 @@
 # Collections Hazards – Aliasing, Mutable Keys, and Shared State
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Collections Hazards – Aliasing, Mutable Keys, and Shared State"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core dissects the perils inherent in Python's reference semantics when interacting with collections, spotlighting aliasing, mutable keys, and shared mutable state. Extending equality and hashing contracts from M01C05 and the value/entity lens from M01C01, we catalog real failure modes—such as lost dict entries from mutated keys and "spooky action at a distance" via aliases—and prescribe neutralization strategies including immutability, defensive copying, and design discipline. These hazards underscore Python's power and pitfalls: references enable efficiency but demand vigilance to avert subtle corruptions.

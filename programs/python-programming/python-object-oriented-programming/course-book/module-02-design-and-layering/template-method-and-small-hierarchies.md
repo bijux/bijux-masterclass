@@ -1,5 +1,30 @@
 # Template Method and Tiny Hierarchies without a Framework Zoo
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Template Method and Tiny Hierarchies without a Framework Zoo"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core refines the inheritance patterns from M02C17, focusing on the template method as a precise tool: a single abstract skeleton method orchestrating a fixed algorithm with minimal interchangeable hooks for subclasses, constrained to tiny hierarchies to avoid bloat. Building directly on M02C17's `BaseRule`, we refactor it into a stricter single-template form (`evaluate` skeleton with one hook `_filter_high`), demonstrating how to enforce override rules (for example, "preserve input order") while capping depth at 2 levels. In the monitoring domain, this eliminates duplication in rule evaluation (normalize-filter-convert) that would otherwise repeat across strategies in M02C16, but the payoff is modest—increased coupling for slight ceremony reduction—highlighting when templates shine (shared steps > variants) versus when to revert to composition. Avoid "framework zoo" pitfalls: no multi-template layers, no excessive hooks, and explicit contracts via ABCs/docs/asserts to prevent brittle extensions.

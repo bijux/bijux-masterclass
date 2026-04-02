@@ -1,5 +1,30 @@
 # Deterministic Async Testing
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Async Funcpipe And Backpressure"]
+  page["Deterministic Async Testing"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
 > This is a **required** core. Every async FuncPipe pipeline that involves timing (retries, timeouts, backoff jitter) is tested deterministically using injected fake clocks, sleepers, RNGs, and timeout contexts — eliminating flakes and making CI fast and reliable.

@@ -1,5 +1,30 @@
 # Encapsulation and Public Surface – Representations, Debuggability, and Leaks
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Encapsulation and Public Surface – Representations, Debuggability, and Leaks"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core addresses the principles of encapsulation in Python objects, focusing on delineating public interfaces from internal state while ensuring debuggability through controlled representations. Building upon the attribute resolution from M01C02 and construction invariants from M01C03, we examine the design of public versus internal attributes, the judicious use of properties for exposing computed values, and the implementation of `__repr__` and `__str__` to facilitate introspection without compromising security or invariants. Effective encapsulation minimizes coupling and information leakage, promoting maintainable and secure types.

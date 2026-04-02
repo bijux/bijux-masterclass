@@ -1,5 +1,30 @@
 # When OOP Is the Wrong Tool in Python
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["When OOP Is the Wrong Tool in Python"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core interrogates the boundaries of object-oriented programming in Python, identifying domains where functional constructs, modules, or data-pipe paradigms surpass classes in clarity and efficiency. Extending the value/entity lens from M01C01 and protocol adoption from M01C08, we catalog scenarios—pure data transformations, small scripts, one-off tools—where OOP introduces unnecessary abstraction overhead, and prescribe recognition of anti-OOP smells to favor procedural or composable alternatives. Disciplined restraint prevents over-engineering, preserving Python's multiparadigm strengths for pragmatic design.

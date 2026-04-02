@@ -1,5 +1,30 @@
 # Properties and Computed Attributes: Clarity vs Hidden Work
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["State And Typestate"]
+  page["Properties and Computed Attributes: Clarity vs Hidden Work"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 The `@property` decorator enables methods to behave as attributes, providing fluent access to derived values without exposing implementation details. In the monitoring domain, this allows direct expressions like `alert.active` for status checks or `metric.category` for classifications, reducing verbose method calls in orchestration. Properties must adhere to a strict contract—pure, local, and cheap—to avoid concealing side effects or computational costs that complicate testing and performance. This core contrasts suitable uses (simple derivations) with misapplications (I/O or expensive operations in "getters"), refactoring simplified M02C20 entities to apply properties for pure reads and reserve methods for actions or complexity. The contract: Properties for pure, local, data-like reads; methods for all else. This supports Module 3's state design, where properties act as descriptors (detailed in M03C22) and integrate with dataclasses (M03C23).

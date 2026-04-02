@@ -1,5 +1,30 @@
 # Equality, Ordering, and Hashing – Contracts with Containers
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Equality, Ordering, and Hashing – Contracts with Containers"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core elucidates the design of equality (`__eq__`), ordering (`__lt__` et al.), and hashing (`__hash__`) in Python objects, emphasizing their interplay with container types such as dictionaries and sets. Extending the identity and state foundations from M01C01 and attribute resolution from M01C02, we delineate value-based versus identity-based equality, the invariants governing hashable objects, and criteria for implementing—or abstaining from—ordering protocols. Correct implementation ensures seamless integration with collections while preserving semantic consistency.

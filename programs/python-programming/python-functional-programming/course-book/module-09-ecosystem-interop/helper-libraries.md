@@ -1,4 +1,29 @@
 # Helper Libraries
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Ecosystem Interop"]
+  page["Helper Libraries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 09**
 > **Core question:**  
 > How do you optionally integrate external FP libraries like `toolz` (for ergonomic combinators) and `returns` (for typed monadic containers) into FuncPipe pipelines, using `toolz` for syntax sugar over stdlib iterators and `returns` only at outermost boundaries with immediate conversion to our custom ADTs?

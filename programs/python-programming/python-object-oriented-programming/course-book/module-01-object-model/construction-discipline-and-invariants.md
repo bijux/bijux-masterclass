@@ -1,5 +1,30 @@
 # Construction Discipline – `__init__`, Required State, and Half-Baked Objects
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Construction Discipline – `__init__`, Required State, and Half-Baked Objects"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core examines the discipline required for object construction in Python, emphasizing the creation of valid instances from inception. Extending the state and attribute models from M01C01 and M01C02, we explore the lifecycle of instantiation—via `__new__` and `__init__`—and strategies to enforce invariants at construction time. The focus is on distinguishing required from optional state through signature design, ensuring no "half-baked" objects escape with invalid configurations, and eschewing post-initialization setters that erode encapsulation. We address critical hazards, including leakage paths and subclassing pitfalls, to produce types that resist misuse.

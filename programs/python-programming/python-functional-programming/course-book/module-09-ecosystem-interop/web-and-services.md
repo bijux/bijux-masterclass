@@ -1,4 +1,29 @@
 # Web and Services
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Ecosystem Interop"]
+  page["Web and Services"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 09**
 > **Core question:**  
 > How do you build web services using FastAPI in a functional style, with thin adapters delegating to pure core logic, dependency injection for capabilities, and explicit mappings for errors/responses to maintain composability and testability in FuncPipe pipelines?

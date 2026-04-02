@@ -1,6 +1,31 @@
 <a id="top"></a>
 # Module 9: Metaclasses — When Everything Else Is Not Enough
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Module 09"]
+  page["Module 9: Metaclasses — When Everything Else Is Not Enough"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 <a id="toc"></a>
 ## Table of Contents
 
@@ -460,7 +485,7 @@ class PluginMeta(type):
             else:
                 _registry.pop(group, None)
 
-# Usage
+## Usage
 
 class Logger(metaclass=PluginMeta):
     __abstract__ = True
@@ -477,7 +502,7 @@ class ConsoleLogger(Logger):
         return f"[CONSOLE] {msg}"
 
 print([name for name, _ in PluginMeta.get_plugins("logging")])
-# ['ConsoleLogger', 'FileLogger']
+## ['ConsoleLogger', 'FileLogger']
 ```
 
 ### Caveats (must be stated bluntly)

@@ -1,5 +1,30 @@
 # Copying and Cloning – Shallow, Deep, and Custom Semantics
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Copying and Cloning – Shallow, Deep, and Custom Semantics"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core investigates the semantics of object copying in Python, contrasting shallow and deep copies from the `copy` module with custom implementations via `__copy__` and `__deepcopy__`. Extending aliasing hazards from M01C06 and the value/entity distinction from M01C01, we delineate copy strategies for entities (identity-preserving), value objects (interchangeable duplicates), and aggregates (nested structures), while identifying when copying signals deeper design flaws. Appropriate copying neutralizes sharing risks without unnecessary overhead, ensuring semantic fidelity across duplicates.

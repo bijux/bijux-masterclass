@@ -1,5 +1,30 @@
 # Versioning and Migration
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Refactoring And Sustainment"]
+  page["Versioning and Migration"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 10**
 > **Core question:**  
 > How do you version and migrate FuncPipe contracts (events, ports, configs, graphs) across bounded contexts with enforceable rules for backward/forward compatibility, enabling zero-downtime evolution and safe deprecation?

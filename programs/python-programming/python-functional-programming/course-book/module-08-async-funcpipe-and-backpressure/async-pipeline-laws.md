@@ -1,5 +1,30 @@
 # Async Pipeline Laws
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Async Funcpipe And Backpressure"]
+  page["Async Pipeline Laws"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
 > This is the final core of Module 08. We add no new combinators — we obtain overwhelming evidence that the pipeline built from C01–C09 satisfies strong, law-like properties under retries, failures, partial consumption, cancellations, and arbitrary cooperative interleavings — with zero runtime enforcement overhead.

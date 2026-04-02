@@ -1,5 +1,30 @@
 # Object Identity, State, and Behavior – Python’s Real Model
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Object Identity, State, and Behavior – Python’s Real Model"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core establishes a rigorous mental model for Python objects, grounded in the Python language reference and data model documentation while distinguishing implementation details and design recommendations. Python's object system is elegant in its uniformity: every value is an object, with identity, state, and behavior emerging from a small set of foundational semantics. We delineate these elements to provide clarity for modeling robust types, avoiding common pitfalls in equality, mutability, and performance.

@@ -1,5 +1,30 @@
 # Refactor 4: Introduce New Feature, Preserve Old Behaviour, Document Smell Fixes
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Resources And Evolution"]
+  page["Refactor 4: Introduce New Feature, Preserve Old Behaviour, Document Smell Fixes"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Goal
 
 Capstone refactor: add a non-trivial feature to the monitoring system **without breaking** existing behavior or stored data.

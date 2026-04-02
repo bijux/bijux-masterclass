@@ -1,5 +1,30 @@
 # Python Data Model as Design Surface – Iteration, Containers, Context, Numeric
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Python Data Model as Design Surface – Iteration, Containers, Context, Numeric"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core surveys the Python data model as a deliberate design interface, focusing on intentional implementation of dunder methods for iteration (`__iter__`), container traits (`__len__`, `__getitem__`, `__contains__`), context management (`__enter__`, `__exit__`), and numeric operations (`__add__` et al.). Extending encapsulation from M01C04 and equality protocols from M01C05, we delineate when to render types "container-like" for ecosystem interoperability versus maintaining opacity to preserve domain semantics. Selective adoption enhances usability without bloating interfaces, aligning objects with expectations while guarding invariants.

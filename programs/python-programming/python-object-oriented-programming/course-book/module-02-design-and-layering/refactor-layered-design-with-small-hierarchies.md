@@ -1,5 +1,30 @@
 # Refactor 1: Thin Layered Architecture with Explicit Roles, Small Hierarchies, and Interfaces
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Refactor 1: Thin Layered Architecture with Explicit Roles, Small Hierarchies, and Interfaces"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core applies Module 2's patterns to refactor the monitoring system into a thin layered architecture (domain for pure logic, application for use-case orchestration via ports, infrastructure for adapters), incorporating a single justified small inheritance hierarchy for rule evaluation (M02C18's template method with `ThresholdRule` and `RateRule` subtypes) and interfaces for role-specific contracts (M02C19: `RuleEvaluator` Protocol for static evaluation hints; `RulePlugin` ABC for runtime plugin enforcement). Building on priors like semantics (M02C14), entities/services (M02C13, M02C15), and composition (M02C12), it addresses M02C16's flat leaks and M02C17's fragility through ports, explicit asserts, and substitutability tests. The hierarchy is chosen over pure strategies for centralizing shared steps (normalize-filter-evaluate) while limiting to two subtypes to prevent bloat; plugins demonstrate minimal extensibility via ABC conformance (virtual subclassing for third-parties, e.g., `RulePlugin.register(ExternalClass)`). The result: isolated layers, polymorphic domain, and enforceable roles, with tests verifying contracts across implementations.

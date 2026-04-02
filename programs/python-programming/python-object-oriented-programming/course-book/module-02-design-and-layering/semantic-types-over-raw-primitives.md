@@ -1,5 +1,30 @@
 # Avoiding Primitive Obsession: Semantic Types, Not Raw Str/Int
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Avoiding Primitive Obsession: Semantic Types, Not Raw Str/Int"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core addresses primitive obsession by wrapping raw types (str, int, float) in purpose-specific semantic types (e.g., `MetricName`, `Threshold`), enhancing expressiveness, validation, and type safety without excessive ceremony. In the monitoring domain, apply to `MetricConfig` fields and evaluation content (replacing Dict[str, Any] with `RuleEvaluation`) to clarify intent, improve error detection via type checkers, and enrich logging/debugging. Demonstrate trade-offs: semantic types pay dividends in hints/validation but become boilerplate if over-applied (e.g., trivial ints). Extending M02C13's value/entity distinctions, refactor to integrate semantics into values/entities, reducing runtime errors and coupling while maintaining simplicity. Note: We use runtime wrappers here for validation/repr; for pure static typing, `NewType` suffices but lacks runtime benefits. Preview `@dataclass(frozen=True)` for `RuleEvaluation` (full dataclasses in Module 3). Raw primitives at explicit boundaries (e.g., I/O); domain prefers semantics where misuse is likely. Metric remains primitive (name/value as str/float) by design, as misuse there is rarer; exercises suggest wrapping for stricter domains.

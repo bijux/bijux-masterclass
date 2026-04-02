@@ -1,5 +1,30 @@
 # Refactor 0 – Script → Object Model with Correct Identity/Data-Model Semantics
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Refactor 0 – Script → Object Model with Correct Identity/Data-Model Semantics"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core applies Module 1 principles to refactor a naïve monitoring script—built on dicts and lists—into an object model with `Metric` (value type: content-based equality and hashing), `Rule` (entity type: identity equality), and `Alert` (entity type: identity equality). The refactor treats values as immutable to enable safe sharing of instances and controlled ownership of collections, resolves unhashability, and preserves behavioral equivalence. Implement minimal data-model methods (`__eq__`, `__hash__`, `__repr__`) to support these semantics, drawing on identity (M01C01), attributes (M01C02), invariants (M01C03), encapsulation (M01C04), equality/hashing (M01C05), and aliasing avoidance (M01C06).

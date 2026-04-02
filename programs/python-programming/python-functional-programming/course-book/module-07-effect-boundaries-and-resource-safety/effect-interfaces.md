@@ -1,5 +1,30 @@
 # Effect Interfaces
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Effect Boundaries And Resource Safety"]
+  page["Effect Interfaces"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 07 – Optional Comparison Core**  
 > **Main track**: Cores 1, 3–10 (Ports & Adapters + Capability Protocols → Production).  
 > **This Core 2 is optional**. It is a standalone comparison only.  

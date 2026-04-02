@@ -1,5 +1,30 @@
 # Async Chunking
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Async Funcpipe And Backpressure"]
+  page["Async Chunking"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 08 – Main Track Core**  
 > **Main track**: Cores 1–10 (Async / Concurrent Pipelines → Production).  
 > This is a **required** core. Every production FuncPipe pipeline that talks to batched external services (embedding APIs, vector DBs, LLM batch endpoints) must chunk the async stream by size and/or time — without ever breaking order, completeness, backpressure, or laziness.

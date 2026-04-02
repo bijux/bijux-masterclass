@@ -1,6 +1,31 @@
 <a id="top"></a>
 # Module 1: Everything Is an Object
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Module 01"]
+  page["Module 1: Everything Is an Object"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 <a id="toc"></a>
 ## Table of Contents
 
@@ -367,11 +392,11 @@ class C:
 
 c = C()
 
-# Data descriptor always wins over instance __dict__
+## Data descriptor always wins over instance __dict__
 c.data = 10              # calls Data.__set__(c, 10) → c._value = 20
 print(c.data)            # calls Data.__get__(c, C)  → 20
 
-# Non-data descriptor can be shadowed by instance __dict__
+## Non-data descriptor can be shadowed by instance __dict__
 c.__dict__["nondata"] = 999
 print(c.nondata)         # 999
 ```
@@ -457,7 +482,7 @@ exec('value = "old"', mod.__dict__)
 imported_value = mod.value  # simulates: from mod import value
 print(mod.value, imported_value)  # old old
 
-# Simulate reload: re-exec into the same module object.
+## Simulate reload: re-exec into the same module object.
 exec('value = "new"', mod.__dict__)
 
 print(mod.value)        # new

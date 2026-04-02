@@ -1,5 +1,31 @@
 # Python Metaprogramming Capstone
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["README"]
+  page["Python Metaprogramming Capstone"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 This capstone is an executable plugin runtime for incident delivery adapters. It is
 small enough to audit line by line and large enough to exercise the core tools of
 the course in one place:

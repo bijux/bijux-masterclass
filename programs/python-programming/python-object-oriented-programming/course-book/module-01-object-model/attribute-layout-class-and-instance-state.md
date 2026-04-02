@@ -1,5 +1,30 @@
 # Attribute Layout – `__dict__`, Class vs Instance, Descriptors in the Chain
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Object Model"]
+  page["Attribute Layout – `__dict__`, Class vs Instance, Descriptors in the Chain"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Introduction
 
 This core dissects Python's attribute resolution mechanism, revealing how attributes are stored, located, and retrieved. Building on M01C01's foundational model of identity, state, and behavior, we examine the storage of state in instance and class dictionaries, the role of the method resolution order (MRO) in inheritance hierarchies, and the pivotal influence of descriptors on access dynamics. Understanding "attribute access" as a multi-step protocol—far beyond simple dictionary lookup—enables precise control over encapsulation, polymorphism, and performance in object designs.

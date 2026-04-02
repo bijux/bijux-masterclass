@@ -1,5 +1,30 @@
 # Module 03: Iterators and Lazy Dataflow
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Iterators And Lazy Dataflow"]
+  page["Module 03: Iterators and Lazy Dataflow"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This module makes streaming a first-class part of the course architecture. The learner
 moves from pure transforms over finite collections to deliberate control over when work
 happens, how much memory is used, and where materialization becomes a conscious choice.

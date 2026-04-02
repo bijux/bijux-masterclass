@@ -1,5 +1,30 @@
 # Python Functional Programming
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Course home"]
+  page["Python Functional Programming"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This course teaches functional programming in Python as a discipline of explicit dataflow,
 controlled effects, and reviewable operational boundaries. The goal is not to imitate a
 different language. The goal is to make ordinary Python systems easier to reason about,

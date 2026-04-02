@@ -1,5 +1,30 @@
 # Value Objects vs Entities: Identity and Basic Lifecycle Setup
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Value Objects vs Entities: Identity and Basic Lifecycle Setup"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core distinguishes value objects—structures defined wholly by their attributes, with equality based on content—from entities, which maintain unique identities independent of attributes. In the monitoring domain, classify a `MetricConfig` as a value object (substitutable if attributes match) versus an `Alert` as an entity (distinguished by a persistent ID, enabling updates without recreation). Explore implications for equality, hashing, mutability, and aliasing in collections; apply basic patterns to enforce these without advanced constructs. Extending M02C12's composition, refactor to illuminate these roles, preventing aliasing collapses and mutation drift while preserving domain intent. Note: We replace the earlier content-based `Alert` (from M02C11) with an identity-based version here, aligning with entity semantics. Lifecycle mechanics (e.g., state transitions) are previewed minimally but elaborated in Module 3.

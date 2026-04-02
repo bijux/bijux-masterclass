@@ -1,5 +1,30 @@
 # Python Metaprogramming
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Course home"]
+  page["Python Metaprogramming"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This course teaches Python metaprogramming as a discipline of runtime honesty. It is not
 about collecting more magic. It is about understanding what the interpreter is doing when
 objects inspect, transform, and register other objects.

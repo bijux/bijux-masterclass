@@ -1,5 +1,30 @@
 # Module 01: Purity and Substitution
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Purity And Substitution"]
+  page["Module 01: Purity and Substitution"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This module establishes the semantic floor for the whole course. If the learner cannot
 separate pure transforms from hidden state here, every later abstraction will feel
 ornamental instead of necessary.

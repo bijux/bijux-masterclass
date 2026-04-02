@@ -1,5 +1,31 @@
 # FuncPipe RAG Capstone
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  guide["Capstone docs"]
+  section["README"]
+  page["FuncPipe RAG Capstone"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 This directory contains the runnable project that anchors the Python Functional
 Programming course. It exists to prove that the course's design claims survive contact
 with executable code, tests, and operational boundaries.

@@ -1,5 +1,30 @@
 # Layering: Domain, Application, Infrastructure in a Python Codebase
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Layering: Domain, Application, Infrastructure in a Python Codebase"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core introduces layering to separate concerns in a Python codebase: the domain layer for pure business logic (entities, values, and domain services from M02C13–15), the application layer for orchestration (use cases and application services), and the infrastructure layer for adapters (external systems such as databases or HTTP clients). In the monitoring domain, refactor to enforce direct dependencies inward (infrastructure → application → domain via dependency inversion), thereby avoiding circular imports and god modules (for example, a flat orchestrator mixing all concerns). Demonstrate this in a small system: the domain owns invariants (such as `Alert` transitions), the application coordinates flows (such as `MonitoringUseCase`), and the infrastructure adapts (such as `HttpMetricAdapter`). Extending M02C15's services, apply semantics from M02C14 and simple domain services across layers to promote testability and evolution while eliminating leaks (for example, no HTTP calls in the domain). The domain contains no concrete infrastructure; the application knows only ports; and concrete adapters are wired in a composition root.

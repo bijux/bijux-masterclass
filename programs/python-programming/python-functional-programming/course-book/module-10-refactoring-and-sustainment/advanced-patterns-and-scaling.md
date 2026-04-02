@@ -1,5 +1,30 @@
 # Advanced Patterns and Scaling
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Refactoring And Sustainment"]
+  page["Advanced Patterns and Scaling"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 **Module 10**
 > **Core question:**  
 > How do Python's structural pattern matching and advanced typing features enable richer, safer functional pipelines, and how do you scale FuncPipe to parallel execution with tools like concurrent.futures or Dask while preserving purity, composability, and laws?

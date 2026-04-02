@@ -1,5 +1,30 @@
 # Outro – Closing *Python Metaprogramming I* and Looking Ahead
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Module 11"]
+  page["Outro – Closing *Python Metaprogramming I* and Looking Ahead"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 At this point you have seen the full “stack” of Python’s runtime customisation points: objects and namespaces, introspection (`dir`, `vars`, `inspect`), decorators (simple, parameterized, and type-aware), class decorators and properties, the descriptor protocol from first principles, and metaclasses with custom `type` pipelines and registries—together with a sober look at eval/exec, import hooks, and structural typing. You should now be able to trace what happens when you write `@decorator`, when you access `obj.field`, or when a framework registers a class at import time, without treating any of it as magic.
 
 The capstones you implemented—self-printing functions, robust `debug_print`, signature-driven `__repr__`, caching and validation decorators, frozen/immutable classes, reusable field descriptors, a mini-ORM, and a metaclass-based plugin registry—are deliberately modest in scope but structurally realistic. They are meant to be templates you can extend in your own work, with a clear understanding of the trade-offs around performance, error reporting, and maintainability. If you can now read the source of `property`, `dataclasses.dataclass`, or a Pydantic-style field implementation and see the same patterns, the course has achieved its main objective.

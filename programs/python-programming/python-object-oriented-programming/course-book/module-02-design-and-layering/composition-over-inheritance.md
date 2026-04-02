@@ -1,5 +1,30 @@
 # Composition over Inheritance as Default
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Composition over Inheritance as Default"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core establishes composition as the default structural mechanism in Module 2, favoring "has-a" relationships over "is-a" inheritance to promote flexibility and low coupling. Explore delegation (forwarding calls to components), forwarding (explicit method passthrough), and façades (unified interfaces over collaborators) through hands-on refactoring. Demonstrate when composition strictly outperforms inheritance—such as in pluggable behaviors or layered concerns—via reduced coupling (fewer inter-class dependencies) and increased flexibility (easier behavior swaps). Extending M02C11's responsibilities, apply this to the monitoring domain: compose rule evaluators via delegates rather than subclassing, enabling runtime swaps without hierarchy fragility.

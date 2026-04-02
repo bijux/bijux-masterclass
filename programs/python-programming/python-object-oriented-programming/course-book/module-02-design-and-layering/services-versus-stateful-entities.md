@@ -1,5 +1,30 @@
 # Service Objects and Operations vs Stateful Entities
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Design And Layering"]
+  page["Service Objects and Operations vs Stateful Entities"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 ## Purpose
 
 This core distinguishes stateful entities—data carriers with identity and domain behavior (e.g., `Alert`, `MetricConfig` from M02C13/14)—from service objects, which encapsulate orchestration and cross-cutting operations without owning the domain model (e.g., `RuleEvaluator`, `AlertService`). In the monitoring domain, extract coordination (e.g., persistence, notifications) into services to promote cohesion, testability, and reusability, avoiding bloated entities (data + infrastructure mixing) or god objects (orchestrators handling all concerns). Demonstrate when services form real abstractions (e.g., pluggable `AlertService` for lifecycle coordination) versus dumping grounds (e.g., procedural functions). Extending M02C14's semantics, refactor to compose services with semantic types, reducing entity bloat and enhancing modularity. Entities retain domain logic (e.g., transition invariants); services hold stable collaborators (e.g., ports) and delegate external concerns. Note: This core relocates and finalizes the `Alert` entity definition, superseding prior versions.
