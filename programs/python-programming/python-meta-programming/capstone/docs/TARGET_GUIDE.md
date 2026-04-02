@@ -25,6 +25,12 @@ Use this guide when `make help` shows several commands but the right one is stil
 obvious. The goal is not target memorization. The goal is choosing the smallest honest
 route for the claim you need to check.
 
+## Start here when two commands feel too similar
+
+- Use this page after [COMMAND_GUIDE.md](COMMAND_GUIDE.md), not before it.
+- Stay here when you are deciding between two plausible targets.
+- Leave once one distinction settles the choice.
+
 ## Stable targets
 
 | Target | What it is for |
@@ -78,7 +84,9 @@ Use:
 * `make confirm`
 * `make proof`
 
-## Important distinctions
+## The confusing pairs
+
+Use this section when the problem is not "what commands exist?" but "which of these two is the honest next move?"
 
 - `manifest` versus `registry`
   `manifest` explains schema and action metadata; `registry` explains which plugins are currently registered.
@@ -94,6 +102,14 @@ Use:
   `demo` shows one result; `trace` shows result, configuration, and recorded action history together.
 - `confirm` versus `proof`
   `confirm` is the strongest local confirmation route; `proof` publishes the full learner-facing review route.
+
+## Default choices when unsure
+
+- Choose `manifest` before `registry`.
+- Choose `field` or `action` before `plugin` when one contract is the real pressure.
+- Choose `trace` before `demo` when metadata or history might matter.
+- Choose `inspect` before `tour` when the question is still mainly about ownership.
+- Choose `confirm` before `proof` when a human-facing published bundle is not required.
 
 ## Best companion guides
 
