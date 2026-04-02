@@ -25,21 +25,30 @@ This directory collects the durable learner guides for the course. The course ho
 explains what the course teaches. The guides explain how to study it, how to compare your
 work with the reference states, and how to inspect the capstone without guessing.
 
-## Study guides
+## Read These First
 
 - [Start Here](start-here.md) for the shortest honest entry route
-- [Course Guide](course-guide.md) for the learning arc and module order
-- [Learning Contract](learning-contract.md) for learner expectations
-- [Module Dependency Map](module-dependency-map.md) for sequence reasoning
-- [Practice Map](practice-map.md) for the rehearsal loop
-- [Command Guide](command-guide.md) for the executable surface
-- [History Guide](history-guide.md) for `_history` and module worktrees
-- [Proof Matrix](proof-matrix.md) for claim-to-evidence routing
+- [Course Guide](course-guide.md) for the module arc and support-page roles
+- [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
+- [Orientation Overview](../module-00-orientation/index.md) for the full course shape
+- [Course Orientation](../module-00-orientation/course-orientation.md) and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md) for the reading rhythm
 
-## Capstone guides
+## Use These For Study Planning
+
+- [Module Dependency Map](module-dependency-map.md) when you need the sequence explained
+- [Practice Map](practice-map.md) when you want the rehearsal loop in one place
+- [History Guide](history-guide.md) when you want `_history` and module worktree comparisons
+
+## Use These For Commands And Proof
+
+- [Command Guide](command-guide.md) for the executable surface
+- [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence
+- [Review Checklist](../reference/review-checklist.md) and [Self-Review Prompts](../reference/self-review-prompts.md) when you need a stable review bar
+
+## Use These For Capstone Reading
 
 - [FuncPipe Capstone Guide](capstone.md) for the capstone’s role in the course
-- [Capstone Map](capstone-map.md) for the reading route
+- [Capstone Map](capstone-map.md) for the module-to-repository route
 - [Capstone File Guide](capstone-file-guide.md) for package-first reading
 - [Capstone Test Guide](capstone-test-guide.md) for test-first reading
 - [Capstone Review Worksheet](capstone-review-worksheet.md) for review prompts
@@ -48,11 +57,9 @@ work with the reference states, and how to inspect the capstone without guessing
 - [Capstone Proof Guide](capstone-proof-guide.md) for verification depth
 - [Capstone Extension Guide](capstone-extension-guide.md) for change placement
 
-## Layout rule
+## Keep The Layout Stable
 
-The course-book root should stay predictable:
-
-- `index.md` for the course home
-- `guides/` for essential learner guides
-- `module-00-orientation/` plus Modules `01` to `10` for the teaching sequence
-- `reference/` for long-lived standards and checklists
+- `index.md` stays the course home
+- `guides/` stays the learner route and proof shelf
+- `reference/` stays the durable standards and checklist shelf
+- `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

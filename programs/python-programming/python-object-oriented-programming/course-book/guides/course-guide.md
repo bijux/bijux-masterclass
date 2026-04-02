@@ -24,7 +24,16 @@ This guide explains how the course is shaped and why the sequence matters. The c
 not a pile of OOP topics. It is a pressure-tested path from object semantics to systems
 that survive integration, change, and operational stress.
 
-## The three arcs
+## Course Spine
+
+The course has four linked layers:
+
+1. entry pages and orientation
+2. module work from object semantics to operational hardening
+3. capstone proof in one executable system
+4. review surfaces for ownership, trust, and public-boundary decisions
+
+## The Three Arcs
 
 ### Semantic floor
 
@@ -55,31 +64,23 @@ Modules 08 to 10 ask whether the model can be trusted:
 - does the public API reflect the intended boundary
 - can the system be observed, hardened, and evolved safely
 
-## How to use the capstone during the arc
+## How The Capstone Fits
 
 - Treat Modules 01 to 03 as preparation for understanding the capstone's core objects.
 - Treat Modules 04 to 07 as the explanation for the capstone's shape.
 - Treat Modules 08 to 10 as the audit of whether that shape deserves confidence.
 
-## Honest expectation
+## Support Pages To Keep Open
+
+- [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
+- [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
+- [Module Dependency Map](module-dependency-map.md) when the reading order needs justification
+- [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
+- [Proof Ladder](proof-ladder.md) when you need to size proof correctly
+- [Capstone](capstone.md) and [Capstone Map](capstone-map.md) when you want the repository route kept explicit
+
+## Honest Expectation
 
 If you rush, the course will feel heavier than necessary. If you read it in order and
 keep the capstone in view, the later modules should feel like consequences of earlier
 ownership decisions instead of unrelated advanced topics.
-
-Use [Module Dependency Map](module-dependency-map.md) when you need to understand why the
-sequence is shaped this way, and use [Practice Map](practice-map.md) to keep each module
-tied to code and verification.
-
-## Ten-module route in one sentence each
-
-- Module 01 defines what a Python object means semantically.
-- Module 02 decides where behavior and boundaries belong.
-- Module 03 turns state and lifecycle into explicit contracts.
-- Module 04 explains how multiple objects stay coherent together.
-- Module 05 keeps that model survivable under cleanup, failure, and change.
-- Module 06 extends the model across storage and serialized boundaries.
-- Module 07 adds time, workers, retries, and async pressure without losing ownership.
-- Module 08 proves the design with tests that match real contracts.
-- Module 09 decides what becomes public and extensible.
-- Module 10 reviews whether the whole system is operationally trustworthy.

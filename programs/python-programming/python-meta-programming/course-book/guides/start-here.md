@@ -28,19 +28,28 @@ Start here if you are deciding whether this course matches your current problem.
 metaprogramming only pays for itself when the runtime behavior stays visible, testable,
 and easier to justify than a simpler alternative.
 
-## Use this course if
+## Use This Course If
 
 - you need to inspect, wrap, validate, or register Python objects without lying about runtime behavior
 - you review frameworks or libraries that already rely on decorators, descriptors, or metaclasses
 - you want a disciplined ladder for deciding when a higher-power hook is justified
 
-## Do not start here if
+## Do Not Start Here If
 
 - you still need a first introduction to classes, callables, attributes, and ordinary object design
 - you want clever tricks without the debugging and maintenance costs
 - the problem can still be solved honestly with plain functions, plain classes, or explicit composition
 
-## Reading routes
+## Best Reading Route
+
+1. Read [Course Home](../index.md) for the course promise and support surfaces.
+2. Read [Course Guide](course-guide.md) for the module arc and page roles.
+3. Read [Learning Contract](learning-contract.md) before you start Module 01.
+4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.
+5. Keep [Runtime Power Ladder](../reference/runtime-power-ladder.md) open while reading so every stronger hook is judged against a lower-power alternative.
+6. Use [Capstone Map](capstone-map.md) and [Capstone Guide](capstone.md) when you want the executable route.
+
+## Route By Pressure
 
 ### Route 1: Reviewer under pressure
 
@@ -56,7 +65,7 @@ and easier to justify than a simpler alternative.
 3. Read every module in order from [Module 00](../module-00-orientation/index.md) through [Module 10](../module-10-runtime-governance-and-mastery/index.md), then finish with [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md).
 4. Keep [Capstone Map](capstone-map.md) open while reading so every mechanism stays tied to one executable surface.
 
-## What success looks like
+## Success Signal
 
 By the end of the course, you should be able to explain:
 
@@ -65,7 +74,7 @@ By the end of the course, you should be able to explain:
 - why a descriptor owns an invariant better than a decorator in some cases
 - when a metaclass is justified and when it is only hiding design confusion
 
-## First files to keep open
+## First Pages To Keep Open
 
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)

@@ -29,43 +29,43 @@ module tree. The subject is not class syntax. The subject is how Python object m
 stay coherent when they carry state, invariants, collaboration, persistence, and runtime
 pressure for a long time.
 
-## What this course is really teaching
+## Use This Course If
 
-The course teaches object-oriented Python as a discipline of ownership:
+- you design or review Python systems where object semantics, invariants, or ownership are still fuzzy
+- you need clearer boundaries around state, collaboration, persistence, or orchestration
+- you want stronger criteria for deciding whether an object-heavy design is trustworthy
 
-- which object owns an invariant
-- which boundary is authoritative
-- which behavior belongs in orchestration instead of the domain
-- which changes should stay local instead of rippling across the system
+## Do Not Start Here If
 
-If you keep those questions in view, the modules feel cumulative instead of scattered.
+- you only want class syntax or pattern trivia without system design trade-offs
+- you want inheritance advice before you understand object semantics and ownership
+- you want to treat the capstone as an optional appendix
 
-## Best reading route
+## Best Reading Route
 
 1. Read [Course Home](../index.md) for the course promise and module arc.
-2. Read [Module Promise Map](module-promise-map.md) so each module has a clear contract before you start.
-3. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
-4. Read [Course Guide](course-guide.md) and [Learning Contract](learning-contract.md) before you start Module 01.
-5. Keep [Module Checkpoints](module-checkpoints.md) open while reading so you know the module exit bar.
-6. Use [Pressure Routes](pressure-routes.md) when you are entering from a concrete code-review or design problem.
-7. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
-8. Use [Proof Ladder](proof-ladder.md), [Command Guide](command-guide.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+2. Read [Course Guide](course-guide.md) for the module sequence and page roles.
+3. Read [Learning Contract](learning-contract.md) before you start Module 01.
+4. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
+5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
+6. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
+7. Use [Proof Ladder](proof-ladder.md), [Command Guide](command-guide.md), and [Capstone Map](capstone-map.md) when you want the executable route.
 
-## When to use each arc
+## Use The Arcs Deliberately
 
-- Modules 01-03: use them when object semantics, equality, or state design feel fuzzy.
-- Modules 04-07: use them when the main difficulty is collaboration, persistence, or runtime pressure.
-- Modules 08-10: use them when the design already exists and you need to decide whether it is trustworthy under tests, public use, and operations.
+- Modules 01 to 03 when object semantics, equality, or state design feel fuzzy
+- Modules 04 to 07 when the main difficulty is collaboration, persistence, or runtime pressure
+- Modules 08 to 10 when the design already exists and you need to decide whether it is trustworthy under tests, public use, and operations
 
-## What to avoid
-
-- jumping into advanced modules without the earlier semantic foundation
-- treating the capstone as an optional appendix
-- reading the chapters as pattern trivia instead of ownership decisions
-- assuming a class hierarchy is progress by itself
-
-## Success signal
+## Success Signal
 
 You are using the course correctly if each module makes one design question easier to
 answer in the capstone: what changed, who should own it, and why that owner is the least
 surprising place for the behavior to live.
+
+## First Pages To Keep Open
+
+- [Course Home](../index.md)
+- [Course Guide](course-guide.md)
+- [Orientation](../module-00-orientation/index.md)
+- [Capstone](capstone.md)

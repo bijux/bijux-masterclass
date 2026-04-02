@@ -29,35 +29,43 @@ module pages. The subject is not functional syntax by itself. The subject is how
 Python codebases easier to reason about by turning purity, dataflow, failures, and
 effects into explicit contracts.
 
-## What this course is really teaching
+## Use This Course If
 
-The course teaches functional programming in Python as a discipline of boundary control:
+- you build Python services, automation, pipelines, or tooling that need clearer reasoning boundaries
+- you want stronger criteria for purity, error handling, and effect placement during review
+- you need async or effect-heavy code to become more testable instead of more magical
 
-- what should stay pure
-- what should become explicit data
-- where effects should enter
-- how a pipeline should remain inspectable under growth
+## Do Not Start Here If
 
-If you keep those questions in view, the modules feel cumulative instead of decorative.
+- you only want a beginner introduction to `lambda`, `map`, or list comprehensions
+- you want functional vocabulary without changing hidden state or effect design
+- you want abstractions before you understand the contracts they are supposed to protect
 
-## Best reading route
+## Best Reading Route
 
 1. Read [Course Home](../index.md) for the course promise and module arc.
-2. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
-3. Read [Course Guide](course-guide.md) to understand the course structure.
-4. Read [Learning Contract](learning-contract.md) before Module 01.
+2. Read [Course Guide](course-guide.md) for the module sequence and page roles.
+3. Read [Learning Contract](learning-contract.md) before you start Module 01.
+4. Read [Orientation](../module-00-orientation/index.md), [Course Orientation](../module-00-orientation/course-orientation.md), and [How to Study This Course](../module-00-orientation/how-to-study-this-course.md).
 5. Keep [FuncPipe Capstone Guide](capstone.md) open while reading the full course.
 6. Use [Command Guide](command-guide.md), [Proof Matrix](proof-matrix.md), and [Capstone Map](capstone-map.md) when you want the executable route.
 
-## What to avoid
+## Use The Arcs Deliberately
 
-- treating purity as an aesthetic preference instead of a local reasoning contract
-- treating laziness, retries, or async work as magic instead of explicit control surfaces
-- reading advanced modules without checking what evidence in the capstone supports them
-- admiring abstractions that make the code harder to debug than the imperative baseline
+- Modules 01 to 03 when the main problem is local reasoning, purity, or lazy pipeline design
+- Modules 04 to 06 when the main problem is failure modelling, validation, or explicit context
+- Modules 07 to 08 when the main problem is effect boundaries, resources, retries, or async pressure
+- Modules 09 to 10 when the system already exists and you need interop, governance, and sustainment judgment
 
-## Success signal
+## Success Signal
 
 You are using the course correctly if each module helps you answer one question more
 clearly in the capstone: what is still pure, where effects begin, and why that boundary
 is easier to review than the alternatives.
+
+## First Pages To Keep Open
+
+- [Course Home](../index.md)
+- [Course Guide](course-guide.md)
+- [Orientation](../module-00-orientation/index.md)
+- [FuncPipe Capstone Guide](capstone.md)
