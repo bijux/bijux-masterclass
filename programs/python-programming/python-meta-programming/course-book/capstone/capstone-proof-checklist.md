@@ -24,6 +24,25 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 Use this checklist to confirm that the capstone proves what the course claims, rather
 than only "having some tests."
 
+## Choose the proof pass you actually need
+
+### Bounded review pass
+
+Use this when you need one honest pass without reopening the whole runtime:
+
+1. Read `capstone/README.md`.
+2. Run `make PROGRAM=python-programming/python-meta-programming capstone-tour`.
+3. Read `capstone/docs/PROOF_GUIDE.md`.
+4. Check one matching test file for the claim under review.
+
+### Deeper executable pass
+
+Use this when the review question is strong enough to justify the full saved proof route:
+
+1. Run `make PROGRAM=python-programming/python-meta-programming test`.
+2. Run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`.
+3. Compare the saved outputs with the matching tests.
+
 ## Proof targets
 
 - The manifest exposes field and action metadata without executing plugin work.
@@ -62,6 +81,14 @@ Also:
 - Which proof confirms preserved metadata rather than only produced output?
 - Which saved bundle is strongest for a human review without rerunning commands?
 - Which proof would fail first if the design became more magical?
+
+## Reviewer exit signal
+
+You can stop the proof pass when you can say:
+
+- which claim you checked
+- which smallest route established it
+- which stronger route you deliberately did not need yet
 
 ## Claim to evidence map
 
