@@ -48,6 +48,7 @@ need to prove behavior over time.
 - [Versioning and Migration](versioning-and-migration.md)
 - [Governance](governance.md)
 - [Capstone Delivery](capstone-delivery.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -58,4 +59,6 @@ need to prove behavior over time.
 ## Before finishing the course
 
 You should be able to explain how the capstone can continue evolving without losing the
-semantics, boundaries, and review discipline the course spent ten modules building.
+semantics, boundaries, and review discipline the course spent ten modules building. Use
+[Refactoring Guide](refactoring-guide.md) and compare against
+`capstone/_history/worktrees/module-10` before you call the course complete.

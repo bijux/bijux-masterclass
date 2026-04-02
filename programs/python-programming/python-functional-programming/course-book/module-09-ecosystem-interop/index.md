@@ -48,6 +48,7 @@ conventions? The answer is not purity theater. It is deliberate interop.
 - [Functional Facades](functional-facades.md)
 - [Cross-Process Composition](cross-process-composition.md)
 - [Team Adoption](team-adoption.md)
+- [Refactoring Guide](refactoring-guide.md)
 
 ## Capstone checkpoints
 
@@ -58,4 +59,5 @@ conventions? The answer is not purity theater. It is deliberate interop.
 ## Before moving on
 
 You should be able to explain how to adapt real libraries without letting them rewrite the
-course’s core architecture.
+course’s core architecture. Use [Refactoring Guide](refactoring-guide.md) and compare
+against `capstone/_history/worktrees/module-09` before moving forward.
