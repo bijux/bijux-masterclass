@@ -172,6 +172,7 @@ make profile-audit
 make profile-summary
 make config-summary
 make results-summary
+make evidence-summary
 make tour
 make confirm
 ```
@@ -226,6 +227,8 @@ Use `make config-summary` when you want one compact JSON that shows the reposito
 config, the materialized defaults, and the run identity captured in provenance.
 Use `make results-summary` when you want one compact JSON that shows which per-sample
 internal result surfaces exist before you open the heavier `results/{sample}/` files.
+Use `make evidence-summary` when you want one compact JSON that shows which logs,
+benchmarks, provenance fields, and published paths belong to the current executed run.
 Use `make profile-audit` when the question is about execution policy across local, CI,
 and cluster contexts rather than publish correctness alone.
 Use `make profile-summary` when you want one compact JSON that separates shared policy

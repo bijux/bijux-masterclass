@@ -70,6 +70,9 @@ If one surface has to answer all five, review gets noisy fast.
 6. `publish/v1/provenance.json`
 7. `publish/v1/`
 
+Run `make evidence-summary` when you want the shortest honest artifact that combines
+logs, benchmarks, provenance identity, and the published path list for the current run.
+
 ---
 
 ## Review Questions
@@ -78,4 +81,3 @@ If one surface has to answer all five, review gets noisy fast.
 - Which rule log should you open before changing a rule contract?
 - Which benchmark file matters if a maintainer claims performance-sensitive drift?
 - Which provenance field matters first if a run changed even though the repository did not?
-

@@ -40,6 +40,7 @@ file, or artifact that defends it.
 | the published boundary can be summarized without losing its public meaning | `make publish-summary` | `scripts/publish_summary.py`, `publish-summary.json`, `publish/v1/` |
 | the resolved configuration can be inspected without reading five files separately | `make config-summary` | `scripts/config_summary.py`, `config-summary.json`, `publish/v1/provenance.json` |
 | internal per-sample surfaces can be reviewed before opening every result file | `make results-summary` | `scripts/results_summary.py`, `results-summary.json`, `results/` |
+| executed logs, benchmarks, and provenance can be reviewed as one evidence surface | `make evidence-summary` | `scripts/evidence_summary.py`, `evidence-summary.json`, `logs/`, `benchmarks/` |
 | workflow execution remains deterministic across core counts | `make selftest` | `tests/selftest.sh`, `publish/v1/summary.json` |
 | clean-room confirmation protects the full repository contract | `make confirm` | `Makefile`, `tests/`, `publish/v1/` |
 | the capstone exposes one learner-facing bundled proof route | `make proof` | `tour`, `verify-report`, and `profile-audit` artifacts |
