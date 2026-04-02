@@ -39,6 +39,7 @@ nav:
       - "Capstone Map": capstone-map.md
       - "Capstone File Guide": capstone-file-guide.md
       - "Capstone Review Worksheet": capstone-review-worksheet.md
+      - "Capstone Extension Guide": capstone-extension-guide.md
   - "Module 01: Why Reproducibility Fails": module-01.md
   - "Module 02: Data Identity and Content Addressing": module-02.md
   - "Module 03: Execution Environments as Inputs": module-03.md
