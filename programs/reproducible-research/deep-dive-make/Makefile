@@ -50,7 +50,8 @@ typecheck: install-dev ## Run mypy on Python helper scripts
 > $(MYPY) $(PY_LINT_PATHS)
 
 # Capstone (GNU Make repository)
-.PHONY: capstone capstone-selftest capstone-hardened capstone-tour capstone-walkthrough capstone-clean
+.PHONY: capstone capstone-selftest capstone-hardened capstone-tour capstone-walkthrough \
+        capstone-contract-audit capstone-incident-audit capstone-clean
 capstone: ## Build the capstone (writes ./all sentinel inside capstone)
 > $(MAKE) -C $(CAPSTONE_DIR) all
 
@@ -65,6 +66,12 @@ capstone-tour: ## Print the capstone walkthrough from the program directory
 
 capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
 > $(MAKE) -C $(CAPSTONE_DIR) walkthrough
+
+capstone-contract-audit: ## Build the capstone public-contract audit bundle
+> $(MAKE) -C $(CAPSTONE_DIR) contract-audit
+
+capstone-incident-audit: ## Build the capstone incident review bundle
+> $(MAKE) -C $(CAPSTONE_DIR) incident-audit
 
 capstone-clean: ## Clean capstone outputs
 > $(MAKE) -C $(CAPSTONE_DIR) clean
