@@ -12,6 +12,7 @@ Use it when you know what concept you care about but want the fastest evidence r
 
 | Claim | Command | File surfaces |
 | --- | --- | --- |
+| the capstone has a bounded first-pass reading route | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `capstone/README.md`, `artifacts/walkthrough/reproducible-research/deep-dive-make/` |
 | the graph converges after a successful build | `gmake -C capstone selftest` | `capstone/Makefile`, `capstone/tests/run.sh` |
 | parallelism does not change artifact meaning | `gmake -C capstone selftest` | `capstone/tests/run.sh`, `capstone/repro/` |
 | discovery is deterministic | `gmake -C capstone discovery-audit` | `capstone/mk/objects.mk` |
@@ -27,6 +28,8 @@ Use it when you know what concept you care about but want the fastest evidence r
 | Claim | Command | File surfaces |
 | --- | --- | --- |
 | the build has a stable public API | `gmake -C capstone help` | `capstone/Makefile` |
+| the layered `mk/*.mk` structure has explicit responsibilities | inspect [`mk-layer-guide.md`](mk-layer-guide.md) | `capstone/mk/*.mk` |
+| artifact boundaries are smaller than the whole repository | inspect [`artifact-boundary-guide.md`](artifact-boundary-guide.md) | `capstone/build/`, `capstone/repro/`, `capstone/tests/` |
 | the build can explain rebuild behavior | `gmake -C capstone --trace all` | `capstone/Makefile`, `capstone/mk/*.mk` |
 | the build declares portability boundaries | `gmake -C capstone portability-audit` | `capstone/mk/contract.mk` |
 | the build produces non-contaminating evidence | `gmake -C capstone attest` | `capstone/Makefile`, `build/attest.txt` |
@@ -40,6 +43,7 @@ Use it when you know what concept you care about but want the fastest evidence r
 
 | Question | Best first command | Best first file |
 | --- | --- | --- |
+| where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `capstone/README.md` |
 | why did this rebuild | `gmake -C capstone --trace all` | `capstone/mk/stamps.mk` |
 | why is `-j` unsafe | `gmake -C capstone selftest` | `capstone/repro/01-shared-log.mk` |
 | where is the build API | `gmake -C capstone help` | `capstone/Makefile` |
@@ -58,5 +62,6 @@ The most useful companion pages for this matrix are:
 * [`public-targets.md`](public-targets.md)
 * [`practice-map.md`](practice-map.md)
 * [`capstone-file-guide.md`](capstone-file-guide.md)
+* [`selftest-map.md`](selftest-map.md)
 
 [Back to top](#top)
