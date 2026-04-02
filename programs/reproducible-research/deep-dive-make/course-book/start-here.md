@@ -85,6 +85,9 @@ make -C capstone help
 make -C capstone selftest
 ```
 
+If you are on macOS, read [`platform-setup.md`](platform-setup.md) first and use `gmake`
+instead of `/usr/bin/make`.
+
 From the course book:
 
 * use [`capstone-map.md`](capstone-map.md) when you want to cross-check a concept
