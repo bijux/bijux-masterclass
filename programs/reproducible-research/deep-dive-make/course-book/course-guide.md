@@ -14,9 +14,10 @@ This guide groups the course surfaces by the question you are trying to answer.
 Start with these pages in order:
 
 1. [`start-here.md`](start-here.md)
-2. [`module-00.md`](module-00.md)
-3. [`learning-contract.md`](learning-contract.md)
-4. [`module-dependency-map.md`](module-dependency-map.md)
+2. [`platform-setup.md`](platform-setup.md)
+3. [`module-00.md`](module-00.md)
+4. [`learning-contract.md`](learning-contract.md)
+5. [`module-dependency-map.md`](module-dependency-map.md)
 
 Then begin Module 01.
 
@@ -30,6 +31,8 @@ Use these pages when you already know the course but need a fast answer:
 
 * [`build-graph-glossary.md`](build-graph-glossary.md) for shared vocabulary
 * [`concept-index.md`](concept-index.md) for where an idea is taught
+* [`command-guide.md`](command-guide.md) for root, program, and capstone surfaces
+* [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
 * [`practice-map.md`](practice-map.md) for the right proof loop
 * [`public-targets.md`](public-targets.md) for stable command surfaces
 * [`incident-ladder.md`](incident-ladder.md) for debugging order
@@ -45,6 +48,7 @@ reference build:
 
 * [`capstone-map.md`](capstone-map.md) for module-to-repository routing
 * [`capstone-file-guide.md`](capstone-file-guide.md) for file responsibilities
+* [`capstone-proof-checklist.md`](capstone-proof-checklist.md) for one bounded proof pass
 * [`capstone-walkthrough.md`](capstone-walkthrough.md) for bounded reading routes
 * [`repro-catalog.md`](repro-catalog.md) for failure-mode examples
 * [`capstone-extension-guide.md`](capstone-extension-guide.md) for safe evolution
@@ -59,7 +63,9 @@ Use these pages when you care about assessment, maintainability, or repository r
 
 * [`completion-rubric.md`](completion-rubric.md)
 * [`module-dependency-map.md`](module-dependency-map.md)
+* [`proof-matrix.md`](proof-matrix.md)
 * [`public-targets.md`](public-targets.md)
+* [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
 * [`capstone-extension-guide.md`](capstone-extension-guide.md)
 
 [Back to top](#top)
@@ -69,6 +75,7 @@ Use these pages when you care about assessment, maintainability, or repository r
 ## Best Three Entry Commands
 
 ```sh
+make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-make test
 make PROGRAM=reproducible-research/deep-dive-make capstone-tour
 gmake -C capstone help
