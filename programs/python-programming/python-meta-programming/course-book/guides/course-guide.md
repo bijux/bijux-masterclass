@@ -81,6 +81,7 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 - [Reading Routes](reading-routes.md) when you need a lower-density or pressure-shaped sequence
 - [Module Promise Map](module-promise-map.md) when you want the exact contract of each module stated plainly
 - [Module Checkpoints](module-checkpoints.md) when you need a concrete exit bar before moving on
+- [Outcomes and Proof Map](outcomes-and-proof-map.md) when you want course-level promises tied to proof surfaces
 - [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current claim
 - [Runtime Power Ladder](../reference/runtime-power-ladder.md) when you need the governing review model
 - [Topic Boundaries](../reference/topic-boundaries.md) when you need to decide what belongs inside the course center

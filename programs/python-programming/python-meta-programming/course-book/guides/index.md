@@ -39,6 +39,7 @@ do not have to repeat that scaffolding.
 - [Reading Routes](reading-routes.md) when you want a paced path through dense modules
 - [Module Promise Map](module-promise-map.md) when you want the promise of each module stated plainly
 - [Module Checkpoints](module-checkpoints.md) when you need to know whether you are ready for the next module
+- [Outcomes and Proof Map](outcomes-and-proof-map.md) when you want learner outcomes tied directly to evidence
 - [Mechanism Selection](mechanism-selection.md) when you need a concrete "use this, not that" guide
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence explained
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
