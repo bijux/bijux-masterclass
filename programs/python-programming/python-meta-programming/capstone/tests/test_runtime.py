@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from incident_plugins import PluginMeta, build_manifest, invoke
 from incident_plugins.plugins import ConsoleNotifier, PagerNotifier, WebhookNotifier
+from incident_plugins.scenarios import DEFAULT_DEMO_SCENARIO, DEFAULT_TRACE_SCENARIO
 
 
 def test_manifest_exposes_schema_and_actions_without_execution() -> None:
@@ -47,3 +48,13 @@ def test_actions_record_invocation_history() -> None:
 
     assert "\"routing_key\": \"sev1\"" in preview
     assert pager.action_history()[-1]["action"] == "preview"
+
+
+def test_shipped_scenarios_stay_stable() -> None:
+    assert DEFAULT_DEMO_SCENARIO.plugin_name == "console"
+    assert DEFAULT_DEMO_SCENARIO.action_name == "deliver"
+    assert DEFAULT_DEMO_SCENARIO.arguments["severity"] == "warning"
+
+    assert DEFAULT_TRACE_SCENARIO.plugin_name == "pager"
+    assert DEFAULT_TRACE_SCENARIO.action_name == "preview"
+    assert DEFAULT_TRACE_SCENARIO.config["routing_key"] == "sev1"
