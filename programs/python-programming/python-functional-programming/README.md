@@ -83,13 +83,18 @@ From the repository root:
 make PROGRAM=python-programming/python-functional-programming install
 make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming capstone-test
+make PROGRAM=python-programming/python-functional-programming capstone-walkthrough
+make PROGRAM=python-programming/python-functional-programming capstone-tour
+make PROGRAM=python-programming/python-functional-programming capstone-confirm
 make PROGRAM=python-programming/python-functional-programming docs-serve
 make PROGRAM=python-programming/python-functional-programming history-refresh
 make PROGRAM=python-programming/python-functional-programming history-verify
 ```
 
 At the course level, `test` is the strongest published proof route and delegates to the
-capstone's `confirm` target. Use `capstone-test` when you only want the pytest suite.
+capstone's `confirm` target. Use `capstone-test` when you only want the pytest suite,
+`capstone-walkthrough` when you want the first learner-facing route, and `capstone-tour`
+when you need the saved proof bundle before the strictest confirmation pass.
 
 Primary reading route:
 

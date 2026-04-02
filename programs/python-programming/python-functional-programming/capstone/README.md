@@ -72,6 +72,7 @@ From the repository root:
 
 ```bash
 make PROGRAM=python-programming/python-functional-programming install
+make PROGRAM=python-programming/python-functional-programming capstone-walkthrough
 make PROGRAM=python-programming/python-functional-programming inspect
 make PROGRAM=python-programming/python-functional-programming test
 make PROGRAM=python-programming/python-functional-programming capstone-test
@@ -95,7 +96,8 @@ make history-verify
 From the repository root, `make PROGRAM=python-programming/python-functional-programming test`
 is the strongest published course-level proof route and delegates here to `make confirm`.
 Use `capstone-test` when you only want the pytest suite without the extra confirmation
-bundles.
+bundles. Use `capstone-walkthrough` when you want the first published learner-facing
+route before escalating to `capstone-tour`, `capstone-verify-report`, or `capstone-confirm`.
 
 ## Choose the smallest command that answers your question
 
