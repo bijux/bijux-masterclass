@@ -29,7 +29,7 @@ nav:
       - Learner Entry: guides/start-here.md
       - Platform Setup: guides/platform-setup.md
       - Learning Contract: guides/learning-contract.md
-      - Program Outline: module-00-orientation/index.md
+      - "Module 00: Orientation and Study Strategy": module-00-orientation/index.md
   - Course Reference:
       - Reference Home: reference/index.md
       - Module Dependency Map: reference/module-dependency-map.md
@@ -52,23 +52,23 @@ nav:
       - Capstone Review Worksheet: guides/capstone-review-worksheet.md
       - Capstone Extension Guide: guides/capstone-extension-guide.md
       - Capstone Overview: guides/readme-capstone.md
-  - "Module 01: File Contracts":
+  - "Module 01: First Principles and the File-DAG Contract":
       - Overview: module-01-file-contracts-and-the-workflow-dag/index.md
-  - "Module 02: Dynamic DAGs":
+  - "Module 02: Dynamic DAGs, Integrity, and Deterministic Discovery":
       - Overview: module-02-dynamic-dags-integrity-and-deterministic-discovery/index.md
-  - "Module 03: Production Operation":
+  - "Module 03: Production Operations and Policy Boundaries":
       - Overview: module-03-production-operations-and-policy-boundaries/index.md
-  - "Module 04: Scaling Boundaries":
+  - "Module 04: Scaling Workflows and Interface Boundaries":
       - Overview: module-04-scaling-workflows-and-interface-boundaries/index.md
-  - "Module 05: Rule Boundaries":
+  - "Module 05: Software Boundaries and Reproducible Rules":
       - Overview: module-05-software-boundaries-and-reproducible-rules/index.md
-  - "Module 06: Publish Contracts":
+  - "Module 06: Publishing and Downstream Contracts":
       - Overview: module-06-publishing-and-downstream-contracts/index.md
-  - "Module 07: Workflow Architecture":
+  - "Module 07: Workflow Architecture and File APIs":
       - Overview: module-07-workflow-architecture-and-file-apis/index.md
-  - "Module 08: Operating Contexts":
+  - "Module 08: Operating Contexts and Execution Policy":
       - Overview: module-08-operating-contexts-and-execution-policy/index.md
-  - "Module 09: Incident Response":
+  - "Module 09: Observability, Performance, and Incident Response":
       - Overview: module-09-observability-performance-and-incident-response/index.md
-  - "Module 10: Mastery":
+  - "Module 10: Governance, Migration, and Tool Boundaries":
       - Overview: module-10-governance-migration-and-tool-boundaries/index.md

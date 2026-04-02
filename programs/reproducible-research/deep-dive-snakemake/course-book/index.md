@@ -66,6 +66,14 @@ If you already know the course exists but are not sure which support page you ne
 Use [`guides/index.md`](guides/index.md) when you want the full learner-support surface
 and [`reference/index.md`](reference/index.md) when you want the stable review shelf.
 
+## Course shape at a glance
+
+The top level is now deliberate:
+
+* `guides/` for learner entry, proof routing, and capstone reading routes
+* `reference/` for stable review surfaces and lookup pages
+* `module-00-orientation/` through `module-10-*/` for the learning arc itself
+
 ## What each module contributes
 
 - [Module 00](module-00-orientation/index.md) establishes the full program map and capstone relationship.
@@ -79,7 +87,14 @@ and [`reference/index.md`](reference/index.md) when you want the stable review s
 - [Module 08](module-08-operating-contexts-and-execution-policy/index.md) deepens profiles, executors, storage, and staging as operating-context boundaries.
 - [Module 09](module-09-observability-performance-and-incident-response/index.md) teaches performance, observability, and workflow incident response.
 - [Module 10](module-10-governance-migration-and-tool-boundaries/index.md) finishes with governance, migration, anti-patterns, and tool-boundary judgment.
-- [Capstone](readme-capstone.md) provides the executable reference workflow that keeps the program honest.
+- [Capstone](guides/readme-capstone.md) provides the executable reference workflow that keeps the program honest.
+
+## Recommended route
+
+1. Start with [Start Here](guides/start-here.md).
+2. Read [Module 00](module-00-orientation/index.md).
+3. Move through Modules 01 to 10 in order.
+4. Enter the capstone through [Capstone Map](guides/capstone-map.md) or [Proof Matrix](guides/proof-matrix.md) instead of browsing the repository cold.
 
 ## How to use the capstone while reading
 

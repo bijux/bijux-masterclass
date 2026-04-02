@@ -39,6 +39,12 @@ Many Snakemake workflows function adequately in simple cases but encounter issue
 
 This repository offers a structured beginner-to-mastery path through Snakemake semantics: understanding its guarantees, limitations, and patterns that ensure workflows remain reliable as complexity increases.
 
+The repository now separates three surfaces clearly:
+
+- `course-book/guides/` for learner entry, study routes, and capstone reading routes
+- `course-book/reference/` for stable maps, glossary pages, and review checklists
+- `course-book/module-00-orientation/` through `course-book/module-10-*/` for the actual learning arc
+
 [Back to top](#top)
 
 ---
@@ -131,11 +137,12 @@ Successful completion confirms the workflow's contract on your system.
 
 ## How to study this program well
 
-1. Start with the orientation material before reading the deeper technical modules.
+1. Start with `course-book/guides/start-here.md`, then `course-book/module-00-orientation/index.md`.
 2. Work through Modules 01 to 10 in order because later workflow patterns depend on earlier file-contract discipline.
 3. Treat each module as a design checkpoint: read the overview, then the detailed module body, then inspect the capstone for the same idea.
-4. Re-run the capstone proof targets regularly so the workflow stays executable in your head, not only in prose.
-5. Use dry-runs, summaries, and proof artifacts as learning tools, not only as debugging tools.
+4. Use `course-book/guides/capstone-map.md` and `course-book/guides/proof-matrix.md` when you need to enter the reference workflow deliberately instead of browsing randomly.
+5. Re-run the capstone proof targets regularly so the workflow stays executable in your head, not only in prose.
+6. Use dry-runs, summaries, and proof artifacts as learning tools, not only as debugging tools.
 
 [Back to top](#top)
 
@@ -154,17 +161,17 @@ Successful completion confirms the workflow's contract on your system.
 
 ## Module map
 
-- `00` Program outline and study map
-- `01` First principles: the file-DAG contract
+- `00` Orientation and study strategy
+- `01` First principles and the file-DAG contract
 - `02` Dynamic DAGs, integrity, and deterministic discovery
-- `03` Production operation, profiles, retries, staging, and governance
-- `04` Scaling patterns, modularity, interfaces, and CI gates
-- `05` Software stacks, scripts, wrappers, and reproducible rule boundaries
-- `06` Versioned publishing, reports, and downstream workflow contracts
-- `07` Workflow architecture, modules, file APIs, and reuse
-- `08` Operating contexts: profiles, executors, storage, and staging boundaries
-- `09` Performance, observability, and workflow incident response
-- `10` Mastery: governance, migration, anti-patterns, and tool boundaries
+- `03` Production operations and policy boundaries
+- `04` Scaling workflows and interface boundaries
+- `05` Software boundaries and reproducible rules
+- `06` Publishing and downstream contracts
+- `07` Workflow architecture and file APIs
+- `08` Operating contexts and execution policy
+- `09` Observability, performance, and incident response
+- `10` Governance, migration, and tool boundaries
 
 [Back to top](#top)
 
