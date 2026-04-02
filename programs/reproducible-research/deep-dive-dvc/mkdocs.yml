@@ -24,6 +24,7 @@ nav:
       - "Guides Home": guides/index.md
       - "Course Guide": guides/course-guide.md
       - "Learner Entry": guides/start-here.md
+      - "Pressure Routes": guides/pressure-routes.md
       - "Module Promise Map": guides/module-promise-map.md
       - "Module Checkpoints": guides/module-checkpoints.md
       - "Learning Contract": guides/learning-contract.md
