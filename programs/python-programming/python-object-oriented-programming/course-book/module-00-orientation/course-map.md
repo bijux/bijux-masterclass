@@ -44,6 +44,17 @@ controls, and compatibility boundaries.
 - Use the local refactor chapter in each module as the synthesis checkpoint before moving on.
 - Return to the capstone after each module to locate the same ideas in executable code.
 
+## Route by design question
+
+| If your current question is... | Start with | Then |
+| --- | --- | --- |
+| What is this object, and what contract does it carry? | First-Contact Map | Modules 01-03 |
+| Where should behavior and invariants live across collaborating objects? | Mid-Course Map | Modules 04-05 |
+| How does this design survive persistence, time, and runtime pressure? | Mid-Course Map | Modules 06-07 |
+| Can this design be trusted, exposed, and hardened over time? | Mastery Map | Modules 08-10 |
+
+This keeps the map tied to human questions instead of forcing the learner to remember module numbers first.
+
 ## Staged maps
 
 ### [First-Contact Map](first-contact-map.md)
@@ -77,3 +88,9 @@ Use this when you are reviewing capstone hardening or planning real extensions.
 | First contact | 1-3 | What is an object here, what should it own, and what states are legal? |
 | Mid-course | 4-7 | How do those objects collaborate, persist, and survive time and concurrency pressure? |
 | Mastery | 8-10 | How do we verify, govern, expose, and harden the system over time? |
+
+## What to open with each map
+
+- First-Contact Map: keep [Module Promise Map](../guides/module-promise-map.md) open.
+- Mid-Course Map: keep [Pressure Routes](../guides/pressure-routes.md) and [Capstone Map](../guides/capstone-map.md) open.
+- Mastery Map: keep [Proof Ladder](../guides/proof-ladder.md) and [Capstone Review Checklist](../guides/capstone-review-checklist.md) open.
