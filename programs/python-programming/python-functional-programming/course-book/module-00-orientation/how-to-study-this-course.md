@@ -42,7 +42,7 @@ Keep the FuncPipe RAG capstone open while reading:
 
 - `capstone/src/funcpipe_rag/` for implementation structure
 - `capstone/tests/` for executable claims
-- `capstone/README.md` for entrypoints and repo shape
+- [FuncPipe Capstone Guide](../capstone/index.md) for entrypoints and repo shape
 
 Use the capstone as a concrete answer to "where does this idea live in a real codebase?"
 

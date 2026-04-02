@@ -78,7 +78,7 @@ Then inspect:
 
 - `src/funcpipe_rag/interop/`
 - `src/funcpipe_rag/boundaries/shells/cli.py`
-- `capstone/docs/PROOF_GUIDE.md`
+- [Capstone Proof Guide](../capstone/capstone-proof-guide.md)
 
 ## What mastery should feel like
 
