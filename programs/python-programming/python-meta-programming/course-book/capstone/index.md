@@ -63,8 +63,8 @@ This keeps the capstone from becoming a repository tour without a learning contr
 ## Best entrypoints
 
 - repository guide: `capstone/README.md`
-- runtime architecture: `capstone/ARCHITECTURE.md`
-- proof route: `capstone/PROOF_GUIDE.md`
+- runtime architecture: `capstone/docs/ARCHITECTURE.md`
+- proof route: `capstone/docs/PROOF_GUIDE.md`
 - source: `capstone/src/incident_plugins/`
 - tests: `capstone/tests/`
 

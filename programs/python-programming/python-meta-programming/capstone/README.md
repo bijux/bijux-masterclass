@@ -88,6 +88,45 @@ make verify-report
 make proof
 ```
 
+## Documentation set
+
+All supporting capstone guides live in [docs/](docs/). The root stays focused on the
+entry route while still linking the complete local documentation set:
+
+- [ACTION_GUIDE.md](docs/ACTION_GUIDE.md)
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [BUNDLE_GUIDE.md](docs/BUNDLE_GUIDE.md)
+- [BUNDLE_MANIFEST_GUIDE.md](docs/BUNDLE_MANIFEST_GUIDE.md)
+- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
+- [CONSTRUCTOR_GUIDE.md](docs/CONSTRUCTOR_GUIDE.md)
+- [DEFINITION_TIME_GUIDE.md](docs/DEFINITION_TIME_GUIDE.md)
+- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
+- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
+- [FIELD_GUIDE.md](docs/FIELD_GUIDE.md)
+- [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md)
+- [GUIDE_INDEX.md](docs/GUIDE_INDEX.md)
+- [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
+- [MANIFEST_GUIDE.md](docs/MANIFEST_GUIDE.md)
+- [MECHANISM_SELECTION_GUIDE.md](docs/MECHANISM_SELECTION_GUIDE.md)
+- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
+- [PLUGIN_CATALOG.md](docs/PLUGIN_CATALOG.md)
+- [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md)
+- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
+- [PUBLIC_API_GUIDE.md](docs/PUBLIC_API_GUIDE.md)
+- [PUBLIC_SURFACE_MAP.md](docs/PUBLIC_SURFACE_MAP.md)
+- [REGISTRY_GUIDE.md](docs/REGISTRY_GUIDE.md)
+- [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md)
+- [SCENARIO_GUIDE.md](docs/SCENARIO_GUIDE.md)
+- [SCENARIO_SELECTION_GUIDE.md](docs/SCENARIO_SELECTION_GUIDE.md)
+- [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
+- [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md)
+- [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
+- [TEST_GUIDE.md](docs/TEST_GUIDE.md)
+- [TEST_READING_MAP.md](docs/TEST_READING_MAP.md)
+- [TOUR.md](docs/TOUR.md)
+- [TRACE_GUIDE.md](docs/TRACE_GUIDE.md)
+- [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
+
 ## Read it by question
 
 ### "What can I inspect without running business behavior?"
@@ -179,7 +218,7 @@ all interact here, so the implementation has to stay honest about:
 - `make confirm` runs the strongest local executable confirmation route.
 - `make proof` builds the published learner-facing review route.
 
-Read [PLUGIN_RUNTIME_GUIDE.md](PLUGIN_RUNTIME_GUIDE.md) first when the runtime terms still
+Read [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md) first when the runtime terms still
 feel fuzzier than the commands.
 
 ## Best companion guides

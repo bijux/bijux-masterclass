@@ -48,11 +48,11 @@ named home inside it.
 
 - Use [Capstone Architecture Guide](capstone-architecture-guide.md) when you need ownership boundaries before reading implementation detail.
 - Use [Capstone Walkthrough](capstone-walkthrough.md) when you need a guided first pass through commands and files.
-- Use `capstone/PACKAGE_GUIDE.md` when you need a code-reading route.
-- Use `capstone/TEST_GUIDE.md` when you need the shortest proof route.
-- Use `capstone/WALKTHROUGH_GUIDE.md` when you need the public-surface narrative order.
-- Use `capstone/TARGET_GUIDE.md` when you need the smallest honest command.
-- Use `capstone/INSPECTION_GUIDE.md` and `capstone/EXTENSION_GUIDE.md` when the question is review depth or change placement.
+- Use `capstone/docs/PACKAGE_GUIDE.md` when you need a code-reading route.
+- Use `capstone/docs/TEST_GUIDE.md` when you need the shortest proof route.
+- Use `capstone/docs/WALKTHROUGH_GUIDE.md` when you need the public-surface narrative order.
+- Use `capstone/docs/TARGET_GUIDE.md` when you need the smallest honest command.
+- Use `capstone/docs/INSPECTION_GUIDE.md` and `capstone/docs/EXTENSION_GUIDE.md` when the question is review depth or change placement.
 
 ## Practical reading order
 
