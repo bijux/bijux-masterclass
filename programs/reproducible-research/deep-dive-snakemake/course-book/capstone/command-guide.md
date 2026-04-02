@@ -1,7 +1,4 @@
-<a id="top"></a>
-
 # Command Guide
-
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -16,90 +13,73 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
+  question["What are you trying to do?"] --> layer["Choose the matching command layer"]
+  layer --> command["Run the smallest honest command"]
+  command --> next_move["Escalate only if the question changes"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Read the first diagram as a timing map: this page is for command choice, not for reading
+the whole capstone. Read the second diagram as the rule: choose the command layer that
+matches the current job, run the smallest honest command, then escalate only if the
+question changes.
 
 Deep Dive Snakemake has three command layers: repository root, program directory, and
-capstone directory. This page makes those boundaries explicit.
-
-Use it when you know what proof question you have but are not sure where the command
+capstone directory. The layers exist so learners do not have to guess where a command
 belongs.
 
----
+## Choose the command layer
 
-## Repository Root
+| If you need... | Use this layer | Why |
+| --- | --- | --- |
+| one stable entrypoint from the repository root | repository root | consistent commands across all programs |
+| course-local commands while staying inside the program | `programs/reproducible-research/deep-dive-snakemake/` | a smaller surface than the repo root |
+| the raw executable workflow repository | `capstone/` | direct access to the workflow itself |
+
+## Start by job, not by directory
+
+| If the job is... | Start here | Do not start with |
+| --- | --- | --- |
+| first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make -C capstone confirm` |
+| executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make -C capstone proof` |
+| publish-boundary verification | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make -C capstone confirm` |
+| execution-policy comparison | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | random `make -C capstone` exploration |
+| strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
+
+## Repository root
 
 Use root-level commands when you want one entrypoint that works across programs.
 
-| Command | What it does |
-| --- | --- |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake program-help` | show the program Makefile surface |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake docs-build` | build the course docs in strict mode |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | build the learner-first capstone walkthrough bundle |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | build the executed capstone proof bundle |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | run the sanctioned learner-facing proof route |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | build the publish verification report bundle |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | package execution-policy review evidence |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-selftest` | run the determinism self-test route |
-| `make PROGRAM=reproducible-research/deep-dive-snakemake test` | run the course's main verification target |
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour`
+- `make PROGRAM=reproducible-research/deep-dive-snakemake proof`
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`
+- `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm`
 
-[Back to top](#top)
-
----
-
-## Program Directory
+## Program directory
 
 Use `programs/reproducible-research/deep-dive-snakemake/` when you want the course-local
 surface.
 
-| Command | What it does |
-| --- | --- |
-| `make help` | show program-level targets |
-| `make test` | run the capstone fast verification suite via the program surface |
-| `make capstone-walkthrough` | build the learner-first walkthrough bundle |
-| `make capstone-tour` | build the executed capstone proof bundle |
-| `make proof` | run the sanctioned learner-facing proof route |
-| `make capstone-profile-audit` | package execution-policy review evidence |
-| `make clean` | remove program and capstone build artifacts |
+- `make capstone-walkthrough`
+- `make capstone-tour`
+- `make proof`
+- `make capstone-profile-audit`
+- `make capstone-confirm`
 
-[Back to top](#top)
+## Capstone directory
 
----
+Use `capstone/` when you want the raw reference workflow.
 
-## Capstone Directory
+- `make walkthrough`
+- `make verify`
+- `make tour`
+- `make verify-report`
+- `make profile-audit`
+- `make confirm`
 
-Use `capstone/` when you want the raw executable workflow repository.
+## Good stopping point
 
-| Command | What it does |
-| --- | --- |
-| `make help` | show public capstone targets |
-| `make bootstrap` | create the supported local toolchain and print the resolved versions |
-| `make bootstrap-confirm` | create the supported local toolchain and run the strongest clean-room confirmation route |
-| `make walkthrough` | build the learner-first reading bundle without executing the workflow |
-| `make wf-dryrun` | preview the execution plan with printed commands |
-| `make verify` | execute the workflow and validate the promoted contract |
-| `make confirm` | run formatting, tests, workflow checks, execution, and artifact validation |
-| `make tour` | build the executed proof bundle |
-| `make proof` | run the sanctioned learner-facing proof route |
-| `make profile-audit` | compare local, CI, and scheduler policy bundles |
-
-[Back to top](#top)
-
----
-
-## Best Defaults by Module Arc
-
-| Module arc | Start here | Then use |
-| --- | --- | --- |
-| Fresh machine setup | `make -C capstone bootstrap-confirm` | `make -C capstone proof` |
-| Modules 01-02 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-snakemake test` |
-| Modules 03-04 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
-| Modules 05-09 | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` |
-| Module 10 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `make -C capstone info` |
-
-[Back to top](#top)
+Stop when you can explain why the chosen command layer is proportionate to the current
+question. If the layer still feels too large, step down one layer before opening more
+targets.
