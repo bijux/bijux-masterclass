@@ -47,6 +47,18 @@ defend. If those choices are implicit, the repository is only temporarily reprod
 | retention | "Which history is worth keeping reproducible, and for how long?" | compare policy ideas to the repository's promoted surfaces |
 | maintenance discipline | "When is cleanup safe, and when is it destructive?" | use recovery evidence before trusting garbage collection |
 
+## Learning outcomes
+
+- explain which repository state must survive cache loss, maintainer turnover, and remote migration
+- define retention and cleanup rules in terms of trust preservation rather than convenience alone
+- treat recovery drills and durability evidence as ongoing design work instead of incident-only behavior
+
+## Verification route
+
+- Run `make -C capstone recovery-audit` to inspect the remote-backed restore route and the evidence it captures.
+- Compare the module’s retention ideas against the capstone’s promoted bundle, lock state, and recovery artifacts.
+- Use the final invariants checklist to decide whether the repository is only tidy today or actually durable over time.
+
 ## Why this module matters in the course
 
 This is the module that forces the learner to stop treating reproducibility as a setup

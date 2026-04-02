@@ -50,6 +50,18 @@ reference repository in `capstone/`.
 | recovery and promotion discipline | trust based on memory or directory names |
 | pedagogy that moves from state model to repository stewardship | dropping the learner into a full repository too early |
 
+## Learning outcomes
+
+- explain the five-course through-lines: stable identity, truthful state transitions, durable evidence, operational survival, and stewardship judgment
+- choose when to enter the capstone so the repository stays a proof surface instead of becoming cognitive noise
+- identify which later modules answer state identity, pipeline truth, experimentation, collaboration, recovery, promotion, and governance questions
+
+## Verification route
+
+- Run `make -C capstone platform-report` to confirm the supported Python, Git, and DVC versions before you trust later proof routes.
+- Run `make -C capstone walkthrough` when you want the first learner-facing repository tour.
+- Use `../guides/module-checkpoints.md` to decide whether you are ready to enter the capstone or should stay with the smaller module model first.
+
 ---
 
 ## Program Arc

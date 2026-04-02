@@ -54,6 +54,18 @@ coherent state model.
 | tool boundary | "What problem does DVC solve, and what does it not solve?" | enter only after the failure model feels concrete |
 | hidden state | "Which influential inputs are usually missing from the story?" | expect later modules to make the boundary explicit |
 
+## Learning outcomes
+
+- distinguish repeatability from reproducibility without collapsing them into one vague success criterion
+- identify the hidden inputs that make Git-plus-script workflows structurally fragile
+- explain what DVC solves and which governance problems remain outside DVC’s authority
+
+## Verification route
+
+- Read the simplified workflow specimen in this module, then inspect the capstone only lightly as a failure specimen rather than as a full solution surface.
+- Write down at least five hidden inputs from one of your own workflows and compare that list to what the module calls out as undeclared state.
+- Use the readiness checklist at the end of this module as the proof bar before moving to Module 02.
+
 ---
 
 ## 1.1 A Familiar Scenario (Grounded in Practice)

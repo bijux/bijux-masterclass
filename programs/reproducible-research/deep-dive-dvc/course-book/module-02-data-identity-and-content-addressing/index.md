@@ -74,6 +74,18 @@ If those answers are still fuzzy, pause here before moving on to pipeline semant
 | state layers | "Which copy is mutable, and which one is authoritative?" | inspect `dvc.lock`, cache, remote, and publish state deliberately |
 | recovery logic | "How does content identity make restoration possible?" | do not let remote behavior feel magical |
 
+## Learning outcomes
+
+- explain why paths are locators rather than identity and why content addressing changes the trust story
+- distinguish workspace, Git, cache, remote, and promoted state without treating them as one blob of “the repo”
+- describe how content identity enables recovery and collaboration instead of relying on private memory
+
+## Verification route
+
+- Inspect `capstone/dvc.lock`, the local cache, and the configured remote together so each state layer has a concrete artifact.
+- Run `make -C capstone state-summary` after the module’s state layers feel legible.
+- Confirm that you can explain which copy is mutable, which copy is authoritative, and which copy is only a recovery source before moving on.
+
 ## What to inspect in the capstone
 
 Keep the capstone open while reading this module and inspect:

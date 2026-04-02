@@ -48,6 +48,18 @@ the same state story without private context, the repository is still too fragil
 | CI enforcement | "What should the system block instead of trusting memory?" | compare verification targets to human review expectations |
 | remote discipline | "What must another person be able to verify without private context?" | use `confirm` and `recovery-drill` as shared proof surfaces |
 
+## Learning outcomes
+
+- identify which reproducibility failures are really collaboration failures with technical consequences
+- decide what CI and review gates should enforce instead of relying on memory or goodwill
+- explain what another maintainer must be able to verify without private context
+
+## Verification route
+
+- Run `make -C capstone confirm` to inspect the strongest shared proof route the capstone already exposes.
+- Run `make -C capstone recovery-audit` when you want remote-backed evidence of repository restoration under shared stewardship.
+- Use the module’s invariants checklist to decide whether the repository depends on disciplined people alone or on enforceable contracts.
+
 ## Why this module matters in the course
 
 This is the moment where the course stops pretending that good tooling alone is enough.

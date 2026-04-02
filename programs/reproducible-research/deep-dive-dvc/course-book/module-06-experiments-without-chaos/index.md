@@ -47,6 +47,18 @@ system while keeping lineage, comparability, and reversal intact? If the answer 
 | reversible change | "How do I explore without corrupting the main state story?" | inspect params, metrics, and publish state together |
 | declared variation | "Which experiment changes belong in the control surface?" | avoid treating local tweaks as legitimate lineage |
 
+## Learning outcomes
+
+- explain what makes an experiment comparable, reversible, and promotable instead of merely different
+- distinguish controlled experiment variation from baseline-changing boundary work
+- defend why local folklore is not an acceptable experiment lineage story
+
+## Verification route
+
+- Run `make -C capstone experiment-review` to inspect baseline params, baseline metrics, and comparable experiment records together.
+- Compare one candidate experiment against the baseline and decide whether it is reversible, comparable, and ready for promotion review.
+- Use the invariants checklist at the end of the module as the exit bar before moving into collaboration and CI policy.
+
 ## Why this module matters in the course
 
 This is where many teams destroy the discipline they built in earlier modules. Once the

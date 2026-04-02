@@ -53,6 +53,18 @@ If that distinction stays fuzzy, experiment review and promotion will become the
 
 The main outcome of this module is not more measurement. It is better comparability.
 
+## Learning outcomes
+
+- explain why metrics are semantic claims rather than just logged numbers
+- identify which parameters belong to the comparison surface for a given review question
+- defend when two runs are meaningfully comparable and when they are only mechanically different
+
+## Verification route
+
+- Inspect `capstone/params.yaml`, `capstone/metrics/metrics.json`, and `capstone/publish/v1/metrics.json` together as one comparison surface.
+- Run `make -C capstone release-audit` when you want the promoted params and metrics bundled with the release contract.
+- Use the invariants checklist at the end of the module to decide whether the metrics in front of you are still semantically comparable.
+
 ---
 
 ## 5.1 The Perilous Misconception: Metrics as Mere Numerical Values

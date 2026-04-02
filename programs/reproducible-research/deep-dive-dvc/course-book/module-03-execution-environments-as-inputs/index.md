@@ -50,6 +50,18 @@ governance.
 | determinism spectrum | "Why can two honest runs still diverge?" | use capstone surfaces to inspect declared boundaries, not to promise sameness |
 | tool responsibility | "What should DVC record, and what should another tool own?" | compare DVC to lockfiles and containers intentionally |
 
+## Learning outcomes
+
+- treat the execution environment as part of the input surface rather than background luck
+- distinguish which runtime facts DVC can record indirectly and which must be governed by other tooling or policy
+- explain why honest runs can diverge without any one person “making a mistake”
+
+## Verification route
+
+- Run `make -C capstone platform-report` and inspect the reported Python, Git, and DVC versions as concrete environment evidence.
+- Compare the module’s environment boundary claims with the capstone’s declared install and runtime surface.
+- State clearly which environment facts DVC tracks, which ones it only influences indirectly, and which ones must be governed elsewhere.
+
 ---
 
 ## 3.1 The Erroneous Presumption: Identical Code and Data Yield Identical Results

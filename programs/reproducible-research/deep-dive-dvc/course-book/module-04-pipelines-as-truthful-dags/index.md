@@ -48,6 +48,18 @@ promotion rules will be defending the wrong state story.
 | dependency declaration | "Which inputs are strong enough to belong in the graph?" | compare `dvc.yaml` and `dvc.lock` carefully |
 | operational trust | "When does `dvc repro` become predictable instead of mystical?" | inspect stage boundaries, not just stage names |
 
+## Learning outcomes
+
+- explain what makes a DVC stage truthful rather than merely convenient
+- identify which reads, writes, params, and outputs belong in the declared graph
+- use `dvc.yaml` and `dvc.lock` together as evidence of declared state transitions
+
+## Verification route
+
+- Inspect `capstone/dvc.yaml`, `capstone/dvc.lock`, and `capstone/params.yaml` together instead of reading any one file in isolation.
+- Run `make -C capstone verify-report` once you can already predict why the pipeline should rerun or stay stable.
+- Explain one stage in terms of its declared dependencies, parameters, outputs, and recorded lock evidence before moving on.
+
 ## Why this module matters in the course
 
 This is where the course turns state identity into executable truth. Once a team can name
