@@ -14,6 +14,7 @@ WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-dvc
 RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
+RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
 
 .PHONY: help
 help: ## Show available targets
@@ -128,6 +129,35 @@ release-audit: verify ## Build a focused release-boundary audit bundle
 	@echo "publish_dir=$(RELEASE_AUDIT_DIR)/publish-v1" >> $(RELEASE_AUDIT_DIR)/bundle.env
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RELEASE_AUDIT_DIR) --output $(RELEASE_AUDIT_DIR)/manifest.json
 	@echo "✔ wrote release audit bundle to $(RELEASE_AUDIT_DIR)"
+
+.PHONY: recovery-audit
+recovery-audit: push ## Capture the remote-backed recovery route as a review bundle
+	@rm -rf $(RECOVERY_AUDIT_DIR)
+	@mkdir -p $(RECOVERY_AUDIT_DIR)/publish-v1
+	@$(DVC) status > $(RECOVERY_AUDIT_DIR)/before-status.txt
+	@$(DVC) remote list > $(RECOVERY_AUDIT_DIR)/remote.txt
+	@rm -rf data/derived metrics models publish state .dvc/cache
+	@$(DVC) pull > $(RECOVERY_AUDIT_DIR)/pull.txt
+	@$(DVC) checkout > $(RECOVERY_AUDIT_DIR)/checkout.txt
+	@$(VENV_PY) -m incident_escalation_capstone.verify --publish publish/v1 --report $(RECOVERY_AUDIT_DIR)/verify.json
+	@$(DVC) status > $(RECOVERY_AUDIT_DIR)/after-status.txt
+	@cp dvc.lock $(RECOVERY_AUDIT_DIR)/dvc.lock
+	@cp publish/v1/manifest.json $(RECOVERY_AUDIT_DIR)/publish-v1/manifest.json
+	@cp publish/v1/report.md $(RECOVERY_AUDIT_DIR)/publish-v1/report.md
+	@printf '%s\n' \
+		'Recovery audit route:' \
+		'  1. Read remote.txt to confirm the configured recovery source.' \
+		'  2. Compare before-status.txt and after-status.txt to see the repository state around the drill.' \
+		'  3. Read pull.txt and checkout.txt for the recovery commands that rebuilt local state.' \
+		'  4. Read verify.json and publish-v1/manifest.json to confirm the restored publish contract.' \
+		'  5. Compare dvc.lock against the restored publish bundle when you need recorded provenance.' > $(RECOVERY_AUDIT_DIR)/route.txt
+	@printf '%s\n' \
+		'Recovery questions:' \
+		'  Which facts come from the remote-backed restore rather than the working tree?' \
+		'  Which restored files are safe for downstream trust without re-running training?' \
+		'  Which parts of recovery still depend on repository-internal state rather than the publish bundle alone?' > $(RECOVERY_AUDIT_DIR)/review-questions.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RECOVERY_AUDIT_DIR) --output $(RECOVERY_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote recovery audit bundle to $(RECOVERY_AUDIT_DIR)"
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
