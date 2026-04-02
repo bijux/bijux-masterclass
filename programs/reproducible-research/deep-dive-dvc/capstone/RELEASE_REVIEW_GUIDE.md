@@ -50,6 +50,9 @@ Use this guide when the question is no longer "did the pipeline run?" and is now
 - the downstream control surface is small and reviewable
 - the release bundle can be defended without forcing a reviewer through the entire repository
 
+Read [PREDICTION_REVIEW_GUIDE.md](PREDICTION_REVIEW_GUIDE.md) when the release question
+depends on concrete false negatives, false positives, or borderline promoted rows.
+
 ## What this route does not prove
 
 - that every internal experiment has been reviewed
