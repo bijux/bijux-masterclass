@@ -38,3 +38,19 @@ alone.
 - how alerts become events and derived read models
 - how small object boundaries create a readable operational story
 - how the walkthrough bundle gives you a review surface you can revisit without rerunning ad hoc commands
+
+## Scenario-stage map
+
+| Stage in the walkthrough | Main boundary to notice | Why it matters |
+| --- | --- | --- |
+| policy creation | `application.py` into `model.py` | the learner-facing facade should not own the domain rules |
+| rule activation | aggregate lifecycle rules | invalid transitions should fail at the authoritative boundary |
+| sample evaluation | `policies.py` plus aggregate coordination | evaluation variability should not turn into condition ladders inside the aggregate |
+| alert publication | runtime orchestration and sink boundary | integration work should stay outside the domain model |
+| read-model update | projections and derived views | downstream views must not become the source of truth |
+
+## What to compare after the walkthrough
+
+- Compare the walkthrough bundle with `ARCHITECTURE.md` to see whether the story and the boundary design agree.
+- Compare the walkthrough bundle with the relevant tests if one stage still feels magical.
+- Revisit the matching module chapter only after you can name which stage of the scenario felt unclear.
