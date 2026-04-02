@@ -62,6 +62,10 @@ capstone-confirm: ## Run the selected program's strongest capstone confirmation 
 clean: ## Run clean for the selected program
 	@$(RUN_PROGRAM) clean
 
+.PHONY: docs-audit
+docs-audit: ## Audit course-book and capstone documentation rules
+	@$(PYTHON) scripts/audit_masterclass_docs.py
+
 .PHONY: series-docs-venv
 series-docs-venv: ## Create the virtual environment for the series site
 	@$(PYTHON) -m venv $(VENV_DIR)
