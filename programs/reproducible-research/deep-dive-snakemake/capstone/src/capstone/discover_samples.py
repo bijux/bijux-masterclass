@@ -124,6 +124,7 @@ def main() -> None:
         raise SystemExit(f"no FASTQ files recognized for sample '{sample}'")
 
     payload = {
+        "schema_version": 2,
         "raw_dir": str(raw_dir),
         "glob": args.glob,
         "n_files": len(fastqs),
