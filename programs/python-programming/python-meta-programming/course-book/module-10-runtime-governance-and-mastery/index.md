@@ -37,8 +37,13 @@ flowchart LR
 6. [Core 3: Responsible Metaprogramming — Tracebacks, Performance, Globals, Monkey-Patching](#core48)
 7. [Core 4: Import Hooks & AST Transforms — Tooling-Grade, Not App-Grade](#core49)
 8. [Capstone: Plugin Architectures — Decorator vs Metaclass vs Import Hook](#capstone)
-9. [Power Ladder Checkpoint](#power-checkpoint)
-10. [Glossary (Module 10)](#glossary)
+9. [Learning outcomes](#learning-outcomes)
+10. [Common failure modes](#common-failure-modes)
+11. [Exercises](#exercises)
+12. [Self-test](#self-test)
+13. [Closing criteria](#closing-criteria)
+14. [Power Ladder Checkpoint](#power-checkpoint)
+15. [Glossary (Module 10)](#glossary)
 
 <span style="font-size: 1em;">[Back to top](#top)</span>
 
@@ -715,6 +720,52 @@ Extend the comparison by:
 * Adding mypy stubs for plugin APIs and verifying that each architecture remains type-checkable.
 
 You now understand metaclasses thoroughly — and exactly why you should almost never write one yourself.
+
+<a id="learning-outcomes"></a>
+## Learning outcomes
+
+By the end of this module, you should be able to:
+
+- Apply a practical review policy to dynamic execution, monkey-patching, protocols, and import hooks instead of treating them as isolated tricks.
+- Explain why restricted globals are not a real security boundary for `eval` and `exec`.
+- Choose between decorators, metaclasses, entry points, and import hooks for plugin systems with an honest justification.
+- Demand observability, reversibility, and measurement evidence before approving high-power runtime behavior.
+- Separate tooling-grade mechanisms from application-grade defaults without overstating what the runtime can safely guarantee.
+
+<a id="common-failure-modes"></a>
+## Common failure modes
+
+- Presenting AST validation or restricted globals as a sandbox instead of acknowledging the need for process isolation with untrusted input.
+- Approving monkey patches that have no context manager, reset hook, or blast-radius boundary.
+- Using protocols or `__subclasshook__` to imply semantic guarantees that only static analysis or real tests can provide.
+- Treating import hooks as a convenient plugin mechanism when explicit imports or packaging entry points would be clearer and safer.
+- Skipping performance measurement for wrappers and dynamic machinery on hot paths because the mechanism "seems lightweight."
+
+<a id="exercises"></a>
+## Exercises
+
+- Take one dynamic execution example and rewrite it as a data-driven parser or explicit dispatch table; document what risk disappeared.
+- Add timing evidence to one wrapper-heavy path and decide whether the abstraction still earns its keep.
+- Build a context-managed monkey patch for a user-defined symbol, then write the revert path and failure test before using it.
+- Compare a decorator registry, a metaclass registry, and an import-hook discovery sketch for the same plugin interface; justify the default choice in writing.
+
+<a id="self-test"></a>
+## Self-test
+
+- Can you explain why "trusted input only" is the real line for in-process `eval` and `exec`?
+- Can you name the minimum evidence you would ask for before approving an import hook in production code?
+- Can you point to one use of a protocol that improves type clarity and one misuse that pretends to prove runtime semantics?
+- Can you explain how to turn off, reset, or bypass each high-power mechanism covered in this module?
+
+<a id="closing-criteria"></a>
+## Closing criteria
+
+You have completed the module when you can review high-power runtime code with operational, not aesthetic, standards:
+
+- The lowest-power mechanism has been considered first and documented honestly.
+- Security claims stop at the real boundary the implementation can enforce.
+- Reversibility, observability, and test isolation are part of the design, not cleanup work for later.
+- Performance-sensitive behavior comes with measurement or an explicit statement that it is off the hot path.
 
 <a id="power-checkpoint"></a>
 ## Power Ladder Checkpoint
