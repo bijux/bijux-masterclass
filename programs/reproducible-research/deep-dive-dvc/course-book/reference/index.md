@@ -43,5 +43,6 @@ order, comparison routes, and course completion standards.
 - [State Glossary](state-glossary.md) for durable language
 - [Topic Boundaries](topic-boundaries.md) for what the course treats as core, supporting, and boundary material
 - [Practice Map](practice-map.md) for module-to-proof routing
+- [Anti-Pattern Atlas](anti-pattern-atlas.md) for routing common reproducibility smells to the right repair path
 - [Verification Route Guide](verification-route-guide.md) for picking the right command
 - [Completion Rubric](completion-rubric.md) for course and repository review
