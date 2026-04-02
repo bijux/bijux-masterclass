@@ -4,6 +4,7 @@ SHELL := /bin/sh
 
 PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../../artifacts
+REPO_ROOT := $(abspath ../../../../)
 VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-dvc/capstone
 VENV_BIN := $(VENV_DIR)/bin
 VENV_PY := $(abspath $(VENV_BIN)/python)
@@ -17,6 +18,8 @@ RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
+SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-dvc
+SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-dvc-capstone-source.tar.gz
 
 .PHONY: help
 help: ## Show available targets
@@ -408,6 +411,16 @@ source-baseline-check: ## Fail if local-only state would contaminate a source bu
 		exit 1; \
 	fi; \
 	printf '%s\n' 'PASS: source baseline contains no local-only state'
+
+.PHONY: source-bundle
+source-bundle: source-baseline-check ## Build a tracked-source bundle for release or learner download
+	@mkdir -p $(SOURCE_BUNDLE_DIR)
+	@$(PYTHON) $(REPO_ROOT)/scripts/build_clean_source_bundle.py \
+		--repo-root $(REPO_ROOT) \
+		--source-dir $(CURDIR) \
+		--output $(abspath $(SOURCE_BUNDLE_PATH)) \
+		--prefix deep-dive-dvc-capstone
+	@printf 'PASS: wrote %s\n' "$(abspath $(SOURCE_BUNDLE_PATH))"
 
 .PHONY: clean
 clean: clean-generated ## Remove local virtual environment and caches
