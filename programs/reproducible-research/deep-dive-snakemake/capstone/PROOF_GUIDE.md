@@ -37,6 +37,7 @@ file, or artifact that defends it.
 | rule contracts are explicit and durable | `make walkthrough` | `Snakefile`, `workflow/rules/common.smk`, `FILE_API.md` |
 | dynamic discovery is explicit instead of hidden | `make walkthrough` | `Snakefile`, `publish/v1/discovered_samples.json` |
 | the published boundary is stable and reviewable | `make verify` | `FILE_API.md`, `publish/v1/manifest.json`, `publish/v1/provenance.json` |
+| the published boundary can be summarized without losing its public meaning | `make publish-summary` | `scripts/publish_summary.py`, `publish-summary.json`, `publish/v1/` |
 | workflow execution remains deterministic across core counts | `make selftest` | `tests/selftest.sh`, `publish/v1/summary.json` |
 | clean-room confirmation protects the full repository contract | `make confirm` | `Makefile`, `tests/`, `publish/v1/` |
 | the capstone exposes one learner-facing bundled proof route | `make proof` | `tour`, `verify-report`, and `profile-audit` artifacts |

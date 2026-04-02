@@ -55,6 +55,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	fmt fmt-check lint test \
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
+	publish-summary \
 	verify-report profile-audit \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
@@ -176,6 +177,12 @@ verify-report: verify ## Write a structured publish verification report
 		'  Which publish file would require a version bump if its semantics changed?' > "$(VERIFY_REPORT_DIR)/review-questions.txt"
 	@$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(VERIFY_REPORT_DIR)" --output "$(VERIFY_REPORT_DIR)/bundle-manifest.json"
 	@echo "✔ wrote publish verification report to $(VERIFY_REPORT_DIR)"
+
+publish-summary: verify ## Write a compact publish-boundary summary
+	@mkdir -p "$(VERIFY_REPORT_DIR)"
+	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
+	@$(PYTHON) scripts/publish_summary.py --publish "$(PUBLISH_DIR_ABS)" --out "$(VERIFY_REPORT_DIR)/publish-summary.json"
+	@echo "✔ wrote publish summary to $(VERIFY_REPORT_DIR)/publish-summary.json"
 
 profile-audit: validate-config ## Build the profile review bundle
 	@rm -rf "$(PROFILE_AUDIT_DIR)"

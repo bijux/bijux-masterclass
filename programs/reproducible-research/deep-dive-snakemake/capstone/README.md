@@ -167,6 +167,7 @@ make bootstrap
 make walkthrough
 make selftest
 make verify-report
+make publish-summary
 make profile-audit
 make tour
 make confirm
@@ -203,6 +204,9 @@ Use `EXTENSION_GUIDE.md` when the question is where the next change should land.
 Use `make verify-report` when you want a durable publish-contract report under
 `artifacts/proof/reproducible-research/deep-dive-snakemake/verify/` rather than a single
 console verdict.
+Use `make publish-summary` when you want one compact JSON that names the discovered
+samples, public files, top screen hits, and provenance identity without opening the
+full publish bundle.
 Use `make profile-audit` when the question is about execution policy across local, CI,
 and cluster contexts rather than publish correctness alone.
 

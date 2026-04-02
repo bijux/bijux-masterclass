@@ -36,10 +36,11 @@ directory that happens to contain files.
 ## Primary Review Route
 
 1. Read `FILE_API.md`.
-2. Run `make verify-report`.
-3. Read `PUBLISH_REVIEW_GUIDE.md`, `verify.json`, `route.txt`, and `review-questions.txt` in the bundle.
-4. Compare the report with `manifest.json`, `discovered_samples.json`, `summary.json`, `summary.tsv`, and `provenance.json`.
-5. Read `report/index.html` when you need the compact human-facing publish surface.
+2. Run `make publish-summary` when you need the shortest honest publish overview.
+3. Run `make verify-report` when you need the fuller contract review bundle.
+4. Read `PUBLISH_REVIEW_GUIDE.md`, `publish-summary.json`, `verify.json`, `route.txt`, and `review-questions.txt` in the bundle.
+5. Compare the report with `manifest.json`, `discovered_samples.json`, `summary.json`, `summary.tsv`, and `provenance.json`.
+6. Read `report/index.html` when you need the compact human-facing publish surface.
 
 [Back to top](#top)
 
