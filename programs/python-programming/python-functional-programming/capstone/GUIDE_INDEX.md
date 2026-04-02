@@ -23,6 +23,7 @@ time.
 - `COMMAND_GUIDE.md`
 - `PUBLIC_SURFACE_MAP.md`
 - `PROOF_GUIDE.md`
+- `TEST_READING_MAP.md`
 - `TOUR.md`
 - `WALKTHROUGH_GUIDE.md`
 
@@ -41,6 +42,7 @@ Choose based on the question you have:
 - "Which package owns this behavior?" -> `ARCHITECTURE.md`
 - "What should I read first in the code?" -> `PACKAGE_GUIDE.md`
 - "Which tests prove this claim?" -> `TEST_GUIDE.md`
+- "Which proof should fail first for this claim?" -> `TEST_READING_MAP.md`
 - "Which command should I run?" -> `COMMAND_GUIDE.md`
 - "What did a command or artifact actually expose?" -> `PUBLIC_SURFACE_MAP.md`
 - "What is the shortest human reading route?" -> `WALKTHROUGH_GUIDE.md`
