@@ -153,7 +153,11 @@ tour:
 >     rm -rf "$(TOUR_DIR)"
 >     mkdir -p "$(TOUR_DIR)/mk" "$(TOUR_DIR)/repro" "$(TOUR_DIR)/tests"
 >     cp README.md "$(TOUR_DIR)/README.md"
+>     cp ARCHITECTURE.md "$(TOUR_DIR)/ARCHITECTURE.md"
 >     cp PROOF_GUIDE.md "$(TOUR_DIR)/PROOF_GUIDE.md"
+>     cp TARGET_GUIDE.md "$(TOUR_DIR)/TARGET_GUIDE.md"
+>     cp WALKTHROUGH_GUIDE.md "$(TOUR_DIR)/WALKTHROUGH_GUIDE.md"
+>     cp REPRO_GUIDE.md "$(TOUR_DIR)/REPRO_GUIDE.md"
 >     cp Makefile "$(TOUR_DIR)/Makefile"
 >     cp $(TST_DIR)/run.sh "$(TOUR_DIR)/tests/run.sh"
 >     cp $(MK_DIR)/contract.mk "$(TOUR_DIR)/mk/contract.mk"
@@ -166,11 +170,11 @@ tour:
 >     printf '%s\n' \
 >       'Tour route:' \
 >       '  1. Read README.md for the repository contract.' \
->       '  2. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
->       '  3. Read help.txt to see the stable public interface.' \
->       '  4. Read tests/run.sh for the proof harness.' \
->       '  5. Read trace-count.txt for the observability guardrail.' \
->       '  6. Inspect repro/01-shared-log.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
+>       '  2. Read TARGET_GUIDE.md for the stable public interface.' \
+>       '  3. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
+>       '  4. Read ARCHITECTURE.md and WALKTHROUGH_GUIDE.md for ownership and first-pass order.' \
+>       '  5. Read tests/run.sh and trace-count.txt for proof and observability evidence.' \
+>       '  6. Inspect REPRO_GUIDE.md and repro/01-shared-log.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Focused routes:' \
 >       '  generators   -> make --trace dyn' \
@@ -198,7 +202,10 @@ walkthrough:
 >     rm -rf "$(WALKTHROUGH_DIR)"
 >     mkdir -p "$(WALKTHROUGH_DIR)/repro" "$(WALKTHROUGH_DIR)/tests" "$(WALKTHROUGH_DIR)/mk"
 >     cp README.md "$(WALKTHROUGH_DIR)/README.md"
+>     cp ARCHITECTURE.md "$(WALKTHROUGH_DIR)/ARCHITECTURE.md"
 >     cp PROOF_GUIDE.md "$(WALKTHROUGH_DIR)/PROOF_GUIDE.md"
+>     cp TARGET_GUIDE.md "$(WALKTHROUGH_DIR)/TARGET_GUIDE.md"
+>     cp WALKTHROUGH_GUIDE.md "$(WALKTHROUGH_DIR)/WALKTHROUGH_GUIDE.md"
 >     cp Makefile "$(WALKTHROUGH_DIR)/Makefile"
 >     cp $(TST_DIR)/run.sh "$(WALKTHROUGH_DIR)/tests/run.sh"
 >     cp $(MK_DIR)/contract.mk "$(WALKTHROUGH_DIR)/mk/contract.mk"
@@ -207,11 +214,11 @@ walkthrough:
 >     cp $(MK_DIR)/stamps.mk "$(WALKTHROUGH_DIR)/mk/stamps.mk"
 >     cp $(REP_DIR)/01-shared-log.mk "$(WALKTHROUGH_DIR)/repro/01-shared-log.mk"
 >     printf '%s\n' \
->       '1. Read README.md to understand the capstone contract.' \
->       '2. Read PROOF_GUIDE.md to map claims to proof surfaces.' \
->       '3. Read Makefile to identify the public targets.' \
->       '4. Read tests/run.sh to see what selftest is proving.' \
->       '5. Read mk/contract.mk and mk/objects.mk for the boundary and graph model.' \
+>       '1. Read WALKTHROUGH_GUIDE.md to understand the recommended first pass.' \
+>       '2. Read README.md and TARGET_GUIDE.md to understand the capstone contract and public targets.' \
+>       '3. Read PROOF_GUIDE.md and tests/run.sh to see what selftest is proving.' \
+>       '4. Read ARCHITECTURE.md and mk/contract.mk for ownership and boundary design.' \
+>       '5. Read mk/objects.mk and mk/stamps.mk for graph truth and modeled hidden inputs.' \
 >       '6. Run make help in the capstone directory.' \
 >       '7. Run make selftest when you want executed proof.' \
 >       '8. Inspect repro/01-shared-log.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
@@ -224,7 +231,10 @@ walkthrough:
 >     printf '%s\n' \
 >       'Walkthrough bundle surfaces:' \
 >       '  README.md            repository contract and program fit' \
+>       '  TARGET_GUIDE.md      stable public target surface' \
 >       '  PROOF_GUIDE.md       claim-to-evidence routing' \
+>       '  WALKTHROUGH_GUIDE.md bounded first-pass reading order' \
+>       '  ARCHITECTURE.md      layer ownership and system map' \
 >       '  Makefile             stable public target surface' \
 >       '  tests/run.sh         selftest proof harness' \
 >       '  mk/contract.mk       platform and policy boundaries' \
@@ -238,7 +248,9 @@ contract-audit:
 >     rm -rf "$(CONTRACT_AUDIT_DIR)"
 >     mkdir -p "$(CONTRACT_AUDIT_DIR)/tests"
 >     cp README.md "$(CONTRACT_AUDIT_DIR)/README.md"
+>     cp CONTRACT_AUDIT_GUIDE.md "$(CONTRACT_AUDIT_DIR)/CONTRACT_AUDIT_GUIDE.md"
 >     cp PROOF_GUIDE.md "$(CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     cp TARGET_GUIDE.md "$(CONTRACT_AUDIT_DIR)/TARGET_GUIDE.md"
 >     cp Makefile "$(CONTRACT_AUDIT_DIR)/Makefile"
 >     cp $(TST_DIR)/run.sh "$(CONTRACT_AUDIT_DIR)/tests/run.sh"
 >     $(MAKE) help > "$(CONTRACT_AUDIT_DIR)/help.txt"
@@ -246,9 +258,9 @@ contract-audit:
 >     $(MAKE) discovery-audit > "$(CONTRACT_AUDIT_DIR)/discovery.txt"
 >     printf '%s\n' \
 >       'Contract audit route:' \
->       '  1. Read README.md for the repository claim.' \
->       '  2. Read help.txt for the stable public targets.' \
->       '  3. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
+>       '  1. Read CONTRACT_AUDIT_GUIDE.md for the reading order and review lens.' \
+>       '  2. Read README.md and help.txt for the repository claim and stable public targets.' \
+>       '  3. Read TARGET_GUIDE.md and PROOF_GUIDE.md for target meaning and claim-to-evidence routing.' \
 >       '  4. Read portability.txt for the declared runtime boundary.' \
 >       '  5. Read discovery.txt and tests/run.sh for graph and proof discipline.' > "$(CONTRACT_AUDIT_DIR)/route.txt"
 >     printf '%s\n' \
@@ -266,14 +278,15 @@ incident-audit:
 >     rm -rf "$(INCIDENT_AUDIT_DIR)"
 >     mkdir -p "$(INCIDENT_AUDIT_DIR)"
 >     cp "$(REPRO_CASE)" "$(INCIDENT_AUDIT_DIR)/$(notdir $(REPRO_CASE))"
+>     cp INCIDENT_REVIEW_GUIDE.md "$(INCIDENT_AUDIT_DIR)/INCIDENT_REVIEW_GUIDE.md"
 >     printf '%s\n' "make -f $(REPRO_CASE) -j2 all" > "$(INCIDENT_AUDIT_DIR)/command.txt"
 >     if $(MAKE) -f "$(REPRO_CASE)" -j2 all > "$(INCIDENT_AUDIT_DIR)/run.txt" 2>&1; then status=0; else status=$$?; fi; \
 >       printf 'exit_status=%s\n' "$$status" > "$(INCIDENT_AUDIT_DIR)/exit-status.txt"; \
 >       $(MAKE) -f "$(REPRO_CASE)" clean >/dev/null 2>&1 || true
 >     printf '%s\n' \
 >       'Incident audit route:' \
->       '  1. Read command.txt for the exact failing invocation.' \
->       '  2. Read run.txt and exit-status.txt for the observed incident evidence.' \
+>       '  1. Read INCIDENT_REVIEW_GUIDE.md for the incident reading order.' \
+>       '  2. Read command.txt, run.txt, and exit-status.txt for the observed incident evidence.' \
 >       '  3. Read the copied repro makefile for the dishonest or unsafe pattern.' \
 >       '  4. Read REPRO_GUIDE.md for the repair route back into the course.' \
 >       '  5. Read PROOF_GUIDE.md if you need the matching production proof surface.' > "$(INCIDENT_AUDIT_DIR)/route.txt"
@@ -292,7 +305,9 @@ profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
 >     mkdir -p "$(PROFILE_AUDIT_DIR)/mk"
 >     cp README.md "$(PROFILE_AUDIT_DIR)/README.md"
+>     cp PROFILE_AUDIT_GUIDE.md "$(PROFILE_AUDIT_DIR)/PROFILE_AUDIT_GUIDE.md"
 >     cp PROOF_GUIDE.md "$(PROFILE_AUDIT_DIR)/PROOF_GUIDE.md"
+>     cp TARGET_GUIDE.md "$(PROFILE_AUDIT_DIR)/TARGET_GUIDE.md"
 >     cp Makefile "$(PROFILE_AUDIT_DIR)/Makefile"
 >     cp $(MK_DIR)/contract.mk "$(PROFILE_AUDIT_DIR)/mk/contract.mk"
 >     $(MAKE) help > "$(PROFILE_AUDIT_DIR)/help.txt"
@@ -300,9 +315,9 @@ profile-audit:
 >     $(MAKE) show-origins > "$(PROFILE_AUDIT_DIR)/origins.txt"
 >     printf '%s\n' \
 >       'Profile audit route:' \
->       '  1. Read portability.txt for tool, shell, and feature assumptions.' \
->       '  2. Read mk/contract.mk for the declared boundary and policy surface.' \
->       '  3. Read help.txt to separate stable targets from internal mechanics.' \
+>       '  1. Read PROFILE_AUDIT_GUIDE.md for the bundle reading order.' \
+>       '  2. Read portability.txt and mk/contract.mk for tool, shell, and policy boundaries.' \
+>       '  3. Read help.txt and TARGET_GUIDE.md to separate stable targets from internal mechanics.' \
 >       '  4. Read origins.txt when you need to review variable precedence.' \
 >       '  5. Read PROOF_GUIDE.md if you need the matching claim-to-evidence route.' > "$(PROFILE_AUDIT_DIR)/route.txt"
 >     printf '%s\n' \
@@ -375,13 +390,15 @@ selftest-report:
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
 >     MAKE="$(MAKE)" SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" $(TST_DIR)/run.sh
 >     cp SELFTEST_GUIDE.md "$(SELFTEST_REPORT_DIR_ABS)/SELFTEST_GUIDE.md"
+>     cp PROOF_GUIDE.md "$(SELFTEST_REPORT_DIR_ABS)/PROOF_GUIDE.md"
 >     printf '%s\n' \
 >       'Selftest review route:' \
 >       '  1. Read summary.txt for the top-level verdict.' \
 >       '  2. Read SELFTEST_GUIDE.md for file meanings and review questions.' \
->       '  3. Read settings.env for the runtime boundary.' \
->       '  4. Compare serial.sum and parallel.sum for schedule equivalence.' \
->       '  5. Read hidden-input.txt for the negative-proof result.' > "$(SELFTEST_REPORT_DIR_ABS)/route.txt"
+>       '  3. Read PROOF_GUIDE.md for the wider claim-to-evidence route.' \
+>       '  4. Read settings.env for the runtime boundary.' \
+>       '  5. Compare serial.sum and parallel.sum for schedule equivalence.' \
+>       '  6. Read hidden-input.txt for the negative-proof result.' > "$(SELFTEST_REPORT_DIR_ABS)/route.txt"
 >     printf '%s\n' \
 >       'Bundle surfaces:' \
 >       '  SELFTEST_GUIDE.md  reading order and file meanings' \
@@ -396,13 +413,14 @@ selftest-report:
 verify-report: selftest-report
 >     @echo "PASS: verify-report completed via $(SELFTEST_REPORT_DIR_ABS)"
 
-proof: walkthrough selftest-report contract-audit incident-audit
+proof: walkthrough selftest-report contract-audit incident-audit profile-audit
 >     @printf '%s\n' \
 >       'PASS: wrote learner-facing proof bundles:' \
 >       "  walkthrough: $(WALKTHROUGH_DIR)" \
 >       "  selftest report: $(SELFTEST_REPORT_DIR_ABS)" \
 >       "  contract audit: $(CONTRACT_AUDIT_DIR)" \
->       "  incident audit: $(INCIDENT_AUDIT_DIR)"
+>       "  incident audit: $(INCIDENT_AUDIT_DIR)" \
+>       "  profile audit: $(PROFILE_AUDIT_DIR)"
 
 # ---- quarantined rule-generation demo (optional) ----
 USE_EVAL ?= no
