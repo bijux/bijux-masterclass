@@ -106,9 +106,9 @@ contract, then to full repository confirmation.
 
 The most useful companion pages for this guide are:
 
-* [`command-guide.md`](command-guide.md)
+* [`command-guide.md`](../guides/command-guide.md)
 * [`practice-map.md`](practice-map.md)
-* [`proof-matrix.md`](proof-matrix.md)
-* [`capstone-map.md`](capstone-map.md)
+* [`proof-matrix.md`](../guides/proof-matrix.md)
+* [`capstone-map.md`](../guides/capstone-map.md)
 
 [Back to top](#top)

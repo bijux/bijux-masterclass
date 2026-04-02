@@ -36,6 +36,6 @@ An experiment is only reviewable if you can say:
 
 ## Best companion pages
 
-- [Evidence Boundary Guide](evidence-boundary-guide.md)
-- [Verification Route Guide](verification-route-guide.md)
+- [Evidence Boundary Guide](../reference/evidence-boundary-guide.md)
+- [Verification Route Guide](../reference/verification-route-guide.md)
 - [Capstone Map](capstone-map.md)

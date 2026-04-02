@@ -103,8 +103,8 @@ time and loss.
 The most useful companion pages for this guide are:
 
 * [`authority-map.md`](authority-map.md)
-* [`proof-matrix.md`](proof-matrix.md)
-* [`capstone-map.md`](capstone-map.md)
-* [`repository-layer-guide.md`](repository-layer-guide.md)
+* [`proof-matrix.md`](../guides/proof-matrix.md)
+* [`capstone-map.md`](../guides/capstone-map.md)
+* [`repository-layer-guide.md`](../guides/repository-layer-guide.md)
 
 [Back to top](#top)

@@ -96,8 +96,8 @@ trust claim without checking what authority that file actually has.
 The most useful companion pages for this map are:
 
 * [`state-glossary.md`](state-glossary.md)
-* [`module-02.md`](module-02.md)
-* [`module-08.md`](module-08.md)
-* [`capstone-map.md`](capstone-map.md)
+* [`module-02.md`](../module-02.md)
+* [`module-08.md`](../module-08.md)
+* [`capstone-map.md`](../guides/capstone-map.md)
 
 [Back to top](#top)

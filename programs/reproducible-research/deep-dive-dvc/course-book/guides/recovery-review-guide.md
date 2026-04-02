@@ -33,8 +33,8 @@ story is real rather than aspirational.
 
 ## Best route
 
-1. Read [Authority Map](authority-map.md).
+1. Read [Authority Map](../reference/authority-map.md).
 2. Run `make -C capstone recovery-drill`.
 3. Run `make -C capstone recovery-review`.
 4. Read `capstone/RECOVERY_GUIDE.md`.
-5. Inspect the recovery bundle beside [Evidence Boundary Guide](evidence-boundary-guide.md).
+5. Inspect the recovery bundle beside [Evidence Boundary Guide](../reference/evidence-boundary-guide.md).

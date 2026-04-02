@@ -43,7 +43,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | params are part of recorded execution meaning | `make -C capstone verify` | `capstone/params.yaml`, `capstone/dvc.lock` |
 | metrics are reviewable state, not only console output | `make -C capstone verify` | `capstone/metrics/metrics.json`, `capstone/publish/v1/metrics.json` |
 | promoted outputs are smaller than internal repository state | `make -C capstone tour` | `capstone/publish/v1/`, `capstone/state/`, `capstone/README.md`, `capstone/publish/v1/manifest.json` |
-| repository layers have distinct reading responsibilities | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/repository-layer-guide.md`, `course-book/capstone-file-guide.md` |
+| repository layers have distinct reading responsibilities | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/guides/repository-layer-guide.md`, `course-book/guides/capstone-file-guide.md` |
 
 [Back to top](#top)
 
@@ -57,8 +57,8 @@ Use it when you care about a concept but want the fastest evidence route.
 | experiments can vary parameters without mutating the baseline contract | `dvc exp run --cwd capstone` | `capstone/params.yaml`, `capstone/dvc.lock` |
 | another person can run the same proof targets through the public interface | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `Makefile`, `programs/reproducible-research/deep-dive-dvc/Makefile`, `capstone/Makefile` |
 | remote-backed recovery still works after local loss | `make -C capstone recovery-drill` | `capstone/.dvc-remote/`, `capstone/publish/v1/` |
-| the full repository can defend itself under review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `capstone/README.md`, `capstone/dvc.yaml`, `capstone/dvc.lock`, `course-book/capstone-review-worksheet.md` |
-| the promoted bundle can be audited without the whole internal repository story | `make -C capstone verify` | `capstone/publish/v1/manifest.json`, `course-book/release-audit-checklist.md` |
+| the full repository can defend itself under review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `capstone/README.md`, `capstone/dvc.yaml`, `capstone/dvc.lock`, `course-book/guides/capstone-review-worksheet.md` |
+| the promoted bundle can be audited without the whole internal repository story | `make -C capstone verify` | `capstone/publish/v1/manifest.json`, `course-book/guides/release-audit-checklist.md` |
 
 [Back to top](#top)
 
@@ -72,10 +72,10 @@ Use it when you care about a concept but want the fastest evidence route.
 | which parameters are safe to compare across runs | `make -C capstone verify` | `capstone/params.yaml` |
 | which artifacts are safe for downstream trust | `make -C capstone tour` | `capstone/publish/v1/manifest.json` |
 | which state survives local cache loss | `make -C capstone recovery-drill` | `capstone/README.md` |
-| which verification route fits my question | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `course-book/verification-route-guide.md` |
+| which verification route fits my question | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `course-book/reference/verification-route-guide.md` |
 | what should I inspect before migration | `make -C capstone confirm` | `capstone/dvc.yaml` |
-| how should I read the repository layers | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/repository-layer-guide.md` |
-| how should I audit the promoted release boundary | `make -C capstone verify` | `course-book/release-audit-checklist.md` |
+| how should I read the repository layers | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/guides/repository-layer-guide.md` |
+| how should I audit the promoted release boundary | `make -C capstone verify` | `course-book/guides/release-audit-checklist.md` |
 
 [Back to top](#top)
 
@@ -86,11 +86,11 @@ Use it when you care about a concept but want the fastest evidence route.
 The most useful companion pages for this matrix are:
 
 * [`command-guide.md`](command-guide.md)
-* [`verification-route-guide.md`](verification-route-guide.md)
-* [`authority-map.md`](authority-map.md)
-* [`evidence-boundary-guide.md`](evidence-boundary-guide.md)
+* [`verification-route-guide.md`](../reference/verification-route-guide.md)
+* [`authority-map.md`](../reference/authority-map.md)
+* [`evidence-boundary-guide.md`](../reference/evidence-boundary-guide.md)
 * [`repository-layer-guide.md`](repository-layer-guide.md)
-* [`practice-map.md`](practice-map.md)
+* [`practice-map.md`](../reference/practice-map.md)
 * [`capstone-file-guide.md`](capstone-file-guide.md)
 * [`release-audit-checklist.md`](release-audit-checklist.md)
 

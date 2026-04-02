@@ -99,7 +99,7 @@ That keeps the audit grounded in recorded evidence instead of presentation alone
 The most useful companion pages for this checklist are:
 
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
-* [`evidence-boundary-guide.md`](evidence-boundary-guide.md)
+* [`evidence-boundary-guide.md`](../reference/evidence-boundary-guide.md)
 * [`proof-matrix.md`](proof-matrix.md)
 * [`capstone-extension-guide.md`](capstone-extension-guide.md)
 

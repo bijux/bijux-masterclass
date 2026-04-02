@@ -33,5 +33,5 @@ Use this guide when studying promotion and auditability.
 ## Best companion pages
 
 - [Release Audit Checklist](release-audit-checklist.md)
-- [Evidence Boundary Guide](evidence-boundary-guide.md)
+- [Evidence Boundary Guide](../reference/evidence-boundary-guide.md)
 - [Capstone Review Worksheet](capstone-review-worksheet.md)

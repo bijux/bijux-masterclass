@@ -21,33 +21,34 @@ plugins:
 nav:
   - Start Here:
       - "Course Home": index.md
-      - "Course Guide": course-guide.md
-      - "Learner Entry": start-here.md
-      - "Learning Contract": learning-contract.md
+      - "Course Guide": guides/course-guide.md
+      - "Learner Entry": guides/start-here.md
+      - "Learning Contract": guides/learning-contract.md
       - "Program Outline": module-00.md
-      - "Platform Setup": platform-setup.md
+      - "Platform Setup": guides/platform-setup.md
   - Course Reference:
-      - "Module Dependency Map": module-dependency-map.md
-      - "Authority Map": authority-map.md
-      - "Evidence Boundary Guide": evidence-boundary-guide.md
-      - "State Glossary": state-glossary.md
-      - "Practice Map": practice-map.md
-      - "Command Guide": command-guide.md
-      - "Verification Route Guide": verification-route-guide.md
-      - "Proof Matrix": proof-matrix.md
-      - "Completion Rubric": completion-rubric.md
+      - "Reference Home": reference/index.md
+      - "Module Dependency Map": reference/module-dependency-map.md
+      - "Authority Map": reference/authority-map.md
+      - "Evidence Boundary Guide": reference/evidence-boundary-guide.md
+      - "State Glossary": reference/state-glossary.md
+      - "Practice Map": reference/practice-map.md
+      - "Command Guide": guides/command-guide.md
+      - "Verification Route Guide": reference/verification-route-guide.md
+      - "Proof Matrix": guides/proof-matrix.md
+      - "Completion Rubric": reference/completion-rubric.md
   - Capstone Route:
-      - "Capstone Guide": readme-capstone.md
-      - "Capstone Architecture Guide": capstone-architecture-guide.md
-      - "Capstone Map": capstone-map.md
-      - "Capstone File Guide": capstone-file-guide.md
-      - "Repository Layer Guide": repository-layer-guide.md
-      - "Experiment Review Guide": experiment-review-guide.md
-      - "Release Review Guide": release-review-guide.md
-      - "Recovery Review Guide": recovery-review-guide.md
-      - "Capstone Review Worksheet": capstone-review-worksheet.md
-      - "Release Audit Checklist": release-audit-checklist.md
-      - "Capstone Extension Guide": capstone-extension-guide.md
+      - "Capstone Guide": guides/readme-capstone.md
+      - "Capstone Architecture Guide": guides/capstone-architecture-guide.md
+      - "Capstone Map": guides/capstone-map.md
+      - "Capstone File Guide": guides/capstone-file-guide.md
+      - "Repository Layer Guide": guides/repository-layer-guide.md
+      - "Experiment Review Guide": guides/experiment-review-guide.md
+      - "Release Review Guide": guides/release-review-guide.md
+      - "Recovery Review Guide": guides/recovery-review-guide.md
+      - "Capstone Review Worksheet": guides/capstone-review-worksheet.md
+      - "Release Audit Checklist": guides/release-audit-checklist.md
+      - "Capstone Extension Guide": guides/capstone-extension-guide.md
   - "Module 01: Why Reproducibility Fails": module-01.md
   - "Module 02: Data Identity and Content Addressing": module-02.md
   - "Module 03: Execution Environments as Inputs": module-03.md

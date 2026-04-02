@@ -127,7 +127,7 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
 make -C capstone help
 ```
 
-Use [`verification-route-guide.md`](verification-route-guide.md) when you need to choose
+Use [`verification-route-guide.md`](../reference/verification-route-guide.md) when you need to choose
 between `walkthrough`, `verify`, `confirm`, `recovery-drill`, and `tour`.
 
 [Back to top](#top)

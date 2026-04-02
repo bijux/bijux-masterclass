@@ -49,4 +49,4 @@ yet at the ownership level.
 - [Repository Layer Guide](repository-layer-guide.md)
 - [Capstone File Guide](capstone-file-guide.md)
 - [Capstone Map](capstone-map.md)
-- [Verification Route Guide](verification-route-guide.md)
+- [Verification Route Guide](../reference/verification-route-guide.md)
