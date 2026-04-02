@@ -1,4 +1,4 @@
-"""CSV-in / JSONL-out boundary shell for the Module-02 API."""
+"""CSV-in / JSONL-out boundary shell for the end-of-Module-04 API."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from funcpipe_rag.result import Err, Ok, Result
 class FSReader(Reader):
     """Filesystem reader implementation (impure)."""
 
-    def read_docs(self, path: str) -> Result[list[RawDoc]]:
+    def read_docs(self, path: str) -> Result[list[RawDoc], str]:
         try:
             with open(path, encoding="utf-8") as f_in:
                 reader = csv.DictReader(f_in)
@@ -26,7 +26,7 @@ class FSReader(Reader):
             return Err(f"Load failed: {exc}")
 
 
-def write_chunks_jsonl(path: str, chunks: Iterable[Chunk]) -> Result[None]:
+def write_chunks_jsonl(path: str, chunks: Iterable[Chunk]) -> Result[None, str]:
     try:
         with open(path, "w", encoding="utf-8") as f_out:
             for chunk in chunks:
@@ -37,7 +37,7 @@ def write_chunks_jsonl(path: str, chunks: Iterable[Chunk]) -> Result[None]:
         return Err(f"Write failed: {exc}")
 
 
-def run(input_path: str, output_path: str, *, config: RagConfig) -> Result[Observations]:
+def run(input_path: str, output_path: str, *, config: RagConfig) -> Result[Observations, str]:
     """Effectful boundary: read docs, run pure core, write chunks."""
 
     reader = FSReader()
@@ -53,4 +53,3 @@ def run(input_path: str, output_path: str, *, config: RagConfig) -> Result[Obser
 
 
 __all__ = ["FSReader", "write_chunks_jsonl", "run"]
-

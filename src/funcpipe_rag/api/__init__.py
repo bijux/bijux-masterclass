@@ -1,7 +1,7 @@
-"""Public APIs for the end-of-Module-03 codebase.
+"""Public APIs for the end-of-Module-04 codebase.
 
-Module 03 adds streaming helpers (fencing, tracing, bounded multicast, pacing),
-while keeping the Module 02 API shapes stable.
+Module 03 adds streaming helpers; Module 04 adds tree-safe recursion, Result/Option
+per-record failures, memoization, breakers/retries, and structured error reporting.
 """
 
 from .types import DocRule, RagTaps, DebugConfig, Observations, TraceLens, RagTraceV3

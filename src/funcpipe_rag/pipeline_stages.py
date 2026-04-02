@@ -1,8 +1,9 @@
 """Pure, composable pipeline stages for the FuncPipe RAG implementation.
 
-End-of-Module-03 codebase: these stages remain the stable, deterministic core
+End-of-Module-04 codebase: these stages remain the stable, deterministic core
 used by the higher-level APIs (configs, rules, taps/probes, boundary shells),
-with Module 03 extending chunking with overlap and tail policies.
+with Module 03 extending chunking with overlap and tail policies, and Module 04
+adding chunk metadata for tree/path provenance.
 """
 
 from __future__ import annotations
@@ -139,6 +140,7 @@ def embed_chunk(chunk: ChunkWithoutEmbedding) -> Chunk:
         text=chunk.text,
         start=chunk.start,
         end=chunk.end,
+        metadata=chunk.metadata,
         embedding=vector,
     )
 

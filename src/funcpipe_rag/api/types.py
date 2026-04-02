@@ -1,4 +1,4 @@
-"""Public API types for the end-of-Module-03 codebase.
+"""Public API types for the end-of-Module-04 codebase.
 
 Most of these types are introduced in Module 02 and extended in Module 03
 (notably tracing/stream observability).
@@ -44,7 +44,7 @@ class DebugConfig:
 
 @dataclass(frozen=True)
 class Observations:
-    """Deterministic summary for a RAG invocation (end-of-Module 03)."""
+    """Deterministic summary for a RAG invocation (end-of-Module 04)."""
 
     total_docs: int
     total_chunks: int

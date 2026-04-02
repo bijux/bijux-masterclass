@@ -1,4 +1,4 @@
-"""Time-aware pacing stages (Module 03, sync-only).
+"""Time-aware pacing stages (Module 03, sync-only; end-of-Module-04).
 
 These helpers accept injected `clock` and `sleeper` callables to make timing
 deterministic and testable. In Module 03 they are synchronous and may block
@@ -39,6 +39,19 @@ def make_throttle(
             yield item
 
     return stage
+
+
+def throttle(
+    items: Iterable[T],
+    *,
+    min_delta: float,
+    clock: Callable[[], float],
+    sleeper: Callable[[float], None],
+) -> Iterator[T]:
+    """Yield items while enforcing a minimum spacing between emissions."""
+
+    stage: Transform[T, T] = make_throttle(min_delta=min_delta, clock=clock, sleeper=sleeper)
+    yield from stage(items)
 
 
 def make_rate_limit(
@@ -109,5 +122,4 @@ def make_call_gate(
     return gate
 
 
-__all__ = ["make_throttle", "make_rate_limit", "make_timestamp", "make_call_gate"]
-
+__all__ = ["make_throttle", "throttle", "make_rate_limit", "make_timestamp", "make_call_gate"]

@@ -6,7 +6,7 @@ import hashlib
 import hypothesis.strategies as st
 from hypothesis.strategies import SearchStrategy
 
-from funcpipe_rag.rag_types import RawDoc, RagEnv, Chunk
+from funcpipe_rag.rag_types import Chunk, RagEnv, RawDoc, TextNode, TreeDoc
 
 
 def raw_doc_strategy() -> SearchStrategy[RawDoc]:
@@ -39,6 +39,40 @@ def env_strategy() -> SearchStrategy[RagEnv]:
     return st.builds(RagEnv, chunk_size=st.integers(min_value=128, max_value=1024))
 
 
+def text_node_strategy() -> SearchStrategy[TextNode]:
+    return st.builds(
+        TextNode,
+        text=st.text(max_size=100),
+        metadata=st.dictionaries(
+            keys=st.just("id"),
+            values=st.text(min_size=1, max_size=20, alphabet="abcdefghijklmnopqrstuvwxyz0123456789-_"),
+            max_size=1,
+        ),
+    )
+
+
+def tree_strategy() -> SearchStrategy[TreeDoc]:
+    base = st.builds(TreeDoc, node=text_node_strategy(), children=st.just(()))
+    return st.recursive(
+        base,
+        lambda sub: st.builds(TreeDoc, node=text_node_strategy(), children=st.lists(sub, max_size=3).map(tuple)),
+        max_leaves=50,
+    )
+
+
+def deep_chain(depth: int) -> TreeDoc:
+    if depth < 1:
+        raise ValueError("depth must be >= 1")
+    node: TreeDoc = TreeDoc(TextNode(text=f"n{depth - 1}", metadata={"id": f"n{depth - 1}"}), ())
+    for i in range(depth - 2, -1, -1):
+        node = TreeDoc(TextNode(text=f"n{i}", metadata={"id": f"n{i}"}), (node,))
+    return node
+
+
+def deep_chain_strategy(depth: int) -> SearchStrategy[TreeDoc]:
+    return st.just(deep_chain(depth))
+
+
 @st.composite
 def pipeline_chunk_strategy(draw) -> Chunk:
     """Strategy for Chunk instances respecting the production embedding invariant."""
@@ -52,4 +86,4 @@ def pipeline_chunk_strategy(draw) -> Chunk:
     vec = tuple(int(h[i : i + step], 16) / (16**step - 1) for i in range(0, 64, step))
 
     doc_id = draw(st.text(min_size=1))
-    return Chunk(doc_id, text, start, end, vec)
+    return Chunk(doc_id=doc_id, text=text, start=start, end=end, metadata={}, embedding=vec)

@@ -1,7 +1,8 @@
-"""Fan-out helpers for splitting streams (Module 03)."""
+"""Fan-out helpers for splitting streams (Module 03, end-of-Module-04)."""
 
 from __future__ import annotations
 
+from collections import deque
 from collections.abc import Callable, Iterable, Iterator
 from itertools import islice, tee
 from typing import TypeVar
@@ -57,5 +58,48 @@ def fork2_lockstep(t: Transform[A, B], u: Transform[A, C]) -> Transform[A, tuple
     return stage
 
 
-__all__ = ["tap_prefix", "fork2_lockstep"]
+def multicast(items: Iterable[T], n: int, *, maxlen: int = 1024) -> tuple[Iterator[T], ...]:
+    """Bounded multicast: return ``n`` independent iterators over the same stream.
 
+    Raises BufferError if consumer skew exceeds maxlen.
+    """
+
+    if n <= 0:
+        raise ValueError("n must be > 0")
+    if maxlen <= 0:
+        raise ValueError("maxlen must be > 0")
+
+    upstream = iter(items)
+    queues: list[deque[object]] = [deque() for _ in range(n)]
+    done = False
+    sentinel = object()
+
+    def pump_once() -> None:
+        nonlocal done
+        if done:
+            return
+        try:
+            x: object = next(upstream)
+        except StopIteration:
+            done = True
+            for q in queues:
+                q.append(sentinel)
+            return
+        for q in queues:
+            if len(q) >= maxlen:
+                raise BufferError(f"multicast buffer exceeded (maxlen={maxlen})")
+            q.append(x)
+
+    def sub(i: int) -> Iterator[T]:
+        while True:
+            if not queues[i]:
+                pump_once()
+            item = queues[i].popleft()
+            if item is sentinel:
+                return
+            yield item  # type: ignore[misc]
+
+    return tuple(sub(i) for i in range(n))
+
+
+__all__ = ["tap_prefix", "fork2_lockstep", "multicast"]

@@ -8,8 +8,9 @@ All types are frozen dataclasses → instances are values:
 
 from __future__ import annotations
 
-from collections.abc import Callable
-from dataclasses import dataclass
+from collections.abc import Callable, Mapping
+from dataclasses import dataclass, field
+from types import MappingProxyType
 
 TailPolicy = str
 
@@ -55,6 +56,19 @@ class ChunkWithoutEmbedding:
     text: str              # the actual slice of the abstract
     start: int             # inclusive start offset in the original abstract
     end: int               # exclusive end offset in the original abstract
+    metadata: Mapping[str, object] = field(default_factory=dict, compare=False)
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.start, int) or not isinstance(self.end, int):
+            raise ValueError("Chunk offsets must be integers")
+        if self.start < 0:
+            raise ValueError("Chunk.start must be >= 0")
+        if self.end < self.start:
+            raise ValueError("Chunk.end must be >= start")
+        if not isinstance(self.metadata, Mapping):
+            raise ValueError("Chunk.metadata must be a mapping")
+        if isinstance(self.metadata, dict):
+            object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
 
 
 @dataclass(frozen=True, eq=True)
@@ -66,7 +80,12 @@ class Chunk(ChunkWithoutEmbedding):
     be deduplicated with a simple `set` or the canonical `structural_dedup_chunks`.
     """
 
-    embedding: tuple[float, ...]   # fixed length 16, each value in [0.0, 1.0]
+    embedding: tuple[float, ...] = ()  # fixed length 16, each value in [0.0, 1.0]
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        if len(self.embedding) != 16:
+            raise ValueError("Chunk.embedding must be a 16-dimensional tuple[float, ...]")
 
 
 @dataclass(frozen=True)
@@ -95,6 +114,28 @@ class RagEnv:
             raise ValueError('RagEnv.tail_policy must be one of: "emit_short", "drop", "pad"')
 
 
+@dataclass(frozen=True)
+class TextNode:
+    """A single text-bearing node in a document hierarchy (Module 04)."""
+
+    text: str
+    metadata: Mapping[str, str] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.metadata, Mapping):
+            raise ValueError("TextNode.metadata must be a mapping")
+        if isinstance(self.metadata, dict):
+            object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+
+
+@dataclass(frozen=True)
+class TreeDoc:
+    """Immutable, recursive document structure (Module 04)."""
+
+    node: TextNode
+    children: tuple["TreeDoc", ...] = ()
+
+
 __all__ = [
     "RawDoc",
     "DocRule",
@@ -103,4 +144,6 @@ __all__ = [
     "Chunk",
     "TailPolicy",
     "RagEnv",
+    "TextNode",
+    "TreeDoc",
 ]

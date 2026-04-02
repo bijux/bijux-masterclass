@@ -43,7 +43,7 @@ class FakeReader:
     def __init__(self, docs: list[RawDoc]) -> None:
         self._docs = docs
 
-    def read_docs(self, path: str) -> Result[list[RawDoc]]:
+    def read_docs(self, path: str) -> Result[list[RawDoc], str]:
         _ = path
         return Ok(self._docs)
 
@@ -100,4 +100,3 @@ def test_pred_dsl_eval_pred() -> None:
     doc_bad = RawDoc("1", "t", "a", "cs.AI")
     assert eval_pred(doc_ok, pred)
     assert not eval_pred(doc_bad, pred)
-

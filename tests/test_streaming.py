@@ -30,10 +30,10 @@ from funcpipe_rag import (
 
 
 def test_dedup_iterator_preserves_order() -> None:
-    a = Chunk("d1", "x", 0, 1, (0.1,) * 16)
-    a2 = Chunk("d1", "x", 0, 1, (0.9,) * 16)  # considered duplicate by structural key
-    b = Chunk("d1", "y", 1, 2, (0.2,) * 16)
-    c = Chunk("d2", "x", 0, 1, (0.3,) * 16)
+    a = Chunk(doc_id="d1", text="x", start=0, end=1, metadata={}, embedding=(0.1,) * 16)
+    a2 = Chunk(doc_id="d1", text="x", start=0, end=1, metadata={}, embedding=(0.9,) * 16)  # considered duplicate by structural key
+    b = Chunk(doc_id="d1", text="y", start=1, end=2, metadata={}, embedding=(0.2,) * 16)
+    c = Chunk(doc_id="d2", text="x", start=0, end=1, metadata={}, embedding=(0.3,) * 16)
 
     out = list(structural_dedup_lazy([a, b, a2, c, a]))
     assert out == [a, b, c]

@@ -1,4 +1,4 @@
-"""Application-level config for the end-of-Module-03 shells.
+"""Application-level config for the end-of-Module-04 shells.
 
 The thin CLI/boundary pattern was introduced in M02C10 and remains the
 recommended way to keep I/O at the edges.

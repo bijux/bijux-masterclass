@@ -1,4 +1,4 @@
-"""Configuration and dependency wiring for the end-of-Module-03 codebase.
+"""Configuration and dependency wiring for the end-of-Module-04 codebase.
 
 The config-as-data and dependency-wiring patterns are introduced in Module 02
 and extended in Module 03 with streaming entry points.
@@ -19,7 +19,7 @@ from funcpipe_rag.result import Err, Ok, Result
 
 
 class Reader(Protocol):
-    def read_docs(self, path: str) -> Result[list[RawDoc]]: ...
+    def read_docs(self, path: str) -> Result[list[RawDoc], str]: ...
 
 
 @dataclass(frozen=True)
@@ -89,7 +89,7 @@ def make_gen_rag_fn(
     return run
 
 
-def boundary_rag_config(raw: Mapping[str, object]) -> Result[RagConfig]:
+def boundary_rag_config(raw: Mapping[str, object]) -> Result[RagConfig, str]:
     """Parse untyped boundary config into frozen RagConfig."""
 
     chunk_size_raw = raw.get("chunk_size", 512)

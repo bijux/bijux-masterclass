@@ -1,7 +1,7 @@
-"""Thin orchestrator example for the end-of-Module-03 codebase.
+"""Thin orchestrator example for the end-of-Module-04 codebase.
 
 This boundary config + pure core + I/O edges shape is introduced in M02C10 and
-remains unchanged for Module 03.
+remains unchanged for Module 04.
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from funcpipe_rag.result import Err, Ok, Result, result_and_then, result_map
 from funcpipe_rag.shells.rag_api_shell import FSReader, write_chunks_jsonl
 
 
-def boundary_app_config(args: list[str]) -> Result[AppConfig]:
+def boundary_app_config(args: list[str]) -> Result[AppConfig, str]:
     """Parse CLI args into frozen AppConfig."""
 
     parser = argparse.ArgumentParser()
@@ -56,19 +56,19 @@ def boundary_app_config(args: list[str]) -> Result[AppConfig]:
     return Ok(AppConfig(input_path=ns.input, output_path=ns.output, rag=cfg))
 
 
-def read_docs(path: str) -> Result[list[RawDoc]]:
+def read_docs(path: str) -> Result[list[RawDoc], str]:
     return FSReader().read_docs(path)
 
 
-def write_chunks(path: str, chunks: list[Chunk]) -> Result[None]:
+def write_chunks(path: str, chunks: list[Chunk]) -> Result[None, str]:
     return write_chunks_jsonl(path, chunks)
 
 
-def orchestrate(args: list[str]) -> Result[None]:
+def orchestrate(args: list[str]) -> Result[None, str]:
     return result_and_then(boundary_app_config(args), _run)
 
 
-def _run(cfg: AppConfig) -> Result[None]:
+def _run(cfg: AppConfig) -> Result[None, str]:
     deps = get_deps(cfg.rag)
     docs_res = read_docs(cfg.input_path)
     core_res = result_map(docs_res, lambda docs: full_rag_api_docs(docs, cfg.rag, deps))
