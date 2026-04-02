@@ -41,6 +41,17 @@ pressure for a long time.
 - you want inheritance advice before you understand object semantics and ownership
 - you want to treat the capstone as an optional appendix
 
+## Readiness check
+
+You are ready for the course if most of these already feel routine:
+
+- writing a small class with a meaningful constructor and a pytest test
+- explaining the difference between identity and equality in plain Python terms
+- using `dataclass` for a simple value type without guessing what it generates
+- describing why shared mutable state can create non-local bugs
+
+If those still feel shaky, slow down and treat [Orientation](../module-00-orientation/index.md) plus [Module 01](../module-01-object-model/index.md) as a deliberate on-ramp instead of trying to browse the whole course.
+
 ## Best Reading Route
 
 1. Read [Course Home](../index.md) for the course promise and module arc.
@@ -50,6 +61,14 @@ pressure for a long time.
 5. Use [Module Promise Map](module-promise-map.md) and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
 6. Keep [Capstone](capstone.md) open while reading so the ownership claims stay tied to one executable system.
 7. Use [Proof Ladder](proof-ladder.md), [Command Guide](command-guide.md), and [Capstone Map](capstone-map.md) when you want the executable route.
+
+## If you have one hour
+
+1. Read [Course Home](../index.md).
+2. Read [Orientation](../module-00-orientation/index.md).
+3. Read [Module Promise Map](module-promise-map.md).
+4. Choose one row from [Pressure Routes](pressure-routes.md).
+5. End with [Capstone](capstone.md) or [Capstone Map](capstone-map.md), not the strongest proof command.
 
 ## Use The Arcs Deliberately
 
