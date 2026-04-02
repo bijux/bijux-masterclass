@@ -75,7 +75,7 @@ Use stops 5 and 6 only after the earlier stops no longer settle the question.
 
 ## Walkthrough stop 6: Inspect the full learner route
 
-- Run `make inspect` and `make tour`.
+- Run `make inspect` and `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough`.
 - Read the saved bundle under `artifacts/inspect/python-programming/python-meta-programming` and `artifacts/tour/python-programming/python-meta-programming`.
 - Ask: does the public learning surface make the runtime easier to review than the raw source tree alone?
 - Prove it by following `route.txt` and `focus-areas.txt`.

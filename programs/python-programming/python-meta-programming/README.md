@@ -127,7 +127,16 @@ From the repository root:
 make PROGRAM=python-programming/python-meta-programming docs-serve
 make PROGRAM=python-programming/python-meta-programming docs-build
 make PROGRAM=python-programming/python-meta-programming test
+make PROGRAM=python-programming/python-meta-programming capstone-walkthrough
+make PROGRAM=python-programming/python-meta-programming capstone-tour
+make PROGRAM=python-programming/python-meta-programming capstone-verify-report
+make PROGRAM=python-programming/python-meta-programming capstone-confirm
 ```
+
+Use `capstone-walkthrough` for the first published learner-facing route, `capstone-tour`
+when you want the same saved bundle in the proof ladder, `capstone-verify-report` when
+you need durable executable evidence, and `capstone-confirm` for the strictest published
+confirmation pass.
 
 Primary reading route:
 

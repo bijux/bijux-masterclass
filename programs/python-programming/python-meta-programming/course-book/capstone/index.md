@@ -40,7 +40,7 @@ must coexist without hiding responsibility.
 | what the runtime exposes without execution | [Capstone Map](capstone-map.md) and the manifest or registry outputs | `make manifest` or `make registry` |
 | which file owns the mechanism | [Capstone Architecture Guide](capstone-architecture-guide.md) and [Capstone File Guide](capstone-file-guide.md) | `capstone/src/incident_plugins/` |
 | which command is the smallest honest proof | [Command Guide](command-guide.md) and the matching capstone target | the matching capstone target |
-| how to review the capstone end to end | [Capstone Walkthrough](capstone-walkthrough.md) and [Capstone Proof Checklist](capstone-proof-checklist.md) | `make tour` or `make verify-report` |
+| how to review the capstone end to end | [Capstone Walkthrough](capstone-walkthrough.md) and [Capstone Proof Checklist](capstone-proof-checklist.md) | `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` or `make PROGRAM=python-programming/python-meta-programming capstone-verify-report` |
 
 ## Best route by module stage
 
