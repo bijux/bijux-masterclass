@@ -39,6 +39,7 @@ choice tied to learner intent instead of rewarding the heaviest route by default
 ## Best companion files
 
 - `GUIDE_INDEX.md`
+- `PUBLIC_SURFACE_MAP.md`
 - `PROOF_GUIDE.md`
 - `ARCHITECTURE.md`
 - `WALKTHROUGH_GUIDE.md`

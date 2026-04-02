@@ -44,18 +44,24 @@ inspect: install ## Build the learner-facing inspection bundle
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(INSPECT_DIR)/summary.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(INSPECT_DIR)/summary.json
 	cp README.md $(INSPECT_DIR)/README.md
+	cp FIRST_SESSION_GUIDE.md $(INSPECT_DIR)/FIRST_SESSION_GUIDE.md
 	cp GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
 	cp COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
 	cp ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
 	cp PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
+	cp PUBLIC_SURFACE_MAP.md $(INSPECT_DIR)/PUBLIC_SURFACE_MAP.md
+	cp REVIEW_ROUTE_MAP.md $(INSPECT_DIR)/REVIEW_ROUTE_MAP.md
+	cp SOURCE_TO_PROOF_MAP.md $(INSPECT_DIR)/SOURCE_TO_PROOF_MAP.md
 	cp TEST_GUIDE.md $(INSPECT_DIR)/TEST_GUIDE.md
+	cp TEST_READING_MAP.md $(INSPECT_DIR)/TEST_READING_MAP.md
 	cp PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
 	printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read summary.txt for the human review map.' \
 		'  2. Read summary.json for the machine-readable package and test groups.' \
-		'  3. Read PACKAGE_GUIDE.md and TEST_GUIDE.md for the local reading routes.' \
-		'  4. Read ARCHITECTURE.md and PROOF_GUIDE.md when you need ownership and proof depth.' \
+		'  3. Read PACKAGE_GUIDE.md, TEST_GUIDE.md, and TEST_READING_MAP.md for the local reading routes.' \
+		'  4. Read PUBLIC_SURFACE_MAP.md, SOURCE_TO_PROOF_MAP.md, and REVIEW_ROUTE_MAP.md when you need ownership and route depth.' \
+		'  5. Read ARCHITECTURE.md and PROOF_GUIDE.md when you need the broader package and proof map.' \
 		> $(INSPECT_DIR)/route.txt
 	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
 	@echo "✔ wrote learner-facing inspection bundle to $(INSPECT_DIR)"
@@ -69,15 +75,20 @@ verify-report: install ## Build the structured capstone verification report bund
 	cp README.md $(VERIFY_REPORT_DIR)/README.md
 	cp GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
 	cp COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
+	cp PUBLIC_SURFACE_MAP.md $(VERIFY_REPORT_DIR)/PUBLIC_SURFACE_MAP.md
 	cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
+	cp REVIEW_ROUTE_MAP.md $(VERIFY_REPORT_DIR)/REVIEW_ROUTE_MAP.md
+	cp SOURCE_TO_PROOF_MAP.md $(VERIFY_REPORT_DIR)/SOURCE_TO_PROOF_MAP.md
+	cp TEST_READING_MAP.md $(VERIFY_REPORT_DIR)/TEST_READING_MAP.md
 	cp WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
 	cp TOUR.md $(VERIFY_REPORT_DIR)/TOUR.md
 	printf '%s\n' \
 		'Verification report route:' \
 		'  1. Read pytest.txt for the executed verification result.' \
 		'  2. Read review-summary.txt for the package, test, and route inventory.' \
-		'  3. Read PROOF_GUIDE.md when you need claim-to-evidence routing.' \
-		'  4. Read WALKTHROUGH_GUIDE.md and TOUR.md when you want the matching human review order.' \
+		'  3. Read PROOF_GUIDE.md, TEST_READING_MAP.md, and SOURCE_TO_PROOF_MAP.md when you need claim-to-evidence routing.' \
+		'  4. Read PUBLIC_SURFACE_MAP.md and REVIEW_ROUTE_MAP.md when you need to connect the saved artifact back to the published routes.' \
+		'  5. Read WALKTHROUGH_GUIDE.md and TOUR.md when you want the matching human review order.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
 	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "✔ wrote capstone verification report to $(VERIFY_REPORT_DIR)"
@@ -89,9 +100,14 @@ tour: install ## Build the learner-facing proof bundle
 	find src/funcpipe_rag -type d | sort > $(TOUR_DIR)/package-tree.txt
 	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
 	cp README.md $(TOUR_DIR)/README.md
+	cp FIRST_SESSION_GUIDE.md $(TOUR_DIR)/FIRST_SESSION_GUIDE.md
 	cp GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
 	cp COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
+	cp PUBLIC_SURFACE_MAP.md $(TOUR_DIR)/PUBLIC_SURFACE_MAP.md
 	cp pyproject.toml $(TOUR_DIR)/pyproject.toml
+	cp REVIEW_ROUTE_MAP.md $(TOUR_DIR)/REVIEW_ROUTE_MAP.md
+	cp SOURCE_TO_PROOF_MAP.md $(TOUR_DIR)/SOURCE_TO_PROOF_MAP.md
+	cp TEST_READING_MAP.md $(TOUR_DIR)/TEST_READING_MAP.md
 	cp TOUR.md $(TOUR_DIR)/TOUR.md
 	cp WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
 	cp PACKAGE_GUIDE.md $(TOUR_DIR)/PACKAGE_GUIDE.md
@@ -104,6 +120,14 @@ tour: install ## Build the learner-facing proof bundle
 		"tests=tests/unit" \
 		> $(TOUR_DIR)/focus-areas.txt
 	$(PYTHON) scripts/write_bundle_manifest.py --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/manifest.json
+	printf '%s\n' \
+		'Tour route:' \
+		'  1. Read package-tree.txt and test-tree.txt for the repository shape.' \
+		'  2. Read focus-areas.txt for the highest-signal package groups.' \
+		'  3. Read TOUR.md and WALKTHROUGH_GUIDE.md for the human reading order.' \
+		'  4. Read PUBLIC_SURFACE_MAP.md, SOURCE_TO_PROOF_MAP.md, and TEST_READING_MAP.md when you need to connect the walkthrough back to commands and proof groups.' \
+		'  5. Read REVIEW_ROUTE_MAP.md when the current pressure is clearer than the route itself.' \
+		> $(TOUR_DIR)/route.txt
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
 proof: test inspect tour ## Run the sanctioned learner-facing proof route

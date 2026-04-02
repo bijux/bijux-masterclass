@@ -56,3 +56,10 @@ Use `make confirm` only when you need the strongest combined route.
 2. Choose the route that produces the closest evidence, or use `make confirm` for the strongest published route.
 3. Inspect the relevant package or guide.
 4. Decide whether the evidence matches the claim or only hints at it.
+
+## Best companion files
+
+- `PUBLIC_SURFACE_MAP.md`
+- `SOURCE_TO_PROOF_MAP.md`
+- `TEST_READING_MAP.md`
+- `REVIEW_ROUTE_MAP.md`

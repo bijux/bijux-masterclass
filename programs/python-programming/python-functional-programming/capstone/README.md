@@ -101,6 +101,10 @@ Proof route:
 - `FIRST_SESSION_GUIDE.md`
 - `GUIDE_INDEX.md`
 - `COMMAND_GUIDE.md`
+- `PUBLIC_SURFACE_MAP.md`
+- `SOURCE_TO_PROOF_MAP.md`
+- `TEST_READING_MAP.md`
+- `REVIEW_ROUTE_MAP.md`
 - `PROOF_GUIDE.md`
 - `ARCHITECTURE.md`
 - `TOUR.md`
@@ -112,6 +116,10 @@ Proof route:
 - `FIRST_SESSION_GUIDE.md` for the smallest honest first pass through the capstone
 - `GUIDE_INDEX.md` for the smallest route into the capstone doc set
 - `COMMAND_GUIDE.md` for choosing the smallest honest command and artifact route
+- `PUBLIC_SURFACE_MAP.md` for understanding what each published route actually exposes
+- `SOURCE_TO_PROOF_MAP.md` for package-to-proof alignment
+- `TEST_READING_MAP.md` for choosing the first proof group by claim
+- `REVIEW_ROUTE_MAP.md` for guide-to-command-to-artifact routing
 - `ARCHITECTURE.md` for the package map
 - `tests/` for the proof surface
 - `src/funcpipe_rag/` for package boundaries
@@ -121,6 +129,7 @@ Proof route:
 Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
 effects, or orchestration should live.
 Use `FIRST_SESSION_GUIDE.md` first whenever the capstone itself still feels too large.
+Use `PUBLIC_SURFACE_MAP.md` when you ran a route and still need to know what it actually exposed.
 Use `PROOF_GUIDE.md` when you need to choose between fast inspection, saved review output,
 and the strongest confirmation route.
 Use `TOUR.md` when you want the shortest human-readable route through the proof bundle.
