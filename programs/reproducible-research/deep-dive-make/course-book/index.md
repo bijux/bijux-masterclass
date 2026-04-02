@@ -17,18 +17,12 @@ deterministic results, and repeatable verification.
 ---
 ## Table of Contents
 - [Why this program exists](#why-this-program-exists)
-- [Start here](start-here.md)
-- [Course guide](course-guide.md)
-- [Learning contract](learning-contract.md)
-- [How the guide is written](#how-the-guide-is-written)
-- [What you will learn](#what-you-will-learn)
-- [Prerequisites](#prerequisites)
-- [How to read it](#how-to-read-it)
+- [Best entry routes](#best-entry-routes)
+- [Support pages that matter first](#support-pages-that-matter-first)
+- [Module map](#what-you-will-learn)
 - [Verification via the capstone](#verification-via-the-capstone)
-- [Capstone map](capstone-map.md)
 - [Diagnostics playbook](#diagnostics-playbook)
 - [Repository links](#repository-links)
-- [Contributing](#contributing)
 - [License](#license)
 ---
 ## Why this program exists
@@ -62,6 +56,34 @@ surfaces by learner need: first entry, stable reference, capstone use, and revie
 Use [`learning-contract.md`](learning-contract.md) as the stable reference for how this
 course teaches: concept, failure mode, repair, and proof. It makes the pedagogical bar
 explicit instead of leaving it scattered across modules.
+
+[Back to top](#top)
+
+---
+## Best entry routes
+
+Use these as the default learner routes:
+
+| If you need | Start with | Then go to |
+| --- | --- | --- |
+| first exposure to GNU Make | [`start-here.md`](start-here.md) | [`module-00.md`](module-00.md), then Module 01 |
+| a stable course hub | [`course-guide.md`](course-guide.md) | the support page that matches your question |
+| platform requirements first | [`platform-setup.md`](platform-setup.md) | [`command-guide.md`](command-guide.md) |
+| executable proof after the module | [`capstone-map.md`](capstone-map.md) | [`capstone-walkthrough.md`](capstone-walkthrough.md) |
+
+[Back to top](#top)
+
+---
+## Support pages that matter first
+
+These pages exist so learners do not have to reconstruct the course shape from ten
+modules and one capstone:
+
+* [`course-guide.md`](course-guide.md) for the stable hub
+* [`module-00.md`](module-00.md) for the full course arc
+* [`module-dependency-map.md`](module-dependency-map.md) for the safe reading order
+* [`command-guide.md`](command-guide.md) for root, program, and capstone commands
+* [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
 
 [Back to top](#top)
 
@@ -118,16 +140,6 @@ This program guide and capstone rely on GNU Make 4.3+ for full pattern fidelity:
 Older versions may work for basic modules but lack key parallel-safe primitives. Fallbacks are discussed where relevant.  
 [Back to top](#top)
 
----
-## How to read it
-Recommended path (best learning outcomes):
-1. Start at the syllabus: [`module-00.md`](module-00.md)
-2. Read modules in order (01 → 10)
-3. After each advanced module, apply at least one pattern in the capstone and re-run selftests
-If you are here for incident response or reference:
-* jump to Module 04, Module 05, Module 09, and Module 10
-* use the diagnostics playbook below  
-[Back to top](#top)
 ---
 ## Verification via the capstone
 The program is paired with an executable reference build: [`capstone/`](https://github.com/bijux/bijux-masterclass/tree/master/programs/reproducible-research/deep-dive-make/capstone). It exists for one reason: **proof**.
