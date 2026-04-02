@@ -78,5 +78,6 @@ The tour reveals the architectural promise of the capstone:
 ## Compare these after the tour
 
 - compare `TOUR.md` with `ARCHITECTURE.md` to see which scenario step maps to which boundary
+- compare `TOUR.md` with `EVENT_FLOW_GUIDE.md` to see how each step turns into derived state
 - compare `TOUR.md` with `TEST_GUIDE.md` to decide which executable proof best matches the story
 - compare `TOUR.md` with `PROOF_GUIDE.md` when you want to move from narrative understanding into stronger evidence

@@ -61,6 +61,7 @@ projections should stay derived so read concerns do not mutate authoritative sta
 - Use `make tour` when you want the learner-facing scenario route through the architecture.
 - Use `make verify-report` when you need executable evidence alongside that review.
 - Use `EXTENSION_GUIDE.md` when the architecture question is really a change-placement question.
+- Use `EVENT_FLOW_GUIDE.md` when the main question is how aggregate decisions become read-model state.
 
 ## Architecture questions for review
 

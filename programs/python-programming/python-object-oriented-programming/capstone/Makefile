@@ -34,6 +34,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@cp DOMAIN_GUIDE.md $(TOUR_DIR)/DOMAIN_GUIDE.md
 	@cp SCENARIO_GUIDE.md $(TOUR_DIR)/SCENARIO_GUIDE.md
 	@cp RULE_LIFECYCLE_GUIDE.md $(TOUR_DIR)/RULE_LIFECYCLE_GUIDE.md
+	@cp EVENT_FLOW_GUIDE.md $(TOUR_DIR)/EVENT_FLOW_GUIDE.md
 	@cp WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
 	@cp ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
 	@cp TARGET_GUIDE.md $(TOUR_DIR)/TARGET_GUIDE.md
@@ -41,7 +42,7 @@ tour: ## Build the learner-facing walkthrough bundle
 		'Walkthrough route:' \
 		'  1. Read walkthrough.txt for the scenario output.' \
 		'  2. Read DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, and TOUR.md for the vocabulary, fixed inputs, lifecycle, and narrative sequence.' \
-		'  3. Read WALKTHROUGH_GUIDE.md and TARGET_GUIDE.md for the command and file route.' \
+		'  3. Read WALKTHROUGH_GUIDE.md, EVENT_FLOW_GUIDE.md, and TARGET_GUIDE.md for the command and file route.' \
 		'  4. Read ARCHITECTURE.md when you need object ownership while following the story.' \
 		> $(TOUR_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/manifest.json
@@ -95,13 +96,14 @@ verify-report: ## Build the capstone verification report bundle
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
 	@cp PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
 	@cp TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
+	@cp EVENT_FLOW_GUIDE.md $(VERIFY_REPORT_DIR)/EVENT_FLOW_GUIDE.md
 	@cp WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
 	@cp INSPECTION_GUIDE.md $(VERIFY_REPORT_DIR)/INSPECTION_GUIDE.md
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable confirmation.' \
 		'  2. Read summary.txt and history.txt for the learner-facing state captured alongside the tests.' \
-		'  3. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
+		'  3. Read PROOF_GUIDE.md and EVENT_FLOW_GUIDE.md for claim-to-evidence and event-to-artifact routing.' \
 		'  4. Read TEST_GUIDE.md, WALKTHROUGH_GUIDE.md, and INSPECTION_GUIDE.md for the matching human review path.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json

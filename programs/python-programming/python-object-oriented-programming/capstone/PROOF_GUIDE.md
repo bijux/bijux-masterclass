@@ -66,6 +66,10 @@ both.
 | learner-facing use cases | `tests/test_application.py` and `tests/test_demo.py` | `make demo` or `make tour` |
 | whole-capstone trust and saved evidence | the generated verification bundle | `make confirm` or `make proof` |
 
+Keep [EVENT_FLOW_GUIDE.md](EVENT_FLOW_GUIDE.md) nearby when the code makes sense locally
+but you still need to trace how one aggregate action becomes a projection update or a
+saved learner-facing artifact.
+
 ## Review question after each route
 
 - Which object or boundary owned the proven behavior?
