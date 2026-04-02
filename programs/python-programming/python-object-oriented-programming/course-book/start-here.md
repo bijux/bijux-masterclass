@@ -47,6 +47,7 @@ If you keep those questions in view, the modules feel cumulative instead of scat
 3. Read [Course Guide](course-guide.md) to understand the three-arc structure.
 4. Read [Learning Contract](learning-contract.md) before you start Module 01.
 5. Keep [Capstone](capstone.md) open while reading Modules 04 to 10.
+6. Use [Command Guide](command-guide.md) and [Capstone Map](capstone-map.md) when you want the executable route.
 
 ## What to avoid
 

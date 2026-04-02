@@ -86,6 +86,9 @@ Run the scenario walkthrough from the capstone directory:
 make demo
 ```
 
+Use [Capstone Map](capstone-map.md) when you want the best next page for architecture,
+code reading, walkthrough, or proof review.
+
 ## Architecture map
 
 ```mermaid
