@@ -54,7 +54,7 @@ By the end of the course, you should be able to:
 
 ## Course structure
 
-- `course-book/` contains the published course material.
+- `course-book/` uses one stable shape: `guides/`, `reference/`, `module-00-orientation/`, and Modules `01` to `10`.
 - `capstone/` contains a runnable monitoring-system reference implementation with
   aggregates, evaluation strategies, read models, and a runtime facade.
 - `Makefile` exposes stable course-level entrypoints inside the monorepo.
@@ -115,6 +115,19 @@ Primary reading route:
 - `08` Testing, verification, contracts, and confidence
 - `09` Public APIs, extension points, plugins, and governance
 - `10` Performance, observability, security, and capstone mastery
+
+## Ten-module roadmap
+
+1. Object model: identity, equality, copying, and the semantic contract of an object.
+2. Design and layering: roles, composition, protocols, and boundary assignment.
+3. State and typestate: validation, lifecycle transitions, and illegal-state prevention.
+4. Aggregates and collaboration: cross-object invariants, events, projections, and policies.
+5. Resources and evolution: cleanup, failure handling, compatibility, and safe change.
+6. Persistence and schema evolution: repositories, codecs, versioning, and migration.
+7. Time and concurrency: clocks, scheduling, retries, queues, threads, and async boundaries.
+8. Testing and verification: behavioral proof, contracts, properties, and confidence ladders.
+9. Public APIs and extension governance: facades, plugin seams, compatibility, and review controls.
+10. Performance, observability, and security: operational review, trust boundaries, and capstone hardening.
 
 ## Capstone promise
 

@@ -72,6 +72,27 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 - [Course Guide](guides/course-guide.md)
 - [Learning Contract](guides/learning-contract.md)
 
+## Course shape
+
+- [Orientation](module-00-orientation/index.md) establishes the reading discipline and course map.
+- [Modules 01-03](module-01-object-model/index.md) through [module-03-state-and-typestate/index.md](module-03-state-and-typestate/index.md) build the semantic and state-design floor.
+- [Modules 04-07](module-04-aggregates-and-collaboration/index.md) through [module-07-time-and-concurrency/index.md](module-07-time-and-concurrency/index.md) apply that floor to collaboration, persistence, and runtime pressure.
+- [Modules 08-10](module-08-testing-and-verification/index.md) through [module-10-performance-observability-and-security/index.md](module-10-performance-observability-and-security/index.md) audit whether the design is actually trustworthy under tests, public use, and operations.
+- [Capstone](guides/capstone.md) keeps the whole route tied to one executable system.
+
+## Ten-module roadmap
+
+1. [Module 01](module-01-object-model/index.md): object semantics and the Python data model.
+2. [Module 02](module-02-design-and-layering/index.md): responsibility assignment and collaboration boundaries.
+3. [Module 03](module-03-state-and-typestate/index.md): state, validation, and lifecycle rules.
+4. [Module 04](module-04-aggregates-and-collaboration/index.md): aggregates, events, policies, and projections.
+5. [Module 05](module-05-resources-and-evolution/index.md): cleanup, failure handling, and safe evolution.
+6. [Module 06](module-06-persistence-and-schema-evolution/index.md): repositories, storage mapping, and schema change.
+7. [Module 07](module-07-time-and-concurrency/index.md): clocks, scheduling, concurrency, and async boundaries.
+8. [Module 08](module-08-testing-and-verification/index.md): executable proof and confidence design.
+9. [Module 09](module-09-public-apis-and-extension-governance/index.md): public surfaces, extension seams, and governance.
+10. [Module 10](module-10-performance-observability-and-security/index.md): operational review, observability, security, and capstone mastery.
+
 ## Working model
 
 The course uses a monitoring-system domain as the running example. That domain is
