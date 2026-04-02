@@ -2,27 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  ladder["Proof ladder"]
-  read["Reading proof"]
-  inspect["Inspection proof"]
-  execute["Executable proof"]
-
-  ladder --> read
-  ladder --> inspect
-  ladder --> execute
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Proof Ladder"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  question["What do I need to prove?"] --> small["Choose the smallest honest proof"]
-  small --> inspect["Inspect guides or code"]
-  inspect --> execute["Escalate to commands only when needed"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when you are deciding how much proof you need. Not every OOP question
 needs the strongest capstone command, and using the heaviest route too early often

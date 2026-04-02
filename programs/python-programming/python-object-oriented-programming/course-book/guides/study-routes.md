@@ -2,26 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  entry["Start Here"] --> routes["Study Routes"]
-  routes --> modules["Module overview"]
-  routes --> capstone["Capstone surface"]
-  capstone --> proof["Proof route"]
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Study Routes"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  time["How much focused time do you have?"] --> short["20-minute route"]
-  time --> medium["45-minute route"]
-  time --> long["90-minute route"]
-  short --> recap["Name one ownership decision"]
-  medium --> recap
-  long --> recap
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when the course feels clear in principle but hard to schedule honestly.
 These routes turn the course into repeatable study sessions instead of a pile of pages.

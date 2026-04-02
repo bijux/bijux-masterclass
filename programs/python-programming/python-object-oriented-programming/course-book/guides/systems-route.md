@@ -2,27 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  start["Modules 01-03 feel stable"] --> m4["Module 04"]
-  m4 --> m5["Module 05"]
-  m5 --> m6["Module 06"]
-  m6 --> m7["Module 07"]
-  m7 --> m8["Module 08"]
-  m8 --> m9["Module 09"]
-  m9 --> m10["Module 10"]
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Systems Route"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  question["What pressure is entering the design now?"] --> ownership["Collaboration and survival"]
-  ownership --> durability["Persistence and runtime pressure"]
-  durability --> trust["Verification and governance"]
-  trust --> review["Operational review with proof"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when Modules 01 to 03 already feel grounded and the remaining challenge is
 the heavier systems half of the course. This route keeps Modules 04 to 10 tied together

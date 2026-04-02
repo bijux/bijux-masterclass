@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  entry["Start Here"] --> home["Course Home"]
-  home --> guide["Course Guide"]
-  guide --> modules["Modules 01-10"]
-  modules --> capstone["Capstone review"]
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Course Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  foundation["Modules 01-03\nobject semantics and state"] --> collaboration["Modules 04-05\ncollaboration and survivability"]
-  collaboration --> scale["Modules 06-07\npersistence and runtime pressure"]
-  scale --> trust["Modules 08-10\nverification, public APIs, and operational mastery"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This guide explains how the course is shaped and why the sequence matters. The course is
 not a pile of OOP topics. It is a pressure-tested path from object semantics to systems

@@ -2,31 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph TD
-  m1["01 Object model"] --> m2["02 Roles and boundaries"]
-  m2 --> m3["03 State and lifecycles"]
-  m3 --> m4["04 Collaboration and aggregates"]
-  m4 --> m5["05 Operational survival"]
-  m5 --> m6["06 Persistence and evolution"]
-  m6 --> m7["07 Time and concurrency"]
-  m7 --> m8["08 Testing and verification"]
-  m8 --> m9["09 Public APIs and governance"]
-  m9 --> m10["10 Operational mastery"]
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Module Dependency Map"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  semantics["Semantics"] --> ownership["Ownership"]
-  ownership --> state["Lifecycle control"]
-  state --> collaboration["Aggregate boundaries"]
-  collaboration --> durability["Persistence and runtime pressure"]
-  durability --> confidence["Verification and governance"]
-  confidence --> mastery["Operational review"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This map exists to prevent a common failure mode: reading an advanced chapter without
 the earlier concept that gives it meaning.

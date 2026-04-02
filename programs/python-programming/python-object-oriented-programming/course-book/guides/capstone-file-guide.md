@@ -2,26 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph TD
-  app["application.py"] --> model["model.py"]
-  model --> policies["policies.py"]
-  policies --> runtime["runtime.py"]
-  runtime --> repo["repository.py"]
-  runtime --> views["read_models.py and projections.py"]
-  views --> tests["tests/"]
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone File Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  learner["Learner question"] --> file["Open the matching file"]
-  file --> concept["Read the ownership boundary"]
-  concept --> test["Find the matching test or command"]
-  test --> recap["Explain why that file is not doing more"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This guide gives the capstone a human reading order. The goal is not to read every file
 alphabetically. The goal is to understand how the system is partitioned.

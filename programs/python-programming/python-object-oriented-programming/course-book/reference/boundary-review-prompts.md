@@ -2,30 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Reference Position
 
 ```mermaid
-graph LR
-  prompts["Boundary review prompts"]
-  api["Public API"]
-  persistence["Persistence"]
-  runtime["Runtime pressure"]
-  extension["Extension seams"]
-
-  prompts --> api
-  prompts --> persistence
-  prompts --> runtime
-  prompts --> extension
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> reference["Boundary Review Prompts"]
+  reference --> review["Design or review decision"]
+  review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
 flowchart TD
-  review["Review one boundary"] --> pressure["Name the main pressure"]
-  pressure --> authority["Find the authoritative owner"]
-  authority --> leak["Check for leaked assumptions"]
-  leak --> verdict["Accept, tighten, or redesign"]
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
+  lookup --> compare["Compare the current code or workflow against the boundary"]
+  compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
 Use these prompts when a design crosses process, time, persistence, or extension
 boundaries. These are the places where object-oriented systems usually stop being

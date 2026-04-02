@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  chapter["Module chapter"] --> proof["Capstone Proof Guide"]
-  proof --> capstone["capstone/PROOF_GUIDE.md"]
-  capstone --> commands["inspect, verify-report, confirm, and proof commands"]
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Proof Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  claim["Design claim"] --> route["Pick a proof route"]
-  route --> command["Run the command"]
-  command --> inspect["Inspect output and tests"]
-  inspect --> refine["Refine the design understanding"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when a chapter makes a design claim and you want the most direct executable
 evidence in the capstone.

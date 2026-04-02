@@ -2,27 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Reference Position
 
 ```mermaid
-graph LR
-  atlas["Anti-pattern atlas"]
-  semantics["Semantic failures"]
-  systems["Systems failures"]
-  trust["Trust failures"]
-
-  atlas --> semantics
-  atlas --> systems
-  atlas --> trust
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> reference["Anti-Pattern Atlas"]
+  reference --> review["Design or review decision"]
+  review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
-flowchart LR
-  smell["Notice a design smell"] --> classify["Classify the failure shape"]
-  classify --> module["Jump to the module that repairs it"]
-  module --> review["Review the ownership rule that was violated"]
+flowchart TD
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
+  lookup --> compare["Compare the current code or workflow against the boundary"]
+  compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
 Use this page when a codebase feels “object-oriented” but hard to trust. These are the
 failure shapes the course is trying to prevent, grouped by the module that best repairs

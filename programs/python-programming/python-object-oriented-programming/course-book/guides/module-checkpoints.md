@@ -2,28 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  checkpoints["Module checkpoints"]
-  read["Read the module"]
-  explain["Explain the design shift"]
-  prove["Verify in code or capstone"]
-
-  checkpoints --> read
-  checkpoints --> explain
-  checkpoints --> prove
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Module Checkpoints"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
-flowchart LR
-  finish["Finish a module"] --> pause["Pause before advancing"]
-  pause --> explain["Explain the new ownership rule"]
-  explain --> verify["Review the proof route"]
-  verify --> next["Advance only when the checkpoint is true"]
+flowchart TD
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page at the end of each module. A strong course needs a clear exit bar, not
 just more reading. These checkpoints are the smallest honest claims you should be able

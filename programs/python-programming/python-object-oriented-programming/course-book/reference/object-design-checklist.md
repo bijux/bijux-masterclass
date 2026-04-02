@@ -2,27 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Reference Position
 
 ```mermaid
-graph TD
-  object["Object design checklist"]
-  semantics["Semantics"]
-  ownership["Ownership"]
-  change["Change pressure"]
-  review["Review decision"]
-
-  object --> semantics --> ownership --> change --> review
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> reference["Object Design Checklist"]
+  reference --> review["Design or review decision"]
+  review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
-flowchart LR
-  class["Review one class or aggregate"] --> meaning["What does it mean?"]
-  meaning --> owner["What does it own?"]
-  owner --> contract["What contract must survive change?"]
-  contract --> decision["Keep, split, or redesign"]
+flowchart TD
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
+  lookup --> compare["Compare the current code or workflow against the boundary"]
+  compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
 Use this checklist when reviewing any object-oriented design in the course or the
 capstone. The point is not to reward “more classes.” The point is to decide whether

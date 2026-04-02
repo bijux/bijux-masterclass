@@ -2,24 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  claim["Course claim"] --> code["Capstone code"]
-  code --> proof["Tests or commands"]
-  proof --> review["Review checklist"]
-  review --> decision["Accept or challenge the design"]
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Review Checklist"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  owner["Who owns the invariant?"] --> authority["Which object is authoritative?"]
-  authority --> boundary["Which boundary is public or internal?"]
-  boundary --> change["Where should a feature change land?"]
-  change --> proof["What test or command should prove it?"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this checklist when reviewing the capstone after a module or before extending it.
 

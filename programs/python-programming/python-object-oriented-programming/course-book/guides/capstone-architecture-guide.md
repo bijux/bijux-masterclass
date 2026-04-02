@@ -2,23 +2,25 @@
 
 
 <!-- page-maps:start -->
-## Page Maps
+## Guide Fit
 
 ```mermaid
-graph LR
-  course["Course modules"] --> bridge["Capstone Architecture Guide"]
-  bridge --> doc["capstone/ARCHITECTURE.md"]
-  doc --> code["Capstone code"]
+flowchart TD
+  family["Python Programming"] --> program["Python Object-Oriented Programming"]
+  program --> pressure["A concrete learner or reviewer question"]
+  pressure --> guide["Capstone Architecture Guide"]
+  guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
 ```mermaid
 flowchart TD
-  ownership["Review ownership"] --> authority["Review authoritative state"]
-  authority --> orchestration["Review orchestration boundaries"]
-  orchestration --> projections["Review derived views"]
-  projections --> extension["Review extension seams"]
+  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
+  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
+  crosscheck --> next_move["Leave with one next decision, page, or command"]
 ```
 <!-- page-maps:end -->
+
+Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 Use this page when a module asks you to review the capstone's architecture instead of
 only its syntax.
