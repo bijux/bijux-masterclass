@@ -72,6 +72,7 @@ make proof
 Or from the repository root:
 
 ```bash
+make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough
 make PROGRAM=python-programming/python-object-oriented-programming proof
 ```
 
@@ -125,6 +126,7 @@ come back to this README for the broader guide list and review routes.
 - `make inspect-rate-of-change` prints the alternate evaluation-mode scenario when you need a policy-seam example.
 - `make inspect-json` prints the default scenario as stable structured JSON when you need a machine-readable review surface.
 - `make tour` writes the walkthrough bundle with the scenario story and matching local guides.
+- `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` is the published repository-root walkthrough route that builds the same saved learner-facing bundle.
 - `make verify-report` writes the executable verification report bundle with test results and captured state.
 - `make confirm` runs the strongest local confirmation route.
 - `make proof` builds the published learner-facing review route.
@@ -136,7 +138,7 @@ directories kept explicit.
 
 | If you want to... | Start with | Then |
 | --- | --- | --- |
-| understand the domain before reading code | `GUIDE_INDEX.md`, this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make demo` and `TOUR.md` |
+| understand the domain before reading code | `GUIDE_INDEX.md`, this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` and `TOUR.md` |
 | inspect ownership boundaries file by file | `OWNERSHIP_BOUNDARIES.md` and `PACKAGE_GUIDE.md` | `SOURCE_GUIDE.md` and `ARCHITECTURE.md` |
 | pick the smallest scenario for the current pressure | `SCENARIO_BOUNDARY_MAP.md` | the matching scenario guide and inspect route |
 | confirm one design claim with evidence | `PROOF_GUIDE.md` | `make inspect` or `make verify-report` |
@@ -157,7 +159,7 @@ directories kept explicit.
 | --- | --- | --- | --- |
 | Do the core value and entity boundaries make sense? | `src/service_monitoring/model.py`, `tests/test_policy_lifecycle.py` | Identity, equality, and lifecycle semantics are explicit rather than accidental | `make inspect` |
 | Is evaluation behavior owned by replaceable policy objects instead of condition ladders? | `src/service_monitoring/policies.py`, `tests/test_policy_evaluation.py` | Variation lives in named policy surfaces, not inside the aggregate | `make verify-report` |
-| Does orchestration stay outside the aggregate? | `src/service_monitoring/runtime.py`, `src/service_monitoring/application.py`, `ARCHITECTURE.md` | Runtime coordination does not become the source of truth | `make tour` |
+| Does orchestration stay outside the aggregate? | `src/service_monitoring/runtime.py`, `src/service_monitoring/application.py`, `ARCHITECTURE.md` | Runtime coordination does not become the source of truth | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` |
 | Can the current design be reviewed as a learner-facing artifact instead of just a code dump? | `TOUR.md`, `INSPECTION_GUIDE.md`, `PROOF_GUIDE.md` | The capstone remains legible as a guided reference path | `make proof` |
 
 Use this order repeatedly: inspect the named files, state the ownership claim, then run the smallest route that produces matching evidence.
