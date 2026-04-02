@@ -50,6 +50,14 @@ capstone-walkthrough: ## Run the selected program's learner-facing capstone walk
 capstone-tour: ## Run the selected program's learner-facing capstone tour
 	@$(RUN_PROGRAM) capstone-tour
 
+.PHONY: capstone-verify
+capstone-verify: ## Run the selected program's capstone contract verification
+	@$(RUN_PROGRAM) capstone-verify
+
+.PHONY: capstone-confirm
+capstone-confirm: ## Run the selected program's strongest capstone confirmation route
+	@$(RUN_PROGRAM) capstone-confirm
+
 .PHONY: clean
 clean: ## Run clean for the selected program
 	@$(RUN_PROGRAM) clean

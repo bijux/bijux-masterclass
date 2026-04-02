@@ -20,6 +20,14 @@ test: ## Run the capstone confirmation suite
 capstone-tour: ## Build the learner-facing capstone proof bundle
 	@$(RUN_CAPSTONE) tour
 
+.PHONY: capstone-verify
+capstone-verify: ## Run the capstone contract verification route
+	@$(RUN_CAPSTONE) verify
+
+.PHONY: capstone-confirm
+capstone-confirm: ## Run the capstone's strongest confirmation route
+	@$(RUN_CAPSTONE) confirm
+
 .PHONY: capstone-walkthrough
 capstone-walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@$(RUN_CAPSTONE) walkthrough
