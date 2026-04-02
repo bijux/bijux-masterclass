@@ -55,6 +55,7 @@ verify-report: repro ## Write a structured verification report for the published
 		'  1. Read verify.json for the per-surface contract results.' \
 		'  2. Read publish/v1/manifest.json beside it when you need promoted file inventory.' \
 		'  3. Read publish/v1/report.md when you need the human-readable release story.' > $(VERIFY_REPORT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "✔ wrote verification report to $(VERIFY_REPORT_DIR)"
 
 .PHONY: tour
@@ -98,6 +99,7 @@ tour: verify ## Build the learner-facing proof bundle
 		'  dvc.lock                   recorded execution state that publish/v1 came from' > $(TOUR_DIR)/recovery-evidence.txt
 	@echo "tour_dir=$(TOUR_DIR)" > $(TOUR_DIR)/bundle.env
 	@echo "publish_dir=$(TOUR_DIR)/publish-v1" >> $(TOUR_DIR)/bundle.env
+	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/manifest.json
 	@echo "✔ wrote learner-facing tour to $(TOUR_DIR)"
 
 .PHONY: release-audit
@@ -124,6 +126,7 @@ release-audit: verify ## Build a focused release-boundary audit bundle
 		'  Which promoted metrics and params remain semantically meaningful later?' > $(RELEASE_AUDIT_DIR)/review-questions.txt
 	@echo "audit_dir=$(RELEASE_AUDIT_DIR)" > $(RELEASE_AUDIT_DIR)/bundle.env
 	@echo "publish_dir=$(RELEASE_AUDIT_DIR)/publish-v1" >> $(RELEASE_AUDIT_DIR)/bundle.env
+	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(RELEASE_AUDIT_DIR) --output $(RELEASE_AUDIT_DIR)/manifest.json
 	@echo "✔ wrote release audit bundle to $(RELEASE_AUDIT_DIR)"
 
 .PHONY: walkthrough
@@ -166,6 +169,7 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 		'  dvc.lock              recorded execution state' \
 		'  params.yaml           control surface' \
 		'  TOUR.md               proof-bundle reading route' > $(WALKTHROUGH_DIR)/bundle-guide.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(WALKTHROUGH_DIR) --output $(WALKTHROUGH_DIR)/manifest.json
 	@echo "✔ wrote learner-facing walkthrough to $(WALKTHROUGH_DIR)"
 
 .PHONY: push

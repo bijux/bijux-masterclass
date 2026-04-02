@@ -118,6 +118,9 @@ These commands answer different questions:
 - `make walkthrough` writes the learner-first reading bundle under `artifacts/walkthrough/reproducible-research/deep-dive-dvc/`.
 - `make tour` writes a learner-facing proof bundle under `artifacts/tour/reproducible-research/deep-dive-dvc/`.
 
+Every generated bundle now includes a `manifest.json` inventory so review can start from
+an explicit file list instead of manual guessing.
+
 If you are unsure which route fits your question, use the course-book
 `verification-route-guide.md` page before defaulting to the strongest command.
 
