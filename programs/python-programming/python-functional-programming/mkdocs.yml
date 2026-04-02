@@ -19,6 +19,8 @@ nav:
       - Course Home: index.md
       - Course Guide: course-guide.md
       - Learning Contract: learning-contract.md
+      - Module Dependency Map: module-dependency-map.md
+      - Practice Map: practice-map.md
       - Orientation Overview: module-00-orientation/index.md
       - Course Orientation: module-00-orientation/course-orientation.md
       - How to Study This Course: module-00-orientation/how-to-study-this-course.md

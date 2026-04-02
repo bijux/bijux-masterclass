@@ -72,3 +72,7 @@ Modules 09 to 10 ask whether the design can survive a team and a production life
 If you rush, the course will feel heavier than necessary. If you read it in order and
 keep the capstone in view, the later modules should feel like consequences of earlier
 boundary decisions instead of unrelated advanced techniques.
+
+Use [Module Dependency Map](module-dependency-map.md) when you need to understand why the
+sequence is shaped this way, and use [Practice Map](practice-map.md) to keep each module
+tied to code and verification.
