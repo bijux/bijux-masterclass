@@ -28,6 +28,12 @@ flowchart LR
 State is where object-oriented systems usually become ambiguous. This module treats
 state as something designed deliberately rather than accumulated incidentally.
 
+Keep one question in view while reading:
+
+> Which states are legal, and how should the object make illegal states difficult to construct or preserve?
+
+That question is what turns state from tolerated mess into an explicit design contract.
+
 ## Why this module matters
 
 Object-oriented systems often look clean at the class level while hiding most of

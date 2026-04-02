@@ -1,4 +1,4 @@
-# Orientation
+# Orientation and Reading Discipline
 
 
 <!-- page-maps:start -->
@@ -9,7 +9,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Orientation"]
-  page["Orientation"]
+  page["Orientation and Reading Discipline"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -30,6 +30,14 @@ useful only if you can explain what your objects mean, what they are allowed to 
 and where the boundaries of responsibility actually live.
 
 This course is a structured deep dive into those boundaries.
+
+Keep one question in view while reading the whole book:
+
+> Which object should own this decision, and what makes that ownership boundary the least surprising place for it to live?
+
+That question is the thread connecting the whole course. Semantics come first because
+later architecture, persistence, and operational choices only make sense when ownership
+already means something precise.
 
 ## What this course is not
 

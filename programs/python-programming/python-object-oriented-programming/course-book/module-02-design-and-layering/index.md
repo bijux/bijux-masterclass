@@ -28,6 +28,13 @@ flowchart LR
 Once the object model is clear, the next problem is assignment of responsibility.
 This module moves from isolated objects to collaborating roles.
 
+Keep one question in view while reading:
+
+> Which role should own this behavior, and which neighboring role should stay simpler because of that choice?
+
+That question matters because bad layering usually starts with a correct behavior placed
+in the wrong object.
+
 ## Why this module matters
 
 Many codebases become difficult not because individual objects are broken, but because

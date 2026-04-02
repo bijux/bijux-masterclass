@@ -29,6 +29,12 @@ This module builds the semantic floor for the rest of the course. Before talking
 about architecture, inheritance, or aggregates, you need a precise mental model of
 what Python objects are and how they behave.
 
+Keep one question in view while reading:
+
+> What contract does this object actually expose through identity, state, equality, and mutation?
+
+If that contract is vague, later design work becomes naming theater instead of engineering.
+
 ## Why this module matters
 
 Most long-lived OOP mistakes are already visible at the object-model level:
