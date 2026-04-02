@@ -41,6 +41,9 @@ its comparable outcomes explicit.
 - treat split changes as population changes that can weaken baseline comparability
 - treat training changes as model-behavior changes that still need release-boundary evidence before promotion
 
+Use `make threshold-review` when the decision threshold is the main pressure and you want
+to inspect borderline promoted predictions instead of only aggregate metrics.
+
 ## Best companion guides
 
 - read [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md) when the next question is how to run and compare a changed candidate

@@ -4,7 +4,14 @@ import json
 from pathlib import Path
 
 from incident_escalation_capstone.common import write_json
-from incident_escalation_capstone.inspect import main, release_summary, review_queue, stage_summary, state_summary
+from incident_escalation_capstone.inspect import (
+    main,
+    release_summary,
+    review_queue,
+    stage_summary,
+    state_summary,
+    threshold_review,
+)
 
 
 def _write_publish_fixture(base: Path) -> None:
@@ -23,7 +30,7 @@ def _write_publish_fixture(base: Path) -> None:
     )
     write_json(
         publish_dir / "metrics.json",
-        {"accuracy": 0.9, "f1": 0.88, "brier_score": 0.11},
+        {"accuracy": 0.9, "f1": 0.88, "brier_score": 0.11, "threshold": 0.52},
     )
     (publish_dir / "params.yaml").write_text(
         "split:\n  seed: 17\ntraining:\n  iterations: 100\ndecision:\n  threshold: 0.52\n",
@@ -137,6 +144,16 @@ def test_review_queue_returns_false_positive_and_false_negative_rows(tmp_path: P
     assert queue["false_negatives"][0]["incident_id"] == "INC-2"
 
 
+def test_threshold_review_returns_borderline_predictions(tmp_path: Path) -> None:
+    _write_publish_fixture(tmp_path)
+
+    review = threshold_review(tmp_path / "publish", margin=0.12, limit=2)
+
+    assert review["threshold"] == 0.52
+    assert review["near_threshold_count"] == 1
+    assert review["near_threshold"][0]["incident_id"] == "INC-2"
+
+
 def test_cli_prints_release_summary_json(capsys, tmp_path: Path) -> None:
     _write_publish_fixture(tmp_path)
 
@@ -171,3 +188,24 @@ def test_cli_prints_stage_summary_json(capsys, tmp_path: Path) -> None:
     assert exit_code == 0
     assert payload["stage_count"] == 1
     assert payload["stages"][0]["stage_name"] == "evaluate"
+
+
+def test_cli_prints_threshold_review_json(capsys, tmp_path: Path) -> None:
+    _write_publish_fixture(tmp_path)
+
+    exit_code = main(
+        [
+            "threshold-review",
+            "--publish",
+            str(tmp_path / "publish"),
+            "--margin",
+            "0.12",
+            "--limit",
+            "1",
+        ]
+    )
+    payload = json.loads(capsys.readouterr().out)
+
+    assert exit_code == 0
+    assert payload["near_threshold_count"] == 1
+    assert payload["near_threshold"][0]["incident_id"] == "INC-2"

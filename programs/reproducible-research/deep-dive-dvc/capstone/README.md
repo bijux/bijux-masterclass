@@ -147,6 +147,7 @@ make state-summary
 make stage-summary
 make release-summary
 make review-queue
+make threshold-review
 make experiment-review
 make release-review
 make confirm
@@ -167,6 +168,7 @@ These commands answer different questions:
 - `make verify` checks that the current repository state matches the expected contract.
 - `make verify-report` writes a structured verification report under `artifacts/proof/reproducible-research/deep-dive-dvc/verify/`.
 - `make stage-summary` renders the declared and recorded stage contract in one learner-facing summary.
+- `make threshold-review` renders borderline promoted predictions near the current decision threshold.
 - `make confirm` reruns the broader confirmation flow that the course points learners to.
 - `make recovery-drill` proves that a remote-backed restore still works after local loss.
 - `make experiment-review` writes a comparison bundle under `artifacts/review/reproducible-research/deep-dive-dvc/experiments/`.

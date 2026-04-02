@@ -99,6 +99,38 @@ def review_queue(publish_dir: Path, *, limit: int = 3) -> dict[str, object]:
     }
 
 
+def threshold_review(publish_dir: Path, *, margin: float = 0.08, limit: int = 5) -> dict[str, object]:
+    metrics = read_json(publish_dir / "metrics.json")
+    threshold = float(metrics["threshold"])
+    with (publish_dir / "predictions.csv").open("r", encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+
+    near_threshold = []
+    for row in rows:
+        probability = float(row["probability"])
+        distance = abs(probability - threshold)
+        if distance <= margin:
+            near_threshold.append(
+                {
+                    "incident_id": row["incident_id"],
+                    "team": row["team"],
+                    "actual": int(row["actual"]),
+                    "predicted": int(row["predicted"]),
+                    "probability": probability,
+                    "distance_from_threshold": round(distance, 6),
+                }
+            )
+
+    near_threshold.sort(key=lambda row: row["distance_from_threshold"])
+    return {
+        "publish_dir": publish_dir.as_posix(),
+        "threshold": threshold,
+        "margin": margin,
+        "near_threshold_count": len(near_threshold),
+        "near_threshold": near_threshold[:limit],
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="incident-escalation-inspect",
@@ -127,6 +159,12 @@ def main(argv: list[str] | None = None) -> int:
     queue.add_argument("--limit", type=int, default=3)
     queue.set_defaults(handler=_handle_review_queue)
 
+    threshold = subparsers.add_parser("threshold-review", help="Render borderline predictions near the decision threshold.")
+    threshold.add_argument("--publish", type=Path, required=True)
+    threshold.add_argument("--margin", type=float, default=0.08)
+    threshold.add_argument("--limit", type=int, default=5)
+    threshold.set_defaults(handler=_handle_threshold_review)
+
     args = parser.parse_args(argv)
     print(json.dumps(args.handler(args), indent=2, sort_keys=True))
     return 0
@@ -151,6 +189,10 @@ def _handle_state_summary(args: argparse.Namespace) -> dict[str, object]:
 
 def _handle_review_queue(args: argparse.Namespace) -> dict[str, object]:
     return review_queue(args.publish, limit=args.limit)
+
+
+def _handle_threshold_review(args: argparse.Namespace) -> dict[str, object]:
+    return threshold_review(args.publish, margin=args.margin, limit=args.limit)
 
 
 if __name__ == "__main__":

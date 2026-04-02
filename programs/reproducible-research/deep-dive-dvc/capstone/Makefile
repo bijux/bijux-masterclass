@@ -85,6 +85,10 @@ release-summary: verify ## Render the promoted release summary
 review-queue: verify ## Render the structured prediction review queue
 	@$(INSPECT) review-queue --publish publish/v1
 
+.PHONY: threshold-review
+threshold-review: verify ## Render borderline predictions near the decision threshold
+	@$(INSPECT) threshold-review --publish publish/v1
+
 .PHONY: tour
 tour: verify ## Build the learner-facing proof bundle
 	@rm -rf $(TOUR_DIR)
@@ -113,13 +117,14 @@ tour: verify ## Build the learner-facing proof bundle
 	@$(INSPECT) state-summary --publish publish/v1 --metrics metrics/metrics.json --params params.yaml --lock dvc.lock > $(TOUR_DIR)/state-summary.json
 	@$(INSPECT) release-summary --publish publish/v1 > $(TOUR_DIR)/release-summary.json
 	@$(INSPECT) review-queue --publish publish/v1 > $(TOUR_DIR)/review-queue.json
+	@$(INSPECT) threshold-review --publish publish/v1 > $(TOUR_DIR)/threshold-review.json
 	@printf '%s\n' \
 		'Executed proof route:' \
 		'  1. Read status.txt for DVC up-to-date state.' \
 		'  2. Read stage-summary.json before comparing dvc.yaml and dvc.lock directly.' \
 		'  3. Read dvc.yaml and dvc.lock together.' \
 		'  4. Read publish-v1/manifest.json and PUBLISH_CONTRACT.md together.' \
-		'  5. Read publish-v1/metrics.json and publish-v1/params.yaml.' \
+		'  5. Read publish-v1/metrics.json, threshold-review.json, and publish-v1/params.yaml together.' \
 		'  6. Read remote.txt when reviewing recovery assumptions.' > $(TOUR_DIR)/route.txt
 	@printf '%s\n' \
 		'Release boundary evidence:' \
