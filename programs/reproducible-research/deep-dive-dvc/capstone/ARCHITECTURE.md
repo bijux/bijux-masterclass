@@ -60,3 +60,6 @@ only which file owns a behavior, but which DVC stage boundary should own it.
 The course is about authority and evidence. This capstone only teaches that well if the
 learner can point to the exact file that owns declaration, execution, promotion, or
 verification.
+
+Use [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the architecture is clear but the learner
+still needs the fastest exact route from one question to one file and proof surface.

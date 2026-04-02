@@ -70,6 +70,7 @@ repository:
 - `STATE_LAYER_GUIDE.md` explains which repository surface is authoritative for source, recorded, promoted, and remote-backed state.
 - `CONTROL_SURFACE_GUIDE.md` explains which params changes stay comparable and how to interpret the resulting metrics.
 - `BUNDLE_MANIFEST_GUIDE.md` explains the saved review-bundle inventory and how to audit it.
+- `SOURCE_GUIDE.md` gives the exact file route for common capstone questions.
 - `src/incident_escalation_capstone/` contains the pipeline implementation.
 - `params.yaml` is the declared control surface for splitting, training, and decision policy.
 - `dvc.yaml` and `dvc.lock` define and prove the pipeline execution graph.

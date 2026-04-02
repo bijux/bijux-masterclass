@@ -38,6 +38,9 @@ suggested reading route without executing the workflow.
 Read [BUNDLE_MANIFEST_GUIDE.md](BUNDLE_MANIFEST_GUIDE.md) when the next question is not
 which proof route to use, but exactly what a saved bundle captured.
 
+Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the bundle and stage routes are clear but
+you need the exact owning file for one behavior.
+
 ## What the tour produces
 
 - `status.txt`: DVC's current view of whether the repository is up to date
