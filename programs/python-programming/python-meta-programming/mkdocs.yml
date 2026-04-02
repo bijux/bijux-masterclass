@@ -44,8 +44,10 @@ nav:
       - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
   - Capstone:
       - Capstone Guide: guides/capstone.md
+      - Capstone Architecture Guide: guides/capstone-architecture-guide.md
       - Capstone Map: guides/capstone-map.md
       - Capstone File Guide: guides/capstone-file-guide.md
+      - Capstone Walkthrough: guides/capstone-walkthrough.md
       - Capstone Proof Checklist: guides/capstone-proof-checklist.md
       - Capstone Review Worksheet: guides/capstone-review-worksheet.md
       - Capstone Extension Guide: guides/capstone-extension-guide.md

@@ -54,7 +54,9 @@ This keeps the capstone from becoming a repository tour without a learning contr
 ## Read these guides together
 
 - [Capstone Map](capstone-map.md)
+- [Capstone Architecture Guide](capstone-architecture-guide.md)
 - [Capstone File Guide](capstone-file-guide.md)
+- [Capstone Walkthrough](capstone-walkthrough.md)
 - [Capstone Proof Checklist](capstone-proof-checklist.md)
 - [Capstone Extension Guide](capstone-extension-guide.md)
 

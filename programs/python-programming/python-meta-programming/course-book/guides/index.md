@@ -55,8 +55,10 @@ do not have to repeat that scaffolding.
 ## Use These For Capstone Reading
 
 - [Capstone Guide](capstone.md) for the capstone’s role in the course
+- [Capstone Architecture Guide](capstone-architecture-guide.md) for ownership boundaries inside the runtime
 - [Capstone Map](capstone-map.md) for the module-to-repository route
 - [Capstone File Guide](capstone-file-guide.md) for file responsibilities
+- [Capstone Walkthrough](capstone-walkthrough.md) for the guided first pass through commands and files
 - [Capstone Proof Checklist](capstone-proof-checklist.md) for a bounded proof pass
 - [Capstone Review Worksheet](capstone-review-worksheet.md) for structured repository review
 - [Capstone Extension Guide](capstone-extension-guide.md) for safe evolution
