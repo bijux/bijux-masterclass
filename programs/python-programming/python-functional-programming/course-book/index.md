@@ -54,22 +54,28 @@ By the end of the course, you should be able to:
 - move infrastructure behind explicit protocols, adapters, and async coordination layers
 - sustain a long-lived codebase with evidence, review standards, and migration discipline
 
-## Start here
+## Choose one starting lane
 
-- Read [Guides](guides/index.md) when you want the guide space itself to stay organized.
-- Read [Start Here](guides/start-here.md) for the shortest stable learner route.
-- Continue with [Course Guide](guides/course-guide.md) and [Learning Contract](guides/learning-contract.md).
-- Use [Return Map](module-00-orientation/return-map.md) when you are coming back after a break and need the right re-entry boundary.
-- Use [Module Promise Map](guides/module-promise-map.md) when you want the promise and evidence route for each module before reading deeply.
-- Use [Module Checkpoints](guides/module-checkpoints.md) when you want a clear bar for finishing a module honestly.
-- Use [Foundations Reading Plan](guides/foundations-reading-plan.md) when you want a paced route through Modules 01 to 03.
-- Use [FuncPipe RAG Primer](guides/funcpipe-rag-primer.md) when the capstone domain is unfamiliar and you want the smallest useful vocabulary set.
-- Use [Outcomes and Proof Map](guides/outcomes-and-proof-map.md) when you want the course contract expressed as outcomes, learning work, and evidence.
-- Keep [History Guide](guides/history-guide.md) nearby when you want the module-end comparison route.
-- Read the [Orientation overview](module-00-orientation/index.md).
-- Keep [Proof Matrix](guides/proof-matrix.md) nearby when you want the fastest route from course claims to executable evidence.
-- Keep the [FuncPipe Capstone Guide](capstone/index.md) open from the beginning.
-- Work through the modules in order. The sequence is deliberate.
+| If your pressure is... | Start here | Keep nearby |
+| --- | --- | --- |
+| I need the shortest honest route into the course. | [Start Here](guides/start-here.md) | [Course Guide](guides/course-guide.md) |
+| I want to know what each module is supposed to change in my judgment. | [Module Promise Map](guides/module-promise-map.md) | [Module Checkpoints](guides/module-checkpoints.md) |
+| I want a paced first pass through the semantic floor. | [Foundations Reading Plan](guides/foundations-reading-plan.md) | [Learning Contract](guides/learning-contract.md) |
+| My question is already practical and I need the owning module. | [Engineering Question Map](guides/engineering-question-map.md) | [Proof Matrix](guides/proof-matrix.md) |
+| The capstone domain still feels noisy. | [FuncPipe RAG Primer](guides/funcpipe-rag-primer.md) | [FuncPipe Capstone Guide](capstone/index.md) |
+| I am returning after a break and do not want to restart from zero. | [Return Map](module-00-orientation/return-map.md) | [Module Promise Map](guides/module-promise-map.md) |
+
+## Read the support shelf by job
+
+| Use this page when you need... | Best page |
+| --- | --- |
+| the shortest stable route through the whole course | [Guides](guides/index.md) |
+| the course promise, module arc, and capstone role in one place | [Course Guide](guides/course-guide.md) |
+| the explicit contract between learning goals and proof | [Outcomes and Proof Map](guides/outcomes-and-proof-map.md) |
+| the promise and evidence route for each module | [Module Promise Map](guides/module-promise-map.md) |
+| an honest bar for finishing a module | [Module Checkpoints](guides/module-checkpoints.md) |
+| the fastest route from a claim to executable evidence | [Proof Matrix](guides/proof-matrix.md) |
+| the generated module comparison route | [History Guide](guides/history-guide.md) |
 
 ## Module Table of Contents
 
@@ -100,13 +106,25 @@ Use it to answer practical questions:
 - Where is laziness preserved, and where is materialization deliberate?
 - Which effects are described as contracts, and which are driven by concrete adapters?
 
+Keep [FuncPipe Capstone Guide](capstone/index.md) open from the beginning, but do not
+try to read the whole repository at once. Bring it in when a module gives you a concrete
+question about purity, failure modelling, boundary ownership, or proof.
+
 ## Study rhythm
 
-- Read each module overview before touching its lessons.
-- Work through the lessons in order unless you are deliberately reviewing.
-- After every module, read the matching `refactoring-guide.md` and compare against `_history/worktrees/module-XX`.
+- Read the module overview before touching its lessons.
+- Work through the modules in order unless you are deliberately reviewing one named pressure.
+- After each module, read the matching `refactoring-guide.md` and compare against `_history/worktrees/module-XX`.
 - Treat `module-reference-states/` as the tracked source of truth and `_history/worktrees/` as the generated local comparison surface.
 - Treat refactor, law, and review chapters as checkpoints rather than optional extras.
+
+## Stop here before you start browsing
+
+You are ready to leave this page when you can name three things clearly:
+
+- which starting lane matches your current pressure
+- which module arc you are entering first
+- which capstone question you expect the next module to clarify
 
 ## Common failure modes this course is trying to prevent
 
