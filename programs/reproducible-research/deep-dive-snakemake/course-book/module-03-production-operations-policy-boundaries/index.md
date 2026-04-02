@@ -38,7 +38,9 @@ confirmation routes.
 
 > **Version & scope contract**
 >
-> * Target: **Snakemake 9.14.x** (this module relies on profile version files like `config.vX+.yaml`, plugin catalog executors/storage, and the current unit-test generator behavior). Verify:
+> * Target: **Snakemake 9.14.x** (this module relies on profile files like `config.yaml`,
+>   plugin catalog executors/storage, and the current unit-test generator behavior).
+>   Verify:
 >
 >   * `snakemake --version`
 >   * `snakemake --help | sed -n '1,40p'`
@@ -83,7 +85,11 @@ this module is the reason.
 
 ## Orientation: production is “policy + plugins + proofs”
 
-Production Snakemake means you stop relying on “tribal CLI invocations” and you make execution reproducible by encoding **policy in a profile**, **capabilities in plugins**, and **correctness via proof artifacts** (logs, change reports, tests). Profiles in 9.x are explicitly version-scoped (`config.vX+.yaml`) and can set any CLI option by YAML key. ([Snakemake][1])
+Production Snakemake means you stop relying on “tribal CLI invocations” and you make
+execution reproducible by encoding **policy in a profile**, **capabilities in plugins**,
+and **correctness via proof artifacts** (logs, change reports, tests). In this course,
+the capstone exposes policy through profile-local `config.yaml` files, and each CLI flag
+can be represented as a YAML key. ([Snakemake][1])
 
 ### Unified cost model
 
@@ -114,8 +120,8 @@ graph TD
   lab --> results["results/"]
   profiles --> local["local/"]
   profiles --> slurm["slurm/"]
-  local --> localConfig["config.v9+.yaml"]
-  slurm --> slurmConfig["config.v9+.yaml"]
+  local --> localConfig["config.yaml"]
+  slurm --> slurmConfig["config.yaml"]
   scripts --> flaky["flaky_once.py"]
   scripts --> poison["poison.py"]
   scripts --> atomic["atomic_writer.py"]
@@ -143,13 +149,15 @@ snakemake --profile profiles/local --list-changes code
 
 You will be able to:
 
-* Encode execution policy in a **version-scoped profile** and prove it’s applied.
+* Encode execution policy in a **version-controlled profile** and prove it’s applied.
 * Switch **local ↔ SLURM** without editing workflow code.
 * Predict and fix “profile not applied” failures using evidence.
 
 ## Definition
 
-A **profile** is a directory containing `config.vX+.yaml` (preferred) or `config.yaml` (fallback). Each CLI flag `--foo-bar` becomes YAML key `foo-bar:`; profiles can also include auxiliary files. ([Snakemake][1])
+A **profile** is a directory containing a `config.yaml` that records execution policy.
+Each CLI flag `--foo-bar` becomes YAML key `foo-bar:`; profiles can also include
+auxiliary files. ([Snakemake][1])
 
 ## Semantics
 
@@ -167,7 +175,7 @@ flowchart LR
 
 ## Failure signatures
 
-* **Runs locally despite “cluster intent”** → wrong profile path or wrong filename (`config.v9+.yaml` missing).
+* **Runs locally despite “cluster intent”** → wrong profile path or wrong filename (`config.yaml` missing).
 * **Unknown executor** → SLURM plugin not installed on the submission host.
 * **Logs missing** → SLURM plugin defaults delete successful logs unless configured. ([Snakemake][3])
 
@@ -175,7 +183,7 @@ flowchart LR
 
 ### 1) Two profiles
 
-`profiles/local/config.v9+.yaml`
+`profiles/local/config.yaml`
 
 ```yaml
 executor: local
@@ -184,7 +192,7 @@ printshellcmds: true
 latency-wait: 5
 ```
 
-`profiles/slurm/config.v9+.yaml`
+`profiles/slurm/config.yaml`
 
 ```yaml
 executor: slurm
@@ -215,7 +223,8 @@ snakemake --profile profiles/slurm -n --print-compilation > .proof/slurm.compile
 ## Fix pattern
 
 * Put *everything operational* into the profile: executor, job caps, log retention, latency wait.
-* Treat ad-hoc CLI flags as incident response only; if it matters, it belongs in versioned profile files (`config.vX+.yaml`). ([Snakemake][1])
+* Treat ad-hoc CLI flags as incident response only; if it matters, it belongs in a
+  version-controlled profile file (`config.yaml`). ([Snakemake][1])
 
 ## Proof hook
 
@@ -712,7 +721,8 @@ rule atomic_ok:
 
 If you want production-grade Snakemake, stop optimizing rules first. Instead:
 
-1. **Profiles** are policy, version-scoped (`config.vX+.yaml`), and they must fully encode how the DAG is executed. ([Snakemake][1])
+1. **Profiles** are policy surfaces, and they must fully encode how the DAG is executed
+   through reviewable `config.yaml` files. ([Snakemake][1])
 2. **Robustness** is atomic outputs + strict incomplete semantics + retries; poison artifacts are a correctness bug, not an inconvenience. ([Snakemake][1])
 3. **Data locality** is explicit: staging to scratch must be configured and proven with filesystem evidence; the fs plugin gives canonical patterns. ([Snakemake][5])
 4. **CI** is real only when it runs workflow-derived tests (`--generate-unit-tests` + pytest) and gates merges. ([Snakemake][2])
