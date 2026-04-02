@@ -75,6 +75,7 @@ repository:
 - `DATA_PROFILE_GUIDE.md` explains how to read the promoted population summary before trusting metrics.
 - `MODEL_GUIDE.md` explains how to read the promoted scoring artifact before trusting release conclusions.
 - `PREDICTION_REVIEW_GUIDE.md` explains how to review promoted row-level outcomes, mistakes, and borderline cases.
+- `REVIEW_ROUTE_GUIDE.md` explains how to choose the smallest honest capstone route for a given review question.
 - `src/incident_escalation_capstone/` contains the pipeline implementation.
 - `params.yaml` is the declared control surface for splitting, training, and decision policy.
 - `dvc.yaml` and `dvc.lock` define and prove the pipeline execution graph.
@@ -218,6 +219,9 @@ If you are still unsure, use this escalation order:
 3. `make verify-report`
 4. `make experiment-review` or `make recovery-review` or `make release-review`
 5. `make confirm`
+
+Read [REVIEW_ROUTE_GUIDE.md](REVIEW_ROUTE_GUIDE.md) when the main difficulty is not a
+missing proof surface, but choosing the right one without over-escalating.
 
 ## What `confirm` proves
 
