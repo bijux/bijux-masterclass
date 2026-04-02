@@ -9,8 +9,12 @@ from service_monitoring.scenario import (
     DEFAULT_POLICY_ID,
     DEFAULT_RULE_REGISTRATIONS,
     DEFAULT_SAMPLES,
+    RATE_OF_CHANGE_POLICY_ID,
+    RATE_OF_CHANGE_RULE,
+    RATE_OF_CHANGE_SAMPLES,
     RETIREMENT_REASON,
     build_default_observation,
+    build_rate_of_change_observation,
     build_retirement_review,
 )
 
@@ -95,3 +99,13 @@ def test_retirement_scenario_contract_stays_stable() -> None:
     assert review.retired_snapshot.open_incidents == {}
     assert review.retired_snapshot.incident_history["disk"][0].rule_id == "disk-hot"
     assert review.retired_reason == RETIREMENT_REASON
+
+
+def test_rate_of_change_scenario_contract_stays_stable() -> None:
+    observation = build_rate_of_change_observation()
+
+    assert RATE_OF_CHANGE_POLICY_ID == "service-monitoring-rate-of-change"
+    assert RATE_OF_CHANGE_RULE.evaluation_mode == "rate_of_change"
+    assert len(RATE_OF_CHANGE_SAMPLES) == 3
+    assert observation.cycle_report.alerts_published == 1
+    assert observation.snapshot.open_incidents["latency-spike"].observed_value == 0.26

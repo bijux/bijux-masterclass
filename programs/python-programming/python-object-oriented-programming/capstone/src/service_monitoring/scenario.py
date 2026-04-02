@@ -40,6 +40,20 @@ RETIREMENT_SAMPLES: tuple[MetricSample, ...] = (
     MetricSample(datetime(2026, 4, 2, 10, 0, 0), MetricName("disk"), 0.91),
 )
 RETIREMENT_REASON = "replaced by storage saturation policy"
+RATE_OF_CHANGE_POLICY_ID = "service-monitoring-rate-of-change"
+RATE_OF_CHANGE_RULE = RuleRegistration(
+    rule_id="latency-spike",
+    metric_name="latency",
+    threshold=0.2,
+    severity="critical",
+    window=3,
+    evaluation_mode="rate_of_change",
+)
+RATE_OF_CHANGE_SAMPLES: tuple[MetricSample, ...] = (
+    MetricSample(datetime(2026, 4, 2, 11, 0, 0), MetricName("latency"), 0.35),
+    MetricSample(datetime(2026, 4, 2, 11, 1, 0), MetricName("latency"), 0.40),
+    MetricSample(datetime(2026, 4, 2, 11, 2, 0), MetricName("latency"), 0.61),
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -78,3 +92,11 @@ def build_retirement_review() -> RetirementReview:
         retired_snapshot=retired_snapshot,
         retired_reason=RETIREMENT_REASON,
     )
+
+
+def build_rate_of_change_observation() -> ObservationResult:
+    app = MonitoringApplication()
+    app.create_policy(RATE_OF_CHANGE_POLICY_ID)
+    app.register_rule(RATE_OF_CHANGE_POLICY_ID, RATE_OF_CHANGE_RULE)
+    app.activate_rule(RATE_OF_CHANGE_POLICY_ID, RATE_OF_CHANGE_RULE.rule_id)
+    return app.observe_samples(RATE_OF_CHANGE_POLICY_ID, list(RATE_OF_CHANGE_SAMPLES))
