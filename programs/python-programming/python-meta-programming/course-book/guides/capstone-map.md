@@ -42,11 +42,14 @@ named home inside it.
 
 ## Module to capstone route
 
-- [Module 03](../module-03-inspect-signatures-and-provenance/index.md): inspect signatures and docs from the manifest surface
-- [Modules 04-05](../module-04-function-wrappers-and-decorators/index.md): compare raw action methods with wrapped action metadata
-- [Modules 07-08](../module-07-descriptor-mechanics-and-lookup/index.md): inspect descriptor declaration, storage, and validation flow
-- [Module 09](../module-09-metaclass-design-and-class-creation/index.md): inspect registration and class-definition-time invariants
-- [Module 10](../module-10-runtime-governance-and-mastery/index.md) and [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md): inspect whether the public surface remains observable and governable
+| Module stage | Inspect this file or surface | Why it matters | Prove it with |
+| --- | --- | --- | --- |
+| [Modules 01-03](../module-03-inspect-signatures-and-provenance/index.md) | `capstone/src/incident_plugins/framework.py` and `manifest` output | shows how fields and actions stay inspectable without executing plugin work | `make PROGRAM=python-programming/python-meta-programming inspect` then read `manifest.json` |
+| [Modules 04-05](../module-04-function-wrappers-and-decorators/index.md) | `capstone/src/incident_plugins/actions.py` | shows wrapper policy, preserved metadata, and recorded action history | `make PROGRAM=python-programming/python-meta-programming proof` then inspect `trace.json` and `capstone/tests/test_runtime.py` |
+| [Module 06](../module-06-class-customization-before-metaclasses/index.md) | generated constructor behavior in `capstone/src/incident_plugins/framework.py` | shows what can stay honest after class creation before metaclasses become necessary | `make PROGRAM=python-programming/python-meta-programming test` then read `capstone/tests/test_runtime.py` |
+| [Modules 07-08](../module-07-descriptor-mechanics-and-lookup/index.md) | `capstone/src/incident_plugins/fields.py` | shows descriptor-backed validation, coercion, and per-instance storage ownership | `make PROGRAM=python-programming/python-meta-programming test` then read `capstone/tests/test_fields.py` |
+| [Module 09](../module-09-metaclass-design-and-class-creation/index.md) | registration logic in `capstone/src/incident_plugins/framework.py` and `registry` output | shows definition-time registration and duplicate prevention | `make PROGRAM=python-programming/python-meta-programming inspect` then read `registry.json` and `capstone/tests/test_registry.py` |
+| [Module 10](../module-10-runtime-governance-and-mastery/index.md) and [Mastery Review](../module-10-runtime-governance-and-mastery/mastery-review.md) | `capstone/src/incident_plugins/cli.py` plus saved proof bundles | shows that the public review surface stays observational and reviewable | `make PROGRAM=python-programming/python-meta-programming capstone-verify-report` then read `pytest.txt`, `manifest.json`, and `trace.json` |
 
 ## Local review guides
 
@@ -63,3 +66,11 @@ named home inside it.
 3. Read `actions.py` for wrapper discipline.
 4. Read `plugins.py` for concrete plugin behavior.
 5. Read tests only after you know what each file claims to own.
+
+## Inspect, explain, prove
+
+For each module-stage claim, use the same loop:
+
+1. Inspect one source file or saved public output.
+2. Explain which runtime boundary owns the behavior.
+3. Prove the claim with one named test or one saved bundle file.

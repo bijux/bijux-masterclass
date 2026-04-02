@@ -44,6 +44,16 @@ must coexist without hiding responsibility.
 - Module 09: inspect registration and generated constructor behavior in `framework.py`.
 - Module 10 and mastery review: use the public commands and saved bundles as the final review surface.
 
+## Inspect, explain, prove
+
+Use the capstone with one repeated rhythm:
+
+1. Inspect one public output or one source file.
+2. Explain which runtime boundary owns the behavior.
+3. Prove the claim with one named test or saved bundle artifact.
+
+This keeps the capstone from becoming a repository tour without a learning contract.
+
 ## Read these guides together
 
 - [Capstone Map](capstone-map.md)
