@@ -37,6 +37,23 @@ only its syntax.
 - projections derive views from events instead of controlling the model
 - persistence and rollback concerns stay explicit
 
+## Question to boundary map
+
+| If the review question is... | Start here | Then compare |
+| --- | --- | --- |
+| Who owns lifecycle and invariant decisions? | `model.py` | lifecycle tests and `ARCHITECTURE.md` |
+| Where does variation belong without rewriting the aggregate? | `policies.py` | `model.py` and policy tests |
+| What is orchestration versus domain logic? | `application.py` and `runtime.py` | walkthrough bundle and runtime tests |
+| Which surfaces are authoritative and which are derived? | `read_models.py` and `projections.py` | events and aggregate transitions |
+| Where would persistence or rollback change land? | `repository.py` | unit-of-work tests and architecture notes |
+
+## Change-placement questions
+
+- If a new rule mode appears, can it stay in `policies.py`?
+- If a new integration or sink appears, can it stay outside `model.py`?
+- If a new read model appears, can it derive from events instead of mutating authoritative state?
+- If persistence changes, can the aggregate remain the owner of domain rules?
+
 ## Best use inside the course
 
 - Use it after Module 04 to review aggregate and event boundaries.
