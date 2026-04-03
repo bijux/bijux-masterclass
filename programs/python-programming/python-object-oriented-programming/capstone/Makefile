@@ -5,25 +5,37 @@ SHELL := /bin/sh
 PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../../artifacts
 DOCS_DIR := docs
+VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-object-oriented-programming/capstone
+VENV_BIN := $(VENV_DIR)/bin
+VENV_PY := $(abspath $(VENV_BIN)/python)
+PIP := $(VENV_PY) -m pip
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-object-oriented-programming
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/python-programming/python-object-oriented-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-object-oriented-programming
-WRITE_BUNDLE_MANIFEST := $(PYTHON) scripts/write_bundle_manifest.py
+WRITE_BUNDLE_MANIFEST := $(VENV_PY) scripts/write_bundle_manifest.py
+
+$(VENV_PY):
+	@$(PYTHON) -m venv $(VENV_DIR)
+	@$(PIP) install -U pip
+
+.PHONY: install
+install: $(VENV_PY) ## Install the capstone test environment
+	@$(PIP) install -e . pytest
 
 .PHONY: help
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .PHONY: test
-test: ## Run the capstone test suite
-	@PYTHONPATH=src $(PYTHON) -m pytest -q
+test: install ## Run the capstone test suite
+	@PYTHONPATH=src $(VENV_PY) -m pytest -q
 
 .PHONY: confirm
 confirm: test proof ## Run the executable validation suite
 
 .PHONY: demo
 demo: ## Run the capstone scenario walkthrough
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.demo
 
 .PHONY: tour
 tour: ## Build the learner-facing walkthrough bundle
@@ -69,43 +81,43 @@ tour: ## Build the learner-facing walkthrough bundle
 
 .PHONY: inspect-summary
 inspect-summary: ## Inspect the scenario summary
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli summary
 
 .PHONY: inspect-rules
 inspect-rules: ## Inspect the rule lifecycle summary
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rules
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rules
 
 .PHONY: inspect-history
 inspect-history: ## Inspect incident history by metric
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli history
 
 .PHONY: inspect-timeline
 inspect-timeline: ## Inspect the ordered scenario timeline
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli timeline
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli timeline
 
 .PHONY: inspect-retirement
 inspect-retirement: ## Inspect the retirement scenario before and after state
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli retirement
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli retirement
 
 .PHONY: inspect-rate-of-change
 inspect-rate-of-change: ## Inspect the alternate rate-of-change scenario
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rate-of-change
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change
 
 .PHONY: inspect-json
 inspect-json: ## Inspect the default scenario as machine-readable JSON
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli snapshot-json
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json
 
 .PHONY: inspect
 inspect: ## Build the capstone learner-facing inspection bundle
 	@rm -rf $(INSPECT_DIR)
 	@mkdir -p $(INSPECT_DIR) $(INSPECT_DIR)/docs
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary > $(INSPECT_DIR)/summary.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rules > $(INSPECT_DIR)/rules.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(INSPECT_DIR)/history.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli timeline > $(INSPECT_DIR)/timeline.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli retirement > $(INSPECT_DIR)/retirement.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rate-of-change > $(INSPECT_DIR)/rate_of_change.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli snapshot-json > $(INSPECT_DIR)/snapshot.json
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli summary > $(INSPECT_DIR)/summary.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rules > $(INSPECT_DIR)/rules.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli history > $(INSPECT_DIR)/history.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli timeline > $(INSPECT_DIR)/timeline.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli retirement > $(INSPECT_DIR)/retirement.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change > $(INSPECT_DIR)/rate_of_change.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json > $(INSPECT_DIR)/snapshot.json
 	@cp README.md $(INSPECT_DIR)/README.md
 	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
 	@cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(INSPECT_DIR)/FIRST_SESSION_GUIDE.md
@@ -147,13 +159,13 @@ inspect: ## Build the capstone learner-facing inspection bundle
 verify-report: ## Build the capstone verification report bundle
 	@rm -rf $(VERIFY_REPORT_DIR)
 	@mkdir -p $(VERIFY_REPORT_DIR) $(VERIFY_REPORT_DIR)/docs
-	@PYTHONPATH=src $(PYTHON) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary > $(VERIFY_REPORT_DIR)/summary.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(VERIFY_REPORT_DIR)/history.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli timeline > $(VERIFY_REPORT_DIR)/timeline.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli retirement > $(VERIFY_REPORT_DIR)/retirement.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rate-of-change > $(VERIFY_REPORT_DIR)/rate_of_change.txt
-	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli snapshot-json > $(VERIFY_REPORT_DIR)/snapshot.json
+	@PYTHONPATH=src $(VENV_PY) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli summary > $(VERIFY_REPORT_DIR)/summary.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli history > $(VERIFY_REPORT_DIR)/history.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli timeline > $(VERIFY_REPORT_DIR)/timeline.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli retirement > $(VERIFY_REPORT_DIR)/retirement.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change > $(VERIFY_REPORT_DIR)/rate_of_change.txt
+	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json > $(VERIFY_REPORT_DIR)/snapshot.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
 	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
 	@cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(VERIFY_REPORT_DIR)/FIRST_SESSION_GUIDE.md

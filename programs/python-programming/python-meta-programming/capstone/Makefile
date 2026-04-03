@@ -5,19 +5,31 @@ SHELL := /bin/sh
 PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../../artifacts
 DOCS_DIR := docs
+VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-meta-programming/capstone
+VENV_BIN := $(VENV_DIR)/bin
+VENV_PY := $(abspath $(VENV_BIN)/python)
+PIP := $(VENV_PY) -m pip
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/python-programming/python-meta-programming
 INSPECT_DIR ?= $(ARTIFACTS_DIR)/inspect/python-programming/python-meta-programming
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/review/python-programming/python-meta-programming
-CLI := $(PYTHON) -m incident_plugins.cli
-WRITE_BUNDLE_MANIFEST := $(PYTHON) scripts/write_bundle_manifest.py
+CLI := $(VENV_PY) -m incident_plugins.cli
+WRITE_BUNDLE_MANIFEST := $(VENV_PY) scripts/write_bundle_manifest.py
+
+$(VENV_PY):
+	@$(PYTHON) -m venv $(VENV_DIR)
+	@$(PIP) install -U pip
+
+.PHONY: install
+install: $(VENV_PY) ## Install the capstone test environment
+	@$(PIP) install -e . pytest
 
 .PHONY: help
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "\033[36m%-12s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 .PHONY: test
-test: ## Run the capstone test suite
-	@$(PYTHON) -m pytest -q
+test: install ## Run the capstone test suite
+	@$(VENV_PY) -m pytest -q
 
 .PHONY: confirm
 confirm: test ## Run the executable validation suite
@@ -110,7 +122,7 @@ proof: inspect tour verify-report ## Run the full public proof route
 verify-report: ## Build the structured capstone verification report
 	@rm -rf $(VERIFY_REPORT_DIR)
 	@mkdir -p $(VERIFY_REPORT_DIR) $(VERIFY_REPORT_DIR)/docs
-	@$(PYTHON) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
+	@$(VENV_PY) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(VERIFY_REPORT_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(VERIFY_REPORT_DIR)/plugin.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(VERIFY_REPORT_DIR)/signatures.json
