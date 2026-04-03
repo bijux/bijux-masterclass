@@ -151,6 +151,7 @@ Collaborative breakdowns invariably trace to these archetypes, warranting memori
 DVC possesses detection capabilities for these lapses, contingent upon enablement.
 
 **Comparative Table**:
+
 | Failure Mode              | Manifestations                  | Consequences                   |
 |---------------------------|---------------------------------|--------------------------------|
 | Omitted Uploads           | Merged code, missing remotes   | Reproduction barriers          |

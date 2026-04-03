@@ -279,6 +279,7 @@ Discomfort with this paradigm signals productive reevaluation of prior practices
 ## Module 02: Invariants Checklist
 
 Affirm and justify:
+
 - [ ] Data identity derives exclusively from content.
 - [ ] Paths do not constitute identity.
 - [ ] Identity remains immutable.

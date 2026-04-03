@@ -271,6 +271,7 @@ DVC equips you with instruments for this defense—execution is yours.
 ## Module 05: Invariants Checklist
 
 Affirm:
+
 - [ ] All consequential parameters tracked.
 - [ ] Metric definitions stable and articulated.
 - [ ] Comparisons semantically sound.

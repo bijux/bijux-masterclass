@@ -250,6 +250,7 @@ Each invariant is defined, exemplified, and failure-tested rigorously.
 ## Module 01: Readiness Checklist
 
 Affirm readiness by confirming:
+
 - [ ] Explanation of Git's inadequacy for reproducibility.
 - [ ] Differentiation between repeatability and reproducibility.
 - [ ] Identification of at least five hidden inputs in personal workflows.

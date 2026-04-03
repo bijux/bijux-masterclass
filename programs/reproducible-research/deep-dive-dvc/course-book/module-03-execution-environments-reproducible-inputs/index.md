@@ -230,6 +230,7 @@ Influential factors must be captured, constrained, or acknowledged as variable; 
 ## Module 03: Invariants Checklist
 
 Affirm and substantiate:
+
 - [ ] Environments impact outcomes despite identical data.
 - [ ] Determinism is conditional, not unequivocal.
 - [ ] DVC excludes environment management intentionally.

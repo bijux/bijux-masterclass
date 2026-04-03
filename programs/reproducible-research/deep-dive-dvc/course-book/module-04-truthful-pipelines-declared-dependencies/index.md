@@ -182,6 +182,7 @@ Stages execute redundantly despite unaltered pertinent elements. Contributors in
 Stages omit reruns amid relevant modifications, stemming from omitted dependencies, undeclared file accesses, concealed parameters, or environmental infiltrations. Ramifications are severe: erroneous outcomes, undetected data corruption, and flawed inferences. DVC's architecture deliberately favors false positives to avert these catastrophic lapses.
 
 **Comparative Table**:
+
 | Failure Type      | Causes                          | Costs                          |
 |-------------------|---------------------------------|--------------------------------|
 | False Positives   | Over-declaration, coarse inputs | Inefficiency, delays           |
@@ -283,6 +284,7 @@ Inability to articulate a stage's execution rationale denotes systemic failure.
 ## Module 04: Invariants Checklist
 
 Affirm:
+
 - [ ] Comprehensive declaration of stage influences.
 - [ ] Eradication of false negatives.
 - [ ] Comprehension and tolerance of false positives.

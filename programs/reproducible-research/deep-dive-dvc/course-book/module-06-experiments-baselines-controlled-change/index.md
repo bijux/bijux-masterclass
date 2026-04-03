@@ -302,6 +302,7 @@ Equating all elements with significance undermines reliability.
 ## Module 06: Invariants Checklist
 
 Confirm:
+
 - [ ] Experiments segregated from primary history.
 - [ ] Defined resolutions for all experiments.
 - [ ] Deliberate, verifiable promotions.
