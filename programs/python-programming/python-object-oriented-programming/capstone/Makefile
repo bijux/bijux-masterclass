@@ -144,7 +144,7 @@ inspect: ## Build the capstone learner-facing inspection bundle
 .PHONY: verify-report
 verify-report: ## Build the capstone verification report bundle
 	@rm -rf $(VERIFY_REPORT_DIR)
-	@mkdir -p $(VERIFY_REPORT_DIR)
+	@mkdir -p $(VERIFY_REPORT_DIR) $(VERIFY_REPORT_DIR)/docs
 	@PYTHONPATH=src $(PYTHON) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary > $(VERIFY_REPORT_DIR)/summary.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(VERIFY_REPORT_DIR)/history.txt
@@ -171,6 +171,8 @@ verify-report: ## Build the capstone verification report bundle
 	@cp $(DOCS_DIR)/SCENARIO_SELECTION_GUIDE.md $(VERIFY_REPORT_DIR)/SCENARIO_SELECTION_GUIDE.md
 	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
 	@cp $(DOCS_DIR)/INSPECTION_GUIDE.md $(VERIFY_REPORT_DIR)/INSPECTION_GUIDE.md
+	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/
+	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/docs/
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read GUIDE_INDEX.md, FIRST_SESSION_GUIDE.md, and COMMAND_GUIDE.md for the local route into the saved bundle.' \
