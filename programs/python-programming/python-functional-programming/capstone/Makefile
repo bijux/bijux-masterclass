@@ -74,20 +74,15 @@ inspect: install ## Build the learner-facing inspection bundle
 
 verify-report: install ## Build the structured capstone verification report bundle
 	rm -rf $(VERIFY_REPORT_DIR)
-	mkdir -p $(VERIFY_REPORT_DIR)
+	mkdir -p $(VERIFY_REPORT_DIR) $(VERIFY_REPORT_DIR)/docs
 	$(PYTEST) -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(VERIFY_REPORT_DIR)/review-summary.json
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(VERIFY_REPORT_DIR)/review-summary.txt
 	cp README.md $(VERIFY_REPORT_DIR)/README.md
-	cp $(DOCS_DIR)/GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
-	cp $(DOCS_DIR)/COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
-	cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(VERIFY_REPORT_DIR)/PUBLIC_SURFACE_MAP.md
-	cp $(DOCS_DIR)/PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
-	cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(VERIFY_REPORT_DIR)/REVIEW_ROUTE_MAP.md
-	cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(VERIFY_REPORT_DIR)/SOURCE_TO_PROOF_MAP.md
-	cp $(DOCS_DIR)/TEST_READING_MAP.md $(VERIFY_REPORT_DIR)/TEST_READING_MAP.md
-	cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
-	cp $(DOCS_DIR)/TOUR.md $(VERIFY_REPORT_DIR)/TOUR.md
+	for doc in ARCHITECTURE.md CODE_ROUTE_MAP.md COMMAND_GUIDE.md EXTENSION_GUIDE.md FIRST_SESSION_GUIDE.md GUIDE_INDEX.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
+		cp $(DOCS_DIR)/$$doc $(VERIFY_REPORT_DIR)/$$doc; \
+		cp $(DOCS_DIR)/$$doc $(VERIFY_REPORT_DIR)/docs/$$doc; \
+	done
 	printf '%s\n' \
 		'Verification report route:' \
 		'  1. Read pytest.txt for the executed verification result.' \
