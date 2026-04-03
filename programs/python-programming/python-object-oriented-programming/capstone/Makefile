@@ -96,7 +96,7 @@ inspect-json: ## Inspect the default scenario as machine-readable JSON
 .PHONY: inspect
 inspect: ## Build the capstone learner-facing inspection bundle
 	@rm -rf $(INSPECT_DIR)
-	@mkdir -p $(INSPECT_DIR)
+	@mkdir -p $(INSPECT_DIR) $(INSPECT_DIR)/docs
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli summary > $(INSPECT_DIR)/summary.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli rules > $(INSPECT_DIR)/rules.txt
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.cli history > $(INSPECT_DIR)/history.txt
@@ -128,6 +128,8 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(INSPECT_DIR)/TARGET_GUIDE.md
 	@cp $(DOCS_DIR)/INSPECTION_GUIDE.md $(INSPECT_DIR)/INSPECTION_GUIDE.md
 	@cp $(DOCS_DIR)/EXTENSION_GUIDE.md $(INSPECT_DIR)/EXTENSION_GUIDE.md
+	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/
+	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/docs/
 	@printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read GUIDE_INDEX.md, FIRST_SESSION_GUIDE.md, and COMMAND_GUIDE.md for the smallest local route.' \
