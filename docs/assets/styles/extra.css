@@ -73,6 +73,14 @@ button {
   border-radius: 0.9rem;
   padding: 1rem;
   overflow-x: auto;
+  text-align: center;
+}
+
+.md-typeset .mermaid svg {
+  display: block;
+  margin: 0 auto;
+  height: auto;
+  max-width: 100%;
 }
 
 .bijux-map-frame {
