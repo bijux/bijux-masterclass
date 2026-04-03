@@ -67,4 +67,3 @@ def test_config_summary_reports_repository_and_materialized_config(tmp_path: Pat
     assert payload["materialized_directories"]["publish_dir"] == "publish"
     assert payload["materialized_params"]["publish_version"] == "v1"
     assert payload["provenance_identity"]["snakemake_version"] == "9.19.0"
-

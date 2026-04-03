@@ -60,8 +60,7 @@ def build_summary(profile_paths: dict[str, Path]) -> dict[str, object]:
 
     return {
         "profiles": {
-            name: path.resolve().as_posix()
-            for name, path in sorted(profile_paths.items())
+            name: path.resolve().as_posix() for name, path in sorted(profile_paths.items())
         },
         "shared_settings": shared_settings,
         "differing_settings": differing_settings,

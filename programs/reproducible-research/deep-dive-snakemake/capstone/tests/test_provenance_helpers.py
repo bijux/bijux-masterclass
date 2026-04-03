@@ -6,9 +6,7 @@ from types import SimpleNamespace
 
 
 def load_provenance_module():
-    module_path = (
-        Path(__file__).resolve().parents[1] / "workflow" / "scripts" / "provenance.py"
-    )
+    module_path = Path(__file__).resolve().parents[1] / "workflow" / "scripts" / "provenance.py"
     spec = importlib.util.spec_from_file_location("snakemake_provenance", module_path)
     assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)

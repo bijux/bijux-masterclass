@@ -85,4 +85,3 @@ def test_publish_summary_script_writes_compact_publish_summary(tmp_path: Path) -
     assert payload["top_panels"]["sampleA"]["panel"] == "panel-alpha"
     assert payload["report_path"] == "report/index.html"
     assert payload["git_commit"] == "abc123"
-

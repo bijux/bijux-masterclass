@@ -41,9 +41,7 @@ def build_summary(
     provenance = load_json(provenance_path)
     manifest = load_json(manifest_path)
 
-    benchmark_summary = {
-        path.stem: parse_benchmark(path) for path in benchmark_paths
-    }
+    benchmark_summary = {path.stem: parse_benchmark(path) for path in benchmark_paths}
 
     return {
         "logs_dir": logs_dir.resolve().as_posix(),

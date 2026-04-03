@@ -24,13 +24,10 @@ def resolve_snakemake_version(python_executable: str) -> str:
         pass
 
     try:
-        return (
-            subprocess.check_output(
-                [python_executable, "-c", "import snakemake; print(snakemake.__version__)"],
-                text=True,
-            )
-            .strip()
-        )
+        return subprocess.check_output(
+            [python_executable, "-c", "import snakemake; print(snakemake.__version__)"],
+            text=True,
+        ).strip()
     except Exception:
         return "unknown"
 

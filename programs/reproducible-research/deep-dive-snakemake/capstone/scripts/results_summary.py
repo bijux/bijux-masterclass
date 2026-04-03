@@ -30,9 +30,7 @@ def build_summary(results_dir: Path, summary_path: Path) -> dict[str, object]:
         }
         status = {name: path.is_file() for name, path in files.items()}
         highlights = published_summary["units"].get(sample, {}).get("highlights", {})
-        top_hit = (
-            published_summary["units"].get(sample, {}).get("screen", {}).get("top_hit", {})
-        )
+        top_hit = published_summary["units"].get(sample, {}).get("screen", {}).get("top_hit", {})
 
         per_sample[sample] = {
             "available_surfaces": status,

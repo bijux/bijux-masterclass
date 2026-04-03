@@ -58,4 +58,3 @@ def test_profile_summary_script_compares_shared_and_different_settings(tmp_path:
         "jobs": ["slurm"],
         "rerun-incomplete": ["ci", "local"],
     }
-

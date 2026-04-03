@@ -56,4 +56,3 @@ def test_results_summary_reports_internal_surfaces_and_highlights(tmp_path: Path
     assert payload["samples"]["sampleA"]["available_surfaces"]["screen"] is True
     assert payload["samples"]["sampleA"]["reads"]["dedup"] == 12
     assert payload["samples"]["sampleA"]["top_panel"] == "panel-alpha"
-
