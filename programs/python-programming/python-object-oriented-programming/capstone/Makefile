@@ -28,7 +28,7 @@ demo: ## Run the capstone scenario walkthrough
 .PHONY: tour
 tour: ## Build the learner-facing walkthrough bundle
 	@rm -rf $(TOUR_DIR)
-	@mkdir -p $(TOUR_DIR)
+	@mkdir -p $(TOUR_DIR) $(TOUR_DIR)/docs
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo > $(TOUR_DIR)/walkthrough.txt
 	@cp README.md $(TOUR_DIR)/README.md
 	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
@@ -54,6 +54,8 @@ tour: ## Build the learner-facing walkthrough bundle
 	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
 	@cp $(DOCS_DIR)/ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
 	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(TOUR_DIR)/TARGET_GUIDE.md
+	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/
+	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/docs/
 	@printf '%s\n' \
 		'Walkthrough route:' \
 		'  1. Read GUIDE_INDEX.md and FIRST_SESSION_GUIDE.md for the smallest local route.' \
