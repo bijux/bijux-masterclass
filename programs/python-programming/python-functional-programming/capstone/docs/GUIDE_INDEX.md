@@ -1,5 +1,21 @@
 # FuncPipe Guide Index
 
+```mermaid
+flowchart TD
+  reader["Capstone reader"] --> index["Guide Index"]
+  index --> arrival["Arrival guides"]
+  index --> code["Code and package guides"]
+  index --> proof["Proof and review guides"]
+  index --> change["Change guides"]
+```
+
+```mermaid
+flowchart TD
+  question["State the question you have"] --> section["Choose the matching section"]
+  section --> file["Open one next guide"]
+  file --> narrow["Keep the route narrow until the question changes"]
+```
+
 Use this page when you already know the capstone is the right place to look, but you do
 not yet know which local guide answers your question fastest. The goal is to keep the
 capstone doc set small and navigable instead of making learners rescan the README every

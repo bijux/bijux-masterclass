@@ -1,5 +1,20 @@
 # FuncPipe Code Route Map
 
+```mermaid
+flowchart TD
+  pressure["Course or review pressure"] --> map["Code Route Map"]
+  map --> packages["Source packages"]
+  packages --> proofs["Proof tests"]
+  proofs --> next["Focused inspection route"]
+```
+
+```mermaid
+flowchart TD
+  question["Ask a package or concept question"] --> start["Open the first listed package"]
+  start --> corroborate["Open the paired proof files"]
+  corroborate --> refine["Refine the question before widening the route"]
+```
+
 Use this guide when a course page tells you to "inspect the capstone" but you still need
 one concrete route into the current source tree. The point is to keep learners out of
 directory wandering and move them from concept to package to proof with one stable map.

@@ -1,5 +1,21 @@
 # FuncPipe Command Guide
 
+```mermaid
+flowchart TD
+  question["Capstone question"] --> command["Command Guide"]
+  command --> inspect["make inspect"]
+  command --> verify["make verify-report"]
+  command --> proof["make proof"]
+  command --> confirm["make confirm"]
+```
+
+```mermaid
+flowchart TD
+  goal["Name the smallest proof you need"] --> route["Choose the matching command"]
+  route --> artifact["Read the saved artifact or test output"]
+  artifact --> next["Open the companion guide only if the question remains"]
+```
+
 Use this page when you already know your question is in the capstone, but you are not
 sure which command gives the smallest honest proof surface. The goal is to keep command
 choice tied to learner intent instead of rewarding the heaviest route by default.
