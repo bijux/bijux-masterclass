@@ -1,5 +1,20 @@
 # Workflow Review Checklist
 
+```mermaid
+flowchart TD
+  change["Workflow change"] --> contract["Contract review"]
+  contract --> declared["Declared workflow review"]
+  declared --> drift["Drift review"]
+  drift --> executed["Executed evidence review"]
+```
+
+```mermaid
+flowchart TD
+  start["Start the checklist"] --> commands["Run the listed commands"]
+  commands --> checks["Check each review question"]
+  checks --> escalate["Escalate to contract docs if meaning is still unclear"]
+```
+
 Use this checklist when a workflow change needs evidence, not intuition.
 
 ## Contract review

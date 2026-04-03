@@ -1,5 +1,21 @@
 # Workflow Contract
 
+```mermaid
+flowchart TD
+  change["Workflow change"] --> contract["Workflow Contract"]
+  contract --> rules["Rule names and outputs"]
+  contract --> config["Config and schema keys"]
+  contract --> discovery["Discovery behavior"]
+  contract --> publish["Published path conventions"]
+```
+
+```mermaid
+flowchart TD
+  edit["Propose a workflow edit"] --> classify["Classify it as preserving or changing"]
+  classify --> review["Review the affected contract surface"]
+  review --> version["Version or document the change deliberately"]
+```
+
 This file describes the boundaries that keep workflow meaning reviewable.
 
 ## What belongs in the workflow contract

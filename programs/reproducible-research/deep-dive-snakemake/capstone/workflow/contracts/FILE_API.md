@@ -1,5 +1,20 @@
 # Workflow File API
 
+```mermaid
+flowchart TD
+  workflow["Workflow-owned files"] --> discovery["Discovery output"]
+  workflow --> results["Per-sample results"]
+  workflow --> publish["Published outputs"]
+  workflow --> rules["Compatibility rules"]
+```
+
+```mermaid
+flowchart TD
+  change["Path or payload change"] --> surface["Identify the affected file surface"]
+  surface --> contract["Decide whether the contract changed"]
+  contract --> action["Version, document, or reject the change"]
+```
+
 This guide records the workflow-owned file surfaces that other rules are allowed to rely
 on. It exists so contract questions can be answered inside the workflow tree, not only
 from the top-level capstone review docs.
