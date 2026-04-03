@@ -152,7 +152,7 @@ verify-report: ## Build the structured capstone verification report
 .PHONY: tour
 tour: ## Build the learner-facing walkthrough bundle
 	@rm -rf $(TOUR_DIR)
-	@mkdir -p $(TOUR_DIR)
+	@mkdir -p $(TOUR_DIR) $(TOUR_DIR)/docs
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(TOUR_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(TOUR_DIR)/registry.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(TOUR_DIR)/plugin.json
@@ -187,6 +187,12 @@ tour: ## Build the learner-facing walkthrough bundle
 	@cp $(DOCS_DIR)/TOUR.md $(TOUR_DIR)/TOUR.md
 	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
 	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(TOUR_DIR)/TARGET_GUIDE.md
+	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/
+	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/docs/
+	@for doc in $(TOUR_DIR)/*.md; do \
+		[ "$$doc" = "$(TOUR_DIR)/README.md" ] && continue; \
+		python3 -c "from pathlib import Path; path = Path('$$doc'); path.write_text(path.read_text(encoding='utf-8').replace('](../README.md)', '](README.md)'), encoding='utf-8')"; \
+	done
 	@printf '%s\n' \
 		"fields=src/incident_plugins/fields.py" \
 		"actions=src/incident_plugins/actions.py" \
