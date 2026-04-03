@@ -1,5 +1,21 @@
 # Scenario Boundary Map
 
+```mermaid
+flowchart TD
+  scenario["Scenario question"] --> map["Scenario Boundary Map"]
+  map --> default["Default monitoring flow"]
+  map --> retirement["Retirement flow"]
+  map --> rate["Rate-of-change flow"]
+  map --> bundles["Inspection and walkthrough bundles"]
+```
+
+```mermaid
+flowchart TD
+  pressure["Name the ownership pressure"] --> route["Choose the matching scenario"]
+  route --> inspect["Open the linked guides and code"]
+  inspect --> proof["Run the matching proof route"]
+```
+
 Use this page when you know a scenario would teach the idea faster than a file tree, but
 you are not sure which scenario demonstrates which ownership boundary. The goal is to
 turn the scenarios into deliberate teaching routes instead of isolated walkthroughs.

@@ -1,5 +1,22 @@
 # Ownership Boundaries
 
+```mermaid
+flowchart TD
+  system["Monitoring system"] --> aggregate["Aggregate boundary"]
+  system --> policy["Policy boundary"]
+  system --> projection["Projection boundary"]
+  system --> runtime["Runtime boundary"]
+  system --> persistence["Persistence boundary"]
+  system --> public["Public surface boundary"]
+```
+
+```mermaid
+flowchart TD
+  change["Consider a change"] --> owner["Identify the owning boundary"]
+  owner --> reject["Reject cross-boundary leakage"]
+  reject --> redesign["Redesign or push the change outward"]
+```
+
 Use this guide when the capstone technically makes sense but you still need one page that
 states who owns what, who only derives views, and what kinds of changes should be rejected
 or pushed outward.
