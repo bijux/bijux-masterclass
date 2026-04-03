@@ -15,8 +15,8 @@ VENV_BIN := $(VENV_DIR)/bin
 VENV_PY := $(abspath $(VENV_BIN)/python)
 PIP := $(VENV_PY) -m pip
 MKDOCS := $(VENV_PY) -m mkdocs
-SYNC_SERIES_DOCS := $(PYTHON) scripts/sync_series_docs.py
-RENDER_ROOT_MKDOCS := $(PYTHON) scripts/render_root_mkdocs.py
+SYNC_SERIES_DOCS := $(VENV_PY) scripts/sync_series_docs.py
+RENDER_ROOT_MKDOCS := $(VENV_PY) scripts/render_root_mkdocs.py
 DOCS_ENV = NO_MKDOCS_2_WARNING=true
 ROOT_MKDOCS_FILE := artifacts/mkdocs.root.yml
 
