@@ -79,3 +79,30 @@ Use the explicit per-program docs route when you only want one program:
 ```bash
 make PROGRAM=python-programming/python-functional-programming docs-serve
 ```
+
+## Verification Routes
+
+Audit the documentation rules that apply across course-book and capstone content:
+
+```bash
+make docs-audit
+```
+
+Build the full catalog with the same strict MkDocs validation used for the repository site:
+
+```bash
+make docs-build
+```
+
+Run a program's published verification route through its own Makefile:
+
+```bash
+make PROGRAM=python-programming/python-object-oriented-programming test
+make PROGRAM=reproducible-research/deep-dive-snakemake test
+```
+
+Inspect the selected program's available routes before running them:
+
+```bash
+make PROGRAM=python-programming/python-functional-programming program-help
+```
