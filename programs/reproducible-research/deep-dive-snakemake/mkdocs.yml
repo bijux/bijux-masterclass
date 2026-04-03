@@ -30,9 +30,6 @@ plugins:
   - search
   - macros:
       include_dir: .
-  - git-revision-date-localized:
-      enable_creation_date: true
-      type: timeago
   - minify:
       minify_html: true
 
