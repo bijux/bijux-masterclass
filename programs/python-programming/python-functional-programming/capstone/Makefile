@@ -96,23 +96,16 @@ verify-report: install ## Build the structured capstone verification report bund
 
 tour: install ## Build the learner-facing proof bundle
 	rm -rf $(TOUR_DIR)
-	mkdir -p $(TOUR_DIR)
+	mkdir -p $(TOUR_DIR) $(TOUR_DIR)/docs
 	$(PYTEST) -q 2>&1 | tee $(TOUR_DIR)/pytest.txt
 	find src/funcpipe_rag -type d | sort > $(TOUR_DIR)/package-tree.txt
 	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
 	cp README.md $(TOUR_DIR)/README.md
-	cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(TOUR_DIR)/FIRST_SESSION_GUIDE.md
-	cp $(DOCS_DIR)/GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
-	cp $(DOCS_DIR)/COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
-	cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(TOUR_DIR)/PUBLIC_SURFACE_MAP.md
 	cp pyproject.toml $(TOUR_DIR)/pyproject.toml
-	cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(TOUR_DIR)/REVIEW_ROUTE_MAP.md
-	cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(TOUR_DIR)/SOURCE_TO_PROOF_MAP.md
-	cp $(DOCS_DIR)/TEST_READING_MAP.md $(TOUR_DIR)/TEST_READING_MAP.md
-	cp $(DOCS_DIR)/TOUR.md $(TOUR_DIR)/TOUR.md
-	cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
-	cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(TOUR_DIR)/PACKAGE_GUIDE.md
-	cp $(DOCS_DIR)/TEST_GUIDE.md $(TOUR_DIR)/TEST_GUIDE.md
+	for doc in ARCHITECTURE.md CODE_ROUTE_MAP.md COMMAND_GUIDE.md EXTENSION_GUIDE.md FIRST_SESSION_GUIDE.md GUIDE_INDEX.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
+		cp $(DOCS_DIR)/$$doc $(TOUR_DIR)/$$doc; \
+		cp $(DOCS_DIR)/$$doc $(TOUR_DIR)/docs/$$doc; \
+	done
 	printf '%s\n' \
 		"core=src/funcpipe_rag/core" \
 		"result=src/funcpipe_rag/result" \
