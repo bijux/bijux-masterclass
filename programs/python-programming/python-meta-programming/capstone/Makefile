@@ -67,7 +67,7 @@ trace: ## Trace one delivery action and its recorded history
 .PHONY: inspect
 inspect: ## Build the learner-facing inspection bundle
 	@rm -rf $(INSPECT_DIR)
-	@mkdir -p $(INSPECT_DIR)
+	@mkdir -p $(INSPECT_DIR) $(INSPECT_DIR)/docs
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(INSPECT_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) registry --group delivery > $(INSPECT_DIR)/registry.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(INSPECT_DIR)/plugin.json
@@ -87,6 +87,12 @@ inspect: ## Build the learner-facing inspection bundle
 	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(INSPECT_DIR)/TARGET_GUIDE.md
 	@cp $(DOCS_DIR)/INSPECTION_GUIDE.md $(INSPECT_DIR)/INSPECTION_GUIDE.md
 	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
+	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/
+	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/docs/
+	@for doc in $(INSPECT_DIR)/*.md; do \
+		[ "$$doc" = "$(INSPECT_DIR)/README.md" ] && continue; \
+		python3 -c "from pathlib import Path; path = Path('$$doc'); path.write_text(path.read_text(encoding='utf-8').replace('](../README.md)', '](README.md)'), encoding='utf-8')"; \
+	done
 	@printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read manifest.json for group-level field and action metadata.' \
