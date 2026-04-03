@@ -109,7 +109,7 @@ proof: inspect tour verify-report ## Run the full public proof route
 .PHONY: verify-report
 verify-report: ## Build the structured capstone verification report
 	@rm -rf $(VERIFY_REPORT_DIR)
-	@mkdir -p $(VERIFY_REPORT_DIR)
+	@mkdir -p $(VERIFY_REPORT_DIR) $(VERIFY_REPORT_DIR)/docs
 	@$(PYTHON) -m pytest -q 2>&1 | tee $(VERIFY_REPORT_DIR)/pytest.txt
 	@PYTHONPATH=src $(CLI) manifest --group delivery > $(VERIFY_REPORT_DIR)/manifest.json
 	@PYTHONPATH=src $(CLI) plugin delivery webhook > $(VERIFY_REPORT_DIR)/plugin.json
@@ -133,6 +133,12 @@ verify-report: ## Build the structured capstone verification report
 	@cp $(DOCS_DIR)/TEST_READING_MAP.md $(VERIFY_REPORT_DIR)/TEST_READING_MAP.md
 	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
 	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(VERIFY_REPORT_DIR)/TARGET_GUIDE.md
+	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/
+	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/docs/
+	@for doc in $(VERIFY_REPORT_DIR)/*.md; do \
+		[ "$$doc" = "$(VERIFY_REPORT_DIR)/README.md" ] && continue; \
+		python3 -c "from pathlib import Path; path = Path('$$doc'); path.write_text(path.read_text(encoding='utf-8').replace('](../README.md)', '](README.md)'), encoding='utf-8')"; \
+	done
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read pytest.txt for executable proof.' \
