@@ -68,7 +68,7 @@ def prefixed_nav(items: list[Any], prefix: str) -> list[Any]:
 
 def course_book_nav(items: list[Any], prefix: str) -> list[Any]:
     prefixed = prefixed_nav(items, prefix)
-    section_names = {"Start Here", "Guides", "Reference", "Capstone"}
+    section_names = {"Start Here", "Guides", "Reference", "Capstone", "Modules"}
     grouped: list[Any] = []
     modules: list[Any] = []
 
