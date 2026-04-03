@@ -9,7 +9,12 @@ document$.subscribe(() => {
   }
 
   mermaid.initialize(window.mermaidConfig);
+  const nodes = document.querySelectorAll("pre.mermaid, div.mermaid");
+  if (!nodes.length) {
+    return;
+  }
+
   mermaid.run({
-    querySelector: "pre.mermaid code, div.mermaid, code.mermaid",
+    nodes,
   });
 });
