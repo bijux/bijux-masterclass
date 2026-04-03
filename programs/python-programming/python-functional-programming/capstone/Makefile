@@ -53,21 +53,14 @@ demo: tour ## Build the learner-facing capstone walkthrough
 
 inspect: install ## Build the learner-facing inspection bundle
 	rm -rf $(INSPECT_DIR)
-	mkdir -p $(INSPECT_DIR)
+	mkdir -p $(INSPECT_DIR) $(INSPECT_DIR)/docs
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(INSPECT_DIR)/summary.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(INSPECT_DIR)/summary.json
 	cp README.md $(INSPECT_DIR)/README.md
-	cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(INSPECT_DIR)/FIRST_SESSION_GUIDE.md
-	cp $(DOCS_DIR)/GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
-	cp $(DOCS_DIR)/COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
-	cp $(DOCS_DIR)/ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
-	cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
-	cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(INSPECT_DIR)/PUBLIC_SURFACE_MAP.md
-	cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(INSPECT_DIR)/REVIEW_ROUTE_MAP.md
-	cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(INSPECT_DIR)/SOURCE_TO_PROOF_MAP.md
-	cp $(DOCS_DIR)/TEST_GUIDE.md $(INSPECT_DIR)/TEST_GUIDE.md
-	cp $(DOCS_DIR)/TEST_READING_MAP.md $(INSPECT_DIR)/TEST_READING_MAP.md
-	cp $(DOCS_DIR)/PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
+	for doc in FIRST_SESSION_GUIDE.md GUIDE_INDEX.md COMMAND_GUIDE.md ARCHITECTURE.md CODE_ROUTE_MAP.md EXTENSION_GUIDE.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
+		cp $(DOCS_DIR)/$$doc $(INSPECT_DIR)/$$doc; \
+		cp $(DOCS_DIR)/$$doc $(INSPECT_DIR)/docs/$$doc; \
+	done
 	printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read summary.txt for the human review map.' \
