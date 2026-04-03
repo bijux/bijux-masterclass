@@ -66,6 +66,25 @@ def prefixed_nav(items: list[Any], prefix: str) -> list[Any]:
     return prefixed
 
 
+def course_book_nav(items: list[Any], prefix: str) -> list[Any]:
+    prefixed = prefixed_nav(items, prefix)
+    section_names = {"Start Here", "Guides", "Reference", "Capstone"}
+    grouped: list[Any] = []
+    modules: list[Any] = []
+
+    for item in prefixed:
+        key, value = next(iter(item.items()))
+        if key in section_names:
+            grouped.append({key: value})
+        else:
+            modules.append({key: value})
+
+    if modules:
+        grouped.append({"Modules": modules})
+
+    return grouped
+
+
 def capstone_nav(program_dir: Path, family_slug: str, program_slug: str) -> list[Any]:
     capstone_dir = program_dir / "capstone"
     readme_path = capstone_dir / "README.md"
@@ -115,7 +134,7 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
                 {
                     program_name: [
                         {"Program Overview": overview_path},
-                        {"Course Book": prefixed_nav(program_config["nav"], course_prefix)},
+                        {"Course Book": course_book_nav(program_config["nav"], course_prefix)},
                         {"Capstone": capstone_nav(program_dir, family_slug, program_slug)},
                     ]
                 }
