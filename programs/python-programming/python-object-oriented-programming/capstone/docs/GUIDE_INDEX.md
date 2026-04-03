@@ -1,5 +1,22 @@
 # Monitoring System Guide Index
 
+```mermaid
+flowchart TD
+  reader["Capstone reader"] --> index["Guide Index"]
+  index --> arrival["Arrival route"]
+  index --> ownership["Ownership route"]
+  index --> proof["Proof route"]
+  index --> scenario["Scenario route"]
+  index --> change["Extension route"]
+```
+
+```mermaid
+flowchart TD
+  question["State the question you have"] --> section["Pick the matching guide group"]
+  section --> file["Open one next guide"]
+  file --> narrow["Keep the route narrow until the question changes"]
+```
+
 Use this page when you already know the capstone is the right place to look, but you do
 not yet know which local guide answers your question fastest. The goal is to keep the
 capstone doc set reviewable instead of making learners rescan the README every time.

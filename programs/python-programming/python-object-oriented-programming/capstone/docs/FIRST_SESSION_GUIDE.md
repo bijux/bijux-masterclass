@@ -1,5 +1,20 @@
 # First Session Guide
 
+```mermaid
+flowchart TD
+  newcomer["New capstone reader"] --> first["First Session Guide"]
+  first --> docs["Core docs"]
+  first --> demo["make demo"]
+  first --> next["One sharper next question"]
+```
+
+```mermaid
+flowchart TD
+  arrive["Start with the smallest honest route"] --> read["Read the listed guides in order"]
+  read --> run["Run make demo"]
+  run --> stop["Stop when the authority boundary is clear"]
+```
+
 Use this page when this is your first honest pass through the capstone and you want a
 coherent route without trying to understand every guide at once. The goal is not to cover
 everything. The goal is to leave the first session able to name the domain, the authority

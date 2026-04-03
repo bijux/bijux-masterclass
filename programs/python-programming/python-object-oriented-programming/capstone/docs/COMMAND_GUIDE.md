@@ -1,5 +1,21 @@
 # Monitoring System Command Guide
 
+```mermaid
+flowchart TD
+  question["Capstone question"] --> guide["Command Guide"]
+  guide --> inspect["make inspect"]
+  guide --> tour["make tour"]
+  guide --> verify["make verify-report"]
+  guide --> proof["make proof"]
+```
+
+```mermaid
+flowchart TD
+  goal["Name the smallest proof route"] --> run["Run the matching command"]
+  run --> bundle["Read the saved bundle or test output"]
+  bundle --> followup["Open a companion guide only if the question remains"]
+```
+
 Use this page when you know the question is inside the capstone, but you are not sure
 which command gives the smallest honest proof surface. The goal is to match the route to
 the question instead of defaulting to the heaviest command.
