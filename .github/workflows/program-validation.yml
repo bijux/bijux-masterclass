@@ -32,7 +32,7 @@ jobs:
               python -m pip install -U pip
             validate: |
               make PROGRAM=reproducible-research/deep-dive-snakemake docs-build
-              make -C programs/reproducible-research/deep-dive-snakemake/capstone confirm
+              make -C programs/reproducible-research/deep-dive-snakemake/capstone bootstrap-confirm
           - name: deep-dive-dvc
             setup: |
               python -m pip install -U pip
