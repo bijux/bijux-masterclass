@@ -74,13 +74,14 @@ nav:
       - Repro Catalog: capstone/repro-catalog.md
       - Repro Study Worksheet: capstone/repro-study-worksheet.md
       - Capstone Extension Guide: capstone/capstone-extension-guide.md
-  - "Module 01: Foundations, Build Graphs, and Truth": module-01-build-graph-foundations-truth/index.md
-  - "Module 02: Parallel Safety and Project Structure": module-02-parallel-safety-project-structure/index.md
-  - "Module 03: Production Practice, Determinism, and Selftests": module-03-determinism-debugging-self-testing/index.md
-  - "Module 04: CLI Semantics, Includes, and Rule Edge Cases": module-04-rule-semantics-precedence-edge-cases/index.md
-  - "Module 05: Portability, Hermeticity, and Failure Modes": module-05-portability-hermeticity-failure-modes/index.md
-  - "Module 06: Generated Files and Pipeline Boundaries": module-06-generated-files-multi-output-pipeline-boundaries/index.md
-  - "Module 07: Reusable Build Architecture and Build APIs": module-07-build-architecture-layered-includes-apis/index.md
-  - "Module 08: Release Engineering and Artifact Publication": module-08-release-engineering-artifact-contracts/index.md
-  - "Module 09: Observability and Build Incident Response": module-09-performance-observability-incident-response/index.md
-  - "Module 10: Migration, Governance, and Make Boundaries": module-10-migration-governance-tool-boundaries/index.md
+  - Modules:
+      - "Module 01: Foundations, Build Graphs, and Truth": module-01-build-graph-foundations-truth/index.md
+      - "Module 02: Parallel Safety and Project Structure": module-02-parallel-safety-project-structure/index.md
+      - "Module 03: Production Practice, Determinism, and Selftests": module-03-determinism-debugging-self-testing/index.md
+      - "Module 04: CLI Semantics, Includes, and Rule Edge Cases": module-04-rule-semantics-precedence-edge-cases/index.md
+      - "Module 05: Portability, Hermeticity, and Failure Modes": module-05-portability-hermeticity-failure-modes/index.md
+      - "Module 06: Generated Files and Pipeline Boundaries": module-06-generated-files-multi-output-pipeline-boundaries/index.md
+      - "Module 07: Reusable Build Architecture and Build APIs": module-07-build-architecture-layered-includes-apis/index.md
+      - "Module 08: Release Engineering and Artifact Publication": module-08-release-engineering-artifact-contracts/index.md
+      - "Module 09: Observability and Build Incident Response": module-09-performance-observability-incident-response/index.md
+      - "Module 10: Migration, Governance, and Make Boundaries": module-10-migration-governance-tool-boundaries/index.md
