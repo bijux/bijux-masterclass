@@ -301,7 +301,7 @@ experiment-review: verify ## Build a focused experiment comparison bundle
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@rm -rf $(WALKTHROUGH_DIR)
-	@mkdir -p $(WALKTHROUGH_DIR)/src/incident_escalation_capstone $(WALKTHROUGH_DIR)/tests $(WALKTHROUGH_DIR)/publish-v1
+	@mkdir -p $(WALKTHROUGH_DIR)/docs $(WALKTHROUGH_DIR)/src/incident_escalation_capstone $(WALKTHROUGH_DIR)/tests $(WALKTHROUGH_DIR)/publish-v1
 	@cp README.md $(WALKTHROUGH_DIR)/README.md
 	@cp $(DOCS_DIR)/DOMAIN_GUIDE.md $(WALKTHROUGH_DIR)/DOMAIN_GUIDE.md
 	@cp $(DOCS_DIR)/STAGE_CONTRACT_GUIDE.md $(WALKTHROUGH_DIR)/STAGE_CONTRACT_GUIDE.md
@@ -309,6 +309,12 @@ walkthrough: ## Build the learner-facing capstone walkthrough bundle
 	@cp $(DOCS_DIR)/CONTROL_SURFACE_GUIDE.md $(WALKTHROUGH_DIR)/CONTROL_SURFACE_GUIDE.md
 	@cp $(DOCS_DIR)/ARCHITECTURE.md $(WALKTHROUGH_DIR)/ARCHITECTURE.md
 	@cp $(DOCS_DIR)/PUBLISH_CONTRACT.md $(WALKTHROUGH_DIR)/PUBLISH_CONTRACT.md
+	@cp $(DOCS_DIR)/*.md $(WALKTHROUGH_DIR)/
+	@cp $(DOCS_DIR)/*.md $(WALKTHROUGH_DIR)/docs/
+	@for doc in $(WALKTHROUGH_DIR)/*.md; do \
+		[ "$$doc" = "$(WALKTHROUGH_DIR)/README.md" ] && continue; \
+		$(VENV_PY) -c "from pathlib import Path; path = Path('$$doc'); path.write_text(path.read_text(encoding='utf-8').replace('](../', ']('), encoding='utf-8')"; \
+	done
 	@cp dvc.yaml $(WALKTHROUGH_DIR)/dvc.yaml
 	@cp dvc.lock $(WALKTHROUGH_DIR)/dvc.lock
 	@cp params.yaml $(WALKTHROUGH_DIR)/params.yaml
