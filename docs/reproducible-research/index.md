@@ -1,3 +1,12 @@
+---
+title: Reproducible Research
+audience: mixed
+type: index
+status: canonical
+owner: bijux-masterclass-docs
+last_reviewed: 2026-04-04
+---
+
 # Reproducible Research
 
 This family collects programs about how systems declare state, build graphs, publish
@@ -87,3 +96,13 @@ make docs-serve
 make PROGRAM=reproducible-research/deep-dive-snakemake docs-serve
 make PROGRAM=reproducible-research/deep-dive-dvc test
 ```
+
+## Purpose
+
+This page helps a reader choose the reproducible-research program that matches the current
+system pressure before they drop into the full course-book tree.
+
+## Stability
+
+This page is part of the canonical docs spine. Keep it aligned with the checked-in
+program set and the learner entry routes exposed in the synced library.

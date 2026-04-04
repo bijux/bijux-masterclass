@@ -6,6 +6,7 @@ site_author: Bijan Mousavi <bijan@bijux.io>
 site_url: https://bijux.io/bijux-masterclass/
 repo_name: bijux/bijux-masterclass
 repo_url: https://github.com/bijux/bijux-masterclass
+edit_uri: edit/main/docs/
 
 docs_dir: docs
 site_dir: artifacts/site/bijux-masterclass

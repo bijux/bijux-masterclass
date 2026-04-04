@@ -1,3 +1,12 @@
+---
+title: Python Programming
+audience: mixed
+type: index
+status: canonical
+owner: bijux-masterclass-docs
+last_reviewed: 2026-04-04
+---
+
 # Python Programming
 
 This family collects long-form Python courses about semantics, runtime boundaries, and
@@ -84,3 +93,13 @@ make docs-serve
 make PROGRAM=python-programming/python-object-oriented-programming docs-serve
 make PROGRAM=python-programming/python-functional-programming test
 ```
+
+## Purpose
+
+This page helps a reader choose the Python program that matches the current design
+pressure before they enter the full course-book and capstone tree.
+
+## Stability
+
+This page is part of the canonical docs spine. Keep it aligned with the checked-in
+program set and the learner entry routes exposed in the synced library.

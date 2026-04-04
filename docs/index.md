@@ -1,9 +1,22 @@
+---
+title: Bijux Masterclass
+audience: mixed
+type: index
+status: canonical
+owner: bijux-masterclass-docs
+last_reviewed: 2026-04-04
+---
+
 # Bijux Masterclass
 
 Bijux Masterclass is the root catalog for the full program collection. The root docs site
 is intentionally a learner-facing surface, not only a repository index: it mirrors the
 checked-in course books and capstone guides so you can move between programs without
 switching documentation systems.
+
+The page follows the same Bijux handbook pattern used across the other repositories: start
+with the visible catalog, then move into family routing, local course trees, and exact
+commands when you need them.
 
 <div class="bijux-callout">
   <strong>Use the left navigation as the full library.</strong>
@@ -101,3 +114,13 @@ make PROGRAM=reproducible-research/deep-dive-make test
 The root catalog is a synchronized mirror of the checked-in course-book and capstone
 Markdown. It is not a separate editorial fork. If a course page changes in `programs/`,
 the root site picks up that same source during `make docs-build` or `make docs-serve`.
+
+## Purpose
+
+This page routes readers into the correct program family quickly enough that they can move
+from the shared catalog into the checked-in course-book tree without losing context.
+
+## Stability
+
+This page is part of the canonical docs spine. Keep it aligned with the checked-in program
+families, the generated navigation, and the local course and capstone entry routes.
