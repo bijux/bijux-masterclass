@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any
 
@@ -40,7 +41,27 @@ CAPSTONE_ORDER = {
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
-    return yaml.safe_load(path.read_text(encoding="utf-8"))
+    class EnvSafeLoader(yaml.SafeLoader):
+        """Safe YAML loader with minimal support for MkDocs-style !ENV tags."""
+
+    def construct_env_tag(
+        loader: EnvSafeLoader,
+        node: yaml.ScalarNode | yaml.SequenceNode,
+    ) -> str:
+        if isinstance(node, yaml.ScalarNode):
+            var_name = loader.construct_scalar(node)
+            return os.getenv(var_name, "")
+        if isinstance(node, yaml.SequenceNode):
+            values = loader.construct_sequence(node)
+            if not values:
+                return ""
+            var_name = str(values[0])
+            fallback = str(values[1]) if len(values) > 1 else ""
+            return os.getenv(var_name, fallback)
+        raise TypeError(f"Unsupported !ENV node type: {type(node)!r}")
+
+    EnvSafeLoader.add_constructor("!ENV", construct_env_tag)
+    return yaml.load(path.read_text(encoding="utf-8"), Loader=EnvSafeLoader)
 
 
 def first_h1(path: Path) -> str:
