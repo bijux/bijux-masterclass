@@ -103,6 +103,32 @@ def as_nav_list(title: str, value: Any) -> list[Any]:
     raise TypeError(f"Unsupported nav value type for {title!r}: {type(value)!r}")
 
 
+def with_module_glossary(program_dir: Path, value: Any) -> Any:
+    nav_items = as_nav_list("module", value)
+    listed_paths = {path for _, path in (nav_entry(item) for item in nav_items)}
+    if not nav_items:
+        return value
+
+    first_path = Path(nav_items[0][next(iter(nav_items[0]))])
+    source_path = (
+        Path(*first_path.parts[3:])
+        if len(first_path.parts) >= 4 and first_path.parts[0] == "library"
+        else first_path
+    )
+    glossary_path = source_path.parent / "glossary.md"
+    if glossary_path.as_posix() in listed_paths:
+        return value
+    if not (program_dir / "course-book" / glossary_path).exists():
+        return value
+
+    target_glossary_path = (
+        Path(*first_path.parts[:3]) / glossary_path
+        if len(first_path.parts) >= 4 and first_path.parts[0] == "library"
+        else glossary_path
+    )
+    return [*nav_items, {"Glossary": target_glossary_path.as_posix()}]
+
+
 def module_label(title: str) -> str:
     match = re.search(r"\bModule\s+(\d+)\b", title)
     if not match:
@@ -113,6 +139,7 @@ def module_label(title: str) -> str:
 def course_book_nav(
     items: list[Any],
     prefix: str,
+    program_dir: Path,
     project_capstone_nav: list[Any],
 ) -> list[Any]:
     prefixed = prefixed_nav(items, prefix)
@@ -154,7 +181,7 @@ def course_book_nav(
             else:
                 guides.append({key: value})
         else:
-            module_nav.append({label: value})
+            module_nav.append({label: with_module_glossary(program_dir, value)})
 
     nav: list[Any] = []
     if guides:
@@ -235,6 +262,7 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
                         *course_book_nav(
                             program_config["nav"],
                             course_prefix,
+                            program_dir,
                             project_capstone_nav,
                         ),
                     ]
