@@ -17,7 +17,33 @@ function bijuxNormalizePath(target) {
   return path || "/";
 }
 
+function bijuxBestMatchingLink(links, pathAttribute) {
+  const currentPath = bijuxNormalizePath(window.location.pathname);
+  let activeLink = null;
+
+  for (const link of links) {
+    const linkPath = bijuxNormalizePath(link.getAttribute(pathAttribute) || "/");
+    const isMatch =
+      currentPath === linkPath ||
+      (linkPath !== "/" && currentPath.startsWith(`${linkPath}/`));
+
+    if (isMatch && (!activeLink || linkPath.length > activeLink.path.length)) {
+      activeLink = { path: linkPath, node: link };
+    }
+  }
+
+  return activeLink;
+}
+
 function bijuxBestSitePath() {
+  const activeLink = bijuxBestMatchingLink(
+    document.querySelectorAll(".bijux-site-tabs [data-bijux-site-path]"),
+    "data-bijux-site-path"
+  );
+  if (activeLink) {
+    return activeLink.path;
+  }
+
   const authoredActiveLink = document.querySelector(
     ".bijux-site-tabs [data-bijux-site-path][aria-current='page'], .bijux-site-tabs .bijux-tabs__item--active [data-bijux-site-path]"
   );
@@ -26,28 +52,7 @@ function bijuxBestSitePath() {
       authoredActiveLink.getAttribute("data-bijux-site-path") || "/"
     );
   }
-
-  const currentPath = bijuxNormalizePath(window.location.pathname);
-  const siteLinks = document.querySelectorAll(
-    ".bijux-site-tabs [data-bijux-site-path]"
-  );
-  let bestMatch = null;
-
-  for (const link of siteLinks) {
-    const linkPath = bijuxNormalizePath(
-      link.getAttribute("data-bijux-site-path") || "/"
-    );
-    if (
-      currentPath === linkPath ||
-      (linkPath !== "/" && currentPath.startsWith(`${linkPath}/`))
-    ) {
-      if (!bestMatch || linkPath.length > bestMatch.length) {
-        bestMatch = linkPath;
-      }
-    }
-  }
-
-  return bestMatch;
+  return null;
 }
 
 function bijuxSyncSiteTabActiveState() {
@@ -98,7 +103,6 @@ function bijuxSyncDetailStripVisibility() {
 
 function bijuxSyncDetailStripActiveState() {
   const activeStrip = document.querySelector("[data-bijux-detail-strip]:not([hidden])");
-  const currentPath = bijuxNormalizePath(window.location.pathname);
   const authoredActiveLink = activeStrip?.querySelector(
     "[data-bijux-detail-path][aria-current='page'], .bijux-tabs__item--active [data-bijux-detail-path]"
   );
@@ -118,28 +122,18 @@ function bijuxSyncDetailStripActiveState() {
     return;
   }
 
-  let activeLink = null;
+  let activeLink = bijuxBestMatchingLink(
+    activeStrip.querySelectorAll("[data-bijux-detail-path]"),
+    "data-bijux-detail-path"
+  );
 
-  if (authoredActiveLink) {
+  if (!activeLink && authoredActiveLink) {
     activeLink = {
       path: bijuxNormalizePath(
         authoredActiveLink.getAttribute("data-bijux-detail-path") || "/"
       ),
       node: authoredActiveLink,
     };
-  } else {
-    for (const link of activeStrip.querySelectorAll("[data-bijux-detail-path]")) {
-      const linkPath = bijuxNormalizePath(
-        link.getAttribute("data-bijux-detail-path") || "/"
-      );
-      const isMatch =
-        currentPath === linkPath ||
-        (linkPath !== "/" && currentPath.startsWith(`${linkPath}/`));
-
-      if (isMatch && (!activeLink || linkPath.length > activeLink.path.length)) {
-        activeLink = { path: linkPath, node: link };
-      }
-    }
   }
 
   if (activeLink) {
@@ -152,35 +146,27 @@ function bijuxSyncDetailStripActiveState() {
 
 function bijuxActiveDetailPath() {
   const activeStrip = document.querySelector("[data-bijux-detail-strip]:not([hidden])");
-  const currentPath = bijuxNormalizePath(window.location.pathname);
   const authoredActiveLink = activeStrip?.querySelector(
     "[data-bijux-detail-path][aria-current='page'], .bijux-tabs__item--active [data-bijux-detail-path]"
   );
 
+  if (!activeStrip) {
+    return null;
+  }
+
+  const activeLink = bijuxBestMatchingLink(
+    activeStrip.querySelectorAll("[data-bijux-detail-path]"),
+    "data-bijux-detail-path"
+  );
+  if (activeLink) {
+    return activeLink.path;
+  }
   if (authoredActiveLink) {
     return bijuxNormalizePath(
       authoredActiveLink.getAttribute("data-bijux-detail-path") || "/"
     );
   }
-  if (!activeStrip) {
-    return null;
-  }
-
-  let activePath = null;
-  for (const link of activeStrip.querySelectorAll("[data-bijux-detail-path]")) {
-    const linkPath = bijuxNormalizePath(
-      link.getAttribute("data-bijux-detail-path") || "/"
-    );
-    const isMatch =
-      currentPath === linkPath ||
-      (linkPath !== "/" && currentPath.startsWith(`${linkPath}/`));
-
-    if (isMatch && (!activePath || linkPath.length > activePath.length)) {
-      activePath = linkPath;
-    }
-  }
-
-  return activePath;
+  return null;
 }
 
 function bijuxSyncCourseStripVisibility() {
@@ -197,7 +183,6 @@ function bijuxSyncCourseStripVisibility() {
 
 function bijuxSyncCourseStripActiveState() {
   const activeStrip = document.querySelector("[data-bijux-course-strip]:not([hidden])");
-  const currentPath = bijuxNormalizePath(window.location.pathname);
   const authoredActiveLink = activeStrip?.querySelector(
     "[data-bijux-course-path][aria-current='page'], .bijux-tabs__item--active [data-bijux-course-path]"
   );
@@ -217,28 +202,18 @@ function bijuxSyncCourseStripActiveState() {
     return;
   }
 
-  let activeLink = null;
+  let activeLink = bijuxBestMatchingLink(
+    activeStrip.querySelectorAll("[data-bijux-course-path]"),
+    "data-bijux-course-path"
+  );
 
-  if (authoredActiveLink) {
+  if (!activeLink && authoredActiveLink) {
     activeLink = {
       path: bijuxNormalizePath(
         authoredActiveLink.getAttribute("data-bijux-course-path") || "/"
       ),
       node: authoredActiveLink,
     };
-  } else {
-    for (const link of activeStrip.querySelectorAll("[data-bijux-course-path]")) {
-      const linkPath = bijuxNormalizePath(
-        link.getAttribute("data-bijux-course-path") || "/"
-      );
-      const isMatch =
-        currentPath === linkPath ||
-        (linkPath !== "/" && currentPath.startsWith(`${linkPath}/`));
-
-      if (isMatch && (!activeLink || linkPath.length > activeLink.path.length)) {
-        activeLink = { path: linkPath, node: link };
-      }
-    }
   }
 
   if (activeLink) {
