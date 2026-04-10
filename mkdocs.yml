@@ -11,6 +11,32 @@ edit_uri: edit/main/docs/
 docs_dir: docs
 site_dir: artifacts/site/bijux-masterclass
 
+extra:
+  bijux:
+    repository: bijux-masterclass
+    hub_links:
+      - key: bijux
+        label: Bijux
+        url: https://bijux.io/
+      - key: core
+        label: Core
+        url: https://bijux.io/bijux-core/
+      - key: bijux-canon
+        label: Canon
+        url: https://bijux.io/bijux-canon/
+      - key: bijux-atlas
+        label: Atlas
+        url: https://bijux.io/bijux-atlas/
+      - key: bijux-proteomics
+        label: Proteomics
+        url: https://bijux.io/bijux-proteomics/
+      - key: bijux-pollenomics
+        label: Pollenomics
+        url: https://bijux.io/bijux-pollenomics/
+      - key: bijux-masterclass
+        label: Masterclass
+        url: https://bijux.io/bijux-masterclass/
+
 nav:
   - Home: index.md
   - Reproducible Research:
