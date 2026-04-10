@@ -6,6 +6,7 @@ from __future__ import annotations
 import re
 import shutil
 from pathlib import Path
+from typing import Callable
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -18,6 +19,11 @@ SKIP_PARTS = {
     ".mypy_cache",
     ".ruff_cache",
     ".venv",
+}
+CAPSTONE_INTERNAL_PARTS = {
+    "_history",
+    "all-cores",
+    "module-reference-states",
 }
 
 
@@ -45,6 +51,10 @@ def should_skip(path: Path) -> bool:
     return any(part in SKIP_PARTS for part in path.parts)
 
 
+def should_skip_capstone_path(path: Path) -> bool:
+    return should_skip(path) or any(part in CAPSTONE_INTERNAL_PARTS for part in path.parts)
+
+
 def rewrite_capstone_overview_links(text: str) -> str:
     def replacer(match: re.Match[str]) -> str:
         prefix = match.group(1)
@@ -59,9 +69,11 @@ def copy_markdown_tree(
     source_dir: Path,
     target_dir: Path,
     rename_root_readme: bool = False,
+    skip_path: Callable[[Path], bool] | None = None,
 ) -> None:
+    path_filter = skip_path or should_skip
     for source_path in sorted(source_dir.rglob("*.md")):
-        if should_skip(source_path.relative_to(program_dir)):
+        if path_filter(source_path.relative_to(program_dir)):
             continue
 
         relative_path = source_path.relative_to(source_dir)
@@ -107,6 +119,7 @@ def main() -> int:
                     capstone_dir,
                     program_target_dir / "capstone",
                     rename_root_readme=True,
+                    skip_path=should_skip_capstone_path,
                 )
 
     print(f"Synced docs into {TARGET_ROOT.relative_to(REPO_ROOT)}")
