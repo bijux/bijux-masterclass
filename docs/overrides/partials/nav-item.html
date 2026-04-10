@@ -33,7 +33,8 @@
 {% endmacro %}
 {% macro render(nav_item, path, level) %}
   {% set class = "md-nav__item" %}
-  {% set item_active = nav_item.active or (nav_item.pages and page in nav_item.pages) %}
+  {% set current_page = page if page is defined else none %}
+  {% set item_active = true if nav_item.active or (current_page and nav_item.pages and current_page in nav_item.pages) else false %}
   {% if item_active %}
     {% set class = class ~ " md-nav__item--active" %}
   {% endif %}
@@ -85,7 +86,7 @@
           </label>
         {% else %}
           {% set index = indexes | first %}
-          {% set class = "md-nav__link--active" if index == page %}
+          {% set class = "md-nav__link--active" if index == current_page %}
           <div class="md-nav__link md-nav__container">
             <a href="{{ index.url | url }}" class="md-nav__link {{ class }}">
               {{ render_content(index, nav_item) }}
@@ -115,9 +116,9 @@
         {{ render_pruned(nav_item) }}
       {% endif %}
     </li>
-  {% elif nav_item == page %}
+  {% elif nav_item == current_page %}
     <li class="{{ class }}">
-      {% set toc = page.toc %}
+      {% set toc = current_page.toc %}
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       {% set first = toc | first %}
       {% if first and first.level == 1 %}

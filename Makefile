@@ -200,6 +200,10 @@ clean: ## Run clean for the selected program
 docs-audit: ## Audit course-book and capstone documentation rules
 	@$(PYTHON) scripts/audit_masterclass_docs.py
 
+.PHONY: docs-nav-check
+docs-nav-check: series-docs-build ## Check rendered masterclass navigation rows
+	@$(PYTHON) scripts/check_masterclass_navigation.py
+
 .PHONY: series-docs-venv
 series-docs-venv: ## Create the virtual environment for the series site
 	@$(PYTHON) -m venv $(VENV_DIR)
