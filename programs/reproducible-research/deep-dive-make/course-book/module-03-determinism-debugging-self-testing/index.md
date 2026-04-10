@@ -50,6 +50,20 @@ the file that matches the failure or design decision you are facing.
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
 
+## How to use the file set
+
+| If you need to... | Start here |
+| --- | --- |
+| stabilize discovery and generation under repository change | [Determinism and Stable Discovery](determinism-and-stable-discovery.md) |
+| explain one rebuild with evidence instead of folklore | [Forensic Debugging with Make Evidence](forensic-debugging-with-make-evidence.md) |
+| define which targets CI is actually allowed to trust | [CI Targets as a Public Contract](ci-targets-as-a-public-contract.md) |
+| prove the build system rather than only the program | [Build-System Selftests](build-system-selftests.md) |
+| keep macros and optional `eval` under control | [Macros and Quarantined Eval](macros-and-quarantined-eval.md) |
+| see the whole module in one simulator | [Worked Example: Production Simulator](worked-example-production-simulator.md) |
+| test your own understanding | [Exercises](exercises.md) |
+| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
+| stabilize vocabulary while reading the module | [Glossary](glossary.md) |
+
 ## The running example
 
 This module uses a local production simulator that extends the earlier small builds with:
@@ -62,6 +76,21 @@ This module uses a local production simulator that extends the earlier small bui
 
 That gives you one build that is intentionally close to production pressure while still
 small enough to reason about.
+
+## The central review question
+
+Carry this question through the whole module:
+
+> If the build behaves differently tomorrow, on CI, or on another machine, what exact fact
+> changed in the graph or its inputs?
+
+Good Module 03 answers usually mention one or more of these:
+
+- unstable discovery
+- unmodeled hidden inputs
+- generator publication problems
+- a public target whose meaning drifted
+- a selftest that was too weak to catch the regression
 
 ## Commands to keep open
 
