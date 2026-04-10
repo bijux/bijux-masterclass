@@ -42,6 +42,13 @@ class PageCheck:
 
 PAGE_CHECKS = (
     PageCheck(
+        path="reproducible-research/deep-dive-make/index.html",
+        course_title="Deep Dive Make",
+        current_label="Home",
+        sidebar_labels=("Home",),
+        sidebar_absent_labels=("Guides", "Guides Home", "Start Here", "M01", "Capstone", "Reference"),
+    ),
+    PageCheck(
         path=(
             "library/reproducible-research/deep-dive-make/"
             "module-01-build-graph-foundations-truth/index.html"
@@ -65,7 +72,8 @@ PAGE_CHECKS = (
         path="python-programming/python-functional-programming/index.html",
         course_title="Python Functional Programming",
         current_label="Home",
-        sidebar_labels=("Guides", "M01", "Capstone", "Project Docs", "Reference"),
+        sidebar_labels=("Home",),
+        sidebar_absent_labels=("Guides", "M01", "Capstone", "Project Docs", "Reference"),
     ),
     PageCheck(
         path=(
