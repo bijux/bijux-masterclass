@@ -177,7 +177,11 @@ function bijuxSyncCourseStripVisibility() {
     const rootPath = bijuxNormalizePath(
       strip.getAttribute("data-bijux-course-root-path") || "/"
     );
-    strip.hidden = rootPath !== activeDetailPath;
+    const activeCourseLink = bijuxBestMatchingLink(
+      strip.querySelectorAll("[data-bijux-course-path]"),
+      "data-bijux-course-path"
+    );
+    strip.hidden = rootPath !== activeDetailPath && !activeCourseLink;
   }
 }
 
