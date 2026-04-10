@@ -13,7 +13,6 @@ import posixpath
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROGRAMS_DIR = REPO_ROOT / "programs"
 TARGET_ROOT = REPO_ROOT / "docs" / "library"
-PROJECT_CAPSTONE_OVERVIEW = "project-overview.md"
 PROJECT_DOCS_DIRNAME = "project-docs"
 SKIP_PARTS = {
     ".pytest_cache",
@@ -60,15 +59,6 @@ def should_skip(path: Path) -> bool:
 
 def should_skip_capstone_path(path: Path) -> bool:
     return should_skip(path) or any(part in CAPSTONE_INTERNAL_PARTS for part in path.parts)
-
-
-def rewrite_capstone_overview_links(text: str) -> str:
-    def replacer(match: re.Match[str]) -> str:
-        prefix = match.group(1)
-        fragment = match.group(2) or ""
-        return f"]({prefix}{PROJECT_CAPSTONE_OVERVIEW}{fragment})"
-
-    return re.sub(r"\]\(((?:\.\./)*)README\.md(#[^)]+)?\)", replacer, text)
 
 
 def slugify_path_part(value: str) -> str:
@@ -143,7 +133,6 @@ def copy_markdown_tree(
     program_dir: Path,
     source_dir: Path,
     target_dir: Path,
-    rename_root_readme: bool = False,
     skip_path: Callable[[Path], bool] | None = None,
 ) -> None:
     path_filter = skip_path or should_skip
@@ -152,12 +141,7 @@ def copy_markdown_tree(
             continue
 
         relative_path = source_path.relative_to(source_dir)
-        target_relative_path = (
-            Path(PROJECT_CAPSTONE_OVERVIEW)
-            if rename_root_readme and relative_path == Path("README.md")
-            else relative_path
-        )
-        target_path = target_dir / target_relative_path
+        target_path = target_dir / relative_path
         target_path.parent.mkdir(parents=True, exist_ok=True)
 
         text = source_path.read_text(encoding="utf-8")
@@ -165,10 +149,20 @@ def copy_markdown_tree(
         if include_path is not None:
             text = (program_dir / include_path).read_text(encoding="utf-8")
             text = rewrite_included_links(text, include_path)
-        if rename_root_readme:
-            text = rewrite_capstone_overview_links(text)
 
         target_path.write_text(text, encoding="utf-8")
+
+
+def copy_capstone_course_book(program_dir: Path, capstone_dir: Path, target_dir: Path) -> None:
+    for source_path in sorted(capstone_dir.glob("*.md")):
+        if source_path.name == "README.md":
+            continue
+        if should_skip_capstone_path(source_path.relative_to(program_dir)):
+            continue
+
+        target_path = target_dir / source_path.name
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        target_path.write_text(source_path.read_text(encoding="utf-8"), encoding="utf-8")
 
 
 def copy_project_docs(program_dir: Path, capstone_dir: Path, target_dir: Path) -> None:
@@ -217,13 +211,7 @@ def main() -> int:
 
             capstone_dir = program_dir / "capstone"
             if capstone_dir.exists():
-                copy_markdown_tree(
-                    program_dir,
-                    capstone_dir,
-                    program_target_dir / "capstone",
-                    rename_root_readme=True,
-                    skip_path=should_skip_capstone_path,
-                )
+                copy_capstone_course_book(program_dir, capstone_dir, program_target_dir / "capstone")
                 copy_project_docs(program_dir, capstone_dir, program_target_dir)
 
     print(f"Synced docs into {TARGET_ROOT.relative_to(REPO_ROOT)}")
