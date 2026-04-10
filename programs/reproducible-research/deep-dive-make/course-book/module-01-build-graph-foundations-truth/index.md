@@ -43,18 +43,33 @@ whose title matches the question in front of you instead of rereading the whole 
 
 ## The ten files in this module
 
-1. [Build Graph Mental Model](build-graph-mental-model.md)
-2. [Rebuild Truth and Convergence](rebuild-truth-and-convergence.md)
-3. [Rule Shapes and Target Ownership](rule-shapes-and-target-ownership.md)
-4. [Evaluation and Expansion](evaluation-and-expansion.md)
-5. [Atomic Publication and Dependency Tracking](atomic-publication-and-dependency-tracking.md)
-6. [Worked Example: Tiny C Build](worked-example-tiny-c-build.md)
-7. [Exercises](exercises.md)
-8. [Exercise Answers](exercise-answers.md)
-9. [Glossary](glossary.md)
+1. Overview (`index.md`)
+2. [Build Graph Mental Model](build-graph-mental-model.md)
+3. [Rebuild Truth and Convergence](rebuild-truth-and-convergence.md)
+4. [Rule Shapes and Target Ownership](rule-shapes-and-target-ownership.md)
+5. [Evaluation and Expansion](evaluation-and-expansion.md)
+6. [Atomic Publication and Dependency Tracking](atomic-publication-and-dependency-tracking.md)
+7. [Worked Example: Tiny C Build](worked-example-tiny-c-build.md)
+8. [Exercises](exercises.md)
+9. [Exercise Answers](exercise-answers.md)
+10. [Glossary](glossary.md)
 
 This page stays short on purpose. It tells you what the module covers, how the files fit
 together, and what "done" means before you move on.
+
+## How to use the file set
+
+| If you need to... | Start here |
+| --- | --- |
+| understand what Make is deciding | [Build Graph Mental Model](build-graph-mental-model.md) |
+| explain a surprising rebuild or a rebuild that never ends | [Rebuild Truth and Convergence](rebuild-truth-and-convergence.md) |
+| choose between explicit rules, pattern rules, and generators | [Rule Shapes and Target Ownership](rule-shapes-and-target-ownership.md) |
+| understand why a variable changed the graph | [Evaluation and Expansion](evaluation-and-expansion.md) |
+| prove that failed builds do not poison later runs | [Atomic Publication and Dependency Tracking](atomic-publication-and-dependency-tracking.md) |
+| see the whole module in one small build | [Worked Example: Tiny C Build](worked-example-tiny-c-build.md) |
+| test your own understanding | [Exercises](exercises.md) |
+| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
+| stabilize vocabulary while you read | [Glossary](glossary.md) |
 
 ## The running example
 
