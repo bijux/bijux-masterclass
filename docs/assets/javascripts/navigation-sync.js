@@ -1,6 +1,19 @@
+function bijuxSiteBasePath() {
+  const scopePath = window.__md_scope?.pathname;
+  if (!scopePath) {
+    return "";
+  }
+  const path = scopePath.replace(/\/+$/, "");
+  return path === "/" ? "" : path;
+}
+
 function bijuxNormalizePath(target) {
   const url = new URL(target, window.location.href);
-  const path = url.pathname.replace(/\/+$/, "");
+  const basePath = bijuxSiteBasePath();
+  let path = url.pathname.replace(/\/+$/, "");
+  if (basePath && (path === basePath || path.startsWith(`${basePath}/`))) {
+    path = path.slice(basePath.length) || "/";
+  }
   return path || "/";
 }
 
