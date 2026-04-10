@@ -33,7 +33,8 @@
 {% endmacro %}
 {% macro render(nav_item, path, level) %}
   {% set class = "md-nav__item" %}
-  {% if nav_item.active %}
+  {% set item_active = nav_item.active or (nav_item.pages and page in nav_item.pages) %}
+  {% if item_active %}
     {% set class = class ~ " md-nav__item--active" %}
   {% endif %}
   {% if nav_item.pages %}
@@ -51,7 +52,7 @@
       {% endfor %}
     {% endif %}
     {% if "navigation.tabs" in features %}
-      {% if level == 1 and nav_item.active %}
+      {% if level == 1 and item_active %}
         {% set class = class ~ " md-nav__item--section" %}
         {% set is_section = true %}
       {% endif %}
@@ -76,7 +77,7 @@
     <li class="{{ class }} md-nav__item--nested">
       {% if not is_pruned %}
         {% set force_checked = bijux_expand_scoped_groups and level == 1 %}
-        {% set checked = "checked" if nav_item.active or force_checked %}
+        {% set checked = "checked" if item_active or force_checked %}
         {% if "navigation.expand" in features and not checked %}
           {% set indeterminate = "md-toggle--indeterminate" %}
         {% endif %}
@@ -102,7 +103,7 @@
             {% endif %}
           </div>
         {% endif %}
-        <nav class="md-nav" data-md-level="{{ level }}" aria-labelledby="{{ path }}_label" aria-expanded="{{ nav_item.active | tojson }}">
+        <nav class="md-nav" data-md-level="{{ level }}" aria-labelledby="{{ path }}_label" aria-expanded="{{ item_active | tojson }}">
           <label class="md-nav__title" for="{{ path }}">
             <span class="md-nav__icon md-icon"></span>
             {{ nav_item.title }}
