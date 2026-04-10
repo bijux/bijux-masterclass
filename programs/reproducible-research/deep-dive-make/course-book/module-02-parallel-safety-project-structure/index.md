@@ -48,6 +48,20 @@ to the file that matches the failure or design question in front of you.
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
 
+## How to use the file set
+
+| If you need to... | Start here |
+| --- | --- |
+| understand what Make is allowed to run together | [Parallel Scheduling and Runnable Targets](parallel-scheduling-and-runnable-targets.md) |
+| review whether outputs are safe under `-j` | [Parallel Safety Contract](parallel-safety-contract.md) |
+| choose between real edges, order-only edges, and stamps | [Ordering Tools and Honest Edges](ordering-tools-and-honest-edges.md) |
+| scale the build without hiding dependencies | [Project Structure with One DAG](project-structure-with-one-dag.md) |
+| prove the build instead of trusting it | [Selftests and Race Repro Pack](selftests-and-race-repro-pack.md) |
+| see the ideas gathered in one simulator | [Worked Example: Parallel-Safe Build](worked-example-parallel-safe-build.md) |
+| test your own understanding | [Exercises](exercises.md) |
+| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
+| stabilize the module vocabulary | [Glossary](glossary.md) |
+
 ## The running example
 
 This module uses a small `m02/` build simulator with:
@@ -61,6 +75,20 @@ That gives you two learning surfaces:
 
 - a build you want to keep correct
 - several builds you expect to fail until you explain and repair them
+
+## The central review question
+
+Carry this question through the whole module:
+
+> If two targets run at the same time, what exactly makes that safe?
+
+Good Module 02 answers usually mention one or more of these:
+
+- truthful prerequisite edges
+- one writer per output path
+- atomic publication
+- honest setup boundaries
+- a selftest that proves the result
 
 ## Commands to keep open
 
