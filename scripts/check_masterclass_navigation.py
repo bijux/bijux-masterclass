@@ -72,6 +72,27 @@ PAGE_CHECKS = (
     PageCheck(
         path=(
             "library/reproducible-research/deep-dive-make/"
+            "module-02-parallel-safety-project-structure/index.html"
+        ),
+        course_title="Deep Dive Make",
+        current_label="M02",
+        sidebar_labels=(
+            "Overview",
+            "Parallel Scheduling and Runnable Targets",
+            "Parallel Safety Contract",
+            "Ordering Tools and Honest Edges",
+            "Project Structure with One DAG",
+            "Selftests and Race Repro Pack",
+            "Worked Example: Parallel-Safe Build",
+            "Exercises",
+            "Exercise Answers",
+            "Glossary",
+        ),
+        sidebar_absent_labels=("Capstone", "Project Docs", "Reference", "M03"),
+    ),
+    PageCheck(
+        path=(
+            "library/reproducible-research/deep-dive-make/"
             "project-docs/index.html"
         ),
         course_title="Deep Dive Make",
