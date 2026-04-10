@@ -97,7 +97,7 @@
       {% endif %}
     </div>
   </nav>
-  <nav class="md-tabs bijux-site-tabs" aria-label="{{ config.site_name }} navigation" data-md-component="tabs">
+  <nav class="md-tabs bijux-site-tabs" aria-label="{{ config.site_name }} navigation" data-bijux-nav-row="site" data-md-component="tabs">
     <div class="md-grid">
       <ul class="md-tabs__list bijux-tabs__list bijux-tabs__list--site">
         {% for nav_item in nav %}
@@ -119,7 +119,7 @@
   {% for nav_item in nav %}
     {% if nav_item.children %}
       {% set is_hidden = "" if nav_item.active else "hidden" %}
-      <nav class="bijux-detail-tabs" aria-label="{{ nav_item.title }} sections" data-bijux-detail-strip data-bijux-detail-root-path="{{ bijux_nav.first_page_path(nav_item) | trim }}" {{ is_hidden }}>
+      <nav class="bijux-detail-tabs" aria-label="{{ nav_item.title }} sections" data-bijux-nav-row="program" data-bijux-detail-strip data-bijux-detail-root-path="{{ bijux_nav.first_page_path(nav_item) | trim }}" {{ is_hidden }}>
         <div class="md-grid">
           <ul class="bijux-tabs__list bijux-tabs__list--detail">
             {% for child in nav_item.children %}
@@ -144,7 +144,7 @@
         {% if course_item.children %}
           {% set course_active = course_item.active or (course_item.pages and page in course_item.pages) %}
           {% set is_hidden = "" if nav_item.active and course_active else "hidden" %}
-          <nav class="bijux-detail-tabs bijux-course-tabs" aria-label="{{ course_item.title }} course sections" data-bijux-course-strip data-bijux-course-root-path="{{ bijux_nav.first_page_path(course_item) | trim }}" {{ is_hidden }}>
+          <nav class="bijux-detail-tabs bijux-course-tabs" aria-label="{{ course_item.title }} course sections" data-bijux-nav-row="course" data-bijux-course-strip data-bijux-course-root-path="{{ bijux_nav.first_page_path(course_item) | trim }}" data-bijux-course-title="{{ course_item.title }}" {{ is_hidden }}>
             <div class="md-grid">
               <ul class="bijux-tabs__list bijux-tabs__list--detail bijux-tabs__list--course">
                 {% for child in course_item.children %}
