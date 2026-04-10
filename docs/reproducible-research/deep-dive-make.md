@@ -38,7 +38,7 @@ flowchart LR
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/guides/start-here.md)
 - Pressure routes: [Pressure Routes](../library/reproducible-research/deep-dive-make/guides/pressure-routes.md)
 - Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-make/guides/module-promise-map.md)
-- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-make/capstone/project-overview.md)
+- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-make/project-docs/index.md)
 
 ## Local Commands
 

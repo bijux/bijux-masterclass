@@ -56,7 +56,7 @@ flowchart LR
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/guides/start-here.md)
 - Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-make/guides/pressure-routes.md)
 - Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-make/guides/module-promise-map.md)
-- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-make/capstone/project-overview.md)
+- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-make/project-docs/index.md)
 
 ### [Deep Dive Snakemake](deep-dive-snakemake.md)
 
@@ -64,7 +64,7 @@ flowchart LR
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-snakemake/guides/start-here.md)
 - Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-snakemake/guides/pressure-routes.md)
 - Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-snakemake/guides/module-promise-map.md)
-- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-snakemake/capstone/project-overview.md)
+- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-snakemake/project-docs/index.md)
 
 ### [Deep Dive DVC](deep-dive-dvc.md)
 
@@ -72,7 +72,7 @@ flowchart LR
 - Learner entry: [Start Here](../library/reproducible-research/deep-dive-dvc/guides/start-here.md)
 - Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-dvc/guides/pressure-routes.md)
 - Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-dvc/guides/module-promise-map.md)
-- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-dvc/capstone/project-overview.md)
+- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-dvc/project-docs/index.md)
 
 <div class="bijux-panel-grid">
   <div class="bijux-panel">
