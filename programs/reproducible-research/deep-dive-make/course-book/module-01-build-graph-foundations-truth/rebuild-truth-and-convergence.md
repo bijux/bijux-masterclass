@@ -33,6 +33,12 @@ Some things can change output meaning without appearing in the prerequisite list
 If one of those facts changes but the graph does not mention it, Make keeps making a
 decision from incomplete evidence.
 
+Another way to say the same thing is:
+
+Make can only be as truthful as the evidence you hand it. If the graph omits a build fact
+that changes output meaning, the next rebuild decision becomes guesswork wearing a clean
+exit code.
+
 ## A small example
 
 Suppose you write this:
@@ -56,6 +62,19 @@ the object was compiled with different flags.
 
 That is how a build can be "green" while still being untruthful.
 
+## Two failure stories worth recognizing
+
+### "Nothing rebuilt, but the binary changed in meaning"
+
+This is the classic hidden-input problem. The graph did not mention something that
+matters, so Make had no reason to act.
+
+### "Everything rebuilds every time"
+
+This is the opposite failure. Instead of missing evidence, you introduced unstable
+evidence. Common causes include timestamps, random values, or shell discovery that moves
+from run to run.
+
 ## What convergence means
 
 A convergent build has a stable resting state.
@@ -74,6 +93,22 @@ After a successful build:
 
 Module 01 wants you to care about that middle case. A build that rebuilds forever without
 meaningful change is telling you the graph is unstable.
+
+## A practical convergence loop
+
+Use this four-step loop whenever a build feels suspicious:
+
+1. `make clean && make all`
+2. `make -q all; echo $?`
+3. `make --trace all`
+4. touch one meaningful input and repeat
+
+That loop tells you two things:
+
+- whether the build reaches a resting state
+- whether the right edges wake up when a real input changes
+
+If either part fails, the graph needs work before the build deserves trust.
 
 ## Two common ways convergence breaks
 
@@ -95,6 +130,15 @@ SRCS = $(wildcard src/*.c)
 This is not always wrong, but if the resulting list is unordered or if file discovery
 changes without being modeled clearly, you can create confusing rebuild behavior.
 
+### Recipe text that depends on moving state
+
+Sometimes the problem is not file discovery but recipe construction. If the recipe embeds
+a moving value such as a time-based define or volatile environment string, the output
+meaning changes while the target path stays the same.
+
+That is still a hidden-input problem. The graph is missing evidence about a change it
+cares about.
+
 ## The basic repair pattern
 
 Model semantic inputs as explicit, stable artifacts.
@@ -102,6 +146,35 @@ Model semantic inputs as explicit, stable artifacts.
 One common way is a stamp or manifest whose content changes only when the input meaning
 changes. The important property is not the filename. The important property is that the
 file becomes trustworthy evidence about a build fact.
+
+## A small semantic-stamp example
+
+```make
+FLAGS_LINE := CFLAGS=$(CFLAGS) CPPFLAGS=$(CPPFLAGS)
+FLAGS_ID := $(shell printf '%s' "$(FLAGS_LINE)" | cksum | awk '{print $$1}')
+FLAGS_STAMP := build/flags.$(FLAGS_ID).stamp
+
+$(FLAGS_STAMP): | build/
+	@printf '%s\n' "$(FLAGS_LINE)" > $@
+
+build/%.o: src/%.c $(FLAGS_STAMP) | build/
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+```
+
+This does not solve every build-fact problem, but it teaches the right instinct:
+
+- if a semantic fact changes output meaning
+- and Make cannot otherwise see it
+- give the graph evidence that changes when the fact changes
+
+The exact stamp design can improve later. The habit matters now.
+
+## Questions to ask during review
+
+- What input changed build meaning here?
+- Where is that input represented as evidence?
+- Does that evidence stay stable when the meaning stays stable?
+- Can the build reach a quiet state after success?
 
 ## Practical questions for review
 
