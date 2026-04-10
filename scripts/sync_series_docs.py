@@ -7,6 +7,7 @@ import re
 import shutil
 from pathlib import Path
 from typing import Callable
+import posixpath
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -104,6 +105,40 @@ def project_doc_sources(capstone_dir: Path) -> list[Path]:
     return sources
 
 
+def rewrite_markdown_links(
+    text: str,
+    source_relative_path: Path,
+    source_to_target: dict[str, Path],
+    target_relative_path: Path,
+) -> str:
+    def replacer(match: re.Match[str]) -> str:
+        raw_target = match.group(1)
+        if "://" in raw_target or raw_target.startswith(("#", "/")):
+            return match.group(0)
+
+        target_path, fragment = (raw_target.split("#", 1) + [""])[:2]
+        if not target_path.endswith(".md"):
+            return match.group(0)
+
+        normalized_source = Path(
+            posixpath.normpath((source_relative_path.parent / target_path).as_posix())
+        )
+        rewritten_target = source_to_target.get(normalized_source.as_posix())
+        if rewritten_target is None:
+            return match.group(0)
+
+        relative_target = Path(
+            posixpath.relpath(
+                rewritten_target.as_posix(),
+                target_relative_path.parent.as_posix() or ".",
+            )
+        ).as_posix()
+        fragment_suffix = f"#{fragment}" if fragment else ""
+        return f"]({relative_target}{fragment_suffix})"
+
+    return re.sub(r"\]\(([^)]+)\)", replacer, text)
+
+
 def copy_markdown_tree(
     program_dir: Path,
     source_dir: Path,
@@ -137,14 +172,31 @@ def copy_markdown_tree(
 
 
 def copy_project_docs(program_dir: Path, capstone_dir: Path, target_dir: Path) -> None:
-    for source_path in project_doc_sources(capstone_dir):
-        if should_skip_capstone_path(source_path.relative_to(program_dir)):
-            continue
+    source_paths = [
+        path
+        for path in project_doc_sources(capstone_dir)
+        if not should_skip_capstone_path(path.relative_to(program_dir))
+    ]
+    source_to_target = {
+        path.relative_to(capstone_dir).as_posix(): project_doc_target_path(
+            path.relative_to(capstone_dir)
+        )
+        for path in source_paths
+    }
 
+    for source_path in source_paths:
         relative_path = source_path.relative_to(capstone_dir)
-        target_path = target_dir / project_doc_target_path(relative_path)
+        target_relative_path = project_doc_target_path(relative_path)
+        target_path = target_dir / target_relative_path
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        target_path.write_text(source_path.read_text(encoding="utf-8"), encoding="utf-8")
+        text = source_path.read_text(encoding="utf-8")
+        text = rewrite_markdown_links(
+            text,
+            relative_path,
+            source_to_target,
+            target_relative_path,
+        )
+        target_path.write_text(text, encoding="utf-8")
 
 
 def main() -> int:
