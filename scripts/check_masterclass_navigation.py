@@ -26,6 +26,7 @@ COURSE_ROW_LABELS = (
     "M09",
     "M10",
     "Capstone",
+    "Project Docs",
     "Reference",
 )
 
@@ -36,14 +37,35 @@ class PageCheck:
     course_title: str
     current_label: str
     sidebar_labels: tuple[str, ...] = ()
+    sidebar_absent_labels: tuple[str, ...] = ()
 
 
 PAGE_CHECKS = (
     PageCheck(
+        path=(
+            "library/reproducible-research/deep-dive-make/"
+            "module-01-build-graph-foundations-truth/index.html"
+        ),
+        course_title="Deep Dive Make",
+        current_label="M01",
+        sidebar_labels=("Overview", "Glossary"),
+        sidebar_absent_labels=("Capstone", "Project Docs", "Reference", "M02"),
+    ),
+    PageCheck(
+        path=(
+            "library/reproducible-research/deep-dive-make/"
+            "project-docs/index.html"
+        ),
+        course_title="Deep Dive Make",
+        current_label="Project Docs",
+        sidebar_labels=("Overview", "Architecture Guide", "Proof Guide"),
+        sidebar_absent_labels=("Capstone", "Reference", "M01"),
+    ),
+    PageCheck(
         path="python-programming/python-functional-programming/index.html",
         course_title="Python Functional Programming",
         current_label="Home",
-        sidebar_labels=("Guides", "M01", "Capstone", "Reference"),
+        sidebar_labels=("Guides", "M01", "Capstone", "Project Docs", "Reference"),
     ),
     PageCheck(
         path=(
@@ -66,10 +88,8 @@ PAGE_CHECKS = (
         ),
         course_title="Deep Dive Snakemake",
         current_label="M04",
-        sidebar_labels=(
-            "Scaling Workflows and Interface Boundaries",
-            "Workflow Modularization",
-        ),
+        sidebar_labels=("Overview", "Glossary"),
+        sidebar_absent_labels=("Capstone", "Project Docs", "Reference", "M05"),
     ),
 )
 
@@ -106,6 +126,22 @@ def require_text(html: str, text: str, context: str) -> None:
         fail(f"missing {context}: {text}")
 
 
+def forbid_text(html: str, text: str, context: str) -> None:
+    if text in html:
+        fail(f"unexpected {context}: {text}")
+
+
+def scoped_sidebar_html(html: str, page: PageCheck) -> str:
+    marker = 'bijux-nav--scoped" aria-label="Navigation"'
+    start = html.find(marker)
+    if start == -1:
+        fail(f"missing scoped sidebar for {page.path}")
+    end = html.find('md-sidebar--secondary', start)
+    if end == -1:
+        return html[start:]
+    return html[start:end]
+
+
 def check_course_row(html: str, page: PageCheck) -> None:
     visible_row_tag(html, "site")
     visible_row_tag(html, "program")
@@ -120,13 +156,16 @@ def check_course_row(html: str, page: PageCheck) -> None:
 
 
 def check_sidebar(html: str, page: PageCheck) -> None:
+    sidebar_html = scoped_sidebar_html(html, page)
     require_text(
-        html,
+        sidebar_html,
         'bijux-nav--scoped" aria-label="Navigation" data-bijux-nav-empty="false"',
         f"scoped sidebar for {page.path}",
     )
     for label in page.sidebar_labels:
-        require_text(html, label, f"sidebar label for {page.path}")
+        require_text(sidebar_html, label, f"sidebar label for {page.path}")
+    for label in page.sidebar_absent_labels:
+        forbid_text(sidebar_html, label, f"sidebar label for {page.path}")
 
 
 def main() -> int:
