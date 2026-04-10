@@ -29,36 +29,28 @@
 {% endif %}
 {% if active_course_section.item and active_course_section.item.children %}
   {% for child in active_course_section.item.children %}
-    {% if not child.is_index %}
-      {% set _ = scoped.items.append(child) %}
-    {% endif %}
+    {% set _ = scoped.items.append(child) %}
   {% endfor %}
   {% set scoped.title = active_course_section.item.title %}
   {% set scoped.visible = scoped.items | length > 0 %}
 {% endif %}
 {% if not scoped.visible and current_page and active_root.item and current_page.parent and current_page.parent.children and current_page.parent != active_root.item %}
   {% for child in current_page.parent.children %}
-    {% if not child.is_index %}
-      {% set _ = scoped.items.append(child) %}
-    {% endif %}
+    {% set _ = scoped.items.append(child) %}
   {% endfor %}
   {% set scoped.title = current_page.parent.title %}
   {% set scoped.visible = scoped.items | length > 0 %}
 {% endif %}
 {% if not scoped.visible and active_course.item and active_course.item.children %}
   {% for child in active_course.item.children %}
-    {% if not child.is_index %}
-      {% set _ = scoped.items.append(child) %}
-    {% endif %}
+    {% set _ = scoped.items.append(child) %}
   {% endfor %}
   {% set scoped.title = active_course.item.title %}
   {% set scoped.visible = scoped.items | length > 0 %}
 {% endif %}
 {% if not scoped.visible and active_root.item and active_root.item.children %}
   {% for child in active_root.item.children %}
-    {% if not child.is_index %}
-      {% set _ = scoped.items.append(child) %}
-    {% endif %}
+    {% set _ = scoped.items.append(child) %}
   {% endfor %}
   {% set scoped.title = active_root.item.title %}
   {% set scoped.visible = scoped.items | length > 0 %}
