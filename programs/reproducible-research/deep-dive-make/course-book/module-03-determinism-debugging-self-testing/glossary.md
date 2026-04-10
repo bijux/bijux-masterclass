@@ -1,33 +1,16 @@
-# Module Glossary
+# Glossary
 
-<!-- page-maps:start -->
-## Glossary Fit
+This glossary keeps the language of Module 03 stable.
 
-```mermaid
-flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
-```
-
-```mermaid
-flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
-```
-<!-- page-maps:end -->
-
-This glossary belongs to **Module 03: Determinism, Debugging, and Self-Testing** in **Deep Dive Make**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
-
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Term | Meaning in Module 03 |
 | --- | --- |
+| CI contract | The stable target surface and behavior guarantees that automation depends on. |
+| convergence | The build reaches a quiet state where a repeated successful run has nothing left to do. |
+| deterministic discovery | Rooted, canonical file discovery that stays stable for the same repository state. |
+| equivalence set | The declared artifact set used to compare serial and parallel builds. |
+| forensic debugging | Debugging that relies on Make-native evidence such as `-n`, `--trace`, and `-p`. |
+| hidden input | A build fact that changes output meaning without already appearing as explicit graph evidence. |
+| negative test | A deliberate regression case used to prove the selftest can detect a real build-system failure. |
+| public target | A target whose meaning is part of the supported interface of the build. |
+| semantic stamp | A stamp or manifest that changes only when the modeled semantic input changes. |
+| quarantined eval | A bounded, auditable, switchable `eval` surface that does not control the core build. |

@@ -99,6 +99,15 @@ nav:
           - Glossary: module-02-parallel-safety-project-structure/glossary.md
       - "Module 03: Production Practice, Determinism, and Selftests":
           - Overview: module-03-determinism-debugging-self-testing/index.md
+          - Determinism and Stable Discovery: module-03-determinism-debugging-self-testing/determinism-and-stable-discovery.md
+          - Forensic Debugging with Make Evidence: module-03-determinism-debugging-self-testing/forensic-debugging-with-make-evidence.md
+          - CI Targets as a Public Contract: module-03-determinism-debugging-self-testing/ci-targets-as-a-public-contract.md
+          - Build-System Selftests: module-03-determinism-debugging-self-testing/build-system-selftests.md
+          - Macros and Quarantined Eval: module-03-determinism-debugging-self-testing/macros-and-quarantined-eval.md
+          - "Worked Example: Production Simulator": module-03-determinism-debugging-self-testing/worked-example-production-simulator.md
+          - Exercises: module-03-determinism-debugging-self-testing/exercises.md
+          - Exercise Answers: module-03-determinism-debugging-self-testing/exercise-answers.md
+          - Glossary: module-03-determinism-debugging-self-testing/glossary.md
       - "Module 04: CLI Semantics, Includes, and Rule Edge Cases":
           - Overview: module-04-rule-semantics-precedence-edge-cases/index.md
       - "Module 05: Portability, Hermeticity, and Failure Modes":
