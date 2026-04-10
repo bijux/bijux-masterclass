@@ -77,6 +77,15 @@ nav:
   - Modules:
       - "Module 01: Foundations, Build Graphs, and Truth":
           - Overview: module-01-build-graph-foundations-truth/index.md
+          - Build Graph Mental Model: module-01-build-graph-foundations-truth/build-graph-mental-model.md
+          - Rebuild Truth and Convergence: module-01-build-graph-foundations-truth/rebuild-truth-and-convergence.md
+          - Rule Shapes and Target Ownership: module-01-build-graph-foundations-truth/rule-shapes-and-target-ownership.md
+          - Evaluation and Expansion: module-01-build-graph-foundations-truth/evaluation-and-expansion.md
+          - Atomic Publication and Dependency Tracking: module-01-build-graph-foundations-truth/atomic-publication-and-dependency-tracking.md
+          - "Worked Example: Tiny C Build": module-01-build-graph-foundations-truth/worked-example-tiny-c-build.md
+          - Exercises: module-01-build-graph-foundations-truth/exercises.md
+          - Exercise Answers: module-01-build-graph-foundations-truth/exercise-answers.md
+          - Glossary: module-01-build-graph-foundations-truth/glossary.md
       - "Module 02: Parallel Safety and Project Structure":
           - Overview: module-02-parallel-safety-project-structure/index.md
       - "Module 03: Production Practice, Determinism, and Selftests":

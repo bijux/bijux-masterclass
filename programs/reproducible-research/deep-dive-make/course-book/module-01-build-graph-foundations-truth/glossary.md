@@ -1,33 +1,21 @@
-# Module Glossary
+# Glossary
 
-<!-- page-maps:start -->
-## Glossary Fit
+This glossary keeps the language of Module 01 stable. Use it when a word starts feeling
+fuzzy or overloaded.
 
-```mermaid
-flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
-```
-
-```mermaid
-flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
-```
-<!-- page-maps:end -->
-
-This glossary belongs to **Module 01: Build Graph Foundations and Truth** in **Deep Dive Make**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
-
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Term | Meaning in Module 01 |
 | --- | --- |
+| artifact | A file the build intentionally publishes and expects other work to trust. |
+| atomic publication | Writing to a temporary path first and moving into the final path only after success. |
+| convergence | The build reaches a stable state where a repeated run without meaningful change has nothing to do. |
+| dependency graph | The directed relationship between targets and the prerequisites that justify rebuilding them. |
+| depfile | A file, usually emitted by the compiler, that records discovered header dependencies for later runs. |
+| hidden input | A fact that can change output meaning without appearing as explicit build evidence. |
+| ownership | The rule that a particular recipe is responsible for publishing a specific output path. |
+| pattern rule | A rule that describes a family of targets using `%`. |
+| phony target | A named command target that does not stand for a real file. |
+| prerequisite | An input Make uses when deciding whether a target is out of date. |
+| recipe | The shell commands that publish or update a target. |
+| stamp | A file used to represent the state of a semantic input that would otherwise stay invisible. |
+| target | The file or named goal a rule promises to produce or make available. |
+| truth | The condition where the build graph tells Make enough accurate information to make the right rebuild decisions. |
