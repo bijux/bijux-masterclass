@@ -1,33 +1,16 @@
-# Module Glossary
+# Glossary
 
-<!-- page-maps:start -->
-## Glossary Fit
+This glossary keeps the language of Module 02 stable.
 
-```mermaid
-flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
-```
-
-```mermaid
-flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
-```
-<!-- page-maps:end -->
-
-This glossary belongs to **Module 02: Parallel Safety and Project Structure** in **Deep Dive Make**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
-
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Term | Meaning in Module 02 |
 | --- | --- |
+| convergence | The build reaches a stable state where a repeated successful run has nothing left to do. |
+| order-only prerequisite | A prerequisite that enforces existence or sequencing without making ordinary timestamp changes trigger rebuilds. |
+| parallel safety | The condition where parallel execution changes speed but not build meaning. |
+| recursive make | Splitting the build into separate make processes instead of keeping one top-level DAG. |
+| repro pack | A set of intentionally broken Makefiles used to practice race diagnosis and repair. |
+| runnable target | A target whose prerequisites are already up to date and which Make may schedule now. |
+| selftest | A build-system test that proves properties such as convergence and serial/parallel equivalence. |
+| serial/parallel equivalence | The requirement that declared artifacts match whether the build runs under `-j1` or `-jN`. |
+| shared append | Multiple recipes appending to the same file, which makes the output nondeterministic. |
+| single top-level DAG | One visible dependency graph owned by a top-level build entry point. |

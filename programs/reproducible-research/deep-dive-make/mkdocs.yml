@@ -88,6 +88,15 @@ nav:
           - Glossary: module-01-build-graph-foundations-truth/glossary.md
       - "Module 02: Parallel Safety and Project Structure":
           - Overview: module-02-parallel-safety-project-structure/index.md
+          - Parallel Scheduling and Runnable Targets: module-02-parallel-safety-project-structure/parallel-scheduling-and-runnable-targets.md
+          - Parallel Safety Contract: module-02-parallel-safety-project-structure/parallel-safety-contract.md
+          - Ordering Tools and Honest Edges: module-02-parallel-safety-project-structure/ordering-tools-and-honest-edges.md
+          - Project Structure with One DAG: module-02-parallel-safety-project-structure/project-structure-with-one-dag.md
+          - Selftests and Race Repro Pack: module-02-parallel-safety-project-structure/selftests-and-race-repro-pack.md
+          - "Worked Example: Parallel-Safe Build": module-02-parallel-safety-project-structure/worked-example-parallel-safe-build.md
+          - Exercises: module-02-parallel-safety-project-structure/exercises.md
+          - Exercise Answers: module-02-parallel-safety-project-structure/exercise-answers.md
+          - Glossary: module-02-parallel-safety-project-structure/glossary.md
       - "Module 03: Production Practice, Determinism, and Selftests":
           - Overview: module-03-determinism-debugging-self-testing/index.md
       - "Module 04: CLI Semantics, Includes, and Rule Edge Cases":
