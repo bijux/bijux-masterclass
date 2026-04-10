@@ -13,6 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROGRAMS_DIR = REPO_ROOT / "programs"
 TARGET_ROOT = REPO_ROOT / "docs" / "library"
 PROJECT_CAPSTONE_OVERVIEW = "project-overview.md"
+PROJECT_DOCS_DIRNAME = "project-docs"
 SKIP_PARTS = {
     ".pytest_cache",
     "__pycache__",
@@ -24,6 +25,11 @@ CAPSTONE_INTERNAL_PARTS = {
     "_history",
     "all-cores",
     "module-reference-states",
+}
+PROJECT_DOC_SOURCE_PARTS = {
+    "docs",
+    "workflow",
+    "publish",
 }
 
 
@@ -64,6 +70,40 @@ def rewrite_capstone_overview_links(text: str) -> str:
     return re.sub(r"\]\(((?:\.\./)*)README\.md(#[^)]+)?\)", replacer, text)
 
 
+def slugify_path_part(value: str) -> str:
+    cleaned = re.sub(r"[^A-Za-z0-9]+", "-", value.strip().lower()).strip("-")
+    return cleaned or "doc"
+
+
+def project_doc_target_path(relative_path: Path) -> Path:
+    if relative_path == Path("README.md"):
+        return Path(PROJECT_DOCS_DIRNAME) / "index.md"
+
+    name_parts = [slugify_path_part(part) for part in relative_path.parts[:-1]]
+    if relative_path.parts and relative_path.parts[0] == "docs":
+        name_parts = []
+    name_parts.append(slugify_path_part(relative_path.stem))
+    return Path(PROJECT_DOCS_DIRNAME) / ("-".join(name_parts) + ".md")
+
+
+def project_doc_sources(capstone_dir: Path) -> list[Path]:
+    sources: list[Path] = []
+
+    readme_path = capstone_dir / "README.md"
+    if readme_path.exists():
+        sources.append(readme_path)
+
+    for source_path in sorted(capstone_dir.rglob("*.md")):
+        relative_path = source_path.relative_to(capstone_dir)
+        if relative_path == Path("README.md"):
+            continue
+        if relative_path.parts[0] not in PROJECT_DOC_SOURCE_PARTS:
+            continue
+        sources.append(source_path)
+
+    return sources
+
+
 def copy_markdown_tree(
     program_dir: Path,
     source_dir: Path,
@@ -96,6 +136,17 @@ def copy_markdown_tree(
         target_path.write_text(text, encoding="utf-8")
 
 
+def copy_project_docs(program_dir: Path, capstone_dir: Path, target_dir: Path) -> None:
+    for source_path in project_doc_sources(capstone_dir):
+        if should_skip_capstone_path(source_path.relative_to(program_dir)):
+            continue
+
+        relative_path = source_path.relative_to(capstone_dir)
+        target_path = target_dir / project_doc_target_path(relative_path)
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        target_path.write_text(source_path.read_text(encoding="utf-8"), encoding="utf-8")
+
+
 def main() -> int:
     shutil.rmtree(TARGET_ROOT, ignore_errors=True)
     TARGET_ROOT.mkdir(parents=True, exist_ok=True)
@@ -121,6 +172,7 @@ def main() -> int:
                     rename_root_readme=True,
                     skip_path=should_skip_capstone_path,
                 )
+                copy_project_docs(program_dir, capstone_dir, program_target_dir)
 
     print(f"Synced docs into {TARGET_ROOT.relative_to(REPO_ROOT)}")
     return 0
