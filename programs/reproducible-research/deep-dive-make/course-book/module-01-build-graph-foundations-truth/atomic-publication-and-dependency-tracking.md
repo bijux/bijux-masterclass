@@ -15,6 +15,18 @@ run, Make sees a file and may treat it as evidence.
 
 That is how a build becomes poisoned.
 
+## The failure you are trying to prevent
+
+Imagine this sequence:
+
+1. the compile starts writing `build/main.o`
+2. the compiler fails halfway through
+3. the path `build/main.o` still exists
+4. the next incremental run reasons from that broken file
+
+That is a terrible debugging loop because the target path now exists but the trust
+contract behind it is false. Publication hygiene is how you break that loop.
+
 ## The safe publication pattern
 
 Write to a temporary file first, then rename it into place only after the command
@@ -33,6 +45,18 @@ This gives you a strong property:
 
 That property becomes more important, not less, as the build grows.
 
+## A compile rule that treats `.o` and `.d` as one publication unit
+
+```make
+$(BLD_DIR)/%.o: $(SRC_DIR)/%.c $(FLAGS_STAMP) | $(BLD_DIR)/
+	tmp=$@.tmp; dtmp=$(@:.o=.d).tmp; \
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) -MF $$dtmp -MT $@ -c $< -o $$tmp && \
+	mv -f $$tmp $@ && mv -f $$dtmp $(@:.o=.d) || { rm -f $$tmp $$dtmp; exit 1; }
+```
+
+The important idea here is not fancy shell syntax. It is that the object file and the
+depfile represent one compile result, so they should be published together or not at all.
+
 ## `.DELETE_ON_ERROR`
 
 Add this near the top of serious Makefiles:
@@ -43,6 +67,9 @@ Add this near the top of serious Makefiles:
 
 It tells Make not to keep a target that failed while being built. It is not enough by
 itself, but it is a good baseline.
+
+Think of `.DELETE_ON_ERROR` as guardrails, not as your whole design. You still need the
+recipe to avoid publishing partial artifacts in the first place.
 
 ## Header dependencies are real dependencies
 
@@ -58,6 +85,14 @@ then a header edit may not trigger the rebuild you need.
 
 That is why depfiles matter. They let the compiler publish the discovered header edges
 into `.d` files, which Make can include on the next run.
+
+Without depfiles, header changes often create the most frustrating kind of build bug:
+
+- the source file clearly uses the header
+- the program output changes in meaning
+- but Make has no recorded edge, so nothing rebuilds
+
+That is a graph-truth failure, not a compiler failure.
 
 ## The core depfile shape
 
@@ -78,6 +113,26 @@ The details matter less than the intent:
 - headers become explicit evidence for future rebuilds
 - the `.o` and `.d` files are published together
 - a failed compile does not leave a half-truth behind
+
+## A short failure drill
+
+Force one failure on purpose. For example, add `false` before the final `mv` in a link or
+compile rule. Then check:
+
+- does the final target path remain absent or unchanged
+- does a rerun recover cleanly
+- do you still trust the artifact graph after the failed run
+
+If the answer to the third question is "not really," the publication contract still needs
+work.
+
+## End-of-page checklist
+
+- real artifacts publish through temp paths
+- failed recipes do not leave new broken outputs behind
+- header dependencies are included through depfiles
+- you can explain why a target path is trustworthy after success
+- you can explain why a failed run does not poison the next one
 
 ## What to prove on this page
 
