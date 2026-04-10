@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+from sync_series_docs import PROJECT_DOCS_DIRNAME, project_doc_sources, project_doc_target_path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -140,7 +141,7 @@ def course_book_nav(
     items: list[Any],
     prefix: str,
     program_dir: Path,
-    project_capstone_nav: list[Any],
+    project_docs_nav_items: list[Any],
 ) -> list[Any]:
     prefixed = prefixed_nav(items, prefix)
     sections: dict[str, Any] = {}
@@ -188,17 +189,14 @@ def course_book_nav(
         nav.append({"Guides": guides})
     nav.extend(module_nav)
 
-    capstone: list[Any] = []
     course_book_capstone: list[Any] = []
     if "Capstone" in sections:
         course_book_capstone.extend(as_nav_list("Capstone", sections["Capstone"]))
     course_book_capstone.extend(capstone_extras)
     if course_book_capstone:
-        capstone.append({"Course Book": course_book_capstone})
-    if project_capstone_nav:
-        capstone.append({"Project Docs": project_capstone_nav})
-    if capstone:
-        nav.append({"Capstone": capstone})
+        nav.append({"Capstone": course_book_capstone})
+    if project_docs_nav_items:
+        nav.append({"Project Docs": project_docs_nav_items})
 
     if "Reference" in sections:
         nav.append({"Reference": as_nav_list("Reference", sections["Reference"])})
@@ -206,34 +204,28 @@ def course_book_nav(
     return nav
 
 
-def capstone_nav(program_dir: Path, family_slug: str, program_slug: str) -> list[Any]:
-    capstone_dir = program_dir / "capstone"
-    readme_path = capstone_dir / "README.md"
-    docs_dir = capstone_dir / "docs"
-    docs_files = sorted(
-        docs_dir.glob("*.md"),
-        key=lambda path: (CAPSTONE_ORDER.get(path.stem, 999), path.stem),
-    )
+def project_doc_sort_key(relative_path: Path) -> tuple[int, int, str]:
+    if relative_path == Path("README.md"):
+        return (0, 0, "")
+    if relative_path.parts and relative_path.parts[0] == "docs":
+        return (1, CAPSTONE_ORDER.get(relative_path.stem, 999), relative_path.stem)
+    return (2, 0, project_doc_target_path(relative_path).name)
 
+
+def project_docs_nav(program_dir: Path, family_slug: str, program_slug: str) -> list[Any]:
+    capstone_dir = program_dir / "capstone"
+    source_paths = sorted(
+        project_doc_sources(capstone_dir),
+        key=lambda path: project_doc_sort_key(path.relative_to(capstone_dir)),
+    )
     nav: list[Any] = []
-    if readme_path.exists():
+    for source_path in source_paths:
+        relative_path = source_path.relative_to(capstone_dir)
+        target_path = project_doc_target_path(relative_path)
+        label = "Overview" if relative_path == Path("README.md") else first_h1(source_path)
         nav.append(
             {
-                first_h1(readme_path): (
-                    f"library/{family_slug}/{program_slug}/capstone/"
-                    f"{PROJECT_CAPSTONE_OVERVIEW}"
-                ),
-            }
-        )
-    if docs_files:
-        nav.append(
-            {
-                "Capstone Docs": [
-                    {
-                        first_h1(path): f"library/{family_slug}/{program_slug}/capstone/docs/{path.name}",
-                    }
-                    for path in docs_files
-                ]
+                label: f"library/{family_slug}/{program_slug}/{target_path.as_posix()}",
             }
         )
 
@@ -254,7 +246,7 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
             program_dir = PROGRAMS_DIR / family_slug / program_slug
             program_config = load_yaml(program_dir / "mkdocs.yml")
             course_prefix = f"library/{family_slug}/{program_slug}"
-            project_capstone_nav = capstone_nav(program_dir, family_slug, program_slug)
+            project_docs_nav_items = project_docs_nav(program_dir, family_slug, program_slug)
             family_nav.append(
                 {
                     program_name: [
@@ -263,7 +255,7 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
                             program_config["nav"],
                             course_prefix,
                             program_dir,
-                            project_capstone_nav,
+                            project_docs_nav_items,
                         ),
                     ]
                 }
