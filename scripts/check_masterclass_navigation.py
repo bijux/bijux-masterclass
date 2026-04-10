@@ -47,7 +47,7 @@ PAGE_CHECKS = (
     ),
     PageCheck(
         path=(
-            "library/python-programming/python-functional-programming/course-book/"
+            "library/python-programming/python-functional-programming/"
             "module-04-streaming-resilience-failure-handling/"
             "structural-recursion-and-iteration/index.html"
         ),
@@ -61,7 +61,7 @@ PAGE_CHECKS = (
     ),
     PageCheck(
         path=(
-            "library/reproducible-research/deep-dive-snakemake/course-book/"
+            "library/reproducible-research/deep-dive-snakemake/"
             "module-04-scaling-workflows-interface-boundaries/index.html"
         ),
         course_title="Deep Dive Snakemake",

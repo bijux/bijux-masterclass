@@ -21,7 +21,7 @@ commands when you need them.
 <div class="bijux-callout">
   <strong>Use the left navigation as the full library.</strong>
   The family overview pages are only the front door. Each program now expands into its
-  full ordered course-book tree and capstone guide set directly inside the root docs site.
+  full ordered course tree and capstone guide set directly inside the root docs site.
 </div>
 
 ## Catalog Maps
@@ -61,7 +61,7 @@ flowchart LR
 
 - Start with the family page when you know the problem space but not the specific program.
 - Start with the program page when you already know which course you want.
-- Use the expanded sidebar sections to move through the full ordered course-book and capstone pages without leaving the root site.
+- Use the expanded sidebar sections to move through the full ordered course and capstone pages without leaving the root site.
 - Use the local course-home and capstone links on each program page when you want the shortest entry route.
 - Use the root search when you want one result list across all six course books and capstone guides.
 
@@ -72,7 +72,7 @@ flowchart LR
   </div>
   <div class="bijux-panel">
     <h3>Program Trees</h3>
-    <p>Open one program in the sidebar to see the full ordered course-book and capstone navigation.</p>
+    <p>Open one program in the sidebar to see the full ordered course and capstone navigation.</p>
   </div>
   <div class="bijux-panel">
     <h3>Search Across Everything</h3>
@@ -111,14 +111,14 @@ make PROGRAM=reproducible-research/deep-dive-make test
 
 ## Honesty Boundary
 
-The root catalog is a synchronized mirror of the checked-in course-book and capstone
+The root catalog is a synchronized mirror of the checked-in course and capstone
 Markdown. It is not a separate editorial fork. If a course page changes in `programs/`,
 the root site picks up that same source during `make docs-build` or `make docs-serve`.
 
 ## Purpose
 
 This page routes readers into the correct program family quickly enough that they can move
-from the shared catalog into the checked-in course-book tree without losing context.
+from the shared catalog into the checked-in course tree without losing context.
 
 ## Stability
 

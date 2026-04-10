@@ -34,11 +34,11 @@ flowchart LR
 
 ## Local Catalog Route
 
-- Course home: [Program guide](../library/reproducible-research/deep-dive-make/course-book/index.md)
-- Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/course-book/guides/start-here.md)
-- Pressure routes: [Pressure Routes](../library/reproducible-research/deep-dive-make/course-book/guides/pressure-routes.md)
-- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-make/course-book/guides/module-promise-map.md)
-- Capstone guide: [Capstone README](../library/reproducible-research/deep-dive-make/capstone/README.md)
+- Course home: [Program guide](../library/reproducible-research/deep-dive-make/index.md)
+- Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/guides/start-here.md)
+- Pressure routes: [Pressure Routes](../library/reproducible-research/deep-dive-make/guides/pressure-routes.md)
+- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-make/guides/module-promise-map.md)
+- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-make/capstone/project-overview.md)
 
 ## Local Commands
 

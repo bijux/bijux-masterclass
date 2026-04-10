@@ -15,6 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_CONFIG = REPO_ROOT / "mkdocs.yml"
 PROGRAMS_DIR = REPO_ROOT / "programs"
 OUTPUT_CONFIG = REPO_ROOT / "artifacts" / "mkdocs.root.yml"
+PROJECT_CAPSTONE_OVERVIEW = "project-overview.md"
 
 CAPSTONE_ORDER = {
     "README": 0,
@@ -191,7 +192,10 @@ def capstone_nav(program_dir: Path, family_slug: str, program_slug: str) -> list
     if readme_path.exists():
         nav.append(
             {
-                first_h1(readme_path): f"library/{family_slug}/{program_slug}/capstone/{readme_path.name}",
+                first_h1(readme_path): (
+                    f"library/{family_slug}/{program_slug}/capstone/"
+                    f"{PROJECT_CAPSTONE_OVERVIEW}"
+                ),
             }
         )
     if docs_files:
@@ -222,7 +226,7 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
             program_slug = Path(overview_path).stem
             program_dir = PROGRAMS_DIR / family_slug / program_slug
             program_config = load_yaml(program_dir / "mkdocs.yml")
-            course_prefix = f"library/{family_slug}/{program_slug}/course-book"
+            course_prefix = f"library/{family_slug}/{program_slug}"
             project_capstone_nav = capstone_nav(program_dir, family_slug, program_slug)
             family_nav.append(
                 {
