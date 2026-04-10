@@ -6,6 +6,7 @@
 {% set scoped = namespace(items=[], title=config.site_name, visible=false) %}
 {% set active_root = namespace(item=None) %}
 {% set active_course = namespace(item=None) %}
+{% set active_course_section = namespace(item=None) %}
 {% for nav_item in nav %}
   {% if nav_item.active %}
     {% set active_root.item = nav_item %}
@@ -18,7 +19,23 @@
     {% endif %}
   {% endif %}
 {% endfor %}
-{% if page and active_root.item and page.parent and page.parent.children and page.parent != active_root.item %}
+{% if active_course.item and active_course.item.children %}
+  {% for child in active_course.item.children %}
+    {% if child.active or (child.pages and page in child.pages) %}
+      {% set active_course_section.item = child %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% if active_course_section.item and active_course_section.item.children %}
+  {% for child in active_course_section.item.children %}
+    {% if not child.is_index %}
+      {% set _ = scoped.items.append(child) %}
+    {% endif %}
+  {% endfor %}
+  {% set scoped.title = active_course_section.item.title %}
+  {% set scoped.visible = scoped.items | length > 0 %}
+{% endif %}
+{% if not scoped.visible and page and active_root.item and page.parent and page.parent.children and page.parent != active_root.item %}
   {% for child in page.parent.children %}
     {% if not child.is_index %}
       {% set _ = scoped.items.append(child) %}
