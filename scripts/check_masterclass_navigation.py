@@ -93,6 +93,27 @@ PAGE_CHECKS = (
     PageCheck(
         path=(
             "library/reproducible-research/deep-dive-make/"
+            "module-03-determinism-debugging-self-testing/index.html"
+        ),
+        course_title="Deep Dive Make",
+        current_label="M03",
+        sidebar_labels=(
+            "Overview",
+            "Determinism and Stable Discovery",
+            "Forensic Debugging with Make Evidence",
+            "CI Targets as a Public Contract",
+            "Build-System Selftests",
+            "Macros and Quarantined Eval",
+            "Worked Example: Production Simulator",
+            "Exercises",
+            "Exercise Answers",
+            "Glossary",
+        ),
+        sidebar_absent_labels=("Capstone", "Project Docs", "Reference", "M04"),
+    ),
+    PageCheck(
+        path=(
+            "library/reproducible-research/deep-dive-make/"
             "project-docs/index.html"
         ),
         course_title="Deep Dive Make",
