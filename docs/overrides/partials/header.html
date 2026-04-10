@@ -142,14 +142,16 @@
     {% if nav_item.children %}
       {% for course_item in nav_item.children %}
         {% if course_item.children %}
-          {% set is_hidden = "" if nav_item.active and course_item.active else "hidden" %}
+          {% set course_active = course_item.active or (course_item.pages and page in course_item.pages) %}
+          {% set is_hidden = "" if nav_item.active and course_active else "hidden" %}
           <nav class="bijux-detail-tabs bijux-course-tabs" aria-label="{{ course_item.title }} course sections" data-bijux-course-strip data-bijux-course-root-path="{{ bijux_nav.first_page_path(course_item) | trim }}" {{ is_hidden }}>
             <div class="md-grid">
               <ul class="bijux-tabs__list bijux-tabs__list--detail bijux-tabs__list--course">
                 {% for child in course_item.children %}
                   {% set item_class = "bijux-tabs__item" %}
                   {% set current = "" %}
-                  {% if course_item.active and child.active %}
+                  {% set child_active = child.active or (child.pages and page in child.pages) %}
+                  {% if course_active and child_active %}
                     {% set item_class = item_class ~ " bijux-tabs__item--active" %}
                     {% set current = 'aria-current="page"' %}
                   {% endif %}
