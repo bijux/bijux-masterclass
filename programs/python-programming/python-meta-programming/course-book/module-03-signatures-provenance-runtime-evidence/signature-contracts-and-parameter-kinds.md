@@ -1,6 +1,6 @@
 # Signature Contracts and Parameter Kinds
 
-Module 03 becomes useful the moment a learner stops saying "this callable looks fine" and
+Module 03 becomes useful the moment you stop saying "this callable looks fine" and
 starts asking for stronger evidence.
 
 The first strong evidence surface is `inspect.signature`.

@@ -48,7 +48,7 @@ That is a valuable but limited observation.
 
 ## The type provides the call protocol
 
-This example surprises many learners:
+This example may be surprising:
 
 ```python
 class Plain:
