@@ -54,7 +54,7 @@ If a module page drifts away from this contract, the drift should become visible
 | --- | --- | --- | --- | --- |
 | 01 File-DAG Contract | teach Snakemake as explicit file semantics, not command folklore | rules, targets, dry-runs, publish boundary | explain why planned work exists before execution | `capstone-walkthrough` |
 | 02 Dynamic DAGs | teach staged discovery without turning the plan into magic | checkpoints, discovered-set artifacts, deterministic planning, publish integrity | explain what a checkpoint may discover, what discovery must record, and how that fact reaches the public boundary | `make verify` |
-| 03 Production Operations | teach policy surfaces without semantic drift | profiles, retries, staging, governance, verification gates | distinguish workflow meaning from run-context policy | `capstone-tour` |
+| 03 Production Operations | teach policy surfaces without semantic drift | profiles, retries, staging, governance, and proof routes | distinguish workflow meaning from run-context policy and choose the right production proof route | `capstone-profile-audit` |
 | 04 Scaling Boundaries | teach larger repository design without interface blur | modules, file APIs, CI gates, executor-proof semantics | inspect a repository boundary without guessing where the contract lives | `capstone-tour` |
 | 05 Software Boundaries | teach the line between workflow logic and software stack | wrappers, scripts, envs, helper-code ownership | explain which logic belongs in rules versus helper code | `proof` |
 | 06 Downstream Contracts | teach stable outputs and publish trust | versioned publish surfaces, reports, manifests, checksums | review whether a downstream consumer could trust the workflow outputs | `capstone-verify-report` |

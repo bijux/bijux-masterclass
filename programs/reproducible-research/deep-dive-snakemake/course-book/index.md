@@ -74,7 +74,7 @@ can inspect, trust, and extend without folklore.
 | [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof surfaces, and capstone timing |
 | [Module 01](module-01-file-contracts-workflow-graph-truth/index.md) | File Contracts and Workflow Graph Truth | teaches the workflow as a file-driven DAG instead of a script |
 | [Module 02](module-02-dynamic-dags-discovery-integrity/index.md) | Dynamic DAGs, Discovery, and Integrity | teaches deterministic discovery, checkpoint discipline, and publish integrity |
-| [Module 03](module-03-production-operations-policy-boundaries/index.md) | Production Operations and Policy Boundaries | separates workflow semantics from operational policy |
+| [Module 03](module-03-production-operations-policy-boundaries/index.md) | Production Operations and Policy Boundaries | teaches profiles, recovery policy, staging discipline, and production proof routes |
 | [Module 04](module-04-scaling-workflows-interface-boundaries/index.md) | Scaling Workflows and Interface Boundaries | scales the workflow without losing explicit interfaces |
 | [Module 05](module-05-software-boundaries-reproducible-rules/index.md) | Software Boundaries and Reproducible Rules | keeps helper code and rule meaning in the right layer |
 | [Module 06](module-06-publishing-downstream-contracts/index.md) | Publishing and Downstream Contracts | makes the public artifact boundary versioned and trustworthy |

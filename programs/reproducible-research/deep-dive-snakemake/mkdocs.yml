@@ -97,6 +97,15 @@ nav:
           - Glossary: module-02-dynamic-dags-discovery-integrity/glossary.md
       - "Module 03: Production Operations and Policy Boundaries":
           - Overview: module-03-production-operations-policy-boundaries/index.md
+          - Profiles, Defaults, and Workflow Meaning: module-03-production-operations-policy-boundaries/profiles-defaults-and-workflow-meaning.md
+          - Failure Policy, Retries, and Incomplete Outputs: module-03-production-operations-policy-boundaries/failure-policy-retries-and-incomplete-outputs.md
+          - Staging, Shared Filesystems, and Data Locality: module-03-production-operations-policy-boundaries/staging-shared-filesystems-and-data-locality.md
+          - Proof Routes, Selftests, and Clean-Room Confirmation: module-03-production-operations-policy-boundaries/proof-routes-selftests-and-clean-room-confirmation.md
+          - Operational Governance and Policy Review: module-03-production-operations-policy-boundaries/operational-governance-and-policy-review.md
+          - "Worked Example: Hardening a Workflow for Production Use": module-03-production-operations-policy-boundaries/worked-example-hardening-a-workflow-for-production-use.md
+          - Exercises: module-03-production-operations-policy-boundaries/exercises.md
+          - Exercise Answers: module-03-production-operations-policy-boundaries/exercise-answers.md
+          - Glossary: module-03-production-operations-policy-boundaries/glossary.md
       - "Module 04: Scaling Workflows and Interface Boundaries":
           - Overview: module-04-scaling-workflows-interface-boundaries/index.md
       - "Module 05: Software Boundaries and Reproducible Rules":
