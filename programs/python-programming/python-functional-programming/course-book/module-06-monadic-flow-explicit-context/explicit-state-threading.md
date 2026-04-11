@@ -107,20 +107,16 @@ def put(new_s: S) -> State[S, None]:
     return State(lambda _: (None, new_s))
 
 def modify(f: Callable[[S], S]) -> State[S, None]:
-    return get().and_then(lambda s: put(f(s)))
+    return State(lambda s: (None, f(s)))
 
-# Runner utilities
 def run_state(p: State[S, T], initial: S) -> tuple[T, S]:
     return p.run(initial)
-
-def eval_state(p: State[S, T], initial: S) -> T:
-    return p.run(initial)[0]
-
-def exec_state(p: State[S, T], initial: S) -> S:
-    return p.run(initial)[1]
 ```
 
-That's it. No more primitives needed for daily use.
+That matches the repository snapshot in `capstone/src/funcpipe_rag/fp/effects/state.py`.
+If you want the value-only or state-only views, you can still read them directly from
+`run_state(p, initial)[0]` and `run_state(p, initial)[1]` without introducing extra
+helpers into the core teaching surface.
 
 ## 3. Canonical Style – The Way You Will Actually Write 99% of State Pipelines
 
