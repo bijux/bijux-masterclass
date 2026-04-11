@@ -90,7 +90,7 @@ The most useful companion pages for this matrix are:
 
 * [`capstone/command-guide.md`](../capstone/command-guide.md)
 * [`public-targets.md`](../reference/public-targets.md)
-* [`practice-map.md`](../reference/practice-map.md)
+* [`completion-rubric.md`](../reference/completion-rubric.md)
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 * [`public-targets.md`](../reference/public-targets.md)
 
