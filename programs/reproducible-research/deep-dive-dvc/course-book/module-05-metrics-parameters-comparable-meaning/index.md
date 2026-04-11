@@ -1,291 +1,144 @@
 # Module 05: Metrics, Parameters, and Comparable Meaning
 
+Module 05 turns successful pipeline execution into defensible interpretation.
 
-<!-- page-maps:start -->
-## Module Position
+By now, learners know how to reason about content identity, runtime boundaries, and
+truthful pipeline declarations. That is necessary, but it is not enough. A workflow can
+run honestly and still invite a bad conclusion if its metrics and parameters do not mean
+the same thing across runs.
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 05: Metrics, Parameters, and Comparable Meaning"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
-```
+This module is about comparability:
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+- what a metric claims to measure
+- which population the metric describes
+- which parameter values belong to the comparison surface
+- which plot or table conventions must stay stable
+- when a numeric difference is meaningful and when it is only mechanical
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+The central learner question is:
 
-*Why numbers are not results, and comparisons are contracts*
+> Are these two results describing the same reality under comparable controls?
 
----
+If the answer is unclear, `dvc metrics diff` can still show numbers, but the team does not
+yet have a defensible comparison.
 
-## Purpose of this Module
+The capstone corroboration surface for this module is the set of files that tie
+parameters, metrics, and release evidence together: `capstone/params.yaml`,
+`capstone/metrics/metrics.json`, `capstone/plots/`, `capstone/publish/v1/metrics.json`,
+`capstone/docs/PREDICTION_REVIEW_GUIDE.md`, `capstone/docs/RELEASE_REVIEW_GUIDE.md`, and
+the `make -C capstone release-audit` route.
 
-This module addresses the failure that survives even after execution becomes repeatable:
-two runs can be mechanically comparable while still meaning different things.
+## Why this module exists
 
-Use this module to learn how parameters and metrics become semantic contracts. The
-question is no longer only "Did the pipeline run?" but "Are these numbers still
-describing the same reality, under the same controls, in a way another reviewer can
-trust?"
+Many teams can answer:
 
-If that distinction stays fuzzy, experiment review and promotion will become theater.
+- did the run finish
+- did the data match
+- did the pipeline rerun correctly
+- did the metric move
 
----
+and still fail to answer:
 
-## At a Glance
+- did the test population stay comparable
+- did the metric definition change
+- did the threshold or split policy move
+- did the plot compare the same slice of data
+- should this number be used for a release decision
 
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| semantic metrics | "Are these numbers still measuring the same thing?" | inspect tracked metrics only after metric meaning is explicit |
-| parameter contracts | "Which controls are part of the comparison surface?" | compare `params.yaml` to published params deliberately |
-| reviewability | "What makes one run comparable to another?" | use the capstone to inspect params, metrics, and publish evidence together |
+That is where DVC usage needs interpretation discipline. DVC can track metric files,
+diff values, and connect parameter changes to runs. It cannot decide by itself whether a
+metric comparison is semantically valid.
 
-The main outcome of this module is not more measurement. It is better comparability.
+The point of Module 05 is not to collect more numbers. The point is to defend the meaning
+of the numbers already being used.
 
-## Learning outcomes
-
-- explain why metrics are semantic claims rather than just logged numbers
-- identify which parameters belong to the comparison surface for a given review question
-- defend when two runs are meaningfully comparable and when they are only mechanically different
-
-## Verification route
-
-- Inspect `capstone/params.yaml`, `capstone/metrics/metrics.json`, and `capstone/publish/v1/metrics.json` together as one comparison surface.
-- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-audit` when you want the promoted params and metrics bundled with the release contract.
-- Use the invariants checklist at the end of the module to decide whether the metrics in front of you are still semantically comparable.
-
----
-
-## 5.1 The Perilous Misconception: Metrics as Mere Numerical Values
-
-Workflows commonly reduce metrics to scalars, tables, or plots—logged, diffed, and compared algorithmically. This overlooks their essence: **metrics articulate assertions about reality**.
-
-A metric encodes implicitly:
-
-- The measured entity.
-- The target population.
-- The computational definition.
-- Underlying assumptions.
-
-Alterations in any dimension transform meaning, irrespective of numerical format. DVC performs diffs reliably on numbers, yet cannot validate semantic alignment—rendering comparisons potentially invalid.
-
-**Example**: Accuracy on a binary classification task (0.85) appears stable across runs, but shifts from balanced to imbalanced test data invalidate comparability.
-
-**Illustration**:
+## Study route
 
 ```mermaid
-graph TD
-  metric["Metric Value<br/>0.85"]
-  entity["Entity<br/>Accuracy"]
-  population["Population<br/>Test Set"]
-  definition["Definition<br/>TP + TN / Total"]
-  assumptions["Assumptions<br/>Balanced Classes"]
-  drift["Meaning Drift<br/>Even if the number stays the same"]
-  metric --> entity
-  metric --> population
-  metric --> definition
-  metric --> assumptions
-  entity --> drift
-  population --> drift
-  definition --> drift
-  assumptions --> drift
+flowchart LR
+  overview["Overview"] --> core1["Core 1: metrics as claims"]
+  core1 --> core2["Core 2: parameter comparison surface"]
+  core2 --> core3["Core 3: metric files and schemas"]
+  core3 --> core4["Core 4: metrics diff and review limits"]
+  core4 --> core5["Core 5: plots and release interpretation"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
----
+Read the module in that order the first time.
 
-## 5.2 Parameters as Inputs, Not Arbitrary Controls
+If the problem is already partly clear, use this shortcut:
 
-Parameters are frequently mishandled as transient adjustments: hardcoded literals, command-line arguments, or experimental YAML tweaks. This casual treatment is erroneous.
+- open Core 1 when the main confusion is "why isn't a metric just a number?"
+- open Core 2 when the main confusion is "which parameter changes affect comparability?"
+- open Core 3 when the main confusion is "what makes a metric file stable enough to review?"
+- open Core 4 when the main confusion is "what can `dvc metrics diff` prove and not prove?"
+- open Core 5 when the main confusion is "when are plots or release numbers safe to use?"
 
-Parameters qualify as **inputs**, equivalent to data in influence. Undeclared parameters that affect execution preclude result attribution, undermine comparisons, and reduce experiments to unsubstantiated claims.
+## Module map
 
-DVC's `params.yaml` enforces rigor: **If influential, it must be declared explicitly.**
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `metrics-as-semantic-claims.md` | teaches why metric values need population, definition, and intent |
+| `parameters-as-comparison-controls.md` | teaches which controls belong to `params.yaml` and review |
+| `metric-files-schemas-and-stability.md` | teaches stable metric file structure and meaning over time |
+| `metrics-diff-and-review-boundaries.md` | teaches what DVC diffs can show and what humans must still judge |
+| `plots-and-release-interpretation.md` | teaches plots, visual evidence, and release-facing metric discipline |
+| `worked-example-repairing-a-misleading-metric-comparison.md` | walks through one realistic comparison repair |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
-**Example `params.yaml`**:
-```yaml
-train:
-  learning_rate: 0.01
-  batch_size: 32
-  epochs: 100
-evaluate:
-  threshold: 0.5
+## What should be clear by the end
+
+By the end of this module, you should be able to explain:
+
+- why a metric is a semantic claim, not only a scalar value
+- how parameter changes alter the comparison surface
+- why metric schemas and naming conventions need stability
+- what `dvc metrics diff` can show without judging meaning
+- how plots can mislead when population, sorting, aggregation, or rendering drift
+- what evidence belongs in a release review before trusting a metric movement
+
+## Commands to keep close
+
+These commands form the evidence loop for Module 05:
+
+```bash
+make -C capstone release-audit
+make -C capstone prediction-review
+dvc metrics show
+dvc metrics diff
+dvc params diff
 ```
 
-Tracked via `dvc.yaml` under `params:`, changes trigger reruns and ensure traceability.
+Use the `make` routes for the course-provided capstone review. Use the `dvc` commands
+inside a DVC workspace when you want to inspect metric and parameter differences directly.
 
----
+## Capstone route
 
-## 5.3 Parameter Scope and Leakage Risks
+Use the capstone after the metric meaning question is clear.
 
-**Parameter leakage** emerges subtly:
+Best corroboration surfaces for this module:
 
-- Scripts accessing unlisted config files.
-- Evolving defaults across invocations.
-- Environment variables dictating behavior.
+- `capstone/params.yaml`
+- `capstone/metrics/metrics.json`
+- `capstone/plots/`
+- `capstone/publish/v1/metrics.json`
+- `capstone/publish/v1/params.yaml`
+- `capstone/docs/PREDICTION_REVIEW_GUIDE.md`
+- `capstone/docs/RELEASE_REVIEW_GUIDE.md`
+- `capstone/docs/PUBLISH_CONTRACT.md`
 
-DVC's viewpoint: Undeclared parameters are nonexistent; modifications evade rerun detection, yielding silent staleness. This constitutes a contract breach, not a limitation of the tool.
+Useful proof route:
 
-**Diagnostic Tip**: Use `dvc params diff` to expose discrepancies; audit scripts for external reads.
-
----
-
-## 5.4 Prioritizing Metric Stability Over Precision
-
-Counterintuitively, a metric that is modestly biased, imperfect, or approximate—yet **definitionally stable**—outweighs a "superior" metric prone to semantic evolution.
-
-Reproducibility hinges on valid comparisons. Without honest yesterday-to-today alignment, advancement remains inscrutable.
-
----
-
-## 5.5 Schemas as Semantic Foundations
-
-Metrics persisted in JSON, CSV, or YAML carry implicit schemas, even undocumented. Modifications to column sequencing, field nomenclature, aggregation protocols, or null-value protocols alter semantics fundamentally.
-
-DVC refrains from schema enforcement, presuming user diligence. Absent discipline, this assumption invites peril.
-
-**Example Metric File** (JSON):
-```json
-{
-  "accuracy": 0.85,
-  "f1_score": 0.82,
-  "population_size": 1000
-}
-```
-Altering field order or adding unversioned keys breaks comparability.
-
----
-
-## 5.6 `dvc metrics diff`: Veracity Without Intelligence
-
-Executing `dvc metrics diff` addresses a constrained query: *Which metric files diverge, and by what magnitude?*
-
-It omits:
-
-- Semantic validity of the contrast.
-- Population alterations.
-- Definitional shifts.
-
-Changing the evaluation set while retaining metric labels yields accurate diffs but erroneous human interpretation. This demarcation is intentional—a boundary, not a shortfall.
-
-**Example Usage**:
-```
-$ dvc metrics diff
-    metric   old     new     diff
-    accuracy 0.85    0.87    +0.02
+```bash
+make -C capstone prediction-review
+make -C capstone release-audit
 ```
 
----
-
-## 5.7 Plots as Deceptive Visuals (Absent Constraints)
-
-Plots convey authority yet lack it. Instability arises from:
-
-- Nondeterministic sorting.
-- Implicit aggregations.
-- Sampling artifacts.
-- Floating-point perturbations.
-- Default rendering behaviors.
-
-Visually akin plots may derive from disparate populations or semantics. Generation must be deterministic, parameterized, and versioned to qualify as evidence, not ornament.
-
----
-
-## 5.8 Metrics as Contracts: A Structured Design Framework
-
-Prior to metric adoption, interrogate:
-
-1. **Population**: Applicable data scope?
-2. **Definition**: Precise computation?
-3. **Invariants**: Constants for valid comparisons?
-4. **Failure Modes**: Potential misdirections?
-5. **Longevity**: Sustained meaning over time?
-
-Unanswerable queries signal unreadiness for automation.
-
-**Illustration**:
-
-```mermaid
-graph TD
-  metric["Metric Contract<br/>F1-Score"]
-  population["Population<br/>Imbalanced test set"]
-  definition["Definition<br/>2 * (P * R) / (P + R)"]
-  invariants["Invariants<br/>Threshold = 0.5<br/>No label flip"]
-  failures["Failure Modes<br/>Ignores class-imbalance severity"]
-  longevity["Longevity<br/>Stable if the evaluation set stays fixed"]
-  metric --> population
-  metric --> definition
-  metric --> invariants
-  metric --> failures
-  metric --> longevity
-```
-
----
-
-## 5.9 Failure Modes and Analyses
-
-| Symptom                        | Interpretation                 |
-| ------------------------------ | -------------------------------- |
-| Unexpected metric shift        | Definitional or population drift |
-| Stable metric, degraded model  | Metric oversight                 |
-| Plot variance sans metric change | Rendering nondeterminism       |
-| CI-local metric mismatch       | Environment/parameter variance   |
-
-Remedy via semantic rectification, not diff suppression.
-
----
-
-## 5.10 Semantic Exercise
-
-Select a core metric. Document:
-
-- Prose definition.
-- Expected invariants.
-- Invalidating conditions.
-
-Query: Does your pipeline enforce these, or rely on convention?
-
-Gaps are typically revelatory.
-
-**Guidance**: Implement in a notebook or script for validation.
-
----
-
-## 5.11 Essential Conceptual Framework
-
-> **Pipelines generate artifacts; metrics generate meaning; meaning demands defense.**
-
-DVC equips you with instruments for this defense—execution is yours.
-
----
-
-## Module 05: Invariants Checklist
-
-Affirm:
-
-- [ ] All consequential parameters tracked.
-- [ ] Metric definitions stable and articulated.
-- [ ] Comparisons semantically sound.
-- [ ] Plots reproducible, not decorative.
-- [ ] Metric drift identifiable, not opaque.
-
-Rectify ambiguities before proceeding.
-
----
-
-## Transition to Module 06
-
-Immutable data, explicit environments, truthful pipelines, and meaningful metrics established. Exploration now poses a novel challenge: **How to iterate without historical corruption?** Module 06 delineates experiments as disciplined deviations from the core contract.
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is not to accept a number because it appears in a metric file. It
+is to ask whether the parameter surface, population, metric definition, and published
+evidence support the comparison a reviewer wants to make.
