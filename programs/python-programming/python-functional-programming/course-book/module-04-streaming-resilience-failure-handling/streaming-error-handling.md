@@ -2,43 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Streaming Error Handling"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  mixed["Start with a stream containing both successes and failures"] --> continue["Keep the stream moving item by item"]
+  continue --> route["Route, recover, or log in one pass"]
+  route --> preserve["Preserve order and avoid early materialization"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should answer a simple but high-pressure question: once failures are values, how do we keep the stream useful? Students need to see that the answer is not another big control loop. It is a small set of stream combinators with explicit continuation and routing behavior.
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Mixed-Stream Problem
 
-Here's a snippet from the progression map:
+Once a pipeline yields `Ok` and `Err` values together, students need better tools than "collect everything and sort it out later." The lesson should make one-pass separation and recovery feel normal.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If one bad item still kills the whole stream, typed failures have not been integrated properly.
+- If separating successes from failures requires an early list build, the routing layer is hiding lost laziness.
+- If recovery or logging changes order or visits items twice, the combinator contract is not clear enough.
 
 > **Core question:**  
 > How do you keep a lazy streaming pipeline flowing when individual records fail, while faithfully collecting every error with full provenance and enabling one-pass routing, recovery, or parallel processing — all without materialising the stream?
 
-We now take the `TreeDoc → Chunk → Result[Chunk, ErrInfo]` stream from M04C04 and face the real-world production reality:
+This lesson introduces streaming error combinators as the operational layer on top of `Result`:
 
-**99 % of chunks embed successfully, but 1 % fail for different reasons (Unicode, OOM, model rejection, network timeout).**
+- keep per-item failures from halting unrelated work
+- route, recover, or observe results in the same pass that processes them
+- preserve the original stream order so later folds and reports remain trustworthy
+
+The 99/1 success/failure example matters because it captures the real production pressure: most of the stream is still useful, so the design should not throw that value away.
 
 A naïve pipeline would:
 
@@ -49,12 +42,9 @@ for chunk in chunks:
 
 You lose everything after the first bad chunk.
 
-Even a careful try/except loop either:
-- halts on first error,
-- silently drops bad chunks,
-- or materialises everything just to separate good/bad.
+Even a careful try/except loop tends to halt, drop, or prematurely materialize.
 
-The production solution uses tiny, composable streaming combinators that treat `Result` as a normal value:
+The production solution uses small streaming combinators that treat `Result` as a normal value and keep routing explicit.
 
 ```python
 embedded = par_try_map_iter(embed_chunk, chunks_with_path, stage="embed")
@@ -70,7 +60,7 @@ The stream continues forever; good chunks flow through immediately; every failur
 2. You will route, log, recover, or aggregate errors in one pass using lazy combinators.  
 3. You will ship a RAG pipeline that survives any per-chunk catastrophe and delivers rich, structured error reports.
 
-We formalise exactly what we want from correct, production-ready streaming error handling: continuation, ordering, separation, bounded work, and perfect containment.
+We formalise exactly what students should review in this layer: continuation, ordering, one-pass separation, bounded work, and complete containment of wrapped failures.
 
 ---
 
