@@ -81,6 +81,18 @@ You are now three steps away from a complete production-grade functional archite
 the shell. That keeps partial-consumption cleanup explicit and deterministic for the
 pattern we are teaching here.
 
+## Shell Checklist For Partial Consumption
+
+When a shell consumes only part of a stream, review these questions explicitly:
+
+- who owns the underlying file, connection, or cursor?
+- where is `closing(...)` or the equivalent deterministic cleanup wrapper?
+- what happens if the loop breaks early, raises, or returns before exhaustion?
+
+Students usually understand `with open(...)` quickly. The subtle part is remembering that
+lazy iteration moves some cleanup responsibility to the consumer when exhaustion is not
+guaranteed.
+
 ## 3. Public API – No New Domain API
 
 This core adds **no new public domain types**. Resource safety is an implementation detail of adapters/shells. The visible contract remains the capability protocols from M07C01/C03.
