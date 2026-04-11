@@ -6,7 +6,7 @@
 
 ```mermaid
 flowchart LR
-  plain["Start with an ordinary Python function"] --> choose["Choose map, and_then, map_err, or liftA based on dependency shape"]
+  plain["Start with an ordinary Python function"] --> choose["Choose map, and_then, map_err, or liftA2 based on dependency shape"]
   choose --> lift["Lift the function without rewriting container plumbing"]
   lift --> read["Keep the happy path linear and the container contract explicit"]
 ```
@@ -30,6 +30,18 @@ This lesson introduces lifting as the bridge between ordinary functions and cont
 - preserve the behavior of plain functions instead of rewriting them around containers
 - choose the smallest combinator that matches the dependency structure
 - keep the resulting pipeline readable by making the lifting rule obvious at the call site
+
+## The First Decision To Make
+
+Before picking a combinator, ask one question about the next piece of work:
+
+- does the next step depend on the previous successful value, or
+- are you combining two independent container values that can be computed separately?
+
+That split removes most of the confusion:
+
+- dependent next step -> usually `.and_then`
+- independent combination -> usually `liftA2` or `v_liftA2`
 
 **Audience**: Engineers who are done writing `if isinstance(x, Err): return x` 47 times and want a small, reliable decision framework for container-aware composition.
 
@@ -99,6 +111,10 @@ validate_user = v_liftA2(
 # → VFailure(("name missing", "bad age"))
 ```
 
+This example is intentionally different from `and_then`: neither validation depends on
+the other. Both feed the same constructor, which is why applicative lifting is the
+honest fit here.
+
 ### 3.3 Before → After
 ```python
 # BEFORE – manual propagation
@@ -119,6 +135,11 @@ validate_cfg = lambda cfg: (
     .map(lambda _: Config(cfg["name"], cfg["port"]))
 )
 ```
+
+This last example stays sequential on purpose: each step depends on the same evolving
+`Result` context. It complements the previous validation example instead of replacing it.
+The teaching point is that lifting is not one single pattern. The dependency shape tells
+you whether to chain or combine.
 
 ## 4. Property-Based Proofs (selected)
 
