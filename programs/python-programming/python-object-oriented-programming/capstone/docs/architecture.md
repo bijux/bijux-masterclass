@@ -31,7 +31,7 @@ to show an object-oriented design where ownership stays legible under change.
 
 ## Ownership boundaries
 
-- `application.py` is the learner-facing use-case surface.
+- `application.py` is the public use-case surface.
 - `model.py` is the authoritative home of rule lifecycle and evaluation ownership.
 - `policies.py` isolates replaceable evaluation behavior.
 - `runtime.py` coordinates sources, sinks, projections, and units of work.
@@ -49,7 +49,7 @@ projections should stay derived so read concerns do not mutate authoritative sta
 | Surface | May depend on | Should not depend on |
 | --- | --- | --- |
 | `application.py` | use-case inputs, runtime coordination, aggregate-facing operations | projection internals as a source of truth |
-| `model.py` | domain values, events, policy abstractions | runtime adapters, sinks, or learner-facing command flow |
+| `model.py` | domain values, events, policy abstractions | runtime adapters, sinks, or public command flow |
 | `policies.py` | rule-evaluation inputs and domain values | repository or projection mechanics |
 | `runtime.py` | aggregate operations, repositories, projections, sinks, and sources | projection state as an authority for domain decisions |
 | `read_models.py` and `projections.py` | emitted events and display needs | aggregate mutation paths |
@@ -58,7 +58,7 @@ projections should stay derived so read concerns do not mutate authoritative sta
 ## Review routes for architecture questions
 
 - Use `make inspect` when you want the derived state bundle before opening code.
-- Use `make tour` when you want the learner-facing scenario route through the architecture.
+- Use `make tour` when you want the public scenario route through the architecture.
 - Use `make verify-report` when you need executable evidence alongside that review.
 - Use `EXTENSION_GUIDE.md` when the architecture question is really a change-placement question.
 - Use `PROOF_GUIDE.md` when the main question is how aggregate decisions become reviewable evidence.
@@ -89,7 +89,7 @@ projections should stay derived so read concerns do not mutate authoritative sta
 | projection | downstream read models and derived history | authoritative lifecycle state |
 | runtime | coordination with sources, sinks, and units of work | domain truth |
 | persistence | repository and unit-of-work boundaries | domain decision-making |
-| public surface | learner-facing CLI and bundle routes | hidden authority not reachable from review routes |
+| public surface | CLI and bundle routes | hidden authority not reachable from review routes |
 
 ## Anti-patterns this architecture rejects
 

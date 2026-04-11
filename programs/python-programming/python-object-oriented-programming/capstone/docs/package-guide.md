@@ -38,7 +38,7 @@ before you start tracing methods line by line.
 7. `src/service_monitoring/projections.py`
 8. `tests/`
 
-That route keeps learner-facing use cases first, domain ownership second, runtime
+That route keeps public use cases first, domain ownership second, runtime
 coordination third, and proof surfaces last.
 
 ## Package responsibilities
@@ -66,7 +66,7 @@ coordination third, and proof surfaces last.
 
 | If the proposed change is about... | Start here | Keep this neighbor open too |
 | --- | --- | --- |
-| a new learner-facing use case | `application.py` | `model.py` |
+| a new public use case | `application.py` | `model.py` |
 | a lifecycle or invariant rule | `model.py` | `tests/test_policy_lifecycle.py` |
 | a new evaluation behavior | `policies.py` | `model.py` |
 | runtime coordination or adapters | `runtime.py` | `application.py` |

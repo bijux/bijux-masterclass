@@ -23,13 +23,13 @@ flowchart TD
 <!-- page-maps:end -->
 
 This capstone should not be trusted because the prose sounds tidy. It should be trusted
-because the learner can inspect behavior directly.
+because you can inspect behavior directly.
 
 ## Current proof routes
 
-- `make inspect` writes the learner-facing inspection bundle.
-- `make tour` writes the learner-facing walkthrough bundle.
-- `make verify-report` writes test output together with captured learner-facing state.
+- `make inspect` writes the inspection bundle.
+- `make tour` writes the walkthrough bundle.
+- `make verify-report` writes test output together with captured review state.
 - `make confirm` runs the strongest local confirmation route.
 - `make proof` runs the sanctioned end-to-end route.
 
@@ -37,9 +37,9 @@ because the learner can inspect behavior directly.
 
 - `make inspect` proves that the scenario state can be reviewed without spelunking into internals first.
 - `make tour` proves that a human can follow the story from policy creation to incident publication.
-- `make verify-report` proves that executable checks and learner-facing state agree in one saved review bundle.
+- `make verify-report` proves that executable checks and saved review state agree in one bundle.
 - `make confirm` proves that the current object boundaries and lifecycle behavior survive the strongest local confirmation route.
-- `make proof` proves that the published learner-facing review route is still coherent end to end.
+- `make proof` proves that the published review route is still coherent end to end.
 
 ## Honest limitation
 
@@ -66,12 +66,12 @@ directory structure is not.
 | lifecycle and invariant ownership | `tests/test_policy_lifecycle.py` | `make inspect` |
 | replaceable evaluation behavior | `tests/test_policy_evaluation.py` | `make verify-report` |
 | runtime orchestration and adapter boundaries | `tests/test_runtime.py` and `TOUR.md` | `make tour` or `make verify-report` |
-| learner-facing use cases | `tests/test_application.py` and `tests/test_demo.py` | `make demo` or `make tour` |
+| public use cases | `tests/test_application.py` and `tests/test_demo.py` | `make demo` or `make tour` |
 | whole-capstone trust and saved evidence | the generated verification bundle | `make confirm` or `make proof` |
 
 Keep [ARCHITECTURE.md](architecture.md) nearby when the code makes sense locally
 but you still need to trace how one aggregate action becomes a projection update or a
-saved learner-facing artifact.
+saved review artifact.
 
 ## Review question after each route
 
