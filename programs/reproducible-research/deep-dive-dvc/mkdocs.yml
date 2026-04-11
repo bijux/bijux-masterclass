@@ -132,6 +132,15 @@ nav:
           - Glossary: module-05-metrics-parameters-comparable-meaning/glossary.md
       - "Module 06: Experiments Without Chaos":
           - Overview: module-06-experiments-baselines-controlled-change/index.md
+          - Baseline Authority and Experiment Intent: module-06-experiments-baselines-controlled-change/baseline-authority-and-experiment-intent.md
+          - Experiment Scope and Change Boundaries: module-06-experiments-baselines-controlled-change/experiment-scope-and-change-boundaries.md
+          - DVC Experiment Records and Isolation: module-06-experiments-baselines-controlled-change/dvc-experiment-records-and-isolation.md
+          - Comparing Experiments and Selecting Candidates: module-06-experiments-baselines-controlled-change/comparing-experiments-and-selecting-candidates.md
+          - Promotion, Cleanup, and History Integrity: module-06-experiments-baselines-controlled-change/promotion-cleanup-and-history-integrity.md
+          - "Worked Example: Promoting a Controlled Threshold Experiment": module-06-experiments-baselines-controlled-change/worked-example-promoting-a-controlled-threshold-experiment.md
+          - Exercises: module-06-experiments-baselines-controlled-change/exercises.md
+          - Exercise Answers: module-06-experiments-baselines-controlled-change/exercise-answers.md
+          - Glossary: module-06-experiments-baselines-controlled-change/glossary.md
       - "Module 07: Collaboration, CI, and Social Contracts":
           - Overview: module-07-collaboration-ci-social-contracts/index.md
       - "Module 08: Production, Scale, and Incident Survival":
