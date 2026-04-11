@@ -30,7 +30,7 @@ Strong explanation:
 
 - the `.dvc` file records the tracked identity reference
 - the cache stores the actual tracked content in DVC's local durable layer
-- the workspace file is the local projection a learner sees and uses day to day
+- the workspace file is the local projection you see and use day to day
 
 Why this matters:
 

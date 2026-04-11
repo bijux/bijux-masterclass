@@ -59,7 +59,7 @@ flowchart TD
   changedbytes["different bytes later"] --> path1
 ```
 
-Once learners see this, many later DVC ideas become less mysterious.
+Once you see this, many later DVC ideas become less mysterious.
 
 ## A small example
 
@@ -107,8 +107,7 @@ start asking:
 
 > what exact content is the system claiming, and where is that claim recorded?
 
-That question prepares the learner for pointer files, cache objects, remotes, and recovery
-routes.
+That question prepares you for pointer files, cache objects, remotes, and recovery routes.
 
 ## Keep this standard
 

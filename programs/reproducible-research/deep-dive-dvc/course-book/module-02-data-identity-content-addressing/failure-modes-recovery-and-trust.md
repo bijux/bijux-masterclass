@@ -2,8 +2,8 @@
 
 Identity matters because failure eventually arrives.
 
-Module 02 is not finished when the learner can explain hashes in the abstract. It is
-finished when they can explain what a broken recovery or identity story actually means.
+Module 02 is not finished when you can explain hashes in the abstract. It is finished when
+you can explain what a broken recovery or identity story actually means.
 
 ## What good recovery is proving
 
@@ -66,7 +66,7 @@ This is why the capstone's recovery route includes review artifacts and not only
 
 ## A small example
 
-Suppose a learner deletes local tracked data and then uses the remote-backed recovery route.
+Suppose you delete local tracked data and then use the remote-backed recovery route.
 
 Strong explanation:
 

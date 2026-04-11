@@ -5,7 +5,7 @@ one kind of state.
 
 Different layers answer different questions.
 
-If learners blur them together, recovery and trust will keep feeling magical.
+If you blur them together, recovery and trust will keep feeling magical.
 
 ## The five layers that matter in practice
 
@@ -37,7 +37,7 @@ which layer is authoritative for which fact?
 
 ## What the workspace is and is not
 
-The workspace is where learners see the familiar files.
+The workspace is where you see the familiar files.
 
 It is useful for:
 
@@ -115,7 +115,7 @@ This separation becomes very important in later modules.
 
 ## A small example
 
-Suppose a learner asks:
+Suppose you ask:
 
 > I can see `metrics.json` in my workspace. Doesn't that mean the result is safe?
 

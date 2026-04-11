@@ -2,8 +2,8 @@
 
 This glossary keeps the language of Module 02 stable.
 
-The goal is practical clarity: when learners keep identity, location, storage, and trust
-layers distinct, DVC stops feeling mystical and starts feeling inspectable.
+The goal is practical clarity: when you keep identity, location, storage, and trust layers
+distinct, DVC stops feeling mystical and starts feeling inspectable.
 
 ## Terms
 

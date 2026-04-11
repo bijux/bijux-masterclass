@@ -1,11 +1,11 @@
 # DVC Add, Push, Pull, and Checkout as State Moves
 
-Many learners memorize DVC commands before they understand what state each command is
+It is easy to memorize DVC commands before you understand what state each command is
 changing.
 
 That creates brittle knowledge.
 
-Module 02 should leave them with a clearer question:
+Module 02 should leave you with a clearer question:
 
 > when I run this command, which layer moves, and what kind of trust does that create?
 
@@ -22,7 +22,7 @@ This table is the heart of the page.
 
 ## Why this framing matters
 
-If learners think only in command names, they will ask:
+If you think only in command names, you will ask:
 
 - when should I run `pull` again
 - why did `checkout` touch my files
@@ -56,8 +56,8 @@ into:
 
 - "this workspace path now refers to recorded content identity"
 
-The learner should leave this section understanding that `dvc add` is not mostly about
-moving files around. It is about making a content claim explicit and locally restorable.
+You should leave this section understanding that `dvc add` is not mostly about moving
+files around. It is about making a content claim explicit and locally restorable.
 
 ## `dvc push`: make recovery durable
 
@@ -88,8 +88,8 @@ This is why `pull` and `checkout` are related but not identical.
 It reconstructs or aligns workspace files from tracked content already available in the
 cache.
 
-That is why a learner can have content present in the cache and still need `checkout` to
-make the workspace match the recorded state.
+That is why you can have content present in the cache and still need `checkout` to make
+the workspace match the recorded state.
 
 ## A small example
 
@@ -107,7 +107,7 @@ It is:
 
 This three-layer explanation is much healthier than magical thinking.
 
-## Common learner confusions
+## Common confusions
 
 ### "I pushed, so the workspace is fixed"
 

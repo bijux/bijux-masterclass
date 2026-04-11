@@ -12,7 +12,7 @@ recovery drills all depend on a more durable idea:
 - mutable workspace files are not the same thing as authoritative recorded state
 - caches and remotes are part of the trust model, not implementation trivia
 
-This module is where learners stop saying "the file is over there" and start saying "the
+This module is where you stop saying "the file is over there" and start saying "the
 system is claiming these exact bytes."
 
 The capstone corroboration surface for this module is the set of files and review routes
@@ -91,7 +91,7 @@ make -C capstone recovery-review
 ```
 
 The point is not to memorize commands. It is to tie each state layer to a concrete file or
-bundle so the learner stops treating the repository as one undifferentiated blob.
+bundle so you stop treating the repository as one undifferentiated blob.
 
 ## Capstone route
 

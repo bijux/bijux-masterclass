@@ -20,7 +20,7 @@ Write a short response that explains:
 
 ## Exercise 2: Separate pointer, cache, and workspace
 
-A learner has run `dvc add data/raw.csv`.
+Suppose you have run `dvc add data/raw.csv`.
 
 Explain in plain language:
 
@@ -43,7 +43,7 @@ Use the vocabulary from the module rather than generic phrases like "the repo."
 
 ## Exercise 4: Explain the commands as state moves
 
-Write a short explanation of what changes when a learner runs:
+Write a short explanation of what changes when you run:
 
 - `dvc push`
 - `dvc pull`

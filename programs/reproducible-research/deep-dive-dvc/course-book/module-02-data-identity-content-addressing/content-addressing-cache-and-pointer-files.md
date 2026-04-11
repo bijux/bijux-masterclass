@@ -18,7 +18,7 @@ That sounds simple, but it changes the whole trust model:
 
 This is much stronger than path-based naming conventions.
 
-## The three pieces learners need to understand
+## The three pieces you need to understand
 
 When you run `dvc add`, three ideas matter most:
 
@@ -51,7 +51,7 @@ flowchart LR
   pointer --> git["Git records the pointer"]
 ```
 
-This diagram matters because learners often blur the pointer and the content together.
+This diagram matters because it is easy to blur the pointer and the content together.
 
 They are related, but they are not the same layer.
 
@@ -67,7 +67,7 @@ What matters is:
 - DVC now has a content-addressed cached copy
 - a `.dvc` file now tells Git and the team which data identity the workspace path refers to
 
-Once learners see that, later recovery commands stop feeling magical.
+Once you see that, later recovery commands stop feeling magical.
 
 ## Why the cache matters
 
