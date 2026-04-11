@@ -63,6 +63,16 @@ These laws guarantee that migration is **safe, verifiable, and never a leap of f
 
 **Rule**: Fix one symptom at a time. Never do more than one step in a single PR.
 
+## Read The Migration In Two Layers
+
+Students usually follow this page more successfully if they separate two questions:
+
+1. what public behavior must stay the same for callers right now?
+2. which internal effect site or boundary are we cleaning up in this step?
+
+That order prevents a common migration mistake: changing the contract and the internal
+architecture in the same move, then losing track of which change caused a regression.
+
 ## 3. The 6-Step Migration Protocol (memorise this)
 
 1. **Characterise** – Write black-box equivalence tests around the current behaviour (golden inputs → expected outputs + side effects).  
@@ -192,7 +202,7 @@ def rag_with_caps(
     doc_results = list(storage.read_docs(input_path))
     errs = [r.error for r in doc_results if isinstance(r, Err)]
     if errs:
-        logger.log(LogEntry("ERROR", f"Read failed: {errs[0].message}"))
+        logger.log(LogEntry("ERROR", f"Read failed: {errs[0].msg}"))
         return Err(errs[0])  # domain-specific error aggregation strategy
 
     docs = [r.value for r in doc_results if isinstance(r, Ok)]
@@ -205,7 +215,7 @@ def rag_with_caps(
 
     write_res = storage.write_chunks(output_path, iter(chunks))
     if isinstance(write_res, Err):
-        logger.log(LogEntry("ERROR", f"Write failed: {write_res.error.message}"))
+        logger.log(LogEntry("ERROR", f"Write failed: {write_res.error.msg}"))
         return write_res
 
     logger.log(LogEntry("INFO", "Done"))
@@ -246,7 +256,7 @@ def rag_described(
             logger.log(LogEntry("INFO", f"Processed {len(chunks)} chunks in {duration}"))
             write_res = storage.write_chunks(output_path, iter(chunks))
             if isinstance(write_res, Err):
-                logger.log(LogEntry("ERROR", f"Write failed: {write_res.error.message}"))
+                logger.log(LogEntry("ERROR", f"Write failed: {write_res.error.msg}"))
                 return write_res
             logger.log(LogEntry("INFO", "Done"))
             return Ok(chunks)
