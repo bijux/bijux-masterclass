@@ -78,7 +78,7 @@ Snakemake.
 | container ecosystem debates | containers matter as execution boundaries, not as the full course topic | keep focus on reproducible runtime surfaces |
 | general data-versioning systems | Snakemake has limits and neighbors | Module 10 teaches tool boundaries instead of pretending Snakemake owns everything |
 
-When a learner wants more on one of these, the honest answer is not “the course covers
+When you want more on one of these, the honest answer is not “the course covers
 everything.” The honest answer is “the course touches this where it affects workflow
 truth, then hands off.”
 
@@ -101,7 +101,7 @@ them as badges of Snakemake sophistication.
 
 ## Blind Spots This Page Protects Against
 
-Without an explicit boundary page, learners can leave with the wrong conclusions:
+Without an explicit boundary page, readers can leave with the wrong conclusions:
 
 * “The course forgot science-domain concerns.”
   It did not forget them. It scoped them outside the central workflow argument.
@@ -122,4 +122,3 @@ Use these with this page:
 * [`module-dependency-map.md`](module-dependency-map.md) to see the safe learning order
 * [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest workflow proof route
 * [`completion-rubric.md`](completion-rubric.md) to review whether the course is actually keeping its promises
-

@@ -24,7 +24,7 @@ Read the first diagram as a lookup map: this page is part of the review shelf, n
 
 Deep Dive Snakemake should finish with more than syntax familiarity.
 
-Use this rubric to judge whether the learner can reason about workflow truth, dynamic
+Use this rubric to judge whether you can reason about workflow truth, dynamic
 behavior, policy boundaries, and publish contracts without hand-waving.
 
 ---
@@ -76,5 +76,4 @@ A reviewer should be able to ask:
 * what changed when moving between local and CI policy
 * what would you inspect first before migration
 
-If those answers stay vague, the learner is not done yet.
-
+If those answers stay vague, you are not done yet.

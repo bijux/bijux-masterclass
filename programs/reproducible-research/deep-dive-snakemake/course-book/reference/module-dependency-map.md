@@ -22,7 +22,7 @@ flowchart TD
 
 Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
-Deep Dive Snakemake is easier to learn when the learner can see which ideas are
+Deep Dive Snakemake is easier to learn when you can see which ideas are
 prerequisites and which ideas are extensions.
 
 This page makes that structure explicit.
@@ -64,7 +64,7 @@ graph TD
 | 01 File Contracts | none | it establishes that outputs, wildcards, and published paths are explicit contracts |
 | 02 Dynamic DAGs | 01 | dynamic behavior only stays trustworthy when file contracts are already clear |
 | 03 Production Operation | 01-02 | profiles, proof targets, and operational evidence depend on a truthful graph |
-| 04 Scaling Boundaries | 01 | scaling boundaries matter only after the learner can already reason about files and rules |
+| 04 Scaling Boundaries | 01 | scaling boundaries matter only after you can already reason about files and rules |
 | 05 Rule Boundaries | 01-04 | script boundaries and environment choices are safer once architectural limits are understood |
 | 06 Publish Contracts | 01-03 | publish surfaces depend on trustworthy execution and explicit output meaning |
 | 07 Workflow Architecture | 04-06 | repository structure is easiest to judge after boundaries and publish contracts are concrete |
@@ -76,7 +76,7 @@ graph TD
 
 ## Fastest Safe Paths
 
-### New learner
+### First-time reader
 
 Read in order from Module 01 through Module 10.
 
@@ -100,4 +100,3 @@ decision depends on file or DAG truth.
 | after 03-05 | compare profiles, helper boundaries, and `FILE_API.md` deliberately |
 | after 06-08 | inspect publish artifacts, profile policy, and workflow layout as one system |
 | after 09-10 | use tests, verification targets, and governance questions as a review specimen |
-
