@@ -46,7 +46,7 @@ controls, and compatibility boundaries.
 | How does this design survive persistence, time, and runtime pressure? | Mid-Course Map | Modules 06-07 |
 | Can this design be trusted, exposed, and hardened over time? | Mastery Map | Modules 08-10 |
 
-This keeps the map tied to human questions instead of forcing the learner to remember module numbers first.
+This keeps the map tied to human questions instead of forcing you to remember module numbers first.
 
 ## Staged maps
 

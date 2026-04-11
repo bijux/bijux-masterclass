@@ -25,7 +25,7 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so learners do not mistake the capstone or reference pages for the first stop.
+Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so you do not mistake the capstone or reference pages for the first stop.
 
 This course teaches object-oriented Python as a discipline of explicit semantics,
 clear responsibilities, and long-lived system boundaries. The focus is not on class
@@ -103,7 +103,7 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 
 ## What to keep open while reading
 
-- [Module Promise Map](guides/module-promise-map.md) when you need the title of a module translated into a learner contract
+- [Module Promise Map](guides/module-promise-map.md) when you need the title of a module translated into a concrete promise
 - [Module Checkpoints](guides/module-checkpoints.md) when you want the "done" bar to stay visible
 - [Capstone Map](capstone/capstone-map.md) when you want the module-to-repository bridge
 - [Proof Ladder](guides/proof-ladder.md) when you want to choose the smallest honest proof route
@@ -174,7 +174,7 @@ By the end of the course, you should be able to:
 - Work through Modules 01 to 10 in order.
 - Use the [Capstone](capstone/index.md) and [Proof Ladder](guides/proof-ladder.md) to connect the prose to runnable code honestly.
 
-## Expected learner rhythm
+## Expected reading rhythm
 
 - Read one module overview before touching its chapters.
 - Read chapter prose in order unless you are deliberately reviewing.
