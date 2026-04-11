@@ -2,48 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Result and Option Failures"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  exception["Start with try/except scattered through the pipeline"] --> choose["Choose between absence and failure with reasons"]
+  choose --> wrap["Wrap each item in Option or Result explicitly"]
+  wrap --> compose["Compose the stream without losing provenance"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is where failure handling becomes a data-modeling problem instead of a control-flow habit. Students need to leave with a sharp distinction in mind: `Option` is for absence without explanation, `Result` is for failure with information that matters later.
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Failure Boundary
 
-Here's a snippet from the progression map:
+Before this lesson, bad items often appear as raised exceptions, skipped records, or vague `None` values. The page needs to make those tradeoffs explicit instead of letting them blur together.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If a value may simply be missing and no further explanation is needed, `Option` is usually enough.
+- If later stages need cause, path, or stage metadata, students need `Result` rather than a silent absence.
+- If exceptions are still being used for ordinary per-record control flow, the stream contract is too implicit to compose safely.
 
 > **Core question:**  
 > How do you turn per-record failures (bad text, parsing errors, embedding crashes) into ordinary values so that a lazy streaming pipeline can continue processing the good records while faithfully collecting every error for later analysis?
 
-We now take the `TreeDoc → Chunk` pipeline from M04C01–C03 and face the real-world reality:
+This lesson introduces `Option` and `Result` as explicit failure containers in streams:
 
-**Some chunks simply cannot be processed.**
+- use `Option` when the story is only "present or absent"
+- use `Result` when the story includes structured reasons and provenance
+- keep good records flowing while turning bad records into values that later stages can inspect, route, or aggregate
 
-- Truncated Unicode → `UnicodeDecodeError`
-- Toxic content rejected by the model → custom `EmbeddingRejected`
-- Out-of-memory on a single giant chunk → `MemoryError`
-- Transient network timeout in remote embedder → `ConnectionError`
+The motivating chunk failures matter because they show why real pipelines overwhelmingly need `Result`: the reason and location of failure are part of the downstream work.
 
 The naïve solution is try/except around every operation:
 
@@ -59,9 +47,9 @@ def embed_all_naive(chunks):
     return results
 ```
 
-This is error-handling spaghetti: the stream halts or silently drops data, logs are scattered, and you lose provenance (tree path, stage, cause).
+This is the failure-handling trap the lesson needs to eliminate: halting unexpectedly, dropping records silently, and scattering provenance across log messages instead of values.
 
-The production solution treats success and failure as ordinary values (`Result[Chunk, ErrInfo]`) so the pipeline stays pure, lazy, and composable — exactly like mapping over a normal iterator.
+The production solution treats success and failure as ordinary values so the pipeline can keep the same streaming shape it had before errors were introduced.
 
 **Audience:** Engineers who process real-world messy data and refuse to lose records or halt pipelines just because one item is bad.
 
@@ -70,7 +58,7 @@ The production solution treats success and failure as ordinary values (`Result[C
 2. You will compose `.map()`, `.bind()`, `.recover()`, and streaming combinators to handle mixed good/bad streams elegantly.  
 3. You will ship a RAG pipeline that processes 99 % of chunks even when 1 % fail, collecting rich structured errors for reporting.
 
-We formalise exactly what we want from correct, production-ready error containers: functor/monad laws, observational equivalence to try/except, bounded work, and perfect error containment.
+We formalise exactly what students should be able to defend here: lawful mapping and binding, bounded work, faithful equivalence to wrapped try/except behavior, and complete containment of per-record failures.
 
 ---
 
