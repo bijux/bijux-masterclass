@@ -1,66 +1,72 @@
 # Capstone Guide
 
+This capstone is the executable reference workflow for Deep Dive Snakemake. It is where
+the course’s largest claims become runnable and reviewable:
 
-<!-- page-maps:start -->
-## Guide Fit
+- rules act as explicit file contracts
+- dynamic discovery leaves durable evidence instead of ambient side effects
+- profiles change operating policy without redefining workflow meaning
+- published outputs are smaller and clearer than the internal run state
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone Guide"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+It is not the right place for first exposure to a concept. It is the right place for
+corroboration once the local idea is already clear.
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+## Use this capstone when
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+- the module idea is already legible and you want executable corroboration
+- you need one repository that keeps workflow truth, publish trust, and policy surfaces visible together
+- you are reviewing whether a small workflow behaves like a serious one under pressure
 
-The Snakemake capstone is the course’s executable proof. It is the place where the
-course’s strongest claims become runnable:
+## Do not use this capstone when
 
-- explicit file contracts instead of hidden edges
-- dynamic discovery that leaves durable evidence
-- profiles as policy instead of tribal command lines
-- verification gates that make “it ran once” an unacceptable standard
+- you still need the first explanation of the concept itself
+- you want to browse the whole repository before naming the question
+- the strongest route feels safer than choosing a smaller proof surface
 
-## How to use it while reading
+## Choose the entry route by question
 
-- After Module 01, inspect the rule contracts and the stable publish boundary.
-- After Module 02, inspect the checkpoint and the way discovery becomes explicit output.
-- After Module 03, inspect profiles, retries, and verification gates.
-- After Module 04, inspect module boundaries, file APIs, and CI-style proof surfaces.
+| If the question is... | Start here | Escalate only if needed |
+| --- | --- | --- |
+| what does this repository promise | [Capstone Walkthrough](capstone-walkthrough.md) | [Capstone File Guide](capstone-file-guide.md) |
+| which files and commands are publicly important | [Command Guide](command-guide.md) | [Capstone Proof Guide](capstone-proof-guide.md) |
+| what is safe for downstream trust | [Publish Review Guide](publish-review-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| what differs across local, CI, and scheduler policy | [Profile Audit Guide](profile-audit-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| how should I review the repository as a steward | [Capstone Review Worksheet](capstone-review-worksheet.md) | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
 
-## Best entrypoints
+## First honest pass
 
-- Capstone walkthrough: [Capstone Walkthrough](capstone-walkthrough.md)
-- File guide: [Capstone File Guide](capstone-file-guide.md)
-- Architecture guide: [Capstone Architecture Guide](capstone-architecture-guide.md)
-- Workflow root: `capstone/Snakefile`
+1. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`.
+2. Read [Capstone Walkthrough](capstone-walkthrough.md).
+3. Read [Capstone File Guide](capstone-file-guide.md).
+4. Read the copied `Snakefile`, key rule files, and `FILE_API.md`.
+5. Stop before widening into stronger proof routes.
+
+That is enough to see the repository contract, the visible workflow shape, and the public
+publish boundary without turning the capstone into directory tourism.
 
 ## Core commands
 
-```bash
+From repository root:
+
+```sh
 make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-snakemake capstone-wf-dryrun
 make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour
 make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit
 make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm
 ```
 
-## Study questions
+Those commands cover first pass, executed review, publish trust, policy review, and the
+strongest confirmation path.
 
-- Which outputs are for internal workflow coordination and which are part of the public interface?
-- What exactly does the checkpoint discover, and what does it never hide?
-- Which proof artifacts would you inspect before trusting a run?
-- Where would you extend the workflow without weakening the publish contract?
+## What to keep asking while you read
+
+- which files are public contracts and which are internal coordination state
+- where discovery becomes a durable artifact instead of runtime folklore
+- which settings belong to policy rather than workflow meaning
+- which saved evidence would matter most to another maintainer
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between repository routes, review surfaces, and proof commands.
+Use [Glossary](glossary.md) when the route pages start sounding interchangeable and you
+need the shelf language kept stable.
