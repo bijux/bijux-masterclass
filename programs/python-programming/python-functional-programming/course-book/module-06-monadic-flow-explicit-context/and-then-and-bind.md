@@ -2,41 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 06: Monadic Flow and Explicit Context"]
-  module --> concept["and_then and bind"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  manual["Start with manual propagation after each step"] --> chain["Chain dependent steps with and_then"]
+  chain --> shortcircuit["Let failure or absence short-circuit automatically"]
+  shortcircuit --> refactor["Refactor the chain without rewriting propagation logic"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make `and_then` feel like a readability tool first. Students usually do not need another name for “monad” on day one. They need a way to stop rewriting the same propagation checks and let dependent steps read like the happy path again.
 
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
+## Start With the Propagation Smell
 
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
+Students often already know the sequence of operations they want. What gets in the way is the repetitive structure around them.
+
+- If every step is followed by “if error, return error,” the code is repeating the container contract instead of the business logic.
+- If adding one more dependent step means editing several propagation branches, the flow is too brittle.
+- If students cannot see where the chain stops on failure, the control rule is still harder to inspect than it needs to be.
 
 **Core question**  
 How do you replace nested `if err/None` checks and manual error propagation with monadic `and_then` (a.k.a. `bind` or `flat_map`) — chaining dependent fallible/optional steps while automatically short-circuiting on the first failure or absence?
 
-We take the pure ADTs from Module 5 and ask the question every pipeline eventually faces:  
-**“Why do I have 47 copies of the same 8-line `if res.is_err(): return res` boilerplate, and why does adding a new step silently break half the pipeline?”**
+This lesson introduces `and_then` as the standard way to express dependent steps over fallible or optional values:
+
+- keep the success path linear and readable
+- let the container propagate failure or absence automatically
+- rely on the lawfulness of the chain so regrouping and extraction stay safe
+
+The repeated-propagation examples matter because they show the exact maintenance tax students are trying to remove.
 
 The naïve pattern everyone writes first:
 ```python
@@ -51,9 +46,9 @@ def embed_chunk(c: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
     return Ok(replace(c, embedding=Embedding(encoded.value, model.name)))
 ```
 
-Duplicated checks, easy to forget a propagation, no compiler help.
+This is the propagation smell the lesson needs students to recognize immediately.
 
-The production pattern: every fallible or optional step returns a container, and `and_then` chains them — automatically short-circuiting on the first failure/absence.
+The production pattern leaves each step responsible only for its own transformation and lets `and_then` carry the propagation rule.
 
 > Repo note: examples in this module use the Module-05 "compositional domain model" types:
 > `ChunkText.content` / `Embedding` via `from funcpipe_rag.rag.domain import Chunk, Embedding`.
@@ -72,9 +67,9 @@ def embed_chunk(c: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
 
 Note: the original `c` and `model` are captured via closure here (perfectly valid). We will replace this exact pattern with a Reader monad in M06C04 so dependencies are explicit and testable.
 
-Adding a new step or changing error handling is a single-line change — forever.
+Now adding or reordering a dependent step is a localized change instead of a control-flow rewrite.
 
-**Audience**: Engineers tired of manual error propagation who want mathematically lawful, automatically short-circuiting pipelines.
+**Audience**: Engineers tired of manual error propagation who want dependent pipelines that stay linear, inspectable, and safe to refactor.
 
 **Outcome**
 1. Every nested `if err/None` replaced with `and_then`.
