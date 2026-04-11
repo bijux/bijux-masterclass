@@ -2,42 +2,38 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 06: Monadic Flow and Explicit Context"]
-  module --> concept["Law-Guided Design"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  hope["Start with \"this composition seems to work\""] --> law["State the law the code should satisfy"]
+  law --> property["Turn the law into a property test"]
+  property --> regress["Catch regressions before they become folklore"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make laws feel practical and defensive. Students do not need to admire algebra from a distance. They need to understand that the laws are the reason a refactor can be trusted instead of manually re-checked at every chaining site.
 
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
+## Start With the Confidence Gap
 
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
+Once chaining looks elegant, a new risk appears: people trust it because it “seems right” rather than because its behavior is nailed down. This lesson should close that gap.
+
+- If the team cannot state the laws a combinator is supposed to satisfy, regressions become hard to name.
+- If a refactor changes grouping or extracted helper boundaries, the laws are what tell us whether the meaning should stay the same.
+- If CI only checks a few examples, composition can still drift while the happy path passes.
 
 **Core question**  
 How do you use property-based testing with Hypothesis to **machine-check** that your `and_then` (and `map`) implementations satisfy the monad/functor laws — giving you high, mechanically verified confidence for the modeled compositions and function families you actually run in CI?
 
-Property-based testing with Hypothesis turns the algebraic laws from “nice theory” into **executable specifications** that run in CI and fail fast if anyone ever regresses the core abstractions.
+This lesson introduces laws as executable specifications:
 
-**Audience**: Engineers who already write `and_then` chains and now want **mechanical confidence** (not hope) that their compositions are safe to refactor forever.
+- name the intended composition behavior precisely
+- encode that behavior as property tests over realistic function families
+- use shrinking and CI to turn abstract guarantees into concrete feedback when something breaks
+
+The central point for students is simple: laws are the reason “safe to refactor” can mean more than “I reran a couple of examples.”
+
+**Audience**: Engineers who already write `and_then` chains and want mechanical confidence, not hope, that those chains remain safe under refactoring.
 
 **Outcome**
 1. You will have a reusable, DRY test suite that machine-checks monad/functor laws for Result and Option.
@@ -49,7 +45,7 @@ Property-based testing with Hypothesis turns the algebraic laws from “nice the
 - **Right identity**: Feeding the identity function (`Ok`/`Some`) does nothing → you can refactor by extracting sub-pipelines without fear.
 - **Associativity**: Parentheses don’t matter → you can regroup chains freely during refactoring; the code stays correct even when the structure changes dramatically.
 
-Violate any of these and your pipeline may work today but break silently tomorrow when someone adds a step or changes grouping.
+Violate any of these and the pipeline may still appear fine in simple examples while quietly becoming unsafe to regroup, extract, or extend.
 
 ## 1. Laws & Invariants (machine-checked in CI)
 
