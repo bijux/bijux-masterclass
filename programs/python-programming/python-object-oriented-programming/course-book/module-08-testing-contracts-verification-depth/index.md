@@ -76,7 +76,7 @@ test count.
 
 ## Keep these support surfaces open
 
-- `../guides/outcomes-and-proof-map.md` when you want each verification claim tied to one evidence route.
+- `../guides/proof-matrix.md` when you want each verification claim tied to one evidence route.
 - `../guides/proof-ladder.md` when you need to size proof honestly instead of defaulting to the strongest route.
 - `../reference/self-review-prompts.md` when you want to test whether a proof claim now sounds like a design judgment instead of a testing slogan.
 

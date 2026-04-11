@@ -85,8 +85,8 @@ Modules 08 to 10 ask whether the model can be trusted:
 - [Pressure Routes](pressure-routes.md) when the design question is clearer than the module name
 - [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
-- [Module Dependency Map](module-dependency-map.md) when the reading order needs justification
-- [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
+- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
+- [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
 - [Pressure Routes](pressure-routes.md) when the next useful module depends on the design pressure you are under
 - [Proof Ladder](proof-ladder.md) when you need to size proof correctly
 - [Capstone](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) when you want the repository route kept explicit

@@ -75,7 +75,7 @@ semantics instead of flattening them away.
 
 ## Keep these support surfaces open
 
-- `../guides/outcomes-and-proof-map.md` when you want the persistence promise tied to one evidence route.
+- `../guides/proof-matrix.md` when you want the persistence promise tied to one evidence route.
 - `../capstone/capstone-map.md` when you want the repository and proof surfaces kept explicit.
 - `../reference/self-review-prompts.md` when you want to test whether storage translation and domain meaning still sound separable.
 

@@ -31,7 +31,7 @@ module tree can stay focused on long-lived content.
 - [Start Here](start-here.md) for the shortest honest entry route
 - [Course Guide](course-guide.md) for the module arc and support-page roles
 - [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
-- [Outcomes And Proof Map](outcomes-and-proof-map.md) for the route from course promise to evidence
+- [Proof Matrix](proof-matrix.md) for the route from course promise to evidence
 - [Orientation](../module-00-orientation/index.md) for the full course shape
 - [Course Map](../module-00-orientation/course-map.md) for the reading structure
 
@@ -41,7 +41,7 @@ module tree can stay focused on long-lived content.
 - [Module Promise Map](module-promise-map.md) when you want each module title translated into a learner contract
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
 - [Pressure Routes](pressure-routes.md) when your route is shaped by a concrete design or review problem
-- [Module Dependency Map](module-dependency-map.md) and [Practice Map](practice-map.md) when you need the sequence and rehearsal loop explained
+- [Module Dependency Map](../reference/module-dependency-map.md) and [Practice Map](../reference/practice-map.md) when you need the sequence and rehearsal loop explained
 
 ## Use These For Commands And Proof
 
@@ -69,4 +69,4 @@ module tree can stay focused on long-lived content.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.
+Use [Glossary](../reference/glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.

@@ -74,7 +74,7 @@ than as a later concern owned by "infrastructure people."
 
 ## Keep these support surfaces open
 
-- `../guides/outcomes-and-proof-map.md` when you want the survivability promise tied to executable evidence.
+- `../guides/proof-matrix.md` when you want the survivability promise tied to executable evidence.
 - `../guides/pressure-routes.md` when failure ownership still feels mixed with persistence or runtime pressure.
 - `../reference/self-review-prompts.md` when you want to test whether cleanup, retry, and compatibility questions now sound like ownership decisions.
 

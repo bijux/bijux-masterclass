@@ -77,7 +77,7 @@ made the system understandable in the first place.
 
 ## Keep these support surfaces open
 
-- `../guides/outcomes-and-proof-map.md` when you want the final operational promise tied directly to proof.
+- `../guides/proof-matrix.md` when you want the final operational promise tied directly to proof.
 - `../guides/proof-ladder.md` when you need to choose the smallest honest audit route.
 - `../reference/self-review-prompts.md` when you want the final review to sound like a production design audit instead of a checklist recital.
 

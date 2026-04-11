@@ -72,7 +72,7 @@ represented as a contract instead of a pile of tolerated exceptions.
 
 ## Keep these support surfaces open
 
-- `../guides/outcomes-and-proof-map.md` when you want the state and lifecycle promise connected to evidence.
+- `../guides/proof-matrix.md` when you want the state and lifecycle promise connected to evidence.
 - `../guides/module-checkpoints.md` when you need a sharper bar for legal and illegal state reasoning.
 - `../reference/self-review-prompts.md` when you want to test whether nullability, validation, and transitions now sound like contract language.
 

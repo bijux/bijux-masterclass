@@ -46,6 +46,17 @@ evidence.
 | the strongest local confirmation route still holds | `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | executable suite plus saved learner-facing bundles |
 | the full learner-facing proof route still builds end to end | `make PROGRAM=python-programming/python-object-oriented-programming proof` | inspection, walkthrough, and verification bundles together |
 
+## Course contract to proof surface
+
+| Course outcome | Best first route | Best first surface |
+| --- | --- | --- |
+| model value objects and entities without confusing their contracts | `inspect` | `summary.txt`, `rules.txt`, lifecycle tests |
+| choose composition, inheritance, protocols, or plain functions deliberately | `capstone-walkthrough` | `walkthrough.txt`, `application.py`, `model.py` |
+| design state transitions so illegal states are difficult to construct | `inspect` | `rules.txt`, `tests/test_policy_lifecycle.py`, `snapshot.json` |
+| enforce cross-object invariants through aggregate roots and disciplined APIs | `capstone-verify-report` | `history.txt`, `timeline.txt`, runtime and application tests |
+| evolve storage, codecs, and compatibility boundaries without flattening the domain | `capstone-verify-report` | `retirement.txt`, `rate_of_change.txt`, repository and runtime surfaces |
+| publish public APIs and extension points that remain governable under change | `proof` | saved learner-facing bundles plus the public-capstone guides |
+
 ## Module-to-proof bridge
 
 | Module range | Main learner question | Best first evidence surface |

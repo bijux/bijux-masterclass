@@ -77,7 +77,7 @@ plumbing to bolt on later.
 
 ## Keep these support surfaces open
 
-- `../guides/outcomes-and-proof-map.md` when you want the time and concurrency promise tied to a proof route.
+- `../guides/proof-matrix.md` when you want the time and concurrency promise tied to a proof route.
 - `../guides/pressure-routes.md` when runtime pressure is competing with earlier ownership questions.
 - `../reference/self-review-prompts.md` when you want to test whether clocks, cancellation, and retries still sound like boundary decisions.
 

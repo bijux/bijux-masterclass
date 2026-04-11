@@ -78,7 +78,7 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 
 - Use [Start Here](guides/start-here.md) when you need the shortest honest route into the course.
 - Use [Course Guide](guides/course-guide.md) when you want the ten-module arc explained before you start reading.
-- Use [Outcomes And Proof Map](guides/outcomes-and-proof-map.md) when you want every promise tied to one evidence route.
+- Use [Proof Matrix](guides/proof-matrix.md) when you want every promise tied to one evidence route.
 - Use [Pressure Routes](guides/pressure-routes.md) when you already have a concrete design or review problem.
 - Use [Capstone](capstone/index.md) only after the module idea is clear enough that you know what you are trying to prove.
 
@@ -95,7 +95,7 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 - [Start Here](guides/start-here.md)
 - [Course Guide](guides/course-guide.md)
 - [Learning Contract](guides/learning-contract.md)
-- [Outcomes And Proof Map](guides/outcomes-and-proof-map.md)
+- [Proof Matrix](guides/proof-matrix.md)
 - [Module Promise Map](guides/module-promise-map.md)
 - [Module Checkpoints](guides/module-checkpoints.md)
 - [Pressure Routes](guides/pressure-routes.md)
@@ -168,7 +168,7 @@ By the end of the course, you should be able to:
 ## Reading order
 
 - Start with [Start Here](guides/start-here.md).
-- Continue with [Outcomes And Proof Map](guides/outcomes-and-proof-map.md), [Module Promise Map](guides/module-promise-map.md), [Course Guide](guides/course-guide.md), and [Learning Contract](guides/learning-contract.md).
+- Continue with [Proof Matrix](guides/proof-matrix.md), [Module Promise Map](guides/module-promise-map.md), [Course Guide](guides/course-guide.md), and [Learning Contract](guides/learning-contract.md).
 - Use [Module Checkpoints](guides/module-checkpoints.md) and [Pressure Routes](guides/pressure-routes.md) when you need a more intentional route.
 - Start with [Orientation](module-00-orientation/index.md).
 - Work through Modules 01 to 10 in order.
