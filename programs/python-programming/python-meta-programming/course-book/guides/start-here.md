@@ -41,7 +41,7 @@ and easier to justify than a simpler alternative.
 
 Use this route when you are new to the course and want the smallest honest sequence:
 
-1. Read [Course Home](../index.md) for the promise, audience, and entry choices.
+1. Read [Course Home](../index.md) for the promise, scope, and entry choices.
 2. Read [Course Guide](course-guide.md) for the module arc and page roles.
 3. Read [Learning Contract](learning-contract.md) so the study bar is explicit before the dense modules begin.
 4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.

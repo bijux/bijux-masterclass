@@ -18,7 +18,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  promise["Read the course promise, scope, and audience"] --> orientation["Open Module 00 to anchor the mental model"]
+  promise["Read the course promise and scope"] --> orientation["Open Module 00 to anchor the mental model"]
   orientation --> modules["Move into the module sequence that matches your pressure"]
   modules --> support["Use guides and reference pages when they answer a concrete question"]
   modules --> capstone["Bring the capstone in after the current idea is clear"]
@@ -148,7 +148,7 @@ instead of ornamental.
 - using dynamic power because it feels clever
 - breaking signatures, metadata, or tracebacks during wrapping
 - putting class-creation behavior into code that should stay ordinary and explicit
-- teaching metaclasses before descriptor behavior is clear
+- using metaclasses before descriptor behavior is clear
 - approving meta-heavy code without a proof route
 
 ## What success looks like

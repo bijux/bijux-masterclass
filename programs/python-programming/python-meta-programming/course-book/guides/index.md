@@ -78,7 +78,7 @@ do not have to repeat that scaffolding.
 - `guides/` stays the study route and proof shelf
 - `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable runtime and review shelf
-- `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc
+- `module-00-orientation/` plus Modules `01` to `10` stay the course arc
 
 ## Directory glossary
 

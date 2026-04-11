@@ -45,7 +45,7 @@ higher-power hook is justified, it belongs in the center of this course.
 
 ## Topics that are adjacent, not central
 
-These matter, but they are supporting material rather than the main teaching target:
+These matter, but they are supporting material rather than the main runtime-design target:
 
 - static typing details beyond what is needed to discuss annotations and reviewability
 - framework APIs beyond the runtime pressure they introduce
