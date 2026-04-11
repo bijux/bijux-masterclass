@@ -1,42 +1,38 @@
 # Capstone Glossary
 
-<!-- page-maps:start -->
-## Glossary Fit
+Use this page when the capstone route pages start to blur together. The capstone shelf is
+not a second course book. It is a small set of entry points into one executable
+repository, and the terms here keep those entry points distinct.
 
-```mermaid
-flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
-```
+## Route terms
 
-```mermaid
-flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
-```
-<!-- page-maps:end -->
+| Term | Meaning here | Why it matters |
+| --- | --- | --- |
+| walkthrough | the bounded first pass through the repository | keeps first contact human-scale |
+| inspect | the learner-facing public-contract review route | helps you review targets and boundaries before wider proof |
+| proof | the sanctioned multi-bundle review route | meant for stewardship review, not first contact |
+| confirm | the strongest built-in confirmation pass | for final confidence after narrower routes are already understood |
+| repro | a deliberately broken miniature Makefile | isolates one failure class so the lesson is visible |
+| capstone route | one bounded way into the executable repository | prevents directory tourism |
+| public target | a target another learner or reviewer is allowed to rely on | separates the supported surface from implementation detail |
+| proof surface | the command, file, or saved bundle that corroborates a claim | keeps review tied to evidence instead of prose |
 
-This glossary belongs to **Index** in **Deep Dive Make**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+## Page names in plain language
 
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Page | What it helps you do |
 | --- | --- |
-| Capstone Extension Guide | the change-placement surface for the capstone, used to decide where a new behavior belongs and what it must preserve. |
-| Capstone File Guide | the capstone reading surface for capstone file guide, used to choose the next repository entry point without guessing. |
-| Capstone Proof Checklist | the capstone review surface for capstone proof checklist, used to turn course ideas into inspection, evidence, and change decisions. |
-| Capstone Review Worksheet | the capstone review surface for capstone review worksheet, used to turn course ideas into inspection, evidence, and change decisions. |
-| Capstone Walkthrough | the capstone reading surface for capstone walkthrough, used to choose the next repository entry point without guessing. |
-| Command Guide | the executable entry surface for the capstone, used when the next question is best answered by running the project rather than rereading the course. |
-| Deep Dive Make: Capstone Map | the capstone reading surface for deep dive make: capstone map, used to choose the next repository entry point without guessing. |
-| Repro Catalog | the capstone support surface for repro catalog, used to keep repository reading attached to the course rather than turning into tool tourism. |
-| Repro Study Worksheet | the capstone review surface for repro study worksheet, used to turn course ideas into inspection, evidence, and change decisions. |
+| [Capstone Map](capstone-map.md) | choose the right route by module or question |
+| [Command Guide](command-guide.md) | pick the right command layer and first command |
+| [Capstone File Guide](capstone-file-guide.md) | know which files to read first and why |
+| [Capstone Walkthrough](capstone-walkthrough.md) | take a bounded first pass through the repository |
+| [Capstone Proof Checklist](capstone-proof-checklist.md) | run one complete learner-facing proof pass |
+| [Capstone Review Worksheet](capstone-review-worksheet.md) | review the repository as a steward, not just a reader |
+| [Capstone Extension Guide](capstone-extension-guide.md) | change the capstone without weakening its teaching or proof value |
+| [Repro Catalog](repro-catalog.md) | choose the right failure specimen for one lesson |
+| [Repro Study Worksheet](repro-study-worksheet.md) | capture what a repro actually taught you |
+
+## Reading rule
+
+If two pages sound interchangeable, do not open both. Name the job first: entry, command
+choice, file ownership, proof, stewardship, or failure study. Then open the one page that
+owns that job.
