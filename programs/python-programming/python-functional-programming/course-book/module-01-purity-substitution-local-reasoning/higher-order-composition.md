@@ -2,54 +2,42 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Higher-Order Composition"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  repeat["Spot repeated transform logic"] --> extract["Extract the small transform"]
+  extract --> pass["Pass it into map, filter, reduce, or flow"]
+  pass --> review["Review the pipeline as data moving through steps"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about a practical refactor move: stop rewriting the same loop structure when
+the real variation is only the transform inside it.
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Concrete Problem
 
-Here's a snippet from the progression map:
+Without composition, codebases tend to collect:
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+- loops that differ in only one or two lines
+- nested transforms where the business rule is buried inside traversal mechanics
+- callback-heavy code that is harder to reorder or test than it should be
 
+Composition solves that by separating:
+
+- the fixed traversal or pipeline structure
+- the specific function passed into that structure
+
+## Keep This Question In View
 
 > **Core question:**  
 > How do you build concise, reusable, composable transformations using functions as first-class citizens—so that complex logic emerges from simple, testable building blocks without imperative loops or hidden state?
 
-This core builds on **Core 1**'s mindset, **Core 2**'s contracts, and **Core 3**'s immutability by adding **higher-order functions and composition**:  
-- Treat functions as values (`lambda`, `def`, partial).  
-- Transform data with `map`, `filter`, `reduce`.  
-- Build pipelines via composition (our `flow` helper) and generator chains.  
+By the end of this lesson, you should be able to identify:
 
-We continue the **running project** from Core 1-3: refactoring the FuncPipe RAG Builder, now using HO functions for stages like cleaning and chunking.
-
-**Audience:** Developers who passed Core 3's immutability checks but still write imperative loops, duplicate transformation code, or struggle with callback hell in data processing.  
-**Outcome:**  
-1. Refactor any imperative loop into a declarative pipeline in < 15 lines.  
-2. Explain why declarative pipelines beat nested loops for reasoning (and are usually comparable or faster in performance when idiomatic).  
-3. Add properties proving identity and equivalence for your compositions.  
-4. Spot and fix three classic HO violations: side-effects in map/filter, manual indexing, non-associative reduce.
+- the repeated pipeline shape
+- the small function that should be extracted
+- whether the resulting pipeline is actually clearer than the loop it replaced
 
 ---
 
@@ -65,7 +53,12 @@ We continue the **running project** from Core 1-3: refactoring the FuncPipe RAG 
 
 ### 1.3 Why This Matters Now
 
-HO composition glues Core 3's immutable data with Core 2's pure functions into efficient pipelines, enabling local refactorings (Core 5) and combinators (Core 6); without it, code remains imperative spaghetti.
+Higher-order composition matters because it keeps structure and behavior separate. Once the
+transform becomes a value, you can:
+
+- test the small function on its own
+- test the traversal logic on its own
+- swap or reorder steps without rewriting the whole loop body
 
 ---
 
@@ -74,15 +67,15 @@ HO composition glues Core 3's immutable data with Core 2's pure functions into e
 ### 2.1 One Picture
 
 ```text
-Imperative Loop                            Declarative Pipeline
-+--------------------------------+        +-------------------------------------+
-| total = 0                      |        | from operator import add            |
-| for x in xs:                   |        | total = reduce(add,                 |
-|     if x > 0:                  |        |                filter(pos,          |
-|         total += x * x         |        |                       map(sq, xs)), |
-| print(total)                   |        |                0)                   |
-+--------------------------------+        +-------------------------------------+
-                                           Reads top-to-bottom, no hidden state
+Imperative loop                           Declarative pipeline
++--------------------------------+       +-------------------------------------+
+| total = 0                      |       | from operator import add            |
+| for x in xs:                   |       | total = reduce(add,                 |
+|     if x > 0:                  |       |                filter(pos,          |
+|         total += x * x         |       |                       map(sq, xs)), |
+| print(total)                   |       |                0)                   |
++--------------------------------+       +-------------------------------------+
+                                          Structure and transform are separated
 ```
 
 ### 2.2 Contract Table
@@ -93,7 +86,10 @@ Imperative Loop                            Declarative Pipeline
 | Equivalence                | Pipeline ≠ known-correct impl          | Hypothesis equivalence vs imperative     |
 | Laziness / Memory          | Eager list(map()) on large data        | Manual memory profiling                  |
 
-**Note on Pipelines:** Only as strong as parts; impure functions or mutable data break everything—guard with Core 2/3. In Python, declarative pipelines often mean comprehensions + small pure functions, with map/filter/reduce as optional tools.
+**Note on Pipelines:** In Python, declarative code often means comprehensions plus small
+pure helpers, with `map`, `filter`, `reduce`, or a local `flow` helper used when they make
+the data movement clearer. The point is not to force one syntax. The point is to make the
+transform easy to see.
 
 ### 2.3 How This Relates to Plain Python
 
