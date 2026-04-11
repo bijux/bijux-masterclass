@@ -68,3 +68,5 @@ Leave this arc able to review a real Make system and justify what should change 
 - Read [Mid-Course Map](mid-course-map.md) when Modules 01 to 03 already feel stable and
   you need the bridge into semantics under pressure, hardening, release trust, and
   incidents.
+- Read [Mastery Map](mastery-map.md) when the pressure is stewardship, migration, or
+  long-lived trust review.

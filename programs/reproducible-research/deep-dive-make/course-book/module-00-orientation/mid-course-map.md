@@ -63,6 +63,11 @@ Use this cluster when the main question is no longer only correctness.
 
 Leave this cluster able to separate public trust from local build residue.
 
+## When to leave this route
+
+Move to [mastery-map.md](mastery-map.md) once the question becomes stewardship,
+migration, or whether Make should keep owning the concern at all.
+
 ## Good next move after this map
 
 Open exactly one of these before resuming:
