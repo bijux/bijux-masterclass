@@ -54,7 +54,7 @@ This is verbose, easy to get wrong, and duplicates logic across codebases.
 
 The production solution expresses each strategy as a small fold over the `Result` stream, so the choice is explicit and easy to review.
 
-**Audience:** Engineers who run batch RAG pipelines over millions of chunks and need either quick failure feedback or complete error reports — without ever writing another manual error-collecting loop.
+Use this when you run batch RAG pipelines over millions of chunks and need either quick failure feedback or complete error reports without writing another manual error-collecting loop.
 
 **Outcome:**  
 1. You will choose fail-fast or accumulation per pipeline and implement it in 3–5 lines using pure folds.  

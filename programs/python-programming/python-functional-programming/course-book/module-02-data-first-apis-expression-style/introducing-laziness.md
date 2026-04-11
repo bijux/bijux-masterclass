@@ -35,7 +35,7 @@ This lesson introduces laziness in the way you need to apply it:
 
 The running project keeps the lesson honest: laziness is useful when it preserves a readable pipeline while reducing waste, not when it turns every example into a generator puzzle.
 
-**Audience:** Developers using expression-oriented pipelines but still materializing large lists with `[...]` comprehensions, risking unnecessary memory use and accidental eager work.  
+Use this when you have expression-oriented pipelines but still materialize large lists with `[...]` comprehensions, risking unnecessary memory use and accidental eager work.
 **Outcome:**  
 1. Spot eager materialization in code and explain why it wastes memory.  
 2. Refactor an eager list comprehension to a lazy generator.  

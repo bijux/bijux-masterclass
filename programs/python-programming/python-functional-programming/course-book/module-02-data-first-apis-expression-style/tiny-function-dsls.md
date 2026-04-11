@@ -35,7 +35,7 @@ This lesson introduces a small data-driven DSL in concrete terms:
 
 The running project matters because filtering rules are exactly the sort of logic that keeps drifting into helpers unless the team gives them a stable representation.
 
-**Audience:** Developers with combinator pipelines who still embed domain logic in if-else branches or scattered predicates.  
+Use this when you have combinator pipelines but still embed domain logic in if-else branches or scattered predicates.
 **Outcome:**  
 1. Identify rule smells (if-else sprawl, mutable flags) and explain their impact on evolvability.  
 2. Refactor domain logic to frozen rule data + pure interpreter.  

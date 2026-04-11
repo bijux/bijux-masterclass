@@ -35,7 +35,7 @@ This lesson introduces the expression-oriented mindset in the form you actually 
 
 The running project matters here because expression style is not just "shorter Python." It is a way to make filtering, selection, and branching reviewable inside a configurable pipeline.
 
-**Audience:** Developers who understand purity and configurators but still write loops like:
+Use this when you understand purity and configurators but still write loops like:
 
 ```python
 found = False

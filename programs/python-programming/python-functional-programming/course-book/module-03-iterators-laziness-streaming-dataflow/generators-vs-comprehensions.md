@@ -35,7 +35,7 @@ This lesson builds directly on generator functions by introducing the simplest l
 
 The running project keeps the lesson honest: not every list should become a generator, but every comprehension should be justified as either a stored result or a stream.
 
-**Audience:** Developers who already know generator functions but still default to list comprehensions inside streaming code.
+Use this when you already know generator functions but still default to list comprehensions inside streaming code.
 
 **Outcome:**
 1. Spot any list comprehension that produces on the order of tens of thousands of items and instantly know it’s a likely memory footgun.

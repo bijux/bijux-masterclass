@@ -48,7 +48,7 @@ This works once — but it forgets to close on early break, consumer exceptions,
 
 The production solution wraps the stream in small resource managers whose whole job is to guarantee cleanup on every exit path.
 
-**Audience:** Engineers who open any long-lived resource inside a generator and refuse to leak sockets/memory on errors or aborts.
+Use this when you open any long-lived resource inside a generator and refuse to leak sockets or memory on errors or aborts.
 
 **Outcome:**  
 1. You will wrap any resource-holding generator with automatic cleanup that works on all exit paths.  

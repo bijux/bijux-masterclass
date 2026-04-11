@@ -35,7 +35,7 @@ This lesson introduces configuration-as-data as a reviewable workflow:
 
 The running project matters because real pipelines often have many settings. Students need to see how modeling those settings improves inspection rather than adding ceremony for its own sake.
 
-**Audience:** Developers with sealed boundaries who still use globals, environment leaks, or mutable config that break determinism.  
+Use this when you have sealed boundaries but still use globals, environment leaks, or mutable config that break determinism.
 **Outcome:**  
 1. Identify config smells (globals, env leaks) and explain their impact on testing.  
 2. Refactor raw sources to validated immutable data + binding.  

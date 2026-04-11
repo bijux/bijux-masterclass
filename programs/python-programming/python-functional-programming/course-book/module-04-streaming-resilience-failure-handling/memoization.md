@@ -48,7 +48,7 @@ The production solution must improve performance without changing the function c
 
 That is the standard for safe memoization in this course: a pure optimization that can be removed without changing the result.
 
-**Audience:** Engineers who have expensive pure functions (embedding models, parsers, hashers, normalizers) called repeatedly in recursive or streaming contexts and refuse to waste CPU on recomputation.
+Use this when you have expensive pure functions called repeatedly in recursive or streaming contexts and refuse to waste CPU on recomputation.
 
 **Outcome:**  
 1. You will apply `lru_cache_custom` or `memoize_keyed` to any pure function and prove via instrumentation that recomputations drop to the number of unique inputs.  

@@ -35,7 +35,7 @@ This lesson introduces `itertools` as disciplined orchestration for lazy stages:
 
 The running project keeps the lesson practical: the right helper should make the pipeline easier to read and easier to reason about, not just shorter.
 
-**Audience:** Developers with lazy stages who need to merge, slice, or branch streams without accidentally reintroducing eager behavior.
+Use this when you have lazy stages and need to merge, slice, or branch streams without accidentally reintroducing eager behavior.
 
 **Outcome:**
 1. Spot composition smells like list chaining.

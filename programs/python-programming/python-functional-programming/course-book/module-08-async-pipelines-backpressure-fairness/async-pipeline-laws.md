@@ -59,7 +59,7 @@ The production pattern: design the description so that it satisfies the laws by 
 
 No runtime guards. No locks. No distributed transactions. Just pure descriptions + overwhelming evidence in CI.
 
-**Audience**: Engineers who refuse to ship async pipelines without overwhelming evidence they won’t duplicate or lose data under failure.
+Use this when you refuse to ship async pipelines without strong evidence they will not duplicate or lose data under failure.
 
 **Outcome**
 1. Every pipeline that satisfies the preconditions in the decision table (stable keys, idempotent ops, UPSERT, key-disjoint merges) satisfies idempotence, at-most-once success, and no duplication — with overwhelming evidence in CI.

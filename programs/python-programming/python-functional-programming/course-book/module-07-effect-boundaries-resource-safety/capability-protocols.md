@@ -86,7 +86,7 @@ These laws turn dependency injection from a runtime pattern into a **type-checke
 For pure-core instrumentation in this course, the usual preference is still Writer-based
 logging, with the shell draining `Writer[..., LogEntry]` into a concrete `Logger`
 adapter. That keeps the capability story and the purity story aligned instead of forcing
-students to choose one and forget the other.
+you to choose one and forget the other.
 
 ## 3. Public API – Capability Protocols (`capstone/src/funcpipe_rag/domain/capabilities.py`)
 

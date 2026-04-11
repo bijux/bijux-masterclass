@@ -45,7 +45,7 @@ This loses the structure the whole module has been building.
 
 The production solution folds the `Result` stream into an immutable report that preserves the counts, samples, and provenance worth carrying forward.
 
-**Audience:** Engineers who need complete, structured failure diagnostics from batch RAG runs.
+Use this when you need complete, structured failure diagnostics from batch RAG runs.
 
 **Outcome:**  
 1. You will aggregate every error into a rich, bounded, serialisable report with one fold.  

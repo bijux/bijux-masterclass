@@ -39,7 +39,7 @@ Module 8 is **Async FuncPipe & Backpressure** — the lightweight, production-gr
 
 This is where many Python courses accidentally turn concurrency into mysticism. The goal
 here is the opposite: treat async behavior as explicit description plus explicit driving
-boundaries, so the reader can still reason about the system locally.
+boundaries, so you can still reason about the system locally.
 
 Module 08 matters because it is the place where production pressure is highest: retries,
 timeouts, queues, fairness, and coordination. If the mental model stays weak here, the

@@ -63,7 +63,7 @@ Chunk(text="Deep leaf",         depth=D, path=(1, 0, 0, ..., k))
 
 The naïve recursive implementation is still worth studying because it names the traversal clearly. The lesson is not "recursion is bad." The lesson is that some inputs turn the clearest specification into an unsafe runtime strategy. The production version must therefore protect stack depth without giving up the same observable traversal behavior.
 
-**Audience:** Engineers who process unpredictable document hierarchies (PDF → HTML → Markdown → XML) and will not ship code that can `RecursionError` or OOM on legal input.
+Use this when you process unpredictable document hierarchies and will not ship code that can `RecursionError` or OOM on legal input.
 
 **Outcome:**  
 1. You will be able to formally prove termination and give a machine-checked guarantee of stack-safety + full laziness in Python.  

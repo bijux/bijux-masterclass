@@ -74,7 +74,7 @@ async for batch in chunked():
 
 One policy change → dramatically different efficiency. Zero core changes. Full deterministic testing with fake sleeper.
 
-**Audience**: Engineers who discovered that “just use async” is not free when you have 100k items and a batch API.
+Use this when “just use async” stops being free because you have 100k items and a batch API.
 
 **Outcome**
 1. Every single-item call replaced with properly-sized and timed batches.

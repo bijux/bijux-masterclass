@@ -51,7 +51,7 @@ This is the failure-handling trap the lesson needs to eliminate: halting unexpec
 
 The production solution treats success and failure as ordinary values so the pipeline can keep the same streaming shape it had before errors were introduced.
 
-**Audience:** Engineers who process real-world messy data and refuse to lose records or halt pipelines just because one item is bad.
+Use this when you process real-world messy data and refuse to lose records or halt pipelines just because one item is bad.
 
 **Outcome:**  
 1. You will model any per-item failure as `Result` or `Option` and prove via Hypothesis that the typed pipeline is equivalent to try/except but never loses data.  

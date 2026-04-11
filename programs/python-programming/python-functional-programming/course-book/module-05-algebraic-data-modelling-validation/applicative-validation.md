@@ -67,7 +67,7 @@ validated: Validation[User, ErrInfo] = validate_user(raw_user)
 
 Now the diagnostic behavior is part of the design, and it scales better both for users and for code review.
 
-**Audience**: Engineers tired of “fix one field, resubmit, repeat” who want complete and principled validation feedback.
+Use this when you are tired of “fix one field, resubmit, repeat” and want complete, principled validation feedback.
 
 **Outcome**
 1. Every short-circuit validator replaced with `Validation`.

@@ -35,7 +35,7 @@ This lesson introduces fencing as an explicit safety discipline:
 
 The running project matters because production pipelines often process sources that are large, malformed, or simply unbounded. Students need to leave this lesson knowing how to make termination a visible design choice.
 
-**Audience:** Developers processing logs, network feeds, generators, or other streams that may be untrusted or unbounded.
+Use this when you process logs, network feeds, generators, or other streams that may be untrusted or unbounded.
 
 **Outcome:**
 1. Spot any unfenced consumption of an iterator that could be unbounded and know it's a denial-of-service vulnerability.

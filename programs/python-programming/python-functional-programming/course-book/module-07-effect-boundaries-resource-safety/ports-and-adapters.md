@@ -69,7 +69,7 @@ How do you structure a real production system so that the pure domain core depen
 
 This is the architectural pattern that finally lets you ship the beautiful monadic pipelines from Module 6 to production **without compromise**.
 
-**Audience**: Engineers who love the purity of Module 6 but need to integrate with the real world (files, APIs, databases) without polluting the core.
+Use this when you love the purity of Module 6 but need to integrate with the real world without polluting the core.
 
 **Outcome**  
 1. You will define narrow, pure ports (protocols) for every external dependency.  

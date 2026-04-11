@@ -70,7 +70,7 @@ class Failure:
 
 Now the model itself tells you which cases exist, and later tools like `match` and `assert_never` can enforce that understanding mechanically.
 
-**Audience**: Engineers tired of incomplete state handling, silent `None` paths, and mutable model shapes that let bad combinations slip through review.
+Use this when incomplete state handling, silent `None` paths, and mutable model shapes let bad combinations slip through review.
 
 **Outcome**
 1. Every dict/class soup replaced with proper product and tagged sum types.

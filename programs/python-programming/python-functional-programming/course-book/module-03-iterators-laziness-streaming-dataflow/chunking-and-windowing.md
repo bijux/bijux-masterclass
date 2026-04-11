@@ -35,7 +35,7 @@ This lesson introduces the main streaming aggregation patterns you actually need
 
 The running project matters because retrieval and document processing pipelines constantly need these patterns, and they are exactly where hidden eager work tends to sneak back in.
 
-**Audience:** Developers with lazy pipelines who still materialize lists for chunking, windowing, or grouping because those operations feel harder to stream.
+Use this when you have lazy pipelines but still materialize lists for chunking, windowing, or grouping because those operations feel harder to stream.
 
 **Outcome:**
 1. Spot any `for i in range(0, len(text), step): text[i:i+k]` loop and instantly know you can make it lazy with overlap and tail handling.

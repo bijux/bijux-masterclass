@@ -35,7 +35,7 @@ This lesson introduces boundary design as a practical architecture habit:
 
 The running project makes the lesson concrete: the same RAG pipeline should work with fake boundaries in tests and real boundaries in production without changing the core logic.
 
-**Audience:** Developers using small-arity APIs but still letting file reads, exceptions, or mutable state leak into the core.  
+Use this when you have small-arity APIs but still let file reads, exceptions, or mutable state leak into the core.
 **Outcome:**  
 1. Identify effect leaks (I/O, raises) in code and explain their impact on reasoning.  
 2. Refactor a leaky function into parametric core + thin boundary with injected deps.  

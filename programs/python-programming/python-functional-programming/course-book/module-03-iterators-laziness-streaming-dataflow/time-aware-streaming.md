@@ -35,7 +35,7 @@ This lesson introduces time-aware streaming as explicit dependency design:
 
 The running project and side examples matter because time-sensitive pipelines are common, and they should not require giving up the explicit-boundary habits built earlier in the course.
 
-**Audience:** Developers with real-time or bursty streams who need time controls without hiding behavior in global clocks.
+Use this when you have real-time or bursty streams and need time controls without hiding behavior in global clocks.
 
 **Outcome:**
 1. Spot untimed smells like bursty I/O.

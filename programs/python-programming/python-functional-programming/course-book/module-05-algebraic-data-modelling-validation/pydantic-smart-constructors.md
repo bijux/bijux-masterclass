@@ -54,7 +54,7 @@ serialized = validated.model_dump_json(by_alias=True)  # stable, versioned, repr
 
 That one-time validation boundary is the key design idea this lesson should lock in.
 
-**Audience**: Engineers who have debugged bad input too late and want strong runtime validation without dragging framework models through the core.
+Use this when you have debugged bad input too late and want strong runtime validation without dragging framework models through the core.
 
 **Outcome**
 1. Every raw JSON/dict → validated Pydantic model → core frozen ADT.

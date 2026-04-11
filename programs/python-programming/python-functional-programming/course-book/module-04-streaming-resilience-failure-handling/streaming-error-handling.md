@@ -53,7 +53,7 @@ embedded = par_try_map_iter(embed_chunk, chunks_with_path, stage="embed")
 
 The stream continues forever; good chunks flow through immediately; every failure is captured with full provenance and can be logged, retried, or routed without stopping anything.
 
-**Audience:** Engineers who run RAG (or any data-processing) pipelines over real-world messy data and refuse to lose 99 % of their work because of 1 % bad records.
+Use this when you run RAG or other data-processing pipelines over real-world messy data and refuse to lose 99 % of the work because of 1 % bad records.
 
 **Outcome:**  
 1. You will process mixed good/bad streams with zero halting and O(1) memory per item.  

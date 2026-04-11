@@ -35,7 +35,7 @@ This lesson introduces reusable streaming stages as explicit factories:
 
 The broader examples matter here because the lesson is not only about one RAG pipeline. It is about recognizing a reusable streaming shape that survives across domains.
 
-**Audience:** Developers with ad-hoc streaming scripts who want reusable, testable stages instead of copy-pasted variants.
+Use this when you have ad-hoc streaming scripts and want reusable, testable stages instead of copy-pasted variants.
 
 **Outcome:**
 1. Spot hardcoding smells like globals.

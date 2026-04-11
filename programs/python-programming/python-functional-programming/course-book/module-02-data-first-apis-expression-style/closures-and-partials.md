@@ -35,7 +35,7 @@ This lesson introduces pure configurators in the practical sense you need:
 
 The running FuncPipe examples make one idea concrete: configuration should become a value that shapes behavior, not a hidden force that changes behavior from a distance.
 
-**Audience:** Python developers with pure pipelines who now need configurable variants such as different chunk sizes or keep rules, but keep reaching for globals or mutable defaults.  
+Use this when you have pure pipelines that need configurable variants such as different chunk sizes or keep rules, but globals or mutable defaults still feel tempting.
 **Outcome:**  
 1. Spot globals or mutable defaults in config and explain why they break determinism.  
 2. Refactor a configurable impure function to pure using closures/partials.  

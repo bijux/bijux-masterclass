@@ -35,7 +35,7 @@ This lesson introduces fan-in and fan-out as contract-heavy streaming operations
 
 The running project and cross-domain examples matter because merge and split patterns show up everywhere, but the same names hide very different behavior if the contracts are not stated clearly.
 
-**Audience:** Developers building multi-source or multi-consumer pipelines who need lazy merge and split behavior without hidden materialization.
+Use this when you are building multi-source or multi-consumer pipelines and need lazy merge and split behavior without hidden materialization.
 
 **Outcome:**
 1. Identify single-stream limitations.

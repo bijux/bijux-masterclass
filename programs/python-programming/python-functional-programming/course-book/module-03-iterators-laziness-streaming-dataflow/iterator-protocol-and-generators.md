@@ -35,7 +35,7 @@ This lesson introduces iterator foundations in the way you actually need them:
 
 The running FuncPipe examples matter because they show laziness as an explicit boundary choice, not a vague performance trick.
 
-**Audience:** Python developers with pure configurable pipelines who still materialize full collections, hit memory ceilings, or compute data that the caller never uses.
+Use this when you have pure configurable pipelines but still materialize full collections, hit memory ceilings, or compute data that the caller never uses.
 
 **Outcome:**
 1. Spot eagerness in code and explain exactly how much memory it wastes.

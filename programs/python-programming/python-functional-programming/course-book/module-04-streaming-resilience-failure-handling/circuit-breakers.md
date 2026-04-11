@@ -54,7 +54,7 @@ This works once — but it’s duplicated everywhere, easy to get wrong, and bre
 
 The production solution expresses that stopping rule as a lazy, composable breaker over the stream, so the threshold and resulting behavior are both visible.
 
-**Audience:** Engineers who run long-running batch pipelines and cannot afford to process doomed data for hours.
+Use this when you run long-running batch pipelines and cannot afford to process doomed data for hours.
 
 **Outcome:**  
 1. You will short-circuit on first error, error count, error rate, or arbitrary predicate — all with O(k) work.  

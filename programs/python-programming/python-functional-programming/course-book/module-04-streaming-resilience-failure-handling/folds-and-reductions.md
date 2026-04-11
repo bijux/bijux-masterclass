@@ -54,7 +54,7 @@ The production solution must still tell the same aggregation story, but it has t
 
 That is what a fold gives us in this module: one explicit reduction over the tree where the recursion strategy is safe and the aggregation logic remains reviewable.
 
-**Audience:** Engineers who routinely aggregate statistics over tree/document/graph structures and refuse to ship code that can `RecursionError` on pathological but legal inputs.
+Use this when you routinely aggregate statistics over tree/document/graph structures and refuse to ship code that can `RecursionError` on pathological but legal inputs.
 
 **Outcome:**  
 1. You will replace any recursive aggregation with an iterative fold that is formally terminating and stack-safe.  

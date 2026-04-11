@@ -35,7 +35,7 @@ This lesson introduces combinators as disciplined orchestration:
 
 The running project keeps the lesson practical: a combinator chain should make the document pipeline easier to read, not more magical.
 
-**Audience:** Developers with config-as-data who still wire stages together with nested callbacks or imperative loops that hide the real pipeline.  
+Use this when you have config-as-data but still wire stages together with nested callbacks or imperative loops that hide the real pipeline.
 **Outcome:**  
 1. Identify callback smells (nested functions, imperative chains) and explain their impact on composability.  
 2. Refactor a callback chain into combinators with bound pure functions.  

@@ -35,7 +35,7 @@ This lesson introduces debugging as explicit pipeline design:
 
 The running project keeps the lesson grounded: debugging support should help explain chunk flow and decision points without flattening the lazy pipeline into a debugging script.
 
-**Audience:** Developers with DSL-driven pipelines who still debug with prints, breakpoints, or forced eager evaluation.  
+Use this when you have DSL-driven pipelines but still debug with prints, breakpoints, or forced eager evaluation.
 **Outcome:**  
 1. Spot debug smells (prints in core, mutable flags, eager `list()`) and explain their impact on purity.  
 2. Refactor an opaque pipeline to include named functions, tee traces, and probe assertions.  

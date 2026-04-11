@@ -59,7 +59,7 @@ validated_chunks = from_optimized_batch(obatch)         # back to pure ADTs, pro
 
 That is the standard to leave with: compromise representation, never meaning.
 
-**Audience**: Engineers who value ADTs but need a principled path through real performance pressure.
+Use this when you value ADTs but need a principled path through real performance pressure.
 
 **Outcome**
 1. Every hot path measured and justified.

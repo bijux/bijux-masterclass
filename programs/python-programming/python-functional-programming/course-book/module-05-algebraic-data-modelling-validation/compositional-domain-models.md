@@ -64,7 +64,7 @@ chunk = assemble(text, meta, emb)   # Validation[Chunk, ErrInfo] with cross-chec
 
 That separation is the core value: local evolution plus visible recombination rules.
 
-**Audience**: Engineers and teams who want independent model evolution without turning integration into schema chaos.
+Use this when you want independent model evolution without turning integration into schema chaos.
 
 **Outcome**
 1. Every domain concept lives in its own subsystem ADT.

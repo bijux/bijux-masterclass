@@ -35,7 +35,7 @@ This lesson introduces the refactor as a sequence you can apply:
 
 The running project matters because it shows a realistic end state: not "functional everything," but a codebase where responsibilities are separated clearly enough to test and evolve.
 
-**Audience:** Developers with legacy imperative scripts who want a concrete route from mixed concerns to a modular functional design.  
+Use this when you have legacy imperative scripts and want a concrete route from mixed concerns to a modular functional design.
 **Outcome:**  
 1. Refactor non-trivial scripts into FP modules + orchestrator in a few small modules.  
 2. Spot and fix three refactor smells: global state, implicit I/O, god functions.  

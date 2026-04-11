@@ -82,7 +82,7 @@ def transition(state: ProcessingState, event: Event) -> ProcessingState:
 
 With explicit state variants and transition functions, the lifecycle becomes something the team can inspect and evolve deliberately instead of a hidden agreement spread across methods.
 
-**Audience**: Engineers tired of “stuck in running forever” and “missing failure payload” bugs who want state machines the codebase can actually defend.
+Use this when you are tired of “stuck in running forever” and “missing failure payload” bugs and want state machines the codebase can actually defend.
 
 **Outcome**
 1. Every flag/field soup replaced with exhaustive, payload-carrying state ADTs.

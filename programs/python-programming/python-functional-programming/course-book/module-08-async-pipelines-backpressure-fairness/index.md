@@ -38,8 +38,8 @@ Carry this question into the module:
 
 > Which async behavior is being coordinated explicitly, and where would hidden scheduling or buffering make the system harder to reason about?
 
-This module treats async code as a coordination problem, not a style choice. The learner
-moves from effect boundaries to bounded concurrency, fairness, and testable async plans
+This module treats async code as a coordination problem, not a style choice. You move
+from effect boundaries to bounded concurrency, fairness, and testable async plans
 that do not smear runtime behavior across the whole codebase.
 
 ## Learning outcomes

@@ -75,7 +75,7 @@ embed_batch = list_map(embed_chunk) >> list_map(postprocess)
 
 Now the value transformation becomes the readable part again, and later composition has fewer places to drift apart.
 
-**Audience**: Engineers drowning in duplicated unboxing who want one consistent way to transform optional, fallible, and batched values.
+Use this when duplicated unboxing is getting in the way and you want one consistent way to transform optional, fallible, and batched values.
 
 **Outcome**
 1. Every manual `if Err/None` or loop replaced with functor `map`.

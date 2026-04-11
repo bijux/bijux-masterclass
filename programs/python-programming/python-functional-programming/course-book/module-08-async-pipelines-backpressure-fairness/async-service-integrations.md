@@ -102,7 +102,7 @@ def make_openai_embed_adapter(client: AsyncClient, model: str) -> EmbedPort:
 
 One factory change → completely different provider. Zero core changes. Full resilience via policies applied outside.
 
-**Audience**: Engineers who have been woken up at 3 a.m. because “the embedding API changed its JSON shape again”.
+Use this when “the embedding API changed its JSON shape again” is the kind of failure you need to contain before it wakes anyone up.
 
 **Outcome**
 1. Every external service wrapped in a pure protocol + thin adapter factory returning a class.

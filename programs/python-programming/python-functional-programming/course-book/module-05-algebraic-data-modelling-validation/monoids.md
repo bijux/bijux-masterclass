@@ -66,7 +66,7 @@ pipeline_metrics = tree_reduce(METRICS, per_chunk_metrics)
 
 Now regrouping stops being a risk, which is what makes parallel and tree-based reduction defensible rather than hopeful.
 
-**Audience**: Engineers who have seen grouping-dependent totals, slow log merges, or race-prone mutable aggregation and want one reliable aggregation story.
+Use this when grouping-dependent totals, slow log merges, or race-prone mutable aggregation show that you need one reliable aggregation story.
 
 **Outcome**
 1. Every `+=`, `extend`, `dict.update` replaced with monoidal `tree_reduce`.

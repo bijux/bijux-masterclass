@@ -35,7 +35,7 @@ This lesson introduces FP-friendly API design as a set of reviewable design choi
 
 The running project grounds the rule in a realistic case: a RAG pipeline is not simple, but its boundary still has to stay inspectable.
 
-**Audience:** Developers using lazy pipelines but facing high-arity functions or hidden globals that make testing and composition awkward.  
+Use this when you have lazy pipelines but face high-arity functions or hidden globals that make testing and composition awkward.
 **Outcome:**  
 1. Identify high-arity or hidden dependencies in code and explain their impact on composability.  
 2. Refactor a high-arity function into a small-arity API with grouped config and dependencies.  

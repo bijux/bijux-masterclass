@@ -68,7 +68,7 @@ def handle_result(res: Result[T, ErrInfo]) -> T:
 
 That is the real promise to care about: changes to the model become visible pressure on the handling sites instead of silent drift.
 
-**Audience**: Engineers tired of `isinstance` spaghetti who want clearer and more trustworthy case analysis over ADTs.
+Use this when you are tired of `isinstance` spaghetti and want clearer, more trustworthy case analysis over ADTs.
 
 **Outcome**
 1. Every `if isinstance` chain replaced with `match`.

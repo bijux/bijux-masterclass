@@ -80,7 +80,7 @@ def production_multi_tenant_stream(
 
 One line change → completely different scheduling behaviour. Zero duplication. Full deterministic testing via fake clock.
 
-**Audience**: Engineers who have been globally banned from an API at 3 a.m. or had to explain to a customer why their job never progresses.
+Use this when you have been globally banned from an API at 3 a.m. or had to explain why a customer job never progresses.
 
 **Outcome**
 1. Every hard-coded `await asyncio.sleep(...)` replaced with `RateLimitPolicy`.

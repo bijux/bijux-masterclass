@@ -54,7 +54,7 @@ core_chunk = from_json(serialized, dec_chunk()) # migrates automatically
 
 That explicitness is the whole point: changes stop being silent and start becoming governed.
 
-**Audience**: Engineers who have been burned by “just add a field” persistence changes and want durable contracts instead of lucky dumps.
+Use this when “just add a field” persistence changes have burned you and you want durable contracts instead of lucky dumps.
 
 **Outcome**
 1. Every core ADT gains explicit encoder/decoder factories + Envelope.

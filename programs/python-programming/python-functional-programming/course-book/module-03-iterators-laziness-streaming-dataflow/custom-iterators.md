@@ -35,7 +35,7 @@ This lesson introduces custom iterators as an explicit lifecycle pattern:
 
 The running and cross-domain examples matter because custom iterators should feel like a practical response to a real lifecycle need, not like ceremony for its own sake.
 
-**Audience:** Developers who have hit the limits of generators for reusable, stateful, or resource-aware streams.
+Use this when you have hit the limits of generators for reusable, stateful, or resource-aware streams.
 
 **Outcome:**
 1. Spot generator limits like no reuse.

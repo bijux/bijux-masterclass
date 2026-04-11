@@ -93,7 +93,7 @@ def async_rag_description(
 
 The core stays pure sync forever. The shell stays thin forever. Adding concurrency/retries/rate-limiting/fairness is a one-line policy change in the description.
 
-**Audience**: Engineers who built a gorgeous pure core and then watched async creep destroy it.
+Use this when you built a gorgeous pure core and then watched async creep destroy it.
 
 **Outcome**
 1. The pure core is 100 % synchronous and instantly unit-testable (no event loop needed).

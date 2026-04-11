@@ -52,7 +52,7 @@ This blocks the entire stream on one slow chunk, leaks resources on early breake
 
 The production solution applies a pure retry combinator that separates policy from execution and keeps the stream behavior reviewable.
 
-**Audience:** Engineers who call flaky external services (embedding APIs, vector DBs, OCR) inside RAG pipelines and need per-chunk resilience without sacrificing throughput or resource safety.
+Use this when you call flaky external services inside RAG pipelines and need per-chunk resilience without sacrificing throughput or resource safety.
 
 **Outcome:**  
 1. You will define retry policies as pure data and apply them with a single combinator that works on any `Result` stream.  

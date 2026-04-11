@@ -35,7 +35,7 @@ This lesson introduces observability as explicit stream instrumentation:
 
 The running project matters because the capstone already pressures you to balance streaming behavior with visibility. This page gives you a way to do that honestly.
 
-**Audience:** Developers debugging or monitoring lazy pipelines who want visibility without collapsing them into eager scripts.
+Use this when you need visibility into lazy pipelines without collapsing them into eager scripts.
 
 **Outcome:**
 1. Spot opacity smells like no metrics.
