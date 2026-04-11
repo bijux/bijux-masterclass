@@ -23,3 +23,4 @@ exercise, proof loop, and capstone follow-up.
 - truth loop: `make --trace all`, `make all`, `make -q all`
 - concurrency loop: compare clean serial and parallel builds
 - diagnostics loop: `make -n <target>`, `make --trace <target>`, `make -p`
+- public-target loop: `make help`, then the smallest documented target for the current claim

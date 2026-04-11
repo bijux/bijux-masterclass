@@ -20,3 +20,9 @@ judgment instead of command memorization.
 - Which command gives the cheapest clarifying evidence for this incident?
 - Which failure class would you suspect first if serial works and `-j` breaks?
 - Which architectural layer would you inspect before approving the next non-trivial change?
+
+## Public target prompts
+
+- Which target should another reviewer trust first without reading recipes?
+- What does `selftest` prove that `all` does not?
+- Which output is meant to be consumed directly and which is only review evidence?

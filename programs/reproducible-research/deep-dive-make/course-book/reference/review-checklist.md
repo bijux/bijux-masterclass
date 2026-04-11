@@ -15,6 +15,12 @@ goal is to turn build feelings into explicit review judgments.
 - Does the documented command surface match what `help` exposes?
 - Would a new maintainer know which target to trust first without recipe archaeology?
 
+## Layer ownership
+
+- Which layer should own this behavior: top-level `Makefile`, `mk/*.mk`, tests, or repros?
+- Does the current placement make the build easier to review or only more indirect?
+- Would a reader know where to look without oral history?
+
 ## Artifact and proof boundaries
 
 - Which outputs are build results, which are review evidence, and which are only teaching specimens?

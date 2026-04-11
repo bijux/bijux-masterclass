@@ -70,8 +70,7 @@ That order keeps the fix anchored to build truth instead of style preferences.
 
 Use these with the atlas:
 
-- [`incident-ladder.md`](incident-ladder.md) for debugging order under pressure
-- [`concept-index.md`](concept-index.md) for where the idea is taught in full
+- [`self-review-prompts.md`](self-review-prompts.md) for debugging order under pressure
+- [`module-dependency-map.md`](module-dependency-map.md) for where the idea is taught in sequence
 - [`capstone-map.md`](../capstone/capstone-map.md) for module-aware capstone routing
 - [`repro-catalog.md`](../capstone/repro-catalog.md) for the curated failure pack
-

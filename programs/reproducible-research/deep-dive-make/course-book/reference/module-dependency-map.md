@@ -40,3 +40,9 @@ graph TD
 | 08 | 03-07 | release engineering depends on a stable public build surface |
 | 09 | 03-08 | incident response assumes the build already expresses its contracts clearly |
 | 10 | all earlier modules | mastery review needs the whole build model together |
+
+## Fastest safe paths
+
+- new learner: read Modules 01 through 10 in order
+- working maintainer: start with Modules 03, 05, 07, and 09, then backfill earlier modules when graph truth gets fuzzy
+- build steward: start with Modules 03, 07, 08, 09, and 10, then revisit earlier modules when a policy or artifact boundary points backward

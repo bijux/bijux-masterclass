@@ -118,8 +118,7 @@ Without an explicit boundary page, learners can come away with the wrong conclus
 
 Use these with this page:
 
-* [`concept-index.md`](concept-index.md) to find where a topic is actually taught
-* [`concept-index.md`](concept-index.md) to see the safe learning order
-* [`public-targets.md`](public-targets.md) to separate the stable API from implementation detail
+* [`module-dependency-map.md`](module-dependency-map.md) to find where a topic is actually taught
+* [`module-dependency-map.md`](module-dependency-map.md) to see the safe learning order
+* [`review-checklist.md`](review-checklist.md) to separate the stable API from implementation detail
 * [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest proof route
-
