@@ -63,16 +63,16 @@ If the problem is already clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `reviewing-workflow-contracts-and-current-truth.md` | teaches how to review the repository you have before proposing redesign |
-| `migration-plans-that-preserve-proof.md` | teaches how to move one boundary at a time without losing review evidence |
-| `governance-rules-for-long-lived-workflows.md` | teaches lightweight rules that keep the repository trustworthy over time |
-| `recurring-workflow-antipatterns-and-recovery.md` | teaches which patterns deserve early rejection and how to recover from them |
-| `deciding-when-snakemake-should-stop-owning-a-concern.md` | teaches how to draw honest handoff boundaries |
-| `worked-example-planning-a-safe-workflow-migration.md` | walks through one realistic migration plan from review to sequence |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Reviewing Workflow Contracts and Current Truth](reviewing-workflow-contracts-and-current-truth.md) | teaches how to review the repository you have before proposing redesign |
+| [Migration Plans That Preserve Proof](migration-plans-that-preserve-proof.md) | teaches how to move one boundary at a time without losing review evidence |
+| [Governance Rules for Long-Lived Workflows](governance-rules-for-long-lived-workflows.md) | teaches lightweight rules that keep the repository trustworthy over time |
+| [Recurring Workflow Antipatterns and Recovery](recurring-workflow-antipatterns-and-recovery.md) | teaches which patterns deserve early rejection and how to recover from them |
+| [Deciding When Snakemake Should Stop Owning a Concern](deciding-when-snakemake-should-stop-owning-a-concern.md) | teaches how to draw honest handoff boundaries |
+| [Worked Example: Planning a Safe Workflow Migration](worked-example-planning-a-safe-workflow-migration.md) | walks through one realistic migration plan from review to sequence |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

@@ -61,16 +61,16 @@ If the problem is already clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `workflow-cost-models-and-timing-surfaces.md` | teaches how to separate planning, scheduling, storage, and tool cost |
-| `logs-benchmarks-summaries-and-provenance.md` | teaches which evidence surface answers which question |
-| `incident-triage-for-slow-and-flaky-runs.md` | teaches an evidence-first diagnosis ladder |
-| `performance-tuning-without-semantic-drift.md` | teaches how to improve speed without making the workflow lie |
-| `runbooks-escalation-and-operational-review.md` | teaches how to leave behind a usable operating route |
-| `worked-example-investigating-a-slow-and-noisy-workflow.md` | walks through one realistic incident from symptom to repair |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Workflow Cost Models and Timing Surfaces](workflow-cost-models-and-timing-surfaces.md) | teaches how to separate planning, scheduling, storage, and tool cost |
+| [Logs, Benchmarks, Summaries, and Provenance](logs-benchmarks-summaries-and-provenance.md) | teaches which evidence surface answers which question |
+| [Incident Triage for Slow and Flaky Runs](incident-triage-for-slow-and-flaky-runs.md) | teaches an evidence-first diagnosis ladder |
+| [Performance Tuning without Semantic Drift](performance-tuning-without-semantic-drift.md) | teaches how to improve speed without making the workflow lie |
+| [Runbooks, Escalation, and Operational Review](runbooks-escalation-and-operational-review.md) | teaches how to leave behind a usable operating route |
+| [Worked Example: Investigating a Slow and Noisy Workflow](worked-example-investigating-a-slow-and-noisy-workflow.md) | walks through one realistic incident from symptom to repair |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 
