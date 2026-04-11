@@ -2,97 +2,58 @@
 
 # Module Promise Map
 
+Use this page when a module title sounds plausible but still too compressed. A good module
+title should tell you what kind of judgment you will leave with, not just which topic
+area the chapter occupies.
 
-<!-- page-maps:start -->
-## Guide Fit
+## How to read the map
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Module Promise Map"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+Each row answers four practical questions:
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+1. what the module is trying to change in your mental model
+2. what it is not trying to cover yet
+3. what kind of evidence should corroborate the lesson
+4. what you should be able to do afterward
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This page exists because strong module titles are not enough. A learner should be able to
-ask, for every module, “what is this module promising me, and how will I know it was
-delivered?”
-
-Use this guide when a title sounds right but still feels too broad, too compressed, or
-insufficiently tied to proof.
-
----
-
-## How To Read This Page
-
-Each row names four things:
-
-* the module promise
-* the boundary of that promise
-* the learner outcome the module should leave behind
-* the first honest capstone corroboration route
-
-If a module page drifts away from this contract, the drift should become visible here.
+If a module page drifts from that contract, the drift should be visible here.
 
 [Back to top](#top)
 
----
+## Module contracts
 
-## Promise Table
-
-| Module | Promise | Boundary | Learner outcome | First corroboration |
+| Module | The promise | The boundary | You should leave able to... | First corroboration route |
 | --- | --- | --- | --- | --- |
-| 01 Foundations | teach Make as a truthful build graph, not as shell glue | targets, prerequisites, rebuild causes, atomic publication | explain why a target rebuilt and why false edges are dangerous | `capstone-walkthrough` |
-| 02 Scaling | teach parallel safety and controlled growth | ordering, rooted discovery, project structure, race classes | predict which builds will break under `-j` and why | `test` |
-| 03 Production Practice | teach stable operational habits | selftests, deterministic behavior, CI discipline, public targets | name the proof surface that protects the build contract | `capstone-verify-report` |
-| 04 Semantics Under Pressure | teach how Make behaves in incidents | precedence, includes, restarts, rule edge cases | debug tricky behavior without folklore | `capstone-tour` |
-| 05 Hardening | teach platform and environment boundaries | portability, jobserver, modeled non-file inputs, failure containment | explain which assumptions must be declared instead of implied | `capstone-contract-audit` |
-| 06 Generated Files | teach generators and multi-output boundaries honestly | generated headers, manifests, pipeline edges, coupled outputs | trace a generator from declared inputs to trusted outputs | `proof` |
-| 07 Build Architecture | teach layered build design without private-language drift | public targets, includes, macros, `mk/*.mk` ownership | identify which layer should absorb a change | `inspect` |
-| 08 Release Engineering | teach publish trust and artifact boundaries | bundles, manifests, install surfaces, attestations | review whether an artifact is safe to trust downstream | `proof` |
-| 09 Incident Response | teach diagnosis under operational pressure | performance, traces, review bundles, failure ladders | move from symptom to owning boundary with less guesswork | `capstone-incident-audit` |
-| 10 Make Boundaries | teach stewardship and migration judgment | governance, anti-patterns, handoff boundaries, review method | decide whether Make should keep owning the problem | `capstone-confirm` |
+| [01 Foundations](../module-01-build-graph-foundations-truth/index.md) | Make the build graph legible instead of mystical | targets, prerequisites, rebuild causes, atomic publication | explain one rebuild in terms of declared inputs and outputs | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
+| [02 Parallel Safety](../module-02-parallel-safety-project-structure/index.md) | show that concurrency is a truth test, not a speed hack | runnable targets, one-writer rules, order-only edges, race classes | explain why one concurrent shape is safe and another is dishonest | [Repro Catalog](../capstone/repro-catalog.md) |
+| [03 Determinism](../module-03-determinism-debugging-self-testing/index.md) | turn correctness into a repeatable operating habit | stable discovery, CI-facing targets, selftests, Make-native debugging | distinguish product tests from build-system proof | [Capstone Proof Checklist](../capstone/capstone-proof-checklist.md) |
+| [04 Semantics](../module-04-rule-semantics-precedence-edge-cases/index.md) | replace folklore with named GNU Make rules | precedence, expansion, includes, remakes, rule semantics | explain a surprising result by naming the governing rule | [Command Guide](../capstone/command-guide.md) |
+| [05 Hardening](../module-05-portability-hermeticity-failure-modes/index.md) | surface the assumptions a build must declare to stay trustworthy | tools, shell behavior, hidden inputs, failure containment | say which assumptions belong in policy instead of custom or lore | [Capstone Map](../capstone/capstone-map.md) |
+| [06 Generated Files](../module-06-generated-files-multi-output-pipeline-boundaries/index.md) | treat generators as ordinary graph owners instead of side effects | generated headers, manifests, multi-output rules, publish points | trace a generated artifact back to its semantic inputs | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| [07 Build Architecture](../module-07-build-architecture-layered-includes-apis/index.md) | scale the build without turning it into a private language | public targets, layered `mk/` files, macros, naming | point to the right file when a structural change is needed | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| [08 Release Engineering](../module-08-release-engineering-artifact-contracts/index.md) | define what a publishable artifact actually promises | bundle layout, manifests, attestations, install behavior | explain why a file belongs inside or outside a released surface | [Capstone Proof Checklist](../capstone/capstone-proof-checklist.md) |
+| [09 Incident Response](../module-09-performance-observability-incident-response/index.md) | make build incidents diagnosable under pressure | measurement, observability, triage ladders, runbooks | choose the next evidence surface before editing anything | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+| [10 Governance](../module-10-migration-governance-tool-boundaries/index.md) | teach stewardship, migration order, and honest tool boundaries | review method, migration sequencing, governance rules, handoff decisions | improve a build while preserving proof and public trust | [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 
 [Back to top](#top)
 
----
+## What this page prevents
 
-## Promise Failures This Page Guards Against
+This map exists to prevent four common course failures:
 
-When module titles are strong but unchecked, courses usually fail in one of four ways:
+- a module promises judgment but only delivers syntax
+- a module promises operations but never reaches executable proof
+- a module promises architecture but leaves ownership blurry
+- a module promises stewardship but never turns into review behavior
 
-* the title promises judgment, but the module only delivers syntax
-* the title promises operations, but the proof routes stay abstract
-* the title promises architecture, but ownership remains blurry
-* the title promises release or governance, but the capstone surface never corroborates it
-
-This page makes those failures visible before they harden into course drift.
+If you notice one of those failures while reading a module, come back here and name the
+missing piece directly.
 
 [Back to top](#top)
 
----
+## Best companion pages
 
-## Best Companion Pages
-
-Use these pages with the promise map:
-
-* [`course-guide.md`](course-guide.md) for the stable learner hub
-* [`module-checkpoints.md`](module-checkpoints.md) for the end-of-module review bar
-* [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
-* [`capstone/capstone-map.md`](../capstone/capstone-map.md) for module-to-capstone entry routes
+- [Module Checkpoints](module-checkpoints.md) when you need the exit bar after the promise
+- [Proof Ladder](proof-ladder.md) when the corroboration route feels too heavy
+- [Capstone Map](../capstone/capstone-map.md) when the promise is clear but the repository route is not
 
 [Back to top](#top)
