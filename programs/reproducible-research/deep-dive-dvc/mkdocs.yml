@@ -78,6 +78,7 @@ nav:
       - "Module 01: Why Reproducibility Fails":
           - Overview: module-01-reproducibility-failures-real-teams/index.md
           - Repeatability Versus Reproducibility: module-01-reproducibility-failures-real-teams/repeatability-versus-reproducibility.md
+          - Hidden State and Undeclared Inputs: module-01-reproducibility-failures-real-teams/hidden-state-and-undeclared-inputs.md
       - "Module 02: Data Identity and Content Addressing":
           - Overview: module-02-data-identity-content-addressing/index.md
       - "Module 03: Execution Environments as Inputs":
