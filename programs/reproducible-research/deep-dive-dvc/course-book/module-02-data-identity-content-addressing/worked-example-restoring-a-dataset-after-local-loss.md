@@ -1,7 +1,7 @@
 # Worked Example: Restoring a Dataset After Local Loss
 
-This example shows how Module 02 ideas fit together when a learner stops talking about
-files abstractly and starts asking what survives real failure.
+This example shows how Module 02 ideas fit together when you stop talking about files
+abstractly and start asking what survives real failure.
 
 The story is intentionally simple.
 
@@ -9,7 +9,7 @@ That helps the module show the important boundaries without burying them in plat
 
 ## The situation
 
-A learner has a DVC-tracked dataset in the workspace and says:
+Suppose you have a DVC-tracked dataset in the workspace and say:
 
 > the data is `data/raw/service_incidents.csv`, and we should be fine because it is already
 > in the repo.
@@ -27,17 +27,17 @@ The first correction is conceptual:
 
 That sounds like small wording, but it changes how the whole incident is understood.
 
-The learner is not asking:
+You are not asking:
 
 > where did the file go?
 
-They are now asking:
+You are now asking:
 
 > can the repository recover the tracked content that this path used to project?
 
 ## Step 2: Check which layers still exist
 
-At this point, the learner inspects:
+At this point, you inspect:
 
 - Git-tracked DVC files and `dvc.lock`
 - the configured remote
@@ -66,7 +66,7 @@ through luck or a teammate copying something over Slack.
 
 ## Step 4: Ask what this proves
 
-After the restore, the learner can now say:
+After the restore, you can now say:
 
 - the workspace path was reconstructed
 - the tracked content identity was durably recoverable
@@ -90,9 +90,9 @@ This is the moment where the module's state-layer vocabulary becomes useful:
 - remote: the source of durability after loss
 - publish: a narrower downstream trust surface, not the whole recovery story
 
-Once the learner can say that in plain language, Module 02 is doing real work.
+Once you can say that in plain language, Module 02 is doing real work.
 
-## What the learner should not say anymore
+## What you should not say anymore
 
 After this example, weak sentences should sound weak:
 
@@ -101,7 +101,7 @@ After this example, weak sentences should sound weak:
 - DVC magically rebuilt everything
 - publish state is the whole repository story
 
-The module is succeeding when the learner now notices those shortcuts on their own.
+The module is succeeding when you now notice those shortcuts on your own.
 
 ## The review note you would want
 
