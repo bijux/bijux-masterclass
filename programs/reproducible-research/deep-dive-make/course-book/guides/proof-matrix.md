@@ -92,6 +92,6 @@ The most useful companion pages for this matrix are:
 * [`public-targets.md`](../reference/public-targets.md)
 * [`practice-map.md`](../reference/practice-map.md)
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
-* [`selftest-map.md`](../reference/selftest-map.md)
+* [`public-targets.md`](../reference/public-targets.md)
 
 [Back to top](#top)

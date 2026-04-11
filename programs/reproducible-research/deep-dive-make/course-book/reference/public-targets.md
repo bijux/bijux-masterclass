@@ -110,6 +110,35 @@ detail unless they are exposed by `help` or documented in one of the capstone gu
 
 ---
 
+## What `selftest` proves
+
+`selftest` is the most important executable proof in Deep Dive Make. Use this section
+when you want to understand why `selftest` is stronger than `make all`.
+
+| Step in `tests/run.sh` | What it proves | Main files |
+| --- | --- | --- |
+| convergence | a successful build reaches an up-to-date state | `capstone/Makefile`, `capstone/tests/run.sh` |
+| serial-parallel equivalence | `-j` changes throughput, not artifact meaning | `capstone/tests/run.sh`, `capstone/repro/` |
+| trace guardrail | observability cost is bounded instead of drifting silently | `capstone/tests/run.sh`, `capstone/Makefile` |
+| hidden input detection | the harness can detect a lying graph rather than only happy paths | `capstone/tests/run.sh`, `capstone/mk/stamps.mk` |
+
+Why this matters:
+
+- `make all` tells you the build succeeded once
+- `make selftest` tells you whether the build contract is still honest
+- `make verify-report` preserves that proof as a saved review bundle
+
+Best reading order:
+
+1. `capstone/Makefile`
+2. `capstone/tests/run.sh`
+3. this page
+4. `make PROGRAM=reproducible-research/deep-dive-make test`
+
+[Back to top](#top)
+
+---
+
 ## Good first commands
 
 From the program root:
