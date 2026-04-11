@@ -2,45 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Error Aggregation"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  mixed["Start with a mixed Result stream"] --> strategy["Choose fail-fast or collect-many deliberately"]
+  strategy --> cap["Decide whether memory bounds require a cap"]
+  cap --> review["Review work performed and diagnostic value gained"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make aggregation strategy feel like a policy choice, not a default reflex. Students need to understand that fail-fast and collect-many are both legitimate, but they optimize for different kinds of feedback and different costs.
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Decision Point
 
-Here's a snippet from the progression map:
+Once failures are flowing through the stream as values, the next question is not "can we keep going?" but "how long should we keep going?" That decision deserves a clearer opening than raw implementation detail.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If one failure invalidates everything downstream, fail-fast is usually the honest design.
+- If the run exists to diagnose many bad records, collecting errors to completion is worth the extra work.
+- If students cannot explain memory bounds on collected errors, the accumulation policy is still underspecified.
 
 > **Core question:**  
 > How do you aggregate errors from a `Result` stream — choosing between fail-fast (stop on first error for quick feedback) and full accumulation (collect every error for complete diagnostics) — while preserving laziness when possible and keeping the pipeline pure and composable?
 
-We now take the `Iterator[Result[Chunk, ErrInfo]]` stream from M04C05 and face the final real-world question:
+This lesson introduces error aggregation as a fold-level policy decision:
 
-**“After safely wrapping every possible per-chunk failure, what do we actually do with the mixed good/bad stream?”**
+- choose short-circuiting when feedback speed matters more than full diagnosis
+- choose complete accumulation when the job must report every failing record
+- cap memory intentionally when full diagnostics would otherwise scale too far
 
-Two equally valid answers exist:
+The central idea students should hold onto is that both strategies are valid, but they make different promises about work, memory, and insight.
 
 1. **Fail-fast**: stop on the first error — perfect for interactive debugging or when one failure invalidates everything downstream.
 
@@ -61,7 +52,7 @@ for r in embedded:
 
 This is verbose, easy to get wrong, and duplicates logic across codebases.
 
-The production solution uses tiny, composable folds over `Result` streams that give you both strategies with mathematical guarantees.
+The production solution expresses each strategy as a small fold over the `Result` stream, so the choice is explicit and easy to review.
 
 **Audience:** Engineers who run batch RAG pipelines over millions of chunks and need either quick failure feedback or complete error reports — without ever writing another manual error-collecting loop.
 
@@ -70,7 +61,7 @@ The production solution uses tiny, composable folds over `Result` streams that g
 2. You will cap error collection, aggregate monoidally, and prove short-circuiting works.  
 3. You will ship a RAG pipeline that either fails instantly on the first bad chunk or delivers a perfect error report covering every failure.
 
-We formalise exactly what we want from correct, production-ready error aggregation: short-circuiting, full collection, bounded memory, ordering, and equivalence to reference implementations.
+We formalise exactly what students should review here: short-circuit behavior, full-collection behavior, bounded memory when capped, preserved ordering, and equivalence to straightforward reference loops.
 
 ---
 
