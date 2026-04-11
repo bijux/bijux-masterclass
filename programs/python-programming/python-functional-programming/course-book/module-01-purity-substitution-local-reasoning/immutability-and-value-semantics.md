@@ -2,54 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Immutability & Value Semantics"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  share["Start with a shared data example"] --> danger["See how mutation leaks across aliases"]
+  danger --> freeze["Replace mutable publication with immutable values"]
+  freeze --> compare["Review equality, hashing, and update behavior"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about protecting data the same way purity protects functions.
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Python Problem
 
-Here's a snippet from the progression map:
+Two names pointing at the same mutable object are enough to break local reasoning. One part
+of the program mutates the value, another part observes the change, and now the meaning of
+the data depends on who touched it last.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+Immutability is the data-side answer to that problem: once a value is published, readers
+can trust that it will keep meaning the same thing.
 
+## Keep This Question In View
 
-> **Core question:**  
-> How do you make data truly immutable with value semantics—never changing after creation, equality by value, and (when possible) structural sharing for efficiency—so that sharing is safe, reasoning is local, and mutations are impossible?
+> How do you make shared data safe to trust by preventing post-creation mutation and comparing values by what they contain?
 
-This core builds on **Core 1**'s functional mindset and **Core 2**'s contracts by adding **immutability as the data counterpart**:  
-- **Immutable containers** (`tuple`, `frozenset`, frozen dataclasses).  
-- **Value semantics** (equality by contents, not identity).  
-- **Structural sharing** (persistent updates reuse unchanged parts—built-ins give shallow sharing via `replace`).  
+By the end of this lesson, you should be able to explain:
 
-We continue the **running project** from Core 1/2: refactoring the FuncPipe RAG Builder, now enforcing immutability on types.
-
-**Audience:** Developers who passed Core 2's contract checks but still see bugs from nested mutation, accidental rebinding, or cache invalidation due to mutable defaults.  
-**Outcome:**  
-1. Replace any mutable container with an immutable equivalent in < 10 lines.  
-2. Explain value semantics vs reference semantics—and why `==` on immutables is safe.  
-3. Add properties proving hash stability and absence of observable mutation for RAG data.  
-4. Spot and fix three classic immutability violations: mutable defaults, nested mutation, identity-based caching.
+- when `tuple`, `frozenset`, and frozen dataclasses are the right publication boundary
+- why equality by contents is easier to reason about than equality by identity
+- why hashable published values must not be mutated after creation
 
 ---
 
@@ -65,7 +47,12 @@ We continue the **running project** from Core 1/2: refactoring the FuncPipe RAG 
 
 ### 1.3 Why This Matters Now
 
-Immutability enforces Core 2's no-mutation contract at the type level, enabling safe sharing in higher-order functions (Core 4) and equational proofs (Core 9); without it, nested mutations cause heisenbugs.
+Immutability makes data reviewable in the same way purity makes function calls reviewable.
+When a value cannot change after publication:
+
+- aliases stop being surprising
+- equality becomes meaningful for "same information"
+- caching and lookup behavior stop rotting after incidental mutation
 
 ### 1.4 Bug Story: Mutating a Hash Key
 
@@ -93,7 +80,9 @@ assert old_hash != new_hash  # hash changed
 assert cache.get(chunk) is None  # lookup fails → key “lost”
 ```
 
-**Problem:** Mutation invalidates hash, breaking dict/set lookups. Immutability prevents this entirely. This is why we insist that anything you put in a set / dict key path be logically immutable: otherwise caches, memoization, and lookup-based optimizations silently rot.
+**Problem:** mutation invalidates the hash, so the key becomes logically "lost" inside the
+dictionary. That is why values used as set members, dictionary keys, or cache identities
+must be immutable after creation.
 
 ---
 
@@ -101,25 +90,14 @@ assert cache.get(chunk) is None  # lookup fails → key “lost”
 
 ### 2.1 One Picture
 
-```mermaid
-graph LR
-  subgraph Mutable["Mutable reference semantics"]
-    obj1["obj1"] --> shared["[1,2,3]"]
-    obj2["obj2"] --> shared
-    shared --> mutated["mutate -> [1,2,4]"]
-    mutated --> visible["both references observe the change"]
-  end
-
-  subgraph Immutable["Immutable value semantics"]
-    value1["obj1: [1,2,3]"]
-    value2["obj2: [1,2,3]"]
-    equal["obj1 == obj2 by contents"]
-    newObject["mutation creates a new object"]
-    safe["sharing remains safe"]
-    value1 --> equal
-    value2 --> equal
-    equal --> newObject --> safe
-  end
+```text
+Mutable publication                       Immutable publication
++-----------------------------+         +------------------------------+
+| a ----> shared list         |         | a ----> value object         |
+| b ----> shared list         |         | b ----> same value meaning   |
+| mutate through a            |         | update means "make new value"|
+| b silently observes change  |         | old readers keep old meaning |
++-----------------------------+         +------------------------------+
 ```
 
 ### 2.2 Contract Table
@@ -131,7 +109,9 @@ graph LR
 | Hash stability             | Mutable in set/dict key                | Hypothesis rehash property               |
 | Structural sharing         | Full copy on update                    | Manual inspection + benchmarks           |
 
-**Note on Nested Mutation:** `frozen=True` is shallow; use `deepcopy` in properties to detect deep violations. In this series, ‘immutable’ always implicitly means ‘deeply immutable’ for any data that crosses module boundaries.
+**Note on Nested Mutation:** `frozen=True` only stops attribute rebinding. If an attribute
+still holds a mutable list or dict, deep mutation is still possible. In this module,
+"immutable" should be read as "safe to share without later mutation."
 
 **Note on Local Mutables:** Local mutable temporaries are fine; publishing them as part of the API is not.
 
