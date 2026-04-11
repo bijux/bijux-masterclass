@@ -161,7 +161,7 @@ nav:
           - Exercises: module-08-operating-contexts-execution-policy/exercises.md
           - Exercise Answers: module-08-operating-contexts-execution-policy/exercise-answers.md
           - Glossary: module-08-operating-contexts-execution-policy/glossary.md
-      - "Module 09: Observability, Performance, and Incident Response":
+      - "Module 09: Performance, Observability, and Incident Response":
           - Overview: module-09-performance-observability-incident-response/index.md
       - "Module 10: Governance, Migration, and Tool Boundaries":
           - Overview: module-10-governance-migration-tool-boundaries/index.md

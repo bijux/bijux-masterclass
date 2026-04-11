@@ -1,292 +1,125 @@
-<a id="top"></a>
-
 # Module 09: Performance, Observability, and Incident Response
 
+A workflow can be correct, portable, and still become painful to trust once runs get
+slow, noisy, or unpredictable.
 
-<!-- page-maps:start -->
-## Module Position
+That is the problem this module addresses.
+
+Module 09 is not about tuning for sport. It is about keeping a workflow reviewable under
+pressure:
+
+- naming where time is actually spent
+- adding evidence surfaces that answer real review questions
+- diagnosing incidents before touching the workflow
+- improving feedback loops without hiding semantic drift
+- leaving behind a route another maintainer can follow
+
+The capstone corroboration surface for this module is the execution evidence and incident
+review route around it: `logs/`, `benchmarks/`, `publish/v1/provenance.json`,
+`make evidence-summary`, `make tour`, `make verify-report`, and
+`docs/INCIDENT_REVIEW_GUIDE.md`.
+
+## Why this module exists
+
+Many workflow teams eventually hit the same failure pattern:
+
+- a run feels slow, but nobody can say whether the cost is planning, scheduling, storage,
+  or tool runtime
+- logs exist, but they do not answer the question maintainers actually have
+- the first response to a flaky run is to change retries, threads, or grouping
+- performance work quietly changes workflow meaning and gets called optimization
+- the only incident playbook lives in one person's memory
+
+This module repairs those problems by teaching observability and performance as part of
+workflow stewardship rather than as cleanup after the real work.
+
+## Study route
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 09: Performance, Observability, and Incident Response"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
+flowchart LR
+  overview["Overview"] --> core1["Core 1: workflow cost model"]
+  core1 --> core2["Core 2: evidence surfaces"]
+  core2 --> core3["Core 3: incident triage"]
+  core3 --> core4["Core 4: tuning without drift"]
+  core4 --> core5["Core 5: runbooks and escalation"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+Read the module in that order the first time.
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+If the problem is already clear, use this shortcut:
 
-Once a workflow is correct and operationally portable, the next challenge is keeping it
-understandable when runs become slow, noisy, or flaky. Performance work in Snakemake is
-not about chasing smaller timings for their own sake. It is about preserving useful
-feedback loops and making the workflow debuggable when something behaves differently under
-real load.
+- open Core 1 when the question is mostly "where is the cost?"
+- open Core 2 when the question is mostly "which artifact should I inspect?"
+- open Core 3 when the question is mostly "what do I do first in an incident?"
+- open Core 4 when the question is mostly "is this optimization honest?"
+- open Core 5 when the question is mostly "how do we make this reviewable for others?"
 
-This module teaches a cost model for workflow performance, the observability surfaces that
-make incidents explainable, and the review habits that keep tuning from quietly damaging
-workflow truth.
+## Module map
 
-Capstone exists here as corroboration. The local measurement and incident drills should
-already tell a coherent story before you inspect the reference benchmarks, logs, and
-workflow-tour artifacts.
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `workflow-cost-models-and-timing-surfaces.md` | teaches how to separate planning, scheduling, storage, and tool cost |
+| `logs-benchmarks-summaries-and-provenance.md` | teaches which evidence surface answers which question |
+| `incident-triage-for-slow-and-flaky-runs.md` | teaches an evidence-first diagnosis ladder |
+| `performance-tuning-without-semantic-drift.md` | teaches how to improve speed without making the workflow lie |
+| `runbooks-escalation-and-operational-review.md` | teaches how to leave behind a usable operating route |
+| `worked-example-investigating-a-slow-and-noisy-workflow.md` | walks through one realistic incident from symptom to repair |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
-### Before You Begin
+## What should be clear by the end
 
-This module works best after Modules 01-08, especially the parts on dynamic DAGs,
-operating contexts, publish boundaries, and reusable architecture.
+By the end of this module, you should be able to explain:
 
-Use this module if you need to learn how to:
+- how Snakemake planning cost differs from tool runtime and filesystem drag
+- why logs, benchmarks, summaries, and provenance need distinct jobs
+- how to triage a slow or flaky run without editing first
+- which performance changes preserve workflow truth and which ones only hide trouble
+- what belongs in a runbook for local use, CI review, and incident escalation
 
-* tell scheduler cost from actual computation cost
-* add observability without flooding the workflow with meaningless noise
-* diagnose slow or flaky runs with a repeatable incident ladder
+## Commands to keep close
 
-Proof loop for this module:
+These commands form the evidence loop for Module 09:
 
 ```bash
 snakemake -n -p
 snakemake --summary
 snakemake --list-changes input code params
+make -C capstone wf-dryrun
+make -C capstone evidence-summary
+make -C capstone tour
 ```
 
-Capstone corroboration:
+The point of that route is not to collect output for its own sake. It is to choose the
+smallest honest artifact that answers the current question.
 
-* inspect `capstone/benchmarks/`
-* inspect `capstone/logs/`
-* inspect `capstone/Makefile` targets such as `wf-dryrun`, `verify`, and `tour`
-* inspect `capstone/tests/test_workflow_integration.py`
+## Capstone route
 
-## At a Glance
+Use the capstone only after the local module ideas are already legible.
 
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| workflow cost model | "Is this run slow because of planning, scheduling, storage, or the actual tool?" | inspect the capstone after you can name the likely cost class first |
-| observability surfaces | "Which logs, benchmarks, and summaries actually help explain what happened?" | compare `logs/`, `benchmarks/`, and dry-run output together |
-| incident response | "What evidence should I collect before changing the workflow?" | use verification and tour targets as the review path |
+Best corroboration surfaces for this module:
 
----
+- `capstone/logs/`
+- `capstone/benchmarks/`
+- `capstone/publish/v1/provenance.json`
+- `capstone/Makefile`
+- `capstone/docs/EXECUTION_EVIDENCE_GUIDE.md`
+- `capstone/docs/INCIDENT_REVIEW_GUIDE.md`
+- `capstone/docs/TOUR.md`
 
-<a id="toc"></a>
-## 1) Table of Contents
+Useful proof route:
 
-1. [Table of Contents](#toc)
-2. [Learning Outcomes](#outcomes)
-3. [How to Use This Module](#usage)
-4. [Core 1 — A Cost Model for Snakemake Runs](#core1)
-5. [Core 2 — Logs, Benchmarks, Summaries, and Drift Reports](#core2)
-6. [Core 3 — Incident Triage for Slow or Flaky Workflows](#core3)
-7. [Core 4 — Tuning Without Hiding Truth](#core4)
-8. [Core 5 — Operational Runbooks and Review Surfaces](#core5)
-9. [Capstone Sidebar](#capstone)
-10. [Exercises](#exercises)
-11. [Closing Criteria](#closing)
-
----
-
-<a id="outcomes"></a>
-## 2) Learning Outcomes
-
-By the end of this module, you can:
-
-* distinguish workflow planning cost, scheduling cost, and real compute cost
-* add observability surfaces that help incident response instead of creating more confusion
-* diagnose slow or flaky runs using a fixed evidence-first ladder
-* tune workflow structure while preserving file-contract truth and reproducibility
-* produce a short operational runbook that another maintainer can actually use
-
-[Back to top](#top)
-
----
-
-<a id="usage"></a>
-## 3) How to Use This Module
-
-Take one working workflow and collect four surfaces:
-
-```text
-lab/
-  workflow/
-  logs/
-  benchmarks/
-  docs/
-    incident-notes.md
+```bash
+make -C capstone wf-dryrun
+make -C capstone evidence-summary
+make -C capstone tour
+make -C capstone verify-report
 ```
 
-For one representative run, capture:
-
-1. dry-run output
-2. a summary or drift report
-3. per-rule logs or benchmarks
-4. one written incident note describing what was slow, noisy, or surprising
-
-This module goes well only when you compare symptoms with evidence instead of guessing
-from memory.
-
-[Back to top](#top)
-
----
-
-<a id="core1"></a>
-## 4) Core 1 — A Cost Model for Snakemake Runs
-
-Performance problems in Snakemake usually come from one of several places:
-
-* workflow planning or discovery
-* scheduler overhead across many small jobs
-* filesystem or staging latency
-* the real computation inside tools or scripts
-
-Those are not interchangeable.
-
-Useful first questions:
-
-* is the DAG surprisingly large?
-* are there many tiny jobs whose runtime is smaller than scheduling overhead?
-* is the filesystem slow to reveal outputs?
-* is one actual tool doing most of the work?
-
-Without a cost model, “optimize the workflow” usually turns into unprincipled tinkering.
-
-[Back to top](#top)
-
----
-
-<a id="core2"></a>
-## 5) Core 2 — Logs, Benchmarks, Summaries, and Drift Reports
-
-Snakemake already gives you strong observability surfaces when you use them deliberately:
-
-* per-rule logs
-* `benchmark:` outputs
-* `--summary`
-* `--list-changes`
-* dry-runs with printed commands
-
-The point is not to collect everything. The point is to keep enough evidence to answer:
-
-* what ran
-* why it ran
-* what changed
-* where time or failure accumulated
-
-Good observability is narrow, purposeful, and reviewable.
-
-[Back to top](#top)
-
----
-
-<a id="core3"></a>
-## 6) Core 3 — Incident Triage for Slow or Flaky Workflows
-
-Use a fixed incident ladder:
-
-1. confirm the symptom
-2. dry-run the same target set
-3. inspect changed inputs, code, or params
-4. inspect logs and benchmarks for the affected rules
-5. decide whether the problem is workflow shape, operating context, or tool behavior
-
-Common incident classes:
-
-* dynamic discovery produced more work than expected
-* too many tiny jobs overwhelmed the scheduler or filesystem
-* retries masked a real deterministic failure
-* a changed environment or helper script caused drift that looked like randomness
-* publish verification passed locally but failed in a stricter context
-
-[Back to top](#top)
-
----
-
-<a id="core4"></a>
-## 7) Core 4 — Tuning Without Hiding Truth
-
-Allowed tuning moves:
-
-* combine tiny tasks when the grouping remains truthful
-* reduce redundant work in helper scripts or summary steps
-* make scheduling or profile defaults more realistic
-* improve staging discipline or file placement
-
-Disallowed tuning moves:
-
-* suppressing reruns by hiding a real dependency
-* removing logs or benchmarks because they are inconvenient during review
-* publishing fewer proofs so a run only appears faster
-* changing profiles in ways that alter semantics but look like optimization
-
-Fast wrong workflows are still wrong workflows.
-
-[Back to top](#top)
-
----
-
-<a id="core5"></a>
-## 8) Core 5 — Operational Runbooks and Review Surfaces
-
-A mature workflow should have a minimal runbook that answers:
-
-* how to dry-run safely
-* how to inspect what changed
-* where logs and benchmarks live
-* how to confirm the publish surface is still sane
-* when to treat the issue as workflow design rather than executor friction
-
-The runbook does not need to be long. It does need to exist somewhere a teammate can find
-before an incident becomes folklore.
-
-[Back to top](#top)
-
----
-
-<a id="capstone"></a>
-## 9) Capstone Sidebar
-
-Use the capstone to inspect:
-
-* `benchmarks/` and `logs/` as routine observability surfaces
-* `Makefile` proof targets as operational shortcuts
-* `tests/test_workflow_integration.py` as a signal that incidents can become executable checks
-* the workflow tour bundle as a human-readable incident and review artifact
-
-[Back to top](#top)
-
----
-
-<a id="exercises"></a>
-## 10) Exercises
-
-1. Write a short incident note for one slow or surprising workflow run and back every claim with an artifact.
-2. Add one benchmark or log surface that makes a recurring review question easier to answer.
-3. Tune one workflow bottleneck without changing the publish contract or hiding a dependency.
-4. Convert one recurrent operational issue into a repeatable check or proof target.
-
-[Back to top](#top)
-
----
-
-<a id="closing"></a>
-## 11) Closing Criteria
-
-You pass this module only if you can demonstrate:
-
-* a cost model that distinguishes workflow overhead from tool runtime
-* observability surfaces that answer real review or incident questions
-* one documented incident ladder for slow or flaky runs
-* one tuning change that improves feedback without weakening workflow truth
-
-[Back to top](#top)
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is to confirm that workflow evidence stays reviewable before and
+after the workflow runs.
