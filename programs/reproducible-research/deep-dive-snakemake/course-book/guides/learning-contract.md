@@ -1,7 +1,7 @@
 # Learning Contract
 
 Use this page when you need to reset how to study the program. Deep Dive Snakemake is not
-built for passive reading. It is built for learners who can explain one workflow
+built for passive reading. It is built for readers who can explain one workflow
 boundary, name the failure it prevents, and point to the command or artifact that proves
 the claim.
 
@@ -26,8 +26,8 @@ The material should present each important idea in an order that a human can act
 4. the proof route that can confirm the claim
 5. the capstone route only after the local idea is clear
 
-When a page jumps from slogan to command list, the learner is doing the course-design
-work alone.
+When a page jumps from slogan to command list, the page is making you reconstruct the
+lesson design alone.
 
 ## How to work a module honestly
 
@@ -84,4 +84,3 @@ Stop and reset if any of these are true:
 
 Those are not minor study gaps. They usually mean the previous page needs a slower,
 smaller pass.
-

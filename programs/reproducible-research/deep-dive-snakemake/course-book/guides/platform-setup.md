@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Platform Setup"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -25,7 +25,7 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 Deep Dive Snakemake depends on more than a `snakemake` binary existing somewhere on the
 machine. The course assumes a small, explicit platform contract.
 
-This page makes that contract clear before the learner hits avoidable setup failures.
+This page makes that contract clear before you hit avoidable setup failures.
 
 ---
 
@@ -124,4 +124,3 @@ its bundle, and validate the promoted artifacts using the supported local toolch
 | config validation skips unexpectedly | `jsonschema` or `pyyaml` missing | install the missing Python packages if you want schema validation to execute |
 | `dag` or `rulegraph` fails | Graphviz `dot` missing | install Graphviz and rerun the target |
 | `verify` fails after a successful dry-run | runtime dependencies or filesystem assumptions differ from the planning surface | inspect `profiles/`, `config/`, and the failing rule logs before changing workflow code |
-

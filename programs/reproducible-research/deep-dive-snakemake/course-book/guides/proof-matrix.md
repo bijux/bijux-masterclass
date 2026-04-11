@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Proof Matrix"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -58,7 +58,7 @@ Use it when you care about a concept but want the fastest evidence route.
 
 | Question | Best first command | Best first file |
 | --- | --- | --- |
-| where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `course-book/capstone/index.md` |
+| where should a first-time reader start in the capstone | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `course-book/capstone/index.md` |
 | what does this workflow claim it will build | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-wf-dryrun` | `capstone/Snakefile` |
 | what exactly is public for downstream trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-artifacts` | [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) |
 | which surface explains dynamic discovery honestly | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `capstone/workflow/rules/preprocess.smk` |

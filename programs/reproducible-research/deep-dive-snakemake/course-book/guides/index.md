@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Guides"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -81,7 +81,7 @@ without changing what the words mean.
 
 | Term | Meaning here | Why it matters |
 | --- | --- | --- |
-| learner route | a short reading path for one concrete question | keeps you from opening five pages when one page would do |
+| reading route | a short reading path for one concrete question | keeps you from opening five pages when one page would do |
 | pressure | the situation shaping what you can realistically read right now | keeps the guides tied to real use instead of generic study advice |
 | proof route | the smallest command, artifact, or file that can honestly test a claim | keeps evidence proportional to the question |
 | workflow contract | the file, path, or publish promise the workflow is making | reminds you the course is about explicit agreements, not ambient behavior |
@@ -97,7 +97,7 @@ without changing what the words mean.
 | [Start Here](start-here.md) | safest first route into the program |
 | [Course Guide](course-guide.md) | overview of when to use guides, modules, reference pages, or capstone routes |
 | [Learning Contract](learning-contract.md) | the bar the course sets for explanation, proof, and honest progress |
-| [Module Promise Map](module-promise-map.md) | translation of module titles into concrete learner outcomes |
+| [Module Promise Map](module-promise-map.md) | translation of module titles into concrete outcomes |
 | [Module Checkpoints](module-checkpoints.md) | readiness review before you move on |
 | [Platform Setup](platform-setup.md) | tooling and version checks before you trust local proof routes |
 | [Pressure Routes](pressure-routes.md) | shortest honest route when urgency is shaping the reading order |

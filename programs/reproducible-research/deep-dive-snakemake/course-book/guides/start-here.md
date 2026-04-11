@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Start Here"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
