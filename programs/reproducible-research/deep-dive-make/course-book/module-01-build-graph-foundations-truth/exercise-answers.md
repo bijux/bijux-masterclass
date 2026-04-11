@@ -46,7 +46,7 @@ three alternative paths.
 For discovered source lists, `:=` is usually the safer Module 01 default because it gives
 you one stable value for the whole invocation.
 
-If a learner adds that "`=` is not wrong, but easier to misuse for graph-shaping values,"
+If you add that "`=` is not wrong, but easier to misuse for graph-shaping values,"
 that is a strong answer. The important distinction is timing, not moral purity.
 
 ## Exercise 5: Prove safe publication
@@ -65,8 +65,8 @@ That turns the answer from principle into evidence.
 
 ## What a mastery-level answer set looks like
 
-A mastery-level submission does not just contain the right snippets. It shows that the
-learner can move between three levels comfortably:
+A mastery-level submission does not just contain the right snippets. It shows that you can
+move between three levels comfortably:
 
 - graph language: target, prerequisite, ownership, convergence
 - command evidence: `--trace`, `-q`, failure drills

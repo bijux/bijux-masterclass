@@ -149,7 +149,7 @@ If you cannot explain those three points, the abstraction is probably premature.
 
 - Does each output path have one obvious owner?
 - Is the chosen rule form simpler than repeating explicit rules?
-- If a pattern is used, can a learner name the matched files without guessing?
+- If a pattern is used, can you name the matched files without guessing?
 - If a generator produces several files, is the coupling part of the design, not an
   accident?
 

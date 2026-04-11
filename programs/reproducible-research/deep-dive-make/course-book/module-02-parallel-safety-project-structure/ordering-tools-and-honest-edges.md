@@ -41,9 +41,9 @@ through a carefully chosen order-only prerequisite.
 If you use a normal prerequisite for a directory, you often create rebuild noise rather
 than truth.
 
-That rebuild noise matters because it trains learners to distrust Make for the wrong
-reason. The real bug is not "Make is noisy." The real bug is that the graph treated a
-setup path as if it were semantic content.
+That rebuild noise matters because it trains you to distrust Make for the wrong reason.
+The real bug is not "Make is noisy." The real bug is that the graph treated a setup path
+as if it were semantic content.
 
 ## Stamps exist to model hidden semantic state
 

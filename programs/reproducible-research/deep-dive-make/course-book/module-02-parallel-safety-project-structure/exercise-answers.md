@@ -25,7 +25,7 @@ happen to append politely.
 The bug is that `tmp.out` is a shared output path. A safe repair derives the temporary
 path from `$@`, so each target publishes through its own temp file.
 
-If a learner adds that temporary paths are still part of the publication contract, that is
+If you add that temporary paths are still part of the publication contract, that is
 exactly the Module 02 lesson.
 
 ## Exercise 4: Choose the right ordering tool

@@ -47,9 +47,9 @@ If each directory runs its own private make process, you often lose global visib
 - weaker scheduling decisions
 - harder debugging because each sub-make sees only part of the truth
 
-It also weakens teaching. A learner looking at one subdirectory Makefile may get the
-impression that the local file is the whole build story, when the real dependencies cross
-that boundary. One top-level DAG keeps those relationships explicit.
+It also weakens teaching. If you look at one subdirectory Makefile in isolation, you may
+get the impression that the local file is the whole build story, when the real
+dependencies cross that boundary. One top-level DAG keeps those relationships explicit.
 
 There are legitimate boundaries, but they should be treated as explicit tool invocations
 with named inputs and outputs, not as a casual way to avoid maintaining one graph.
