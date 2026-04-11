@@ -2,41 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Structural Recursion and Iteration"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  clear["Start with the clearest recursive specification"] --> limit["Notice where depth or stack limits break it"]
+  limit --> iterate["Move the traversal to an explicit stack"]
+  iterate --> review["Review laziness, order, and termination directly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson needs to make one tension clear from the start: the recursive version is often the best specification, but not always the safest production implementation. Students should see iteration here as a way to preserve the same traversal meaning under deeper, messier inputs, not as a rejection of structural reasoning.
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Depth Problem
 
-Here's a snippet from the progression map:
+The first failure mode in this module is not a fancy resilience pattern. It is the basic fact that real hierarchical data can be deeper or stranger than the nicest recursive demo.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If the input may be thousands of levels deep, a pretty recursive definition is not enough.
+- If traversal order or metadata changes during the iterative rewrite, the implementation is no longer equivalent to the spec.
+- If a "safe" version pre-scans the whole tree first, it has already broken the laziness contract students need later in the module.
 
 > **Core question:**  
 > When should you prefer structural recursion over iteration in Python, and how do you guarantee termination, stack-safety, **and full laziness** while preserving equational reasoning?
 
-We extend `funcpipe-rag-04` with proper hierarchical document support via `TreeDoc` — a simple, immutable, recursive structure that perfectly mirrors real-world nested sections, tables inside figures, or malformed HTML/XML.
+This lesson introduces the real design move for tree traversal:
+
+- start from the recursive specification because it best expresses the structure
+- switch to an explicit stack only when depth and call-stack limits require it
+- preserve preorder, metadata, and demand behavior so the iterative version remains a faithful implementation instead of a different algorithm
+
+The `TreeDoc` examples matter because they show a realistic hierarchy with both branching and pathological depth, which is exactly where production and specification begin to diverge.
 
 **Concrete motivating example** (a real parsed Markdown document):
 
@@ -66,9 +61,7 @@ Chunk(text="Subsection 1.1",    depth=2, path=(0, 0))
 Chunk(text="Deep leaf",         depth=D, path=(1, 0, 0, ..., k))
 ```
 
-The naïve recursive implementation is the clearest possible specification.  
-Unfortunately it blows the recursion limit on real-world degenerate inputs.  
-The production implementation must be **fully lazy**, **stack-safe**, and **allocation-bounded** while remaining readable and provably equivalent.
+The naïve recursive implementation is still worth studying because it names the traversal clearly. The lesson is not "recursion is bad." The lesson is that some inputs turn the clearest specification into an unsafe runtime strategy. The production version must therefore protect stack depth without giving up the same observable traversal behavior.
 
 **Audience:** Engineers who process unpredictable document hierarchies (PDF → HTML → Markdown → XML) and will not ship code that can `RecursionError` or OOM on legal input.
 
@@ -77,7 +70,7 @@ The production implementation must be **fully lazy**, **stack-safe**, and **allo
 2. You will refactor any structural-recursive function into a constant-call-stack, fully lazy version without losing clarity or equational reasoning.  
 3. You will ship a public `flatten` that obeys all laws for any finite acyclic input — no matter how deep or bushy — with zero pre-scan.
 
-We formalise exactly what we want from a correct, production-ready flatten: termination, stack-safety, perfect preorder, correct metadata, and true laziness (consume k items → visit exactly k nodes).
+We formalise exactly what students should defend in code review: termination, stack-safety, preorder correctness, correct metadata, and true laziness where consuming `k` items does only `k` nodes of work.
 
 ---
 
