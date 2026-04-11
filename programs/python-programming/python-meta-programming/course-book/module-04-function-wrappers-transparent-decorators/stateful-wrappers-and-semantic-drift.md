@@ -1,5 +1,30 @@
 # Stateful Wrappers and Semantic Drift
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Function Wrappers Transparent Decorators"]
+  page["Stateful Wrappers and Semantic Drift"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Module 04 needs one explicit warning boundary:
 
 > the moment a decorator starts keeping state across calls, it stops being "just a thin

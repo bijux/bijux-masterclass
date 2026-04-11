@@ -1,5 +1,30 @@
 # Instances as Runtime Objects
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Runtime Objects Object Model"]
+  page["Instances as Runtime Objects"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The first three core pages explain functions, classes, and modules as runtime objects.
 This page finishes that floor by making instance behavior equally concrete.
 

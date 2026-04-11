@@ -1,21 +1,26 @@
 # Module Glossary
 
 <!-- page-maps:start -->
-## Glossary Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  directory["Module 03"] --> glossary["Glossary"]
-  glossary --> lessons["Core lessons"]
-  glossary --> example["Worked example"]
-  glossary --> practice["Exercises and answers"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Signatures Provenance Runtime Evidence"]
+  page["Module Glossary"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  unknown["Hit an unfamiliar term"] --> lookup["Open the glossary"]
-  lookup --> local["Confirm the Module 03 meaning"]
-  local --> reuse["Reuse the same wording in notes, tooling, and review"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

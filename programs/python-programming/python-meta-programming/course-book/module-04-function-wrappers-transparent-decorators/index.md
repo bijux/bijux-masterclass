@@ -1,28 +1,26 @@
 # Module 04: Function Wrappers and Transparent Decorators
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 04: Function Wrappers and Transparent Decorators"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Function Wrappers Transparent Decorators"]
+  page["Module 04: Function Wrappers and Transparent Decorators"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Nested Functions and Wrapper Skeletons"]
-  core1 --> core2["Decorator Syntax and Definition-Time Rebinding"]
-  core2 --> core3["Thin Practical Wrappers at Call Time"]
-  core3 --> core4["Stateful Wrappers and Semantic Drift"]
-  core4 --> core5["Wraps and Signature Transparency"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

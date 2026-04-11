@@ -1,5 +1,30 @@
 # Worked Example: Building a Bounded Cache Decorator
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Function Wrappers Transparent Decorators"]
+  page["Worked Example: Building a Bounded Cache Decorator"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The five core lessons in Module 04 become much easier to trust when they all show up in
 one wrapper that is useful, tempting, and clearly not production-ready.
 

@@ -1,28 +1,26 @@
 # Module 03: Signatures, Provenance, and Runtime Evidence
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 03: Signatures, Provenance, and Runtime Evidence"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Signatures Provenance Runtime Evidence"]
+  page["Module 03: Signatures, Provenance, and Runtime Evidence"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Signature Contracts and Parameter Kinds"]
-  core1 --> core2["Argument Binding and Call Simulation"]
-  core2 --> core3["Provenance Helpers and Best-Effort Recovery"]
-  core3 --> core4["Dynamic Members and Static Structure"]
-  core4 --> core5["Frames and Diagnostic-Only Runtime Evidence"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

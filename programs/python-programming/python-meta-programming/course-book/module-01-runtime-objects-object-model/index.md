@@ -1,28 +1,26 @@
 # Module 01: Runtime Objects and the Python Object Model
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 01: Runtime Objects and the Python Object Model"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Runtime Objects Object Model"]
+  page["Module 01: Runtime Objects and the Python Object Model"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Functions as Runtime Objects"]
-  core1 --> core2["Classes as Runtime Objects"]
-  core2 --> core3["Modules as Runtime Objects"]
-  core3 --> core4["Instances as Runtime Objects"]
-  core4 --> core5["Object Graph and Runtime Cycle"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

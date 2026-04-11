@@ -1,23 +1,26 @@
 # First-Contact Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["First-Contact Map"]
-  concept --> capstone["Capstone pressure point"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Orientation"]
+  page["First-Contact Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Start with the first honest runtime question"] --> module1["Module 01"]
-  module1 --> module2["Module 02"]
-  module2 --> module3["Module 03"]
-  module3 --> capstone["Inspect the matching capstone surface"]
-  capstone --> readiness["Decide whether you are ready for wrappers"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

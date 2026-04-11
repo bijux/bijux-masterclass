@@ -1,5 +1,30 @@
 # Static Lookup and Disciplined Observation
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Runtime Observation Inspection"]
+  page["Static Lookup and Disciplined Observation"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The earlier pages in Module 02 teach separate boundaries:
 
 - names are not stored state

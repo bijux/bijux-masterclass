@@ -1,5 +1,30 @@
 # Worked Example: Building a Safe Signature-Guided `__repr__`
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Signatures Provenance Runtime Evidence"]
+  page["Worked Example: Building a Safe Signature-Guided `__repr__`"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The five core lessons in Module 03 are easiest to trust when they all show up in one
 helper that feels practical and easy to get subtly wrong.
 

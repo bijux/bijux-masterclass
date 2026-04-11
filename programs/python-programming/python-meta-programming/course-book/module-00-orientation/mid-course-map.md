@@ -1,23 +1,26 @@
 # Mid-Course Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["Mid-Course Map"]
-  concept --> capstone["Capstone pressure point"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Orientation"]
+  page["Mid-Course Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Return after the observation modules"] --> module4["Modules 04 to 05"]
-  module4 --> module6["Module 06"]
-  module6 --> module7["Modules 07 to 08"]
-  module7 --> capstone["Check the matching capstone surfaces"]
-  capstone --> readiness["Decide whether class-creation hooks are now justified"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

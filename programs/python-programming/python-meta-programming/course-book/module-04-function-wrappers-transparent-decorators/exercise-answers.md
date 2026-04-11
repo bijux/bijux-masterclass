@@ -1,5 +1,30 @@
 # Exercise Answers
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Function Wrappers Transparent Decorators"]
+  page["Exercise Answers"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Use this page after attempting the exercises yourself. The goal is not to match every
 example literally. The goal is to compare your reasoning against answers that distinguish
 mechanics, transparency, and policy honestly.

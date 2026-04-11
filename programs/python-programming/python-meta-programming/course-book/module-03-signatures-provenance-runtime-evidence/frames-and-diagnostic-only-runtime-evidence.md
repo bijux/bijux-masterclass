@@ -1,5 +1,30 @@
 # Frames and Diagnostic-Only Runtime Evidence
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Signatures Provenance Runtime Evidence"]
+  page["Frames and Diagnostic-Only Runtime Evidence"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Module 03 ends with the sharpest inspection surface in the module:
 
 - `inspect.currentframe()`

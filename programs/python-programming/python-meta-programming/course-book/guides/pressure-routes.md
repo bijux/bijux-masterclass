@@ -1,22 +1,26 @@
 # Pressure Routes
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> pressure["A concrete study or review question"]
-  pressure --> guide["Pressure Routes"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Guides"]
+  page["Pressure Routes"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Name the exact engineering pressure"] --> route["Choose the smallest honest route"]
-  route --> module["Read the linked module sequence"]
-  module --> proof["Check the matching capstone or review surface"]
-  proof --> decision["Leave with one runtime decision or review judgment"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

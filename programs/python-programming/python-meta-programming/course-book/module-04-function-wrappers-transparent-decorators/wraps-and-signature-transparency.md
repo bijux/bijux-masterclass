@@ -1,5 +1,30 @@
 # Wraps and Signature Transparency
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Function Wrappers Transparent Decorators"]
+  page["Wraps and Signature Transparency"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 By the time Module 04 reaches this page, one rule should feel non-negotiable:
 
 > if a decorator is meant to stay transparent, it must preserve callable identity and

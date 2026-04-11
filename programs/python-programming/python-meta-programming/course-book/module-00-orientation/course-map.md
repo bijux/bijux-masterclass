@@ -1,22 +1,26 @@
 # Course Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["Course Map"]
-  concept --> capstone["Capstone pressure point"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Orientation"]
+  page["Course Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  problem["Start with the design or review question"] --> route["Choose the right part of the course arc"]
-  route --> module_work["Read the module sequence for that arc"]
-  module_work --> capstone["Carry the question into the capstone"]
-  capstone --> judgment["Leave with one runtime judgment"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

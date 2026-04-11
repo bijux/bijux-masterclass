@@ -1,21 +1,26 @@
 # Proof Matrix
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> pressure["A concrete study or review question"]
-  pressure --> guide["Proof Matrix"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Guides"]
+  page["Proof Matrix"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Name the exact claim you need to prove"] --> route["Choose the smallest honest command"]
-  route --> surface["Inspect the matching saved output or source surface"]
-  surface --> next_move["Leave with one clearer design decision"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

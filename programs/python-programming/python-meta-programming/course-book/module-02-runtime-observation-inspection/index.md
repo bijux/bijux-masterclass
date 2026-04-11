@@ -1,28 +1,26 @@
 # Module 02: Safe Runtime Observation and Inspection
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 02: Safe Runtime Observation and Inspection"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Runtime Observation Inspection"]
+  page["Module 02: Safe Runtime Observation and Inspection"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Visible Names and Stored State"]
-  core1 --> core2["Dynamic Attribute Access"]
-  core2 --> core3["Exactness and Polymorphism"]
-  core3 --> core4["Callable Objects and the Call Protocol"]
-  core4 --> core5["Static Lookup and Disciplined Observation"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

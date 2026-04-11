@@ -1,23 +1,26 @@
 # Mastery Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["Mastery Map"]
-  concept --> capstone["Capstone pressure point"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Orientation"]
+  page["Mastery Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Start with the strongest design or review question"] --> module4["Modules 04 to 05"]
-  module4 --> module6["Modules 06 to 08"]
-  module6 --> module9["Modules 09 to 10"]
-  module9 --> capstone["Use the capstone proof and review surfaces"]
-  capstone --> judgment["Leave with a keep, change, or reject call"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 
