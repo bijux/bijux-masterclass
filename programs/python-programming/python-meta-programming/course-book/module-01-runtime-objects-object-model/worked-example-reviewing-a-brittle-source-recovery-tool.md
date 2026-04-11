@@ -245,3 +245,10 @@ When you meet a clever introspection helper, run this loop:
 
 If you can do that here, Module 01 has done its job and Module 02 can teach safe
 inspection with much less ambiguity.
+
+## Continue through Module 01
+
+- Previous: [Object Graph and Runtime Cycle](object-graph-and-runtime-cycle.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)

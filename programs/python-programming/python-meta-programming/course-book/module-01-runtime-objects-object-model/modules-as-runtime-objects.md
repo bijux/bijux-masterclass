@@ -196,3 +196,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is to look at instances as objects with their own
 storage and lookup behavior.
+
+## Continue through Module 01
+
+- Previous: [Classes as Runtime Objects](classes-as-runtime-objects.md)
+- Next: [Instances as Runtime Objects](instances-as-runtime-objects.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

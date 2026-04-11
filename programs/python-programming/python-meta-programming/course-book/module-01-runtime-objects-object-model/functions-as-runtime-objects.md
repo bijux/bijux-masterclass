@@ -273,3 +273,10 @@ Try these before moving on:
 
 If those feel ordinary, you are ready to treat classes as runtime objects instead of only
 as syntax for inheritance.
+
+## Continue through Module 01
+
+- Previous: [Overview](index.md)
+- Next: [Classes as Runtime Objects](classes-as-runtime-objects.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

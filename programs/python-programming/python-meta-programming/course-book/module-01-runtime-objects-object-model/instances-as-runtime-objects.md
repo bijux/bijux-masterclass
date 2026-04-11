@@ -234,3 +234,10 @@ Try these before moving on:
 
 If those feel ordinary, the last core can connect modules, classes, instances, functions,
 and bound methods into one runtime graph.
+
+## Continue through Module 01
+
+- Previous: [Modules as Runtime Objects](modules-as-runtime-objects.md)
+- Next: [Object Graph and Runtime Cycle](object-graph-and-runtime-cycle.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

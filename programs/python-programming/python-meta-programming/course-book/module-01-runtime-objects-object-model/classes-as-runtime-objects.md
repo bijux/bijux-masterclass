@@ -218,3 +218,10 @@ Try these before moving on:
 
 If those feel ordinary, the module can move from class objects to module objects without
 losing the thread of runtime identity.
+
+## Continue through Module 01
+
+- Previous: [Functions as Runtime Objects](functions-as-runtime-objects.md)
+- Next: [Modules as Runtime Objects](modules-as-runtime-objects.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

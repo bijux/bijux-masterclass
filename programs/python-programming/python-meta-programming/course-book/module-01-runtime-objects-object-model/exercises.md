@@ -83,3 +83,10 @@ Across all six answers, the module wants the same habits:
 - you avoid "Python magic" as a substitute for a real object-model explanation
 
 If an answer still sounds like folklore, keep going.
+
+## Continue through Module 01
+
+- Previous: [Worked Example: Reviewing a Brittle Source-Recovery Tool](worked-example-reviewing-a-brittle-source-recovery-tool.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

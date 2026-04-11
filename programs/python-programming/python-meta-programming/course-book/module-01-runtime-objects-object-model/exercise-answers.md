@@ -193,3 +193,10 @@ Across the whole set, strong answers share the same habits:
 
 If your answer still depends on phrases like "Python just knows" or "class magic," revise
 it until you can point to the actual object and relationship doing the work.
+
+## Continue through Module 01
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 02](../module-02-runtime-observation-inspection/index.md)
+- Terms: [Glossary](glossary.md)

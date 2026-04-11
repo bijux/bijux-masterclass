@@ -196,3 +196,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can pressure-test the boundary between
 supported introspection and brittle object-model tricks.
+
+## Continue through Module 01
+
+- Previous: [Instances as Runtime Objects](instances-as-runtime-objects.md)
+- Next: [Worked Example: Reviewing a Brittle Source-Recovery Tool](worked-example-reviewing-a-brittle-source-recovery-tool.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)
