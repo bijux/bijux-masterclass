@@ -2,10 +2,10 @@
 
 Module 05 turns successful pipeline execution into defensible interpretation.
 
-By now, learners know how to reason about content identity, runtime boundaries, and
-truthful pipeline declarations. That is necessary, but it is not enough. A workflow can
-run honestly and still invite a bad conclusion if its metrics and parameters do not mean
-the same thing across runs.
+By now, you know how to reason about content identity, runtime boundaries, and truthful
+pipeline declarations. That is necessary, but it is not enough. A workflow can run
+honestly and still invite a bad conclusion if its metrics and parameters do not mean the
+same thing across runs.
 
 This module is about comparability:
 
@@ -15,7 +15,7 @@ This module is about comparability:
 - which plot or table conventions must stay stable
 - when a numeric difference is meaningful and when it is only mechanical
 
-The central learner question is:
+The central question is:
 
 > Are these two results describing the same reality under comparable controls?
 

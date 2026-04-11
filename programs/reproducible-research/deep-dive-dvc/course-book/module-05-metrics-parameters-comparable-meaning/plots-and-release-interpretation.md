@@ -129,5 +129,5 @@ You understand this core when you can:
 - decide when a metric is not ready for promotion
 - write a review note that separates numeric movement from release judgment
 
-The learner goal is a release bundle that can be read later without guessing what the
-numbers and plots were supposed to mean.
+The goal is a release bundle that can be read later without guessing what the numbers and
+plots were supposed to mean.

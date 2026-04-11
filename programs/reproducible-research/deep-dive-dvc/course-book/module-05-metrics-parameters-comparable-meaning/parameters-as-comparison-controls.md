@@ -10,8 +10,8 @@ That means a reviewer should be able to answer:
 > Which controls changed between these two results, and do those changes still allow the
 > comparison we are making?
 
-DVC helps by tracking declared parameter values. The learner still has to decide which
-values deserve that treatment.
+DVC helps by tracking declared parameter values. You still have to decide which values
+deserve that treatment.
 
 ## Controls that belong in review
 

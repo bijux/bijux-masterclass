@@ -71,7 +71,7 @@ is real, but the interpretation "the model improved" is not yet justified.
 DVC can help track both files and show the numeric difference. It cannot decide whether
 the population change invalidates the conclusion.
 
-That judgment belongs to the course learner and the review contract.
+That judgment belongs to you and the review contract.
 
 ## Metric names are not enough
 
@@ -142,5 +142,5 @@ You understand this core when you can take one metric and explain:
 - what conclusion it can and cannot support
 - what evidence a reviewer should inspect beside the metric file
 
-The learner goal is not to distrust every number. It is to make each important number
-earn the interpretation attached to it.
+The goal is not to distrust every number. It is to make each important number earn the
+interpretation attached to it.

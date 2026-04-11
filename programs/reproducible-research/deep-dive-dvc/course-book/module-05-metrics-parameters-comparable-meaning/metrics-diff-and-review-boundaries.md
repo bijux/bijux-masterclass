@@ -8,8 +8,8 @@ It answers a specific question:
 
 That is an important question. It is not the whole review.
 
-Module 05 teaches learners to use the diff without asking it to do semantic judgment it
-cannot do.
+Module 05 teaches you to use the diff without asking it to do semantic judgment it cannot
+do.
 
 ## What the diff can show
 
@@ -133,4 +133,4 @@ You understand this core when you can explain:
 - why no-change can still need review
 - how to write a conclusion that separates numeric movement from meaning
 
-The learner goal is not to distrust DVC diffs. It is to use them precisely.
+The goal is not to distrust DVC diffs. It is to use them precisely.

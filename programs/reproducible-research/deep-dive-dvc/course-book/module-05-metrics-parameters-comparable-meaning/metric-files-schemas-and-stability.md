@@ -147,5 +147,5 @@ You understand this core when you can inspect a metric file and answer:
 - whether old and new values are safe to compare
 - which documentation or review surface explains the metric contract
 
-The learner goal is a metric file that ages well. Two years later, the team should still
-know what the number meant.
+The goal is a metric file that ages well. Two years later, the team should still know what
+the number meant.
