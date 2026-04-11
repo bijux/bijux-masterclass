@@ -59,10 +59,10 @@ named home inside it.
 - Use [Capstone Architecture Guide](capstone-architecture-guide.md) when you need ownership boundaries before reading implementation detail.
 - Use [Capstone Walkthrough](capstone-walkthrough.md) when you need a guided first pass through commands and files.
 - Use [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
-- Use [Capstone Proof Checklist](capstone-proof-checklist.md) when you need the shortest proof route.
+- Use [Capstone Proof Guide](capstone-proof-guide.md) when you need the shortest proof route.
 - Use [Capstone Walkthrough](capstone-walkthrough.md) when you need the public-surface narrative order.
 - Use [Command Guide](command-guide.md) when you need the smallest honest command.
-- Use [Capstone Proof Checklist](capstone-proof-checklist.md) and [Capstone Extension Guide](capstone-extension-guide.md) when the question is review depth or change placement.
+- Use [Capstone Proof Guide](capstone-proof-guide.md) and [Capstone Extension Guide](capstone-extension-guide.md) when the question is review depth or change placement.
 
 ## Practical reading order
 

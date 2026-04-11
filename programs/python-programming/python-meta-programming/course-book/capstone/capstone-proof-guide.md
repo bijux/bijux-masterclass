@@ -1,4 +1,4 @@
-# Capstone Proof Checklist
+# Capstone Proof Guide
 
 <!-- page-maps:start -->
 ## Guide Fit
