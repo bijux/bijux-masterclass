@@ -1,304 +1,139 @@
 # Module 04: Truthful Pipelines and Declared Dependencies
 
+Module 04 turns DVC from a storage story into an execution story.
 
-<!-- page-maps:start -->
-## Module Position
+By now, learners already know two important facts:
+
+- data identity should come from content, not path names
+- runtime can influence a result even when code and data look unchanged
+
+The next question is sharper:
+
+can the pipeline itself tell the truth about why a result exists?
+
+A DVC pipeline is only reviewable when its declared graph matches the real work. If a
+script reads a file that is not listed, writes an output that is not owned, or uses a
+control value that is hidden inside code, DVC can still run. The danger is that it may run
+for reasons the team cannot explain, or skip work when the result is already stale.
+
+This module is about replacing "the script usually works" with a declared execution graph
+that a reviewer can inspect, challenge, and reproduce.
+
+The capstone corroboration surface for this module is the set of files that show declared
+execution truth: `capstone/dvc.yaml`, `capstone/dvc.lock`, `capstone/params.yaml`,
+`capstone/docs/STAGE_CONTRACT_GUIDE.md`, `capstone/docs/CHANGE_PLACEMENT_GUIDE.md`, and
+the `make -C capstone verify` route.
+
+## Why this module exists
+
+Many pipelines fail quietly because the graph is incomplete.
+
+Common examples look ordinary at first:
+
+- a preparation script reads a lookup table that is not in `deps`
+- a model script uses a threshold literal instead of a value in `params.yaml`
+- an evaluation command writes a report but only the metric file is declared as an output
+- a shared intermediate directory is reused by two commands without a clear owner
+- a stage reruns so often that the team stops investigating why
+
+These are not cosmetic problems. They decide whether `dvc repro` has enough declared
+information to make a correct decision.
+
+The point of Module 04 is not to memorize every DVC field. The point is to learn the
+review habit:
+
+> If this result changed, could I explain the change from declared dependencies,
+> parameters, outputs, command text, and recorded lock evidence?
+
+If the answer is no, the pipeline is not yet truthful enough.
+
+## Study route
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 04: Truthful Pipelines and Declared Dependencies"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
+flowchart LR
+  overview["Overview"] --> core1["Core 1: stage contract"]
+  core1 --> core2["Core 2: dependency, parameter, output boundaries"]
+  core2 --> core3["Core 3: staleness and lock evidence"]
+  core3 --> core4["Core 4: false reruns and stale outputs"]
+  core4 --> core5["Core 5: refactoring and shared outputs"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+Read the module in that order the first time.
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+If the problem is already partly clear, use this shortcut:
 
-*From scripts that “usually work” to execution graphs that can be reasoned about*
+- open Core 1 when the main confusion is "what is a DVC stage promising?"
+- open Core 2 when the main confusion is "what belongs in `deps`, `params`, or `outs`?"
+- open Core 3 when the main confusion is "why did `dvc repro` rerun or skip?"
+- open Core 4 when the main confusion is "which failure is merely annoying and which is dangerous?"
+- open Core 5 when the main confusion is "how do I change pipeline shape without losing provenance?"
 
----
+## Module map
 
-## Purpose of this Module
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `stage-contracts-and-declared-truth.md` | teaches the promise each DVC stage makes |
+| `dependency-parameter-output-boundaries.md` | teaches how to place inputs, controls, and outputs in the graph |
+| `dvc-repro-staleness-and-lock-evidence.md` | teaches how `dvc repro` decides and how `dvc.lock` records evidence |
+| `false-reruns-and-stale-outputs.md` | teaches how to distinguish wasteful reruns from dangerous stale results |
+| `safe-pipeline-refactoring-and-shared-outputs.md` | teaches graph change, shared intermediates, and multi-output care |
+| `worked-example-repairing-a-deceptive-pipeline.md` | walks through one realistic pipeline review and repair |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
-This module turns state literacy into execution literacy. Once identity and environment
-boundaries are clear, the next question is whether the pipeline tells the truth about
-what actually influences each stage.
+## What should be clear by the end
 
-Use this module to learn what a truthful DVC graph looks like: declared dependencies,
-declared outputs, declared parameters, and rerun behavior that follows those declarations
-instead of private assumptions. If that graph is not truthful, later metrics and
-promotion rules will be defending the wrong state story.
+By the end of this module, you should be able to explain:
 
-## At a Glance
+- what makes a DVC stage truthful rather than merely convenient
+- how to decide whether a file belongs in `deps`, `outs`, or neither
+- how parameter declaration turns control values into reviewable change
+- how `dvc repro` uses declared state and lock evidence to decide what reruns
+- why stale outputs are more dangerous than extra reruns
+- how to refactor a pipeline without breaking the provenance story
 
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| truthful stages | "Why did this stage rerun, or why did it not?" | use the capstone heavily after the state model is already clear |
-| dependency declaration | "Which inputs are strong enough to belong in the graph?" | compare `dvc.yaml` and `dvc.lock` carefully |
-| operational trust | "When does `dvc repro` become predictable instead of mystical?" | inspect stage boundaries, not just stage names |
+## Commands to keep close
 
-## Learning outcomes
-
-- explain what makes a DVC stage truthful rather than merely convenient
-- identify which reads, writes, params, and outputs belong in the declared graph
-- use `dvc.yaml` and `dvc.lock` together as evidence of declared state transitions
-
-## Verification route
-
-- Inspect `capstone/dvc.yaml`, `capstone/dvc.lock`, and `capstone/params.yaml` together instead of reading any one file in isolation.
-- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` once you can already predict why the pipeline should rerun or stay stable.
-- Explain one stage in terms of its declared dependencies, parameters, outputs, and recorded lock evidence before moving on.
-
-## Why this module matters in the course
-
-This is where the course turns state identity into executable truth. Once a team can name
-state correctly, the next question is whether its pipeline graph tells the truth about how
-that state changes.
-
-That matters because `dvc repro` is not magic. It can only make correct decisions from
-the dependencies, parameters, commands, and outputs that the repository declares. If the
-graph lies, DVC will behave consistently and still give the wrong operational result.
-
-## Questions this module should answer
-
-By the end of the module, you should be able to answer:
-
-- What makes a stage truthful rather than merely convenient?
-- Which inputs are strong enough to belong in `deps` or `params`?
-- What kinds of hidden reads or writes make a pipeline deceptive?
-- Why is `dvc.lock` evidence of a graph execution rather than just a generated file?
-
-Those answers are the bridge between "the repository runs" and "the repository is reviewable."
-
-This module should make pipeline behavior more explainable, not merely more automated.
-
-## What to inspect in the capstone
-
-Keep the capstone open while reading this module and inspect:
-
-- `dvc.yaml` as the declared graph
-- `params.yaml` as the control surface that should trigger meaningful change
-- `dvc.lock` as the recorded consequence of the declared graph
-- `publish/v1/` as the stable output boundary that downstream consumers should trust
-
-Ask a hard question while you inspect them: if one declared edge disappeared, which wrong
-result would become possible without an obvious crash?
-
----
-
-## 4.1 The Core Issue: Implicit Dependencies in Scripts
-
-ML pipelines typically originate as sequential scripts, such as:
+These commands form the evidence loop for Module 04:
 
 ```bash
-python preprocess.py
-python train.py
-python evaluate.py
+make -C capstone verify
+make -C capstone walkthrough
+dvc dag
+dvc status
+dvc repro
 ```
 
-These constructs function adequately in isolation but harbor inherent deceptions through omissions: dependencies remain unspoken, inputs are accessed without formal acknowledgment, outputs are generated sans registration, and parameters are embedded within code or global variables. While the script internally comprehends its requisites, the overarching system lacks this awareness, fostering opacity and unreliability.
+Use `make -C capstone verify` and `make -C capstone walkthrough` from the capstone root
+when you want the course-provided review route. Use `dvc dag`, `dvc status`, and
+`dvc repro` inside a DVC workspace when you want to inspect the declared graph and rerun
+decision directly.
 
-DVC pipelines mitigate this by rendering dependencies explicit and amenable to scrutiny, transforming ad-hoc executions into structured, auditable processes.
+## Capstone route
 
-**Illustration**:
+Use the capstone after you can describe a single stage in plain language.
 
-```mermaid
-graph LR
-  script["Script Execution"]
-  omissions["Implicit Dependencies<br/>Undeclared Inputs<br/>Unregistered Outputs<br/>Hidden Parameters"]
-  dvc["DVC Pipeline"]
-  declarations["Explicit Declarations<br/>Inspectable Graph<br/>Auditable Execution"]
-  script --> omissions
-  dvc --> declarations
+Best corroboration surfaces for this module:
+
+- `capstone/dvc.yaml`
+- `capstone/dvc.lock`
+- `capstone/params.yaml`
+- `capstone/docs/STAGE_CONTRACT_GUIDE.md`
+- `capstone/docs/CHANGE_PLACEMENT_GUIDE.md`
+- `capstone/docs/PUBLISH_CONTRACT.md`
+
+Useful proof route:
+
+```bash
+make -C capstone walkthrough
+make -C capstone verify
 ```
 
----
-
-## 4.2 Formal Definition of a DVC Stage
-
-A DVC stage embodies a pure functional declaration: **Given specified inputs, this command yields designated outputs.** Formally, it comprises:
-
-- **deps**: Files or directories consumed during execution.
-- **params**: Configuration values extracted from tracked sources (e.g., `params.yaml`).
-- **cmd**: The command invoked for processing.
-- **outs**: Files or directories produced.
-
-No extraneous factors may impinge upon the outcome; undeclared influences constitute a violation, rendering the pipeline deceptive.
-
-**Example Stage Definition** (from `dvc.yaml`):
-```yaml
-stages:
-  preprocess:
-    cmd: python preprocess.py
-    deps:
-      - data/raw.csv
-    params:
-      - batch_size: 32
-    outs:
-      - data/processed.csv
-```
-
-This structure enforces transparency, ensuring all elements are traceable.
-
----
-
-## 4.3 The Directed Acyclic Graph as the Execution Contract
-
-Interconnected stages form a DAG in DVC, with nodes representing stages, edges denoting declared dependencies, and directional flow indicating causality. This graph transcends mere visualization; it constitutes the binding execution contract, governing DVC's determinations on execution, omission, and staleness.
-
-Discrepancies in the DAG precipitate erroneous yet consistent DVC behavior, underscoring the imperative for accuracy.
-
-**Illustration**:
-
-```mermaid
-graph LR
-  preprocess["Preprocess"]
-  train["Train"]
-  evaluate["Evaluate"]
-  preprocess -- processed.csv --> train
-  train -- model.pkl --> evaluate
-```
-
----
-
-## 4.4 Categories of Pipeline Failures
-
-Failures manifest in two primary forms, each with distinct etiologies and ramifications.
-
-### False Positives (Excessive Rebuilds)
-Stages execute redundantly despite unaltered pertinent elements. Contributors include overbroad dependency declarations, granular input specifications (e.g., whole directories), and superfluous parameter linkages. Consequences encompass computational inefficiency, protracted iterations, and operational frustration. While inefficient, these are benign, preserving result integrity.
-
-### False Negatives (Stale Outputs)
-Stages omit reruns amid relevant modifications, stemming from omitted dependencies, undeclared file accesses, concealed parameters, or environmental infiltrations. Ramifications are severe: erroneous outcomes, undetected data corruption, and flawed inferences. DVC's architecture deliberately favors false positives to avert these catastrophic lapses.
-
-**Comparative Table**:
-
-| Failure Type      | Causes                          | Costs                          |
-|-------------------|---------------------------------|--------------------------------|
-| False Positives   | Over-declaration, coarse inputs | Inefficiency, delays           |
-| False Negatives   | Omissions, leaks                | Errors, corruption             |
-
----
-
-## 4.5 Mechanics of `dvc repro` Decision-Making
-
-Dispensing with ambiguity, `dvc repro` adheres to a rigorous protocol:
-
-1. Traverse the DAG topologically.
-2. For each stage: Compute hashes of declared dependencies, retrieve tracked parameters, and juxtapose against `dvc.lock` states.
-3. Upon detection of any divergence: Designate the stage as stale and queue for execution.
-4. Cascade staleness to downstream stages.
-
-This process eschews speculation; reruns occur exclusively due to declared changes, while omissions reflect unaltered declarations.
-
-**Example Command Execution** (Illustrative output):
-```
-$ dvc repro
-Stage 'preprocess' didn't change, skipping
-Stage 'train' changed, reproducing...
-Running command: python train.py
-Stage 'evaluate' is downstream of changed stages, reproducing...
-```
-
----
-
-## 4.6 Significance of `dvc.lock` as Evidentiary Artifact
-
-Far from ancillary metadata, `dvc.lock` functions as a verifiable record, capturing precise dependency hashes, parameter values, and output artifacts. It resolves inquiries into executed content and inputs. Deletion or disregard impairs historical reasoning; versioning `dvc.yaml` sans `dvc.lock` documents aspirations, not realizations.
-
-**Sample `dvc.lock` Excerpt**:
-```yaml
-stages:
-  train:
-    cmd: python train.py
-    deps:
-    - path: data/processed.csv
-      md5: abcdef1234567890
-    params:
-      params.yaml:
-        learning_rate: 0.01
-    outs:
-    - path: model.pkl
-      md5: 0987654321fedcba
-```
-
----
-
-## 4.7 Handling Shared Intermediates and Multi-Output Configurations
-
-Authentic pipelines exhibit non-linearity, featuring shared intermediates, multi-output stages, and fan-in/fan-out topologies—these represent standard rather than exceptional patterns. Truthful DAGs mandate explicit intermediate declarations, avoidance of concealed temporary files, and resistance to undeclared artifact repurposing. Incidental file presence signals a defect.
-
----
-
-## 4.8 Safe Pipeline Refactoring with Preserved Provenance
-
-Truthful DAGs facilitate refactoring—renaming stages, restructuring directories, or partitioning/merging steps—provided dependencies endure, outputs align, and hashes verify. Path alterations do not fracture identity; undeclared dependencies do. This leverages DVC's content-centric paradigm for robust evolution.
-
----
-
-## 4.9 Failure Modes and Interpretations
-
-| Symptom                         | Interpretation                  |
-| ------------------------------- | ------------------------------- |
-| Unexpected stage rerun          | Declared input modification     |
-| Omitted rerun despite necessity | Dependency omission             |
-| Downstream staleness            | Proper propagation              |
-| Deletion-induced breakage       | Overreliance on workspace       |
-
-Interpret these as diagnostic indicators, not adversities.
-
----
-
-## 4.10 Predictive Exercise
-
-Prior to execution:
-1. Modify a single file or parameter.
-2. Document anticipated reruns and omissions.
-3. Invoke `dvc repro`.
-4. Contrast predictions with observations.
-
-Disparities implicate DAG inaccuracies or conceptual misunderstandings, yielding instructive insights.
-
-**Guidance**: Employ a minimal pipeline for safety; annotate discrepancies to refine understanding.
-
----
-
-## 4.11 Core Conceptual Framework
-
-> **Pipelines transcend scripts; they embody executable assertions of causality.**
-
-Inability to articulate a stage's execution rationale denotes systemic failure.
-
----
-
-## Module 04: Invariants Checklist
-
-Affirm:
-
-- [ ] Comprehensive declaration of stage influences.
-- [ ] Eradication of false negatives.
-- [ ] Comprehension and tolerance of false positives.
-- [ ] Authoritativeness of `dvc.lock`.
-- [ ] Predictable pipeline dynamics.
-
-Resolve uncertainties by rectifying the DAG before progression.
-
----
-
-## Transition to Module 05
-
-Equipped to identify data, govern environments, and execute truthful pipelines, a profound challenge persists: **What do results signify?** Metrics fluctuate, parameters shift, and visualizations mislead. Module 05 introduces semantic contracts for equitable temporal comparisons.
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is not to trust the graph because it exists. It is to practice
+asking whether each declared edge matches the real read, write, and control behavior of
+the pipeline.
