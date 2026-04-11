@@ -83,7 +83,7 @@ into an ungoverned surface area.
 ## Public surface review route
 
 1. Read `src/service_monitoring/application.py`.
-2. Compare it with [Capstone File Guide](../capstone/capstone-file-guide.md) and [Capstone Review Checklist](../capstone/capstone-review-checklist.md).
+2. Compare it with [Capstone File Guide](../capstone/capstone-file-guide.md) and [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md).
 3. Use [Command Guide](../capstone/command-guide.md) and the learner-facing routes to decide which promises are public enough to defend.
 
 This route keeps one governance question visible: a public surface is not simply the code

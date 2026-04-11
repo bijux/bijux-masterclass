@@ -84,7 +84,7 @@ If you want the shortest stable entry route, start with [Start Here](guides/star
 
 ## Keep these references nearby
 
-- [Object Design Checklist](reference/object-design-checklist.md)
+- [Review Checklist](reference/review-checklist.md)
 - [Boundary Review Prompts](reference/boundary-review-prompts.md)
 - [Topic Boundaries](reference/topic-boundaries.md)
 - [Anti-Pattern Atlas](reference/anti-pattern-atlas.md)

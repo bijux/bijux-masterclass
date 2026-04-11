@@ -8,7 +8,18 @@
 .DEFAULT_GOAL := install
 
 ARTIFACTS_DIR ?= ../../../../artifacts
-DOCS_DIR   := docs
+DOCS_DIR   := ../course-book/capstone-docs
+DOC_FILES  := \
+	architecture.md:ARCHITECTURE.md \
+	command-guide.md:COMMAND_GUIDE.md \
+	extension-guide.md:EXTENSION_GUIDE.md \
+	index.md:INDEX.md \
+	package-guide.md:PACKAGE_GUIDE.md \
+	proof-guide.md:PROOF_GUIDE.md \
+	public-surface-map.md:PUBLIC_SURFACE_MAP.md \
+	test-guide.md:TEST_GUIDE.md \
+	tour.md:TOUR.md \
+	walkthrough-guide.md:WALKTHROUGH_GUIDE.md
 VENV       ?= $(ARTIFACTS_DIR)/venv/python-programming/python-functional-programming/capstone
 PYTHON     ?= $(shell command -v python3 2>/dev/null || command -v python 2>/dev/null)
 VENV_PY    := $(VENV)/bin/python
@@ -57,9 +68,10 @@ inspect: install ## Build the learner-facing inspection bundle
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(INSPECT_DIR)/summary.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(INSPECT_DIR)/summary.json
 	cp README.md $(INSPECT_DIR)/README.md
-	for doc in INDEX.md COMMAND_GUIDE.md ARCHITECTURE.md EXTENSION_GUIDE.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md TEST_GUIDE.md TOUR.md WALKTHROUGH_GUIDE.md; do \
-		cp $(DOCS_DIR)/$$doc $(INSPECT_DIR)/$$doc; \
-		cp $(DOCS_DIR)/$$doc $(INSPECT_DIR)/docs/$$doc; \
+	for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(INSPECT_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(INSPECT_DIR)/docs/$$dest; \
 	done
 	printf '%s\n' \
 		'Inspection route:' \
@@ -79,9 +91,10 @@ verify-report: install ## Build the structured capstone verification report bund
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(VERIFY_REPORT_DIR)/review-summary.json
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(VERIFY_REPORT_DIR)/review-summary.txt
 	cp README.md $(VERIFY_REPORT_DIR)/README.md
-	for doc in ARCHITECTURE.md COMMAND_GUIDE.md EXTENSION_GUIDE.md INDEX.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md TEST_GUIDE.md TOUR.md WALKTHROUGH_GUIDE.md; do \
-		cp $(DOCS_DIR)/$$doc $(VERIFY_REPORT_DIR)/$$doc; \
-		cp $(DOCS_DIR)/$$doc $(VERIFY_REPORT_DIR)/docs/$$doc; \
+	for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(VERIFY_REPORT_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(VERIFY_REPORT_DIR)/docs/$$dest; \
 	done
 	printf '%s\n' \
 		'Verification report route:' \
@@ -102,9 +115,10 @@ tour: install ## Build the learner-facing proof bundle
 	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
 	cp README.md $(TOUR_DIR)/README.md
 	cp pyproject.toml $(TOUR_DIR)/pyproject.toml
-	for doc in ARCHITECTURE.md COMMAND_GUIDE.md EXTENSION_GUIDE.md INDEX.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md TEST_GUIDE.md TOUR.md WALKTHROUGH_GUIDE.md; do \
-		cp $(DOCS_DIR)/$$doc $(TOUR_DIR)/$$doc; \
-		cp $(DOCS_DIR)/$$doc $(TOUR_DIR)/docs/$$doc; \
+	for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(TOUR_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(TOUR_DIR)/docs/$$dest; \
 	done
 	printf '%s\n' \
 		"core=src/funcpipe_rag/core" \

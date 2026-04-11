@@ -4,7 +4,18 @@ SHELL := /bin/sh
 
 PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../../artifacts
-DOCS_DIR := docs
+DOCS_DIR := ../course-book/capstone-docs
+DOC_FILES := \
+	architecture.md:ARCHITECTURE.md \
+	command-guide.md:COMMAND_GUIDE.md \
+	design-boundaries.md:DESIGN_BOUNDARIES.md \
+	extension-guide.md:EXTENSION_GUIDE.md \
+	index.md:INDEX.md \
+	package-guide.md:PACKAGE_GUIDE.md \
+	proof-guide.md:PROOF_GUIDE.md \
+	test-guide.md:TEST_GUIDE.md \
+	tour.md:TOUR.md \
+	walkthrough-guide.md:WALKTHROUGH_GUIDE.md
 VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-meta-programming/capstone
 VENV_BIN := $(VENV_DIR)/bin
 VENV_PY := $(abspath $(VENV_BIN)/python)
@@ -87,16 +98,17 @@ inspect: ## Build the learner-facing inspection bundle
 	@PYTHONPATH=src $(CLI) action delivery pager preview > $(INSPECT_DIR)/action.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
-	@cp $(DOCS_DIR)/INDEX.md $(INSPECT_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
-	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(INSPECT_DIR)/DESIGN_BOUNDARIES.md
-	@cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
-	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
-	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/
-	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/docs/
+	@for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(INSPECT_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(INSPECT_DIR)/docs/$$dest; \
+	done
 	@for doc in $(INSPECT_DIR)/*.md; do \
 		[ "$$doc" = "$(INSPECT_DIR)/README.md" ] && continue; \
-		python3 -c "from pathlib import Path; path = Path('$$doc'); path.write_text(path.read_text(encoding='utf-8').replace('](../README.md)', '](README.md)'), encoding='utf-8')"; \
+		perl -0pi -e "s#\\]\\(\\.\\./capstone/index\\.md\\)#](README.md)#g" "$$doc"; \
+	done
+	@for doc in $(INSPECT_DIR)/docs/*.md; do \
+		perl -0pi -e "s#\\]\\(\\.\\./capstone/index\\.md\\)#](../README.md)#g" "$$doc"; \
 	done
 	@printf '%s\n' \
 		'Inspection route:' \
@@ -127,17 +139,17 @@ verify-report: ## Build the structured capstone verification report
 		--arg "summary=worker backlog growing" \
 		> $(VERIFY_REPORT_DIR)/trace.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
-	@cp $(DOCS_DIR)/INDEX.md $(VERIFY_REPORT_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
-	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(VERIFY_REPORT_DIR)/DESIGN_BOUNDARIES.md
-	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
-	@cp $(DOCS_DIR)/TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
-	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
-	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/
-	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/docs/
+	@for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(VERIFY_REPORT_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(VERIFY_REPORT_DIR)/docs/$$dest; \
+	done
 	@for doc in $(VERIFY_REPORT_DIR)/*.md; do \
 		[ "$$doc" = "$(VERIFY_REPORT_DIR)/README.md" ] && continue; \
-		python3 -c "from pathlib import Path; path = Path('$$doc'); path.write_text(path.read_text(encoding='utf-8').replace('](../README.md)', '](README.md)'), encoding='utf-8')"; \
+		perl -0pi -e "s#\\]\\(\\.\\./capstone/index\\.md\\)#](README.md)#g" "$$doc"; \
+	done
+	@for doc in $(VERIFY_REPORT_DIR)/docs/*.md; do \
+		perl -0pi -e "s#\\]\\(\\.\\./capstone/index\\.md\\)#](../README.md)#g" "$$doc"; \
 	done
 	@printf '%s\n' \
 		'Verification route:' \
@@ -174,18 +186,17 @@ tour: ## Build the learner-facing walkthrough bundle
 	@find src/incident_plugins -type f | sort > $(TOUR_DIR)/runtime-files.txt
 	@find tests -type f | sort > $(TOUR_DIR)/test-files.txt
 	@cp README.md $(TOUR_DIR)/README.md
-	@cp $(DOCS_DIR)/INDEX.md $(TOUR_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
-	@cp $(DOCS_DIR)/ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
-	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(TOUR_DIR)/DESIGN_BOUNDARIES.md
-	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(TOUR_DIR)/PROOF_GUIDE.md
-	@cp $(DOCS_DIR)/TOUR.md $(TOUR_DIR)/TOUR.md
-	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
-	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/
-	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/docs/
+	@for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(TOUR_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(TOUR_DIR)/docs/$$dest; \
+	done
 	@for doc in $(TOUR_DIR)/*.md; do \
 		[ "$$doc" = "$(TOUR_DIR)/README.md" ] && continue; \
-		python3 -c "from pathlib import Path; path = Path('$$doc'); path.write_text(path.read_text(encoding='utf-8').replace('](../README.md)', '](README.md)'), encoding='utf-8')"; \
+		perl -0pi -e "s#\\]\\(\\.\\./capstone/index\\.md\\)#](README.md)#g" "$$doc"; \
+	done
+	@for doc in $(TOUR_DIR)/docs/*.md; do \
+		perl -0pi -e "s#\\]\\(\\.\\./capstone/index\\.md\\)#](../README.md)#g" "$$doc"; \
 	done
 	@printf '%s\n' \
 		"fields=src/incident_plugins/fields.py" \

@@ -4,7 +4,18 @@ SHELL := /bin/sh
 
 PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../../artifacts
-DOCS_DIR := docs
+DOCS_DIR := ../course-book/capstone-docs
+DOC_FILES := \
+	architecture.md:ARCHITECTURE.md \
+	command-guide.md:COMMAND_GUIDE.md \
+	domain-guide.md:DOMAIN_GUIDE.md \
+	extension-guide.md:EXTENSION_GUIDE.md \
+	index.md:INDEX.md \
+	package-guide.md:PACKAGE_GUIDE.md \
+	proof-guide.md:PROOF_GUIDE.md \
+	test-guide.md:TEST_GUIDE.md \
+	tour.md:TOUR.md \
+	walkthrough-guide.md:WALKTHROUGH_GUIDE.md
 VENV_DIR ?= $(ARTIFACTS_DIR)/venv/python-programming/python-object-oriented-programming/capstone
 VENV_BIN := $(VENV_DIR)/bin
 VENV_PY := $(abspath $(VENV_BIN)/python)
@@ -43,8 +54,11 @@ tour: ## Build the learner-facing walkthrough bundle
 	@mkdir -p $(TOUR_DIR) $(TOUR_DIR)/docs
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo > $(TOUR_DIR)/walkthrough.txt
 	@cp README.md $(TOUR_DIR)/README.md
-	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/
-	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/docs/
+	@for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(TOUR_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(TOUR_DIR)/docs/$$dest; \
+	done
 	@printf '%s\n' \
 		'Walkthrough route:' \
 		'  1. Read INDEX.md for the smallest local route.' \
@@ -96,8 +110,11 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change > $(INSPECT_DIR)/rate_of_change.txt
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json > $(INSPECT_DIR)/snapshot.json
 	@cp README.md $(INSPECT_DIR)/README.md
-	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/
-	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/docs/
+	@for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(INSPECT_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(INSPECT_DIR)/docs/$$dest; \
+	done
 	@printf '%s\n' \
 		'Inspection route:' \
 		'  1. Read INDEX.md and COMMAND_GUIDE.md for the smallest local route.' \
@@ -121,8 +138,11 @@ verify-report: ## Build the capstone verification report bundle
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change > $(VERIFY_REPORT_DIR)/rate_of_change.txt
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json > $(VERIFY_REPORT_DIR)/snapshot.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
-	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/
-	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/docs/
+	@for doc in $(DOC_FILES); do \
+		src=$${doc%%:*}; dest=$${doc#*:}; \
+		cp $(DOCS_DIR)/$$src $(VERIFY_REPORT_DIR)/$$dest; \
+		cp $(DOCS_DIR)/$$src $(VERIFY_REPORT_DIR)/docs/$$dest; \
+	done
 	@printf '%s\n' \
 		'Verification route:' \
 		'  1. Read INDEX.md and COMMAND_GUIDE.md for the local route into the saved bundle.' \

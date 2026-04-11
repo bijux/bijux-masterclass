@@ -46,20 +46,20 @@ Use the smallest honest route for the question you have:
 
 If you are new to this capstone, the best first route is:
 
-1. Read [INDEX.md](docs/INDEX.md).
+1. Read [INDEX.md](../course-book/capstone-docs/index.md).
 2. Run `make manifest`.
-3. Read [INDEX.md](docs/INDEX.md).
-4. Read [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md).
-5. Read [ARCHITECTURE.md](docs/ARCHITECTURE.md).
+3. Read [INDEX.md](../course-book/capstone-docs/index.md).
+4. Read [DESIGN_BOUNDARIES.md](../course-book/capstone-docs/design-boundaries.md).
+5. Read [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md).
 6. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
 7. Read the matching tests.
 
 ## Start with these defaults
 
-- If you do not know where to begin, read [INDEX.md](docs/INDEX.md).
-- If you know the question but not the guide, read [INDEX.md](docs/INDEX.md).
-- If you know the guide but not the command, read [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md).
-- If you already have a claim and need evidence, read [PROOF_GUIDE.md](docs/PROOF_GUIDE.md).
+- If you do not know where to begin, read [INDEX.md](../course-book/capstone-docs/index.md).
+- If you know the question but not the guide, read [INDEX.md](../course-book/capstone-docs/index.md).
+- If you know the guide but not the command, read [COMMAND_GUIDE.md](../course-book/capstone-docs/command-guide.md).
+- If you already have a claim and need evidence, read [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md).
 
 ## What it models
 
@@ -106,37 +106,37 @@ make PROGRAM=python-programming/python-meta-programming capstone-confirm
 
 ## Documentation set
 
-All supporting capstone guides live under `docs/`. Start from the group that matches
+All supporting capstone guides live under `course-book/capstone-docs/`. Start from the group that matches
 your pressure instead of reading the full list in alphabetical order.
 
 ### First-pass orientation
 
-- [INDEX.md](docs/INDEX.md)
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
+- [INDEX.md](../course-book/capstone-docs/index.md)
+- [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md)
+- [DESIGN_BOUNDARIES.md](../course-book/capstone-docs/design-boundaries.md)
 
 ### Public surface and command choice
 
-- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
+- [COMMAND_GUIDE.md](../course-book/capstone-docs/command-guide.md)
 
 ### Mechanism and ownership guides
 
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
-- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
-- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
+- [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md)
+- [DESIGN_BOUNDARIES.md](../course-book/capstone-docs/design-boundaries.md)
+- [PACKAGE_GUIDE.md](../course-book/capstone-docs/package-guide.md)
+- [EXTENSION_GUIDE.md](../course-book/capstone-docs/extension-guide.md)
 
 ### Review, proof, and saved bundles
 
-- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
-- [TEST_GUIDE.md](docs/TEST_GUIDE.md)
-- [TOUR.md](docs/TOUR.md)
-- [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
+- [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md)
+- [TEST_GUIDE.md](../course-book/capstone-docs/test-guide.md)
+- [TOUR.md](../course-book/capstone-docs/tour.md)
+- [WALKTHROUGH_GUIDE.md](../course-book/capstone-docs/walkthrough-guide.md)
 
 ### Concrete runtime examples
 
-- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
-- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
+- [PACKAGE_GUIDE.md](../course-book/capstone-docs/package-guide.md)
+- [EXTENSION_GUIDE.md](../course-book/capstone-docs/extension-guide.md)
 
 ## Read it by question
 
@@ -144,13 +144,13 @@ your pressure instead of reading the full list in alphabetical order.
 
 - `make manifest`
 - `make registry`
-- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
+- [COMMAND_GUIDE.md](../course-book/capstone-docs/command-guide.md)
 
 ### "Where do wrappers, fields, and class creation live?"
 
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
-- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
+- [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md)
+- [DESIGN_BOUNDARIES.md](../course-book/capstone-docs/design-boundaries.md)
+- [PACKAGE_GUIDE.md](../course-book/capstone-docs/package-guide.md)
 - `src/incident_plugins/actions.py`
 - `src/incident_plugins/fields.py`
 - `src/incident_plugins/framework.py`
@@ -161,25 +161,25 @@ your pressure instead of reading the full list in alphabetical order.
 - `make field`
 - `make action`
 - `make signatures`
-- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
-- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
+- [PACKAGE_GUIDE.md](../course-book/capstone-docs/package-guide.md)
+- [DESIGN_BOUNDARIES.md](../course-book/capstone-docs/design-boundaries.md)
 
 ### "How do I review the full learner-facing route?"
 
-- [INDEX.md](docs/INDEX.md)
+- [INDEX.md](../course-book/capstone-docs/index.md)
 - `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough`
 - `make inspect`
 - `make tour`
-- [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
-- [TOUR.md](docs/TOUR.md)
+- [WALKTHROUGH_GUIDE.md](../course-book/capstone-docs/walkthrough-guide.md)
+- [TOUR.md](../course-book/capstone-docs/tour.md)
 
 ### "How do I prove the runtime still works?"
 
 - `make verify-report`
 - `make proof`
 - `make confirm`
-- [TEST_GUIDE.md](docs/TEST_GUIDE.md)
-- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
+- [TEST_GUIDE.md](../course-book/capstone-docs/test-guide.md)
+- [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md)
 
 Use these question routes when you already know the pressure. Otherwise, stay with the
 defaults above and escalate only one guide at a time.
@@ -224,19 +224,19 @@ all interact here, so the implementation has to stay honest about:
 - `make confirm` runs the strongest local executable confirmation route.
 - `make proof` builds the published learner-facing review route.
 
-Read [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) first when the runtime terms still
+Read [DESIGN_BOUNDARIES.md](../course-book/capstone-docs/design-boundaries.md) first when the runtime terms still
 feel fuzzier than the commands.
 
 ## Best companion guides
 
-- [INDEX.md](docs/INDEX.md) for the smallest honest local route into the doc set
-- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md) for local command selection and artifact locations
-- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md) for connecting commands, outputs, and owning files
-- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md) for change-to-proof alignment and saved review routes
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md) for ownership boundaries
-- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) for what each mechanism owns and what it should not own
-- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) for the timing model and ownership rules
-- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md) for safe evolution
+- [INDEX.md](../course-book/capstone-docs/index.md) for the smallest honest local route into the doc set
+- [COMMAND_GUIDE.md](../course-book/capstone-docs/command-guide.md) for local command selection and artifact locations
+- [COMMAND_GUIDE.md](../course-book/capstone-docs/command-guide.md) for connecting commands, outputs, and owning files
+- [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md) for change-to-proof alignment and saved review routes
+- [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md) for ownership boundaries
+- [DESIGN_BOUNDARIES.md](../course-book/capstone-docs/design-boundaries.md) for what each mechanism owns and what it should not own
+- [DESIGN_BOUNDARIES.md](../course-book/capstone-docs/design-boundaries.md) for the timing model and ownership rules
+- [EXTENSION_GUIDE.md](../course-book/capstone-docs/extension-guide.md) for safe evolution
 
 ## Definition of done
 
