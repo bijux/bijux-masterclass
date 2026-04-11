@@ -2,99 +2,67 @@
 
 # Capstone File Guide
 
+Use this page when you know the repository is the right surface but do not yet know which
+file owns the answer. The goal is to shorten the path from question to owning file.
 
-<!-- page-maps:start -->
-## Guide Fit
+## Start with the file that owns the question
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone File Guide"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+| If the question is about... | Open this file first | Then open |
+| --- | --- | --- |
+| what the pipeline declares it will do | `capstone/dvc.yaml` | `capstone/dvc.lock` |
+| what the last recorded execution actually resolved | `capstone/dvc.lock` | the matching stage implementation under `src/incident_escalation_capstone/` |
+| which parameters are part of comparable state | `capstone/params.yaml` | the declared `params:` keys in `capstone/dvc.yaml` |
+| how publish artifacts are assembled and promoted | `capstone/src/incident_escalation_capstone/publish.py` | `capstone/publish/v1/manifest.json` |
+| how promoted state is verified | `capstone/src/incident_escalation_capstone/verify.py` | `capstone/tests/test_verify.py` |
+| what downstream users are allowed to trust | `capstone/publish/v1/manifest.json` | [Release Audit Checklist](release-audit-checklist.md) |
+| what survives local loss and remote restore | `capstone/.dvc-remote/` as the durability source, then `capstone/dvc.lock` | [Recovery Review Guide](recovery-review-guide.md) |
+| what learner-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+[Back to top](#top)
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+## Directory responsibilities
 
-This page explains which capstone files matter first and what responsibility each one
-holds.
-
-Use it when the repository feels understandable at a directory level but not yet at a
-file level.
-
----
-
-## Start With These Files
-
-| File | Why it matters |
+| Path | What belongs there |
 | --- | --- |
-| [DVC Capstone Guide](index.md) | defines the repository contract and the proof questions it is trying to answer |
-| [Capstone Architecture Guide](capstone-architecture-guide.md) | explains which files own declaration, execution, promotion, and verification |
-| `capstone/dvc.yaml` | declares the pipeline graph and stage boundaries |
-| `capstone/dvc.lock` | records executed state and declared evidence |
-| `capstone/params.yaml` | defines the parameter surface that controls comparable runs |
-| `capstone/Makefile` | exposes the learner-facing verification and recovery targets |
-| [Experiment Review Guide](experiment-review-guide.md) | explains how to inspect comparable experiment changes without mutating the baseline story |
-| [Recovery Review Guide](recovery-review-guide.md) | explains what the restore drill proves and what it does not prove |
-| [Release Review Guide](release-review-guide.md) | explains how to review the promoted boundary as a downstream contract |
-| [DVC Capstone Guide](index.md) | explains the proof bundle generated for learners and reviewers |
-| `capstone/publish/v1/manifest.json` | demonstrates the promoted release evidence boundary |
+| `capstone/dvc.yaml` | declared stage graph and tracked dependencies |
+| `capstone/dvc.lock` | recorded execution state |
+| `capstone/params.yaml` | declared control surface |
+| `capstone/src/incident_escalation_capstone/` | implementation of preparation, fitting, evaluation, publication, inspection, and verification |
+| `capstone/state/`, `capstone/metrics/`, `capstone/models/`, `capstone/data/derived/` | internal repository outputs and intermediate state |
+| `capstone/publish/v1/` | promoted downstream-facing contract |
+| `capstone/.dvc-remote/` | local training remote used to prove recovery |
+| `capstone/tests/` | executable checks for code-level and contract-level behavior |
 
 [Back to top](#top)
 
----
+## Good first reading order
 
-## Directory Responsibilities
+If this is your first serious repository pass, use this sequence:
 
-| Path | Responsibility |
-| --- | --- |
-| `capstone/data/raw/` | committed source data used to begin the state story |
-| `capstone/data/derived/` | generated intermediate data produced by the pipeline |
-| `capstone/src/incident_escalation_capstone/` | implementation of preparation, fitting, evaluation, publication, and verification logic |
-| `capstone/metrics/` | tracked evaluation outputs |
-| `capstone/models/` | model artifacts produced by the pipeline |
-| `capstone/publish/v1/` | promoted downstream contract and evidence bundle |
-| `capstone/state/` | non-promoted but reviewable intermediate state surfaces |
-| `capstone/tests/` | executable checks for code-level behavior |
+1. `capstone/dvc.yaml`
+2. `capstone/dvc.lock`
+3. `capstone/params.yaml`
+4. `capstone/Makefile`
+5. `capstone/src/incident_escalation_capstone/publish.py`
+6. `capstone/src/incident_escalation_capstone/verify.py`
+7. `capstone/publish/v1/manifest.json`
+8. one route page that matches your question: experiment, recovery, or release
 
-[Back to top](#top)
-
----
-
-## Best Reading Order
-
-1. [DVC Capstone Guide](index.md)
-2. `capstone/dvc.yaml`
-3. `capstone/dvc.lock`
-4. `capstone/params.yaml`
-5. `capstone/Makefile`
-6. [Experiment Review Guide](experiment-review-guide.md), [Recovery Review Guide](recovery-review-guide.md), and [Release Review Guide](release-review-guide.md)
-7. [DVC Capstone Guide](index.md)
-8. `capstone/publish/v1/manifest.json`
-
-That order keeps the learner anchored in contract, then declared graph, then recorded
-state, then verification and promotion.
+That order keeps declaration first, recorded state second, enforcement third, and
+promotion last.
 
 [Back to top](#top)
 
----
+## Wrong reading orders
 
-## Common Wrong Reading Order
+Avoid these:
 
-Avoid starting with:
+- opening implementation files before reading `dvc.yaml`
+- treating `publish/v1/` as the whole repository story
+- reading `dvc.lock` before you know what `dvc.yaml` declared
+- using folder names as a substitute for authority and ownership
 
-* implementation files before reading the repository contract
-* promoted artifacts before understanding the baseline state story
-* `dvc.lock` before reading `dvc.yaml`
-
-That route teaches fragments without context.
+If you are still navigating by directory names alone, the repository has not become
+legible yet.
 
 [Back to top](#top)
