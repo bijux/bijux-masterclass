@@ -32,7 +32,7 @@ Read the directory index first, then return here whenever a page, command, or re
 | Term | Meaning in this directory |
 | --- | --- |
 | Course Guide | the guided support surface for course guide, used to study or review the course without wandering. |
-| Design Question Map | the routing surface for design question map, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
+| Pressure Routes | the routing surface for design pressure, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
 | Learning Contract | the stable study contract for the course, used to define what the learner owes the material and what the proof route should show. |
 | Mechanism Selection | the durable learner-support surface for mechanism selection, used to keep the course route and proof route readable under pressure. |
 | Module Checkpoints | the exit bar for moving between modules, used to keep pace honest instead of guessing readiness. |
@@ -42,5 +42,5 @@ Read the directory index first, then return here whenever a page, command, or re
 | Practice Map | the routing surface for practice map, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
 | Pressure Routes | the routing surface for pressure routes, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
 | Proof Ladder | the evidence-routing surface for proof ladder, used to connect course claims to the right practice, review, or capstone proof. |
-| Reading Routes | the routing surface for reading routes, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
+| Start Here | the stable entry route that now also carries the slower first-pass reading options when density is the blocker. |
 | Start Here | the durable learner-support surface for start here, used to keep the course route and proof route readable under pressure. |

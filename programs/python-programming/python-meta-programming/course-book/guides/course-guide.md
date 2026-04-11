@@ -80,8 +80,8 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 ### When you are choosing how to enter
 
 - [Pressure Routes](pressure-routes.md) when you are entering from a concrete engineering pressure
-- [Reading Routes](reading-routes.md) when you need a lower-density or pressure-shaped sequence
-- [Design Question Map](design-question-map.md) when you can name the engineering question faster than the module
+- [Start Here](start-here.md) when you need a lower-density or pressure-shaped sequence
+- [Pressure Routes](pressure-routes.md) when you can name the engineering question faster than the module
 - [Module Dependency Map](module-dependency-map.md) when you need the sequence justified
 
 ### When you are checking whether a module actually landed

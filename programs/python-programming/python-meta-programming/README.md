@@ -68,7 +68,7 @@ become much harder to judge honestly.
 2. Read `course-book/guides/course-guide.md` and `course-book/guides/learning-contract.md`.
 3. Keep `course-book/guides/module-promise-map.md` open so each module stays attached to one clear promise.
 4. Use `course-book/guides/module-checkpoints.md` to decide whether you are ready to move on.
-5. Use `course-book/guides/design-question-map.md` when your engineering question is clearer than the mechanism name.
+5. Use `course-book/guides/pressure-routes.md` when your engineering question is clearer than the mechanism name.
 6. Use `course-book/guides/outcomes-and-proof-map.md` when you want the course promises tied directly to evidence.
 7. Use `course-book/module-00-orientation/mid-course-map.md` when you are leaving the observation modules and entering wrappers, descriptors, and class customization.
 8. Use `course-book/module-00-orientation/return-map.md` when you are resuming the course after a break and need to re-enter from the right boundary.

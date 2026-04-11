@@ -52,10 +52,22 @@ Use this route when you are new to the course and want the smallest honest seque
 ## Switch routes when the pressure changes
 
 - Use [Pressure Routes](pressure-routes.md) when you are entering from a code review, framework change, or debugging problem.
-- Use [Reading Routes](reading-routes.md) when you want a slower or mechanism-shaped sequence instead of the default path.
 - Use [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need the last stable module boundary.
 - Use [Platform Setup](platform-setup.md) when the environment or public command surface is the blocker.
 - Use [Capstone Guide](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) once the current module claim is clear enough to inspect in executable code.
+
+## Choose a reading route when density is the blocker
+
+Use one of these instead of trying to read every module at the same speed:
+
+- Foundation first: read Modules 00 to 03 in order when the runtime ladder still feels denser than the actual mechanics.
+- Review hotspots: jump to Modules 04, 07, 09, and 10 when you already review dynamic code and need the shortest honest inspection route.
+- Attribute and validation systems: focus on Modules 06 to 08 when the real question is field ownership, lookup order, or validation design.
+- Class creation and governance: focus on Modules 09 to 10 when the pressure is registries, import-time hooks, or metaclass scope.
+
+Stop once you can explain what import time, class-definition time, and call time each
+mean in the current route. If those timings are still fuzzy, move back toward the
+foundation-first route instead of escalating.
 
 ## Route By Pressure
 
