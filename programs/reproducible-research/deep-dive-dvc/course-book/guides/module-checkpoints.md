@@ -2,92 +2,58 @@
 
 # Module Checkpoints
 
+Use this page when you are about to move on and want an honest readiness bar. Reading a
+module once is not the same thing as being ready for the next one. These checkpoints are
+meant to tell you whether the next module will build on stable understanding or on vague
+recognition.
 
-<!-- page-maps:start -->
-## Guide Fit
-
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Module Checkpoints"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
-
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This page is the missing study contract at the end of each module. It gives a human bar
-for readiness instead of assuming that reading the prose once means the concept is
-stable.
-
-Use it when you are about to move on and want to know whether you are ready, what you are
-still fuzzy on, and which proof route should settle the question.
-
----
-
-## How To Use The Checkpoints
+## How to use this page
 
 For each module:
 
-1. read the module overview and main lessons
-2. answer the checkpoint questions without looking at the text
-3. run the smallest honest proof route
-4. only advance when the concept feels explainable, not merely recognizable
+1. answer the checkpoint question without looking at the text
+2. run the listed proof or inspection route
+3. stop if you still cannot explain the result in plain language
+
+If you need to reread, reread the narrowest lesson that matches the gap instead of the
+whole module.
 
 [Back to top](#top)
 
----
+## Readiness table
 
-## Checkpoint Table
-
-| Module | You are ready when you can explain | You should be able to do | Useful proof route |
+| Module | You are ready to move on when you can explain... | Quick proof or inspection route | Go back when... |
 | --- | --- | --- | --- |
-| 01 | why reruns and saved files are weaker than explicit state contracts | name the missing trust question in a weak reproducibility story | `capstone-tour` |
-| 02 | why content identity is not the same thing as file location | distinguish workspace, cache, remote, and lockfile roles | `capstone-verify` |
-| 03 | why environments belong in the state model | explain why the runtime boundary affects reproducibility truth | `capstone-verify` |
-| 04 | how `dvc.yaml` and `dvc.lock` should tell one consistent story | review whether a pipeline edge is really declared | `capstone-repro` |
-| 05 | what a metric or parameter comparison is allowed to mean | explain which controls must stay semantically stable | `capstone-verify` |
-| 06 | how experiments can vary state without mutating the baseline contract | compare runs without muddying baseline truth | `capstone-experiment-review` |
-| 07 | what another person should be able to rerun and review | explain which collaboration boundary protects trust | `capstone-confirm` |
-| 08 | what survives cache loss and what only looked durable | describe the recovery story without hand-waving | `capstone-recovery-review` |
-| 09 | what makes a promoted state surface small enough to trust | review whether downstream trust is smaller than repo complexity | `capstone-release-review` |
-| 10 | when DVC should stop owning the problem | review a repository as a long-lived product with migration judgment | `capstone-confirm` |
+| [Module 01](../module-01-reproducibility-failures-real-teams/index.md) | why rerunning commands is weaker than explicit state contracts | [Capstone Guide](../capstone/index.md) or `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | you are still treating "it runs again" as the whole reproducibility story |
+| [Module 02](../module-02-data-identity-content-addressing/index.md) | what makes state durable instead of path-shaped | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | you cannot distinguish workspace files, cache objects, remote-backed state, and lockfile records |
+| [Module 03](../module-03-environments-code-execution-context/index.md) | why execution environment belongs in the state model | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | your explanation of reproducibility still ignores toolchain and runtime context |
+| [Module 04](../module-04-truthful-pipelines-declared-dependencies/index.md) | how `dvc.yaml` and `dvc.lock` tell different but compatible stories | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-repro` | you can read a stage but cannot say whether its edge is truly declared |
+| [Module 05](../module-05-metrics-parameters-comparable-meaning/index.md) | which params and metrics are safe to compare and why | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | you treat any changed metric as meaningful without checking the declared control surface |
+| [Module 06](../module-06-experiments-baselines-controlled-change/index.md) | how to vary runs without muddying baseline truth | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | you can compare runs mechanically but cannot defend their comparability |
+| [Module 07](../module-07-collaboration-ci-reviewable-state/index.md) | what another maintainer should be able to rerun and review without oral context | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` or `capstone-confirm` | your review story still depends on author memory |
+| [Module 08](../module-08-recovery-scale-incident-survival/index.md) | what survives local loss and what only looked durable | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | you still blur local convenience with remote-backed recovery guarantees |
+| [Module 09](../module-09-promotion-registry-boundaries-auditability/index.md) | what is safe for downstream trust and why it is smaller than the whole repository | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | the promoted bundle still feels like a raw dump of internal state |
+| [Module 10](../module-10-migration-governance-dvc-boundaries/index.md) | how to improve or migrate the repository without losing proof and trust | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | your migration plan is mostly taste instead of preserved evidence |
 
 [Back to top](#top)
 
----
+## Common false positives
 
-## Failure Signals
+Do not call a module done just because:
 
-Do not advance yet if any of these are still true:
+- the commands looked familiar
+- you can repeat the vocabulary
+- the strongest route passed once
+- you can follow the capstone without naming why the evidence matters
 
-* you recognize the term but cannot explain the trust question it settles
-* you know the strongest proof command but not the smallest honest one
-* you can follow the capstone mechanically but cannot name the authoritative layer
-* you can repeat the repair pattern but cannot say what failure it prevents
-
-These are not small study gaps. They are signals that the next module will feel more
-administrative than it should.
+Those usually mean you have seen the surface, not learned the boundary.
 
 [Back to top](#top)
 
----
+## Best companion pages
 
-## Best Companion Pages
-
-Use these with the checkpoints:
-
-* [`module-promise-map.md`](module-promise-map.md) to see what each title promised
-* [`proof-ladder.md`](proof-ladder.md) to keep proof proportional to the question
-* [`practice-map.md`](../reference/practice-map.md) to match module work with proof loops
-* [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) when you want to record what the evidence actually showed
+- [Module Promise Map](module-promise-map.md) when you need the module contract restated
+- [Proof Ladder](proof-ladder.md) when the proof route feels heavier than the claim
+- [Capstone Map](../capstone/capstone-map.md) when the concept is clear but the repository route is not
 
 [Back to top](#top)
