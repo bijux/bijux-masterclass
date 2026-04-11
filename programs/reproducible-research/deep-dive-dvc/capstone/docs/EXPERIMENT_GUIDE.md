@@ -44,5 +44,6 @@ surface. It is not a license to mutate the baseline story until the result looks
 3. Use `dvc exp show` to compare the candidate against the baseline.
 4. Return to the publish contract only if the candidate is worth promotion.
 
-Read [CONTROL_SURFACE_GUIDE.md](CONTROL_SURFACE_GUIDE.md) first when the real pressure is
-not how to run the experiment, but whether the changed params still support honest comparison.
+Read [STAGE_CONTRACT_GUIDE.md](STAGE_CONTRACT_GUIDE.md) first when the real pressure is
+not how to run the experiment, but whether the changed params still support honest
+comparison and still belong to the stage that owns them.

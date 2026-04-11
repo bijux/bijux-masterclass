@@ -64,11 +64,12 @@ Inside `capstone/`, use `gmake` on macOS because `/usr/bin/make` is BSD Make.
 ## First honest pass
 
 1. Run `make walkthrough`.
-2. Read [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md).
-3. Run `make inspect`.
-4. Read [TARGET_GUIDE.md](docs/TARGET_GUIDE.md).
-5. Run `make selftest`.
-6. Read [PROOF_GUIDE.md](docs/PROOF_GUIDE.md).
+2. Read [INDEX.md](docs/INDEX.md).
+3. Read [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md).
+4. Run `make inspect`.
+5. Read [TARGET_GUIDE.md](docs/TARGET_GUIDE.md).
+6. Run `make selftest`.
+7. Read [PROOF_GUIDE.md](docs/PROOF_GUIDE.md).
 
 Stop there first. That is enough to see the public contract, the proof harness, and one
 bounded review route without turning the capstone into a browsing exercise.
@@ -115,6 +116,7 @@ All capstone documentation lives under `docs/`:
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [CONTRACT_AUDIT_GUIDE.md](docs/CONTRACT_AUDIT_GUIDE.md)
 - [INCIDENT_REVIEW_GUIDE.md](docs/INCIDENT_REVIEW_GUIDE.md)
+- [INDEX.md](docs/INDEX.md)
 - [PROFILE_AUDIT_GUIDE.md](docs/PROFILE_AUDIT_GUIDE.md)
 - [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
 - [REPRO_GUIDE.md](docs/REPRO_GUIDE.md)

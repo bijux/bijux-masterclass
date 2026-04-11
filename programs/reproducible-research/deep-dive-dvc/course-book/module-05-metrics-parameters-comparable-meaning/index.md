@@ -25,7 +25,7 @@ yet have a defensible comparison.
 The capstone corroboration surface for this module is the set of files that tie
 parameters, metrics, and release evidence together: `capstone/params.yaml`,
 `capstone/metrics/metrics.json`, `capstone/plots/`, `capstone/publish/v1/metrics.json`,
-`capstone/docs/PREDICTION_REVIEW_GUIDE.md`, `capstone/docs/RELEASE_REVIEW_GUIDE.md`, and
+`capstone/docs/RELEASE_REVIEW_GUIDE.md`, `capstone/docs/PUBLISH_CONTRACT.md`, and
 the `make -C capstone release-audit` route.
 
 ## Why this module exists
@@ -128,7 +128,7 @@ Best corroboration surfaces for this module:
 - `capstone/plots/`
 - `capstone/publish/v1/metrics.json`
 - `capstone/publish/v1/params.yaml`
-- `capstone/docs/PREDICTION_REVIEW_GUIDE.md`
+- `capstone/docs/RELEASE_REVIEW_GUIDE.md`
 - `capstone/docs/RELEASE_REVIEW_GUIDE.md`
 - `capstone/docs/PUBLISH_CONTRACT.md`
 

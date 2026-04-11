@@ -162,6 +162,7 @@ tour:
 >     mkdir -p "$(TOUR_DIR)/mk" "$(TOUR_DIR)/repro" "$(TOUR_DIR)/tests"
 >     cp README.md "$(TOUR_DIR)/README.md"
 >     cp $(DOCS_DIR)/ARCHITECTURE.md "$(TOUR_DIR)/ARCHITECTURE.md"
+>     cp $(DOCS_DIR)/INDEX.md "$(TOUR_DIR)/INDEX.md"
 >     cp $(DOCS_DIR)/PROOF_GUIDE.md "$(TOUR_DIR)/PROOF_GUIDE.md"
 >     cp $(DOCS_DIR)/TARGET_GUIDE.md "$(TOUR_DIR)/TARGET_GUIDE.md"
 >     cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md "$(TOUR_DIR)/WALKTHROUGH_GUIDE.md"
@@ -177,12 +178,13 @@ tour:
 >     $(MAKE) trace-count > "$(TOUR_DIR)/trace-count.txt"
 >     printf '%s\n' \
 >       'Tour route:' \
->       '  1. Read README.md for the repository contract.' \
->       '  2. Read TARGET_GUIDE.md for the stable public interface.' \
->       '  3. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
->       '  4. Read ARCHITECTURE.md and WALKTHROUGH_GUIDE.md for ownership and first-pass order.' \
->       '  5. Read tests/run.sh and trace-count.txt for proof and observability evidence.' \
->       '  6. Inspect REPRO_GUIDE.md and repro/01-shared-log.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
+>       '  1. Read INDEX.md for the smallest local route.' \
+>       '  2. Read README.md for the repository contract.' \
+>       '  3. Read TARGET_GUIDE.md for the stable public interface.' \
+>       '  4. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
+>       '  5. Read ARCHITECTURE.md and WALKTHROUGH_GUIDE.md for ownership and first-pass order.' \
+>       '  6. Read tests/run.sh and trace-count.txt for proof and observability evidence.' \
+>       '  7. Inspect REPRO_GUIDE.md and repro/01-shared-log.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Focused routes:' \
 >       '  generators   -> make --trace dyn' \
@@ -211,6 +213,7 @@ walkthrough:
 >     mkdir -p "$(WALKTHROUGH_DIR)/repro" "$(WALKTHROUGH_DIR)/tests" "$(WALKTHROUGH_DIR)/mk"
 >     cp README.md "$(WALKTHROUGH_DIR)/README.md"
 >     cp $(DOCS_DIR)/ARCHITECTURE.md "$(WALKTHROUGH_DIR)/ARCHITECTURE.md"
+>     cp $(DOCS_DIR)/INDEX.md "$(WALKTHROUGH_DIR)/INDEX.md"
 >     cp $(DOCS_DIR)/PROOF_GUIDE.md "$(WALKTHROUGH_DIR)/PROOF_GUIDE.md"
 >     cp $(DOCS_DIR)/TARGET_GUIDE.md "$(WALKTHROUGH_DIR)/TARGET_GUIDE.md"
 >     cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md "$(WALKTHROUGH_DIR)/WALKTHROUGH_GUIDE.md"
@@ -222,14 +225,15 @@ walkthrough:
 >     cp $(MK_DIR)/stamps.mk "$(WALKTHROUGH_DIR)/mk/stamps.mk"
 >     cp $(REP_DIR)/01-shared-log.mk "$(WALKTHROUGH_DIR)/repro/01-shared-log.mk"
 >     printf '%s\n' \
->       '1. Read WALKTHROUGH_GUIDE.md to understand the recommended first pass.' \
->       '2. Read README.md and TARGET_GUIDE.md to understand the capstone contract and public targets.' \
->       '3. Read PROOF_GUIDE.md and tests/run.sh to see what selftest is proving.' \
->       '4. Read ARCHITECTURE.md and mk/contract.mk for ownership and boundary design.' \
->       '5. Read mk/objects.mk and mk/stamps.mk for graph truth and modeled hidden inputs.' \
->       '6. Run make help in the capstone directory.' \
->       '7. Run make selftest when you want executed proof.' \
->       '8. Inspect repro/01-shared-log.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
+>       '1. Read INDEX.md to choose the smallest honest entry route.' \
+>       '2. Read WALKTHROUGH_GUIDE.md to understand the recommended first pass.' \
+>       '3. Read README.md and TARGET_GUIDE.md to understand the capstone contract and public targets.' \
+>       '4. Read PROOF_GUIDE.md and tests/run.sh to see what selftest is proving.' \
+>       '5. Read ARCHITECTURE.md and mk/contract.mk for ownership and boundary design.' \
+>       '6. Read mk/objects.mk and mk/stamps.mk for graph truth and modeled hidden inputs.' \
+>       '7. Run make help in the capstone directory.' \
+>       '8. Run make selftest when you want executed proof.' \
+>       '9. Inspect repro/01-shared-log.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Public entry commands:' \
 >       '  make help' \
@@ -239,6 +243,7 @@ walkthrough:
 >     printf '%s\n' \
 >       'Walkthrough bundle surfaces:' \
 >       '  README.md            repository contract and program fit' \
+>       '  INDEX.md             stable local route into the capstone docs' \
 >       '  TARGET_GUIDE.md      stable public target surface' \
 >       '  PROOF_GUIDE.md       claim-to-evidence routing' \
 >       '  WALKTHROUGH_GUIDE.md bounded first-pass reading order' \

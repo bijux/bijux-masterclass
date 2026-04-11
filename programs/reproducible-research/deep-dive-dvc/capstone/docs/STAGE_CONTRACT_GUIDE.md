@@ -51,11 +51,14 @@ Use `make stage-summary` when you want the repository to render that declared-ve
 - Which facts should be reviewed in `dvc.lock` after execution?
 - Which promoted facts should still wait until `publish/v1/`?
 
-Read [CHANGE_PLACEMENT_GUIDE.md](CHANGE_PLACEMENT_GUIDE.md) when the stage contract is
-clear but the next design question is where a new requirement should be placed.
+When the stage contract is clear but the next design question is where a new requirement
+should be placed, keep the same route and ask two questions explicitly:
+
+- which declared input, recorded state surface, or promoted artifact would change
+- which owning stage can absorb that change without stealing another stage's job
 
 ## Best companion guides
 
 - read [ARCHITECTURE.md](ARCHITECTURE.md) when the next question is file ownership above the stage level
-- read [STATE_LAYER_GUIDE.md](STATE_LAYER_GUIDE.md) when the next question is which state is authoritative before or after a stage runs
+- read [RECOVERY_GUIDE.md](RECOVERY_GUIDE.md) when the next question is which state is authoritative after local loss and restore
 - read [PUBLISH_CONTRACT.md](PUBLISH_CONTRACT.md) when the question moves from stage truth to downstream trust

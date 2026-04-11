@@ -46,8 +46,9 @@ is verified.
 - `publish.py` writes the downstream review bundle.
 - `verify.py` checks whether the promoted bundle satisfies the release contract.
 
-Use [Control Surface Guide](CONTROL_SURFACE_GUIDE.md) when the next question is not only
-which file owns a behavior, but which declared controls change the review meaning.
+Use [Stage Contract Guide](STAGE_CONTRACT_GUIDE.md) when the next question is not only
+which file owns a behavior, but which declared controls or recorded state change the
+review meaning.
 
 ### Review surfaces
 

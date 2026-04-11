@@ -54,5 +54,5 @@ team could plausibly review before deciding whether closer intervention is likel
 ## Best companion guides
 
 - read [Capstone Architecture](ARCHITECTURE.md) when the domain is clear but the repository ownership layers are not
-- read [Control Surface Guide](CONTROL_SURFACE_GUIDE.md) when the next question is how declared controls change the review meaning
+- read [Experiment Guide](EXPERIMENT_GUIDE.md) when the next question is how declared controls change the review meaning
 - read [Publish Contract](PUBLISH_CONTRACT.md) when the next question is which domain evidence survives into `publish/v1/`

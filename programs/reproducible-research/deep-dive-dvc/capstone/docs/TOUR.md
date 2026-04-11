@@ -62,4 +62,4 @@ of recovery.
 - use `REVIEW_ROUTE_GUIDE.md` when the question might be narrower than the tour
 - use `PUBLISH_CONTRACT.md` when the question is specifically downstream trust
 - use `RECOVERY_GUIDE.md` when the question is specifically restore and remote durability
-- use `SOURCE_GUIDE.md` when you know the question but not the owning file
+- use `INDEX.md` when you know the question but not the next guide

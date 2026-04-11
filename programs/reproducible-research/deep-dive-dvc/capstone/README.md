@@ -62,12 +62,13 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review
 ## First honest pass
 
 1. Run `make walkthrough`.
-2. Read [DOMAIN_GUIDE.md](docs/DOMAIN_GUIDE.md).
-3. Read [STATE_LAYER_GUIDE.md](docs/STATE_LAYER_GUIDE.md).
+2. Read [INDEX.md](docs/INDEX.md).
+3. Read [DOMAIN_GUIDE.md](docs/DOMAIN_GUIDE.md).
 4. Read [STAGE_CONTRACT_GUIDE.md](docs/STAGE_CONTRACT_GUIDE.md).
-5. Read `dvc.yaml`, `dvc.lock`, and `params.yaml`.
-6. Run `make verify`.
-7. Read [REVIEW_ROUTE_GUIDE.md](docs/REVIEW_ROUTE_GUIDE.md).
+5. Read [PUBLISH_CONTRACT.md](docs/PUBLISH_CONTRACT.md).
+6. Read `dvc.yaml`, `dvc.lock`, and `params.yaml`.
+7. Run `make verify`.
+8. Read [RELEASE_REVIEW_GUIDE.md](docs/RELEASE_REVIEW_GUIDE.md) and [REVIEW_ROUTE_GUIDE.md](docs/REVIEW_ROUTE_GUIDE.md).
 
 Stop there first. That is enough to see the domain, state boundaries, pipeline contract,
 and one bounded proof route without turning the capstone into a browsing exercise.
@@ -101,22 +102,15 @@ Use these surfaces deliberately:
 All capstone documentation lives under `docs/`:
 
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [BUNDLE_MANIFEST_GUIDE.md](docs/BUNDLE_MANIFEST_GUIDE.md)
-- [CHANGE_PLACEMENT_GUIDE.md](docs/CHANGE_PLACEMENT_GUIDE.md)
-- [CONTROL_SURFACE_GUIDE.md](docs/CONTROL_SURFACE_GUIDE.md)
-- [DATA_PROFILE_GUIDE.md](docs/DATA_PROFILE_GUIDE.md)
 - [DOMAIN_GUIDE.md](docs/DOMAIN_GUIDE.md)
 - [EXPERIMENT_GUIDE.md](docs/EXPERIMENT_GUIDE.md)
-- [MODEL_GUIDE.md](docs/MODEL_GUIDE.md)
-- [PREDICTION_REVIEW_GUIDE.md](docs/PREDICTION_REVIEW_GUIDE.md)
+- [INDEX.md](docs/INDEX.md)
 - [PUBLISH_CONTRACT.md](docs/PUBLISH_CONTRACT.md)
 - [RECOVERY_GUIDE.md](docs/RECOVERY_GUIDE.md)
 - [RELEASE_REVIEW_GUIDE.md](docs/RELEASE_REVIEW_GUIDE.md)
 - [REVIEW_ROUTE_GUIDE.md](docs/REVIEW_ROUTE_GUIDE.md)
-- [SOURCE_BASELINE_GUIDE.md](docs/SOURCE_BASELINE_GUIDE.md)
-- [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
 - [STAGE_CONTRACT_GUIDE.md](docs/STAGE_CONTRACT_GUIDE.md)
-- [STATE_LAYER_GUIDE.md](docs/STATE_LAYER_GUIDE.md)
+- [TOUR.md](docs/TOUR.md)
 
 ## Good stopping point
 

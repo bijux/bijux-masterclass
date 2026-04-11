@@ -17,7 +17,7 @@ system is claiming these exact bytes."
 
 The capstone corroboration surface for this module is the set of files and review routes
 that separate state layers and recovery: `dvc.lock`, `publish/v1/`, `make state-summary`,
-`make recovery-review`, `docs/STATE_LAYER_GUIDE.md`, and `docs/RECOVERY_GUIDE.md`.
+`make recovery-review`, `docs/STAGE_CONTRACT_GUIDE.md`, and `docs/RECOVERY_GUIDE.md`.
 
 ## Why this module exists
 
@@ -101,7 +101,7 @@ Best corroboration surfaces for this module:
 
 - `capstone/dvc.lock`
 - `capstone/publish/v1/manifest.json`
-- `capstone/docs/STATE_LAYER_GUIDE.md`
+- `capstone/docs/STAGE_CONTRACT_GUIDE.md`
 - `capstone/docs/RECOVERY_GUIDE.md`
 - `capstone/docs/PUBLISH_CONTRACT.md`
 - `capstone/Makefile`

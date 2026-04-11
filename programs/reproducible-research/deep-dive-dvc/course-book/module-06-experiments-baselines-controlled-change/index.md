@@ -25,7 +25,7 @@ evidence model.
 The capstone corroboration surface for this module is the set of files and commands that
 make experiment review visible: `capstone/params.yaml`, `capstone/metrics/metrics.json`,
 `capstone/publish/v1/params.yaml`, `capstone/docs/EXPERIMENT_GUIDE.md`,
-`capstone/docs/PREDICTION_REVIEW_GUIDE.md`, `capstone/docs/RELEASE_REVIEW_GUIDE.md`, and
+`capstone/docs/RELEASE_REVIEW_GUIDE.md`, `capstone/docs/PUBLISH_CONTRACT.md`, and
 the `make -C capstone experiment-review` route.
 
 ## Why this module exists
@@ -123,7 +123,7 @@ Best corroboration surfaces for this module:
 - `capstone/publish/v1/params.yaml`
 - `capstone/publish/v1/metrics.json`
 - `capstone/docs/EXPERIMENT_GUIDE.md`
-- `capstone/docs/PREDICTION_REVIEW_GUIDE.md`
+- `capstone/docs/RELEASE_REVIEW_GUIDE.md`
 - `capstone/docs/RELEASE_REVIEW_GUIDE.md`
 
 Useful proof route:
