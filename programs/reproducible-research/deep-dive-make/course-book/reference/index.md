@@ -13,27 +13,40 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
+  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Choose the page that answers that question"]
+  lookup --> compare["Compare the current design or claim against the stated boundary"]
   compare --> decision["Turn the comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
+This shelf is for recurring questions, not first exposure. Use it when you already know
+roughly what the course is teaching and need a durable answer about language, ownership,
+debugging order, or proof routes.
 
-The reference surface holds the durable reading aids for Deep Dive Make. These pages are
-for questions that recur across modules: vocabulary, learning order, stable target
-surfaces, build layers, artifact boundaries, incident debugging order, and review
-standards.
+## Start here by question
 
-## Use This Section When
+| If the question is... | Start here | Then read |
+| --- | --- | --- |
+| what does this term mean locally | [Glossary](glossary.md) | the page or module that used it |
+| where does this idea belong in the program | [Concept Index](concept-index.md) | [Module Dependency Map](module-dependency-map.md) |
+| which target is public and which is internal | [Public Targets](public-targets.md) | [Mk Layer Guide](mk-layer-guide.md) |
+| why is this build incident happening | [Incident Ladder](incident-ladder.md) | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
+| where should this artifact or review output live | [Artifact Boundary Guide](artifact-boundary-guide.md) | [Completion Rubric](completion-rubric.md) |
 
-- you need the right vocabulary before reading a module again
-- you want to know which target or layer is public and which is implementation detail
-- you need the right proof route instead of the strongest one
-- you are reviewing whether the course and capstone are keeping their promises
+## What these pages are for
 
-## Reference Pages
+- maps: reading order, concept placement, and proof routing
+- boundaries: what belongs in the course, the capstone, and the public target surface
+- review aids: standards for judging clarity, stability, and build truth
+- failure aids: symptom-led routes into incidents and repair work
+
+## What this shelf is not for
+
+Do not use reference pages as a substitute for a module when the concept is still new.
+These pages compress ideas so you can move faster later. They are strongest after at
+least one full read of the relevant lesson or capstone guide.
+
+## Reference pages
 
 - [Module Dependency Map](module-dependency-map.md) for concept order and safe reading sequence
 - [Glossary](glossary.md) for durable terminology
@@ -47,7 +60,3 @@ standards.
 - [Artifact Boundary Guide](artifact-boundary-guide.md) for separating outputs, proofs, and teaching surfaces
 - [Selftest Map](selftest-map.md) for reading the build proof harness
 - [Completion Rubric](completion-rubric.md) for course and repository review
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between standards, checklists, prompts, and boundary calls.
