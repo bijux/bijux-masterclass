@@ -43,6 +43,6 @@ graph TD
 
 ## Fastest safe paths
 
-- new learner: read Modules 01 through 10 in order
+- new to functional programming: read Modules 01 through 10 in order
 - working maintainer: start with Modules 04, 07, 08, and 09, then backfill earlier modules when purity or failure boundaries feel shaky
 - FP steward: start with Modules 05, 07, 09, and 10, then return to earlier modules when a boundary or law question points backward

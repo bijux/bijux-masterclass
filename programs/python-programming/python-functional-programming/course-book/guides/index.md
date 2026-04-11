@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Guides"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -25,7 +25,7 @@ pressure, not to become a second table of contents. Read the second diagram as t
 loop: arrive with one question, open the matching route, then leave with one smaller and
 more honest next move.
 
-This directory collects the durable learner guides for the course. Use it when the course
+This directory collects the durable study guides for the course. Use it when the course
 home tells you the promise, but you still need help choosing the right pace, proof
 surface, or capstone bridge.
 
@@ -53,7 +53,7 @@ surface, or capstone bridge.
 | route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
 | compare current work with generated history surfaces | [Proof Ladder](proof-ladder.md) |
 | confirm the local environment before public commands | [Platform Setup](platform-setup.md) |
-| hold the teaching bar steady | [Learning Contract](learning-contract.md) |
+| hold the course bar steady | [Learning Contract](learning-contract.md) |
 
 ## Cross into the capstone deliberately
 
@@ -70,10 +70,10 @@ surface, or capstone bridge.
 ## Keep The Layout Stable
 
 - `index.md` stays the course home
-- `guides/` stays the learner route and proof shelf
+- `guides/` stays the study route and proof shelf
 - `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable standards and checklist shelf
-- `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc
+- `module-00-orientation/` plus Modules `01` to `10` stay the study arc
 
 ## Stop here when
 

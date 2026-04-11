@@ -96,7 +96,7 @@ failure mode you can name, slow down instead of widening the route.
 - Read the [First-Contact Map](first-contact-map.md) if you want the shortest stable first session.
 - Read the [Mid-Course Map](mid-course-map.md) when Modules 01 to 03 feel stable or when you are resuming after a break and need the last trustworthy boundary again.
 - Read the [Mastery Map](mastery-map.md) when you are returning with a design or review pressure.
-- Keep the [FuncPipe Capstone Guide](../capstone/index.md) open from the beginning, and keep [Start Here](../guides/start-here.md) available when you need the short learner route again.
+- Keep the [FuncPipe Capstone Guide](../capstone/index.md) open from the beginning, and keep [Start Here](../guides/start-here.md) available when you need the short entry route again.
 
 ## Capstone roadmap
 

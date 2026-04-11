@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Learning Contract"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -32,7 +32,7 @@ tied together.
 - the capstone gives one stable codebase so the abstractions stay grounded
 - the prose tries to name trade-offs, limits, and failure modes directly
 
-## Commitments the learner should make back
+## Commitments to bring back
 
 - read module overviews before the lesson pages
 - do not skip the law, refactor, or review chapters

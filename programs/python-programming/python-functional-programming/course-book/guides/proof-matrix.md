@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Proof Matrix"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -50,7 +50,7 @@ pytest suite.
 | design pipelines that stay configurable, lazy, and testable under growth | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `tests/unit/pipelines/`, `tests/unit/streaming/`, `src/funcpipe_rag/pipelines/` |
 | model expected failures and domain states as data instead of tangled control flow | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `tests/unit/result/`, `src/funcpipe_rag/result/`, `src/funcpipe_rag/fp/validation.py` |
 | move infrastructure behind explicit protocols, adapters, and async coordination layers | `make PROGRAM=python-programming/python-functional-programming capstone-tour` | `src/funcpipe_rag/domain/`, `src/funcpipe_rag/infra/`, `src/funcpipe_rag/domain/effects/async_/` |
-| sustain a long-lived codebase with evidence, review standards, and migration discipline | `make PROGRAM=python-programming/python-functional-programming proof` | learner-facing bundles under `artifacts/`, review guides, and capstone proof surfaces |
+| sustain a long-lived codebase with evidence, review standards, and migration discipline | `make PROGRAM=python-programming/python-functional-programming proof` | guided bundles under `artifacts/`, review guides, and capstone proof surfaces |
 
 ## Capstone review claims
 
@@ -58,14 +58,14 @@ pytest suite.
 | --- | --- | --- |
 | where should I start reading the capstone | inspect [`capstone-file-guide.md`](../capstone/capstone-file-guide.md) | `tests/`, then `src/funcpipe_rag/fp/`, `rag/`, and `pipelines/` |
 | which package owns the idea from the module I just read | inspect [`capstone/capstone-map.md`](../capstone/capstone-map.md) | the matching package group in `src/funcpipe_rag/` |
-| what is the strongest learner-facing proof route | `make PROGRAM=python-programming/python-functional-programming proof` | [`capstone-proof-guide.md`](../capstone/capstone-proof-guide.md), `artifacts/tour/python-programming/python-functional-programming/` |
+| what is the strongest guided proof route | `make PROGRAM=python-programming/python-functional-programming proof` | [`capstone-proof-guide.md`](../capstone/capstone-proof-guide.md), `artifacts/tour/python-programming/python-functional-programming/` |
 | what lets a human reviewer inspect the repository quickly | `make PROGRAM=python-programming/python-functional-programming capstone-tour` | [`capstone-walkthrough.md`](../capstone/capstone-walkthrough.md), `package-tree.txt`, `test-tree.txt` |
 | which review questions should I carry into a change | inspect [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) | the matching code and test folders |
 | which earlier module state should I compare against | `make PROGRAM=python-programming/python-functional-programming history-refresh` | `capstone/_history/worktrees/module-XX/`, `_history/manifests/module-XX.json`, `capstone/module-reference-states/` |
 
 ## Module-to-proof bridge
 
-| Module range | Main learner question | Best proof surfaces |
+| Module range | Main module question | Best proof surfaces |
 | --- | --- | --- |
 | Modules 01 to 03 | what stays pure and lazy | `tests/unit/fp/`, `tests/unit/result/`, `tests/unit/streaming/`, `src/funcpipe_rag/fp/`, `streaming/` |
 | Modules 04 to 06 | how failures, laws, and explicit context stay reviewable | `tests/unit/fp/laws/`, `tests/unit/policies/`, `src/funcpipe_rag/result/`, `fp/effects/`, `policies/` |

@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Platform Setup"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -76,7 +76,7 @@ make proof
 ```
 
 That sequence creates the virtual environment, installs the capstone plus its
-development tools, checks the test suite, and confirms that the learner-facing bundles
+development tools, checks the test suite, and confirms that the guided bundles
 still build.
 
 ## What to verify before deeper proof
@@ -85,7 +85,7 @@ Check these in order:
 
 1. `make install` finishes without recreating a broken environment repeatedly.
 2. `make test` runs the raw executable suite.
-3. `make inspect` writes the learner-facing inventory bundle into `artifacts/inspect/...`.
+3. `make inspect` writes the guided inventory bundle into `artifacts/inspect/...`.
 4. `make proof` completes when you need the full sanctioned route.
 
 If setup fails before step 2, the right next move is environment repair, not capstone

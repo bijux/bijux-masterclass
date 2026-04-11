@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Proof Ladder"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -29,8 +29,8 @@ strongest command. The point of this ladder is to keep proof proportional to the
 
 ## Two kinds of proof pressure
 
-- Human-review pressure: use the early levels when the question is whether a learner or
-  reviewer can inspect the design honestly.
+- Human-review pressure: use the early levels when the question is whether you can
+  inspect or review the design honestly.
 - Executable-confidence pressure: use the later levels when the question is whether the
   runnable capstone still satisfies the strongest published route.
 
@@ -40,12 +40,12 @@ strongest command. The point of this ladder is to keep proof proportional to the
 | --- | --- | --- | --- |
 | 1. Reading route | which package, test family, or guide owns the claim | [Proof Matrix](proof-matrix.md) and [Capstone Map](../capstone/capstone-map.md) | the smallest file and test surfaces worth opening |
 | 2. Inspection route | how the repository is grouped before deeper proof | `make PROGRAM=python-programming/python-functional-programming inspect` | saved package, test, and proof-route inventory |
-| 3. Raw executable route | whether the capstone test suite still holds | `make PROGRAM=python-programming/python-functional-programming capstone-test` | direct pytest output without the wider learner-facing bundles |
+| 3. Raw executable route | whether the capstone test suite still holds | `make PROGRAM=python-programming/python-functional-programming capstone-test` | direct pytest output without the wider guided bundles |
 | 4. Course confirmation route | whether the program-approved executable route still holds | `make PROGRAM=python-programming/python-functional-programming test` | course-level confirmation anchored to the capstone test surface |
-| 5. Guided walkthrough route | how the package and test trees connect for a human reviewer | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` | learner-facing walkthrough bundle and route notes |
+| 5. Guided walkthrough route | how the package and test trees connect for a human reviewer | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` | guided walkthrough bundle and route notes |
 | 6. Saved verification route | whether executed tests and saved review surfaces still agree | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` | pytest output plus saved review summaries |
-| 7. Learner-facing proof route | whether the published reading and proof bundle is still coherent | `make PROGRAM=python-programming/python-functional-programming capstone-tour` | package tree, test tree, focus areas, and review route |
-| 8. Sanctioned full route | whether the official learner-facing route still builds end to end | `make PROGRAM=python-programming/python-functional-programming proof` | the sanctioned course bundle route |
+| 7. Guided proof route | whether the published reading and proof bundle is still coherent | `make PROGRAM=python-programming/python-functional-programming capstone-tour` | package tree, test tree, focus areas, and review route |
+| 8. Sanctioned full route | whether the official guided route still builds end to end | `make PROGRAM=python-programming/python-functional-programming proof` | the sanctioned course bundle route |
 | 9. Strongest capstone route | whether the capstone survives its strictest local confirmation bar | `make PROGRAM=python-programming/python-functional-programming capstone-confirm` | lint, build, saved bundles, and executable confirmation together |
 
 ## Module comparison routes
@@ -56,7 +56,7 @@ state?”
 
 | Need | Route | Surface |
 | --- | --- | --- |
-| rebuild the learner-facing module comparison surface | `make PROGRAM=python-programming/python-functional-programming history-refresh` | `capstone/_history/worktrees/module-XX/` plus per-module manifests |
+| rebuild the guided module comparison surface | `make PROGRAM=python-programming/python-functional-programming history-refresh` | `capstone/_history/worktrees/module-XX/` plus per-module manifests |
 | verify the generated comparison surface against tracked snapshot sources | `make PROGRAM=python-programming/python-functional-programming history-verify` | `capstone/module-reference-states/` and `_history/manifests/module-XX.json` |
 | remove generated comparison state before rebuilding cleanly | `make PROGRAM=python-programming/python-functional-programming history-clean` | local `_history/` worktrees, tags, and generated history metadata |
 
@@ -82,7 +82,7 @@ Use these when the question sounds like:
 
 Use these when the question sounds like:
 
-- How should a learner read this repository honestly?
+- How should I read this repository honestly?
 - Which saved artifacts should another reviewer inspect first?
 - How do the package tree and test tree support the claim?
 
@@ -102,7 +102,7 @@ Use these when the question sounds like:
 - Escalate from `capstone-test` to `capstone-verify-report` when you need durable
   evidence instead of terminal output.
 - Escalate from `capstone-walkthrough` to `capstone-tour` when you need the fuller
-  learner-facing bundle instead of the first-pass route.
+  guided bundle instead of the first-pass route.
 - Use the history routes only when the question is about module-to-module comparison,
   not as a substitute for understanding the current claim first.
 

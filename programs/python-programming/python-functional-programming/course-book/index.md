@@ -25,7 +25,7 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so learners do not mistake the capstone or reference pages for the first stop.
+Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so you do not mistake the capstone or reference pages for the first stop.
 
 This course teaches functional programming in Python as a discipline of explicit dataflow,
 controlled effects, and reviewable operational boundaries. The goal is not to imitate a
@@ -40,9 +40,9 @@ refactor, test, and run under production pressure.
 
 ## Who this course is not for
 
-- readers looking for a beginner introduction to `lambda`, `map`, or list comprehensions
+- a beginner introduction to `lambda`, `map`, or list comprehensions
 - teams that want functional vocabulary without changing hidden state or effect design
-- learners who want abstractions before they understand the contracts those abstractions protect
+- abstractions before the contracts those abstractions protect are clear
 
 ## What you will learn
 
