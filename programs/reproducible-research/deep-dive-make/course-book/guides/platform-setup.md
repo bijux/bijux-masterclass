@@ -26,7 +26,7 @@ routes stop being trustworthy.
 Run these from the repository root:
 
 ```sh
-make PROGRAM=reproducible-research/deep-dive-make program-help
+make PROGRAM=reproducible-research/deep-dive-make help
 make PROGRAM=reproducible-research/deep-dive-make test
 ```
 
