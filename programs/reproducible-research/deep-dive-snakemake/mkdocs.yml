@@ -165,5 +165,6 @@ nav:
           - Overview: module-09-performance-observability-incident-response/index.md
           - Workflow Cost Models and Timing Surfaces: module-09-performance-observability-incident-response/workflow-cost-models-and-timing-surfaces.md
           - Logs, Benchmarks, Summaries, and Provenance: module-09-performance-observability-incident-response/logs-benchmarks-summaries-and-provenance.md
+          - Incident Triage for Slow and Flaky Runs: module-09-performance-observability-incident-response/incident-triage-for-slow-and-flaky-runs.md
       - "Module 10: Governance, Migration, and Tool Boundaries":
           - Overview: module-10-governance-migration-tool-boundaries/index.md
