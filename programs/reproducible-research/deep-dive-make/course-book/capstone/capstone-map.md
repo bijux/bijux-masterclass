@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Deep Dive Make Capstone Map"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -55,7 +55,7 @@ Return to the module first if:
 
 ## Module-to-capstone map
 
-| Module | Main learner question | Capstone surface | First command |
+| Module | Main question | Capstone surface | First command |
 | --- | --- | --- | --- |
 | 01 Foundations | what makes a graph truthful instead of lucky | `Makefile`, `src/`, `include/` | `make walkthrough` |
 | 02 Scaling | what breaks under `-j` when the graph lies | `repro/`, `mk/objects.mk`, `tests/run.sh` | `make selftest` |

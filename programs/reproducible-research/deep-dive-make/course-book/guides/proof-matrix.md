@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Proof Matrix"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -63,7 +63,7 @@ reference build directly.
 
 | Question | Best first command | Best first file |
 | --- | --- | --- |
-| where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `course-book/capstone/index.md` |
+| where should a first-time reader start in the capstone | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `course-book/capstone/index.md` |
 | why did this rebuild | `gmake -C capstone --trace all` | `capstone/mk/stamps.mk` |
 | why is `-j` unsafe | `make PROGRAM=reproducible-research/deep-dive-make test` | `capstone/repro/01-shared-log.mk` |
 | where is the build API | `make PROGRAM=reproducible-research/deep-dive-make help` | `capstone/Makefile` |

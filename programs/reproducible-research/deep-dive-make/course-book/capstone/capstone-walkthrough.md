@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Capstone Walkthrough"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -26,13 +26,13 @@ is visible.
 
 ## First pass versus deeper pass
 
-- First pass: use the 30-minute route when you need one bounded learner story from public targets to proof.
+- First pass: use the 30-minute route when you need one bounded story from public targets to proof.
 - Deeper pass: use the longer routes only when the question changes from entry to architecture or stewardship.
 
 ## 30-minute first pass
 
 1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough`.
-2. Read [Capstone Walkthrough](capstone-walkthrough.md) for the learner-facing route.
+2. Read [Capstone Walkthrough](capstone-walkthrough.md) for the reader-facing route.
 3. Run `make PROGRAM=reproducible-research/deep-dive-make inspect`.
 4. Read [Command Guide](command-guide.md) for the smallest honest command.
 5. Read `capstone/Makefile` and `capstone/tests/run.sh`.

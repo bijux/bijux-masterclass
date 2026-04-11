@@ -18,9 +18,9 @@ If you cannot name the evidence, the judgment is still too soft.
 
 Ask:
 
-- which targets are clearly public for a learner or maintainer
+- which targets are clearly public for a reader or maintainer
 - whether `help` and the command docs are enough to start correctly
-- which commands are aliases for a learner-facing route rather than separate contracts
+- which commands are aliases for a reader-facing route rather than separate contracts
 
 Best evidence:
 

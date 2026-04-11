@@ -12,7 +12,7 @@ properties:
 - atomic publication for real outputs
 - serial and parallel equivalence where the build claims it
 - a small public target surface
-- a repository shape a learner can still audit end to end
+- a repository shape you can still audit end to end
 
 If a proposed change weakens one of those, treat that as a design change, not routine
 maintenance.
@@ -53,7 +53,7 @@ Slow down when a change does any of these:
 
 Answer these in your own words:
 
-1. what learner or maintainer question became easier after this change
+1. what reader or maintainer question became easier after this change
 2. which file now owns the behavior
 3. which proof route still corroborates the claim
 4. whether the filename and commit message would still make sense later

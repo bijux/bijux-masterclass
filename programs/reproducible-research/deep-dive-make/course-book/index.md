@@ -17,7 +17,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  promise["Read the course promise and learner fit"] --> route["Choose one stable entry lane"]
+  promise["Read the course promise and fit"] --> route["Choose one stable entry lane"]
   route --> orientation["Anchor the mental model in Module 00"]
   orientation --> modules["Read the modules in order"]
   modules --> proof["Use guides, reference, and capstone only when they answer the current question"]
@@ -25,8 +25,8 @@ flowchart TD
 <!-- page-maps:end -->
 
 Read the first diagram as the shape of the whole book. Read the second diagram as the
-intended learner route so the capstone and support shelves do not become accidental first
-lessons.
+intended route through it so the capstone and support shelves do not become accidental
+first lessons.
 
 Deep Dive Make teaches GNU Make as a build-graph engine whose claims must stay truthful
 under change, concurrency, publication pressure, and review. The goal is not to collect
@@ -71,7 +71,7 @@ repair without folklore.
 
 | Module | Title | Why it matters |
 | --- | --- | --- |
-| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof ladder, and capstone timing |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the entry route, proof ladder, and capstone timing |
 | [Module 01](module-01-build-graph-foundations-truth/index.md) | Build Graph Foundations and Truth | makes dependency edges and rebuild meaning explicit |
 | [Module 02](module-02-parallel-safety-project-structure/index.md) | Parallel Safety and Project Structure | scales the graph without introducing race-prone structure |
 | [Module 03](module-03-determinism-debugging-self-testing/index.md) | Determinism, Debugging, and Self-Testing | makes builds explainable, repeatable, and self-testing |
