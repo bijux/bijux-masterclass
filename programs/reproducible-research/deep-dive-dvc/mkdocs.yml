@@ -101,6 +101,7 @@ nav:
           - Overview: module-03-execution-environments-reproducible-inputs/index.md
           - Execution Environment as Part of the Input Surface: module-03-execution-environments-reproducible-inputs/execution-environment-as-part-of-the-input-surface.md
           - Determinism Is a Spectrum, Not a Switch: module-03-execution-environments-reproducible-inputs/determinism-is-a-spectrum-not-a-switch.md
+          - What DVC Records Indirectly and What It Does Not Manage: module-03-execution-environments-reproducible-inputs/what-dvc-records-indirectly-and-what-it-does-not-manage.md
       - "Module 04: Pipelines as Truthful DAGs":
           - Overview: module-04-truthful-pipelines-declared-dependencies/index.md
       - "Module 05: Metrics, Parameters, and Meaning":
