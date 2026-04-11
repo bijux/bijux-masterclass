@@ -25,7 +25,7 @@ but do not want to browse the whole test suite to find the right proof surface.
 
 | If the question is about... | Read this test file first | Then open |
 | --- | --- | --- |
-| registration order, duplicate protection, or manifest shape rooted in class creation | `tests/test_registry.py` | `framework.py` and `REGISTRY_GUIDE.md` |
+| registration order, duplicate protection, or manifest shape rooted in class creation | `tests/test_registry.py` | `framework.py` and `COMMAND_GUIDE.md` |
 | field defaults, coercion, required values, or per-instance descriptor storage | `tests/test_fields.py` | `fields.py` and `FIELD_GUIDE.md` |
 | action history, generated constructors, or one concrete plugin invocation path | `tests/test_runtime.py` | `actions.py`, `framework.py`, and `plugins.py` |
 | CLI behavior for manifest, registry, invoke, or trace routes | `tests/test_cli.py` | `cli.py` and `COMMAND_GUIDE.md` |
@@ -50,5 +50,5 @@ Use this when you are debugging or reviewing a change:
 
 - `TEST_GUIDE.md`
 - `SOURCE_TO_PROOF_MAP.md`
-- `PUBLIC_SURFACE_MAP.md`
+- `COMMAND_GUIDE.md`
 - `PROOF_GUIDE.md`

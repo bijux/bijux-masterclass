@@ -68,15 +68,12 @@ has one stable entry hub instead of two overlapping arrival pages.
 ### "Which command should I run first?"
 
 - [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
-- [TARGET_GUIDE.md](TARGET_GUIDE.md)
 - [README.md](../README.md)
 
 ### "How do I inspect the public runtime shape?"
 
-- [MANIFEST_GUIDE.md](MANIFEST_GUIDE.md)
-- [REGISTRY_GUIDE.md](REGISTRY_GUIDE.md)
 - [INSPECTION_GUIDE.md](INSPECTION_GUIDE.md)
-- [PUBLIC_SURFACE_MAP.md](PUBLIC_SURFACE_MAP.md)
+- [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
 
 ### "How do wrappers, fields, and constructors work?"
 

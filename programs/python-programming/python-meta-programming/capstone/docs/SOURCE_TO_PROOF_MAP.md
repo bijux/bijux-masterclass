@@ -51,5 +51,5 @@ from ownership.
 
 - `SOURCE_GUIDE.md`
 - `TEST_GUIDE.md`
-- `PUBLIC_SURFACE_MAP.md`
+- `COMMAND_GUIDE.md`
 - `PROOF_GUIDE.md`

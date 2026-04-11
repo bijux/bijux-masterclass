@@ -52,6 +52,27 @@ the question you are trying to answer.
 | `make confirm` | run the strongest local executable confirmation route | pytest success or failure |
 | `make proof` | build the full learner-facing proof route | all saved bundles together |
 
+## Public runtime surfaces
+
+Use these when the question is not yet about execution, only about what the runtime
+publishes honestly from the public surface:
+
+| Surface | What it settles | Best command |
+| --- | --- | --- |
+| manifest export | which field schema and action metadata the runtime exposes without invocation | `make manifest` or `make plugin` |
+| registry export | which concrete plugins exist and in what deterministic order | `make registry` |
+| generated signatures | which constructor and action call shapes the runtime exposes | `make signatures` |
+| top-level package surface | which names another module should import from `incident_plugins` | `make manifest`, `make registry`, or `make inspect` |
+
+## Supported top-level imports
+
+| Need | Start here |
+| --- | --- |
+| framework review | `PluginBase`, `PluginMeta`, `build_manifest`, `create_plugin`, `invoke` |
+| descriptor review | `Field`, `FieldSpec`, `StringField`, `IntegerField`, `BooleanField`, `ChoiceField` |
+| decorator review | `action`, `ActionSpec` |
+| concrete plugin review | `ConsoleNotifier`, `WebhookNotifier`, `PagerNotifier`, `DeliveryPlugin` |
+
 ## Start by proof size
 
 ### Smallest observational routes
@@ -87,6 +108,44 @@ Use these when you need the broadest local confidence:
 - `make confirm`
 - `make proof`
 
+## Command to ownership map
+
+| Command | Kind of fact | Main output | First owning file | Best next proof surface |
+| --- | --- | --- | --- | --- |
+| `make manifest` | inspection-time fact | group-level field and action metadata | `src/incident_plugins/framework.py` | `tests/test_registry.py` or `PROOF_GUIDE.md` |
+| `make plugin` | inspection-time fact | one concrete plugin contract | `src/incident_plugins/plugins.py` | `tests/test_runtime.py` |
+| `make field` | inspection-time fact | one descriptor-backed field contract | `src/incident_plugins/fields.py` | `tests/test_fields.py` |
+| `make action` | inspection-time fact | one decorator-backed action contract | `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
+| `make registry` | class-definition fact made observable later | registered plugin names and order | `src/incident_plugins/framework.py` | `tests/test_registry.py` |
+| `make signatures` | class-definition fact made observable later | generated constructor and action signatures | `src/incident_plugins/framework.py` and `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
+| `make demo` | call-time fact | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | `TRACE_GUIDE.md` |
+| `make trace` | call-time fact with visible metadata | invocation history with config and action metadata | `src/incident_plugins/actions.py` and `src/incident_plugins/plugins.py` | `tests/test_runtime.py` or `tests/test_cli.py` |
+
+## The confusing pairs
+
+- `manifest` versus `registry`
+  `manifest` explains schema and action metadata; `registry` explains which plugins are currently registered.
+- `manifest` versus `plugin`
+  `manifest` shows the whole exported group; `plugin` lets you inspect one concrete plugin contract in isolation.
+- `plugin` versus `field`
+  `plugin` keeps fields and actions together; `field` isolates one descriptor-backed public contract.
+- `field` versus `action`
+  `field` isolates descriptor-backed configuration; `action` isolates decorator-backed callable metadata.
+- `registry` versus `signatures`
+  `registry` proves which plugins exist; `signatures` proves which generated call shapes they expose.
+- `demo` versus `trace`
+  `demo` shows one result; `trace` shows result, configuration, and recorded action history together.
+- `confirm` versus `proof`
+  `confirm` is the strongest local confirmation route; `proof` publishes the full learner-facing review route.
+
+## Default choices when unsure
+
+- Choose `manifest` before `registry`.
+- Choose `field` or `action` before `plugin` when one contract is the real pressure.
+- Choose `trace` before `demo` when metadata or history might matter.
+- Choose `inspect` before `tour` when the question is still mainly about ownership.
+- Choose `confirm` before `proof` when a human-facing published bundle is not required.
+
 ## Default escalation
 
 1. Start with one observational command.
@@ -103,7 +162,6 @@ Use these when you need the broadest local confidence:
 ## Best companion guides
 
 - `INDEX.md`
-- `PUBLIC_SURFACE_MAP.md`
-- `TARGET_GUIDE.md`
+- `ARCHITECTURE.md`
 - `PROOF_GUIDE.md`
 - `TEST_GUIDE.md`

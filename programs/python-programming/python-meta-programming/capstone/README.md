@@ -119,11 +119,6 @@ your pressure instead of reading the full list in alphabetical order.
 ### Public surface and command choice
 
 - [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
-- [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
-- [MANIFEST_GUIDE.md](docs/MANIFEST_GUIDE.md)
-- [REGISTRY_GUIDE.md](docs/REGISTRY_GUIDE.md)
-- [PUBLIC_API_GUIDE.md](docs/PUBLIC_API_GUIDE.md)
-- [PUBLIC_SURFACE_MAP.md](docs/PUBLIC_SURFACE_MAP.md)
 
 ### Mechanism and ownership guides
 
@@ -163,10 +158,6 @@ your pressure instead of reading the full list in alphabetical order.
 - `make manifest`
 - `make registry`
 - [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
-- [PUBLIC_SURFACE_MAP.md](docs/PUBLIC_SURFACE_MAP.md)
-- [MANIFEST_GUIDE.md](docs/MANIFEST_GUIDE.md)
-- [REGISTRY_GUIDE.md](docs/REGISTRY_GUIDE.md)
-- [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
 
 ### "Where do wrappers, fields, and class creation live?"
 
@@ -213,7 +204,7 @@ defaults above and escalate only one guide at a time.
 
 ## Read it by course stage
 
-- Observation modules: start with `make manifest`, `MANIFEST_GUIDE.md`, `make registry`, and `PROOF_GUIDE.md`
+- Observation modules: start with `make manifest`, `COMMAND_GUIDE.md`, `make registry`, and `PROOF_GUIDE.md`
 - Decorator modules: inspect `src/incident_plugins/actions.py` and the runtime tests
 - Descriptor modules: inspect `src/incident_plugins/fields.py`, `CONSTRUCTOR_GUIDE.md`, and `tests/test_fields.py`
 - Metaclass module: inspect `src/incident_plugins/framework.py` and `tests/test_registry.py`
@@ -258,7 +249,7 @@ feel fuzzier than the commands.
 
 - [INDEX.md](docs/INDEX.md) for the smallest honest local route into the doc set
 - [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md) for local command selection and artifact locations
-- [PUBLIC_SURFACE_MAP.md](docs/PUBLIC_SURFACE_MAP.md) for connecting commands, outputs, and owning files
+- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md) for connecting commands, outputs, and owning files
 - [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md) for change-to-proof alignment
 - [TEST_READING_MAP.md](docs/TEST_READING_MAP.md) for finding the first proof file by question
 - [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md) for choosing the right local route, command, and bundle

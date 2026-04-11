@@ -42,4 +42,4 @@ helps prove.
 
 - read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when you want the file placement of the plugin layer
 - read [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md) when you want the shipped demo and trace examples
-- read [TARGET_GUIDE.md](TARGET_GUIDE.md) when you want the smallest command for one plugin
+- read [COMMAND_GUIDE.md](COMMAND_GUIDE.md) when you want the smallest command for one plugin

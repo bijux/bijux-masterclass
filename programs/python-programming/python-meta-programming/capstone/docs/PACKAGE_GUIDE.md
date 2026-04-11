@@ -72,7 +72,7 @@ want the wrapper contract isolated from the rest of the runtime.
 Read [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when the framework is clear but the concrete
 adapter differences still need a purpose-driven explanation.
 
-Read [PUBLIC_API_GUIDE.md](PUBLIC_API_GUIDE.md) when the question is no longer only
+Read [COMMAND_GUIDE.md](COMMAND_GUIDE.md) when the question is no longer only
 internal ownership, but what the package intentionally exports.
 
 Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the package route is still too broad and you

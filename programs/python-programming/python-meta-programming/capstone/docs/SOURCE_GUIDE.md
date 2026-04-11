@@ -51,5 +51,5 @@ the whole capstone just to answer one narrow metaprogramming question.
 
 - read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when you still need the higher-level file boundary map
 - read [TOUR.md](TOUR.md) when you want a broader walkthrough instead of a pinpoint route
-- read [TARGET_GUIDE.md](TARGET_GUIDE.md) when the real question is which command to run next
+- read [COMMAND_GUIDE.md](COMMAND_GUIDE.md) when the real question is which command to run next
 - read [PROOF_GUIDE.md](PROOF_GUIDE.md) when the source location is known and the next step is evidence

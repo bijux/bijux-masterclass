@@ -97,11 +97,8 @@ public surface without opening private internals first.
 - Metaclass module: pair `registry` output with `tests/test_registry.py`.
 - Governance and mastery: use `inspect`, `tour`, and `verify-report` as the final human review surface.
 
-Use [REGISTRY_GUIDE.md](REGISTRY_GUIDE.md) when the metaclass proof question is mainly
-about deterministic registration and duplicate handling.
-
-Use [MANIFEST_GUIDE.md](MANIFEST_GUIDE.md) when the proof question is mainly about
-observational export rather than registration or invocation.
+Use [COMMAND_GUIDE.md](COMMAND_GUIDE.md) when the proof question is mainly about
+public export shape, deterministic registration, or target choice instead of action behavior.
 
 ## Review questions
 

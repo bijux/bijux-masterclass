@@ -92,10 +92,8 @@ inspect: ## Build the learner-facing inspection bundle
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(INSPECT_DIR)/DESIGN_BOUNDARIES.md
 	@cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
-	@cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(INSPECT_DIR)/PUBLIC_SURFACE_MAP.md
 	@cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(INSPECT_DIR)/REVIEW_ROUTE_MAP.md
 	@cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(INSPECT_DIR)/SOURCE_TO_PROOF_MAP.md
-	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(INSPECT_DIR)/TARGET_GUIDE.md
 	@cp $(DOCS_DIR)/INSPECTION_GUIDE.md $(INSPECT_DIR)/INSPECTION_GUIDE.md
 	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/
@@ -108,7 +106,7 @@ inspect: ## Build the learner-facing inspection bundle
 		'Inspection route:' \
 		'  1. Read manifest.json for group-level field and action metadata.' \
 		'  2. Read registry.json, plugin.json, field.json, action.json, and signatures.json for registered plugins, one concrete plugin, one concrete field, one concrete action, and generated callable shapes.' \
-		'  3. Read INSPECTION_GUIDE.md, PUBLIC_SURFACE_MAP.md, and TARGET_GUIDE.md for the next review route.' \
+		'  3. Read INSPECTION_GUIDE.md and COMMAND_GUIDE.md for the next review route.' \
 		'  4. Read PACKAGE_GUIDE.md and SOURCE_TO_PROOF_MAP.md when you need to connect the outputs back to source ownership and proof.' \
 		> $(INSPECT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/bundle-manifest.json
@@ -143,7 +141,6 @@ verify-report: ## Build the structured capstone verification report
 	@cp $(DOCS_DIR)/TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
 	@cp $(DOCS_DIR)/TEST_READING_MAP.md $(VERIFY_REPORT_DIR)/TEST_READING_MAP.md
 	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
-	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(VERIFY_REPORT_DIR)/TARGET_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/
 	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/docs/
 	@for doc in $(VERIFY_REPORT_DIR)/*.md; do \
@@ -191,12 +188,10 @@ tour: ## Build the learner-facing walkthrough bundle
 	@cp $(DOCS_DIR)/ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
 	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(TOUR_DIR)/DESIGN_BOUNDARIES.md
 	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(TOUR_DIR)/PROOF_GUIDE.md
-	@cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(TOUR_DIR)/PUBLIC_SURFACE_MAP.md
 	@cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(TOUR_DIR)/REVIEW_ROUTE_MAP.md
 	@cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(TOUR_DIR)/SOURCE_TO_PROOF_MAP.md
 	@cp $(DOCS_DIR)/TOUR.md $(TOUR_DIR)/TOUR.md
 	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
-	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(TOUR_DIR)/TARGET_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/
 	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/docs/
 	@for doc in $(TOUR_DIR)/*.md; do \
@@ -216,7 +211,7 @@ tour: ## Build the learner-facing walkthrough bundle
 		'  1. Read manifest.json, registry.json, plugin.json, and signatures.json to inspect the public runtime shape.' \
 		'  2. Read demo.json for one concrete invocation.' \
 		'  3. Read trace.json for configuration and action-history visibility.' \
-		'  4. Read WALKTHROUGH_GUIDE.md, PUBLIC_SURFACE_MAP.md, and TOUR.md for the review order.' \
+		'  4. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
 		'  5. Read REVIEW_ROUTE_MAP.md and SOURCE_TO_PROOF_MAP.md when you need to connect the tour back to local guides or source ownership.' \
 		> $(TOUR_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/bundle-manifest.json

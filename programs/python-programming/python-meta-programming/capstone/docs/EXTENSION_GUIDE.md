@@ -45,7 +45,7 @@ observable and the ownership boundary explicit.
 1. Update the closest test file in `tests/`.
 2. Run `make confirm`.
 3. Run `make inspect`, `make trace`, or `make verify-report` if the public review surface changed.
-4. Update `PROOF_GUIDE.md`, `TARGET_GUIDE.md`, or `INSPECTION_GUIDE.md` if the best review route changed.
+4. Update `PROOF_GUIDE.md`, `COMMAND_GUIDE.md`, or `INSPECTION_GUIDE.md` if the best review route changed.
 
 ## Review rule
 
