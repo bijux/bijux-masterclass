@@ -119,6 +119,15 @@ nav:
           - Glossary: module-04-scaling-workflows-interface-boundaries/glossary.md
       - "Module 05: Software Boundaries and Reproducible Rules":
           - Overview: module-05-software-boundaries-reproducible-rules/index.md
+          - Rule Logic, Scripts, and Software Ownership: module-05-software-boundaries-reproducible-rules/rule-logic-scripts-and-software-ownership.md
+          - Environments, Containers, and Runtime Contracts: module-05-software-boundaries-reproducible-rules/environments-containers-and-runtime-contracts.md
+          - Helper Code, Packages, and Reusable Boundaries: module-05-software-boundaries-reproducible-rules/helper-code-packages-and-reusable-boundaries.md
+          - Software Provenance, Drift, and Rebuild Evidence: module-05-software-boundaries-reproducible-rules/software-provenance-drift-and-rebuild-evidence.md
+          - Failure Modes at the Software Boundary: module-05-software-boundaries-reproducible-rules/failure-modes-at-the-software-boundary.md
+          - "Worked Example: Moving a Workflow Across the Software Boundary Safely": module-05-software-boundaries-reproducible-rules/worked-example-moving-a-workflow-across-the-software-boundary-safely.md
+          - Exercises: module-05-software-boundaries-reproducible-rules/exercises.md
+          - Exercise Answers: module-05-software-boundaries-reproducible-rules/exercise-answers.md
+          - Glossary: module-05-software-boundaries-reproducible-rules/glossary.md
       - "Module 06: Publishing and Downstream Contracts":
           - Overview: module-06-publishing-downstream-contracts/index.md
       - "Module 07: Workflow Architecture and File APIs":

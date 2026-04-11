@@ -54,7 +54,7 @@ For each module:
 | 02 | why dynamic discovery needs one durable discovered-set artifact and one honest publish trail | describe what discovery is allowed to change and what must stay stable | `make verify` |
 | 03 | why profiles, failure handling, and proof routes are policy surfaces rather than workflow meaning | distinguish execution context from workflow semantics and choose the right production proof route | `capstone-profile-audit` |
 | 04 | how repository growth stays legible through named boundaries and review gates | name which file or interface boundary should absorb one scaling change | `capstone-tour` |
-| 05 | why scripts, wrappers, and envs must stay reviewable | explain which logic belongs in rules versus helper code | `proof` |
+| 05 | why software ownership, runtime contracts, and provenance must stay reviewable together | explain where rule logic ends, where software begins, and what evidence supports a rebuild | `proof` |
 | 06 | what makes a publish surface trustworthy downstream | explain the difference between internal state and public outputs | `capstone-verify-report` |
 | 07 | how repository architecture protects workflow meaning | review ownership without guessing where the contract lives | `proof` |
 | 08 | what may change across local, CI, and cluster contexts | explain which differences are policy and which would be semantic drift | `capstone-profile-audit` |

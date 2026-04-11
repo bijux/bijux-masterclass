@@ -76,7 +76,7 @@ can inspect, trust, and extend without folklore.
 | [Module 02](module-02-dynamic-dags-discovery-integrity/index.md) | Dynamic DAGs, Discovery, and Integrity | teaches deterministic discovery, checkpoint discipline, and publish integrity |
 | [Module 03](module-03-production-operations-policy-boundaries/index.md) | Production Operations and Policy Boundaries | teaches profiles, recovery policy, staging discipline, and production proof routes |
 | [Module 04](module-04-scaling-workflows-interface-boundaries/index.md) | Scaling Workflows and Interface Boundaries | teaches rule-family splits, module interfaces, file APIs, and scaling review gates |
-| [Module 05](module-05-software-boundaries-reproducible-rules/index.md) | Software Boundaries and Reproducible Rules | keeps helper code and rule meaning in the right layer |
+| [Module 05](module-05-software-boundaries-reproducible-rules/index.md) | Software Boundaries and Reproducible Rules | teaches software ownership, runtime contracts, provenance, and rebuild judgment |
 | [Module 06](module-06-publishing-downstream-contracts/index.md) | Publishing and Downstream Contracts | makes the public artifact boundary versioned and trustworthy |
 | [Module 07](module-07-workflow-architecture-file-apis/index.md) | Workflow Architecture and File APIs | organizes the repository so ownership stays visible |
 | [Module 08](module-08-operating-contexts-execution-policy/index.md) | Operating Contexts and Execution Policy | compares local, CI, and cluster policy without semantic drift |
