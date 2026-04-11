@@ -175,3 +175,4 @@ nav:
       - "Module 10: Governance, Migration, and Tool Boundaries":
           - Overview: module-10-governance-migration-tool-boundaries/index.md
           - Reviewing Workflow Contracts and Current Truth: module-10-governance-migration-tool-boundaries/reviewing-workflow-contracts-and-current-truth.md
+          - Migration Plans That Preserve Proof: module-10-governance-migration-tool-boundaries/migration-plans-that-preserve-proof.md
