@@ -1,160 +1,173 @@
 # Lifting Plain Functions
 
-
 <!-- page-maps:start -->
 ## Lesson Map
 
 ```mermaid
 flowchart LR
-  plain["Start with an ordinary Python function"] --> choose["Choose map, and_then, map_err, or liftA based on dependency shape"]
-  choose --> lift["Lift the function without rewriting container plumbing"]
-  lift --> read["Keep the happy path linear and the container contract explicit"]
+  plain["Start with an ordinary Python function"] --> classify["Ask what the function returns and whether the inputs depend on each other"]
+  classify --> choose["Choose map, map_err, and_then, or liftA2"]
+  choose --> pipeline["Lift the function without rewriting the business logic"]
 ```
 <!-- page-maps:end -->
 
-This lesson should make lifting feel like a small practical decision rather than a pile of combinator names. Students need a reliable way to look at a plain function and decide whether it belongs under `map`, `and_then`, `map_err`, or applicative lifting.
+After `and_then`, students often hit a new kind of friction: the next function is just a
+plain Python function, so which combinator should carry it into the pipeline?
 
-## Start With the Choice Problem
+This lesson is about making that choice routine instead of mysterious.
 
-After learning `and_then`, students often hit a different kind of uncertainty: the function is plain Python, so which operation should carry it into the container flow?
+## Core Question
 
-- If the function transforms a successful value without changing the container type, it usually belongs under `map`.
-- If the function itself returns a container, then `and_then` is usually the honest choice.
-- If the function combines independent container values, applicative lifting is often the better fit than sequential chaining.
+How do you take an ordinary function and place it into a container-based pipeline without
+rewriting the function just to satisfy the container?
 
-**Core question**  
-How do you turn any plain Python function into a container-aware version (`map`, `ap`, `and_then`) so that your pipelines become completely linear on the happy path and never require another manual error check again?
+## The Decision Ladder
 
-This lesson introduces lifting as the bridge between ordinary functions and container-based flow:
+Start with two questions:
 
-- preserve the behavior of plain functions instead of rewriting them around containers
-- choose the smallest combinator that matches the dependency structure
-- keep the resulting pipeline readable by making the lifting rule obvious at the call site
+1. Does the function return a plain value or another container?
+2. Are the inputs sequentially dependent or independent?
 
-**Audience**: Engineers who are done writing `if isinstance(x, Err): return x` 47 times and want a small, reliable decision framework for container-aware composition.
+That gives you the main choices:
 
-**Outcome**
-1. You will reach for `.map`, `.map_err`, `.and_then`, or `liftA2` instinctively.
-2. You will know exactly when to pick fail-fast `Result` vs accumulating `Validation`.
-3. You will have Hypothesis-backed proof that all lifting combinators satisfy functor/applicative/monad laws.
+| Situation                                      | Use              | Why it fits |
+|------------------------------------------------|------------------|-------------|
+| Transform the success value                    | `.map(f)`        | `f` is plain and depends on one successful value |
+| Transform the error value                      | `.map_err(g)`    | you want to normalize or enrich the error branch |
+| Run the next dependent step                    | `.and_then(f)`   | `f` already returns `Result` or `Option` |
+| Combine independent container values           | `liftA2(f, a, b)` or `v_liftA2(f, a, b)` | both inputs matter and neither has to wait for the other |
 
-## The Four Operations To Reach For First
+If you remember only one sentence, remember this one:
 
-| Operation      | Method                  | Use when                                                   | Container     |
-|----------------|-------------------------|------------------------------------------------------------|---------------|
-| Transform success | `.map(f)`             | Independent post-processing                                | All           |
-| Transform error   | `.map_err(g)`         | Error enrichment / normalisation                           | Result        |
-| Chain dependent   | `.and_then(f)`        | Sequential steps, parsing, API calls (fail-fast)           | Result / Option |
-| Parallel independent | `liftA2(f, a, b)`      | Multi-field validation (accumulate or fail-fast)           | Result / Validation |
+> Choose the smallest combinator that matches the real dependency shape of the work.
 
-The only Tier-2 helper you’ll occasionally need is `try_result` (exception bridging). Everything else lives in reference appendices.
-
-## 1. Laws & Invariants (machine-checked in CI)
-
-| Law                           | Formal Statement                                                            | Why it matters                                            |
-|-------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Functor Identity              | `m.map(id) == m`                                                            | Mapping identity is a no-op                               |
-| Functor Composition           | `m.map(f).map(g) == m.map(g ∘ f)`                                           | Mapping composes predictably                              |
-| Applicative Identity          | `Ok(lambda x: x).ap(m) == m`                                                | Pure identity function does nothing                       |
-| Applicative Homomorphism      | `Ok(f).ap(Ok(x)) == Ok(f(x))`                                               | Lifting pure functions preserves meaning                  |
-| Applicative Interchange       | `u.ap(Ok(y)) == Ok(lambda f: f(y)).ap(u)`                                   | Order of pure arguments doesn't matter                    |
-| Applicative Composition       | `Ok(compose).ap(u).ap(v).ap(m) == u.ap(v.ap(m))`                            | Applicative composition is associative                     |
-| Monad Laws                    | Left/right identity, associativity (M06C02)                                  | Refactor-safe chaining                                    |
-| Validation Accumulation       | `v_ap(VFailure(e1), VFailure(e2)) == VFailure(e1 + e2)`                     | All errors are always collected                           |
-
-All laws are verified with Hypothesis. A single counterexample breaks CI.
-
-## 2. Public API – End-of-Module-06 code locations
-
-- `Result` / `Option`: `capstone/src/funcpipe_rag/result/types.py`
-- `Validation` applicative helpers (`v_ap`, `v_liftA2`): `capstone/src/funcpipe_rag/fp/validation.py`
-- Exception bridging (boundary-only): `capstone/src/funcpipe_rag/boundaries/adapters/exception_bridge.py`
+## One Plain Function, Three Different Lifts
 
 ```python
-from funcpipe_rag.result.types import Err, NoneVal, Ok, Option, Result, Some, liftA2
-from funcpipe_rag.fp.validation import v_ap, v_liftA2
+def normalize(name: str) -> str:
+    return name.strip().title()
+
+def parse_port(raw: str) -> Result[int, ErrInfo]:
+    ...
+
+def combine_host_port(host: str, port: int) -> Endpoint:
+    return Endpoint(host=host, port=port)
 ```
 
-## 3. Real-World Examples
+Those functions enter pipelines in different ways:
 
-### 3.1 Fail-Fast Pipeline (Result)
 ```python
-safe_int = try_result(int, lambda e: ErrInfo("PARSE", str(e)))
+clean_name = Ok("  bijan ").map(normalize)
 
-def parse_port(s: str) -> Result[int, ErrInfo]:
-    return Ok(s).and_then(safe_int).and_then(ensure(in_range(1, 65536)))
+validated_port = Ok("8080").and_then(parse_port)
 
-parse_port("abc")   # Err(...)
-parse_port("80")    # Ok(80)
+endpoint = liftA2(
+    combine_host_port,
+    Ok("api.internal"),
+    Ok(8080),
+)
 ```
 
-### 3.2 Parallel Validation (Validation)
+The function bodies stay ordinary. The combinator explains how the container should
+carry them.
+
+## When `liftA2` Matters
+
+Students often overuse `and_then` because it feels familiar after the previous lesson.
+That works for dependent steps, but it is the wrong mental model for independent
+validation.
+
+Use `liftA2` or `v_liftA2` when:
+
+- both inputs can be computed separately
+- the final function needs both values together
+- you care about the difference between fail-fast `Result` and accumulating `Validation`
+
 ```python
 validate_user = v_liftA2(
     User,
-    parse_name(data.get("name")),
-    parse_age(data.get("age"))
-)
-
-# → VFailure(("name missing", "bad age"))
-```
-
-### 3.3 Before → After
-```python
-# BEFORE – manual propagation
-def validate_cfg(cfg: dict) -> Result[Config, ErrInfo]:
-    if "name" not in cfg or not isinstance(cfg["name"], str):
-        return Err(ErrInfo("NAME", "..."))
-    if "port" not in cfg or not isinstance(cfg["port"], int):
-        return Err(ErrInfo("PORT", "..."))
-    return Ok(Config(cfg["name"], cfg["port"]))
-
-# AFTER – linear happy path
-validate_cfg = lambda cfg: (
-    Ok(cfg)
-    .and_then(require("name", ErrInfo("NAME", "missing")))
-    .and_then(ensure(is_str, ErrInfo("NAME", "not str")))
-    .and_then(require("port", ErrInfo("PORT", "missing")))
-    .and_then(ensure(is_int, ErrInfo("PORT", "not int")))
-    .map(lambda _: Config(cfg["name"], cfg["port"]))
+    validate_name(data.get("name")),
+    validate_age(data.get("age")),
 )
 ```
 
-## 4. Property-Based Proofs (selected)
+That example is different from sequential chaining. Neither validation depends on the
+other; they are peers that feed the same constructor.
+
+## A Better Before and After
 
 ```python
-@given(m=st_result())
-def test_result_applicative_identity(m):
-    assert Ok(lambda x: x).ap(m) == m
+# BEFORE – manual propagation mixed with business rules
+def validate_cfg(cfg: dict[str, object]) -> Result[Config, ErrInfo]:
+    name = cfg.get("name")
+    if not isinstance(name, str):
+        return Err(ErrInfo("NAME", "missing or invalid"))
 
-@given(e1=st_errors(), e2=st_errors())
-def test_validation_accumulates(e1, e2):
-    # In the codebase: VFailure is in funcpipe_rag.fp.core; v_ap is in funcpipe_rag.fp.validation.
-    assert v_ap(VFailure((e1,)), VFailure((e2,))) == VFailure((e1, e2))
+    port = cfg.get("port")
+    if not isinstance(port, int):
+        return Err(ErrInfo("PORT", "missing or invalid"))
+
+    return Ok(Config(name=name, port=port))
 ```
 
-## 5. Anti-Patterns & Immediate Fixes
+```python
+# AFTER – plain constructors, clear lifting choices
+def require_str(field: str) -> Callable[[dict[str, object]], Result[str, ErrInfo]]:
+    def step(cfg: dict[str, object]) -> Result[str, ErrInfo]:
+        value = cfg.get(field)
+        return Ok(value) if isinstance(value, str) else Err(ErrInfo(field.upper(), "missing or invalid"))
 
-| Anti-Pattern                        | Symptom                              | Fix                              |
-|-------------------------------------|--------------------------------------|----------------------------------|
-| Manual propagation                  | `if isinstance(x, Err): return x`    | Use `.map` / `.and_then` / `liftA2` |
-| Using `and_then` for parallel validation | Only first error reported            | Use `liftA2` + `Validation`      |
-| Raw exceptions inside pipeline      | Unhandled crashes                    | Wrap with `try_result`           |
+    return step
 
-## 6. Pre-Core Quiz
+def require_int(field: str) -> Callable[[dict[str, object]], Result[int, ErrInfo]]:
+    def step(cfg: dict[str, object]) -> Result[int, ErrInfo]:
+        value = cfg.get(field)
+        return Ok(value) if isinstance(value, int) else Err(ErrInfo(field.upper(), "missing or invalid"))
 
-1. Use `.map` when…? → **Independent success transform**  
-2. Use `.and_then` when…? → **Dependent/sequential step**  
-3. Use `liftA2` when…? → **Independent parallel validation**  
-4. Validation vs Result? → **Accumulate all vs stop on first**  
-5. The golden rule? → **Never write manual error propagation again**
+    return step
 
-## 7. Post-Core Exercise
+def validate_cfg(cfg: dict[str, object]) -> Result[Config, ErrInfo]:
+    return liftA2(
+        lambda name, port: Config(name=name, port=port),
+        require_str("name")(cfg),
+        require_int("port")(cfg),
+    )
+```
 
-1. Take the most nested validation function in your codebase and rewrite it with `v_liftA2` — verify all errors are reported.
-2. Convert a real `try/except` chain to `and_then` + `try_result`.
-3. Add a new field to an existing validation — confirm it’s a single-line change.
+The improvement is not that the code became more abstract. The improvement is that the
+dependency story became honest:
 
-**Continue with:** [Reader Pattern](../module-06-monadic-flow-explicit-context/reader-pattern.md)
+- field checks are independent, so they are lifted independently
+- the constructor is plain, so it stays plain
+- the container only handles propagation
 
-You have now reached the point where every pipeline you write is **linear on the happy path**, **automatically propagates every error**, and is **mathematically proven correct** by Hypothesis. The remaining cores remove the last bits of friction.
+## What the Laws Buy You
+
+The functor and applicative laws matter here because they let you trust the lifting:
+
+- `m.map(lambda x: x) == m`: mapping identity does nothing
+- `Ok(f).ap(Ok(x)) == Ok(f(x))`: lifting a pure function preserves its meaning
+
+Those laws do not prove the business rule is correct. They prove that the combinator
+machinery is not secretly changing the meaning of your function.
+
+## Common Mistakes
+
+| Mistake                                 | What it looks like | Better move |
+|-----------------------------------------|--------------------|-------------|
+| Using `and_then` for a plain transform  | chaining a function that returns `U` | use `.map` |
+| Using `and_then` for peer validations   | validating field A only to reach field B | use `liftA2` or `v_liftA2` |
+| Rewriting a pure function around `Ok`   | returning containers from a function that should stay plain | keep the function plain and lift it at the call site |
+| Mapping the wrong branch                | changing errors with `.map` | use `.map_err` |
+
+## Practice Prompt
+
+Take one plain helper from your codebase and place it under:
+
+1. `.map`
+2. `.and_then`
+3. `liftA2` or `v_liftA2`
+
+Then explain why only one of those choices matches the real dependency structure.
+
+**Continue with:** [Reader Pattern](reader-pattern.md)
