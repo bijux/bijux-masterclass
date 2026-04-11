@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Module Promise Map"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -38,7 +38,7 @@ what it does not settle yet, and what design pressure it prepares you to handle 
 | 06 Persistence and Schema Evolution | you can persist aggregates without flattening away domain meaning | concurrency scheduling and async runtime design | `repository.py`, rehydration boundaries, and verification bundles | time and runtime pressure |
 | 07 Time and Concurrency | you can keep clocks, queues, threads, and async boundaries from corrupting ownership | confidence strategy and public governance | runtime coordination plus tests that prove orchestration stays outside the domain | tests and public surfaces |
 | 08 Testing and Verification | you can design proof routes that match stateful and contract-heavy object systems | extension governance and third-party reuse | `tests/`, `verify-report`, and the saved review bundles | public APIs and safe customization |
-| 09 Public APIs and Extension Governance | you can expose a stable public surface without letting extension points dissolve the model | operational measurement and hardening | learner-facing entry surfaces, guides, and extension seams | operational review |
+| 09 Public APIs and Extension Governance | you can expose a stable public surface without letting extension points dissolve the model | operational measurement and hardening | entry surfaces, guides, and extension seams | operational review |
 | 10 Performance, Observability, and Security | you can review an object system under hot-path, telemetry, trust, and operational pressure | no later module; this is the integrated review pass | the full review bundle, proof route, and architecture review surfaces | capstone mastery and long-term stewardship |
 
 ## The three arcs inside the course

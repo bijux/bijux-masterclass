@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Platform Setup"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -61,7 +61,7 @@ make PROGRAM=python-programming/python-object-oriented-programming capstone-walk
 ```
 
 Use `test` to build the supported environment and run the raw suite. Use
-`capstone-walkthrough` only after setup is stable and you are ready for the learner-facing
+`capstone-walkthrough` only after setup is stable and you are ready for the saved review
 route.
 
 ## Capstone setup
@@ -76,7 +76,7 @@ make verify-report
 ```
 
 That sequence creates the virtual environment, installs the editable package plus pytest,
-checks the suite, and then verifies that the saved learner-facing inspection and review
+checks the suite, and then verifies that the saved inspection and review
 bundles can be built.
 
 ## What to verify before deeper proof
@@ -85,7 +85,7 @@ Check these in order:
 
 1. `make install` completes and creates the virtual environment under `artifacts/venv/...`.
 2. `make test` passes before you trust saved bundles.
-3. `make inspect` produces the learner-facing state bundle.
+3. `make inspect` produces the saved state bundle.
 4. `make verify-report` succeeds before you escalate to `make proof`.
 
 If step 2 fails, the right next move is environment repair, not architecture review.

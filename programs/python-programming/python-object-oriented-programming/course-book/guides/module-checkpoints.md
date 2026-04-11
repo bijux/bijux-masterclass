@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Module Checkpoints"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -47,7 +47,7 @@ to make before moving deeper into the course.
 - You can make illegal states hard to construct.
 - You can describe which transitions are allowed and who guards them.
 - You can explain when dataclasses, descriptors, or explicit factories fit the state model.
-- Prove it by checking lifecycle tests and the learner-facing inspection bundle from `make inspect`.
+- Prove it by checking lifecycle tests and the saved inspection bundle from `make inspect`.
 
 ### Module 04: Aggregates, Events, and Collaboration Boundaries
 
@@ -89,7 +89,7 @@ to make before moving deeper into the course.
 - You can name the stable public surface and the internal surface.
 - You can explain what extension points are allowed and what must remain closed.
 - You can describe how examples, docs, and compatibility suites defend the public contract.
-- Prove it by reviewing learner-facing entry surfaces plus `EXTENSION_GUIDE.md`.
+- Prove it by reviewing entry surfaces plus `EXTENSION_GUIDE.md`.
 
 ### Module 10: Performance, Observability, and Security Review
 

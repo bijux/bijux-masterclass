@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Proof Matrix"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -41,10 +41,10 @@ evidence.
 
 | Claim | Best first command | Best first surface |
 | --- | --- | --- |
-| a learner can read the capstone in one bounded walkthrough | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` | `walkthrough.txt`, `TOUR.md`, `WALKTHROUGH_GUIDE.md` |
-| executable tests and learner-facing state still agree | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` | `pytest.txt`, `summary.txt`, `history.txt`, `snapshot.json` |
-| the strongest local confirmation route still holds | `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | executable suite plus saved learner-facing bundles |
-| the full learner-facing proof route still builds end to end | `make PROGRAM=python-programming/python-object-oriented-programming proof` | inspection, walkthrough, and verification bundles together |
+| a reader can inspect the capstone in one bounded walkthrough | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` | `walkthrough.txt`, `TOUR.md`, `WALKTHROUGH_GUIDE.md` |
+| executable tests and saved review state still agree | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` | `pytest.txt`, `summary.txt`, `history.txt`, `snapshot.json` |
+| the strongest local confirmation route still holds | `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | executable suite plus saved review bundles |
+| the full public proof route still builds end to end | `make PROGRAM=python-programming/python-object-oriented-programming proof` | inspection, walkthrough, and verification bundles together |
 
 ## Course contract to proof surface
 
@@ -55,11 +55,11 @@ evidence.
 | design state transitions so illegal states are difficult to construct | `inspect` | `rules.txt`, `tests/test_policy_lifecycle.py`, `snapshot.json` |
 | enforce cross-object invariants through aggregate roots and disciplined APIs | `capstone-verify-report` | `history.txt`, `timeline.txt`, runtime and application tests |
 | evolve storage, codecs, and compatibility boundaries without flattening the domain | `capstone-verify-report` | `retirement.txt`, `rate_of_change.txt`, repository and runtime surfaces |
-| publish public APIs and extension points that remain governable under change | `proof` | saved learner-facing bundles plus the public-capstone guides |
+| publish public APIs and extension points that remain governable under change | `proof` | saved review bundles plus the public-capstone guides |
 
 ## Module-to-proof bridge
 
-| Module range | Main learner question | Best first evidence surface |
+| Module range | Main question | Best first evidence surface |
 | --- | --- | --- |
 | Modules 01 to 03 | what do identity, roles, and lifecycle rules actually own | `summary.txt`, `rules.txt`, lifecycle tests |
 | Modules 04 to 05 | where do cross-object invariants and failure boundaries actually live | `history.txt`, `timeline.txt`, `runtime.py`, `tests/test_unit_of_work.py` |
@@ -73,7 +73,7 @@ evidence.
 | which object or boundary should own this claim | [Proof Ladder](proof-ladder.md) | this page plus [Capstone Map](../capstone/capstone-map.md) |
 | where should I start when the issue is the current scenario state | `inspect` | `summary.txt`, `snapshot.json` |
 | where should I start when the issue is lifecycle or rule ownership | `inspect` | `rules.txt`, `tests/test_policy_lifecycle.py` |
-| where should I start when the issue is a full-system review | `capstone-verify-report` | `pytest.txt`, saved learner-facing state, and [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+| where should I start when the issue is a full-system review | `capstone-verify-report` | `pytest.txt`, saved review state, and [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
 | which route should I use before approving a larger change | `capstone-confirm` or `proof` | executable suite plus the saved bundles |
 
 ## Best companion pages

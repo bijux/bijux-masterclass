@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Proof Ladder"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -42,7 +42,7 @@ hides the actual design issue.
 - reading pages can explain the intended ownership, but they cannot prove current behavior
 - inspection bundles can show state and narrative clearly, but they cannot replace targeted behavioral checks
 - confirmation routes can prove the current local contract, but they cannot repair a vague question or an unclear ownership claim
-- published proof routes can prove the learner-facing path still works, but they are too heavy for every narrow design question
+- published proof routes can prove the public review path still works, but they are too heavy for every narrow design question
 
 ## Rules for escalation
 
