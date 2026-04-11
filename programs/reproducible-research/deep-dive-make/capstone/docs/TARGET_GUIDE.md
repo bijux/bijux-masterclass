@@ -117,7 +117,7 @@ What must stay out of the source bundle:
 What belongs in the source bundle:
 
 - `Makefile` and `mk/` because they define the build contract
-- `README.md`, `TARGET_GUIDE.md`, and `PROOF_GUIDE.md` because they explain the repository surface
+- `README.md`, [TARGET_GUIDE.md](TARGET_GUIDE.md), and [PROOF_GUIDE.md](PROOF_GUIDE.md) because they explain the repository surface
 - `src/`, `include/`, `tests/`, `repro/`, and helper scripts because they are tracked project inputs
 
 [Back to top](#top)
@@ -126,11 +126,11 @@ What belongs in the source bundle:
 
 ## Useful companions
 
-- `PROOF_GUIDE.md`
-- `WALKTHROUGH_GUIDE.md`
-- `SELFTEST_GUIDE.md`
-- `CONTRACT_AUDIT_GUIDE.md`
-- `INCIDENT_REVIEW_GUIDE.md`
-- `PROFILE_AUDIT_GUIDE.md`
+- [PROOF_GUIDE.md](PROOF_GUIDE.md)
+- [WALKTHROUGH_GUIDE.md](WALKTHROUGH_GUIDE.md)
+- [SELFTEST_GUIDE.md](SELFTEST_GUIDE.md)
+- [CONTRACT_AUDIT_GUIDE.md](CONTRACT_AUDIT_GUIDE.md)
+- [INCIDENT_REVIEW_GUIDE.md](INCIDENT_REVIEW_GUIDE.md)
+- [PROFILE_AUDIT_GUIDE.md](PROFILE_AUDIT_GUIDE.md)
 
 [Back to top](#top)

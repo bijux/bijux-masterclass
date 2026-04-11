@@ -59,10 +59,10 @@ start narrower.
 Use this order when the repository is new but the ideas are not:
 
 1. `README.md` for the repository contract
-2. `TARGET_GUIDE.md` for the public target surface
-3. `PROOF_GUIDE.md` for claim-to-route selection
+2. [TARGET_GUIDE.md](TARGET_GUIDE.md) for the public target surface
+3. this page for claim-to-route selection
 4. `tests/run.sh` for the executed proof harness
-5. `ARCHITECTURE.md` and `mk/contract.mk` for ownership and boundary rules
+5. [ARCHITECTURE.md](ARCHITECTURE.md) and `mk/contract.mk` for ownership and boundary rules
 6. the audit or repro guide that matches the current question
 
 That keeps claim, route, and evidence ahead of implementation detail.
@@ -91,11 +91,11 @@ That keeps claim, route, and evidence ahead of implementation detail.
 Read these with this guide:
 
 - `README.md`
-- `TARGET_GUIDE.md`
-- `WALKTHROUGH_GUIDE.md`
-- `CONTRACT_AUDIT_GUIDE.md`
-- `INCIDENT_REVIEW_GUIDE.md`
-- `PROFILE_AUDIT_GUIDE.md`
-- `SELFTEST_GUIDE.md`
+- [TARGET_GUIDE.md](TARGET_GUIDE.md)
+- [WALKTHROUGH_GUIDE.md](WALKTHROUGH_GUIDE.md)
+- [CONTRACT_AUDIT_GUIDE.md](CONTRACT_AUDIT_GUIDE.md)
+- [INCIDENT_REVIEW_GUIDE.md](INCIDENT_REVIEW_GUIDE.md)
+- [PROFILE_AUDIT_GUIDE.md](PROFILE_AUDIT_GUIDE.md)
+- [SELFTEST_GUIDE.md](SELFTEST_GUIDE.md)
 
 [Back to top](#top)
