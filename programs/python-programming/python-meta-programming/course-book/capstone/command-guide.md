@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Command Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
