@@ -2,51 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Closures & Partials"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  smell["Need one pipeline in several configured variants"] --> leak["Reach for globals or mutable defaults"]
+  leak --> refactor["Capture configuration in a closure or partial"]
+  refactor --> review["Review behavior by inspecting explicit values"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson matters when a team wants several variants of the same pipeline and the first instinct is to hide the choice in globals, environment reads, or mutable defaults. The diagram shows the safer move: build the variant once, keep the captured configuration visible, and review the resulting function as a normal value.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Design Smell
 
-Here's a snippet from the progression map:
+Students usually do not struggle with the syntax of `partial`. They struggle with knowing when a configurator is cleaner than "just set a variable somewhere and call the function later."
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If changing chunk size means editing module-level state, the design is already harder to test.
+- If two pipeline variants share code but not configuration, the missing concept is usually a configurator.
+- If a reviewer cannot tell what behavior is fixed at construction time, the capture is too implicit.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do closures and partial application create pure configurators that capture immutable config to produce reusable, deterministic variants of RAG pipelines without globals or mutable defaults?
 
-This core introduces **pure configurators** in Python:  
-- Treat config as **explicit, immutable data** captured in closures or fixed via partials for predictable variants.  
-- Default to **pure functions** that depend only on captured config and inputs, preserving determinism.  
-- Isolate mutable state (if any) to thin edges, building on Module 1's purity.
+This lesson introduces pure configurators in the practical sense students need:
 
-This core builds on Module 1’s **purity**, **immutability**, and **explicit dependencies** by showing how to capture configuration as immutable values instead of leaking it through globals or mutable defaults.
+- treat configuration as explicit immutable data that can be captured once and inspected later
+- build variants by returning new callables instead of mutating shared state
+- keep the core deterministic so the configured function still behaves like a normal pure function
 
-We use the **running project** from `m02-rag.md`—extending the FuncPipe RAG Builder—to ground every concept. This project evolves across all 10 cores: start with a configurable but impure version using globals; end with pure, composable configurators.
+The running FuncPipe examples make one idea concrete: configuration should become a value that shapes behavior, not a hidden force that changes behavior from a distance.
 
-**Audience:** Python developers from Module 1 with pure pipelines who now need configurable variants (e.g., different chunk sizes or rules) but face nondeterminism from globals or mutable defaults.  
+**Audience:** Python developers with pure pipelines who now need configurable variants such as different chunk sizes or keep rules, but keep reaching for globals or mutable defaults.  
 **Outcome:**  
 1. Spot globals or mutable defaults in config and explain why they break determinism.  
 2. Refactor a configurable impure function to pure using closures/partials.  
@@ -86,11 +75,11 @@ We refactor the hypothetical pre-refactor shapes into the real Module 02 API acr
 
 ### 1.3 Why This Matters Now
 
-Without pure configurators, adding variability (e.g., different chunk sizes or cleaning rules) introduces globals or mutable defaults, leading to nondeterministic outputs where the same inputs yield different chunks depending on prior calls or shared state—breaking Module 1's substitution and tests.
+Module 01 taught students to protect purity inside one function. This lesson shows how to preserve that discipline when the same behavior needs several named variants. Without configurators, teams often add a global setting, a mutable default, or an environment lookup. The code still looks small, but reasoning gets worse because behavior now depends on hidden history instead of just inputs.
 
 ### 1.4 Configurators as Values in 5 Lines
 
-Configurators as first-class values enable dynamic variants:
+The key move is simple: build the configured function once, then pass that function around like data.
 
 ```python
 from functools import partial
