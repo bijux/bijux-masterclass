@@ -1,56 +1,55 @@
 # Workflow Modularization
 
-<!-- page-maps:start -->
-## Guide Fit
+Use this page when a workflow is growing and the real question is not "can we split it?"
+but "which split keeps the workflow more legible than it is today?"
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Workflow Modularization"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+## Start with the decision, not the tool
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+Before you split anything, answer two questions:
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+1. what ownership boundary is currently hard to review
+2. what would a new file make clearer that is currently blurry
 
-Use this page when a workflow is growing and the main question is not "can we split it?"
-but "which split keeps the workflow legible?"
+If you cannot answer those, the split is probably about discomfort, not design.
 
-## The Levels
+## Choose the smallest boundary that clarifies the workflow
 
 | If the real need is... | Prefer this level | What it should own | What it must not hide |
 | --- | --- | --- | --- |
-| one small workflow with obvious rule relationships | a single `Snakefile` | the visible workflow graph | architecture complexity for its own sake |
-| grouping coherent rule families inside one repository | `include:` files under `workflow/rules/` | rule families with shared file-contract concerns | cross-cutting defaults that only exist in helper files |
-| reusing a workflow bundle with a clear boundary | `workflow/modules/` | a named workflow boundary with explicit inputs and outputs | the real DAG shape or consumer-facing file contracts |
-| moving non-trivial implementation out of rule bodies | `workflow/scripts/` or `src/` package code | computation and reusable program logic | silent workflow semantics that are no longer visible from the rules |
-| changing run context without changing meaning | `profiles/` | execution policy, retries, resources, and executor settings | analytical meaning or published output contracts |
+| one small workflow with obvious rule relationships | a single `Snakefile` | the visible graph and top-level intent | architecture complexity for its own sake |
+| grouping coherent rule families in one repository | `include:` files under `workflow/rules/` | rules that share one clear contract or stage | cross-cutting defaults that only make sense after oral explanation |
+| reusing a workflow bundle with an explicit interface | `workflow/modules/` | a named boundary with declared inputs and outputs | the real DAG shape or the consumer-facing file contract |
+| moving non-trivial implementation out of rule bodies | `workflow/scripts/` or `src/` | computation and reusable program logic | silent workflow semantics that disappear from the rule surface |
+| changing run context without changing meaning | `profiles/` | execution policy, resources, retries, and executor settings | analytical meaning or published output contracts |
 
-## Fast Decision Rules
+## Fast decision rules
 
-- Stay in one `Snakefile` while the workflow graph is still easier to review than the split.
-- Use `include:` when the split mirrors rule ownership that a reviewer can name in one sentence.
-- Use `workflow/modules/` only when the module has a stable interface and does not make the main graph harder to explain.
-- Move logic into `workflow/scripts/` or `src/` when the code is real program logic, not merely shell glue.
-- Keep `profiles/` for operating policy only; if a profile change would alter the workflow meaning, the boundary is wrong.
+- stay in one `Snakefile` while the graph is still easier to review than the split
+- use `include:` when the new file mirrors a rule family a reviewer can name in one sentence
+- use `workflow/modules/` only when the module has a stable interface and a consumer can explain it
+- move logic into `workflow/scripts/` or `src/` when the code is real software, not just shell glue
+- keep `profiles/` for operating policy only; if a profile change alters workflow meaning, the boundary is wrong
 
-## Anti-Patterns
+## Warning signs
 
-- Splitting files only because one file became long, while leaving ownership more confusing than before.
-- Creating a "common" workflow module that everybody imports and nobody can review confidently.
-- Hiding path conventions or wildcard assumptions in helper code that the rule surface never names.
-- Treating profile settings as harmless when they actually change published behavior or scientific meaning.
+Modularization is going badly when:
 
-## Best Companion Surfaces
+- files are split because one file felt long, but ownership is now less clear
+- a "common" module is imported everywhere and confidently understood nowhere
+- path conventions or wildcard assumptions live only in helper code
+- profile files quietly change the published meaning of the workflow
+- the top-level `Snakefile` becomes an include dispatcher with no readable contract left
 
-- [Module 07](../module-07-workflow-architecture-file-apis/index.md) for the main teaching module
-- [Repository Layer Guide](../reference/repository-layer-guide.md) for the capstone file layout
-- [Capstone Map](../capstone/capstone-map.md) for the module-to-repository route
+## Good companion surfaces
+
+- [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md) for the full teaching arc
+- [Module 07](../module-07-workflow-architecture-file-apis/index.md) for repository architecture and file APIs
+- [Capstone Map](../capstone/capstone-map.md) for the route from module idea to repository evidence
+
+## Good stopping point
+
+Stop when you can say three things clearly:
+
+- what the new boundary owns
+- what stayed visible at the rule surface
+- why the repository is easier to review after the split than before it
