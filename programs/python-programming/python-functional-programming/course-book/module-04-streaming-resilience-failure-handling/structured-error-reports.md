@@ -2,59 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Structured Error Reports"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  captured["Start with failures already captured as data"] --> group["Group and count them intentionally"]
+  group --> sample["Keep bounded ordered samples for diagnosis"]
+  sample --> report["Produce a report that stays serializable and reviewable"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should feel like the payoff for the whole module. Students have spent several lessons making failures explicit, bounded, retryable, and resource-safe. Now they need to turn that work into diagnostics that a team can actually read and act on.
 
-## Module 04 Recap – What You Can Now Do
+## Start With the Reporting Gap
 
-You have completed the full error-handling stack:
+Without a structured report, the earlier resilience work still tends to collapse back into noisy logs and scattered anecdotes. This page should make reporting feel like the final functional reduction over the whole failure story.
 
-- **M04C01–C02**: Safe recursion over trees — constant stack, full laziness, machine-checked termination.
-- **M04C03**: Memoization — pure, persistent, observationally invisible caching.
-- **M04C04**: Result/Option — turn every per-record failure into a value; streams never halt.
-- **M04C05**: Streaming combinators — one-pass routing, recovery, parallelism over mixed good/bad data.
-- **M04C06**: Aggregation strategies — fail-fast or accumulate all errors with mathematical guarantees.
-- **M04C07**: Circuit-breakers — abort the moment a run becomes hopeless.
-- **M04C08**: Resource safety — zero leaks, even on early termination or exceptions.
-- **M04C09**: Pure retries — bounded, fair, composable, with full provenance.
-- **M04C10**: Structured reports — turn every error into beautiful, serialisable, grouped diagnostics.
-
-You can now process real-world messy data at scale with:
-
-- Zero recursion blowups
-- Zero cache misses on duplicates
-- Zero lost records on failures
-- Zero resource leaks
-- Zero wasted work on doomed runs
-- Clear, structured error reports
-
-This is production-grade functional data processing in Python — the kind that ships to millions of documents and survives anything the real world throws at it.
-
----
+- If the only output is raw log lines, counts and patterns are hard to trust.
+- If sample errors are unbounded, the report becomes another memory risk.
+- If grouping rules are implicit, students cannot explain why the report is actionable rather than just verbose.
 
 > **Core question:**  
 > How do you turn every error in a streaming pipeline into structured, serialisable, grouped reports — complete with counts, ordered samples, and retry metadata — while keeping the pipeline pure and memory-bounded?
 
-We now take the fully-featured `Iterator[Result[Chunk, ErrInfo | BreakInfo[ErrInfo]]]` stream from M04C05–C09 and answer the final question:
+This lesson introduces error reports as a bounded summary fold over the failure stream:
 
-**“I have captured every possible failure with full provenance. Now how do I turn that into actionable diagnostics without ad-hoc logging or unbounded memory?”**
+- group failures by the dimensions the team actually uses to debug runs
+- keep bounded ordered samples so reports stay useful without exploding in size
+- produce serializable data structures that can be stored, diffed, and surfaced outside the running process
+
+The motivating question is straightforward and important: once failures are captured well, how do we turn them into something actionable instead of noisy?
 
 The naïve solution is scattered logging:
 
@@ -64,9 +41,9 @@ for r in embedded:
         logger.error("Embedding failed: %s", r.error)
 ```
 
-This loses grouping, ordering, counts, and retry context — and blows up logs on high error rates.
+This loses the structure students have spent the whole module building.
 
-The production solution folds the `Result` stream into an immutable `ErrReport` — pure data with groups by code/stage/path, bounded samples, and aggregated retry statistics.
+The production solution folds the `Result` stream into an immutable report that preserves the counts, samples, and provenance worth carrying forward.
 
 **Audience:** Engineers who need complete, structured failure diagnostics from batch RAG runs.
 
@@ -75,7 +52,7 @@ The production solution folds the `Result` stream into an immutable `ErrReport` 
 2. You will group by code/stage/path_prefix and extract retry metadata automatically.  
 3. You will ship perfect JSON error reports that survive 1 % or 50 % failure rates.
 
-We formalise exactly what we want from correct, production-ready error reports: completeness, bounded memory, ordering, and purity.
+We formalise exactly what students should review in reporting code: completeness, bounded memory, ordered samples, and purity of the resulting report value.
 
 ---
 
