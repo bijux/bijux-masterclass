@@ -1,44 +1,40 @@
 # Capstone Glossary
 
-<!-- page-maps:start -->
-## Glossary Fit
+Use this page when the capstone route pages start to blur together. The capstone shelf is
+not a second course book. It is a small set of routes into one executable DVC repository,
+and the terms here keep those routes distinct.
 
-```mermaid
-flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
-```
+## Route terms
 
-```mermaid
-flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
-```
-<!-- page-maps:end -->
+| Term | Meaning here | Why it matters |
+| --- | --- | --- |
+| walkthrough | the bounded first pass through the repository without executing proof routes | keeps first contact human-scale |
+| verify | the ordinary executable check that current repository state still matches the contract | separates current-state truth from broader stewardship review |
+| verify report | the saved verification bundle for later inspection | helps you review promotion and enforcement without rerunning live |
+| experiment review | the focused comparison route for changed runs against the baseline | keeps experiment discussion from mutating the baseline story |
+| recovery review | the bundle that shows what survives local loss and remote restore | keeps durability claims distinct from release claims |
+| release review | the bundle that audits what downstream users may trust | keeps promoted state distinct from internal repository state |
+| confirm | the strongest overall repository confirmation pass | for final confidence after narrower routes already make sense |
+| authoritative layer | the file or state surface that should win when surfaces disagree | keeps review attached to state ownership |
+| promoted contract | the smaller downstream-facing bundle that another consumer is allowed to trust | prevents the whole repository from masquerading as a release |
 
-This glossary belongs to **DVC Capstone Guide** in **Deep Dive DVC**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+## Page names in plain language
 
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Page | What it helps you do |
 | --- | --- |
-| Capstone Architecture Guide | the capstone reading surface for capstone architecture guide, used to choose the next repository entry point without guessing. |
-| Capstone Extension Guide | the change-placement surface for the capstone, used to decide where a new behavior belongs and what it must preserve. |
-| Capstone File Guide | the capstone reading surface for capstone file guide, used to choose the next repository entry point without guessing. |
-| Capstone Review Worksheet | the capstone review surface for capstone review worksheet, used to turn course ideas into inspection, evidence, and change decisions. |
-| Command Guide | the executable entry surface for the capstone, used when the next question is best answered by running the project rather than rereading the course. |
-| Deep Dive DVC: Capstone Map | the capstone reading surface for deep dive dvc: capstone map, used to choose the next repository entry point without guessing. |
-| Experiment Review Guide | the capstone review surface for experiment review guide, used to turn course ideas into inspection, evidence, and change decisions. |
-| Recovery Review Guide | the capstone review surface for recovery review guide, used to turn course ideas into inspection, evidence, and change decisions. |
-| Release Audit Checklist | the capstone review surface for release audit checklist, used to turn course ideas into inspection, evidence, and change decisions. |
-| Release Review Guide | the capstone review surface for release review guide, used to turn course ideas into inspection, evidence, and change decisions. |
-| Repository Layer Guide | the capstone support surface for repository layer guide, used to keep repository reading attached to the course rather than turning into tool tourism. |
+| [DVC Capstone Guide](index.md) | enter the repository with the right expectations |
+| [Capstone Map](capstone-map.md) | choose the right route by module or question |
+| [Command Guide](command-guide.md) | pick the right command layer and first command |
+| [Capstone File Guide](capstone-file-guide.md) | know which repository files to open first and why |
+| [Repository Layer Guide](repository-layer-guide.md) | read the repository by ownership rather than folder names |
+| [Experiment Review Guide](experiment-review-guide.md) | compare changed runs without muddying the baseline story |
+| [Recovery Review Guide](recovery-review-guide.md) | review restore guarantees and what they depend on |
+| [Release Audit Checklist](release-audit-checklist.md) | make one downstream-trust judgment |
+| [Release Review Guide](release-review-guide.md) | inspect promoted state as a contract, not a dump |
+| [Capstone Review Worksheet](capstone-review-worksheet.md) | review the repository as a steward, not just a reader |
+
+## Reading rule
+
+If two pages sound interchangeable, do not open both. Name the job first: entry,
+command choice, state authority, file ownership, experiment review, recovery review,
+release review, or stewardship. Then open the one page that owns that job.
