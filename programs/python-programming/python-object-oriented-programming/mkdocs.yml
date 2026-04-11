@@ -14,6 +14,182 @@ edit_uri: edit/master/programs/python-programming/python-object-oriented-program
 docs_dir: course-book
 site_dir: ../../../artifacts/site/python-programming/python-object-oriented-programming
 
+nav:
+- Home: index.md
+- Guides:
+  - Home: guides/index.md
+  - Start Here: guides/start-here.md
+  - Course Guide: guides/course-guide.md
+  - Learning Contract: guides/learning-contract.md
+  - Pressure Routes: guides/pressure-routes.md
+  - Proof Matrix: guides/proof-matrix.md
+  - Module Promise Map: guides/module-promise-map.md
+  - Module Checkpoints: guides/module-checkpoints.md
+  - Proof Ladder: guides/proof-ladder.md
+  - Platform Setup: guides/platform-setup.md
+- 'Module 00: Orientation and Study Practice':
+  - Home: module-00-orientation/index.md
+  - Course Map: module-00-orientation/course-map.md
+  - First-Contact Map: module-00-orientation/first-contact-map.md
+  - Mid-Course Map: module-00-orientation/mid-course-map.md
+  - Mastery Map: module-00-orientation/mastery-map.md
+- 'Module 01: Object Semantics and the Python Data Model':
+  - Home: module-01-object-semantics-data-model/index.md
+  - Object Identity, State, and Behavior – Python’s Real Model: module-01-object-semantics-data-model/object-identity-state-and-behavior.md
+  - Attribute Layout – `__dict__`, Class vs Instance, Descriptors in the Chain: module-01-object-semantics-data-model/attribute-layout-class-and-instance-state.md
+  - Construction Discipline – `__init__`, Required State, and Half-Baked Objects: module-01-object-semantics-data-model/construction-discipline-and-invariants.md
+  - Encapsulation and Public Surface – Representations, Debuggability, and Leaks: module-01-object-semantics-data-model/encapsulation-public-surface-and-representation.md
+  - Equality, Ordering, and Hashing – Contracts with Containers: module-01-object-semantics-data-model/equality-ordering-and-hashing.md
+  - Collections Hazards – Aliasing, Mutable Keys, and Shared State: module-01-object-semantics-data-model/aliasing-mutable-keys-and-shared-state.md
+  - Copying and Cloning – Shallow, Deep, and Custom Semantics: module-01-object-semantics-data-model/copying-cloning-and-custom-semantics.md
+  - Python Data Model as Design Surface – Iteration, Containers, Context, Numeric: module-01-object-semantics-data-model/python-data-model-as-design-surface.md
+  - When OOP Is the Wrong Tool in Python: module-01-object-semantics-data-model/when-classes-are-the-wrong-tool.md
+  - Refactor 0 – Script → Object Model with Correct Identity/Data-Model Semantics: module-01-object-semantics-data-model/refactor-script-to-object-model.md
+  - Module Glossary: module-01-object-semantics-data-model/glossary.md
+- 'Module 02: Design Roles, Interfaces, and Layering':
+  - Home: module-02-design-roles-interfaces-layering/index.md
+  - Responsibilities, Cohesion, and Object Smells: module-02-design-roles-interfaces-layering/responsibilities-cohesion-and-object-smells.md
+  - 'Value Objects vs Entities: Identity and Basic Lifecycle Setup': module-02-design-roles-interfaces-layering/value-objects-versus-entities.md
+  - Service Objects and Operations vs Stateful Entities: module-02-design-roles-interfaces-layering/services-versus-stateful-entities.md
+  - Composition over Inheritance as Default: module-02-design-roles-interfaces-layering/composition-over-inheritance.md
+  - 'Inheritance: Legit Use Cases and the Fragile Base Class Problem': module-02-design-roles-interfaces-layering/inheritance-and-fragile-base-classes.md
+  - Cooperative Inheritance, MRO, and Mixins: module-02-design-roles-interfaces-layering/cooperative-inheritance-mro-and-mixins.md
+  - Template Method and Tiny Hierarchies without a Framework Zoo: module-02-design-roles-interfaces-layering/template-method-and-small-hierarchies.md
+  - Factories, Dependency Injection, and Composition Roots: module-02-design-roles-interfaces-layering/factories-dependency-injection-and-composition-roots.md
+  - 'Avoiding Primitive Obsession: Semantic Types, Not Raw Str/Int': module-02-design-roles-interfaces-layering/semantic-types-over-raw-primitives.md
+  - 'Interfaces in Python: Duck Typing, ABCs, Protocols (Prescriptive Choices)': module-02-design-roles-interfaces-layering/duck-typing-abcs-and-protocols.md
+  - 'Layering: Domain, Application, Infrastructure in a Python Codebase': module-02-design-roles-interfaces-layering/domain-application-and-infrastructure-layers.md
+  - 'Refactor 1: Thin Layered Architecture with Explicit Roles, Small Hierarchies, and Interfaces': module-02-design-roles-interfaces-layering/refactor-layered-design-with-small-hierarchies.md
+  - Module Glossary: module-02-design-roles-interfaces-layering/glossary.md
+- 'Module 03: State, Validation, and Typestate':
+  - Home: module-03-state-validation-typestate/index.md
+  - 'Properties and Computed Attributes: Clarity vs Hidden Work': module-03-state-validation-typestate/properties-and-computed-attributes.md
+  - Descriptors Mental Model (Without Writing Your Own): module-03-state-validation-typestate/descriptor-mental-model.md
+  - 'Dataclasses, the Good: Concise Value and Entity Definitions': module-03-state-validation-typestate/dataclasses-for-values-and-entities.md
+  - 'Dataclasses, the Ugly: Inheritance, Defaults, Slots, Frozen Pitfalls': module-03-state-validation-typestate/dataclass-inheritance-defaults-slots-and-frozen-pitfalls.md
+  - Post-Init Validation and “Invalid States Unrepresentable”: module-03-state-validation-typestate/post-init-validation-and-invariants.md
+  - 'Boundary Validation Libraries: Where Pydantic and Friends Belong': module-03-state-validation-typestate/boundary-validation-libraries.md
+  - 'Nulls, Optionals, and Partial Objects: Designing Instead of Hoping': module-03-state-validation-typestate/null-optionals-and-partial-objects.md
+  - 'Lifecycle and Typestate: Draft → Active → Retired Objects': module-03-state-validation-typestate/lifecycle-and-typestate.md
+  - Enforcing Typestate in Python APIs (Without Fancy Type Systems): module-03-state-validation-typestate/typestate-in-python-apis.md
+  - 'Refactor 2: Configs and Rules → Dataclasses, Null-Safe APIs, Typestate & Hypothesis': module-03-state-validation-typestate/refactor-dataclasses-null-safety-and-typestate.md
+  - Module Glossary: module-03-state-validation-typestate/glossary.md
+- 'Module 04: Aggregates, Events, and Collaboration Boundaries':
+  - Home: module-04-aggregates-events-collaboration-boundaries/index.md
+  - Aggregates and Consistency Boundaries in a Python Service: module-04-aggregates-events-collaboration-boundaries/aggregates-and-consistency-boundaries.md
+  - Cross-Object Invariants and Aggregate-Level Validation: module-04-aggregates-events-collaboration-boundaries/cross-object-invariants.md
+  - Aggregate Lifecycle and Failure Semantics: module-04-aggregates-events-collaboration-boundaries/aggregate-lifecycle-and-failure-semantics.md
+  - Domain Events for Decoupling (Without Full Event Sourcing): module-04-aggregates-events-collaboration-boundaries/domain-events-without-event-sourcing.md
+  - Projections, Read Models, and Object-Graph Debug Views: module-04-aggregates-events-collaboration-boundaries/projections-read-models-and-debug-views.md
+  - Strategy and Policy Objects for Rule Evaluation and Decisions: module-04-aggregates-events-collaboration-boundaries/strategy-and-policy-objects.md
+  - 'In-Process Event Dispatch: Tiny Observer and Event Bus': module-04-aggregates-events-collaboration-boundaries/in-process-event-bus.md
+  - 'Designing Collaboration Surfaces: How Objects Talk Without Tangle': module-04-aggregates-events-collaboration-boundaries/collaboration-surfaces-without-tangle.md
+  - 'Adapter and Bridge: Wrapping External Systems and Storage': module-04-aggregates-events-collaboration-boundaries/adapters-and-bridges.md
+  - 'Refactor 3: Monolithic Logic → Aggregates + Events + Strategies + Debuggable Graph': module-04-aggregates-events-collaboration-boundaries/refactor-aggregates-events-and-strategies.md
+  - Module Glossary: module-04-aggregates-events-collaboration-boundaries/glossary.md
+- 'Module 05: Resources, Failures, and Safe Evolution':
+  - Home: module-05-resources-failures-safe-evolution/index.md
+  - 'Resources and Context Managers: Objects That Own Things': module-05-resources-failures-safe-evolution/resource-ownership-and-context-managers.md
+  - 'Unit-of-Work: Grouping Changes and Handling Failures': module-05-resources-failures-safe-evolution/unit-of-work-and-failure-handling.md
+  - Deterministic Cleanup and Leak Prevention in Pure Python: module-05-resources-failures-safe-evolution/deterministic-cleanup-and-leak-prevention.md
+  - Domain Errors, Recovery Contracts, and Compensating Actions: module-05-resources-failures-safe-evolution/domain-errors-recovery-contracts-and-compensating-actions.md
+  - Idempotent Operations and Safe Retries (Sync-Only Context): module-05-resources-failures-safe-evolution/idempotent-operations-and-safe-retries.md
+  - Logging and Error Propagation as Part of Object Contracts: module-05-resources-failures-safe-evolution/logging-and-error-propagation.md
+  - Public vs Internal Modules and Facades for OOP Codebases: module-05-resources-failures-safe-evolution/public-versus-internal-modules.md
+  - Design Smells and Refactoring Patterns in OOP Python: module-05-resources-failures-safe-evolution/design-smells-and-refactoring-patterns.md
+  - Copying and Versioning of Objects and Aggregates Over Time: module-05-resources-failures-safe-evolution/copying-and-versioning-over-time.md
+  - Evolution Basics and Compatibility Contracts: module-05-resources-failures-safe-evolution/compatibility-contracts-and-evolution.md
+  - 'Refactor 4: Introduce New Feature, Preserve Old Behaviour, Document Smell Fixes': module-05-resources-failures-safe-evolution/refactor-new-feature-without-breaking-behavior.md
+  - Module Glossary: module-05-resources-failures-safe-evolution/glossary.md
+- 'Module 06: Persistence, Serialization, and Schema Evolution':
+  - Home: module-06-persistence-serialization-schema-evolution/index.md
+  - Repository Contracts and Aggregate Rehydration: module-06-persistence-serialization-schema-evolution/repository-contracts-and-aggregate-rehydration.md
+  - Mapping Domain Objects to Storage Models: module-06-persistence-serialization-schema-evolution/mapping-domain-objects-to-storage-models.md
+  - Serialization Boundaries and Explicit Codecs: module-06-persistence-serialization-schema-evolution/serialization-boundaries-and-explicit-codecs.md
+  - ORMs, Identity Maps, and Session Boundaries: module-06-persistence-serialization-schema-evolution/orms-identity-map-and-session-boundaries.md
+  - Snapshots, Events, and Rebuild Trade-Offs: module-06-persistence-serialization-schema-evolution/snapshots-events-and-rebuild-trade-offs.md
+  - Schema Versioning and Upcasters: module-06-persistence-serialization-schema-evolution/schema-versioning-and-upcasters.md
+  - Optimistic Concurrency and Conflict Detection: module-06-persistence-serialization-schema-evolution/optimistic-concurrency-and-conflict-detection.md
+  - Transactional Boundaries and Outbox Thinking: module-06-persistence-serialization-schema-evolution/transactional-boundaries-and-outbox-thinking.md
+  - Persistence Tests and Backend Swappability: module-06-persistence-serialization-schema-evolution/persistence-tests-and-backend-swappability.md
+  - Migrating Stored Data without Domain Corruption: module-06-persistence-serialization-schema-evolution/migrating-stored-data-without-domain-corruption.md
+  - 'Refactor: Repositories, Codecs, and Schema Evolution': module-06-persistence-serialization-schema-evolution/refactor-repositories-codecs-and-schema-evolution.md
+  - Module Glossary: module-06-persistence-serialization-schema-evolution/glossary.md
+- 'Module 07: Time, Scheduling, and Concurrency Boundaries':
+  - Home: module-07-time-scheduling-concurrency-boundaries/index.md
+  - Clocks, Timezones, and Monotonic Time: module-07-time-scheduling-concurrency-boundaries/clocks-timezones-and-monotonic-time.md
+  - Deadlines, Timeouts, and Expiration Policies: module-07-time-scheduling-concurrency-boundaries/deadlines-timeouts-and-expiration-policies.md
+  - Schedulers, Timers, and Coordination Objects: module-07-time-scheduling-concurrency-boundaries/schedulers-timers-and-coordination-objects.md
+  - Threads, Locks, and Owned Mutation: module-07-time-scheduling-concurrency-boundaries/threads-locks-and-owned-mutation.md
+  - Queues, Workers, and Backpressure Boundaries: module-07-time-scheduling-concurrency-boundaries/queues-workers-and-backpressure-boundaries.md
+  - Concurrency-Safe Caches and Memoization: module-07-time-scheduling-concurrency-boundaries/concurrency-safe-caches-and-memoization.md
+  - Asyncio Tasks and Sync-Async Bridges: module-07-time-scheduling-concurrency-boundaries/asyncio-tasks-and-sync-async-bridges.md
+  - Designing Thread-Aware and Async-Aware APIs: module-07-time-scheduling-concurrency-boundaries/designing-thread-aware-and-async-aware-apis.md
+  - Cancellation, Retries, and Resumable Operations: module-07-time-scheduling-concurrency-boundaries/cancellation-retries-and-resumable-operations.md
+  - 'Refactor: Runtime around Time and Concurrency Boundaries': module-07-time-scheduling-concurrency-boundaries/refactor-runtime-around-time-and-concurrency-boundaries.md
+  - Module Glossary: module-07-time-scheduling-concurrency-boundaries/glossary.md
+- 'Module 08: Testing, Contracts, and Verification Depth':
+  - Home: module-08-testing-contracts-verification-depth/index.md
+  - Behavior-First Tests for Domain Objects: module-08-testing-contracts-verification-depth/behavior-first-tests-for-domain-objects.md
+  - Stateful Testing and Transition Coverage: module-08-testing-contracts-verification-depth/stateful-testing-and-transition-coverage.md
+  - Contract Tests for Repositories and Adapters: module-08-testing-contracts-verification-depth/contract-tests-for-repositories-and-adapters.md
+  - Property-Based Testing for Object Models: module-08-testing-contracts-verification-depth/property-based-testing-for-object-models.md
+  - Fixtures, Builders, and Test Data Ownership: module-08-testing-contracts-verification-depth/fixtures-builders-and-test-data-ownership.md
+  - Fakes, Stubs, Spies, and When Mocks Hurt: module-08-testing-contracts-verification-depth/fakes-stubs-spies-and-when-mocks-hurt.md
+  - Runtime Contracts, Assertions, and Defensive Checks: module-08-testing-contracts-verification-depth/runtime-contracts-assertions-and-defensive-checks.md
+  - Golden Files, Snapshots, and Approval Boundaries: module-08-testing-contracts-verification-depth/golden-files-snapshots-and-approval-boundaries.md
+  - Integration Suites and Confidence Ladders: module-08-testing-contracts-verification-depth/integration-suites-and-confidence-ladders.md
+  - 'Refactor: Tests toward Contract-Driven Confidence': module-08-testing-contracts-verification-depth/refactor-tests-toward-contract-driven-confidence.md
+  - Module Glossary: module-08-testing-contracts-verification-depth/glossary.md
+- 'Module 09: Public APIs, Extension Seams, and Governance':
+  - Home: module-09-public-apis-extension-governance/index.md
+  - Facades, Entrypoints, and Public Surface Area: module-09-public-apis-extension-governance/facades-entrypoints-and-public-surface-area.md
+  - Capability Protocols and Stable Extension Points: module-09-public-apis-extension-governance/capability-protocols-and-stable-extension-points.md
+  - Plugin Discovery, Registration, and Sandboxing: module-09-public-apis-extension-governance/plugin-discovery-registration-and-sandboxing.md
+  - Deprecation, Versioning, and Removal Policy: module-09-public-apis-extension-governance/deprecation-versioning-and-removal-policy.md
+  - Documentation, Examples, and Executable API Promises: module-09-public-apis-extension-governance/documentation-examples-and-executable-api-promises.md
+  - Import Boundaries and Layer Enforcement: module-09-public-apis-extension-governance/import-boundaries-and-layer-enforcement.md
+  - Review Checklists for Extension Safety: module-09-public-apis-extension-governance/review-checklists-for-extension-safety.md
+  - Third-Party Integration Contracts and Compatibility Suites: module-09-public-apis-extension-governance/third-party-integration-contracts-and-compatibility-suites.md
+  - Architectural Decision Records and Change Control: module-09-public-apis-extension-governance/architectural-decision-records-and-change-control.md
+  - 'Refactor: Public API for Safe Customization': module-09-public-apis-extension-governance/refactor-public-api-for-safe-customization.md
+  - Module Glossary: module-09-public-apis-extension-governance/glossary.md
+- 'Module 10: Performance, Observability, and Security Review':
+  - Home: module-10-performance-observability-security-review/index.md
+  - Measuring Allocation Costs and Object Hot Paths: module-10-performance-observability-security-review/measuring-allocation-costs-and-object-hot-paths.md
+  - Profiling before Optimization: module-10-performance-observability-security-review/profiling-before-optimization.md
+  - Caching, Batching, and Lazy Work: module-10-performance-observability-security-review/caching-batching-and-lazy-work.md
+  - Observability Signals for Object Systems: module-10-performance-observability-security-review/observability-signals-for-object-systems.md
+  - Input Hardening and Secure Defaults: module-10-performance-observability-security-review/input-hardening-and-secure-defaults.md
+  - Safe Serialization, Secrets, and Trust Boundaries: module-10-performance-observability-security-review/safe-serialization-secrets-and-trust-boundaries.md
+  - Operational Readiness, Runbooks, and Failure Drills: module-10-performance-observability-security-review/operational-readiness-runbooks-and-failure-drills.md
+  - Capstone Architecture Review: module-10-performance-observability-security-review/capstone-architecture-review.md
+  - Capstone Hardening and Extension Strategy: module-10-performance-observability-security-review/capstone-hardening-and-extension-strategy.md
+  - Final Mastery Checkpoint: module-10-performance-observability-security-review/final-mastery-checkpoint.md
+  - Module Glossary: module-10-performance-observability-security-review/glossary.md
+- Python Object-Oriented Programming Capstone Guide:
+  - Home: capstone/index.md
+  - Capstone Map: capstone/capstone-map.md
+  - Capstone File Guide: capstone/capstone-file-guide.md
+  - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
+  - Capstone Proof Guide: capstone/capstone-proof-guide.md
+  - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+  - Capstone Extension Guide: capstone/capstone-extension-guide.md
+  - Capstone Walkthrough: capstone/capstone-walkthrough.md
+  - Command Guide: capstone/command-guide.md
+  - Capstone Glossary: capstone/glossary.md
+- Reference:
+  - Home: reference/index.md
+  - Reference Glossary: reference/glossary.md
+  - Module Dependency Map: reference/module-dependency-map.md
+  - Practice Map: reference/practice-map.md
+  - Review Checklist: reference/review-checklist.md
+  - Boundary Review Prompts: reference/boundary-review-prompts.md
+  - Self-Review Prompts: reference/self-review-prompts.md
+  - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
+  - Completion Rubric: reference/completion-rubric.md
+  - Topic Boundaries: reference/topic-boundaries.md
+
 theme:
   custom_dir: ../../../docs/overrides
   logo: ../../../docs/assets/bijux_logo_hq.png
