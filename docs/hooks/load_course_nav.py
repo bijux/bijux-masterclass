@@ -9,7 +9,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from scripts.docs_nav import build_tree_nav
+from scripts.docs_nav import build_tree_nav, explicit_course_nav
 from scripts.sync_series_docs import sync_program_docs
 
 
@@ -31,5 +31,6 @@ def on_config(config):
     sync_program_docs(program_root, staged_docs_dir)
 
     config.docs_dir = str(staged_docs_dir)
-    config.nav = build_tree_nav(staged_docs_dir)
+    explicit_nav = explicit_course_nav(program_root)
+    config.nav = explicit_nav or build_tree_nav(staged_docs_dir)
     return config

@@ -8,10 +8,14 @@ import re
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 
 CAPSTONE_DOCS_DIRNAMES = {"capstone-docs"}
 MODULE_DIR_PATTERN = re.compile(r"module-(\d+)")
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
+REPO_ROOT = Path(__file__).resolve().parents[1]
+PROGRAMS_ROOT = REPO_ROOT / "programs"
 
 
 def first_h1(path: Path) -> str:
@@ -57,7 +61,8 @@ def normalize_link_target(target: str) -> str:
 
 def uses_structural_directory_order(directory: Path) -> bool:
     return any(
-        child.is_dir() and (
+        child.is_dir()
+        and (
             child.name == "guides"
             or child.name == "reference"
             or child.name == "capstone"
@@ -101,7 +106,9 @@ def index_child_order(directory: Path) -> dict[str, int]:
     return order
 
 
-def child_sort_key(path: Path, sibling_order: dict[str, int]) -> tuple[int, int, int, int, str]:
+def child_sort_key(
+    path: Path, sibling_order: dict[str, int]
+) -> tuple[int, int, int, int, str]:
     explicit_position = sibling_order.get(path.name, 10_000)
     if path.name == "index.md":
         return (0, explicit_position, -1, -1, path.name)
@@ -125,6 +132,47 @@ def nav_path(prefix: str, name: str) -> str:
     return f"{prefix}/{name}" if prefix else name
 
 
+def _prefix_nav_value(value: Any, prefix: str) -> Any:
+    if isinstance(value, str):
+        return nav_path(prefix, value)
+    if isinstance(value, list):
+        return [_prefix_nav_item(item, prefix) for item in value]
+    return value
+
+
+def _prefix_nav_item(item: Any, prefix: str) -> Any:
+    if isinstance(item, dict):
+        return {key: _prefix_nav_value(value, prefix) for key, value in item.items()}
+    return _prefix_nav_value(item, prefix)
+
+
+@lru_cache(maxsize=None)
+def _course_config(program_root: Path) -> dict[str, Any]:
+    config_path = program_root / "mkdocs.yml"
+    if not config_path.exists():
+        return {}
+    data = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+    if not isinstance(data, dict):
+        raise TypeError(f"Unsupported MkDocs config in {config_path}")
+    return data
+
+
+def explicit_course_nav(program_root: Path, *, prefix: str = "") -> list[Any] | None:
+    nav = _course_config(program_root).get("nav")
+    if nav is None:
+        return None
+    if not isinstance(nav, list):
+        raise TypeError(f"Unsupported nav config in {program_root / 'mkdocs.yml'}")
+    return [_prefix_nav_item(item, prefix) for item in nav]
+
+
+def explicit_course_title(program_root: Path) -> str | None:
+    site_name = _course_config(program_root).get("site_name")
+    if site_name is None:
+        return None
+    return str(site_name)
+
+
 def build_tree_nav(
     directory: Path,
     prefix: str = "",
@@ -138,7 +186,9 @@ def build_tree_nav(
     if include_root_home and index_path.exists():
         nav.append({"Home": nav_path(prefix, "index.md")})
 
-    for child in sorted(directory.iterdir(), key=lambda path: child_sort_key(path, sibling_order)):
+    for child in sorted(
+        directory.iterdir(), key=lambda path: child_sort_key(path, sibling_order)
+    ):
         if child.name == "index.md":
             continue
         if child.is_file() and child.suffix == ".md":

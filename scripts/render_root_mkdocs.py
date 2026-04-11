@@ -14,7 +14,13 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from scripts.docs_nav import build_tree_nav
+from scripts.docs_nav import (
+    build_tree_nav,
+    child_sort_key,
+    explicit_course_nav,
+    explicit_course_title,
+    index_child_order,
+)
 
 SOURCE_CONFIG = REPO_ROOT / "mkdocs.yml"
 DOCS_ROOT = REPO_ROOT / "docs"
@@ -52,14 +58,30 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
         family_name, family_home = next(iter(family_item.items()))
         family_slug = Path(family_home).parent.name
         family_root = DOCS_ROOT / family_slug
-        generated.append(
-            {
-                family_name: build_tree_nav(
-                    family_root,
-                    family_slug,
-                )
-            }
-        )
+        family_nav = [{"Home": family_home}]
+        sibling_order = index_child_order(family_root)
+        for child in sorted(
+            family_root.iterdir(),
+            key=lambda path: child_sort_key(path, sibling_order),
+        ):
+            if not child.is_dir():
+                continue
+            program_root = REPO_ROOT / "programs" / family_slug / child.name
+            explicit_nav = explicit_course_nav(
+                program_root,
+                prefix=f"{family_slug}/{child.name}",
+            )
+            child_nav = explicit_nav or build_tree_nav(
+                child,
+                f"{family_slug}/{child.name}",
+            )
+            title = (
+                explicit_course_title(program_root)
+                or child.name.replace("-", " ").title()
+            )
+            family_nav.append({title: child_nav})
+
+        generated.append({family_name: family_nav})
 
     return generated
 
