@@ -2,41 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["Compositional Domain Models"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  giant["Start with a giant shared domain object"] --> split["Split concerns into focused subsystem models"]
+  split --> join["Recombine them only at explicit integration points"]
+  join --> validate["Validate cross-subsystem invariants at the join"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should help students separate two ideas that often get blurred together: a domain can be one business concept and still be best modeled as several smaller value types. The crucial move is not just splitting. It is making recombination explicit and reviewable.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the God-Object Smell
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines | bind/and_then, Reader/State-like patterns, error-typed flows                |
+Students usually reach this lesson after seeing a domain object that carries every concern at once. The pain is obvious in teams too: every change collides with every other change.
+
+- If one type is imported and mutated by every subsystem, the model boundary is already too wide.
+- If cross-subsystem invariants are checked everywhere, no one place owns the truth.
+- If splitting the model would make integration rules disappear, the split is not yet disciplined enough.
 
 **Core question**  
 How do you split domain concepts into independent subsystem ADTs and recombine them safely — keeping subsystems loosely coupled while the overall model stays coherent, evolvable, and type-safe in every FuncPipe pipeline?
 
-Every growing system eventually hits the same wall:
+This lesson introduces compositional domain modeling as a boundary design strategy:
 
-**“Why does changing the embedding format require touching the ingestion code? Why is the Chunk type a 400-line god-object that three teams fight over?”**
+- give each subsystem its own focused value model
+- keep cross-subsystem invariants at explicit assemblers or conversion points
+- let teams and modules evolve locally until they intentionally meet
+
+The motivating giant `Chunk` example matters because it captures both the code smell and the team smell at the same time: one type, too many reasons to change.
 
 The naïve pattern everyone writes first:
 
@@ -54,9 +49,9 @@ class Chunk:
 # Every subsystem imports and mutates the same type → merge hell
 ```
 
-Tight coupling, schema wars, impossible parallel work.
+This is the composition problem the lesson should help students name.
 
-The production pattern: split every concern into its own subsystem ADT, own module, own team. Recombine only at explicit integration points via validated assemblers.
+The production pattern keeps each subsystem small and then makes integration the one place where cross-cutting rules are enforced deliberately.
 
 ```python
 # AFTER – split + safe recombination
@@ -67,9 +62,9 @@ emb  = Embedding(vector=(0.1, ...), model="mini", dim=384)
 chunk = assemble(text, meta, emb)   # Validation[Chunk, ErrInfo] with cross-checks
 ```
 
-Subsystems evolve independently. Integration is explicit and validated.
+That separation is the core value: local evolution plus visible recombination rules.
 
-**Audience**: Engineers (or teams) building systems larger than one module who want independent evolution without schema conflicts.
+**Audience**: Engineers and teams who want independent model evolution without turning integration into schema chaos.
 
 **Outcome**
 1. Every domain concept lives in its own subsystem ADT.
