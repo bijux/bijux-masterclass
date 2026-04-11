@@ -120,11 +120,11 @@ def replace_with_callable(cls):
     return proxy
 ```
 
-This is legal. It is also usually a bad surprise for:
+This is legal. It also usually creates a bad surprise around:
 
 - `isinstance` expectations
 - tooling
-- readers who think the name still refers to a class
+- names that no longer clearly refer to classes
 
 That does not make it impossible. It does make it something the design should justify
 very strongly if used at all.

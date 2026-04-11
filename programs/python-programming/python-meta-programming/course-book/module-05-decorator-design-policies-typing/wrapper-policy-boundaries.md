@@ -88,7 +88,7 @@ Why these can be better:
 - composition is easier to inspect
 - test reset and configuration become less magical
 
-This is exactly the kind of downward-pressure decision the course wants learners to make.
+This is exactly the kind of downward-pressure decision to practice here.
 
 ## Decorators and explicit objects can still cooperate
 
