@@ -35,6 +35,33 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 
 [Back to top](#top)
 
+## Architectural route
+
+Use this sequence when the repository is understandable at the directory level but not
+yet at the ownership level:
+
+1. [DVC Capstone Guide](index.md)
+2. `capstone/dvc.yaml` and `capstone/dvc.lock`
+3. one implementation file under `capstone/src/incident_escalation_capstone/`
+4. the matching review route for the current question
+
+That keeps the capstone centered on declaration, recorded state, implementation, and
+review packaging in the same order the repository is meant to be read.
+
+### Ownership boundaries
+
+| Layer | Main surfaces | Responsibility |
+| --- | --- | --- |
+| repository contract | `README.md`, [DVC Capstone Guide](index.md) | explain what the repository is trying to prove |
+| declared workflow | `capstone/dvc.yaml`, `capstone/params.yaml` | declare the intended execution graph and control surface |
+| recorded workflow state | `capstone/dvc.lock` | record the exact state transition after execution |
+| implementation | `capstone/src/incident_escalation_capstone/` | implement the stages the workflow declares |
+| promoted contract | `capstone/publish/v1/` | expose the smaller, reviewable bundle downstream users may trust |
+| contract enforcement | `capstone/src/incident_escalation_capstone/verify.py` | validate the promoted contract against the supported rules |
+| review packaging | `capstone/Makefile` targets and generated bundles | package saved evidence for later inspection |
+
+[Back to top](#top)
+
 ## Good first reading order
 
 If this is your first serious repository pass, use this sequence:
