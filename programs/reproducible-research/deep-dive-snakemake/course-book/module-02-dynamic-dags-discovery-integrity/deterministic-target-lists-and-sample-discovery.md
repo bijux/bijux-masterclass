@@ -9,7 +9,7 @@ ways that are unstable, implicit, or impossible to review later.
 
 ## Discovery is not permission to be vague
 
-Learners often say "Snakemake discovers samples for me" when they really mean one of
+People often say "Snakemake discovers samples for me" when they really mean one of
 three different things:
 
 - the sample list is written in config
@@ -42,7 +42,7 @@ That is how dynamic behavior stays reviewable.
 
 This is the easiest surface to teach:
 
-- the learner writes the sample list deliberately
+- you write the sample list deliberately
 - version control captures the change
 - `rule all` or a helper function expands from known data
 
@@ -89,7 +89,7 @@ rule all:
 
 Why this is weak:
 
-- `Path.glob()` order is not the lesson you want learners to trust
+- `Path.glob()` order is not the lesson you want readers to trust
 - the filename parsing is wrong because `.stem` drops only the final suffix
 - there is no validation for duplicate logical sample IDs
 - nothing records the discovered set for later review
@@ -175,7 +175,7 @@ rule discover_samples:
         )
 ```
 
-This rule does two useful things for a learner:
+This rule does two useful things for you:
 
 - it names discovery as a real step with a real output
 - it gives later review one file that answers "what did this run discover?"
