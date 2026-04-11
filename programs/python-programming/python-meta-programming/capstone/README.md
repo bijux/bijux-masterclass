@@ -46,9 +46,9 @@ Use the smallest honest route for the question you have:
 
 If you are new to this capstone, the best first route is:
 
-1. Read [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md).
+1. Read [INDEX.md](docs/INDEX.md).
 2. Run `make manifest`.
-3. Read [GUIDE_INDEX.md](docs/GUIDE_INDEX.md).
+3. Read [INDEX.md](docs/INDEX.md).
 4. Read [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md).
 5. Read [ARCHITECTURE.md](docs/ARCHITECTURE.md).
 6. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
@@ -56,8 +56,8 @@ If you are new to this capstone, the best first route is:
 
 ## Start with these defaults
 
-- If you do not know where to begin, read [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md).
-- If you know the question but not the guide, read [GUIDE_INDEX.md](docs/GUIDE_INDEX.md).
+- If you do not know where to begin, read [INDEX.md](docs/INDEX.md).
+- If you know the question but not the guide, read [INDEX.md](docs/INDEX.md).
 - If you know the guide but not the command, read [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md).
 - If you already have a claim and need evidence, read [PROOF_GUIDE.md](docs/PROOF_GUIDE.md).
 
@@ -111,8 +111,7 @@ your pressure instead of reading the full list in alphabetical order.
 
 ### First-pass orientation
 
-- [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md)
-- [GUIDE_INDEX.md](docs/GUIDE_INDEX.md)
+- [INDEX.md](docs/INDEX.md)
 - [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md)
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
@@ -191,7 +190,7 @@ your pressure instead of reading the full list in alphabetical order.
 
 ### "How do I review the full learner-facing route?"
 
-- [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md)
+- [INDEX.md](docs/INDEX.md)
 - `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough`
 - `make inspect`
 - `make tour`
@@ -257,8 +256,7 @@ feel fuzzier than the commands.
 
 ## Best companion guides
 
-- [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md) for the smallest honest first pass
-- [GUIDE_INDEX.md](docs/GUIDE_INDEX.md) for the smallest local route into the doc set
+- [INDEX.md](docs/INDEX.md) for the smallest honest local route into the doc set
 - [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md) for local command selection and artifact locations
 - [PUBLIC_SURFACE_MAP.md](docs/PUBLIC_SURFACE_MAP.md) for connecting commands, outputs, and owning files
 - [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md) for change-to-proof alignment

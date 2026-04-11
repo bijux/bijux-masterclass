@@ -87,11 +87,10 @@ inspect: ## Build the learner-facing inspection bundle
 	@PYTHONPATH=src $(CLI) action delivery pager preview > $(INSPECT_DIR)/action.json
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
-	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
+	@cp $(DOCS_DIR)/INDEX.md $(INSPECT_DIR)/INDEX.md
 	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(INSPECT_DIR)/BUNDLE_GUIDE.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(INSPECT_DIR)/DESIGN_BOUNDARIES.md
-	@cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(INSPECT_DIR)/FIRST_SESSION_GUIDE.md
 	@cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
 	@cp $(DOCS_DIR)/PUBLIC_SURFACE_MAP.md $(INSPECT_DIR)/PUBLIC_SURFACE_MAP.md
 	@cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(INSPECT_DIR)/REVIEW_ROUTE_MAP.md
@@ -134,7 +133,7 @@ verify-report: ## Build the structured capstone verification report
 		--arg "summary=worker backlog growing" \
 		> $(VERIFY_REPORT_DIR)/trace.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
-	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
+	@cp $(DOCS_DIR)/INDEX.md $(VERIFY_REPORT_DIR)/INDEX.md
 	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(VERIFY_REPORT_DIR)/BUNDLE_GUIDE.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(VERIFY_REPORT_DIR)/DESIGN_BOUNDARIES.md
@@ -186,8 +185,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@find src/incident_plugins -type f | sort > $(TOUR_DIR)/runtime-files.txt
 	@find tests -type f | sort > $(TOUR_DIR)/test-files.txt
 	@cp README.md $(TOUR_DIR)/README.md
-	@cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(TOUR_DIR)/FIRST_SESSION_GUIDE.md
-	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
+	@cp $(DOCS_DIR)/INDEX.md $(TOUR_DIR)/INDEX.md
 	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(TOUR_DIR)/BUNDLE_GUIDE.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md

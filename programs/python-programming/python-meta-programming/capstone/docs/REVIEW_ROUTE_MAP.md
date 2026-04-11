@@ -29,7 +29,7 @@ the local guides, public commands, and saved bundles.
 | --- | --- | --- | --- |
 | public shape without invocation | [PUBLIC_SURFACE_MAP.md](PUBLIC_SURFACE_MAP.md) | `make manifest`, `make registry`, or `make inspect` | [PROOF_GUIDE.md](PROOF_GUIDE.md) |
 | one concrete field or action contract | [PUBLIC_SURFACE_MAP.md](PUBLIC_SURFACE_MAP.md) | `make field`, `make action`, or `make inspect` | [TEST_READING_MAP.md](TEST_READING_MAP.md) |
-| one realistic invocation story | [FIRST_SESSION_GUIDE.md](FIRST_SESSION_GUIDE.md) or [COMMAND_GUIDE.md](COMMAND_GUIDE.md) | `make demo`, `make trace`, or `make tour` | `tests/test_runtime.py` |
+| one realistic invocation story | [INDEX.md](INDEX.md) or [COMMAND_GUIDE.md](COMMAND_GUIDE.md) | `make demo`, `make trace`, or `make tour` | `tests/test_runtime.py` |
 | source ownership for a change | [SOURCE_TO_PROOF_MAP.md](SOURCE_TO_PROOF_MAP.md) | the matching public route from the file map | [TEST_GUIDE.md](TEST_GUIDE.md) |
 | which proof file should fail first | [TEST_READING_MAP.md](TEST_READING_MAP.md) | the matching test file | [SOURCE_GUIDE.md](SOURCE_GUIDE.md) |
 | a saved artifact bundle for another reviewer | [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md) | `make inspect`, `make tour`, or `make verify-report` | [BUNDLE_MANIFEST_GUIDE.md](BUNDLE_MANIFEST_GUIDE.md) |
@@ -45,7 +45,7 @@ the local guides, public commands, and saved bundles.
 
 ## Best companion guides
 
-- [GUIDE_INDEX.md](GUIDE_INDEX.md)
+- [INDEX.md](INDEX.md)
 - [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
 - [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md)
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)

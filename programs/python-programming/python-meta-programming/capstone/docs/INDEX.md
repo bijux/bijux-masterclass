@@ -1,11 +1,11 @@
-# Guide Index
+# Capstone Index
 
 <!-- page-maps:start -->
 ## Guide Maps
 
 ```mermaid
 graph TD
-  guide["GUIDE_INDEX.md"]
+  guide["INDEX.md"]
   route["Route selection"]
   local["Local capstone guides"]
   code["Source files"]
@@ -25,17 +25,38 @@ flowchart LR
 <!-- page-maps:end -->
 
 Use this page when the capstone root shows many guide files and you need one durable
-starting point. The goal is not to read every document. The goal is to open the smallest
-local guide that matches the question you actually have.
+starting point. It combines the first-session route with the guide index so the doc set
+has one stable entry hub instead of two overlapping arrival pages.
+
+## First honest pass
+
+1. Run `make manifest`.
+2. Read [README.md](../README.md).
+3. Read [ARCHITECTURE.md](ARCHITECTURE.md).
+4. Read [PLUGIN_RUNTIME_GUIDE.md](PLUGIN_RUNTIME_GUIDE.md).
+5. Open `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
+6. Read `tests/test_registry.py` and `tests/test_fields.py`.
+7. Stop there unless your current question clearly requires invocation or CLI detail.
+
+## What the first pass should settle
+
+| Step | Main answer |
+| --- | --- |
+| `make manifest` | what the runtime exposes publicly without invoking plugin behavior |
+| `README.md` | what this repository is for and which commands matter |
+| `ARCHITECTURE.md` | which file owns each mechanism and why |
+| `PLUGIN_RUNTIME_GUIDE.md` | how definition-time, attribute-time, and invocation-time behavior differ |
+| `framework.py`, `fields.py`, `actions.py` | where registration, field behavior, and action wrapping actually live |
+| `test_registry.py`, `test_fields.py` | what proof already exists for class creation and descriptor ownership |
 
 ## Start here by question
 
 ### "What is this project, and how should I enter it?"
 
 - [README.md](../README.md)
-- [FIRST_SESSION_GUIDE.md](FIRST_SESSION_GUIDE.md)
-- [GUIDE_INDEX.md](GUIDE_INDEX.md)
+- [INDEX.md](INDEX.md)
 - [PLUGIN_RUNTIME_GUIDE.md](PLUGIN_RUNTIME_GUIDE.md)
+- [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ### "Which file owns which mechanism?"
 
@@ -89,12 +110,12 @@ Use the smallest guide that answers the current question, then stop.
 - Move to tests only after the guide names the claim that still needs proof.
 - Move to saved bundles only when another reviewer needs a durable artifact.
 
-## Best next files after the guide index
+## Good stopping point
 
-1. [README.md](../README.md)
-2. [FIRST_SESSION_GUIDE.md](FIRST_SESSION_GUIDE.md)
-3. [ARCHITECTURE.md](ARCHITECTURE.md)
-4. [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
+Stop after the first pass when you can answer:
 
-That route gives the learner the project promise, the first-session route, the ownership
-model, and the command route before they drop into code.
+- what the runtime exports without invocation
+- which file owns registration
+- which file owns field behavior
+- which file owns action wrapping
+- which proof file you would open first for registration or field questions
