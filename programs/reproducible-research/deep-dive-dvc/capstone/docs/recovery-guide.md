@@ -4,23 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  loss["Local loss"]
-  remote["DVC remote"]
-  pull["dvc pull"]
-  checkout["dvc checkout"]
-  verify["contract verification"]
-  review["recovery review bundle"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Recovery Guide"]
+  proof["Proof route"]
 
-  loss --> remote --> pull --> checkout --> verify --> review
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  before["Record before-status and remote config"] --> erase["Simulate local loss"]
-  erase --> restore["Restore from remote-backed state"]
-  restore --> validate["Validate the publish contract again"]
-  validate --> inspect["Inspect the saved recovery evidence"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

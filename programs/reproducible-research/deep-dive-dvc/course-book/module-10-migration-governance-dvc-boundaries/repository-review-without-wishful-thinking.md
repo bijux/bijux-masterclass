@@ -1,5 +1,30 @@
 # Repository Review Without Wishful Thinking
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Migration Governance Dvc Boundaries"]
+  page["Repository Review Without Wishful Thinking"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 A mature DVC review starts with evidence.
 
 Do not begin by asking whether the repository "looks organized." Ask whether it can still

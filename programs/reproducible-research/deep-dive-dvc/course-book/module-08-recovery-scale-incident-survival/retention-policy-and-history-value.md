@@ -1,5 +1,30 @@
 # Retention Policy and History Value
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Recovery Scale Incident Survival"]
+  page["Retention Policy and History Value"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Retention policy answers a hard question:
 
 > Which historical states are worth keeping recoverable, and for how long?

@@ -1,5 +1,30 @@
 # Registry Boundaries and Consumer Contracts
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Promotion Registry Boundaries Auditability"]
+  page["Registry Boundaries and Consumer Contracts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 A registry boundary is where internal artifacts become named products.
 
 It may be a model registry, a published directory, an object-store prefix, or a release

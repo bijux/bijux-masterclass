@@ -4,30 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  publish["publish/v1/"]
-  manifest["manifest.json"]
-  params["params.yaml"]
-  metrics["metrics.json"]
-  report["report.md"]
-  decision["downstream trust decision"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Release Review Guide"]
+  proof["Proof route"]
 
-  publish --> manifest
-  publish --> params
-  publish --> metrics
-  publish --> report
-  manifest --> decision
-  params --> decision
-  metrics --> decision
-  report --> decision
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  candidate["Candidate release bundle"] --> inventory["Check inventory and hashes"]
-  inventory --> meaning["Check control surface and metrics meaning"]
-  meaning --> review["Read the human review report"]
-  review --> decide["Approve, reject, or ask for more evidence"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

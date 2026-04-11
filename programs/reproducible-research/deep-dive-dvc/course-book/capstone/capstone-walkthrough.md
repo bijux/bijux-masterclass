@@ -1,5 +1,30 @@
 # Capstone Walkthrough
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Capstone"]
+  page["Capstone Walkthrough"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Use this page when you want the first honest pass through the DVC capstone. The goal is
 to understand the repository contract, state story, and publish boundary before widening
 into stronger review routes.

@@ -1,5 +1,30 @@
 # Review Checklist
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Reference"]
+  page["Review Checklist"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Use this checklist when reviewing a DVC repository, module exercise, or capstone change.
 The goal is to leave with explicit keep, change, or reject calls rather than vague trust.
 

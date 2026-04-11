@@ -1,5 +1,30 @@
 # DVC Tool Boundaries and System Ownership
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Migration Governance Dvc Boundaries"]
+  page["DVC Tool Boundaries and System Ownership"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Mature DVC usage includes knowing where DVC should stop.
 
 DVC is strong at content-addressed state, pipeline evidence, experiment comparison, and

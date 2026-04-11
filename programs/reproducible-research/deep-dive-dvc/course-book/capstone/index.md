@@ -1,5 +1,30 @@
 # Deep Dive DVC Capstone Guide
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Capstone"]
+  page["Deep Dive DVC Capstone Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This capstone is the executable reference repository for Deep Dive DVC. It keeps state
 authority, promotion, and recovery visible in one place so the course's biggest claims
 can be inspected instead of repeated from memory.

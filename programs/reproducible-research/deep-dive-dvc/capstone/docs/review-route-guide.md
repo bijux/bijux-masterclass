@@ -4,19 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  question["Review question"] --> summary["Summary commands"]
-  question --> verify["Verification report"]
-  question --> release["Release review"]
-  question --> recovery["Recovery review"]
-  question --> tour["Tour or walkthrough"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Review Route Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  ask["Name the question precisely"] --> route["Choose the smallest honest route"]
-  route --> inspect["Read the saved outputs or command result"]
-  inspect --> escalate["Escalate only if the question is still open"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

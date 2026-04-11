@@ -1,5 +1,30 @@
 # Promotion Contracts and Downstream Trust
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Promotion Registry Boundaries Auditability"]
+  page["Promotion Contracts and Downstream Trust"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Promotion is the moment a result becomes someone else's dependency.
 
 That is why promotion is not a copy operation. It is a contract:

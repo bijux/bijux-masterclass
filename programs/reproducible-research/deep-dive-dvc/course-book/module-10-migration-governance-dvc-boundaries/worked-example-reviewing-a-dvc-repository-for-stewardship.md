@@ -1,5 +1,30 @@
 # Worked Example: Reviewing a DVC Repository for Stewardship
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Migration Governance Dvc Boundaries"]
+  page["Worked Example: Reviewing a DVC Repository for Stewardship"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This example shows the final course skill: reviewing a DVC repository as a steward, not
 only as a user.
 

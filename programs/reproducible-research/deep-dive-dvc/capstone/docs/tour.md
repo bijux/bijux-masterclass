@@ -8,7 +8,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive DVC"]
   guide["Capstone docs"]
-  section["TOUR"]
+  section["Docs"]
   page["Capstone Tour"]
   proof["Proof route"]
 
@@ -18,10 +18,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Start from the executed bundle"] --> declaration["Read declared and recorded state"]
-  declaration --> release["Read promoted release evidence"]
-  release --> recovery["Read recovery and durability evidence if needed"]
-  recovery --> next["Escalate only if the question changes"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

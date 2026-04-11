@@ -6,17 +6,23 @@
 
 ```mermaid
 graph LR
-  raw["service_incidents.csv"] --> fields["Operational columns"]
-  fields --> target["Escalated outcome"]
-  target --> pipeline["DVC pipeline"]
-  pipeline --> publish["publish/v1/"]
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Domain Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  question["What is this repository modeling?"] --> domain["Read the incident domain contract"]
-  domain --> columns["Name the features, target, and review surfaces"]
-  columns --> route["Only then inspect the pipeline and publish boundary"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

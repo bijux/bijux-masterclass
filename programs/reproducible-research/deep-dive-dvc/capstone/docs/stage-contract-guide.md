@@ -6,16 +6,23 @@
 
 ```mermaid
 graph LR
-  prepare["prepare"] --> fit["fit"]
-  fit --> evaluate["evaluate"]
-  evaluate --> publish["publish"]
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Stage Contract Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  question["Which stage owns this state change?"] --> stage["Read the stage contract"]
-  stage --> boundary["Check declared deps, params, and outputs"]
-  boundary --> proof["Compare dvc.yaml and dvc.lock"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

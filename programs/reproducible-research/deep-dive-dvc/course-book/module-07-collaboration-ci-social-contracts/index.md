@@ -1,5 +1,30 @@
 # Module 07: Collaboration, CI, and Social Contracts
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Collaboration Ci Social Contracts"]
+  page["Module 07: Collaboration, CI, and Social Contracts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Module 07 turns reproducibility from a single-person practice into a team contract.
 
 By now, you know how a DVC project should represent data identity, runtime evidence,

@@ -1,5 +1,31 @@
 # Deep Dive DVC Capstone Docs
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Deep Dive DVC Capstone Docs"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 This shelf is the curated public document surface for the Deep Dive DVC capstone. It is
 smaller than the full repository on purpose. The goal is to expose the documents another
 reviewer or downstream consumer can use without dragging every internal study route,

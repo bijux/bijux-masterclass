@@ -4,22 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  baseline["Baseline params and metrics"]
-  change["Declared parameter change"]
-  run["Experiment run"]
-  compare["Comparable metrics and outputs"]
-  decision["Promote or reject"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Experiment Guide"]
+  proof["Proof route"]
 
-  baseline --> change --> run --> compare --> decision
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  choose["Choose one declared change"] --> run["Run an experiment"]
-  run --> inspect["Inspect params, metrics, and predictions together"]
-  inspect --> judge["Decide whether the result is reviewable"]
-  judge --> promote["Only then ask about promotion"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

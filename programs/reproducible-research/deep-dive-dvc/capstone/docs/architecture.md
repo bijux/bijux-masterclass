@@ -4,25 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  raw["Committed source data"]
-  prepare["prepare.py"]
-  fit["fit.py"]
-  evaluate["evaluate.py"]
-  publish["publish.py"]
-  verify["verify.py"]
-  release["publish/v1/"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Capstone Architecture"]
+  proof["Proof route"]
 
-  raw --> prepare --> fit --> evaluate --> publish --> release
-  release --> verify
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  declare["dvc.yaml and params.yaml"] --> execute["Pipeline stages produce recorded state"]
-  execute --> promote["publish.py promotes the downstream contract"]
-  promote --> verify["verify.py checks the promoted contract"]
-  verify --> review["review bundles package the evidence"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

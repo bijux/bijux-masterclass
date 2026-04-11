@@ -1,5 +1,30 @@
 # Promotion Failures and Review Repairs
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Promotion Registry Boundaries Auditability"]
+  page["Promotion Failures and Review Repairs"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Promotion failures are dangerous because they often look orderly.
 
 The folder exists. The model file exists. The report opens. The metric file has numbers.

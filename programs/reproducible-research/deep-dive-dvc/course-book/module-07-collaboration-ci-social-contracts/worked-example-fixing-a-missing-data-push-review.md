@@ -1,5 +1,30 @@
 # Worked Example: Fixing a Missing Data Push Review
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Collaboration Ci Social Contracts"]
+  page["Worked Example: Fixing a Missing Data Push Review"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This example shows how Module 07 fits together when a pull request looks complete in Git
 but cannot be restored by another maintainer.
 

@@ -1,5 +1,30 @@
 # Release Surfaces and Bundle Shape
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Promotion Registry Boundaries Auditability"]
+  page["Release Surfaces and Bundle Shape"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 A release surface is the small set of files a downstream consumer is expected to use.
 
 It should be more stable than the internal repository layout. If a consumer must browse
