@@ -60,16 +60,16 @@ If you already know the basic problem, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `internal-results-vs-public-contracts.md` | teaches the first and most important split |
-| `versioned-publish-boundaries-and-compatible-change.md` | teaches versioning, compatibility, and path stability |
-| `manifests-checksums-and-bundle-integrity.md` | teaches how a publish bundle defends itself |
-| `reports-file-apis-and-human-vs-machine-surfaces.md` | teaches which artifacts are for machines, humans, or both |
-| `reviewing-publish-drift-and-downstream-risk.md` | teaches how to review publish changes before trust is lost |
-| `worked-example-promoting-results-into-a-versioned-publish-bundle.md` | walks through a concrete publish-boundary design |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Internal Results versus Public Contracts](internal-results-vs-public-contracts.md) | teaches the first and most important split |
+| [Versioned Publish Boundaries and Compatible Change](versioned-publish-boundaries-and-compatible-change.md) | teaches versioning, compatibility, and path stability |
+| [Manifests, Checksums, and Bundle Integrity](manifests-checksums-and-bundle-integrity.md) | teaches how a publish bundle defends itself |
+| [Reports, File APIs, and Human versus Machine Surfaces](reports-file-apis-and-human-vs-machine-surfaces.md) | teaches which artifacts are for machines, humans, or both |
+| [Reviewing Publish Drift and Downstream Risk](reviewing-publish-drift-and-downstream-risk.md) | teaches how to review publish changes before trust is lost |
+| [Worked Example: Promoting Results into a Versioned Publish Bundle](worked-example-promoting-results-into-a-versioned-publish-bundle.md) | walks through a concrete publish-boundary design |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

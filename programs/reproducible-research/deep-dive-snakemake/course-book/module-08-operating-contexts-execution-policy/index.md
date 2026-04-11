@@ -60,16 +60,16 @@ If the basic problem is already clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `profiles-as-policy-and-semantic-boundaries.md` | teaches what profiles may and may not own |
-| `executors-queues-and-context-invariant-workflow-meaning.md` | teaches how execution surfaces can vary without changing the workflow contract |
-| `retries-latency-and-failure-discipline.md` | teaches operational help versus hidden correctness debt |
-| `staging-storage-and-filesystem-assumptions.md` | teaches where operating contexts touch data locality and visibility |
-| `reviewing-operating-context-drift-and-policy-leaks.md` | teaches how to review profile and executor changes honestly |
-| `worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md` | walks through a concrete policy audit route |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Profiles as Policy and Semantic Boundaries](profiles-as-policy-and-semantic-boundaries.md) | teaches what profiles may and may not own |
+| [Executors, Queues, and Context-Invariant Workflow Meaning](executors-queues-and-context-invariant-workflow-meaning.md) | teaches how execution surfaces can vary without changing the workflow contract |
+| [Retries, Latency, and Failure Discipline](retries-latency-and-failure-discipline.md) | teaches operational help versus hidden correctness debt |
+| [Staging, Storage, and Filesystem Assumptions](staging-storage-and-filesystem-assumptions.md) | teaches where operating contexts touch data locality and visibility |
+| [Reviewing Operating-Context Drift and Policy Leaks](reviewing-operating-context-drift-and-policy-leaks.md) | teaches how to review profile and executor changes honestly |
+| [Worked Example: Auditing Local, CI, and Slurm without Semantic Drift](worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md) | walks through a concrete policy audit route |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

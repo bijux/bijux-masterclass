@@ -68,16 +68,16 @@ If the shape is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `entrypoints-repository-layers-and-visible-assembly.md` | teaches how the repository announces its shape |
-| `rule-families-modules-and-ownership-boundaries.md` | teaches how to split workflow logic without hiding it |
-| `file-apis-public-paths-and-contract-docs.md` | teaches path-level contracts and stable file surfaces |
-| `helpers-scripts-packages-and-coupling-control.md` | teaches where implementation code belongs and how coupling spreads |
-| `architecture-review-drift-and-refactor-triggers.md` | teaches when architecture is getting harder to trust |
-| `worked-example-reading-a-snakemake-repository-like-an-architect.md` | walks through a concrete repository review path |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Entrypoints, Repository Layers, and Visible Assembly](entrypoints-repository-layers-and-visible-assembly.md) | teaches how the repository announces its shape |
+| [Rule Families, Modules, and Ownership Boundaries](rule-families-modules-and-ownership-boundaries.md) | teaches how to split workflow logic without hiding it |
+| [File APIs, Public Paths, and Contract Docs](file-apis-public-paths-and-contract-docs.md) | teaches path-level contracts and stable file surfaces |
+| [Helpers, Scripts, Packages, and Coupling Control](helpers-scripts-packages-and-coupling-control.md) | teaches where implementation code belongs and how coupling spreads |
+| [Architecture Review, Drift, and Refactor Triggers](architecture-review-drift-and-refactor-triggers.md) | teaches when architecture is getting harder to trust |
+| [Worked Example: Reading a Snakemake Repository like an Architect](worked-example-reading-a-snakemake-repository-like-an-architect.md) | walks through a concrete repository review path |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 
