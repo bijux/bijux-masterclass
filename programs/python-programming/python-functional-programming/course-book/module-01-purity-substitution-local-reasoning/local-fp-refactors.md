@@ -2,51 +2,39 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Local FP Refactors"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  legacy["Start with one stateful function"] --> split["Separate traversal, mutation, and decision logic"]
+  split --> replace["Replace mutation with explicit return values"]
+  replace --> prove["Prove old and new behavior still match"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about improving real code without pretending you can rewrite the whole
+system in one pass.
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Refactor Pressure
 
-Here's a snippet from the progression map:
+Most teams inherit one function, one file, or one workflow step at a time. The practical
+question is not "how do I make the whole codebase functional?" The practical question is:
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+- which mutation do I remove first
+- what pure helper replaces it
+- how do I prove I did not break behavior
 
+That is the purpose of local FP refactors.
 
-> **Core question:**  
-> How do you systematically refactor imperative, stateful code into small, pure, composable functions—so that hidden mutations vanish, equational reasoning becomes possible, and every change is locally verifiable?
+## Keep This Question In View
 
-This core builds on **Core 1**'s mindset, **Core 2**'s contracts, **Core 3**'s immutability, and **Core 4**'s composition by applying it locally: **refactor one function at a time**, turning loops, mutable accumulators, and in-place updates into pure transforms over immutable data.
+> How do you systematically refactor imperative, stateful code into small, pure, composable functions so that hidden mutations vanish and every change is locally verifiable?
 
-We continue the **running project** from Core 1-4: refactoring the FuncPipe RAG Builder, now replacing imperative accumulators with pure equivalents.
+By the end of this lesson, you should be able to explain:
 
-**Audience:** Developers who love Core 4 pipelines but still have legacy functions full of `for` loops, `while`, list.append(), dict updates, and index juggling.  
-**Outcome:**  
-1. Refactor any stateful function into pure equivalent in < 20 lines.  
-2. Explain why manual accumulators hurt reasoning/testing vs comprehensions/folds.  
-3. Add Hypothesis properties proving refactor equivalence + new purity.  
-4. Spot and fix three classic refactor blockers: multiple accumulators, index-dependent logic, mutable defaults.
+- which part of a function is traversal noise
+- which part is the real business transform
+- what evidence shows the refactor is meaning-preserving
 
 ---
 
@@ -62,13 +50,15 @@ We continue the **running project** from Core 1-4: refactoring the FuncPipe RAG 
 
 ### 1.3 Why This Matters Now
 
-Local refactoring operationalizes Core 1-4's tools on real code, enabling typed pipelines (Core 6) and effect extraction (Core 7); without it, legacy state blocks progress.
+This is where the earlier lessons become maintenance practice. Pure functions and immutable
+values are only useful if you can move existing code toward them without guessing.
 
 ### 1.4 Refactor Moves in This Core
 
-1. Loop → map  
-2. Accumulator → comprehension  
-3. In-place update → new object  
+1. Loop → explicit transform
+2. Mutable accumulator → returned value
+3. In-place update → new object
+4. Hidden shared default → explicit constructor-owned value
 
 ### 1.5 Purity Spectrum Table
 
@@ -87,15 +77,15 @@ Local refactoring operationalizes Core 1-4's tools on real code, enabling typed 
 ### 2.1 One Picture
 
 ```text
-Stateful Loop                               Pure Transform
-+----------------------------------+        +--------------------------------+
-| results = []                     |        | results = [                    |
-| totals = {}                      |        |     f(x) for x in xs           |
-| for x in xs:                     |        |     if pred(x)                 |
-|     results.append(f(x))         |        | ]                              |
-|     totals[x] = totals.get(x,0)+1|        | totals = Counter(xs)           |
-| return results, totals           |        +--------------------------------+
-+----------------------------------+        No mutation of inputs/shared state
+Stateful loop                            Local refactor
++----------------------------------+     +-----------------------------------+
+| results = []                     |     | transformed = [f(x) for x in xs]  |
+| totals = {}                      |     | totals = Counter(xs)              |
+| for x in xs:                     |     | return transformed, totals        |
+|     results.append(f(x))         |     |                                   |
+|     totals[x] = totals.get(x,0)+1|     | mutation removed from the API     |
+| return results, totals           |     |                                   |
++----------------------------------+     +-----------------------------------+
 ```
 
 ### 2.2 Contract Table
@@ -107,7 +97,9 @@ Stateful Loop                               Pure Transform
 | No hidden state            | Closure over mutable                   | Manual review + Hypothesis               |
 | Determinism                | Random/state inside loop               | Hypothesis determinism                   |
 
-**Note on Refactors:** Safe only when old/new agree on all inputs—prove it. Note: Some stateful variants here are observationally pure (their mutation is confined to local variables), others like stateful_add_chunk are truly impure (shared mutable defaults). We treat both as refactor targets for clarity and safety.
+**Note on Refactors:** Some functions are only locally stateful, while others are truly
+impure because they mutate caller-owned or shared data. Both can be improved, but the
+second class is the one that most urgently blocks local reasoning.
 
 ---
 
