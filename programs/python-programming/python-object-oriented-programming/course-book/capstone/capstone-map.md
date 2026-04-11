@@ -29,10 +29,11 @@ Use it to decide where to go next when you want concrete proof for a course idea
 
 - Start with [Capstone](index.md) for the overall purpose and domain.
 - Read [Capstone File Guide](capstone-file-guide.md) when you need a code-reading route.
-- Read [Capstone Review Checklist](capstone-review-checklist.md) when you want an explicit review lens.
+- Read [Capstone Review Worksheet](capstone-review-worksheet.md) when you want an explicit review lens.
 - Read [Capstone Architecture Guide](capstone-architecture-guide.md) when you are reviewing ownership and boundaries.
 - Read [Capstone Walkthrough](capstone-walkthrough.md) when you want the scenario flow from creation to incident publication.
 - Read [Capstone Proof Guide](capstone-proof-guide.md) when you want the verification route.
+- Read [Capstone Extension Guide](capstone-extension-guide.md) when you need to place a change without weakening ownership boundaries.
 - Use the local capstone guides `INDEX.md`, `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`, `COMMAND_GUIDE.md`, `PROOF_GUIDE.md`, and `EXTENSION_GUIDE.md` when you need a narrower review surface.
 
 ## Module-to-capstone bridge
@@ -41,13 +42,13 @@ Use it to decide where to go next when you want concrete proof for a course idea
 | --- | --- | --- | --- |
 | Module 01 | `src/service_monitoring/model.py` | [Capstone File Guide](capstone-file-guide.md) | `make inspect` |
 | Module 02 | `src/service_monitoring/model.py` and `src/service_monitoring/application.py` | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` |
-| Module 03 | lifecycle rules in `src/service_monitoring/model.py` | [Capstone Review Checklist](capstone-review-checklist.md) | `make inspect` |
+| Module 03 | lifecycle rules in `src/service_monitoring/model.py` | [Capstone Review Worksheet](capstone-review-worksheet.md) | `make inspect` |
 | Module 04 | aggregate events and read-model flow | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make verify-report` |
 | Module 05 | `src/service_monitoring/runtime.py` and unit-of-work surfaces | [Capstone Walkthrough](capstone-walkthrough.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` |
 | Module 06 | `src/service_monitoring/repository.py` | [Capstone File Guide](capstone-file-guide.md) | `make verify-report` |
 | Module 07 | runtime coordination and tests | [Capstone Proof Guide](capstone-proof-guide.md) | `make verify-report` |
 | Module 08 | `tests/` and saved proof bundles | [Capstone Proof Guide](capstone-proof-guide.md) | `make confirm` |
-| Module 09 | public entry surfaces and extension seams | [Capstone Review Checklist](capstone-review-checklist.md) | `make proof` |
+| Module 09 | public entry surfaces and extension seams | [Capstone Extension Guide](capstone-extension-guide.md) | `make proof` |
 | Module 10 | full review bundle and architecture surfaces | [Capstone Proof Guide](capstone-proof-guide.md) | `make proof` |
 
 ## How to use the bridge
