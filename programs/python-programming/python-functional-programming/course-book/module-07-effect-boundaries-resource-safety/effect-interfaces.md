@@ -29,6 +29,11 @@ Read the first diagram as a placement map: this page is one concept inside its p
 > The canonical FuncPipe approach is the native `IOPlan` shown first – a tiny, zero-dependency, thunk-based deferred IO that composes perfectly with `Result`, `Reader`, `Writer`, and the ports from Core 1.  
 > The `returns` and `effect` references are pure sidebars for ecosystem context.
 
+If you are following the main track, read this page in two passes:
+
+1. read the native `IOPlan` sections (`Core question`, `Public API`, `Minimal Example`, and `Property-Based Proofs`)
+2. treat the external-library comparison as optional context, not as a second required implementation path
+
 ## Progression Note
 Module 7 takes the lawful containers and pipelines from Module 6 and puts all effects behind explicit boundaries.
 
@@ -39,7 +44,7 @@ Module 7 takes the lawful containers and pipelines from Module 6 and puts all ef
 | 8      | Async / Concurrent Pipelines            | Backpressure, timeouts, resumability, fairness (built on 6–7)               |
 
 **Core question**  
-How do you represent effectful operations as pure, composable data – using either a minimal native ADT or popular libraries – while staying 100 % compatible with the ports & adapters architecture from Core 1?
+How do you represent effectful operations as pure, composable data with a minimal native ADT, and how does that compare with popular library approaches while staying compatible with the ports & adapters architecture from Core 1?
 
 **What you now have after M07C01 + this core**
 - Pure domain core (Module 5–6)  
@@ -82,9 +87,9 @@ The real power is adapter swappability, not interpreter proliferation.
 | Intent-based effects          | Medium     | No     | `effect` / `effects`       | Dispatcher style, rarely needed in new code |
 | Just thunks                   | Lowest     | No     | Stdlib `Callable`          | No named type, easy to misuse |
 
-**Verdict**: In this capstone, `IOPlan` is the best default. It stays small, composes
-cleanly with the earlier cores, and covers the production pressures this repository is
-designed to prove.
+**Verdict**: In this capstone, `IOPlan` is the default path. It stays small, composes
+cleanly with the earlier cores, and covers the boundary pressures this repository is
+designed to teach without adding a library dependency.
 
 **Global error policy**: We fix `E = ErrInfo` everywhere. This is deliberate – it simplifies interop between `Result`, `Reader`, ports, and `IOPlan`. Per-subsystem error types are possible by parameterising `IOPlan[A, E]`, but we don’t need that complexity here.
 
