@@ -1,5 +1,30 @@
 # Wildcard Domains and Fanout Control
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Dynamic Dags Discovery Integrity"]
+  page["Wildcard Domains and Fanout Control"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Once a workflow has a discovered sample set, the next danger is not discovery itself.
 The next danger is accidental multiplication.
 

@@ -1,5 +1,30 @@
 # Glossary
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Software Boundaries Reproducible Rules"]
+  page["Glossary"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This glossary keeps the language of Module 05 stable. The goal is not to impress you with
 terminology. The goal is to make sure the same words keep the same meaning across lessons,
 reviews, exercises, and capstone work.

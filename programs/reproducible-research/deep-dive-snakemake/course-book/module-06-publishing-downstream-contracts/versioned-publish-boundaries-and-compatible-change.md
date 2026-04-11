@@ -1,5 +1,30 @@
 # Versioned Publish Boundaries and Compatible Change
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Publishing Downstream Contracts"]
+  page["Versioned Publish Boundaries and Compatible Change"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Once you know which files belong in the public contract, the next question appears:
 
 > how do downstream users know when that contract has changed?

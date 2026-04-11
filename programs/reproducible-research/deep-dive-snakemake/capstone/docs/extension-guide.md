@@ -5,21 +5,23 @@
 
 ```mermaid
 graph LR
-  change["New change"] --> workflow["Workflow meaning"]
-  change --> policy["Execution policy"]
-  change --> publish["Publish contract"]
-  change --> code["Helper implementation"]
-  workflow --> owner["Choose the owning layer"]
-  policy --> owner
-  publish --> owner
-  code --> owner
-  owner --> evidence["Update the matching proof surface"]
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Extension Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
-flowchart TD
-  question["What kind of change is this"] --> route["Place it in the right layer first"]
-  route --> proof["Strengthen the guide, bundle, or check that should notice drift"]
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

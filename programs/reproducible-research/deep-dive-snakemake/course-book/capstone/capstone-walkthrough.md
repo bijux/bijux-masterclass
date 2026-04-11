@@ -1,21 +1,26 @@
 # Capstone Walkthrough
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete question you need answered"]
-  pressure --> guide["Capstone Walkthrough"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Capstone"]
+  page["Capstone Walkthrough"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Do you need a first pass or a deeper review?"] --> route["Choose one walkthrough depth"]
-  route --> inspect["Read the matching guide and artifact"]
-  inspect --> next_move["Stop when one honest workflow story is visible"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

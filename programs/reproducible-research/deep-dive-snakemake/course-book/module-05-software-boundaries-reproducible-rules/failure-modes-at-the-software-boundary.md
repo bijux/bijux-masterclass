@@ -1,5 +1,30 @@
 # Failure Modes at the Software Boundary
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Software Boundaries Reproducible Rules"]
+  page["Failure Modes at the Software Boundary"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The easiest way to understand software boundaries is to study how they fail.
 
 Most repositories do not become confusing because someone explicitly decides to hide

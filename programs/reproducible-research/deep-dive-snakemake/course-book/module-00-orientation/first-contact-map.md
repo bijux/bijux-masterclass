@@ -1,22 +1,26 @@
 # First-Contact Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["First-Contact Map"]
-  concept --> capstone["Capstone pressure point"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Orientation"]
+  page["First-Contact Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  enter["Arrive without a stable route yet"] --> promise["Read the course promise"]
-  promise --> map["Read the course map"]
-  map --> guide["Read the study guide"]
-  guide --> capstone["Choose whether the capstone helps yet"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

@@ -9,7 +9,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Snakemake"]
   guide["Capstone docs"]
-  section["PUBLISH_REVIEW_GUIDE"]
+  section["Docs"]
   page["Publish Review Guide"]
   proof["Proof route"]
 
@@ -19,10 +19,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  contract["FILE_API.md"] --> report["make verify-report"]
-  report --> verify["verify.json and route.txt"]
-  verify --> publish["publish/v1/ artifacts"]
-  publish --> review["Downstream trust decision"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

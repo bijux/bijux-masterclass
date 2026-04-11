@@ -1,5 +1,30 @@
 # Reports, File APIs, and Human Versus Machine Surfaces
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Publishing Downstream Contracts"]
+  page["Reports, File APIs, and Human Versus Machine Surfaces"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 A strong publish bundle usually needs more than one kind of artifact.
 
 That is not a flaw. It is a sign that the bundle is serving more than one audience.

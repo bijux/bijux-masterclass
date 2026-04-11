@@ -1,5 +1,30 @@
 # Wildcards, Binding, Ambiguity, and Constraints
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["File Contracts Workflow Graph Truth"]
+  page["Wildcards, Binding, Ambiguity, and Constraints"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This page explains how Snakemake binds wildcards to concrete filenames, and why careless
 patterns quickly turn into ambiguity or accidental matches.
 

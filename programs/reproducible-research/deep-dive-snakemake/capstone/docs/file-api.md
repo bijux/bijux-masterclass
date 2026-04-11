@@ -8,7 +8,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Snakemake"]
   guide["Capstone docs"]
-  section["FILE_API"]
+  section["Docs"]
   page["File API"]
   proof["Proof route"]
 
@@ -18,9 +18,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  question["Which file surface is under review"] --> boundary["Choose results/ or publish/v1/"]
-  boundary --> contract["Read the fields and compatibility rules"]
-  contract --> trust["Decide whether a change is internal or public"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

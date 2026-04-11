@@ -1,21 +1,26 @@
 # Anti-Pattern Atlas
 
 <!-- page-maps:start -->
-## Reference Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> reference["Anti-Pattern Atlas"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Reference"]
+  page["Anti-Pattern Atlas"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  symptom["Name the symptom"] --> pattern["Match it to the likely failure class"]
-  pattern --> question["Ask the repair question that belongs to that class"]
-  question --> route["Choose the module or capstone route that proves the fix"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

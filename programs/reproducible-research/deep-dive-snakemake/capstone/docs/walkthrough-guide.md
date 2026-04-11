@@ -9,7 +9,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Snakemake"]
   guide["Capstone docs"]
-  section["WALKTHROUGH_GUIDE"]
+  section["Docs"]
   page["Walkthrough Guide"]
   proof["Proof route"]
 
@@ -19,10 +19,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  command["make walkthrough"] --> bundle["Learner-first walkthrough bundle"]
-  bundle --> rules["Rule list and dry-run"]
-  rules --> contracts["Config, publish, and file-contract surfaces"]
-  contracts --> review["Review questions and next commands"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

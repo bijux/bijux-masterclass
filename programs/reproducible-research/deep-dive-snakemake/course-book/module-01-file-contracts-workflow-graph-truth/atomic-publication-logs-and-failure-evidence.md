@@ -1,5 +1,30 @@
 # Atomic Publication, Logs, and Failure Evidence
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["File Contracts Workflow Graph Truth"]
+  page["Atomic Publication, Logs, and Failure Evidence"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This page explains how a workflow earns trust after something goes wrong: final outputs are
 published safely, and failures leave behind evidence instead of confusion.
 

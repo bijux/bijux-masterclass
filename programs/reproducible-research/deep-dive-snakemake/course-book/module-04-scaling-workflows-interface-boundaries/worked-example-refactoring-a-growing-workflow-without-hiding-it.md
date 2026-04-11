@@ -1,5 +1,30 @@
 # Worked Example: Refactoring a Growing Workflow Without Hiding It
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Scaling Workflows Interface Boundaries"]
+  page["Worked Example: Refactoring a Growing Workflow Without Hiding It"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This file ties the module together around one realistic problem:
 
 > a workflow still works, but the repository has become large enough that every change feels risky.

@@ -1,5 +1,30 @@
 # Profiles, Defaults, and Workflow Meaning
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Production Operations Policy Boundaries"]
+  page["Profiles, Defaults, and Workflow Meaning"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Module 03 begins with the boundary that most production confusion grows out of:
 
 > a profile may change how the workflow runs, but it must not change what the workflow means.

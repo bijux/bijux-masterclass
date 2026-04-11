@@ -1,5 +1,30 @@
 # Modules, Reuse, and Explicit Interfaces
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Scaling Workflows Interface Boundaries"]
+  page["Modules, Reuse, and Explicit Interfaces"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Once rule-family splits are working, the next scaling question appears:
 
 > is this still one workflow graph with clearer organization, or is one part becoming a reusable workflow boundary of its own?

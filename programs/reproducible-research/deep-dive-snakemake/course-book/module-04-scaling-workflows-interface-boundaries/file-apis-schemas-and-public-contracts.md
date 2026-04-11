@@ -1,5 +1,30 @@
 # File APIs, Schemas, and Public Contracts
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Scaling Workflows Interface Boundaries"]
+  page["File APIs, Schemas, and Public Contracts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Repository growth becomes dangerous when people cannot answer one basic question:
 
 > which files are part of the contract, and which ones are only internal coordination state?

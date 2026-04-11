@@ -1,5 +1,30 @@
 # Executors, Queues, and Context-Invariant Workflow Meaning
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Operating Contexts Execution Policy"]
+  page["Executors, Queues, and Context-Invariant Workflow Meaning"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Once profiles are understood as policy surfaces, the next question appears:
 
 > what should stay true when the workflow moves from local runs to CI or a scheduler?

@@ -1,5 +1,30 @@
 # Reviewing Publish Drift and Downstream Risk
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Publishing Downstream Contracts"]
+  page["Reviewing Publish Drift and Downstream Risk"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The publish boundary deserves the same seriousness as code review.
 
 If a workflow changes what it publishes, how it names files, or what those files mean,

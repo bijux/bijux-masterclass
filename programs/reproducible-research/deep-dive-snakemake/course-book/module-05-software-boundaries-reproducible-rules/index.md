@@ -1,5 +1,30 @@
 # Module 05: Software Boundaries and Reproducible Rules
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Software Boundaries Reproducible Rules"]
+  page["Module 05: Software Boundaries and Reproducible Rules"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Modules 01 to 04 teach workflow truth, dynamic discipline, production policy, and
 repository scaling. Module 05 asks the next boundary question:
 

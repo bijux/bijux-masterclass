@@ -1,21 +1,26 @@
 # Command Guide
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete question you need answered"]
-  pressure --> guide["Command Guide"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Capstone"]
+  page["Command Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["What are you trying to do?"] --> layer["Choose the matching command layer"]
-  layer --> command["Run the smallest honest command"]
-  command --> next_move["Escalate only if the question changes"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

@@ -1,5 +1,30 @@
 # Worked Example: Auditing Local, CI, and SLURM Without Semantic Drift
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Operating Contexts Execution Policy"]
+  page["Worked Example: Auditing Local, CI, and SLURM Without Semantic Drift"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This worked example ties the module together.
 
 The goal is not to prove that every profile difference is harmless. The goal is to show

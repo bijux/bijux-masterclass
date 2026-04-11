@@ -1,5 +1,30 @@
 # Deep Dive Snakemake Capstone Guide
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Capstone"]
+  page["Deep Dive Snakemake Capstone Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This capstone is the executable reference workflow for Deep Dive Snakemake. It keeps rule
 contracts, dynamic discovery, operating policy, and publish trust visible in one place so
 the workflow can be reviewed as a real repository rather than as terminal folklore.

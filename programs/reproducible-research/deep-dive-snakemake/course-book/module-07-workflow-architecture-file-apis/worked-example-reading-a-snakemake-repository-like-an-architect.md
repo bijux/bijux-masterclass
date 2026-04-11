@@ -1,5 +1,30 @@
 # Worked Example: Reading a Snakemake Repository Like an Architect
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Workflow Architecture File Apis"]
+  page["Worked Example: Reading a Snakemake Repository Like an Architect"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This worked example ties the module together.
 
 The goal is not to inspect every file in the repository. The goal is to show how a

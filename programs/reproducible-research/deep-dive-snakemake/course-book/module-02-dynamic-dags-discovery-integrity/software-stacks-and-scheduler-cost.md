@@ -1,5 +1,30 @@
 # Software Stacks and Scheduler Cost
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Dynamic Dags Discovery Integrity"]
+  page["Software Stacks and Scheduler Cost"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Dynamic workflows do not fail only because their DAG is wrong. They also fail because the
 workflow is technically honest but operationally clumsy.
 

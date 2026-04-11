@@ -1,5 +1,31 @@
 # Deep Dive Snakemake Capstone Docs
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Deep Dive Snakemake Capstone Docs"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 Use this shelf when the question is about the executable Snakemake capstone repository
 itself: public file contracts, review bundles, repository architecture, profile drift, or
 safe extension. These pages are not another first-contact route into the course. They are

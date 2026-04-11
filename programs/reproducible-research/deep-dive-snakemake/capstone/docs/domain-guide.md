@@ -9,7 +9,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Snakemake"]
   guide["Capstone docs"]
-  section["DOMAIN_GUIDE"]
+  section["Docs"]
   page["Domain Guide"]
   proof["Proof route"]
 
@@ -19,12 +19,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  raw["Raw FASTQ reads"] --> qc["Quality control"]
-  qc --> trim["Adapter and quality trimming"]
-  trim --> dedup["Duplicate handling"]
-  dedup --> kmer["k-mer profiling"]
-  kmer --> screen["Reference panel screening"]
-  screen --> publish["Published summary and report"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

@@ -1,5 +1,31 @@
 # Workflow File API
 
+
+<!-- page-maps:start -->
+## Guide Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  guide["Capstone docs"]
+  section["Workflow"]
+  page["Workflow File API"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
+```
+
+```mermaid
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
+```
+<!-- page-maps:end -->
+
 ```mermaid
 flowchart TD
   workflow["Workflow-owned files"] --> discovery["Discovery output"]

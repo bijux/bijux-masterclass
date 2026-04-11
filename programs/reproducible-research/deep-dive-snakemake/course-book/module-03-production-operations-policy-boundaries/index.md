@@ -1,5 +1,30 @@
 # Module 03: Production Operations and Policy Boundaries
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Production Operations Policy Boundaries"]
+  page["Module 03: Production Operations and Policy Boundaries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Modules 01 and 02 teach workflow truth and disciplined dynamic behavior. Module 03 asks
 the next practical question:
 

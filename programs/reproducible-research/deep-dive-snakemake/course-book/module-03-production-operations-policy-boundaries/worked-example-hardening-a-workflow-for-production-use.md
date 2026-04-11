@@ -1,5 +1,30 @@
 # Worked Example: Hardening a Workflow for Production Use
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Production Operations Policy Boundaries"]
+  page["Worked Example: Hardening a Workflow for Production Use"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This file ties the whole module together around one realistic problem:
 
 > a workflow runs locally, but the team now wants to run it in CI and review it like a production repository.

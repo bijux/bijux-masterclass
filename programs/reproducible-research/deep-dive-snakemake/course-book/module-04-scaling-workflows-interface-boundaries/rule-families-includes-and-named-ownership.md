@@ -1,5 +1,30 @@
 # Rule Families, Includes, and Named Ownership
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["Scaling Workflows Interface Boundaries"]
+  page["Rule Families, Includes, and Named Ownership"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The first scaling decision is usually simpler than teams make it sound:
 
 > does this workflow need more boundaries, or does it only need clearer ownership?

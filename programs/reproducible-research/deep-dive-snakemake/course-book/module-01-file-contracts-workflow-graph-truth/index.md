@@ -1,5 +1,30 @@
 # Module 01: First Principles and the File-DAG Contract
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Snakemake"]
+  section["File Contracts Workflow Graph Truth"]
+  page["Module 01: First Principles and the File-DAG Contract"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Module 01 is where the whole Snakemake program either becomes clear or stays mystical.
 
 This module is not about memorizing rule syntax. It is about learning the contract Snakemake
