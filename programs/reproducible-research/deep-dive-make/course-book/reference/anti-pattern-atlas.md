@@ -2,7 +2,6 @@
 
 # Anti-Pattern Atlas
 
-
 <!-- page-maps:start -->
 ## Reference Position
 
@@ -16,80 +15,72 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
+  symptom["Name the symptom"] --> pattern["Match it to the likely failure class"]
+  pattern --> question["Ask the repair question that goes with that class"]
+  question --> route["Choose the module or capstone route that proves the fix"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-This page is the missing failure crosswalk for Deep Dive Make. It exists because humans
-rarely remember course structure by module title during a real build problem. They
-remember symptoms, smells, and clumsy patterns.
-
-Use this page when the question is “what kind of bad Make idea is this?” rather than
-“which module was that in?”
+Use this page when you recognize the smell before you recognize the lesson. A good atlas
+turns "this build feels wrong" into a smaller statement about hidden state, missing
+edges, unsafe publication, or ownership drift.
 
 ---
 
-## Common Anti-Patterns
+## Symptom-led lookup
 
-| Anti-pattern | Why it is clumsy | Primary modules | First proof or repro route |
+| Symptom | Likely failure class | Ask this next | First route |
 | --- | --- | --- | --- |
-| phony targets used as ordering glue | it hides real edges behind fake structure | 01, 02 | `capstone-walkthrough` |
-| stamp files used as wishful thinking | they model hope instead of declared state | 05, 06 | `capstone-contract-audit` |
-| recursive Make used as architecture by default | it fragments the graph and hides ownership | 05, 07 | `inspect` |
-| generated files treated as incidental side effects | consumers become stale or race-prone | 06 | `proof` |
-| shared temp or append-only writes under `-j` | schedule changes meaning | 02, 09 | `capstone-incident-audit` |
-| includes and overrides treated as folklore | debugging becomes guesswork | 04 | `capstone-tour` |
-| release artifacts published without a declared contract | downstream trust becomes accidental | 08 | `proof` |
-| observability added only after a failure | incident review loses causal evidence | 09 | `capstone-incident-audit` |
-| Make kept as owner after its boundary is exceeded | governance and migration drift become chronic | 10 | `capstone-confirm` |
+| `-j` breaks a target that looks fine in serial mode | shared mutable output or a missing dependency edge | which file is written by more than one recipe, or consumed before publication is complete | `make incident-audit` |
+| a touched file does not trigger a rebuild | hidden input or dishonest stamp boundary | which input changed meaning without appearing in the prerequisite graph | `make selftest` |
+| everything rebuilds and no one can explain why | unstable discovery, broad stamps, or variable precedence drift | which target changed its meaning, flags, or discovered inputs | `make profile-audit` |
+| a generated file exists, but downstream users stay stale | generated output modeled as a side effect instead of a declared edge | where should the generated file appear in the graph, and who owns it | `make proof` |
+| release outputs look correct, but no one can say why they are trustworthy | publication contract is weaker than the build contract | which bundle or manifest proves what was published | `make inspect` |
+| the top-level `Makefile` keeps absorbing every concern | ownership collapsed across build layers | which rule belongs in `Makefile` and which belongs in `mk/*.mk` | `make walkthrough` |
 
 [Back to top](#top)
 
 ---
 
-## Symptom To Anti-Pattern
+## Recurring failure classes
 
-| Symptom | Likely anti-pattern | Better question |
+| Failure class | Why it matters | Where the course teaches the repair |
 | --- | --- | --- |
-| “`-j` breaks this sometimes” | hidden shared state or missing edges | which file or output has more than one writer |
-| “I touched a file and nothing rebuilt” | hidden input or unmodeled boundary | what declared edge is missing |
-| “Everything rebuilt and I do not know why” | unstable discovery, stamps, or precedence confusion | which target changed its meaning |
-| “This release exists, but I do not trust it” | weak publication contract | what review bundle or manifest proves it |
-| “No one knows where to change this build safely” | ownership collapse across `mk/*.mk` | which layer should own the change |
+| phony ordering used instead of real file edges | it hides truth about what causes work | Modules 01-02, `repro/06-order-only-misuse.mk` |
+| stamps used to hide meaningful state | it trades explicit inputs for wishful thinking | Modules 05-06, `mk/stamps.mk` |
+| recursive or fragmented ownership by default | it makes the graph harder to reason about than the product | Modules 05 and 07, `ARCHITECTURE.md` |
+| generated files treated as incidental | it breaks rebuild truth and downstream causality | Module 06, `repro/04-generated-header.mk` |
+| shared temp files or append-only outputs | schedule changes start changing meaning | Modules 02 and 09, `repro/01-shared-log.mk`, `repro/05-mkdir-race.mk` |
+| variable precedence left as folklore | a machine with different environment values tells a different story | Module 04, `show`, `show-e`, and `profile-audit` |
+| publication done directly to final paths | partial artifacts become visible as if they were finished | Module 08, `mk/macros.mk` and the top-level recipes |
+| observability bolted on after failure | incident review loses the evidence needed to explain cause | Module 09, `trace-count`, `selftest-report`, and audit bundles |
 
 [Back to top](#top)
 
 ---
 
-## Repair Direction
+## Repair order
 
-When you identify an anti-pattern, do not jump straight to rewriting everything.
+When you identify a likely anti-pattern, use this sequence:
 
-Use this order:
+1. name the failure class in one sentence
+2. point to the output, edge, or boundary that is lying
+3. choose the smallest capstone route that demonstrates the same defect or claim
+4. repair the model before polishing the implementation
 
-1. name the failure class precisely
-2. find the matching module and capstone proof route
-3. inspect the owning boundary
-4. apply the narrowest repair that restores build truth
-
-This order keeps the course aligned with real maintenance work instead of theatrical
-refactoring.
+That order keeps the fix anchored to build truth instead of style preferences.
 
 [Back to top](#top)
 
 ---
 
-## Best Companion Pages
+## Companion pages
 
 Use these with the atlas:
 
-* [`concept-index.md`](concept-index.md) for where the idea is taught in full
-* [`incident-ladder.md`](incident-ladder.md) for operational diagnosis order
-* [`capstone-map.md`](../capstone/capstone-map.md) for module-aware capstone routing
-* [`repro-catalog.md`](../capstone/repro-catalog.md) for concrete failure-class examples
+- [`incident-ladder.md`](incident-ladder.md) for debugging order under pressure
+- [`concept-index.md`](concept-index.md) for where the idea is taught in full
+- [`capstone-map.md`](../capstone/capstone-map.md) for module-aware capstone routing
+- [`repro-catalog.md`](../capstone/repro-catalog.md) for the curated failure pack
 
 [Back to top](#top)
