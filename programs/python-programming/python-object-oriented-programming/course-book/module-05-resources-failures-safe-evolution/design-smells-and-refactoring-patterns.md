@@ -72,7 +72,7 @@ For education, always connect:
 - failure mode: “invalid active rules slip into evaluation”
 - refactor: “typestate + domain invariants”
 
-This helps learners see design as cause-and-effect, not taste.
+This helps you see design as cause-and-effect, not taste.
 
 ## Practical Guidelines
 

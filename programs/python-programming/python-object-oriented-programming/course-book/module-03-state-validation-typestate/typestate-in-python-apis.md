@@ -98,7 +98,7 @@ This mirrors the DTO → domain pattern (M03C26).
 
 ## 5. Teachability: Your Types Become Documentation
 
-A learner reading:
+Someone reading:
 
 ```python
 def evaluate(rule: ActiveRule, ...) -> ...
@@ -108,7 +108,7 @@ immediately learns:
 - only active rules are evaluatable,
 - state is not a comment; it is structural.
 
-This is one of the strongest pedagogical arguments for typestate in Python.
+This is one of the strongest clarity arguments for typestate in Python.
 
 ## Practical Guidelines
 

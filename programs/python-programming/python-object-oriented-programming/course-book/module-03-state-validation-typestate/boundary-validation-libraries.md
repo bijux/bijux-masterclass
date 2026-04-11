@@ -104,7 +104,7 @@ Domain errors should be precise and stable:
 Keep translation explicit:
 - boundary catches and formats domain errors if needed.
 
-This separation improves pedagogy: learners can see where “bad input” ends and “domain integrity” begins.
+This separation improves clarity: you can see where “bad input” ends and “domain integrity” begins.
 
 ## Practical Guidelines
 

@@ -55,7 +55,7 @@ from .domain.types import MetricName, Threshold
 
 Callers import from the facade, not from deep internals.
 
-This reduces coupling and improves teachability (learners see “the surface”, not the whole engine).
+This reduces coupling and improves clarity because you can see “the surface”, not the whole engine.
 
 ## 3. Naming Conventions and Structure
 

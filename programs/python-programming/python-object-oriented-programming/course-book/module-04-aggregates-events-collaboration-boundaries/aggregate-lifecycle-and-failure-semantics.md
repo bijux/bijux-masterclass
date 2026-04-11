@@ -52,7 +52,7 @@ A common pattern:
 - repository save checks the expected version,
 - if mismatch, raise `ConcurrencyConflict`.
 
-Even if you don’t implement it now, teaching it helps learners reason about correctness under concurrency.
+Even if you don’t implement it now, naming it helps you reason about correctness under concurrency.
 
 ## 3. Failure Taxonomy: Domain vs Infrastructure
 
