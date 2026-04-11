@@ -60,3 +60,10 @@ Module 10 finishes with stewardship judgment.
 - Module 10 teaches migration planning, governance rules, and tool-boundary decisions.
 
 Leave this arc able to review a real DVC repository and justify what should change next.
+
+## Route markers
+
+- Read [First-Contact Map](first-contact-map.md) when you need the smallest honest
+  starting route.
+- Read [Mid-Course Map](mid-course-map.md) when Modules 01 to 04 already feel stable and
+  you need the bridge into comparison, collaboration, recovery, and promotion.

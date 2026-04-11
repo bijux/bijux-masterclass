@@ -43,3 +43,8 @@ Before the first technical module, you should be able to answer:
 - what this course treats as the core promises of a trustworthy DVC repository
 - why the capstone is executable corroboration rather than the first thing to read
 - which course arc matches your current pressure: state truth, comparability, promotion, or stewardship
+
+## When to leave this route
+
+Move to [mid-course-map.md](mid-course-map.md) once Modules 01 to 04 feel stable and the
+main question becomes comparison meaning, collaboration trust, recovery, or promotion.
