@@ -44,7 +44,7 @@ In real investigations, the practical precedence ladder is usually:
 
 There is one important exception: `-e` lets the environment outrank ordinary makefile
 assignments. That is why `-e` belongs in the "be suspicious" bucket. It changes the
-precedence rules learners are trying to reason about.
+precedence rules you are trying to reason about.
 
 ## Flavor answers "how is this stored?"
 
@@ -87,13 +87,13 @@ can observe a different world if one of the referenced values changes.
 
 If you do not need that dynamism, you are paying for complexity without getting value.
 
-## The operators learners keep meeting
+## The operators you keep meeting
 
 | Operator | Meaning | Healthy use | Common failure |
 | --- | --- | --- | --- |
 | `:=` | immediate assignment | fixed paths, sorted source lists, computed defaults | rarely the problem |
 | `=` | deferred assignment | true laziness, advanced indirection | value changes later in ways nobody expected |
-| `?=` | assign only if unset | configurable defaults | learner forgets something already set the variable |
+| `?=` | assign only if unset | configurable defaults | you forget something already set the variable |
 | `+=` | append | extending a stable list | duplicates or recursive growth when combined with `=` |
 | `!=` | shell assignment | rare integration edge cases | hidden inputs and parse-time side effects |
 

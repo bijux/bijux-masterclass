@@ -13,7 +13,7 @@ Strong answers in Module 04 do not merely name a feature. They explain:
 The strongest answer starts with `make --trace app` because the immediate question is "why
 did this run?" `--trace` is the cleanest first route to the causal edge or rule location.
 
-A strong second command is `make -p` or `make -q app`, depending on what the learner is
+A strong second command is `make -p` or `make -q app`, depending on what you are
 trying to settle next:
 
 - `-p` if the dispute is about the evaluated rule or variable world

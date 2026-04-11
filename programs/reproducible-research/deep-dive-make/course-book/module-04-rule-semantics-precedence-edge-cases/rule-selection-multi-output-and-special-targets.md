@@ -51,7 +51,7 @@ Example:
 	$(CC) -c $< -o $@
 ```
 
-Now a learner has to ask which rule Make will choose and why. If the answer is "I think it
+Now you have to ask which rule Make will choose and why. If the answer is "I think it
 uses the second one," the design is already too murky.
 
 The healthy fix is usually to make the patterns non-overlapping or to use explicit/static
@@ -236,7 +236,7 @@ clean:
 	rm -f api.h api.json
 ```
 
-Now imagine the generator updates both files. Ask the learner:
+Now imagine the generator updates both files. Ask yourself:
 
 - what guarantees one invocation under `-j4`
 - what path tells Make the publication completed as one event

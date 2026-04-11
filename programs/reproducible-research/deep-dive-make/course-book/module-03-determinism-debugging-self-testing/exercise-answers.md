@@ -16,7 +16,7 @@ pulling in temporary files or by allowing system-dependent ordering.
 A strong answer quotes the actual `--trace` line that names the prerequisite reason rather
 than paraphrasing from memory. The point is to let Make supply the explanation.
 
-If a learner adds the target name and the causal relationship in plain language, that is
+If you add the target name and the causal relationship in plain language, that is
 exactly the right level of understanding for this module.
 
 ## Exercise 3: Define the CI contract

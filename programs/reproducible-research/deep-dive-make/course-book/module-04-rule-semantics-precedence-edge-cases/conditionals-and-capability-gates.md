@@ -123,7 +123,7 @@ $(error python3 is required to generate the API manifest)
 endif
 ```
 
-This is kinder to the learner than letting the build wander into a broken state later.
+This is kinder to you than letting the build wander into a broken state later.
 
 ## A small example with Make version gates
 
@@ -232,7 +232,7 @@ explicit.
 
 ### "I cannot tell why this branch was taken"
 
-That means the condition is not inspectable enough. A learner should be able to print the
+That means the condition is not inspectable enough. You should be able to print the
 deciding variable and discuss it in plain language.
 
 ## A review question that improves conditionals fast

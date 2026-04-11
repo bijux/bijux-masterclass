@@ -60,7 +60,7 @@ The first says the file is required. If it is missing, the build definition is i
 The second says the file is optional. If it is missing, keep going.
 
 That distinction matters because optional files should only be optional when correctness
-does not depend on them. A learner-local configuration file is a good candidate for
+does not depend on them. A local reader-specific configuration file is a good candidate for
 `-include`. A required public rules file is not.
 
 ## The restart model in plain language
@@ -196,7 +196,7 @@ app.o: app.c config.h
 ```
 
 If `config.h` exists in more than one place, or if the search order changes, the build may
-still "work" while the learner loses track of which file actually supplied the input.
+still "work" while you lose track of which file actually supplied the input.
 
 That is why this course prefers explicit paths:
 

@@ -22,7 +22,7 @@ Assume a repository with these facts:
 - a generator produces both `api.h` and `api.json`
 - the project uses a search path because headers exist in both `include/` and `generated/`
 
-The learner reports three symptoms:
+Suppose you report three symptoms:
 
 1. `make all` succeeds, but `make -q all` still returns `1`
 2. `make -j4 all` sometimes logs the generator twice
@@ -90,9 +90,9 @@ make --trace all
 Imagine the trace points back to `mk/generated-config.mk`. That tells us the incident is
 not about the final recipe first. It is about an input that shapes evaluation itself.
 
-This is an important emotional shift for learners. When the binary is the thing that
-looks wrong, they instinctively inspect the link line first. The trace teaches them to
-follow causality instead of visible pain.
+This is an important emotional shift. When the binary is the thing that looks wrong, it is
+easy to inspect the link line first. The trace teaches you to follow causality instead of
+visible pain.
 
 ## Step 3: inspect the included file contract
 
@@ -128,7 +128,7 @@ atomically.
 
 ## Step 4: explain the variable disagreement
 
-The learner also said CI uses different flags.
+You also said CI uses different flags.
 
 Do not inspect the full recipe yet. Ask the variable questions from Core 2:
 
@@ -192,7 +192,7 @@ This repair does three things:
 
 ## Step 5: repair the multi-output generator
 
-The learner saw duplicate generator logs under `-j4`:
+You saw duplicate generator logs under `-j4`:
 
 ```make
 api.h api.json: gen_api.py schema.yml
@@ -236,7 +236,7 @@ The build also used:
 VPATH := include generated
 ```
 
-If both directories can contain `api.h`, the learner has to remember the search policy to
+If both directories can contain `api.h`, you have to remember the search policy to
 know which file `main.o` really depends on.
 
 That is unnecessary cognitive load. Prefer the explicit path:
@@ -303,9 +303,9 @@ flowchart TD
 This is why the module is organized as five cores and then a worked example. The example is
 not extra material. It is where the module becomes believable.
 
-## What the learner should say at the end
+## What you should say at the end
 
-A strong learner summary sounds like this:
+A strong summary sounds like this:
 
 > The build failed to converge because a generated include wrote a fresh timestamp on every
 > run. CI flag drift came from environment precedence under `-e`. Parallel duplication came

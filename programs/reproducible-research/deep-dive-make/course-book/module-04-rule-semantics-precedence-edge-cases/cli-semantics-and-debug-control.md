@@ -129,7 +129,7 @@ truth is broken.
 
 ## A better incident loop
 
-When a learner says "Make is being weird," the usual issue is not weirdness. The issue is
+When you say "Make is being weird," the usual issue is not weirdness. The issue is
 that the investigation has no order. Use this loop instead:
 
 1. Preview intent with `make -n <target>`.

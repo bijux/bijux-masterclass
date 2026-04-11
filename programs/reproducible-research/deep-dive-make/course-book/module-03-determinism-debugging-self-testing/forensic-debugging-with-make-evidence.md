@@ -16,7 +16,7 @@ That order matters because it keeps the explanation grounded in the evaluated gr
 
 ## Why the order matters
 
-Learners often jump straight to adding `echo` lines or rewriting a recipe. That tends to
+It is common to jump straight to adding `echo` lines or rewriting a recipe. That tends to
 mix symptoms with causes. The ladder above forces a cleaner sequence:
 
 - inspect the intended work

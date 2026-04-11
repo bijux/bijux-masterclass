@@ -11,7 +11,7 @@ Each exercise asks for three things:
 
 ## Exercise 1: Choose the right CLI probe
 
-A learner says:
+Suppose you say:
 
 > "`app` rebuilt, and I do not know whether the reason was a stale input, a phony target,
 > or a generated include."
@@ -44,7 +44,7 @@ What to hand in:
 ## Exercise 3: Repair a generated-include loop
 
 A build generates `mk/generated-config.mk`, includes it, and rewrites it on every run with
-a fresh timestamp. The learner reports that the build never seems to settle.
+a fresh timestamp. You report that the build never seems to settle.
 
 Explain why that happens and redesign the rule so the included file converges.
 
