@@ -60,3 +60,11 @@ Modules 09 to 10 finish with long-lived ownership judgment.
 - Module 10 teaches migration, governance, and tool-boundary decisions.
 
 Leave this arc able to review a real Make system and justify what should change next.
+
+## Route markers
+
+- Read [First-Contact Map](first-contact-map.md) when you need the smallest honest
+  starting route.
+- Read [Mid-Course Map](mid-course-map.md) when Modules 01 to 03 already feel stable and
+  you need the bridge into semantics under pressure, hardening, release trust, and
+  incidents.

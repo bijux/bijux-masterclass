@@ -37,7 +37,7 @@ properties real over time.
 | --- | --- |
 | what journey does the whole course take | [course-map.md](course-map.md) |
 | what should my first session look like | [first-contact-map.md](first-contact-map.md) |
-| how should I study this without turning it into passive reading | [how-to-study-this-course.md](how-to-study-this-course.md) |
+| how should I bridge from graph foundations into hardening, release, and incident pressure | [mid-course-map.md](mid-course-map.md) |
 | which recurring terms matter before Module 01 | [glossary.md](glossary.md) |
 
 ## What this course is trying to build
@@ -65,6 +65,6 @@ the concept you are studying.
 
 - [course-map.md](course-map.md)
 - [first-contact-map.md](first-contact-map.md)
+- [mid-course-map.md](mid-course-map.md)
 - [how-to-study-this-course.md](how-to-study-this-course.md)
 - [glossary.md](glossary.md)
-
