@@ -4,7 +4,7 @@ audience: mixed
 type: index
 status: canonical
 owner: bijux-masterclass-docs
-last_reviewed: 2026-04-04
+last_reviewed: 2026-04-11
 ---
 
 # Reproducible Research
@@ -13,8 +13,8 @@ This family collects programs about how systems declare state, build graphs, pub
 artifacts, and recover trustworthy results after change or failure.
 
 <div class="bijux-callout">
-  Expand a program in the sidebar to browse its ordered course and capstone set. The
-  overview routes here help you choose; the sidebar holds the full library.
+  Use this page when you are choosing between the reproducible-research programs. The
+  sidebar exposes the full ordered course and capstone tree for each program directly underneath it.
 </div>
 
 ## Family Maps
@@ -50,29 +50,26 @@ flowchart LR
 
 ## Program Routes
 
-### [Deep Dive Make](deep-dive-make.md)
+### [Deep Dive Make](deep-dive-make/index.md)
 
-- Local course home: [Deep Dive Make course home](../library/reproducible-research/deep-dive-make/index.md)
-- Learner entry: [Start Here](../library/reproducible-research/deep-dive-make/guides/start-here.md)
-- Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-make/guides/pressure-routes.md)
-- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-make/guides/module-promise-map.md)
-- Capstone guide: [Capstone docs](../library/reproducible-research/deep-dive-make/capstone-docs/index.md)
+- Learner entry: [Start Here](deep-dive-make/guides/start-here.md)
+- Pressure route: [Pressure Routes](deep-dive-make/guides/pressure-routes.md)
+- Promise review: [Module Promise Map](deep-dive-make/guides/module-promise-map.md)
+- Capstone guide: [Capstone docs](deep-dive-make/capstone-docs/index.md)
 
-### [Deep Dive Snakemake](deep-dive-snakemake.md)
+### [Deep Dive Snakemake](deep-dive-snakemake/index.md)
 
-- Local course home: [Deep Dive Snakemake course home](../library/reproducible-research/deep-dive-snakemake/index.md)
-- Learner entry: [Start Here](../library/reproducible-research/deep-dive-snakemake/guides/start-here.md)
-- Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-snakemake/guides/pressure-routes.md)
-- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-snakemake/guides/module-promise-map.md)
-- Capstone guide: [Capstone docs](../library/reproducible-research/deep-dive-snakemake/capstone-docs/index.md)
+- Learner entry: [Start Here](deep-dive-snakemake/guides/start-here.md)
+- Pressure route: [Pressure Routes](deep-dive-snakemake/guides/pressure-routes.md)
+- Promise review: [Module Promise Map](deep-dive-snakemake/guides/module-promise-map.md)
+- Capstone guide: [Capstone docs](deep-dive-snakemake/capstone-docs/index.md)
 
-### [Deep Dive DVC](deep-dive-dvc.md)
+### [Deep Dive DVC](deep-dive-dvc/index.md)
 
-- Local course home: [Deep Dive DVC course home](../library/reproducible-research/deep-dive-dvc/index.md)
-- Learner entry: [Start Here](../library/reproducible-research/deep-dive-dvc/guides/start-here.md)
-- Pressure route: [Pressure Routes](../library/reproducible-research/deep-dive-dvc/guides/pressure-routes.md)
-- Promise review: [Module Promise Map](../library/reproducible-research/deep-dive-dvc/guides/module-promise-map.md)
-- Capstone guide: [Capstone docs](../library/reproducible-research/deep-dive-dvc/capstone-docs/index.md)
+- Learner entry: [Start Here](deep-dive-dvc/guides/start-here.md)
+- Pressure route: [Pressure Routes](deep-dive-dvc/guides/pressure-routes.md)
+- Promise review: [Module Promise Map](deep-dive-dvc/guides/module-promise-map.md)
+- Capstone guide: [Capstone docs](deep-dive-dvc/capstone-docs/index.md)
 
 <div class="bijux-panel-grid">
   <div class="bijux-panel">

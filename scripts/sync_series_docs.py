@@ -23,6 +23,32 @@ def should_skip(path: Path) -> bool:
     return any(part in SKIP_PARTS for part in path.parts)
 
 
+def family_dirs() -> list[Path]:
+    return sorted(path for path in PROGRAMS_DIR.iterdir() if path.is_dir())
+
+
+def preserve_library_indexes() -> None:
+    TARGET_ROOT.mkdir(parents=True, exist_ok=True)
+    expected_families = {family_dir.name for family_dir in family_dirs()}
+
+    for child in sorted(TARGET_ROOT.iterdir()):
+        if child.is_file():
+            if child.name != "index.md":
+                child.unlink()
+            continue
+        if child.name not in expected_families:
+            shutil.rmtree(child)
+
+    for family_name in expected_families:
+        family_root = TARGET_ROOT / family_name
+        family_root.mkdir(parents=True, exist_ok=True)
+        for child in sorted(family_root.iterdir()):
+            if child.is_dir():
+                shutil.rmtree(child)
+            elif child.name != "index.md":
+                child.unlink()
+
+
 def copy_markdown_tree(source_dir: Path, target_dir: Path) -> None:
     for source_path in sorted(source_dir.rglob("*.md")):
         relative_path = source_path.relative_to(source_dir)
@@ -35,12 +61,22 @@ def copy_markdown_tree(source_dir: Path, target_dir: Path) -> None:
 
 
 def main() -> int:
-    shutil.rmtree(TARGET_ROOT, ignore_errors=True)
-    TARGET_ROOT.mkdir(parents=True, exist_ok=True)
+    preserve_library_indexes()
 
-    for family_dir in sorted(PROGRAMS_DIR.iterdir()):
-        if not family_dir.is_dir():
-            continue
+    required_indexes = [TARGET_ROOT / "index.md"]
+    for family_dir in family_dirs():
+        required_indexes.append(TARGET_ROOT / family_dir.name / "index.md")
+
+    missing_indexes = [
+        path.relative_to(REPO_ROOT)
+        for path in required_indexes
+        if not path.is_file()
+    ]
+    if missing_indexes:
+        missing = ", ".join(str(path) for path in missing_indexes)
+        raise FileNotFoundError(f"missing synced library index source: {missing}")
+
+    for family_dir in family_dirs():
         for program_dir in sorted(family_dir.iterdir()):
             if not program_dir.is_dir():
                 continue

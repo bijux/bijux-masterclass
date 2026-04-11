@@ -4,7 +4,7 @@ audience: mixed
 type: index
 status: canonical
 owner: bijux-masterclass-docs
-last_reviewed: 2026-04-04
+last_reviewed: 2026-04-11
 ---
 
 # Python Programming
@@ -14,8 +14,8 @@ how to keep a design understandable when a codebase grows more state, more abstr
 or more runtime power.
 
 <div class="bijux-callout">
-  Expand a program in the sidebar to open its full course and capstone tree. The overview
-  pages below are the short routing layer, not the whole library.
+  Use this page when you are choosing between the Python programs. The sidebar exposes
+  the full ordered course and capstone tree for each program directly underneath it.
 </div>
 
 ## Family Maps
@@ -46,30 +46,27 @@ flowchart LR
 
 - Start with object-oriented programming when you need explicit roles, aggregates, and long-lived change boundaries.
 - Start with functional programming when you need purity, pipeline discipline, effect isolation, and async coordination.
-- Start with meta-programming when you need runtime hooks but want to stay honest about invariants and debugging cost.
+- Start with metaprogramming when you need runtime hooks but want to stay honest about invariants and debugging cost.
 - Move back through this family page when you want to compare how the three programs answer similar design pressures differently.
 
 ## Program Routes
 
-### [Python Object-Oriented Programming](python-object-oriented-programming.md)
+### [Python Object-Oriented Programming](python-object-oriented-programming/index.md)
 
-- Local course home: [Course home](../library/python-programming/python-object-oriented-programming/index.md)
-- Learner entry: [Start Here](../library/python-programming/python-object-oriented-programming/guides/start-here.md)
-- Promise review: [Module Promise Map](../library/python-programming/python-object-oriented-programming/guides/module-promise-map.md)
-- Pressure route: [Pressure Routes](../library/python-programming/python-object-oriented-programming/guides/pressure-routes.md)
-- Capstone guide: [Capstone docs](../library/python-programming/python-object-oriented-programming/capstone-docs/index.md)
+- Learner entry: [Start Here](python-object-oriented-programming/guides/start-here.md)
+- Promise review: [Module Promise Map](python-object-oriented-programming/guides/module-promise-map.md)
+- Pressure route: [Pressure Routes](python-object-oriented-programming/guides/pressure-routes.md)
+- Capstone guide: [Capstone docs](python-object-oriented-programming/capstone-docs/index.md)
 
-### [Python Functional Programming](python-functional-programming.md)
+### [Python Functional Programming](python-functional-programming/index.md)
 
-- Local course home: [Course home](../library/python-programming/python-functional-programming/index.md)
-- Learner entry: [Orientation](../library/python-programming/python-functional-programming/module-00-orientation/index.md)
-- Capstone guide: [Capstone docs](../library/python-programming/python-functional-programming/capstone-docs/index.md)
+- Learner entry: [Orientation](python-functional-programming/module-00-orientation/index.md)
+- Capstone guide: [Capstone docs](python-functional-programming/capstone-docs/index.md)
 
-### [Python Meta-Programming](python-meta-programming.md)
+### [Python Metaprogramming](python-meta-programming/index.md)
 
-- Local course home: [Course home](../library/python-programming/python-meta-programming/index.md)
-- Learner entry: [Orientation](../library/python-programming/python-meta-programming/module-00-orientation/index.md)
-- Capstone guide: [Capstone docs](../library/python-programming/python-meta-programming/capstone-docs/index.md)
+- Learner entry: [Orientation](python-meta-programming/module-00-orientation/index.md)
+- Capstone guide: [Capstone docs](python-meta-programming/capstone-docs/index.md)
 
 <div class="bijux-panel-grid">
   <div class="bijux-panel">

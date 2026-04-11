@@ -20,7 +20,7 @@ commands when you need them.
 
 <div class="bijux-callout">
   <strong>Use the left navigation as the full library.</strong>
-  The family overview pages are only the front door. Each program now expands into its
+  The family indexes now live inside the synced library. Each program expands into its
   full ordered course tree and capstone guide set directly inside the root docs site.
 </div>
 
@@ -50,8 +50,8 @@ graph TD
 
 ```mermaid
 flowchart LR
-  home["Choose a family"] --> family["Read the family overview"]
-  family --> program["Open one program page"]
+  home["Choose a family"] --> family["Read the family index"]
+  family --> program["Open one course home"]
   program --> course["Enter the local course home"]
   course --> capstone["Cross-check the capstone guide"]
   capstone --> review["Return to the catalog when switching programs"]
@@ -59,16 +59,16 @@ flowchart LR
 
 ## How to Use This Site
 
-- Start with the family page when you know the problem space but not the specific program.
-- Start with the program page when you already know which course you want.
+- Start with the family index when you know the problem space but not the specific program.
+- Start with the course home when you already know which program you want.
 - Use the expanded sidebar sections to move through the full ordered course and capstone pages without leaving the root site.
-- Use the local course-home and capstone links on each program page when you want the shortest entry route.
+- Use the local course-home and capstone links in the library when you want the shortest entry route.
 - Use the root search when you want one result list across all six course books and capstone guides.
 
 <div class="bijux-panel-grid">
   <div class="bijux-panel">
-    <h3>Family Overviews</h3>
-    <p>Use the family pages to decide which course matches the design pressure you are facing.</p>
+    <h3>Family Indexes</h3>
+    <p>Use the family indexes to decide which course matches the design pressure you are facing.</p>
   </div>
   <div class="bijux-panel">
     <h3>Program Trees</h3>
@@ -82,23 +82,23 @@ flowchart LR
 
 ## Program Families
 
-### [Reproducible Research](reproducible-research/index.md)
+### [Reproducible Research](library/reproducible-research/index.md)
 
 Courses about build graphs, workflow engines, data state, and long-lived reproducibility
 contracts:
 
-- [Deep Dive Make](reproducible-research/deep-dive-make.md)
-- [Deep Dive Snakemake](reproducible-research/deep-dive-snakemake.md)
-- [Deep Dive DVC](reproducible-research/deep-dive-dvc.md)
+- [Deep Dive Make](library/reproducible-research/deep-dive-make/index.md)
+- [Deep Dive Snakemake](library/reproducible-research/deep-dive-snakemake/index.md)
+- [Deep Dive DVC](library/reproducible-research/deep-dive-dvc/index.md)
 
-### [Python Programming](python-programming/index.md)
+### [Python Programming](library/python-programming/index.md)
 
 Courses about Python semantics, runtime boundaries, and maintainable design under real
 change pressure:
 
-- [Python Object-Oriented Programming](python-programming/python-object-oriented-programming.md)
-- [Python Functional Programming](python-programming/python-functional-programming.md)
-- [Python Meta-Programming](python-programming/python-meta-programming.md)
+- [Python Object-Oriented Programming](library/python-programming/python-object-oriented-programming/index.md)
+- [Python Functional Programming](library/python-programming/python-functional-programming/index.md)
+- [Python Meta-Programming](library/python-programming/python-meta-programming/index.md)
 
 ## Local Commands
 

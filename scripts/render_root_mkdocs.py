@@ -49,29 +49,17 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
     generated: list[Any] = [source_nav[0]]
 
     for family_item in source_nav[1:]:
-        family_name, entries = next(iter(family_item.items()))
-        family_slug = entries[0]["Overview"].split("/")[0]
-        family_nav: list[Any] = [{"Home": entries[0]["Overview"]}]
-
-        for program_item in entries[1:]:
-            program_name, overview_path = next(iter(program_item.items()))
-            program_slug = Path(overview_path).stem
-            program_root = LIBRARY_ROOT / family_slug / program_slug
-            course_prefix = f"library/{family_slug}/{program_slug}"
-            family_nav.append(
-                {
-                    program_name: [
-                        {"Home": overview_path},
-                        *build_tree_nav(
-                            program_root,
-                            course_prefix,
-                            include_root_home=False,
-                        ),
-                    ]
-                }
-            )
-
-        generated.append({family_name: family_nav})
+        family_name, family_home = next(iter(family_item.items()))
+        family_slug = Path(family_home).parent.name
+        family_root = LIBRARY_ROOT / family_slug
+        generated.append(
+            {
+                family_name: build_tree_nav(
+                    family_root,
+                    f"library/{family_slug}",
+                )
+            }
+        )
 
     return generated
 

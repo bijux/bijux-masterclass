@@ -43,7 +43,7 @@ class PageCheck:
 
 PAGE_CHECKS = (
     PageCheck(
-        path="reproducible-research/deep-dive-make/index.html",
+        path="library/reproducible-research/deep-dive-make/index.html",
         course_title="Deep Dive Make",
         current_label="Home",
         sidebar_labels=("Home",),
@@ -123,7 +123,7 @@ PAGE_CHECKS = (
         sidebar_absent_labels=("Reference", "M01"),
     ),
     PageCheck(
-        path="python-programming/python-functional-programming/index.html",
+        path="library/python-programming/python-functional-programming/index.html",
         course_title="Python Functional Programming",
         current_label="Home",
         sidebar_labels=("Home",),
