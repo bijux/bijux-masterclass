@@ -78,7 +78,7 @@ can inspect, trust, and extend without folklore.
 | [Module 04](module-04-scaling-workflows-interface-boundaries/index.md) | Scaling Workflows and Interface Boundaries | teaches rule-family splits, module interfaces, file APIs, and scaling review gates |
 | [Module 05](module-05-software-boundaries-reproducible-rules/index.md) | Software Boundaries and Reproducible Rules | teaches software ownership, runtime contracts, provenance, and rebuild judgment |
 | [Module 06](module-06-publishing-downstream-contracts/index.md) | Publishing and Downstream Contracts | teaches public bundle design, compatibility discipline, integrity evidence, and publish review |
-| [Module 07](module-07-workflow-architecture-file-apis/index.md) | Workflow Architecture and File APIs | organizes the repository so ownership stays visible |
+| [Module 07](module-07-workflow-architecture-file-apis/index.md) | Workflow Architecture and File APIs | teaches repository layers, file-api boundaries, helper placement, and architecture review |
 | [Module 08](module-08-operating-contexts-execution-policy/index.md) | Operating Contexts and Execution Policy | compares local, CI, and cluster policy without semantic drift |
 | [Module 09](module-09-performance-observability-incident-response/index.md) | Performance, Observability, and Incident Response | reviews logs, benchmarks, and incidents with explicit evidence |
 | [Module 10](module-10-governance-migration-tool-boundaries/index.md) | Governance, Migration, and Tool Boundaries | finishes with stewardship and tool-boundary judgment |
