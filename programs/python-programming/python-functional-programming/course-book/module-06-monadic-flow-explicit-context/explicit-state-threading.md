@@ -1,6 +1,5 @@
 # Explicit State Threading
 
-
 <!-- page-maps:start -->
 ## Concept Position
 
@@ -14,89 +13,64 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+  mutation["Start with a local counter, cache, or accumulator"] --> thread["Return the updated state instead of mutating in place"]
+  thread --> compose["Let and_then pass the new state to the next step"]
+  compose --> review["Review both the value and the final state together"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+State is useful when a pipeline needs local evolving data but you still want the flow to
+stay pure and reviewable.
 
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
+## Core Question
 
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
+How do you model local state changes as explicit input and output so that counters,
+accumulators, and progress updates remain easy to test?
 
-**Core question**  
-How do you handle the last remaining effect — local mutable state — in a pure, composable, testable way by explicitly threading state through the pipeline, without ever using a global or in-place mutation again?
+## Start With the Real Problem
 
-This is the final effect-encoding pattern. After this core, every pipeline you write will be completely pure, referentially transparent, and mechanically proven correct — while still being able to count tokens, accumulate metadata, or track progress.
+Students usually meet State after trying one of these patterns:
 
-**Audience**: Engineers who need counters, accumulators, or temporary mutable state inside pipelines but refuse to pay the price of globals or hidden mutation.
+- a helper mutates a shared counter
+- several functions pass `(value, state)` by hand
+- local bookkeeping starts to overshadow the business steps
 
-**Outcome**
-1. You will write every stateful pipeline as a pure `State[S, T]`.
-2. You will thread state automatically with `.and_then`.
-3. You will have Hypothesis proof that your State compositions satisfy the monad laws — meaning refactoring is always safe.
+The problem is not that bookkeeping exists. The problem is that hidden mutation and
+manual threading both make the pipeline harder to read.
 
-## Why State Is the Final Effect
+## State in One Sentence
 
-- **get / put / modify**: Read, write, or update the current state — pure because a new state is always returned.
-- **and_then**: Threads the state automatically through dependent steps — exactly like Reader, but the "environment" can change.
-- **State + Result**: The real daily driver — state + error handling in one pure value.
-
-Use State **only** when you truly need to accumulate or mutate something across steps.  
-For read-only dependencies, use Reader (M06C04).  
-In practice, most real pipelines are layered: `Reader[Config, State[PipelineState, Result[T, ErrInfo]]]`.
-
-## 1. Laws & Invariants (machine-checked in CI)
-
-| Law                 | Formal Statement                                                            | Why it matters                                            |
-|---------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Left Identity       | `pure(x).and_then(f) == f(x)`                                               | Safe to lift plain values                                 |
-| Right Identity      | `s.and_then(pure) == s`                                                     | Safe to extract sub-pipelines                             |
-| Associativity       | `s.and_then(f).and_then(g) == s.and_then(lambda x: f(x).and_then(g))`       | Grouping never changes meaning                            |
-| Get/Put Retrieval   | `get().and_then(put) == pure(None)`                                         | Get then put restores original state                      |
-| Put/Get             | `put(s).and_then(lambda _: get()) == put(s).map(lambda _: s)`               | Put then get returns the new value                        |
-| Modify Identity     | `modify(lambda s: s) == pure(None)`                                         | Modifying with identity does nothing                      |
-
-All laws verified with Hypothesis. A single counterexample breaks CI.
-
-## 2. Public API – State is a one-field dataclass (mypy --strict clean)
+`State[S, T]` is a pure function `S -> tuple[T, S]`: it takes a current state, returns a
+value, and also returns the next state.
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/state.py – end-of-Module-06 (mypy --strict clean target)
-
-from __future__ import annotations
-from dataclasses import dataclass
-from typing import Generic, Callable, TypeVar
-
-S = TypeVar("S")   # State type
-T = TypeVar("T")
-U = TypeVar("U")
-
 @dataclass(frozen=True)
 class State(Generic[S, T]):
     run: Callable[[S], tuple[T, S]]
 
-    def map(self, f: Callable[[T], U]) -> "State[S, U]":
-        def run(s: S) -> tuple[U, S]:
+    def map(self, f: Callable[[T], U]) -> State[S, U]:
+        def _run(s: S) -> tuple[U, S]:
             value, new_s = self.run(s)
             return f(value), new_s
-        return State(run)
 
-    def and_then(self, f: Callable[[T], "State[S, U]"]) -> "State[S, U]":
-        def run(s: S) -> tuple[U, S]:
+        return State(_run)
+
+    def and_then(self, f: Callable[[T], State[S, U]]) -> State[S, U]:
+        def _run(s: S) -> tuple[U, S]:
             value, new_s = self.run(s)
             return f(value).run(new_s)
-        return State(run)
 
-# Primitives
+        return State(_run)
+```
+
+That is the main idea. Nothing mutates in place. The next state is just another return
+value.
+
+## The Core Helpers
+
+These are the helpers that exist in the repository:
+
+```python
 def pure(x: T) -> State[S, T]:
     return State(lambda s: (x, s))
 
@@ -107,22 +81,51 @@ def put(new_s: S) -> State[S, None]:
     return State(lambda _: (None, new_s))
 
 def modify(f: Callable[[S], S]) -> State[S, None]:
-    return get().and_then(lambda s: put(f(s)))
+    return State(lambda s: (None, f(s)))
 
-# Runner utilities
 def run_state(p: State[S, T], initial: S) -> tuple[T, S]:
     return p.run(initial)
-
-def eval_state(p: State[S, T], initial: S) -> T:
-    return p.run(initial)[0]
-
-def exec_state(p: State[S, T], initial: S) -> S:
-    return p.run(initial)[1]
 ```
 
-That's it. No more primitives needed for daily use.
+For this module, the reading is simple:
 
-## 3. Canonical Style – The Way You Will Actually Write 99% of State Pipelines
+- `get()`: inspect the current state
+- `put(new_s)`: replace it
+- `modify(f)`: derive a new state from the old one
+- `run_state(...)`: execute the whole pipeline
+
+## Before and After
+
+```python
+# BEFORE – manual threading
+def step1(x: int, total: int) -> tuple[int, int]:
+    return x + 1, total + 1
+
+def step2(y: int, total: int) -> tuple[int, int]:
+    return y * 2, total + 1
+
+def pipeline(x: int, total: int) -> tuple[int, int]:
+    y, total1 = step1(x, total)
+    z, total2 = step2(y, total1)
+    return z, total2
+```
+
+```python
+# AFTER – the state rule is carried by the container
+def step1_s(x: int) -> State[int, int]:
+    return modify(lambda total: total + 1).map(lambda _: x + 1)
+
+def step2_s(y: int) -> State[int, int]:
+    return modify(lambda total: total + 1).map(lambda _: y * 2)
+
+pipeline_s = pure(10).and_then(step1_s).and_then(step2_s)
+value, final_total = run_state(pipeline_s, 0)
+```
+
+The business steps are easier to see because the state-threading rule no longer appears
+in every function signature.
+
+## A More Realistic Module 06 Example
 
 ```python
 @dataclass(frozen=True)
@@ -130,124 +133,51 @@ class PipelineState:
     total_tokens: int = 0
     processed_chunks: int = 0
 
-def embed_chunk(chunk: Chunk) -> State[PipelineState, Result[EmbeddedChunk, ErrInfo]]:
-    # NOTE: In this core we deliberately ignore Reader/ports and focus only on the State aspect.
-    # In the real codebase (M07+), this function lives inside a Reader[Config, ...] and uses ports, not globals.
-    def run(st: PipelineState) -> tuple[Result[EmbeddedChunk, ErrInfo], PipelineState]:
-        tokens = tokenize(chunk.text.content)
-        vec = model.encode(tokens)                                 # model from Reader (outer layer)
-        embedded = replace(chunk, embedding=Embedding(vec, current_model))
-
-        new_st = PipelineState(
+def count_tokens(tokens: list[str]) -> State[PipelineState, list[str]]:
+    return modify(
+        lambda st: replace(
+            st,
             total_tokens=st.total_tokens + len(tokens),
             processed_chunks=st.processed_chunks + 1,
         )
-        return Ok(embedded), new_st
-    return State(run)
-
-# Usage
-initial_state = PipelineState()
-(result, final_state) = run_state(embed_chunk(some_chunk), initial_state)
-print(final_state.total_tokens)
+    ).map(lambda _: tokens)
 ```
 
-This is the style you will use every day when you need local mutable state.
+The helper updates the bookkeeping and still returns the original payload so the rest of
+the pipeline can keep working with it.
 
-## 4. Composition When You Need Reusable Steps
+## When State Is Worth It
 
-```python
-def count_tokens(tokens: list[str]) -> State[PipelineState, list[str]]:
-    return (
-        modify(lambda st: replace(st, total_tokens=st.total_tokens + len(tokens)))
-        .and_then(lambda _: pure(tokens))
-    )
+Use State when:
 
-def embed_and_count(chunk: Chunk) -> State[PipelineState, Result[EmbeddedChunk, ErrInfo]]:
-    return (
-        pure(chunk.text.content)
-        .map(tokenize)
-        .and_then(count_tokens)          # accumulates + forwards tokens
-        .map(model.encode)
-        .map(lambda vec: replace(chunk, embedding=Embedding(vec, current_model)))
-        .map(Ok)
-    )
-```
+- the same local state needs to flow through several steps
+- mutating in place would hide important behavior
+- manual `(value, state)` plumbing is starting to dominate the code
 
-## 5. Before → After – Manual Threading vs State
+Do not use State when a single local variable inside one function is enough. Ordinary
+Python is often clearer for one small scope.
 
-```python
-# BEFORE – manual threading (signatures explode)
-def step1(x: int, s: int) -> tuple[int, int]:
-    return x + 1, s + 1
+## What the Laws Buy You
 
-def step2(y: int, s: int) -> tuple[int, int]:
-    return y * 2, s * 2
+The State laws matter because they protect the refactoring freedom around that threaded
+state:
 
-def pipeline(x: int, s: int) -> tuple[int, int]:
-    y, s1 = step1(x, s)
-    z, s2 = step2(y, s1)
-    return z, s2
+- you can regroup stateful steps without changing the result
+- you can extract a helper that updates state and returns a value
+- you can trust that the sequencing rule stays stable while the business logic evolves
 
-# AFTER – pure State, composable
-def step1_s(x: int) -> State[int, int]:
-    return modify(lambda s: s + 1).map(lambda _: x + 1)
+## Review Checklist
 
-def step2_s(y: int) -> State[int, int]:
-    return modify(lambda s: s * 2).map(lambda _: y * 2)
+When reading a State pipeline, ask:
 
-pipeline_s = pure(some_x).and_then(step1_s).and_then(step2_s)
-(value, final_s) = run_state(pipeline_s, initial_s)
-```
+- what information is carried as state from step to step?
+- is the state genuinely shared, or would a local variable be simpler?
+- can I explain the final state without mentally simulating hidden mutation?
 
-Zero manual threading. Zero mutation. Full composability.
+## Practice Prompt
 
-## 6. Property-Based Proofs (capstone/tests/test_state_laws.py)
+Take one mutable counter or accumulator from your codebase and rewrite it as explicit
+state. Then explain whether the new version is better because it is shared across a
+pipeline, not just because it uses a functional abstraction.
 
-```python
-@given(x=st.integers())
-def test_state_left_identity(x):
-    f = lambda n: State(lambda s: (n + 1, s + 1))
-    assert run_state(pure(x).and_then(f), 0) == run_state(f(x), 0)
-
-@given(p=st_states())
-def test_state_associativity(p):
-    f = lambda a: State(lambda s: (a + 1, s + 1))
-    g = lambda b: State(lambda s: (b * 2, s * 2))
-    assert run_state(p.and_then(f).and_then(g), 0) == run_state(p.and_then(lambda x: f(x).and_then(g)), 0)
-
-def test_get_put_retrieval():
-    prog = get().and_then(put)
-    assert run_state(prog, 42) == (None, 42)
-
-def test_put_get():
-    s_val = 42
-    prog1 = put(s_val).and_then(lambda _: get())
-    prog2 = put(s_val).map(lambda _: s_val)
-    assert run_state(prog1, 0) == run_state(prog2, 0)
-```
-
-## 7. Anti-Patterns & Immediate Fixes
-
-| Anti-Pattern              | Symptom                           | Fix                          |
-|---------------------------|-----------------------------------|------------------------------|
-| Global mutable state      | Untestable, race-prone            | Use State + explicit threading |
-| In-place mutation         | Hidden side effects               | Return new state             |
-| Manual state passing      | Signatures explode                | State composes automatically |
-
-## 8. Pre-Core Quiz
-
-1. State replaces…? → **Global mutable variables**  
-2. You read state with…? → **get()**  
-3. You update state with…? → **put() or modify()**  
-4. You run a State with…? → **run_state(p, initial)**  
-5. The golden rule? → **Never mutate in place again**
-
-## 9. Post-Core Exercise
-
-1. Take your largest global-mutable-state pipeline and rewrite it using the `def run(st):` style inside a State.
-2. Add a token counter + processed-chunks counter to an existing embedding pipeline.
-3. Layer State inside Reader from M06C04 — run the same pipeline with two different configs and assert different final states.
-
-**Continue with:** [Error-Typed Flows](../module-06-monadic-flow-explicit-context/error-typed-flows.md)
-
-You have now handled **all three classic effects** (config, failure, state) in a pure, composable way. Every pipeline you write from here on is mathematically pure, fully testable, and proven correct by Hypothesis. The remaining cores are polish and architecture.
+**Continue with:** [Error-Typed Flows](error-typed-flows.md)
