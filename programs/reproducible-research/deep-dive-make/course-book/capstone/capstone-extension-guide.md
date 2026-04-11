@@ -27,7 +27,7 @@ maintenance.
 | discovery or object selection | `capstone/mk/objects.mk` | graph membership should have one owning file |
 | hidden inputs or rebuild state evidence | `capstone/mk/stamps.mk` | state tracking should stay reviewable |
 | proof behavior | `capstone/tests/run.sh` | proof belongs to the harness, not to prose |
-| a new failure specimen | `capstone/repro/` plus the learner-facing repro pages | failure teaching should stay isolated from the healthy build |
+| a new failure specimen | `capstone/repro/` plus [Capstone Proof Guide](capstone-proof-guide.md) | failure teaching should stay isolated from the healthy build |
 
 ## Good capstone changes
 
@@ -73,4 +73,3 @@ make PROGRAM=reproducible-research/deep-dive-make proof
 ```
 
 Those four routes cover entry, public contract, executable proof, and steward review.
-

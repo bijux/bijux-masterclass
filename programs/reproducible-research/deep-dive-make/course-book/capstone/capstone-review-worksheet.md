@@ -54,7 +54,7 @@ Best evidence:
 
 - `capstone/Makefile`
 - `capstone/repro/`
-- [Repro Catalog](repro-catalog.md)
+- [Capstone Proof Guide](capstone-proof-guide.md)
 
 ## Architecture and ownership
 
@@ -96,3 +96,11 @@ Finish with one of these judgments:
 If your conclusion is longer than a short paragraph, the review probably drifted away from
 one bounded question.
 
+## Failure-study prompts
+
+Use these when the review question is about a broken specimen rather than the healthy
+build:
+
+- Which output or directory has more than one effective writer?
+- Which edge should affect staleness rather than only sequencing?
+- Which repair would make the graph more truthful instead of only hiding the symptom?
