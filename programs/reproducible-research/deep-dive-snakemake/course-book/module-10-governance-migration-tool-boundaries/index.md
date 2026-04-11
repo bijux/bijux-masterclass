@@ -110,7 +110,7 @@ Best corroboration surfaces for this module:
 - `capstone/docs/FILE_API.md`
 - `capstone/docs/PUBLISH_REVIEW_GUIDE.md`
 - `capstone/docs/PROFILE_AUDIT_GUIDE.md`
-- `capstone/docs/REVIEW_ROUTE_GUIDE.md`
+- `capstone/docs/INDEX.md`
 - `capstone/Makefile`
 
 Useful proof route:

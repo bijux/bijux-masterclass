@@ -38,7 +38,7 @@ first.
 | the published boundary is stable and reviewable | `make verify-report` | [File API](FILE_API.md), `verify.json`, `manifest.json`, `provenance.json` |
 | profile differences stay operational instead of semantic | `make profile-audit` | `profiles/*/config.yaml`, dry-run comparisons, [Profile Audit Guide](PROFILE_AUDIT_GUIDE.md) |
 | the workflow stays deterministic across core counts | `make selftest` | `tests/selftest.sh`, published summaries under `publish/v1/` |
-| executed evidence can be reviewed in one place | `make tour` | `run.txt`, `summary.txt`, published artifacts, [Review Route Guide](REVIEW_ROUTE_GUIDE.md) |
+| executed evidence can be reviewed in one place | `make tour` | `run.txt`, `summary.txt`, published artifacts, [TOUR.md](TOUR.md) |
 | one sanctioned multi-bundle proof route exists | `make proof` | `tour`, `verify-report`, and `profile-audit` bundles |
 | the full repository contract still survives clean-room pressure | `make confirm` | `Makefile`, `tests/`, `publish/v1/`, profile surfaces |
 

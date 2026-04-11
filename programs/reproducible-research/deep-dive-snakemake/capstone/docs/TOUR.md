@@ -41,15 +41,15 @@ If the workflow has not been run yet, start with `make walkthrough` instead.
 - `verify.txt` for publish verification output
 - `discovered_samples.json` for the durable checkpoint-resolved sample set
 - `publish-manifest.json`, `summary.json`, `summary.tsv`, `provenance.json`, and `report/index.html` for the published contract
-- copied guides for domain, stage ownership, checkpoint review, publish trust, profile drift, incident review, extension ownership, and exact source routing
+- copied guides for domain, walkthrough, publish trust, profile drift, proof routing, architecture, and extension ownership
 - `bundle-manifest.json` for the inventory of the tour bundle itself
 
 ## Good first reading order
 
 1. `README.md`
-2. `DOMAIN_GUIDE.md` and `WORKFLOW_STAGE_GUIDE.md`
+2. `INDEX.md`, `DOMAIN_GUIDE.md`, and `WALKTHROUGH_GUIDE.md`
 3. `list-rules.txt` and `dryrun.txt`
-4. `CHECKPOINT_GUIDE.md` and `discovered_samples.json`
+4. `discovered_samples.json`, `Snakefile`, and `dryrun.txt`
 5. `summary.txt`, `run.txt`, and `verify.txt`
 6. `publish-manifest.json`, `summary.json`, `summary.tsv`, `provenance.json`, and `report/index.html`
 
@@ -60,5 +60,5 @@ evidence ahead of downstream trust.
 
 - use `PUBLISH_REVIEW_GUIDE.md` when the question is specifically downstream trust
 - use `PROFILE_AUDIT_GUIDE.md` when the question is profile or executor drift
-- use `INCIDENT_REVIEW_GUIDE.md` when the question is determinism or incident diagnosis
-- use `EXACT_SOURCE_GUIDE.md` when you know the question but not the next file
+- use `PROOF_GUIDE.md` when the question is determinism or route selection
+- use `EXTENSION_GUIDE.md` when you know the question but not the owning layer

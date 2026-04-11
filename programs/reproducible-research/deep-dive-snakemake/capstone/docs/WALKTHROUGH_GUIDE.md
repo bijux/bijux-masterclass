@@ -53,8 +53,8 @@ Use `make tour` later when you need executed proof artifacts.
 - `dryrun.txt` explains the declared plan before execution
 - copied profile and config files explain policy and validation inputs
 - copied scripts explain how config and publish checks are enforced
-- [Review Route Guide](REVIEW_ROUTE_GUIDE.md) and [File API](FILE_API.md) explain which
-  route or contract to inspect next
+- [INDEX.md](INDEX.md) and [File API](FILE_API.md) explain which route or contract to
+  inspect next
 
 ---
 
@@ -65,6 +65,5 @@ Use `make tour` later when you need executed proof artifacts.
 3. `route.txt`
 4. `Snakefile` and `list-rules.txt`
 5. `list-rules.txt` and `dryrun.txt`
-6. [File API](FILE_API.md) and [Review Route Guide](REVIEW_ROUTE_GUIDE.md)
+6. [File API](FILE_API.md) and [INDEX.md](INDEX.md)
 7. `commands.txt` and `review-questions.txt`
-

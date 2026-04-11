@@ -66,5 +66,5 @@ decision for the affected surface.
 
 - `workflow/contracts/FILE_API.md` for path-level promises
 - `workflow/REVIEW.md` for the evidence checklist
-- `../CONFIG_CONTRACT_GUIDE.md` for config truth and materialization
+- `../WALKTHROUGH_GUIDE.md` for config truth and materialization in the learner-first route
 - `../PROFILE_AUDIT_GUIDE.md` for executor-policy review

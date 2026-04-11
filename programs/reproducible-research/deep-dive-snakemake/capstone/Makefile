@@ -181,8 +181,7 @@ verify-artifacts: ## Verify publish artifacts exist and are parseable (best-effo
 verify-report: verify ## Write a structured publish verification report
 	@mkdir -p "$(VERIFY_REPORT_DIR)/report"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
-	@cp $(DOCS_DIR)/FILE_API.md "$(VERIFY_REPORT_DIR)/FILE_API.md"
-	@cp $(DOCS_DIR)/PUBLISH_REVIEW_GUIDE.md "$(VERIFY_REPORT_DIR)/PUBLISH_REVIEW_GUIDE.md"
+	@cp $(DOCS_DIR)/*.md "$(VERIFY_REPORT_DIR)/"
 	@cp README.md "$(VERIFY_REPORT_DIR)/README.md"
 	@cp "$(PUBLISH_DIR_ABS)/manifest.json" "$(VERIFY_REPORT_DIR)/manifest.json"
 	@cp "$(PUBLISH_DIR_ABS)/discovered_samples.json" "$(VERIFY_REPORT_DIR)/discovered_samples.json"
@@ -298,15 +297,8 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	$(SNAKEMAKE) --list-rules > "$(WALKTHROUGH_DIR_ABS)/list-rules.txt"
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) -n -p > "$(WALKTHROUGH_DIR_ABS)/dryrun.txt"
 	cp README.md "$(WALKTHROUGH_DIR_ABS)/README.md"
-	cp $(DOCS_DIR)/DOMAIN_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/DOMAIN_GUIDE.md"
-	cp $(DOCS_DIR)/WORKFLOW_STAGE_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/WORKFLOW_STAGE_GUIDE.md"
-	cp $(DOCS_DIR)/CHECKPOINT_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/CHECKPOINT_GUIDE.md"
-	cp $(DOCS_DIR)/EXACT_SOURCE_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/EXACT_SOURCE_GUIDE.md"
-	cp $(DOCS_DIR)/ARCHITECTURE.md "$(WALKTHROUGH_DIR_ABS)/ARCHITECTURE.md"
-	cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/WALKTHROUGH_GUIDE.md"
-	cp $(DOCS_DIR)/PROOF_GUIDE.md "$(WALKTHROUGH_DIR_ABS)/PROOF_GUIDE.md"
+	cp $(DOCS_DIR)/*.md "$(WALKTHROUGH_DIR_ABS)/"
 	cp Snakefile "$(WALKTHROUGH_DIR_ABS)/Snakefile"
-	cp $(DOCS_DIR)/FILE_API.md "$(WALKTHROUGH_DIR_ABS)/FILE_API.md"
 	cp config/config.yaml "$(WALKTHROUGH_DIR_ABS)/config.yaml"
 	cp config/schema.yaml "$(WALKTHROUGH_DIR_ABS)/schema.yaml"
 	cp workflow/rules/common.smk "$(WALKTHROUGH_DIR_ABS)/workflow/rules/common.smk"
@@ -321,17 +313,16 @@ walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundl
 	cp profiles/slurm/config.yaml "$(WALKTHROUGH_DIR_ABS)/profiles/slurm/config.yaml"
 	cp scripts/validate_config.py "$(WALKTHROUGH_DIR_ABS)/scripts/validate_config.py"
 	cp scripts/verify_publish.py "$(WALKTHROUGH_DIR_ABS)/scripts/verify_publish.py"
-	cp $(DOCS_DIR)/TOUR.md "$(WALKTHROUGH_DIR_ABS)/TOUR.md"
 	@printf '%s\n' \
-		'1. Read DOMAIN_GUIDE.md if the sample story or biological vocabulary is still fuzzy.' \
-		'2. Read README.md for the repository contract and WORKFLOW_STAGE_GUIDE.md for stage ownership.' \
-		'3. Read CHECKPOINT_GUIDE.md and Snakefile to see how discovery becomes a durable artifact.' \
-		'4. Read the copied rule files, module Snakefiles, and list-rules.txt for visible workflow meaning.' \
+		'1. Read INDEX.md to choose the smallest honest route.' \
+		'2. Read DOMAIN_GUIDE.md if the sample story or biological vocabulary is still fuzzy.' \
+		'3. Read README.md and WALKTHROUGH_GUIDE.md for the repository contract and first-pass order.' \
+		'4. Read Snakefile, the copied rule files, module Snakefiles, and list-rules.txt for visible workflow meaning.' \
 		'5. Read dryrun.txt to inspect the declared plan before execution.' \
-		'6. Read ARCHITECTURE.md and EXACT_SOURCE_GUIDE.md when the next file is not obvious.' \
+		'6. Read ARCHITECTURE.md when the next layer or file is not obvious.' \
 		'7. Read profiles/*/config.yaml, config.yaml, and schema.yaml to separate workflow meaning from policy.' \
 		'8. Read workflow/scripts/provenance.py and scripts/*.py to see how provenance, config, and publish checks are enforced.' \
-		'9. Read FILE_API.md to see which outputs are public contracts.' \
+		'9. Read FILE_API.md and PUBLISH_REVIEW_GUIDE.md to see which outputs are public contracts.' \
 		'10. Run make selftest when the next honest question is determinism.' \
 		'11. Run make tour when you need executed proof artifacts.' > "$(WALKTHROUGH_DIR_ABS)/route.txt"
 	@printf '%s\n' \
@@ -365,18 +356,8 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 	$(SNAKEMAKE) --profile $(PROFILE) --cores $(CORES) --configfile $(CONFIG) --summary > "$(TOUR_DIR_ABS)/summary.txt"
 	$(PYTHON) scripts/verify_publish.py --publish "$(PUBLISH_DIR_ABS)" > "$(TOUR_DIR_ABS)/verify.txt"
 	cp README.md "$(TOUR_DIR_ABS)/README.md"
-	cp $(DOCS_DIR)/DOMAIN_GUIDE.md "$(TOUR_DIR_ABS)/DOMAIN_GUIDE.md"
-	cp $(DOCS_DIR)/WORKFLOW_STAGE_GUIDE.md "$(TOUR_DIR_ABS)/WORKFLOW_STAGE_GUIDE.md"
-	cp $(DOCS_DIR)/CHECKPOINT_GUIDE.md "$(TOUR_DIR_ABS)/CHECKPOINT_GUIDE.md"
-	cp $(DOCS_DIR)/EXACT_SOURCE_GUIDE.md "$(TOUR_DIR_ABS)/EXACT_SOURCE_GUIDE.md"
-	cp $(DOCS_DIR)/ARCHITECTURE.md "$(TOUR_DIR_ABS)/ARCHITECTURE.md"
+	cp $(DOCS_DIR)/*.md "$(TOUR_DIR_ABS)/"
 	cp Snakefile "$(TOUR_DIR_ABS)/Snakefile"
-	cp $(DOCS_DIR)/PROOF_GUIDE.md "$(TOUR_DIR_ABS)/PROOF_GUIDE.md"
-	cp $(DOCS_DIR)/FILE_API.md "$(TOUR_DIR_ABS)/FILE_API.md"
-	cp $(DOCS_DIR)/PUBLISH_REVIEW_GUIDE.md "$(TOUR_DIR_ABS)/PUBLISH_REVIEW_GUIDE.md"
-	cp $(DOCS_DIR)/PROFILE_AUDIT_GUIDE.md "$(TOUR_DIR_ABS)/PROFILE_AUDIT_GUIDE.md"
-	cp $(DOCS_DIR)/INCIDENT_REVIEW_GUIDE.md "$(TOUR_DIR_ABS)/INCIDENT_REVIEW_GUIDE.md"
-	cp $(DOCS_DIR)/EXTENSION_GUIDE.md "$(TOUR_DIR_ABS)/EXTENSION_GUIDE.md"
 	cp config/config.yaml "$(TOUR_DIR_ABS)/config.yaml"
 	cp config/schema.yaml "$(TOUR_DIR_ABS)/schema.yaml"
 	cp workflow/rules/common.smk "$(TOUR_DIR_ABS)/workflow/rules/common.smk"
@@ -392,17 +373,16 @@ tour: clean validate-config wf-lint ## Build a learner-facing workflow proof bun
 	cp "$(PUBLISH_DIR_ABS)/summary.json" "$(TOUR_DIR_ABS)/summary.json"
 	cp "$(PUBLISH_DIR_ABS)/summary.tsv" "$(TOUR_DIR_ABS)/summary.tsv"
 	cp "$(PUBLISH_DIR_ABS)/report/index.html" "$(TOUR_DIR_ABS)/report/index.html"
-	cp $(DOCS_DIR)/TOUR.md "$(TOUR_DIR_ABS)/TOUR.md"
 	@printf '%s\n' \
 		'Executed review route:' \
-		'  1. Read README.md and DOMAIN_GUIDE.md to reset the repository and domain contract.' \
-		'  2. Read list-rules.txt, dryrun.txt, and WORKFLOW_STAGE_GUIDE.md for the declared workflow shape.' \
-		'  3. Read CHECKPOINT_GUIDE.md with discovered_samples.json when discovery behavior is the review target.' \
+		'  1. Read INDEX.md, README.md, and DOMAIN_GUIDE.md to reset the repository and domain contract.' \
+		'  2. Read list-rules.txt, dryrun.txt, Snakefile, and WALKTHROUGH_GUIDE.md for the declared workflow shape.' \
+		'  3. Read discovered_samples.json with dryrun.txt when discovery behavior is the review target.' \
 		'  4. Read summary.txt and run.txt for executed workflow evidence.' \
 		'  5. Read publish-manifest.json, summary.json, summary.tsv, provenance.json, and report/index.html together.' \
 		'  6. Read FILE_API.md and PUBLISH_REVIEW_GUIDE.md to interpret the published boundary.' \
-		'  7. Read ARCHITECTURE.md, PROFILE_AUDIT_GUIDE.md, and INCIDENT_REVIEW_GUIDE.md when the issue is ownership or operating context.' \
-		'  8. Read EXACT_SOURCE_GUIDE.md when the next file is still not obvious.' > "$(TOUR_DIR_ABS)/route.txt"
+		'  7. Read ARCHITECTURE.md, PROFILE_AUDIT_GUIDE.md, and EXTENSION_GUIDE.md when the issue is ownership or operating context.' \
+		'  8. Read PROOF_GUIDE.md when the next route is still not obvious.' > "$(TOUR_DIR_ABS)/route.txt"
 	@printf '%s\n' \
 		'Review questions:' \
 		'  Which workflow claims are visible before execution, and which only after execution?' \

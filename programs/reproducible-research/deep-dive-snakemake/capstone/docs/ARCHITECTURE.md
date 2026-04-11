@@ -83,8 +83,7 @@ to reusable code, to operating policy, and finally to the downstream contract.
 - If a downstream consumer relied on one file, which layer proves that trust boundary?
 - Which layer would be the first warning sign if the repository started to hide workflow truth?
 
-Use [Review Route Guide](REVIEW_ROUTE_GUIDE.md) when the architecture answer still feels
-too broad and you need the smallest next route for one concrete question.
+Use [INDEX.md](INDEX.md) when the architecture answer still feels too broad and you need
+the smallest next route for one concrete question.
 Use [Walkthrough Guide](WALKTHROUGH_GUIDE.md) when the confusion is specifically about
 the visible workflow layers before execution.
-

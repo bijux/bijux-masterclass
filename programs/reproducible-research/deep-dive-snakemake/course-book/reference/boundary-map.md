@@ -30,10 +30,10 @@ which surface is actually allowed to settle the question.
 | Question | Authoritative surface | Supporting evidence |
 | --- | --- | --- |
 | what does the workflow claim it will build | `Snakefile` and `workflow/rules/` | `list-rules.txt`, `dryrun.txt` |
-| what did checkpoint discovery actually decide | `discovered_samples.json` and the checkpoint-owning rules | `CHECKPOINT_GUIDE.md`, `Snakefile` |
+| what did checkpoint discovery actually decide | `discovered_samples.json` and the checkpoint-owning rules | `WALKTHROUGH_GUIDE.md`, `Snakefile` |
 | which differences are execution policy rather than workflow meaning | `profiles/` plus validated config | `PROFILE_AUDIT_GUIDE.md`, dry-run comparisons |
 | which files are safe for downstream trust | `FILE_API.md` and `publish/v1/` | `verify.json`, `manifest.json`, `PUBLISH_REVIEW_GUIDE.md` |
-| what happened during an executed run | `run.txt`, `summary.txt`, logs, and benchmarks | `EXECUTION_EVIDENCE_GUIDE.md`, `TOUR.md` |
+| what happened during an executed run | `run.txt`, `summary.txt`, logs, and benchmarks | `TOUR.md`, `PROOF_GUIDE.md` |
 | where should a future change land | repository layer ownership | `ARCHITECTURE.md`, `EXTENSION_GUIDE.md` |
 
 ---
@@ -96,4 +96,3 @@ Fast decision rules:
 - [`repository-layer-guide.md`](repository-layer-guide.md)
 - [`anti-pattern-atlas.md`](anti-pattern-atlas.md)
 - [`glossary.md`](glossary.md)
-

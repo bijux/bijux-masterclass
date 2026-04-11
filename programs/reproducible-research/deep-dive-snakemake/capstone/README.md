@@ -62,11 +62,12 @@ make PROGRAM=reproducible-research/deep-dive-snakemake proof
 ## First honest pass
 
 1. Run `make walkthrough`.
-2. Read [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md).
-3. Read `Snakefile` and the rule files it exposes first.
-4. Read [FILE_API.md](docs/FILE_API.md).
-5. Run `make verify`.
-6. Read [PROOF_GUIDE.md](docs/PROOF_GUIDE.md).
+2. Read [INDEX.md](docs/INDEX.md).
+3. Read [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md).
+4. Read `Snakefile` and the rule files it exposes first.
+5. Read [FILE_API.md](docs/FILE_API.md).
+6. Run `make verify`.
+7. Read [PROOF_GUIDE.md](docs/PROOF_GUIDE.md).
 
 Stop there first. That is enough to see the workflow contract, repository shape, and one
 bounded proof route without turning the capstone into a browsing exercise.
@@ -99,24 +100,15 @@ Use these surfaces deliberately:
 All capstone documentation lives under `docs/`:
 
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [CHECKPOINT_GUIDE.md](docs/CHECKPOINT_GUIDE.md)
-- [CONFIG_CONTRACT_GUIDE.md](docs/CONFIG_CONTRACT_GUIDE.md)
 - [DOMAIN_GUIDE.md](docs/DOMAIN_GUIDE.md)
-- [EXECUTION_EVIDENCE_GUIDE.md](docs/EXECUTION_EVIDENCE_GUIDE.md)
-- [EXACT_SOURCE_GUIDE.md](docs/EXACT_SOURCE_GUIDE.md)
 - [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
 - [FILE_API.md](docs/FILE_API.md)
-- [INCIDENT_REVIEW_GUIDE.md](docs/INCIDENT_REVIEW_GUIDE.md)
-- [MODULE_BOUNDARY_GUIDE.md](docs/MODULE_BOUNDARY_GUIDE.md)
+- [INDEX.md](docs/INDEX.md)
 - [PROFILE_AUDIT_GUIDE.md](docs/PROFILE_AUDIT_GUIDE.md)
 - [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
 - [PUBLISH_REVIEW_GUIDE.md](docs/PUBLISH_REVIEW_GUIDE.md)
-- [RESULTS_BOUNDARY_GUIDE.md](docs/RESULTS_BOUNDARY_GUIDE.md)
-- [REVIEW_ROUTE_GUIDE.md](docs/REVIEW_ROUTE_GUIDE.md)
-- [SOURCE_BASELINE_GUIDE.md](docs/SOURCE_BASELINE_GUIDE.md)
 - [TOUR.md](docs/TOUR.md)
 - [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
-- [WORKFLOW_STAGE_GUIDE.md](docs/WORKFLOW_STAGE_GUIDE.md)
 
 ## Good stopping point
 

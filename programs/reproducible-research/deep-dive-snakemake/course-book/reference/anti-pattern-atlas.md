@@ -43,7 +43,7 @@ checkpoint abuse, profile drift, weak publish contracts, or ownership collapse.
 | Failure class | Why it matters | Where the course or capstone teaches the repair |
 | --- | --- | --- |
 | hidden workflow logic in shell or helper code | readers stop being able to trust the DAG by inspection | modules 01 and 05, `WALKTHROUGH_GUIDE.md` |
-| checkpoint discovery used as a black box | dynamic behavior becomes harder to audit than it needs to be | module 02, `CHECKPOINT_GUIDE.md` |
+| checkpoint discovery used as a black box | dynamic behavior becomes harder to audit than it needs to be | module 02, `WALKTHROUGH_GUIDE.md` |
 | profiles used to carry semantic differences | execution context starts changing analytical meaning | modules 03 and 08, `PROFILE_AUDIT_GUIDE.md` |
 | modularity that hides the file contract | a larger repository becomes less legible instead of more | modules 04 and 07, `ARCHITECTURE.md` |
 | publish directories treated as informal output piles | downstream trust becomes accidental | module 06, `FILE_API.md`, `PUBLISH_REVIEW_GUIDE.md` |
@@ -67,4 +67,3 @@ When you identify a likely anti-pattern:
 - [`boundary-map.md`](boundary-map.md)
 - [`repository-layer-guide.md`](repository-layer-guide.md)
 - [`module-dependency-map.md`](module-dependency-map.md)
-
