@@ -27,7 +27,7 @@ maintenance.
 | discovery or object selection | `capstone/mk/objects.mk` | graph membership should have one owning file |
 | hidden inputs or rebuild state evidence | `capstone/mk/stamps.mk` | state tracking should stay reviewable |
 | proof behavior | `capstone/tests/run.sh` | proof belongs to the harness, not to prose |
-| a new failure specimen | `capstone/repro/` plus [Capstone Proof Guide](capstone-proof-guide.md) | failure teaching should stay isolated from the healthy build |
+| a new failure specimen | `capstone/repro/` plus [Capstone Proof Guide](capstone-proof-guide.md) | failure specimens should stay isolated from the healthy build |
 
 ## Good capstone changes
 
@@ -36,8 +36,8 @@ These usually improve the repository:
 - clarifying a target description or route page
 - adding one more explicit dependency or boundary file
 - improving a proof message without weakening the check
-- adding a distinct repro that teaches a real failure class
-- tightening file ownership so a reader has less guessing to do
+- adding a distinct repro that exposes a real failure class
+- tightening file ownership so review requires less guessing
 
 ## Risky changes
 
@@ -53,11 +53,11 @@ Slow down when a change does any of these:
 
 Answer these in your own words:
 
-1. what reader or maintainer question became easier after this change
+1. what review or maintenance question became easier after this change
 2. which file now owns the behavior
 3. which proof route still corroborates the claim
 4. whether the filename and commit message would still make sense later
-5. whether a future reader could understand the change without oral history
+5. whether the change can be understood without oral history
 
 If you cannot answer those, the change is probably not placed cleanly yet.
 

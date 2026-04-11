@@ -19,7 +19,7 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this page gives the capstone a teaching route,
+Read the first diagram as a timing map: this page gives the capstone a guided route,
 not just a repository map. Read the second diagram as the rule: choose one walkthrough
 depth, read the matching guide and artifact, then stop when one honest repository story
 is visible.
@@ -32,7 +32,7 @@ is visible.
 ## 30-minute first pass
 
 1. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough`.
-2. Read [Capstone Walkthrough](capstone-walkthrough.md) for the reader-facing route.
+2. Read [Capstone Walkthrough](capstone-walkthrough.md) for the guided route.
 3. Run `make PROGRAM=reproducible-research/deep-dive-make inspect`.
 4. Read [Command Guide](command-guide.md) for the smallest honest command.
 5. Read `capstone/Makefile` and `capstone/tests/run.sh`.
@@ -64,7 +64,7 @@ Use this only after Modules 09-10.
 4. Run `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm`.
 
 Goal: judge whether another maintainer could extend, review, or migrate the build
-without losing its teaching honesty.
+without losing its review honesty.
 
 ## Good stopping point
 

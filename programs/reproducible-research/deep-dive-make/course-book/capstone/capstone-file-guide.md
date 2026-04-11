@@ -41,7 +41,7 @@ If this is your first serious repository pass, use this sequence:
 6. one file under `capstone/repro/`
 7. one script under `capstone/scripts/`
 
-That order keeps contract first, proof second, policy third, and failure teaching last.
+That order keeps contract first, proof second, policy third, and failure specimens last.
 
 ## Wrong reading orders
 

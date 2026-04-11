@@ -18,9 +18,9 @@ If you cannot name the evidence, the judgment is still too soft.
 
 Ask:
 
-- which targets are clearly public for a reader or maintainer
+- which targets are clearly public for review and maintenance
 - whether `help` and the command docs are enough to start correctly
-- which commands are aliases for a reader-facing route rather than separate contracts
+- which commands are aliases for a guided route rather than separate contracts
 
 Best evidence:
 
@@ -77,7 +77,7 @@ Ask:
 
 - what counts as publishable source versus local build residue
 - whether release evidence is adjacent to artifacts rather than mixed into their identity
-- whether a future maintainer could extend the build without weakening the teaching bar
+- whether the build can be extended without weakening the review bar
 
 Best evidence:
 
