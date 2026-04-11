@@ -21,22 +21,26 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-This glossary belongs to **Reference** in **Deep Dive DVC**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+This glossary keeps Deep Dive DVC's recurring terms stable across modules, reference
+pages, and capstone review routes. Use it when the repository is concrete enough to
+inspect, but the local meaning of a word still needs to be pinned down.
 
 ## How to use this glossary
 
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
+Open it when a term matters for a decision: which state layer is authoritative, what kind
+of evidence settles the question, or which verification route should answer it. Do not
+read it as a list to memorize.
 
 ## Terms in this directory
 
-| Term | Meaning in this directory |
+| Term | Meaning in Deep Dive DVC |
 | --- | --- |
-| Anti-Pattern Atlas | the recurring failure catalog for anti-pattern atlas, used to recognize defect shapes before they harden into local folklore. |
-| Authority Map | the routing surface for authority map, used to find the right dependency, practice, or evidence path quickly. |
-| Completion Rubric | the review surface for completion rubric, used to turn judgment into explicit keep, change, or reject calls. |
-| Evidence Boundary Guide | the durable rule surface for evidence boundary guide, used when a design or review decision needs stable language instead of intuition. |
-| Module Dependency Map | the routing surface for module dependency map, used to find the right dependency, practice, or evidence path quickly. |
-| Practice Map | the routing surface for practice map, used to find the right dependency, practice, or evidence path quickly. |
-| Topic Boundaries | the durable rule surface for topic boundaries, used when a design or review decision needs stable language instead of intuition. |
-| Verification Route Guide | the durable vocabulary and review surface for verification route guide, used to keep naming, scope, and proof expectations stable across the course. |
-| Version Support Guide | the durable rule surface for version support guide, used when a design or review decision needs stable language instead of intuition. |
+| Anti-Pattern Atlas | A symptom-led catalog of recurring DVC and reproducibility mistakes, used when you recognize the smell before you remember the lesson. |
+| Authority Map | The page that distinguishes workspace state, pipeline declaration, recorded execution, cache, remote recovery, and promoted release surfaces. |
+| Completion Rubric | The review standard for deciding whether someone can explain DVC behavior with evidence rather than command folklore. |
+| Evidence Boundary Guide | The guide that separates declaration, recorded execution, comparison, promotion, experiment, and recovery evidence. |
+| Module Dependency Map | The reading-order map that shows which modules support later ones and which ideas should come first. |
+| Practice Map | The crosswalk from modules to capstone routes that corroborate the same concept. |
+| Topic Boundaries | The page that distinguishes core course material from supporting context and out-of-scope extensions. |
+| Verification Route Guide | The route-selection guide for choosing the smallest honest command or bundle for a state question. |
+| Version Support Guide | The guide that defines the supported Python, Git, and DVC toolchain boundary for this course. |
