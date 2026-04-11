@@ -47,5 +47,5 @@ proves.
 3. read `remote.txt`, `before-status.txt`, `pull.txt`, `checkout.txt`, `verify.json`, and `after-status.txt` in that order
 4. read `publish-v1/manifest.json` and the release summaries when the next question is downstream trust after restore
 
-Read `STATE_LAYER_GUIDE.md` when the main confusion is not the recovery sequence itself
-but which layer is authoritative before and after recovery.
+Read [Publish Contract](PUBLISH_CONTRACT.md) when the main confusion is not the recovery
+sequence itself but which promoted files still deserve downstream trust after restore.

@@ -68,4 +68,4 @@ into record-level evidence.
 
 - use `make manifest-summary` when you want the promoted inventory rendered into one compact surface
 - use `make release-review` when you need the surrounding summaries and saved review bundle
-- use `STATE_LAYER_GUIDE.md` when the next question is why `publish/v1/` is authoritative for downstream trust but not for the entire repository story
+- use [Recovery Guide](RECOVERY_GUIDE.md) when the next question is why downstream trust and restore guarantees are related but not identical
