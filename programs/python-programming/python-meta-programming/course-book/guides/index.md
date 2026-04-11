@@ -35,7 +35,7 @@ do not have to repeat that scaffolding.
 | I need to know what each module is supposed to change. | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
 | I need to route a runtime claim to evidence. | [Proof Matrix](proof-matrix.md) | [Proof Ladder](proof-ladder.md) |
 | The capstone runtime still feels unfamiliar. | [Start Here](start-here.md) | [Capstone](../capstone/index.md) |
-| I am resuming after a break. | [Return Map](../module-00-orientation/return-map.md) | [Proof Ladder](proof-ladder.md) |
+| I am resuming after a break. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) | [Proof Ladder](proof-ladder.md) |
 
 ## Use the shelf by job
 

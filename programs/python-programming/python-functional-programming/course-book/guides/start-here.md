@@ -192,7 +192,7 @@ Can you explain where laziness stops being a win and starts needing explicit cle
 | I want the course contract stated as outcomes and evidence. | [Proof Matrix](proof-matrix.md) |
 | My question is already practical. | [Pressure Routes](pressure-routes.md) |
 | I am leaving the semantic floor and entering failures, effects, or async pressure. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) |
-| I am returning after a break. | [Return Map](../module-00-orientation/return-map.md) |
+| I am returning after a break. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) |
 | I need to trust the local Python and proof environment first. | [Platform Setup](platform-setup.md) |
 | I need the executable route. | [Proof Matrix](proof-matrix.md) and [Capstone Map](../capstone/capstone-map.md) |
 

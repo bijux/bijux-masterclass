@@ -20,9 +20,10 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this page when you are returning to the course after the first full pass. The goal is
-to turn "I read this before" into a repeatable mastery route: name the pressure, revisit
-the smallest set of pages that own it, and leave with executable evidence.
+Use this page when you are returning to the course after the first full pass or when the
+open question already lives in interop, governance, or long-lived sustainment. The goal
+is to turn "I read this before" into a repeatable mastery route: name the pressure,
+revisit the smallest set of pages that own it, and leave with executable evidence.
 
 ## Return by engineering pressure
 

@@ -39,7 +39,7 @@ surface, or capstone bridge.
 | My question is already practical. | [Pressure Routes](pressure-routes.md) | the owning module or [Proof Matrix](proof-matrix.md) |
 | I need to connect learning goals to proof. | [Proof Matrix](proof-matrix.md) | [Proof Ladder](proof-ladder.md) |
 | The capstone domain still feels unfamiliar. | [Start Here](start-here.md) | [Capstone](../capstone/index.md) |
-| I am resuming after a break. | [Return Map](../module-00-orientation/return-map.md) | [Proof Ladder](proof-ladder.md) |
+| I am resuming after a break. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) | [Proof Ladder](proof-ladder.md) |
 
 ## Use the shelf by job
 

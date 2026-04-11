@@ -52,7 +52,7 @@ Use this route when you are new to the course and want the smallest honest seque
 ## Switch routes when the pressure changes
 
 - Use [Pressure Routes](pressure-routes.md) when you are entering from a code review, framework change, or debugging problem.
-- Use [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need the last stable module boundary.
+- Use [Mid-Course Map](../module-00-orientation/mid-course-map.md) when you are resuming after a break and need the last stable module boundary.
 - Use [Platform Setup](platform-setup.md) when the environment or public command surface is the blocker.
 - Use [Capstone Guide](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) once the current module claim is clear enough to inspect in executable code.
 

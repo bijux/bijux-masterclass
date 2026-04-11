@@ -31,6 +31,30 @@ Use this map when Modules 01 to 03 are no longer the blocker but the second half
 course still feels like one long stretch of "stronger magic." The point of this route is
 to slow that stretch down into clearer ownership boundaries.
 
+## Resume from the last stable boundary
+
+If you are returning after time away, re-anchor with:
+
+1. [Module 00](index.md)
+2. [Course Map](course-map.md)
+3. [Module Promise Map](../guides/module-promise-map.md)
+
+Then use the last boundary you still trust:
+
+| If you still trust yourself through... | Re-enter with... | Keep open... |
+| --- | --- | --- |
+| Modules 01 to 03 | this page and Module 04 | [Proof Ladder](../guides/proof-ladder.md), [Capstone Map](../capstone/capstone-map.md) |
+| Modules 04 to 06 | Module 07 and [Pressure Routes](../guides/pressure-routes.md) | [Module Checkpoints](../guides/module-checkpoints.md), [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) |
+| Modules 07 to 08 | [Mastery Map](mastery-map.md) and Module 09 | [Review Checklist](../reference/review-checklist.md), [Proof Matrix](../guides/proof-matrix.md) |
+
+Use one small proof route before resuming:
+
+- `make manifest`
+- `make registry`
+- `make action`
+- `make field`
+- `make verify-report`
+
 ## Modules 04 to 05: Wrapper Honesty Before Wrapper Policy
 
 **Theme:** learn how far callable transformation can go before it stops being a clean

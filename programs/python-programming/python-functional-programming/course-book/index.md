@@ -63,7 +63,7 @@ By the end of the course, you should be able to:
 | I want a paced first pass through the semantic floor. | [Start Here](guides/start-here.md) | [Learning Contract](guides/learning-contract.md) |
 | My question is already practical and I need the owning module. | [Pressure Routes](guides/pressure-routes.md) | [Proof Matrix](guides/proof-matrix.md) |
 | The capstone domain still feels noisy. | [Start Here](guides/start-here.md) | [FuncPipe Capstone Guide](capstone/index.md) |
-| I am returning after a break and do not want to restart from zero. | [Return Map](module-00-orientation/return-map.md) | [Module Promise Map](guides/module-promise-map.md) |
+| I am returning after a break and do not want to restart from zero. | [Mid-Course Map](module-00-orientation/mid-course-map.md) | [Module Promise Map](guides/module-promise-map.md) |
 
 ## Read the support shelf by job
 

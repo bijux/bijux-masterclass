@@ -27,8 +27,9 @@ holds. Read the second diagram as the working rhythm for the page: move from wra
 attributes to class creation and governance, then use the capstone to turn that knowledge
 into a review judgment.
 
-Use this map when you are studying the second half of the course, reviewing a dynamic codebase,
-or deciding whether a higher-power runtime hook is truly justified.
+Use this map when you are studying the second half of the course, reviewing a dynamic
+codebase, or deciding whether a higher-power runtime hook is truly justified after the
+middle-course boundaries already feel stable.
 
 ## Modules 04 to 05: Wrapper Ownership and Policy Boundaries
 

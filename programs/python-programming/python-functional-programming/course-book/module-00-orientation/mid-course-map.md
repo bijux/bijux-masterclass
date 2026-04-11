@@ -24,6 +24,28 @@ Use this page when Modules 01 to 03 no longer feel like the blocker, but the sec
 of the course still feels too large to enter cleanly. The goal is to turn the middle of
 the course into a readable bridge from semantic clarity to system pressure.
 
+## Resume from the last stable boundary
+
+If you are returning after a break, re-anchor with:
+
+1. [Orientation](index.md)
+2. [Functional Programming Course Map](course-map.md)
+3. [Module Promise Map](../guides/module-promise-map.md)
+
+Then use the last boundary you still trust:
+
+| If you still trust yourself through... | Re-enter with... | Keep open... |
+| --- | --- | --- |
+| Modules 01 to 03 | this page and Module 04 | [Proof Matrix](../guides/proof-matrix.md), [Capstone Map](../capstone/capstone-map.md) |
+| Modules 04 to 06 | Module 07 and [Pressure Routes](../guides/pressure-routes.md) | [Boundary Review Prompts](../reference/boundary-review-prompts.md), [Review Checklist](../reference/review-checklist.md) |
+| Modules 07 to 08 | [Mastery Map](mastery-map.md) and Module 09 | [Proof Matrix](../guides/proof-matrix.md), [Capstone](../capstone/index.md) |
+
+Use one small proof route before resuming:
+
+- `make PROGRAM=python-programming/python-functional-programming capstone-test`
+- `make PROGRAM=python-programming/python-functional-programming capstone-tour`
+- `make PROGRAM=python-programming/python-functional-programming capstone-verify-report`
+
 ## Modules 04 to 06: survivable failure and modelling
 
 Use this stretch when the main pressure is no longer "what is pure?" but instead:

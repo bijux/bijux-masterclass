@@ -48,8 +48,8 @@ feel ornamental instead of necessary.
 If you want the shortest stable entry route, start with `course-book/guides/start-here.md`.
 When Modules 01 to 03 feel stable and you need the cleanest bridge into failures,
 effects, and async pressure, use `course-book/module-00-orientation/mid-course-map.md`.
-When you are returning after a break and need the right re-entry boundary, use
-`course-book/module-00-orientation/return-map.md`.
+When you are returning after a break and need the right re-entry boundary, return to
+`course-book/module-00-orientation/mid-course-map.md`.
 
 ## What this course covers
 
