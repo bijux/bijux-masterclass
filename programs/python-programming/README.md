@@ -46,21 +46,21 @@ route: start from the pressure, not from a favorite abstraction style.
 - Learner entry: [Start Here](python-object-oriented-programming/course-book/guides/start-here.md)
 - Program guide: [Course Guide](python-object-oriented-programming/course-book/guides/course-guide.md)
 - Pressure route: [Pressure Routes](python-object-oriented-programming/course-book/guides/pressure-routes.md)
-- Capstone guide: [Capstone docs](python-object-oriented-programming/course-book/capstone-docs/index.md)
+- Capstone guide: [Capstone docs](python-object-oriented-programming/capstone/docs/index.md)
 
 ### [Python Functional Programming](python-functional-programming/course-book/index.md)
 
 - Learner entry: [Orientation](python-functional-programming/course-book/module-00-orientation/index.md)
 - Program guide: [Course Guide](python-functional-programming/course-book/guides/course-guide.md)
 - Pressure route: [Pressure Routes](python-functional-programming/course-book/guides/pressure-routes.md)
-- Capstone guide: [Capstone docs](python-functional-programming/course-book/capstone-docs/index.md)
+- Capstone guide: [Capstone docs](python-functional-programming/capstone/docs/index.md)
 
 ### [Python Metaprogramming](python-meta-programming/course-book/index.md)
 
 - Learner entry: [Start Here](python-meta-programming/course-book/guides/start-here.md)
 - Program guide: [Course Guide](python-meta-programming/course-book/guides/course-guide.md)
 - Pressure route: [Pressure Routes](python-meta-programming/course-book/guides/pressure-routes.md)
-- Capstone guide: [Capstone docs](python-meta-programming/course-book/capstone-docs/index.md)
+- Capstone guide: [Capstone docs](python-meta-programming/capstone/docs/index.md)
 
 ## How to Use This Family
 

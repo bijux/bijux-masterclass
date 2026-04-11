@@ -31,7 +31,7 @@ has one stable entry hub instead of two overlapping arrival pages.
 ## First honest pass
 
 1. Run `make manifest`.
-2. Read [README.md](../capstone/index.md).
+2. Read [README.md](../README.md).
 3. Read [ARCHITECTURE.md](architecture.md).
 4. Read [DESIGN_BOUNDARIES.md](design-boundaries.md).
 5. Open `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
@@ -53,7 +53,7 @@ has one stable entry hub instead of two overlapping arrival pages.
 
 ### "What is this project, and how should I enter it?"
 
-- [README.md](../capstone/index.md)
+- [README.md](../README.md)
 - [INDEX.md](index.md)
 - [DESIGN_BOUNDARIES.md](design-boundaries.md)
 - [ARCHITECTURE.md](architecture.md)
@@ -67,7 +67,7 @@ has one stable entry hub instead of two overlapping arrival pages.
 ### "Which command should I run first?"
 
 - [COMMAND_GUIDE.md](command-guide.md)
-- [README.md](../capstone/index.md)
+- [README.md](../README.md)
 
 ### "How do I inspect the public runtime shape?"
 

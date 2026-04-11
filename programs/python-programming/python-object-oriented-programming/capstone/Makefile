@@ -4,7 +4,7 @@ SHELL := /bin/sh
 
 PYTHON ?= python3
 ARTIFACTS_DIR ?= ../../../../artifacts
-DOCS_DIR := ../course-book/capstone-docs
+DOCS_DIR := docs
 DOC_FILES := \
 	architecture.md:ARCHITECTURE.md \
 	command-guide.md:COMMAND_GUIDE.md \
