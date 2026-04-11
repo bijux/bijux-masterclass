@@ -2,49 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Effect Boundaries"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  leak["Start with a core function that reads files or raises directly"] --> boundary["Move the effect into an injected boundary"]
+  boundary --> core["Keep the core focused on transforming values"]
+  core --> swap["Swap fake and real implementations without rewriting logic"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is where the module stops being purely about elegant code and starts being about trustworthy system structure. Students need to see that "pure core, effectful edge" is not a slogan. It is a concrete answer to the question of where file access, network access, logging, and failures belong.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Boundary Mistake
 
-Here's a snippet from the progression map:
+The most common mistake here is not using effects. It is letting them sneak into the middle of code that students still want to test and rewrite as if it were pure.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If a core helper opens files or catches broad exceptions, the boundary is in the wrong place.
+- If tests must patch built-ins or global services, dependencies are still hidden.
+- If reviewers cannot swap a fake implementation without changing the algorithm, the design is not yet sealed.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you isolate all side effects (I/O, mutation, exceptions) to thin, explicit boundaries—so the core stays parametric over effects, composable, and equational while handling real-world I/O?
 
-This core introduces **boundary design** in Python:  
-- Confine effects to **thin implementations** injected via protocols in deps, keeping the core parametric over pure or effectful functions.  
-- Use `Result` for explicit errors instead of exceptions.  
-- Build on M02C04's config/deps for injecting services (pure or effectful).  
+This lesson introduces boundary design as a practical architecture habit:
 
-We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder—evolving from a leaky version with scattered I/O to parametric core + injected boundaries that preserve baseline equivalence.
+- keep side effects inside thin implementations that can be named, replaced, and tested
+- pass those implementations through dependencies so the core can stay focused on values
+- prefer explicit result values over invisible exception paths in the core layer
 
-**Audience:** Developers from M02C04 using small-arity APIs but with effects (e.g., file reads, exceptions) leaking into the core, breaking parametricity.  
+The running project makes the lesson concrete: the same RAG pipeline should work with fake boundaries in tests and real boundaries in production without changing the core logic.
+
+**Audience:** Developers using small-arity APIs but still letting file reads, exceptions, or mutable state leak into the core.  
 **Outcome:**  
 1. Identify effect leaks (I/O, raises) in code and explain their impact on reasoning.  
 2. Refactor a leaky function into parametric core + thin boundary with injected deps.  
@@ -68,11 +59,11 @@ We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder�
 
 ### 1.3 Why This Matters Now
 
-M02C04 gave small-arity APIs with explicit deps, but hardcoded effects in the core break parametricity, making reasoning conditional. Boundary design enforces parametricity, enabling full M02C01–M02C04 power in real systems with injectable I/O.
+Small, explicit APIs are only half the story. If the code behind them still performs I/O directly, the boundary remains muddy and reasoning becomes conditional on the runtime environment. This lesson finishes the separation: APIs name the dependencies, and boundaries decide how the outside world gets involved.
 
 ### 1.4 Boundaries as Values in 5 Lines
 
-Boundaries as first-class enable dynamic injection:
+The next example matters because it shows a boundary implementation being treated as a replaceable value, not as hardwired behavior.
 
 ```python
 from dataclasses import dataclass
