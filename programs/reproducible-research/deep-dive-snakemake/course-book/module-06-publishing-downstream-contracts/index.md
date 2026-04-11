@@ -1,302 +1,105 @@
-<a id="top"></a>
-
 # Module 06: Publishing and Downstream Contracts
 
+A workflow run is not automatically a downstream contract.
 
-<!-- page-maps:start -->
-## Module Position
+That distinction matters because a workflow usually produces many files that help it run,
+debug, or explain itself, but only a smaller set of files should be safe for another
+human, notebook, or pipeline to trust as published outputs.
+
+This module is about drawing that line on purpose.
+
+You will learn how to:
+
+- separate internal workflow state from public deliverables
+- version a publish boundary so downstream expectations stay stable
+- use manifests, checksums, reports, and provenance without confusing their jobs
+- review publish drift before downstream trust is damaged
+
+The capstone corroboration surface for this module is the versioned bundle under
+`publish/v1/`, especially `summary.json`, `summary.tsv`, `report/index.html`,
+`manifest.json`, `provenance.json`, and `discovered_samples.json`.
+
+## Why this module exists
+
+Many workflows fail at the exact moment they seem most useful: when someone tries to use
+their outputs downstream.
+
+Typical failure patterns look like this:
+
+- downstream consumers read from `results/` because no publish contract is visible
+- report files are treated as the contract even though they are meant for humans
+- manifests exist but do not clearly defend the bundle
+- published paths drift without a deliberate version change
+
+This module repairs those problems by teaching publish surfaces as contracts, not as
+accidental folders.
+
+## Study route
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 06: Publishing and Downstream Contracts"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
+flowchart LR
+  overview["Overview"] --> core1["Core 1: internal vs public"]
+  core1 --> core2["Core 2: versioned publish boundary"]
+  core2 --> core3["Core 3: manifest and integrity evidence"]
+  core3 --> core4["Core 4: machine vs human publish surfaces"]
+  core4 --> core5["Core 5: publish drift review"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+Read the module in that order if the publish boundary still feels fuzzy.
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+If you already know the basic problem, use this shortcut:
 
-A workflow run is not automatically a trustworthy result. The internal execution state
-that helps the workflow operate is often not the same thing as the published surface that
-another human, notebook, or downstream pipeline is allowed to depend on.
+- open Core 2 if your question is mostly about versioning and compatibility
+- open Core 3 if your question is mostly about manifests, checksums, and validation
+- open Core 5 if your question is mostly about review and downstream risk
 
-This module is about designing that boundary on purpose: what remains internal, what is
-published, how published outputs are versioned, and how manifests, reports, and checksums
-support trust without turning every run into a pile of unreviewable noise.
+## Module map
 
-Capstone exists here as corroboration. The local publishing exercises should already make
-the internal-versus-public split clear before you inspect `publish/v1/` and the file API
-in the reference workflow.
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `internal-results-vs-public-contracts.md` | teaches the first and most important split |
+| `versioned-publish-boundaries-and-compatible-change.md` | teaches versioning, compatibility, and path stability |
+| `manifests-checksums-and-bundle-integrity.md` | teaches how a publish bundle defends itself |
+| `reports-file-apis-and-human-vs-machine-surfaces.md` | teaches which artifacts are for machines, humans, or both |
+| `reviewing-publish-drift-and-downstream-risk.md` | teaches how to review publish changes before trust is lost |
+| `worked-example-promoting-results-into-a-versioned-publish-bundle.md` | walks through a concrete publish-boundary design |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
-### Before You Begin
+## What should be clear by the end
 
-This module works best after Modules 01-05, especially the parts on file contracts,
-provenance, and safe rule boundaries.
+By the end of this module, you should be able to explain:
 
-Use this module if you need to learn how to:
+- why `results/` and `publish/v1/` are different promises
+- when a publish change requires a version change
+- why a manifest is not the same thing as a report
+- how provenance and checksums support downstream trust
+- how to review a published bundle as a contract rather than a convenience folder
 
-* separate internal workflow state from stable published deliverables
-* version a publish boundary so downstream users know what they are trusting
-* decide which reports and manifests are proof artifacts and which are part of the public contract
+## Capstone route
 
-Proof loop for this module:
+Use the capstone only after the local module ideas are already legible.
+
+Best corroboration surfaces for this module:
+
+- `capstone/workflow/rules/summarize_report.smk`
+- `capstone/workflow/rules/publish.smk`
+- `capstone/workflow/contracts/FILE_API.md`
+- `capstone/publish/v1/`
+- [Publish Review Guide](../capstone/publish-review-guide.md)
+
+Useful proof route:
 
 ```bash
 snakemake -n
-snakemake --summary
 snakemake publish/v1/manifest.json
+python scripts/verify_publish.py --publish publish/v1
 ```
 
-Capstone corroboration:
-
-* inspect `capstone/publish/v1/`
-* inspect [Publish Review Guide](../capstone/publish-review-guide.md)
-* inspect `capstone/workflow/rules/publish.smk`
-* inspect [Capstone Walkthrough](../capstone/capstone-walkthrough.md)
-
-## At a Glance
-
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| publish boundaries | "Which files are internal workflow state, and which files are safe for others to trust?" | inspect `publish/v1/` only after the internal-versus-public split is explicit |
-| versioned contracts | "How do downstream users know what changed and what remained stable?" | compare publish structure and the file API together |
-| proof artifacts | "Which manifests and reports defend the published bundle without becoming the contract themselves?" | use the capstone when you are ready to review evidence surfaces intentionally |
-
----
-
-<a id="toc"></a>
-## 1) Table of Contents
-
-1. [Table of Contents](#toc)
-2. [Learning Outcomes](#outcomes)
-3. [How to Use This Module](#usage)
-4. [Core 1 — Internal Results Versus Published Results](#core1)
-5. [Core 2 — Versioned Publish Boundaries](#core2)
-6. [Core 3 — Manifests, Checksums, and File APIs](#core3)
-7. [Core 4 — Reports and Human-Readable Proof](#core4)
-8. [Core 5 — Reviewing a Published Contract for Drift](#core5)
-9. [Capstone Sidebar](#capstone)
-10. [Exercises](#exercises)
-11. [Closing Criteria](#closing)
-
----
-
-<a id="outcomes"></a>
-## 2) Learning Outcomes
-
-By the end of this module, you can:
-
-* distinguish internal workflow outputs from stable downstream deliverables
-* define a versioned publish boundary that survives repository growth
-* use manifests and checksums to make a published tree auditable
-* decide when a report is part of the contract versus supporting evidence
-* review a workflow’s publish surface for accidental coupling or drift
-
-[Back to top](#top)
-
----
-
-<a id="usage"></a>
-## 3) How to Use This Module
-
-Build a local lab with two output layers:
-
-```text
-lab/
-  workflow/
-    Snakefile
-  results/
-  publish/
-    v1/
-  docs/
-```
-
-Require your lab to produce:
-
-1. internal per-sample results under `results/`
-2. a stable published bundle under `publish/v1/`
-3. a manifest that inventories the published files
-4. one human-readable report that explains the run
-
-The teaching goal is to make the learner able to answer, file by file, which outputs are
-safe for downstream consumers to trust.
-
-[Back to top](#top)
-
----
-
-<a id="core1"></a>
-## 4) Core 1 — Internal Results Versus Published Results
-
-Not every output belongs in the public contract.
-
-Internal state often includes:
-
-* intermediates needed for later jobs
-* per-rule logs and benchmarks
-* scratch outputs that support aggregation
-* diagnostic summaries used for review
-
-Published state should include only what downstream readers are allowed to rely on:
-
-* stable paths
-* stable formats
-* clear versioning
-* enough supporting evidence to validate what was published
-
-If a downstream notebook depends on `results/` because the publish boundary is vague, the
-workflow is teaching the wrong contract.
-
-[Back to top](#top)
-
----
-
-<a id="core2"></a>
-## 5) Core 2 — Versioned Publish Boundaries
-
-Versioned publication is not ceremony. It is how you tell a consumer whether a file path
-or format is still meant to be stable.
-
-Good publish-boundary questions:
-
-* what are the canonical outputs for this workflow version?
-* which paths may change without breaking consumers?
-* what should a reviewer inspect before approving a new publish version?
-
-Common discipline:
-
-* keep the stable surface in a path such as `publish/v1/`
-* document it in a file API or contract note
-* change the version only when the downstream contract really changes
-
-Bad discipline:
-
-* publishing directly from `results/`
-* letting report names drift every run
-* changing manifest structure without treating it as a contract change
-
-[Back to top](#top)
-
----
-
-<a id="core3"></a>
-## 6) Core 3 — Manifests, Checksums, and File APIs
-
-A publish directory is much more trustworthy when it can explain itself.
-
-Three complementary surfaces help:
-
-| Surface | Purpose |
-| --- | --- |
-| manifest | lists what was published |
-| checksums | prove file identity and detect tampering or accidental drift |
-| file API document | tells a human what each artifact means and how stable it is |
-
-You do not need to dump every internal detail into the manifest. You do need enough
-information to answer:
-
-* what files belong in the bundle
-* how a consumer can validate them
-* which artifact is authoritative for each question
-
-[Back to top](#top)
-
----
-
-<a id="core4"></a>
-## 7) Core 4 — Reports and Human-Readable Proof
-
-Published workflows often need two kinds of artifacts:
-
-* machine-consumable contract artifacts
-* human-readable proof artifacts
-
-Examples:
-
-* `summary.tsv` or `summary.json` for downstream programmatic use
-* `report/index.html` for human interpretation
-* provenance or manifest JSON for validation and review
-
-The mistake is not having both. The mistake is failing to say which role each one plays.
-
-A report should help answer “what happened?” without being the only authoritative source
-of machine-readable truth.
-
-[Back to top](#top)
-
----
-
-<a id="core5"></a>
-## 8) Core 5 — Reviewing a Published Contract for Drift
-
-Review the publish surface the same way you review code:
-
-* did the set of published files change?
-* did any stable path move or disappear?
-* did the file API still describe reality?
-* are reports and manifests still aligned?
-* did new internal artifacts leak into the public contract accidentally?
-
-Drift is often introduced by convenience:
-
-* “just publish this extra JSON too”
-* “let’s read from `results/` for now”
-* “the report has the information, so we do not need to update the manifest”
-
-Those shortcuts turn future reviews into archaeology.
-
-[Back to top](#top)
-
----
-
-<a id="capstone"></a>
-## 9) Capstone Sidebar
-
-Use the capstone to inspect:
-
-* `publish/v1/` as the stable public surface
-* `FILE_API.md` as the human contract for those files
-* `workflow/rules/publish.smk` as the logic that draws the boundary
-* `TOUR.md` and the workflow tour bundle as human-readable proof surfaces
-
-[Back to top](#top)
-
----
-
-<a id="exercises"></a>
-## 10) Exercises
-
-1. Split one workflow’s outputs into internal results and a clean published bundle.
-2. Add a manifest and explain which published artifacts are authoritative for downstream code.
-3. Create one human-readable report and one machine-readable summary without making them interchangeable.
-4. Simulate a publish-boundary change, then decide whether it requires a new publish version.
-
-[Back to top](#top)
-
----
-
-<a id="closing"></a>
-## 11) Closing Criteria
-
-You pass this module only if you can demonstrate:
-
-* a clear distinction between internal outputs and published outputs
-* a versioned publish boundary with stable paths
-* a manifest or checksum surface that validates the published tree
-* a documented contract that a downstream consumer could follow without guessing
-
-[Back to top](#top)
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is not just to run the workflow. It is to inspect whether the
+published bundle still deserves downstream trust.
