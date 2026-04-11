@@ -91,6 +91,7 @@ nav:
           - Paths Are Locators, Not Data Identity: module-02-data-identity-content-addressing/paths-are-locators-not-data-identity.md
           - Content Addressing, Cache, and Pointer Files: module-02-data-identity-content-addressing/content-addressing-cache-and-pointer-files.md
           - Workspace, Git, Cache, Remote, and Published State: module-02-data-identity-content-addressing/workspace-git-cache-remote-and-published-state.md
+          - DVC Add, Push, Pull, and Checkout as State Moves: module-02-data-identity-content-addressing/dvc-add-push-pull-and-checkout-as-state-moves.md
       - "Module 03: Execution Environments as Inputs":
           - Overview: module-03-execution-environments-reproducible-inputs/index.md
       - "Module 04: Pipelines as Truthful DAGs":
