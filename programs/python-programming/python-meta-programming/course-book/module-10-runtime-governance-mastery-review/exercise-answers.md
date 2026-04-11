@@ -99,4 +99,3 @@ sounds operational instead.
 - Previous: [Exercises](exercises.md)
 - Next: [Glossary](glossary.md)
 - Return: [Overview](index.md)
-- Close with: [Mastery Review](mastery-review.md)

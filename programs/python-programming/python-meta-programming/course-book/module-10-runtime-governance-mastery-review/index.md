@@ -9,7 +9,7 @@ flowchart TD
   program --> module["Module 10: Runtime Governance and Mastery Review"]
   module --> cores["Five core lesson pages"]
   module --> example["Worked example"]
-  module --> practice["Exercises, answers, glossary, and mastery review"]
+  module --> practice["Exercises, answers, and glossary"]
 ```
 
 ```mermaid
@@ -23,7 +23,6 @@ flowchart TD
   example --> practice["Exercises"]
   practice --> answers["Exercise Answers"]
   answers --> glossary["Glossary"]
-  glossary --> review["Mastery Review"]
 ```
 <!-- page-maps:end -->
 
@@ -34,8 +33,7 @@ ask for evidence instead of admiring cleverness.
 
 This module now uses the same ten-file learning surface as the deep-dive series and the
 other strong metaprogramming modules: overview, five core lessons, worked example,
-exercises, answer key, and glossary. It also keeps a closing mastery review page so the
-module ends as a durable review surface rather than a final content dump.
+exercises, answer key, and glossary.
 
 ## What this module is for
 
@@ -66,11 +64,6 @@ By the end of Module 10, you should be able to explain five things clearly:
 8. [Exercises](exercises.md)
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
-
-## The closing review surface
-
-After the ten-file module route, use [Mastery Review](mastery-review.md) to convert the
-material into one last keep/change/reject pass before leaving the course.
 
 ## How to use the file set
 

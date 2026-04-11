@@ -44,7 +44,6 @@ not extra theory.
 | In-process trust boundary | The limit of what the current Python process can honestly protect without stronger isolation. |
 | Interface claim | The actual promise made by an ABC, protocol, or virtual subclass rule, as distinct from the reputation of the mechanism. |
 | Lowest-power choice | The least invasive mechanism that still owns the behavior at the right timing and scope. |
-| Module 10 Review: Mastery Review | The closing review surface that pressure-tests judgment after the lessons, worked example, and practice set. |
 | Observational surface | A command, manifest, or API that reveals runtime facts without triggering the business behavior under inspection. |
 | Operational honesty | The discipline of describing what a runtime mechanism really guarantees about safety, timing, visibility, and rollback. |
 | Process isolation | A separate runtime boundary used when hostile input or risky execution must not share memory and globals with the current process. |
@@ -60,4 +59,3 @@ not extra theory.
 
 - Return to [Overview](index.md) for the full module route.
 - Use [Exercises](exercises.md) and [Exercise Answers](exercise-answers.md) to pressure-test the vocabulary.
-- Close with [Mastery Review](mastery-review.md) when the module should become review judgment instead of reading material.

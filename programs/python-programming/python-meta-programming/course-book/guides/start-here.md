@@ -83,7 +83,7 @@ foundation-first route instead of escalating.
 
 1. Read [Course Guide](course-guide.md).
 2. Read [Learning Contract](learning-contract.md).
-3. Read every module in order from [Module 00](../module-00-orientation/index.md) through [Module 10](../module-10-runtime-governance-mastery-review/index.md), then finish with [Mastery Review](../module-10-runtime-governance-mastery-review/mastery-review.md).
+3. Read every module in order from [Module 00](../module-00-orientation/index.md) through [Module 10](../module-10-runtime-governance-mastery-review/index.md).
 4. Keep [Capstone Map](../capstone/capstone-map.md) open while reading so every mechanism stays tied to one executable surface.
 
 ## Success Signal
