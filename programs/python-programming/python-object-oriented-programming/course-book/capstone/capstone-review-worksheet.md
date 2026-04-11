@@ -1,4 +1,4 @@
-# Capstone Review Checklist
+# Capstone Review Worksheet
 
 
 <!-- page-maps:start -->
@@ -8,7 +8,7 @@
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
   program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone Review Checklist"]
+  pressure --> guide["Capstone Review Worksheet"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
 

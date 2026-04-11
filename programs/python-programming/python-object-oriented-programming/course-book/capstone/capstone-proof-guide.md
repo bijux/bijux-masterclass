@@ -32,7 +32,7 @@ evidence in the capstone.
 3. Run `make verify-report` when you want test output and learner-facing state in one review bundle.
 4. Run `make confirm` when you want the strongest local confirmation route.
 5. Run `make proof` when you want the sanctioned end-to-end route.
-6. Use [Capstone Review Checklist](capstone-review-checklist.md) to decide whether the evidence is strong enough.
+6. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to decide whether the evidence is strong enough.
 
 ## Route selection rules
 
