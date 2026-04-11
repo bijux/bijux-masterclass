@@ -1,5 +1,30 @@
 # Resilience and Control-Flow Wrappers
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Decorator Design Policies Typing"]
+  page["Resilience and Control-Flow Wrappers"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The moment a wrapper starts retrying, timing out, or rate-limiting, it is no longer only
 changing what happens around a call. It is changing whether, when, and how often the
 underlying function gets to run.

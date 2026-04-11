@@ -1,5 +1,30 @@
 # Reference
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Reference"]
+  page["Reference"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This shelf is for durable metaprogramming vocabulary, escalation rules, and review
 judgment. Use it when the mechanism is already recognizable and you need help deciding
 whether it belongs at all, where it belongs, or how to prove it cleanly.

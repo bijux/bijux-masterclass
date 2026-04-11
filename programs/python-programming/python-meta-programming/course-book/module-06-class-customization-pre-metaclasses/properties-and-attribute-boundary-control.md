@@ -1,5 +1,30 @@
 # Properties and Attribute-Boundary Control
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Class Customization Pre Metaclasses"]
+  page["Properties and Attribute-Boundary Control"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Properties are the friendliest place in the course to say something very important:
 
 > attribute access is still runtime machinery, even when the syntax looks like a plain

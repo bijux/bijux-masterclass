@@ -1,5 +1,30 @@
 # Worked Example: Building an Educational Mini Relational Model
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Descriptor Systems Validation Framework Design"]
+  page["Worked Example: Building an Educational Mini Relational Model"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The five core lessons in Module 08 become easier to trust when they meet one example that
 is powerful enough to look like a framework, but still small enough to inspect.
 

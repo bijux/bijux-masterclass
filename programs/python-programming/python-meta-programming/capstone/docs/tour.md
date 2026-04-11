@@ -5,22 +5,23 @@
 
 ```mermaid
 graph LR
-  readme["README"]
-  architecture["ARCHITECTURE"]
-  source["Source files"]
-  proof["PROOF_GUIDE"]
-  tests["Tests"]
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Capstone Tour"]
+  proof["Proof route"]
 
-  readme --> architecture --> source --> proof --> tests
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
-flowchart TD
-  start["Start the tour"] --> framework["Open framework.py first"]
-  framework --> fields["Then fields.py"]
-  fields --> actions["Then actions.py"]
-  actions --> plugins["Then plugins.py"]
-  plugins --> tests["Finish with proof tests"]
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

@@ -1,5 +1,30 @@
 # Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Metaclass Design Class Creation"]
+  page["Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The five core lessons in Module 09 become much easier to trust when they meet one
 metaclass design that is useful, tempting, and still narrow enough to review honestly.
 

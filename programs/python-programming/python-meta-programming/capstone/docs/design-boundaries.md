@@ -4,19 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  boundary["Design boundaries"] --> wrapper["Callable boundary"]
-  boundary --> attribute["Attribute boundary"]
-  boundary --> class_creation["Class-creation boundary"]
-  boundary --> governance["Governance boundary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Design Boundaries"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  question["Name the behavior you want to add or review"] --> owner["Choose the owning boundary"]
-  owner --> lower["Check the lower-power alternative first"]
-  lower --> evidence["Inspect the matching command, file, or test"]
-  evidence --> decision["Leave with a keep, change, or reject call"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

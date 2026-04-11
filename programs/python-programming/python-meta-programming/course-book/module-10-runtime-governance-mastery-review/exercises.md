@@ -1,5 +1,30 @@
 # Exercises
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Runtime Governance Mastery Review"]
+  page["Exercises"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Use these after reading the five core lessons and the worked example. The goal is not to
 collect more advanced mechanisms. The goal is to make trust boundaries, interface claims,
 observability rules, hook boundaries, and escalation decisions explicit.

@@ -6,18 +6,23 @@
 
 ```mermaid
 graph LR
-  manifest["manifest"] --> registry["registry"]
-  registry --> demo["demo"]
-  demo --> trace["trace"]
-  trace --> tests["confirm"]
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Walkthrough Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
-flowchart TD
-  inspect["Inspect the public shape first"] --> choose["Choose one concrete plugin action"]
-  choose --> run["Run the action through the CLI"]
-  run --> traceback["Trace configuration and history"]
-  traceback --> verify["Use tests to verify the same claim more precisely"]
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

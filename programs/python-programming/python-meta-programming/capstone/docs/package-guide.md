@@ -5,20 +5,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  framework["framework.py"] --> fields["fields.py"]
-  framework --> actions["actions.py"]
-  framework --> plugins["plugins.py"]
-  plugins --> cli["cli.py"]
-  cli --> tests["tests/"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Package Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  question["Learner question"] --> package["Choose the owning package"]
-  package --> boundary["Read the boundary and its neighbors"]
-  boundary --> proof["Find the matching command or test"]
-  proof --> review["Return with a concrete ownership answer"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

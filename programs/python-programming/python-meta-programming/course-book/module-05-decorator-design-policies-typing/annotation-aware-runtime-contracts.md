@@ -1,5 +1,30 @@
 # Annotation-Aware Runtime Contracts
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Decorator Design Policies Typing"]
+  page["Annotation-Aware Runtime Contracts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Annotation-aware decorators are one of the easiest places for a course to overpromise.
 
 Type hints can help wrappers make clearer runtime decisions. They do not turn a decorator

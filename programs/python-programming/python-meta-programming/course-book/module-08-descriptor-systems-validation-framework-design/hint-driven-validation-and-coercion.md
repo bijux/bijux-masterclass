@@ -1,5 +1,30 @@
 # Hint-Driven Validation and Coercion
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Descriptor Systems Validation Framework Design"]
+  page["Hint-Driven Validation and Coercion"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The fourth pressure in Module 08 is metadata.
 
 Once a descriptor starts reading annotations and `Annotated[...]` metadata, it stops being

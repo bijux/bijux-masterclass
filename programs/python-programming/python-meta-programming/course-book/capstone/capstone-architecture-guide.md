@@ -1,22 +1,26 @@
 # Capstone Architecture Guide
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> pressure["A concrete study or review question"]
-  pressure --> guide["Capstone Architecture Guide"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Capstone"]
+  page["Capstone Architecture Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Name the exact architecture question"] --> slice["Choose the owning runtime slice"]
-  slice --> inspect["Inspect the matching file, command, and test"]
-  inspect --> compare["Compare the mechanism against a lower-power alternative"]
-  compare --> decision["Leave with one design judgment"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

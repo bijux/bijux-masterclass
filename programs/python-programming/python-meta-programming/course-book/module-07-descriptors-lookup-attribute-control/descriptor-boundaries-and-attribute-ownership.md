@@ -1,5 +1,30 @@
 # Descriptor Boundaries and Attribute Ownership
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Descriptors Lookup Attribute Control"]
+  page["Descriptor Boundaries and Attribute Ownership"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This final core is the design page for the module.
 
 By now the mechanics are visible. The remaining question is the one that matters in real

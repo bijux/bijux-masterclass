@@ -1,28 +1,26 @@
 # Module 08: Descriptor Systems, Validation, and Framework Design
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 08: Descriptor Systems, Validation, and Framework Design"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Descriptor Systems Validation Framework Design"]
+  page["Module 08: Descriptor Systems, Validation, and Framework Design"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Cached Descriptors and Invalidation"]
-  core1 --> core2["External Storage Descriptors"]
-  core2 --> core3["Descriptor Composition and Wrapper Fields"]
-  core3 --> core4["Hint-Driven Validation and Coercion"]
-  core4 --> core5["Descriptor Systems and Framework Boundaries"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

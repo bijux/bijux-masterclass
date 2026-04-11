@@ -4,27 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  runtime["Incident plugin runtime"]
-  framework["framework.py"]
-  fields["fields.py"]
-  actions["actions.py"]
-  plugins["plugins.py"]
-  tests["tests/"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Capstone Architecture"]
+  proof["Proof route"]
 
-  runtime --> framework
-  runtime --> fields
-  runtime --> actions
-  runtime --> plugins
-  runtime --> tests
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  classDef["Class definition"] --> meta["PluginMeta collects fields and actions"]
-  meta --> registry["Registry stores plugin classes"]
-  registry --> manifest["Manifest exposes runtime shape"]
-  manifest --> invoke["Invocation creates plugin instances and runs actions"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

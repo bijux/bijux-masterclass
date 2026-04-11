@@ -4,25 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  guide["Proof Guide"]
-  unit["Pytest proof"]
-  manifest["Manifest proof"]
-  invoke["Invocation proof"]
-  review["Review questions"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Proof Guide"]
+  proof["Proof route"]
 
-  guide --> unit
-  guide --> manifest
-  guide --> invoke
-  guide --> review
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  choose["Choose a claim"] --> command["Run the matching command"]
-  command --> output["Inspect the output"]
-  output --> source["Trace it back to source ownership"]
-  source --> review["Record what the proof actually established"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

@@ -1,28 +1,26 @@
 # Module 05: Decorator Design, Policies, and Typing
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 05: Decorator Design, Policies, and Typing"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Decorator Design Policies Typing"]
+  page["Module 05: Decorator Design, Policies, and Typing"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Decorator Factories and Parameter Capture"]
-  core1 --> core2["Resilience and Control-Flow Wrappers"]
-  core2 --> core3["Annotation-Aware Runtime Contracts"]
-  core3 --> core4["Cache Policy and lru_cache Behavior"]
-  core4 --> core5["Wrapper Policy Boundaries"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

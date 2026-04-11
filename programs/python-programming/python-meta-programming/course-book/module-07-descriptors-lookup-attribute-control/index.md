@@ -1,28 +1,26 @@
 # Module 07: Descriptors, Lookup, and Attribute Control
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 07: Descriptors, Lookup, and Attribute Control"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Descriptors Lookup Attribute Control"]
+  page["Module 07: Descriptors, Lookup, and Attribute Control"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Descriptor Protocol and `__set_name__`"]
-  core1 --> core2["Data and Non-Data Descriptor Precedence"]
-  core2 --> core3["Functions, Binding, and Method Descriptors"]
-  core3 --> core4["Reusable Field Descriptors and Storage"]
-  core4 --> core5["Descriptor Boundaries and Attribute Ownership"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

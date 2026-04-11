@@ -1,22 +1,26 @@
 # Capstone Walkthrough
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> pressure["A concrete study or review question"]
-  pressure --> guide["Capstone Walkthrough"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Capstone"]
+  page["Capstone Walkthrough"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Name the exact learning stage"] --> stop["Choose the smallest walkthrough stop"]
-  stop --> inspect["Inspect the file or saved output for that stop"]
-  inspect --> explain["Explain what runtime boundary owns the behavior"]
-  explain --> proof["Use one matching command or test as proof"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

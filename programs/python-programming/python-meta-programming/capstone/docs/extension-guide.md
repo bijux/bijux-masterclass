@@ -5,19 +5,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  need["New requirement"] --> field["Descriptor change"]
-  need --> action["Decorator or action change"]
-  need --> plugin["Concrete plugin change"]
-  need --> framework["Framework or metaclass change"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Extension Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  idea["Extension idea"] --> owner["Choose the lowest-power owner"]
-  owner --> proof["Add or update the matching proof"]
-  proof --> review["Check whether the public surface stayed observable"]
-  review --> ship["Only then keep the higher-power hook"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

@@ -1,28 +1,26 @@
 # Module 06: Class Customization Before Metaclasses
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 06: Class Customization Before Metaclasses"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Class Customization Pre Metaclasses"]
+  page["Module 06: Class Customization Before Metaclasses"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Class Decorators and Post-Construction Transformation"]
-  core1 --> core2["Dataclass Generation Boundaries"]
-  core2 --> core3["Properties and Attribute-Boundary Control"]
-  core3 --> core4["Type Hints and Descriptor-Backed Validation"]
-  core4 --> core5["Class Customization Boundaries"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

@@ -5,18 +5,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  registry["test_registry.py"] --> fields["test_fields.py"]
-  fields --> runtime["test_runtime.py"]
-  runtime --> cli["test_cli.py"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Test Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  claim["Design claim"] --> test["Choose the closest test file"]
-  test --> behavior["Read what behavior is asserted"]
-  behavior --> source["Trace back to the owning source file"]
-  source --> review["Decide whether the proof is strong enough"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

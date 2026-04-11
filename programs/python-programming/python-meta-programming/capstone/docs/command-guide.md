@@ -5,16 +5,23 @@
 
 ```mermaid
 graph LR
-  question["Question"] --> command["Command"]
-  command --> output["Output or saved bundle"]
-  output --> owner["Owning file or review boundary"]
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Command Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  pressure["Pick the smallest proof need"] --> run["Run one local command"]
-  run --> inspect["Inspect stdout or the saved artifact"]
-  inspect --> escalate["Escalate only if the smaller route no longer settles the question"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

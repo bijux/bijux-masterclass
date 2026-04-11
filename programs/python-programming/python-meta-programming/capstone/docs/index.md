@@ -4,23 +4,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  guide["INDEX.md"]
-  route["Route selection"]
-  local["Local capstone guides"]
-  code["Source files"]
-  proof["Commands and tests"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Python Metaprogramming Capstone Docs"]
+  proof["Proof route"]
 
-  guide --> route --> local
-  local --> code
-  local --> proof
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  question["Pick the question you have"] --> local_guide["Choose the smallest local guide"]
-  local_guide --> inspect["Inspect the command, file, or bundle it names"]
-  inspect --> answer["Return with one concrete ownership or proof answer"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

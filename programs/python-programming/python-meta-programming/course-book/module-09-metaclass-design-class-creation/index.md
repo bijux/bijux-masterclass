@@ -1,28 +1,26 @@
 # Module 09: Metaclass Design and Class Creation
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 09: Metaclass Design and Class Creation"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Metaclass Design Class Creation"]
+  page["Module 09: Metaclass Design and Class Creation"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Manual Class Creation with `type(...)`"]
-  core1 --> core2["Metaclass Resolution, Timing, and Conflicts"]
-  core2 --> core3["Metaclass `__new__` and `__init__`"]
-  core3 --> core4["`__prepare__` and Declaration-Time Enforcement"]
-  core4 --> core5["Metaclass Boundaries and Class-Creation Ownership"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

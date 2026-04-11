@@ -1,28 +1,26 @@
 # Module 10: Runtime Governance and Mastery Review
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> module["Module 10: Runtime Governance and Mastery Review"]
-  module --> cores["Five core lesson pages"]
-  module --> example["Worked example"]
-  module --> practice["Exercises, answers, and glossary"]
+graph LR
+  family["Python Programming"]
+  program["Python Meta-Programming"]
+  section["Runtime Governance Mastery Review"]
+  page["Module 10: Runtime Governance and Mastery Review"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  overview["Overview"] --> core1["Dynamic Execution, Trust Boundaries, and Process Isolation"]
-  core1 --> core2["Interface Contracts with ABCs, Protocols, and __subclasshook__"]
-  core2 --> core3["Observability, Reversibility, and Monkey-Patching Boundaries"]
-  core3 --> core4["Import Hooks, AST Transforms, and Tooling Boundaries"]
-  core4 --> core5["Mechanism Selection, Review Gates, and Escalation Boundaries"]
-  core5 --> example["Worked Example"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 
