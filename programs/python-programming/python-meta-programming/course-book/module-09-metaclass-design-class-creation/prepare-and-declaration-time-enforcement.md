@@ -140,11 +140,11 @@ But `__prepare__` still matters because:
 So the point of the hook is not “ordered class dictionaries exist.” The point is control
 over declaration-time semantics.
 
-## What this core is really teaching
+## What this core makes clear
 
-The lesson is not “always customize the class namespace.”
+The point is not “always customize the class namespace.”
 
-The lesson is:
+The boundary is:
 
 - there is one hook that can see class-body writes as they happen
 - that hook exists for declaration-time rules

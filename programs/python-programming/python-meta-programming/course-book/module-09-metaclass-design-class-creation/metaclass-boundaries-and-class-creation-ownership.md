@@ -18,7 +18,7 @@ when is a metaclass truly justified?
 Use a metaclass only when the invariant belongs to class creation itself or must apply
 automatically across a class hierarchy in a way lower-power tools cannot own honestly.
 
-That is the boundary the module is really teaching.
+That is the boundary the module keeps visible.
 
 ## Why this boundary matters so much
 

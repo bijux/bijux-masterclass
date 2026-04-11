@@ -117,11 +117,11 @@ Manual `type(...)` creation is dynamic, but it is still explicit and local:
 That makes it a lower-power tool than a metaclass, even though both participate in class
 creation.
 
-## What this page is really teaching
+## What this page makes clear
 
-The lesson is not “build classes dynamically all the time.”
+The point is not “build classes dynamically all the time.”
 
-The lesson is:
+The boundary is:
 
 - class creation is a runtime event
 - class objects can be built explicitly

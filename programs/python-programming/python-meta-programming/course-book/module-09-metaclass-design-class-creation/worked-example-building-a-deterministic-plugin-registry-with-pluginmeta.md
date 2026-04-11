@@ -76,7 +76,7 @@ A registry is not honest unless it answers two questions:
 This example rejects duplicates within a group and sorts registrations deterministically by
 name so test behavior stays predictable.
 
-## A didactic implementation
+## A bounded implementation
 
 ```python
 from collections import defaultdict
@@ -145,7 +145,7 @@ class ConsoleLogger(Logger):
         return f"[CONSOLE] {message}"
 ```
 
-## Why this is a good teaching artifact
+## Why this is useful for review
 
 This example keeps the important metaclass choices visible:
 
@@ -187,7 +187,7 @@ It does not attempt:
 Those would push the design beyond a single metaclass example into broader framework
 architecture.
 
-## What this example teaches about Module 09
+## What this example makes clear about Module 09
 
 This worked example ties the module together:
 
@@ -197,8 +197,8 @@ This worked example ties the module together:
 - import-time consequences must be named, not hidden
 - the metaclass remains justified only because the ownership boundary is narrow and clear
 
-That is the real lesson. The point is not to make registries feel magical. The point is to
-show one case where class-creation-time control is genuinely the honest owner.
+That is the durable takeaway. The point is not to make registries feel magical. The point
+is to show one case where class-creation-time control is genuinely the honest owner.
 
 ## Continue through Module 09
 
