@@ -9,6 +9,8 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+import yaml
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SITE_DIR = REPO_ROOT / "artifacts" / "site" / "bijux-masterclass"
@@ -354,6 +356,30 @@ def check_authored_source_navigation(programs_root: Path) -> int:
     return checked_directories
 
 
+def check_explicit_course_navigation(programs_root: Path) -> int:
+    sys.path.insert(0, str(REPO_ROOT))
+    from scripts.docs_nav import build_tree_nav
+
+    checked_courses = 0
+    failures: list[str] = []
+    for config_path in sorted(programs_root.glob("**/mkdocs.yml")):
+        checked_courses += 1
+        config = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+        nav = config.get("nav")
+        if nav is None:
+            failures.append(f"{config_path.relative_to(REPO_ROOT)} is missing explicit nav")
+            continue
+        expected = build_tree_nav(config_path.parent / "course-book")
+        if nav != expected:
+            failures.append(
+                f"{config_path.relative_to(REPO_ROOT)} nav does not match authored course order"
+            )
+
+    if failures:
+        fail("\n".join(failures))
+    return checked_courses
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -364,6 +390,7 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    checked_courses = check_explicit_course_navigation(PROGRAMS_ROOT)
     checked_directories = check_authored_source_navigation(PROGRAMS_ROOT)
     for page in PAGE_CHECKS:
         html = read_page(args.site_dir, page)
@@ -372,7 +399,8 @@ def main() -> int:
 
     print(
         "navigation checks passed for "
-        f"{checked_directories} source directories and {len(PAGE_CHECKS)} rendered pages"
+        f"{checked_courses} course configs, {checked_directories} source directories, "
+        f"and {len(PAGE_CHECKS)} rendered pages"
     )
     return 0
 
