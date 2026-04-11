@@ -2,7 +2,6 @@
 
 # Incident Ladder
 
-
 <!-- page-maps:start -->
 ## Reference Position
 
@@ -16,83 +15,82 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
+  incident["Build incident"] --> intent["Check intent before execution"]
+  intent --> cause["Trace causality"]
+  cause --> pressure["Stress the suspicious boundary"]
+  pressure --> repro["Reduce to a smaller repro if needed"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-When a Make-based build misbehaves, the first job is to reduce confusion.
-
-This page provides a stable escalation path for diagnosing rebuild, correctness, and
-parallel-safety incidents without folklore.
+Use this page when a Make build is misbehaving and the main risk is confusion. The ladder
+is an escalation order: do the cheapest clarifying step first, then move deeper only when
+the current evidence stops being enough.
 
 ---
 
-## Step 1: Preview
+## 1. Check intent before execution
 
-Ask what Make intends to do before you let it do it.
+Ask what Make plans to do.
 
 ```sh
 make -n <target>
 ```
 
-Use this to catch unexpected target selection, recipe fan-out, and accidental default-goal
-behavior.
+Use this first when the wrong target runs, too many recipes fan out, or the default goal
+looks suspicious.
 
 [Back to top](#top)
 
 ---
 
-## Step 2: Trace Causality
+## 2. Trace why work is happening
 
-Ask why Make believes work is necessary.
+Ask why Make thinks the work is necessary.
 
 ```sh
 make --trace <target>
 ```
 
-This is the fastest path to locating a stale edge, a changed prerequisite, or a hidden
-assumption that someone modeled indirectly.
+This is the fastest route to a missing edge, stale prerequisite, or target whose meaning
+changed without anyone noticing.
 
 [Back to top](#top)
 
 ---
 
-## Step 3: Dump The Evaluated World
+## 3. Inspect the evaluated build state
 
 Ask what rules and variables Make actually ended up with.
 
 ```sh
 make -p > build/make.dump
+make show
+make show-e
 ```
 
-Use this when command-line variables, includes, or layered `mk/*.mk` files are making the
-behavior hard to see by inspection.
+Use this when includes, overrides, or environment precedence are part of the problem.
 
 [Back to top](#top)
 
 ---
 
-## Step 4: Prove Or Break Convergence
+## 4. Check convergence
 
-Ask whether the build reaches a stable state.
+Ask whether one successful build leaves the repository in a truthful up-to-date state.
 
 ```sh
 make all
 make -q all
 ```
 
-If the second command says work is still needed, treat that as a real defect, not as a
-"Make being weird" moment.
+If the second command still thinks work is needed, the build is not "mostly fine." It is
+lying about state.
 
 [Back to top](#top)
 
 ---
 
-## Step 5: Stress Concurrency
+## 5. Change the schedule
 
 Ask whether the graph stays truthful when scheduling changes.
 
@@ -100,43 +98,44 @@ Ask whether the graph stays truthful when scheduling changes.
 make -j2 all
 ```
 
-Parallel-only failures usually indicate one of these:
+Parallel-only failures usually point to one of these:
 
-* missing edge
-* multi-writer output
-* shared mutable state
-* non-atomic publication
-* misuse of order-only prerequisites
+- missing dependency edge
+- shared mutable output
+- non-atomic publication
+- order-only prerequisite used in place of a real semantic dependency
 
 [Back to top](#top)
 
 ---
 
-## Step 6: Reduce To A Repro
+## 6. Reduce to a smaller repro
 
-If the build is still confusing, make the failure smaller before you keep theorizing.
+If the build is still hard to explain, make the failure smaller before theorizing.
 
 The target outcome is a tiny Makefile that preserves the defect class and removes
-everything else.
+everything else. In this course, that often means checking `repro/` first and then
+running the incident bundle route:
 
-This is where `capstone/repro/` becomes especially useful as a reference for what a good
-teaching or debugging repro looks like.
-When you need an executed example instead of a hand-driven repro, use
-`make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` and read the
-published [Repro Catalog](../capstone/repro-catalog.md).
+```sh
+make incident-audit
+```
+
+That route captures the command, run output, and exit status so the review starts from
+evidence instead of memory.
 
 [Back to top](#top)
 
 ---
 
-## Fast Symptom Table
+## Fast symptom table
 
 | Symptom | First suspicion | First command |
 | --- | --- | --- |
-| unexpected rebuild | changed prerequisite or hidden input | `make --trace <target>` |
-| build never converges | non-modeled input or self-poisoning output | `make all && make -q all` |
-| only fails under `-j` | missing edge or shared state | `make -j2 all` |
-| CI differs from local | version, shell, locale, or discovery drift | `make -p` and portability audit |
-| release bundle looks wrong | build truth and release truth are mixed | inspect `dist` contract and manifest inputs |
+| unexpected rebuild | a prerequisite changed or discovery drifted | `make --trace <target>` |
+| successful build never settles | hidden input or self-poisoning output | `make all && make -q all` |
+| serial works but `-j` breaks | missing edge or shared state | `make -j2 all` |
+| local behavior differs from another machine | variable precedence or portability drift | `make show-e` and `make portability-audit` |
+| incident explanation is too hand-wavy | the repro is still too large | `make incident-audit` |
 
 [Back to top](#top)
