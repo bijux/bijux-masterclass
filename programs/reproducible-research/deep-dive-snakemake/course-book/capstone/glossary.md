@@ -1,44 +1,40 @@
 # Capstone Glossary
 
-<!-- page-maps:start -->
-## Glossary Fit
+Use this page when the capstone route pages start to blur together. The capstone shelf is
+not a second course book. It is a small set of routes into one executable workflow
+repository, and the terms here keep those routes distinct.
 
-```mermaid
-flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
-```
+## Route terms
 
-```mermaid
-flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
-```
-<!-- page-maps:end -->
+| Term | Meaning here | Why it matters |
+| --- | --- | --- |
+| walkthrough | the bounded first pass through the repository without execution | keeps first contact human-scale |
+| tour | the executed review bundle for one end-to-end workflow story | separates planned shape from executed evidence |
+| verify report | the saved publish-contract bundle | helps you review downstream trust without rerunning the workflow live |
+| profile audit | the bundle that compares local, CI, and scheduler policy surfaces | keeps operating-context review separate from workflow semantics |
+| proof | the sanctioned multi-bundle stewardship route | meant for broad review, not first contact |
+| confirm | the strongest clean-room confirmation pass | for final confidence after narrower routes already make sense |
+| public contract | the files and paths another consumer or maintainer is allowed to rely on | separates stable promises from internal repository state |
+| policy surface | settings that affect execution context without redefining workflow meaning | prevents profile drift from hiding as semantics |
+| proof surface | the command, artifact, or saved bundle that corroborates a claim | keeps review attached to evidence instead of prose |
 
-This glossary belongs to **Capstone Guide** in **Deep Dive Snakemake**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+## Page names in plain language
 
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Page | What it helps you do |
 | --- | --- |
-| Capstone Architecture Guide | the capstone reading surface for capstone architecture guide, used to choose the next repository entry point without guessing. |
-| Capstone Extension Guide | the change-placement surface for the capstone, used to decide where a new behavior belongs and what it must preserve. |
-| Capstone File Guide | the capstone reading surface for capstone file guide, used to choose the next repository entry point without guessing. |
-| Capstone Proof Guide | the capstone review surface for capstone proof guide, used to turn course ideas into inspection, evidence, and change decisions. |
-| Capstone Review Worksheet | the capstone review surface for capstone review worksheet, used to turn course ideas into inspection, evidence, and change decisions. |
-| Capstone Walkthrough | the capstone reading surface for capstone walkthrough, used to choose the next repository entry point without guessing. |
-| Command Guide | the executable entry surface for the capstone, used when the next question is best answered by running the project rather than rereading the course. |
-| Deep Dive Snakemake: Capstone Map | the capstone reading surface for deep dive snakemake: capstone map, used to choose the next repository entry point without guessing. |
-| Incident Review Guide | the capstone review surface for incident review guide, used to turn course ideas into inspection, evidence, and change decisions. |
-| Profile Audit Guide | the capstone reading surface for profile audit guide, used to choose the next repository entry point without guessing. |
-| Publish Review Guide | the capstone review surface for publish review guide, used to turn course ideas into inspection, evidence, and change decisions. |
+| [Capstone Guide](index.md) | enter the repository with the right expectations |
+| [Capstone Map](capstone-map.md) | choose the right route by module or question |
+| [Command Guide](command-guide.md) | pick the right command layer and first command |
+| [Capstone File Guide](capstone-file-guide.md) | know which repository files to open first and why |
+| [Capstone Walkthrough](capstone-walkthrough.md) | take a bounded first pass through the repository |
+| [Capstone Proof Guide](capstone-proof-guide.md) | choose the smallest honest proof route |
+| [Publish Review Guide](publish-review-guide.md) | inspect the downstream contract and why it is trustworthy |
+| [Profile Audit Guide](profile-audit-guide.md) | review local, CI, and scheduler policy differences |
+| [Incident Review Guide](incident-review-guide.md) | narrow an incident before widening into the whole repository |
+| [Capstone Review Worksheet](capstone-review-worksheet.md) | review the repository as a steward, not just a reader |
+
+## Reading rule
+
+If two pages sound interchangeable, do not open both. Name the job first: entry,
+command choice, file ownership, publish review, profile review, incident review, or
+stewardship. Then open the one page that owns that job.
