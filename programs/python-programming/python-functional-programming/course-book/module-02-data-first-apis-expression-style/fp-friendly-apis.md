@@ -2,49 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["FP-Friendly APIs"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  shape["Start with an API shape that keeps growing"] --> hide["Notice which settings and services are hidden"]
+  hide --> group["Group inputs, config, and dependencies deliberately"]
+  group --> review["Review the function boundary before the implementation"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about making a function boundary easy to inspect. Students should come away knowing that good API shape is not decoration around the real code. It determines whether later composition, testing, and refactoring stay manageable.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Review Pressure
 
-Here's a snippet from the progression map:
+Large signatures and hidden dependencies usually appear one "small" requirement at a time. The lesson needs to show students how to stop that drift early.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If a function needs many unrelated arguments, the model of the operation is still blurry.
+- If callers must know about globals, environment variables, or service singletons, the API is lying about what it needs.
+- If reviewers cannot tell which inputs are data, which are policy, and which are external services, composition will stay fragile.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you design APIs with ≤3 parameters, explicit config and dependencies, and no hidden globals—so pipelines from M02C01–M02C03 are composable, testable, and predictable?
 
-This core introduces **FP-friendly API design** in Python:  
-- Craft functions as **small, composable bricks** with explicit interfaces (arity ≤3 for core public APIs).  
-- Group parameters into **immutable config** (domain settings) and **dependencies** (injected services).  
-- Build on M02C01 configurators, M02C02 expressions, and M02C03 laziness for streaming pipelines.  
+This lesson introduces FP-friendly API design as a set of reviewable design choices:
 
-We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder—evolving from a high-arity, global-dependent version to clean, composable APIs that preserve baseline equivalence.
+- keep the public function boundary small enough to understand in one read
+- separate input data from configuration and from injected services
+- preserve the earlier module gains so configured, expression-oriented, and lazy stages still compose cleanly
 
-**Audience:** Developers from M02C03 using lazy pipelines but facing high-arity functions or hidden globals that hinder testing and composition.  
+The running project grounds the rule in a realistic case: a RAG pipeline is not simple, but its boundary still has to stay inspectable.
+
+**Audience:** Developers using lazy pipelines but facing high-arity functions or hidden globals that make testing and composition awkward.  
 **Outcome:**  
 1. Identify high-arity or hidden dependencies in code and explain their impact on composability.  
 2. Refactor a high-arity function into a small-arity API with grouped config and dependencies.  
@@ -64,11 +55,11 @@ We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder�
 
 ### 1.3 Why This Matters Now
 
-M02C03 introduced lazy pipelines, but high-arity APIs or hidden globals make them hard to partialize, test, or compose. FP-friendly design ensures pipelines snap together, leveraging M02C01 configurators for variants, M02C02 expressions for clarity, and M02C03 laziness for efficiency.
+The earlier lessons made it possible to write configured, expression-oriented, lazy code. This lesson makes it possible to keep that code usable as a public surface. Without a disciplined API boundary, the implementation improvements remain trapped behind a function signature that keeps leaking internal details.
 
 ### 1.4 FP-Friendly APIs as Values in 5 Lines
 
-Small-arity APIs enable dynamic composition:
+The example below matters because it shows how configured callables become easy to store and reuse once the boundary shape is stable.
 
 ```python
 from functools import partial
