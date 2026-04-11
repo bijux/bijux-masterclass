@@ -45,8 +45,8 @@ include mk/targets.mk
 -include mk/local.mk
 ```
 
-The important part is not the filenames themselves. The important part is that the learner
-can say what each layer owns and why that ownership makes later mutation easier to review.
+The important part is not the filenames themselves. The important part is that you can say
+what each layer owns and why that ownership makes later mutation easier to review.
 
 ## Exercise 3: Decide whether a macro is justified
 

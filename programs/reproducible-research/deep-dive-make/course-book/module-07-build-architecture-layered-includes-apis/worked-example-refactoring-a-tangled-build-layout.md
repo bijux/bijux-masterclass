@@ -15,7 +15,7 @@ That is a very normal point in the life of a Make-based system.
 
 ## The incident
 
-Assume the learner inherits a build with these complaints:
+Assume you inherit a build with these complaints:
 
 1. no one agrees which top-level targets are public
 2. CI calls `build-objects` because it was convenient once
@@ -255,9 +255,9 @@ flowchart TD
 This is why the module is organized as five cores and then one worked example. The example
 is where the design advice becomes operational.
 
-## What the learner should say at the end
+## What you should say at the end
 
-A strong learner summary sounds like this:
+A strong summary sounds like this:
 
 > The build was not broken at the graph level, but its architecture was drifting. The
 > public surface was too large, CI depended on a helper target, include files did not have

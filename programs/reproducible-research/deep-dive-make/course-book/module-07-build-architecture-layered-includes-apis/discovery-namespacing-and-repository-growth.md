@@ -61,7 +61,7 @@ That makes the build easier to review and easier to extend.
 
 ## Sorting is part of graph stability
 
-Discovery order matters more than many learners expect.
+Discovery order matters more than many people expect.
 
 If source lists affect:
 
