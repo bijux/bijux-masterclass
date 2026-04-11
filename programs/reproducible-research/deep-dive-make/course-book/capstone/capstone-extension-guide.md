@@ -2,104 +2,88 @@
 
 # Capstone Extension Guide
 
+Use this page before changing the capstone. The goal is not to freeze the repository. The
+goal is to keep new work readable, provable, and clearly owned two years from now.
 
-<!-- page-maps:start -->
-## Guide Fit
+## What must survive every change
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone Extension Guide"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+Unless the course itself is being redesigned, a capstone change should preserve these
+properties:
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+- truthful dependency modeling
+- atomic publication for real outputs
+- serial and parallel equivalence where the build claims it
+- a small public target surface
+- a repository shape a learner can still audit end to end
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This page exists for maintainers who want to evolve the capstone without diluting its
-teaching value or its correctness contract.
-
----
-
-## What Must Stay Stable
-
-Any capstone change should preserve these properties unless the course itself is being
-redesigned deliberately:
-
-* truthful dependency modeling
-* atomic publication
-* serial and parallel equivalence
-* a small enough surface area for end-to-end auditability
-* public targets that remain clear to a learner
+If a proposed change weakens one of those, treat that as a design change, not routine
+maintenance.
 
 [Back to top](#top)
 
----
+## Put changes in the right place
 
-## Safe Kinds Of Changes
-
-These are usually good changes:
-
-* clarifying a public target description
-* adding a new repro that teaches a distinct failure class
-* improving selftest diagnostics without weakening its assertions
-* adding one more explicit boundary file or generator dependency
-* tightening docs so the capstone is easier to read in order
-
-[Back to top](#top)
-
----
-
-## Risky Kinds Of Changes
-
-These need extra discipline:
-
-* increasing repository size without increasing teaching value
-* adding abstraction layers that hide the graph
-* turning internal helper rules into undocumented public surfaces
-* weakening selftest because a defect is inconvenient on one machine
-* mixing release evidence into artifact identity
+| If you are changing... | Start in... | Why |
+| --- | --- | --- |
+| public target names or user-facing help text | `capstone/Makefile` | the public contract belongs at the top level |
+| tool, shell, or portability policy | `capstone/mk/contract.mk` | policy should stay explicit and centralized |
+| reusable recipe helpers | `capstone/mk/macros.mk` or `capstone/mk/common.mk` | reuse belongs in named helpers, not copied shell |
+| discovery or object selection | `capstone/mk/objects.mk` | graph membership should have one owning file |
+| hidden inputs or rebuild state evidence | `capstone/mk/stamps.mk` | state tracking should stay reviewable |
+| proof behavior | `capstone/tests/run.sh` | proof belongs to the harness, not to prose |
+| a new failure specimen | `capstone/repro/` plus the learner-facing repro pages | failure teaching should stay isolated from the healthy build |
 
 [Back to top](#top)
 
----
+## Good capstone changes
 
-## Best Review Checklist
+These usually improve the repository:
 
-Before merging a capstone change, confirm:
-
-1. which learner question the change improves
-2. which public target or file responsibility changed
-3. whether `selftest` still proves the same contract
-4. whether the new surface is still easy to audit end to end
-5. whether a future maintainer would understand the intent from the filename and commit message alone
+- clarifying a target description or route page
+- adding one more explicit dependency or boundary file
+- improving a proof message without weakening the check
+- adding a distinct repro that teaches a real failure class
+- tightening file ownership so a reader has less guessing to do
 
 [Back to top](#top)
 
----
+## Risky changes
 
-## Best Commands To Re-Run
+Slow down when a change does any of these:
+
+- adds abstraction that hides the graph more than it reduces repetition
+- turns internal helper behavior into an undocumented public surface
+- weakens selftest because one environment is inconvenient
+- mixes proof residue into source or release identity
+- adds repository bulk without adding a sharper lesson
+
+[Back to top](#top)
+
+## Review checklist before you commit
+
+Answer these in your own words:
+
+1. what learner or maintainer question became easier after this change
+2. which file now owns the behavior
+3. which proof route still corroborates the claim
+4. whether the filename and commit message would still make sense later
+5. whether a future reader could understand the change without oral history
+
+If you cannot answer those, the change is probably not placed cleanly yet.
+
+[Back to top](#top)
+
+## Best rerun commands
+
+From repository root:
 
 ```sh
-make PROGRAM=reproducible-research/deep-dive-make program-help
-make PROGRAM=reproducible-research/deep-dive-make capstone-tour
-make PROGRAM=reproducible-research/deep-dive-make proof
+make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-make inspect
 make PROGRAM=reproducible-research/deep-dive-make test
+make PROGRAM=reproducible-research/deep-dive-make proof
 ```
 
-Use GNU Make on macOS only when you intentionally step down into the raw `capstone/`
-reference build.
+Those four routes cover entry, public contract, executable proof, and steward review.
 
 [Back to top](#top)
