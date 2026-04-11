@@ -1,7 +1,6 @@
 <a id="top"></a>
 
-# Public Target Reference
-
+# Public Targets
 
 <!-- page-maps:start -->
 ## Reference Position
@@ -9,130 +8,127 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> reference["Public Target Reference"]
+  program --> reference["Public Targets"]
   reference --> review["Design or review decision"]
   review --> capstone["Capstone proof surface"]
 ```
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
+  question["Name the question you need answered"] --> target["Choose the smallest public target"]
+  target --> evidence["Inspect the bundle or console output it produces"]
+  evidence --> boundary["Name the owning file or review surface"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-This page documents the stable command surfaces a learner, maintainer, or reviewer should
-care about first.
-
-The goal is to make the build API legible without requiring a scan of multiple Makefiles.
+This page documents the stable command surface for Deep Dive Make. Use it to answer
+"which command should I trust first?" without reading every recipe in both Makefiles.
 
 ---
 
-## Program-Level Targets
+## Program-level targets
 
 These live in `programs/reproducible-research/deep-dive-make/Makefile`.
 
-| Target | Purpose | Use when |
+| Target | What it does | Use when |
 | --- | --- | --- |
-| `help` | list local development entrypoints | you are orienting yourself in the program directory |
-| `test` | run the capstone selftest from the program root | you want one course-level verification command |
-| `capstone` | build the capstone | you want artifacts without the full selftest |
-| `capstone-selftest` | run the capstone proof harness | you are validating the reference build |
-| `capstone-hardened` | run selftest plus audits and runtime checks | you want the strongest built-in validation |
-| `inspect` | build the learner-facing inspection bundle | you want the smallest bounded review route |
-| `capstone-walkthrough` | build the learner-facing walkthrough bundle | you want the bounded first-pass capstone route |
-| `capstone-verify-report` | build the saved selftest report bundle | you want durable executed proof output |
-| `capstone-confirm` | run the strongest shared confirmation route | you want the published review and validation surface |
-| `capstone-clean` | clear capstone outputs | you need a clean build state |
+| `help` | lists the program-level entrypoints | you are orienting yourself at the program root |
+| `test` | runs the capstone selftest through the program wrapper | you want one course-level verification command |
+| `capstone` | builds the capstone outputs | you need artifacts without the broader audits |
+| `capstone-selftest` | runs the capstone proof harness | you are validating build truth |
+| `capstone-hardened` | runs the strongest built-in validation set | you want the capstone's full confirmation route |
+| `capstone-tour` | prints the shortest review route and writes the tour bundle | you need a quick entry into the repository |
+| `capstone-walkthrough` | writes the bounded first-pass walkthrough bundle | you want the learner-first reading route |
+| `capstone-contract-audit` | writes the public-contract audit bundle | you are reviewing the published target surface |
+| `capstone-incident-audit` | writes one executed incident bundle | you want one failure class with captured evidence |
+| `capstone-verify-report` | writes the saved selftest report bundle | you need durable proof output |
+| `capstone-profile-audit` | writes the execution-profile audit bundle | you are reviewing policy and precedence boundaries |
+| `capstone-confirm` | runs the strongest shared stewardship route | you are closing a review loop |
+| `inspect` | aliases `capstone/contract-audit` from the program root | you want the smallest honest public-contract review route |
+| `proof` | writes the sanctioned bundle set from the program root | you need the multi-bundle stewardship route |
 
 [Back to top](#top)
 
 ---
 
-## Capstone Targets
+## Capstone targets
 
 These live in `capstone/Makefile`.
 
-| Target | Promise |
+| Target | What it proves or produces |
 | --- | --- |
-| `all` | build the main executable and dynamic binaries, then converge |
-| `test` | run runtime behavior checks on built artifacts |
-| `selftest` | prove convergence, serial/parallel equivalence, and a negative hidden-input case |
-| `inspect` | alias the contract-audit route with learner review naming |
-| `verify-report` | alias the selftest report with shared catalog naming |
-| `walkthrough` | write the learner-facing walkthrough bundle |
-| `tour` | print the recommended first reading route |
-| `discovery-audit` | assert deterministic discovery order |
-| `repro` | print the repro pack entrypoints |
-| `attest` | write evidence without contaminating artifact identity |
-| `trace-count` | report a lightweight observability metric |
-| `portability-audit` | print tool and feature assumptions |
-| `confirm` | alias the strongest capstone confirmation route |
-| `hardened` | combine selftest, audits, attestations, and runtime checks |
+| `help` | the stable public interface and supported variables |
+| `all` | the ordinary build result and convergence sentinel |
+| `test` | runtime behavior checks on the built outputs |
+| `selftest` | convergence, serial/parallel equivalence, and hidden-input detection |
+| `walkthrough` | the learner-first walkthrough bundle |
+| `tour` | the shortest printed repository route plus a focused tour bundle |
+| `contract-audit` | the public-contract review bundle |
+| `inspect` | the same contract audit route under learner-facing naming |
+| `incident-audit` | one executed repro bundle with captured command and output |
+| `profile-audit` | the execution-policy and precedence review bundle |
+| `selftest-report` | the saved selftest evidence bundle |
+| `verify-report` | the same selftest bundle under shared catalog naming |
+| `proof` | the sanctioned set of walkthrough, selftest, contract, incident, and profile bundles |
+| `confirm` | the strongest named review route |
+| `hardened` | selftest, audits, attestation, and runtime checks together |
+| `source-baseline-check` | the check that source packaging would not include local build residue |
+| `source-bundle` | the tracked-source archive for learner or review distribution |
 
 [Back to top](#top)
 
 ---
 
-## Stability Rules
+## Stable entrypoints
 
-Treat these as stable entrypoints:
+Treat these as the command surface the course and review material are allowed to rely on:
 
-* program-level `test`
-* capstone `all`
-* capstone `test`
-* capstone `selftest`
-* capstone `inspect`
-* capstone `verify-report`
-* capstone `hardened`
-* capstone `confirm`
-* capstone `help`
-* capstone `walkthrough`
-* capstone `tour`
+- program root: `help`, `test`, `inspect`, `proof`, `capstone-walkthrough`, `capstone-confirm`
+- capstone root: `help`, `all`, `test`, `selftest`, `walkthrough`, `tour`, `inspect`,
+  `incident-audit`, `profile-audit`, `verify-report`, `proof`, `confirm`
 
-Treat internal helper rules and file-specific recipes as implementation detail unless they
-are explicitly documented here or in `help`.
+Treat helper recipes, temporary file rules, and layer-specific internals as implementation
+detail unless they are exposed by `help` or documented in one of the capstone guides.
 
 [Back to top](#top)
 
 ---
 
-## Best First Commands
+## Choose the smallest honest command
 
-If you are new to the course:
+| Question | Start here |
+| --- | --- |
+| what does this repository promise publicly | `make inspect` |
+| what does the build prove about itself | `make selftest` |
+| how do I save proof output for review later | `make verify-report` |
+| which failure class should I study with evidence | `make incident-audit` |
+| what does this repository assume about tools and variable sources | `make profile-audit` |
+| what is the first bounded route for a new reader | `make walkthrough` |
+| what is the strongest shared stewardship route | `make confirm` |
+
+[Back to top](#top)
+
+---
+
+## Good first commands
+
+From the program root:
 
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
 make PROGRAM=reproducible-research/deep-dive-make inspect
-make PROGRAM=reproducible-research/deep-dive-make program-help
-make PROGRAM=reproducible-research/deep-dive-make capstone-tour
 make PROGRAM=reproducible-research/deep-dive-make test
 ```
 
-If you are reviewing the course as a system:
+Inside `capstone/`:
 
 ```sh
-make PROGRAM=reproducible-research/deep-dive-make test
-make PROGRAM=reproducible-research/deep-dive-make capstone-confirm
+gmake walkthrough
+gmake help
+gmake selftest
 ```
 
-[Back to top](#top)
-
----
-
-## Best Target By Question
-
-| Question | Smallest honest target |
-| --- | --- |
-| what is promised publicly | `inspect` |
-| what proves the build contract | `selftest` |
-| what saves durable proof | `verify-report` |
-| what reviews one failure class | `incident-audit` |
-| what reviews policy and observability boundaries | `profile-audit` |
-| what bundles the sanctioned review route | `proof` |
-| what performs the strongest stewardship pass | `confirm` |
+Use `gmake` on macOS inside `capstone/`, because `/usr/bin/make` is BSD Make rather than
+GNU Make.
 
 [Back to top](#top)
