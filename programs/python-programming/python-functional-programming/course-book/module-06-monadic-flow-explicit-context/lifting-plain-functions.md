@@ -2,47 +2,43 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 06: Monadic Flow and Explicit Context"]
-  module --> concept["Lifting Plain Functions"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  plain["Start with an ordinary Python function"] --> choose["Choose map, and_then, map_err, or liftA based on dependency shape"]
+  choose --> lift["Lift the function without rewriting container plumbing"]
+  lift --> read["Keep the happy path linear and the container contract explicit"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make lifting feel like a small practical decision rather than a pile of combinator names. Students need a reliable way to look at a plain function and decide whether it belongs under `map`, `and_then`, `map_err`, or applicative lifting.
 
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
+## Start With the Choice Problem
 
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
+After learning `and_then`, students often hit a different kind of uncertainty: the function is plain Python, so which operation should carry it into the container flow?
+
+- If the function transforms a successful value without changing the container type, it usually belongs under `map`.
+- If the function itself returns a container, then `and_then` is usually the honest choice.
+- If the function combines independent container values, applicative lifting is often the better fit than sequential chaining.
 
 **Core question**  
 How do you turn any plain Python function into a container-aware version (`map`, `ap`, `and_then`) so that your pipelines become completely linear on the happy path and never require another manual error check again?
 
-**Audience**: Engineers who are done writing `if isinstance(x, Err): return x` 47 times and want the laws + type-checker to guarantee correctness forever.
+This lesson introduces lifting as the bridge between ordinary functions and container-based flow:
+
+- preserve the behavior of plain functions instead of rewriting them around containers
+- choose the smallest combinator that matches the dependency structure
+- keep the resulting pipeline readable by making the lifting rule obvious at the call site
+
+**Audience**: Engineers who are done writing `if isinstance(x, Err): return x` 47 times and want a small, reliable decision framework for container-aware composition.
 
 **Outcome**
 1. You will reach for `.map`, `.map_err`, `.and_then`, or `liftA2` instinctively.
 2. You will know exactly when to pick fail-fast `Result` vs accumulating `Validation`.
 3. You will have Hypothesis-backed proof that all lifting combinators satisfy functor/applicative/monad laws.
 
-## The Only Four Things You Will Ever Need (Tier 1)
+## The Four Operations To Reach For First
 
 | Operation      | Method                  | Use when                                                   | Container     |
 |----------------|-------------------------|------------------------------------------------------------|---------------|
