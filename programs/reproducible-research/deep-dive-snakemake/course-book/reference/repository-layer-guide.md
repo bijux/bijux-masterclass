@@ -2,7 +2,6 @@
 
 # Repository Layer Guide
 
-
 <!-- page-maps:start -->
 ## Reference Position
 
@@ -16,26 +15,19 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
+  question["Where should this change or question land"] --> layer["Choose the owning repository layer"]
+  layer --> proof["Read the guide or artifact that proves that ownership"]
+  proof --> decision["Keep the change in that layer or move it"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-Deep Dive Snakemake uses several repository layers on purpose. This page explains what
-each layer owns so the capstone stays legible as the learner moves past the top-level
-workflow entrypoint.
-
-Use it when `workflow/`, `src/`, `profiles/`, and `config/` feel like parallel folders
-instead of an intentional architecture.
+Use this page when `Snakefile`, `workflow/rules/`, `workflow/modules/`, `workflow/scripts/`,
+`src/capstone/`, `profiles/`, and `config/` all look plausible. The point is to assign
+ownership before the repository grows another ambiguous layer.
 
 ---
 
-## Reading Order
-
-Read the repository layers in this order:
+## Read the repository in this order
 
 1. `capstone/Snakefile`
 2. `capstone/workflow/rules/`
@@ -45,52 +37,46 @@ Read the repository layers in this order:
 6. `capstone/profiles/`
 7. `capstone/config/`
 
-That order moves from orchestration entrypoint, to rule families, to modular grouping,
-to workflow-adjacent helpers, to reusable implementation code, to operating policy, and
-finally to declared configuration.
+That route moves from visible orchestration to helper structure, then to reusable code,
+and only then to operating policy.
 
 [Back to top](#top)
 
 ---
 
-## Layer Responsibilities
+## What each layer owns
 
-| Path | Responsibility |
-| --- | --- |
-| `Snakefile` | repository entrypoint and visible workflow assembly |
-| `workflow/rules/` | rule families and declared file contracts |
-| `workflow/modules/` | reusable workflow bundles that keep repository growth legible |
-| `workflow/scripts/` | workflow-adjacent helpers that belong with orchestration rather than the Python package |
-| `src/capstone/` | reusable implementation code for processing steps |
-| `profiles/` | execution policy for local, CI, and scheduler-backed runs |
-| `config/` | declared config inputs and schema validation boundaries |
-
-[Back to top](#top)
-
----
-
-## What Each Layer Must Not Do
-
-| Path | Boundary to protect |
-| --- | --- |
-| `Snakefile` | should not become the only place where workflow truth can be located |
-| `workflow/rules/` | should not hide implementation code that belongs in scripts or packages |
-| `workflow/modules/` | should not bury the visible rule graph under indirection |
-| `workflow/scripts/` | should not become a second undocumented application package |
-| `src/capstone/` | should not silently mutate workflow meaning outside declared rule or config surfaces |
-| `profiles/` | should not change the workflow's analytical meaning |
-| `config/` | should not become an unvalidated dumping ground for hidden behavior |
+| Path | Owns | Should not absorb |
+| --- | --- | --- |
+| `Snakefile` | visible workflow assembly and top-level story | helper logic that hides the DAG behind indirection |
+| `workflow/rules/` | rule-family contracts, file paths, logs, and benchmarks | reusable processing code that belongs in scripts or Python modules |
+| `workflow/modules/` | grouped workflow structure that keeps larger rule sets legible | abstractions so indirect that readers stop being able to trace outputs |
+| `workflow/scripts/` | orchestration-adjacent helpers called by rules | application logic that deserves tests and package boundaries |
+| `src/capstone/` | reusable implementation code with explicit interfaces | policy, profile, or publish-boundary choices |
+| `profiles/` | execution context and resource policy | analytical meaning or hidden semantic switches |
+| `config/` | validated workflow inputs | ad hoc knobs that bypass documented contracts |
 
 [Back to top](#top)
 
 ---
 
-## Best Companion Pages
+## Ownership tests
 
-Use these pages with this guide:
+Before adding or moving code, ask:
 
-* [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
-* [`capstone-map.md`](../capstone/capstone-map.md)
-* [`proof-matrix.md`](../guides/proof-matrix.md)
+1. is this changing workflow meaning, operating policy, or reusable implementation
+2. should a dry-run reveal this behavior, or only the helper code
+3. which guide would you point a reviewer to first
+4. if this file disappeared, what kind of question would become impossible to answer
+
+[Back to top](#top)
+
+---
+
+## Companion pages
+
+- [`boundary-map.md`](boundary-map.md)
+- [`anti-pattern-atlas.md`](anti-pattern-atlas.md)
+- [`completion-rubric.md`](completion-rubric.md)
 
 [Back to top](#top)
