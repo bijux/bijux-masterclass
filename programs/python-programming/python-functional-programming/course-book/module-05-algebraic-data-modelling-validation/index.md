@@ -30,7 +30,7 @@ Use these support surfaces while reading so value modelling stays connected to r
 domain states instead of turning into type-shape ornament:
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge through failures and modelling
-- [Engineering Question Map](../guides/engineering-question-map.md) for domain-pressure routing
+- [Pressure Routes](../guides/pressure-routes.md) for domain-pressure routing
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for symptom-first review of modelling mistakes
 - [Capstone Map](../capstone/capstone-map.md) for the validation and domain-state surfaces in FuncPipe
 

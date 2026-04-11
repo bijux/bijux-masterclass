@@ -61,7 +61,7 @@ By the end of the course, you should be able to:
 | I need the shortest honest route into the course. | [Start Here](guides/start-here.md) | [Course Guide](guides/course-guide.md) |
 | I want to know what each module is supposed to change in my judgment. | [Module Promise Map](guides/module-promise-map.md) | [Module Checkpoints](guides/module-checkpoints.md) |
 | I want a paced first pass through the semantic floor. | [Foundations Reading Plan](guides/foundations-reading-plan.md) | [Learning Contract](guides/learning-contract.md) |
-| My question is already practical and I need the owning module. | [Engineering Question Map](guides/engineering-question-map.md) | [Proof Matrix](guides/proof-matrix.md) |
+| My question is already practical and I need the owning module. | [Pressure Routes](guides/pressure-routes.md) | [Proof Matrix](guides/proof-matrix.md) |
 | The capstone domain still feels noisy. | [FuncPipe RAG Primer](guides/funcpipe-rag-primer.md) | [FuncPipe Capstone Guide](capstone/index.md) |
 | I am returning after a break and do not want to restart from zero. | [Return Map](module-00-orientation/return-map.md) | [Module Promise Map](guides/module-promise-map.md) |
 

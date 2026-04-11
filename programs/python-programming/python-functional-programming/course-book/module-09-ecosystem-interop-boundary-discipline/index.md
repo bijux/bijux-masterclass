@@ -30,7 +30,7 @@ Use these support surfaces while reading so interop stays disciplined and does n
 the boundaries the earlier modules established:
 
 - [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course route into interop and sustainment
-- [Engineering Question Map](../guides/engineering-question-map.md) for framework and library pressure
+- [Pressure Routes](../guides/pressure-routes.md) for framework and library pressure
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for interop symptoms that hide design regressions
 - [Capstone Map](../capstone/capstone-map.md) for the CLI, distributed, and interop surfaces in FuncPipe
 

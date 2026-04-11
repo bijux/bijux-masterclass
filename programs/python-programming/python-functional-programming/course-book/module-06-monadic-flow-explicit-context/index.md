@@ -30,7 +30,7 @@ Use these support surfaces while reading so explicit context and composition sta
 reviewable flow rather than container jargon:
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge through failure and modelling pressure
-- [Engineering Question Map](../guides/engineering-question-map.md) for flow and context questions
+- [Pressure Routes](../guides/pressure-routes.md) for flow and context questions
 - [Boundary Review Prompts](../reference/boundary-review-prompts.md) for keep/change/reject pressure
 - [Capstone Map](../capstone/capstone-map.md) for the context, result, and pipeline surfaces in FuncPipe
 
