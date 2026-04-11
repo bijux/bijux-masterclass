@@ -2,42 +2,38 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 06: Monadic Flow and Explicit Context"]
-  module --> concept["Reader Pattern"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  hidden["Start with globals or closure-captured dependencies"] --> explicit["Make the environment an explicit typed input"]
+  explicit --> swap["Swap configurations at the call site without rewriting logic"]
+  swap --> review["Review dependency use from the Reader shape itself"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make Reader feel like a dependency-visibility tool, not a clever container. Students need to see that the real gain is simple: configuration and services stop hiding in globals and closures and become explicit in the compositional shape of the pipeline.
 
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
+## Start With the Hidden Dependency Problem
 
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
+By this point students can chain fallible steps well, but they may still be smuggling models, tokenizers, or config through closure capture. Reader matters when that hidden context starts making tests and reviews harder.
+
+- If dependencies are captured invisibly, the call site no longer tells the truth about what the pipeline needs.
+- If swapping one config or service requires rebuilding a whole chain manually, the dependency story is too implicit.
+- If students cannot tell which parts of the environment a step actually reads, the abstraction is still hiding too much.
 
 **Core question**  
 How do you completely eliminate closure-captured variables and globals from monadic pipelines by making configuration an explicit, typed, injectable dependency — giving you pure, testable, refactor-safe code that scales from 3 lines to 300 without ever hiding a dependency again?
 
-This is the core that finally kills the last remaining anti-pattern from the earlier examples: closure-captured `model`, `tokenizer`, or `config`. After this core, every dependency is visible in the type signature, swappable with one line, and proven correct by Hypothesis.
+This lesson introduces Reader as the explicit-context version of patterns students have already seen:
 
-**Audience**: Engineers who have tasted the power of `.and_then` chains but are still fighting closure-captured dependencies that break tests and refactors.
+- keep the pipeline pure while still depending on shared configuration
+- expose the environment in the type and combinator structure
+- make swapping environments a call-site concern instead of a hidden construction trick
+
+The earlier closure examples matter because Reader is easiest to understand as a disciplined replacement for patterns students already use.
+
+**Audience**: Engineers who have tasted the power of `.and_then` chains but are still fighting hidden dependencies that break tests and refactors.
 
 **Outcome**
 1. You will write every config-dependent pipeline as a pure `Reader[Config, T]`.
@@ -52,7 +48,7 @@ This is the core that finally kills the last remaining anti-pattern from the ear
 | Closure capture          | Hidden     | Bad         | Bad               | Bad             | Works until it doesn't   |
 | Reader (this core)       | Explicit   | Strong      | Strong            | Strong          | Best fit for this core   |
 
-Reader is "closure capture, but lawful, typed, and composable".
+Reader is best understood here as “explicit, lawful closure capture” rather than as a mysterious new runtime mechanism.
 
 ## 1. Laws & Invariants (machine-checked in CI)
 
