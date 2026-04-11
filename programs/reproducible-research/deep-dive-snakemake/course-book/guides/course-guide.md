@@ -37,7 +37,7 @@ Deep Dive Snakemake has four durable surfaces:
 | first entry into the course | [Start Here](start-here.md) | the capstone repository |
 | the module sequence explained | [Module 00](../module-00-orientation/index.md) | incident or governance pages |
 | one support page for urgency | [Pressure Routes](pressure-routes.md) | random browsing through `guides/` |
-| workflow-versus-policy separation | [Boundary Map](../reference/boundary-map.md) | the strongest available command |
+| workflow-versus-policy separation | [Topic Boundaries](../reference/topic-boundaries.md) | the strongest available command |
 | module-to-repository routing | [Capstone Map](../capstone/capstone-map.md) | raw repository files |
 | durable review maps | [Reference](../reference/index.md) | course-home prose |
 
@@ -52,7 +52,7 @@ Deep Dive Snakemake has four durable surfaces:
 
 ## The support shelf by job
 
-- Read [Boundary Map](../reference/boundary-map.md) when repository splits or module boundaries feel fuzzy.
+- Read [Boundary Review Prompts](../reference/boundary-review-prompts.md) when repository splits or module boundaries feel fuzzy.
 - Read [Module Promise Map](module-promise-map.md) when module titles feel too compressed.
 - Read [Module Checkpoints](module-checkpoints.md) when you need a visible exit bar.
 - Read [Pressure Routes](pressure-routes.md) when the reading order is shaped by urgency.

@@ -34,41 +34,35 @@ than one module chapter.
 | the full support-page map | [Course Guide](course-guide.md) | [Learning Contract](learning-contract.md) |
 | a route shaped by urgency | [Pressure Routes](pressure-routes.md) | [Proof Ladder](proof-ladder.md) |
 | module promises and exit bars | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
-| state truth and evidence rules | [Course Guide](course-guide.md) | [Authority Map](../reference/authority-map.md) |
+| durable review and boundary standards | [Review Checklist](../reference/review-checklist.md) | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
 | capstone entry | [Capstone Guide](../capstone/index.md) | [Capstone Map](../capstone/capstone-map.md) |
 
-## Study routes
+## Use the shelf by job
 
-- [Start Here](start-here.md) for the shortest stable route into the course
-- [Course Guide](course-guide.md) for the role of each support surface
-- [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
-- [Pressure Routes](pressure-routes.md) for repair, stewardship, and recovery entry paths
-- [Platform Setup](platform-setup.md) before you run local proof commands
+| Job | Best page |
+| --- | --- |
+| understand the module arc and support-page roles | [Course Guide](course-guide.md) |
+| see the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) |
+| rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) |
+| hold the stable review bar steady | [Review Checklist](../reference/review-checklist.md) |
+| sharpen a keep, change, or reject boundary call | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
+| spot common repository drift faster | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) |
+| route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
+| choose the smallest honest proof route | [Proof Ladder](proof-ladder.md) |
+| confirm the local environment before public commands | [Platform Setup](platform-setup.md) |
 
-## Module support
+## Cross into the capstone deliberately
 
-- [Course Guide](course-guide.md) when you need change-detection and evidence rules in one place
-- [Module Promise Map](module-promise-map.md) when you want each title translated into a learner contract
-- [Module Checkpoints](module-checkpoints.md) when you need an exit bar before moving on
-- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
-- [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
-
-## Proof and command routes
-
-- [Proof Ladder](proof-ladder.md) for choosing the smallest honest route
-- [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence surface
-- [Authority Map](../reference/authority-map.md) when the question is which state layer is authoritative
-- [Evidence Boundary Guide](../reference/evidence-boundary-guide.md) when you need to separate declaration, execution, promotion, and recovery proof
-- [Command Guide](../capstone/command-guide.md) for command boundaries
-
-## Capstone entry routes
-
-- [Capstone Guide](../capstone/index.md) for the repository contract
-- [Capstone Map](../capstone/capstone-map.md) for module and question routing
-- [Capstone File Guide](../capstone/capstone-file-guide.md) for file responsibilities
-- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for steward-level repository review
-- [Release Review Guide](../capstone/release-review-guide.md) for downstream contract review
-- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
+| If you need... | Best page |
+| --- | --- |
+| the capstone's role in the course | [Capstone](../capstone/index.md) |
+| the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
+| a bounded first pass through the repository | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
+| file responsibilities inside the repository | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| ownership boundaries across declaration, execution, promotion, and recovery | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
+| verification depth for publish, experiment, or recovery questions | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+| steward-level repository review | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+| safe evolution | [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 
 ## Good stopping point
 

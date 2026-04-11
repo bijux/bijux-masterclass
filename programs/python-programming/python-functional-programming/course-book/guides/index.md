@@ -38,7 +38,7 @@ surface, or capstone bridge.
 | I need to know what each module is supposed to change. | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
 | My question is already practical. | [Pressure Routes](pressure-routes.md) | the owning module or [Proof Matrix](proof-matrix.md) |
 | I need to connect learning goals to proof. | [Proof Matrix](proof-matrix.md) | [Proof Ladder](proof-ladder.md) |
-| The capstone domain still feels unfamiliar. | [Start Here](start-here.md) | [FuncPipe Capstone Guide](../capstone/index.md) |
+| The capstone domain still feels unfamiliar. | [Start Here](start-here.md) | [Capstone](../capstone/index.md) |
 | I am resuming after a break. | [Return Map](../module-00-orientation/return-map.md) | [Proof Ladder](proof-ladder.md) |
 
 ## Use the shelf by job
@@ -52,19 +52,20 @@ surface, or capstone bridge.
 | rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) |
 | route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
 | compare current work with generated history surfaces | [Proof Ladder](proof-ladder.md) |
+| confirm the local environment before public commands | [Platform Setup](platform-setup.md) |
 | hold the teaching bar steady | [Learning Contract](learning-contract.md) |
 
 ## Cross into the capstone deliberately
 
 | If you need... | Best page |
 | --- | --- |
-| the capstone's role in the course | [FuncPipe Capstone Guide](../capstone/index.md) |
+| the capstone's role in the course | [Capstone](../capstone/index.md) |
 | the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
-| a package-first reading route | [Capstone File Guide](../capstone/capstone-file-guide.md) |
-| a test-first reading route | [Capstone Test Guide](../capstone/capstone-test-guide.md) |
+| a bounded first pass through the repository | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
+| file ownership and package roles | [Capstone File Guide](../capstone/capstone-file-guide.md) |
 | boundary ownership and package roles | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
-| review prompts and extension placement | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) and [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 | verification depth and saved proof | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+| review prompts and extension placement | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) and [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 
 ## Keep The Layout Stable
 

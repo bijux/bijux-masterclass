@@ -26,38 +26,44 @@ Use this section when you need route guidance rather than one module chapter. Th
 pages keep the reading order, practice rhythm, and capstone bridge explicit so the
 module tree can stay focused on long-lived content.
 
-## Read These First
+## Choose one lane
 
-- [Start Here](start-here.md) for the shortest honest entry route
-- [Course Guide](course-guide.md) for the module arc and support-page roles
-- [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
-- [Proof Matrix](proof-matrix.md) for the route from course promise to evidence
-- [Orientation](../module-00-orientation/index.md) for the full course shape
-- [Course Map](../module-00-orientation/course-map.md) for the reading structure
+| If your pressure is... | Best page | Then go to... |
+| --- | --- | --- |
+| I need the shortest honest entry route. | [Start Here](start-here.md) | [Course Guide](course-guide.md) |
+| I need the module arc and proof bar kept explicit. | [Course Guide](course-guide.md) | [Learning Contract](learning-contract.md) |
+| I know the design pressure faster than the module name. | [Pressure Routes](pressure-routes.md) | [Proof Matrix](proof-matrix.md) |
+| I need to know what each module is supposed to change. | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
+| I need the route from promise to evidence. | [Proof Matrix](proof-matrix.md) | [Proof Ladder](proof-ladder.md) |
+| The capstone still feels unfamiliar. | [Start Here](start-here.md) | [Capstone](../capstone/index.md) |
+| I am resuming after a break. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) | [Proof Ladder](proof-ladder.md) |
 
-## Use These For Study Planning
+## Use the shelf by job
 
-- [Pressure Routes](pressure-routes.md) when you know the design problem faster than the module name
-- [Module Promise Map](module-promise-map.md) when you want each module title translated into a learner contract
-- [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
-- [Pressure Routes](pressure-routes.md) when your route is shaped by a concrete design or review problem
-- [Module Dependency Map](../reference/module-dependency-map.md) and [Practice Map](../reference/practice-map.md) when you need the sequence and rehearsal loop explained
+| Job | Best page |
+| --- | --- |
+| understand the module arc and support-page roles | [Course Guide](course-guide.md) |
+| see the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) |
+| rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) |
+| hold the stable review bar steady | [Review Checklist](../reference/review-checklist.md) |
+| sharpen a keep, change, or reject decision | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
+| check your own understanding before escalating | [Self-Review Prompts](../reference/self-review-prompts.md) |
+| route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
+| choose the smallest honest proof route | [Proof Ladder](proof-ladder.md) |
+| confirm the local environment before public commands | [Platform Setup](platform-setup.md) |
 
-## Use These For Commands And Proof
+## Cross into the capstone deliberately
 
-- [Command Guide](../capstone/command-guide.md) for the executable route
-- [Proof Ladder](proof-ladder.md) for choosing the smallest honest proof route
-- [Object Design Checklist](../reference/object-design-checklist.md), [Self-Review Prompts](../reference/self-review-prompts.md), and [Boundary Review Prompts](../reference/boundary-review-prompts.md) for stable review bars
-
-## Use These For Capstone Reading
-
-- [Capstone](../capstone/index.md) for the capstone’s role in the course
-- [Capstone Map](../capstone/capstone-map.md) for the module-to-repository route
-- [Capstone File Guide](../capstone/capstone-file-guide.md) for the capstone reading path
-- [Capstone Review Checklist](../capstone/capstone-review-checklist.md) for a bounded review pass
-- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for boundary ownership
-- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for the human review story
-- [Capstone Proof Guide](../capstone/capstone-proof-guide.md) for verification depth
+| If you need... | Best page |
+| --- | --- |
+| the capstone's role in the course | [Capstone](../capstone/index.md) |
+| the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
+| a bounded first pass through the repository | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
+| the capstone reading path by file | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| boundary ownership inside the system | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
+| verification depth and saved proof | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+| a bounded review pass | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+| safe extension | [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 
 ## Keep The Layout Stable
 

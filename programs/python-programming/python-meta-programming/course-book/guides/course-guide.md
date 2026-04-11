@@ -94,7 +94,7 @@ Module 10 and [Mastery Review](../module-10-runtime-governance-mastery-review/ma
 ### When you are deciding whether a dynamic mechanism is justified
 
 - [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current claim
-- [Runtime Power Ladder](../reference/runtime-power-ladder.md) when you need the governing review model
+- [Review Checklist](../reference/review-checklist.md) when you need the governing review bar
 - [Pressure Routes](pressure-routes.md) when you need a problem-to-tool comparison with the lowest-power alternative kept visible
 - [Topic Boundaries](../reference/topic-boundaries.md) when you need to decide what belongs inside the course center
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) when you are recognizing a smell before you can name the mechanism

@@ -56,7 +56,7 @@ workflow contract, and capstone timing visible.
 | If you need... | Read next | Keep nearby |
 | --- | --- | --- |
 | first contact with Snakemake | [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md), [Module 02](../module-02-dynamic-dags-discovery-integrity/index.md) | [Module Checkpoints](module-checkpoints.md) |
-| repair of an existing workflow | [Pressure Routes](pressure-routes.md), [Module 03](../module-03-production-operations-policy-boundaries/index.md), [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md) | [Boundary Map](../reference/boundary-map.md) |
+| repair of an existing workflow | [Pressure Routes](pressure-routes.md), [Module 03](../module-03-production-operations-policy-boundaries/index.md), [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md) | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
 | stewardship of a long-lived workflow repository | [Module 06](../module-06-publishing-downstream-contracts/index.md), [Module 07](../module-07-workflow-architecture-file-apis/index.md), [Module 10](../module-10-governance-migration-tool-boundaries/index.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 
 ## What to keep open
@@ -64,7 +64,7 @@ workflow contract, and capstone timing visible.
 - [Course Guide](course-guide.md)
 - [Module Promise Map](module-promise-map.md)
 - [Module Checkpoints](module-checkpoints.md)
-- [Boundary Map](../reference/boundary-map.md)
+- [Boundary Review Prompts](../reference/boundary-review-prompts.md)
 - [Capstone Guide](../capstone/index.md), but only as a later corroboration surface
 
 ## Success signal

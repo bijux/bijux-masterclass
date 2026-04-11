@@ -101,4 +101,4 @@ By the end of the course, you should be able to explain:
 - [Course Guide](course-guide.md)
 - [Module 00](../module-00-orientation/index.md)
 - [Platform Setup](platform-setup.md)
-- [Runtime Power Ladder](../reference/runtime-power-ladder.md)
+- [Review Checklist](../reference/review-checklist.md)

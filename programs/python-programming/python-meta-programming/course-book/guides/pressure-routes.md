@@ -69,7 +69,7 @@ If you cannot explain why the higher-power option is necessary, stay on the lowe
 
 Use this when the immediate pressure is decorator-heavy code that may be hiding the callable it wrapped.
 
-1. Read [Runtime Power Ladder](../reference/runtime-power-ladder.md).
+1. Read [Review Checklist](../reference/review-checklist.md).
 2. Read [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) for signatures, provenance, and evidence boundaries.
 3. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) for transparent wrapper mechanics.
 4. Read [Module 05](../module-05-decorator-design-policies-typing/index.md) for policy-heavy wrappers and where they stop being honest.

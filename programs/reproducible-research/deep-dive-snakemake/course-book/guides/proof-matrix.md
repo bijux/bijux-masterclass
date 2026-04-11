@@ -71,9 +71,8 @@ Use it when you care about a concept but want the fastest evidence route.
 The most useful companion pages for this matrix are:
 
 * [`capstone/command-guide.md`](../capstone/command-guide.md)
-* [`boundary-map.md`](../reference/boundary-map.md)
+* [`topic-boundaries.md`](../reference/topic-boundaries.md)
 * [`practice-map.md`](../reference/practice-map.md)
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 * [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md)
 * [`capstone-proof-guide.md`](../capstone/capstone-proof-guide.md)
-

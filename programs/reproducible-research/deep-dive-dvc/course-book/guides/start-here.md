@@ -54,7 +54,7 @@ state contract, and capstone timing visible.
 | If you need... | Read next | Keep nearby |
 | --- | --- | --- |
 | first contact with DVC | [Module 01](../module-01-reproducibility-failures-real-teams/index.md), [Module 02](../module-02-data-identity-content-addressing/index.md) | [Module Checkpoints](module-checkpoints.md) |
-| repair of an existing repository | [Pressure Routes](pressure-routes.md), [Module 04](../module-04-truthful-pipelines-declared-dependencies/index.md), [Module 08](../module-08-recovery-scale-incident-survival/index.md) | [Authority Map](../reference/authority-map.md) |
+| repair of an existing repository | [Pressure Routes](pressure-routes.md), [Module 04](../module-04-truthful-pipelines-declared-dependencies/index.md), [Module 08](../module-08-recovery-scale-incident-survival/index.md) | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
 | stewardship of a long-lived repository | [Module 05](../module-05-metrics-parameters-comparable-meaning/index.md), [Module 09](../module-09-promotion-registry-boundaries-auditability/index.md), [Module 10](../module-10-migration-governance-dvc-boundaries/index.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 
 ## What to keep open
@@ -62,7 +62,7 @@ state contract, and capstone timing visible.
 - [Course Guide](course-guide.md)
 - [Proof Ladder](proof-ladder.md)
 - [Module Promise Map](module-promise-map.md)
-- [Authority Map](../reference/authority-map.md)
+- [Review Checklist](../reference/review-checklist.md)
 - [Capstone Guide](../capstone/index.md), but only as a later corroboration surface
 
 ## Success signal

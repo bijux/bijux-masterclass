@@ -37,37 +37,32 @@ than one module chapter.
 | proof selection | [Proof Ladder](proof-ladder.md) | [Proof Matrix](proof-matrix.md) |
 | capstone entry | [Capstone Guide](../capstone/index.md) | [Capstone Map](../capstone/capstone-map.md) |
 
-## Study routes
+## Use the shelf by job
 
-- [Start Here](start-here.md) for the shortest stable route into the course
-- [Course Guide](course-guide.md) for the role of each support surface
-- [Learning Contract](learning-contract.md) for the teaching bar and proof expectations
-- [Pressure Routes](pressure-routes.md) for repair, stewardship, and incident entry paths
-- [Platform Setup](platform-setup.md) before you run local proof commands
+| Job | Best page |
+| --- | --- |
+| understand the module arc and support-page roles | [Course Guide](course-guide.md) |
+| see the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) |
+| rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) |
+| hold the stable review bar steady | [Review Checklist](../reference/review-checklist.md) |
+| sharpen a keep, change, or reject boundary call | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
+| spot common failure classes faster | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) |
+| route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
+| choose the smallest honest proof route | [Proof Ladder](proof-ladder.md) |
+| confirm the local environment before public commands | [Platform Setup](platform-setup.md) |
 
-## Module support
+## Cross into the capstone deliberately
 
-- [Module Promise Map](module-promise-map.md) when you want each title translated into a learner contract
-- [Module Checkpoints](module-checkpoints.md) when you need an exit bar before moving on
-- [Concept Index](../reference/concept-index.md) when the reading order needs justification
-- [Completion Rubric](../reference/completion-rubric.md) when you want the module-to-proof loop in one place
-
-## Proof and command routes
-
-- [Proof Ladder](proof-ladder.md) for choosing the smallest honest route
-- [Proof Matrix](proof-matrix.md) for routing a claim to the right evidence surface
-- [Command Guide](../capstone/command-guide.md) for root, program, and capstone command boundaries
-- [Public Targets](../reference/public-targets.md) when you need the stable command surface
-- [Incident Ladder](../reference/incident-ladder.md) when you are debugging under pressure
-
-## Capstone entry routes
-
-- [Capstone Guide](../capstone/index.md) for the repository contract
-- [Capstone Map](../capstone/capstone-map.md) for module and question routing
-- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for a bounded first pass
-- [Capstone Proof Checklist](../capstone/capstone-proof-checklist.md) for one end-to-end proof pass
-- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for steward-level review
-- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
+| If you need... | Best page |
+| --- | --- |
+| the capstone's role in the course | [Capstone](../capstone/index.md) |
+| the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
+| a bounded first pass through the repository | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
+| file responsibilities inside the repository | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| ownership boundaries across graph, proof, and release surfaces | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
+| one end-to-end proof pass | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+| steward-level review | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+| safe evolution | [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 
 ## Good stopping point
 

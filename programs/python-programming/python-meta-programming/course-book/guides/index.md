@@ -25,66 +25,45 @@ Use this section when you need route guidance rather than a single mechanism pag
 guides keep the reading order, proof path, and capstone bridge explicit so the modules
 do not have to repeat that scaffolding.
 
-## Pick one guide lane first
+## Choose one lane
 
-### New learner
+| If your pressure is... | Best page | Then go to... |
+| --- | --- | --- |
+| I need the shortest honest entry route. | [Start Here](start-here.md) | [Course Guide](course-guide.md) |
+| I need the module arc and review bar kept explicit. | [Course Guide](course-guide.md) | [Learning Contract](learning-contract.md) |
+| I need to choose a mechanism without skipping lower-power tools. | [Pressure Routes](pressure-routes.md) | [Review Checklist](../reference/review-checklist.md) |
+| I need to know what each module is supposed to change. | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
+| I need to route a runtime claim to evidence. | [Proof Matrix](proof-matrix.md) | [Proof Ladder](proof-ladder.md) |
+| The capstone runtime still feels unfamiliar. | [Start Here](start-here.md) | [Capstone](../capstone/index.md) |
+| I am resuming after a break. | [Return Map](../module-00-orientation/return-map.md) | [Proof Ladder](proof-ladder.md) |
 
-- [Start Here](start-here.md)
-- [Course Guide](course-guide.md)
-- [Learning Contract](learning-contract.md)
+## Use the shelf by job
 
-### Reviewer under pressure
+| Job | Best page |
+| --- | --- |
+| understand the module arc and support-page roles | [Course Guide](course-guide.md) |
+| see the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) |
+| rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) |
+| route mechanism choice through the stable review bar | [Review Checklist](../reference/review-checklist.md) |
+| sharpen a keep, change, or reject decision | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
+| spot smells before you can name the mechanism | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) |
+| keep scope boundaries explicit | [Topic Boundaries](../reference/topic-boundaries.md) |
+| route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
+| choose the smallest honest proof route | [Proof Ladder](proof-ladder.md) |
+| confirm the local environment before public commands | [Platform Setup](platform-setup.md) |
 
-- [Pressure Routes](pressure-routes.md)
-- [Proof Matrix](proof-matrix.md)
-- [Proof Ladder](proof-ladder.md)
+## Cross into the capstone deliberately
 
-### Builder choosing a mechanism
-
-- [Pressure Routes](pressure-routes.md)
-- [Module Dependency Map](../reference/module-dependency-map.md)
-- [Proof Matrix](proof-matrix.md)
-
-## Read these first
-
-- [Start Here](start-here.md) for the shortest honest entry route
-- [Course Guide](course-guide.md) for the module arc and support-page roles
-- [Learning Contract](learning-contract.md) for the teaching bar and review expectations
-- [Module 00: Orientation](../module-00-orientation/index.md) for the course shape
-- [Runtime Power Ladder](../reference/runtime-power-ladder.md) for the governing review model
-
-## Use These For Study Planning
-
-- [Pressure Routes](pressure-routes.md) when you are entering from a real engineering pressure or when your question is clearer than the mechanism name
-- [Start Here](start-here.md) when you want a paced path through dense modules
-- [Module Promise Map](module-promise-map.md) when you want the promise of each module stated plainly
-- [Module Checkpoints](module-checkpoints.md) when you need to know whether you are ready for the next module
-- [Proof Matrix](proof-matrix.md) when you want learner outcomes tied directly to evidence
-- [Pressure Routes](pressure-routes.md) when you need a concrete lower-power comparison
-- [Module Dependency Map](../reference/module-dependency-map.md) when you need the sequence explained
-- [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
-
-## Use These For Commands And Proof
-
-- [Command Guide](../capstone/command-guide.md) for the executable route
-- [Proof Ladder](proof-ladder.md) when you need the smallest honest command for the current question
-- [Review Checklist](../reference/review-checklist.md) when you need the stable review bar
-- [Self-Review Prompts](../reference/self-review-prompts.md) when you want learner-side comprehension checks
-- [Boundary Review Prompts](../reference/boundary-review-prompts.md) when you need sharper keep/change/reject prompts
-- [Topic Boundaries](../reference/topic-boundaries.md) when you need the scope boundary
-- [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) when you need a symptom-first failure map
-- [Glossary](../reference/glossary.md) when the vocabulary itself is the blocker
-
-## Use These For Capstone Reading
-
-- [Capstone Guide](../capstone/index.md) for the capstone’s role in the course
-- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for ownership boundaries inside the runtime
-- [Capstone Map](../capstone/capstone-map.md) for the module-to-repository route
-- [Capstone File Guide](../capstone/capstone-file-guide.md) for file responsibilities
-- [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for the guided first pass through commands and files
-- [Capstone Proof Checklist](../capstone/capstone-proof-checklist.md) for a bounded proof pass
-- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for structured repository review
-- [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
+| If you need... | Best page |
+| --- | --- |
+| the capstone's role in the course | [Capstone](../capstone/index.md) |
+| the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
+| a bounded first pass through commands and files | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
+| ownership boundaries inside the runtime | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
+| file responsibilities inside the repository | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| a bounded proof pass | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+| structured repository review | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+| safe evolution | [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 
 ## Good use of this shelf
 

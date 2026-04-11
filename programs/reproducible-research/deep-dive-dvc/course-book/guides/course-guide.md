@@ -37,7 +37,7 @@ Deep Dive DVC has four durable surfaces:
 | first entry into the course | [Start Here](start-here.md) | the capstone repository |
 | the module sequence explained | [Module 00](../module-00-orientation/index.md) | release or recovery pages |
 | one support page for urgency | [Pressure Routes](pressure-routes.md) | random browsing through `guides/` |
-| state authority and evidence rules | this page | [Authority Map](../reference/authority-map.md) |
+| state authority and evidence rules | this page | [Review Checklist](../reference/review-checklist.md) |
 | module-to-repository routing | [Capstone Map](../capstone/capstone-map.md) | raw repository files |
 | durable review maps | [Reference](../reference/index.md) | course-home prose |
 

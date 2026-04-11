@@ -50,12 +50,12 @@ reference build directly.
 | Claim | Command | File surfaces |
 | --- | --- | --- |
 | the build has a stable public API | `make PROGRAM=reproducible-research/deep-dive-make help` | `capstone/Makefile` |
-| the layered `mk/*.mk` structure has explicit responsibilities | inspect [`mk-layer-guide.md`](../reference/mk-layer-guide.md) | `capstone/mk/*.mk` |
-| artifact boundaries are smaller than the whole repository | inspect [`artifact-boundary-guide.md`](../reference/artifact-boundary-guide.md) | `capstone/build/`, `capstone/repro/`, `capstone/tests/` |
+| the layered `mk/*.mk` structure has explicit responsibilities | inspect [`capstone-architecture-guide.md`](../capstone/capstone-architecture-guide.md) | `capstone/mk/*.mk` |
+| artifact boundaries are smaller than the whole repository | inspect [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) | `capstone/build/`, `capstone/repro/`, `capstone/tests/` |
 | the build can explain rebuild behavior | `gmake -C capstone --trace all` | `capstone/Makefile`, `capstone/mk/*.mk` |
 | the build declares portability boundaries | `make PROGRAM=reproducible-research/deep-dive-make capstone-portability-audit` | `capstone/mk/contract.mk` |
 | the build produces non-contaminating evidence | `gmake -C capstone attest` | `capstone/Makefile`, `build/attest.txt` |
-| the repro pack teaches real failure classes | `gmake -C capstone repro` | `capstone/repro/`, `repro-catalog.md` |
+| the repro pack teaches real failure classes | `gmake -C capstone repro` | `capstone/repro/`, `course-book/capstone/capstone-proof-guide.md` |
 
 ---
 
@@ -77,8 +77,7 @@ reference build directly.
 The most useful companion pages for this matrix are:
 
 * [`capstone/command-guide.md`](../capstone/command-guide.md)
-* [`public-targets.md`](../reference/public-targets.md)
+* [`review-checklist.md`](../reference/review-checklist.md)
 * [`completion-rubric.md`](../reference/completion-rubric.md)
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
-* [`capstone-proof-checklist.md`](../capstone/capstone-proof-checklist.md)
-
+* [`capstone-proof-guide.md`](../capstone/capstone-proof-guide.md)
