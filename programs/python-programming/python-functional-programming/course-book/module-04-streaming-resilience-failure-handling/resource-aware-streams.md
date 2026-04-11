@@ -2,43 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Resource-Aware Streams"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  hold["Start with a stream that owns a resource"] --> paths["List every exit path: success, failure, break, consumer stop"]
+  paths --> wrap["Wrap the stream so cleanup is guaranteed on all paths"]
+  wrap --> review["Review cleanup as part of the stream contract"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make cleanup feel first-class. Once a stream owns a connection, file handle, or GPU context, its behavior is no longer only about yielded values. It is also about what happens when the consumer stops early or something fails midway.
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Leak Risk
 
-Here's a snippet from the progression map:
+Resource leaks often hide behind otherwise elegant streaming code. The lesson needs to foreground that risk before students get lost in wrapper APIs.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If the consumer can stop early, cleanup cannot rely on natural exhaustion alone.
+- If a breaker or exception changes control flow, students need to know whether release still happens.
+- If resource management is handwritten differently in each pipeline, correctness becomes hard to review and easy to miss.
 
 > **Core question:**  
 > How do you guarantee that every resource-holding generator (files, network connections, GPU contexts) is properly closed on normal completion, consumer exceptions, producer exceptions, or early termination from breakers — all while keeping the pipeline pure, lazy, and composable?
 
-We now take the `Iterator[Result[Chunk, ErrInfo | BreakInfo[ErrInfo]]]` stream from M04C07 and face the final real-world reliability question:
+This lesson introduces resource-aware streams as explicit cleanup protocols:
 
-**“My embedding stream opens a single persistent HTTP connection (or GPU context) for the whole run. When a breaker fires after 10 000 chunks, the connection is never closed — I leak sockets and GPU memory.”**
+- model cleanup obligations as part of the stream abstraction instead of scattered `try/finally` blocks
+- guarantee closure under normal exhaustion, exceptions, and early termination
+- keep the stream lazy so managing the resource does not accidentally force work early
+
+The persistent-connection example matters because it captures the practical failure mode clearly: the values may look fine, but the lifecycle is wrong.
 
 The naïve solution is manual try/finally around the whole pipeline:
 
@@ -53,7 +46,7 @@ finally:
 
 This works once — but it forgets to close on early break, consumer exceptions, or when you later parallelise.
 
-The production solution uses tiny, composable resource managers that guarantee cleanup on every possible exit path — including when Core 7 breakers fire early.
+The production solution wraps the stream in small resource managers whose whole job is to guarantee cleanup on every exit path.
 
 **Audience:** Engineers who open any long-lived resource inside a generator and refuse to leak sockets/memory on errors or aborts.
 
@@ -62,7 +55,7 @@ The production solution uses tiny, composable resource managers that guarantee c
 2. You will compose nested resources safely and prove closure via Hypothesis.  
 3. You will ship a RAG pipeline that never leaks resources — even when breakers abort early.
 
-We formalise exactly what we want from correct, production-ready resource management: cleanup on all paths, scoped effects, laziness (no premature iteration), and compatibility with breakers.
+We formalise exactly what students should review here: cleanup on all paths, scoped effects, preserved laziness, and compatibility with breakers and exceptions.
 
 ---
 
