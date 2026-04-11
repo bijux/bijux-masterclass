@@ -56,8 +56,8 @@ Typed domain values are part of the correctness contract, not ornament.
 
 ## 4. Prefer Small Translation Functions over Clever Metadata
 
-Heavy reflection or ORM magic often hides where a field changed meaning. In a teaching
-codebase and in many production systems, explicit mapper functions are easier to review,
+Heavy reflection or ORM magic often hides where a field changed meaning. In this capstone
+and in many production systems, explicit mapper functions are easier to review,
 test, and evolve.
 
 ## Practical Guidelines

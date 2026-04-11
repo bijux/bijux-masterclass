@@ -80,7 +80,7 @@ def debug_view(self) -> dict:
     }
 ```
 
-This keeps costs explicit and improves teaching clarity.
+This keeps costs explicit and improves design clarity.
 
 ## 4. Correctness Rule: Projections Must Not Drive Domain State
 

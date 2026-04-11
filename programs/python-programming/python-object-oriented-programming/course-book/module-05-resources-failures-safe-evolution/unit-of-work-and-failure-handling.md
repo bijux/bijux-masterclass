@@ -31,7 +31,7 @@ A **Unit of Work (UoW)**:
 - commits them together,
 - rolls back on failure.
 
-Even without a database transaction, UoW gives you a clean failure model and a teaching-friendly structure.
+Even without a database transaction, UoW gives you a clean failure model and a reviewable structure.
 
 ## Where This Fits
 

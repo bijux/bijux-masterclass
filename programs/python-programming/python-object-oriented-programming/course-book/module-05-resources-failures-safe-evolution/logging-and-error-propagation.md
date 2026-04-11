@@ -55,7 +55,7 @@ Two primary buckets:
 - **Infrastructure errors**: network failure, storage down, timeout.
   - environmental
 
-Keep them distinct. It helps both design and teaching.
+Keep them distinct. It helps both design and review.
 
 ## 3. Logging: Context, Not Chatter
 
