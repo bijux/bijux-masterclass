@@ -154,6 +154,15 @@ nav:
           - Glossary: module-07-build-architecture-layered-includes-apis/glossary.md
       - "Module 08: Release Engineering and Artifact Publication":
           - Overview: module-08-release-engineering-artifact-contracts/index.md
+          - Release Targets and Contract Meaning: module-08-release-engineering-artifact-contracts/release-targets-and-contract-meaning.md
+          - Package Layouts and Publication Boundaries: module-08-release-engineering-artifact-contracts/package-layouts-and-publication-boundaries.md
+          - Checksums, Manifests, and Artifact Evidence: module-08-release-engineering-artifact-contracts/checksums-manifests-and-artifact-evidence.md
+          - Install Flows and Destination Safety: module-08-release-engineering-artifact-contracts/install-flows-and-destination-safety.md
+          - Release Failure Modes and Debugging: module-08-release-engineering-artifact-contracts/release-failure-modes-and-debugging.md
+          - "Worked Example: Repairing a Broken Release Surface": module-08-release-engineering-artifact-contracts/worked-example-repairing-a-broken-release-surface.md
+          - Exercises: module-08-release-engineering-artifact-contracts/exercises.md
+          - Exercise Answers: module-08-release-engineering-artifact-contracts/exercise-answers.md
+          - Glossary: module-08-release-engineering-artifact-contracts/glossary.md
       - "Module 09: Observability and Build Incident Response":
           - Overview: module-09-performance-observability-incident-response/index.md
       - "Module 10: Migration, Governance, and Make Boundaries":
