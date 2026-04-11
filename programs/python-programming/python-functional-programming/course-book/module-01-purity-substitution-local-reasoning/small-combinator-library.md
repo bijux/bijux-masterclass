@@ -2,56 +2,39 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Small Combinator Library"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  repeat["Notice repeated pipeline helpers"] --> audit["Keep only the helpers you can explain quickly"]
+  audit --> compose["Use the helpers to simplify real pipeline code"]
+  compose --> restrain["Stop before the helper layer becomes a framework"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is not arguing that every team needs a mini functional library. It is about
+recognizing when a tiny helper layer removes repetition and when it just adds indirection.
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Design Pressure
 
-Here's a snippet from the progression map:
+When functional code is new in a codebase, teams often bounce between two bad extremes:
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+- no helpers at all, so every pipeline is rebuilt by hand
+- too many helpers, so ordinary Python gets wrapped in a private framework
 
+The goal of this page is the middle ground: a small, auditable set of helpers that make
+real code clearer.
+
+## Keep This Question In View
 
 > **Core question:**  
 > How do you build a tiny, reusable combinator library—so that complex data flows emerge from a handful of pure, curried building blocks instead of copy-pasting pipeline fragments across your codebase?
 
-This core builds on **Core 1**'s mindset, **Core 2**'s contracts, **Core 3**'s immutability, **Core 4**'s composition, and **Core 5**'s refactorings by packaging patterns into **small, reusable combinator libraries**:  
-- Curried versions of `map`, `filter`, `reduce` that never shadow builtins.  
-- Custom `flow` / `pipe` variants for readable left-to-right composition.  
-- Tiny domain-specific abstractions (`tap`, `branch`, `when`).  
-- Zero-dependency implementations you can audit in one glance.  
+By the end of this lesson, you should be able to answer:
 
-We continue the **running project** from Core 1-5: refactoring the FuncPipe RAG Builder, now using a tiny combinator layer for reusable pipelines.
-
-**Audience:** Developers who love Core 5’s refactorings but hate re-implementing `curried_map` or `pipe` in every new module.  
-**Outcome:**  
-1. Drop the small `module-01/funcpipe-rag-01/src/funcpipe_rag/fp.py` into any codebase and instantly get `flow`, `fmap`, `ffilter`, `foldl`, `pipe`, `compose2`, `Pipeline`, `log_calls`, and `with_context`.  
-2. Write custom combinators (`branch`, `when`, `tap`) that slot into existing pipelines.  
-3. Implement `flow`/`pipe` that compose safely and readably in pure pipelines.  
-4. Replace third-party deps (`toolz`, `returns`) with your own minimal, auditable versions when needed.  
-5. Add Hypothesis properties proving your combinators obey algebraic laws (associativity, identity, idempotence).
+- which helper belongs in a shared `fp.py`
+- which helper should stay local to one module
+- when not to add another abstraction at all
 
 ---
 
@@ -59,7 +42,7 @@ We continue the **running project** from Core 1-5: refactoring the FuncPipe RAG 
 
 ### 1.1 The One-Sentence Rule
 
-> **Default to a single, audited `module-01/funcpipe-rag-01/src/funcpipe_rag/fp.py` module containing the combinators you rely on (`flow`, `fmap`, `ffilter`, `foldl`, `pipe`, `compose2`, `Pipeline`, `log_calls`, `with_context`); never copy-paste pipeline boilerplate again.**
+> **Default to a tiny, audited helper module with only the combinators your team can explain and test quickly; do not build a framework just to avoid writing plain Python.**
 
 ### 1.2 Combinator Libraries in One Precise Sentence
 
@@ -67,11 +50,15 @@ We continue the **running project** from Core 1-5: refactoring the FuncPipe RAG 
 
 ### 1.3 Why This Matters Now
 
-Combinator libraries package Core 5's refactorings into reusable tools, enabling typed pipelines (Core 7) and effect separation (Core 8); without them, pipelines remain ad-hoc.
+Combinator libraries help when the same pipeline patterns really do repeat. They hurt when
+the helper names become another language the reader has to decode before they can
+understand the business logic.
 
 ### 1.4 Why This Isn’t Just itertools
 
-Python's itertools is great for iterators but lacks currying and simple left-to-right composition. Our `module-01/funcpipe-rag-01/src/funcpipe_rag/fp.py` emphasizes:
+Python already gives you comprehensions, generator expressions, `itertools`, and ordinary
+functions. A local helper module is justified only when it adds a clearer review surface.
+Our `module-01/funcpipe-rag-01/src/funcpipe_rag/fp.py` emphasizes:
 
 - **Composability:** `flow` threads data through a series of pure functions; `fmap`, `ffilter`, and `foldl` lift scalar helpers over collections; `Pipeline` gives an OO-friendly builder.
 
@@ -79,9 +66,10 @@ Python's itertools is great for iterators but lacks currying and simple left-to-
 
 - **Shared laws:** `fmap` obeys identity and composition laws, proven via Hypothesis in `capstone/tests/test_laws.py`; the other helpers can be tested similarly.
 
-- **Minimalism:** No runtime dependencies (aside from typing_extensions on older Python versions); audit in <5 minutes.
+- **Minimalism:** No runtime dependencies and small enough to audit in a few minutes.
 
-Use itertools underneath for advanced iterators; `fp.py` stays a thin, auditable layer.
+Use `itertools` underneath for advanced iterators. Let `fp.py` stay a thin layer that
+names the few patterns you truly repeat.
 
 ### 1.5 Purity Spectrum Table
 
@@ -100,17 +88,15 @@ Use itertools underneath for advanced iterators; `fp.py` stays a thin, auditable
 ### 2.1 One Picture
 
 ```text
-Ad-Hoc Pipeline                            Combinator Library
-+---------------------------+            +---------------------------+
-| pipe(                     |            | from fp import flow, fmap, |
-|   lambda x: x.strip(),    |            |                ffilter     |
-|   lambda x: x.upper(),    |            |                            |
-|   lambda x: x.split(),    |            | clean = flow(              |
-|   lambda xs: xs[:5]       |            |   str.strip, str.upper,    |
-| )                         |            |   str.split, take(5)       |
-|                           |            | )                          |
-+---------------------------+            +----------------------------+
-        Copy-paste hell                     Reusable, curried
+Repeated hand-written steps                 Small audited helper layer
++---------------------------+              +----------------------------+
+| strip -> upper -> split   |              | clean = flow(              |
+| repeated in three files   |              |   str.strip,               |
+| slight variations creep in|              |   str.upper,               |
+| reviews compare noise     |              |   str.split,               |
++---------------------------+              |   take(5),                 |
+                                           | )                          |
+                                           +----------------------------+
 ```
 
 ### 2.2 Contract Table
