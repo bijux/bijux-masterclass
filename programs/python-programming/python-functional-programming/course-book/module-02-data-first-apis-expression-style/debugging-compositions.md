@@ -2,52 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Debugging Compositions"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  opaque["Start with a pipeline that is hard to inspect"] --> prints["Resist scattering prints through the core"]
+  prints --> stages["Add named probes and trace stages deliberately"]
+  stages --> repeat["Replay and compare behavior without changing the algorithm"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should reassure students that debugging does not require abandoning the design principles from the rest of the module. The goal is to observe the pipeline honestly, not to punch ad-hoc holes in it whenever something feels mysterious.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Debugging Trap
 
-Here's a snippet from the progression map:
+The common trap is easy to recognize: once a composed pipeline feels opaque, students start inserting prints, eager `list(...)` calls, and mutable debug switches. Those moves reveal something, but they also distort the code they are trying to understand.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If debugging changes evaluation order or forces materialization, it is changing more than visibility.
+- If log statements are mixed into core transforms, the lesson boundary between pure logic and effects is disappearing.
+- If reviewers cannot tell which debug behavior is temporary and which is part of the design, the instrumentation is too ad hoc.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you debug pure, composed FP pipelines without scattering prints or breaking laziness—so "it works in my head but not in prod" becomes structured traces, reproducible probes, and self-documenting names that turn black-box flows into auditable glass?
 
-This core introduces **debugging FP code** in Python:  
-- Treat debugging as **explicit, sealed stages** with meaningful names for self-documentation.  
-- Use `tee` for non-destructive tracing (effects isolated here).  
-- Use `probe` for pure assertions or boundary checks.  
-- Leverage structured logs and decision traces (from M02C08).  
-- Employ Hypothesis with verbose mode to shrink failures to minimal counterexamples.  
-- No `print` in core transforms, no mutable debug flags, no unbounded eager materialization.  
+This lesson introduces debugging as explicit pipeline design:
 
-We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder—evolving from opaque pipelines to debuggable ones with named stages, tees, and probes that preserve baseline equivalence.
+- name stages so the pipeline is readable even before a bug appears
+- use explicit trace or probe stages when observation is needed
+- keep debugging support composable so it can be enabled, disabled, and reviewed without rewriting the core
 
-**Audience:** Developers from M02C08 with DSL-driven pipelines but still debugging via prints or breakpoints, losing laziness and reproducibility.  
+The running project keeps the lesson grounded: debugging support should help explain chunk flow and decision points without flattening the lazy pipeline into a debugging script.
+
+**Audience:** Developers with DSL-driven pipelines who still debug with prints, breakpoints, or forced eager evaluation.  
 **Outcome:**  
 1. Spot debug smells (prints in core, mutable flags, eager `list()`) and explain their impact on purity.  
 2. Refactor an opaque pipeline to include named functions, tee traces, and probe assertions.  
@@ -67,11 +55,11 @@ We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder�
 
 ### 1.3 Why This Matters Now
 
-M02C08 gave data-driven DSLs for rules, but opaque pipelines hide bugs. Debugging as explicit stages makes them auditable, leveraging M02C03 laziness, M02C05 boundaries, and M02C07 combinators for production-ready transparency.
+Once a pipeline becomes more declarative, a new student fear appears: "it is cleaner, but how do I see what is happening?" This lesson answers that fear directly. We do not go backward to print-driven debugging. We add observation points that respect the pipeline structure students have already learned.
 
 ### 1.4 Debugging as Values in 5 Lines
 
-Debug stages as first-class enable dynamic tracing:
+The next snippet matters because the tracing behavior is packaged as a reusable stage instead of being threaded through every transformation.
 
 ```python
 from collections.abc import Callable, Iterable, Iterator
