@@ -165,5 +165,14 @@ nav:
           - Glossary: module-08-recovery-scale-incident-survival/glossary.md
       - "Module 09: Promotion, Registry Boundaries, Release Contracts, and Auditability":
           - Overview: module-09-promotion-registry-boundaries-auditability/index.md
+          - Promotion Contracts and Downstream Trust: module-09-promotion-registry-boundaries-auditability/promotion-contracts-and-downstream-trust.md
+          - Release Surfaces and Bundle Shape: module-09-promotion-registry-boundaries-auditability/release-surfaces-and-bundle-shape.md
+          - Audit Evidence, Params, Metrics, Locks, and Manifests: module-09-promotion-registry-boundaries-auditability/audit-evidence-params-metrics-locks-manifests.md
+          - Registry Boundaries and Consumer Contracts: module-09-promotion-registry-boundaries-auditability/registry-boundaries-and-consumer-contracts.md
+          - Promotion Failures and Review Repairs: module-09-promotion-registry-boundaries-auditability/promotion-failures-and-review-repairs.md
+          - "Worked Example: Repairing an Incomplete Release Bundle": module-09-promotion-registry-boundaries-auditability/worked-example-repairing-an-incomplete-release-bundle.md
+          - Exercises: module-09-promotion-registry-boundaries-auditability/exercises.md
+          - Exercise Answers: module-09-promotion-registry-boundaries-auditability/exercise-answers.md
+          - Glossary: module-09-promotion-registry-boundaries-auditability/glossary.md
       - "Module 10: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries":
           - Overview: module-10-migration-governance-dvc-boundaries/index.md
