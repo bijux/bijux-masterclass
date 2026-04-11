@@ -16,7 +16,7 @@ Treat combinators as a readability tool before treating them as an abstraction t
 
 ## Start With the Composition Problem
 
-Students often know each individual function they want, but still wire them together with loops, callbacks, and local bookkeeping. That wiring is the thing this lesson needs to simplify.
+You may know each individual function you want and still wire them together with loops, callbacks, and local bookkeeping. That wiring is the thing this lesson simplifies.
 
 - If the pipeline shape is hidden inside callback nesting, the composition is hard to inspect.
 - If each stage is configured but the orchestration is still imperative, the full flow is still hard to see.

@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson needs to make state modelling feel concrete. Students should not leave thinking “ADTs for status values” is just a nicer syntax. They should see that explicit states and transitions remove entire classes of stuck, partial, and contradictory workflow bugs.
+State modelling needs to feel concrete. Do not treat “ADTs for status values” as just a nicer syntax. Explicit states and transitions remove entire classes of stuck, partial, and contradictory workflow bugs.
 
 ## Start With the Lifecycle Smell
 

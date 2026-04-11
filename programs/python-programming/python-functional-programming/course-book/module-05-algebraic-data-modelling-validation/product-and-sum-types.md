@@ -16,7 +16,7 @@ Make one modelling question visible right away: is the concept “all of these f
 
 ## Start With the Invalid-State Smell
 
-Students often know the data they care about, but still encode it with booleans, nullable fields, and mutable classes that allow impossible combinations.
+You may know the data you care about and still encode it with booleans, nullable fields, and mutable classes that allow impossible combinations.
 
 - If several fields must all exist together, the model wants a product type.
 - If a value must be one variant or another, the model wants a tagged sum.

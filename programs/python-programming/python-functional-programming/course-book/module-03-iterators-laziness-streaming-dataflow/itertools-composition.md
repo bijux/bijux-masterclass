@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make `itertools` feel less like a toolbox to memorize and more like a set of contract-carrying building blocks. Students need to understand not only what helper to pick, but also what that helper promises about order, laziness, and buffering.
+This lesson makes `itertools` feel less like a toolbox to memorize and more like a set of contract-carrying building blocks. The point is not only what helper to pick, but also what that helper promises about order, laziness, and buffering.
 
 ## Start With the Composition Smell
 

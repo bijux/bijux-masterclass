@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make laws feel practical and defensive. Students do not need to admire algebra from a distance. They need to understand that the laws are the reason a refactor can be trusted instead of manually re-checked at every chaining site.
+This lesson should make laws feel practical and defensive. You do not need to admire algebra from a distance. You need to understand that the laws are the reason a refactor can be trusted instead of manually re-checked at every chaining site.
 
 ## Start With the Confidence Gap
 

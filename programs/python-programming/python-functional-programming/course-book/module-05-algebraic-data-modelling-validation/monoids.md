@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make monoids feel like a reliability tool before they feel like an algebra term. Students need to understand that the real engineering question is simple: if we regroup the same data, should we still get the same answer?
+This lesson should make monoids feel like a reliability tool before they feel like an algebra term. The real engineering question is simple: if we regroup the same data, should we still get the same answer?
 
 ## Start With the Aggregation Drift
 

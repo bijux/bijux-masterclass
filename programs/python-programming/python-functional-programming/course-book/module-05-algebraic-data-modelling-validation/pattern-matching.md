@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make pattern matching feel like a safer way to read domain variants, not like syntactic novelty. Students need to see that `match` is valuable because it lines up naturally with tagged sums and makes missing cases harder to hide.
+This lesson should make pattern matching feel like a safer way to read domain variants, not like syntactic novelty. `match` is valuable because it lines up naturally with tagged sums and makes missing cases harder to hide.
 
 ## Start With the Branching Boilerplate
 

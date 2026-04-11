@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make folds feel practical before they feel abstract. Students need to see a fold as the answer to a repeated-work problem: one traversal, one accumulator story, one place to reason about what is combined and when.
+This lesson makes folds feel practical before they feel abstract. Treat a fold as the answer to a repeated-work problem: one traversal, one accumulator story, one place to reason about what is combined and when.
 
 ## Start With the Repeated Traversal Smell
 

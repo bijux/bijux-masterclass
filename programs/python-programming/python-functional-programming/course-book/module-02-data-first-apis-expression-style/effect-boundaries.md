@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is where the module stops being purely about elegant code and starts being about trustworthy system structure. Students need to see that "pure core, effectful edge" is not a slogan. It is a concrete answer to the question of where file access, network access, logging, and failures belong.
+This lesson is where the module stops being purely about elegant code and starts being about trustworthy system structure. "Pure core, effectful edge" is not a slogan. It is a concrete answer to the question of where file access, network access, logging, and failures belong.
 
 ## Start With the Boundary Mistake
 

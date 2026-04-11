@@ -12,11 +12,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson needs to make one point clear early: chunking and windowing are not excuses to fall back to full collection materialization. They are disciplined ways to keep only the bounded state required for the next output.
+Keep one point clear early: chunking and windowing are not excuses to fall back to full collection materialization. They are disciplined ways to keep only the bounded state required for the next output.
 
 ## Start With the Aggregation Trap
 
-Students usually recognize map and filter as streaming-friendly, but batching and grouping often tempt them back into eager thinking. This lesson needs to bridge that gap directly.
+Map and filter usually feel streaming-friendly, but batching and grouping often tempt pipelines back into eager thinking. This page bridges that gap directly.
 
 - If the code materializes the whole input just to compute local neighborhoods, the state boundary is probably too large.
 - If overlap or tail handling is not named explicitly, you cannot review whether coverage is correct.

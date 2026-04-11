@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make retries feel controlled rather than hopeful. Students need to see that retrying is not just "do it again." It is a bounded policy choice with fairness, cleanup, and final provenance requirements.
+This lesson makes retries feel controlled rather than hopeful. Retrying is not just "do it again." It is a bounded policy choice with fairness, cleanup, and final provenance requirements.
 
 ## Start With the Retry Smell
 

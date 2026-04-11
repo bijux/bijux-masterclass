@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is where lazy iteration stops being only a performance topic and becomes a safety topic. Students need to see that an unfenced iterator is not merely inefficient. In the wrong place, it is a correctness and reliability risk.
+This lesson is where lazy iteration stops being only a performance topic and becomes a safety topic. An unfenced iterator is not merely inefficient. In the wrong place, it is a correctness and reliability risk.
 
 ## Start With the Missing Fence
 
@@ -33,7 +33,7 @@ This lesson introduces fencing as an explicit safety discipline:
 - use `takewhile` and `dropwhile` when the stop condition is part of the data contract
 - place fences where they actually bound expensive work instead of after the damage is done
 
-The running project matters because production pipelines often process sources that are large, malformed, or simply unbounded. Students need to leave this lesson knowing how to make termination a visible design choice.
+The running project matters because production pipelines often process sources that are large, malformed, or simply unbounded. Leave this lesson knowing how to make termination a visible design choice.
 
 Use this when you process logs, network feeds, generators, or other streams that may be untrusted or unbounded.
 
@@ -67,7 +67,7 @@ Use this when you process logs, network feeds, generators, or other streams that
 
 ### 1.3 Why This Matters Now
 
-Chunking and grouping made streaming richer, but they still assumed data that would eventually end. This lesson removes that assumption. Students now need to think about termination as part of the contract: not only what values flow through the pipeline, but also how much upstream work is allowed before the pipeline must stop.
+Chunking and grouping made streaming richer, but they still assumed data that would eventually end. This lesson removes that assumption. Think about termination as part of the contract: not only what values flow through the pipeline, but also how much upstream work is allowed before the pipeline must stop.
 
 ### 1.4 Fencing in 5 Lines
 

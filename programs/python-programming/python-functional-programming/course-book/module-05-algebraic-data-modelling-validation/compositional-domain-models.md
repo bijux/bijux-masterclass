@@ -16,7 +16,7 @@ Separate two ideas that often get blurred together: a domain can be one business
 
 ## Start With the God-Object Smell
 
-Students usually reach this lesson after seeing a domain object that carries every concern at once. The pain is obvious in teams too: every change collides with every other change.
+You usually reach this lesson after seeing a domain object that carries every concern at once. The pain is obvious in teams too: every change collides with every other change.
 
 - If one type is imported and mutated by every subsystem, the model boundary is already too wide.
 - If cross-subsystem invariants are checked everywhere, no one place owns the truth.

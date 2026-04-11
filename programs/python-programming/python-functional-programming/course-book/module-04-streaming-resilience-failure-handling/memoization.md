@@ -16,7 +16,7 @@ Memoization should feel narrower and safer than it often does at first. The righ
 
 ## Start With the Repeated Work Problem
 
-Students usually arrive here after seeing the same text, subtree, or request shape recur many times. The important teaching step is to connect that duplication to a safe optimization boundary.
+You usually arrive here after seeing the same text, subtree, or request shape recur many times. The important step is to connect that duplication to a safe optimization boundary.
 
 - If repeated inputs are triggering the same pure work again and again, memoization may be the right optimization.
 - If the function reads hidden state, time, or external services, caching can change behavior instead of only improving speed.

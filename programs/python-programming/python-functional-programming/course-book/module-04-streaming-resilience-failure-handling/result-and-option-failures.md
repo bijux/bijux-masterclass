@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is where failure handling becomes a data-modeling problem instead of a control-flow habit. Students need to leave with a sharp distinction in mind: `Option` is for absence without explanation, `Result` is for failure with information that matters later.
+This lesson is where failure handling becomes a data-modeling problem instead of a control-flow habit. Keep a sharp distinction in mind: `Option` is for absence without explanation, `Result` is for failure with information that matters later.
 
 ## Start With the Failure Boundary
 

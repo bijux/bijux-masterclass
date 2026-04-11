@@ -16,7 +16,7 @@ This lesson becomes important the moment a pipeline is conceptually simple but o
 
 ## Start With the Waste Pattern
 
-Students often learn generators as syntax first and purpose second. The purpose here is simpler: stop doing all the work up front when the consumer only needs a stream.
+Generators are often introduced as syntax first and purpose second. The purpose here is simpler: stop doing all the work up front when the consumer only needs a stream.
 
 - If each stage returns a new list, ask whether the next stage really needs the whole collection.
 - If memory usage grows with every intermediate transformation, the pipeline boundary is probably in the wrong place.

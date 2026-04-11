@@ -16,7 +16,7 @@ This lesson helps distinguish a reusable stage from a script fragment that only 
 
 ## Start With the Reuse Smell
 
-Many codebases have "pipeline helpers" that still read globals, capture mutable state accidentally, or hand back iterators that cannot safely be reused. This lesson needs to make those failure modes obvious.
+Many codebases have "pipeline helpers" that still read globals, capture mutable state accidentally, or hand back iterators that cannot safely be reused. Make those failure modes obvious here.
 
 - If a stage depends on globals, it is configured implicitly rather than honestly.
 - If calling the factory twice shares state, it is not producing fresh iterators.

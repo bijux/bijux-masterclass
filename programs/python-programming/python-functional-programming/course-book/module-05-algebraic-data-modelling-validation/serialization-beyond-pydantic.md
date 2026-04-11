@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make persistence feel like a modeling problem, not a library feature. Students need to see that once a value crosses time or process boundaries, “just dump the dataclass” is no longer a harmless shortcut. It becomes a schema contract whether the team admits it or not.
+This lesson should make persistence feel like a modeling problem, not a library feature. Once a value crosses time or process boundaries, “just dump the dataclass” is no longer a harmless shortcut. It becomes a schema contract whether the team admits it or not.
 
 ## Start With the Drift Problem
 

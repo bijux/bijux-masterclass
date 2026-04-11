@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make Reader feel like a dependency-visibility tool, not a clever container. Students need to see that the real gain is simple: configuration and services stop hiding in globals and closures and become explicit in the compositional shape of the pipeline.
+This lesson should make Reader feel like a dependency-visibility tool, not a clever container. The real gain is simple: configuration and services stop hiding in globals and closures and become explicit in the compositional shape of the pipeline.
 
 ## Start With the Hidden Dependency Problem
 

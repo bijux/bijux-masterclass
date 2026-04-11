@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should feel like the payoff for the whole module. Students have spent several lessons making failures explicit, bounded, retryable, and resource-safe. Now they need to turn that work into diagnostics that a team can actually read and act on.
+This lesson should feel like the payoff for the whole module. After making failures explicit, bounded, retryable, and resource-safe, the next move is turning that work into diagnostics that a team can actually read and act on.
 
 ## Start With the Reporting Gap
 

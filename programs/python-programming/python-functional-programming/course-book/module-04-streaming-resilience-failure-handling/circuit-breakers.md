@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make circuit breakers feel like an act of design honesty, not panic. Students need to see that a breaker is justified when continuing no longer creates useful value, and that the stopping rule itself must be explicit enough to review.
+This lesson makes circuit breakers feel like an act of design honesty, not panic. A breaker is justified when continuing no longer creates useful value, and the stopping rule itself must be explicit enough to review.
 
 ## Start With the Hopeless Run
 

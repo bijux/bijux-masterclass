@@ -12,11 +12,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should not make class-based iterators feel like the default. It should make them feel justified. Students need a clear reason to leave generators behind: more explicit control over state, reuse, or cleanup than a simple generator can provide cleanly.
+This lesson should not make class-based iterators feel like the default. It should make them feel justified. Leave generators behind only when you need more explicit control over state, reuse, or cleanup than a simple generator can provide cleanly.
 
 ## Start With the Generator Limit
 
-Generators solve most streaming problems in this module. That is exactly why this lesson needs a careful opening. Students should learn when a custom iterator is warranted, not come away thinking classes are automatically more advanced and therefore better.
+Generators solve most streaming problems in this module. That is exactly why this lesson needs a careful opening. Learn when a custom iterator is warranted; do not treat classes as automatically more advanced and therefore better.
 
 - If a stream needs explicit cleanup, restartable iteration, or more structured state handling, a class may be the clearer design.
 - If the same object is both iterable and iterator by accident, reuse and consumption semantics become easy to blur.
@@ -74,7 +74,7 @@ In this series, enables resources; preserves laziness.
 
 ### 1.3 Why This Matters Now
 
-Up to this point, generators have been enough for almost every lesson. That is a feature, not a problem. This page matters because it marks the boundary where a generator stops being the clearest representation. Students need to recognize that boundary so they can choose a custom iterator intentionally rather than out of habit or novelty.
+Up to this point, generators have been enough for almost every lesson. That is a feature, not a problem. This page matters because it marks the boundary where a generator stops being the clearest representation. Recognize that boundary so you can choose a custom iterator intentionally rather than out of habit or novelty.
 
 ### 1.4 Custom Iter in 5 Lines
 

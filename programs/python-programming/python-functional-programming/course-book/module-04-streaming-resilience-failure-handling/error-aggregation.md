@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make aggregation strategy feel like a policy choice, not a default reflex. Students need to understand that fail-fast and collect-many are both legitimate, but they optimize for different kinds of feedback and different costs.
+This lesson makes aggregation strategy feel like a policy choice, not a default reflex. Fail-fast and collect-many are both legitimate, but they optimize for different kinds of feedback and different costs.
 
 ## Start With the Decision Point
 

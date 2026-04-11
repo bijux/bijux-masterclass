@@ -16,7 +16,7 @@ Stop conflating “validation” with “first error wins.” The key question i
 
 ## Start With the Feedback Problem
 
-Students usually feel the pain of fail-fast validation before they know the name “applicative.” The lesson needs to begin from that user-facing problem.
+The pain of fail-fast validation usually appears before the name “applicative.” Begin from that user-facing problem.
 
 - If all the checks are independent, reporting only the first failure is usually unnecessary friction.
 - If one validation step depends on the output of another, then applicative accumulation is no longer the right default.

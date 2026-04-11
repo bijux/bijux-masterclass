@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is about one of the highest-leverage edits in the whole module: deciding whether a comprehension is describing a stored collection or a stream. Students need a crisp review rule here because `[]` and `()` look almost identical while their execution costs are very different.
+This lesson is about one of the highest-leverage edits in the whole module: deciding whether a comprehension is describing a stored collection or a stream. You need a crisp review rule here because `[]` and `()` look almost identical while their execution costs are very different.
 
 ## Start With the Accidental Materialization
 

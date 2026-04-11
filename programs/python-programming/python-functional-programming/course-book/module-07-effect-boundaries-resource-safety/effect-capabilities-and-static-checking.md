@@ -71,7 +71,7 @@ These laws turn capability injection from a runtime pattern into a **type-checke
 
 ## What mypy Enforces, and What It Does Not
 
-Students often benefit from separating two different guardrails:
+It often helps to separate two different guardrails:
 
 - `mypy --strict` enforces protocol usage, explicit types, and undeclared-method errors
 - CI or review rules enforce architectural layering, such as “domain modules do not import infra adapters”

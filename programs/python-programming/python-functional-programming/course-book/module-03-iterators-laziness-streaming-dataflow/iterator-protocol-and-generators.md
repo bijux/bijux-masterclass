@@ -12,11 +12,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is where module 03 really starts. Students do not need a history lesson about iterators first. They need one clear question: when does the work happen? Once that question is visible, `yield`, `next`, and the iterator protocol stop feeling magical and start feeling like execution tools they can reason about.
+This lesson is where Module 03 really starts. You do not need a history lesson about iterators first. You need one clear question: when does the work happen? Once that question is visible, `yield`, `next`, and the iterator protocol stop feeling magical and start feeling like execution tools you can reason about.
 
 ## Start With the Timing Problem
 
-Teams often write pure pipeline stages and still pay huge memory costs because every step finishes all its work before the next step begins. This lesson needs to make that hidden timing visible.
+Teams often write pure pipeline stages and still pay huge memory costs because every step finishes all its work before the next step begins. Make that hidden timing visible here.
 
 - If a stage returns a list, the pipeline has already crossed a memory boundary.
 - If the consumer only needs a prefix, eager production is doing more work than the result requires.

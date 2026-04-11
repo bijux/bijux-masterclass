@@ -12,11 +12,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make `and_then` feel like a readability tool first. Students usually do not need another name for “monad” on day one. They need a way to stop rewriting the same propagation checks and let dependent steps read like the happy path again.
+This lesson should make `and_then` feel like a readability tool first. You usually do not need another name for “monad” on day one. You need a way to stop rewriting the same propagation checks and let dependent steps read like the happy path again.
 
 ## Start With the Propagation Smell
 
-Students often already know the sequence of operations they want. What gets in the way is the repetitive structure around them.
+You often already know the sequence of operations you want. What gets in the way is the repetitive structure around them.
 
 - If every step is followed by “if error, return error,” the code is repeating the container contract instead of the business logic.
 - If adding one more dependent step means editing several propagation branches, the flow is too brittle.
@@ -27,7 +27,7 @@ How do you replace nested `if err/None` checks and manual error propagation with
 
 ## The Fast Choice Rule
 
-Students usually need one practical test before they need more vocabulary:
+Start with one practical test before adding more vocabulary:
 
 - use `.map(f)` when `f` returns a plain value and stays inside the current success path
 - use `.and_then(f)` when `f` already returns the same container and may short-circuit the rest of the flow

@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is about making a function boundary easy to inspect. Students should come away knowing that good API shape is not decoration around the real code. It determines whether later composition, testing, and refactoring stay manageable.
+This lesson is about making a function boundary easy to inspect. Good API shape is not decoration around the real code. It determines whether later composition, testing, and refactoring stay manageable.
 
 ## Start With the Review Pressure
 

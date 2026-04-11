@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson needs to make time feel reviewable. Students often understand why global configuration is risky but still treat time as an unavoidable hidden dependency. This page should show that clocks and sleeps can be modeled explicitly too.
+Time needs to feel reviewable. Global configuration may already look risky, but time can still feel like an unavoidable hidden dependency. This page shows that clocks and sleeps can be modeled explicitly too.
 
 ## Start With the Hidden Clock Problem
 

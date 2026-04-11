@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should answer a simple but high-pressure question: once failures are values, how do we keep the stream useful? Students need to see that the answer is not another big control loop. It is a small set of stream combinators with explicit continuation and routing behavior.
+This lesson answers a simple but high-pressure question: once failures are values, how do we keep the stream useful? The answer is not another big control loop. It is a small set of stream combinators with explicit continuation and routing behavior.
 
 ## Start With the Mixed-Stream Problem
 

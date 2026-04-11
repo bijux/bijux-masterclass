@@ -89,7 +89,7 @@ When a shell consumes only part of a stream, review these questions explicitly:
 - where is `closing(...)` or the equivalent deterministic cleanup wrapper?
 - what happens if the loop breaks early, raises, or returns before exhaustion?
 
-Students usually understand `with open(...)` quickly. The subtle part is remembering that
+`with open(...)` is usually quick to understand. The subtle part is remembering that
 lazy iteration moves some cleanup responsibility to the consumer when exhaustion is not
 guaranteed.
 

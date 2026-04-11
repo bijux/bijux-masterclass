@@ -65,7 +65,7 @@ These laws guarantee that migration is **safe, verifiable, and never a leap of f
 
 ## Read The Migration In Two Layers
 
-Students usually follow this page more successfully if they separate two questions:
+This page is easier to follow if you separate two questions:
 
 1. what public behavior must stay the same for callers right now?
 2. which internal effect site or boundary are we cleaning up in this step?

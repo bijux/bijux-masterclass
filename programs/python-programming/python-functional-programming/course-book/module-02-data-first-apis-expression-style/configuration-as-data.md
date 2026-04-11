@@ -33,7 +33,7 @@ This lesson introduces configuration-as-data as a reviewable workflow:
 - validate before the core starts using the values
 - keep configuration immutable so behavior changes only when the config value changes
 
-The running project matters because real pipelines often have many settings. Students need to see how modeling those settings improves inspection rather than adding ceremony for its own sake.
+The running project matters because real pipelines often have many settings. Modeling those settings should improve inspection rather than add ceremony for its own sake.
 
 Use this when you have sealed boundaries but still use globals, environment leaks, or mutable config that break determinism.
 **Outcome:**  

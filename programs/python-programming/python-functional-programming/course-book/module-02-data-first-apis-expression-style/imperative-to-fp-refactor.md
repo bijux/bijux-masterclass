@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should feel like a trustworthy migration guide. Students are no longer learning isolated tools. They are learning how to use the whole module to reshape a script without losing behavior or creating a maze of half-finished abstractions.
+This lesson should feel like a trustworthy migration guide. You are no longer learning isolated tools. You are learning how to use the whole module to reshape a script without losing behavior or creating a maze of half-finished abstractions.
 
 ## Start With the Refactor Fear
 
@@ -57,7 +57,7 @@ Use this when you have legacy imperative scripts and want a concrete route from 
 
 ### 1.3 Why This Matters Now
 
-The previous lessons each removed one source of confusion: hidden config, flag-driven control flow, eager waste, leaky effects, scattered rules, opaque composition. This final lesson shows how those improvements fit together during a real refactor. Students need that synthesis so the module feels like a usable method instead of a stack of disconnected techniques.
+The previous lessons each removed one source of confusion: hidden config, flag-driven control flow, eager waste, leaky effects, scattered rules, opaque composition. This final lesson shows how those improvements fit together during a real refactor. That synthesis turns the module into a usable method instead of a stack of disconnected techniques.
 
 ### 1.3.1 Refactor Steps Checklist
 

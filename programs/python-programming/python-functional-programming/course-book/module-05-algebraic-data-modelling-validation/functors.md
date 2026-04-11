@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make functors feel like a relief from repetitive container plumbing. Students often do not need more abstraction for its own sake here. They need a safe way to transform values inside `Option`, `Result`, and collections without rewriting the same structural boilerplate every time.
+This lesson should make functors feel like a relief from repetitive container plumbing. The point is not more abstraction for its own sake. The point is a safe way to transform values inside `Option`, `Result`, and collections without rewriting the same structural boilerplate every time.
 
 ## Start With the Unboxing Smell
 

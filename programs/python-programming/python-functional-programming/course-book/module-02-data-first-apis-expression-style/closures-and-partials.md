@@ -16,7 +16,7 @@ This lesson matters when a team wants several variants of the same pipeline and 
 
 ## Start With the Design Smell
 
-Students usually do not struggle with the syntax of `partial`. They struggle with knowing when a configurator is cleaner than "just set a variable somewhere and call the function later."
+The hard part is usually not the syntax of `partial`. The hard part is knowing when a configurator is cleaner than "just set a variable somewhere and call the function later."
 
 - If changing chunk size means editing module-level state, the design is already harder to test.
 - If two pipeline variants share code but not configuration, the missing concept is usually a configurator.
