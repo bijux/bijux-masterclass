@@ -31,7 +31,7 @@ kind of pressure each test file is meant to catch.
 | class-definition-time registration and manifest ownership | `tests/test_registry.py` | `tests/test_cli.py` |
 | descriptor coercion, defaults, and per-instance storage | `tests/test_fields.py` | `tests/test_runtime.py` |
 | runtime plugin creation and action history | `tests/test_runtime.py` | `tests/test_cli.py` |
-| public command behavior and learner-facing CLI promises | `tests/test_cli.py` | `make confirm` |
+| public command behavior and CLI promises | `tests/test_cli.py` | `make confirm` |
 | saved review inventory stability | `tests/test_bundle_manifest.py` | `make verify-report` |
 
 ## Recommended reading order

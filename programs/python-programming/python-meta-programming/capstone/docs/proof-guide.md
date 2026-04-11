@@ -51,8 +51,8 @@ export, and runtime invocation behavior.
 
 ## Saved review routes
 
-- `make inspect` writes the learner-facing inspection bundle.
-- `make tour` writes the learner-facing walkthrough bundle.
+- `make inspect` writes the guided inspection bundle.
+- `make tour` writes the guided walkthrough bundle.
 - `make verify-report` writes executable proof together with public-surface evidence.
 
 ## Choose the saved bundle by review need
@@ -60,7 +60,7 @@ export, and runtime invocation behavior.
 | If you need to review... | Choose this bundle | Do not start with |
 | --- | --- | --- |
 | public runtime shape without invocation | inspect bundle | verify-report bundle |
-| one saved learner-facing story from manifest to trace | tour bundle | inspect bundle plus ad hoc commands |
+| one saved guided story from manifest to trace | tour bundle | inspect bundle plus ad hoc commands |
 | strongest saved executable confirmation | verify-report bundle | confirm output alone |
 
 Each bundle also includes `bundle-manifest.json`, which records stable file paths, file
@@ -98,7 +98,7 @@ public surface without opening private internals first.
 - `tour` proves that a human can follow one complete public review route.
 - `verify-report` proves that executable tests and public-surface evidence agree in one saved bundle.
 - `confirm` proves the strongest local regression surface.
-- `proof` publishes the full learner-facing review route.
+- `proof` publishes the full guided review route.
 
 ## File to proof map
 

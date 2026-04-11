@@ -76,8 +76,8 @@ make verify-report
 - `signatures`: inspect constructor and action signatures together
 - `demo`: invoke one realistic plugin action directly in the terminal
 - `trace`: inspect result, configuration, and action history together
-- `inspect`: build the saved learner-facing inspection bundle
-- `capstone-walkthrough` from the repository root, or `tour` inside `capstone/`, writes the learner-facing walkthrough bundle into `artifacts/`
+- `inspect`: build the saved guided inspection bundle
+- `capstone-walkthrough` from the repository root, or `tour` inside `capstone/`, writes the guided walkthrough bundle into `artifacts/`
 - `capstone-tour`: use the same saved walkthrough bundle when you are moving through the proof ladder rather than the first-pass reading route
 - `verify-report`: write the executable verification report bundle into `artifacts/`
 - `confirm`: strongest local executable proof through pytest

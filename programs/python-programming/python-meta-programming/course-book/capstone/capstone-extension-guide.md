@@ -68,4 +68,4 @@ Every extension should answer:
 
 - Do not widen the metaclass when a plugin, field, or action layer still owns the change.
 - Do not skip the public route and jump straight to tests.
-- Do not leave the local guides unchanged if the learner-facing route has really changed.
+- Do not leave the local guides unchanged if the guided route has really changed.

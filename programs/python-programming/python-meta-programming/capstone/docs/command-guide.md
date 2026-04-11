@@ -50,7 +50,7 @@ the question you are trying to answer.
 | `make tour` | build the saved walkthrough bundle | bundle under `artifacts/tour/...` |
 | `make verify-report` | build the saved executable verification bundle | bundle under `artifacts/review/...` |
 | `make confirm` | run the strongest local executable confirmation route | pytest success or failure |
-| `make proof` | build the full learner-facing proof route | all saved bundles together |
+| `make proof` | build the full guided proof route | all saved bundles together |
 
 ## Public runtime surfaces
 
@@ -136,7 +136,7 @@ Use these when you need the broadest local confidence:
 - `demo` versus `trace`
   `demo` shows one result; `trace` shows result, configuration, and recorded action history together.
 - `confirm` versus `proof`
-  `confirm` is the strongest local confirmation route; `proof` publishes the full learner-facing review route.
+  `confirm` is the strongest local confirmation route; `proof` publishes the full guided review route.
 
 ## Default choices when unsure
 

@@ -73,7 +73,7 @@ Use stops 5 and 6 only after the earlier stops no longer settle the question.
 - Ask: which rules belong to the framework and which rules belong to the concrete adapter?
 - Prove it by matching the plugin output to the field and action metadata already inspected.
 
-## Walkthrough stop 6: Inspect the full learner route
+## Walkthrough stop 6: Inspect the full guided route
 
 - Run `make inspect` and `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough`.
 - Read the saved bundle under `artifacts/inspect/python-programming/python-meta-programming` and `artifacts/tour/python-programming/python-meta-programming`.

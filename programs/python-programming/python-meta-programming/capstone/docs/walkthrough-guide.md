@@ -28,7 +28,7 @@ before you dive into metaclasses, descriptors, and wrappers.
 ## First pass versus deeper pass
 
 - First pass: stop after `make trace` if the goal is to understand one honest public story from schema to invocation history.
-- Deeper pass: add `make confirm` only when the question becomes executable confidence rather than learner-facing explanation.
+- Deeper pass: add `make confirm` only when the question becomes executable confidence rather than guided explanation.
 
 ## Recommended walkthrough
 
@@ -58,7 +58,7 @@ before you dive into metaclasses, descriptors, and wrappers.
 - starting with the metaclass before you understand the public consequences
 - treating manifest output as if it proved runtime invocation by itself
 - skipping trace review and missing the recorded wrapper history
-- reading the whole capstone without one explicit learner-facing order
+- reading the whole capstone without one explicit guided order
 
 ## Good stopping point
 
