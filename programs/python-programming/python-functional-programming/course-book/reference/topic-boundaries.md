@@ -42,7 +42,7 @@ effects, it belongs in the center of this course.
 
 ## Topics that are adjacent, not central
 
-These matter, but they are supporting material rather than the main teaching target:
+These matter, but they are supporting material rather than the main course target:
 
 - type-checker details beyond what is needed to keep the API and laws reviewable
 - category-theory vocabulary beyond the minimum needed to explain the laws in use
