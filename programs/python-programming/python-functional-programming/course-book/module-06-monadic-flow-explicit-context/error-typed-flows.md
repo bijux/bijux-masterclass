@@ -57,6 +57,17 @@ After this core you will never again scatter ad-hoc `except Exception` blocks th
 
 Try wrappers are **boundary-only** combinators. Using them deep inside pure code is forbidden.
 
+## A Practical Classification Check
+
+Before turning an exception into a typed error, ask three questions:
+
+1. is this a failure the caller can reasonably recover from?
+2. does this case belong to the domain contract, not just to a broken implementation?
+3. would catching it make debugging harder by hiding a bug or broken invariant?
+
+If the first two answers are yes and the third is no, the case is usually a good fit for
+`Result` or `Validation`. If not, letting it raise is often the more honest move.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Invariant                         | Description                                                                                  | Enforcement          |
@@ -159,6 +170,10 @@ def unexpected_fail(msg: str) -> NoReturn:
 
 **Contract**: `exc_type` defines what is treated as an expected domain exception.  
 Exceptions outside `exc_type` propagate as bugs (they never become `Result`/`Validation`).
+
+Read `exc_type` as a classification boundary, not as a convenience flag. It is the line
+that says “these are the exception shapes we have deliberately decided to model as
+expected.”
 
 ## 3. Real-World Example – JSON Parsing at Boundary
 
