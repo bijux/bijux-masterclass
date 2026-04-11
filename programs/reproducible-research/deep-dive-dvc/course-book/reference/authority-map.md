@@ -2,7 +2,6 @@
 
 # Authority Map
 
-
 <!-- page-maps:start -->
 ## Reference Position
 
@@ -16,85 +15,65 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
+  question["What kind of trust question is this"] --> layer["Choose the authoritative layer"]
+  layer --> evidence["Read the supporting evidence that should agree with it"]
+  evidence --> decision["Decide whether the state story is still honest"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-Deep Dive DVC repeatedly asks which layer of state is authoritative. This page answers
-that question directly.
-
-Use it when the repository contains many kinds of files but you need to know which one is
-supposed to settle a trust question.
+Deep Dive DVC only stays reviewable if each kind of state question has a clear owner.
+Use this page when the repository contains many plausible answers, but you need to know
+which surface is actually allowed to settle the question.
 
 ---
 
-## State Layers And Their Jobs
+## Which layer settles which question
 
-| Layer | What it is authoritative for | What it is not authoritative for |
+| Question | Authoritative layer | Supporting evidence |
 | --- | --- | --- |
-| workspace files | the current visible checkout | long-term identity or durable recovery |
-| `dvc.yaml` | the declared pipeline contract | proof that a stage actually ran with a specific state |
-| `dvc.lock` | recorded execution state and dependency hashes | downstream release policy by itself |
-| DVC cache | content-addressed local materialization of tracked data | durable off-machine survival |
-| DVC remote | durable recovery source when local cache is lost | human-readable release meaning |
-| `publish/v1/` | downstream contract another person may trust | the full internal state story |
-
-## Review Order
-
-When a trust question is ambiguous, inspect the layers in this order:
-
-1. `dvc.yaml` for declared responsibility
-2. `dvc.lock` for recorded execution state
-3. DVC remote or recovery drills for durability
-4. `publish/v1/` for downstream release trust
-
-That order prevents one common DVC mistake: jumping from a visible file straight to a
-trust claim without checking what authority that file actually has.
+| what the repository claims should happen | `dvc.yaml` and `params.yaml` | stage summaries and stage guides |
+| what exact state was recorded after execution | `dvc.lock` | metrics, publish summaries, and recorded outputs |
+| what survives machine loss and local cleanup | DVC remote plus `dvc pull` and `dvc checkout` | recovery drills and recovery bundles |
+| what another person may trust downstream | `publish/v1/` plus its manifest | verification reports and release reviews |
+| what is merely visible in the workspace today | workspace files | none; visibility is not authority |
+| what changed comparably across runs | params, metrics, and experiment records | experiment review routes |
 
 [Back to top](#top)
 
 ---
 
-## Which Layer Answers Which Question
+## Common authority mistakes
 
-| Question | Start with |
+| Mistake | Why it lowers trust |
 | --- | --- |
-| what does this pipeline claim it will do | `dvc.yaml` |
-| what exact state did it record after execution | `dvc.lock` |
-| can this repository restore tracked data after local loss | the DVC remote plus `dvc pull` |
-| what may downstream users rely on | `publish/v1/` plus its manifest |
-| what is merely visible today in the working tree | workspace files |
-| what changed meaningfully between comparable runs | `params.yaml`, `metrics/metrics.json`, and experiment metadata |
-
-[Back to top](#top)
-
----
-
-## Common Authority Mistakes
-
-| Mistake | Why it fails |
-| --- | --- |
-| treating a workspace path as stable identity | the bytes may change while the path stays the same |
+| treating a workspace path as stable identity | a path can stay the same while the bytes and meaning change |
 | treating `dvc.yaml` as proof of execution | declaration is not the same as recorded state |
-| treating the local cache as durable recovery | it disappears with the machine or cleanup |
-| treating the publish bundle as the whole repository truth | promoted state is intentionally smaller than the internal state story |
-| treating a successful restore as proof of semantic comparability | durability does not guarantee that params or metrics still mean the same thing |
+| treating the local DVC cache as durable recovery | it disappears with cleanup or machine loss |
+| treating `publish/v1/` as the whole repository story | promoted trust is intentionally smaller than internal state |
+| treating restore success as proof of semantic comparability | durability does not guarantee that params and metrics still mean the same thing |
 
 [Back to top](#top)
 
 ---
 
-## Best Companion Pages
+## Review order when the question is ambiguous
 
-The most useful companion pages for this map are:
+1. read `dvc.yaml` for declared responsibility
+2. read `dvc.lock` for recorded execution state
+3. read the relevant comparison or release surface
+4. read recovery evidence only if the question is about survival after loss
 
-* [`glossary.md`](glossary.md)
-* [`module-02.md`](../module-02-data-identity-content-addressing/index.md)
-* [`module-08.md`](../module-08-recovery-scale-incident-survival/index.md)
-* [`capstone-map.md`](../capstone/capstone-map.md)
+That order stops one common DVC mistake: jumping from a visible file straight to a trust
+claim without checking what kind of authority that file actually has.
+
+[Back to top](#top)
+
+---
+
+## Companion pages
+
+- [`evidence-boundary-guide.md`](evidence-boundary-guide.md)
+- [`verification-route-guide.md`](verification-route-guide.md)
+- [`glossary.md`](glossary.md)
 
 [Back to top](#top)
