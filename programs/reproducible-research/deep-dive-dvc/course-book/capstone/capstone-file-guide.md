@@ -62,6 +62,24 @@ review packaging in the same order the repository is meant to be read.
 
 [Back to top](#top)
 
+## Layer questions
+
+Use this table when the repository feels crowded and you need to know which layer you
+are actually reading.
+
+| Question | Best layer to inspect first |
+| --- | --- |
+| what is this repository promising to defend | repository contract |
+| what should happen when the pipeline runs | declared workflow |
+| what did happen on the recorded run | recorded workflow state |
+| where is the behavior actually implemented | implementation |
+| which generated artifacts are only internal | internal repository outputs |
+| what may a downstream reviewer rely on | promoted contract |
+| what survives local loss | recovery durability |
+| what makes one changed run meaningfully comparable to the baseline | declared workflow plus promoted contract |
+
+[Back to top](#top)
+
 ## Good first reading order
 
 If this is your first serious repository pass, use this sequence:
@@ -91,5 +109,16 @@ Avoid these:
 
 If you are still navigating by directory names alone, the repository has not become
 legible yet.
+
+[Back to top](#top)
+
+## Best companion pages
+
+The most useful companion pages for this guide are:
+
+* [`capstone-map.md`](capstone-map.md)
+* [`command-guide.md`](command-guide.md)
+* [`authority-map.md`](../reference/authority-map.md)
+* [`proof-matrix.md`](../guides/proof-matrix.md)
 
 [Back to top](#top)

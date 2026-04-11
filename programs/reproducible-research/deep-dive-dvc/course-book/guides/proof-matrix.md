@@ -40,7 +40,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | params are part of recorded execution meaning | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/params.yaml`, `capstone/dvc.lock` |
 | metrics are reviewable state, not only console output | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/metrics/metrics.json`, `capstone/publish/v1/metrics.json` |
 | promoted outputs are smaller than internal repository state | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | `capstone/publish/v1/`, `capstone/state/`, `course-book/capstone/index.md`, `capstone/publish/v1/manifest.json` |
-| repository layers have distinct reading responsibilities | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/repository-layer-guide.md`, `course-book/capstone/capstone-file-guide.md` |
+| repository layers have distinct reading responsibilities | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/capstone-file-guide.md`, `capstone/dvc.yaml` |
 
 [Back to top](#top)
 
@@ -71,7 +71,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | which state survives local cache loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | `course-book/capstone/index.md` |
 | which verification route fits my question | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `course-book/reference/verification-route-guide.md` |
 | what should I inspect before migration | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `capstone/dvc.yaml` |
-| how should I read the repository layers | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/repository-layer-guide.md` |
+| how should I read the repository layers | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/capstone-file-guide.md` |
 | how should I audit the promoted release boundary | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `course-book/capstone/release-audit-checklist.md` |
 
 [Back to top](#top)
@@ -86,9 +86,9 @@ The most useful companion pages for this matrix are:
 * [`verification-route-guide.md`](../reference/verification-route-guide.md)
 * [`authority-map.md`](../reference/authority-map.md)
 * [`evidence-boundary-guide.md`](../reference/evidence-boundary-guide.md)
-* [`repository-layer-guide.md`](../capstone/repository-layer-guide.md)
-* [`practice-map.md`](../reference/practice-map.md)
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
+* [`capstone-map.md`](../capstone/capstone-map.md)
+* [`practice-map.md`](../reference/practice-map.md)
 * [`release-audit-checklist.md`](../capstone/release-audit-checklist.md)
 
 [Back to top](#top)

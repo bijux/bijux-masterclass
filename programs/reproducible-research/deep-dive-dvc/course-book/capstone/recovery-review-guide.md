@@ -35,5 +35,5 @@ story is real rather than aspirational.
 1. Read [Authority Map](../reference/authority-map.md).
 2. Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill`.
 3. Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review`.
-4. Read [Repository Layer Guide](repository-layer-guide.md).
+4. Read [Capstone File Guide](capstone-file-guide.md).
 5. Inspect the recovery bundle beside [Evidence Boundary Guide](../reference/evidence-boundary-guide.md).

@@ -28,7 +28,7 @@ corroboration once the local idea is already clear.
 | If the question is... | Start here | Escalate only if needed |
 | --- | --- | --- |
 | what this repository promises | [Capstone Map](capstone-map.md) | [Command Guide](command-guide.md) |
-| which files and state surfaces matter first | [Capstone File Guide](capstone-file-guide.md) | [Repository Layer Guide](repository-layer-guide.md) |
+| which files and state surfaces matter first | [Capstone File Guide](capstone-file-guide.md) | [Command Guide](command-guide.md) |
 | what counts as current repository truth | [Command Guide](command-guide.md) | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` |
 | what survives local loss and remote restore | [Recovery Review Guide](recovery-review-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | what is safe for downstream trust | [Release Audit Checklist](release-audit-checklist.md) | [Release Review Guide](release-review-guide.md) |
@@ -97,7 +97,7 @@ repository, and the terms here keep those routes distinct.
 | [Capstone Map](capstone-map.md) | choose the right route by module or question |
 | [Command Guide](command-guide.md) | pick the right command layer and first command |
 | [Capstone File Guide](capstone-file-guide.md) | know which repository files to open first and why |
-| [Repository Layer Guide](repository-layer-guide.md) | read the repository by ownership rather than folder names |
+| [Capstone File Guide](capstone-file-guide.md) | read the repository by ownership rather than folder names |
 | [Experiment Review Guide](experiment-review-guide.md) | compare changed runs without muddying the baseline story |
 | [Recovery Review Guide](recovery-review-guide.md) | review restore guarantees and what they depend on |
 | [Release Audit Checklist](release-audit-checklist.md) | make one downstream-trust judgment |

@@ -57,7 +57,7 @@ Return to the module first if:
 
 | Module | Main learner question | Capstone surface | First command |
 | --- | --- | --- | --- |
-| 01 Reproducibility Failures | why rerunnable scripts are weaker than explicit state contracts | `README.md`, `data/raw/`, [Repository Layer Guide](repository-layer-guide.md) | `make walkthrough` |
+| 01 Reproducibility Failures | why rerunnable scripts are weaker than explicit state contracts | `README.md`, `data/raw/`, [Capstone File Guide](capstone-file-guide.md) | `make walkthrough` |
 | 02 Data Identity | what makes state durable instead of path-shaped | `dvc.lock`, `.dvc/cache`, `.dvc-remote/` | `make verify` |
 | 03 Execution Environments | how runtime assumptions become explicit repository state | `Makefile`, `pyproject.toml`, `src/incident_escalation_capstone/` | `make verify` |
 | 04 Truthful Pipelines | how declared stage edges differ from hopeful reruns | `dvc.yaml`, `dvc.lock`, `state/` | `make repro` |
