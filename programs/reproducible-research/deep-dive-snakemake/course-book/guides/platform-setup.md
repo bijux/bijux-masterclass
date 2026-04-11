@@ -88,9 +88,10 @@ make walkthrough
 make wf-dryrun
 ```
 
-That sequence creates the supported local toolchain under `artifacts/venv/`,
-prints the resolved versions, and proves the workflow can at least plan correctly before
-a full execution.
+That sequence creates the supported local toolchain under
+`artifacts/venv/reproducible-research/deep-dive-snakemake/capstone/`, prints the
+resolved versions, and proves the workflow can at least plan correctly before a full
+execution.
 
 [Back to top](#top)
 
