@@ -2,92 +2,112 @@
 
 # Capstone Review Worksheet
 
+Use this page when you want to review the capstone as an inherited build, not just read
+it as course material. The point is to leave with explicit judgments you could defend in
+code review, maintenance planning, or a handoff.
 
-<!-- page-maps:start -->
-## Guide Fit
+## How to use the worksheet
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone Review Worksheet"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+Work top to bottom. For each section:
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+1. answer the question in your own words
+2. name the file or saved bundle that supports the answer
+3. record one risk only if you can point to the owning boundary
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Use this worksheet when you want to review the capstone as a build-system specimen rather
-than just read it as course material.
-
----
-
-## Public Surface
-
-Answer these first:
-
-* which targets are clearly public
-* which targets are clearly internal
-* whether the help text is enough for another maintainer to start correctly
+If you cannot name the evidence, the judgment is still too soft.
 
 [Back to top](#top)
 
----
+## Public contract
 
-## Truth And Convergence
+Ask:
 
-Review these questions:
+- which targets are clearly public for a learner or maintainer
+- whether `help` and the command docs are enough to start correctly
+- which commands are aliases for a learner-facing route rather than separate contracts
 
-* where are hidden inputs modeled
-* what would cause non-convergence
-* which files or rules are responsible for generated artifacts
-* whether `selftest` proves the core invariants clearly enough
+Best evidence:
 
-[Back to top](#top)
-
----
-
-## Parallel Safety
-
-Review these questions:
-
-* which outputs have one writer
-* which recipes would become unsafe under `-j` if the graph lied
-* whether the repro pack covers the main race and ordering classes
+- `capstone/Makefile`
+- [Command Guide](command-guide.md)
+- `artifacts/audit/reproducible-research/deep-dive-make/contract/help.txt`
 
 [Back to top](#top)
 
----
+## Truth and convergence
 
-## Architecture
+Ask:
 
-Review these questions:
+- where hidden inputs are modeled
+- what file acts as the convergence proof surface
+- what would make the build appear healthy while still lying
 
-* whether the `mk/*.mk` split is responsibility-driven
-* whether macros reduce duplication without hiding graph meaning
-* whether discovery, stamps, and contract rules are easy to locate
+Best evidence:
+
+- `capstone/mk/stamps.mk`
+- `capstone/tests/run.sh`
+- `artifacts/proof/reproducible-research/deep-dive-make/selftest/summary.txt`
 
 [Back to top](#top)
 
----
+## Parallel safety
 
-## Release And Stewardship
+Ask:
 
-Review these questions:
+- which outputs have one clear writer
+- which failures only appear under `-j`
+- whether the repro pack teaches the same failure classes the healthy build protects against
 
-* whether `dist` and `attest` are separated cleanly
-* whether portability boundaries are explicit
-* whether another maintainer could extend the capstone without weakening its teaching value
+Best evidence:
+
+- `capstone/Makefile`
+- `capstone/repro/`
+- [Repro Catalog](repro-catalog.md)
+
+[Back to top](#top)
+
+## Architecture and ownership
+
+Ask:
+
+- whether each `mk/*.mk` file has one readable job
+- whether macros reduce repetition without hiding control flow
+- whether a new maintainer could locate policy, discovery, and proof without guesswork
+
+Best evidence:
+
+- `capstone/mk/contract.mk`
+- `capstone/mk/objects.mk`
+- `capstone/mk/macros.mk`
+- [Capstone File Guide](capstone-file-guide.md)
+
+[Back to top](#top)
+
+## Release and stewardship
+
+Ask:
+
+- what counts as publishable source versus local build residue
+- whether release evidence is adjacent to artifacts rather than mixed into their identity
+- whether a future maintainer could extend the build without weakening the teaching bar
+
+Best evidence:
+
+- `capstone/docs/SOURCE_BASELINE_GUIDE.md`
+- `capstone/scripts/mkdist.py`
+- [Capstone Extension Guide](capstone-extension-guide.md)
+
+[Back to top](#top)
+
+## Record the result
+
+Finish with one of these judgments:
+
+- trust as-is
+- trust with one named follow-up boundary
+- do not trust yet because one specific proof or ownership question is unresolved
+
+If your conclusion is longer than a short paragraph, the review probably drifted away from
+one bounded question.
 
 [Back to top](#top)
