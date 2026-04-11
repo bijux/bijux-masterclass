@@ -149,3 +149,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is metaclass resolution: how Python chooses a
 metaclass, when the work runs, and why conflicts appear.
+
+## Continue through Module 09
+
+- Previous: [Overview](index.md)
+- Next: [Metaclass Resolution, Timing, and Conflicts](metaclass-resolution-timing-and-conflicts.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

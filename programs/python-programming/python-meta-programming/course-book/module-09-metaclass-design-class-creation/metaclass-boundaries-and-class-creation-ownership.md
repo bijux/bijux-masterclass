@@ -161,3 +161,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can now show one honest metaclass case:
 deterministic plugin registration across a class family.
+
+## Continue through Module 09
+
+- Previous: [`__prepare__` and Declaration-Time Enforcement](prepare-and-declaration-time-enforcement.md)
+- Next: [Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`](worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

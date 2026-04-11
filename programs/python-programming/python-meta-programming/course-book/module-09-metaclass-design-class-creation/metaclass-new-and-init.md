@@ -163,3 +163,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is `__prepare__`, the one hook that can observe and
 control assignments during class body execution itself.
+
+## Continue through Module 09
+
+- Previous: [Metaclass Resolution, Timing, and Conflicts](metaclass-resolution-timing-and-conflicts.md)
+- Next: [`__prepare__` and Declaration-Time Enforcement](prepare-and-declaration-time-enforcement.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

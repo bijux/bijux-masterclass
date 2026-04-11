@@ -119,3 +119,10 @@ Across the whole set, strong answers share the same habits:
 If an answer still sounds like "metaclasses are powerful so they fit here," revise it
 until you can name the exact class-creation invariant they own and why lower-power tools
 fail.
+
+## Continue through Module 09
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 10](../module-10-runtime-governance-mastery-review/index.md)
+- Terms: [Glossary](glossary.md)

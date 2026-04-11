@@ -199,3 +199,10 @@ This worked example ties the module together:
 
 That is the real lesson. The point is not to make registries feel magical. The point is to
 show one case where class-creation-time control is genuinely the honest owner.
+
+## Continue through Module 09
+
+- Previous: [Metaclass Boundaries and Class-Creation Ownership](metaclass-boundaries-and-class-creation-ownership.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)

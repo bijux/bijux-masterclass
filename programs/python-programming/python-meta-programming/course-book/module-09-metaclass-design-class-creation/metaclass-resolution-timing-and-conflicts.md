@@ -183,3 +183,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is to separate structural work in metaclass
 `__new__` from post-creation bookkeeping in metaclass `__init__`.
+
+## Continue through Module 09
+
+- Previous: [Manual Class Creation with `type(...)`](manual-class-creation-with-type.md)
+- Next: [Metaclass `__new__` and `__init__`](metaclass-new-and-init.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

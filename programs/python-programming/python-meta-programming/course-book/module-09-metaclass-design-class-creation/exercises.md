@@ -81,3 +81,10 @@ Across all six answers, the module wants the same habits:
 - you reject metaclass escalation when lower-power tools remain honest owners
 
 If an answer still sounds like "a metaclass can just handle it," keep going.
+
+## Continue through Module 09
+
+- Previous: [Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`](worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

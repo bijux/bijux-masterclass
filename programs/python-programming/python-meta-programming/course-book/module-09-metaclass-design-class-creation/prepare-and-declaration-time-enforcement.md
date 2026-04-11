@@ -172,3 +172,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is the module's design page: when metaclass power is
 truly justified and when lower-power tools should still win.
+
+## Continue through Module 09
+
+- Previous: [Metaclass `__new__` and `__init__`](metaclass-new-and-init.md)
+- Next: [Metaclass Boundaries and Class-Creation Ownership](metaclass-boundaries-and-class-creation-ownership.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)
