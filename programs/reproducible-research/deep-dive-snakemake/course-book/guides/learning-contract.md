@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Learning Contract
 
 Use this page when you need to reset how to study the program. Deep Dive Snakemake is not
@@ -18,8 +16,6 @@ For each module, you should be able to do four things before you call it done:
 
 If you can only recognize the vocabulary, the module is not done yet.
 
-[Back to top](#top)
-
 ## What the program owes you
 
 The material should present each important idea in an order that a human can actually use:
@@ -33,8 +29,6 @@ The material should present each important idea in an order that a human can act
 When a page jumps from slogan to command list, the learner is doing the course-design
 work alone.
 
-[Back to top](#top)
-
 ## How to work a module honestly
 
 Use this loop:
@@ -47,8 +41,6 @@ Use this loop:
 
 The goal is not speed. The goal is leaving each module with something you can defend in
 review.
-
-[Back to top](#top)
 
 ## The proof surfaces you should keep reaching for
 
@@ -66,8 +58,6 @@ These surfaces recur because they answer different classes of question:
 Good study means choosing the surface that matches the claim instead of jumping straight
 to the biggest route.
 
-[Back to top](#top)
-
 ## When the capstone is appropriate
 
 Open the capstone when the local idea is already stable and you want to see it survive a
@@ -83,8 +73,6 @@ Do not open the capstone yet when:
 Use [Capstone Map](../capstone/capstone-map.md) when the concept is clear but the right
 repository route is not.
 
-[Back to top](#top)
-
 ## Signs you are fooling yourself
 
 Stop and reset if any of these are true:
@@ -97,4 +85,3 @@ Stop and reset if any of these are true:
 Those are not minor study gaps. They usually mean the previous page needs a slower,
 smaller pass.
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Incident Review Guide
 
 <!-- page-maps:start -->
@@ -48,8 +46,6 @@ Read an incident bundle in this order:
 
 This keeps observed behavior ahead of interpretation.
 
-[Back to top](#top)
-
 ---
 
 ## What each surface gives you
@@ -64,8 +60,6 @@ This keeps observed behavior ahead of interpretation.
 | `REPRO_GUIDE.md` | places the defect inside the broader repro catalog |
 | `PROOF_GUIDE.md` | maps the repaired claim back to the production proof route |
 
-[Back to top](#top)
-
 ---
 
 ## What a good incident review should answer
@@ -76,8 +70,6 @@ By the end of one bundle review, you should be able to say:
 - whether the defect depends on scheduling or appears in serial mode too
 - which repair belongs in the real capstone rather than in the teaching repro
 - which proof route would confirm the repaired behavior in production
-
-[Back to top](#top)
 
 ---
 
@@ -92,8 +84,6 @@ If the repro pack is new, start with incidents in this order:
 
 That sequence moves from obvious corruption toward subtler graph lies.
 
-[Back to top](#top)
-
 ---
 
 ## Companion surfaces
@@ -102,4 +92,3 @@ That sequence moves from obvious corruption toward subtler graph lies.
 - `PROOF_GUIDE.md`
 - `ARCHITECTURE.md`
 
-[Back to top](#top)

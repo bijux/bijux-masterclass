@@ -51,8 +51,6 @@ Use the course in this order:
 7. Modules `01` to `10` in order
 8. `course-book/guides/proof-ladder.md`, `course-book/capstone/index.md`, and `course-book/capstone/capstone-map.md` once the local model is clear
 
-[Back to top](#top)
-
 ---
 
 ## What you should be able to do after this program
@@ -62,8 +60,6 @@ Use the course in this order:
 - separate workflow logic, profile policy, and published artifact contracts cleanly
 - extend a pipeline without weakening its publish boundary or provenance story
 - review a Snakemake repository for hidden coupling, poison artifacts, and reproducibility gaps
-
-[Back to top](#top)
 
 ---
 
@@ -107,8 +103,6 @@ The course now includes dedicated support pages for:
 - anti-pattern routing
 - proof sizing and capstone escalation
 
-[Back to top](#top)
-
 ---
 
 ## Recommended background
@@ -116,8 +110,6 @@ The course now includes dedicated support pages for:
 - Comfortable shell usage and basic Python workflow tooling
 - Basic Snakemake familiarity: rules, wildcards, `snakemake -n`, and dry-run interpretation
 - Willingness to treat workflow design as an engineering contract rather than as glue code
-
-[Back to top](#top)
 
 ---
 
@@ -155,8 +147,6 @@ On a fresh machine, prefer
 before relying on any global `snakemake` install. The exact setup contract lives in
 `course-book/guides/platform-setup.md`.
 
-[Back to top](#top)
-
 ---
 
 ## How to study this program well
@@ -168,8 +158,6 @@ before relying on any global `snakemake` install. The exact setup contract lives
 5. Re-run the capstone proof targets regularly so the workflow stays executable in your head, not only in prose.
 6. Use dry-runs, summaries, and proof artifacts as learning tools, not only as debugging tools.
 
-[Back to top](#top)
-
 ---
 
 ## How to know you are succeeding
@@ -178,8 +166,6 @@ before relying on any global `snakemake` install. The exact setup contract lives
 - You can describe what a checkpoint is allowed to discover and what it must never hide.
 - You can distinguish executor policy from workflow semantics.
 - You can review a workflow and identify hidden coupling, poison artifacts, or provenance gaps quickly.
-
-[Back to top](#top)
 
 ---
 
@@ -198,8 +184,6 @@ before relying on any global `snakemake` install. The exact setup contract lives
 | `08` | Operating Contexts and Execution Policy | teach profile boundaries, failure policy, storage assumptions, and context-drift review |
 | `09` | Observability, Performance, and Incident Response | review logs, benchmarks, and incidents with explicit evidence |
 | `10` | Governance, Migration, and Tool Boundaries | finish with stewardship, migration, and tool-boundary judgment |
-
-[Back to top](#top)
 
 ---
 
@@ -221,8 +205,6 @@ graph TD
   capstone --> more["..."]
 ```
 
-[Back to top](#top)
-
 ---
 
 ## Capstone promise
@@ -234,8 +216,6 @@ the big claims in the course can always be located in runnable workflow behavior
 - versioned publishing instead of informal results directories
 - profiles as policy instead of tribal command lines
 - verification gates instead of “it ran once” confidence
-
-[Back to top](#top)
 
 ---
 
@@ -251,12 +231,9 @@ Contributions that enhance correctness, clarity, or reproducibility are welcome 
    ```
 4. Open a pull request against `master` or `main`.
 
-[Back to top](#top)
-
 ---
 
 ## License
 
 MIT — see the repository root [LICENSE](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE). © 2025 Bijan Mousavi <bijan@bijux.io>.
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Capstone Review Worksheet
 
 Use this page when you want to review the capstone as an inherited workflow repository,
@@ -16,8 +14,6 @@ Work top to bottom. For each section:
 
 If you cannot name the evidence, the judgment is still too soft.
 
-[Back to top](#top)
-
 ## Repository contract
 
 Ask:
@@ -33,8 +29,6 @@ Best evidence:
 - `capstone/workflow/contracts/FILE_API.md`
 - [Capstone Guide](index.md)
 
-[Back to top](#top)
-
 ## Workflow truth
 
 Ask:
@@ -48,8 +42,6 @@ Best evidence:
 - `capstone/workflow/rules/preprocess.smk`
 - `capstone/publish/v1/discovered_samples.json`
 - walkthrough or tour bundle surfaces
-
-[Back to top](#top)
 
 ## Policy and operating context
 
@@ -66,8 +58,6 @@ Best evidence:
 - `capstone/profiles/slurm/config.yaml`
 - [Profile Audit Guide](profile-audit-guide.md)
 
-[Back to top](#top)
-
 ## Publish boundary
 
 Ask:
@@ -81,8 +71,6 @@ Best evidence:
 - `capstone/publish/v1/`
 - `capstone/workflow/contracts/FILE_API.md`
 - verify-report bundle surfaces
-
-[Back to top](#top)
 
 ### Publish review route
 
@@ -99,8 +87,6 @@ A good publish review should answer:
 - which proofs are about publish trust rather than workflow execution generally
 - which future change would require a versioned publish boundary change
 
-[Back to top](#top)
-
 ## Architecture and ownership
 
 Ask:
@@ -116,8 +102,6 @@ Best evidence:
 - `capstone/workflow/modules/`
 - `capstone/workflow/scripts/`
 - `capstone/src/capstone/`
-
-[Back to top](#top)
 
 ## Incident review
 
@@ -136,8 +120,6 @@ A good incident review should answer:
 - which command gives the most honest first evidence
 - which files should remain unchanged until stronger proof exists
 
-[Back to top](#top)
-
 ## Record the result
 
 Finish with one of these judgments:
@@ -149,4 +131,3 @@ Finish with one of these judgments:
 If your conclusion is longer than a short paragraph, the review probably drifted away
 from one bounded question.
 
-[Back to top](#top)

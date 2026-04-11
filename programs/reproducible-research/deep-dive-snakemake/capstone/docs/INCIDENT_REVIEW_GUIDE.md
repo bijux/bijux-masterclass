@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Incident Review Guide
 
 
@@ -43,8 +41,6 @@ surface answers which kind of question.
 3. Run `make tour` when the question is about executed evidence, logs, and summary artifacts.
 4. Compare the result with `publish/v1/`, `FILE_API.md`, and the relevant profile bundle if needed.
 
-[Back to top](#top)
-
 ---
 
 ## What The Review Should Distinguish
@@ -52,8 +48,6 @@ surface answers which kind of question.
 - semantic workflow failures versus executor or policy differences
 - publish-boundary problems versus internal repository noise
 - nondeterminism versus a normal but unexpected rebuild
-
-[Back to top](#top)
 
 ---
 
@@ -66,4 +60,3 @@ surface answers which kind of question.
 Use `REVIEW_ROUTE_GUIDE.md` when you need to decide whether this is really an incident
 review question or a publish, profile, or stewardship question instead.
 
-[Back to top](#top)

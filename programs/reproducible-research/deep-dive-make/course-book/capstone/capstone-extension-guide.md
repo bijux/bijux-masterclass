@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Capstone Extension Guide
 
 Use this page before changing the capstone. The goal is not to freeze the repository. The
@@ -19,8 +17,6 @@ properties:
 If a proposed change weakens one of those, treat that as a design change, not routine
 maintenance.
 
-[Back to top](#top)
-
 ## Put changes in the right place
 
 | If you are changing... | Start in... | Why |
@@ -33,8 +29,6 @@ maintenance.
 | proof behavior | `capstone/tests/run.sh` | proof belongs to the harness, not to prose |
 | a new failure specimen | `capstone/repro/` plus the learner-facing repro pages | failure teaching should stay isolated from the healthy build |
 
-[Back to top](#top)
-
 ## Good capstone changes
 
 These usually improve the repository:
@@ -45,8 +39,6 @@ These usually improve the repository:
 - adding a distinct repro that teaches a real failure class
 - tightening file ownership so a reader has less guessing to do
 
-[Back to top](#top)
-
 ## Risky changes
 
 Slow down when a change does any of these:
@@ -56,8 +48,6 @@ Slow down when a change does any of these:
 - weakens selftest because one environment is inconvenient
 - mixes proof residue into source or release identity
 - adds repository bulk without adding a sharper lesson
-
-[Back to top](#top)
 
 ## Review checklist before you commit
 
@@ -70,8 +60,6 @@ Answer these in your own words:
 5. whether a future reader could understand the change without oral history
 
 If you cannot answer those, the change is probably not placed cleanly yet.
-
-[Back to top](#top)
 
 ## Best rerun commands
 
@@ -86,4 +74,3 @@ make PROGRAM=reproducible-research/deep-dive-make proof
 
 Those four routes cover entry, public contract, executable proof, and steward review.
 
-[Back to top](#top)

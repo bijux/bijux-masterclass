@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Workflow Architecture Guide
 
 
@@ -47,8 +45,6 @@ The repository should keep four responsibilities separate:
 If those responsibilities blur together, the repository becomes harder to review than the
 course is claiming it should be.
 
-[Back to top](#top)
-
 ---
 
 ## Layer Route
@@ -65,8 +61,6 @@ Read the architecture in this order:
 That route moves from visible workflow assembly, to rule families, to helper boundaries,
 to reusable code, to operating policy, and finally to the downstream contract.
 
-[Back to top](#top)
-
 ---
 
 ## What Each Layer Owns
@@ -79,8 +73,6 @@ to reusable code, to operating policy, and finally to the downstream contract.
 | `src/capstone/` | reusable processing logic with tests | execution policy or publish semantics that belong to the workflow |
 | `profiles/` and `config/` | operating policy and validated configuration inputs | analytical meaning or hidden behavior |
 | `publish/v1/` | downstream-facing public contract | internal execution detail or transient workflow state |
-
-[Back to top](#top)
 
 ---
 
@@ -96,4 +88,3 @@ too broad and you need the smallest next route for one concrete question.
 Use [Walkthrough Guide](WALKTHROUGH_GUIDE.md) when the confusion is specifically about
 the visible workflow layers before execution.
 
-[Back to top](#top)

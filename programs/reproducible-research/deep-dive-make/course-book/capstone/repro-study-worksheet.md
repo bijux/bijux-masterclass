@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Repro Study Worksheet
 
 
@@ -38,8 +36,6 @@ Write down:
 2. what failure class it is supposed to teach
 3. what you predict will go wrong under `-j` or under the current graph
 
-[Back to top](#top)
-
 ---
 
 ## While You Run It
@@ -49,8 +45,6 @@ Capture:
 1. the exact command you ran
 2. the visible symptom
 3. whether the failure is about graph truth, publication, directory setup, or rule choice
-
-[Back to top](#top)
 
 ---
 
@@ -62,8 +56,6 @@ Answer these:
 2. which edge, target, or publication step is lying
 3. what repair pattern would remove the defect
 4. which course module teaches the healthy version of this idea
-
-[Back to top](#top)
 
 ---
 
@@ -77,8 +69,6 @@ Use this order for a first serious repro pass:
 
 That route moves from visible parallel corruption into subtler graph-boundary mistakes.
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -89,4 +79,3 @@ Use these pages with this worksheet:
 * [`incident-ladder.md`](../reference/incident-ladder.md)
 * [`proof-matrix.md`](../guides/proof-matrix.md)
 
-[Back to top](#top)

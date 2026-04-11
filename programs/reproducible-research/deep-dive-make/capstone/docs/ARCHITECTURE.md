@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Architecture Guide
 
 
@@ -47,8 +45,6 @@ This capstone is organized so a learner can separate five concerns without guess
 If those boundaries collapse into one large Makefile in your head, the capstone will feel
 clever instead of teachable.
 
-[Back to top](#top)
-
 ---
 
 ## Layer Map
@@ -80,8 +76,6 @@ graph TD
 | `tests/run.sh` | proof harness for build-system behavior | you need executed evidence |
 | `repro/` | tiny failure-class demonstrations | you need one defect class in isolation |
 
-[Back to top](#top)
-
 ---
 
 ## Reading Order By Question
@@ -110,8 +104,6 @@ graph TD
 2. `repro/*.mk`
 3. [INCIDENT_REVIEW_GUIDE.md](INCIDENT_REVIEW_GUIDE.md)
 
-[Back to top](#top)
-
 ---
 
 ## Ownership Table
@@ -126,8 +118,6 @@ graph TD
 | what the build must prove | `tests/run.sh` and [SELFTEST_GUIDE.md](SELFTEST_GUIDE.md) | proof belongs to the harness, not to README prose |
 | how failures are taught | `repro/` and [REPRO_GUIDE.md](REPRO_GUIDE.md) | controlled defects should stay isolated from the main build |
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Files
@@ -139,4 +129,3 @@ Read these after this guide:
 * [PROOF_GUIDE.md](PROOF_GUIDE.md) for claim-to-evidence routing
 * [WALKTHROUGH_GUIDE.md](WALKTHROUGH_GUIDE.md) for the first-pass reading order
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Module Promise Map
 
 Use this page when a module title sounds right but still too compressed. A strong module
@@ -17,8 +15,6 @@ Each row answers four practical questions:
 
 If a module drifts away from that contract, the drift should be visible here.
 
-[Back to top](#top)
-
 ## Module contracts
 
 | Module | The promise | The boundary | You should leave able to... | First corroboration route |
@@ -34,8 +30,6 @@ If a module drifts away from that contract, the drift should be visible here.
 | [09 Promotion and Auditability](../module-09-promotion-registry-boundaries-auditability/index.md) | teach promotion as a smaller trusted boundary instead of a repository dump | publish surfaces, manifests, release review, promotion evidence | review what downstream users may trust from the promoted bundle | [Release Review Guide](../capstone/release-review-guide.md) |
 | [10 Migration and Governance](../module-10-migration-governance-dvc-boundaries/index.md) | teach stewardship, migration order, and honest DVC limits | governance, anti-patterns, tool boundaries, migration review | decide whether DVC should keep owning the concern | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 
-[Back to top](#top)
-
 ## What this page prevents
 
 This map exists to prevent four common course failures:
@@ -48,12 +42,9 @@ This map exists to prevent four common course failures:
 If you notice one of those failures while reading, come back here and name the missing
 piece directly.
 
-[Back to top](#top)
-
 ## Best companion pages
 
 - [Module Checkpoints](module-checkpoints.md) when you need the exit bar after the promise
 - [Proof Ladder](proof-ladder.md) when the corroboration route feels too heavy
 - [Capstone Map](../capstone/capstone-map.md) when the promise is clear but the repository route is not
 
-[Back to top](#top)

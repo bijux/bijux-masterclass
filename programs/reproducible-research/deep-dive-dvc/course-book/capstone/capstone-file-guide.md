@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Capstone File Guide
 
 Use this page when you know the repository is the right surface but do not yet know which
@@ -18,8 +16,6 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | what survives local loss and remote restore | `capstone/.dvc-remote/` as the durability source, then `capstone/dvc.lock` | [Recovery Review Guide](recovery-review-guide.md) |
 | what learner-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
 
-[Back to top](#top)
-
 ## Directory responsibilities
 
 | Path | What belongs there |
@@ -32,8 +28,6 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | `capstone/publish/v1/` | promoted downstream-facing contract |
 | `capstone/.dvc-remote/` | local training remote used to prove recovery |
 | `capstone/tests/` | executable checks for code-level and contract-level behavior |
-
-[Back to top](#top)
 
 ## Architectural route
 
@@ -60,8 +54,6 @@ review packaging in the same order the repository is meant to be read.
 | contract enforcement | `capstone/src/incident_escalation_capstone/verify.py` | validate the promoted contract against the supported rules |
 | review packaging | `capstone/Makefile` targets and generated bundles | package saved evidence for later inspection |
 
-[Back to top](#top)
-
 ## Layer questions
 
 Use this table when the repository feels crowded and you need to know which layer you
@@ -77,8 +69,6 @@ are actually reading.
 | what may a downstream reviewer rely on | promoted contract |
 | what survives local loss | recovery durability |
 | what makes one changed run meaningfully comparable to the baseline | declared workflow plus promoted contract |
-
-[Back to top](#top)
 
 ## Good first reading order
 
@@ -96,8 +86,6 @@ If this is your first serious repository pass, use this sequence:
 That order keeps declaration first, recorded state second, enforcement third, and
 promotion last.
 
-[Back to top](#top)
-
 ## Wrong reading orders
 
 Avoid these:
@@ -110,8 +98,6 @@ Avoid these:
 If you are still navigating by directory names alone, the repository has not become
 legible yet.
 
-[Back to top](#top)
-
 ## Best companion pages
 
 The most useful companion pages for this guide are:
@@ -121,4 +107,3 @@ The most useful companion pages for this guide are:
 * [`authority-map.md`](../reference/authority-map.md)
 * [`proof-matrix.md`](../guides/proof-matrix.md)
 
-[Back to top](#top)

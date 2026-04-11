@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Topic Boundaries
 
 
@@ -48,8 +46,6 @@ job.
 | release and publication contracts | outputs need a trustworthy downstream surface | 06, 08 | dist, attest, install, contract audit |
 | operational review and migration judgment | a long-lived build needs stewardship, not only syntax | 09, 10 | incident audit, review dump, migration rubric |
 
-[Back to top](#top)
-
 ---
 
 ## Supporting Topics That Matter, But Serve The Core
@@ -67,8 +63,6 @@ These topics matter because they make the core topics legible and enforceable.
 
 These topics are important, but they are never the final destination. The destination is
 always a more trustworthy build.
-
-[Back to top](#top)
 
 ---
 
@@ -88,8 +82,6 @@ When a learner asks for more on one of these topics, the honest answer is not �
 covers everything.” The honest answer is “the course touches this where it affects build
 truth, then hands off.”
 
-[Back to top](#top)
-
 ---
 
 ## Topics People Often Expect But Should Not Overweight
@@ -104,8 +96,6 @@ These topics are easy to fetishize and easy to teach badly:
 
 The course mentions these only when they sharpen judgment. It does not treat them as a
 badge of Make sophistication.
-
-[Back to top](#top)
 
 ---
 
@@ -122,8 +112,6 @@ Without an explicit boundary page, learners can come away with the wrong conclus
 * “Make itself should solve every orchestration problem.”
   Module 10 exists precisely to prevent that mistake.
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -135,4 +123,3 @@ Use these with this page:
 * [`public-targets.md`](public-targets.md) to separate the stable API from implementation detail
 * [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest proof route
 
-[Back to top](#top)

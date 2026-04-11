@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Module Checkpoints
 
 Use this page when you are about to move on and want an honest readiness bar. Reading a
@@ -18,8 +16,6 @@ For each module:
 If you need to reread, reread the narrowest lesson that matches the gap instead of the
 whole module.
 
-[Back to top](#top)
-
 ## Readiness table
 
 | Module | You are ready to move on when you can explain... | Quick proof or inspection route | Go back when... |
@@ -35,8 +31,6 @@ whole module.
 | [Module 09](../module-09-performance-observability-incident-response/index.md) | which evidence surface you would inspect before editing a slow or flaky workflow | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) or `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | your first move is to change retries, threads, or grouping |
 | [Module 10](../module-10-governance-migration-tool-boundaries/index.md) | how to improve or migrate the repository without losing proof and public trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | your migration plan is mostly taste, not preserved evidence |
 
-[Back to top](#top)
-
 ## Common false positives
 
 Do not call a module done just because:
@@ -48,12 +42,9 @@ Do not call a module done just because:
 
 Those usually mean you have seen the surface, not learned the boundary.
 
-[Back to top](#top)
-
 ## Best companion pages
 
 - [Module Promise Map](module-promise-map.md) when you need the module contract restated
 - [Proof Ladder](proof-ladder.md) when the proof route feels heavier than the claim
 - [Capstone Map](../capstone/capstone-map.md) when the concept is clear but the repository route is not
 
-[Back to top](#top)

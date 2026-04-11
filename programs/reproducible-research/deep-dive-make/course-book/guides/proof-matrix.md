@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Proof Matrix
 
 
@@ -45,8 +43,6 @@ reference build directly.
 | hidden inputs are modeled explicitly | `gmake -C capstone --trace all` | `capstone/mk/stamps.mk` |
 | generated files are treated as graph nodes | `gmake -C capstone --trace dyn` | `capstone/Makefile`, `capstone/scripts/gen_dynamic_h.py` |
 
-[Back to top](#top)
-
 ---
 
 ## Operational Claims
@@ -61,8 +57,6 @@ reference build directly.
 | the build produces non-contaminating evidence | `gmake -C capstone attest` | `capstone/Makefile`, `build/attest.txt` |
 | the repro pack teaches real failure classes | `gmake -C capstone repro` | `capstone/repro/`, `repro-catalog.md` |
 
-[Back to top](#top)
-
 ---
 
 ## Review Claims
@@ -76,8 +70,6 @@ reference build directly.
 | how is code generation modeled | `gmake -C capstone --trace dyn` | `capstone/scripts/gen_dynamic_h.py` |
 | what would I review before migration | `gmake -C capstone -p > build/review.dump` | `capstone/mk/` |
 
-[Back to top](#top)
-
 ---
 
 ## Companion Pages
@@ -90,4 +82,3 @@ The most useful companion pages for this matrix are:
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 * [`capstone-proof-checklist.md`](../capstone/capstone-proof-checklist.md)
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Boundary Map
 
 <!-- page-maps:start -->
@@ -38,8 +36,6 @@ which surface is actually allowed to settle the question.
 | what happened during an executed run | `run.txt`, `summary.txt`, logs, and benchmarks | `EXECUTION_EVIDENCE_GUIDE.md`, `TOUR.md` |
 | where should a future change land | repository layer ownership | `ARCHITECTURE.md`, `EXTENSION_GUIDE.md` |
 
-[Back to top](#top)
-
 ---
 
 ## Common boundary mistakes
@@ -52,8 +48,6 @@ which surface is actually allowed to settle the question.
 | treating logs as the only trustworthy evidence | diagnostic output is not a substitute for a published contract |
 | treating README prose as stronger than the workflow or the published files | trust shifts from executed evidence back to narration |
 
-[Back to top](#top)
-
 ---
 
 ## Boundary tests
@@ -64,8 +58,6 @@ Ask these before you change a file or trust a claim:
 2. which artifact or bundle should agree with that source
 3. who is the reader: workflow maintainer, operator, or downstream consumer
 4. would this still be reviewable if the logs disappeared
-
-[Back to top](#top)
 
 ---
 
@@ -97,8 +89,6 @@ Fast decision rules:
 - move logic into `workflow/scripts/` or `src/` when the code is real software, not just shell glue
 - keep `profiles/` for operating policy only; if a profile change alters workflow meaning, the boundary is wrong
 
-[Back to top](#top)
-
 ---
 
 ## Companion pages
@@ -107,4 +97,3 @@ Fast decision rules:
 - [`anti-pattern-atlas.md`](anti-pattern-atlas.md)
 - [`glossary.md`](glossary.md)
 
-[Back to top](#top)

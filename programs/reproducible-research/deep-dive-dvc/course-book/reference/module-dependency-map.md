@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Module Dependency Map
 
 
@@ -51,8 +49,6 @@ graph TD
   m08 --> m10
 ```
 
-[Back to top](#top)
-
 ---
 
 ## Why The Sequence Looks Like This
@@ -69,8 +65,6 @@ graph TD
 | 08 | 02-07 | durability depends on state identity, remotes, and human process |
 | 09 | 05-08 | promotion requires comparable state plus long-lived trust |
 | 10 | all earlier modules | stewardship judgment requires the whole model |
-
-[Back to top](#top)
 
 ---
 
@@ -90,8 +84,6 @@ in your state model.
 Start with Modules 05, 08, 09, and 10, then revisit earlier modules when a boundary
 question points back to fundamentals.
 
-[Back to top](#top)
-
 ---
 
 ## Where The Capstone Helps Most
@@ -103,4 +95,3 @@ question points back to fundamentals.
 | after 06-08 | inspect experiment, collaboration, and recovery surfaces |
 | after 09-10 | review the repository as a stewardship specimen |
 
-[Back to top](#top)

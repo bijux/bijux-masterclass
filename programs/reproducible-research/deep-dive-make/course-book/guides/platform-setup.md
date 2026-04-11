@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Platform Setup
 
 Use this page before you trust local results. Deep Dive Make depends on GNU Make features
@@ -19,8 +17,6 @@ The program assumes:
 If one of those is missing, the course can still teach concepts, but the executable proof
 routes stop being trustworthy.
 
-[Back to top](#top)
-
 ## First check
 
 Run these from the repository root:
@@ -34,8 +30,6 @@ Those commands prove two things quickly:
 
 - the program-level wrapper targets are available
 - the selected `make` is good enough to run the capstone selftest route
-
-[Back to top](#top)
 
 ## macOS
 
@@ -56,8 +50,6 @@ Then keep the command layers straight:
 The first two layers call the program wrappers. The last layer runs the raw capstone
 build directly.
 
-[Back to top](#top)
-
 ## Linux
 
 Most Linux distributions already ship a compatible GNU Make, but check anyway:
@@ -67,8 +59,6 @@ make --version | head -1
 ```
 
 If the version is older than 4.3, upgrade it before relying on any proof output.
-
-[Back to top](#top)
 
 ## Raw capstone check
 
@@ -82,8 +72,6 @@ gmake -C programs/reproducible-research/deep-dive-make/capstone selftest
 On Linux, replace `gmake` with `make` only after confirming `make --version` reports GNU
 Make 4.3 or newer.
 
-[Back to top](#top)
-
 ## Common setup failures
 
 | Symptom | Likely cause | What to fix |
@@ -93,8 +81,6 @@ Make 4.3 or newer.
 | selftest fails before build logic is exercised | missing compiler or broken shell assumption | verify `cc` and `/bin/sh` first |
 | helper scripts fail | missing Python 3 | install Python 3 and rerun the capstone route |
 
-[Back to top](#top)
-
 ## Good stopping point
 
 Stop when you can answer three questions clearly:
@@ -103,4 +89,3 @@ Stop when you can answer three questions clearly:
 - which command layer you are currently in
 - whether the failure is a setup problem or a course concept you still need to learn
 
-[Back to top](#top)

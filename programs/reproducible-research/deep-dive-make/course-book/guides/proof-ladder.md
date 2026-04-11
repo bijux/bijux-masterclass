@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Proof Ladder
 
 Use this page when you know the question but not the right amount of evidence. The common
@@ -17,8 +15,6 @@ That means:
 - a public-contract question does not need an incident bundle
 - a stewardship question usually needs saved evidence, not one terminal run
 
-[Back to top](#top)
-
 ## The ladder
 
 | Level | Start here when the question is... | First route |
@@ -31,8 +27,6 @@ That means:
 | 6 | do I need one executed failure specimen with repair context | `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` |
 | 7 | do I need the sanctioned multi-bundle stewardship route | `make PROGRAM=reproducible-research/deep-dive-make proof` |
 | 8 | am I ready for the strongest confirmation pass | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` |
-
-[Back to top](#top)
 
 ## Start points by claim
 
@@ -47,8 +41,6 @@ That means:
 | "I need the full review route another maintainer could repeat." | proof |
 | "I need the strongest built-in confirmation before major change." | capstone-confirm |
 
-[Back to top](#top)
-
 ## Bad escalation habits
 
 If you are using the ladder badly, it usually looks like one of these:
@@ -60,12 +52,9 @@ If you are using the ladder badly, it usually looks like one of these:
 
 The stronger route is only better when it answers a different question.
 
-[Back to top](#top)
-
 ## Best companion pages
 
 - [Proof Matrix](proof-matrix.md) when you know the claim but need the first evidence surface
 - [Command Guide](../capstone/command-guide.md) when the command layer itself is unclear
 - [Capstone Map](../capstone/capstone-map.md) when you know the module but not the repository route
 
-[Back to top](#top)

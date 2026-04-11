@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Completion Rubric
 
 
@@ -43,8 +41,6 @@ The learner should be able to do all of this without guessing:
 | name the public build API | correct distinction between stable entrypoints and internal helpers |
 | review a build | short written review covering graph truth, publication, operations, and migration risk |
 
-[Back to top](#top)
-
 ---
 
 ## Module Milestones
@@ -55,8 +51,6 @@ The learner should be able to do all of this without guessing:
 | 03-05 | a stable proof loop with selftests, diagnostics, and explicit hardening assumptions |
 | 06-08 | one correctly modeled generator boundary and one clear release contract |
 | 09-10 | one incident ladder and one written review or migration recommendation |
-
-[Back to top](#top)
 
 ---
 
@@ -77,8 +71,6 @@ surface and proof loop.
 | 08 | local release surface | `make dist`, `make install`, `make -q dist` | inspect `dist` and `attest` in the capstone |
 | 09 | measured working build | `make trace-count`, `make -p > build/make.dump` | compare with capstone selftest guardrails |
 | 10 | written build review | review rubric plus proof commands | use the capstone as the review specimen |
-
-[Back to top](#top)
 
 ---
 
@@ -115,8 +107,6 @@ make --trace <target>
 make -p > build/make.dump
 ```
 
-[Back to top](#top)
-
 ---
 
 ## Capstone Expectations
@@ -130,8 +120,6 @@ The learner should be able to:
 * identify at least one repro and describe the failure class it teaches
 * explain why `attest` is separated from artifact identity
 
-[Back to top](#top)
-
 ---
 
 ## Signs The Learner Is Not Done Yet
@@ -142,8 +130,6 @@ These are strong signals that more deliberate practice is needed:
 * they call every ordering problem a "Make quirk"
 * they reach for `.PHONY` or stamps before explaining the graph truth
 * they use the capstone as a script dump instead of as a proof specimen
-
-[Back to top](#top)
 
 ---
 
@@ -160,8 +146,6 @@ sections:
 
 That exercise reflects the real outcome of the course better than a trivia quiz.
 
-[Back to top](#top)
-
 ---
 
 ## Best study habit
@@ -175,4 +159,3 @@ For each module:
 
 This keeps the course centered on comprehension instead of file tourism.
 
-[Back to top](#top)

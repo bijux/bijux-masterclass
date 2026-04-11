@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Deep Dive Make
 
 A program guide and executable capstone that teaches **GNU Make as a build-graph engine**—not a scripting language. The goal is simple: help you write Makefiles that are **truthful, race-free under `-j`, deterministic, and self-tested**, from your first real Makefile to long-lived build-system stewardship.
@@ -55,8 +53,6 @@ Use the course in this order:
 | `09` | Performance, Observability, and Incident Response | diagnose build incidents with evidence rather than folklore |
 | `10` | Migration, Governance, and Make Boundaries | finish with stewardship, migration, and tool-boundary judgment |
 
-[Back to top](#top)
-
 ---
 
 ## What you get
@@ -88,8 +84,6 @@ The course now includes dedicated support pages for:
 
 Small, isolated examples of common pitfalls (races, stamp lies, mkdir hazards, generated header modeling) meant to be *reproduced*, not merely described.
 
-[Back to top](#top)
-
 ---
 
 ## Quick start
@@ -116,8 +110,6 @@ make PROGRAM=reproducible-research/deep-dive-make proof
 
 Use `capstone-walkthrough` first, `inspect` when you need the public boundary, `test`
 for routine proof, and `proof` only when the narrower routes are no longer enough.
-
-[Back to top](#top)
 
 ---
 
@@ -152,8 +144,6 @@ graph TD
   workflows --> ci["program-validation.yml"]
 ```
 
-[Back to top](#top)
-
 ---
 
 ## Who this is for
@@ -164,8 +154,6 @@ graph TD
 * Teams that want a build system they can trust in CI and at scale.
 
 This is not “Make syntax tutorials.” It is **build semantics and correctness engineering** with Make as the tool.
-
-[Back to top](#top)
 
 ---
 
@@ -181,12 +169,9 @@ Contributions that improve correctness, clarity, or reproducibility are welcome 
    ```
 4. Open a PR against `master` or `main`
 
-[Back to top](#top)
-
 ---
 
 ## License
 
 MIT — see the repository root [LICENSE](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE). © 2025 Bijan Mousavi <bijan@bijux.io>.
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Learning Contract
 
 Use this page when you need to reset how to study the course. Deep Dive Make is not built
@@ -17,8 +15,6 @@ For each module, you should be able to do four things before you call it done:
 
 If you can only recognize the wording, the module is not done yet.
 
-[Back to top](#top)
-
 ## What the course owes you
 
 The material should make every important idea legible in the same order:
@@ -32,8 +28,6 @@ The material should make every important idea legible in the same order:
 When a page skips from slogan to advice, the page is unfinished. You should not have to
 reconstruct the lesson design by yourself.
 
-[Back to top](#top)
-
 ## How to work a module honestly
 
 Use this loop:
@@ -45,8 +39,6 @@ Use this loop:
 5. Move on only when you can explain the idea without copying the page's wording.
 
 The point is not speed. The point is leaving each module with something you can defend.
-
-[Back to top](#top)
 
 ## The proof bar for this course
 
@@ -63,8 +55,6 @@ These commands appear often because they answer different classes of question:
 Good study means choosing the command that matches the claim instead of jumping straight
 to the strongest available route.
 
-[Back to top](#top)
-
 ## When the capstone is appropriate
 
 Open the capstone when the local idea is already stable and you want to see it survive a
@@ -80,8 +70,6 @@ Do not open the capstone yet when:
 Use [Capstone Map](../capstone/capstone-map.md) when you know the concept but need the
 right repository route.
 
-[Back to top](#top)
-
 ## Signs you are fooling yourself
 
 Stop and reset if any of these are true:
@@ -94,4 +82,3 @@ Stop and reset if any of these are true:
 Those are not small study gaps. They usually mean the previous page needs a slower, more
 bounded pass.
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Anti-Pattern Atlas
 
 <!-- page-maps:start -->
@@ -38,8 +36,6 @@ state truth, comparability, promotion, recovery, or ownership drift.
 | the repo works here, but no one can say what survives elsewhere | local cache and remote durability were never separated | which layer is authoritative after local loss | `make recovery-review` |
 | the published bundle exists, but downstream trust still feels vague | promoted state is larger or blurrier than it should be | what smaller contract is actually safe for downstream use | `make release-review` |
 
-[Back to top](#top)
-
 ---
 
 ## Recurring failure classes
@@ -55,8 +51,6 @@ state truth, comparability, promotion, recovery, or ownership drift.
 | release surfaces that mirror internal repository complexity | downstream trust becomes too large and too vague | module 09, `release-review` |
 | DVC kept as owner after its boundary is exceeded | governance and migration drift become chronic | module 10, stewardship and change-placement routes |
 
-[Back to top](#top)
-
 ---
 
 ## Repair order
@@ -68,8 +62,6 @@ When you identify a likely anti-pattern:
 3. choose the smallest capstone route that demonstrates the same defect or claim
 4. repair the contract before polishing the implementation
 
-[Back to top](#top)
-
 ---
 
 ## Companion pages
@@ -78,4 +70,3 @@ When you identify a likely anti-pattern:
 - [`evidence-boundary-guide.md`](evidence-boundary-guide.md)
 - [`verification-route-guide.md`](verification-route-guide.md)
 
-[Back to top](#top)

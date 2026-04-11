@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Platform Setup
 
 
@@ -45,8 +43,6 @@ You need:
 * DVC available inside the capstone virtual environment
 * a writable local filesystem for the capstone remote at `.dvc-remote/`
 
-[Back to top](#top)
-
 ---
 
 ## Supported Toolchain Contract
@@ -65,8 +61,6 @@ The support promise also assumes you distinguish setup-time network requirements
 normal proof routes: creating the environment through `make install` needs package
 downloads, while ordinary local verification after setup does not.
 
-[Back to top](#top)
-
 ---
 
 ## Truth Sources For Version Discipline
@@ -82,8 +76,6 @@ Use these files and commands as the authoritative support surfaces:
 
 If one of these surfaces changes, this guide should change with it.
 
-[Back to top](#top)
-
 ---
 
 ## Repository Root
@@ -96,8 +88,6 @@ make PROGRAM=reproducible-research/deep-dive-dvc docs-build
 ```
 
 Use these commands when you want docs or program-level verification.
-
-[Back to top](#top)
 
 ---
 
@@ -121,8 +111,6 @@ when you need to know whether local-only state would leak into a source archive.
 On a fresh machine, expect `make install` to be the network-dependent step. If you are
 offline, reuse a previously prepared environment instead of assuming the setup flow can
 recreate itself.
-
-[Back to top](#top)
 
 ---
 
@@ -148,8 +136,6 @@ make source-baseline-clean
 make source-bundle
 ```
 
-[Back to top](#top)
-
 ---
 
 ## Common Setup Failures
@@ -160,8 +146,6 @@ make source-bundle
 | `dvc` commands fail after install | virtual environment not created or not used through `make` | rerun `make install` and invoke DVC through the Make targets |
 | `recovery-drill` fails to restore state | `.dvc-remote/` missing or not writable | rerun `make dvc-init` and verify local filesystem permissions |
 | `docs-build` fails while capstone commands work | docs virtual environment missing | run `make PROGRAM=reproducible-research/deep-dive-dvc docs-build` from the repository root |
-
-[Back to top](#top)
 
 ---
 
@@ -175,8 +159,6 @@ Treat these as signs that you need to re-check the support contract:
 - `make verify` or `make recovery-audit` starts failing after tool changes
 - the course docs still mention a setup flow that no longer matches the capstone Makefile
 
-[Back to top](#top)
-
 ---
 
 ## What This Guide Deliberately Does Not Promise
@@ -188,4 +170,3 @@ Treat these as signs that you need to re-check the support contract:
 That restraint is intentional. Reproducibility training should be explicit about where
 tool support stops and verification begins.
 
-[Back to top](#top)

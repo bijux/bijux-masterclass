@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Anti-Pattern Atlas
 
 <!-- page-maps:start -->
@@ -38,8 +36,6 @@ edges, unsafe publication, or ownership drift.
 | release outputs look correct, but no one can say why they are trustworthy | publication contract is weaker than the build contract | which bundle or manifest proves what was published | `make inspect` |
 | the top-level `Makefile` keeps absorbing every concern | ownership collapsed across build layers | which rule belongs in `Makefile` and which belongs in `mk/*.mk` | `make walkthrough` |
 
-[Back to top](#top)
-
 ---
 
 ## Recurring failure classes
@@ -55,8 +51,6 @@ edges, unsafe publication, or ownership drift.
 | publication done directly to final paths | partial artifacts become visible as if they were finished | Module 08, `mk/macros.mk` and the top-level recipes |
 | observability bolted on after failure | incident review loses the evidence needed to explain cause | Module 09, `trace-count`, `selftest-report`, and audit bundles |
 
-[Back to top](#top)
-
 ---
 
 ## Repair order
@@ -70,8 +64,6 @@ When you identify a likely anti-pattern, use this sequence:
 
 That order keeps the fix anchored to build truth instead of style preferences.
 
-[Back to top](#top)
-
 ---
 
 ## Companion pages
@@ -83,4 +75,3 @@ Use these with the atlas:
 - [`capstone-map.md`](../capstone/capstone-map.md) for module-aware capstone routing
 - [`repro-catalog.md`](../capstone/repro-catalog.md) for the curated failure pack
 
-[Back to top](#top)

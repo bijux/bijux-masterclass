@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Proof Ladder
 
 Use this page when you know the question but not the right amount of evidence. The common
@@ -17,8 +15,6 @@ That means:
 - a publish-boundary question does not need a full stewardship pass
 - a profile question should start with profile evidence, not a generic run log
 
-[Back to top](#top)
-
 ## The ladder
 
 | Level | Start here when the question is... | First route |
@@ -30,8 +26,6 @@ That means:
 | 5 | do I need to compare local, CI, and scheduler policy surfaces | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` |
 | 6 | do I need the sanctioned multi-bundle stewardship route | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
 | 7 | am I ready for the strongest clean-room confirmation pass | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
-
-[Back to top](#top)
 
 ## Start points by claim
 
@@ -45,8 +39,6 @@ That means:
 | "I need the full review route another maintainer could repeat." | proof |
 | "I need the strongest confirmation before major change." | capstone-confirm |
 
-[Back to top](#top)
-
 ## Bad escalation habits
 
 If you are using the ladder badly, it usually looks like one of these:
@@ -58,12 +50,9 @@ If you are using the ladder badly, it usually looks like one of these:
 
 The stronger route is only better when it answers a different question.
 
-[Back to top](#top)
-
 ## Best companion pages
 
 - [Proof Matrix](proof-matrix.md) when you know the claim but need the first evidence surface
 - [Command Guide](../capstone/command-guide.md) when the command layer itself is unclear
 - [Capstone Map](../capstone/capstone-map.md) when you know the module but not the repository route
 
-[Back to top](#top)

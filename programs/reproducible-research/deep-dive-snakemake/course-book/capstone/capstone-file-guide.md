@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Capstone File Guide
 
 Use this page when you know the repository is the right surface but do not yet know which
@@ -19,8 +17,6 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | where helper logic lives outside the rule files | `capstone/workflow/scripts/provenance.py` or `capstone/src/capstone/` | `capstone/environment.yaml` or `capstone/workflow/envs/` |
 | how the repository is defended | `capstone/tests/` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
-[Back to top](#top)
-
 ## Directory responsibilities
 
 | Path | What belongs there |
@@ -34,8 +30,6 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | `capstone/profiles/` | operating-policy differences across execution contexts |
 | `capstone/tests/` | unit and workflow-level proof surfaces |
 | `capstone/publish/v1/` | downstream-facing publish boundary |
-
-[Back to top](#top)
 
 ## Good first reading order
 
@@ -54,8 +48,6 @@ If this is your first serious repository pass, use this sequence:
 That order keeps workflow meaning first, publish trust second, policy third, and proof
 surfaces last.
 
-[Back to top](#top)
-
 ## Wrong reading orders
 
 Avoid these:
@@ -67,8 +59,6 @@ Avoid these:
 
 If you are still navigating by directory names alone, the repository has not become
 legible yet.
-
-[Back to top](#top)
 
 ---
 
@@ -98,4 +88,3 @@ Best moments to use it:
 - after Module 07, when the full repository architecture becomes part of the lesson
 - after Module 10, when reviewing the capstone as a long-lived workflow product
 
-[Back to top](#top)

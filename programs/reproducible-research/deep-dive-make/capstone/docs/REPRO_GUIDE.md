@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Repro Guide
 
 
@@ -49,8 +47,6 @@ When you want one curated executed example instead of choosing a repro by hand, 
 | `repro/06-order-only-misuse.mk` | order-only misuse | ordering constraints do not replace semantic dependencies |
 | `repro/07-pattern-ambiguity.mk` | ambiguous rule selection | pattern rules must remain legible under growth |
 
-[Back to top](#top)
-
 ---
 
 ## Best First Route
@@ -64,8 +60,6 @@ Use this route when the repro pack is new:
 
 That route moves from visible failure into subtler graph-modeling mistakes.
 
-[Back to top](#top)
-
 ---
 
 ## Incident Bundle Route
@@ -78,8 +72,6 @@ Use this when you want a saved executed incident review:
 4. Read the copied repro makefile.
 5. Return to `PROOF_GUIDE.md` to match the repair to the real capstone.
 
-[Back to top](#top)
-
 ---
 
 ## Review Questions
@@ -91,4 +83,3 @@ Ask these while using a repro:
 * whether the failure changes under `-j`
 * which repair pattern belongs in the real capstone
 
-[Back to top](#top)

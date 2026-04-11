@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Completion Rubric
 
 
@@ -41,8 +39,6 @@ You should be able to do all of the following:
 * identify which outputs are internal versus safe for downstream trust
 * explain which artifacts another reviewer should inspect before approving change
 
-[Back to top](#top)
-
 ---
 
 ## Course Outcomes
@@ -54,8 +50,6 @@ You should be able to do all of the following:
 | operational policy | you can show which profile changes are safe and which would leak into semantics |
 | publish boundaries | you can defend the public file API and the promoted evidence bundle |
 | stewardship | you can review the workflow for drift, risk, and migration pressure |
-
-[Back to top](#top)
 
 ---
 
@@ -69,8 +63,6 @@ Use these proof routes as the minimum capstone evidence:
 4. `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm`
 
 You are not done if you ran them mechanically but cannot explain what each one proved.
-
-[Back to top](#top)
 
 ---
 
@@ -86,4 +78,3 @@ A reviewer should be able to ask:
 
 If those answers stay vague, the learner is not done yet.
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Anti-Pattern Atlas
 
 <!-- page-maps:start -->
@@ -38,8 +36,6 @@ checkpoint abuse, profile drift, weak publish contracts, or ownership collapse.
 | the repository is modular, but no one knows where a change belongs | ownership boundaries are blurry | which layer should own workflow meaning, helper code, or policy | `make tour` |
 | logs are everywhere, but incident review is still vague | evidence lacks a review route | which smaller bundle or guide should answer the current question first | `make proof` |
 
-[Back to top](#top)
-
 ---
 
 ## Recurring failure classes
@@ -53,8 +49,6 @@ checkpoint abuse, profile drift, weak publish contracts, or ownership collapse.
 | publish directories treated as informal output piles | downstream trust becomes accidental | module 06, `FILE_API.md`, `PUBLISH_REVIEW_GUIDE.md` |
 | governance questions left until after drift is visible | stewardship turns reactive and expensive | module 10, `EXTENSION_GUIDE.md` |
 
-[Back to top](#top)
-
 ---
 
 ## Repair order
@@ -66,8 +60,6 @@ When you identify a likely anti-pattern:
 3. choose the smallest capstone route that demonstrates the same defect or claim
 4. repair the contract before polishing the implementation
 
-[Back to top](#top)
-
 ---
 
 ## Companion pages
@@ -76,4 +68,3 @@ When you identify a likely anti-pattern:
 - [`repository-layer-guide.md`](repository-layer-guide.md)
 - [`module-dependency-map.md`](module-dependency-map.md)
 
-[Back to top](#top)

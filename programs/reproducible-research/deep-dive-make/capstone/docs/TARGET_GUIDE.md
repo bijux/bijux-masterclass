@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Target Guide
 
 <!-- page-maps:start -->
@@ -47,8 +45,6 @@ question honestly.
 | can this tree be published as source without local residue | `make source-baseline-check` | `make source-bundle` |
 | what is the strongest shared stewardship route | `make confirm` | none; this is the top route |
 
-[Back to top](#top)
-
 ---
 
 ## Stable review targets
@@ -71,8 +67,6 @@ question honestly.
 | `hardened` | selftest, audits, attestation, and runtime checks | you want the strongest built-in validation body |
 | `confirm` | the same strongest route under shared naming | you are closing stewardship review |
 
-[Back to top](#top)
-
 ---
 
 ## Distinctions that matter
@@ -84,8 +78,6 @@ question honestly.
 - `profile-audit` is about declared execution boundary and variable sources, not raw performance benchmarking
 - `proof` is not "better selftest"; it is the point where one review question has become several
 - `hardened` and `confirm` are the strongest built-in routes, not the default starting point
-
-[Back to top](#top)
 
 ---
 
@@ -120,8 +112,6 @@ What belongs in the source bundle:
 - `README.md`, [TARGET_GUIDE.md](TARGET_GUIDE.md), and [PROOF_GUIDE.md](PROOF_GUIDE.md) because they explain the repository surface
 - `src/`, `include/`, `tests/`, `repro/`, and helper scripts because they are tracked project inputs
 
-[Back to top](#top)
-
 ---
 
 ## Useful companions
@@ -133,4 +123,3 @@ What belongs in the source bundle:
 - [INCIDENT_REVIEW_GUIDE.md](INCIDENT_REVIEW_GUIDE.md)
 - [PROFILE_AUDIT_GUIDE.md](PROFILE_AUDIT_GUIDE.md)
 
-[Back to top](#top)

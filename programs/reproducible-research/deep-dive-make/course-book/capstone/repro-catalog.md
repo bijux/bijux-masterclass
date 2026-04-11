@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Repro Catalog
 
 
@@ -44,8 +42,6 @@ question the learner should ask when running it.
 | `06-order-only-misuse.mk` | misunderstanding order-only prerequisites | "Which edge should affect staleness rather than just sequencing?" |
 | `07-pattern-ambiguity.mk` | rule selection ambiguity | "Which rule does Make pick, and why?" |
 
-[Back to top](#top)
-
 ---
 
 ## Best Order To Study Them
@@ -60,8 +56,6 @@ question the learner should ask when running it.
 
 This order moves from visible concurrency hazards into subtler modeling and selection
 problems.
-
-[Back to top](#top)
 
 ---
 
@@ -82,8 +76,6 @@ Best first questions:
 
 If you only run the Makefile and shrug at the result, the repro did not teach enough.
 
-[Back to top](#top)
-
 ---
 
 ## Companion Pages
@@ -94,4 +86,3 @@ The most useful companion pages for the repro pack are:
 * [`capstone-file-guide.md`](capstone-file-guide.md)
 * [`incident-ladder.md`](../reference/incident-ladder.md)
 
-[Back to top](#top)

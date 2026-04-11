@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Proof Matrix
 
 
@@ -40,8 +38,6 @@ Use it when you care about a concept but want the fastest evidence route.
 | profiles change execution policy without changing workflow meaning | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | `capstone/profiles/`, `capstone/Makefile` |
 | promoted outputs are smaller than the full internal repository state | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md), `capstone/publish/v1/`, `capstone/results/` |
 
-[Back to top](#top)
-
 ---
 
 ## Operational Claims
@@ -56,8 +52,6 @@ Use it when you care about a concept but want the fastest evidence route.
 | workflow incidents can be reviewed with narrower evidence than a full rewrite | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-selftest` or `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `capstone/tests/selftest.sh`, `capstone/logs/`, `artifacts/tour/reproducible-research/deep-dive-snakemake/` |
 | the executed workflow tour is reviewable as evidence | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `artifacts/tour/reproducible-research/deep-dive-snakemake/`, [`capstone-proof-guide.md`](../capstone/capstone-proof-guide.md) |
 
-[Back to top](#top)
-
 ---
 
 ## Review Questions
@@ -69,8 +63,6 @@ Use it when you care about a concept but want the fastest evidence route.
 | what exactly is public for downstream trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-artifacts` | [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) |
 | which surface explains dynamic discovery honestly | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `capstone/workflow/rules/preprocess.smk` |
 | what would I inspect before migration | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `course-book/capstone/index.md` |
-
-[Back to top](#top)
 
 ---
 
@@ -85,4 +77,3 @@ The most useful companion pages for this matrix are:
 * [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md)
 * [`capstone-proof-guide.md`](../capstone/capstone-proof-guide.md)
 
-[Back to top](#top)

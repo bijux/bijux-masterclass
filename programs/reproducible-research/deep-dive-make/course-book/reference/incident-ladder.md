@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Incident Ladder
 
 <!-- page-maps:start -->
@@ -39,8 +37,6 @@ make -n <target>
 Use this first when the wrong target runs, too many recipes fan out, or the default goal
 looks suspicious.
 
-[Back to top](#top)
-
 ---
 
 ## 2. Trace why work is happening
@@ -53,8 +49,6 @@ make --trace <target>
 
 This is the fastest route to a missing edge, stale prerequisite, or target whose meaning
 changed without anyone noticing.
-
-[Back to top](#top)
 
 ---
 
@@ -70,8 +64,6 @@ make show-e
 
 Use this when includes, overrides, or environment precedence are part of the problem.
 
-[Back to top](#top)
-
 ---
 
 ## 4. Check convergence
@@ -85,8 +77,6 @@ make -q all
 
 If the second command still thinks work is needed, the build is not "mostly fine." It is
 lying about state.
-
-[Back to top](#top)
 
 ---
 
@@ -105,8 +95,6 @@ Parallel-only failures usually point to one of these:
 - non-atomic publication
 - order-only prerequisite used in place of a real semantic dependency
 
-[Back to top](#top)
-
 ---
 
 ## 6. Reduce to a smaller repro
@@ -124,8 +112,6 @@ make incident-audit
 That route captures the command, run output, and exit status so the review starts from
 evidence instead of memory.
 
-[Back to top](#top)
-
 ---
 
 ## Fast symptom table
@@ -138,4 +124,3 @@ evidence instead of memory.
 | local behavior differs from another machine | variable precedence or portability drift | `make show-e` and `make portability-audit` |
 | incident explanation is too hand-wavy | the repro is still too large | `make incident-audit` |
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Walkthrough Guide
 
 
@@ -45,8 +43,6 @@ Use `make walkthrough` when:
 
 Use `make tour` later when you need executed proof artifacts.
 
-[Back to top](#top)
-
 ---
 
 ## What The Bundle Is For
@@ -60,8 +56,6 @@ Use `make tour` later when you need executed proof artifacts.
 - [Review Route Guide](REVIEW_ROUTE_GUIDE.md) and [File API](FILE_API.md) explain which
   route or contract to inspect next
 
-[Back to top](#top)
-
 ---
 
 ## Best Review Order
@@ -74,4 +68,3 @@ Use `make tour` later when you need executed proof artifacts.
 6. [File API](FILE_API.md) and [Review Route Guide](REVIEW_ROUTE_GUIDE.md)
 7. `commands.txt` and `review-questions.txt`
 
-[Back to top](#top)

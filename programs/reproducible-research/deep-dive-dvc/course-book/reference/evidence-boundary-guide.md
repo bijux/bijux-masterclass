@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Evidence Boundary Guide
 
 <!-- page-maps:start -->
@@ -38,8 +36,6 @@ declaration, recorded execution, comparability, promotion, experiment value, or 
 | recovery evidence | DVC remote state, `dvc pull`, `dvc checkout`, recovery bundles | that tracked artifacts can be restored after local loss | that the repository is automatically clear or well-governed |
 | experiment evidence | experiment params, metrics, and comparison surfaces | which declared deviations are being compared to the baseline | whether the candidate should already be promoted downstream |
 
-[Back to top](#top)
-
 ---
 
 ## Which evidence to reach for first
@@ -52,8 +48,6 @@ declaration, recorded execution, comparability, promotion, experiment value, or 
 | what may a downstream reviewer rely on | promoted release evidence |
 | what survives when local material is deleted | recovery evidence |
 | whether an experiment is a meaningful candidate rather than random variance | experiment evidence |
-
-[Back to top](#top)
 
 ---
 
@@ -70,8 +64,6 @@ That sequence mirrors the course: understand what the repository claims, then wh
 recorded, then what remains comparable, then what gets promoted, then what survives time
 and loss.
 
-[Back to top](#top)
-
 ---
 
 ## Companion pages
@@ -80,4 +72,3 @@ and loss.
 - [`verification-route-guide.md`](verification-route-guide.md)
 - [`anti-pattern-atlas.md`](anti-pattern-atlas.md)
 
-[Back to top](#top)

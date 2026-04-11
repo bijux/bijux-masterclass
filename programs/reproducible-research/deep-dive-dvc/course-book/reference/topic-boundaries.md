@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Topic Boundaries
 
 
@@ -48,8 +46,6 @@ job.
 | promotion and downstream contracts | published state must stay smaller and clearer than the working repo | 09 | publish and release audit routes |
 | governance and tool boundaries | stewardship requires knowing where DVC should stop owning the problem | 10 | confirm route, governance review |
 
-[Back to top](#top)
-
 ---
 
 ## Supporting Topics That Matter, But Serve The Core
@@ -65,8 +61,6 @@ These matter because they make the core topics legible and enforceable.
 | review bundles | to turn repository claims into inspectable evidence | Modules 06, 08, 09, 10 |
 
 These are important, but they are always in service of a more trustworthy state model.
-
-[Back to top](#top)
 
 ---
 
@@ -86,8 +80,6 @@ When a learner wants more on one of these, the honest answer is not “the cours
 everything.” The honest answer is “the course touches this where it affects state truth,
 then hands off.”
 
-[Back to top](#top)
-
 ---
 
 ## Topics People Often Overweight
@@ -102,8 +94,6 @@ These topics are easy to romanticize and easy to teach badly:
 
 The course mentions these only when they sharpen judgment. It does not treat them as
 badges of DVC sophistication.
-
-[Back to top](#top)
 
 ---
 
@@ -120,8 +110,6 @@ Without an explicit boundary page, learners can leave with the wrong conclusions
 * “DVC should keep owning every data or workflow concern forever.”
   Module 10 exists precisely to prevent that mistake.
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -133,4 +121,3 @@ Use these with this page:
 * [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest repository proof route
 * [`completion-rubric.md`](completion-rubric.md) to review whether the course is actually keeping its promises
 
-[Back to top](#top)

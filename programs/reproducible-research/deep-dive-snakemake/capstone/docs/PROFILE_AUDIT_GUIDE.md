@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Profile Audit Guide
 
 <!-- page-maps:start -->
@@ -43,8 +41,6 @@ Use `profile-summary` after `profile-audit` when you want the compact comparison
 4. Compare `local-dryrun.txt`, `ci-dryrun.txt`, and `slurm-dryrun.txt`.
 5. Run `make profile-summary` only if you want the compact comparison surface.
 
-[Back to top](#top)
-
 ---
 
 ## What the audit should prove
@@ -52,8 +48,6 @@ Use `profile-summary` after `profile-audit` when you want the compact comparison
 - executor and resource policy are visible as configuration
 - the workflow plan stays semantically stable across operating contexts
 - profile differences do not become hidden analytical changes
-
-[Back to top](#top)
 
 ---
 
@@ -63,4 +57,3 @@ Use `profile-summary` after `profile-audit` when you want the compact comparison
 - Which difference would worry you because it smells like semantic drift?
 - Which profile should a maintainer inspect first before approving a move to new infrastructure?
 
-[Back to top](#top)

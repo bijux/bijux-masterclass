@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Proof Ladder
 
 Use this page when you know the question but not the right amount of evidence. The common
@@ -17,8 +15,6 @@ That means:
 - a release-boundary question does not need a recovery bundle
 - a recovery question should not start with promotion evidence
 
-[Back to top](#top)
-
 ## The ladder
 
 | Level | Start here when the question is... | First route |
@@ -30,8 +26,6 @@ That means:
 | 5 | do I need to inspect what survives local loss and remote restore | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` |
 | 6 | do I need to audit what is safe for downstream trust | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` |
 | 7 | am I ready for the strongest stewardship and confirmation pass | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
-
-[Back to top](#top)
 
 ## Start points by claim
 
@@ -45,8 +39,6 @@ That means:
 | "I need to know what downstream users may trust." | capstone-release-review |
 | "I need the strongest overall confirmation before major change." | capstone-confirm |
 
-[Back to top](#top)
-
 ## Bad escalation habits
 
 If you are using the ladder badly, it usually looks like one of these:
@@ -58,12 +50,9 @@ If you are using the ladder badly, it usually looks like one of these:
 
 The stronger route is only better when it answers a different question.
 
-[Back to top](#top)
-
 ## Best companion pages
 
 - [Proof Matrix](proof-matrix.md) when you know the claim but need the first evidence surface
 - [Command Guide](../capstone/command-guide.md) when the command layer itself is unclear
 - [Capstone Map](../capstone/capstone-map.md) when you know the module but not the repository route
 
-[Back to top](#top)

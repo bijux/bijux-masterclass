@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Walkthrough Guide
 
 <!-- page-maps:start -->
@@ -45,8 +43,6 @@ browsing and the strongest route in the repository.
 
 That route keeps claim first, proof second, ownership third, and controlled failure last.
 
-[Back to top](#top)
-
 ---
 
 ## If you have 15 minutes
@@ -58,8 +54,6 @@ Read:
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 
 Outcome: you should be able to name the public surface and the next target you would run.
-
-[Back to top](#top)
 
 ---
 
@@ -73,8 +67,6 @@ Read:
 - `mk/contract.mk`
 
 Outcome: you should understand what the capstone proves and where boundary decisions live.
-
-[Back to top](#top)
 
 ---
 
@@ -91,8 +83,6 @@ Read:
 Outcome: you should be able to explain graph truth, modeled hidden inputs, and one
 failure class without hand-waving.
 
-[Back to top](#top)
-
 ---
 
 ## Questions to keep asking
@@ -102,8 +92,6 @@ failure class without hand-waving.
 - which file owns the rule, and which file proves it
 - where would a hidden input become visible if the graph stopped telling the truth
 - which failure specimen would teach this concept faster than more prose
-
-[Back to top](#top)
 
 ---
 
@@ -116,4 +104,3 @@ The walkthrough has done its job if you can answer these without guessing:
 - which file declares the execution boundary
 - which repro you would use to show a concurrency defect to another engineer
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Public Targets
 
 <!-- page-maps:start -->
@@ -47,8 +45,6 @@ These live in `programs/reproducible-research/deep-dive-make/Makefile`.
 | `inspect` | aliases `capstone/contract-audit` from the program root | you want the smallest honest public-contract review route |
 | `proof` | writes the sanctioned bundle set from the program root | you need the multi-bundle stewardship route |
 
-[Back to top](#top)
-
 ---
 
 ## Capstone targets
@@ -75,8 +71,6 @@ These live in `capstone/Makefile`.
 | `source-baseline-check` | the check that source packaging would not include local build residue |
 | `source-bundle` | the tracked-source archive for learner or review distribution |
 
-[Back to top](#top)
-
 ---
 
 ## Stable entrypoints
@@ -89,8 +83,6 @@ Treat these as the command surface the course and review material are allowed to
 
 Treat helper recipes, temporary file rules, and layer-specific internals as implementation
 detail unless they are exposed by `help` or documented in one of the capstone guides.
-
-[Back to top](#top)
 
 ---
 
@@ -105,8 +97,6 @@ detail unless they are exposed by `help` or documented in one of the capstone gu
 | what does this repository assume about tools and variable sources | `make profile-audit` |
 | what is the first bounded route for a new reader | `make walkthrough` |
 | what is the strongest shared stewardship route | `make confirm` |
-
-[Back to top](#top)
 
 ---
 
@@ -135,8 +125,6 @@ Best reading order:
 3. this page
 4. `make PROGRAM=reproducible-research/deep-dive-make test`
 
-[Back to top](#top)
-
 ---
 
 ## Good first commands
@@ -160,4 +148,3 @@ gmake selftest
 Use `gmake` on macOS inside `capstone/`, because `/usr/bin/make` is BSD Make rather than
 GNU Make.
 
-[Back to top](#top)

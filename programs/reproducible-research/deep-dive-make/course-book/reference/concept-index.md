@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Concept Index
 
 
@@ -77,8 +75,6 @@ Fastest safe paths:
 - working maintainer: start with Modules 04, 05, and 09, then backfill earlier modules when you find a gap in your mental model
 - build steward: start with Modules 03, 07, 08, 09, and 10, then revisit earlier modules when a policy or graph-truth question points back to fundamentals
 
-[Back to top](#top)
-
 ---
 
 ## Core Build Truth
@@ -91,8 +87,6 @@ Fastest safe paths:
 | depfiles | 01, 03, 06 | touch a header and inspect the rebuild |
 | single writer per output | 01, 02, 06 | compare serial and parallel behavior |
 
-[Back to top](#top)
-
 ---
 
 ## Parallel Safety And Structure
@@ -103,8 +97,6 @@ Fastest safe paths:
 | order-only prerequisites | 02, 04 | controlled repro with directory creation or boundary drift |
 | recursive make boundaries | 02, 05, 07 | inspect the top-level DAG and jobserver behavior |
 | rooted discovery | 02, 03, 07 | sorted discovery audit and stable object mapping |
-
-[Back to top](#top)
 
 ---
 
@@ -118,8 +110,6 @@ Fastest safe paths:
 | includes and restart semantics | 04, 07 | minimal include repro plus inspected database |
 | incident ladder | 04, 05, 09 | stepwise diagnosis from preview to repro |
 
-[Back to top](#top)
-
 ---
 
 ## Boundaries, Packaging, And Stewardship
@@ -132,8 +122,6 @@ Fastest safe paths:
 | release contracts | 08 | `dist`, `install`, and artifact inspection |
 | migration and governance | 05, 09, 10 | written review or migration rubric |
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -145,4 +133,3 @@ When using this index, the most useful companion pages are:
 * [`capstone-map.md`](../capstone/capstone-map.md)
 * [`completion-rubric.md`](completion-rubric.md)
 
-[Back to top](#top)

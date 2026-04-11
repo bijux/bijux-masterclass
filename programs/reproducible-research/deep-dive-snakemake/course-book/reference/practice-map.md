@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Practice Map
 
 
@@ -46,8 +44,6 @@ prove before you enter the capstone.
 | 09 | incident review lab | `snakemake -n -p`, `snakemake --list-changes input code params` | compare logs, benchmarks, and verification surfaces |
 | 10 | written workflow review | review rubric plus evidence commands | use the capstone as the specimen for governance and migration judgment |
 
-[Back to top](#top)
-
 ---
 
 ## Three Reusable Proof Loops
@@ -81,8 +77,6 @@ snakemake --summary
 snakemake --list-changes input code params
 ```
 
-[Back to top](#top)
-
 ---
 
 ## Best Study Habit
@@ -96,4 +90,3 @@ For each module:
 
 That order keeps the course centered on comprehension instead of repository tourism.
 
-[Back to top](#top)

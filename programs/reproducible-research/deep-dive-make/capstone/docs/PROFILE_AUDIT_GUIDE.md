@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Profile Audit Guide
 
 <!-- page-maps:start -->
@@ -48,8 +46,6 @@ Read the profile audit bundle in this order:
 This keeps declared boundary first, published interface second, and precedence evidence
 third.
 
-[Back to top](#top)
-
 ---
 
 ## What each file tells you
@@ -64,8 +60,6 @@ third.
 | `PROOF_GUIDE.md` | shows how this audit connects to the wider proof surface |
 | `review-questions.txt` | forces a concrete judgment instead of vague unease |
 
-[Back to top](#top)
-
 ---
 
 ## What the audit should help you decide
@@ -76,8 +70,6 @@ By the end of the profile audit, you should be able to answer:
 - which parts of the command surface are stable enough for a learner or reviewer to rely on
 - which variables are intended to be overridden, and from which sources
 - whether a portability concern belongs in policy, documentation, or a stronger proof route
-
-[Back to top](#top)
 
 ---
 
@@ -90,8 +82,6 @@ Avoid these:
 - reviewing variable precedence from memory instead of `origins.txt`
 - assuming every documented command is part of the stable public surface without checking `help.txt`
 
-[Back to top](#top)
-
 ---
 
 ## Companion guides
@@ -101,4 +91,3 @@ Avoid these:
 - `CONTRACT_AUDIT_GUIDE.md`
 - `SELFTEST_GUIDE.md`
 
-[Back to top](#top)

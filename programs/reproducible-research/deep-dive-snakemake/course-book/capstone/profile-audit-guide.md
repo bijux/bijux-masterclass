@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Profile Audit Guide
 
 
@@ -35,8 +33,6 @@ rather than about rule contracts alone.
 2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit`.
 3. Compare the resulting bundle with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Boundary Map](../reference/boundary-map.md).
 
-[Back to top](#top)
-
 ---
 
 ## What A Good Audit Can Answer
@@ -45,4 +41,3 @@ rather than about rule contracts alone.
 - which context shift would be safest or riskiest for reproducibility
 - where a reviewer should look first when execution context changes
 
-[Back to top](#top)

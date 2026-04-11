@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Reference
 
 <!-- page-maps:start -->
@@ -59,4 +57,3 @@ one full read of the relevant lesson or capstone guide.
 - [Anti-Pattern Atlas](anti-pattern-atlas.md)
 - [Completion Rubric](completion-rubric.md)
 
-[Back to top](#top)

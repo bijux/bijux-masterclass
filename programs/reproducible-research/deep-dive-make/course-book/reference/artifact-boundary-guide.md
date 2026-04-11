@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Artifact Boundary Guide
 
 <!-- page-maps:start -->
@@ -37,8 +35,6 @@ review bundle evidence, or a controlled teaching specimen.
 | release artifacts | someone receiving a distributable package | `dist.tar.gz` and source bundles under `artifacts/dist/` |
 | teaching specimens | someone studying a failure class in isolation | `repro/*.mk` and the docs that explain how to read them |
 
-[Back to top](#top)
-
 ---
 
 ## Boundary tests
@@ -53,8 +49,6 @@ Ask these questions before moving a file or adding a new output:
 If the answer changes across readers, the artifact is probably in the wrong place or
 missing a guide.
 
-[Back to top](#top)
-
 ---
 
 ## Common boundary mistakes
@@ -67,8 +61,6 @@ missing a guide.
 | mixing attestation or packaging into the ordinary `all` path | it pollutes artifact identity with review and release work |
 | adding undocumented outputs to `artifacts/` | it creates bundle sprawl with no reader contract |
 
-[Back to top](#top)
-
 ---
 
 ## Useful companion pages
@@ -77,4 +69,3 @@ missing a guide.
 - [`capstone-file-guide.md`](../capstone/capstone-file-guide.md) for the learner-facing file map
 - [`capstone-proof-checklist.md`](../capstone/capstone-proof-checklist.md) for the review route that bundles these surfaces together
 
-[Back to top](#top)

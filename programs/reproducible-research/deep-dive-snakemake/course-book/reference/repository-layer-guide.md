@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Repository Layer Guide
 
 <!-- page-maps:start -->
@@ -40,8 +38,6 @@ ownership before the repository grows another ambiguous layer.
 That route moves from visible orchestration to helper structure, then to reusable code,
 and only then to operating policy.
 
-[Back to top](#top)
-
 ---
 
 ## What each layer owns
@@ -56,8 +52,6 @@ and only then to operating policy.
 | `profiles/` | execution context and resource policy | analytical meaning or hidden semantic switches |
 | `config/` | validated workflow inputs | ad hoc knobs that bypass documented contracts |
 
-[Back to top](#top)
-
 ---
 
 ## Ownership tests
@@ -69,8 +63,6 @@ Before adding or moving code, ask:
 3. which guide would you point a reviewer to first
 4. if this file disappeared, what kind of question would become impossible to answer
 
-[Back to top](#top)
-
 ---
 
 ## Companion pages
@@ -79,4 +71,3 @@ Before adding or moving code, ask:
 - [`anti-pattern-atlas.md`](anti-pattern-atlas.md)
 - [`completion-rubric.md`](completion-rubric.md)
 
-[Back to top](#top)

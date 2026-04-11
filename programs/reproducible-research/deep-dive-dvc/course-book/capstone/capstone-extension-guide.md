@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Capstone Extension Guide
 
 
@@ -40,8 +38,6 @@ These boundaries should remain explicit:
 * internal repository state versus `publish/v1/`
 * local cache convenience versus remote-backed durability
 
-[Back to top](#top)
-
 ---
 
 ## Safe Kinds Of Change
@@ -53,8 +49,6 @@ These changes are usually safe when reviewed carefully:
 * extending params or metrics when comparability rules are updated with them
 * strengthening verification or recovery evidence
 
-[Back to top](#top)
-
 ---
 
 ## Risky Kinds Of Change
@@ -65,8 +59,6 @@ These changes need stronger review:
 * adding parameters that silently invalidate historical comparisons
 * moving recovery guarantees from the remote to local cache assumptions
 * changing stage behavior without making the new dependency surface legible in `dvc.yaml`
-
-[Back to top](#top)
 
 ---
 
@@ -82,8 +74,6 @@ After any meaningful capstone change, rerun:
 If any of those results become harder to explain, the repository likely got worse even if
 it still runs.
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -95,4 +85,3 @@ Use these pages with this guide:
 * [`proof-matrix.md`](../guides/proof-matrix.md)
 * [`completion-rubric.md`](../reference/completion-rubric.md)
 
-[Back to top](#top)

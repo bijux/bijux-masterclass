@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Module 00: Orientation and Study Practice
 
 <!-- page-maps:start -->
@@ -70,4 +68,3 @@ the concept you are studying.
 - [how-to-study-this-course.md](how-to-study-this-course.md)
 - [glossary.md](glossary.md)
 
-[Back to top](#top)

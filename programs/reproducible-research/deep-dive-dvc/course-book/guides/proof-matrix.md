@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Proof Matrix
 
 
@@ -42,8 +40,6 @@ Use it when you care about a concept but want the fastest evidence route.
 | promoted outputs are smaller than internal repository state | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | `capstone/publish/v1/`, `capstone/state/`, `course-book/capstone/index.md`, `capstone/publish/v1/manifest.json` |
 | repository layers have distinct reading responsibilities | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/capstone-file-guide.md`, `capstone/dvc.yaml` |
 
-[Back to top](#top)
-
 ---
 
 ## Operational Claims
@@ -56,8 +52,6 @@ Use it when you care about a concept but want the fastest evidence route.
 | remote-backed recovery still works after local loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | `capstone/.dvc-remote/`, `capstone/publish/v1/` |
 | the full repository can defend itself under review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `course-book/capstone/index.md`, `capstone/dvc.yaml`, `capstone/dvc.lock`, `course-book/capstone/capstone-review-worksheet.md` |
 | the promoted bundle can be audited without the whole internal repository story | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/publish/v1/manifest.json`, `course-book/capstone/release-review-guide.md` |
-
-[Back to top](#top)
 
 ---
 
@@ -74,8 +68,6 @@ Use it when you care about a concept but want the fastest evidence route.
 | how should I read the repository layers | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/capstone-file-guide.md` |
 | how should I audit the promoted release boundary | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `course-book/capstone/release-review-guide.md` |
 
-[Back to top](#top)
-
 ---
 
 ## Companion Pages
@@ -91,4 +83,3 @@ The most useful companion pages for this matrix are:
 * [`practice-map.md`](../reference/practice-map.md)
 * [`release-review-guide.md`](../capstone/release-review-guide.md)
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Capstone Extension Guide
 
 
@@ -40,8 +38,6 @@ These boundaries should remain explicit:
 * operating policy versus workflow meaning
 * internal execution state versus `publish/v1/`
 
-[Back to top](#top)
-
 ---
 
 ## Safe Kinds Of Change
@@ -52,8 +48,6 @@ These changes are usually safe when reviewed carefully:
 * enriching the publish bundle without breaking existing promoted files
 * extending profiles while keeping their meaning operational rather than semantic
 * strengthening walkthrough, tour, or verification evidence
-
-[Back to top](#top)
 
 ---
 
@@ -69,8 +63,6 @@ These changes need stronger review:
 The best companion for this page is [Capstone File Guide](capstone-file-guide.md). Use it when you want
 the capstone reading order to answer where the next change belongs.
 
-[Back to top](#top)
-
 ---
 
 ## Minimum Proof After A Change
@@ -85,8 +77,6 @@ After any meaningful capstone change, rerun:
 If any of those results become harder to explain, the repository likely got worse even if
 it still runs.
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -98,4 +88,3 @@ Use these pages with this guide:
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
 * [`proof-matrix.md`](../guides/proof-matrix.md)
 
-[Back to top](#top)

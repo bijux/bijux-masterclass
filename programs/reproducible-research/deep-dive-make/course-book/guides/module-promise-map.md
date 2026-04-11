@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Module Promise Map
 
 Use this page when a module title sounds plausible but still too compressed. A good module
@@ -17,8 +15,6 @@ Each row answers four practical questions:
 
 If a module page drifts from that contract, the drift should be visible here.
 
-[Back to top](#top)
-
 ## Module contracts
 
 | Module | The promise | The boundary | You should leave able to... | First corroboration route |
@@ -34,8 +30,6 @@ If a module page drifts from that contract, the drift should be visible here.
 | [09 Incident Response](../module-09-performance-observability-incident-response/index.md) | make build incidents diagnosable under pressure | measurement, observability, triage ladders, runbooks | choose the next evidence surface before editing anything | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 | [10 Governance](../module-10-migration-governance-tool-boundaries/index.md) | teach stewardship, migration order, and honest tool boundaries | review method, migration sequencing, governance rules, handoff decisions | improve a build while preserving proof and public trust | [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
 
-[Back to top](#top)
-
 ## What this page prevents
 
 This map exists to prevent four common course failures:
@@ -48,12 +42,9 @@ This map exists to prevent four common course failures:
 If you notice one of those failures while reading a module, come back here and name the
 missing piece directly.
 
-[Back to top](#top)
-
 ## Best companion pages
 
 - [Module Checkpoints](module-checkpoints.md) when you need the exit bar after the promise
 - [Proof Ladder](proof-ladder.md) when the corroboration route feels too heavy
 - [Capstone Map](../capstone/capstone-map.md) when the promise is clear but the repository route is not
 
-[Back to top](#top)

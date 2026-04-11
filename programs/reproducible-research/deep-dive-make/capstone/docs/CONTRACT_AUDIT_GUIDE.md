@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Contract Audit Guide
 
 
@@ -49,8 +47,6 @@ When the contract audit bundle has been generated, read it in this order:
 That order keeps public promise first, platform boundary second, and graph-discipline
 evidence third.
 
-[Back to top](#top)
-
 ---
 
 ## What Each File Is For
@@ -65,8 +61,6 @@ evidence third.
 | `tests/run.sh` | which invariants the proof harness actually checks |
 | `review-questions.txt` | whether the contract is clear enough for another engineer |
 
-[Back to top](#top)
-
 ---
 
 ## Review Questions That Matter
@@ -77,8 +71,6 @@ Ask these before you trust the bundle:
 * are GNU Make and shell assumptions declared instead of implied
 * does discovery evidence show rooted enumeration rather than convenience globbing
 * does the proof route point to executed evidence instead of only README prose
-
-[Back to top](#top)
 
 ---
 
@@ -91,8 +83,6 @@ Treat these as contract defects:
 * rooted discovery is claimed but not shown in the audit output
 * proof claims require a maintainer to guess which target or file proves them
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Guides
@@ -103,4 +93,3 @@ Read these with the contract audit:
 * `PROOF_GUIDE.md`
 * `ARCHITECTURE.md`
 
-[Back to top](#top)

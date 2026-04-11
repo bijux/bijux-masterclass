@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Authority Map
 
 <!-- page-maps:start -->
@@ -38,8 +36,6 @@ which surface is actually allowed to settle the question.
 | what is merely visible in the workspace today | workspace files | none; visibility is not authority |
 | what changed comparably across runs | params, metrics, and experiment records | experiment review routes |
 
-[Back to top](#top)
-
 ---
 
 ## Common authority mistakes
@@ -51,8 +47,6 @@ which surface is actually allowed to settle the question.
 | treating the local DVC cache as durable recovery | it disappears with cleanup or machine loss |
 | treating `publish/v1/` as the whole repository story | promoted trust is intentionally smaller than internal state |
 | treating restore success as proof of semantic comparability | durability does not guarantee that params and metrics still mean the same thing |
-
-[Back to top](#top)
 
 ---
 
@@ -66,8 +60,6 @@ which surface is actually allowed to settle the question.
 That order stops one common DVC mistake: jumping from a visible file straight to a trust
 claim without checking what kind of authority that file actually has.
 
-[Back to top](#top)
-
 ---
 
 ## Companion pages
@@ -76,4 +68,3 @@ claim without checking what kind of authority that file actually has.
 - [`verification-route-guide.md`](verification-route-guide.md)
 - [`glossary.md`](glossary.md)
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Module Dependency Map
 
 
@@ -57,8 +55,6 @@ graph TD
   m09 --> m10
 ```
 
-[Back to top](#top)
-
 ---
 
 ## Why The Sequence Looks Like This
@@ -75,8 +71,6 @@ graph TD
 | 08 Operating Contexts | 03-07 | policy and executor changes make sense only after the workflow and repository are stable |
 | 09 Incident Response | 03-08 | incident response needs evidence, policy, and architecture to already exist |
 | 10 Mastery | all earlier modules | migration and governance require the full mental model |
-
-[Back to top](#top)
 
 ---
 
@@ -96,8 +90,6 @@ workflow graph or output contract becomes unclear.
 Start with Modules 04, 05, 07, 09, and 10, then backfill earlier modules when a boundary
 decision depends on file or DAG truth.
 
-[Back to top](#top)
-
 ---
 
 ## Where The Capstone Helps Most
@@ -109,4 +101,3 @@ decision depends on file or DAG truth.
 | after 06-08 | inspect publish artifacts, profile policy, and workflow layout as one system |
 | after 09-10 | use tests, verification targets, and governance questions as a review specimen |
 
-[Back to top](#top)

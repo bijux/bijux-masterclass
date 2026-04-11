@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Extension Guide
 
 <!-- page-maps:start -->
@@ -46,8 +44,6 @@ Also update:
   new reader should notice it
 - `make walkthrough` or `make tour` evidence if the visible route changed
 
-[Back to top](#top)
-
 ---
 
 ## If the change affects execution policy
@@ -63,8 +59,6 @@ Also update:
 - `make profile-audit` expectations
 
 If the change would alter analytical meaning, it does not belong here.
-
-[Back to top](#top)
 
 ---
 
@@ -83,8 +77,6 @@ Also update:
 
 Treat this as a trust-boundary change, not a convenience edit.
 
-[Back to top](#top)
-
 ---
 
 ## If the change affects helper implementation
@@ -100,8 +92,6 @@ Also update:
 
 Do not let helper code become the only place where workflow meaning can be found.
 
-[Back to top](#top)
-
 ---
 
 ## Final ownership test
@@ -112,4 +102,3 @@ Before merging a change, ask:
 2. which guide or audit bundle should mention it
 3. which route would fail first if this change drifted later
 
-[Back to top](#top)

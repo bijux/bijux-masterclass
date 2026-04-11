@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Capstone File Guide
 
 Use this page when you know the repository is the right surface but do not yet know which
@@ -19,8 +17,6 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | source and release packaging | `capstone/scripts/mkdist.py` | `capstone/docs/TARGET_GUIDE.md` |
 | one failure class in isolation | `capstone/repro/01-shared-log.mk` or another repro file | [Repro Catalog](repro-catalog.md) |
 
-[Back to top](#top)
-
 ## Directory responsibilities
 
 | Path | What belongs there |
@@ -32,8 +28,6 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | `capstone/tests/` | the proof harness for build-system behavior |
 | `capstone/repro/` | controlled failure specimens for one lesson at a time |
 | `capstone/docs/` | repository-local guide pages for bounded review routes |
-
-[Back to top](#top)
 
 ## Good first reading order
 
@@ -49,8 +43,6 @@ If this is your first serious repository pass, use this sequence:
 
 That order keeps contract first, proof second, policy third, and failure teaching last.
 
-[Back to top](#top)
-
 ## Wrong reading orders
 
 Avoid these:
@@ -62,4 +54,3 @@ Avoid these:
 
 If you are still browsing by folder name, the repository has not become legible yet.
 
-[Back to top](#top)

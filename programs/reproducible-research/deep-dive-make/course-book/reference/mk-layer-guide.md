@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Mk Layer Guide
 
 
@@ -47,8 +45,6 @@ Read the layers in this order:
 That order moves from platform contract, to shared policy, to reusable helpers, to graph
 discovery, to modeled hidden inputs, and finally to optional rule generation.
 
-[Back to top](#top)
-
 ---
 
 ## Layer Responsibilities
@@ -61,8 +57,6 @@ discovery, to modeled hidden inputs, and finally to optional rule generation.
 | `objects.mk` | discovers source files deterministically and maps them into build artifacts |
 | `stamps.mk` | models hidden inputs and non-file boundaries without breaking `make -q all` |
 | `rules_eval.mk` | contains the quarantined optional `$(eval)` demo rather than mixing it into the main build |
-
-[Back to top](#top)
 
 ---
 
@@ -77,8 +71,6 @@ discovery, to modeled hidden inputs, and finally to optional rule generation.
 | `stamps.mk` | should not reintroduce `FORCE` into the transitive closure of `all` |
 | `rules_eval.mk` | should not become required for the normal build path |
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -89,4 +81,3 @@ Use these pages with this guide:
 * [`capstone-map.md`](../capstone/capstone-map.md)
 * [`proof-matrix.md`](../guides/proof-matrix.md)
 
-[Back to top](#top)

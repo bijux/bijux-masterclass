@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Publish Review Guide
 
 
@@ -46,8 +44,6 @@ is whether an internal surface deserves promotion into that contract at all.
 5. Compare the report with `manifest.json`, `discovered_samples.json`, `summary.json`, `summary.tsv`, and `provenance.json`.
 6. Read `report/index.html` when you need the compact human-facing publish surface.
 
-[Back to top](#top)
-
 ---
 
 ## What The Review Should Settle
@@ -57,8 +53,6 @@ is whether an internal surface deserves promotion into that contract at all.
 - which files remain internal execution state even if they are useful during review
 - which published summary surfaces are optimized for machine comparison versus human review
 
-[Back to top](#top)
-
 ---
 
 ## Failure Questions
@@ -67,4 +61,3 @@ is whether an internal surface deserves promotion into that contract at all.
 - Which publish check would you strengthen first if downstream trust became more demanding?
 - Which internal result would you refuse to promote without a clearer contract?
 
-[Back to top](#top)

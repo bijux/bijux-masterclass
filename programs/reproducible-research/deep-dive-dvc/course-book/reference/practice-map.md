@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Practice Map
 
 
@@ -46,8 +44,6 @@ This page collects that information in one place.
 | 09 | promotion boundary review | inspect publish contract and evidence bundle | inspect `publish/v1/` and verify it |
 | 10 | repository review | write a short stewardship review | use the capstone as the review specimen |
 
-[Back to top](#top)
-
 ---
 
 ## Three Reusable Proof Loops
@@ -79,8 +75,6 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review
 ```
 
-[Back to top](#top)
-
 ---
 
 ## Best Study Habit
@@ -94,4 +88,3 @@ For each module:
 
 That keeps the course centered on comprehension instead of command accumulation.
 
-[Back to top](#top)

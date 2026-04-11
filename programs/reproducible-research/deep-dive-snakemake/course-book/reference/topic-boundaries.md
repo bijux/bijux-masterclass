@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Topic Boundaries
 
 
@@ -48,8 +46,6 @@ job.
 | publish and downstream contracts | downstream trust depends on a deliberate stable interface | 06 | publish review, manifest and report evidence |
 | incident response and stewardship judgment | a workflow must stay reviewable under pressure and change | 09, 10 | incident review, governance pass |
 
-[Back to top](#top)
-
 ---
 
 ## Supporting Topics That Matter, But Serve The Core
@@ -66,8 +62,6 @@ These matter because they make the core topics legible and enforceable.
 | Docker and execution surfaces | to expose runtime boundaries honestly | Modules 05, 08 |
 
 These are important, but they are always in service of a more trustworthy workflow.
-
-[Back to top](#top)
 
 ---
 
@@ -88,8 +82,6 @@ When a learner wants more on one of these, the honest answer is not “the cours
 everything.” The honest answer is “the course touches this where it affects workflow
 truth, then hands off.”
 
-[Back to top](#top)
-
 ---
 
 ## Topics People Often Overweight
@@ -104,8 +96,6 @@ These topics are easy to romanticize and easy to teach badly:
 
 The course mentions these only when they sharpen workflow judgment. It does not treat
 them as badges of Snakemake sophistication.
-
-[Back to top](#top)
 
 ---
 
@@ -122,8 +112,6 @@ Without an explicit boundary page, learners can leave with the wrong conclusions
 * “Snakemake should keep owning every orchestration concern forever.”
   Module 10 exists precisely to prevent that mistake.
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -135,4 +123,3 @@ Use these with this page:
 * [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest workflow proof route
 * [`completion-rubric.md`](completion-rubric.md) to review whether the course is actually keeping its promises
 
-[Back to top](#top)

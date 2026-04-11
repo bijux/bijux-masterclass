@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Verification Route Guide
 
 
@@ -44,8 +42,6 @@ proof or a recovery drill for the whole repository contract.
 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | whether tracked state survives local loss | a restore-from-remote rehearsal |
 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | whether the restore evidence is durable enough for review | a recovery review bundle with before and after state |
 
-[Back to top](#top)
-
 ---
 
 ## Best Route By Situation
@@ -61,8 +57,6 @@ proof or a recovery drill for the whole repository contract.
 | I want to test durability under loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | it isolates the recovery claim |
 | I want a reviewable recovery bundle after the drill | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | it packages the recovery evidence for later inspection |
 | I want durable verification evidence | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` | it writes the main verification artifacts to one place |
-
-[Back to top](#top)
 
 ---
 
@@ -81,8 +75,6 @@ Use this order if you are unsure where to start:
 This sequence moves from orientation to declaration, then to execution, then to promoted
 contract, then to full repository confirmation.
 
-[Back to top](#top)
-
 ---
 
 ## Common Route Mistakes
@@ -95,8 +87,6 @@ contract, then to full repository confirmation.
 | using `recovery-drill` as a general repository test | recovery answers a narrower durability question |
 | using `verify` as if it explains experiment quality | publish verification is not experiment review |
 
-[Back to top](#top)
-
 ---
 
 ## Best Companion Pages
@@ -108,4 +98,3 @@ The most useful companion pages for this guide are:
 * [`proof-matrix.md`](../guides/proof-matrix.md)
 * [`capstone-map.md`](../capstone/capstone-map.md)
 
-[Back to top](#top)

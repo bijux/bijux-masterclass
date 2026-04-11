@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Platform Setup
 
 
@@ -44,8 +42,6 @@ The safest path on a fresh machine is still `make bootstrap-confirm`, because it
 the supported local toolchain instead of depending on whatever `snakemake` happens to be
 installed globally.
 
-[Back to top](#top)
-
 ---
 
 ## Version Contract
@@ -59,8 +55,6 @@ Use one of these two routes:
 * preferred: `make bootstrap-confirm` to create the pinned local toolchain and run the strongest clean-room proof route
 * acceptable: use a preinstalled `snakemake`, but verify `snakemake --version` reports `9.14.x` before trusting course commands literally
 
-[Back to top](#top)
-
 ---
 
 ## Repository Root
@@ -73,8 +67,6 @@ make PROGRAM=reproducible-research/deep-dive-snakemake docs-build
 ```
 
 Use these commands when you want docs or program-level verification.
-
-[Back to top](#top)
 
 ---
 
@@ -93,8 +85,6 @@ That sequence creates the supported local toolchain under
 resolved versions, and proves the workflow can at least plan correctly before a full
 execution.
 
-[Back to top](#top)
-
 ---
 
 ## One-Command Truth Path
@@ -107,8 +97,6 @@ make bootstrap-confirm
 
 That target creates the supported local toolchain and then runs the clean-room
 confirmation route without depending on a preinstalled global `snakemake`.
-
-[Back to top](#top)
 
 ---
 
@@ -125,8 +113,6 @@ make verify
 If `make bootstrap` and `make verify` both succeed, the capstone can execute, publish
 its bundle, and validate the promoted artifacts using the supported local toolchain.
 
-[Back to top](#top)
-
 ---
 
 ## Common Setup Failures
@@ -139,4 +125,3 @@ its bundle, and validate the promoted artifacts using the supported local toolch
 | `dag` or `rulegraph` fails | Graphviz `dot` missing | install Graphviz and rerun the target |
 | `verify` fails after a successful dry-run | runtime dependencies or filesystem assumptions differ from the planning surface | inspect `profiles/`, `config/`, and the failing rule logs before changing workflow code |
 
-[Back to top](#top)

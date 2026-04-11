@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Completion Rubric
 
 
@@ -41,8 +39,6 @@ You should be able to do all of the following:
 * identify which artifacts belong to the downstream publish contract
 * describe how the repository restores tracked state after local cache loss
 
-[Back to top](#top)
-
 ---
 
 ## Course Outcomes
@@ -54,8 +50,6 @@ You should be able to do all of the following:
 | semantic comparison | you can say which metrics remain meaningful after a parameter change |
 | experiments and promotion | you can explain baseline, deviation, and promoted contract without mixing them |
 | recovery and stewardship | you can defend the repository's recovery story and review it for drift |
-
-[Back to top](#top)
 
 ---
 
@@ -69,8 +63,6 @@ Use these proof routes as the minimum capstone evidence:
 4. `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm`
 
 You are not done if you ran them mechanically but cannot explain what each one proved.
-
-[Back to top](#top)
 
 ---
 
@@ -86,4 +78,3 @@ A reviewer should be able to ask:
 
 If those answers stay vague, the learner is not done yet.
 
-[Back to top](#top)

@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Proof Guide
 
 <!-- page-maps:start -->
@@ -50,8 +48,6 @@ start narrower.
 | a new reader can enter the capstone without browsing randomly | `make walkthrough` | `WALKTHROUGH_GUIDE.md`, `README.md`, `TARGET_GUIDE.md` |
 | this repository still deserves stewardship trust | `make confirm` | `PROOF_GUIDE.md`, `tests/run.sh`, audit bundles as needed |
 
-[Back to top](#top)
-
 ---
 
 ## Good reading order
@@ -67,8 +63,6 @@ Use this order when the repository is new but the ideas are not:
 
 That keeps claim, route, and evidence ahead of implementation detail.
 
-[Back to top](#top)
-
 ---
 
 ## Route selection rules
@@ -81,8 +75,6 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `profile-audit` for portability, policy, and precedence questions
 - choose `proof` only when the question genuinely spans multiple bundles
 - choose `confirm` when stewardship review needs the strongest built-in route
-
-[Back to top](#top)
 
 ---
 
@@ -98,4 +90,3 @@ Read these with this guide:
 - [PROFILE_AUDIT_GUIDE.md](PROFILE_AUDIT_GUIDE.md)
 - [SELFTEST_GUIDE.md](SELFTEST_GUIDE.md)
 
-[Back to top](#top)

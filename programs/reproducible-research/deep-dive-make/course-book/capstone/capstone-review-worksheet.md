@@ -1,5 +1,3 @@
-<a id="top"></a>
-
 # Capstone Review Worksheet
 
 Use this page when you want to review the capstone as an inherited build, not just read
@@ -16,8 +14,6 @@ Work top to bottom. For each section:
 
 If you cannot name the evidence, the judgment is still too soft.
 
-[Back to top](#top)
-
 ## Public contract
 
 Ask:
@@ -31,8 +27,6 @@ Best evidence:
 - `capstone/Makefile`
 - [Command Guide](command-guide.md)
 - `artifacts/audit/reproducible-research/deep-dive-make/contract/help.txt`
-
-[Back to top](#top)
 
 ## Truth and convergence
 
@@ -48,8 +42,6 @@ Best evidence:
 - `capstone/tests/run.sh`
 - `artifacts/proof/reproducible-research/deep-dive-make/selftest/summary.txt`
 
-[Back to top](#top)
-
 ## Parallel safety
 
 Ask:
@@ -63,8 +55,6 @@ Best evidence:
 - `capstone/Makefile`
 - `capstone/repro/`
 - [Repro Catalog](repro-catalog.md)
-
-[Back to top](#top)
 
 ## Architecture and ownership
 
@@ -81,8 +71,6 @@ Best evidence:
 - `capstone/mk/macros.mk`
 - [Capstone File Guide](capstone-file-guide.md)
 
-[Back to top](#top)
-
 ## Release and stewardship
 
 Ask:
@@ -97,8 +85,6 @@ Best evidence:
 - `capstone/scripts/mkdist.py`
 - [Capstone Extension Guide](capstone-extension-guide.md)
 
-[Back to top](#top)
-
 ## Record the result
 
 Finish with one of these judgments:
@@ -110,4 +96,3 @@ Finish with one of these judgments:
 If your conclusion is longer than a short paragraph, the review probably drifted away from
 one bounded question.
 
-[Back to top](#top)
