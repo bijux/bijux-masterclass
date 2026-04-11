@@ -84,7 +84,7 @@ into an ungoverned surface area.
 
 1. Read `src/service_monitoring/application.py`.
 2. Compare it with [Capstone File Guide](../capstone/capstone-file-guide.md) and [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md).
-3. Use [Command Guide](../capstone/command-guide.md) and the learner-facing routes to decide which promises are public enough to defend.
+3. Use [Command Guide](../capstone/command-guide.md) and the saved review routes to decide which promises are public enough to defend.
 
 This route keeps one governance question visible: a public surface is not simply the code
 other people can import. It is the narrow surface you are prepared to document, version,
@@ -112,7 +112,7 @@ review, and prove repeatedly.
 
 ## Capstone connection
 
-The monitoring capstone can remain a closed teaching example or evolve into a reusable
+The monitoring capstone can remain a closed study system or evolve into a reusable
 package surface. This module shows how to add a facade, documented extension points,
 and governance around plugins and integrations without weakening aggregate boundaries.
 
