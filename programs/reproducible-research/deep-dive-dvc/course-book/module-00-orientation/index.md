@@ -31,6 +31,15 @@ promotion, remote-backed recovery, and the review habits that keep those claims 
 - you need the shortest honest first session instead of browsing the whole shelf
 - you want to know when the capstone helps and when it adds noise
 
+## Study rhythm
+
+Keep the rhythm small and repeatable:
+
+1. read until the current state question is clear
+2. read a bounded cluster instead of the whole shelf
+3. use the capstone only when it sharpens the current claim
+4. stop once you can name one rule, one evidence surface, and one failure mode
+
 ## Start here by question
 
 | If the question is... | Read this first |
@@ -68,5 +77,4 @@ the concept you are studying.
 - [first-contact-map.md](first-contact-map.md)
 - [mid-course-map.md](mid-course-map.md)
 - [mastery-map.md](mastery-map.md)
-- [how-to-study-this-course.md](how-to-study-this-course.md)
 - [glossary.md](glossary.md)

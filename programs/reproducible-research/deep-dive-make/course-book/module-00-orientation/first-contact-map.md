@@ -29,10 +29,9 @@ reading choices feel deliberate instead of random.
 1. Read `../index.md` for the program promise.
 2. Read `index.md` for the Module 00 role.
 3. Read `course-map.md` to see the four course arcs.
-4. Read `how-to-study-this-course.md` so the reading rhythm is clear before Module 01.
-5. Read `../guides/start-here.md` when you want the shortest learner route.
-6. Read `../capstone/capstone-map.md` only if a repository specimen will clarify, not blur, the current idea.
-7. Run one bounded command:
+4. Read `../guides/start-here.md` when you want the shortest learner route.
+5. Read `../capstone/capstone-map.md` only if a repository specimen will clarify, not blur, the current idea.
+6. Run one bounded command:
 
 ```sh
 make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
@@ -45,6 +44,15 @@ Before the first technical module, you should be able to answer:
 - what this course treats as the core promises of a good build system
 - why the capstone is an executable corroboration surface rather than the first thing to read
 - which course arc matches your current pressure: graph truth, discipline, system design, or stewardship
+
+## First-week rhythm
+
+Repeat the same rhythm through the first modules:
+
+1. read until the current build question is clear
+2. inspect one matching example, exercise, or capstone surface immediately
+3. run one bounded command instead of escalating to every proof route
+4. stop when you can state one rule and one failure mode in plain language
 
 ## When to leave this route
 
