@@ -20,3 +20,9 @@ tied to workflow boundaries.
 - Is the published contract smaller and clearer than the whole repository?
 - Which layer should own this behavior: `Snakefile`, rules, modules, scripts, package code, or profiles?
 - What ambiguity would make you reject the current boundary as too blurry to trust?
+
+## Authority prompts
+
+- Which surface is actually allowed to settle this trust question?
+- Is this claim being supported by workflow contracts, durable artifacts, or only logs and memory?
+- Would the repository still be reviewable if runtime output disappeared?

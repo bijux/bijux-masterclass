@@ -64,6 +64,6 @@ When you identify a likely anti-pattern:
 
 ## Companion pages
 
-- [`boundary-map.md`](boundary-map.md)
-- [`repository-layer-guide.md`](repository-layer-guide.md)
+- [`review-checklist.md`](review-checklist.md)
+- [`boundary-review-prompts.md`](boundary-review-prompts.md)
 - [`module-dependency-map.md`](module-dependency-map.md)

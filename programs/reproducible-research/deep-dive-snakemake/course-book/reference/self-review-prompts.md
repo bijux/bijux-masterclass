@@ -20,3 +20,9 @@ workflow judgment instead of passive familiarity.
 - Which repository layer should absorb the next non-trivial change?
 - What would count as semantic drift rather than ordinary policy drift?
 - Which saved evidence bundle would you trust first if logs disappeared?
+
+## Layer prompts
+
+- Should this behavior live in `Snakefile`, rules, modules, scripts, package code, or profiles?
+- Would moving it make the workflow easier to review or only more indirect?
+- Which layer would you inspect first before approving a boundary-heavy change?

@@ -77,6 +77,16 @@ snakemake --summary
 snakemake --list-changes input code params
 ```
 
+### Layer-review loop
+
+Use when the question is where a change belongs before you implement it.
+
+```bash
+snakemake --list-rules
+snakemake -n
+snakemake --summary
+```
+
 ---
 
 ## Best Study Habit
@@ -89,4 +99,3 @@ For each module:
 4. enter the capstone only after the local result is legible
 
 That order keeps the course centered on comprehension instead of repository tourism.
-

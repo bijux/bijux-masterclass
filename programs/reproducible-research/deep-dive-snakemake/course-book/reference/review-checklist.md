@@ -15,6 +15,12 @@ change. The goal is to keep workflow trust tied to contracts and evidence.
 - Does a profile or repository-layer change risk semantic drift?
 - Is reusable code living in the right place instead of leaking workflow semantics into helpers?
 
+## Authority and layer ownership
+
+- Which surface is authoritative for this question: workflow contract, discovery evidence, policy, or publish boundary?
+- Which layer should own the next change: `Snakefile`, rules, modules, scripts, package code, or profiles?
+- Would another maintainer know where this behavior belongs without oral explanation?
+
 ## Publish trust
 
 - Which outputs are safe for downstream trust and which remain internal run state?

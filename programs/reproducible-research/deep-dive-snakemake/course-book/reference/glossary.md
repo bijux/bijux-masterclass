@@ -36,9 +36,7 @@ to memorize.
 | Term | Meaning in Deep Dive Snakemake |
 | --- | --- |
 | Anti-Pattern Atlas | A symptom-led catalog of recurring workflow mistakes, used when you recognize the smell before you remember the lesson that explains it. |
-| Boundary Map | The page that says which repository surface is authoritative for semantics, policy, publish trust, or execution evidence. |
 | Completion Rubric | The review standard for deciding whether someone can explain workflow behavior with evidence rather than slogans. |
 | Module Dependency Map | The reading-order map that shows which modules support later ones and which ideas should come first. |
 | Practice Map | The crosswalk from modules to capstone routes that corroborate the same concept. |
-| Repository Layer Guide | The ownership guide for `Snakefile`, `workflow/rules/`, `workflow/modules/`, `workflow/scripts/`, `src/capstone/`, `profiles/`, and `config/`. |
 | Topic Boundaries | The page that distinguishes core course material from supporting context and out-of-scope extension work. |
