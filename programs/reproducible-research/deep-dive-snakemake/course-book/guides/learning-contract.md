@@ -2,130 +2,99 @@
 
 # Learning Contract
 
+Use this page when you need to reset how to study the program. Deep Dive Snakemake is not
+built for passive reading. It is built for learners who can explain one workflow
+boundary, name the failure it prevents, and point to the command or artifact that proves
+the claim.
 
-<!-- page-maps:start -->
-## Guide Fit
+## What the program is asking from you
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Learning Contract"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+For each module, you should be able to do four things before you call it done:
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+1. explain the workflow or publish boundary in plain language
+2. name the failure that would appear if that boundary were false
+3. choose one command, artifact, or file that tests the claim
+4. say why a heavier proof route would be unnecessary right now
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Deep Dive Snakemake is built around one rule: important workflow claims should be
-checkable by files, commands, or proof artifacts rather than by trust in prose alone.
-
-This page makes that rule explicit so the learner knows what the course expects and how
-to use each module well.
-
----
-
-## The Teaching Sequence
-
-The strongest sections in this course follow this order:
-
-1. contract question
-2. failure mode
-3. repair pattern
-4. proof command
-5. capstone corroboration
-
-If a section jumps straight from advice to commands, it is weaker than the course should
-be.
+If you can only recognize the vocabulary, the module is not done yet.
 
 [Back to top](#top)
 
----
+## What the program owes you
 
-## The Learner's Responsibility
+The material should present each important idea in an order that a human can actually use:
 
-Your job is not to memorize Snakemake directives. Your job is to verify what contract the
-workflow is making.
+1. the contract question
+2. the failure mode that makes the question matter
+3. the repair or design rule
+4. the proof route that can confirm the claim
+5. the capstone route only after the local idea is clear
 
-For each module, you should be able to answer:
-
-* what boundary the workflow is claiming
-* what would break if that boundary were false
-* which file or artifact makes the claim reviewable
-* which command proves the claim instead of only asserting it
-
-[Back to top](#top)
-
----
-
-## The Instructor's Responsibility
-
-The course material should always provide:
-
-* a clear workflow question
-* an explanation of the failure mode it prevents
-* a proof loop the learner can run
-* a reason the capstone is or is not the right teaching surface yet
-
-If those are missing, the learner has to reconstruct the pedagogy alone.
+When a page jumps from slogan to command list, the learner is doing the course-design
+work alone.
 
 [Back to top](#top)
 
----
+## How to work a module honestly
 
-## The Proof Surfaces You Should Use Constantly
+Use this loop:
 
-These surfaces appear throughout the course because they answer different workflow
-questions:
+1. Read the module overview and the lesson that matches the current question.
+2. Write down one sentence that starts with "The contract here is..."
+3. Run the smallest proof route that could falsify your understanding.
+4. If the evidence surface feels bigger than the claim, step back to the module or guide.
+5. Move on only when you can explain the idea without borrowing the page's wording.
 
-| Surface | What it proves |
+The goal is not speed. The goal is leaving each module with something you can defend in
+review.
+
+[Back to top](#top)
+
+## The proof surfaces you should keep reaching for
+
+These surfaces recur because they answer different classes of question:
+
+| Surface | Use it to answer |
 | --- | --- |
-| dry-run output | the planned jobs and file contracts |
-| `--summary` | the recorded state of outputs |
-| `--list-changes` | why code, params, or inputs changed |
+| dry-run output | what Snakemake intends to do before execution |
+| `--summary` | what outputs exist and how Snakemake currently sees them |
+| `--list-changes` | why code, params, or inputs now justify reruns |
 | `FILE_API.md` | what downstream users are allowed to trust |
-| publish tree | the versioned external contract |
-| tests and verification targets | whether the repository can defend its own claims |
+| publish bundle contents | what the repository promotes as a versioned contract |
+| verification and test targets | whether the repository can defend its claims after execution |
+
+Good study means choosing the surface that matches the claim instead of jumping straight
+to the biggest route.
 
 [Back to top](#top)
 
----
+## When the capstone is appropriate
 
-## When To Use The Capstone
+Open the capstone when the local idea is already stable and you want to see it survive a
+real repository shape.
 
-Use the capstone when the concept is already legible in a smaller local model and you
-want to inspect how it behaves in a realistic workflow repository.
+Do not open the capstone yet when:
 
-Do not use the capstone:
+- you still need a first explanation of the concept
+- you cannot name the failure the module is trying to prevent
+- you do not know which command would count as proof
+- the repository still feels larger than the lesson itself
 
-* as your first exposure to a concept
-* as a substitute for understanding the workflow boundary in plain language
-* as evidence that you understand dynamic behavior you still cannot explain simply
-
-Use [`capstone/capstone-map.md`](../capstone/capstone-map.md) when you need a guided route through the
-repository.
+Use [Capstone Map](../capstone/capstone-map.md) when the concept is clear but the right
+repository route is not.
 
 [Back to top](#top)
 
----
+## Signs you are fooling yourself
 
-## Definition Of Done For A Module
+Stop and reset if any of these are true:
 
-A module is complete only when you can:
+- you keep widening the reading surface because one page did not click
+- you can quote the term but cannot give a failure example
+- you chose `proof` or `capstone-confirm` because it felt safer than thinking
+- you can follow the capstone mechanically but cannot say which boundary owns the behavior
 
-* explain the contract boundary it teaches
-* identify one representative failure mode
-* run its core proof loop
-* connect the local idea to one capstone surface intentionally
-
-If you can only repeat words like “reproducibility” or “workflow,” the module is not
-done yet.
+Those are not minor study gaps. They usually mean the previous page needs a slower,
+smaller pass.
 
 [Back to top](#top)
