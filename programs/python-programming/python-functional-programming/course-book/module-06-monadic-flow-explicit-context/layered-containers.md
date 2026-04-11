@@ -1,6 +1,5 @@
 # Layered Containers
 
-
 <!-- page-maps:start -->
 ## Concept Position
 
@@ -14,204 +13,137 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+  effects["Start with two effects you need at the same time"] --> dominant["Choose which effect should be visible first to the caller"]
+  dominant --> nest["Nest the containers in that order"]
+  nest --> review["Use transpose only when the meaning should change"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Layering is where the module starts to feel more like real application code. A pipeline
+rarely has only one concern. It may need failure, absence, config, state, or logs at the
+same time.
 
-## Progression Note
-Module 6 shifts from pure data modelling to **effect-aware composition**.  
-We now treat failure and absence as first-class effects that propagate automatically through pipelines — eliminating nested conditionals forever.
+## Core Question
 
-| Module | Focus                                   | Key Outcomes                                                                 |
-|--------|-----------------------------------------|-------------------------------------------------------------------------------|
-| 5      | Algebraic Data Modelling                | ADTs, exhaustive pattern matching, total functions, refined types            |
-| 6      | Monadic Flows as Composable Pipelines   | bind/and_then, Reader/State-like patterns, error-typed flows                 |
-| 7      | Effect Boundaries & Resource Safety     | Dependency injection, boundaries, testing, evolution                          |
+How do you combine effects without losing track of which one should dominate the way the
+pipeline behaves?
 
-**Core question**  
-How do you combine multiple effects (config + failure, state + failure, failure + absence) in a single pipeline using only simple nested containers and two transpose helpers — with zero monad transformers and zero category theory?
+## Start With the Caller View
 
-This is the core that shows you how to stack the containers from earlier cores into real production pipelines. No magic, no heavy abstraction — just nesting and deliberate layer order.
+The simplest rule is this:
 
-**Audience**: Engineers who have Reader, State, Result, and Option working individually and now need to combine them without introducing complexity.
+> Put the effect first that you want the caller to confront first.
 
-**Outcome**
-1. You will confidently nest containers like `Reader[Config, Result[T, E]]` or `State[S, Result[T, E]]`.
-2. You will understand exactly how layer order controls short-circuit and resource usage.
-3. You will know when (and when not) to transpose layers.
+If the caller should see failure before anything else, make `Result` outermost. If the
+caller must supply configuration before anything can happen, make `Reader` outermost.
 
-## Layer Order Controls Everything
+Thinking in terms of caller view is usually clearer than thinking in terms of abstract
+type gymnastics.
 
-> Note: “outer” / “inner” here are about **effect dominance in the type**  
-> (who owns the short-circuit behaviour), not literal Python call order.
+## Common Layer Orders
 
-| Outer → Inner          | Short-circuit behaviour                                      | State/Config on failure? | Recommended for                              |
-|------------------------|--------------------------------------------------------------|--------------------------|----------------------------------------------|
-| Result → anything      | Err stops everything immediately                             | No                       | Most pipelines (failure dominates)           |
-| Reader → Result        | Config always available (even for logging Err)               | Yes (config)             | When you need config on error paths          |
-| State → Result         | State always threaded (even on Err)                          | Yes (state)              | When you want to count failed operations     |
-| Result → Reader/State  | Err short-circuits before Reader/State runs                  | No                       | When config/state only needed on success     |
-| Result → Option        | Err dominates absence                                        | —                        | Default for "failure or not found"           |
-| Option → Result        | None dominates Err (very rare)                               | —                        | Only when absence should win                 |
+| Shape | Caller experiences first | Good fit |
+|-------|--------------------------|----------|
+| `Result[Option[T], E]` | failure or success | network/database lookup where failure and absence mean different things |
+| `Reader[Config, Result[T, E]]` | supplying config | pipelines that always need config, even on error paths |
+| `State[S, Result[T, E]]` | running stateful work | bookkeeping that should still advance or be inspectable even when the work fails |
+| `Writer[Result[T, E], LogEntry]` | result plus accumulated logs | reviewable logs that should survive short-circuiting |
 
-**Rule of thumb**: Put **Result outermost** in 95% of cases.  
-It gives true early short-circuit and prevents work on failure.
+The layer order is a design statement. It tells the reader which concern is supposed to
+be most visible from the outside.
 
-When you need config or state on error paths (e.g. logging, metrics), put Reader/State outside Result.
+## Result and Option: the Most Common Stack
 
-## 1. Laws & Invariants (machine-checked in CI)
+`Result[Option[T], E]` is often the best default for “failure or not found” because it
+keeps two different ideas separate:
 
-| Law                           | Formal Statement                                                            | Why it matters                                            |
-|-------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Stacked Monad Laws            | Same left/right/associativity as single containers (via normal combinators) | Refactor-safe multi-effect pipelines                      |
-| Transpose Involution          | `transpose_option_result(transpose_result_option(m)) == m`                 | Swapping layers twice is identity                         |
-| Error Dominance               | `transpose_result_option(Err(e)) == Some(Err(e))`                          | Error beats absence                                       |
-
-The stacked monad laws are verified in the full test suite. The transpose-specific laws are shown below.
-
-## 2. Public API – Only two transpose helpers (everything else is plain nesting)
+- `Err(e)`: the lookup failed
+- `Ok(NoneVal())`: the lookup succeeded, but there was no value
+- `Ok(Some(value))`: the lookup succeeded and found something
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/layering.py – end-of-Module-06 (mypy --strict clean target)
-
-from __future__ import annotations
-from funcpipe_rag.result.types import Result, Ok, Err, Option, Some, NoneVal
-
-T = TypeVar("T")
-E = TypeVar("E")
-
-def transpose_result_option(ro: Result[Option[T], E]) -> Option[Result[T, E]]:
-    """Swap layers: Result[Option[T]] → Option[Result[T]].
-    
-    Error dominates absence: Err(e) becomes Some(Err(e)).
-    """
-    if isinstance(ro, Err):
-        return Some(Err(ro.error))
-    return Some(Ok(ro.value.value)) if isinstance(ro.value, Some) else NoneVal()
-
-def transpose_option_result(or_: Option[Result[T, E]]) -> Result[Option[T], E]:
-    """Swap layers: Option[Result[T]] → Result[Option[T]].
-    
-    Error dominates absence: Some(Err(e)) becomes Err(e).
-    """
-    if isinstance(or_, NoneVal):
-        return Ok(NoneVal())
-    return Err(or_.value.error) if isinstance(or_.value, Err) else Ok(Some(or_.value.value))
-```
-
-That's it. No other cross-layer helpers required.  
-Just nest containers and use the usual `.map` / `.and_then`.  
-(You may occasionally write tiny local lift functions for ergonomics in very deep stacks — but 99% of the time you won’t need them.)
-
-## 3. Real-World Example – Query User (Failure + Absence)
-
-```python
-def query_user(id: UserId) -> Result[Option[User], NetworkErr]:
-    """Most common shape: Result outer → network failure short-circuits early."""
-    resp = try_result(
-        lambda: http_get(f"/users/{id}"),
+def query_user(user_id: UserId) -> Result[Option[User], NetworkErr]:
+    return try_result(
+        lambda: http_get(f"/users/{user_id}"),
         map_http_exc,
-    )
-    return resp.map(lambda body: NoneVal() if body is None else Some(parse_user(body)))
-
-# Usage – linear, no manual nesting
-match query_user(some_id):
-    case Ok(Some(user)): process(user)
-    case Ok(NoneVal()): handle_not_found()
-    case Err(e): handle_network_error(e)   # no user parsing work done
+    ).map(lambda body: NoneVal() if body is None else Some(parse_user(body)))
 ```
 
-If you ever need absence to dominate (very rare):
+That shape is easy to review because each branch means something different.
+
+## When Transpose Changes the Story
+
+The repository includes two helpers:
 
 ```python
-absent_first = transpose_result_option(query_user(id))  # Option[Result[User, NetworkErr]]
+def transpose_result_option(ro: Result[Option[T], E]) -> Option[Result[T, E]]: ...
+def transpose_option_result(or_: Option[Result[T, E]]) -> Result[Option[T], E]: ...
 ```
 
-## 4. Recommended Production Stacks
+Use them only when you intentionally want to change which concern is easier to inspect
+first.
 
-| Goal                                 | Stack (outer → inner)                                      | Rationale                                                                          |
-|--------------------------------------|------------------------------------------------------------|------------------------------------------------------------------------------------|
-| Failure dominates everything         | `Result[Reader[Config, State[PipelineState, T]], ErrInfo]` | Early exit on error when interpreted as `(Config → State → Result[T, ErrInfo])`   |
-| Config needed on error paths         | `Reader[Config, Result[State[PipelineState, T], ErrInfo]]` | Config available for logging/metrics on Err                                       |
-| Count failed operations              | `State[PipelineState, Result[Reader[Config, T], ErrInfo]]` | State threaded even on Err                                                         |
+For example:
 
-Pick the **type layer order** that matches your dominance needs.
+- `Result[Option[T], E]`: ask “did the operation fail?”
+- `Option[Result[T, E]]`: ask “is there a value here at all?”
 
+That is not just syntax. It changes what the caller sees first.
 
-## 5. Before → After – Nested Container Handling
+## Reader and Result
+
+Compare these two shapes carefully:
 
 ```python
-# BEFORE – manual nesting hell
-def get_user(id: UserId) -> User | None:
-    res = http_get(id)                  # Result[bytes, NetworkErr]
-    if isinstance(res, Err):
-        log(res.error)
-        return None                     # conflates network error with not found
-    if not res.value:
-        return None
-    return parse_user(res.value)
-
-# AFTER – typed layering, no manual checks
-def get_user(id: UserId) -> Result[Option[User], NetworkErr]:
-    return (
-        try_result(lambda: http_get(id), map_http_exc)
-        .map(lambda body: NoneVal() if body is None else Some(parse_user(body)))
-    )
-
-match get_user(some_id):
-    case Ok(Some(user)): process(user)
-    case Ok(NoneVal()): handle_not_found()
-    case Err(e): handle_network_error(e)
+Reader[Config, Result[T, E]]
+Result[Reader[Config, T], E]
 ```
 
-Zero manual propagation. Types tell the whole story.
+They are not interchangeable.
 
-## 6. Property-Based Proofs (selected)
+- `Reader[Config, Result[T, E]]` means you always provide config, then the work may fail
+- `Result[Reader[Config, T], E]` means the very ability to obtain a config-dependent
+  computation may fail before the caller can even run it
+
+In day-to-day Python code, the first shape is usually the more teachable and more useful
+one.
+
+## State and Result
+
+`State[S, Result[T, E]]` is a good fit when you want the final state even if the work
+fails:
 
 ```python
-@given(ro=results(values=options()))
-def test_transpose_result_option_involution(ro):
-    assert transpose_option_result(transpose_result_option(ro)) == ro
-
-@given(or_=options(values=results()))
-def test_transpose_option_result_involution(or_):
-    assert transpose_result_option(transpose_option_result(or_)) == or_
-
-@given(e=errors())
-def test_transpose_result_option_error_dominates(e):
-    assert transpose_result_option(Err(e)) == Some(Err(e))
-
-@given(e=errors())
-def test_transpose_option_result_error_dominates(e):
-    assert transpose_option_result(Some(Err(e))) == Err(e)
+State[PipelineState, Result[EmbeddedChunk, ErrInfo]]
 ```
 
-## 7. Anti-Patterns & Immediate Fixes
+That shape makes sense for metrics, counters, or progress data that should still be
+visible after a failure.
 
-| Anti-Pattern                    | Symptom                              | Fix                                      |
-|---------------------------------|--------------------------------------|------------------------------------------|
-| Manual nested match/if          | Deeply indented error handling       | Use layered containers + normal combinators |
-| Wrong layer order               | Unexpected short-circuit behaviour   | Choose order deliberately (or transpose) |
-| Monad transformers              | Category-theory overhead             | Just nest — Python handles it            |
+If you instead put `Result` outside the stateful work, the failure can cut off access to
+that state update story. Sometimes that is what you want. The point is to decide
+deliberately.
 
-## 8. Pre-Core Quiz
+## A Good Review Habit
 
-1. Default recommended outer container? → **Result (failure dominates)**  
-2. When to put Reader outer? → **When config needed on error paths**  
-3. Transpose is needed for? → **Result ↔ Option only**  
-4. Recommended production stack when counting failed ops? → **State outer, Result inner**  
-5. The golden rule? → **Let layer order do the work — no transformers needed**
+When you see a nested type, read it outside in and ask:
 
-## 9. Post-Core Exercise
+1. what does the caller meet first?
+2. which branch short-circuits the most work?
+3. what information is still available when something goes wrong?
 
-1. Take a real pipeline with both failure and absence — rewrite with Result[Option[T]].
-2. Swap to Option[Result[T]] with transpose — confirm propagation changes.
-3. Add Reader or State to an existing layered pipeline — choose order deliberately.
+Those three questions usually clarify the right order faster than abstract debate.
 
-**Continue with:** [Writer Pattern](../module-06-monadic-flow-explicit-context/writer-pattern.md)
+## Review Checklist
 
-You have now combined **all** effect containers into production-ready pipelines using nothing more than simple nesting and deliberate layer order. Your code is pure, composable, and proven correct by Hypothesis — with zero category-theory overhead. The remaining cores are pure polish.
+- can I explain each branch of the nested type in plain language?
+- does the outer layer match the concern I want the caller to notice first?
+- am I using transpose because the meaning changed, or only because the type looked odd?
+
+## Practice Prompt
+
+Take one pipeline in your codebase that has both failure and absence. Write down its
+shape as `Result[Option[T], E]` and then as `Option[Result[T, E]]`. For each version,
+explain what the caller learns first and which one better matches the domain story.
+
+**Continue with:** [Writer Pattern](writer-pattern.md)
