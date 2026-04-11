@@ -51,8 +51,8 @@ By the end of this lesson, you should be able to answer:
 ### 1.3 Why This Matters Now
 
 Combinator libraries help when the same pipeline patterns really do repeat. They hurt when
-the helper names become another language the reader has to decode before they can
-understand the business logic.
+the helper names become another language you have to decode before you can understand the
+business logic.
 
 ### 1.4 Why This Isn’t Just itertools
 

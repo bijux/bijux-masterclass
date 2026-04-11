@@ -42,5 +42,5 @@ Read the directory index first, then return here whenever a page, command, or re
 | Module 01 Refactoring Guide | the repair route for applying the module's main design claim to existing code without losing behavior, clarity, or proof. |
 | Pure Functions & Contracts | the module's treatment of pure functions & contracts, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | Small Combinator Library | the module's treatment of small combinator library, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Typed Pipeline Review | the review surface that pressure-tests the module after the first read so the learner can check judgment, not just recall. |
+| Typed Pipeline Review | the review surface that pressure-tests the module after the first read so you can check judgment, not just recall. |
 | Typed Pipelines | the module's treatment of typed pipelines, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |

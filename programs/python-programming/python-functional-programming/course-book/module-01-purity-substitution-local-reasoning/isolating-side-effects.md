@@ -471,6 +471,6 @@ Rarely, for trivial scripts or hot paths, use globals; rely on properties in tes
 
 All claims (e.g., referential transparency) are verifiable via the provided Hypothesis examples—run them to confirm.
 
-**Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. Check free resources like Python.org's FP section or Codecademy's Advanced Python course for readers wanting basics.
+**Further Reading:** For more on purity pitfalls, see 'Fluent Python' Chapter on Functions as Objects. If the Python basics still feel shaky, check free resources like Python.org's FP section or Codecademy's Advanced Python course.
 
 **Continue with:** [Equational Reasoning](../module-01-purity-substitution-local-reasoning/equational-reasoning.md)

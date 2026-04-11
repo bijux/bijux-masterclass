@@ -20,8 +20,8 @@ Two names pointing at the same mutable object are enough to break local reasonin
 of the program mutates the value, another part observes the change, and now the meaning of
 the data depends on who touched it last.
 
-Immutability is the data-side answer to that problem: once a value is published, readers
-can trust that it will keep meaning the same thing.
+Immutability is the data-side answer to that problem: once a value is published, you can
+trust that it will keep meaning the same thing.
 
 ## Keep This Question In View
 
@@ -96,7 +96,7 @@ Mutable publication                       Immutable publication
 | a ----> shared list         |         | a ----> value object         |
 | b ----> shared list         |         | b ----> same value meaning   |
 | mutate through a            |         | update means "make new value"|
-| b silently observes change  |         | old readers keep old meaning |
+| b silently observes change  |         | old references keep meaning  |
 +-----------------------------+         +------------------------------+
 ```
 
