@@ -109,6 +109,9 @@ make PROGRAM=python-programming/python-functional-programming docs-serve
 make PROGRAM=reproducible-research/deep-dive-make test
 ```
 
+If port `8000` is already busy, the docs server automatically moves to the next open
+local port. Set `DOCS_PORT=<port>` when you want a different starting port.
+
 ## Honesty Boundary
 
 The root catalog is a synchronized mirror of the checked-in course and capstone

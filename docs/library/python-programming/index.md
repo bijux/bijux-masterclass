@@ -91,6 +91,9 @@ make PROGRAM=python-programming/python-object-oriented-programming docs-serve
 make PROGRAM=python-programming/python-functional-programming test
 ```
 
+If port `8000` is already busy, the docs server automatically moves to the next open
+local port. Set `DOCS_PORT=<port>` when you want a different starting port.
+
 ## Purpose
 
 This page helps a reader choose the Python program that matches the current design

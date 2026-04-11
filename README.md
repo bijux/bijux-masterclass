@@ -80,6 +80,9 @@ Use the explicit per-program docs route when you only want one program:
 make PROGRAM=python-programming/python-functional-programming docs-serve
 ```
 
+If port `8000` is already busy, the docs server automatically moves to the next open
+local port. Set `DOCS_PORT=<port>` when you want a different starting port.
+
 ## Verification Routes
 
 Audit the documentation rules that apply across course-book and capstone content:
