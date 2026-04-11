@@ -139,7 +139,7 @@ clean:
 	rm -rf $(BLD_DIR) app
 ```
 
-This is not the last Makefile you will ever write. It is a teaching-sized example with
+This is not the last Makefile you will ever write. It is a deliberately small example with
 good instincts baked in.
 
 ## Four experiments to run
@@ -181,7 +181,7 @@ make clean && make all
 make -q all; echo $?
 ```
 
-This file is not the whole lesson. It is the place where the lessons meet one build you
+This file is not the whole module. It is the place where the lessons meet one build you
 can reason about line by line.
 
 ## What this example should teach you

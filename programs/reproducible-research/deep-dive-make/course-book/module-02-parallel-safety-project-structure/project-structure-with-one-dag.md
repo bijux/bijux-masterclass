@@ -29,7 +29,7 @@ That is enough structure to scale without turning the build into a maze.
 
 ## Why this layering helps humans
 
-The layering is not only for the machine. It helps a reader answer different questions in
+The layering is not only for the machine. It helps you answer different questions in
 different places:
 
 - "What can I ask the build to do?" -> `Makefile`
@@ -47,7 +47,7 @@ If each directory runs its own private make process, you often lose global visib
 - weaker scheduling decisions
 - harder debugging because each sub-make sees only part of the truth
 
-It also weakens teaching. If you look at one subdirectory Makefile in isolation, you may
+It also weakens review. If you look at one subdirectory Makefile in isolation, you may
 get the impression that the local file is the whole build story, when the real
 dependencies cross that boundary. One top-level DAG keeps those relationships explicit.
 
@@ -90,7 +90,7 @@ flowchart TD
   rules --> app["app and build artifacts"]
 ```
 
-This picture is intentionally simple. It shows that layering can help a reader without
+This picture is intentionally simple. It shows that layering can help review without
 splitting the build into separate invisible worlds.
 
 ## End-of-page checkpoint

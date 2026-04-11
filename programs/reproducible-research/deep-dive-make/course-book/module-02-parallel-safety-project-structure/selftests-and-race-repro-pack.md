@@ -56,7 +56,7 @@ You should run each repro until you can predict the failure before the next run:
 - unsafe generated files should feel obviously vulnerable to partial reads
 - naive `mkdir` should feel obviously race-prone
 
-When the failure becomes predictable, the graph lesson has landed.
+When the failure becomes predictable, the graph boundary has landed.
 
 ## What artifact comparison means
 

@@ -19,9 +19,8 @@ Module 01 gives you a durable mental model for four things:
 - why a build converges or fails to converge
 - how to publish files without poisoning the graph
 
-The audience is a human reader, not a parser. The goal is not to memorize syntax. The
-goal is to look at a Makefile, predict the next rebuild decision, and explain it in plain
-language.
+The goal is not to memorize syntax like a parser. The goal is to look at a Makefile,
+predict the next rebuild decision, and explain it in plain language.
 
 ## Study route
 

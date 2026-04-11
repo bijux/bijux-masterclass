@@ -13,7 +13,7 @@ fuzzy or overloaded.
 | hidden input | A fact that can change output meaning without appearing as explicit build evidence. | Hidden inputs are the usual reason a build works once and lies later. |
 | order-only prerequisite | A prerequisite used to guarantee setup without making normal timestamp changes force a rebuild. | It helps with directory creation and similar setup edges that are not semantic inputs. |
 | ownership | The rule that a particular recipe is responsible for publishing a specific output path. | Clear ownership makes review and debugging much easier. |
-| pattern rule | A rule that describes a family of targets using `%`. | It reduces repetition, but only works well when the mapping stays obvious to a reader. |
+| pattern rule | A rule that describes a family of targets using `%`. | It reduces repetition, but only works well when the mapping stays obvious in review. |
 | phony target | A named command target that does not stand for a real file. | Phony targets are useful, but they should not be confused with artifact contracts. |
 | prerequisite | An input Make uses when deciding whether a target is out of date. | If an input matters and is not here, the graph is incomplete. |
 | recipe | The shell commands that publish or update a target. | Recipes do not define truth by themselves; they act inside the graph contract. |

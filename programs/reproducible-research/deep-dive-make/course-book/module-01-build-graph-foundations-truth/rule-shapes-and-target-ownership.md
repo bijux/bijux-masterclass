@@ -68,7 +68,7 @@ If two recipes can publish the same file, review gets harder fast:
 Those questions are not academic. They show up as flaky builds, surprising rebuilds, and
 artifacts that differ by execution path.
 
-Ownership also changes how easy review is. A reader should be able to answer:
+Ownership also changes how easy review is. You should be able to answer:
 
 - where does this file come from
 - what evidence controls its rebuild
