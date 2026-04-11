@@ -91,8 +91,6 @@ Keep the FuncPipe RAG capstone open while reading the map.
 - `first-contact-map.md`
 - `mid-course-map.md`
 - `mastery-map.md`
-- `course-orientation.md`
-- `how-to-study-this-course.md`
 - `../guides/start-here.md`
 - `../guides/proof-matrix.md`
 - `../capstone/capstone-file-guide.md`

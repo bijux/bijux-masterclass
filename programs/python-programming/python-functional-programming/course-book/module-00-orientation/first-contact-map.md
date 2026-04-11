@@ -55,10 +55,20 @@ Before you start the first content module, you should be able to answer:
 - do not browse every guide before you have one stable starting route
 - do not confuse "I recognize the terminology" with "I can explain the boundary"
 
+## Study rhythm for the first week
+
+Use the same rhythm each time you sit down:
+
+1. read until the current design pressure is clear
+2. inspect one matching capstone surface immediately
+3. run one bounded command instead of escalating to every proof route
+4. stop once you can state one design rule and one failure mode
+
+If you cannot do that yet, stay on the current boundary instead of widening the route.
+
 ## Best companion pages
 
 - `course-map.md`
-- `course-orientation.md`
-- `../guides/start-here.md`
+- `index.md`
 - `../guides/start-here.md`
 - `../capstone/index.md`

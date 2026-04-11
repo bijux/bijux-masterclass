@@ -94,5 +94,5 @@ You are using the course at a mastery level when you can do the following quickl
 - `course-map.md`
 - `first-contact-map.md`
 - `../guides/proof-matrix.md`
-- `../guides/proof-matrix.md`
+- `../guides/proof-ladder.md`
 - `../reference/self-review-prompts.md`

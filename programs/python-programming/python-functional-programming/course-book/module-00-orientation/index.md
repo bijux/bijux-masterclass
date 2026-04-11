@@ -29,6 +29,15 @@ effects, and operational risk easier to reason about. The goal is not to imitate
 language. The goal is to make real Python systems clearer under testing, refactoring,
 integration, and growth.
 
+## The question this course owns
+
+Keep one question in view while reading:
+
+> Which part of this system is pure dataflow, which part is effectful coordination, and
+> can another engineer tell the difference by reading the code?
+
+If the answer is vague, the system will get harder to reason about as it grows.
+
 ## Learning outcomes
 
 - explain the course boundary: functional programming here means clearer Python systems, not imitation of another language
@@ -69,15 +78,24 @@ up syntax:
 If some of those still feel shaky, continue more slowly and keep the capstone open while
 you read. The course assumes engineering curiosity, not perfection.
 
+## Study rhythm
+
+Use the same rhythm all the way through the course:
+
+1. read the opening page until the current design pressure is clear
+2. read a bounded cluster of pages instead of the whole module at once
+3. inspect the matching capstone surface before the concept becomes abstract again
+4. leave behind one piece of evidence: a note, a refactor, or a small proof step
+
+If a module does not leave you with one design rule, one capstone surface, and one
+failure mode you can name, slow down instead of widening the route.
+
 ## Orientation path
 
 - Read the [Functional Programming Course Map](course-map.md) to see the four course arcs on one page.
 - Read the [First-Contact Map](first-contact-map.md) if you want the shortest stable first session.
 - Read the [Mid-Course Map](mid-course-map.md) when Modules 01 to 03 feel stable and you need a cleaner bridge into failures, effects, and async work.
-- Read the [Return Map](return-map.md) when you are resuming after a break and need to find the last stable boundary again.
 - Read the [Mastery Map](mastery-map.md) when you are returning with a design or review pressure.
-- Read the full [Course Orientation](course-orientation.md).
-- Read [How to Study This Course](how-to-study-this-course.md).
 - Keep the [FuncPipe Capstone Guide](../capstone/index.md) open from the beginning, and keep [Start Here](../guides/start-here.md) available when you need the short learner route again.
 
 ## Capstone roadmap
