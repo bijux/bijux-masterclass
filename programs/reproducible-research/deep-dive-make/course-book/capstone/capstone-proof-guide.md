@@ -1,4 +1,4 @@
-# Capstone Proof Checklist
+# Capstone Proof Guide
 
 <!-- page-maps:start -->
 ## Guide Fit
@@ -7,7 +7,7 @@
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Make"]
   program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone Proof Checklist"]
+  pressure --> guide["Capstone Proof Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
 
@@ -19,11 +19,11 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this checklist is for one end-to-end proof pass,
+Read the first diagram as a timing map: this guide is for one end-to-end proof pass,
 not for first contact. Read the second diagram as the rule: run the bounded proof route,
 inspect the evidence in order, then leave with one explicit judgment about trust.
 
-Use this checklist after Module 03, or later when you need a steward-level review route
+Use this guide after Module 03, or later when you need a steward-level review route
 before incident, profile, or migration questions.
 
 ## Bounded proof pass
@@ -45,6 +45,16 @@ before incident, profile, or migration questions.
 - which saved bundle would matter most to another maintainer
 - which repro teaches a real failure class instead of a toy surprise
 
+## Failure-study route
+
+Use this route when the open question is about one failure class rather than the whole
+healthy build:
+
+1. Start with `capstone/repro/01-shared-log.mk`.
+2. Then inspect `capstone/repro/05-mkdir-race.mk` and `capstone/repro/06-order-only-misuse.mk`.
+3. State the defect class in words before proposing a repair.
+4. Return to `capstone/tests/run.sh` to compare the broken specimen with the healthy proof harness.
+
 ## Good stopping point
 
 Stop when you can write one explicit judgment in your own words:
@@ -60,4 +70,5 @@ commands.
 
 - Read [Capstone File Guide](capstone-file-guide.md) when the open question is file ownership.
 - Read [Proof Matrix](../guides/proof-matrix.md) when the open question is claim-to-evidence routing.
-- Read [Repro Catalog](repro-catalog.md) when the open question is failure-class study.
+- Read [Capstone Review Worksheet](capstone-review-worksheet.md) when the open question is
+  failure-class study or steward judgment.

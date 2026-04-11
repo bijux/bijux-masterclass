@@ -8,14 +8,14 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | If the question is about... | Open this file first | Then open |
 | --- | --- | --- |
 | what the capstone publicly supports | `capstone/Makefile` | [Command Guide](command-guide.md) |
-| what the build proves about itself | `capstone/tests/run.sh` | [Capstone Proof Checklist](capstone-proof-checklist.md) |
+| what the build proves about itself | `capstone/tests/run.sh` | [Capstone Proof Guide](capstone-proof-guide.md) |
 | tool, shell, and policy assumptions | `capstone/mk/contract.mk` | `capstone/Makefile` |
 | shared helper behavior such as atomic writes | `capstone/mk/macros.mk` | `capstone/mk/common.mk` |
 | which sources and objects enter the graph | `capstone/mk/objects.mk` | `capstone/src/` |
 | how hidden inputs and state evidence are modeled | `capstone/mk/stamps.mk` | `capstone/tests/run.sh` |
 | generated-header behavior | `capstone/scripts/gen_dynamic_h.py` | `capstone/Makefile` |
 | source and release packaging | `capstone/scripts/mkdist.py` | `capstone/docs/TARGET_GUIDE.md` |
-| one failure class in isolation | `capstone/repro/01-shared-log.mk` or another repro file | [Repro Catalog](repro-catalog.md) |
+| one failure class in isolation | `capstone/repro/01-shared-log.mk` or another repro file | [Capstone Proof Guide](capstone-proof-guide.md) |
 
 ## Directory responsibilities
 
@@ -53,4 +53,3 @@ Avoid these:
 - using directory names as a substitute for ownership
 
 If you are still browsing by folder name, the repository has not become legible yet.
-
