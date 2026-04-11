@@ -2,50 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Fan-In and Fan-Out"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  multi["Start with multiple sources or multiple consumers"] --> choose["Choose a merge or split strategy deliberately"]
+  choose --> state["Name the ordering, fairness, and buffering contract"]
+  state --> fence["Fence each branch before expensive amplification"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson needs to make a potentially messy topic reviewable. As soon as a pipeline stops being single-stream, students need stronger language for what is preserved, what is duplicated, and where buffering can quietly grow.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Multi-Stream Pressure
 
-Here's a snippet from the progression map:
+Merge and split code often looks simple in demos, but real systems need stronger guarantees than "the data got through somehow." This lesson should front-load those guarantees.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If a merge strategy changes order, that needs to be part of the contract, not a surprise.
+- If one split branch can lag arbitrarily behind another, buffering needs an explicit limit or discipline.
+- If students cannot explain whether branches are independent, lockstep, or cached, the fan-out design is not ready for review.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you safely merge multiple input streams (fan-in) and split or multicast a single stream to multiple consumers (fan-out) in lazy, pure iterator pipelines without breaking equivalence or introducing side-effects?
 
-This core builds on **Core 6**'s reusable stages by introducing fan-in/fan-out patterns:
-- Use `chain`/`chain.from_iterable` for sequential fan-in, `roundrobin` for fair interleaving, `heapq.merge` for sorted fan-in.
-- Use `fork2_lockstep` for strict 1:1 fan-out; bounded multicast for variable-cardinality or independent consumption.
-- Handle independence, buffering, and fairness.
-- Preserve laziness, purity, and freshness.
+This lesson introduces fan-in and fan-out as contract-heavy streaming operations:
 
-We extend the **running project** from Core 6 (FuncPipe RAG Builder from `m03-rag.md`) and add cross-domain examples like multi-log merging, stream splitting for analytics, and API fan-in to prove scalability.
+- choose merge helpers according to the ordering rule you actually need
+- choose split helpers according to the branch independence you can afford
+- keep buffering and fencing visible so downstream work stays safe
 
-**Audience:** Developers building scalable, multi-source pipelines needing merge/split without materialization.
+The running project and cross-domain examples matter because merge and split patterns show up everywhere, but the same names hide very different behavior if the contracts are not stated clearly.
+
+**Audience:** Developers building multi-source or multi-consumer pipelines who need lazy merge and split behavior without hidden materialization.
 
 **Outcome:**
 1. Identify single-stream limitations.
@@ -81,11 +71,11 @@ We extend the **running project** from Core 6 (FuncPipe RAG Builder from `m03-ra
 
 ### 1.3 Why This Matters Now
 
-Single-stream pipes limit scalability; fan-in/out enables multi-source/consumer without eagerness.
+Single-stream reasoning carries students a long way, but real pipelines soon need multiple inputs, side branches, and coordinated consumers. This lesson shows how to extend streaming discipline into that setting without losing track of order, fairness, or buffer growth.
 
 ### 1.4 Fan-In/Out in 5 Lines
 
-Fan-in example:
+The next examples matter because they expose the two central questions of this lesson: how items enter a shared stream and how one stream is observed by more than one consumer.
 
 ```python
 merged = make_chain(src1, src2)()  # lazy merge
