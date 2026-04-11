@@ -1,6 +1,6 @@
 # Config as Data, Profiles as Policy
 
-This page separates two ideas learners often mix together: workflow meaning and execution
+This page separates two ideas people often mix together: workflow meaning and execution
 policy.
 
 ## The sentence to keep
@@ -52,7 +52,7 @@ Typical examples:
 
 These change how the workflow runs, not what the final outputs mean.
 
-That distinction matters because learners need to know whether a change should alter the DAG
+That distinction matters because you need to know whether a change should alter the DAG
 or just alter scheduling and execution policy.
 
 ## A small table that helps
@@ -61,7 +61,7 @@ or just alter scheduling and execution policy.
 | --- | --- |
 | does changing this alter output meaning | config |
 | does changing this alter execution behavior only | profile |
-| should another learner review this as part of workflow semantics | config |
+| should another reader review this as part of workflow semantics | config |
 | should this vary by machine or execution environment without changing the science or logic | profile |
 
 This is not mathematically perfect, but it is a strong beginner rule.
@@ -72,7 +72,7 @@ When the boundary is blurry, several bad things happen:
 
 - semantic choices drift into machine-local profile files
 - the same workflow means different things on different systems
-- debugging becomes harder because the learner cannot tell whether the issue is workflow
+- debugging becomes harder because you cannot tell whether the issue is workflow
   logic or operating context
 - reviewers miss important meaning changes because they look like execution changes
 
@@ -142,7 +142,7 @@ validate(config, "config/schema.yaml")
 This is a very strong beginner habit because it changes a vague late failure into an early
 explicit one.
 
-Without early validation, learners often discover mistakes too late:
+Without early validation, people often discover mistakes too late:
 
 - missing keys
 - wrong shapes
@@ -161,7 +161,7 @@ samplez:
   - B
 ```
 
-Without validation, the learner may later hit:
+Without validation, you may later hit:
 
 - a `KeyError`
 - a confusing expansion failure
@@ -188,7 +188,7 @@ What it should not do is quietly choose:
 - what threshold defines success
 - which reference or panel is the scientific source of truth
 
-If a learner changes a profile and the outputs mean something different, the boundary has
+If you change a profile and the outputs mean something different, the boundary has
 likely drifted.
 
 ## Keep paths understandable
@@ -211,7 +211,7 @@ They are not just operational details because they happen to be strings.
 When looking at a setting, try this short review:
 
 1. if this value changes, should the result meaning change
-2. if yes, can another learner find it in config easily
+2. if yes, can another reader find it in config easily
 3. if no, does it belong in a profile or execution context instead
 4. if it is in config, is its shape validated before any jobs start
 
@@ -260,4 +260,4 @@ Config is for meaning.
 Profiles are for operating policy.
 
 If you keep that one split clear and validate config early, the workflow becomes easier to
-read, easier to review, and much less likely to surprise learners for the wrong reasons.
+read, easier to review, and much less likely to surprise readers for the wrong reasons.

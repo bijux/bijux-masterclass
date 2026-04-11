@@ -62,7 +62,7 @@ flowchart LR
 
 That is the core model.
 
-If learners remember this diagram, wildcards become much less mysterious.
+If you remember this diagram, wildcards become much less mysterious.
 
 ## Wildcards are about path ownership
 
@@ -215,7 +215,7 @@ It becomes risky when expansion generates targets that do not represent reality:
 - filenames are discovered inconsistently
 - helper lists and real data drift apart
 
-Then the learner experiences "weird missing input" or "why is Snakemake looking for this
+Then you experience "weird missing input" or "why is Snakemake looking for this
 file?" when the real issue is target generation drift.
 
 ## The best review question for wildcard design
@@ -258,7 +258,7 @@ This is a path design improvement, not just a regex improvement.
 
 ## What `ruleorder` cannot solve for you
 
-Learners who meet ambiguity often discover `ruleorder` and feel relieved.
+People who meet ambiguity often discover `ruleorder` and feel relieved.
 
 `ruleorder` can help in some advanced cases. It should not be the first fix for a beginner
 workflow whose file ownership is already muddy.

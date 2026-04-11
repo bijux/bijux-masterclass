@@ -1,6 +1,6 @@
 # File Contracts, Targets, and Job Planning
 
-This page explains the first mental shift a learner needs in Snakemake: a rule is not just
+This page explains the first mental shift you need in Snakemake: a rule is not just
 an execution step. It is a promise about files.
 
 ## The sentence to keep
@@ -174,7 +174,7 @@ contract.
 
 ## A common misunderstanding: rule order is not dependency order
 
-Learners often read a Snakefile from top to bottom and assume rules above will run before
+People often read a Snakefile from top to bottom and assume rules above will run before
 rules below.
 
 That intuition is understandable. It is also wrong.
@@ -206,7 +206,7 @@ workflow.
 
 ## Missing steps are usually missing edges
 
-Suppose a learner says:
+Suppose you say:
 
 > the summary rule runs, but it should have waited for my preparation rule.
 
@@ -232,7 +232,7 @@ Its deeper job is to define the finished artifact set for normal use.
 
 A good `rule all`:
 
-- names the outputs a learner or CI user actually cares about
+- names the outputs you or a CI user actually care about
 - keeps internal helper files out of the public completion surface
 - makes dry-runs and summaries easier to interpret
 
@@ -290,7 +290,7 @@ That usually means no requested target depends on its output.
 
 ### "The jobs ran in a strange order"
 
-That usually means the learner expected textual order to matter more than file edges.
+That usually means you expected textual order to matter more than file edges.
 
 ### "The workflow needs a step, but Snakemake does not know that"
 

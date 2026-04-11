@@ -41,7 +41,7 @@ Convergence is one of the most useful signs that a beginner workflow is telling 
 
 ## Reruns are not automatically bad
 
-Learners often treat reruns as evidence that Snakemake is being difficult.
+People often treat reruns as evidence that Snakemake is being difficult.
 
 That is backwards.
 
@@ -151,7 +151,7 @@ inspectable way.
 
 ## Hidden inputs are still inputs
 
-Learners often think of inputs as only the paths listed under `input:`.
+People often think of inputs as only the paths listed under `input:`.
 
 That is too narrow.
 
@@ -210,9 +210,9 @@ rule summarize:
         """
 ```
 
-Now the learner can point to one visible semantic source of truth.
+Now you can point to one visible semantic source of truth.
 
-The improvement is not just technical. It is pedagogical:
+The improvement is not just technical. It improves clarity:
 
 - a reader can find the meaning
 - a reviewer can reason about it

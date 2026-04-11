@@ -98,7 +98,7 @@ That file is poison because it can:
 - mislead downstream rules or humans
 - make debugging harder by looking "finished enough"
 
-Learners often think of this as just an error-handling detail. It is more serious than
+People often think of this as just an error-handling detail. It is more serious than
 that. It is a broken output contract.
 
 ## Logs are part of the contract too
@@ -136,7 +136,7 @@ rule stage_upper:
         """
 ```
 
-Now the learner has both:
+Now you have both:
 
 - a safe publication pattern
 - a rule-specific failure record
@@ -179,7 +179,7 @@ These features should clarify the workflow contract, not paper over a confusing 
 Imagine a report rule that writes directly to `results/report.tsv` and only logs to the
 terminal.
 
-If it fails halfway through, the learner gets:
+If it fails halfway through, you get:
 
 - a final path that may exist but be incomplete
 - a mixed terminal log that is hard to connect back to one specific job
