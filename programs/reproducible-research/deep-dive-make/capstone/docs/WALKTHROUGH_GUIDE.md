@@ -37,10 +37,10 @@ browsing and the strongest route in the repository.
 
 1. run `make walkthrough`
 2. read `README.md` to understand what this repository is trying to prove
-3. read `TARGET_GUIDE.md` to learn the public target surface
-4. read `PROOF_GUIDE.md` to see how claims map to evidence
+3. read [TARGET_GUIDE.md](TARGET_GUIDE.md) to learn the public target surface
+4. read [PROOF_GUIDE.md](PROOF_GUIDE.md) to see how claims map to evidence
 5. read `tests/run.sh` to understand what the proof harness actually checks
-6. read `ARCHITECTURE.md` and `mk/contract.mk` to place ownership and platform boundaries
+6. read [ARCHITECTURE.md](ARCHITECTURE.md) and `mk/contract.mk` to place ownership and platform boundaries
 7. inspect `repro/01-shared-log.mk` to see one failure class in miniature
 
 That route keeps claim first, proof second, ownership third, and controlled failure last.
@@ -54,8 +54,8 @@ That route keeps claim first, proof second, ownership third, and controlled fail
 Read:
 
 - `README.md`
-- `TARGET_GUIDE.md`
-- `PROOF_GUIDE.md`
+- [TARGET_GUIDE.md](TARGET_GUIDE.md)
+- [PROOF_GUIDE.md](PROOF_GUIDE.md)
 
 Outcome: you should be able to name the public surface and the next target you would run.
 
@@ -69,7 +69,7 @@ Read:
 
 - the 15-minute route
 - `tests/run.sh`
-- `ARCHITECTURE.md`
+- [ARCHITECTURE.md](ARCHITECTURE.md)
 - `mk/contract.mk`
 
 Outcome: you should understand what the capstone proves and where boundary decisions live.
@@ -85,7 +85,7 @@ Read:
 - the 45-minute route
 - `mk/objects.mk`
 - `mk/stamps.mk`
-- `REPRO_GUIDE.md`
+- [REPRO_GUIDE.md](REPRO_GUIDE.md)
 - `repro/01-shared-log.mk`
 
 Outcome: you should be able to explain graph truth, modeled hidden inputs, and one

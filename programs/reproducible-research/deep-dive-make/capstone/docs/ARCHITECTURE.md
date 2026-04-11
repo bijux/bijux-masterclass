@@ -89,8 +89,8 @@ graph TD
 ### If the question is public API
 
 1. `Makefile`
-2. `TARGET_GUIDE.md`
-3. `PROOF_GUIDE.md`
+2. [TARGET_GUIDE.md](TARGET_GUIDE.md)
+3. [PROOF_GUIDE.md](PROOF_GUIDE.md)
 
 ### If the question is graph truth
 
@@ -106,9 +106,9 @@ graph TD
 
 ### If the question is incident learning
 
-1. `REPRO_GUIDE.md`
+1. [REPRO_GUIDE.md](REPRO_GUIDE.md)
 2. `repro/*.mk`
-3. `INCIDENT_REVIEW_GUIDE.md`
+3. [INCIDENT_REVIEW_GUIDE.md](INCIDENT_REVIEW_GUIDE.md)
 
 [Back to top](#top)
 
@@ -118,13 +118,13 @@ graph TD
 
 | Question | Owning surface | Why |
 | --- | --- | --- |
-| what is publicly supported | `Makefile` and `TARGET_GUIDE.md` | they define the durable learner-facing API |
+| what is publicly supported | `Makefile` and [TARGET_GUIDE.md](TARGET_GUIDE.md) | they define the durable learner-facing API |
 | what platform assumptions are declared | `mk/contract.mk` | policy belongs in one explicit boundary |
 | how discovery stays deterministic | `mk/objects.mk` | object enumeration is rooted there |
 | how hidden inputs stay modeled | `mk/stamps.mk` | flag and state stamps are declared there |
 | how artifacts are published atomically | `mk/macros.mk` and top-level recipes | publish helpers and target recipes share this contract |
-| what the build must prove | `tests/run.sh` and `SELFTEST_GUIDE.md` | proof belongs to the harness, not to README prose |
-| how failures are taught | `repro/` and `REPRO_GUIDE.md` | controlled defects should stay isolated from the main build |
+| what the build must prove | `tests/run.sh` and [SELFTEST_GUIDE.md](SELFTEST_GUIDE.md) | proof belongs to the harness, not to README prose |
+| how failures are taught | `repro/` and [REPRO_GUIDE.md](REPRO_GUIDE.md) | controlled defects should stay isolated from the main build |
 
 [Back to top](#top)
 
@@ -135,8 +135,8 @@ graph TD
 Read these after this guide:
 
 * `README.md` for the repository role
-* `TARGET_GUIDE.md` for the stable command surface
-* `PROOF_GUIDE.md` for claim-to-evidence routing
-* `WALKTHROUGH_GUIDE.md` for the first-pass reading order
+* [TARGET_GUIDE.md](TARGET_GUIDE.md) for the stable command surface
+* [PROOF_GUIDE.md](PROOF_GUIDE.md) for claim-to-evidence routing
+* [WALKTHROUGH_GUIDE.md](WALKTHROUGH_GUIDE.md) for the first-pass reading order
 
 [Back to top](#top)
