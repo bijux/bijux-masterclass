@@ -2,51 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["itertools Composition"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  manual["Start with manual loop glue around lazy stages"] --> choose["Choose the right itertools helper for merge, slice, or grouping"]
+  choose --> contract["Name the order and demand contract honestly"]
+  contract --> guard["Guard the dangerous cases like tee drift and non-contiguous groupby"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make `itertools` feel less like a toolbox to memorize and more like a set of contract-carrying building blocks. Students need to understand not only what helper to pick, but also what that helper promises about order, laziness, and buffering.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Composition Smell
 
-Here's a snippet from the progression map:
+After learning generators, students often keep the stage internals lazy but reconnect those stages with eager glue or hand-written loops. That loses the gain they just earned.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If composition code builds temporary lists, the pipeline is no longer lazy end to end.
+- If a helper changes ordering or buffering semantics, students need to be able to name that explicitly.
+- If `tee` or `groupby` is used without understanding their constraints, the code may still look elegant while behaving badly.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you use itertools tools like chain, islice, groupby, and tee to compose lazy iterators into efficient pipelines, avoiding materialization while preserving order and equivalence?
 
-This core builds on **Core 1**'s generators and **Core 2**'s expressions by introducing **itertools** for composing lazy stages:
-- Chain multiple iterators without lists.
-- Slice lazily to short-circuit.
-- Group contiguous keys (contiguity by construction—no interleaving of equal keys).
-- Tee duplicates with bounded caching—avoid unbounded unless both branches are consumed in lockstep.
-- Preserve laziness and equivalence to eager.
+This lesson introduces `itertools` as disciplined orchestration for lazy stages:
 
-We continue the **running project** from `m03-rag.md`, now composing stages with itertools.
+- use `chain` when order should stay sequential
+- use `islice` when demand needs a hard fence
+- use `groupby` and `tee` only with a clear statement of their preconditions and costs
 
-**Audience:** Developers with lazy stages who need to merge, slice, or branch streams without losing laziness.
+The running project keeps the lesson practical: the right helper should make the pipeline easier to read and easier to reason about, not just shorter.
+
+**Audience:** Developers with lazy stages who need to merge, slice, or branch streams without accidentally reintroducing eager behavior.
 
 **Outcome:**
 1. Spot composition smells like list chaining.
@@ -79,9 +68,13 @@ In this core, pipe is concretely gen_pipeline and gen_chunked_docs ∘ gen_clean
 Use for pipeline assembly.
 
 ### 1.3 Why This Matters Now
-Manual loops/lists break laziness; itertools keeps streams efficient, enabling unbounded data and short-circuits.
+
+Generator stages are only part of a streaming design. Once students start combining them, the composition layer determines whether laziness survives. This lesson gives them a vocabulary for that layer so they can stop hand-rolling orchestration that hides demand and materialization behavior.
 
 ### 1.4 chain.from_iterable Flattens Lazily
+
+The next snippet matters because it shows composition staying lazy even while multiple sources are being stitched together.
+
 ```python
 from itertools import chain
 iter1 = (x for x in range(3))
