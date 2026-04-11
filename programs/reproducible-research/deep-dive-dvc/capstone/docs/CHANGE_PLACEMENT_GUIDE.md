@@ -1,6 +1,5 @@
 # Change Placement Guide
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -15,15 +14,16 @@ graph TD
 
 ```mermaid
 flowchart LR
-  question["Where should this change live?"] --> owner["Choose the lowest-power owner"]
+  question["Where should this change live"] --> owner["Choose the lowest-power owner"]
   owner --> proof["Update the matching proof surface"]
   proof --> review["Keep the repository legible and reviewable"]
 ```
 <!-- page-maps:end -->
 
 Use this guide when a new requirement seems valid but it is not yet obvious where it
-belongs. The goal is to keep the capstone honest by choosing the smallest ownership
-surface that can carry the change.
+belongs. The main job is to keep ownership obvious a year later: control in control
+surfaces, stage logic in stages, promoted meaning in the publish contract, and saved
+review evidence only where later inspection genuinely needs it.
 
 ## Preferred owners
 
@@ -33,16 +33,16 @@ surface that can carry the change.
 | data normalization or stage computation | `prepare.py`, `fit.py`, `evaluate.py`, or `publish.py` | matching unit test plus `make stage-summary` or `make verify` |
 | downstream trust and promoted meaning | `PUBLISH_CONTRACT.md` and `publish.py` | `make release-review` and `make verify` |
 | learner-facing summaries | `inspect.py` | `tests/test_inspect.py` and the matching Make target |
-| saved audit evidence | review-bundle targets and `scripts/write_bundle_manifest.py` | saved bundle `manifest.json` plus bundle tests |
+| saved audit evidence | review-bundle targets and `scripts/write_bundle_manifest.py` | saved bundle manifests plus bundle route files |
 | durability and restore guarantees | recovery targets and `RECOVERY_GUIDE.md` | `make recovery-drill` or `make recovery-review` |
 
-## Escalation rules
+## Placement rules
 
-1. Change `params.yaml` before adding hidden constants to Python code.
-2. Change one stage implementation before broadening the publish contract.
-3. Change the publish contract only when the downstream reviewer truly needs the new fact.
-4. Add or widen an inspect route only when a real review question is still hard to answer.
-5. Add bundle content only when it improves later review, not just because it exists locally.
+1. change `params.yaml` before adding hidden constants to Python code
+2. change one stage implementation before broadening the publish contract
+3. change the publish contract only when a downstream reviewer truly needs the new fact
+4. add or widen an inspect route only when a real review question is still hard to answer
+5. add bundle content only when it improves later review, not just because it exists locally
 
 ## What this guide prevents
 
