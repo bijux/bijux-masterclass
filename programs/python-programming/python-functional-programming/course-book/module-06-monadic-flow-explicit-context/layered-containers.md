@@ -37,7 +37,7 @@ How do you combine multiple effects (config + failure, state + failure, failure 
 
 This is the core that shows you how to stack the containers from earlier cores into real production pipelines. No magic, no heavy abstraction — just nesting and deliberate layer order.
 
-**Audience**: Engineers who have Reader, State, Result, and Option working individually and now need to combine them without introducing complexity.
+Use this when you have Reader, State, Result, and Option working individually and now need to combine them without introducing complexity.
 
 **Outcome**
 1. You will confidently nest containers like `Reader[Config, Result[T, E]]` or `State[S, Result[T, E]]`.
@@ -148,7 +148,7 @@ absent_first = transpose_result_option(query_user(id))  # Option[Result[User, Ne
 Pick the **type layer order** that matches your dominance needs.
 If a recommended stack feels hard to read, translate it into a sentence from the
 caller’s view before committing to it. That usually reveals whether the chosen outer
-layer is really the one you want readers to notice first.
+layer is really the one you want noticed first.
 
 
 ## 5. Before → After – Nested Container Handling

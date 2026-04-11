@@ -20,7 +20,7 @@ Students often already know the sequence of operations they want. What gets in t
 
 - If every step is followed by “if error, return error,” the code is repeating the container contract instead of the business logic.
 - If adding one more dependent step means editing several propagation branches, the flow is too brittle.
-- If students cannot see where the chain stops on failure, the control rule is still harder to inspect than it needs to be.
+- If you cannot see where the chain stops on failure, the control rule is still harder to inspect than it needs to be.
 
 **Core question**  
 How do you replace nested `if err/None` checks and manual error propagation with monadic `and_then` (a.k.a. `bind` or `flat_map`) — chaining dependent fallible/optional steps while automatically short-circuiting on the first failure or absence?
@@ -41,7 +41,7 @@ This lesson introduces `and_then` as the standard way to express dependent steps
 - let the container propagate failure or absence automatically
 - rely on the lawfulness of the chain so regrouping and extraction stay safe
 
-The repeated-propagation examples matter because they show the exact maintenance tax students are trying to remove.
+The repeated-propagation examples matter because they show the exact maintenance tax you are trying to remove.
 
 The naïve pattern everyone writes first:
 ```python
@@ -56,7 +56,7 @@ def embed_chunk(c: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
     return Ok(replace(c, embedding=Embedding(encoded.value, model.name)))
 ```
 
-This is the propagation smell the lesson needs students to recognize immediately.
+This is the propagation smell to recognize immediately.
 
 The production pattern leaves each step responsible only for its own transformation and lets `and_then` carry the propagation rule.
 
@@ -89,7 +89,7 @@ Note: the original `c` and `model` are captured via closure here (perfectly vali
 
 Now adding or reordering a dependent step is a localized change instead of a control-flow rewrite.
 
-**Audience**: Engineers tired of manual error propagation who want dependent pipelines that stay linear, inspectable, and safe to refactor.
+Use this when you are tired of manual error propagation and want dependent pipelines that stay linear, inspectable, and safe to refactor.
 
 **Outcome**
 1. Every nested `if err/None` replaced with `and_then`.
@@ -121,7 +121,7 @@ We explicitly **do not** use `Optional[T]` as `Option[T]` — absence is a first
 
 ## A Quick `map` vs `and_then` Check
 
-This lesson becomes much easier once students can classify the next function correctly:
+This lesson becomes much easier once you can classify the next function correctly:
 
 | Current value         | Next function returns | Honest choice |
 |-----------------------|-----------------------|---------------|

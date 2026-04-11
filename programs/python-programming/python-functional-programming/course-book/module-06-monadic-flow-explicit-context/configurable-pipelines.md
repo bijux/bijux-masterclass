@@ -44,12 +44,12 @@ branching anywhere in the system. It means:
 - the builder or configuration boundary chooses which wrappers to apply
 - the resulting pipeline runs as one coherent flow for the chosen config
 
-That distinction helps students read the example correctly. The config-dependent
+That distinction helps you read the example correctly. The config-dependent
 branching belongs at pipeline construction time, not inside every business step.
 
 This is the true capstone of Module 6. You now have every tool required to ship real-world pipelines that are pure, composable, observable, refactor-safe, and fully configurable with a single config value.
 
-**Audience**: Engineers who want their beautiful monadic pipelines to actually run in production with different behaviours for dev/prod/test — without compromising on purity or testability.
+Use this when you want monadic pipelines to run in production with different behaviours for dev/prod/test without compromising purity or testability.
 
 **Outcome**
 1. You will toggle validation, logging, and metrics with small, composable combinators.

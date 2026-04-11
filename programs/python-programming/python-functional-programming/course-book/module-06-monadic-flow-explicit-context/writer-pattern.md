@@ -37,7 +37,7 @@ How do you add rich, ordered logging/tracing/metrics to monadic pipelines in a c
 
 This is the core that finally gives you production-grade observability without sacrificing purity. After this core, every pipeline you write can emit detailed, deterministic logs/metrics that are fully testable — with zero `print`, zero global loggers, and zero hidden side effects.
 
-**Audience**: Engineers who need observability in production pipelines but refuse to compromise on purity and testability.
+Use this when you need observability in production pipelines but refuse to compromise on purity and testability.
 
 **Outcome**
 1. You will add logging/tracing with `tell` and `listen`.

@@ -41,7 +41,7 @@ This is the core that finally draws the hard line:
 
 After this core you will never again scatter ad-hoc `except Exception` blocks through your code or turn a programming bug into a domain `Err`. All catching is centralized in boundary helpers, and bugs are forced to propagate by disciplined `map_exc` functions.
 
-**Audience**: Engineers who are tired of "exception swallowing" bugs and want a provable contract that domain errors stay typed while real anomalies crash early.
+Use this when you are tired of "exception swallowing" bugs and want a provable contract that domain errors stay typed while real anomalies crash early.
 
 **Outcome**
 1. You will know exactly where to place `try_result` / `result_map_try` — only at true effect boundaries.

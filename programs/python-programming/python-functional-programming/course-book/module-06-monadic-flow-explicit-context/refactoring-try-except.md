@@ -37,7 +37,7 @@ How do you systematically refactor the inevitable `try/except` + `if None` spagh
 
 This is the core where you finally pay off the promise of the entire module: you take real, ugly, production-grade imperative error handling and turn it into pure, lawful, beautiful FP — with mechanical proof that the public contract is identical.
 
-**Audience**: Engineers who know the theory but still have a codebase full of nested try/except and want a repeatable, safe refactoring process.
+Use this when you know the theory but still have a codebase full of nested try/except and want a repeatable, safe refactoring process.
 
 **Outcome**
 1. You will have a mechanical 6-step process for turning any try/except mess into a monadic pipeline.

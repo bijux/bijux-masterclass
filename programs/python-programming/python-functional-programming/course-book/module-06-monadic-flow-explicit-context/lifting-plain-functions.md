@@ -16,7 +16,7 @@ This lesson should make lifting feel like a small practical decision rather than
 
 ## Start With the Choice Problem
 
-After learning `and_then`, students often hit a different kind of uncertainty: the function is plain Python, so which operation should carry it into the container flow?
+After learning `and_then`, you often hit a different kind of uncertainty: the function is plain Python, so which operation should carry it into the container flow?
 
 - If the function transforms a successful value without changing the container type, it usually belongs under `map`.
 - If the function itself returns a container, then `and_then` is usually the honest choice.
@@ -43,7 +43,7 @@ That split removes most of the confusion:
 - dependent next step -> usually `.and_then`
 - independent combination -> usually `liftA2` or `v_liftA2`
 
-**Audience**: Engineers who are done writing `if isinstance(x, Err): return x` 47 times and want a small, reliable decision framework for container-aware composition.
+Use this when you are done writing `if isinstance(x, Err): return x` 47 times and want a small, reliable decision framework for container-aware composition.
 
 **Outcome**
 1. You will reach for `.map`, `.map_err`, `.and_then`, or `liftA2` instinctively.

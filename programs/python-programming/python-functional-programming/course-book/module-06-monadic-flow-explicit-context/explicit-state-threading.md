@@ -37,7 +37,7 @@ How do you handle the last remaining effect — local mutable state — in a pur
 
 This is the final effect-encoding pattern. After this core, every pipeline you write will be completely pure, referentially transparent, and mechanically proven correct — while still being able to count tokens, accumulate metadata, or track progress.
 
-**Audience**: Engineers who need counters, accumulators, or temporary mutable state inside pipelines but refuse to pay the price of globals or hidden mutation.
+Use this when you need counters, accumulators, or temporary mutable state inside pipelines but refuse to pay the price of globals or hidden mutation.
 
 **Outcome**
 1. You will write every stateful pipeline as a pure `State[S, T]`.

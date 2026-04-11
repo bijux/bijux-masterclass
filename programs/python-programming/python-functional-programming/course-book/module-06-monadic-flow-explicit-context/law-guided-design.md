@@ -31,9 +31,9 @@ This lesson introduces laws as executable specifications:
 - encode that behavior as property tests over realistic function families
 - use shrinking and CI to turn abstract guarantees into concrete feedback when something breaks
 
-The central point for students is simple: laws are the reason “safe to refactor” can mean more than “I reran a couple of examples.”
+The central point is simple: laws are the reason “safe to refactor” can mean more than “I reran a couple of examples.”
 
-**Audience**: Engineers who already write `and_then` chains and want mechanical confidence, not hope, that those chains remain safe under refactoring.
+Use this when you already write `and_then` chains and want mechanical confidence, not hope, that those chains remain safe under refactoring.
 
 **Outcome**
 1. You will have a reusable, DRY test suite that machine-checks monad/functor laws for Result and Option.
@@ -55,7 +55,7 @@ The laws protect the composition machinery. They do **not** prove that:
 - the chosen error messages or error codes are useful
 - a refactor preserved every business-level side condition outside the modeled function family
 
-That distinction matters for students because “lawful” and “correct for the product” are
+That distinction matters because “lawful” and “correct for the product” are
 not the same claim. This page is about the first claim, while the rest of the codebase
 still needs ordinary example-based and domain-focused tests for the second.
 

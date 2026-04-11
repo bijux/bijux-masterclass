@@ -16,24 +16,24 @@ This lesson should make Reader feel like a dependency-visibility tool, not a cle
 
 ## Start With the Hidden Dependency Problem
 
-By this point students can chain fallible steps well, but they may still be smuggling models, tokenizers, or config through closure capture. Reader matters when that hidden context starts making tests and reviews harder.
+By this point you can chain fallible steps well, but you may still be smuggling models, tokenizers, or config through closure capture. Reader matters when that hidden context starts making tests and reviews harder.
 
 - If dependencies are captured invisibly, the call site no longer tells the truth about what the pipeline needs.
 - If swapping one config or service requires rebuilding a whole chain manually, the dependency story is too implicit.
-- If students cannot tell which parts of the environment a step actually reads, the abstraction is still hiding too much.
+- If you cannot tell which parts of the environment a step actually reads, the abstraction is still hiding too much.
 
 **Core question**  
 How do you completely eliminate closure-captured variables and globals from monadic pipelines by making configuration an explicit, typed, injectable dependency — giving you pure, testable, refactor-safe code that scales from 3 lines to 300 without ever hiding a dependency again?
 
-This lesson introduces Reader as the explicit-context version of patterns students have already seen:
+This lesson introduces Reader as the explicit-context version of patterns you have already seen:
 
 - keep the pipeline pure while still depending on shared configuration
 - expose the environment in the type and combinator structure
 - make swapping environments a call-site concern instead of a hidden construction trick
 
-The earlier closure examples matter because Reader is easiest to understand as a disciplined replacement for patterns students already use.
+The earlier closure examples matter because Reader is easiest to understand as a disciplined replacement for patterns you already use.
 
-**Audience**: Engineers who have tasted the power of `.and_then` chains but are still fighting hidden dependencies that break tests and refactors.
+Use this when you have tasted the power of `.and_then` chains but are still fighting hidden dependencies that break tests and refactors.
 
 **Outcome**
 1. You will write every config-dependent pipeline as a pure `Reader[Config, T]`.
