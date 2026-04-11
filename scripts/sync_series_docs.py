@@ -14,6 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PROGRAMS_DIR = REPO_ROOT / "programs"
 TARGET_ROOT = REPO_ROOT / "docs" / "library"
 PROJECT_DOCS_DIRNAME = "project-docs"
+PROJECT_DOCS_MANIFEST = "project-docs-manifest.txt"
 SKIP_PARTS = {
     ".pytest_cache",
     "__pycache__",
@@ -67,17 +68,37 @@ def slugify_path_part(value: str) -> str:
 
 
 def project_doc_target_path(relative_path: Path) -> Path:
+    if relative_path == Path(PROJECT_DOCS_DIRNAME) / "index.md":
+        return Path(PROJECT_DOCS_DIRNAME) / "index.md"
+
     if relative_path == Path("README.md"):
         return Path(PROJECT_DOCS_DIRNAME) / "index.md"
 
     name_parts = [slugify_path_part(part) for part in relative_path.parts[:-1]]
     if relative_path.parts and relative_path.parts[0] == "docs":
         name_parts = []
+    elif relative_path.parts and relative_path.parts[0] == PROJECT_DOCS_DIRNAME:
+        name_parts = [slugify_path_part(part) for part in relative_path.parts[1:-1]]
     name_parts.append(slugify_path_part(relative_path.stem))
     return Path(PROJECT_DOCS_DIRNAME) / ("-".join(name_parts) + ".md")
 
 
 def project_doc_sources(capstone_dir: Path) -> list[Path]:
+    manifest_path = capstone_dir / PROJECT_DOCS_MANIFEST
+    if manifest_path.exists():
+        sources: list[Path] = []
+        for raw_line in manifest_path.read_text(encoding="utf-8").splitlines():
+            line = raw_line.split("#", 1)[0].strip()
+            if not line:
+                continue
+            source_path = capstone_dir / line
+            if source_path.suffix != ".md":
+                raise ValueError(f"{manifest_path} must list markdown files only: {line}")
+            if not source_path.exists():
+                raise FileNotFoundError(f"{manifest_path} references a missing file: {line}")
+            sources.append(source_path)
+        return sources
+
     sources: list[Path] = []
 
     readme_path = capstone_dir / "README.md"
