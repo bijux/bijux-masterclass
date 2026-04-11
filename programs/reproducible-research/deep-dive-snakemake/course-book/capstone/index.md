@@ -29,7 +29,7 @@ corroboration once the local idea is already clear.
 | --- | --- | --- |
 | what does this repository promise | [Capstone Walkthrough](capstone-walkthrough.md) | [Capstone File Guide](capstone-file-guide.md) |
 | which files and commands are publicly important | [Command Guide](command-guide.md) | [Capstone Proof Guide](capstone-proof-guide.md) |
-| what is safe for downstream trust | [Publish Review Guide](publish-review-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| what is safe for downstream trust | [Capstone Review Worksheet](capstone-review-worksheet.md) | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
 | what differs across local, CI, and scheduler policy | [Profile Audit Guide](profile-audit-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | how should I review the repository as a steward | [Capstone Review Worksheet](capstone-review-worksheet.md) | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
 
@@ -93,7 +93,7 @@ repository, and the terms here keep those routes distinct.
 | [Command Guide](command-guide.md) | choose the right command layer and first command |
 | [Capstone File Guide](capstone-file-guide.md) | know which repository files matter first and why |
 | [Capstone Proof Guide](capstone-proof-guide.md) | choose the shortest honest proof route |
-| [Publish Review Guide](publish-review-guide.md) | review the downstream trust surface |
+| [Capstone Review Worksheet](capstone-review-worksheet.md) | review the downstream trust surface and stewardship route |
 | [Profile Audit Guide](profile-audit-guide.md) | review local, CI, and scheduler policy drift |
 | [Capstone Review Worksheet](capstone-review-worksheet.md) | review the repository as a steward, not only as a learner |
 | [Capstone Extension Guide](capstone-extension-guide.md) | evolve the repository without weakening its teaching or review value |

@@ -91,7 +91,7 @@ Best corroboration surfaces for this module:
 - `capstone/workflow/rules/publish.smk`
 - `capstone/workflow/contracts/FILE_API.md`
 - `capstone/publish/v1/`
-- [Publish Review Guide](../capstone/publish-review-guide.md)
+- [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md)
 
 Useful proof route:
 

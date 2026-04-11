@@ -33,7 +33,7 @@ pressure, or workflow debugging with evidence instead of intuition.
 
 1. Read [Capstone Walkthrough](capstone-walkthrough.md).
 2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command for the current symptom.
-3. Compare the result with [Profile Audit Guide](profile-audit-guide.md) and [Publish Review Guide](publish-review-guide.md) if the problem spans multiple boundaries.
+3. Compare the result with [Profile Audit Guide](profile-audit-guide.md) and [Capstone Review Worksheet](capstone-review-worksheet.md) if the problem spans multiple boundaries.
 
 [Back to top](#top)
 

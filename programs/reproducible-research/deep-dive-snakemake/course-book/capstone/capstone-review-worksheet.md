@@ -80,8 +80,24 @@ Best evidence:
 
 - `capstone/publish/v1/`
 - `capstone/workflow/contracts/FILE_API.md`
-- [Publish Review Guide](publish-review-guide.md)
 - verify-report bundle surfaces
+
+[Back to top](#top)
+
+### Publish review route
+
+Use this route when the question is not merely "did the workflow run?" but "what is the
+stable published contract and how is it defended?"
+
+1. Read [Capstone File Guide](capstone-file-guide.md).
+2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`.
+3. Compare the report bundle with this worksheet and [Proof Matrix](../guides/proof-matrix.md).
+
+A good publish review should answer:
+
+- which promoted files belong to the public contract
+- which proofs are about publish trust rather than workflow execution generally
+- which future change would require a versioned publish boundary change
 
 [Back to top](#top)
 

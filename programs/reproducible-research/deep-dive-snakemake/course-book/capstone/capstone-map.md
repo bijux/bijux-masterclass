@@ -41,7 +41,7 @@ Return to the module first if:
 | what this repository promises | [Capstone Guide](index.md) | [Capstone Walkthrough](capstone-walkthrough.md) |
 | which repository surface matches the current module | the table below | [Capstone File Guide](capstone-file-guide.md) |
 | which command should prove the current claim | [Command Guide](command-guide.md) | [Capstone Proof Guide](capstone-proof-guide.md) |
-| what is safe for downstream trust | [Publish Review Guide](publish-review-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| what is safe for downstream trust | [Capstone Review Worksheet](capstone-review-worksheet.md) | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
 | what differs across execution contexts | [Profile Audit Guide](profile-audit-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
 ## Choose the route by module arc
