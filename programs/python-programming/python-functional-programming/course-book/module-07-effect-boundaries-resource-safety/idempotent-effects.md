@@ -134,7 +134,9 @@ def idempotent_write(
             wrote = atomic.write_if_absent(key, iter(cs))
             return Ok(Err(wrote.error)) if isinstance(wrote, Err) else Ok(Ok(None))
 
-        # Subsequent retries/replays are O(1) w.r.t. data size
+        # This behavior materializes and hashes once per logical call to behaviour(...).
+        # If an outer retry wrapper rebuilds the behaviour on each attempt, that work is
+        # repeated unless the caller memoizes the materialized chunks separately.
         return io_delay(act)
     return behaviour
 ```
@@ -247,7 +249,10 @@ Idempotence is verified with a deterministic fake capability in `capstone/tests/
 | Key computation   | O(n) | O(1)       | O(n) | O(n)       |
 | Atomic check-act  | O(1) | O(1)       | O(1) | O(1)       |
 
-Materialization + hashing is O(n) once per logical call; subsequent retries/replays are O(1) w.r.t. data size.
+Materialization + hashing are O(n) per call to `idempotent_write(...)(chunks)`. If a
+retry wrapper reconstructs that behavior on each attempt, the materialization and hash
+work repeat too. The idempotency win is about **correctness under replay**, not a free
+performance shortcut.
 
 ## 7. Anti-Patterns & Immediate Fixes
 
