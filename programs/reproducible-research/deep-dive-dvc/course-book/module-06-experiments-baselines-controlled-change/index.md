@@ -1,324 +1,138 @@
 # Module 06: Experiments, Baselines, and Controlled Change
 
+Module 06 turns reproducibility into a way to explore safely.
 
-<!-- page-maps:start -->
-## Module Position
+Earlier modules made the baseline more trustworthy: data has identity, runtime influence
+is visible, pipeline edges are declared, and metric meaning is reviewable. That does not
+mean the team should stop changing the workflow. It means change needs a clean boundary.
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 06: Experiments, Baselines, and Controlled Change"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
-```
+This module is about disciplined exploration:
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+- what makes a baseline authoritative
+- what makes an experiment comparable to that baseline
+- what DVC experiments help record
+- where experiment isolation ends
+- how a candidate result becomes a deliberate promotion instead of a lucky local run
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+The central learner question is:
 
-*Exploration as a first-class, auditable, and reversible process*
+> What changed, where was it declared, and can this result be compared or promoted without
+> corrupting the baseline story?
 
----
+If the answer is still "I tried a few things locally," the workflow has left the course's
+evidence model.
 
-## Purpose of this Module
+The capstone corroboration surface for this module is the set of files and commands that
+make experiment review visible: `capstone/params.yaml`, `capstone/metrics/metrics.json`,
+`capstone/publish/v1/params.yaml`, `capstone/docs/EXPERIMENT_GUIDE.md`,
+`capstone/docs/PREDICTION_REVIEW_GUIDE.md`, `capstone/docs/RELEASE_REVIEW_GUIDE.md`, and
+the `make -C capstone experiment-review` route.
 
-This module is where the course stops treating reproducibility as only preservation and
-starts treating it as controlled change. A trustworthy baseline is valuable only if a
-team can explore without damaging the history that made the baseline trustworthy.
+## Why this module exists
 
-Use this module to answer one practical question: how do you let experiments vary the
-system while keeping lineage, comparability, and reversal intact? If the answer is still
-"we tried a few things locally," the repository is not ready for promotion or review.
+Experimentation is where many reproducible workflows become informal again.
 
-## At a Glance
+Common failure patterns look ordinary:
 
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| comparable exploration | "What makes an experiment different but still comparable?" | use the capstone after baseline state already feels stable |
-| reversible change | "How do I explore without corrupting the main state story?" | inspect params, metrics, and publish state together |
-| declared variation | "Which experiment changes belong in the control surface?" | avoid treating local tweaks as legitimate lineage |
+- changing a threshold locally and forgetting which run produced the better metric
+- copying a script to try a new model family
+- mixing data changes with parameter changes and calling the result one experiment
+- keeping a strong result in the workspace without a promotion review
+- promoting a result because it had the best metric, while ignoring comparability limits
 
-## Learning outcomes
+Those are not just organization problems. They erase lineage. They make later release and
+collaboration decisions depend on memory instead of evidence.
 
-- explain what makes an experiment comparable, reversible, and promotable instead of merely different
-- distinguish controlled experiment variation from baseline-changing boundary work
-- defend why local folklore is not an acceptable experiment lineage story
+The point of Module 06 is not to make exploration slow. The point is to let exploration
+happen without damaging the baseline that makes comparison possible.
 
-## Verification route
-
-- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` to inspect baseline params, baseline metrics, and comparable experiment records together.
-- Compare one candidate experiment against the baseline and decide whether it is reversible, comparable, and ready for promotion review.
-- Use the invariants checklist at the end of the module as the exit bar before moving into collaboration and CI policy.
-
-## Why this module matters in the course
-
-This is where many teams destroy the discipline they built in earlier modules. Once the
-baseline becomes trustworthy, the urge to explore returns: new thresholds, new features,
-different preprocessing, maybe a changed split strategy. That pressure is normal.
-
-The pedagogical point of this module is that experimentation is not an exception to
-reproducibility. It is one of the places where reproducibility is most likely to fail.
-
-## Questions this module should answer
-
-By the end of the module, you should be able to answer:
-
-- What makes an experiment comparable to the baseline instead of merely different?
-- Which changes belong inside controlled experiment runs, and which require a new baseline?
-- Why is "I tried a few things locally" not an acceptable lineage story?
-- How do experiments stay reversible without cluttering or corrupting main history?
-
-If those answers are still weak, later promotion and governance rules will feel arbitrary.
-
-This module should make experimentation feel more disciplined, not less flexible.
-
-## What to inspect in the capstone
-
-Keep the capstone open while reading this module and inspect:
-
-- `params.yaml` as the declared experiment surface
-- `metrics/metrics.json` as the comparison output
-- `publish/v1/params.yaml` as the promoted parameter contract
-- the recovery and verification targets as a reminder that experiments do not exempt the repository from proof
-
-The capstone is intentionally small, but it should still let you answer the question:
-"What changed, where was it declared, and why is this run still comparable?"
-
----
-
-## 6.1 The Fundamental Conflict: Exploration Versus Provenance
-
-Exploration and provenance exert opposing forces: the former demands agility, iterative flexibility, and liberty, while the latter necessitates constancy, traceability, and rigor.
-
-Many machine learning (ML) teams implicitly favor exploration through informal methods—notebook-based trials, script duplications, directory renamings, or reliance on recollection—yielding outcomes at the expense of lineage traceability.
-
-DVC experiments formalize this process, preserving contractual obligations without compromise.
-
-**Illustration**:
+## Study route
 
 ```mermaid
-graph LR
-  exploration["Exploration<br/>Speed<br/>Iteration<br/>Freedom"]
-  provenance["Provenance<br/>Stability<br/>Traceability<br/>Discipline"]
-  balance["DVC Experiments<br/>Formalized<br/>Contract-Preserving"]
-  loss["Potential Lineage Loss"]
-  constraints["Exploration Constraints"]
-  exploration --> loss
-  provenance --> constraints
-  exploration --> balance
-  provenance --> balance
+flowchart LR
+  overview["Overview"] --> core1["Core 1: baseline authority"]
+  core1 --> core2["Core 2: experiment scope"]
+  core2 --> core3["Core 3: DVC experiment mechanics"]
+  core3 --> core4["Core 4: comparison and selection"]
+  core4 --> core5["Core 5: promotion and cleanup"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
----
+Read the module in that order the first time.
 
-## 6.2 Formal Conception of an Experiment
+If the problem is already partly clear, use this shortcut:
 
-An experiment does **not** equate to a Git branch, notebook, or ephemeral script.
+- open Core 1 when the main confusion is "what is the baseline protecting?"
+- open Core 2 when the main confusion is "what belongs in one experiment?"
+- open Core 3 when the main confusion is "what do DVC experiments record and isolate?"
+- open Core 4 when the main confusion is "which candidate is actually comparable?"
+- open Core 5 when the main confusion is "how does a candidate become history safely?"
 
-Within DVC, it denotes: **A provisional pipeline execution with altered inputs, documented sans modification to primary history.**
+## Module map
 
-Essential attributes include:
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `baseline-authority-and-experiment-intent.md` | teaches how a baseline anchors controlled exploration |
+| `experiment-scope-and-change-boundaries.md` | teaches which changes belong in one experiment and which require stronger review |
+| `dvc-experiment-records-and-isolation.md` | teaches what DVC experiments record, compare, and keep separate |
+| `comparing-experiments-and-selecting-candidates.md` | teaches candidate comparison without metric cherry-picking |
+| `promotion-cleanup-and-history-integrity.md` | teaches deliberate promotion, discard, and baseline protection |
+| `worked-example-promoting-a-controlled-threshold-experiment.md` | walks through one realistic experiment review |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
-- Identical pipeline architecture.
-- Variations in parameters, data, or code.
-- Segregation from the principal branch.
-- Comprehensive comparability and reproducibility.
+## What should be clear by the end
 
-Violations of these criteria reclassify the activity as technical debt, not a legitimate experiment.
+By the end of this module, you should be able to explain:
 
----
+- what makes a baseline authoritative enough for experiment comparison
+- how to keep one experiment focused on a reviewable change
+- what DVC experiments add beyond ordinary Git branch history
+- how to compare candidate runs without ignoring metric meaning
+- why promotion requires evidence, not only a better number
+- how cleanup protects learners from stale local folklore
 
-## 6.3 Limitations of Git Branches in Isolation
+## Commands to keep close
 
-Git branches effectively sequester code, maintain historical records, and enable concurrent development. However, they fall short in:
+These commands form the evidence loop for Module 06:
 
-- Cleanly isolating data versions.
-- Facilitating metric comparisons.
-- Averting inadvertent promotions.
-- Documenting execution origins.
-
-Exclusive dependence on Git branches for ML trials precipitates branch proliferation, contextual erosion, and queries such as "Which branch yielded the optimal outcome?"
-
-DVC experiments augment Git, operating at a higher abstraction level.
-
----
-
-## 6.4 Conceptual Framework of DVC Experiments
-
-DVC introduces a dual-axis execution paradigm:
-
-- **Mainline History**: Governed by Git commits.
-- **Experimental Domain**: Transient executions.
-
-An experiment involves pipeline invocation, input/output/metric logging, and preservation of the current commit's integrity, with capabilities for listing, differencing, and comparison.
-
-This structure supports rapid cycles, secure evaluations, and intentional elevations, precluding accidental integrations.
-
-**Example Workflow**:
-```
-$ dvc exp run --set-param train.learning_rate=0.005
-$ dvc exp list
-$ dvc exp diff
+```bash
+make -C capstone experiment-review
+make -C capstone prediction-review
+dvc exp run
+dvc exp show
+dvc exp diff
+dvc exp apply
 ```
 
----
+Use the `make` routes for the course-provided capstone review. Use the `dvc exp` commands
+inside a DVC workspace when you want to inspect candidate runs directly.
 
-## 6.5 Assurances of Isolation and Their Boundaries
+## Capstone route
 
-DVC experiments provide:
+Use the capstone after you can explain what the baseline promises.
 
-- Detachment from Git chronology.
-- Autonomous parameter configurations.
-- Distinct metric repositories.
+Best corroboration surfaces for this module:
 
-They exclude:
+- `capstone/params.yaml`
+- `capstone/metrics/metrics.json`
+- `capstone/publish/v1/params.yaml`
+- `capstone/publish/v1/metrics.json`
+- `capstone/docs/EXPERIMENT_GUIDE.md`
+- `capstone/docs/PREDICTION_REVIEW_GUIDE.md`
+- `capstone/docs/RELEASE_REVIEW_GUIDE.md`
 
-- Safeguards against environmental variances.
-- Protections from semantic errors.
-- Assurances of sound experimental methodology.
+Useful proof route:
 
-Thus, experiments uphold mechanical fidelity while deferring to human discernment.
-
----
-
-## 6.6 The Imperative Experiment Lifecycle
-
-Each experiment must culminate in one of three resolutions: promotion, archival, or discard. Deviations foster obsolescence.
-
-### Creation Phase
-- Modify inputs (parameters, data, code).
-- Execute the experiment.
-- Capture resultant artifacts.
-
-### Evaluation Phase
-- Contrast metrics.
-- Examine differences.
-- Validate semantic coherence.
-
-### Decision Phase
-- Intentionally promote or explicitly discard.
-
-Undecided experiments accrue as liabilities.
-
-**Illustration**:
-
-```mermaid
-graph LR
-  creation["Creation<br/>Input Changes<br/>Run<br/>Record"]
-  evaluation["Evaluation<br/>Compare<br/>Inspect<br/>Assess"]
-  decision["Decision<br/>Promote<br/>Archive<br/>Discard"]
-  creation --> evaluation --> decision
+```bash
+make -C capstone experiment-review
+make -C capstone release-audit
 ```
 
----
-
-## 6.7 Promotion as a Deliberate Governance Procedure
-
-Promotion represents the most precarious juncture, conferring authority, historical integration, and downstream dependencies upon the experiment.
-
-It mandates:
-
-- Reproducibility confirmation.
-- Metric substantiation.
-- Peer scrutiny where pertinent.
-
-Unverified promotions entrench suboptimal results.
-
-**Example Promotion Command** (with verification):
-```
-$ dvc exp show  # Review metrics
-$ dvc exp apply <exp-id>  # Promote to workspace
-$ git commit -m "Promote verified experiment"
-```
-
----
-
-## 6.8 Defining a Reproducible Experiment
-
-A reproducible experiment permits clean-machine re-execution, yields equivalent metrics, features declared inputs, and adheres to pipeline invariants.
-
-Non-reproducible instances warrant rejection from promotion, with precedence given to pipeline or environmental rectification. This stringent criterion sustains systemic coherence.
-
----
-
-## 6.9 Prevalent Anti-Patterns
-
-### Persistent Experiments
-Undecided lingering experiments devolve into ersatz branches, obfuscating history.
-
-### Tacit Promotion
-Retaining results sans formal assimilation erodes provenance.
-
-### Selective Metric Emphasis
-Prioritizing singular metrics absent semantic oversight engenders spurious assurance.
-
-### Notebook-Centric Inquiry
-Non-reproducible endeavors are nonexistent.
-
----
-
-## 6.10 Failure Modes and Analyses
-
-| Symptom                    | Interpretation                 |
-| -------------------------- | ------------------------------ |
-| Experiment Overabundance   | Decision-making laxity         |
-| Irreproducible Optimal Run | Environmental/dependency infiltration |
-| Incomparable Metrics       | Semantic divergence            |
-| Mainline Contamination     | Unverified promotion           |
-
-These signify governance deficiencies, not instrumental flaws.
-
----
-
-## 6.11 Applied Exercise
-
-Execute systematically:
-1. Conduct three experiments: one superior, one inferior, one equivocal.
-2. For each: Document inputs, compare metrics, determine disposition.
-3. Promote solely one.
-
-Inability to articulate promotion rationale in documentation signals unpreparedness for automation.
-
-**Guidance**: Leverage `dvc exp run` with varied parameters; record in a structured log for traceability.
-
----
-
-## 6.12 Essential Conceptual Paradigm
-
-> **Experiments are ephemeral; history is inviolable.**
-
-Equating all elements with significance undermines reliability.
-
----
-
-## Module 06: Invariants Checklist
-
-Confirm:
-
-- [ ] Experiments segregated from primary history.
-- [ ] Defined resolutions for all experiments.
-- [ ] Deliberate, verifiable promotions.
-- [ ] Rejection of irreproducible experiments.
-- [ ] Preservation of provenance amid exploration.
-
-Resolve negotiability prior to advancement.
-
----
-
-## Transition to Module 07
-
-Individual operations are now viable. However, systemic failures arise from interpersonal dynamics: omitted data pushes, forceful branch overwrites, main-branch experimentations.
-
-Module 07 addresses this reality: **Reproducibility constitutes a social challenge mitigated through technical mechanisms.**
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is not to celebrate variation. It is to ask whether a candidate
+run changed a declared control, stayed comparable to the baseline, and deserves any
+promotion discussion at all.
