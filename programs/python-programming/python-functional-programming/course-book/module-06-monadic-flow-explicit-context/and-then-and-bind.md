@@ -25,6 +25,16 @@ Students often already know the sequence of operations they want. What gets in t
 **Core question**  
 How do you replace nested `if err/None` checks and manual error propagation with monadic `and_then` (a.k.a. `bind` or `flat_map`) — chaining dependent fallible/optional steps while automatically short-circuiting on the first failure or absence?
 
+## The Fast Choice Rule
+
+Students usually need one practical test before they need more vocabulary:
+
+- use `.map(f)` when `f` returns a plain value and stays inside the current success path
+- use `.and_then(f)` when `f` already returns the same container and may short-circuit the rest of the flow
+
+That distinction is the whole reason `and_then` removes propagation boilerplate instead of
+just moving it around.
+
 This lesson introduces `and_then` as the standard way to express dependent steps over fallible or optional values:
 
 - keep the success path linear and readable
@@ -65,6 +75,16 @@ def embed_chunk(c: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
     )
 ```
 
+Read that chain left to right:
+
+1. start with the chunk text inside `Ok(...)`
+2. call `tokenize`, which may return `Err`
+3. call `model.encode`, which may return `Err`
+4. rebuild the chunk only if both earlier steps succeeded
+
+The chain stays linear because each step is only responsible for its own work. The
+container is responsible for the stop-on-failure rule.
+
 Note: the original `c` and `model` are captured via closure here (perfectly valid). We will replace this exact pattern with a Reader monad in M06C04 so dependencies are explicit and testable.
 
 Now adding or reordering a dependent step is a localized change instead of a control-flow rewrite.
@@ -98,6 +118,19 @@ The failing step short-circuits automatically — no manual checks.
 - **Linear happy path**: Success case reads top-to-bottom with no nesting — the code finally matches the mental model.
 
 We explicitly **do not** use `Optional[T]` as `Option[T]` — absence is a first-class ADT (`Some[T] | NoneVal`) with its own lawful `and_then`.
+
+## A Quick `map` vs `and_then` Check
+
+This lesson becomes much easier once students can classify the next function correctly:
+
+| Current value         | Next function returns | Honest choice |
+|-----------------------|-----------------------|---------------|
+| `Result[T, E]`        | `U`                   | `.map`        |
+| `Result[T, E]`        | `Result[U, E]`        | `.and_then`   |
+| `Option[T]`           | `U`                   | `.map`        |
+| `Option[T]`           | `Option[U]`           | `.and_then`   |
+
+That table is worth keeping in mind while reading the larger API and law sections below.
 
 ## 1. Laws & Invariants (machine-checked)
 
