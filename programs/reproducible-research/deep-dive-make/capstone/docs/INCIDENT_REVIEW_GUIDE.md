@@ -2,7 +2,6 @@
 
 # Incident Review Guide
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -21,88 +20,86 @@ graph LR
 
 ```mermaid
 flowchart LR
-  case["Run incident-audit"] --> symptom["Read the captured failure"]
-  symptom --> cause["Map it to the defect class"]
-  cause --> repair["Name the repair rule"]
-  repair --> capstone["Return to the main capstone boundary"]
+  case["Run incident-audit"] --> evidence["Read the captured command and run output"]
+  evidence --> specimen["Inspect the copied repro makefile"]
+  specimen --> repair["Map the defect to the repair surfaces"]
+  repair --> proof["Return to the production proof route"]
 ```
 <!-- page-maps:end -->
 
-Use this guide when you want one executed failure bundle instead of a list of repro file
-names. The point is to study a defect class with evidence, not to admire a broken
-Makefile in isolation.
+Use this guide when you want one executed failure bundle instead of scanning the whole
+repro pack. The point is to study one defect class with concrete evidence and then route
+that lesson back into the real capstone.
 
 ---
 
-## Reading Order
+## Reading order
 
 Read an incident bundle in this order:
 
 1. `route.txt`
-2. `README.md`
-3. `repro-case.mk`
-4. `command.txt`
-5. `output.txt`
-6. `summary.txt`
-7. `PROOF_GUIDE.md`
-8. `review-questions.txt`
+2. `command.txt`
+3. `run.txt`
+4. `exit-status.txt`
+5. the copied repro makefile
+6. `repair-surfaces.txt`
+7. `REPRO_GUIDE.md`
+8. `PROOF_GUIDE.md`
 
-That route keeps the failure specimen ahead of the explanation, so you do not mistake
-the summary for the evidence.
+This keeps observed behavior ahead of interpretation.
 
 [Back to top](#top)
 
 ---
 
-## What Each Surface Gives You
+## What each surface gives you
 
 | File | Why it exists |
 | --- | --- |
-| `repro-case.mk` | the smallest preserved defect specimen |
-| `command.txt` | the exact command used to reproduce the incident |
-| `output.txt` | the concrete failure output or race symptom |
-| `summary.txt` | the named defect class and the repair lesson |
-| `PROOF_GUIDE.md` | the matching proof route in the real capstone |
-| `review-questions.txt` | prompts that force a learner to name cause and repair |
+| `command.txt` | records the exact command used to execute the incident |
+| `run.txt` | captures the output produced during the incident run |
+| `exit-status.txt` | records whether the failure surfaced as a non-zero exit or only as suspicious output |
+| copied repro makefile | preserves the smallest defect specimen used for this bundle |
+| `repair-surfaces.txt` | points back to the real build surfaces that model the repair honestly |
+| `REPRO_GUIDE.md` | places the defect inside the broader repro catalog |
+| `PROOF_GUIDE.md` | maps the repaired claim back to the production proof route |
 
 [Back to top](#top)
 
 ---
 
-## What A Good Incident Review Should Answer
+## What a good incident review should answer
 
-By the end of one incident review, you should be able to say:
+By the end of one bundle review, you should be able to say:
 
-* which output or edge was modeled dishonestly
-* whether the failure depends on `-j` or is visible in serial mode
-* which repair belongs in the main capstone rather than in the repro itself
-* which target in the real capstone would prove the repaired property
+- which output, edge, or boundary was modeled dishonestly
+- whether the defect depends on scheduling or appears in serial mode too
+- which repair belongs in the real capstone rather than in the teaching repro
+- which proof route would confirm the repaired behavior in production
 
 [Back to top](#top)
 
 ---
 
-## Best Incident Sequence
+## Good sequence for new readers
 
-If you are new to the repro pack, use this order:
+If the repro pack is new, start with incidents in this order:
 
 1. shared mutable output
 2. directory creation race
 3. order-only misuse
 4. generated-header modeling
 
-That sequence moves from visibly broken outcomes to more subtle graph lies.
+That sequence moves from obvious corruption toward subtler graph lies.
 
 [Back to top](#top)
 
 ---
 
-## Companion Surfaces
+## Companion surfaces
 
-Use these when the incident bundle raises a bigger question:
-
-* `REPRO_GUIDE.md` for the broader failure-class catalog
-* `PROOF_GUIDE.md` for the corresponding production proof routes
-* `ARCHITECTURE.md` when the repair depends on ownership boundaries
+- `REPRO_GUIDE.md`
+- `PROOF_GUIDE.md`
+- `ARCHITECTURE.md`
 
 [Back to top](#top)
