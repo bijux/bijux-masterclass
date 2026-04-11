@@ -132,6 +132,15 @@ nav:
           - Glossary: module-05-portability-hermeticity-failure-modes/glossary.md
       - "Module 06: Generated Files and Pipeline Boundaries":
           - Overview: module-06-generated-files-multi-output-pipeline-boundaries/index.md
+          - Generated Files as Graph Targets: module-06-generated-files-multi-output-pipeline-boundaries/generated-files-as-graph-targets.md
+          - Multi-Output Producers and Single Publication: module-06-generated-files-multi-output-pipeline-boundaries/multi-output-producers-and-single-publication.md
+          - Manifests, Stamps, and Boundary Files: module-06-generated-files-multi-output-pipeline-boundaries/manifests-stamps-and-boundary-files.md
+          - Generator Pipelines and Atomic Publication: module-06-generated-files-multi-output-pipeline-boundaries/generator-pipelines-and-atomic-publication.md
+          - Generator Failure Modes and Repairs: module-06-generated-files-multi-output-pipeline-boundaries/generator-failure-modes-and-repairs.md
+          - "Worked Example: Repairing a Broken Generator Pipeline": module-06-generated-files-multi-output-pipeline-boundaries/worked-example-repairing-a-broken-generator-pipeline.md
+          - Exercises: module-06-generated-files-multi-output-pipeline-boundaries/exercises.md
+          - Exercise Answers: module-06-generated-files-multi-output-pipeline-boundaries/exercise-answers.md
+          - Glossary: module-06-generated-files-multi-output-pipeline-boundaries/glossary.md
       - "Module 07: Reusable Build Architecture and Build APIs":
           - Overview: module-07-build-architecture-layered-includes-apis/index.md
       - "Module 08: Release Engineering and Artifact Publication":
