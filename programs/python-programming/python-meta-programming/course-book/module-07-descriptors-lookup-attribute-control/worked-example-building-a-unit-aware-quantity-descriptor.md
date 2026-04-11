@@ -236,3 +236,10 @@ This worked example ties the module together:
 
 That is the real lesson. The point is not to build a perfect unit system. The point is to
 make descriptor ownership visible in one coherent field design.
+
+## Continue through Module 07
+
+- Previous: [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)

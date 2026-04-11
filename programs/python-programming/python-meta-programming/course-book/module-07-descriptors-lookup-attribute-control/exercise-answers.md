@@ -142,3 +142,10 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds like "descriptors are advanced so they fit here," revise it
 until you can say exactly what attribute rule they own and why.
+
+## Continue through Module 07
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 08](../module-08-descriptor-systems-validation-framework-design/index.md)
+- Terms: [Glossary](glossary.md)

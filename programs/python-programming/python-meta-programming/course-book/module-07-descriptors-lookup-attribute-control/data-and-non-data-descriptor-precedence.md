@@ -175,3 +175,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is method binding: the most common non-data
 descriptor behavior in everyday Python.
+
+## Continue through Module 07
+
+- Previous: [Descriptor Protocol and `__set_name__`](descriptor-protocol-and-set-name.md)
+- Next: [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

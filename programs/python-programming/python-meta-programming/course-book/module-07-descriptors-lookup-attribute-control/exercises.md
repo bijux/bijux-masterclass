@@ -88,3 +88,10 @@ Across all six answers, the module wants the same habits:
 - you choose descriptor power only when attribute-level ownership really justifies it
 
 If an answer still sounds like "Python just does magic here," keep going.
+
+## Continue through Module 07
+
+- Previous: [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

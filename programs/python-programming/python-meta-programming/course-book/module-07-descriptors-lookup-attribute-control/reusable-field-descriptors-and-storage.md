@@ -191,3 +191,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is the design boundary page: when descriptor power
 is truly the right owner and when it is more than the problem needs.
+
+## Continue through Module 07
+
+- Previous: [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md)
+- Next: [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

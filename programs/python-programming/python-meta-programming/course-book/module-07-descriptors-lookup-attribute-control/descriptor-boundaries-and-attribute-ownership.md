@@ -166,3 +166,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can now combine the module's mechanics and
 ownership boundaries inside one didactic quantity field.
+
+## Continue through Module 07
+
+- Previous: [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md)
+- Next: [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

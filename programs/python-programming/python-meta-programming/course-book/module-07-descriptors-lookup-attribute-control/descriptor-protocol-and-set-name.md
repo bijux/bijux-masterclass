@@ -188,3 +188,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is precedence: why some descriptors beat instance
 state while others can be shadowed.
+
+## Continue through Module 07
+
+- Previous: [Overview](index.md)
+- Next: [Data and Non-Data Descriptor Precedence](data-and-non-data-descriptor-precedence.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

@@ -148,3 +148,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is to build reusable field descriptors that own
 attribute behavior on purpose.
+
+## Continue through Module 07
+
+- Previous: [Data and Non-Data Descriptor Precedence](data-and-non-data-descriptor-precedence.md)
+- Next: [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)
