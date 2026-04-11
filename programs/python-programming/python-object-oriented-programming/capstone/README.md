@@ -82,31 +82,15 @@ All supporting capstone guides live under `docs/`. The root stays focused on the
 entry route while still linking the complete local documentation set:
 
 - [INDEX.md](docs/INDEX.md)
-- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
-- [OWNERSHIP_BOUNDARIES.md](docs/OWNERSHIP_BOUNDARIES.md)
-- [SCENARIO_BOUNDARY_MAP.md](docs/SCENARIO_BOUNDARY_MAP.md)
-- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
 - [DOMAIN_GUIDE.md](docs/DOMAIN_GUIDE.md)
-- [SCENARIO_GUIDE.md](docs/SCENARIO_GUIDE.md)
-- [RETIREMENT_SCENARIO_GUIDE.md](docs/RETIREMENT_SCENARIO_GUIDE.md)
-- [RATE_OF_CHANGE_SCENARIO_GUIDE.md](docs/RATE_OF_CHANGE_SCENARIO_GUIDE.md)
-- [RULE_LIFECYCLE_GUIDE.md](docs/RULE_LIFECYCLE_GUIDE.md)
-- [EVENT_FLOW_GUIDE.md](docs/EVENT_FLOW_GUIDE.md)
-- [BUNDLE_GUIDE.md](docs/BUNDLE_GUIDE.md)
-- [MANIFEST_GUIDE.md](docs/MANIFEST_GUIDE.md)
-- [CHANGE_RECIPES.md](docs/CHANGE_RECIPES.md)
-- [RUNTIME_GUIDE.md](docs/RUNTIME_GUIDE.md)
-- [PROJECTION_GUIDE.md](docs/PROJECTION_GUIDE.md)
-- [PUBLIC_API_GUIDE.md](docs/PUBLIC_API_GUIDE.md)
-- [SCENARIO_SELECTION_GUIDE.md](docs/SCENARIO_SELECTION_GUIDE.md)
-- [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
-- [TOUR.md](docs/TOUR.md)
-- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
-- [TEST_GUIDE.md](docs/TEST_GUIDE.md)
-- [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
-- [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
 - [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
+- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
+- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
+- [TEST_GUIDE.md](docs/TEST_GUIDE.md)
+- [TOUR.md](docs/TOUR.md)
+- [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
 
 ## First session route
 
@@ -129,16 +113,16 @@ come back to this README for the broader guide list and review routes.
 - `make confirm` runs the strongest local confirmation route.
 - `make proof` builds the published learner-facing review route.
 
-Use [BUNDLE_GUIDE.md](docs/BUNDLE_GUIDE.md) when you want the relationship between those saved
+Use [PROOF_GUIDE.md](docs/PROOF_GUIDE.md) when you want the relationship between those saved
 directories kept explicit.
 
 ## Route by reader goal
 
 | If you want to... | Start with | Then |
 | --- | --- | --- |
-| understand the domain before reading code | `INDEX.md`, this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` and `TOUR.md` |
-| inspect ownership boundaries file by file | `OWNERSHIP_BOUNDARIES.md` and `PACKAGE_GUIDE.md` | `SOURCE_GUIDE.md` and `ARCHITECTURE.md` |
-| pick the smallest scenario for the current pressure | `SCENARIO_BOUNDARY_MAP.md` | the matching scenario guide and inspect route |
+| understand the domain before reading code | `INDEX.md`, this README, `DOMAIN_GUIDE.md`, and `ARCHITECTURE.md` | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` and `TOUR.md` |
+| inspect ownership boundaries file by file | `ARCHITECTURE.md` and `PACKAGE_GUIDE.md` | `COMMAND_GUIDE.md` and `PROOF_GUIDE.md` |
+| pick the smallest scenario for the current pressure | `DOMAIN_GUIDE.md` and `WALKTHROUGH_GUIDE.md` | `make inspect` and `make inspect-timeline` |
 | confirm one design claim with evidence | `PROOF_GUIDE.md` | `make inspect` or `make verify-report` |
 | review the full capstone as a learner-facing artifact | `make tour` | `make proof` |
 | run the strongest local confirmation route | `make confirm` | `make proof` if you need the published bundle |
@@ -158,7 +142,7 @@ directories kept explicit.
 | Do the core value and entity boundaries make sense? | `src/service_monitoring/model.py`, `tests/test_policy_lifecycle.py` | Identity, equality, and lifecycle semantics are explicit rather than accidental | `make inspect` |
 | Is evaluation behavior owned by replaceable policy objects instead of condition ladders? | `src/service_monitoring/policies.py`, `tests/test_policy_evaluation.py` | Variation lives in named policy surfaces, not inside the aggregate | `make verify-report` |
 | Does orchestration stay outside the aggregate? | `src/service_monitoring/runtime.py`, `src/service_monitoring/application.py`, `ARCHITECTURE.md` | Runtime coordination does not become the source of truth | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` |
-| Can the current design be reviewed as a learner-facing artifact instead of just a code dump? | `TOUR.md`, `INSPECTION_GUIDE.md`, `PROOF_GUIDE.md` | The capstone remains legible as a guided reference path | `make proof` |
+| Can the current design be reviewed as a learner-facing artifact instead of just a code dump? | `TOUR.md`, `WALKTHROUGH_GUIDE.md`, `PROOF_GUIDE.md` | The capstone remains legible as a guided reference path | `make proof` |
 
 Use this order repeatedly: inspect the named files, state the ownership claim, then run the smallest route that produces matching evidence.
 

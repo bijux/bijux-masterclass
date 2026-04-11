@@ -36,7 +36,7 @@ as one design story instead of seven isolated advanced topics.
 | Module 07 | time, cancellation, and concurrency pressure | `runtime.py`, `TOUR.md`, runtime tests | which objects should know about clocks, queues, or async boundaries |
 | Module 08 | executable confidence | `TEST_GUIDE.md`, `PROOF_GUIDE.md` | which test or route would fail first if the design drifted |
 | Module 09 | public surface and extension governance | `application.py`, `PACKAGE_GUIDE.md`, `EXTENSION_GUIDE.md` | which seams deserve publication and which should stay private |
-| Module 10 | production review | `TARGET_GUIDE.md`, `INSPECTION_GUIDE.md`, `PROOF_GUIDE.md` | which operational changes preserve the ownership model and which ones corrupt it |
+| Module 10 | production review | `COMMAND_GUIDE.md`, `PROOF_GUIDE.md`, `PROOF_GUIDE.md` | which operational changes preserve the ownership model and which ones corrupt it |
 
 ## Best pace for the second half
 

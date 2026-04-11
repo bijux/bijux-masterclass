@@ -60,8 +60,8 @@ alphabetically. The goal is to understand how the system is partitioned.
 
 - Read `PACKAGE_GUIDE.md` when you want the code layout at the package boundary.
 - Read `TEST_GUIDE.md` when you want the fastest route from a claim to an executable check.
-- Read `TARGET_GUIDE.md` when you want the command-level review route.
-- Read `INSPECTION_GUIDE.md` when you want the learner-facing output route.
+- Read `COMMAND_GUIDE.md` when you want the command-level review route.
+- Read `PROOF_GUIDE.md` when you want the learner-facing output route.
 - Read `EXTENSION_GUIDE.md` when you want to place a new feature in the right boundary.
 
 ## Route by module stage

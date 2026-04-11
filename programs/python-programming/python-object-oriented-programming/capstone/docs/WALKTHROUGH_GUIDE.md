@@ -29,7 +29,7 @@ learners who need a deliberate route from scenario story to ownership and proof.
 1. Run `make demo`.
 2. Read `TOUR.md`.
 3. Read `PACKAGE_GUIDE.md`.
-4. Read `SOURCE_GUIDE.md` if you want the exact code route behind the story.
+4. Read `PACKAGE_GUIDE.md` if you want the exact code route behind the story.
 5. Run `make inspect-summary` and `make inspect-history`.
 6. Read `TEST_GUIDE.md`.
 7. Read `PROOF_GUIDE.md`.
@@ -49,7 +49,7 @@ That route keeps story first, package ownership second, inspection third, and pr
 | --- | --- | --- |
 | `make demo` output | what story the learner can follow without internals and where each stage hands off | `TOUR.md` |
 | `TOUR.md` | where the scenario hands off from application surface to domain ownership | `PACKAGE_GUIDE.md` |
-| inspection bundles | which outputs describe state versus derived incident history | `INSPECTION_GUIDE.md` |
+| inspection bundles | which outputs describe state versus derived incident history | `PROOF_GUIDE.md` |
 | `TEST_GUIDE.md` | which suite would fail first if the story stopped matching the design | `PROOF_GUIDE.md` |
 
 ## Time-boxed routes

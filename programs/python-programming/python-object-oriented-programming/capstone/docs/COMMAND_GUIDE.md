@@ -56,5 +56,5 @@ the question instead of defaulting to the heaviest command.
 
 - `INDEX.md`
 - `PROOF_GUIDE.md`
-- `INSPECTION_GUIDE.md`
-- `TARGET_GUIDE.md`
+- `PROOF_GUIDE.md`
+- `COMMAND_GUIDE.md`

@@ -61,9 +61,8 @@ projections should stay derived so read concerns do not mutate authoritative sta
 - Use `make tour` when you want the learner-facing scenario route through the architecture.
 - Use `make verify-report` when you need executable evidence alongside that review.
 - Use `EXTENSION_GUIDE.md` when the architecture question is really a change-placement question.
-- Use `EVENT_FLOW_GUIDE.md` when the main question is how aggregate decisions become read-model state.
-- Use `CHANGE_RECIPES.md` when the architecture question has already become an edit plan.
-- Use `RUNTIME_GUIDE.md` when the main confusion is which orchestration belongs in the runtime at all.
+- Use `PROOF_GUIDE.md` when the main question is how aggregate decisions become reviewable evidence.
+- Use `PACKAGE_GUIDE.md` when the architecture question has already become a file route.
 
 ## Architecture questions for review
 
@@ -80,6 +79,17 @@ projections should stay derived so read concerns do not mutate authoritative sta
 | a new sink or source integration | `runtime.py` | orchestration and adapters stay outside domain ownership |
 | a new read model | `projections.py` or `read_models.py` | derived views should stay downstream of events |
 | a persistence or rollback detail | `repository.py` | storage mechanics should adapt to the domain, not redefine it |
+
+## Boundary ownership by responsibility
+
+| Boundary | Owns | Must not own |
+| --- | --- | --- |
+| aggregate | rule lifecycle, authority, and alert creation | orchestration, projections, or persistence workflow |
+| policy | replaceable evaluation behavior | aggregate authority or event publication |
+| projection | downstream read models and derived history | authoritative lifecycle state |
+| runtime | coordination with sources, sinks, and units of work | domain truth |
+| persistence | repository and unit-of-work boundaries | domain decision-making |
+| public surface | learner-facing CLI and bundle routes | hidden authority not reachable from review routes |
 
 ## Anti-patterns this architecture rejects
 

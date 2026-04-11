@@ -48,7 +48,7 @@ judgment. Tests prove behavioral contracts precisely. Walkthrough and inspection
 prove that the system remains understandable as a story and as a state surface. You need
 both.
 
-Use [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md) when the proof route is clear but the saved
+Use [PROOF_GUIDE.md](PROOF_GUIDE.md) when the proof route is clear but the saved
 directory structure is not.
 
 ## Best review pattern
@@ -69,7 +69,7 @@ directory structure is not.
 | learner-facing use cases | `tests/test_application.py` and `tests/test_demo.py` | `make demo` or `make tour` |
 | whole-capstone trust and saved evidence | the generated verification bundle | `make confirm` or `make proof` |
 
-Keep [EVENT_FLOW_GUIDE.md](EVENT_FLOW_GUIDE.md) nearby when the code makes sense locally
+Keep [ARCHITECTURE.md](ARCHITECTURE.md) nearby when the code makes sense locally
 but you still need to trace how one aggregate action becomes a projection update or a
 saved learner-facing artifact.
 

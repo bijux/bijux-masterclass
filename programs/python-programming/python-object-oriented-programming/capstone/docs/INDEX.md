@@ -26,26 +26,26 @@ map so the capstone has one stable entry hub instead of several overlapping star
 
 1. Read `README.md`.
 2. Read `DOMAIN_GUIDE.md`.
-3. Read `OWNERSHIP_BOUNDARIES.md`.
+3. Read `ARCHITECTURE.md`.
 4. Run `make demo`.
-5. Read `RULE_LIFECYCLE_GUIDE.md` or `EVENT_FLOW_GUIDE.md`, depending on whether the pressure is lifecycle or collaboration.
+5. Read `DOMAIN_GUIDE.md` or `ARCHITECTURE.md`, depending on whether the pressure is lifecycle or collaboration.
 6. Stop there unless you already have a specific proof question.
 
 ## If you only need one next file
 
 - "What does this system model?" -> `README.md`
 - "Which boundary owns this behavior?" -> `ARCHITECTURE.md`
-- "Which scenario shows this pressure?" -> `SCENARIO_BOUNDARY_MAP.md`
+- "Which scenario shows this pressure?" -> `DOMAIN_GUIDE.md`
 - "Which command or saved bundle should I use?" -> `COMMAND_GUIDE.md`
 - "Where should a change land?" -> `EXTENSION_GUIDE.md`
 
 ## Route groups
 
-- Arrival route: `README.md`, `DOMAIN_GUIDE.md`, `OWNERSHIP_BOUNDARIES.md`
-- Ownership route: `OWNERSHIP_BOUNDARIES.md`, `ARCHITECTURE.md`, `PACKAGE_GUIDE.md`
+- Arrival route: `README.md`, `DOMAIN_GUIDE.md`, `ARCHITECTURE.md`
+- Ownership route: `ARCHITECTURE.md`, `ARCHITECTURE.md`, `PACKAGE_GUIDE.md`
 - Proof route: `COMMAND_GUIDE.md`, `PROOF_GUIDE.md`, `TEST_GUIDE.md`, `TOUR.md`
-- Scenario route: `SCENARIO_BOUNDARY_MAP.md`, `RULE_LIFECYCLE_GUIDE.md`, `EVENT_FLOW_GUIDE.md`
-- Extension route: `EXTENSION_GUIDE.md`, `TARGET_GUIDE.md`
+- Scenario route: `DOMAIN_GUIDE.md`, `DOMAIN_GUIDE.md`, `ARCHITECTURE.md`
+- Extension route: `EXTENSION_GUIDE.md`, `COMMAND_GUIDE.md`
 
 ## Route by course stage
 

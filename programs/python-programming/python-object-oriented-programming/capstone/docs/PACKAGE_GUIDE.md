@@ -86,11 +86,11 @@ coordination third, and proof surfaces last.
 - putting a new rule mode into the runtime instead of the policy seam
 - reaching for tests before you know which package is supposed to own the behavior
 
-Read [CHANGE_RECIPES.md](CHANGE_RECIPES.md) when you want those file choices turned into
+Read [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md) when you want those file choices turned into
 concrete local edit sequences.
 
-Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when you want the next layer down: the exact
+Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when you want the next layer down: the exact
 file-and-class route inside those package choices.
 
-Read [PUBLIC_API_GUIDE.md](PUBLIC_API_GUIDE.md) when the question is no longer only
+Read [COMMAND_GUIDE.md](COMMAND_GUIDE.md) when the question is no longer only
 internal file ownership, but what should count as the supported package surface.

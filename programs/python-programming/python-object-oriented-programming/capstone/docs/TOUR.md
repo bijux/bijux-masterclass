@@ -27,7 +27,7 @@ This guide explains the capstone as a narrative, not only as a file tree. Read i
 or after running `make demo`. Use `make tour` when you want this narrative captured as a
 bundle instead of only printed once in the terminal.
 
-Keep [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md) nearby if you want the fixed rules, samples,
+Keep [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md) nearby if you want the fixed rules, samples,
 and expected outputs visible while following the story.
 
 ## Scenario route
@@ -48,7 +48,7 @@ and expected outputs visible while following the story.
 | activate rules | where lifecycle permission actually lives | `tests/test_policy_lifecycle.py` |
 | observe samples | which boundary evaluates behavior versus coordinates flow | `runtime.py` and `policies.py` |
 | publish incidents | which outputs are derived rather than authoritative | `read_models.py` and `projections.py` |
-| inspect snapshot | which learner-facing route best shows current state | `INSPECTION_GUIDE.md` |
+| inspect snapshot | which learner-facing route best shows current state | `PROOF_GUIDE.md` |
 
 ## Best command route
 
@@ -76,12 +76,12 @@ The tour reveals the architectural promise of the capstone:
 - `src/service_monitoring/runtime.py`
 - `src/service_monitoring/model.py`
 - `src/service_monitoring/read_models.py`
-- `TARGET_GUIDE.md`
+- `COMMAND_GUIDE.md`
 - `WALKTHROUGH_GUIDE.md`
 
 ## Compare these after the tour
 
 - compare `TOUR.md` with `ARCHITECTURE.md` to see which scenario step maps to which boundary
-- compare `TOUR.md` with `EVENT_FLOW_GUIDE.md` to see how each step turns into derived state
+- compare `TOUR.md` with `ARCHITECTURE.md` to see how each step turns into derived state
 - compare `TOUR.md` with `TEST_GUIDE.md` to decide which executable proof best matches the story
 - compare `TOUR.md` with `PROOF_GUIDE.md` when you want to move from narrative understanding into stronger evidence

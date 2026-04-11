@@ -61,6 +61,6 @@ the downstream read models record those alerts as open incidents and incident hi
 
 ## Best companion guides
 
-- read [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md) when you want the exact fixed example used by the capstone
+- read [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md) when you want the exact fixed example used by the capstone
 - read [ARCHITECTURE.md](ARCHITECTURE.md) when you want boundary direction after the vocabulary is clear
 - read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when you want the file route for the same domain terms

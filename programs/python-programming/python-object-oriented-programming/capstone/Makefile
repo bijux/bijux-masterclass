@@ -43,37 +43,15 @@ tour: ## Build the learner-facing walkthrough bundle
 	@mkdir -p $(TOUR_DIR) $(TOUR_DIR)/docs
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo > $(TOUR_DIR)/walkthrough.txt
 	@cp README.md $(TOUR_DIR)/README.md
-	@cp $(DOCS_DIR)/INDEX.md $(TOUR_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
-	@cp $(DOCS_DIR)/OWNERSHIP_BOUNDARIES.md $(TOUR_DIR)/OWNERSHIP_BOUNDARIES.md
-	@cp $(DOCS_DIR)/SCENARIO_BOUNDARY_MAP.md $(TOUR_DIR)/SCENARIO_BOUNDARY_MAP.md
-	@cp $(DOCS_DIR)/TOUR.md $(TOUR_DIR)/TOUR.md
-	@cp $(DOCS_DIR)/DOMAIN_GUIDE.md $(TOUR_DIR)/DOMAIN_GUIDE.md
-	@cp $(DOCS_DIR)/SCENARIO_GUIDE.md $(TOUR_DIR)/SCENARIO_GUIDE.md
-	@cp $(DOCS_DIR)/RETIREMENT_SCENARIO_GUIDE.md $(TOUR_DIR)/RETIREMENT_SCENARIO_GUIDE.md
-	@cp $(DOCS_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md $(TOUR_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md
-	@cp $(DOCS_DIR)/RULE_LIFECYCLE_GUIDE.md $(TOUR_DIR)/RULE_LIFECYCLE_GUIDE.md
-	@cp $(DOCS_DIR)/EVENT_FLOW_GUIDE.md $(TOUR_DIR)/EVENT_FLOW_GUIDE.md
-	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(TOUR_DIR)/BUNDLE_GUIDE.md
-	@cp $(DOCS_DIR)/MANIFEST_GUIDE.md $(TOUR_DIR)/MANIFEST_GUIDE.md
-	@cp $(DOCS_DIR)/CHANGE_RECIPES.md $(TOUR_DIR)/CHANGE_RECIPES.md
-	@cp $(DOCS_DIR)/PUBLIC_API_GUIDE.md $(TOUR_DIR)/PUBLIC_API_GUIDE.md
-	@cp $(DOCS_DIR)/RUNTIME_GUIDE.md $(TOUR_DIR)/RUNTIME_GUIDE.md
-	@cp $(DOCS_DIR)/PROJECTION_GUIDE.md $(TOUR_DIR)/PROJECTION_GUIDE.md
-	@cp $(DOCS_DIR)/SOURCE_GUIDE.md $(TOUR_DIR)/SOURCE_GUIDE.md
-	@cp $(DOCS_DIR)/SCENARIO_SELECTION_GUIDE.md $(TOUR_DIR)/SCENARIO_SELECTION_GUIDE.md
-	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
-	@cp $(DOCS_DIR)/ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
-	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(TOUR_DIR)/TARGET_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/
 	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/docs/
 	@printf '%s\n' \
 		'Walkthrough route:' \
 		'  1. Read INDEX.md for the smallest local route.' \
 		'  2. Read walkthrough.txt for the scenario output.' \
-		'  3. Read DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, OWNERSHIP_BOUNDARIES.md, and TOUR.md for the vocabulary, authority model, lifecycle, and narrative sequence.' \
-		'  4. Read SCENARIO_BOUNDARY_MAP.md, WALKTHROUGH_GUIDE.md, EVENT_FLOW_GUIDE.md, TARGET_GUIDE.md, and COMMAND_GUIDE.md for the scenario and command route.' \
-		'  5. Read ARCHITECTURE.md when you need object ownership while following the story.' \
+		'  3. Read DOMAIN_GUIDE.md, ARCHITECTURE.md, PACKAGE_GUIDE.md, and TOUR.md for the vocabulary, authority model, lifecycle, and narrative sequence.' \
+		'  4. Read WALKTHROUGH_GUIDE.md, PROOF_GUIDE.md, and COMMAND_GUIDE.md for the scenario and command route.' \
+		'  5. Read EXTENSION_GUIDE.md when you need the next honest change path.' \
 		> $(TOUR_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/manifest.json
 	@echo "wrote learner-facing walkthrough bundle to $(TOUR_DIR)"
@@ -118,28 +96,6 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change > $(INSPECT_DIR)/rate_of_change.txt
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json > $(INSPECT_DIR)/snapshot.json
 	@cp README.md $(INSPECT_DIR)/README.md
-	@cp $(DOCS_DIR)/INDEX.md $(INSPECT_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
-	@cp $(DOCS_DIR)/OWNERSHIP_BOUNDARIES.md $(INSPECT_DIR)/OWNERSHIP_BOUNDARIES.md
-	@cp $(DOCS_DIR)/SCENARIO_BOUNDARY_MAP.md $(INSPECT_DIR)/SCENARIO_BOUNDARY_MAP.md
-	@cp $(DOCS_DIR)/ARCHITECTURE.md $(INSPECT_DIR)/ARCHITECTURE.md
-	@cp $(DOCS_DIR)/DOMAIN_GUIDE.md $(INSPECT_DIR)/DOMAIN_GUIDE.md
-	@cp $(DOCS_DIR)/SCENARIO_GUIDE.md $(INSPECT_DIR)/SCENARIO_GUIDE.md
-	@cp $(DOCS_DIR)/RETIREMENT_SCENARIO_GUIDE.md $(INSPECT_DIR)/RETIREMENT_SCENARIO_GUIDE.md
-	@cp $(DOCS_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md $(INSPECT_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md
-	@cp $(DOCS_DIR)/RULE_LIFECYCLE_GUIDE.md $(INSPECT_DIR)/RULE_LIFECYCLE_GUIDE.md
-	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(INSPECT_DIR)/BUNDLE_GUIDE.md
-	@cp $(DOCS_DIR)/MANIFEST_GUIDE.md $(INSPECT_DIR)/MANIFEST_GUIDE.md
-	@cp $(DOCS_DIR)/CHANGE_RECIPES.md $(INSPECT_DIR)/CHANGE_RECIPES.md
-	@cp $(DOCS_DIR)/PUBLIC_API_GUIDE.md $(INSPECT_DIR)/PUBLIC_API_GUIDE.md
-	@cp $(DOCS_DIR)/RUNTIME_GUIDE.md $(INSPECT_DIR)/RUNTIME_GUIDE.md
-	@cp $(DOCS_DIR)/PROJECTION_GUIDE.md $(INSPECT_DIR)/PROJECTION_GUIDE.md
-	@cp $(DOCS_DIR)/SOURCE_GUIDE.md $(INSPECT_DIR)/SOURCE_GUIDE.md
-	@cp $(DOCS_DIR)/SCENARIO_SELECTION_GUIDE.md $(INSPECT_DIR)/SCENARIO_SELECTION_GUIDE.md
-	@cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
-	@cp $(DOCS_DIR)/TARGET_GUIDE.md $(INSPECT_DIR)/TARGET_GUIDE.md
-	@cp $(DOCS_DIR)/INSPECTION_GUIDE.md $(INSPECT_DIR)/INSPECTION_GUIDE.md
-	@cp $(DOCS_DIR)/EXTENSION_GUIDE.md $(INSPECT_DIR)/EXTENSION_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/
 	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/docs/
 	@printf '%s\n' \
@@ -148,7 +104,7 @@ inspect: ## Build the capstone learner-facing inspection bundle
 		'  2. Read summary.txt for the current policy and open incident state.' \
 		'  3. Read rules.txt for rule lifecycle state.' \
 		'  4. Read history.txt, timeline.txt, retirement.txt, rate_of_change.txt, and snapshot.json for shipped scenario variants and the structured state surface.' \
-		'  5. Read OWNERSHIP_BOUNDARIES.md, SCENARIO_BOUNDARY_MAP.md, DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, RATE_OF_CHANGE_SCENARIO_GUIDE.md, INSPECTION_GUIDE.md, PACKAGE_GUIDE.md, and TARGET_GUIDE.md to connect the outputs to the code.' \
+		'  5. Read ARCHITECTURE.md, DOMAIN_GUIDE.md, PROOF_GUIDE.md, PACKAGE_GUIDE.md, WALKTHROUGH_GUIDE.md, and COMMAND_GUIDE.md to connect the outputs to the code.' \
 		> $(INSPECT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/manifest.json
 	@echo "wrote learner-facing inspection bundle to $(INSPECT_DIR)"
@@ -165,23 +121,6 @@ verify-report: ## Build the capstone verification report bundle
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change > $(VERIFY_REPORT_DIR)/rate_of_change.txt
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json > $(VERIFY_REPORT_DIR)/snapshot.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
-	@cp $(DOCS_DIR)/INDEX.md $(VERIFY_REPORT_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
-	@cp $(DOCS_DIR)/OWNERSHIP_BOUNDARIES.md $(VERIFY_REPORT_DIR)/OWNERSHIP_BOUNDARIES.md
-	@cp $(DOCS_DIR)/SCENARIO_BOUNDARY_MAP.md $(VERIFY_REPORT_DIR)/SCENARIO_BOUNDARY_MAP.md
-	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
-	@cp $(DOCS_DIR)/TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
-	@cp $(DOCS_DIR)/EVENT_FLOW_GUIDE.md $(VERIFY_REPORT_DIR)/EVENT_FLOW_GUIDE.md
-	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(VERIFY_REPORT_DIR)/BUNDLE_GUIDE.md
-	@cp $(DOCS_DIR)/MANIFEST_GUIDE.md $(VERIFY_REPORT_DIR)/MANIFEST_GUIDE.md
-	@cp $(DOCS_DIR)/PUBLIC_API_GUIDE.md $(VERIFY_REPORT_DIR)/PUBLIC_API_GUIDE.md
-	@cp $(DOCS_DIR)/RUNTIME_GUIDE.md $(VERIFY_REPORT_DIR)/RUNTIME_GUIDE.md
-	@cp $(DOCS_DIR)/PROJECTION_GUIDE.md $(VERIFY_REPORT_DIR)/PROJECTION_GUIDE.md
-	@cp $(DOCS_DIR)/RETIREMENT_SCENARIO_GUIDE.md $(VERIFY_REPORT_DIR)/RETIREMENT_SCENARIO_GUIDE.md
-	@cp $(DOCS_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md $(VERIFY_REPORT_DIR)/RATE_OF_CHANGE_SCENARIO_GUIDE.md
-	@cp $(DOCS_DIR)/SCENARIO_SELECTION_GUIDE.md $(VERIFY_REPORT_DIR)/SCENARIO_SELECTION_GUIDE.md
-	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
-	@cp $(DOCS_DIR)/INSPECTION_GUIDE.md $(VERIFY_REPORT_DIR)/INSPECTION_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/
 	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/docs/
 	@printf '%s\n' \
@@ -189,8 +128,8 @@ verify-report: ## Build the capstone verification report bundle
 		'  1. Read INDEX.md and COMMAND_GUIDE.md for the local route into the saved bundle.' \
 		'  2. Read pytest.txt for executable confirmation.' \
 		'  3. Read summary.txt, history.txt, timeline.txt, retirement.txt, rate_of_change.txt, and snapshot.json for the learner-facing state, variants, and structured snapshot captured alongside the tests.' \
-		'  4. Read PROOF_GUIDE.md, OWNERSHIP_BOUNDARIES.md, SCENARIO_BOUNDARY_MAP.md, and EVENT_FLOW_GUIDE.md for claim-to-evidence and authority routing.' \
-		'  5. Read TEST_GUIDE.md, WALKTHROUGH_GUIDE.md, INSPECTION_GUIDE.md, RETIREMENT_SCENARIO_GUIDE.md, and RATE_OF_CHANGE_SCENARIO_GUIDE.md for the matching human review path.' \
+		'  4. Read PROOF_GUIDE.md, ARCHITECTURE.md, and DOMAIN_GUIDE.md for claim-to-evidence and authority routing.' \
+		'  5. Read TEST_GUIDE.md, WALKTHROUGH_GUIDE.md, EXTENSION_GUIDE.md, and PROOF_GUIDE.md for the matching human review path.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/manifest.json
 	@echo "wrote capstone verification report to $(VERIFY_REPORT_DIR)"

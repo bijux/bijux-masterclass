@@ -49,7 +49,7 @@ boundary that actually owns it.
 | `policies.py` | evaluation tests, `PACKAGE_GUIDE.md`, and `TEST_GUIDE.md` | replaceable behavior should remain obvious to the learner |
 | `runtime.py` | runtime tests, `TOUR.md`, and `ARCHITECTURE.md` | orchestration changes affect both design and story |
 | `repository.py` | unit-of-work tests and `ARCHITECTURE.md` | persistence should stay explicit instead of becoming hidden behavior |
-| `read_models.py` or `projections.py` | inspection bundles, `INSPECTION_GUIDE.md`, and runtime tests | derived views must stay truthful and non-authoritative |
+| `read_models.py` or `projections.py` | inspection bundles, `PROOF_GUIDE.md`, and runtime tests | derived views must stay truthful and non-authoritative |
 
 ## Honest warning
 
@@ -68,7 +68,7 @@ quietly absorb domain rules that belong to the aggregate or evaluation policies.
 1. Add or update tests in `tests/` for the new behavior.
 2. Run `make confirm` to prove the contract still holds.
 3. Run `make demo` or `make inspect` if the learner-facing narrative or review surface changed.
-4. Update `PROOF_GUIDE.md`, `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`, or `TARGET_GUIDE.md` when the review route changed.
+4. Update `PROOF_GUIDE.md`, `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`, or `COMMAND_GUIDE.md` when the review route changed.
 
 ## Minimum honest extension close-out
 
@@ -77,5 +77,5 @@ quietly absorb domain rules that belong to the aggregate or evaluation policies.
 - the most relevant local guide still points a future learner to the same boundary
 - the proof route remains proportionate to the claim
 
-Use [CHANGE_RECIPES.md](CHANGE_RECIPES.md) when you want a concrete local example before
+Use [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md) when you want a concrete local example before
 you open the first file.

@@ -67,7 +67,7 @@ the learner-facing review surface.
 - Which test would fail first if projections started mutating authoritative state?
 - Which test would fail first if the learner-facing inspection route stopped matching the scenario?
 
-Keep [RULE_LIFECYCLE_GUIDE.md](RULE_LIFECYCLE_GUIDE.md) nearby when the test names are
+Keep [DOMAIN_GUIDE.md](DOMAIN_GUIDE.md) nearby when the test names are
 clearer than the state transitions but you still need the lifecycle model in one place.
 
 ## When one suite is not enough
