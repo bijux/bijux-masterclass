@@ -4,17 +4,21 @@
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.docs_nav import build_tree_nav
+
 SOURCE_CONFIG = REPO_ROOT / "mkdocs.yml"
 LIBRARY_ROOT = REPO_ROOT / "docs" / "library"
 OUTPUT_CONFIG = REPO_ROOT / "artifacts" / "mkdocs.root.yml"
-PROJECT_DOCS_DIRNAME = "project-docs"
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -41,68 +45,6 @@ def load_yaml(path: Path) -> dict[str, Any]:
     return yaml.load(path.read_text(encoding="utf-8"), Loader=EnvSafeLoader)
 
 
-def first_h1(path: Path) -> str:
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if line.startswith("# "):
-            return line[2:].strip()
-    return path.stem.replace("_", " ").replace("-", " ").title()
-
-
-def humanize_dirname(name: str) -> str:
-    return name.replace("-", " ").replace("_", " ").title()
-
-
-def directory_sort_key(path: Path) -> tuple[int, str]:
-    name = path.name
-    if name == "guides":
-        return (0, name)
-    if name == "reference":
-        return (1, name)
-    if name == "capstone":
-        return (2, name)
-    if name.startswith("module-"):
-        return (3, name)
-    if name == PROJECT_DOCS_DIRNAME:
-        return (4, name)
-    return (5, name)
-
-
-def file_sort_key(path: Path) -> tuple[int, str]:
-    if path.name == "index.md":
-        return (0, path.name)
-    return (1, path.name)
-
-
-def directory_title(path: Path) -> str:
-    index_path = path / "index.md"
-    if index_path.exists():
-        return first_h1(index_path)
-    if path.name == PROJECT_DOCS_DIRNAME:
-        return "Project Docs"
-    return humanize_dirname(path.name)
-
-
-def tree_nav(directory: Path, prefix: str) -> list[Any]:
-    nav: list[Any] = []
-
-    index_path = directory / "index.md"
-    if index_path.exists():
-        nav.append({"Home": f"{prefix}/index.md"})
-
-    for child in sorted(directory.iterdir(), key=directory_sort_key):
-        if child.name == "index.md":
-            continue
-        if child.is_file() and child.suffix == ".md":
-            nav.append({first_h1(child): f"{prefix}/{child.name}"})
-            continue
-        if child.is_dir():
-            child_nav = tree_nav(child, f"{prefix}/{child.name}")
-            if child_nav:
-                nav.append({directory_title(child): child_nav})
-
-    return nav
-
-
 def root_nav(source_nav: list[Any]) -> list[Any]:
     generated: list[Any] = [source_nav[0]]
 
@@ -120,7 +62,11 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
                 {
                     program_name: [
                         {"Home": overview_path},
-                        *tree_nav(program_root, course_prefix),
+                        *build_tree_nav(
+                            program_root,
+                            course_prefix,
+                            include_root_home=False,
+                        ),
                     ]
                 }
             )
