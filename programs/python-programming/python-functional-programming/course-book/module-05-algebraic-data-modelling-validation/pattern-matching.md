@@ -2,41 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["Pattern Matching"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  chain["Start with long if/isinstance chains"] --> match["Match on ADT variants declaratively"]
+  match --> narrow["Let each branch narrow to the right payload"]
+  narrow --> exhaust["Use the final branch to prove exhaustiveness"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make pattern matching feel like a safer way to read domain variants, not like syntactic novelty. Students need to see that `match` is valuable because it lines up naturally with tagged sums and makes missing cases harder to hide.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the Branching Boilerplate
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines | bind/and_then, Reader/State-like patterns, error-typed flows                |
+Once a codebase has explicit variants, the next problem is how to handle them cleanly. Long `if isinstance` chains often preserve the information, but they bury the model under branching boilerplate.
+
+- If every handler repeats the same variant tests and attribute extraction, the branch structure is harder to review than it needs to be.
+- If adding a new variant can slip past existing handlers, the dispatch style is still too fragile.
+- If students cannot tell what each branch assumes about the payload, the case analysis is not yet readable enough.
 
 **Core question**  
 How do you replace verbose, fragile `if isinstance` chains with Python 3.10+ `match` statements that destructuringly pattern-match on ADTs — guaranteeing exhaustive handling, automatic type narrowing, and refactor-safety in every FuncPipe pipeline stage?
 
-We now take the frozen ADTs from C01–C06 and ask the question every growing codebase eventually faces:
+This lesson introduces `match` as the natural case-analysis syntax for ADTs:
 
-**“Why do I have 47 copies of the same 15-line `if isinstance(x, Ok): … elif isinstance(x, Err): …` boilerplate, and why does adding a new variant silently break half my handlers without mypy noticing?”**
+- destructure variants directly where they are handled
+- keep guards and payload extraction close to the matching branch
+- use the final `assert_never` pattern to keep the closed-union promise honest
+
+The motivating `Result` example matters because it is exactly the kind of branch-heavy code students write everywhere once they have variants available.
 
 The naïve pattern everyone writes first:
 
@@ -53,9 +48,9 @@ def handle_result(res: Result[T, ErrInfo]) -> T:
     # oops, someone added Pending and forgot to handle it → silent crash or wrong path
 ```
 
-Duplicated boilerplate, easy to miss cases, no compiler help when adding variants.
+This is the branching boilerplate the lesson should help students replace.
 
-The production pattern: use `match` with class patterns + guards + a final `case other: assert_never(other)` branch → concise, exhaustive, type-narrowing, refactor-safe.
+The production pattern makes the variant structure visible in the code shape itself and gives tooling a better chance to help.
 
 ```python
 # AFTER – one lawful, exhaustive block
@@ -71,9 +66,9 @@ def handle_result(res: Result[T, ErrInfo]) -> T:
             assert_never(other)   # mypy errors if you add Pending and forget to handle
 ```
 
-Adding a new variant forces every match site to update — forever.
+That is the real promise students should care about: changes to the model become visible pressure on the handling sites instead of silent drift.
 
-**Audience**: Engineers tired of `isinstance` spaghetti who want mathematically exhaustive, type-narrowing case analysis.
+**Audience**: Engineers tired of `isinstance` spaghetti who want clearer and more trustworthy case analysis over ADTs.
 
 **Outcome**
 1. Every `if isinstance` chain replaced with `match`.
