@@ -2,130 +2,99 @@
 
 # Learning Contract
 
+Use this page when you need to reset how to study the program. Deep Dive DVC is not built
+for passive reading. It is built for learners who can explain one trust question, name
+the authoritative layer behind it, and point to the command or artifact that proves the
+claim.
 
-<!-- page-maps:start -->
-## Guide Fit
+## What the program is asking from you
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Learning Contract"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+For each module, you should be able to do four things before you call it done:
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+1. explain the state or trust boundary in plain language
+2. name the failure that would appear if that boundary were false
+3. choose one command, artifact, or file that tests the claim
+4. say why a heavier proof route would be unnecessary right now
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Deep Dive DVC is built around one rule: important claims about reproducibility should be
-checkable by inspecting state, running commands, or exercising a recovery path.
-
-This page makes that rule explicit so the learner knows what the course expects and how
-to use each module well.
-
----
-
-## The Teaching Sequence
-
-The strongest sections in this course follow this order:
-
-1. failure mode
-2. state model
-3. explicit contract
-4. proof command
-5. capstone corroboration
-
-If a section jumps straight from advice to commands, it is weaker than the course should
-be.
+If you can only recognize the vocabulary, the module is not done yet.
 
 [Back to top](#top)
 
----
+## What the program owes you
 
-## The Learner's Responsibility
+The material should present each important idea in an order a human can actually use:
 
-Your job is not to memorize DVC commands. Your job is to verify what state the repository
-is claiming.
+1. the trust question
+2. the failure mode that makes the question matter
+3. the state model or contract that answers it
+4. the proof route that can confirm the claim
+5. the capstone route only after the local idea is clear
 
-For each module, you should be able to answer:
-
-* what state changed
-* where that change was declared
-* what evidence makes the change reviewable later
-* which command proves the claim instead of only asserting it
-
-[Back to top](#top)
-
----
-
-## The Instructor's Responsibility
-
-The course material should always provide:
-
-* a clear state question
-* an explanation of the failure mode it prevents
-* a proof loop the learner can run
-* a reason the capstone is or is not the right teaching surface yet
-
-If those are missing, the learner has to reconstruct the pedagogy alone.
+When a page jumps from slogan to command list, the learner is doing the course-design
+work alone.
 
 [Back to top](#top)
 
----
+## How to work a module honestly
 
-## The Proof Tools You Should Use Constantly
+Use this loop:
 
-These surfaces appear throughout the course because they answer different reproducibility
-questions:
+1. Read the module overview and the lesson that matches the current question.
+2. Write down one sentence that starts with "The trust question here is..."
+3. Identify the authoritative layer before you run any command.
+4. Run the smallest proof route that could falsify your understanding.
+5. Move on only when you can explain the idea without borrowing the page's wording.
 
-| Surface | What it proves |
+The goal is not speed. The goal is leaving each module with something you can defend in a
+review or handoff.
+
+[Back to top](#top)
+
+## The proof surfaces you should keep reaching for
+
+These surfaces recur because they answer different classes of reproducibility question:
+
+| Surface | Use it to answer |
 | --- | --- |
-| `dvc.yaml` | the declared pipeline contract |
-| `dvc.lock` | the recorded state transition after execution |
-| `params.yaml` | the declared control surface |
-| tracked metrics | the declared comparison surface |
-| publish bundle | the promoted downstream contract |
-| recovery drill | whether durability claims survive local loss |
+| `dvc.yaml` | what the repository declares it will do |
+| `dvc.lock` | what the last recorded execution actually resolved |
+| `params.yaml` plus declared `params:` keys | which controls are supposed to affect reproducibility |
+| tracked metrics and summaries | what comparison surfaces the repository is making explicit |
+| publish bundle contents | what the repository promotes for downstream trust |
+| recovery drill output | whether durability claims survive local loss |
+
+Good study means choosing the surface that matches the claim instead of jumping straight
+to the biggest route.
 
 [Back to top](#top)
 
----
+## When the capstone is appropriate
 
-## When To Use The Capstone
+Open the capstone when the local idea is already stable and you want to see it survive a
+real repository shape.
 
-Use the capstone when the concept is already legible in a smaller mental or local model
-and you want to inspect how it behaves in a realistic DVC repository.
+Do not open the capstone yet when:
 
-Do not use the capstone:
+- you still need a first explanation of the concept
+- you cannot name the failure the module is trying to prevent
+- you do not know which command would count as proof
+- the repository still feels larger than the lesson itself
 
-* as your first exposure to a concept
-* as a substitute for understanding state layers
-* as evidence that you understand a topic you still cannot explain in plain language
-
-Use [`capstone/capstone-map.md`](../capstone/capstone-map.md) when you need a guided route through the
-repository.
+Use [Capstone Map](../capstone/capstone-map.md) when the concept is clear but the right
+repository route is not.
 
 [Back to top](#top)
 
----
+## Signs you are fooling yourself
 
-## Definition Of Done For A Module
+Stop and reset if any of these are true:
 
-A module is complete only when you can:
+- you keep widening the reading surface because one page did not click
+- you can quote the term but cannot give a concrete trust failure
+- you chose `capstone-confirm` because it felt safer than thinking
+- you can follow the capstone mechanically but cannot say which layer is authoritative
 
-* explain the state boundary it teaches
-* identify one representative failure mode
-* run its core proof loop
-* connect the local concept to one capstone surface intentionally
-
-If you can only repeat terms like "reproducibility" or "tracking," the module is not
-done yet.
+Those are not minor study gaps. They usually mean the previous page needs a slower,
+smaller pass.
 
 [Back to top](#top)
