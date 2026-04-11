@@ -60,7 +60,7 @@ Metaclasses become more reasonable when the requirement is genuinely about:
 - declaration-time namespace control
 - hierarchy-wide registration or structure that must happen as classes come into existence
 
-Those are all stronger signals than “we want this to happen automatically.”
+Those are all stronger signals than "make this happen automatically."
 
 ## Weak metaclass cases
 

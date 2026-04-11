@@ -24,8 +24,8 @@ first-read narrative. Read the second diagram as the reference rhythm: arrive wi
 concrete ambiguity, compare the current work against the boundary on the page, then turn
 that comparison into a decision.
 
-This page exists because people rarely remember a metaprogramming course by module title
-during a real design review. They remember symptoms, smells, and clumsy runtime patterns.
+During a real design review, people rarely remember a metaprogramming course by module
+title. They remember symptoms, smells, and clumsy runtime patterns.
 
 Use this page when the question is "what kind of bad metaprogramming idea is this?" rather
 than "which module taught that?"

@@ -5,8 +5,8 @@ equally important:
 
 what does a runtime "interface" actually promise?
 
-This page exists because Python gives several ways to name an interface, but those ways do
-not all guarantee the same thing.
+Python gives several ways to name an interface, but those ways do not all guarantee the
+same thing.
 
 ## The sentence to keep
 
@@ -185,7 +185,7 @@ than it really is.
 When reviewing ABCs, protocols, or virtual subclass hooks, ask these questions:
 
 - is the interface stable enough to deserve a name?
-- do we need runtime enforcement, static structural typing, or both?
+- does this design need runtime enforcement, static structural typing, or both?
 - is the protocol check being asked to prove more than it can?
 - does `__subclasshook__` stay trivial and default to `NotImplemented`?
 - are semantic guarantees tested somewhere other than the interface declaration itself?

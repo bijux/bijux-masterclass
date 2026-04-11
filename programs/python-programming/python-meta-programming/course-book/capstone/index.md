@@ -62,6 +62,6 @@ runtime. The goal is to pick one mechanism, one owning boundary, and one proof s
 
 ## Stop here when
 
-- you know which mechanism the current module is actually teaching
+- you know which mechanism the current module is making visible
 - you know which file or public output owns that mechanism
 - you know the smallest command or bundle that proves it

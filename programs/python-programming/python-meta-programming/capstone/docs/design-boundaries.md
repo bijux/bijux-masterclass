@@ -110,7 +110,7 @@ Reject or redesign when:
 
 - the runtime becomes easier to use than to observe
 - debugging now requires folklore instead of public commands and tests
-- the proof route no longer matches the design claims the capstone is teaching
+- the proof route no longer matches the design claims the capstone is meant to defend
 
 ## Definition-time sequence
 

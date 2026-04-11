@@ -3,7 +3,7 @@
 Runtime power becomes expensive when it hides what happened, destroys the trail back to
 the cause, or cannot be turned off cleanly.
 
-This page exists to turn that operational cost into explicit review criteria.
+Use this page to turn that operational cost into explicit review criteria.
 
 ## The sentence to keep
 
