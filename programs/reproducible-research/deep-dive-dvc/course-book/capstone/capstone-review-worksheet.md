@@ -1,58 +1,101 @@
 # Capstone Review Worksheet
 
-<!-- page-maps:start -->
-## Guide Fit
+Use this page when you want to review the capstone as an inherited DVC repository, not
+just read it as course material. The point is to leave with explicit judgments you could
+defend in code review, maintenance planning, or a handoff.
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone Review Worksheet"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+## How to use the worksheet
 
-```mermaid
-flowchart TD
-  question["Do you need one repository-level judgment?"] --> route["Run the bounded review pass"]
-  route --> inspect["Inspect the state, publish, and recovery surfaces in order"]
-  inspect --> judgment["Leave with one explicit repository judgment"]
-```
-<!-- page-maps:end -->
+Work top to bottom. For each section:
 
-Read the first diagram as a timing map: this worksheet is for one repository-level
-review pass, not for first contact. Read the second diagram as the rule: inspect the
-state, publish, and recovery surfaces in order, then leave with one explicit judgment.
+1. answer the question in your own words
+2. name the file or saved bundle that supports the answer
+3. record one risk only if you can point to the owning boundary
 
-Use this worksheet when reviewing the DVC capstone as a repository, not only as a lesson
-artifact.
+If you cannot name the evidence, the judgment is still too soft.
 
-## Bounded review pass
+## Repository contract
 
-1. Read `capstone/dvc.yaml`, `capstone/dvc.lock`, and `capstone/params.yaml`.
-2. Inspect `capstone/publish/v1/` and `capstone/publish/v1/manifest.json`.
-3. Review the recovery route through `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review`.
-4. Read the matching guides only if one of those surfaces stays unclear.
+Ask:
 
-## Questions this pass should answer
+- what the repository claims to build, compare, promote, and restore
+- which files are public contracts and which are internal execution detail
+- whether a new maintainer could discover the supported routes without oral explanation
 
-- which state is authoritative for replay, comparison, and downstream trust
-- whether declared pipeline state and recorded execution state still agree
-- whether the promoted contract is smaller and clearer than the internal repository
-- what recovery depends on locally and what depends on the remote
+Best evidence:
 
-## Good stopping point
+- `capstone/dvc.yaml`
+- `capstone/Makefile`
+- `capstone/publish/v1/manifest.json`
+- [DVC Capstone Guide](index.md)
 
-Stop when you can write one explicit judgment in your own words:
+## State authority
 
-- trust the repository contract as-is
-- trust it with one named boundary to revisit
-- do not trust it yet because one specific state or recovery surface is still missing
+Ask:
 
-If you cannot make one of those judgments, repeat the bounded pass before widening the
-review surface.
+- which layer is authoritative for declaration, execution, and promotion
+- whether `dvc.yaml` and `dvc.lock` still tell compatible stories
+- where params and metrics become reviewable instead of folkloric
 
-## Best follow-up routes
+Best evidence:
 
-- Read [Capstone File Guide](capstone-file-guide.md) when the open question is file ownership.
-- Read [Release Audit Checklist](release-audit-checklist.md) when the open question is downstream trust.
-- Read [Recovery Review Guide](recovery-review-guide.md) when the open question is restore evidence.
+- `capstone/dvc.yaml`
+- `capstone/dvc.lock`
+- `capstone/params.yaml`
+- `capstone/metrics/metrics.json`
+
+## Promotion boundary
+
+Ask:
+
+- which promoted files are safe for downstream trust
+- which artifacts remain internal repository state or supporting evidence
+- whether the promoted contract is smaller and clearer than the whole repository
+
+Best evidence:
+
+- `capstone/publish/v1/`
+- [Release Audit Checklist](release-audit-checklist.md)
+- [Release Review Guide](release-review-guide.md)
+- verify or verify-report bundle surfaces
+
+## Recovery and durability
+
+Ask:
+
+- what survives local loss because the remote still has it
+- what can be rebuilt from declarations alone and what cannot
+- which downstream trust claims survive because recovery restored both recorded state and promoted state
+
+Best evidence:
+
+- `capstone/.dvc-remote/`
+- `capstone/dvc.lock`
+- [Recovery Review Guide](recovery-review-guide.md)
+- recovery review bundle surfaces
+
+## Ownership and change placement
+
+Ask:
+
+- whether declaration, implementation, promotion, and verification still live in readable places
+- where you would place the next non-trivial change and why
+- which changes would require stronger release or recovery review before approval
+
+Best evidence:
+
+- `capstone/dvc.yaml`
+- `capstone/src/incident_escalation_capstone/`
+- `capstone/src/incident_escalation_capstone/publish.py`
+- `capstone/src/incident_escalation_capstone/verify.py`
+
+## Record the result
+
+Finish with one of these judgments:
+
+- trust as-is
+- trust with one named follow-up boundary
+- do not trust yet because one specific proof or ownership question is unresolved
+
+If your conclusion is longer than a short paragraph, the review probably drifted away
+from one bounded question.
