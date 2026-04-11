@@ -54,4 +54,4 @@ repository, runtime, and public-output contracts instead of one undifferentiated
 1. Which tests prove domain behavior, and which prove boundary behavior?
 2. Where are mocks still encoding internal choreography rather than contracts?
 3. Which invariant now has the strongest verification evidence?
-4. Which suite would catch a regression in the learner-facing runtime flow?
+4. Which suite would catch a regression in the public-facing runtime flow?

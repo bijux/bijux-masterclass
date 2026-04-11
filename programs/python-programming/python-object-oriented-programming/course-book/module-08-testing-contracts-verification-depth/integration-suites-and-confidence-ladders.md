@@ -34,7 +34,7 @@ Examples:
 - unit tests for local domain behavior
 - contract tests for repositories and adapters
 - integration tests for cross-layer workflows
-- end-to-end scenarios for learner-facing confidence
+- end-to-end scenarios for public-facing confidence
 
 Each level should earn its cost.
 

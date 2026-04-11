@@ -86,14 +86,14 @@ test count.
 | --- | --- | --- |
 | lifecycle and invariant authority | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) and lifecycle tests | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 | replaceable policy behavior | evaluation tests | `policies.py` and [Capstone File Guide](../capstone/capstone-file-guide.md) |
-| learner-facing use cases | application or demo tests | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) and [Command Guide](../capstone/command-guide.md) |
+| public-facing use cases | application or demo tests | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) and [Command Guide](../capstone/command-guide.md) |
 | runtime or repository boundaries | runtime or unit-of-work tests | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone File Guide](../capstone/capstone-file-guide.md) |
 
 ## If verification still feels abstract
 
 - name the design claim before choosing the test family
 - ask which suite should fail first, not which suite is most impressive to run
-- compare one saved learner-facing bundle with one targeted suite so story and contract stay connected
+- compare one saved review bundle with one targeted suite so story and contract stay connected
 
 ## Common failure modes
 
