@@ -2,50 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Chunking and Windowing"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  aggregate["Start with a need to batch, overlap, or group items"] --> state["Name the bounded state the stage must keep"]
+  state --> stream["Emit chunks or windows lazily instead of collecting everything"]
+  stream --> verify["Verify coverage, order, and tail behavior explicitly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson needs to make one point clear early: chunking and windowing are not excuses to fall back to full collection materialization. They are disciplined ways to keep only the bounded state required for the next output.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Aggregation Trap
 
-Here's a snippet from the progression map:
+Students usually recognize map and filter as streaming-friendly, but batching and grouping often tempt them back into eager thinking. This lesson needs to bridge that gap directly.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If the code materializes the whole input just to compute local neighborhoods, the state boundary is probably too large.
+- If overlap or tail handling is not named explicitly, students cannot review whether coverage is correct.
+- If grouping assumes all equal keys can be found anywhere, the design may be confusing grouping with sorting.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you implement lazy chunking, sliding windows, and contiguous grouping in streaming pipelines to perform aggregations without materializing full collections, while preserving order and coverage?
 
-This core builds on **Core 3**'s itertools composition by introducing the final classic patterns for streaming aggregations:
-- Fixed-size chunking with configurable overlap and tail policy.
-- Sliding windows with bounded deque auxiliary space.
-- Contiguous grouping with streaming per-group processing.
-- All purely lazy, with mathematically tight coverage and demand laws.
+This lesson introduces the main streaming aggregation patterns students actually need:
 
-We continue the **running project** from `m03-rag.md`, now adding overlapping chunks (for better retrieval recall) and per-doc grouping (for future dedup/embedding stages).
+- fixed-size chunking with explicit overlap and tail policy
+- sliding windows with bounded auxiliary state
+- contiguous grouping that works only when the ordering contract is already honest
 
-**Audience:** Developers who have lazy pipelines but still materialise lists for chunking, windowing, or grouping — and pay the memory price.
+The running project matters because retrieval and document processing pipelines constantly need these patterns, and they are exactly where hidden eager work tends to sneak back in.
+
+**Audience:** Developers with lazy pipelines who still materialize lists for chunking, windowing, or grouping because those operations feel harder to stream.
 
 **Outcome:**
 1. Spot any `for i in range(0, len(text), step): text[i:i+k]` loop and instantly know you can make it lazy with overlap and tail handling.
@@ -80,14 +70,11 @@ We continue the **running project** from `m03-rag.md`, now adding overlapping ch
 
 ### 1.3 Why This Matters Now
 
-Core 3 gave you composition primitives (chain, islice, groupby, tee).  
-In real pipelines you still need to break text into chunks, create context windows, or aggregate per document — and doing it eagerly kills the laziness you just won.
-
-These three patterns are the final building blocks that make truly unbounded, memory-constant pipelines possible.
+The previous lessons gave students streaming primitives, but real pipelines rarely stay at plain map/filter composition. They also need context windows, chunk boundaries, and per-key aggregation. This lesson shows how to add those richer shapes without giving up the demand control and bounded memory that made the pipeline streaming in the first place.
 
 ### 1.4 Streaming Aggregations in 5 Lines
 
-Sliding window with deque:
+The next snippet matters because it makes the hidden memory story visible: the stage holds only the current window, not the whole stream.
 
 ```python
 from collections import deque
