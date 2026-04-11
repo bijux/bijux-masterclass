@@ -41,7 +41,7 @@ flowchart LR
 - Readiness check: [Module Checkpoints](../library/reproducible-research/deep-dive-dvc/guides/module-checkpoints.md)
 - Proof escalation: [Proof Ladder](../library/reproducible-research/deep-dive-dvc/guides/proof-ladder.md)
 - Topic boundaries: [Topic Boundaries](../library/reproducible-research/deep-dive-dvc/reference/topic-boundaries.md)
-- Capstone guide: [Project overview](../library/reproducible-research/deep-dive-dvc/project-docs/index.md)
+- Capstone guide: [Capstone docs](../library/reproducible-research/deep-dive-dvc/capstone-docs/index.md)
 
 ## Local Commands
 

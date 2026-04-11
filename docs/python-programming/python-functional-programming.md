@@ -35,7 +35,7 @@ flowchart LR
 
 - Course home: [Course home](../library/python-programming/python-functional-programming/index.md)
 - Learner entry: [Orientation](../library/python-programming/python-functional-programming/module-00-orientation/index.md)
-- Capstone guide: [Project overview](../library/python-programming/python-functional-programming/project-docs/index.md)
+- Capstone guide: [Capstone docs](../library/python-programming/python-functional-programming/capstone-docs/index.md)
 
 ## Local Commands
 

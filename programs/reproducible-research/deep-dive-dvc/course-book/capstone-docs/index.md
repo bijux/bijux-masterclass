@@ -1,4 +1,4 @@
-# DVC Capstone Project Docs
+# Deep Dive DVC Capstone Docs
 
 This shelf is the curated public document surface for the Deep Dive DVC capstone. It is
 smaller than the full repository on purpose. The goal is to expose the documents another

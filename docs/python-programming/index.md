@@ -57,19 +57,19 @@ flowchart LR
 - Learner entry: [Start Here](../library/python-programming/python-object-oriented-programming/guides/start-here.md)
 - Promise review: [Module Promise Map](../library/python-programming/python-object-oriented-programming/guides/module-promise-map.md)
 - Pressure route: [Pressure Routes](../library/python-programming/python-object-oriented-programming/guides/pressure-routes.md)
-- Capstone guide: [Project overview](../library/python-programming/python-object-oriented-programming/project-docs/index.md)
+- Capstone guide: [Capstone docs](../library/python-programming/python-object-oriented-programming/capstone-docs/index.md)
 
 ### [Python Functional Programming](python-functional-programming.md)
 
 - Local course home: [Course home](../library/python-programming/python-functional-programming/index.md)
 - Learner entry: [Orientation](../library/python-programming/python-functional-programming/module-00-orientation/index.md)
-- Capstone guide: [Project overview](../library/python-programming/python-functional-programming/project-docs/index.md)
+- Capstone guide: [Capstone docs](../library/python-programming/python-functional-programming/capstone-docs/index.md)
 
 ### [Python Meta-Programming](python-meta-programming.md)
 
 - Local course home: [Course home](../library/python-programming/python-meta-programming/index.md)
 - Learner entry: [Orientation](../library/python-programming/python-meta-programming/module-00-orientation/index.md)
-- Capstone guide: [Project overview](../library/python-programming/python-meta-programming/project-docs/index.md)
+- Capstone guide: [Capstone docs](../library/python-programming/python-meta-programming/capstone-docs/index.md)
 
 <div class="bijux-panel-grid">
   <div class="bijux-panel">

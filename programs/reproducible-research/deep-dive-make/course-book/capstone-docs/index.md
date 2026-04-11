@@ -1,4 +1,4 @@
-# Capstone Index
+# Deep Dive Make Capstone Docs
 
 <!-- page-maps:start -->
 ## Guide Maps

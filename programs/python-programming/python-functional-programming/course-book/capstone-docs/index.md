@@ -1,4 +1,4 @@
-# FuncPipe Capstone Index
+# FuncPipe Capstone Docs
 
 ```mermaid
 flowchart TD

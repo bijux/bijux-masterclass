@@ -1,4 +1,4 @@
-# Project Docs
+# Deep Dive Snakemake Capstone Docs
 
 Use this shelf when the question is about the executable Snakemake capstone repository
 itself: public file contracts, review bundles, repository architecture, profile drift, or

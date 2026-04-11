@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 
-CAPSTONE_DOCS_DIRNAMES = {"capstone-docs", "project-docs"}
+CAPSTONE_DOCS_DIRNAMES = {"capstone-docs"}
 MODULE_DIR_PATTERN = re.compile(r"module-(\d+)")
 
 

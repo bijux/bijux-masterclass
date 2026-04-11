@@ -36,7 +36,7 @@ flowchart LR
 
 - Course home: [Course home](../library/python-programming/python-meta-programming/index.md)
 - Learner entry: [Orientation](../library/python-programming/python-meta-programming/module-00-orientation/index.md)
-- Capstone guide: [Project overview](../library/python-programming/python-meta-programming/project-docs/index.md)
+- Capstone guide: [Capstone docs](../library/python-programming/python-meta-programming/capstone-docs/index.md)
 
 ## Local Commands
 

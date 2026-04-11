@@ -15,6 +15,7 @@ DEFAULT_SITE_DIR = REPO_ROOT / "artifacts" / "site" / "bijux-masterclass"
 COURSE_ROW_LABELS = (
     "Home",
     "Guides",
+    "M00",
     "M01",
     "M02",
     "M03",
@@ -26,7 +27,7 @@ COURSE_ROW_LABELS = (
     "M09",
     "M10",
     "Capstone",
-    "Project Docs",
+    "Capstone Docs",
     "Reference",
 )
 
@@ -56,7 +57,7 @@ PAGE_CHECKS = (
         course_title="Deep Dive Make",
         current_label="M01",
         sidebar_labels=(
-            "Overview",
+            "Home",
             "Build Graph Mental Model",
             "Rebuild Truth and Convergence",
             "Rule Shapes and Target Ownership",
@@ -67,7 +68,7 @@ PAGE_CHECKS = (
             "Exercise Answers",
             "Glossary",
         ),
-        sidebar_absent_labels=("Capstone", "Project Docs", "Reference", "M02"),
+        sidebar_absent_labels=("Capstone", "Capstone Docs", "Reference", "M02"),
     ),
     PageCheck(
         path=(
@@ -77,7 +78,7 @@ PAGE_CHECKS = (
         course_title="Deep Dive Make",
         current_label="M02",
         sidebar_labels=(
-            "Overview",
+            "Home",
             "Parallel Scheduling and Runnable Targets",
             "Parallel Safety Contract",
             "Ordering Tools and Honest Edges",
@@ -88,7 +89,7 @@ PAGE_CHECKS = (
             "Exercise Answers",
             "Glossary",
         ),
-        sidebar_absent_labels=("Capstone", "Project Docs", "Reference", "M03"),
+        sidebar_absent_labels=("Capstone", "Capstone Docs", "Reference", "M03"),
     ),
     PageCheck(
         path=(
@@ -98,7 +99,7 @@ PAGE_CHECKS = (
         course_title="Deep Dive Make",
         current_label="M03",
         sidebar_labels=(
-            "Overview",
+            "Home",
             "Determinism and Stable Discovery",
             "Forensic Debugging with Make Evidence",
             "CI Targets as a Public Contract",
@@ -109,24 +110,24 @@ PAGE_CHECKS = (
             "Exercise Answers",
             "Glossary",
         ),
-        sidebar_absent_labels=("Capstone", "Project Docs", "Reference", "M04"),
+        sidebar_absent_labels=("Capstone", "Capstone Docs", "Reference", "M04"),
     ),
     PageCheck(
         path=(
             "library/reproducible-research/deep-dive-make/"
-            "project-docs/index.html"
+            "capstone-docs/index.html"
         ),
         course_title="Deep Dive Make",
-        current_label="Project Docs",
-        sidebar_labels=("Overview", "Architecture Guide", "Proof Guide"),
-        sidebar_absent_labels=("Capstone", "Reference", "M01"),
+        current_label="Capstone Docs",
+        sidebar_labels=("Home", "Architecture Guide", "Proof Guide"),
+        sidebar_absent_labels=("Reference", "M01"),
     ),
     PageCheck(
         path="python-programming/python-functional-programming/index.html",
         course_title="Python Functional Programming",
         current_label="Home",
         sidebar_labels=("Home",),
-        sidebar_absent_labels=("Guides", "M01", "Capstone", "Project Docs", "Reference"),
+        sidebar_absent_labels=("Guides", "M01", "Capstone", "Capstone Docs", "Reference"),
     ),
     PageCheck(
         path=(
@@ -149,8 +150,8 @@ PAGE_CHECKS = (
         ),
         course_title="Deep Dive Snakemake",
         current_label="M04",
-        sidebar_labels=("Overview", "Glossary"),
-        sidebar_absent_labels=("Capstone", "Project Docs", "Reference", "M05"),
+        sidebar_labels=("Home", "Glossary"),
+        sidebar_absent_labels=("Capstone", "Capstone Docs", "Reference", "M05"),
     ),
 )
 
@@ -208,12 +209,13 @@ def check_course_row(html: str, page: PageCheck) -> None:
     visible_row_tag(html, "program")
     visible_row_tag(html, "course", page.course_title)
     for label in COURSE_ROW_LABELS:
-        require_text(html, f">{label}</a>", f"course row label for {page.course_title}")
-    require_text(
+        if not re.search(rf">\s*{re.escape(label)}\s*</a>", html):
+            fail(f"missing course row label for {page.course_title}: {label}")
+    if not re.search(
+        rf'aria-current="page">\s*{re.escape(page.current_label)}\s*</a>',
         html,
-        f'aria-current="page">{page.current_label}</a>',
-        f"current course row label for {page.course_title}",
-    )
+    ):
+        fail(f"missing current course row label for {page.course_title}: {page.current_label}")
 
 
 def check_sidebar(html: str, page: PageCheck) -> None:

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the public docs library depth and project-doc export contract."""
+"""Check the public docs library depth and capstone-doc export contract."""
 
 from __future__ import annotations
 
@@ -26,23 +26,26 @@ def check_max_depth() -> None:
         fail(f"unexpected nested public docs directories: {nested_dirs[0]}")
 
 
-def check_project_docs_exports() -> None:
-    for capstone_dir in sorted(PROGRAMS_DIR.glob("*/*/capstone")):
-        program_slug = capstone_dir.parent.relative_to(PROGRAMS_DIR)
+def check_capstone_docs_exports() -> None:
+    for course_book_dir in sorted(PROGRAMS_DIR.glob("*/*/course-book")):
+        program_slug = course_book_dir.parent.relative_to(PROGRAMS_DIR)
         library_program_dir = LIBRARY_ROOT / program_slug
-        readme_path = capstone_dir / "README.md"
-        project_docs_index = library_program_dir / "project-docs" / "index.md"
+        source_capstone_docs_index = course_book_dir / "capstone-docs" / "index.md"
+        capstone_docs_index = library_program_dir / "capstone-docs" / "index.md"
         legacy_overview = library_program_dir / "capstone" / "project-overview.md"
+        legacy_project_docs_dir = library_program_dir / "project-docs"
 
-        if readme_path.exists() and not project_docs_index.exists():
-            fail(f"missing project docs index for {program_slug}")
+        if source_capstone_docs_index.exists() and not capstone_docs_index.exists():
+            fail(f"missing capstone docs index for {program_slug}")
         if legacy_overview.exists():
             fail(f"legacy capstone project overview still exported for {program_slug}")
+        if legacy_project_docs_dir.exists():
+            fail(f"legacy project-docs directory still exported for {program_slug}")
 
 
 def main() -> int:
     check_max_depth()
-    check_project_docs_exports()
+    check_capstone_docs_exports()
     print("library tree checks passed")
     return 0
 

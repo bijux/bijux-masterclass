@@ -1,4 +1,4 @@
-# Capstone Index
+# Python Metaprogramming Capstone Docs
 
 <!-- page-maps:start -->
 ## Guide Maps

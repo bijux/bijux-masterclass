@@ -31,7 +31,7 @@
   {% set nav_path = first_page_path(nav_item) | trim %}
   {% if nav_item.parent and nav_item.title == nav_item.parent.title -%}
     Home
-  {%- elif "/capstone-docs/" in nav_path or "/project-docs/" in nav_path -%}
+  {%- elif "/capstone-docs/" in nav_path -%}
     Capstone Docs
   {%- elif "/capstone/" in nav_path -%}
     Capstone

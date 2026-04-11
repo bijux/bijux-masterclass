@@ -1,4 +1,4 @@
-# Monitoring System Capstone Index
+# Monitoring System Capstone Docs
 
 ```mermaid
 flowchart TD

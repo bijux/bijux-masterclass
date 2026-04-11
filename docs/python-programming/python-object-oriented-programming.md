@@ -39,7 +39,7 @@ flowchart LR
 - Promise review: [Module Promise Map](../library/python-programming/python-object-oriented-programming/guides/module-promise-map.md)
 - Pressure route: [Pressure Routes](../library/python-programming/python-object-oriented-programming/guides/pressure-routes.md)
 - Topic boundaries: [Topic Boundaries](../library/python-programming/python-object-oriented-programming/reference/topic-boundaries.md)
-- Capstone guide: [Project overview](../library/python-programming/python-object-oriented-programming/project-docs/index.md)
+- Capstone guide: [Capstone docs](../library/python-programming/python-object-oriented-programming/capstone-docs/index.md)
 
 ## Local Commands
 
