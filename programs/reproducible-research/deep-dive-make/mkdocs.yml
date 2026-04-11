@@ -14,6 +14,158 @@ edit_uri: edit/master/programs/reproducible-research/deep-dive-make/course-book/
 docs_dir: course-book
 site_dir: ../../../artifacts/site/reproducible-research/deep-dive-make
 
+nav:
+- Home: index.md
+- Guides:
+  - Home: guides/index.md
+  - Start Here: guides/start-here.md
+  - Course Guide: guides/course-guide.md
+  - Learning Contract: guides/learning-contract.md
+  - Pressure Routes: guides/pressure-routes.md
+  - Proof Ladder: guides/proof-ladder.md
+  - Module Promise Map: guides/module-promise-map.md
+  - Module Checkpoints: guides/module-checkpoints.md
+  - Proof Matrix: guides/proof-matrix.md
+  - Platform Setup: guides/platform-setup.md
+- 'Module 00: Orientation and Study Practice':
+  - Home: module-00-orientation/index.md
+  - Course Map: module-00-orientation/course-map.md
+  - First-Contact Map: module-00-orientation/first-contact-map.md
+  - Mid-Course Map: module-00-orientation/mid-course-map.md
+  - Mastery Map: module-00-orientation/mastery-map.md
+- 'Module 01: Build Graph Foundations and Truth':
+  - Home: module-01-build-graph-foundations-truth/index.md
+  - Build Graph Mental Model: module-01-build-graph-foundations-truth/build-graph-mental-model.md
+  - Rebuild Truth and Convergence: module-01-build-graph-foundations-truth/rebuild-truth-and-convergence.md
+  - Rule Shapes and Target Ownership: module-01-build-graph-foundations-truth/rule-shapes-and-target-ownership.md
+  - Evaluation and Expansion: module-01-build-graph-foundations-truth/evaluation-and-expansion.md
+  - Atomic Publication and Dependency Tracking: module-01-build-graph-foundations-truth/atomic-publication-and-dependency-tracking.md
+  - 'Worked Example: Tiny C Build': module-01-build-graph-foundations-truth/worked-example-tiny-c-build.md
+  - Exercises: module-01-build-graph-foundations-truth/exercises.md
+  - Exercise Answers: module-01-build-graph-foundations-truth/exercise-answers.md
+  - Glossary: module-01-build-graph-foundations-truth/glossary.md
+- 'Module 02: Parallel Safety and Project Structure':
+  - Home: module-02-parallel-safety-project-structure/index.md
+  - Parallel Scheduling and Runnable Targets: module-02-parallel-safety-project-structure/parallel-scheduling-and-runnable-targets.md
+  - Parallel Safety Contract: module-02-parallel-safety-project-structure/parallel-safety-contract.md
+  - Ordering Tools and Honest Edges: module-02-parallel-safety-project-structure/ordering-tools-and-honest-edges.md
+  - Project Structure with One DAG: module-02-parallel-safety-project-structure/project-structure-with-one-dag.md
+  - Selftests and Race Repro Pack: module-02-parallel-safety-project-structure/selftests-and-race-repro-pack.md
+  - 'Worked Example: Parallel-Safe Build': module-02-parallel-safety-project-structure/worked-example-parallel-safe-build.md
+  - Exercises: module-02-parallel-safety-project-structure/exercises.md
+  - Exercise Answers: module-02-parallel-safety-project-structure/exercise-answers.md
+  - Glossary: module-02-parallel-safety-project-structure/glossary.md
+- 'Module 03: Determinism, Debugging, and Self-Testing':
+  - Home: module-03-determinism-debugging-self-testing/index.md
+  - Determinism and Stable Discovery: module-03-determinism-debugging-self-testing/determinism-and-stable-discovery.md
+  - Forensic Debugging with Make Evidence: module-03-determinism-debugging-self-testing/forensic-debugging-with-make-evidence.md
+  - CI Targets as a Public Contract: module-03-determinism-debugging-self-testing/ci-targets-as-a-public-contract.md
+  - Build-System Selftests: module-03-determinism-debugging-self-testing/build-system-selftests.md
+  - Macros and Quarantined Eval: module-03-determinism-debugging-self-testing/macros-and-quarantined-eval.md
+  - 'Worked Example: Production Simulator': module-03-determinism-debugging-self-testing/worked-example-production-simulator.md
+  - Exercises: module-03-determinism-debugging-self-testing/exercises.md
+  - Exercise Answers: module-03-determinism-debugging-self-testing/exercise-answers.md
+  - Glossary: module-03-determinism-debugging-self-testing/glossary.md
+- 'Module 04: Rule Semantics, Precedence, and Edge Cases':
+  - Home: module-04-rule-semantics-precedence-edge-cases/index.md
+  - CLI Semantics and Debug Control: module-04-rule-semantics-precedence-edge-cases/cli-semantics-and-debug-control.md
+  - Variable Precedence and Expansion: module-04-rule-semantics-precedence-edge-cases/variable-precedence-and-expansion.md
+  - Conditionals and Capability Gates: module-04-rule-semantics-precedence-edge-cases/conditionals-and-capability-gates.md
+  - Includes, Remake Semantics, and Search Paths: module-04-rule-semantics-precedence-edge-cases/includes-remake-semantics-and-search-paths.md
+  - Rule Selection, Multi-Output, and Special Targets: module-04-rule-semantics-precedence-edge-cases/rule-selection-multi-output-and-special-targets.md
+  - 'Worked Example: Diagnosing Semantic Failures': module-04-rule-semantics-precedence-edge-cases/worked-example-diagnosing-semantic-failures.md
+  - Exercises: module-04-rule-semantics-precedence-edge-cases/exercises.md
+  - Exercise Answers: module-04-rule-semantics-precedence-edge-cases/exercise-answers.md
+  - Glossary: module-04-rule-semantics-precedence-edge-cases/glossary.md
+- 'Module 05: Portability, Hermeticity, and Failure Modes':
+  - Home: module-05-portability-hermeticity-failure-modes/index.md
+  - Portability Contract and Version Gates: module-05-portability-hermeticity-failure-modes/portability-contract-and-version-gates.md
+  - Jobserver and Controlled Recursion: module-05-portability-hermeticity-failure-modes/jobserver-and-controlled-recursion.md
+  - Modeling Non-File Inputs and Stamps: module-05-portability-hermeticity-failure-modes/modeling-non-file-inputs-and-stamps.md
+  - Performance Measurement and Make Overhead: module-05-portability-hermeticity-failure-modes/performance-measurement-and-make-overhead.md
+  - Failure Modes and Tool Boundaries: module-05-portability-hermeticity-failure-modes/failure-modes-and-tool-boundaries.md
+  - 'Worked Example: Hardening an Inherited Build': module-05-portability-hermeticity-failure-modes/worked-example-hardening-an-inherited-build.md
+  - Exercises: module-05-portability-hermeticity-failure-modes/exercises.md
+  - Exercise Answers: module-05-portability-hermeticity-failure-modes/exercise-answers.md
+  - Glossary: module-05-portability-hermeticity-failure-modes/glossary.md
+- 'Module 06: Generated Files, Multi-Output Rules, and Pipeline Boundaries':
+  - Home: module-06-generated-files-multi-output-pipeline-boundaries/index.md
+  - Generated Files as Graph Targets: module-06-generated-files-multi-output-pipeline-boundaries/generated-files-as-graph-targets.md
+  - Multi-Output Producers and Single Publication: module-06-generated-files-multi-output-pipeline-boundaries/multi-output-producers-and-single-publication.md
+  - Manifests, Stamps, and Boundary Files: module-06-generated-files-multi-output-pipeline-boundaries/manifests-stamps-and-boundary-files.md
+  - Generator Pipelines and Atomic Publication: module-06-generated-files-multi-output-pipeline-boundaries/generator-pipelines-and-atomic-publication.md
+  - Generator Failure Modes and Repairs: module-06-generated-files-multi-output-pipeline-boundaries/generator-failure-modes-and-repairs.md
+  - 'Worked Example: Repairing a Broken Generator Pipeline': module-06-generated-files-multi-output-pipeline-boundaries/worked-example-repairing-a-broken-generator-pipeline.md
+  - Exercises: module-06-generated-files-multi-output-pipeline-boundaries/exercises.md
+  - Exercise Answers: module-06-generated-files-multi-output-pipeline-boundaries/exercise-answers.md
+  - Glossary: module-06-generated-files-multi-output-pipeline-boundaries/glossary.md
+- 'Module 07: Build Architecture, Layered Includes, and Build APIs':
+  - Home: module-07-build-architecture-layered-includes-apis/index.md
+  - Public Targets and Build API Design: module-07-build-architecture-layered-includes-apis/public-targets-and-build-api-design.md
+  - Layered Includes and Responsibility Boundaries: module-07-build-architecture-layered-includes-apis/layered-includes-and-responsibility-boundaries.md
+  - Macros, call, and Reuse Without Opaqueness: module-07-build-architecture-layered-includes-apis/macros-call-and-reuse-without-opaqueness.md
+  - Discovery, Namespacing, and Repository Growth: module-07-build-architecture-layered-includes-apis/discovery-namespacing-and-repository-growth.md
+  - Architecture Review and Maintenance Discipline: module-07-build-architecture-layered-includes-apis/architecture-review-and-maintenance-discipline.md
+  - 'Worked Example: Refactoring a Tangled Build Layout': module-07-build-architecture-layered-includes-apis/worked-example-refactoring-a-tangled-build-layout.md
+  - Exercises: module-07-build-architecture-layered-includes-apis/exercises.md
+  - Exercise Answers: module-07-build-architecture-layered-includes-apis/exercise-answers.md
+  - Glossary: module-07-build-architecture-layered-includes-apis/glossary.md
+- 'Module 08: Release Engineering and Artifact Contracts':
+  - Home: module-08-release-engineering-artifact-contracts/index.md
+  - Release Targets and Contract Meaning: module-08-release-engineering-artifact-contracts/release-targets-and-contract-meaning.md
+  - Package Layouts and Publication Boundaries: module-08-release-engineering-artifact-contracts/package-layouts-and-publication-boundaries.md
+  - Checksums, Manifests, and Artifact Evidence: module-08-release-engineering-artifact-contracts/checksums-manifests-and-artifact-evidence.md
+  - Install Flows and Destination Safety: module-08-release-engineering-artifact-contracts/install-flows-and-destination-safety.md
+  - Release Failure Modes and Debugging: module-08-release-engineering-artifact-contracts/release-failure-modes-and-debugging.md
+  - 'Worked Example: Repairing a Broken Release Surface': module-08-release-engineering-artifact-contracts/worked-example-repairing-a-broken-release-surface.md
+  - Exercises: module-08-release-engineering-artifact-contracts/exercises.md
+  - Exercise Answers: module-08-release-engineering-artifact-contracts/exercise-answers.md
+  - Glossary: module-08-release-engineering-artifact-contracts/glossary.md
+- 'Module 09: Performance, Observability, and Incident Response':
+  - Home: module-09-performance-observability-incident-response/index.md
+  - Measuring Parse, Recipe, and Evidence Cost: module-09-performance-observability-incident-response/measuring-parse-recipe-and-evidence-cost.md
+  - Observability Surfaces for Build Behavior: module-09-performance-observability-incident-response/observability-surfaces-for-build-behavior.md
+  - Incident Triage and Evidence Gathering: module-09-performance-observability-incident-response/incident-triage-and-evidence-gathering.md
+  - Performance Tuning Without Truth Loss: module-09-performance-observability-incident-response/performance-tuning-without-truth-loss.md
+  - Operational Runbooks and Escalation: module-09-performance-observability-incident-response/operational-runbooks-and-escalation.md
+  - 'Worked Example: Investigating a Slow and Noisy Build': module-09-performance-observability-incident-response/worked-example-investigating-a-slow-and-noisy-build.md
+  - Exercises: module-09-performance-observability-incident-response/exercises.md
+  - Exercise Answers: module-09-performance-observability-incident-response/exercise-answers.md
+  - Glossary: module-09-performance-observability-incident-response/glossary.md
+- 'Module 10: Migration, Governance, and Make Boundaries':
+  - Home: module-10-migration-governance-tool-boundaries/index.md
+  - Reviewing Build Contracts and Current Truth: module-10-migration-governance-tool-boundaries/reviewing-build-contracts-and-current-truth.md
+  - Migration Plans That Preserve Proof: module-10-migration-governance-tool-boundaries/migration-plans-that-preserve-proof.md
+  - Governance Rules for Long-Lived Builds: module-10-migration-governance-tool-boundaries/governance-rules-for-long-lived-builds.md
+  - Recurring Build Antipatterns and Recovery: module-10-migration-governance-tool-boundaries/recurring-build-antipatterns-and-recovery.md
+  - Deciding When Make Should Stop Owning the Problem: module-10-migration-governance-tool-boundaries/deciding-when-make-should-stop-owning-the-problem.md
+  - 'Worked Example: Planning a Safe Build Migration': module-10-migration-governance-tool-boundaries/worked-example-planning-a-safe-build-migration.md
+  - Exercises: module-10-migration-governance-tool-boundaries/exercises.md
+  - Exercise Answers: module-10-migration-governance-tool-boundaries/exercise-answers.md
+  - Glossary: module-10-migration-governance-tool-boundaries/glossary.md
+- Deep Dive Make Capstone Guide:
+  - Home: capstone/index.md
+  - Deep Dive Make Capstone Map: capstone/capstone-map.md
+  - Command Guide: capstone/command-guide.md
+  - Capstone File Guide: capstone/capstone-file-guide.md
+  - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
+  - Capstone Proof Guide: capstone/capstone-proof-guide.md
+  - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+  - Capstone Extension Guide: capstone/capstone-extension-guide.md
+  - Capstone Walkthrough: capstone/capstone-walkthrough.md
+  - Capstone Glossary: capstone/glossary.md
+- Reference:
+  - Home: reference/index.md
+  - Reference Glossary: reference/glossary.md
+  - Module Dependency Map: reference/module-dependency-map.md
+  - Practice Map: reference/practice-map.md
+  - Review Checklist: reference/review-checklist.md
+  - Boundary Review Prompts: reference/boundary-review-prompts.md
+  - Self-Review Prompts: reference/self-review-prompts.md
+  - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
+  - Completion Rubric: reference/completion-rubric.md
+  - Topic Boundaries: reference/topic-boundaries.md
+
 theme:
   custom_dir: ../../../docs/overrides
   logo: ../../../docs/assets/bijux_logo_hq.png
