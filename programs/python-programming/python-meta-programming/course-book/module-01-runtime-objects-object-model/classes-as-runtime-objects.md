@@ -1,6 +1,6 @@
 # Classes as Runtime Objects
 
-If Module 01 is going to make later metaprogramming honest, learners need one sentence
+If Module 01 is going to make later metaprogramming honest, one sentence needs
 to become ordinary:
 
 > a class is also a runtime object, created at definition time and then stored, passed,
@@ -183,7 +183,7 @@ be taught with restraint.
 
 ## Layout constraints are real
 
-Two experiments often tempt learners:
+Two experiments can feel tempting here:
 
 - `cls.__bases__ = ...`
 - `obj.__class__ = OtherClass`
