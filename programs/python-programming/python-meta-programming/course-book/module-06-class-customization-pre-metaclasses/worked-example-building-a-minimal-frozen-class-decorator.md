@@ -188,3 +188,10 @@ This worked example ties the module together:
 
 That is the real lesson. The decorator is here as a clean case study in class
 customization boundaries, not as a universal immutability recipe.
+
+## Continue through Module 06
+
+- Previous: [Class Customization Boundaries](class-customization-boundaries.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)

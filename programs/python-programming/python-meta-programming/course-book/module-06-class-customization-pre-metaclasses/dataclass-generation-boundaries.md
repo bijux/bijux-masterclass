@@ -154,3 +154,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is the friendly face of descriptor behavior:
 properties at the attribute boundary.
+
+## Continue through Module 06
+
+- Previous: [Class Decorators and Post-Construction Transformation](class-decorators-and-post-construction-transformation.md)
+- Next: [Properties and Attribute-Boundary Control](properties-and-attribute-boundary-control.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

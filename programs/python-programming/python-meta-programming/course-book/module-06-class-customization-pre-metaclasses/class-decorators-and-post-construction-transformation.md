@@ -187,3 +187,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is dataclasses, where method generation and field
 discovery automate class code without turning into metaclass control.
+
+## Continue through Module 06
+
+- Previous: [Overview](index.md)
+- Next: [Dataclass Generation Boundaries](dataclass-generation-boundaries.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

@@ -152,3 +152,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is to use type hints as declarative aids for shallow
 validation through descriptors.
+
+## Continue through Module 06
+
+- Previous: [Dataclass Generation Boundaries](dataclass-generation-boundaries.md)
+- Next: [Type Hints and Descriptor-Backed Validation](type-hints-and-descriptor-backed-validation.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

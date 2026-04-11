@@ -143,3 +143,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can pressure-test this whole decision model
 inside a minimal frozen class decorator.
+
+## Continue through Module 06
+
+- Previous: [Type Hints and Descriptor-Backed Validation](type-hints-and-descriptor-backed-validation.md)
+- Next: [Worked Example: Building a Minimal `@frozen` Class Decorator](worked-example-building-a-minimal-frozen-class-decorator.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

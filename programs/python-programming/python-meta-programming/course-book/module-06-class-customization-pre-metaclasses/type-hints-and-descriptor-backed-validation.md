@@ -160,3 +160,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is the bigger boundary question: when are these
 class-level tools still enough, and when is the design drifting upward?
+
+## Continue through Module 06
+
+- Previous: [Properties and Attribute-Boundary Control](properties-and-attribute-boundary-control.md)
+- Next: [Class Customization Boundaries](class-customization-boundaries.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

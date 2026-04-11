@@ -86,3 +86,10 @@ Across all six answers, the module wants the same habits:
 - you reject metaclass escalation when post-construction or attribute-boundary tools are still enough
 
 If an answer still sounds like "the class magic handles it," keep going.
+
+## Continue through Module 06
+
+- Previous: [Worked Example: Building a Minimal `@frozen` Class Decorator](worked-example-building-a-minimal-frozen-class-decorator.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

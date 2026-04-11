@@ -144,3 +144,10 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds like "a more advanced class feature could handle it," revise it
 until you can say why the chosen owner is the clearest one.
+
+## Continue through Module 06
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 07](../module-07-descriptors-lookup-attribute-control/index.md)
+- Terms: [Glossary](glossary.md)
