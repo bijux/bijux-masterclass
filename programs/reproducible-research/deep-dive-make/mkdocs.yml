@@ -165,5 +165,14 @@ nav:
           - Glossary: module-08-release-engineering-artifact-contracts/glossary.md
       - "Module 09: Observability and Build Incident Response":
           - Overview: module-09-performance-observability-incident-response/index.md
+          - Measuring Parse, Recipe, and Evidence Cost: module-09-performance-observability-incident-response/measuring-parse-recipe-and-evidence-cost.md
+          - Observability Surfaces for Build Behavior: module-09-performance-observability-incident-response/observability-surfaces-for-build-behavior.md
+          - Incident Triage and Evidence Gathering: module-09-performance-observability-incident-response/incident-triage-and-evidence-gathering.md
+          - Performance Tuning Without Truth Loss: module-09-performance-observability-incident-response/performance-tuning-without-truth-loss.md
+          - Operational Runbooks and Escalation: module-09-performance-observability-incident-response/operational-runbooks-and-escalation.md
+          - "Worked Example: Investigating a Slow and Noisy Build": module-09-performance-observability-incident-response/worked-example-investigating-a-slow-and-noisy-build.md
+          - Exercises: module-09-performance-observability-incident-response/exercises.md
+          - Exercise Answers: module-09-performance-observability-incident-response/exercise-answers.md
+          - Glossary: module-09-performance-observability-incident-response/glossary.md
       - "Module 10: Migration, Governance, and Make Boundaries":
           - Overview: module-10-migration-governance-tool-boundaries/index.md
