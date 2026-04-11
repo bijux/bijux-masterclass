@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Capstone Walkthrough"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -22,7 +22,7 @@ flowchart TD
 
 Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
-Use this page when you want the capstone as a guided learner story instead of as package
+Use this page when you want the capstone as a guided study story instead of as package
 reference alone.
 
 ## Recommended route
@@ -32,7 +32,7 @@ reference alone.
 3. Run `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough`.
 4. Read [Capstone Proof Guide](capstone-proof-guide.md) if you want to compare the walkthrough with the stronger saved proof routes.
 5. Read the generated `pytest.txt`, `focus-areas.txt`, `package-tree.txt`, and `test-tree.txt` in that order.
-6. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` only when you want the learner-facing proof bundle after the walkthrough is already clear.
+6. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` only when you want the guided proof bundle after the walkthrough is already clear.
 7. Run `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you need a saved review bundle with the executed test record.
 8. Compare what you learned with [Capstone Architecture Guide](capstone-architecture-guide.md), [Capstone Proof Guide](capstone-proof-guide.md), and [Capstone Review Worksheet](capstone-review-worksheet.md).
 

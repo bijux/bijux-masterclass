@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Capstone Map"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -37,7 +37,7 @@ page. Use it whenever you want to decide where to go next for concrete evidence.
 | Which tests or proof artifacts match the current module? | [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-functional-programming capstone-test` |
 | Where do package boundaries and adapters live? | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make PROGRAM=python-programming/python-functional-programming inspect` |
 | Which saved proof route fits this claim? | [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` |
-| I need the learner-facing walkthrough story. | [Capstone Walkthrough](capstone-walkthrough.md) | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` |
+| I need the guided walkthrough story. | [Capstone Walkthrough](capstone-walkthrough.md) | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` |
 | I need explicit review prompts or change placement. | [Capstone Review Worksheet](capstone-review-worksheet.md) or [Capstone Extension Guide](capstone-extension-guide.md) | none |
 
 ## Module-to-capstone bridge

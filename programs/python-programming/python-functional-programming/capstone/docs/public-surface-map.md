@@ -30,7 +30,7 @@ of the capstone you actually learned from it.
 | `make test` | pytest terminal output | executable behavior across algebra, domain, boundaries, and interop | `TEST_GUIDE.md` or `PROOF_GUIDE.md` |
 | `make verify-report` | `pytest.txt`, `review-summary.txt`, `review-summary.json` | saved executable proof plus the review inventory | `PROOF_GUIDE.md` |
 | `make tour` | `package-tree.txt`, `test-tree.txt`, `focus-areas.txt`, and `TOUR.md` | the human walkthrough route through the repository and proof surface | `WALKTHROUGH_GUIDE.md` or `TOUR.md` |
-| `make proof` | test, inspect, and tour together | the published learner route end to end | `PROOF_GUIDE.md` |
+| `make proof` | test, inspect, and tour together | the published guided route end to end | `PROOF_GUIDE.md` |
 | `make confirm` | lint, build, verify-report, and proof together | the strongest public contract for the capstone | `PROOF_GUIDE.md` |
 
 ## Good questions after every route

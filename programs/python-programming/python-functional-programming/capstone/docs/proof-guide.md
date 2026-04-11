@@ -25,14 +25,14 @@ flowchart TD
 <!-- page-maps:end -->
 
 This capstone should not be trusted because the prose sounds tidy. It should be trusted
-because the learner can inspect behavior and review artifacts directly.
+because you can inspect behavior and review artifacts directly.
 
 ## Current proof routes
 
 - `make inspect` builds the fastest review bundle for package, test, and guide ownership.
 - `make test` runs the executable test suite.
 - `make verify-report` writes the executed test record plus a review summary bundle.
-- `make tour` builds the learner-facing proof bundle.
+- `make tour` builds the guided proof bundle.
 - `make proof` runs the sanctioned end-to-end route.
 - `make confirm` runs lint, build, verify-report, and proof as the strongest public confirmation route.
 
@@ -47,7 +47,8 @@ because the learner can inspect behavior and review artifacts directly.
 ## Honest limitation
 
 These routes prove different things. Inspection proves navigability, tests prove behavior,
-the verification report proves saved evidence, and the tour proves learner readability.
+the verification report proves saved evidence, and the tour proves readability of the
+guided route.
 Use `make confirm` only when you need the strongest combined route.
 
 ## Best review pattern
@@ -72,7 +73,7 @@ Use `make confirm` only when you need the strongest combined route.
 
 | If you need to review... | Start with | Then run or inspect | Escalate with |
 | --- | --- | --- | --- |
-| repository shape and learner routing | `INDEX.md` | `make inspect` and the inspection bundle | `PROOF_GUIDE.md` |
+| repository shape and guided routing | `INDEX.md` | `make inspect` and the inspection bundle | `PROOF_GUIDE.md` |
 | what a published command or artifact actually exposed | `PUBLIC_SURFACE_MAP.md` | the matching command from `COMMAND_GUIDE.md` | `PROOF_GUIDE.md` |
 | which package owns a behavior and how to read it | `ARCHITECTURE.md` or `PACKAGE_GUIDE.md` | the package route and matching test group | `TEST_GUIDE.md` |
 | which proof should fail first for a claim | `TEST_GUIDE.md` | the closest test group | `make test` or `make verify-report` |

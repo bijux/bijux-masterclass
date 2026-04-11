@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-  reader["Capstone reader"] --> index["INDEX"]
+  route["Capstone route"] --> index["INDEX"]
   index --> arrive["Arrival route"]
   index --> code["Code route"]
   index --> proof["Proof route"]
@@ -38,7 +38,7 @@ has one stable entry hub instead of two overlapping arrival pages.
 | `ARCHITECTURE.md` | which package groups own the major reasoning pressures |
 | `PACKAGE_GUIDE.md` | what order to read the code in without mistaking adapters for the core |
 | `TEST_GUIDE.md` | which test groups prove which kinds of claims |
-| `make inspect` | what the learner-facing inspection bundle looks like |
+| `make inspect` | what the guided inspection bundle looks like |
 | `summary.txt` | how the repository is grouped as a review surface |
 
 ## Start here by question

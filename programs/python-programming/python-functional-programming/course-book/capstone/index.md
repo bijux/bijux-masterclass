@@ -39,7 +39,7 @@ clearly enough.
 
 | If you need... | From the repository root | From the capstone directory |
 | --- | --- | --- |
-| the learner-facing walkthrough | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` | `make demo` |
+| the guided walkthrough | `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough` | `make demo` |
 | the pytest suite only | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `make test` |
 | the course-level proof route | `make PROGRAM=python-programming/python-functional-programming test` | `make confirm` |
 

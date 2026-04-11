@@ -26,7 +26,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This tour is the learner-facing entrypoint for the FuncPipe capstone. It builds a proof
+This tour is the guided entrypoint for the FuncPipe capstone. It builds a proof
 bundle that captures the code and evidence surfaces the course keeps referring to:
 package layout, test proof, and the main areas where purity, effects, and async
 coordination live.

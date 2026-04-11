@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Command Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -22,7 +22,7 @@ flowchart TD
 
 Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
-This page exists so the learner does not have to reverse-engineer the executable surface.
+This page exists so you do not have to reverse-engineer the executable surface.
 Use it whenever you want to connect a course claim to runnable evidence.
 
 ## Stable commands from the repository root
@@ -66,9 +66,9 @@ make history-clean
 - Use `install` before your first capstone run or when the environment changed.
 - Use `test` when you want the strongest published course-level confirmation route.
 - Use `capstone-test` when you only want the capstone pytest suite without the full confirmation bundle.
-- Use `capstone-walkthrough` from the repository root, or `demo` inside `capstone/`, when you want the learner-facing walkthrough route.
+- Use `capstone-walkthrough` from the repository root, or `demo` inside `capstone/`, when you want the guided walkthrough route.
 - Use `inspect` when you want the quickest inventory of packages, tests, and proof guides.
-- Use `capstone-tour` or `tour` when you want the learner-facing proof bundle.
+- Use `capstone-tour` or `tour` when you want the guided proof bundle.
 - Use `capstone-verify-report` or `verify-report` when you want a durable review bundle with executed test output.
 - Use `capstone-confirm` or `confirm` when you want the strictest public confirmation route from inside the capstone itself.
 - Use `proof` when you want the sanctioned end-to-end evidence route in one command.

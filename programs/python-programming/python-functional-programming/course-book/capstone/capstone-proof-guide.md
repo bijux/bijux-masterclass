@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete study or review question"]
   pressure --> guide["Capstone Proof Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -38,11 +38,11 @@ the capstone.
 5. Run `make PROGRAM=python-programming/python-functional-programming test` for the
    course-level executable proof route.
 6. Run `make PROGRAM=python-programming/python-functional-programming capstone-walkthrough`
-   when you need the guided learner-facing walkthrough before escalating proof.
+   when you need the guided walkthrough before escalating proof.
 7. Run `make PROGRAM=python-programming/python-functional-programming capstone-verify-report`
    when you want a review bundle with the executed test record.
 8. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` for
-   the learner-facing proof bundle.
+   the guided proof bundle.
 9. Run `make PROGRAM=python-programming/python-functional-programming proof` when you want
    the sanctioned end-to-end route.
 10. Run `make PROGRAM=python-programming/python-functional-programming capstone-confirm`
