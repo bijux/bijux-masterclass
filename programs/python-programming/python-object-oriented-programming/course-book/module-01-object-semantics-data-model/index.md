@@ -75,6 +75,20 @@ instead of engineering decisions.
 3. Then study aliasing, copying, and the broader data model.
 4. Finish with the "when classes are the wrong tool" chapter and the module refactor.
 
+## Lesson map
+
+- [Object Identity, State, and Behavior](object-identity-state-and-behavior.md)
+- [Attribute Layout, Class and Instance State](attribute-layout-class-and-instance-state.md)
+- [Construction Discipline and Invariants](construction-discipline-and-invariants.md)
+- [Encapsulation and Public Surface](encapsulation-public-surface-and-representation.md)
+- [Equality, Ordering, and Hashing](equality-ordering-and-hashing.md)
+- [Collections Hazards: Aliasing, Mutable Keys, and Shared State](aliasing-mutable-keys-and-shared-state.md)
+- [Copying and Cloning](copying-cloning-and-custom-semantics.md)
+- [Python Data Model as Design Surface](python-data-model-as-design-surface.md)
+- [When OOP Is the Wrong Tool in Python](when-classes-are-the-wrong-tool.md)
+- [Refactor 0: Script to Object Model](refactor-script-to-object-model.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the module outcome tied directly to a proof route.

@@ -70,6 +70,20 @@ represented as a contract instead of a pile of tolerated exceptions.
 3. Finish with lifecycle and typestate because they build on the earlier representation choices.
 4. Use the refactor chapter to see state constraints made explicit in one coherent model.
 
+## Lesson map
+
+- [Properties and Computed Attributes](properties-and-computed-attributes.md)
+- [Descriptors Mental Model](descriptor-mental-model.md)
+- [Dataclasses for Values and Entities](dataclasses-for-values-and-entities.md)
+- [Dataclass Inheritance, Defaults, Slots, and Frozen Pitfalls](dataclass-inheritance-defaults-slots-and-frozen-pitfalls.md)
+- [Post-Init Validation and Invariants](post-init-validation-and-invariants.md)
+- [Boundary Validation Libraries](boundary-validation-libraries.md)
+- [Nulls, Optionals, and Partial Objects](null-optionals-and-partial-objects.md)
+- [Lifecycle and Typestate](lifecycle-and-typestate.md)
+- [Typestate in Python APIs](typestate-in-python-apis.md)
+- [Refactor 2: Dataclasses, Null Safety, and Typestate](refactor-dataclasses-null-safety-and-typestate.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the state and lifecycle promise connected to evidence.

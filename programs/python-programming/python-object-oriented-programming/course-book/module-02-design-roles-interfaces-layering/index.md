@@ -74,6 +74,22 @@ should collaborate without turning the system into framework theater.
 3. Read interfaces and protocols after the role boundaries are clear.
 4. Finish with the refactor chapter to see a thin layered design emerge from concrete pressure.
 
+## Lesson map
+
+- [Responsibilities, Cohesion, and Object Smells](responsibilities-cohesion-and-object-smells.md)
+- [Value Objects versus Entities](value-objects-versus-entities.md)
+- [Service Objects versus Stateful Entities](services-versus-stateful-entities.md)
+- [Composition over Inheritance as Default](composition-over-inheritance.md)
+- [Inheritance and the Fragile Base Class Problem](inheritance-and-fragile-base-classes.md)
+- [Cooperative Inheritance, MRO, and Mixins](cooperative-inheritance-mro-and-mixins.md)
+- [Template Method and Small Hierarchies](template-method-and-small-hierarchies.md)
+- [Factories, Dependency Injection, and Composition Roots](factories-dependency-injection-and-composition-roots.md)
+- [Semantic Types over Raw Primitives](semantic-types-over-raw-primitives.md)
+- [Duck Typing, ABCs, and Protocols](duck-typing-abcs-and-protocols.md)
+- [Domain, Application, and Infrastructure Layers](domain-application-and-infrastructure-layers.md)
+- [Refactor 1: Thin Layered Architecture](refactor-layered-design-with-small-hierarchies.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the role-assignment promise tied to a capstone proof route.

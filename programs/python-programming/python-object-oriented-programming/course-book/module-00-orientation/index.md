@@ -97,6 +97,13 @@ and verify the runtime behavior of the examples rather than relying on intuition
 - Read [Module Checkpoints](../guides/module-checkpoints.md) so the exit bar stays visible from the beginning.
 - Then continue into [Module 01](../module-01-object-semantics-data-model/index.md).
 
+## Orientation map
+
+- [Course Map](course-map.md)
+- [First-Contact Map](first-contact-map.md)
+- [Mid-Course Map](mid-course-map.md)
+- [Mastery Map](mastery-map.md)
+
 ## Capstone roadmap
 
 The monitoring-system capstone matures with the course:
