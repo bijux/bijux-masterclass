@@ -1,5 +1,30 @@
 # Python Object-Oriented Programming Capstone Guide
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Capstone"]
+  page["Python Object-Oriented Programming Capstone Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The capstone is a monitoring-policy system for a team that needs to register rules,
 activate them deliberately, evaluate incoming metric samples, emit incidents, and keep
 downstream read models in sync without turning the domain model into procedural glue.

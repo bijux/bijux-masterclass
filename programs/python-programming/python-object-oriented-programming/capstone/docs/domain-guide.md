@@ -6,17 +6,23 @@
 
 ```mermaid
 graph LR
-  scenario["Monitoring scenario"] --> aggregate["MonitoringPolicy"]
-  aggregate --> rules["Managed rules"]
-  rules --> alerts["Alerts and incidents"]
-  alerts --> views["Read models"]
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Domain Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  term["Name one domain term"] --> owner["Find the owning object"]
-  owner --> state["Ask whether it is authoritative or derived"]
-  state --> review["Choose the matching file, guide, or proof route"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

@@ -6,20 +6,23 @@
 
 ```mermaid
 graph LR
-  lifecycle["test_policy_lifecycle.py"] --> aggregate["MonitoringPolicy aggregate"]
-  evaluation["test_policy_evaluation.py"] --> policies["Evaluation policies"]
-  app["test_application.py"] --> facade["MonitoringApplication facade"]
-  runtime["test_runtime.py"] --> orchestration["MonitoringRuntime"]
-  cli["test_cli.py"] --> review["Learner-facing inspection routes"]
-  uow["test_unit_of_work.py"] --> persistence["Repository and unit of work"]
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Test Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  claim["Design claim"] --> suite["Choose the closest test suite"]
-  suite --> behavior["Read the asserted behavior"]
-  behavior --> owner["Name the responsible object"]
-  owner --> decision["Decide whether the claim is actually proven"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

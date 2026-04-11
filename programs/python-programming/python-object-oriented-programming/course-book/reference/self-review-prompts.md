@@ -1,21 +1,26 @@
 # Self-Review Prompts
 
 <!-- page-maps:start -->
-## Reference Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Reference"]
+  page["Self-Review Prompts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  pause["Pause after a module, review, or capstone session"] --> prompt["Choose the matching prompt set"]
-  prompt --> answer["Answer in plain design language"]
-  answer --> proof["Check the answer against one capstone surface or proof route"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

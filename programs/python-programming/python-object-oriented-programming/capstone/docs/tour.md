@@ -6,20 +6,23 @@
 
 ```mermaid
 graph LR
-  create["Create policy"] --> register["Register rules"]
-  register --> activate["Activate rules"]
-  activate --> observe["Observe samples"]
-  observe --> publish["Publish incidents"]
-  publish --> snapshot["Inspect snapshot"]
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Tour Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
-flowchart TD
-  demo["demo.py"] --> app["MonitoringApplication"]
-  app --> runtime["MonitoringRuntime"]
-  runtime --> aggregate["MonitoringPolicy"]
-  aggregate --> events["Domain events"]
-  events --> readmodels["Indexes and ledgers"]
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

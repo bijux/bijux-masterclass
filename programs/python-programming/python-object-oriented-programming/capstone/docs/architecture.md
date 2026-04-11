@@ -5,23 +5,24 @@
 ## Guide Maps
 
 ```mermaid
-graph TD
-  app["MonitoringApplication"] --> runtime["MonitoringRuntime"]
-  runtime --> aggregate["MonitoringPolicy aggregate"]
-  aggregate --> policies["Evaluation policies"]
-  aggregate --> events["Domain events"]
-  events --> projections["ActiveRuleIndex and IncidentLedger"]
-  runtime --> sink["Incident sink"]
-  runtime --> repo["Repository and unit of work"]
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Architecture Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  command["Learner command"] --> app["Application facade"]
-  app --> domain["Domain model"]
-  domain --> event["Events emitted"]
-  event --> views["Read models updated"]
-  views --> review["Snapshot, tests, and review surfaces"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

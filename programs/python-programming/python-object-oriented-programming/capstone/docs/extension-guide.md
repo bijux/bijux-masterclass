@@ -6,19 +6,23 @@
 
 ```mermaid
 graph LR
-  need["New requirement"] --> question["Which boundary owns the change?"]
-  question --> policy["Evaluation policy"]
-  question --> aggregate["Aggregate lifecycle"]
-  question --> runtime["Runtime adapter"]
-  question --> projection["Read model"]
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Extension Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
-flowchart TD
-  change["Proposed change"] --> locate["Locate the authoritative object"]
-  locate --> invariant["Protect invariants and lifecycle rules"]
-  invariant --> route["Update the matching command, tests, and guides"]
-  route --> proof["Prove the new behavior with executable evidence"]
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

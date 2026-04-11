@@ -1,5 +1,30 @@
 # Reference
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Reference"]
+  page["Reference"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This shelf is for durable object-oriented vocabulary, ownership questions, and review
 standards. Use it when the design pressure is already recognizable and you need a stable
 reference surface for making or reviewing a boundary decision.
