@@ -74,7 +74,7 @@ By the end of Module 07, you should be able to explain five things clearly:
 | explain how instance methods bind through function descriptors | [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md) |
 | build reusable validated fields without shared-state bugs | [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md) |
 | decide whether attribute behavior truly belongs to a descriptor | [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md) |
-| see those choices combined in one didactic field system | [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md) |
+| see those choices combined in one bounded field system | [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md) |
 | pressure-test your understanding before moving into framework-grade descriptor systems | [Exercises](exercises.md) |
 | compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
 | stabilize the descriptor vocabulary used in this directory | [Glossary](glossary.md) |

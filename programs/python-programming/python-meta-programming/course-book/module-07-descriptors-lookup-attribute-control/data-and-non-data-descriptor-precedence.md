@@ -25,7 +25,7 @@ present.
 
 ## The default lookup order
 
-For ordinary instance lookup under `object.__getattribute__`, the useful teaching model
+For ordinary instance lookup under `object.__getattribute__`, the useful review model
 is:
 
 1. look for the attribute on the class and its MRO

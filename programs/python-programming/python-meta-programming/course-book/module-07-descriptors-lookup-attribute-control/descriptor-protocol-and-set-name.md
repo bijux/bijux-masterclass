@@ -16,7 +16,7 @@ That is the foundation the rest of the module depends on.
 
 ## The four hooks in one place
 
-The full teaching surface for this module is:
+The full descriptor surface for this module is:
 
 - `__get__(self, obj, owner=None)` for reads
 - `__set__(self, obj, value)` for writes

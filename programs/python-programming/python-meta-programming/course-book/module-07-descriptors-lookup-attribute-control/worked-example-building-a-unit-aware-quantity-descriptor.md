@@ -3,7 +3,7 @@
 The five core lessons in Module 07 become easier to trust when they meet one field design
 that is useful, realistic, and easy to overstate.
 
-A didactic quantity descriptor is exactly that kind of example.
+A bounded quantity descriptor is exactly that kind of example.
 
 It combines:
 
@@ -28,10 +28,10 @@ They also want reads to return a small helper object that can:
 - convert to other supported units
 - support a small amount of scalar arithmetic
 
-Those are reasonable teaching goals. The mistake would be pretending this is now a full
+Those are reasonable design goals. The mistake would be pretending this is now a full
 units framework.
 
-## The first design rule: keep the scope didactic
+## The first design rule: keep the scope bounded
 
 This worked example is intentionally narrow.
 
@@ -88,7 +88,7 @@ Returning a small value object is useful here because it can hold:
 
 That makes reads more expressive while still keeping storage normalized underneath.
 
-## A didactic implementation
+## A bounded implementation
 
 ```python
 import re
@@ -183,7 +183,7 @@ print(distance.length.to("cm"))  # 200000.0
 print(distance.length.in_metres) # 2000.0
 ```
 
-## Why this is a good teaching artifact
+## Why this is useful for review
 
 This example keeps the important choices visible:
 
@@ -204,7 +204,7 @@ For example, this is not supported:
 - preserving the exact original textual unit from assignment
 - checking real-world unit compatibility beyond the declared conversion table
 
-Those limitations are not defects in the lesson. They are part of the module's honesty.
+Those limitations are not defects. They are part of the module's honesty.
 
 ## Why this belongs to a descriptor
 
@@ -224,7 +224,7 @@ If the example instead needed:
 
 then the ownership would be broader than one reusable descriptor.
 
-## What this example teaches about Module 07
+## What this example makes clear about Module 07
 
 This worked example ties the module together:
 
@@ -234,8 +234,8 @@ This worked example ties the module together:
 - per-instance storage choices stay visible
 - descriptor power is useful only because the ownership boundary is honest
 
-That is the real lesson. The point is not to build a perfect unit system. The point is to
-make descriptor ownership visible in one coherent field design.
+That is the durable takeaway. The point is not to build a perfect unit system. The point
+is to make descriptor ownership visible in one coherent field design.
 
 ## Continue through Module 07
 

@@ -112,7 +112,7 @@ storage is unavailable.
 
 That is where external storage patterns become useful.
 
-One common teaching pattern is `WeakKeyDictionary`:
+One common external-storage pattern is `WeakKeyDictionary`:
 
 ```python
 from weakref import WeakKeyDictionary

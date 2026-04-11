@@ -13,7 +13,7 @@ Use a descriptor when the invariant belongs to attribute access itself and needs
 field-level behavior across multiple instances or classes; stay with lower-power tools
 when the rule is narrower or more explicit there.
 
-That is the boundary Module 07 is really teaching.
+That is the boundary Module 07 keeps visible.
 
 ## The lower-power ladder
 
@@ -165,7 +165,7 @@ Try these before moving on:
 3. Write one short review note rejecting a descriptor because a single property would be clearer.
 
 If those feel ordinary, the worked example can now combine the module's mechanics and
-ownership boundaries inside one didactic quantity field.
+ownership boundaries inside one bounded quantity field.
 
 ## Continue through Module 07
 
