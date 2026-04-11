@@ -42,6 +42,11 @@ This module is where the course stops talking only about pure internals and star
 how real systems touch files, clocks, databases, logs, and transactions without losing
 clarity. The emphasis is on explicit boundaries rather than wishful purity.
 
+Most of this module is the required production track. One page,
+[Effect Interfaces](effect-interfaces.md), is an optional comparison core: it explains
+the native `IOPlan` representation and compares it with external-library styles without
+changing the main Module 07 architecture route.
+
 ## Learning outcomes
 
 - how ports and adapters keep the core insulated from infrastructure details
@@ -52,7 +57,7 @@ clarity. The emphasis is on explicit boundaries rather than wishful purity.
 ## Lesson map
 
 - [Ports and Adapters](ports-and-adapters.md)
-- [Effect Interfaces](effect-interfaces.md)
+- [Effect Interfaces](effect-interfaces.md) *(optional comparison core)*
 - [Capability Protocols](capability-protocols.md)
 - [Resource Safety](resource-safety.md)
 - [Functional Logging](functional-logging.md)
