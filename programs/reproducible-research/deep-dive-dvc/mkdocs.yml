@@ -143,6 +143,15 @@ nav:
           - Glossary: module-06-experiments-baselines-controlled-change/glossary.md
       - "Module 07: Collaboration, CI, and Social Contracts":
           - Overview: module-07-collaboration-ci-social-contracts/index.md
+          - Collaboration Failures and Social Contracts: module-07-collaboration-ci-social-contracts/collaboration-failures-and-social-contracts.md
+          - CI as Shared Reproducibility Executor: module-07-collaboration-ci-social-contracts/ci-as-shared-reproducibility-executor.md
+          - Merge Review and Branch Protection: module-07-collaboration-ci-social-contracts/merge-review-and-branch-protection.md
+          - DVC Remotes and Shared Artifact Stewardship: module-07-collaboration-ci-social-contracts/dvc-remotes-and-shared-artifact-stewardship.md
+          - Recovery Drills and Incident Readiness: module-07-collaboration-ci-social-contracts/recovery-drills-and-incident-readiness.md
+          - "Worked Example: Fixing a Missing Data Push Review": module-07-collaboration-ci-social-contracts/worked-example-fixing-a-missing-data-push-review.md
+          - Exercises: module-07-collaboration-ci-social-contracts/exercises.md
+          - Exercise Answers: module-07-collaboration-ci-social-contracts/exercise-answers.md
+          - Glossary: module-07-collaboration-ci-social-contracts/glossary.md
       - "Module 08: Production, Scale, and Incident Survival":
           - Overview: module-08-recovery-scale-incident-survival/index.md
       - "Module 09: Promotion, Registry Boundaries, Release Contracts, and Auditability":
