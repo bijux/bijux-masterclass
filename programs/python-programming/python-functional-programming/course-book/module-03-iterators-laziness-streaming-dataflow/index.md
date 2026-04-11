@@ -38,8 +38,8 @@ Carry this question into the module:
 
 > When does work happen, where does materialization occur, and how can I make that timing visible enough to review?
 
-This module makes streaming a first-class part of the course architecture. The learner
-moves from pure transforms over finite collections to deliberate control over when work
+This module makes streaming a first-class part of the course architecture. You move from
+pure transforms over finite collections to deliberate control over when work
 happens, how much memory is used, and where materialization becomes a conscious choice.
 
 ## Learning outcomes

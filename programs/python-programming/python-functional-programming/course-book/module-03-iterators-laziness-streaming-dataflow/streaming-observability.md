@@ -12,15 +12,15 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson closes the module by answering a practical fear students often have about laziness: "How do I see what is happening without ruining the stream?" The page should make it clear that observability is compatible with streaming only when it stays explicit and disciplined.
+This lesson closes the module by answering a practical fear about laziness: "How do I see what is happening without ruining the stream?" Observability is compatible with streaming only when it stays explicit and disciplined.
 
 ## Start With the Visibility Trap
 
-When a lazy pipeline becomes hard to inspect, students often reach for prints, ad-hoc counters, or eager materialization. Those moves can reveal data, but they also risk changing the very behavior they are trying to understand.
+When a lazy pipeline becomes hard to inspect, it is tempting to reach for prints, ad-hoc counters, or eager materialization. Those moves can reveal data, but they also risk changing the very behavior you are trying to understand.
 
 - If observation forces a second pass, the stream contract has already changed.
 - If a tap mutates ordering, demand, or failure behavior, it is no longer "just observability."
-- If students cannot tell which effects are intentional and where they are confined, the instrumentation is too implicit.
+- If you cannot tell which effects are intentional and where they are confined, the instrumentation is too implicit.
 
 ## Keep This Question In View
 
@@ -33,7 +33,7 @@ This lesson introduces observability as explicit stream instrumentation:
 - use samplers when a stable subset is enough
 - keep metrics callbacks injected and reviewable instead of hidden in global state
 
-The running project matters because the capstone already pressures students to balance streaming behavior with visibility. This page should give them a way to do that honestly.
+The running project matters because the capstone already pressures you to balance streaming behavior with visibility. This page gives you a way to do that honestly.
 
 **Audience:** Developers debugging or monitoring lazy pipelines who want visibility without collapsing them into eager scripts.
 
@@ -71,7 +71,7 @@ In this series, preserves single-pass; explicit effects.
 
 ### 1.3 Why This Matters Now
 
-Students have now learned how to build pipelines that are lazy, bounded, reusable, and sometimes time-aware. The last missing piece is confidence: how to inspect those pipelines without undoing the design. This lesson makes that inspection strategy explicit so students can debug and monitor streams without abandoning the single-pass model.
+You have now learned how to build pipelines that are lazy, bounded, reusable, and sometimes time-aware. The last missing piece is confidence: how to inspect those pipelines without undoing the design. This lesson makes that inspection strategy explicit so you can debug and monitor streams without abandoning the single-pass model.
 
 ### 1.4 Observability in 5 Lines
 

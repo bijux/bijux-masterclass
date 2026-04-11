@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson needs to make a potentially messy topic reviewable. As soon as a pipeline stops being single-stream, students need stronger language for what is preserved, what is duplicated, and where buffering can quietly grow.
+This lesson makes a potentially messy topic reviewable. As soon as a pipeline stops being single-stream, you need stronger language for what is preserved, what is duplicated, and where buffering can quietly grow.
 
 ## Start With the Multi-Stream Pressure
 
@@ -20,7 +20,7 @@ Merge and split code often looks simple in demos, but real systems need stronger
 
 - If a merge strategy changes order, that needs to be part of the contract, not a surprise.
 - If one split branch can lag arbitrarily behind another, buffering needs an explicit limit or discipline.
-- If students cannot explain whether branches are independent, lockstep, or cached, the fan-out design is not ready for review.
+- If you cannot explain whether branches are independent, lockstep, or cached, the fan-out design is not ready for review.
 
 ## Keep This Question In View
 
@@ -71,7 +71,7 @@ The running project and cross-domain examples matter because merge and split pat
 
 ### 1.3 Why This Matters Now
 
-Single-stream reasoning carries students a long way, but real pipelines soon need multiple inputs, side branches, and coordinated consumers. This lesson shows how to extend streaming discipline into that setting without losing track of order, fairness, or buffer growth.
+Single-stream reasoning carries you a long way, but real pipelines soon need multiple inputs, side branches, and coordinated consumers. This lesson shows how to extend streaming discipline into that setting without losing track of order, fairness, or buffer growth.
 
 ### 1.4 Fan-In/Out in 5 Lines
 

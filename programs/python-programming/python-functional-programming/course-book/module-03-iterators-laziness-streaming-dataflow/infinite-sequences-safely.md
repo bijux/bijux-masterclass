@@ -20,7 +20,7 @@ The dangerous mistake here is subtle: the pipeline still looks elegant because e
 
 - If the source might be infinite or attacker-controlled, consuming it without a fence is a design bug.
 - If the pipeline applies expensive work before bounding demand, the fence is too late to be protective.
-- If students cannot say how many upstream pulls a helper performs, they cannot reason about safe termination.
+- If you cannot say how many upstream pulls a helper performs, you cannot reason about safe termination.
 
 ## Keep This Question In View
 

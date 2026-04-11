@@ -16,10 +16,10 @@ This lesson should make `itertools` feel less like a toolbox to memorize and mor
 
 ## Start With the Composition Smell
 
-After learning generators, students often keep the stage internals lazy but reconnect those stages with eager glue or hand-written loops. That loses the gain they just earned.
+After learning generators, it is common to keep the stage internals lazy but reconnect those stages with eager glue or hand-written loops. That loses the gain you just earned.
 
 - If composition code builds temporary lists, the pipeline is no longer lazy end to end.
-- If a helper changes ordering or buffering semantics, students need to be able to name that explicitly.
+- If a helper changes ordering or buffering semantics, you need to be able to name that explicitly.
 - If `tee` or `groupby` is used without understanding their constraints, the code may still look elegant while behaving badly.
 
 ## Keep This Question In View
@@ -69,7 +69,7 @@ Use for pipeline assembly.
 
 ### 1.3 Why This Matters Now
 
-Generator stages are only part of a streaming design. Once students start combining them, the composition layer determines whether laziness survives. This lesson gives them a vocabulary for that layer so they can stop hand-rolling orchestration that hides demand and materialization behavior.
+Generator stages are only part of a streaming design. Once you start combining them, the composition layer determines whether laziness survives. This lesson gives you a vocabulary for that layer so you can stop hand-rolling orchestration that hides demand and materialization behavior.
 
 ### 1.4 chain.from_iterable Flattens Lazily
 

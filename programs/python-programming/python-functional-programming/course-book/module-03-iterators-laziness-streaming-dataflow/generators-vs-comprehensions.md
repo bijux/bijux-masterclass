@@ -16,7 +16,7 @@ This lesson is about one of the highest-leverage edits in the whole module: deci
 
 ## Start With the Accidental Materialization
 
-Many pipelines become eager again one comprehension at a time. The syntax feels harmless, so students need stronger instincts about when list construction is a real requirement and when it is an unnecessary boundary.
+Many pipelines become eager again one comprehension at a time. The syntax feels harmless, so you need stronger instincts about when list construction is a real requirement and when it is an unnecessary boundary.
 
 - If the result is consumed once from left to right, a list may be doing work too early.
 - If the caller wants only a prefix, a generator expression can avoid computing the rest.
@@ -30,7 +30,7 @@ Many pipelines become eager again one comprehension at a time. The syntax feels 
 This lesson builds directly on generator functions by introducing the simplest laziness upgrade in real code:
 
 - use `(f(x) for x in xs if cond)` when the pipeline only needs one pass
-- keep the readable map/filter shape students already know
+- keep the readable map/filter shape you already know
 - make demand and short-circuit behavior explicit without changing the conceptual transform
 
 The running project keeps the lesson honest: not every list should become a generator, but every comprehension should be justified as either a stored result or a stream.
@@ -56,7 +56,7 @@ The running project keeps the lesson honest: not every list should become a gene
 
 ### 1.3 Why This Matters Now
 
-Generator functions solve the complex cases, but most day-to-day laziness wins come from smaller decisions. This lesson teaches students to notice when a comprehension is silently forcing full evaluation. Once they can spot that boundary, switching from `[]` to `()` becomes a deliberate design move instead of a cosmetic trick.
+Generator functions solve the complex cases, but most day-to-day laziness wins come from smaller decisions. This lesson teaches you to notice when a comprehension is silently forcing full evaluation. Once you can spot that boundary, switching from `[]` to `()` becomes a deliberate design move instead of a cosmetic trick.
 
 ### 1.4 Generator Expressions in 5 Lines
 

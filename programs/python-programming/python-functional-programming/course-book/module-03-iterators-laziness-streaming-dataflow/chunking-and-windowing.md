@@ -19,7 +19,7 @@ This lesson needs to make one point clear early: chunking and windowing are not 
 Students usually recognize map and filter as streaming-friendly, but batching and grouping often tempt them back into eager thinking. This lesson needs to bridge that gap directly.
 
 - If the code materializes the whole input just to compute local neighborhoods, the state boundary is probably too large.
-- If overlap or tail handling is not named explicitly, students cannot review whether coverage is correct.
+- If overlap or tail handling is not named explicitly, you cannot review whether coverage is correct.
 - If grouping assumes all equal keys can be found anywhere, the design may be confusing grouping with sorting.
 
 ## Keep This Question In View
@@ -27,7 +27,7 @@ Students usually recognize map and filter as streaming-friendly, but batching an
 > **Core question:**  
 > How do you implement lazy chunking, sliding windows, and contiguous grouping in streaming pipelines to perform aggregations without materializing full collections, while preserving order and coverage?
 
-This lesson introduces the main streaming aggregation patterns students actually need:
+This lesson introduces the main streaming aggregation patterns you actually need:
 
 - fixed-size chunking with explicit overlap and tail policy
 - sliding windows with bounded auxiliary state
@@ -70,7 +70,7 @@ The running project matters because retrieval and document processing pipelines 
 
 ### 1.3 Why This Matters Now
 
-The previous lessons gave students streaming primitives, but real pipelines rarely stay at plain map/filter composition. They also need context windows, chunk boundaries, and per-key aggregation. This lesson shows how to add those richer shapes without giving up the demand control and bounded memory that made the pipeline streaming in the first place.
+The previous lessons gave you streaming primitives, but real pipelines rarely stay at plain map/filter composition. They also need context windows, chunk boundaries, and per-key aggregation. This lesson shows how to add those richer shapes without giving up the demand control and bounded memory that made the pipeline streaming in the first place.
 
 ### 1.4 Streaming Aggregations in 5 Lines
 

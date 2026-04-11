@@ -40,7 +40,7 @@ Read the directory index first, then return here whenever a page, command, or re
 | Iterator Protocol and Generators | the module's treatment of iterator protocol and generators, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | itertools Composition | the module's treatment of itertools composition, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | Module 03 Refactoring Guide | the repair route for applying the module's main design claim to existing code without losing behavior, clarity, or proof. |
-| Pipeline Stage Review and Reuse | the review surface that pressure-tests the module after the first read so the learner can check judgment, not just recall. |
+| Pipeline Stage Review and Reuse | the review surface that pressure-tests the module after the first read so you can check judgment, not just recall. |
 | Reusable Pipeline Stages | the module's treatment of reusable pipeline stages, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | Streaming Observability | the module's treatment of streaming observability, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | Time-Aware Streaming | the module's treatment of time-aware streaming, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |

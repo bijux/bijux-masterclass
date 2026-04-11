@@ -19,7 +19,7 @@ This lesson should not make class-based iterators feel like the default. It shou
 Generators solve most streaming problems in this module. That is exactly why this lesson needs a careful opening. Students should learn when a custom iterator is warranted, not come away thinking classes are automatically more advanced and therefore better.
 
 - If a stream needs explicit cleanup, restartable iteration, or more structured state handling, a class may be the clearer design.
-- If the same object is both iterable and iterator by accident, students may blur reuse and consumption semantics.
+- If the same object is both iterable and iterator by accident, reuse and consumption semantics become easy to blur.
 - If the lifecycle is hidden, reviewers cannot tell when resources are released or whether iteration can safely restart.
 
 ## Keep This Question In View
@@ -31,7 +31,7 @@ This lesson introduces custom iterators as an explicit lifecycle pattern:
 
 - separate the reusable iterable from the single-pass cursor
 - keep state transitions and cleanup obligations visible in the class design
-- preserve laziness while giving the reader a clearer story about restartability and resource control
+- preserve laziness while giving you a clearer story about restartability and resource control
 
 The running and cross-domain examples matter because custom iterators should feel like a practical response to a real lifecycle need, not like ceremony for its own sake.
 

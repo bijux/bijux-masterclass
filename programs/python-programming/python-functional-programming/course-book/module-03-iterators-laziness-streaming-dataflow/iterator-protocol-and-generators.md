@@ -20,14 +20,14 @@ Teams often write pure pipeline stages and still pay huge memory costs because e
 
 - If a stage returns a list, the pipeline has already crossed a memory boundary.
 - If the consumer only needs a prefix, eager production is doing more work than the result requires.
-- If students cannot say when a value is computed, they do not yet understand the behavior they are reviewing.
+- If you cannot say when a value is computed, you do not yet understand the behavior you are reviewing.
 
 ## Keep This Question In View
 
 > **Core question:**  
 > How do you use `yield` and the iterator protocol (`__iter__` / `__next__`) to transform eager list-based transforms into lazy, memory-efficient generators that only compute on demand — and why does this unlock everything else in Module 3?
 
-This lesson introduces iterator foundations in the way students actually need them:
+This lesson introduces iterator foundations in the way you actually need them:
 
 - treat a pipeline stage as something that can produce values gradually instead of all at once
 - use `yield` to make demand visible without changing the meaning of the transform
@@ -58,7 +58,7 @@ The running FuncPipe examples matter because they show laziness as an explicit b
 
 ### 1.3 Why This Matters Now
 
-Module 02 taught students how to make behavior explicit and configurable. This lesson teaches them how to make execution timing explicit too. A pipeline can be beautifully pure and still do unnecessary work if every stage insists on completing before the next one starts. Generators are the first tool that changes that execution model without abandoning functional clarity.
+Module 02 showed how to make behavior explicit and configurable. This lesson shows how to make execution timing explicit too. A pipeline can be beautifully pure and still do unnecessary work if every stage insists on completing before the next one starts. Generators are the first tool that changes that execution model without abandoning functional clarity.
 
 ### 1.4 Generators as Lazy Values in 5 Lines
 

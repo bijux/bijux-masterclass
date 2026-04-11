@@ -16,10 +16,10 @@ This lesson needs to make time feel reviewable. Students often understand why gl
 
 ## Start With the Hidden Clock Problem
 
-Once a pipeline has to respect timing, students often slide back into impure utilities. The lesson needs to slow down and show that timing rules are part of the stage contract, not an excuse to stop reasoning carefully.
+Once a pipeline has to respect timing, it is easy to slide back into impure utilities. Slow down here: timing rules are part of the stage contract, not an excuse to stop reasoning carefully.
 
 - If a stage reads the wall clock directly, the behavior is harder to test and explain.
-- If delays are implicit, students cannot review whether the pipeline is obeying a real rate contract.
+- If delays are implicit, you cannot review whether the pipeline is obeying a real rate contract.
 - If timing is introduced without naming monotonicity or burst behavior, the implementation may look fine while hiding unstable assumptions.
 
 ## Keep This Question In View
@@ -30,10 +30,10 @@ Once a pipeline has to respect timing, students often slide back into impure uti
 This lesson introduces time-aware streaming as explicit dependency design:
 
 - inject clocks and sleepers instead of reading time globally
-- describe throttling and rate-limiting in terms of contracts the reader can inspect
+- describe throttling and rate-limiting in terms of contracts you can inspect
 - preserve lazy streaming behavior while making delays testable and deterministic under controlled inputs
 
-The running project and side examples matter because time-sensitive pipelines are common, but students need to learn them without giving up the explicit-boundary habits built earlier in the course.
+The running project and side examples matter because time-sensitive pipelines are common, and they should not require giving up the explicit-boundary habits built earlier in the course.
 
 **Audience:** Developers with real-time or bursty streams who need time controls without hiding behavior in global clocks.
 
@@ -67,7 +67,7 @@ In this series, preserves purity; mock time for tests.
 
 ### 1.3 Why This Matters Now
 
-The earlier lessons taught students how to control memory, order, and demand. Time adds another control dimension. Without an explicit model, throttling and rate limiting often become opaque helpers that are hard to test and hard to trust. This lesson shows how to keep time as visible as the rest of the pipeline contract.
+The earlier lessons showed how to control memory, order, and demand. Time adds another control dimension. Without an explicit model, throttling and rate limiting often become opaque helpers that are hard to test and hard to trust. This lesson shows how to keep time as visible as the rest of the pipeline contract.
 
 ### 1.4 Time-Aware in 5 Lines
 

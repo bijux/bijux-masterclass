@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should help students tell the difference between a reusable stage and a script fragment that only looks reusable. The key distinction is whether configuration and iterator freshness are explicit or merely assumed.
+This lesson helps distinguish a reusable stage from a script fragment that only looks reusable. The key distinction is whether configuration and iterator freshness are explicit or merely assumed.
 
 ## Start With the Reuse Smell
 
@@ -20,7 +20,7 @@ Many codebases have "pipeline helpers" that still read globals, capture mutable 
 
 - If a stage depends on globals, it is configured implicitly rather than honestly.
 - If calling the factory twice shares state, it is not producing fresh iterators.
-- If students cannot explain what is captured and what is passed in, the reuse boundary is still blurry.
+- If you cannot explain what is captured and what is passed in, the reuse boundary is still blurry.
 
 ## Keep This Question In View
 
@@ -66,7 +66,7 @@ The broader examples matter here because the lesson is not only about one RAG pi
 
 ### 1.3 Why This Matters Now
 
-The previous lessons taught students how to make one pipeline lazy and safe. This lesson teaches them how to keep those properties when a stage needs variants, tests, and reuse across several pipelines. Without an explicit factory boundary, teams often slide back into globals, shared cursors, or duplicated logic.
+The previous lessons showed how to make one pipeline lazy and safe. This lesson shows how to keep those properties when a stage needs variants, tests, and reuse across several pipelines. Without an explicit factory boundary, teams often slide back into globals, shared cursors, or duplicated logic.
 
 ### 1.4 Reusable Stages in 5 Lines
 
