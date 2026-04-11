@@ -2,50 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Infinite Sequences Safely"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  unbounded["Start with an unbounded or untrusted source"] --> fence["Fence demand with an explicit stop rule"]
+  fence --> prove["State what termination and pull count are guaranteed"]
+  prove --> protect["Protect expensive downstream work with that fence"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is where lazy iteration stops being only a performance topic and becomes a safety topic. Students need to see that an unfenced iterator is not merely inefficient. In the wrong place, it is a correctness and reliability risk.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Missing Fence
 
-Here's a snippet from the progression map:
+The dangerous mistake here is subtle: the pipeline still looks elegant because everything is lazy, but nothing guarantees that it stops.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If the source might be infinite or attacker-controlled, consuming it without a fence is a design bug.
+- If the pipeline applies expensive work before bounding demand, the fence is too late to be protective.
+- If students cannot say how many upstream pulls a helper performs, they cannot reason about safe termination.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you safely handle infinite or unbounded sequences in lazy pipelines by using fencing tools like islice, takewhile, and dropwhile to bound demand, short-circuit computation, and prevent resource exhaustion?
 
-This core builds on **Core 4**'s streaming aggregations by introducing defensive fencing techniques for truly unbounded or potentially infinite sources:
-- Use `islice` for hard numeric caps.
-- Use `takewhile` / `dropwhile` for predicate-driven stops and skips.
-- Combine with generator expressions for filtering, then fence.
-- Make it possible to guarantee termination and bounded work even on infinite inputs by placing explicit fences.
+This lesson introduces fencing as an explicit safety discipline:
 
-We continue the **running project** from `m03-rag.md`, now adding robust fences to protect against pathological inputs (huge docs, infinite streams, malicious APIs).
+- use `islice` when the limit is a hard count
+- use `takewhile` and `dropwhile` when the stop condition is part of the data contract
+- place fences where they actually bound expensive work instead of after the damage is done
 
-**Audience:** Developers processing untrusted or potentially infinite streams (logs, network, generators) who need hard guarantees against hangs and OOM.
+The running project matters because production pipelines often process sources that are large, malformed, or simply unbounded. Students need to leave this lesson knowing how to make termination a visible design choice.
+
+**Audience:** Developers processing logs, network feeds, generators, or other streams that may be untrusted or unbounded.
 
 **Outcome:**
 1. Spot any unfenced consumption of an iterator that could be unbounded and know it's a denial-of-service vulnerability.
@@ -77,13 +67,11 @@ We continue the **running project** from `m03-rag.md`, now adding robust fences 
 
 ### 1.3 Why This Matters Now
 
-Core 4 gave you chunking, windows, and grouping — all safe on finite data.  
-Real systems have infinite logs, malicious APIs, or bugs that produce unbounded output.  
-Unfenced pipelines become denial-of-service vulnerabilities.
-
-Fencing is the final defensive layer that makes lazy pipelines production-hardened.
+Chunking and grouping made streaming richer, but they still assumed data that would eventually end. This lesson removes that assumption. Students now need to think about termination as part of the contract: not only what values flow through the pipeline, but also how much upstream work is allowed before the pipeline must stop.
 
 ### 1.4 Fencing in 5 Lines
+
+The next snippet matters because it shows two different kinds of stop rule: one numeric and one predicate-based.
 
 ```python
 from itertools import islice, count, takewhile
