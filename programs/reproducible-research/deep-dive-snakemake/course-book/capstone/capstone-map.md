@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Deep Dive Snakemake Capstone Map"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -55,7 +55,7 @@ Return to the module first if:
 
 ## Module-to-capstone map
 
-| Module | Main learner question | Capstone surface | First command |
+| Module | Main question | Capstone surface | First command |
 | --- | --- | --- | --- |
 | 01 File Contracts | what makes the workflow file-driven instead of script-shaped | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make walkthrough` |
 | 02 Dynamic DAGs | where discovery becomes explicit instead of magical | checkpoint rule files, discovered-set artifacts, `publish/v1/discovered_samples.json` | `make verify` |

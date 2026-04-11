@@ -13,7 +13,7 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | how summary and report surfaces are produced | `capstone/workflow/rules/summarize_report.smk` | `capstone/publish/v1/summary.json` |
 | what downstream users are allowed to trust | `capstone/workflow/contracts/FILE_API.md` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | where local, CI, and SLURM policy differ | `capstone/profiles/local/config.yaml` | `capstone/profiles/ci/config.yaml` and `capstone/profiles/slurm/config.yaml` |
-| what learner-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
+| what reader-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
 | where helper logic lives outside the rule files | `capstone/workflow/scripts/provenance.py` or `capstone/src/capstone/` | `capstone/environment.yaml` or `capstone/workflow/envs/` |
 | how the repository is defended | `capstone/tests/` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 

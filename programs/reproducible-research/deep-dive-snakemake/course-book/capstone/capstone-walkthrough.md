@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Capstone Walkthrough"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -26,7 +26,7 @@ visible.
 
 ## First pass versus deeper pass
 
-- First pass: use the learner-first route when you need one bounded workflow story from file contract to executed proof.
+- First pass: use the first-pass route when you need one bounded workflow story from file contract to executed proof.
 - Deeper pass: use the longer routes only when the question changes from entry to policy, publish, or stewardship review.
 
 ## 30-minute first pass
