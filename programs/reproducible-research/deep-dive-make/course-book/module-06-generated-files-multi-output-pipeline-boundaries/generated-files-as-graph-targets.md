@@ -130,7 +130,7 @@ build/include/version.h: data/version.json scripts/gen_version.py | build/includ
 ```
 
 The directory is setup. The generated file is the published artifact. Keeping those roles
-separate helps learners see what actually changes output meaning and what does not.
+separate helps you see what actually changes output meaning and what does not.
 
 ## What counts as a semantic input
 
@@ -175,7 +175,7 @@ to the build fact that changes its meaning.
 
 Many teams jump straight to advanced generation patterns. That is usually too early.
 
-If the learner cannot yet explain one generated file as:
+If you cannot yet explain one generated file as:
 
 - one promised target
 - one set of semantic inputs
@@ -212,7 +212,7 @@ Take any generated file and ask:
 2. which files and modeled facts define its meaning
 3. which rule owns publication
 4. which downstream targets consume it
-5. could a learner explain its rebuild in one sentence
+5. could you explain its rebuild in one sentence
 
 If those answers are weak, the generation model is weak too.
 

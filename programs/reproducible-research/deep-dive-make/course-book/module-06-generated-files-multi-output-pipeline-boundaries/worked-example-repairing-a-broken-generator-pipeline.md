@@ -15,7 +15,7 @@ feeling like a correctness problem.
 
 ## The incident
 
-Assume the learner inherits a small pipeline that produces:
+Assume you inherit a small pipeline that produces:
 
 - `build/include/api.h`
 - `build/api.json`
@@ -248,9 +248,9 @@ flowchart TD
 This is why the module is organized into five cores and then one worked example. The
 example is where the module becomes operational.
 
-## What the learner should say at the end
+## What you should say at the end
 
-A strong learner summary sounds like this:
+A strong summary sounds like this:
 
 > The pipeline was broken in four different ways: the consumer edge skipped the generated
 > header, the coupled outputs lacked one clear publication event, the manifest recorded

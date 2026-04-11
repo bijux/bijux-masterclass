@@ -94,7 +94,7 @@ The names are close, but the roles often differ:
 | stamp | completion fact | "this generator finished successfully" |
 | manifest | descriptive boundary file | "these outputs correspond to this schema, mode, or fingerprint" |
 
-You do not need rigid purity here, but the distinction helps learners think better:
+You do not need rigid purity here, but the distinction helps you think more clearly:
 
 - stamps usually emphasize event completion
 - manifests usually emphasize inspectable build meaning

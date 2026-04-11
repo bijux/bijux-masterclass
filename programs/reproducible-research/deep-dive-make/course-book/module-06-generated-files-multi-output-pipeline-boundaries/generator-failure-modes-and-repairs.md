@@ -13,7 +13,7 @@ It sounds more like this:
 
 Those are not five unrelated mysteries. They are recurring failure shapes.
 
-This page is about naming those shapes and giving the learner a repair loop that stays
+This page is about naming those shapes and giving you a repair loop that stays
 calm under pressure.
 
 ## The sentence to keep

@@ -55,7 +55,7 @@ The evidence command should usually include a pressured run, such as:
 make -j2 api.h api.json
 ```
 
-or the same command with `--trace` if the learner wants explicit rebuild reasoning.
+or the same command with `--trace` if you want explicit rebuild reasoning.
 
 ## Exercise 3: Decide whether a manifest is justified
 
