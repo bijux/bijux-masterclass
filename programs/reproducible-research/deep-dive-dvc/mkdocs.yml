@@ -82,6 +82,7 @@ nav:
           - Why Git and Scripts Are Not Enough: module-01-reproducibility-failures-real-teams/why-git-and-scripts-are-not-enough.md
           - What DVC Does and Does Not Own: module-01-reproducibility-failures-real-teams/what-dvc-does-and-does-not-own.md
           - The First Honest Workflow Inventory: module-01-reproducibility-failures-real-teams/the-first-honest-workflow-inventory.md
+          - "Worked Example: Auditing a Fragile ML Workflow": module-01-reproducibility-failures-real-teams/worked-example-auditing-a-fragile-ml-workflow.md
       - "Module 02: Data Identity and Content Addressing":
           - Overview: module-02-data-identity-content-addressing/index.md
       - "Module 03: Execution Environments as Inputs":
