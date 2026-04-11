@@ -15,7 +15,7 @@ That is a realistic place for a team to discover it needs release engineering di
 
 ## The incident
 
-Assume the learner inherits a repository with these complaints:
+Assume you inherit a repository with these complaints:
 
 1. `make dist` produces an archive, but the archive contents keep drifting
 2. the checksum changes even when the binary and docs appear unchanged
@@ -58,7 +58,7 @@ unpredictably:
 - mutate local install paths
 - run unrelated checks that belong in another target
 
-So the learner first writes down a cleaner contract:
+So you first write down a cleaner contract:
 
 - `dist`: produce the publishable archive and its declared verification files
 - `release-check`: run the validations required before publication
@@ -158,7 +158,7 @@ install: app LICENSE
 	@cp LICENSE $(INSTALL_ROOT)/share/licenses/app/LICENSE
 ```
 
-Now the learner can test:
+Now you can test:
 
 ```sh
 make install DESTDIR=/tmp/release-check
@@ -244,9 +244,9 @@ flowchart TD
 This is why the module is organized as five cores and then one worked example. The example
 is where release engineering stops sounding abstract.
 
-## What the learner should say at the end
+## What you should say at the end
 
-A strong learner summary sounds like this:
+A strong summary sounds like this:
 
 > The release surface was drifting because `dist` meant too much, the bundle layout was
 > assembled implicitly, unstable diagnostics were packaged into artifact identity, and
