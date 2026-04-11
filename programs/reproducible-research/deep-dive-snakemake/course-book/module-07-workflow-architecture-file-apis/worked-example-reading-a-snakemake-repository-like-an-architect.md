@@ -87,7 +87,7 @@ The capstone keeps those in:
 
 - `workflow/CONTRACT.md`
 - `workflow/contracts/FILE_API.md`
-- `course-book/capstone-docs/file-api.md`
+- `capstone/docs/file-api.md`
 
 Those docs answer questions the directory tree alone cannot:
 

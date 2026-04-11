@@ -43,9 +43,9 @@ Ask first:
 
 In the capstone, this route is visible:
 
-- `course-book/capstone-docs/file-api.md`
+- `capstone/docs/file-api.md`
 - `make verify-report`
-- `course-book/capstone-docs/publish-review-guide.md`
+- `capstone/docs/publish-review-guide.md`
 
 That is a good pattern. It keeps public truth visible without forcing reviewers to infer it
 from the whole repository tree.

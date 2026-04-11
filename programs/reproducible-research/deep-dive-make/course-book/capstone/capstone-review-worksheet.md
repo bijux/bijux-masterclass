@@ -81,7 +81,7 @@ Ask:
 
 Best evidence:
 
-- `course-book/capstone-docs/target-guide.md`
+- `capstone/docs/target-guide.md`
 - `capstone/scripts/mkdist.py`
 - [Capstone Extension Guide](capstone-extension-guide.md)
 

@@ -62,12 +62,12 @@ make PROGRAM=reproducible-research/deep-dive-snakemake proof
 ## First honest pass
 
 1. Run `make walkthrough`.
-2. Read [INDEX.md](../course-book/capstone-docs/index.md).
-3. Read [WALKTHROUGH_GUIDE.md](../course-book/capstone-docs/walkthrough-guide.md).
+2. Read [INDEX.md](docs/index.md).
+3. Read [WALKTHROUGH_GUIDE.md](docs/walkthrough-guide.md).
 4. Read `Snakefile` and the rule files it exposes first.
-5. Read [FILE_API.md](../course-book/capstone-docs/file-api.md).
+5. Read [FILE_API.md](docs/file-api.md).
 6. Run `make verify`.
-7. Read [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md).
+7. Read [PROOF_GUIDE.md](docs/proof-guide.md).
 
 Stop there first. That is enough to see the workflow contract, repository shape, and one
 bounded proof route without turning the capstone into a browsing exercise.
@@ -97,18 +97,18 @@ Use these surfaces deliberately:
 
 ## Capstone docs
 
-All capstone documentation lives under `course-book/capstone-docs/`:
+All capstone documentation lives under `docs/`:
 
-- [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md)
-- [DOMAIN_GUIDE.md](../course-book/capstone-docs/domain-guide.md)
-- [EXTENSION_GUIDE.md](../course-book/capstone-docs/extension-guide.md)
-- [FILE_API.md](../course-book/capstone-docs/file-api.md)
-- [INDEX.md](../course-book/capstone-docs/index.md)
-- [PROFILE_AUDIT_GUIDE.md](../course-book/capstone-docs/profile-audit-guide.md)
-- [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md)
-- [PUBLISH_REVIEW_GUIDE.md](../course-book/capstone-docs/publish-review-guide.md)
-- [TOUR.md](../course-book/capstone-docs/tour.md)
-- [WALKTHROUGH_GUIDE.md](../course-book/capstone-docs/walkthrough-guide.md)
+- [ARCHITECTURE.md](docs/architecture.md)
+- [DOMAIN_GUIDE.md](docs/domain-guide.md)
+- [EXTENSION_GUIDE.md](docs/extension-guide.md)
+- [FILE_API.md](docs/file-api.md)
+- [INDEX.md](docs/index.md)
+- [PROFILE_AUDIT_GUIDE.md](docs/profile-audit-guide.md)
+- [PROOF_GUIDE.md](docs/proof-guide.md)
+- [PUBLISH_REVIEW_GUIDE.md](docs/publish-review-guide.md)
+- [TOUR.md](docs/tour.md)
+- [WALKTHROUGH_GUIDE.md](docs/walkthrough-guide.md)
 
 ## Good stopping point
 

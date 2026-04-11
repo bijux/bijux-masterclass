@@ -25,7 +25,7 @@ If the answer is "the latest files," the promotion boundary is not strong enough
 The capstone corroboration surface for this module is the promoted bundle and its review
 evidence: `capstone/publish/v1/`, `capstone/publish/v1/manifest.json`,
 `capstone/publish/v1/metrics.json`, `capstone/publish/v1/params.yaml`,
-`course-book/capstone-docs/publish-contract.md`, `course-book/capstone-docs/release-review-guide.md`, and the
+`capstone/docs/publish-contract.md`, `capstone/docs/release-review-guide.md`, and the
 `make -C capstone release-audit` route.
 
 ## Why this module exists
@@ -121,8 +121,8 @@ Best corroboration surfaces for this module:
 - `capstone/publish/v1/manifest.json`
 - `capstone/publish/v1/metrics.json`
 - `capstone/publish/v1/params.yaml`
-- `course-book/capstone-docs/publish-contract.md`
-- `course-book/capstone-docs/release-review-guide.md`
+- `capstone/docs/publish-contract.md`
+- `capstone/docs/release-review-guide.md`
 - `capstone/dvc.lock`
 
 Useful proof route:

@@ -33,7 +33,7 @@ BLD_DIR := build
 MK_DIR  := mk
 TST_DIR := tests
 REP_DIR := repro
-DOCS_DIR := ../course-book/capstone-docs
+DOCS_DIR := docs
 ARTIFACTS_DIR ?= ../../../../artifacts
 REPO_ROOT := $(abspath ../../../../)
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
@@ -371,8 +371,8 @@ repro:
 >     '  2. repro/05-mkdir-race.mk' \
 >     '  3. repro/06-order-only-misuse.mk' \
 >     '' \
->     'For the capstone teaching route, read ../course-book/capstone-docs/repro-guide.md' \
->     'For the course route, read course-book/capstone-docs/repro-guide.md'
+>     'For the capstone teaching route, read docs/repro-guide.md' \
+>     'For the course route, read docs/repro-guide.md'
 
 discovery-audit:
 >     printf '%s\n' $(DYN_SRCS) | LC_ALL=C sort -c

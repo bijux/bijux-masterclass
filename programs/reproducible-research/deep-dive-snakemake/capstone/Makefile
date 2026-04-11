@@ -9,7 +9,7 @@ SHELL := /bin/bash
 PROFILE   ?= profiles/local
 CORES     ?= all
 CONFIG    ?= config/config.yaml
-DOCS_DIR := ../course-book/capstone-docs
+DOCS_DIR := docs
 
 SYSTEM_PYTHON ?= $(if $(shell command -v python3.11 2>/dev/null),python3.11,python3)
 DOT       ?= dot

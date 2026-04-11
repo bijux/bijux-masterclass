@@ -45,7 +45,7 @@ to.
 
 These exported pages use lowercase generated names. Inside the capstone repository, the
 source documents appear under `docs/` with uppercase filenames such as
-`course-book/capstone-docs/file-api.md`.
+`docs/file-api.md`.
 
 ## Good stopping point
 

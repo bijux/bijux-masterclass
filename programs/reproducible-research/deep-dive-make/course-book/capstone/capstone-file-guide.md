@@ -14,7 +14,7 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | which sources and objects enter the graph | `capstone/mk/objects.mk` | `capstone/src/` |
 | how hidden inputs and state evidence are modeled | `capstone/mk/stamps.mk` | `capstone/tests/run.sh` |
 | generated-header behavior | `capstone/scripts/gen_dynamic_h.py` | `capstone/Makefile` |
-| source and release packaging | `capstone/scripts/mkdist.py` | `course-book/capstone-docs/target-guide.md` |
+| source and release packaging | `capstone/scripts/mkdist.py` | `capstone/docs/target-guide.md` |
 | one failure class in isolation | `capstone/repro/01-shared-log.mk` or another repro file | [Capstone Proof Guide](capstone-proof-guide.md) |
 
 ## Directory responsibilities
@@ -27,7 +27,7 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | `capstone/scripts/` | explicit generator and packaging helpers |
 | `capstone/tests/` | the proof harness for build-system behavior |
 | `capstone/repro/` | controlled failure specimens for one lesson at a time |
-| `course-book/capstone-docs/` | repository-local guide pages for bounded review routes |
+| `capstone/docs/` | repository-local guide pages for bounded review routes |
 
 ## Good first reading order
 

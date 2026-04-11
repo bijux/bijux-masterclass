@@ -46,21 +46,21 @@ route: choose the pressure first, then open the course that owns that pressure.
 - Learner entry: [Start Here](deep-dive-make/course-book/guides/start-here.md)
 - Program guide: [Course Guide](deep-dive-make/course-book/guides/course-guide.md)
 - Pressure route: [Pressure Routes](deep-dive-make/course-book/guides/pressure-routes.md)
-- Capstone guide: [Capstone docs](deep-dive-make/course-book/capstone-docs/index.md)
+- Capstone guide: [Capstone docs](deep-dive-make/capstone/docs/index.md)
 
 ### [Deep Dive Snakemake](deep-dive-snakemake/course-book/index.md)
 
 - Learner entry: [Start Here](deep-dive-snakemake/course-book/guides/start-here.md)
 - Program guide: [Course Guide](deep-dive-snakemake/course-book/guides/course-guide.md)
 - Pressure route: [Pressure Routes](deep-dive-snakemake/course-book/guides/pressure-routes.md)
-- Capstone guide: [Capstone docs](deep-dive-snakemake/course-book/capstone-docs/index.md)
+- Capstone guide: [Capstone docs](deep-dive-snakemake/capstone/docs/index.md)
 
 ### [Deep Dive DVC](deep-dive-dvc/course-book/index.md)
 
 - Learner entry: [Start Here](deep-dive-dvc/course-book/guides/start-here.md)
 - Program guide: [Course Guide](deep-dive-dvc/course-book/guides/course-guide.md)
 - Pressure route: [Pressure Routes](deep-dive-dvc/course-book/guides/pressure-routes.md)
-- Capstone guide: [Capstone docs](deep-dive-dvc/course-book/capstone-docs/index.md)
+- Capstone guide: [Capstone docs](deep-dive-dvc/capstone/docs/index.md)
 
 ## How to Use This Family
 

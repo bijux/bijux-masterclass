@@ -62,13 +62,13 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review
 ## First honest pass
 
 1. Run `make walkthrough`.
-2. Read [INDEX.md](../course-book/capstone-docs/index.md).
-3. Read [DOMAIN_GUIDE.md](../course-book/capstone-docs/domain-guide.md).
-4. Read [STAGE_CONTRACT_GUIDE.md](../course-book/capstone-docs/stage-contract-guide.md).
-5. Read [PUBLISH_CONTRACT.md](../course-book/capstone-docs/publish-contract.md).
+2. Read [INDEX.md](docs/index.md).
+3. Read [DOMAIN_GUIDE.md](docs/domain-guide.md).
+4. Read [STAGE_CONTRACT_GUIDE.md](docs/stage-contract-guide.md).
+5. Read [PUBLISH_CONTRACT.md](docs/publish-contract.md).
 6. Read `dvc.yaml`, `dvc.lock`, and `params.yaml`.
 7. Run `make verify`.
-8. Read [RELEASE_REVIEW_GUIDE.md](../course-book/capstone-docs/release-review-guide.md) and [REVIEW_ROUTE_GUIDE.md](../course-book/capstone-docs/review-route-guide.md).
+8. Read [RELEASE_REVIEW_GUIDE.md](docs/release-review-guide.md) and [REVIEW_ROUTE_GUIDE.md](docs/review-route-guide.md).
 
 Stop there first. That is enough to see the domain, state boundaries, pipeline contract,
 and one bounded proof route without turning the capstone into a browsing exercise.
@@ -99,18 +99,18 @@ Use these surfaces deliberately:
 
 ## Capstone docs
 
-All capstone documentation lives under `course-book/capstone-docs/`:
+All capstone documentation lives under `docs/`:
 
-- [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md)
-- [DOMAIN_GUIDE.md](../course-book/capstone-docs/domain-guide.md)
-- [EXPERIMENT_GUIDE.md](../course-book/capstone-docs/experiment-guide.md)
-- [INDEX.md](../course-book/capstone-docs/index.md)
-- [PUBLISH_CONTRACT.md](../course-book/capstone-docs/publish-contract.md)
-- [RECOVERY_GUIDE.md](../course-book/capstone-docs/recovery-guide.md)
-- [RELEASE_REVIEW_GUIDE.md](../course-book/capstone-docs/release-review-guide.md)
-- [REVIEW_ROUTE_GUIDE.md](../course-book/capstone-docs/review-route-guide.md)
-- [STAGE_CONTRACT_GUIDE.md](../course-book/capstone-docs/stage-contract-guide.md)
-- [TOUR.md](../course-book/capstone-docs/tour.md)
+- [ARCHITECTURE.md](docs/architecture.md)
+- [DOMAIN_GUIDE.md](docs/domain-guide.md)
+- [EXPERIMENT_GUIDE.md](docs/experiment-guide.md)
+- [INDEX.md](docs/index.md)
+- [PUBLISH_CONTRACT.md](docs/publish-contract.md)
+- [RECOVERY_GUIDE.md](docs/recovery-guide.md)
+- [RELEASE_REVIEW_GUIDE.md](docs/release-review-guide.md)
+- [REVIEW_ROUTE_GUIDE.md](docs/review-route-guide.md)
+- [STAGE_CONTRACT_GUIDE.md](docs/stage-contract-guide.md)
+- [TOUR.md](docs/tour.md)
 
 ## Good stopping point
 

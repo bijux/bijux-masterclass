@@ -24,8 +24,8 @@ If the answer is unclear, the repository may be tidy today but not durable.
 
 The capstone corroboration surface for this module is the set of files and commands that
 make recovery and long-lived state visible: `capstone/dvc.lock`,
-`capstone/publish/v1/manifest.json`, `course-book/capstone-docs/recovery-guide.md`,
-`course-book/capstone-docs/stage-contract-guide.md`, `course-book/capstone-docs/release-review-guide.md`, and the
+`capstone/publish/v1/manifest.json`, `capstone/docs/recovery-guide.md`,
+`capstone/docs/stage-contract-guide.md`, `capstone/docs/release-review-guide.md`, and the
 `make -C capstone recovery-review` route.
 
 ## Why this module exists
@@ -120,9 +120,9 @@ Best corroboration surfaces for this module:
 - `capstone/publish/v1/manifest.json`
 - `capstone/publish/v1/metrics.json`
 - `capstone/publish/v1/params.yaml`
-- `course-book/capstone-docs/recovery-guide.md`
-- `course-book/capstone-docs/stage-contract-guide.md`
-- `course-book/capstone-docs/publish-contract.md`
+- `capstone/docs/recovery-guide.md`
+- `capstone/docs/stage-contract-guide.md`
+- `capstone/docs/publish-contract.md`
 
 Useful proof route:
 

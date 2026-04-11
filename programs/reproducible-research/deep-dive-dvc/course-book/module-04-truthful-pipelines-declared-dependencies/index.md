@@ -21,7 +21,7 @@ that a reviewer can inspect, challenge, and reproduce.
 
 The capstone corroboration surface for this module is the set of files that show declared
 execution truth: `capstone/dvc.yaml`, `capstone/dvc.lock`, `capstone/params.yaml`,
-`course-book/capstone-docs/stage-contract-guide.md`, `course-book/capstone-docs/experiment-guide.md`, and
+`capstone/docs/stage-contract-guide.md`, `capstone/docs/experiment-guide.md`, and
 the `make -C capstone verify` route.
 
 ## Why this module exists
@@ -123,9 +123,9 @@ Best corroboration surfaces for this module:
 - `capstone/dvc.yaml`
 - `capstone/dvc.lock`
 - `capstone/params.yaml`
-- `course-book/capstone-docs/stage-contract-guide.md`
-- `course-book/capstone-docs/experiment-guide.md`
-- `course-book/capstone-docs/publish-contract.md`
+- `capstone/docs/stage-contract-guide.md`
+- `capstone/docs/experiment-guide.md`
+- `capstone/docs/publish-contract.md`
 
 Useful proof route:
 

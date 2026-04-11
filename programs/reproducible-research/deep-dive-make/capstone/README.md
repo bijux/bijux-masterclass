@@ -64,12 +64,12 @@ Inside `capstone/`, use `gmake` on macOS because `/usr/bin/make` is BSD Make.
 ## First honest pass
 
 1. Run `make walkthrough`.
-2. Read [INDEX.md](../course-book/capstone-docs/index.md).
-3. Read [WALKTHROUGH_GUIDE.md](../course-book/capstone-docs/walkthrough-guide.md).
+2. Read [INDEX.md](docs/index.md).
+3. Read [WALKTHROUGH_GUIDE.md](docs/walkthrough-guide.md).
 4. Run `make inspect`.
-5. Read [TARGET_GUIDE.md](../course-book/capstone-docs/target-guide.md).
+5. Read [TARGET_GUIDE.md](docs/target-guide.md).
 6. Run `make selftest`.
-7. Read [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md).
+7. Read [PROOF_GUIDE.md](docs/proof-guide.md).
 
 Stop there first. That is enough to see the public contract, the proof harness, and one
 bounded review route without turning the capstone into a browsing exercise.
@@ -111,18 +111,18 @@ Use these areas deliberately:
 
 ## Capstone docs
 
-All capstone documentation lives under `course-book/capstone-docs/`:
+All capstone documentation lives under `docs/`:
 
-- [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md)
-- [CONTRACT_AUDIT_GUIDE.md](../course-book/capstone-docs/contract-audit-guide.md)
-- [INCIDENT_REVIEW_GUIDE.md](../course-book/capstone-docs/incident-review-guide.md)
-- [INDEX.md](../course-book/capstone-docs/index.md)
-- [PROFILE_AUDIT_GUIDE.md](../course-book/capstone-docs/profile-audit-guide.md)
-- [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md)
-- [REPRO_GUIDE.md](../course-book/capstone-docs/repro-guide.md)
-- [SELFTEST_GUIDE.md](../course-book/capstone-docs/selftest-guide.md)
-- [TARGET_GUIDE.md](../course-book/capstone-docs/target-guide.md)
-- [WALKTHROUGH_GUIDE.md](../course-book/capstone-docs/walkthrough-guide.md)
+- [ARCHITECTURE.md](docs/architecture.md)
+- [CONTRACT_AUDIT_GUIDE.md](docs/contract-audit-guide.md)
+- [INCIDENT_REVIEW_GUIDE.md](docs/incident-review-guide.md)
+- [INDEX.md](docs/index.md)
+- [PROFILE_AUDIT_GUIDE.md](docs/profile-audit-guide.md)
+- [PROOF_GUIDE.md](docs/proof-guide.md)
+- [REPRO_GUIDE.md](docs/repro-guide.md)
+- [SELFTEST_GUIDE.md](docs/selftest-guide.md)
+- [TARGET_GUIDE.md](docs/target-guide.md)
+- [WALKTHROUGH_GUIDE.md](docs/walkthrough-guide.md)
 
 ## Good stopping point
 

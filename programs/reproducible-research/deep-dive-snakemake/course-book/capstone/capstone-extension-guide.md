@@ -83,7 +83,7 @@ it still runs.
 
 Use these pages with this guide:
 
-* [`architecture.md`](../capstone-docs/architecture.md)
+* [`architecture.md`](../capstone/docs/architecture.md)
 * [`capstone-file-guide.md`](capstone-file-guide.md)
 * [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
 * [`proof-matrix.md`](../guides/proof-matrix.md)

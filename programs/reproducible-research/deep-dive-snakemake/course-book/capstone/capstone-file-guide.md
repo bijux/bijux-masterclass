@@ -71,7 +71,7 @@ right places?"
 Recommended route:
 
 1. Read [Capstone Guide](index.md).
-2. Compare this page with [Architecture Guide](../capstone-docs/architecture.md).
+2. Compare this page with [Architecture Guide](../capstone/docs/architecture.md).
 3. Inspect the matching capstone files in the order named above.
 4. Use [Proof Matrix](../guides/proof-matrix.md) to pick the strongest command for the boundary you are reviewing.
 

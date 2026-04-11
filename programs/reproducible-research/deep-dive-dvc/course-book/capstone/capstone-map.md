@@ -63,7 +63,7 @@ Return to the module first if:
 | 04 Truthful Pipelines | how declared stage edges differ from hopeful reruns | `dvc.yaml`, `dvc.lock`, `state/` | `make repro` |
 | 05 Metrics and Parameters | which controls and metrics are safe to compare | `params.yaml`, `metrics/`, `publish/v1/metrics.json` | `make verify` |
 | 06 Experiments | how to vary the control surface without mutating the baseline | `params.yaml`, experiment comparison bundle, `publish/v1/` | `make experiment-review` |
-| 07 Collaboration and CI | which checks another maintainer can run without oral context | `Makefile`, `tests/`, [Review Route Guide](../capstone-docs/review-route-guide.md) | `make verify` |
+| 07 Collaboration and CI | which checks another maintainer can run without oral context | `Makefile`, `tests/`, [Review Route Guide](../capstone/docs/review-route-guide.md) | `make verify` |
 | 08 Recovery and Scale | what survives cache loss and what depends on the remote | `.dvc-remote/`, `publish/v1/`, recovery bundle | `make recovery-review` |
 | 09 Promotion and Auditability | what downstream users may trust from the promoted bundle | `publish/v1/`, `publish/v1/manifest.json`, `dvc.lock` | `make release-review` |
 | 10 Governance and Migration | whether another maintainer could review or migrate the repository safely | `README.md`, `dvc.yaml`, `dvc.lock`, `publish/v1/` | `make confirm` |

@@ -35,8 +35,9 @@ def check_max_depth() -> None:
 def check_capstone_docs_exports() -> None:
     for course_book_dir in sorted(PROGRAMS_DIR.glob("*/*/course-book")):
         program_slug = course_book_dir.parent.relative_to(PROGRAMS_DIR)
+        program_root = course_book_dir.parent
         docs_program_dir = DOCS_ROOT / program_slug
-        source_capstone_docs_index = course_book_dir / "capstone-docs" / "index.md"
+        source_capstone_docs_index = program_root / "capstone" / "docs" / "index.md"
         capstone_docs_index = docs_program_dir / "capstone-docs" / "index.md"
         legacy_overview = docs_program_dir / "capstone" / "project-overview.md"
         legacy_project_docs_dir = docs_program_dir / "project-docs"

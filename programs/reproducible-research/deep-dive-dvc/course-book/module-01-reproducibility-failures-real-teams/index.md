@@ -14,8 +14,8 @@ This module is about naming those failures clearly:
 - what DVC is actually responsible for, and what remains outside its authority
 
 The capstone corroboration surface for this module is the set of review guides that make
-state, recovery, and published truth visible: `course-book/capstone-docs/stage-contract-guide.md`,
-`course-book/capstone-docs/recovery-guide.md`, `course-book/capstone-docs/publish-contract.md`, `make walkthrough`, and
+state, recovery, and published truth visible: `capstone/docs/stage-contract-guide.md`,
+`capstone/docs/recovery-guide.md`, `capstone/docs/publish-contract.md`, `make walkthrough`, and
 `make proof`.
 
 ## Why this module exists
@@ -102,10 +102,10 @@ Use the capstone only after the failure model is already clear.
 
 Best corroboration surfaces for this module:
 
-- `course-book/capstone-docs/stage-contract-guide.md`
-- `course-book/capstone-docs/recovery-guide.md`
-- `course-book/capstone-docs/publish-contract.md`
-- `course-book/capstone-docs/review-route-guide.md`
+- `capstone/docs/stage-contract-guide.md`
+- `capstone/docs/recovery-guide.md`
+- `capstone/docs/publish-contract.md`
+- `capstone/docs/review-route-guide.md`
 - `capstone/Makefile`
 
 Useful proof route:
