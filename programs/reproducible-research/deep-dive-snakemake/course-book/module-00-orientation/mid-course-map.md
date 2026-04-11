@@ -62,6 +62,11 @@ Use this step when the main pressure is execution context rather than workflow m
 Leave this step able to explain what changed across contexts and why the workflow promise
 did or did not change.
 
+## When to leave this route
+
+Move to [mastery-map.md](mastery-map.md) once the question becomes stewardship,
+migration, or whether Snakemake should keep owning the concern at all.
+
 ## Good next move after this map
 
 Open exactly one of these before resuming:

@@ -67,3 +67,5 @@ Leave this arc able to review a real workflow repository and justify what should
   starting route.
 - Read [Mid-Course Map](mid-course-map.md) when Modules 01 to 03 already feel stable and
   you need the bridge into scaling, software seams, publish trust, and operating contexts.
+- Read [Mastery Map](mastery-map.md) when the pressure is stewardship, migration, or
+  long-lived workflow trust review.
