@@ -168,5 +168,6 @@ nav:
           - Incident Triage for Slow and Flaky Runs: module-09-performance-observability-incident-response/incident-triage-for-slow-and-flaky-runs.md
           - Performance Tuning Without Semantic Drift: module-09-performance-observability-incident-response/performance-tuning-without-semantic-drift.md
           - Runbooks, Escalation, and Operational Review: module-09-performance-observability-incident-response/runbooks-escalation-and-operational-review.md
+          - "Worked Example: Investigating a Slow and Noisy Workflow": module-09-performance-observability-incident-response/worked-example-investigating-a-slow-and-noisy-workflow.md
       - "Module 10: Governance, Migration, and Tool Boundaries":
           - Overview: module-10-governance-migration-tool-boundaries/index.md
