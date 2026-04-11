@@ -2,43 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Circuit Breakers"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  doomed["Start with a run that may become obviously doomed"] --> threshold["State the stopping threshold explicitly"]
+  threshold --> break["Break early with a visible policy outcome"]
+  break --> cleanup["Ensure upstream work and cleanup stop promptly too"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make circuit breakers feel like an act of design honesty, not panic. Students need to see that a breaker is justified when continuing no longer creates useful value, and that the stopping rule itself must be explicit enough to review.
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Hopeless Run
 
-Here's a snippet from the progression map:
+By this point in the module, the stream can survive bad records. The new question is when survival stops being the right goal and early termination becomes the responsible one.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If error rate or error count has already crossed a threshold that makes the run useless, continuing is wasted work.
+- If the stopping rule is hidden in loop state, reviewers cannot tell why the run stopped when it did.
+- If early termination does not trigger cleanup promptly, the breaker has solved one problem while causing another.
 
 > **Core question:**  
 > How do you implement short-circuiting and circuit-breaker patterns in streaming pipelines using pure Result types, ensuring early termination on thresholds or failures while maintaining purity, composability, and resource safety?
 
-We now take the `Iterator[Result[Chunk, ErrInfo]]` stream from M04C05–C06 and face the final real-world question:
+This lesson introduces breakers as explicit stop policies over `Result` streams:
 
-**“Processing 100 000 chunks is expensive. If the error rate climbs above 20 % after the first 500 chunks, the whole run is doomed — why waste hours finishing it?”**
+- define the threshold in data rather than hiding it inside ad hoc loop logic
+- stop as soon as the policy says the run has become hopeless
+- preserve composability by emitting or truncating in a predictable, reviewable way
+
+The motivating error-rate example matters because it captures the real tradeoff clearly: there is a point where continuing the run no longer buys meaningful information.
 
 The naïve solution is a manual flag inside a loop:
 
@@ -59,7 +52,7 @@ for r in embedded:
 
 This works once — but it’s duplicated everywhere, easy to get wrong, and breaks when you later add parallelism or recovery.
 
-The production solution uses pure, composable circuit-breakers — lazy iterator transducers over `Result` streams that give you early termination with mathematical guarantees and automatic resource cleanup.
+The production solution expresses that stopping rule as a lazy, composable breaker over the stream, so the threshold and resulting behavior are both visible.
 
 **Audience:** Engineers who run long-running batch pipelines and cannot afford to process doomed data for hours.
 
@@ -68,7 +61,7 @@ The production solution uses pure, composable circuit-breakers — lazy iterator
 2. You will choose between observable breakers (emit `BreakInfo`) and silent truncate breakers.  
 3. You will ship a RAG pipeline that aborts gracefully the moment it becomes hopeless, with full provenance on why.
 
-We formalise exactly what we want from correct, production-ready breakers: short-circuiting, ordering, bounded work, resource cleanup, and equivalence to reference implementations.
+We formalise exactly what students should review in breaker code: short-circuiting position, preserved ordering up to the break, bounded work, cleanup behavior, and equivalence to a straightforward reference policy.
 
 ---
 
