@@ -2,50 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Time-Aware Streaming"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  burst["Start with a stream that can run too fast"] --> time["Inject time as explicit input instead of reading globals"]
+  time --> throttle["Throttle or rate-limit with a named contract"]
+  throttle --> test["Test behavior against a controlled clock and sleeper"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson needs to make time feel reviewable. Students often understand why global configuration is risky but still treat time as an unavoidable hidden dependency. This page should show that clocks and sleeps can be modeled explicitly too.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Hidden Clock Problem
 
-Here's a snippet from the progression map:
+Once a pipeline has to respect timing, students often slide back into impure utilities. The lesson needs to slow down and show that timing rules are part of the stage contract, not an excuse to stop reasoning carefully.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If a stage reads the wall clock directly, the behavior is harder to test and explain.
+- If delays are implicit, students cannot review whether the pipeline is obeying a real rate contract.
+- If timing is introduced without naming monotonicity or burst behavior, the implementation may look fine while hiding unstable assumptions.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you incorporate time awareness into iterator pipelines for throttling and rate-limiting, using pure, functional patterns without side-effects or global clocks, while preserving laziness and equivalence?
 
-This core builds on **Core 7**'s fan-in/out by introducing time-aware stages:
-- Use injected clocks and sleepers for pure throttling.
-- Implement token-bucket rate-limiting.
-- Handle monotonicity and purity via explicit time sources.
-- Preserve laziness, determinism, and freshness.
+This lesson introduces time-aware streaming as explicit dependency design:
 
-We extend the **running project** from Core 7 (FuncPipe RAG Builder from `m03-rag.md`) and add cross-domain examples like timed log tailing, rate-limited API calls, and throttled telemetry to prove scalability.
+- inject clocks and sleepers instead of reading time globally
+- describe throttling and rate-limiting in terms of contracts the reader can inspect
+- preserve lazy streaming behavior while making delays testable and deterministic under controlled inputs
 
-**Audience:** Developers with real-time streams needing time controls without impurity.
+The running project and side examples matter because time-sensitive pipelines are common, but students need to learn them without giving up the explicit-boundary habits built earlier in the course.
+
+**Audience:** Developers with real-time or bursty streams who need time controls without hiding behavior in global clocks.
 
 **Outcome:**
 1. Spot untimed smells like bursty I/O.
@@ -77,11 +67,11 @@ In this series, preserves purity; mock time for tests.
 
 ### 1.3 Why This Matters Now
 
-Untimed pipes burst; time-awareness enables controlled, polite streaming.
+The earlier lessons taught students how to control memory, order, and demand. Time adds another control dimension. Without an explicit model, throttling and rate limiting often become opaque helpers that are hard to test and hard to trust. This lesson shows how to keep time as visible as the rest of the pipeline contract.
 
 ### 1.4 Time-Aware in 5 Lines
 
-Throttling example:
+The next snippet matters because it shows the clock and sleeper as dependencies, not as invisible global behavior.
 
 ```python
 def make_throttle(min_delta: float, clock, sleeper):
