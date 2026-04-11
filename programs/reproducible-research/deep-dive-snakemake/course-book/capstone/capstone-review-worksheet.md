@@ -2,109 +2,116 @@
 
 # Capstone Review Worksheet
 
+Use this page when you want to review the capstone as an inherited workflow repository,
+not just read it as course material. The point is to leave with explicit judgments you
+could defend in code review, maintenance planning, or a handoff.
 
-<!-- page-maps:start -->
-## Guide Fit
+## How to use the worksheet
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone Review Worksheet"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+Work top to bottom. For each section:
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+1. answer the question in your own words
+2. name the file or saved bundle that supports the answer
+3. record one risk only if you can point to the owning boundary
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Use this worksheet when reviewing the Snakemake capstone as a workflow repository, not
-only as a lesson artifact.
-
-The point is to make review concrete enough that another maintainer could compare your
-judgment with the same evidence.
-
----
-
-## Repository Contract
-
-Answer these first:
-
-1. What is the repository claiming to build and publish?
-2. Which surfaces are public contracts and which are internal execution detail?
-3. Which files define the publish boundary?
+If you cannot name the evidence, the judgment is still too soft.
 
 [Back to top](#top)
 
----
+## Repository contract
 
-## Workflow Truth
+Ask:
 
-Review these surfaces together:
+- what the repository claims to build and publish
+- which files are public contracts and which are internal execution detail
+- whether a new maintainer could discover the supported routes without oral explanation
 
-* `capstone/Snakefile`
-* `capstone/workflow/rules/`
-* the discovered-set artifact and related checkpoint evidence
+Best evidence:
 
-Write down:
-
-1. which rules define meaningful file contracts
-2. where dynamic discovery becomes explicit and durable
-3. whether any behavior still feels hidden or nondeterministic
-
-[Back to top](#top)
-
----
-
-## Policy And Operating Context
-
-Review these surfaces together:
-
-* `capstone/profiles/`
-* `capstone/Makefile`
-* the dry-run and workflow-tour bundles
-
-Write down:
-
-1. which settings are operating policy rather than workflow meaning
-2. what would change between local, CI, and scheduler contexts
-3. whether any policy surface leaks into semantics
+- `capstone/Snakefile`
+- `capstone/Makefile`
+- `capstone/workflow/contracts/FILE_API.md`
+- [Capstone Guide](index.md)
 
 [Back to top](#top)
 
----
+## Workflow truth
 
-## Publish Boundary
+Ask:
 
-Review these surfaces together:
+- where the real file contracts live
+- where dynamic discovery becomes a durable artifact
+- whether any important behavior still feels hidden or nondeterministic
 
-* [Publish Review Guide](publish-review-guide.md)
-* `capstone/publish/v1/`
-* `capstone/publish/v1/manifest.json`
+Best evidence:
 
-Write down:
-
-1. which outputs are safe for downstream trust
-2. which artifacts remain internal repository state
-3. whether the promoted contract is smaller and clearer than the whole repository
+- `capstone/workflow/rules/preprocess.smk`
+- `capstone/publish/v1/discovered_samples.json`
+- walkthrough or tour bundle surfaces
 
 [Back to top](#top)
 
----
+## Policy and operating context
 
-## Final Review Questions
+Ask:
 
-Finish with these:
+- which differences across local, CI, and SLURM are operational policy
+- what would count as semantic drift rather than policy drift
+- whether a profile change could silently alter the published meaning of the workflow
 
-* what is the repository's strongest design choice
-* what is the most fragile boundary
-* what would you inspect first before approving a migration
-* what would you refuse to change without new evidence
+Best evidence:
+
+- `capstone/profiles/local/config.yaml`
+- `capstone/profiles/ci/config.yaml`
+- `capstone/profiles/slurm/config.yaml`
+- [Profile Audit Guide](profile-audit-guide.md)
+
+[Back to top](#top)
+
+## Publish boundary
+
+Ask:
+
+- which outputs are safe for downstream trust
+- which artifacts remain internal run state or supporting evidence
+- whether the promoted contract is smaller and clearer than the whole repository
+
+Best evidence:
+
+- `capstone/publish/v1/`
+- `capstone/workflow/contracts/FILE_API.md`
+- [Publish Review Guide](publish-review-guide.md)
+- verify-report bundle surfaces
+
+[Back to top](#top)
+
+## Architecture and ownership
+
+Ask:
+
+- whether the top-level `Snakefile` still explains the repository shape
+- whether rule files, modules, scripts, and package code each have a readable job
+- where you would place the next non-trivial change and why
+
+Best evidence:
+
+- `capstone/Snakefile`
+- `capstone/workflow/rules/`
+- `capstone/workflow/modules/`
+- `capstone/workflow/scripts/`
+- `capstone/src/capstone/`
+
+[Back to top](#top)
+
+## Record the result
+
+Finish with one of these judgments:
+
+- trust as-is
+- trust with one named follow-up boundary
+- do not trust yet because one specific proof or ownership question is unresolved
+
+If your conclusion is longer than a short paragraph, the review probably drifted away
+from one bounded question.
 
 [Back to top](#top)
