@@ -193,7 +193,7 @@ before relying on any global `snakemake` install. The exact setup contract lives
 | `03` | Production Operations and Policy Boundaries | teach profiles, recovery policy, staging discipline, and production proof routes |
 | `04` | Scaling Workflows and Interface Boundaries | teach rule-family splits, module interfaces, file APIs, and scaling review gates |
 | `05` | Software Boundaries and Reproducible Rules | teach software ownership, runtime contracts, provenance, and rebuild judgment |
-| `06` | Publishing and Downstream Contracts | make the public artifact boundary versioned and trustworthy |
+| `06` | Publishing and Downstream Contracts | teach public bundle design, compatibility discipline, integrity evidence, and publish review |
 | `07` | Workflow Architecture and File APIs | organize the repository so ownership stays visible |
 | `08` | Operating Contexts and Execution Policy | compare local, CI, and cluster policy without semantic drift |
 | `09` | Observability, Performance, and Incident Response | review logs, benchmarks, and incidents with explicit evidence |

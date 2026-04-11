@@ -62,7 +62,7 @@ Return to the module first if:
 | 03 Production Operation | what counts as workflow semantics versus operating policy | `profiles/`, `Makefile`, `tests/selftest.sh` | `make profile-audit` |
 | 04 Scaling Patterns | how repository structure stays legible as the workflow grows | `workflow/rules/`, `workflow/modules/`, `FILE_API.md`, `TOUR.md` | `make tour` |
 | 05 Rule Boundaries | where rule ownership ends and software, runtime, and provenance surfaces begin | `workflow/scripts/provenance.py`, `workflow/envs/python.yaml`, `src/capstone/`, `environment.yaml`, `Dockerfile` | `make proof` |
-| 06 Publish Contracts | what downstream consumers may trust from the workflow | `publish/v1/`, `FILE_API.md`, publish bundle evidence | `make verify-report` |
+| 06 Publish Contracts | what downstream consumers may trust from the workflow and how that bundle is defended | `publish/v1/`, `workflow/rules/summarize_report.smk`, `workflow/rules/publish.smk`, `workflow/contracts/FILE_API.md`, `scripts/verify_publish.py` | `make verify-report` |
 | 07 Workflow Architecture | how rules, helpers, and file APIs are split deliberately | `Snakefile`, `workflow/rules/`, `src/capstone/` | `make proof` |
 | 08 Operating Contexts | how local, CI, and scheduler policy differ without semantic drift | `profiles/local/`, `profiles/ci/`, `profiles/slurm/` | `make profile-audit` |
 | 09 Incident Response | how logs, benchmarks, and workflow-tour evidence support diagnosis | `logs/`, `benchmarks/`, incident bundle surfaces | `make proof` |

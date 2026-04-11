@@ -130,6 +130,15 @@ nav:
           - Glossary: module-05-software-boundaries-reproducible-rules/glossary.md
       - "Module 06: Publishing and Downstream Contracts":
           - Overview: module-06-publishing-downstream-contracts/index.md
+          - Internal Results Versus Public Contracts: module-06-publishing-downstream-contracts/internal-results-vs-public-contracts.md
+          - Versioned Publish Boundaries and Compatible Change: module-06-publishing-downstream-contracts/versioned-publish-boundaries-and-compatible-change.md
+          - Manifests, Checksums, and Bundle Integrity: module-06-publishing-downstream-contracts/manifests-checksums-and-bundle-integrity.md
+          - Reports, File APIs, and Human Versus Machine Surfaces: module-06-publishing-downstream-contracts/reports-file-apis-and-human-vs-machine-surfaces.md
+          - Reviewing Publish Drift and Downstream Risk: module-06-publishing-downstream-contracts/reviewing-publish-drift-and-downstream-risk.md
+          - "Worked Example: Promoting Results Into a Versioned Publish Bundle": module-06-publishing-downstream-contracts/worked-example-promoting-results-into-a-versioned-publish-bundle.md
+          - Exercises: module-06-publishing-downstream-contracts/exercises.md
+          - Exercise Answers: module-06-publishing-downstream-contracts/exercise-answers.md
+          - Glossary: module-06-publishing-downstream-contracts/glossary.md
       - "Module 07: Workflow Architecture and File APIs":
           - Overview: module-07-workflow-architecture-file-apis/index.md
       - "Module 08: Operating Contexts and Execution Policy":
