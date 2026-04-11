@@ -1,347 +1,165 @@
 # and_then and bind
 
-
 <!-- page-maps:start -->
 ## Lesson Map
 
 ```mermaid
 flowchart LR
-  manual["Start with manual propagation after each step"] --> chain["Chain dependent steps with and_then"]
-  chain --> shortcircuit["Let failure or absence short-circuit automatically"]
-  shortcircuit --> refactor["Refactor the chain without rewriting propagation logic"]
+  smell["Notice repeated propagation after each step"] --> choose["Use and_then when the next step already returns a container"]
+  choose --> shortcircuit["Let failure or absence stop the chain automatically"]
+  shortcircuit --> refactor["Add, remove, or regroup steps without rewriting the control flow"]
 ```
 <!-- page-maps:end -->
 
-This lesson should make `and_then` feel like a readability tool first. Students usually do not need another name for “monad” on day one. They need a way to stop rewriting the same propagation checks and let dependent steps read like the happy path again.
+`and_then` is the first compositional tool in this module that changes how a pipeline
+feels to read. The goal is not to introduce more terminology. The goal is to stop
+rewriting the same propagation rule after every dependent step.
+
+## Core Question
+
+How do you replace nested `if err` or `if value is None` checks with a chain that keeps
+the success path linear while still stopping on the first failure or absence?
 
 ## Start With the Propagation Smell
 
-Students often already know the sequence of operations they want. What gets in the way is the repetitive structure around them.
+Students usually know the business steps they want. What slows them down is the
+repeated branching around those steps.
 
-- If every step is followed by “if error, return error,” the code is repeating the container contract instead of the business logic.
-- If adding one more dependent step means editing several propagation branches, the flow is too brittle.
-- If students cannot see where the chain stops on failure, the control rule is still harder to inspect than it needs to be.
+- each new step requires another propagation branch
+- the happy path is broken into fragments
+- refactoring means touching control flow instead of only touching the step you changed
 
-**Core question**  
-How do you replace nested `if err/None` checks and manual error propagation with monadic `and_then` (a.k.a. `bind` or `flat_map`) — chaining dependent fallible/optional steps while automatically short-circuiting on the first failure or absence?
+That smell looks like this:
 
-This lesson introduces `and_then` as the standard way to express dependent steps over fallible or optional values:
-
-- keep the success path linear and readable
-- let the container propagate failure or absence automatically
-- rely on the lawfulness of the chain so regrouping and extraction stay safe
-
-The repeated-propagation examples matter because they show the exact maintenance tax students are trying to remove.
-
-The naïve pattern everyone writes first:
 ```python
-# BEFORE – manual propagation everywhere
-def embed_chunk(c: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
-    tokenized = tokenize(c.text.content)
-    if tokenized.is_err():
+def embed_chunk(chunk: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
+    tokenized = tokenize(chunk.text.content)
+    if isinstance(tokenized, Err):
         return tokenized
+
     encoded = model.encode(tokenized.value)
-    if encoded.is_err():
+    if isinstance(encoded, Err):
         return encoded
-    return Ok(replace(c, embedding=Embedding(encoded.value, model.name)))
+
+    return Ok(replace(chunk, embedding=Embedding(encoded.value, model.name)))
 ```
 
-This is the propagation smell the lesson needs students to recognize immediately.
+The business story is simple: tokenize, encode, build the embedded chunk. The control
+flow is what makes the function noisy.
 
-The production pattern leaves each step responsible only for its own transformation and lets `and_then` carry the propagation rule.
+## What `and_then` Means
 
-> Repo note: examples in this module use the Module-05 "compositional domain model" types:
-> `ChunkText.content` / `Embedding` via `from funcpipe_rag.rag.domain import Chunk, Embedding`.
-> The main RAG pipeline value types live separately in `funcpipe_rag.core.rag_types` (those chunks use `text: str`).
+Use `and_then` when the next function already returns the same kind of container.
+
+- `map(f)`: `f` returns a plain value
+- `and_then(f)`: `f` returns `Result[...]` or `Option[...]`
+
+That single distinction removes a lot of confusion:
+
+| You have...                     | Next function returns... | Use...       |
+|---------------------------------|--------------------------|--------------|
+| `Result[T, E]`                  | `U`                      | `.map`       |
+| `Result[T, E]`                  | `Result[U, E]`           | `.and_then`  |
+| `Option[T]`                     | `U`                      | `.map`       |
+| `Option[T]`                     | `Option[U]`              | `.and_then`  |
+
+## Worked Example
 
 ```python
-# AFTER – one lawful, composable pipeline (instance methods = canonical style)
-def embed_chunk(c: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
+def embed_chunk(chunk: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
     return (
-        Ok(c.text.content)
+        Ok(chunk.text.content)
         .and_then(tokenize)
         .and_then(model.encode)
-        .and_then(lambda vec: Ok(replace(c, embedding=Embedding(vec, model.name))))
+        .map(lambda vec: replace(chunk, embedding=Embedding(vec, model.name)))
     )
 ```
 
-Note: the original `c` and `model` are captured via closure here (perfectly valid). We will replace this exact pattern with a Reader monad in M06C04 so dependencies are explicit and testable.
+Read the chain in order:
 
-Now adding or reordering a dependent step is a localized change instead of a control-flow rewrite.
+1. start from the text
+2. run `tokenize`, which may fail
+3. run `model.encode`, which may fail
+4. if both worked, build the final chunk
 
-**Audience**: Engineers tired of manual error propagation who want dependent pipelines that stay linear, inspectable, and safe to refactor.
+The container now owns the propagation rule. Each step only owns its own job.
 
-**Outcome**
-1. Every nested `if err/None` replaced with `and_then`.
-2. All pipelines proven to satisfy monad laws (left/right identity, associativity).
-3. Linear, readable, refactor-safe flows.
+## Tiny Option Example
 
-## Tiny Non-Domain Example – Safe Division Chain
+`and_then` matters for absence as well, not only for errors:
+
 ```python
-def safe_div(a: float, b: float) -> Result[float, str]:
-    return Err("div by zero") if b == 0 else Ok(a / b)
-
-chain = (
-    Ok(12.0)
-    .and_then(lambda x: safe_div(x, 4.0))
-    .and_then(lambda x: safe_div(x, 3.0))
-    .and_then(lambda x: safe_div(x, 0.0))   # short-circuits here
-)
-# → Err("div by zero")
+def get_email(user_id: int) -> Option[str]:
+    return (
+        option_from_nullable(db.get_user(user_id))
+        .and_then(lambda user: option_from_nullable(user.get("profile")))
+        .and_then(lambda profile: option_from_nullable(profile.get("email")))
+    )
 ```
 
-The failing step short-circuits automatically — no manual checks.
+Each lookup may return nothing. The chain stops automatically at the first missing
+value, and the happy path stays readable.
 
-## Why `and_then`? (Three bullets every engineer should internalise)
-- **Automatic short-circuit**: First `Err`/`NoneVal` immediately propagates — no forgotten error paths.
-- **Lawful composition**: `m.and_then(f).and_then(g) == m.and_then(lambda x: f(x).and_then(g))` — refactoring is safe.
-- **Linear happy path**: Success case reads top-to-bottom with no nesting — the code finally matches the mental model.
+## Why Refactoring Gets Easier
 
-We explicitly **do not** use `Optional[T]` as `Option[T]` — absence is a first-class ADT (`Some[T] | NoneVal`) with its own lawful `and_then`.
-
-## 1. Laws & Invariants (machine-checked)
-
-| Law               | Formal Statement                                                            | Enforcement            |
-|-------------------|-----------------------------------------------------------------------------|------------------------|
-| Left Identity     | `Ok(x).and_then(f) == f(x)`                                                 | Hypothesis             |
-| Right Identity    | `m.and_then(Ok) == m`                                                       | Hypothesis             |
-| Associativity     | `m.and_then(f).and_then(g) == m.and_then(lambda x: f(x).and_then(g))`      | Hypothesis             |
-| Short-circuit     | `Err(e).and_then(f) == Err(e)` / `NoneVal().and_then(f) == NoneVal()`       | Hypothesis + runtime   |
-
-## 2. Decision Table – When to Use Which Container
-
-| Scenario                  | May fail? | May be absent? | Accumulate errors? | Use                                     |
-|---------------------------|-----------|----------------|--------------------|-----------------------------------------|
-| API call / parsing        | Yes       | No             | No                 | `Result` + `and_then`                   |
-| Lookup / config key       | No        | Yes            | No                 | `Option` + `and_then`                   |
-| Multi-field validation    | Yes       | No             | Yes                | `Validation` + `v_ap` (see M06C03)      |
-
-## 3. Public API – Instance methods are the canonical, idiomatic API
-
-Type-system note: Python’s type system cannot express that the error branch of `Result[T, E]` is independent of the success type parameter `T`.
-In the actual codebase (`capstone/src/funcpipe_rag/result/types.py`) we keep `mypy --strict` green without `type: ignore` by **re-wrapping** the error value (e.g. returning `Err(self.error)`) in methods like `map` / `and_then` when the success type changes.
-
+When `and_then` is lawful, you can regroup or extract steps without changing meaning.
+The associativity law is the practical reason:
 
 ```python
-# capstone/src/funcpipe_rag/result/types.py – end-of-Module-06 (excerpted)
+m.and_then(f).and_then(g) == m.and_then(lambda x: f(x).and_then(g))
+```
 
-from __future__ import annotations
-from dataclasses import dataclass
-from typing import Generic, Callable, TypeVar, Any
+That law says:
 
-T = TypeVar("T")
-U = TypeVar("U")
-E = TypeVar("E")
+- you can pull part of a chain into a helper
+- you can add parentheses to improve readability
+- you do not have to re-check propagation logic every time you reorganize the code
 
-# ==================== Result ====================
+## Minimal API Surface
 
-@dataclass(frozen=True)
+For this lesson, the only methods you need to remember are:
+
+```python
 class Ok(Generic[T, E]):
-    value: T
+    def map(self, f: Callable[[T], U]) -> Result[U, E]: ...
+    def and_then(self, f: Callable[[T], Result[U, E]]) -> Result[U, E]: ...
 
-    def and_then(self, f: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
-        return f(self.value)
-
-    def map(self, f: Callable[[T], U]) -> "Result[U, E]":
-        return Ok(f(self.value))
-
-    def or_else(self, _: Callable[[E], T]) -> T:
-        return self.value
-
-    def tap(self, side: Callable[[T], None]) -> "Ok[T, E]":
-        side(self.value)
-        return self
-
-@dataclass(frozen=True)
-class Err(Generic[T, E]):
-    error: E
-
-    def and_then(self, _: Callable[[T], "Result[U, E]"]) -> "Result[U, E]":
-        return Err(self.error)
-
-    def map(self, _: Callable[[T], U]) -> "Err[U, E]":
-        return Err(self.error)
-
-    def or_else(self, op: Callable[[E], T]) -> T:
-        return op(self.error)
-
-    def tap(self, _: Callable[[T], None]) -> "Err[T, E]":
-        return self
-
-Result = Ok[T, E] | Err[T, E]
-
-# ==================== Option ====================
-
-@dataclass(frozen=True)
 class Some(Generic[T]):
-    value: T
-
-    def and_then(self, f: Callable[[T], "Option[U]"]) -> "Option[U]":
-        return f(self.value)
-
-    def map(self, f: Callable[[T], U]) -> "Option[U]":
-        return Some(f(self.value))
-
-    def or_else(self, op: Callable[[], T]) -> T:
-        return self.value
-
-    def tap(self, side: Callable[[T], None]) -> "Some[T]":
-        side(self.value)
-        return self
-
-@dataclass(frozen=True)
-class NoneVal:
-    def and_then(self, _: Callable[[Any], "Option[U]"]) -> "Option[U]":
-        return self
-
-    def map(self, _: Callable[[Any], U]) -> "Option[U]":
-        return self
-
-    def or_else(self, op: Callable[[], T]) -> T:
-        return op()
-
-    def tap(self, _: Callable[[Any], None]) -> "NoneVal":
-        return self
-
-Option = Some[T] | NoneVal
+    def map(self, f: Callable[[T], U]) -> Option[U]: ...
+    def and_then(self, f: Callable[[T], Option[U]]) -> Option[U]: ...
 ```
 
-Free-function wrappers exist only as one-liners for stylistic preference or Kleisli composition:
-```python
-def result_and_then(r: Result[T, E], f: Callable[[T], Result[U, E]]) -> Result[U, E]:
-    return r.and_then(f)
-```
+The full implementation lives in `capstone/src/funcpipe_rag/result/types.py`, but the
+teaching point is smaller than the whole source file: `map` is for plain transforms and
+`and_then` is for dependent container-returning steps.
 
-**Policy**: In this series we use the instance method syntax everywhere (`value.and_then(f)`). It is the most readable and idiomatic. Free functions are purely optional.
+## Review Checklist
 
-## 4. Reference Implementations
+Use `and_then` when all of these are true:
 
-### 4.1 RAG Integration – Embedding Pipeline (real-world closure usage)
-```python
-def embed_chunk(c: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
-    return (
-        Ok(c.text.content)
-        .and_then(tokenize)
-        .and_then(model.encode)
-        .and_then(lambda vec: Ok(replace(c, embedding=Embedding(vec, model.name))))
-    )
-```
+- the current value is already inside `Result` or `Option`
+- the next function may short-circuit in the same container
+- the steps depend on each other in sequence
 
-### 4.2 Config Parsing – Pure Result chain (absence = error here)
-```python
-parse_config = lambda raw: (
-    safe_json_load(raw)                                      # -> Result[dict, ErrInfo]
-    .and_then(ensure(is_dict, "NOT_DICT"))
-    .and_then(require_key("port", "MISSING_PORT"))
-    .and_then(get("port"))
-    .and_then(ensure(is_int, "BAD_PORT"))
-    .and_then(ensure(in_range(1, 65535), "PORT_OOR"))
-    .and_then(build_config)
-)
-```
+Do not use `and_then` when the next function is plain and independent. That is a `map`
+case instead.
 
-All steps return `Result[_, ErrInfo]`. Missing key = error, not mere absence → stays cleanly in one monad.
-
-## 5. Property-Based Proofs (capstone/tests/test_monad_laws.py)
+## Quick Property Test Reminder
 
 ```python
-from hypothesis import given, strategies as st
-from funcpipe_rag.result.types import Ok, Err, Some, NoneVal, Result, Option
-
-def st_result(t: st.SearchStrategy, e: st.SearchStrategy):
-    return st.one_of(st.builds(Ok, t), st.builds(Err, e))
-
-def st_option(t: st.SearchStrategy):
-    return st.one_of(st.builds(Some, t), st.just(NoneVal()))
-
 @given(x=st.integers())
 def test_result_left_identity(x):
-    f = lambda v: Ok(v * 2)
+    f = lambda value: Ok(value * 2)
     assert Ok(x).and_then(f) == f(x)
-
-@given(m=st_result(st.integers(), st.text()))
-def test_result_right_identity(m):
-    assert m.and_then(Ok) == m
-
-@given(m=st_result(st.integers(), st.text()))
-def test_result_associativity(m):
-    f = lambda a: Ok(a + 1)
-    g = lambda b: Ok(b * 2)
-    assert m.and_then(f).and_then(g) == m.and_then(lambda a: f(a).and_then(g))
-
-@given(e=st.text())
-def test_result_short_circuit(e):
-    assert Err(e).and_then(lambda _: Ok(999)) == Err(e)
-
-@given(m=st_result(st.integers(), st.text()))
-def test_result_tap_transparent(m):
-    seen = []
-    out = m.tap(lambda v: seen.append(v))
-    assert out == m
-    assert seen == ([m.value] if isinstance(m, Ok) else [])
-
-@given(x=st.integers())
-def test_option_left_identity(x):
-    f = lambda v: Some(v * 2)
-    assert Some(x).and_then(f) == f(x)
-
-@given(o=st_option(st.integers()))
-def test_option_right_identity(o):
-    assert o.and_then(Some) == o
-
-@given(o=st_option(st.integers()))
-def test_option_associativity(o):
-    f = lambda a: Some(a + 1) if a % 2 == 0 else NoneVal()
-    g = lambda b: Some(b * 2)
-    assert o.and_then(f).and_then(g) == o.and_then(lambda a: f(a).and_then(g))
-
-@given(o=st_option(st.integers()))
-def test_option_tap_transparent(o):
-    seen = []
-    out = o.tap(lambda v: seen.append(v))
-    assert out == o
-    assert seen == ([o.value] if isinstance(o, Some) else [])
 ```
 
-## 6. Big-O & Allocation Guarantees
+The property test is not the main lesson here. Its job is to protect the refactoring
+freedom that `and_then` promises.
 
-| Operation         | Time   | Heap   | Notes                                                                 |
-|-------------------|--------|--------|-----------------------------------------------------------------------|
-| and_then / map / tap | O(1)   | O(1)   | Combinators themselves; total cost dominated by user function `f` (may allocate new container) |
+## Practice Prompt
 
-## 7. Anti-Patterns & Immediate Fixes
+Take one function that repeats `if isinstance(result, Err): return result` and rewrite
+it as a chain. Then explain which lines now describe the work and which lines used to
+describe only propagation.
 
-| Anti-Pattern                          | Symptom                              | Fix                                             |
-|---------------------------------------|--------------------------------------|-------------------------------------------------|
-| Nested if/try/except                  | Verbose, easy to miss propagation    | Chain with `and_then`                           |
-| Manual flattening                     | Nested Result/Option                 | `and_then` auto-flattens                        |
-| Side effects in the function to and_then | Impure pipelines, non-reproducible   | Keep pure; use `tap` only for observation/logging |
-| Ignoring laws                         | Refactor silently breaks             | Hypothesis law tests in CI                      |
-
-## 8. Pre-Core Quiz
-
-1. `and_then` is for…?  
-   → **Chaining dependent fallible/optional steps**
-
-2. Short-circuits on…?  
-   → **First Err/NoneVal**
-
-3. Left identity law?  
-   → **Ok(x).and_then(f) == f(x)**
-
-4. Associativity enables…?  
-   → **Refactor-safe composition (parentheses don’t matter)**
-
-5. Never use … as a monad?  
-   → **Optional[T] (builtin None)**
-
-## 9. Post-Core Exercise
-
-1. Take one real `try/except` + manual propagation chain in your codebase and rewrite it with `and_then`.
-2. Add a new fallible step to that chain and confirm only one line changes.
-3. Implement `and_then` (and the four laws) for a custom two-variant ADT of your own.
-4. Find and eliminate one instance of nested `Result[Result[...]]` or `Option[Option[...]]` using `and_then`.
-
-**Continue with:** [Law-Guided Design](../module-06-monadic-flow-explicit-context/law-guided-design.md)
-
-You now chain any number of fallible or optional steps with a single, lawful `and_then` — short-circuiting automatically, no boilerplate, refactor-safe forever. The rest of Module 6 builds Reader/State/Writer patterns and configurable pipelines on top of these monads.
+**Continue with:** [Lifting Plain Functions](lifting-plain-functions.md)
