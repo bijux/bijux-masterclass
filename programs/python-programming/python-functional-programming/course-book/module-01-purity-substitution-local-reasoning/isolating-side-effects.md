@@ -2,57 +2,39 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Isolating Side Effects"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  leak["Find the hidden effect"] --> move["Move it to an explicit shell or context"]
+  move --> core["Leave the core as value-in/value-out logic"]
+  core --> test["Test the core separately from the shell"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about drawing one boundary clearly: the pure core decides what should
+happen, and the thin shell performs the effect.
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Operational Smell
 
-Here's a snippet from the progression map:
+You usually need this lesson when code says it is "just transforming data" but also:
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+- reads environment variables or global config
+- logs, prints, or writes to disk in the middle of the transform
+- calls time, random, database, or network helpers directly
 
+At that point the function is doing two jobs: deciding and performing. This page is about
+splitting those jobs cleanly.
 
-> **Core question:**  
-> How do you eliminate hidden side effects (globals, env, time, RNG, I/O) by passing all dependencies explicitly—so that pure logic stays testable, composable, and free from “it works on my machine” bugs?
+## Keep This Question In View
 
-This core builds on **Core 1**'s mindset, **Core 2**'s contracts, **Core 3**'s immutability, **Core 4**'s composition, **Core 5**'s refactorings, **Core 6**'s combinators, and **Core 7**'s typed pipelines by **isolating impurities at the edges**:  
-- Pass config, logger, DB, clock, RNG explicitly (or via frozen context).  
-- Pure core: referentially transparent logic only (no effects).  
-- Thin shell: effectful wrapper that uses context and delegates to pure core.  
-- Use `with_context` (Core 7) + frozen dataclasses for dependency bundles.  
-- Never touch `os.getenv`, `datetime.now`, or globals inside pure functions.  
+> How do you eliminate hidden side effects by passing all dependencies explicitly so that pure logic stays testable and composable?
 
-We continue the **running project** from Core 1-7: refactoring the FuncPipe RAG Builder, now isolating effects.
+By the end of this lesson, you should be able to point at a function and say:
 
-**Audience:** Developers who mastered Core 7 typed pipelines but still see flaky tests from hidden globals, env vars, or time/RNG.  
-**Outcome:**  
-1. Refactor any function touching globals/env/time/RNG into a pure core + explicit dependency param in < 15 lines.  
-2. Bundle dependencies into frozen `@dataclass` contexts (one per layer) and inject via `with_context`.  
-3. Write tests (and optionally Hypothesis properties) proving determinism when dependencies are fixed.  
-4. Spot and fix three classic effect leaks: implicit `print`/logging, `datetime.now()`, `random.random()`.  
-5. Add property tests showing pure core ≡ old impure version (with mocked effects).
+- what belongs in the pure core
+- what belongs in the shell
+- what dependency should be explicit input instead of ambient state
 
 ---
 
@@ -68,11 +50,13 @@ We continue the **running project** from Core 1-7: refactoring the FuncPipe RAG 
 
 ### 1.3 Why This Matters Now
 
-Explicit dependencies isolate effects, enabling equational reasoning (Core 9) and idempotence (Core 10); without it, hidden state breaks everything.
+Explicit dependencies matter because they keep meaning and execution separate. Once the
+effectful capabilities are passed in explicitly, the core logic can be reviewed and tested
+as a deterministic transform again.
 
 ### 1.4 How This Relates to DI / Ports & Adapters / Clean Architecture
 
-This approach aligns with known patterns:
+This approach lines up with familiar architecture patterns:
 
 - **Dependency Injection (DI):** Passing Env bundles is manual DI—simple and zero-deps.
 
@@ -80,7 +64,8 @@ This approach aligns with known patterns:
 
 - **Clean Architecture:** Core is entities/use-cases (pure); shells are interfaces/infra (effects).
 
-We keep it lightweight: frozen dataclasses + `with_context` instead of full DI frameworks.
+We keep it lightweight: explicit parameters or small frozen contexts instead of heavy
+framework machinery.
 
 ### 1.5 Purity Spectrum Table
 
@@ -90,7 +75,8 @@ We keep it lightweight: frozen dataclasses + `with_context` instead of full DI f
 | Semi-Pure          | Observational taps (e.g., logging)   | `def add_with_log(x: int, y: int) -> int: log(f"Adding {x}+{y}"); return x + y` |
 | Impure             | Globals/I/O/mutation                | `def read_file(path: str) -> str: ...` |
 
-In this core we'll start moving even logging out of the core and into explicit artifacts.
+In this lesson, even logging is treated as an effect that should be explicit when it
+matters to reviewability.
 
 ---
 
@@ -99,17 +85,13 @@ In this core we'll start moving even logging out of the core and into explicit a
 ### 2.1 One Picture
 
 ```text
-Hidden Effects (globals)                   Explicit Context
-+---------------------------+            +---------------------------+
-| global LOG                |            | @dataclass(frozen=True)   |
-| global CONFIG             |            | class CoreEnv:            |
-| datetime.now()            |            |     log: Logger           |
-| os.getenv("KEY")          |            |     cfg: Config           |
-| random.random()           |            |                           |
-| → Heisenbugs everywhere   |            | pure_core(cfg, data)      |
-|                           |            | shell = with_context(env, |
-|                           |            |         effectful_wrapper)|
-+---------------------------+            +---------------------------+
+Hidden effects                             Explicit boundary
++---------------------------+             +-----------------------------+
+| globals / env / time      |             | core(data, cfg) -> value    |
+| random / print / I/O      |             | shell(env, input) performs  |
+| mixed into core logic     |             | effect and calls the core   |
+| review surface is muddy   |             | review surface is clear     |
++---------------------------+             +-----------------------------+
 ```
 
 ### 2.2 Contract Table
@@ -122,7 +104,8 @@ Hidden Effects (globals)                   Explicit Context
 | Mockable effects           | Direct DB calls                        | Unit tests with fake Env                 |
 | Edge isolation             | Effects in pipeline middle             | Code review + linter                     |
 
-**Note on Contracts:** Push effects to the edges; prove the core stays pure.
+**Note on Contracts:** the phrase "thin shell" only helps if the shell really is thin.
+If half the business logic still lives next to the effect, the boundary is still muddy.
 
 ---
 
