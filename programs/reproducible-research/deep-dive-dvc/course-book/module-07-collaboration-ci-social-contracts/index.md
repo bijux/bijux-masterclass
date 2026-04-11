@@ -1,354 +1,138 @@
 # Module 07: Collaboration, CI, and Social Contracts
 
+Module 07 turns reproducibility from a single-person practice into a team contract.
 
-<!-- page-maps:start -->
-## Module Position
+By now, learners know how a DVC project should represent data identity, runtime evidence,
+pipeline truth, metric meaning, and controlled experiments. The next pressure is ordinary
+collaboration: another person clones the repository, reviews a change, relies on CI, and
+expects the same state story to hold without private context.
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 07: Collaboration, CI, and Social Contracts"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
-```
+This module is about shared proof:
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+- what failures appear when more than one person touches the workflow
+- what CI should verify instead of trusting memory
+- what branch and review rules should block
+- how DVC remotes become part of collaboration, not only storage
+- how recovery drills turn "we can restore it" into evidence
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+The central learner question is:
 
-*Why reproducibility fails when more than one human is involved*
+> Can another maintainer verify the same result without knowing what happened on my
+> laptop?
 
----
+If the answer is no, the repository still depends on social memory instead of a durable
+contract.
 
-## Purpose of this Module
+The capstone corroboration surface for this module is the set of shared verification and
+remote-backed review routes: `capstone/Makefile`, `capstone/dvc.lock`,
+`capstone/docs/REVIEW_ROUTE_GUIDE.md`, `capstone/docs/RECOVERY_GUIDE.md`,
+`capstone/docs/PUBLISH_CONTRACT.md`, and the `make -C capstone confirm` route.
 
-This module makes the social side of reproducibility explicit. By now the learner knows
-how the repository should behave technically. The next question is whether more than one
-person can preserve those rules under review pressure, CI shortcuts, and ordinary team
-turnover.
+## Why this module exists
 
-Use this module to see collaboration, CI, and remote discipline as part of the proof
-surface rather than as optional process overhead. If a second maintainer cannot verify
-the same state story without private context, the repository is still too fragile.
+Reproducibility often fails after the technical model is clear.
 
-## At a Glance
+Common collaboration failures look familiar:
 
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| social contracts | "Which failures are coordination failures in disguise?" | inspect the capstone once you can already name the technical contract |
-| CI enforcement | "What should the system block instead of trusting memory?" | compare verification targets to human review expectations |
-| remote discipline | "What must another person be able to verify without private context?" | use `confirm` and `recovery-drill` as shared proof surfaces |
+- a `.dvc` pointer or lockfile is merged but the data was never pushed
+- a reviewer trusts a local result without a clean verification route
+- CI checks formatting but not DVC state recovery
+- a release bundle is promoted without the parameters and metrics needed for review
+- a teammate can reproduce the code but not the data-backed result
+- branch history is rewritten and nobody knows which artifacts still matter
 
-## Learning outcomes
+These are not only human mistakes. They are missing contracts.
 
-- identify which reproducibility failures are really collaboration failures with technical consequences
-- decide what CI and review gates should enforce instead of relying on memory or goodwill
-- explain what another maintainer must be able to verify without private context
+The point of Module 07 is not to add ceremony. The point is to decide which promises the
+system should enforce because humans under pressure will forget them.
 
-## Verification route
-
-- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` to inspect the strongest shared proof route the capstone already exposes.
-- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-audit` when you want remote-backed evidence of repository restoration under shared stewardship.
-- Use the module’s invariants checklist to decide whether the repository depends on disciplined people alone or on enforceable contracts.
-
-## Why this module matters in the course
-
-This is the moment where the course stops pretending that good tooling alone is enough.
-By this point the learner has seen how to represent state correctly. Now the question is
-whether a team will actually preserve those rules under deadline pressure, onboarding,
-review shortcuts, and forgotten uploads.
-
-That is why this module belongs late in the course. Governance without technical clarity
-feels bureaucratic. Governance after technical clarity feels necessary.
-
-## Questions this module should answer
-
-By the end of the module, you should be able to answer:
-
-- Which reproducibility failures are really human-coordination failures in disguise?
-- What should CI enforce instead of trusting developers to remember?
-- Which repository events should block promotion because the state contract is incomplete?
-- How do remotes, reviews, and branch rules become part of the proof surface?
-
-If those answers remain informal, the repository is still depending on optimism.
-
-This module should make collaboration feel more explicit, not more ceremonial.
-
-## What to inspect in the capstone
-
-Keep the capstone open while reading this module and inspect:
-
-- the `confirm` path in the capstone `Makefile`
-- the `push` and `recovery-drill` targets as examples of social rules turned into commands
-- `publish/v1/` as the review boundary that other people should be able to trust
-- `dvc.lock` and tracked params or metrics as the evidence CI should care about
-
-The capstone should make one point visible: a reproducible system is not complete until
-another human can verify it without private context.
-
----
-
-## 7.1 The Fallacy of the "Careful Team"
-
-Numerous teams espouse: "Our compact, vigilant composition obviates the need for safeguards."
-
-Such convictions prove ephemeral.
-
-Escalating demands, temporal constraints, onboarding of novices, and contextual attrition inevitably intervene.
-
-Frameworks predicated on recollection, benevolence, or informal protocols are destined for collapse.
-
-Robust systems presuppose errors, anticipate circumventions, and accommodate informational voids, incorporating these contingencies into their architecture.
-
-**Illustration**:
+## Study route
 
 ```mermaid
-graph LR
-  belief["Initial Belief<br/>Small Team<br/>Careful Practices"]
-  pressure["External Pressures<br/>Deadlines<br/>Turnover<br/>Context Loss"]
-  failure["System Failure"]
-  robust["Robust Design"]
-  assumptions["Assumes Errors"]
-  guardrails["Builds Guardrails"]
-  integrity["Sustains Integrity"]
-  belief --> pressure --> failure
-  robust --> assumptions --> guardrails --> integrity
+flowchart LR
+  overview["Overview"] --> core1["Core 1: collaboration failure modes"]
+  core1 --> core2["Core 2: CI as shared executor"]
+  core2 --> core3["Core 3: merge and branch contracts"]
+  core3 --> core4["Core 4: remote stewardship"]
+  core4 --> core5["Core 5: recovery and incident rehearsal"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
----
+Read the module in that order the first time.
 
-## 7.2 Principal Social Failure Modes
+If the problem is already partly clear, use this shortcut:
 
-Collaborative breakdowns invariably trace to these archetypes, warranting memorization:
+- open Core 1 when the main confusion is "why careful people are not enough"
+- open Core 2 when the main confusion is "what CI should prove for DVC"
+- open Core 3 when the main confusion is "what should block a merge"
+- open Core 4 when the main confusion is "how remotes become team infrastructure"
+- open Core 5 when the main confusion is "how do we know recovery will work?"
 
-### 1. Omitted Data Uploads
-- Code merges proceed.
-- `.dvc` files reference absent remote data.
-- CI or collaborators encounter reproduction impediments.
+## Module map
 
-### 2. Force-Push Ramifications
-- Historical revisions occur.
-- Pointers become isolated.
-- Cache linkages fracture.
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `collaboration-failures-and-social-contracts.md` | teaches how social failures become reproducibility failures |
+| `ci-as-shared-reproducibility-executor.md` | teaches what CI should verify and why local success is not enough |
+| `merge-review-and-branch-protection.md` | teaches merge gates, branch rules, and review evidence |
+| `dvc-remotes-and-shared-artifact-stewardship.md` | teaches remote-backed collaboration and artifact stewardship |
+| `recovery-drills-and-incident-readiness.md` | teaches recovery rehearsal and incident response as proof surfaces |
+| `worked-example-fixing-a-missing-data-push-review.md` | walks through one realistic collaboration failure and repair |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
-### 3. Localized Efficacy
-- Assertions of "It functions on my system."
-- Concealed environmental disparities.
-- CI relegated to secondary status.
+## What should be clear by the end
 
-### 4. Tacit Authority
-- Outcomes endorsed based on originator identity.
-- Absent reproducibility substantiation.
+By the end of this module, you should be able to explain:
 
-DVC possesses detection capabilities for these lapses, contingent upon enablement.
+- why careful teams still need enforceable reproducibility contracts
+- what a DVC-aware CI route should verify
+- which merge events should block until data and lock evidence are complete
+- how DVC remotes support collaboration and recovery
+- why recovery drills matter before an incident
+- how to write review expectations that another maintainer can follow without private context
 
-**Comparative Table**:
+## Commands to keep close
 
-| Failure Mode              | Manifestations                  | Consequences                   |
-|---------------------------|---------------------------------|--------------------------------|
-| Omitted Uploads           | Merged code, missing remotes   | Reproduction barriers          |
-| Force-Push Damage         | Rewritten history              | Orphaned artifacts             |
-| Localized Success         | Environment concealment        | False assurances               |
-| Tacit Authority           | Person-dependent trust         | Undermined verifiability       |
+These commands form the evidence loop for Module 07:
 
----
-
-## 7.3 CI as an Indispensable Mandate
-
-This principle is unequivocal: **Absence of CI reproducibility equates to nonexistence.**
-
-CI must exhibit determinism, authority, and inescapability.
-
-Local executions serve exploratory, tentative, and subordinate roles.
-
-This trust inversion is pivotal for systemic resilience.
-
----
-
-## 7.4 Essential CI Obligations
-
-A compliant CI pipeline necessitates:
-
-1. Repository cloning.
-2. Retrieval of requisite remote data.
-3. Pipeline reproduction via `dvc repro`.
-4. Validation of metrics and outputs.
-5. Conspicuous failure upon discrepancies.
-
-Deviations—such as bypassed data retrievals, unverified cache dependencies, or incomplete executions—render the pipeline deceptive.
-
-**Example CI Configuration** (GitHub Actions YAML excerpt):
-```yaml
-name: Reproduce Pipeline
-on: [pull_request]
-jobs:
-  repro:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install DVC
-        run: pip install dvc[all]
-      - name: Pull Data
-        run: dvc pull
-      - name: Reproduce
-        run: dvc repro
-      - name: Verify Metrics
-        run: dvc metrics diff --targets metrics.json
+```bash
+make -C capstone confirm
+make -C capstone recovery-review
+make -C capstone release-audit
+dvc pull
+dvc status
+dvc repro
 ```
 
----
+Use the `make` routes for the course-provided capstone review. Use the DVC commands inside
+a workspace when checking whether another maintainer can restore, inspect, and reproduce
+declared state.
 
-## 7.5 CI as the Arbiter of Reproducibility
+## Capstone route
 
-CI delivers attributes unattainable by individuals: pristine environments, amnesic state management, and impartiality.
+Use the capstone after you can name the collaboration failure being prevented.
 
-This positions CI as the sole equitable assessor of reproducibility.
+Best corroboration surfaces for this module:
 
-Disparities between local and CI outcomes designate CI as normative, with local results serving diagnostic purposes.
+- `capstone/Makefile`
+- `capstone/dvc.lock`
+- `capstone/docs/REVIEW_ROUTE_GUIDE.md`
+- `capstone/docs/RECOVERY_GUIDE.md`
+- `capstone/docs/PUBLISH_CONTRACT.md`
+- `capstone/publish/v1/`
 
-Such orientation obviates broad dispute categories.
+Useful proof route:
 
----
-
-## 7.6 Branching Protocols Integrating Git and DVC
-
-Branching must accommodate data's inertial properties.
-
-Scalable directives include:
-
-- Perpetual reproducibility of `main`.
-- Prohibition of direct experiments on `main`.
-- CI success as a merge prerequisite.
-- interdiction of force-pushes on safeguarded branches.
-
-Git imposes structural order; DVC enforces substantive integrity. Synergy is requisite.
-
-**Example Protected Branch Rule** (GitHub settings pseudocode):
-```
-Branch: main
-Require: CI pass, no force-push
+```bash
+make -C capstone confirm
+make -C capstone recovery-review
 ```
 
----
-
-## 7.7 Pre-Merge Imperatives
-
-Merges demand:
-
-- Presence of `.dvc` files.
-- Updated `dvc.lock`.
-- Comprehensive data uploads.
-- Successful CI reproduction.
-
-Noncompliance necessitates merge rejection, without exemptions.
-
-Indulgences precipitate degradation.
-
----
-
-## 7.8 Multi-Remote Configurations for Teams and Production
-
-Team expansion renders singular remotes inadequate.
-
-A prevalent schema involves:
-
-- **Development Remote**: Mutable and collaborative.
-- **Production Remote**: Immutable and secured.
-
-Protocols stipulate experimental uploads to development, promotions to production, append-only production policies, and audited deletions.
-
-This architecture averts inadvertent losses, experimental contamination, and restoration complexities.
-
-**Example DVC Remote Configuration**:
-```
-$ dvc remote add dev s3://bucket/dev
-$ dvc remote add prod s3://bucket/prod --read-only
-$ dvc exp push dev
-$ dvc push prod  # After promotion
-```
-
----
-
-## 7.9 Human Error as an Anticipated Variable
-
-Frameworks viewing human fallibility as anomalous are untenable.
-
-Conversely:
-
-- Presume inaccuracies.
-- Engineer restoration pathways.
-- Amplify failure visibility.
-- Normalize recovery procedures.
-
-Superior systems render impropriety arduous and propriety effortless.
-
----
-
-## 7.10 Exemplary Incident Analysis
-
-Consider: A model advances, CI validates, yet three months hence, reproduction falters.
-
-Typical etiologies encompass local data expungement, remote misalignments, environmental evolutions, or unrecorded manual interventions.
-
-These are commonplace, yet avertable via stringent CI, mandated upload regimens, and restoration simulations.
-
----
-
-## 7.11 Deliberate Failure Simulations
-
-Resilient teams proactively:
-
-- Emulate data attrition.
-- Validate pristine recovery.
-- Cycle stewardship roles.
-- Codify restoration protocols.
-
-Untested recovery equates to aspiration, not capability—aspiration insufficiently strategizes.
-
-**Guidance**: Schedule quarterly drills; document discrepancies for iterative refinement.
-
----
-
-## 7.12 Fundamental Conceptual Model
-
-> **Human unreliability necessitates systemic countermeasures.**
-
-This perspective is pragmatic, not pessimistic.
-
----
-
-## Module 07: Invariants Checklist
-
-Affirm readiness by substantiating:
-
-- [ ] CI as the definitive executor.
-- [ ] Merge prohibitions absent reproducibility validations.
-- [ ] Pre-merge data uploads.
-- [ ] Defined branch hierarchies.
-- [ ] Empirical recovery testing.
-
-Perceived stringency underscores the intent.
-
----
-
-## Transition to Module 08
-
-A framework now exists that accommodates individuals, withstands collectives, and mechanistically imposes accuracy.
-
-The ultimate adversary emerges: **Time**.
-
-Enduring systems degrade, storage expands, attrition occurs, incidents transpire.
-
-Module 08 navigates production scalability and endurance, interfacing correctness with operational exigencies.
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is not to prove that one author can run the project locally. It is
+to prove that the repository carries enough evidence for another maintainer to verify the
+same state story.
