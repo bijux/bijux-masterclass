@@ -2,43 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["Product and Sum Types"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  soup["Start with dicts, flags, and optional fields"] --> shape["Choose whether the domain concept is AND or OR"]
+  shape --> model["Model it as a product or tagged sum"]
+  model --> review["Review which invalid states disappeared"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson needs to make one modelling question visible right away: is the concept “all of these fields together” or “exactly one of these variants”? Once students can ask that question clearly, a lot of accidental complexity in Python models stops looking inevitable.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the Invalid-State Smell
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines| bind/and_then, Reader/State-like patterns, error-typed flows                 |
+Students often know the data they care about, but still encode it with booleans, nullable fields, and mutable classes that allow impossible combinations.
+
+- If several fields must all exist together, the model wants a product type.
+- If a value must be one variant or another, the model wants a tagged sum.
+- If a model can hold contradictory information at once, the shape is still too loose.
 
 **Core question**  
 How do you replace ad-hoc dicts, mutable classes, and fragile inheritance with pure product and tagged sum types — guaranteeing exhaustive handling, immutability, and stable serialization in every pipeline stage?
 
-We now take the `Chunk` and error types from Module 04 and ask the question every seasoned engineer eventually faces:
+This lesson introduces ADTs as the first modelling tool students should reach for in this module:
 
-**“Why does my RAG pipeline still have mysterious `None` crashes, silent data loss, and ‘forgot-to-handle-this-case’ bugs even after adding Result and retries?”**
+- use product types when the value is a fixed bundle of fields
+- use tagged sums when the value is one of several distinct cases
+- make those choices explicit enough that the type shape itself removes bad states
 
-The answer is almost always: you’re still using primitive dicts, mutable state, or untyped “variant” classes instead of real algebraic data types.
+The motivating `Chunk` and error examples matter because they show a common failure pattern: even after adding better error flow, the underlying data shapes are still too weak to prevent contradictory or incomplete states.
 
 The naïve (and extremely common) solution:
 
@@ -54,7 +47,7 @@ if state.success:
     index(state.embedding)   # oops, someone forgot to check error is not None
 ```
 
-Classic boolean blindness + null soup.
+This is the core modelling smell the lesson should help students recognize instantly: boolean blindness and null soup.
 
 The production solution: model every domain concept as either a **product type** (AND) or a **tagged sum type** (OR — exactly one variant).
 
@@ -75,9 +68,9 @@ class Failure:
     attempt: int
 ```
 
-Now mypy + assert_never forces you to handle both cases — forever.
+Now the model itself tells readers which cases exist, and later tools like `match` and `assert_never` can enforce that understanding mechanically.
 
-**Audience**: Engineers tired of “it works on my machine” bugs caused by incomplete state handling.
+**Audience**: Engineers tired of incomplete state handling, silent `None` paths, and mutable model shapes that let bad combinations slip through review.
 
 **Outcome**
 1. Every dict/class soup replaced with proper product and tagged sum types.
@@ -113,7 +106,7 @@ def area(s: Shape) -> float:
     assert_never(s)  # mypy errors if you add Triangle and forget to handle it
 ```
 
-Adding a new variant breaks every handler until you update it — no silent defaults.
+Adding a new variant now forces the handling sites to be updated instead of silently drifting out of sync.
 
 ## Why ADTs? (Three bullets every engineer should internalise)
 
