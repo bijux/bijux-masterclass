@@ -1,43 +1,40 @@
 # Guides Glossary
 
-<!-- page-maps:start -->
-## Glossary Fit
+Use this page when the support shelf starts sounding more abstract than the course
+intends. The goal is not to define DVC from scratch. The goal is to keep a small set of
+course-level terms stable so you can move between guides, modules, and capstone routes
+without changing what the words mean halfway through.
 
-```mermaid
-flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
-```
+## Terms that matter on this shelf
 
-```mermaid
-flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
-```
-<!-- page-maps:end -->
+| Term | Meaning here | Why it matters |
+| --- | --- | --- |
+| learner route | a short reading path for one concrete question | keeps you from opening five pages when one page would do |
+| trust question | the exact reproducibility claim you are trying to settle | stops the course from turning into command memorization |
+| authoritative layer | the file or state surface that should win when two surfaces disagree | keeps review tied to state ownership instead of habit |
+| proof route | the smallest command, artifact, or file that can honestly test a claim | keeps evidence proportional to the question |
+| publish boundary | the smaller downstream-facing bundle another person is allowed to trust | separates internal repository state from released state |
+| recovery surface | the files and commands that prove local loss is survivable | keeps durability claims from becoming wishful thinking |
+| capstone entry | the first bounded route into the executable repository | prevents the capstone from becoming first-contact reading |
+| bounded review | an inspection pass with a clear stopping point | stops review from turning into aimless browsing |
 
-This glossary belongs to **Guides** in **Deep Dive DVC**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+## Guide names in plain language
 
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Page | What it is for |
 | --- | --- |
-| Course Guide | the guided support surface for course guide, used to study or review the course without wandering. |
-| Learning Contract | the stable study contract for the course, used to define what the learner owes the material and what the proof route should show. |
-| Module Checkpoints | the exit bar for moving between modules, used to keep pace honest instead of guessing readiness. |
-| Module Promise Map | the routing surface for module promise map, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
-| Platform Setup | the durable learner-support surface for platform setup, used to keep the course route and proof route readable under pressure. |
-| Pressure Routes | the routing surface for pressure routes, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
-| Proof Ladder | the evidence-routing surface for proof ladder, used to connect course claims to the right practice, review, or capstone proof. |
-| Proof Matrix | the evidence-routing surface for proof matrix, used to connect course claims to the right practice, review, or capstone proof. |
-| Start Here | the durable learner-support surface for start here, used to keep the course route and proof route readable under pressure. |
-| Truth Contracts | the stable study contract for the course, used to define what the learner owes the material and what the proof route should show. |
+| [Start Here](start-here.md) | safest first route into the program |
+| [Course Guide](course-guide.md) | overview of when to use guides, modules, reference pages, or capstone routes |
+| [Learning Contract](learning-contract.md) | the bar the course sets for explanation, proof, and honest progress |
+| [Module Promise Map](module-promise-map.md) | translation of module titles into concrete learner outcomes |
+| [Module Checkpoints](module-checkpoints.md) | readiness review before you move on |
+| [Platform Setup](platform-setup.md) | tooling and setup checks before you trust local proof routes |
+| [Pressure Routes](pressure-routes.md) | shortest honest route when urgency is shaping the reading order |
+| [Proof Ladder](proof-ladder.md) | how to choose a smaller or larger proof route without guessing |
+| [Proof Matrix](proof-matrix.md) | where a specific claim is first corroborated |
+| [Truth Contracts](truth-contracts.md) | how to decide what counts as authoritative state and what actually proves it |
+
+## Reading rule
+
+If a guide name still feels vague after you read the tables above, do not open three more
+guides. Name the job first, pick the one page that owns that job, and stop when you have
+one clear next move.
