@@ -51,7 +51,7 @@ least one full read of the relevant lesson or capstone guide.
 - [Topic Boundaries](topic-boundaries.md) for what the course treats as core, supporting, and boundary material
 - [Concept Index](concept-index.md) for locating where an idea is taught
 - [Anti-Pattern Atlas](anti-pattern-atlas.md) for routing common Make smells to the right repair path
-- [Practice Map](practice-map.md) for module-to-proof routing
+- [Completion Rubric](completion-rubric.md) for module-to-proof routing and review standards
 - [Public Targets](public-targets.md) for stable command surfaces
 - [Incident Ladder](incident-ladder.md) for debugging order under pressure
 - [Mk Layer Guide](mk-layer-guide.md) for the layered build architecture
