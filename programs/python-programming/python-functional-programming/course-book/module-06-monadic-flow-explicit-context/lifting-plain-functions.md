@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make lifting feel like a small practical decision rather than a pile of combinator names. You need a reliable way to look at a plain function and decide whether it belongs under `map`, `and_then`, `map_err`, or applicative lifting.
+Lifting should feel like a small practical decision rather than a pile of combinator names. You need a reliable way to look at a plain function and decide whether it belongs under `map`, `and_then`, `map_err`, or applicative lifting.
 
 ## Start With the Choice Problem
 

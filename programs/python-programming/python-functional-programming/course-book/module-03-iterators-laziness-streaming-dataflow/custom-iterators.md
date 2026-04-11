@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should not make class-based iterators feel like the default. It should make them feel justified. Leave generators behind only when you need more explicit control over state, reuse, or cleanup than a simple generator can provide cleanly.
+Class-based iterators are not the default here; they are a justified escalation. Leave generators behind only when you need more explicit control over state, reuse, or cleanup than a simple generator can provide cleanly.
 
 ## Start With the Generator Limit
 
@@ -33,7 +33,7 @@ This lesson introduces custom iterators as an explicit lifecycle pattern:
 - keep state transitions and cleanup obligations visible in the class design
 - preserve laziness while giving you a clearer story about restartability and resource control
 
-The running and cross-domain examples matter because custom iterators should feel like a practical response to a real lifecycle need, not like ceremony for its own sake.
+The running and cross-domain examples matter because custom iterators are a practical response to a real lifecycle need, not ceremony for its own sake.
 
 Use this when you have hit the limits of generators for reusable, stateful, or resource-aware streams.
 

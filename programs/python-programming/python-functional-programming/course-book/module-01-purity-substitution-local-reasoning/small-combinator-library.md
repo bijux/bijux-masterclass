@@ -365,7 +365,7 @@ double_evens = flow(ffilter(lambda x: x % 2 == 0), fmap(lambda x: x * 2))
 
 ## What comes next
 
-This lesson should leave you with a small toolkit you can actually read and reuse. The
+Leave this lesson with a small toolkit you can actually read and reuse. The
 next question is whether the toolkit survives law-based review and whether it stays worth
 the extra abstraction under real maintenance pressure.
 

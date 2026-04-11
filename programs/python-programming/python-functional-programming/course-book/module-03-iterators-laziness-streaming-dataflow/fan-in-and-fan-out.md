@@ -16,7 +16,7 @@ This lesson makes a potentially messy topic reviewable. As soon as a pipeline st
 
 ## Start With the Multi-Stream Pressure
 
-Merge and split code often looks simple in demos, but real systems need stronger guarantees than "the data got through somehow." This lesson should front-load those guarantees.
+Merge and split code often looks simple in demos, but real systems need stronger guarantees than "the data got through somehow." Start with those guarantees.
 
 - If a merge strategy changes order, that needs to be part of the contract, not a surprise.
 - If one split branch can lag arbitrarily behind another, buffering needs an explicit limit or discipline.

@@ -374,7 +374,7 @@ The shell from Core 1 remains; typing focuses on core. Use 'with' for resource s
 
 ## What comes next
 
-This lesson should leave you able to design a typed pipeline surface that is still
+Leave this lesson able to design a typed pipeline surface that is still
 readable. The next step is to decide whether the typed form actually buys safety and how
 to compare it with the simpler baseline it replaced.
 

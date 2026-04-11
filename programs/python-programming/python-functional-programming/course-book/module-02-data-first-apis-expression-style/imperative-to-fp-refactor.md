@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should feel like a trustworthy migration guide. You are no longer learning isolated tools. You are learning how to use the whole module to reshape a script without losing behavior or creating a maze of half-finished abstractions.
+This is a trustworthy migration guide. You are no longer learning isolated tools. You are learning how to use the whole module to reshape a script without losing behavior or creating a maze of half-finished abstractions.
 
 ## Start With the Refactor Fear
 

@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make cleanup feel first-class. Once a stream owns a connection, file handle, or GPU context, its behavior is no longer only about yielded values. It is also about what happens when the consumer stops early or something fails midway.
+Cleanup should feel first-class. Once a stream owns a connection, file handle, or GPU context, its behavior is no longer only about yielded values. It is also about what happens when the consumer stops early or something fails midway.
 
 ## Start With the Leak Risk
 

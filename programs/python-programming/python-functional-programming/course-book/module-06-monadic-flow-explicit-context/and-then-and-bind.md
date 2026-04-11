@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make `and_then` feel like a readability tool first. You usually do not need another name for “monad” on day one. You need a way to stop rewriting the same propagation checks and let dependent steps read like the happy path again.
+`and_then` should feel like a readability tool first. You usually do not need another name for “monad” on day one. You need a way to stop rewriting the same propagation checks and let dependent steps read like the happy path again.
 
 ## Start With the Propagation Smell
 

@@ -12,11 +12,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make laws feel practical and defensive. You do not need to admire algebra from a distance. You need to understand that the laws are the reason a refactor can be trusted instead of manually re-checked at every chaining site.
+Laws should feel practical and defensive. You do not need to admire algebra from a distance. You need to understand that the laws are the reason a refactor can be trusted instead of manually re-checked at every chaining site.
 
 ## Start With the Confidence Gap
 
-Once chaining looks elegant, a new risk appears: people trust it because it “seems right” rather than because its behavior is nailed down. This lesson should close that gap.
+Once chaining looks elegant, a new risk appears: people trust it because it “seems right” rather than because its behavior is nailed down. Close that gap with explicit laws.
 
 - If the team cannot state the laws a combinator is supposed to satisfy, regressions become hard to name.
 - If a refactor changes grouping or extracted helper boundaries, the laws are what tell us whether the meaning should stay the same.

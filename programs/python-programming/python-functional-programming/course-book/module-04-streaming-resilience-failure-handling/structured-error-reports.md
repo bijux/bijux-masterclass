@@ -12,11 +12,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should feel like the payoff for the whole module. After making failures explicit, bounded, retryable, and resource-safe, the next move is turning that work into diagnostics that a team can actually read and act on.
+This page is the payoff for the whole module. After making failures explicit, bounded, retryable, and resource-safe, the next move is turning that work into diagnostics that a team can actually read and act on.
 
 ## Start With the Reporting Gap
 
-Without a structured report, the earlier resilience work still tends to collapse back into noisy logs and scattered anecdotes. This page should make reporting feel like the final functional reduction over the whole failure story.
+Without a structured report, the earlier resilience work still tends to collapse back into noisy logs and scattered anecdotes. Reporting is the final functional reduction over the whole failure story.
 
 - If the only output is raw log lines, counts and patterns are hard to trust.
 - If sample errors are unbounded, the report becomes another memory risk.
