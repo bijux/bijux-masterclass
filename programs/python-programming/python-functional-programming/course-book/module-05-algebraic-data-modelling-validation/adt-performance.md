@@ -2,43 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["ADT Performance"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  pure["Start with a pure ADT design that is correct but slow"] --> measure["Measure where the real bottleneck is"]
+  measure --> optimize["Change representation only inside the hot path"]
+  optimize --> prove["Prove equivalence before calling the compromise safe"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should reassure students that good modeling and good performance are not enemies, but they are not automatically aligned either. The key discipline here is to compromise representation only when profiling justifies it and only when equivalence to the pure model is still demonstrable.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the Performance Panic
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines | bind/and_then, Reader/State-like patterns, error-typed flows                |
+Teams often hit this lesson at the moment they are tempted to throw out their ADTs and “just use arrays and mutable structs everywhere.” The page should slow that reaction down and make the tradeoff reviewable.
+
+- If a path is slow but unmeasured, students do not yet know whether representation is the real problem.
+- If optimization changes public semantics, it is not a safe performance compromise.
+- If there is no easy way back to a pure fallback, the optimization is harder to trust and harder to test.
 
 **Core question**  
 When — and how — should you compromise on pure immutable ADTs for performance or ergonomics in hot paths, while proving that the optimized representation is semantically equivalent to the pure one?
 
-Every ADT-heavy system eventually hits the same three realities:
+This lesson introduces performance compromise as a controlled representation choice:
 
-1. “Why is my embedding batch 40× slower than the NumPy version?”
-2. “Why do I have 400 lines of boilerplate just to copy 5 fields?”
-3. “Why does adding one field allocate 10 million objects?”
+- keep pure ADTs at public boundaries and in business logic
+- flatten or vectorize only the parts proved to be hot
+- require equivalence evidence so speedups do not quietly rewrite the domain behavior
+
+The motivating complaints matter because they are real, but they do not all justify the same answer. The lesson needs to turn “performance panic” into a measured design process.
 
 The naïve reaction everyone has first:
 
@@ -53,9 +46,9 @@ def embed_batch(chunks: list[Chunk]) -> list[Validation[Chunk, ErrInfo]]:
     return out   # N temporary tuples, N Chunk replacements
 ```
 
-40× slower, millions of temporary objects, verbose.
+This is the pressure that makes premature compromise tempting.
 
-The production pattern: keep pure ADTs at **boundaries** and for **business logic**; in measured hot paths, use optimized mutable/flat/NumPy representations — but **prove equivalence** with property tests.
+The production pattern keeps semantics anchored in the pure model while allowing optimized representations where measurement proves they are worth it.
 
 ```python
 # AFTER – hybrid, fast, proven correct
@@ -64,9 +57,9 @@ obatch.embeddings = embed_many([r.text for r in obatch.rows])  # NumPy, zero-cop
 validated_chunks = from_optimized_batch(obatch)         # back to pure ADTs, proven equivalent
 ```
 
-Same semantics, 30–100× faster, zero boilerplate in hot loop.
+That is the standard this lesson should leave students with: compromise representation, never meaning.
 
-**Audience**: Engineers who love ADTs but hit real performance walls and want principled, proven compromises.
+**Audience**: Engineers who value ADTs but need a principled path through real performance pressure.
 
 **Outcome**
 1. Every hot path measured and justified.
