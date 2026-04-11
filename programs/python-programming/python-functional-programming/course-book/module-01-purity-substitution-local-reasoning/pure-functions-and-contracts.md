@@ -2,54 +2,38 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Pure Functions & Contracts"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  leak["Find the hidden input or hidden effect"] --> clause["Name the contract clause it breaks"]
+  clause --> detect["Choose how to detect it: type, check, or property"]
+  detect --> refactor["Refactor toward explicit inputs and deterministic output"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson turns "keep functions pure" into something reviewable.
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Failure Mode
 
-Here's a snippet from the progression map:
+A function usually violates its contract in one of four ways:
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+- it reads hidden input such as environment, time, or module state
+- it returns different results for the same visible inputs
+- it mutates caller-owned data or shared state
+- it performs effects in the middle of logic that should stay substitutable
 
+The goal of this page is to make those failures easy to name and easy to detect.
 
-> **Core question:**  
-> How do you constrain functions so that purity violations—hidden inputs, nondeterministic outputs, or shared mutation—are detectable early by signatures, properties, and optional runtime checks?
+## Keep This Question In View
 
-This core builds on **Core 1**'s functional mindset by adding **detectable contracts** for purity:  
-- Make **all inputs explicit** (no globals, OS env, time, RNG).  
-- Aim for **deterministic outputs** (same args → same result).  
-- **Never mutate shared state** (return new values).  
+> How do you constrain functions so that purity violations are detectable early by signatures, properties, and optional runtime checks?
 
-We continue the **running project** from Core 1: refactoring the FuncPipe RAG Builder to pure, now with contracts on stages like `clean_doc`, `chunk_doc`, and `embed_chunk`.
+By the end of this lesson, you should be able to point at one function and say:
 
-**Audience:** Developers who refactored to pure in Core 1 but still see flaky tests from hidden globals, nondeterministic RNG/time, or accidental argument mutation.  
-**Outcome:**  
-1. Write a pure function whose purity is checkable by Hypothesis in < 10 lines.  
-2. Explain why `random.random()` or `os.getenv` breaks purity—and how to fix it with explicit params.  
-3. Add properties detecting determinism + no input mutation whenever those are part of the contract.  
-4. Spot and fix three classic violations: hidden inputs, nondeterministic outputs, shared mutation.
+- which purity clause matters here
+- how to check it
+- what refactor would make the clause hold again
 
 ---
 
@@ -65,11 +49,18 @@ We continue the **running project** from Core 1: refactoring the FuncPipe RAG Bu
 
 ### 1.3 Why This Matters Now
 
-Detectable contracts catch purity violations early, ensuring functions from Core 1 compose safely in pipelines (Core 4) and satisfy equational laws (Core 9); without detection, hidden state leads to flaky tests and races.
+Purity is only useful when another engineer can verify it. A contract gives that engineer a
+checklist instead of a vibe:
+
+- Are all inputs visible in the signature?
+- Can the same inputs produce a different result?
+- Does this call mutate anything outside its own local scope?
+- Is there an effect here that belongs in a thin shell instead?
 
 ### 1.4 Contracts: Three Layers
 
-Contracts go beyond purity to include preconditions (e.g., "amount >= 0"), postconditions (e.g., "sum of balances unchanged"), and invariants (e.g., "abstract has no double spaces"). Enforce them across three layers:
+Contracts go beyond purity to include preconditions, postconditions, and invariants. In
+this module, use three layers:
 
 | Layer              | Description                          | Examples                             | When to Use                          |
 |--------------------|--------------------------------------|--------------------------------------|--------------------------------------|
@@ -77,7 +68,11 @@ Contracts go beyond purity to include preconditions (e.g., "amount >= 0"), postc
 | Dynamic (asserts)  | Runtime checks that raise errors     | `assert amount >= 0`                 | For simple, enforceable conditions   |
 | Behavioral (Hypothesis) | Relational properties over inputs/outputs | `f(g(x)) == g(f(x))`                | For subtle behaviors like determinism, no mutation, invariants |
 
-**Guidance:** If it's about data shape/structure → use types. If it's a simple check → use asserts. If it's relational (e.g., output properties, no side effects) → use property tests.
+Use the lightest tool that can honestly express the rule:
+
+- Use types for data shape and obvious domain boundaries.
+- Use runtime checks for simple conditions that should fail loudly.
+- Use property tests when the rule is relational, behavioral, or easy to accidentally break.
 
 ---
 
@@ -86,16 +81,16 @@ Contracts go beyond purity to include preconditions (e.g., "amount >= 0"), postc
 ### 2.1 One Picture
 
 ```text
-Leaky Contract (violations)               Detected Contract
-+---------------------------+            +---------------------------+
-| hidden globals / time     |            | explicit params only      |
-| hidden RNG / OS env vars  |            |                           |
-| mutates caller data       |            | returns new values        |
-| prints / logs / I/O       |            |                           |
-| same args → different out |            | same args → same out      |
-+---------------------------+            +---------------------------+
+Leaky Contract                          Reviewed Contract
++---------------------------+          +-----------------------------+
+| hidden globals / time     |          | explicit parameters         |
+| hidden RNG / OS env vars  |          | deterministic output        |
+| mutates caller data       |          | returns new values          |
+| prints / logs / I/O       |          | effect boundary named       |
++---------------------------+          +-----------------------------+
 
-Hypothesis falsifies leaks; types + runtime checks catch them early.
+Types and checks narrow the space. Properties catch the subtle leaks that still get
+through.
 ```
 
 ### 2.2 Contract Table
@@ -107,7 +102,9 @@ Hypothesis falsifies leaks; types + runtime checks catch them early.
 | No shared mutation         | `list.sort()`, `dict.update()`         | Hypothesis mutation check + deepcopy     |
 | No side effects            | `print`, logging, I/O                  | Manual review                            |
 
-**Note on Shared Mutation:** Includes nested structures (aliasing); use `deepcopy` in properties for detection. Unseeded RNG violates determinism; seeded RNG is acceptable if the seed is an explicit argument. Note that Hypothesis cannot automatically detect side effects like printing; capture streams manually if needed.
+**Note on Shared Mutation:** Includes nested structures and aliases; use `deepcopy` in
+properties when you need to prove caller-owned values were not changed. Unseeded RNG
+breaks determinism. Seeded RNG is only acceptable when the seed is explicit input.
 
 In the rest of this core we turn those columns into concrete contracts on the RAG stages and one non-RAG function.
 
