@@ -13,6 +13,158 @@ edit_uri: edit/master/programs/reproducible-research/deep-dive-dvc/course-book/
 docs_dir: course-book
 site_dir: ../../../artifacts/site/reproducible-research/deep-dive-dvc
 
+nav:
+- Home: index.md
+- Guides:
+  - Home: guides/index.md
+  - Start Here: guides/start-here.md
+  - Course Guide: guides/course-guide.md
+  - Learning Contract: guides/learning-contract.md
+  - Pressure Routes: guides/pressure-routes.md
+  - Proof Ladder: guides/proof-ladder.md
+  - Module Promise Map: guides/module-promise-map.md
+  - Module Checkpoints: guides/module-checkpoints.md
+  - Proof Matrix: guides/proof-matrix.md
+  - Platform Setup: guides/platform-setup.md
+- 'Module 00: Orientation and Study Practice':
+  - Home: module-00-orientation/index.md
+  - Course Map: module-00-orientation/course-map.md
+  - First-Contact Map: module-00-orientation/first-contact-map.md
+  - Mid-Course Map: module-00-orientation/mid-course-map.md
+  - Mastery Map: module-00-orientation/mastery-map.md
+- 'Module 01: Reproducibility Failures in Real Teams':
+  - Home: module-01-reproducibility-failures-real-teams/index.md
+  - Repeatability Versus Reproducibility: module-01-reproducibility-failures-real-teams/repeatability-versus-reproducibility.md
+  - Hidden State and Undeclared Inputs: module-01-reproducibility-failures-real-teams/hidden-state-and-undeclared-inputs.md
+  - Why Git and Scripts Are Not Enough: module-01-reproducibility-failures-real-teams/why-git-and-scripts-are-not-enough.md
+  - What DVC Does and Does Not Own: module-01-reproducibility-failures-real-teams/what-dvc-does-and-does-not-own.md
+  - The First Honest Workflow Inventory: module-01-reproducibility-failures-real-teams/the-first-honest-workflow-inventory.md
+  - 'Worked Example: Auditing a Fragile ML Workflow': module-01-reproducibility-failures-real-teams/worked-example-auditing-a-fragile-ml-workflow.md
+  - Exercises: module-01-reproducibility-failures-real-teams/exercises.md
+  - Exercise Answers: module-01-reproducibility-failures-real-teams/exercise-answers.md
+  - Glossary: module-01-reproducibility-failures-real-teams/glossary.md
+- 'Module 02: Data Identity and Content Addressing':
+  - Home: module-02-data-identity-content-addressing/index.md
+  - Paths Are Locators, Not Data Identity: module-02-data-identity-content-addressing/paths-are-locators-not-data-identity.md
+  - Content Addressing, Cache, and Pointer Files: module-02-data-identity-content-addressing/content-addressing-cache-and-pointer-files.md
+  - Workspace, Git, Cache, Remote, and Published State: module-02-data-identity-content-addressing/workspace-git-cache-remote-and-published-state.md
+  - DVC Add, Push, Pull, and Checkout as State Moves: module-02-data-identity-content-addressing/dvc-add-push-pull-and-checkout-as-state-moves.md
+  - Failure Modes, Recovery, and Trust: module-02-data-identity-content-addressing/failure-modes-recovery-and-trust.md
+  - 'Worked Example: Restoring a Dataset After Local Loss': module-02-data-identity-content-addressing/worked-example-restoring-a-dataset-after-local-loss.md
+  - Exercises: module-02-data-identity-content-addressing/exercises.md
+  - Exercise Answers: module-02-data-identity-content-addressing/exercise-answers.md
+  - Glossary: module-02-data-identity-content-addressing/glossary.md
+- 'Module 03: Execution Environments as Reproducible Inputs':
+  - Home: module-03-execution-environments-reproducible-inputs/index.md
+  - Execution Environment as Part of the Input Surface: module-03-execution-environments-reproducible-inputs/execution-environment-as-part-of-the-input-surface.md
+  - Determinism Is a Spectrum, Not a Switch: module-03-execution-environments-reproducible-inputs/determinism-is-a-spectrum-not-a-switch.md
+  - What DVC Records Indirectly and What It Does Not Manage: module-03-execution-environments-reproducible-inputs/what-dvc-records-indirectly-and-what-it-does-not-manage.md
+  - Lockfiles, Containers, and CI as Environment Strategies: module-03-execution-environments-reproducible-inputs/lockfiles-containers-and-ci-as-environment-strategies.md
+  - Reviewing Environment Drift and Runtime Evidence: module-03-execution-environments-reproducible-inputs/reviewing-environment-drift-and-runtime-evidence.md
+  - 'Worked Example: Explaining a Local Versus CI Drift': module-03-execution-environments-reproducible-inputs/worked-example-explaining-a-local-versus-ci-drift.md
+  - Exercises: module-03-execution-environments-reproducible-inputs/exercises.md
+  - Exercise Answers: module-03-execution-environments-reproducible-inputs/exercise-answers.md
+  - Glossary: module-03-execution-environments-reproducible-inputs/glossary.md
+- 'Module 04: Truthful Pipelines and Declared Dependencies':
+  - Home: module-04-truthful-pipelines-declared-dependencies/index.md
+  - Stage Contracts and Declared Truth: module-04-truthful-pipelines-declared-dependencies/stage-contracts-and-declared-truth.md
+  - Dependency, Parameter, and Output Boundaries: module-04-truthful-pipelines-declared-dependencies/dependency-parameter-output-boundaries.md
+  - DVC Repro, Staleness, and Lock Evidence: module-04-truthful-pipelines-declared-dependencies/dvc-repro-staleness-and-lock-evidence.md
+  - False Reruns and Stale Outputs: module-04-truthful-pipelines-declared-dependencies/false-reruns-and-stale-outputs.md
+  - Safe Pipeline Refactoring and Shared Outputs: module-04-truthful-pipelines-declared-dependencies/safe-pipeline-refactoring-and-shared-outputs.md
+  - 'Worked Example: Repairing a Deceptive Pipeline': module-04-truthful-pipelines-declared-dependencies/worked-example-repairing-a-deceptive-pipeline.md
+  - Exercises: module-04-truthful-pipelines-declared-dependencies/exercises.md
+  - Exercise Answers: module-04-truthful-pipelines-declared-dependencies/exercise-answers.md
+  - Module Glossary: module-04-truthful-pipelines-declared-dependencies/glossary.md
+- 'Module 05: Metrics, Parameters, and Comparable Meaning':
+  - Home: module-05-metrics-parameters-comparable-meaning/index.md
+  - Metrics as Semantic Claims: module-05-metrics-parameters-comparable-meaning/metrics-as-semantic-claims.md
+  - Parameters as Comparison Controls: module-05-metrics-parameters-comparable-meaning/parameters-as-comparison-controls.md
+  - Metric Files, Schemas, and Stability: module-05-metrics-parameters-comparable-meaning/metric-files-schemas-and-stability.md
+  - Metrics Diff and Review Boundaries: module-05-metrics-parameters-comparable-meaning/metrics-diff-and-review-boundaries.md
+  - Plots and Release Interpretation: module-05-metrics-parameters-comparable-meaning/plots-and-release-interpretation.md
+  - 'Worked Example: Repairing a Misleading Metric Comparison': module-05-metrics-parameters-comparable-meaning/worked-example-repairing-a-misleading-metric-comparison.md
+  - Exercises: module-05-metrics-parameters-comparable-meaning/exercises.md
+  - Exercise Answers: module-05-metrics-parameters-comparable-meaning/exercise-answers.md
+  - Module Glossary: module-05-metrics-parameters-comparable-meaning/glossary.md
+- 'Module 06: Experiments, Baselines, and Controlled Change':
+  - Home: module-06-experiments-baselines-controlled-change/index.md
+  - Baseline Authority and Experiment Intent: module-06-experiments-baselines-controlled-change/baseline-authority-and-experiment-intent.md
+  - Experiment Scope and Change Boundaries: module-06-experiments-baselines-controlled-change/experiment-scope-and-change-boundaries.md
+  - DVC Experiment Records and Isolation: module-06-experiments-baselines-controlled-change/dvc-experiment-records-and-isolation.md
+  - Comparing Experiments and Selecting Candidates: module-06-experiments-baselines-controlled-change/comparing-experiments-and-selecting-candidates.md
+  - Promotion, Cleanup, and History Integrity: module-06-experiments-baselines-controlled-change/promotion-cleanup-and-history-integrity.md
+  - 'Worked Example: Promoting a Controlled Threshold Experiment': module-06-experiments-baselines-controlled-change/worked-example-promoting-a-controlled-threshold-experiment.md
+  - Exercises: module-06-experiments-baselines-controlled-change/exercises.md
+  - Exercise Answers: module-06-experiments-baselines-controlled-change/exercise-answers.md
+  - Module Glossary: module-06-experiments-baselines-controlled-change/glossary.md
+- 'Module 07: Collaboration, CI, and Social Contracts':
+  - Home: module-07-collaboration-ci-social-contracts/index.md
+  - Collaboration Failures and Social Contracts: module-07-collaboration-ci-social-contracts/collaboration-failures-and-social-contracts.md
+  - CI as Shared Reproducibility Executor: module-07-collaboration-ci-social-contracts/ci-as-shared-reproducibility-executor.md
+  - Merge Review and Branch Protection: module-07-collaboration-ci-social-contracts/merge-review-and-branch-protection.md
+  - DVC Remotes and Shared Artifact Stewardship: module-07-collaboration-ci-social-contracts/dvc-remotes-and-shared-artifact-stewardship.md
+  - Recovery Drills and Incident Readiness: module-07-collaboration-ci-social-contracts/recovery-drills-and-incident-readiness.md
+  - 'Worked Example: Fixing a Missing Data Push Review': module-07-collaboration-ci-social-contracts/worked-example-fixing-a-missing-data-push-review.md
+  - Exercises: module-07-collaboration-ci-social-contracts/exercises.md
+  - Exercise Answers: module-07-collaboration-ci-social-contracts/exercise-answers.md
+  - Module Glossary: module-07-collaboration-ci-social-contracts/glossary.md
+- 'Module 08: Recovery, Scale, and Incident Survival':
+  - Home: module-08-recovery-scale-incident-survival/index.md
+  - Durability Boundaries and Recovery Goals: module-08-recovery-scale-incident-survival/durability-boundaries-and-recovery-goals.md
+  - Retention Policy and History Value: module-08-recovery-scale-incident-survival/retention-policy-and-history-value.md
+  - Garbage Collection and Cache Safety: module-08-recovery-scale-incident-survival/garbage-collection-and-cache-safety.md
+  - Remote Migration and CI Drift: module-08-recovery-scale-incident-survival/remote-migration-and-ci-drift.md
+  - Incident Response and Maintainer Handoffs: module-08-recovery-scale-incident-survival/incident-response-and-maintainer-handoffs.md
+  - 'Worked Example: Restoring After Local Cache Loss': module-08-recovery-scale-incident-survival/worked-example-restoring-after-local-cache-loss.md
+  - Exercises: module-08-recovery-scale-incident-survival/exercises.md
+  - Exercise Answers: module-08-recovery-scale-incident-survival/exercise-answers.md
+  - Module Glossary: module-08-recovery-scale-incident-survival/glossary.md
+- 'Module 09: Promotion, Registry Boundaries, and Auditability':
+  - Home: module-09-promotion-registry-boundaries-auditability/index.md
+  - Promotion Contracts and Downstream Trust: module-09-promotion-registry-boundaries-auditability/promotion-contracts-and-downstream-trust.md
+  - Release Surfaces and Bundle Shape: module-09-promotion-registry-boundaries-auditability/release-surfaces-and-bundle-shape.md
+  - 'Audit Evidence: Params, Metrics, Locks, and Manifests': module-09-promotion-registry-boundaries-auditability/audit-evidence-params-metrics-locks-manifests.md
+  - Registry Boundaries and Consumer Contracts: module-09-promotion-registry-boundaries-auditability/registry-boundaries-and-consumer-contracts.md
+  - Promotion Failures and Review Repairs: module-09-promotion-registry-boundaries-auditability/promotion-failures-and-review-repairs.md
+  - 'Worked Example: Repairing an Incomplete Release Bundle': module-09-promotion-registry-boundaries-auditability/worked-example-repairing-an-incomplete-release-bundle.md
+  - Exercises: module-09-promotion-registry-boundaries-auditability/exercises.md
+  - Exercise Answers: module-09-promotion-registry-boundaries-auditability/exercise-answers.md
+  - Module Glossary: module-09-promotion-registry-boundaries-auditability/glossary.md
+- 'Module 10: Migration, Governance, and DVC Boundaries':
+  - Home: module-10-migration-governance-dvc-boundaries/index.md
+  - Repository Review Without Wishful Thinking: module-10-migration-governance-dvc-boundaries/repository-review-without-wishful-thinking.md
+  - Safe Migration Plans for State Boundaries: module-10-migration-governance-dvc-boundaries/safe-migration-plans-for-state-boundaries.md
+  - Governance Rules for Long-Lived Repositories: module-10-migration-governance-dvc-boundaries/governance-rules-for-long-lived-repositories.md
+  - Anti-Patterns and Review Interventions: module-10-migration-governance-dvc-boundaries/anti-patterns-and-review-interventions.md
+  - DVC Tool Boundaries and System Ownership: module-10-migration-governance-dvc-boundaries/dvc-tool-boundaries-and-system-ownership.md
+  - 'Worked Example: Reviewing a DVC Repository for Stewardship': module-10-migration-governance-dvc-boundaries/worked-example-reviewing-a-dvc-repository-for-stewardship.md
+  - Exercises: module-10-migration-governance-dvc-boundaries/exercises.md
+  - Exercise Answers: module-10-migration-governance-dvc-boundaries/exercise-answers.md
+  - Module Glossary: module-10-migration-governance-dvc-boundaries/glossary.md
+- Deep Dive DVC Capstone Guide:
+  - Home: capstone/index.md
+  - Deep Dive DVC Capstone Map: capstone/capstone-map.md
+  - Capstone File Guide: capstone/capstone-file-guide.md
+  - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
+  - Capstone Proof Guide: capstone/capstone-proof-guide.md
+  - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+  - Capstone Extension Guide: capstone/capstone-extension-guide.md
+  - Capstone Walkthrough: capstone/capstone-walkthrough.md
+  - Command Guide: capstone/command-guide.md
+  - Capstone Glossary: capstone/glossary.md
+- Reference:
+  - Home: reference/index.md
+  - Reference Glossary: reference/glossary.md
+  - Module Dependency Map: reference/module-dependency-map.md
+  - Practice Map: reference/practice-map.md
+  - Review Checklist: reference/review-checklist.md
+  - Boundary Review Prompts: reference/boundary-review-prompts.md
+  - Self-Review Prompts: reference/self-review-prompts.md
+  - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
+  - Completion Rubric: reference/completion-rubric.md
+  - Topic Boundaries: reference/topic-boundaries.md
+
 theme:
   custom_dir: ../../../docs/overrides
   logo: ../../../docs/assets/bijux_logo_hq.png
