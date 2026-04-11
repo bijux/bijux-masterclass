@@ -34,11 +34,11 @@ first.
 | --- | --- | --- |
 | fresh-machine setup is explicit and repeatable | `make bootstrap-confirm` | `Makefile`, `environment.yaml`, toolchain output under `artifacts/venv/` |
 | rule contracts are visible before execution | `make walkthrough` | `Snakefile`, `workflow/rules/*.smk`, `list-rules.txt`, `dryrun.txt` |
-| checkpoint discovery is explicit rather than magical | `make walkthrough` | `CHECKPOINT_GUIDE.md`, `Snakefile`, `discovered_samples.json` after execution |
-| the published boundary is stable and reviewable | `make verify-report` | `FILE_API.md`, `verify.json`, `manifest.json`, `provenance.json` |
-| profile differences stay operational instead of semantic | `make profile-audit` | `profiles/*/config.yaml`, dry-run comparisons, `PROFILE_AUDIT_GUIDE.md` |
+| checkpoint discovery is explicit rather than magical | `make walkthrough` | [Walkthrough Guide](WALKTHROUGH_GUIDE.md), `Snakefile`, `discovered_samples.json` after execution |
+| the published boundary is stable and reviewable | `make verify-report` | [File API](FILE_API.md), `verify.json`, `manifest.json`, `provenance.json` |
+| profile differences stay operational instead of semantic | `make profile-audit` | `profiles/*/config.yaml`, dry-run comparisons, [Profile Audit Guide](PROFILE_AUDIT_GUIDE.md) |
 | the workflow stays deterministic across core counts | `make selftest` | `tests/selftest.sh`, published summaries under `publish/v1/` |
-| executed evidence can be reviewed in one place | `make tour` | `run.txt`, `summary.txt`, published artifacts, `TOUR.md` |
+| executed evidence can be reviewed in one place | `make tour` | `run.txt`, `summary.txt`, published artifacts, [Review Route Guide](REVIEW_ROUTE_GUIDE.md) |
 | one sanctioned multi-bundle proof route exists | `make proof` | `tour`, `verify-report`, and `profile-audit` bundles |
 | the full repository contract still survives clean-room pressure | `make confirm` | `Makefile`, `tests/`, `publish/v1/`, profile surfaces |
 
@@ -55,10 +55,10 @@ first.
 ## Good reading order
 
 1. `README.md`
-2. `PROOF_GUIDE.md`
+2. [Domain Guide](DOMAIN_GUIDE.md)
 3. `Snakefile`
 4. `workflow/rules/common.smk`
 5. `workflow/rules/publish.smk`
-6. `FILE_API.md`
+6. [File API](FILE_API.md)
 
 That route keeps contract and published trust ahead of implementation detail.

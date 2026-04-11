@@ -31,8 +31,9 @@ flowchart LR
 This guide explains how to review the publish boundary as a contract, not only as a
 directory that happens to contain files.
 
-Use `RESULTS_BOUNDARY_GUIDE.md` first when the real question is whether a surface
-deserves promotion into the publish contract at all.
+Use [File API](FILE_API.md) first when the real question is which surfaces are already
+part of the public contract. Use [Architecture Guide](ARCHITECTURE.md) when the question
+is whether an internal surface deserves promotion into that contract at all.
 
 ---
 
@@ -41,7 +42,7 @@ deserves promotion into the publish contract at all.
 1. Read `FILE_API.md`.
 2. Run `make publish-summary` when you need the shortest honest publish overview.
 3. Run `make verify-report` when you need the fuller contract review bundle.
-4. Read `PUBLISH_REVIEW_GUIDE.md`, `publish-summary.json`, `verify.json`, `route.txt`, and `review-questions.txt` in the bundle.
+4. Read this guide, `publish-summary.json`, `verify.json`, `route.txt`, and `review-questions.txt` in the bundle.
 5. Compare the report with `manifest.json`, `discovered_samples.json`, `summary.json`, `summary.tsv`, and `provenance.json`.
 6. Read `report/index.html` when you need the compact human-facing publish surface.
 

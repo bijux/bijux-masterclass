@@ -43,14 +43,14 @@ review question honestly.
 
 | If the question is... | First route | Escalate to |
 | --- | --- | --- |
-| what is this repository trying to do? | `DOMAIN_GUIDE.md`, then `make walkthrough` | `make tour` |
-| how is the workflow divided into stages? | `WORKFLOW_STAGE_GUIDE.md` | `ARCHITECTURE.md`, `make walkthrough` |
-| how does dynamic discovery work? | `CHECKPOINT_GUIDE.md`, then `make walkthrough` | `make tour` |
+| what is this repository trying to do? | [Domain Guide](DOMAIN_GUIDE.md), then `make walkthrough` | `make tour` |
+| how is the workflow divided into stages? | [Walkthrough Guide](WALKTHROUGH_GUIDE.md) | [Architecture Guide](ARCHITECTURE.md), `make walkthrough` |
+| how does dynamic discovery work? | [Walkthrough Guide](WALKTHROUGH_GUIDE.md), then `make walkthrough` | `make tour` |
 | which published files are safe to trust? | `make publish-summary` | `make verify-report` |
 | how do profiles differ without changing meaning? | `make profile-summary` | `make profile-audit` |
 | is the workflow deterministic across cores? | `make selftest` | `make confirm` |
 | what happened during a real execution? | `make tour` | `make confirm` |
-| where should a future change land? | `EXACT_SOURCE_GUIDE.md`, `EXTENSION_GUIDE.md` | `ARCHITECTURE.md` |
+| where should a future change land? | [Extension Guide](EXTENSION_GUIDE.md), [Architecture Guide](ARCHITECTURE.md) | `make walkthrough` |
 | do I need the strongest supported repository proof? | `make proof` | `make confirm` |
 
 ---
@@ -71,4 +71,3 @@ review question honestly.
 - Which route gives the narrowest honest answer with the least incidental complexity?
 - Which bundle or artifact should exist after this route if the capstone contract is working?
 - Which stronger route would you choose next only if the current one stops being sufficient?
-

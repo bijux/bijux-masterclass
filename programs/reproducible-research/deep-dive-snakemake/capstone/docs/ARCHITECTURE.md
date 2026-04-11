@@ -60,7 +60,7 @@ Read the architecture in this order:
 3. `workflow/modules/` and `workflow/scripts/`
 4. `src/capstone/`
 5. `profiles/` and `config/`
-6. `publish/v1/` and `FILE_API.md`
+6. `publish/v1/` and [File API](FILE_API.md)
 
 That route moves from visible workflow assembly, to rule families, to helper boundaries,
 to reusable code, to operating policy, and finally to the downstream contract.
@@ -91,9 +91,9 @@ to reusable code, to operating policy, and finally to the downstream contract.
 - If a downstream consumer relied on one file, which layer proves that trust boundary?
 - Which layer would be the first warning sign if the repository started to hide workflow truth?
 
-Use `EXACT_SOURCE_GUIDE.md` when the architecture answer still feels too broad and you
-need the smallest file route for one concrete question.
-Use `MODULE_BOUNDARY_GUIDE.md` when the confusion is specifically about `workflow/rules`,
-`workflow/modules`, `workflow/scripts`, and `src/capstone`.
+Use [Review Route Guide](REVIEW_ROUTE_GUIDE.md) when the architecture answer still feels
+too broad and you need the smallest next route for one concrete question.
+Use [Walkthrough Guide](WALKTHROUGH_GUIDE.md) when the confusion is specifically about
+the visible workflow layers before execution.
 
 [Back to top](#top)

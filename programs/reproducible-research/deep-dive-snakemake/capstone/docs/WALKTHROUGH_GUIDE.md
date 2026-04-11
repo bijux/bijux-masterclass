@@ -51,13 +51,14 @@ Use `make tour` later when you need executed proof artifacts.
 
 ## What The Bundle Is For
 
-- `README.md` explains the repository contract
-- `DOMAIN_GUIDE.md`, `WORKFLOW_STAGE_GUIDE.md`, and `CHECKPOINT_GUIDE.md` explain the smallest human-first story
+- [Domain Guide](DOMAIN_GUIDE.md) and [Architecture Guide](ARCHITECTURE.md) explain the
+  smallest human-first story
 - `Snakefile`, copied rule files, and `list-rules.txt` explain visible workflow meaning
 - `dryrun.txt` explains the declared plan before execution
 - copied profile and config files explain policy and validation inputs
 - copied scripts explain how config and publish checks are enforced
-- `CHECKPOINT_GUIDE.md` explains why dynamic discovery is visible rather than magical
+- [Review Route Guide](REVIEW_ROUTE_GUIDE.md) and [File API](FILE_API.md) explain which
+  route or contract to inspect next
 
 [Back to top](#top)
 
@@ -66,11 +67,11 @@ Use `make tour` later when you need executed proof artifacts.
 ## Best Review Order
 
 1. `README.md`
-2. `DOMAIN_GUIDE.md` and `WORKFLOW_STAGE_GUIDE.md`
+2. [Domain Guide](DOMAIN_GUIDE.md) and [Architecture Guide](ARCHITECTURE.md)
 3. `route.txt`
-4. `CHECKPOINT_GUIDE.md` and `Snakefile`
+4. `Snakefile` and `list-rules.txt`
 5. `list-rules.txt` and `dryrun.txt`
-6. `ARCHITECTURE.md`, `EXACT_SOURCE_GUIDE.md`, and `FILE_API.md`
+6. [File API](FILE_API.md) and [Review Route Guide](REVIEW_ROUTE_GUIDE.md)
 7. `commands.txt` and `review-questions.txt`
 
 [Back to top](#top)

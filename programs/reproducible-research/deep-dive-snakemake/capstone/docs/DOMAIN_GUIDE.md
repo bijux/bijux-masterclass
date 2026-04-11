@@ -90,7 +90,7 @@ reviewable evidence.
 
 ## Best Next Files
 
-1. `README.md` for the full capstone contract
-2. `Snakefile` for the visible workflow assembly
-3. `FILE_API.md` for the public publish boundary
-4. `PROOF_GUIDE.md` when you want the shortest route from a claim to evidence
+1. `Snakefile` for the visible workflow assembly
+2. [Walkthrough Guide](WALKTHROUGH_GUIDE.md) for the lightest honest entry route
+3. [File API](FILE_API.md) for the public publish boundary
+4. [Proof Guide](PROOF_GUIDE.md) when you want the shortest route from a claim to evidence

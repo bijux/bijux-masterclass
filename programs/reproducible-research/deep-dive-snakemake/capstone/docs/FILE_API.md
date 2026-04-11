@@ -28,9 +28,9 @@ This page describes the file surfaces a reviewer is expected to care about. The 
 distinction is simple: `results/` is workflow-owned internal state; `publish/v1/` is the
 public downstream contract.
 
-Use `PUBLISH_REVIEW_GUIDE.md` when the question is whether the public contract deserves
-trust. Use this page when the question is exactly which files and fields that contract
-contains.
+Use [Publish Review Guide](PUBLISH_REVIEW_GUIDE.md) when the question is whether the
+public contract deserves trust. Use this page when the question is exactly which files
+and fields that contract contains.
 
 ## Compatibility rules
 
@@ -82,6 +82,6 @@ Ask these before changing a file:
 
 ## Companion guides
 
-- `PUBLISH_REVIEW_GUIDE.md`
-- `RESULTS_BOUNDARY_GUIDE.md`
-- `PROOF_GUIDE.md`
+- [Publish Review Guide](PUBLISH_REVIEW_GUIDE.md)
+- [Architecture Guide](ARCHITECTURE.md)
+- [Proof Guide](PROOF_GUIDE.md)

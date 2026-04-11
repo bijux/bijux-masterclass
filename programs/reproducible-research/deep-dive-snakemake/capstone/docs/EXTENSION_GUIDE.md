@@ -42,7 +42,8 @@ Prefer:
 
 Also update:
 
-- `WALKTHROUGH_GUIDE.md` or `WORKFLOW_STAGE_GUIDE.md` if a new reader should notice it
+- [Walkthrough Guide](WALKTHROUGH_GUIDE.md) or [Architecture Guide](ARCHITECTURE.md) if a
+  new reader should notice it
 - `make walkthrough` or `make tour` evidence if the visible route changed
 
 [Back to top](#top)
@@ -58,7 +59,7 @@ Prefer:
 
 Also update:
 
-- `PROFILE_AUDIT_GUIDE.md`
+- [Profile Audit Guide](PROFILE_AUDIT_GUIDE.md)
 - `make profile-audit` expectations
 
 If the change would alter analytical meaning, it does not belong here.
@@ -77,7 +78,7 @@ Prefer:
 
 Also update:
 
-- `PUBLISH_REVIEW_GUIDE.md`
+- [Publish Review Guide](PUBLISH_REVIEW_GUIDE.md)
 - compatibility expectations and versioning decisions
 
 Treat this as a trust-boundary change, not a convenience edit.
