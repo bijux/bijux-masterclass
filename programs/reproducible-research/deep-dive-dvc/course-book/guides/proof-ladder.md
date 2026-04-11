@@ -2,90 +2,68 @@
 
 # Proof Ladder
 
+Use this page when you know the question but not the right amount of evidence. The common
+failure in this program is not too little effort. It is jumping straight to the strongest
+bundle, then losing the original trust question inside the output.
 
-<!-- page-maps:start -->
-## Guide Fit
+## Rule for using the ladder
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Proof Ladder"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+Start at the smallest route that could honestly falsify your claim. Move down only when
+the smaller route leaves an important part of the question unanswered.
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+That means:
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This page fixes a recurring problem: the course has enough proof routes that learners can
-easily overreach. They run the strongest command first, get buried in evidence, and lose
-the trust question they were trying to settle.
-
-Use this page to keep proof proportional to the question.
-
----
-
-## The Ladder
-
-Move down this ladder only when the smaller step no longer answers the question honestly.
-
-| Proof level | Command | Best use | Cost |
-| --- | --- | --- | --- |
-| 1 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` | first contact with repository meaning | low |
-| 2 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | ordinary executable proof of current repository truth | low to medium |
-| 3 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` | durable saved verification evidence | medium |
-| 4 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | focused review of changed experiment state | medium |
-| 5 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | focused review of remote-backed recovery truth | medium |
-| 6 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | focused review of published state and promotion trust | medium |
-| 7 | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | strongest stewardship and confirmation pass | highest |
+- first contact should not start with `capstone-confirm`
+- a release-boundary question does not need a recovery bundle
+- a recovery question should not start with promotion evidence
 
 [Back to top](#top)
 
----
+## The ladder
 
-## Which Questions Belong To Which Level
+| Level | Start here when the question is... | First route |
+| --- | --- | --- |
+| 1 | what is this repository even trying to prove | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` |
+| 2 | does the current repository state still match the declared contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` |
+| 3 | do I need a saved verification bundle I can review later | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` |
+| 4 | do I need to compare experiment candidates without mutating the baseline story | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` |
+| 5 | do I need to inspect what survives local loss and remote restore | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` |
+| 6 | do I need to audit what is safe for downstream trust | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` |
+| 7 | am I ready for the strongest stewardship and confirmation pass | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
 
-| Question | Start at |
+[Back to top](#top)
+
+## Start points by claim
+
+| Claim | Start here |
 | --- | --- |
-| what is this repository trying to prove | capstone-tour |
-| does the current repository state still match the contract | capstone-verify |
-| do I need durable verification evidence I can review later | capstone-verify-report |
-| how should I compare experiment candidates | capstone-experiment-review |
-| what survives cache loss and remote restore | capstone-recovery-review |
-| what is safe for downstream trust | capstone-release-review |
-| is this repository ready for the strongest stewardship pass | capstone-confirm |
+| "I need a bounded first pass through the capstone." | capstone-walkthrough |
+| "I need to know whether declared and recorded state still agree." | capstone-verify |
+| "I need durable verification evidence, not terminal scrollback." | capstone-verify-report |
+| "I need to compare changed runs without confusing them with the baseline." | capstone-experiment-review |
+| "I need to know what survives cache loss." | capstone-recovery-review |
+| "I need to know what downstream users may trust." | capstone-release-review |
+| "I need the strongest overall confirmation before major change." | capstone-confirm |
 
 [Back to top](#top)
 
----
+## Bad escalation habits
 
-## Anti-Patterns This Ladder Prevents
+If you are using the ladder badly, it usually looks like one of these:
 
-The ladder exists to prevent these clumsy review habits:
+- choosing `capstone-confirm` because you feel uncertain, not because the question needs it
+- using `capstone-release-review` when `capstone-verify` would answer the current-state question directly
+- reading large saved bundles before you know what claim they are supposed to support
+- treating a stronger route as automatically more honest than a narrower one
 
-* running `capstone-confirm` when `capstone-tour` would answer the question
-* treating one large bundle as automatically better than a narrower one
-* confusing recovery review with release review
-* burying a first-contact learner in governance evidence before state identity is legible
+The stronger route is only better when it answers a different question.
 
 [Back to top](#top)
 
----
+## Best companion pages
 
-## Best Companion Pages
-
-Use these with the ladder:
-
-* [`capstone/command-guide.md`](../capstone/command-guide.md) for command-layer boundaries
-* [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
-* [`capstone/capstone-map.md`](../capstone/capstone-map.md) for module-aware entry routes
-* [`verification-route-guide.md`](../reference/verification-route-guide.md) when the question is still too fuzzy to prove well
+- [Proof Matrix](proof-matrix.md) when you know the claim but need the first evidence surface
+- [Command Guide](../capstone/command-guide.md) when the command layer itself is unclear
+- [Capstone Map](../capstone/capstone-map.md) when you know the module but not the repository route
 
 [Back to top](#top)
