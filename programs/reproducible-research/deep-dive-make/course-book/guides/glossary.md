@@ -1,42 +1,39 @@
 # Guides Glossary
 
-<!-- page-maps:start -->
-## Glossary Fit
+Use this page when the support shelf starts sounding more abstract than the course
+intends. The goal is not to add theory. The goal is to keep a small set of terms stable
+so you can move between `guides/`, the modules, and the capstone without quietly changing
+what a word means.
 
-```mermaid
-flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
-```
+## Terms that matter on this shelf
 
-```mermaid
-flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
-```
-<!-- page-maps:end -->
+| Term | Meaning here | Why it matters |
+| --- | --- | --- |
+| learner route | a short, deliberate reading path for one question | prevents wandering through five pages when one page would do |
+| pressure | the concrete situation shaping how you read right now | keeps the guides tied to real use instead of generic study advice |
+| proof route | the smallest command, file, or bundle that can honestly answer the current claim | keeps evidence proportional to the question |
+| support shelf | the `guides/` directory as a whole | reminds you these pages are helpers, not substitute chapters |
+| module promise | the practical contract a module is supposed to deliver | helps you judge whether a module actually taught what its title implies |
+| checkpoint | the readiness bar for moving on from a module | stops recognition from masquerading as understanding |
+| capstone entry | the first bounded route into the executable repository | keeps the capstone from becoming first-contact reading |
+| bounded review | an inspection pass with a clear stopping point | keeps review from growing into unstructured browsing |
 
-This glossary belongs to **Guides** in **Deep Dive Make**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+## Guide names in plain language
 
-## How to use this glossary
-
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Page | What it is for |
 | --- | --- |
-| Course Guide | the guided support surface for course guide, used to study or review the course without wandering. |
-| Learning Contract | the stable study contract for the course, used to define what the learner owes the material and what the proof route should show. |
-| Module Checkpoints | the exit bar for moving between modules, used to keep pace honest instead of guessing readiness. |
-| Module Promise Map | the routing surface for module promise map, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
-| Platform Setup | the durable learner-support surface for platform setup, used to keep the course route and proof route readable under pressure. |
-| Pressure Routes | the routing surface for pressure routes, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
-| Proof Ladder | the evidence-routing surface for proof ladder, used to connect course claims to the right practice, review, or capstone proof. |
-| Proof Matrix | the evidence-routing surface for proof matrix, used to connect course claims to the right practice, review, or capstone proof. |
-| Start Here | the durable learner-support surface for start here, used to keep the course route and proof route readable under pressure. |
+| [Start Here](start-here.md) | first entry when you need the safest route into the course |
+| [Course Guide](course-guide.md) | overview of when to use modules, guides, capstone pages, or reference maps |
+| [Learning Contract](learning-contract.md) | the bar the course sets for explanation, proof, and honest progress |
+| [Module Promise Map](module-promise-map.md) | translation of module titles into actual learner outcomes |
+| [Module Checkpoints](module-checkpoints.md) | readiness review before you move on |
+| [Platform Setup](platform-setup.md) | tooling and command boundary checks before you rely on local results |
+| [Proof Ladder](proof-ladder.md) | how to choose a smaller or larger proof route without guessing |
+| [Proof Matrix](proof-matrix.md) | where a specific claim is first corroborated |
+| [Pressure Routes](pressure-routes.md) | shortest route when urgency, repair work, or stewardship is shaping the reading order |
+
+## Reading rule
+
+If a guide name still sounds fuzzy after you read the table above, do not open three more
+guides. Pick the page whose question most closely matches yours, use it, and stop when
+you have one clear next move.
