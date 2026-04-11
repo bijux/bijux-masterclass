@@ -33,8 +33,8 @@ stages:
 
 The graph looks tidy: prepare, fit, evaluate.
 
-But a learner notices something uncomfortable. The evaluation report changes between two
-manual runs even though DVC does not see a reason to rerun evaluation.
+But you notice something uncomfortable. The evaluation report changes between two manual
+runs even though DVC does not see a reason to rerun evaluation.
 
 That is the Module 04 alarm bell:
 
@@ -50,7 +50,7 @@ The stronger review asks:
 
 > What does the command actually read?
 
-The learner inspects `evaluate.py` and finds these reads:
+You inspect `evaluate.py` and find these reads:
 
 - `models/escalation-model.json`
 - `data/prepared/incidents.parquet`
@@ -62,7 +62,7 @@ DVC only knows about the model dependency.
 
 ## Step 2: Separate dependency from parameter
 
-The learner does not dump everything into `deps`.
+You do not dump everything into `deps`.
 
 The prepared data and policy CSV are file reads, so they belong in `deps`.
 
@@ -89,7 +89,7 @@ Now a reviewer can explain what should make evaluation stale.
 
 ## Step 3: Check the producer-consumer edge
 
-The learner now asks whether `data/prepared/incidents.parquet` is owned correctly.
+You now ask whether `data/prepared/incidents.parquet` is owned correctly.
 
 The `prepare` stage already lists it in `outs`, and `evaluate` now lists it in `deps`.
 That creates a real edge:
@@ -111,7 +111,7 @@ That is a better causal story than "evaluation depends on the model."
 
 ## Step 4: Predict rerun behavior
 
-Before running anything, the learner writes predictions:
+Before running anything, you write predictions:
 
 - if `evaluate.threshold` changes, only evaluation should rerun
 - if `data/reference/escalation_policy.csv` changes, evaluation should rerun
@@ -119,11 +119,11 @@ Before running anything, the learner writes predictions:
 - if `fit.model_family` changes, fitting should rerun and evaluation should rerun because the model output changed
 
 This prediction is the learning moment. It turns `dvc repro` from a button into a check
-against the learner's mental graph.
+against your mental graph.
 
 ## Step 5: Compare against lock evidence
 
-After running `dvc repro`, the learner inspects `dvc.lock`.
+After running `dvc repro`, you inspect `dvc.lock`.
 
 The useful question is not "did a lock file change?"
 

@@ -179,5 +179,5 @@ You understand this core when you can inspect one command and separate:
 - owned outputs from temporary run artifacts
 - shared intermediates from accidental leftovers
 
-The learner goal is simple: after reading `dvc.yaml`, a reviewer should understand what
-can legitimately change the result and where that change is recorded.
+The goal is simple: after reading `dvc.yaml`, a reviewer should understand what can
+legitimately change the result and where that change is recorded.

@@ -136,7 +136,7 @@ Why this is stronger when the model is a meaningful intermediate:
 
 A defensible keep-together answer is possible only if the model has no independent review
 or reuse value and the combined command truly owns both outputs as one cohesive result.
-In that case, the learner should still explain why both outputs share the same inputs and
+In that case, you should still explain why both outputs share the same inputs and
 controls.
 
 ## Self-check

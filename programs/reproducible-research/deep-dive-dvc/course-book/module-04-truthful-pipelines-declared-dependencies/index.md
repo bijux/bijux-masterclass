@@ -2,7 +2,7 @@
 
 Module 04 turns DVC from a storage story into an execution story.
 
-By now, learners already know two important facts:
+By now, you already know two important facts:
 
 - data identity should come from content, not path names
 - runtime can influence a result even when code and data look unchanged

@@ -108,8 +108,8 @@ Use this table when reviewing a pipeline surprise:
 | output exists but is not in `outs` | stale or orphan risk | untracked result boundary | who owns this artifact? |
 | rerun happens after command text changes | usually correct | expected recomputation | did the command contract change? |
 
-This lens keeps learners from treating every rerun as bad. Sometimes the rerun is exactly
-the proof that the graph is honest.
+This lens keeps you from treating every rerun as bad. Sometimes the rerun is exactly the
+proof that the graph is honest.
 
 ## Prefer safe noise over silent staleness
 
@@ -153,4 +153,4 @@ You understand this core when you can classify pipeline surprises without drama:
 - broad declarations should be narrowed only after the real read surface is understood
 - missing declarations should be fixed before performance convenience
 
-That distinction is one of the most important learner habits in Module 04.
+That distinction is one of the most important habits in Module 04.

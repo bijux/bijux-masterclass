@@ -120,7 +120,7 @@ has a specific place to go.
 
 ## Stage names are labels, not proof
 
-Names help learners navigate, but a stage name is not evidence.
+Names help you navigate, but a stage name is not evidence.
 
 A stage named `evaluate` can still lie if it reads a model that is not declared. A stage
 named `publish` can still lie if it writes a release file that is not owned. A stage named

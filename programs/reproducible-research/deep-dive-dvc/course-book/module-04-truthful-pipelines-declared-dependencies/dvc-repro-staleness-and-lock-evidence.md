@@ -1,7 +1,6 @@
 # DVC Repro, Staleness, and Lock Evidence
 
-`dvc repro` is easiest to misunderstand when learners treat it like a smarter shell
-script.
+`dvc repro` is easiest to misunderstand when you treat it like a smarter shell script.
 
 It is better to treat it as a graph reviewer:
 
@@ -93,7 +92,7 @@ That downstream rerun is not noise. It is the graph doing the honest thing.
 If `fit.model_family` changes, `fit` becomes stale, but `prepare` does not need to rerun.
 The change belongs to model fitting, not preparation.
 
-This is the kind of prediction learners should make before running `dvc repro`.
+This is the kind of prediction you should make before running `dvc repro`.
 
 ## What the lock file records
 
@@ -116,8 +115,8 @@ stages:
         md5: 0c4d6a2f1eb4c6e4f2e2a2f2b913f5c8
 ```
 
-The exact lock schema can vary by DVC version and output type. The learner lesson is more
-stable than the formatting:
+The exact lock schema can vary by DVC version and output type. The lesson is more stable
+than the formatting:
 
 - dependencies have recorded content identity
 - parameters have recorded values

@@ -64,7 +64,7 @@ Explain each prediction in terms of declared dependencies and parameters.
 
 ## Exercise 4: Diagnose stale output risk
 
-A learner reports:
+You review this report:
 
 > I changed `data/reference/escalation_policy.csv`, ran `dvc repro`, and evaluation did not
 > rerun. But the evaluation command uses that file.
