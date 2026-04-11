@@ -2,7 +2,6 @@
 
 # Proof Guide
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -21,92 +20,82 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
-  inspect --> run["Run the confirm, demo, selftest, or proof command"]
-  run --> compare["Compare output with the stated contract"]
-  compare --> review["Return to the course claim with evidence"]
+  claim["Name the claim"] --> route["Choose the smallest route that proves it"]
+  route --> evidence["Read the specific files that carry the evidence"]
+  evidence --> verdict["Decide whether the claim still holds"]
 ```
 <!-- page-maps:end -->
 
-This capstone is designed to prove build-system properties, not just compile a small C
-program. Use this guide when you want the shortest route from a claim to the target, file,
-or failure surface that defends it.
+This capstone exists to corroborate build-system claims, not just to compile a small C
+program. Use this guide when you know the question you want answered and need the shortest
+honest route from that question to evidence.
 
-When you want one bounded review pass instead of a custom sequence, run `make proof`.
-That target writes the walkthrough, selftest report, contract audit, and incident audit
-bundles together, and now includes the profile audit as part of the sanctioned review set.
+When you do need the full sanctioned bundle set, run `make proof`. Most of the time,
+start narrower.
 
 ---
 
-## Claims And Their First Evidence
+## Start from the claim
 
-| Claim | First target | First files to inspect |
+| Claim | Smallest honest route | Read these first |
 | --- | --- | --- |
-| what is the smallest honest review entrypoint | `make inspect` | `CONTRACT_AUDIT_GUIDE.md`, `TARGET_GUIDE.md` |
-| the graph is truthful and reaches a stable state | `make selftest` | `Makefile`, `tests/run.sh` |
-| serial and parallel schedules mean the same thing | `make selftest` | `tests/run.sh`, `mk/objects.mk`, `mk/stamps.mk` |
-| the executed proof can be reviewed later without terminal scrollback | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `serial.sum`, `parallel.sum` |
-| generated files are modeled as real edges | `make dyn` | `scripts/gen_dynamic_h.py`, `Makefile`, `repro/04-generated-header.mk` |
-| artifact publication is atomic | `make all` | `Makefile`, `mk/macros.mk` |
-| deterministic discovery is rooted and reviewable | `make discovery-audit` | `Makefile`, `mk/objects.mk` |
-| the build boundary is portable enough to be explicit | `make portability-audit` | `Makefile`, `mk/contract.mk` |
-| execution-policy assumptions are explicit enough to audit | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `help.txt`, `origins.txt` |
-| failure classes are teachable instead of folklore | `make repro` | `repro/`, `REPRO_GUIDE.md` |
+| what is publicly promised here | `make inspect` | `CONTRACT_AUDIT_GUIDE.md`, `TARGET_GUIDE.md`, `help.txt` |
+| the build converges after success | `make selftest` | `tests/run.sh`, `mk/stamps.mk` |
+| serial and parallel schedules produce the same result | `make selftest` | `serial.sum`, `parallel.sum`, `tests/run.sh` |
+| proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `settings.env` |
+| generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/04-generated-header.mk` |
+| the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
+| variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
+| one failure class can be studied with captured evidence | `make incident-audit` | `INCIDENT_REVIEW_GUIDE.md`, `command.txt`, `run.txt`, copied repro file |
+| a new reader can enter the capstone without browsing randomly | `make walkthrough` | `WALKTHROUGH_GUIDE.md`, `README.md`, `TARGET_GUIDE.md` |
+| this repository still deserves stewardship trust | `make confirm` | `PROOF_GUIDE.md`, `tests/run.sh`, audit bundles as needed |
 
 [Back to top](#top)
 
 ---
 
-## Best Reading Order
+## Good reading order
 
-Use this order the first time:
+Use this order when the repository is new but the ideas are not:
 
 1. `README.md` for the repository contract
-2. `TARGET_GUIDE.md` for the public interface by question
-3. `Makefile` for the public interface implementation
-4. `tests/run.sh` for the proof harness
-5. `ARCHITECTURE.md` and `mk/contract.mk` for platform and ownership boundaries
-6. `mk/objects.mk` and `mk/stamps.mk` for graph truth
-7. `REPRO_GUIDE.md` and `repro/` for failure teaching surfaces
+2. `TARGET_GUIDE.md` for the public target surface
+3. `PROOF_GUIDE.md` for claim-to-route selection
+4. `tests/run.sh` for the executed proof harness
+5. `ARCHITECTURE.md` and `mk/contract.mk` for ownership and boundary rules
+6. the audit or repro guide that matches the current question
 
-That route keeps contract and proof ahead of implementation detail.
-
-[Back to top](#top)
-
----
-
-## Best Targets By Question
-
-| Question | First target | Why |
-| --- | --- | --- |
-| what is the sanctioned end-to-end learner proof route | `make proof` | it writes the bounded bundle set used by the course-book review pages |
-| what is the smallest bounded review route | `make inspect` | it writes the public-boundary review bundle without forcing the full proof path |
-| does the build still tell the truth after a successful run | `make selftest` | it checks convergence and negative hidden-input behavior |
-| how do I preserve the current proof result for later review | `make verify-report` | it writes the selftest evidence bundle with reading-order guides |
-| which parts of the build are safe under `-j` | `make selftest` | it compares serial and parallel artifact hashes |
-| what is publicly supported for learners and reviewers | `make help` | it exposes the stable command surface |
-| where do the common defects live in miniature form | `make repro` | it lists the curated failure pack |
-| what assumptions does this capstone make about platform and tools | `make portability-audit` | it prints the declared execution boundary |
-| what is the strongest published confirmation route | `make confirm` | it aliases the strongest built-in validation with shared catalog naming |
+That keeps claim, route, and evidence ahead of implementation detail.
 
 [Back to top](#top)
 
 ---
 
-## Companion Surfaces
+## Route selection rules
 
-Use these files together:
+- choose `walkthrough` for first contact
+- choose `inspect` for contract review
+- choose `selftest` for build-truth proof
+- choose `verify-report` when the proof needs to be saved
+- choose `incident-audit` for one failure class with captured evidence
+- choose `profile-audit` for portability, policy, and precedence questions
+- choose `proof` only when the question genuinely spans multiple bundles
+- choose `confirm` when stewardship review needs the strongest built-in route
 
-* `README.md` for the repository contract
-* `TARGET_GUIDE.md` for stable target selection
-* `ARCHITECTURE.md` for ownership boundaries
-* `WALKTHROUGH_GUIDE.md` for first-pass reading order
-* `CONTRACT_AUDIT_GUIDE.md` for public-boundary review
-* `INCIDENT_REVIEW_GUIDE.md` for executed failure review
-* `PROFILE_AUDIT_GUIDE.md` for execution-policy review
-* `REPRO_GUIDE.md` for the failure-class route
-* `tests/run.sh` for the strongest proof path
-* `mk/contract.mk` for boundary declarations
-* `mk/common.mk` and `mk/macros.mk` for reusable build mechanics
+[Back to top](#top)
+
+---
+
+## Companion surfaces
+
+Read these with this guide:
+
+- `README.md`
+- `TARGET_GUIDE.md`
+- `WALKTHROUGH_GUIDE.md`
+- `CONTRACT_AUDIT_GUIDE.md`
+- `INCIDENT_REVIEW_GUIDE.md`
+- `PROFILE_AUDIT_GUIDE.md`
+- `SELFTEST_GUIDE.md`
 
 [Back to top](#top)
