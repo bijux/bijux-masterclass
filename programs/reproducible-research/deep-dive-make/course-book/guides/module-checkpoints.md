@@ -2,95 +2,59 @@
 
 # Module Checkpoints
 
+Use this page when you are about to move on and want an honest readiness bar. Reading a
+module once is not the same thing as owning it. These checkpoints are meant to tell you
+whether the next module will build on stable ground or on vague recognition.
 
-<!-- page-maps:start -->
-## Guide Fit
-
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Module Checkpoints"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
-
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This page is the missing study contract at the end of each module. It gives a human bar
-for readiness instead of assuming that reading the prose once means the concept is stable.
-
-Use it when you are about to move on and want to know whether you are ready, what you are
-still fuzzy on, and which proof route should settle the question.
-
----
-
-## How To Use The Checkpoints
+## How to use this page
 
 For each module:
 
-1. read the module overview and main lessons
-2. answer the checkpoint questions without looking at the text
-3. run the smallest honest proof route
-4. only advance when the concept feels explainable, not merely recognizable
+1. answer the checkpoint question without looking at the module
+2. run the listed proof route or inspection step
+3. stop if you still cannot explain the result in plain language
+
+If you need to reread, reread the narrowest lesson that matches the gap instead of the
+whole module.
 
 [Back to top](#top)
 
----
+## Readiness table
 
-## Checkpoint Table
-
-| Module | You are ready when you can explain | You should be able to do | Useful proof route |
+| Module | You are ready to move on when you can explain... | Quick proof or inspection route | Go back when... |
 | --- | --- | --- | --- |
-| 01 | why Make is a graph and not a shell script with decoration | explain a rebuild using prerequisites and timestamps | `capstone-walkthrough` |
-| 02 | why `-j` reveals hidden truth problems | name one race class and repair it honestly | `test` |
-| 03 | why selftests and public targets are part of the build contract | distinguish build proof from runtime checks | `capstone-verify-report` |
-| 04 | how precedence, includes, and rule semantics change debugging | use `make --trace` and `make -p` with less guessing | `capstone-tour` |
-| 05 | why hardening means declaring boundaries | name which assumptions belong in policy rather than folklore | `capstone-contract-audit` |
-| 06 | how generators and multi-output rules distort truth if modeled loosely | trace a generated artifact back to its real inputs | `proof` |
-| 07 | why layered includes should clarify ownership instead of hiding it | point to the owning file for one structural change | `inspect` |
-| 08 | what makes a published artifact trustworthy | explain the difference between a built output and a reviewed release surface | `proof` |
-| 09 | how to move from build symptom to responsible boundary | choose the right diagnostic route before random debugging | `capstone-incident-audit` |
-| 10 | when Make is still the right owner and when it is not | review a build as a long-lived product with migration judgment | `capstone-confirm` |
+| [Module 01](../module-01-build-graph-foundations-truth/index.md) | why one target rebuilt and why another stayed up to date | `make --trace all` on a tiny build or the module exercise | you still describe Make as "running commands in order" |
+| [Module 02](../module-02-parallel-safety-project-structure/index.md) | what makes concurrent targets safe instead of merely lucky | `make -j8 all` plus one race repro from the module | you can spot the symptom but not the dishonest edge |
+| [Module 03](../module-03-determinism-debugging-self-testing/index.md) | the difference between runtime tests and build-system proof | `make PROGRAM=reproducible-research/deep-dive-make test` | you treat a passing binary as proof that the graph is healthy |
+| [Module 04](../module-04-rule-semantics-precedence-edge-cases/index.md) | which semantic rule explains a surprising build decision | `make -p` or `make --trace <target>` on the relevant example | you are still naming "weird Make behavior" instead of a rule |
+| [Module 05](../module-05-portability-hermeticity-failure-modes/index.md) | which assumptions belong in declared policy instead of habit | `make PROGRAM=reproducible-research/deep-dive-make capstone-contract-audit` | your explanation depends on one maintainer's machine |
+| [Module 06](../module-06-generated-files-multi-output-pipeline-boundaries/index.md) | where generated outputs enter the graph and when they should publish | `gmake -C programs/reproducible-research/deep-dive-make/capstone --trace dyn` | the generator still feels like side-effect magic |
+| [Module 07](../module-07-build-architecture-layered-includes-apis/index.md) | which file owns public targets, policy, discovery, and reusable mechanics | `make PROGRAM=reproducible-research/deep-dive-make inspect` | you can name files but not responsibilities |
+| [Module 08](../module-08-release-engineering-artifact-contracts/index.md) | what belongs in a source or release artifact and why | `gmake -C programs/reproducible-research/deep-dive-make/capstone source-baseline-check` or `source-bundle` | you are still mixing proof residue with publishable source |
+| [Module 09](../module-09-performance-observability-incident-response/index.md) | which evidence would narrow a slow or flaky build before edits begin | `make PROGRAM=reproducible-research/deep-dive-make capstone-incident-audit` | you are changing the build before you can name the boundary |
+| [Module 10](../module-10-migration-governance-tool-boundaries/index.md) | how to improve an inherited build without losing proof and trust | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` | your migration plan is mostly stylistic preference |
 
 [Back to top](#top)
 
----
+## Common false positives
 
-## Failure Signals
+Do not call a module done just because:
 
-Do not advance yet if any of these are still true:
+- the examples felt familiar
+- you can repeat the vocabulary
+- the strongest command passed once
+- you can follow a capstone route without naming why it proves anything
 
-* you can recognize the term but cannot explain the invariant it protects
-* you know the strongest proof command but not the smallest honest one
-* you can follow the capstone mechanically but cannot name the owning boundary
-* you can repeat the repair pattern but cannot say what failure it prevents
-
-These are not minor study gaps. They are signals that the next module will feel more
-arbitrary than it should.
+Those signals often mean you have seen the surface, not learned the boundary.
 
 [Back to top](#top)
 
----
+## Best companion pages
 
-## Best Companion Pages
+Use these together with the checkpoints:
 
-Use these with the checkpoints:
-
-* [`module-promise-map.md`](module-promise-map.md) to see what each title promised
-* [`proof-ladder.md`](proof-ladder.md) to keep proof proportional to the question
-* [`practice-map.md`](../reference/practice-map.md) to match module work with proof loops
-* [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) when you want to record what the evidence actually showed
+- [Module Promise Map](module-promise-map.md) when you need the module contract restated
+- [Proof Ladder](proof-ladder.md) when the proof route feels heavier than the claim
+- [Capstone Map](../capstone/capstone-map.md) when the idea is clear but the repository route is not
 
 [Back to top](#top)
