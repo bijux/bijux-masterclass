@@ -1,88 +1,67 @@
-# Metaprogramming Capstone Guide
-
-
-<!-- page-maps:start -->
-## Guide Fit
-
-```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Metaprogramming Capstone Guide"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
-
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+# Python Metaprogramming Capstone Guide
 
 The metaprogramming capstone is the executable proof for the course. It is a compact
 incident-plugin runtime where decorators, descriptors, metaclasses, and introspection
 must coexist without hiding responsibility.
 
-## What the capstone proves
+Use this guide to enter the shelf question-first. The goal is not to browse the whole
+runtime. The goal is to pick one mechanism, one owning boundary, and one proof surface.
 
-- configuration invariants can live on descriptor-backed fields
-- wrappers can preserve callable metadata while still recording action history
-- class-definition-time registration can stay deterministic and testable
-- manifest export can expose the runtime shape without executing plugin behavior
+## What this capstone proves
 
-## Start by learner pressure
+- descriptor-backed fields can hold configuration invariants without turning state opaque
+- wrappers can preserve metadata while still recording runtime behavior
+- class-definition-time registration can remain deterministic and inspectable
+- manifest export can show the runtime shape without executing plugin side effects
 
-| If your question is... | Start here | Then prove it with |
+## Choose the right capstone route
+
+| If your question is... | Best page |
+| --- | --- |
+| Which capstone surface matches the current module? | [Capstone Map](capstone-map.md) |
+| Which files should I read first? | [Capstone File Guide](capstone-file-guide.md) |
+| Where do runtime boundaries and ownership live? | [Capstone Architecture Guide](capstone-architecture-guide.md) |
+| Which proof route is honest for this claim? | [Capstone Proof Guide](capstone-proof-guide.md) |
+| How should I review the runtime as a steward? | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+| Where should a new change land? | [Capstone Extension Guide](capstone-extension-guide.md) |
+
+## Start by module range
+
+| Module range | Best capstone focus |
+| --- | --- |
+| Modules 01-03 | manifest export, constructor signatures, and inspectable runtime shape |
+| Modules 04-06 | decorators, wrappers, and action-history behavior |
+| Modules 07-08 | descriptors, field validation, and focused field tests |
+| Modules 09-10 | registration, generated constructors, public commands, and saved bundles |
+
+## Core commands
+
+| If you need... | From the repository root | From the capstone directory |
 | --- | --- | --- |
-| what the runtime exposes without execution | [Capstone Map](capstone-map.md) and the manifest or registry outputs | `make manifest` or `make registry` |
-| which file owns the mechanism | [Capstone Architecture Guide](capstone-architecture-guide.md) and [Capstone File Guide](capstone-file-guide.md) | `capstone/src/incident_plugins/` |
-| which command is the smallest honest proof | [Command Guide](command-guide.md) and the matching capstone target | the matching capstone target |
-| how to review the capstone end to end | [Capstone Walkthrough](capstone-walkthrough.md) and [Capstone Proof Checklist](capstone-proof-checklist.md) | `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` or `make PROGRAM=python-programming/python-meta-programming capstone-verify-report` |
+| runtime shape without execution | `make PROGRAM=python-programming/python-meta-programming manifest` | `make manifest` |
+| registry review | `make PROGRAM=python-programming/python-meta-programming registry` | `make registry` |
+| walkthrough and saved proof | `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` | `make walkthrough` |
 
-## Best route by module stage
-
-- Modules 01-03: start with manifest export and constructor signatures.
-- Modules 04-06: inspect `actions.py` and decorator-driven behavior before touching descriptors.
-- Modules 07-08: inspect `fields.py` and the field-focused tests.
-- Module 09: inspect registration and generated constructor behavior in `framework.py`.
-- Module 10 and mastery review: use the public commands and saved bundles as the final review surface.
-
-## Inspect, explain, prove
-
-Use the capstone with one repeated rhythm:
-
-1. Inspect one public output or one source file.
-2. Explain which runtime boundary owns the behavior.
-3. Prove the claim with one named test or saved bundle artifact.
-
-This keeps the capstone from becoming a repository tour without a learning contract.
-
-## Read these guides together
+## Guide set
 
 - [Capstone Map](capstone-map.md)
-- [Capstone Architecture Guide](capstone-architecture-guide.md)
-- [Capstone File Guide](capstone-file-guide.md)
 - [Capstone Walkthrough](capstone-walkthrough.md)
-- [Capstone Proof Checklist](capstone-proof-checklist.md)
+- [Command Guide](command-guide.md)
+- [Capstone File Guide](capstone-file-guide.md)
+- [Capstone Architecture Guide](capstone-architecture-guide.md)
+- [Capstone Proof Guide](capstone-proof-guide.md)
+- [Capstone Review Worksheet](capstone-review-worksheet.md)
 - [Capstone Extension Guide](capstone-extension-guide.md)
-
-## Best entrypoints
-
-- repository guide: [Capstone Map](capstone-map.md)
-- runtime architecture: [Capstone Architecture Guide](capstone-architecture-guide.md)
-- proof route: [Capstone Proof Checklist](capstone-proof-checklist.md)
-- source: `capstone/src/incident_plugins/`
-- tests: `capstone/tests/`
+- [Glossary](glossary.md)
 
 ## Review questions
 
 - Which work happens before an instance exists?
-- Which runtime facts are inspectable from the public surface?
-- Which mechanism would you replace first if you had to simplify the design?
+- Which runtime facts stay inspectable from the public surface?
+- Which mechanism would you simplify first if the design felt too magical?
 
-## Directory glossary
+## Stop here when
 
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between repository routes, review surfaces, and proof commands.
+- you know which mechanism the current module is actually teaching
+- you know which file or public output owns that mechanism
+- you know the smallest command or bundle that proves it
