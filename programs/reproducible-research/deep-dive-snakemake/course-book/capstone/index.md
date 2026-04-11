@@ -66,7 +66,41 @@ strongest confirmation path.
 - which settings belong to policy rather than workflow meaning
 - which saved evidence would matter most to another maintainer
 
-## Directory glossary
+## Shelf vocabulary
 
-Use [Glossary](glossary.md) when the route pages start sounding interchangeable and you
-need the shelf language kept stable.
+Use this section when the route pages start sounding interchangeable. The capstone shelf
+is not a second course book. It is a bounded set of entry routes into one executable
+repository, and the terms here keep those routes distinct.
+
+### Route terms
+
+| Term | Meaning here | Why it matters |
+| --- | --- | --- |
+| walkthrough | the bounded first pass through the repository | keeps first contact human-scale |
+| proof route | the smallest executed or saved route that can honestly test a workflow claim | keeps evidence proportional to the question |
+| publish boundary | the downstream-facing output surface another person is allowed to trust | separates public deliverables from internal run state |
+| profile audit | the route that compares local, CI, and scheduler policy surfaces | keeps execution policy from masquerading as workflow meaning |
+| stewardship review | the stronger route used when another maintainer needs to judge the whole repository | prevents first-pass reading from escalating into full review too early |
+| capstone entry | one bounded way into the executable repository | prevents directory tourism |
+| public file surface | the smaller set of files another reader should inspect first | keeps the repository reviewable under pressure |
+| saved evidence bundle | an exported artifact set that lets a reviewer inspect the workflow later | keeps trust tied to durable evidence instead of terminal scrollback |
+
+### Page names in plain language
+
+| Page | What it helps you do |
+| --- | --- |
+| [Capstone Walkthrough](capstone-walkthrough.md) | take a bounded first pass through the repository |
+| [Command Guide](command-guide.md) | choose the right command layer and first command |
+| [Capstone File Guide](capstone-file-guide.md) | know which repository files matter first and why |
+| [Capstone Proof Guide](capstone-proof-guide.md) | choose the shortest honest proof route |
+| [Publish Review Guide](publish-review-guide.md) | review the downstream trust surface |
+| [Profile Audit Guide](profile-audit-guide.md) | review local, CI, and scheduler policy drift |
+| [Capstone Review Worksheet](capstone-review-worksheet.md) | review the repository as a steward, not only as a learner |
+| [Capstone Extension Guide](capstone-extension-guide.md) | evolve the repository without weakening its teaching or review value |
+| [Incident Review Guide](incident-review-guide.md) | narrow a failure review to the evidence that matters |
+
+## Reading rule
+
+If two capstone pages sound interchangeable, do not open both. Name the current job:
+entry, command choice, file surface, publish review, policy review, or stewardship. Then
+open the one page that owns that job.
