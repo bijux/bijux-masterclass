@@ -52,7 +52,7 @@ change.
 
 - prefer `interop/`
 - keep the compatibility layer thin enough that the core model remains semantically stable
-- prove that the bridge preserves the same contract the course is teaching
+- prove that the bridge preserves the same contract the course uses
 
 ## If the change adds a distributed backend
 

@@ -124,7 +124,7 @@ def trace_value(name: str, value: object, level: Level = "DEBUG") -> Writer[None
 ```
 
 **Performance note**: In this repo the Writer log is a `tuple`, so concatenation is
-`O(n + m)`. This keeps the implementation tiny and predictable for teaching; if you need
+`O(n + m)`. This keeps the implementation tiny and predictable for this repository; if you need
 very high-volume logging, use a list-backed accumulator in the shell or a different
 Writer representation.
 
@@ -246,7 +246,7 @@ def test_order_preservation(entries):
 | `and_then`          | O(n + m)   | O(n + m)         | Concatenates tuple logs from left and right branches   |
 | `run_writer`        | O(1)`*`    | O(1)`*`          | `*` beyond whatever log accumulation already occurred  |
 
-That is a good teaching trade-off for this repository. If a production pipeline needs
+That is a good course trade-off for this repository. If a production pipeline needs
 extremely high-volume logging, the representation should be revisited deliberately rather
 than assumed to be free.
 

@@ -109,7 +109,7 @@ These laws are either mathematically proven, runtime-enforced, or machine-checke
 ## 3. Public API Surface (end-of-Module-04 refactor note)
 
 Refactor note: tree traversal + folds live in `funcpipe_rag.tree` (`capstone/src/funcpipe_rag/tree/_traversal.py` and `capstone/src/funcpipe_rag/tree/folds.py`).  
-`funcpipe_rag.api.core` re-exports the same names as a stable façade for the teaching modules.
+`funcpipe_rag.api.core` re-exports the same names as a stable façade for the course modules.
 
 ```python
 from funcpipe_rag.api.core import (

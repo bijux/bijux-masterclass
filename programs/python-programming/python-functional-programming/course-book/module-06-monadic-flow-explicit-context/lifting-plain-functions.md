@@ -138,7 +138,7 @@ validate_cfg = lambda cfg: (
 
 This last example stays sequential on purpose: each step depends on the same evolving
 `Result` context. It complements the previous validation example instead of replacing it.
-The teaching point is that lifting is not one single pattern. The dependency shape tells
+The key point is that lifting is not one single pattern. The dependency shape tells
 you whether to chain or combine.
 
 ## 4. Property-Based Proofs (selected)

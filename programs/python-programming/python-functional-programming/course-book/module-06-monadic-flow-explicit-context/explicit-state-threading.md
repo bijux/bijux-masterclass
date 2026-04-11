@@ -116,7 +116,7 @@ def run_state(p: State[S, T], initial: S) -> tuple[T, S]:
 That matches the repository snapshot in `capstone/src/funcpipe_rag/fp/effects/state.py`.
 If you want the value-only or state-only views, you can still read them directly from
 `run_state(p, initial)[0]` and `run_state(p, initial)[1]` without introducing extra
-helpers into the core teaching surface.
+helpers into the core course surface.
 
 ## 3. Canonical Style – The Way You Will Actually Write 99% of State Pipelines
 

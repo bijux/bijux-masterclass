@@ -292,7 +292,7 @@ def collect_both(xs: Iterable[Result[T, E]]) -> ResultsBoth[T, E]:
 
 ```python
 def append_chunk(chunks: list[Chunk], chunk: Chunk) -> list[Chunk]:
-    # Pure accumulator for teaching; swap to a local-mutation variant only in profiled hot paths.
+    # Pure accumulator for clarity; swap to a local-mutation variant only in profiled hot paths.
     return [*chunks, chunk]
 
 # Debug/interactive mode — stop on first error

@@ -20,7 +20,7 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Use this page when module titles sound familiar but you want the real teaching promise,
+Use this page when module titles sound familiar but you want the real course promise,
 not just the topic list. A good module promise answers three questions clearly: what
 pressure the module owns, what should feel different after reading it, and where that
 claim becomes inspectable.

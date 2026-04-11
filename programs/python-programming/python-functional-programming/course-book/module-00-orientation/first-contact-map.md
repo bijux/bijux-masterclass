@@ -44,7 +44,7 @@ That is enough for a first session. Do not try to settle every advanced concept 
 Before you start the first content module, you should be able to answer:
 
 - What problem is this course trying to solve in real Python systems?
-- Why is the capstone part of the teaching surface instead of an optional side project?
+- Why is the capstone part of the course surface instead of an optional side project?
 - Which broad arc covers your current pressure: semantics, failures, effects, or sustainment?
 - Which command will you use when you want your first inspectable proof surface?
 

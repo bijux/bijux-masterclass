@@ -79,7 +79,7 @@ You are now three steps away from a complete production-grade functional archite
 **Golden rule**: For the streaming adapters modeled in this course, use a
 **resource-owning iterator** and wrap it in `contextlib.closing` (or equivalent) in
 the shell. That keeps partial-consumption cleanup explicit and deterministic for the
-pattern we are teaching here.
+pattern used here.
 
 ## Shell Checklist For Partial Consumption
 
