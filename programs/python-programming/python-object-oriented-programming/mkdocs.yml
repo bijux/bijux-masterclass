@@ -178,6 +178,17 @@ nav:
   - Capstone Walkthrough: capstone/capstone-walkthrough.md
   - Command Guide: capstone/command-guide.md
   - Capstone Glossary: capstone/glossary.md
+- Capstone Docs:
+  - Home: capstone-docs/index.md
+  - Architecture Guide: capstone-docs/architecture.md
+  - Monitoring System Command Guide: capstone-docs/command-guide.md
+  - Domain Guide: capstone-docs/domain-guide.md
+  - Extension Guide: capstone-docs/extension-guide.md
+  - Package Guide: capstone-docs/package-guide.md
+  - Proof Guide: capstone-docs/proof-guide.md
+  - Test Guide: capstone-docs/test-guide.md
+  - Tour Guide: capstone-docs/tour.md
+  - Walkthrough Guide: capstone-docs/walkthrough-guide.md
 - Reference:
   - Home: reference/index.md
   - Reference Glossary: reference/glossary.md

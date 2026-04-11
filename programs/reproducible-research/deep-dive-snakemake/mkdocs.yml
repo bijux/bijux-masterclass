@@ -151,6 +151,17 @@ nav:
   - Capstone Extension Guide: capstone/capstone-extension-guide.md
   - Capstone Walkthrough: capstone/capstone-walkthrough.md
   - Capstone Glossary: capstone/glossary.md
+- Capstone Docs:
+  - Home: capstone-docs/index.md
+  - Walkthrough Guide: capstone-docs/walkthrough-guide.md
+  - Proof Guide: capstone-docs/proof-guide.md
+  - File API: capstone-docs/file-api.md
+  - Publish Review Guide: capstone-docs/publish-review-guide.md
+  - Workflow Tour: capstone-docs/tour.md
+  - Workflow Architecture Guide: capstone-docs/architecture.md
+  - Extension Guide: capstone-docs/extension-guide.md
+  - Profile Audit Guide: capstone-docs/profile-audit-guide.md
+  - Domain Guide: capstone-docs/domain-guide.md
 - Reference:
   - Home: reference/index.md
   - Reference Glossary: reference/glossary.md

@@ -190,6 +190,17 @@ nav:
   - Capstone Walkthrough: capstone/capstone-walkthrough.md
   - Command Guide: capstone/command-guide.md
   - Capstone Glossary: capstone/glossary.md
+- Capstone Docs:
+  - Home: capstone-docs/index.md
+  - FuncPipe Architecture Map: capstone-docs/architecture.md
+  - FuncPipe Command Guide: capstone-docs/command-guide.md
+  - FuncPipe Extension Guide: capstone-docs/extension-guide.md
+  - FuncPipe Package Guide: capstone-docs/package-guide.md
+  - FuncPipe Proof Guide: capstone-docs/proof-guide.md
+  - FuncPipe Public Surface Map: capstone-docs/public-surface-map.md
+  - FuncPipe Test Guide: capstone-docs/test-guide.md
+  - FuncPipe Capstone Tour: capstone-docs/tour.md
+  - FuncPipe Walkthrough Guide: capstone-docs/walkthrough-guide.md
 - Reference:
   - Home: reference/index.md
   - Reference Glossary: reference/glossary.md

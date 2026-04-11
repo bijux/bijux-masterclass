@@ -199,4 +199,22 @@ def build_tree_nav(
             if child_nav:
                 nav.append({directory_title(child): child_nav})
 
+    if directory.name == "course-book":
+        capstone_docs_dir = directory.parent / "capstone" / "docs"
+        if capstone_docs_dir.exists():
+            capstone_docs_nav = build_tree_nav(
+                capstone_docs_dir,
+                nav_path(prefix, "capstone-docs"),
+            )
+            if capstone_docs_nav:
+                reference_index = next(
+                    (
+                        index
+                        for index, item in enumerate(nav)
+                        if isinstance(item, dict) and "Reference" in item
+                    ),
+                    len(nav),
+                )
+                nav.insert(reference_index, {"Capstone Docs": capstone_docs_nav})
+
     return nav

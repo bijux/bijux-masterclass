@@ -153,6 +153,17 @@ nav:
   - Capstone Walkthrough: capstone/capstone-walkthrough.md
   - Command Guide: capstone/command-guide.md
   - Capstone Glossary: capstone/glossary.md
+- Capstone Docs:
+  - Home: capstone-docs/index.md
+  - Domain Guide: capstone-docs/domain-guide.md
+  - Capstone Architecture: capstone-docs/architecture.md
+  - Publish Contract: capstone-docs/publish-contract.md
+  - Stage Contract Guide: capstone-docs/stage-contract-guide.md
+  - Experiment Guide: capstone-docs/experiment-guide.md
+  - Review Route Guide: capstone-docs/review-route-guide.md
+  - Release Review Guide: capstone-docs/release-review-guide.md
+  - Recovery Guide: capstone-docs/recovery-guide.md
+  - Capstone Tour: capstone-docs/tour.md
 - Reference:
   - Home: reference/index.md
   - Reference Glossary: reference/glossary.md

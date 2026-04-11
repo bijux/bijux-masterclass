@@ -154,6 +154,17 @@ nav:
   - Capstone Extension Guide: capstone/capstone-extension-guide.md
   - Capstone Walkthrough: capstone/capstone-walkthrough.md
   - Capstone Glossary: capstone/glossary.md
+- Capstone Docs:
+  - Home: capstone-docs/index.md
+  - Architecture Guide: capstone-docs/architecture.md
+  - Contract Audit Guide: capstone-docs/contract-audit-guide.md
+  - Incident Review Guide: capstone-docs/incident-review-guide.md
+  - Profile Audit Guide: capstone-docs/profile-audit-guide.md
+  - Proof Guide: capstone-docs/proof-guide.md
+  - Repro Guide: capstone-docs/repro-guide.md
+  - Selftest Guide: capstone-docs/selftest-guide.md
+  - Target Guide: capstone-docs/target-guide.md
+  - Walkthrough Guide: capstone-docs/walkthrough-guide.md
 - Reference:
   - Home: reference/index.md
   - Reference Glossary: reference/glossary.md
