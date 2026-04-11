@@ -84,8 +84,17 @@ nav:
           - Exercises: module-01-file-contracts-workflow-graph-truth/exercises.md
           - Exercise Answers: module-01-file-contracts-workflow-graph-truth/exercise-answers.md
           - Glossary: module-01-file-contracts-workflow-graph-truth/glossary.md
-      - "Module 02: Dynamic DAGs, Integrity, and Deterministic Discovery":
+      - "Module 02: Dynamic DAGs, Discovery, and Integrity":
           - Overview: module-02-dynamic-dags-discovery-integrity/index.md
+          - Deterministic Target Lists and Sample Discovery: module-02-dynamic-dags-discovery-integrity/deterministic-target-lists-and-sample-discovery.md
+          - Wildcard Domains and Fanout Control: module-02-dynamic-dags-discovery-integrity/wildcard-domains-and-fanout-control.md
+          - Checkpoints and Reviewed DAG Changes: module-02-dynamic-dags-discovery-integrity/checkpoints-and-reviewed-dag-changes.md
+          - Provenance, Manifests, and Publish Boundaries: module-02-dynamic-dags-discovery-integrity/provenance-manifests-and-publish-boundaries.md
+          - Software Stacks and Scheduler Cost: module-02-dynamic-dags-discovery-integrity/software-stacks-and-scheduler-cost.md
+          - "Worked Example: Making Checkpoint Discovery Reviewable": module-02-dynamic-dags-discovery-integrity/worked-example-making-checkpoint-discovery-reviewable.md
+          - Exercises: module-02-dynamic-dags-discovery-integrity/exercises.md
+          - Exercise Answers: module-02-dynamic-dags-discovery-integrity/exercise-answers.md
+          - Glossary: module-02-dynamic-dags-discovery-integrity/glossary.md
       - "Module 03: Production Operations and Policy Boundaries":
           - Overview: module-03-production-operations-policy-boundaries/index.md
       - "Module 04: Scaling Workflows and Interface Boundaries":

@@ -51,7 +51,7 @@ For each module:
 | Module | You are ready when you can explain | You should be able to do | Useful proof route |
 | --- | --- | --- | --- |
 | 01 | why rules and targets form a file-driven DAG | explain a dry-run without hand-waving | `capstone-walkthrough` |
-| 02 | why checkpoints need explicit, durable discovery artifacts | describe what discovery is allowed to change and what must stay stable | `test` |
+| 02 | why dynamic discovery needs one durable discovered-set artifact and one honest publish trail | describe what discovery is allowed to change and what must stay stable | `make verify` |
 | 03 | why profiles and retries are policy, not workflow meaning | distinguish execution context from workflow semantics | `capstone-tour` |
 | 04 | how modularity and interfaces keep larger workflows reviewable | name which file boundary should absorb one scaling change | `capstone-tour` |
 | 05 | why scripts, wrappers, and envs must stay reviewable | explain which logic belongs in rules versus helper code | `proof` |

@@ -189,7 +189,7 @@ before relying on any global `snakemake` install. The exact setup contract lives
 | --- | --- | --- |
 | `00` | Orientation and Study Practice | establish the learner route, proof surfaces, and capstone timing |
 | `01` | File Contracts and Workflow Graph Truth | teach the workflow as a file-driven DAG instead of a script |
-| `02` | Dynamic DAGs, Discovery, and Integrity | make checkpoints and changing sample sets reviewable |
+| `02` | Dynamic DAGs, Discovery, and Integrity | teach deterministic discovery, checkpoint discipline, and publish integrity |
 | `03` | Production Operations and Policy Boundaries | separate workflow semantics from operational policy |
 | `04` | Scaling Workflows and Interface Boundaries | scale the workflow without losing explicit interfaces |
 | `05` | Software Boundaries and Reproducible Rules | keep helper code and rule meaning in the right layer |
