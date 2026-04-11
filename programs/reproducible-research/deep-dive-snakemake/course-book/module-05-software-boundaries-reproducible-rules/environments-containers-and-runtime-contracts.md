@@ -4,7 +4,7 @@ Software boundaries are not only about where code lives.
 
 They are also about where code runs.
 
-That is why Snakemake learners eventually need a more serious idea than "use a conda
+That is why you eventually need a more serious idea than "use a conda
 environment when packages get annoying."
 
 An environment or container is a runtime contract.
@@ -51,7 +51,7 @@ They answer different questions.
 | repository environment | contributors need a shared authoring or development baseline | people can work on the repository without guessing setup |
 | container image | a larger execution boundary needs portable system-level consistency | this workflow can move across machines with fewer hidden system assumptions |
 
-Pedagogically, this comparison matters because learners often try to make one of these
+This comparison matters because people often try to make one of these
 surfaces solve every problem.
 
 That usually creates confusion.
@@ -157,7 +157,7 @@ that is a repository environment concern.
 | one huge environment for every rule | tiny changes force unrelated runtime churn | split runtime contracts by actual ownership |
 | rules rely on undeclared host tools | success depends on machine history | declare the tools in an environment or container |
 | container used with no reason | review becomes heavier without better guarantees | use containers for real machine-boundary problems |
-| environment files copied without explanation | learners memorize files instead of intent | explain which step or boundary the file protects |
+| environment files copied without explanation | readers memorize files instead of intent | explain which step or boundary the file protects |
 | repository environment treated as workflow proof | runtime drift remains hidden at rule level | keep rule execution contracts explicit where needed |
 
 ## The explanation a reviewer trusts
