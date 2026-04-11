@@ -50,6 +50,13 @@ The earlier closure examples matter because Reader is easiest to understand as a
 
 Reader is best understood here as “explicit, lawful closure capture” rather than as a mysterious new runtime mechanism.
 
+## A Quick Warrant Check
+
+Reader is worth the extra structure when the same environment is shared across several
+steps and you want that dependency to stay visible at the call site. If one ordinary
+function argument is enough, pass the argument directly. The goal is clearer dependency
+surfaces, not container ceremony.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Law                 | Formal Statement                                                            | Why it matters                                            |
@@ -148,7 +155,7 @@ def embed_chunk_composed(chunk: Chunk) -> Reader[Config, EmbeddedChunk]:
     return (
         pure(chunk.text.content)
         .and_then(lambda text: get_tokenizer_r().map(lambda tok: tok(text)))
-        .and_then(lambda tokens: get_model_r().map(lambda model: model.encode(tokens)))
+        .and_then(lambda tokens: get_model().map(lambda model: model.encode(tokens)))
         .and_then(
             lambda vec: ask().map(
                 lambda cfg: replace(chunk, embedding=Embedding(vec, cfg.model_name))
@@ -157,7 +164,9 @@ def embed_chunk_composed(chunk: Chunk) -> Reader[Config, EmbeddedChunk]:
     )
 ```
 
-Both styles are valid. The `def run(cfg):` version is the daily driver; the composed version is for when you truly need reusable sub-pipelines.
+Both styles are valid. The `def run(cfg):` version is the daily driver; the composed
+version is for when the sub-steps are reusable enough to justify their own Reader
+helpers.
 
 ## 5. Before → After – The Same Pipeline
 
