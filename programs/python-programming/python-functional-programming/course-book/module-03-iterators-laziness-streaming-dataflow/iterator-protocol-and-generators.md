@@ -2,79 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Iterator Protocol and Generators"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  eager["Start with a list-producing stage"] --> timing["Ask when values are computed"]
+  timing --> yield["Move the stage to yield-based iteration"]
+  yield --> review["Review demand, order, and materialization explicitly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is where module 03 really starts. Students do not need a history lesson about iterators first. They need one clear question: when does the work happen? Once that question is visible, `yield`, `next`, and the iterator protocol stop feeling magical and start feeling like execution tools they can reason about.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Timing Problem
 
-Here's a snippet from the progression map:
+Teams often write pure pipeline stages and still pay huge memory costs because every step finishes all its work before the next step begins. This lesson needs to make that hidden timing visible.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If a stage returns a list, the pipeline has already crossed a memory boundary.
+- If the consumer only needs a prefix, eager production is doing more work than the result requires.
+- If students cannot say when a value is computed, they do not yet understand the behavior they are reviewing.
 
-## Why this module matters in the course
-
-This is where the course stops talking only about pure functions and starts talking about
-system scale. Many Python codebases become expensive and fragile because every stage
-materializes whole collections before the next stage begins.
-
-Module 03 changes that mental model. It teaches that dataflow can be lazy, bounded, and
-observable without becoming mysterious.
-
-## Questions this module should answer
-
-By the end of the module, you should be able to answer:
-
-- When does a list become an avoidable memory boundary?
-- What guarantees do generator stages preserve, and what trade-offs do they introduce?
-- How do you prove that a lazy pipeline still covers the same data as the eager version?
-- Where should materialization remain explicit instead of leaking everywhere?
-
-Those answers are the prerequisite for later discussions about retries, effects, and async flows.
-
-## What to inspect in the capstone
-
-Keep the FuncPipe capstone open while reading this module and inspect:
-
-- iterator-oriented pipeline code in `capstone/src/funcpipe_rag/`
-- tests that prove equivalence between eager and lazy forms
-- boundaries where materialization is still deliberate for observability or publication
-
-The capstone should make one point visible here: laziness is a controlled boundary choice, not a magic performance fix.
-
+## Keep This Question In View
 
 > **Core question:**  
 > How do you use `yield` and the iterator protocol (`__iter__` / `__next__`) to transform eager list-based transforms into lazy, memory-efficient generators that only compute on demand — and why does this unlock everything else in Module 3?
 
-This core introduces the **iterator protocol** and **generator functions** as the foundation for lazy dataflow in Python:
-- Treat data pipelines as **iterable sequences** that produce values on-the-fly via `yield`.
-- Replace eager list comprehensions with generators to avoid materializing full collections in memory.
-- Isolate laziness to individual stages while preserving equivalence to Module 2’s eager versions, with explicit, tight laws for invariants (index correctness, coverage, bounded traversal, etc.).
+This lesson introduces iterator foundations in the way students actually need them:
 
-We use the **running project** from `m03-rag.md` — refactoring the FuncPipe RAG Builder — to ground every concept. This project evolves across all 10 cores: start with an eager, list-based version; end with a fully lazy, streaming pipeline.
+- treat a pipeline stage as something that can produce values gradually instead of all at once
+- use `yield` to make demand visible without changing the meaning of the transform
+- preserve equivalence to the eager version while gaining control over timing and memory
 
-**Audience:** Python developers who have mastered Module 2’s pure configurators and expression-oriented code but still hit OOM errors on large datasets or waste time computing chunks that are never used.
+The running FuncPipe examples matter because they show laziness as an explicit boundary choice, not a vague performance trick.
+
+**Audience:** Python developers with pure configurable pipelines who still materialize full collections, hit memory ceilings, or compute data that the caller never uses.
 
 **Outcome:**
 1. Spot eagerness in code and explain exactly how much memory it wastes.
@@ -97,11 +58,11 @@ We use the **running project** from `m03-rag.md` — refactoring the FuncPipe RA
 
 ### 1.3 Why This Matters Now
 
-Module 2 gave you pure, configurable pipelines — but they were still eager.  
-A single 100 MB abstract becomes hundreds of thousands of chunks → hundreds of MB of dataclass instances before you even embed the first one.  
-Lazy generators let you process terabytes of text with constant memory and short-circuit the moment you have enough chunks (e.g., top-k retrieval).
+Module 02 taught students how to make behavior explicit and configurable. This lesson teaches them how to make execution timing explicit too. A pipeline can be beautifully pure and still do unnecessary work if every stage insists on completing before the next one starts. Generators are the first tool that changes that execution model without abandoning functional clarity.
 
 ### 1.4 Generators as Lazy Values in 5 Lines
+
+The next snippet matters because it shows the whole behavioral shift in a tiny example: defining the generator does not do the work, consuming it does.
 
 ```python
 from collections.abc import Iterator
