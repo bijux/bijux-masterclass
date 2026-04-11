@@ -121,6 +121,15 @@ nav:
           - Glossary: module-04-rule-semantics-precedence-edge-cases/glossary.md
       - "Module 05: Portability, Hermeticity, and Failure Modes":
           - Overview: module-05-portability-hermeticity-failure-modes/index.md
+          - Portability Contract and Version Gates: module-05-portability-hermeticity-failure-modes/portability-contract-and-version-gates.md
+          - Jobserver and Controlled Recursion: module-05-portability-hermeticity-failure-modes/jobserver-and-controlled-recursion.md
+          - Modeling Non-File Inputs and Stamps: module-05-portability-hermeticity-failure-modes/modeling-non-file-inputs-and-stamps.md
+          - Performance Measurement and Make Overhead: module-05-portability-hermeticity-failure-modes/performance-measurement-and-make-overhead.md
+          - Failure Modes and Tool Boundaries: module-05-portability-hermeticity-failure-modes/failure-modes-and-tool-boundaries.md
+          - "Worked Example: Hardening an Inherited Build": module-05-portability-hermeticity-failure-modes/worked-example-hardening-an-inherited-build.md
+          - Exercises: module-05-portability-hermeticity-failure-modes/exercises.md
+          - Exercise Answers: module-05-portability-hermeticity-failure-modes/exercise-answers.md
+          - Glossary: module-05-portability-hermeticity-failure-modes/glossary.md
       - "Module 06: Generated Files and Pipeline Boundaries":
           - Overview: module-06-generated-files-multi-output-pipeline-boundaries/index.md
       - "Module 07: Reusable Build Architecture and Build APIs":
