@@ -3,7 +3,7 @@
 Good governance is not a thick policy document.
 
 For this course, governance means small durable rules that protect state contracts after
-the original learners move on.
+the original maintainers move on.
 
 ## Write rules around high-risk changes
 

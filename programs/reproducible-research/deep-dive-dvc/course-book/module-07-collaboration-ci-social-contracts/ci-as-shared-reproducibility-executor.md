@@ -31,7 +31,7 @@ dvc repro
 dvc metrics show
 ```
 
-The capstone may wrap these ideas behind `make -C capstone confirm` so learners have one
+The capstone may wrap these ideas behind `make -C capstone confirm` so you have one
 course-level command to inspect.
 
 ## CI should fail for missing shared state

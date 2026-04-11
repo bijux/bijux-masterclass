@@ -15,7 +15,7 @@ This module is about long-lived trust:
 - how CI and maintainer handoffs survive time
 - how incidents are handled without improvising the state story
 
-The central learner question is:
+The central question is:
 
 > If local cache, local memory, or one storage provider disappeared, which results could
 > still be restored and defended?

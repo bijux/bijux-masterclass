@@ -26,7 +26,7 @@ dvc gc --all-commits --dry-run
 These commands do not mean the same thing. They ask DVC to consider different sets of
 references when deciding what is still needed.
 
-The learner rule is:
+The rule is:
 
 > If you cannot explain the reference scope, you are not ready to delete.
 

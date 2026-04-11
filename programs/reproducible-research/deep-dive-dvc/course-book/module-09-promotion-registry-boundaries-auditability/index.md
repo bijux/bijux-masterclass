@@ -2,10 +2,10 @@
 
 Module 09 turns recoverable state into trusted release state.
 
-By now, learners know how to recover important artifacts and protect them over time. That
-does not mean every recoverable result should be trusted downstream. Promotion is a
-smaller, stronger promise: this specific bundle is approved for someone else to consume,
-review, or audit.
+By now, you know how to recover important artifacts and protect them over time. That does
+not mean every recoverable result should be trusted downstream. Promotion is a smaller,
+stronger promise: this specific bundle is approved for someone else to consume, review, or
+audit.
 
 This module is about release boundaries:
 
@@ -15,7 +15,7 @@ This module is about release boundaries:
 - how a registry or published directory becomes a contract
 - how another reviewer can defend the released state later
 
-The central learner question is:
+The central question is:
 
 > If a downstream user trusts this promoted result, what exactly are they trusting, and
 > what evidence lets us defend it?

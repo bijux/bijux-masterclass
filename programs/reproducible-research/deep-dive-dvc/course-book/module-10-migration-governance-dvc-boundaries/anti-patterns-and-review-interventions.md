@@ -10,7 +10,7 @@ They usually begin as reasonable shortcuts:
 - "the remote probably has it"
 - "the experiment result is obvious"
 
-Module 10 asks learners to stop those shortcuts early.
+Module 10 asks you to stop those shortcuts early.
 
 ## Common DVC anti-patterns
 

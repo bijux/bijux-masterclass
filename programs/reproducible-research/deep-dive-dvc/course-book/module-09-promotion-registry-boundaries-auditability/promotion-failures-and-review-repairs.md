@@ -5,7 +5,7 @@ Promotion failures are dangerous because they often look orderly.
 The folder exists. The model file exists. The report opens. The metric file has numbers.
 But the bundle may still be wrong, incomplete, or impossible to defend.
 
-Module 09 asks learners to review promotion by evidence, not by tidiness.
+Module 09 asks you to review promotion by evidence, not by tidiness.
 
 ## Common failure patterns
 

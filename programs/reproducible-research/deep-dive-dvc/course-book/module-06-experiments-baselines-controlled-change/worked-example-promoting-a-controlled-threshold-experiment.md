@@ -30,7 +30,7 @@ and reports:
 
 The release objective is to reduce missed escalations, even if precision drops slightly.
 
-The learner writes the candidate intent before running it:
+You write the candidate intent before running it:
 
 > Lower `evaluate.threshold` to `0.50` to test whether recall improves enough to justify a
 > precision tradeoff.
@@ -39,7 +39,7 @@ That sentence keeps the candidate narrow.
 
 ## Step 1: Run a declared candidate
 
-The learner runs a candidate by changing the declared control:
+You run a candidate by changing the declared control:
 
 ```bash
 dvc exp run --set-param evaluate.threshold=0.50
@@ -65,7 +65,7 @@ The candidate reports:
 }
 ```
 
-The learner compares the whole review surface:
+You compare the whole review surface:
 
 ```text
 baseline threshold: 0.65
@@ -82,7 +82,7 @@ precision decreases, and the population size appears stable.
 
 ## Step 3: Check scope
 
-The learner confirms:
+You confirm:
 
 - no model family change
 - no evaluation population change
@@ -92,7 +92,7 @@ The learner confirms:
 
 That gives the candidate a coherent story.
 
-If the learner had also changed feature filtering and metric definition, the candidate
+If you had also changed feature filtering and metric definition, the candidate
 would not be a clean threshold experiment anymore. It might still be useful, but it would
 need a different review claim.
 
@@ -101,7 +101,7 @@ need a different review claim.
 The release objective favors recall. The candidate improves recall from `0.84` to `0.95`.
 Precision drops from `0.78` to `0.75`.
 
-The learner writes a promotion argument:
+You write a promotion argument:
 
 > Promote the lower-threshold candidate because it substantially reduces missed
 > escalations under the same metric schema and apparent population size. The precision
@@ -111,7 +111,7 @@ That is a decision, not just a metric observation.
 
 ## Step 5: Apply and inspect before committing
 
-The learner applies the candidate:
+You apply the candidate:
 
 ```bash
 dvc exp apply <candidate-id>
@@ -119,13 +119,13 @@ git diff
 git status
 ```
 
-The learner checks that the workspace contains only intended changes:
+You check that the workspace contains only intended changes:
 
 - `params.yaml` threshold change
 - updated metric evidence
 - any expected lock or output evidence
 
-If unrelated local files appear, the learner stops and cleans up before committing.
+If unrelated local files appear, you stop and clean up before committing.
 
 Applying is not promotion by itself. Promotion happens when the reviewed state is committed
 with a clear rationale.

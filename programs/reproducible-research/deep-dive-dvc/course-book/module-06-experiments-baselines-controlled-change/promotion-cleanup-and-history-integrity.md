@@ -78,7 +78,7 @@ The key is to avoid keeping undecided clutter just because it might be useful so
 If a candidate matters, write why. If it does not, remove it from the active review
 surface.
 
-## Cleanup protects future learners
+## Cleanup protects future maintainers
 
 Cleanup is part of experiment discipline.
 

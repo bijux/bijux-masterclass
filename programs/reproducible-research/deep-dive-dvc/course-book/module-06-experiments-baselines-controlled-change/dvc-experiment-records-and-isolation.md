@@ -18,7 +18,7 @@ An experiment record gives a candidate run a reviewable handle:
 - which outputs were produced
 - which command and pipeline state were involved
 
-That means a learner can ask:
+That means you can ask:
 
 > What changed compared with the baseline, and what evidence did the run produce?
 

@@ -2,7 +2,7 @@
 
 Module 07 turns reproducibility from a single-person practice into a team contract.
 
-By now, learners know how a DVC project should represent data identity, runtime evidence,
+By now, you know how a DVC project should represent data identity, runtime evidence,
 pipeline truth, metric meaning, and controlled experiments. The next pressure is ordinary
 collaboration: another person clones the repository, reviews a change, relies on CI, and
 expects the same state story to hold without private context.
@@ -15,7 +15,7 @@ This module is about shared proof:
 - how DVC remotes become part of collaboration, not only storage
 - how recovery drills turn "we can restore it" into evidence
 
-The central learner question is:
+The central question is:
 
 > Can another maintainer verify the same result without knowing what happened on my
 > laptop?

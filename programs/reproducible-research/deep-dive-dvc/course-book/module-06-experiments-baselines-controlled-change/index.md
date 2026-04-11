@@ -14,7 +14,7 @@ This module is about disciplined exploration:
 - where experiment isolation ends
 - how a candidate result becomes a deliberate promotion instead of a lucky local run
 
-The central learner question is:
+The central question is:
 
 > What changed, where was it declared, and can this result be compared or promoted without
 > corrupting the baseline story?
@@ -94,7 +94,7 @@ By the end of this module, you should be able to explain:
 - what DVC experiments add beyond ordinary Git branch history
 - how to compare candidate runs without ignoring metric meaning
 - why promotion requires evidence, not only a better number
-- how cleanup protects learners from stale local folklore
+- how cleanup protects you from stale local folklore
 
 ## Commands to keep close
 

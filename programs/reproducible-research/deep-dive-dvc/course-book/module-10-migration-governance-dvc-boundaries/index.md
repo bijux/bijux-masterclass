@@ -4,8 +4,8 @@ Module 10 turns the course into a stewardship method.
 
 The earlier modules teach individual contracts: data identity, environment evidence,
 truthful pipelines, meaningful metrics, controlled experiments, collaboration, recovery,
-and promotion. The final module asks whether a learner can review a real repository and
-make deliberate changes without breaking those contracts.
+and promotion. The final module asks whether you can review a real repository and make
+deliberate changes without breaking those contracts.
 
 This module is about mature judgment:
 
@@ -15,7 +15,7 @@ This module is about mature judgment:
 - how to identify recurring DVC anti-patterns before they become culture
 - how to decide what DVC should own and what belongs to another layer
 
-The central learner question is:
+The central question is:
 
 > Which state contracts are broken, underspecified, or assigned to the wrong tool?
 

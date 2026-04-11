@@ -29,7 +29,7 @@ will compare against and which evidence files a reviewer should inspect.
 
 ## Exercise 2: Scope a candidate
 
-A learner wants to try:
+Suppose you want to try:
 
 - lower `evaluate.threshold` from `0.65` to `0.50`
 - switch `fit.model_family` from logistic regression to tree boosting

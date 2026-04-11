@@ -28,7 +28,7 @@ some unrelated model change caused the tradeoff.
 
 ## Controlled change belongs in declared surfaces
 
-Controlled changes should appear where the course has already taught learners to look:
+Controlled changes should appear where the course has already taught you to look:
 
 - parameter changes in `params.yaml`
 - pipeline changes in `dvc.yaml`
