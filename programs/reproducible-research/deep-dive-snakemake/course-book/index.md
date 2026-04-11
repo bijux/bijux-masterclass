@@ -63,7 +63,7 @@ can inspect, trust, and extend without folklore.
 | stable support hub | [Course Guide](guides/course-guide.md) |
 | module titles translated into promises | [Module Promise Map](guides/module-promise-map.md) |
 | module exit bar | [Module Checkpoints](guides/module-checkpoints.md) |
-| workflow split decisions | [Boundary Map](reference/boundary-map.md) |
+| workflow split decisions | [Boundary Review Prompts](reference/boundary-review-prompts.md) |
 | smallest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
 | capstone entry by module and question | [Capstone Map](capstone/capstone-map.md) |
 

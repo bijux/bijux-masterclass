@@ -105,4 +105,4 @@ The most useful companion pages for this guide are:
 * [`capstone-map.md`](capstone-map.md)
 * [`command-guide.md`](command-guide.md)
 * [`capstone-proof-guide.md`](capstone-proof-guide.md)
-* [`authority-map.md`](../reference/authority-map.md)
+* [`review-route-guide.md`](../capstone-docs/review-route-guide.md)

@@ -33,7 +33,7 @@ BLD_DIR := build
 MK_DIR  := mk
 TST_DIR := tests
 REP_DIR := repro
-DOCS_DIR := docs
+DOCS_DIR := ../course-book/capstone-docs
 ARTIFACTS_DIR ?= ../../../../artifacts
 REPO_ROOT := $(abspath ../../../../)
 WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-make
@@ -161,12 +161,12 @@ tour:
 >     rm -rf "$(TOUR_DIR)"
 >     mkdir -p "$(TOUR_DIR)/mk" "$(TOUR_DIR)/repro" "$(TOUR_DIR)/tests"
 >     cp README.md "$(TOUR_DIR)/README.md"
->     cp $(DOCS_DIR)/ARCHITECTURE.md "$(TOUR_DIR)/ARCHITECTURE.md"
->     cp $(DOCS_DIR)/INDEX.md "$(TOUR_DIR)/INDEX.md"
->     cp $(DOCS_DIR)/PROOF_GUIDE.md "$(TOUR_DIR)/PROOF_GUIDE.md"
->     cp $(DOCS_DIR)/TARGET_GUIDE.md "$(TOUR_DIR)/TARGET_GUIDE.md"
->     cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md "$(TOUR_DIR)/WALKTHROUGH_GUIDE.md"
->     cp $(DOCS_DIR)/REPRO_GUIDE.md "$(TOUR_DIR)/REPRO_GUIDE.md"
+>     cp $(DOCS_DIR)/architecture.md "$(TOUR_DIR)/ARCHITECTURE.md"
+>     cp $(DOCS_DIR)/index.md "$(TOUR_DIR)/INDEX.md"
+>     cp $(DOCS_DIR)/proof-guide.md "$(TOUR_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/target-guide.md "$(TOUR_DIR)/TARGET_GUIDE.md"
+>     cp $(DOCS_DIR)/walkthrough-guide.md "$(TOUR_DIR)/WALKTHROUGH_GUIDE.md"
+>     cp $(DOCS_DIR)/repro-guide.md "$(TOUR_DIR)/REPRO_GUIDE.md"
 >     cp Makefile "$(TOUR_DIR)/Makefile"
 >     cp $(TST_DIR)/run.sh "$(TOUR_DIR)/tests/run.sh"
 >     cp $(MK_DIR)/contract.mk "$(TOUR_DIR)/mk/contract.mk"
@@ -212,11 +212,11 @@ walkthrough:
 >     rm -rf "$(WALKTHROUGH_DIR)"
 >     mkdir -p "$(WALKTHROUGH_DIR)/repro" "$(WALKTHROUGH_DIR)/tests" "$(WALKTHROUGH_DIR)/mk"
 >     cp README.md "$(WALKTHROUGH_DIR)/README.md"
->     cp $(DOCS_DIR)/ARCHITECTURE.md "$(WALKTHROUGH_DIR)/ARCHITECTURE.md"
->     cp $(DOCS_DIR)/INDEX.md "$(WALKTHROUGH_DIR)/INDEX.md"
->     cp $(DOCS_DIR)/PROOF_GUIDE.md "$(WALKTHROUGH_DIR)/PROOF_GUIDE.md"
->     cp $(DOCS_DIR)/TARGET_GUIDE.md "$(WALKTHROUGH_DIR)/TARGET_GUIDE.md"
->     cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md "$(WALKTHROUGH_DIR)/WALKTHROUGH_GUIDE.md"
+>     cp $(DOCS_DIR)/architecture.md "$(WALKTHROUGH_DIR)/ARCHITECTURE.md"
+>     cp $(DOCS_DIR)/index.md "$(WALKTHROUGH_DIR)/INDEX.md"
+>     cp $(DOCS_DIR)/proof-guide.md "$(WALKTHROUGH_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/target-guide.md "$(WALKTHROUGH_DIR)/TARGET_GUIDE.md"
+>     cp $(DOCS_DIR)/walkthrough-guide.md "$(WALKTHROUGH_DIR)/WALKTHROUGH_GUIDE.md"
 >     cp Makefile "$(WALKTHROUGH_DIR)/Makefile"
 >     cp $(TST_DIR)/run.sh "$(WALKTHROUGH_DIR)/tests/run.sh"
 >     cp $(MK_DIR)/contract.mk "$(WALKTHROUGH_DIR)/mk/contract.mk"
@@ -261,9 +261,9 @@ contract-audit:
 >     rm -rf "$(CONTRACT_AUDIT_DIR)"
 >     mkdir -p "$(CONTRACT_AUDIT_DIR)/tests"
 >     cp README.md "$(CONTRACT_AUDIT_DIR)/README.md"
->     cp $(DOCS_DIR)/CONTRACT_AUDIT_GUIDE.md "$(CONTRACT_AUDIT_DIR)/CONTRACT_AUDIT_GUIDE.md"
->     cp $(DOCS_DIR)/PROOF_GUIDE.md "$(CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
->     cp $(DOCS_DIR)/TARGET_GUIDE.md "$(CONTRACT_AUDIT_DIR)/TARGET_GUIDE.md"
+>     cp $(DOCS_DIR)/contract-audit-guide.md "$(CONTRACT_AUDIT_DIR)/CONTRACT_AUDIT_GUIDE.md"
+>     cp $(DOCS_DIR)/proof-guide.md "$(CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/target-guide.md "$(CONTRACT_AUDIT_DIR)/TARGET_GUIDE.md"
 >     cp Makefile "$(CONTRACT_AUDIT_DIR)/Makefile"
 >     cp $(TST_DIR)/run.sh "$(CONTRACT_AUDIT_DIR)/tests/run.sh"
 >     $(MAKE) help > "$(CONTRACT_AUDIT_DIR)/help.txt"
@@ -291,7 +291,7 @@ incident-audit:
 >     rm -rf "$(INCIDENT_AUDIT_DIR)"
 >     mkdir -p "$(INCIDENT_AUDIT_DIR)"
 >     cp "$(REPRO_CASE)" "$(INCIDENT_AUDIT_DIR)/$(notdir $(REPRO_CASE))"
->     cp $(DOCS_DIR)/INCIDENT_REVIEW_GUIDE.md "$(INCIDENT_AUDIT_DIR)/INCIDENT_REVIEW_GUIDE.md"
+>     cp $(DOCS_DIR)/incident-review-guide.md "$(INCIDENT_AUDIT_DIR)/INCIDENT_REVIEW_GUIDE.md"
 >     printf '%s\n' "make -f $(REPRO_CASE) -j2 all" > "$(INCIDENT_AUDIT_DIR)/command.txt"
 >     if $(MAKE) -f "$(REPRO_CASE)" -j2 all > "$(INCIDENT_AUDIT_DIR)/run.txt" 2>&1; then status=0; else status=$$?; fi; \
 >       printf 'exit_status=%s\n' "$$status" > "$(INCIDENT_AUDIT_DIR)/exit-status.txt"; \
@@ -309,8 +309,8 @@ incident-audit:
 >       '  PROOF_GUIDE.md   maps the repaired claim to the reference build surface' \
 >       '  mk/objects.mk    shows rooted discovery and directory discipline in the real build' \
 >       '  mk/stamps.mk     shows durable state tracking in the real build' > "$(INCIDENT_AUDIT_DIR)/repair-surfaces.txt"
->     cp $(DOCS_DIR)/REPRO_GUIDE.md "$(INCIDENT_AUDIT_DIR)/REPRO_GUIDE.md"
->     cp $(DOCS_DIR)/PROOF_GUIDE.md "$(INCIDENT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/repro-guide.md "$(INCIDENT_AUDIT_DIR)/REPRO_GUIDE.md"
+>     cp $(DOCS_DIR)/proof-guide.md "$(INCIDENT_AUDIT_DIR)/PROOF_GUIDE.md"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(INCIDENT_AUDIT_DIR)" --output "$(INCIDENT_AUDIT_DIR)/manifest.json"
 >     @echo "PASS: wrote incident audit to $(INCIDENT_AUDIT_DIR)"
 
@@ -318,9 +318,9 @@ profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
 >     mkdir -p "$(PROFILE_AUDIT_DIR)/mk"
 >     cp README.md "$(PROFILE_AUDIT_DIR)/README.md"
->     cp $(DOCS_DIR)/PROFILE_AUDIT_GUIDE.md "$(PROFILE_AUDIT_DIR)/PROFILE_AUDIT_GUIDE.md"
->     cp $(DOCS_DIR)/PROOF_GUIDE.md "$(PROFILE_AUDIT_DIR)/PROOF_GUIDE.md"
->     cp $(DOCS_DIR)/TARGET_GUIDE.md "$(PROFILE_AUDIT_DIR)/TARGET_GUIDE.md"
+>     cp $(DOCS_DIR)/profile-audit-guide.md "$(PROFILE_AUDIT_DIR)/PROFILE_AUDIT_GUIDE.md"
+>     cp $(DOCS_DIR)/proof-guide.md "$(PROFILE_AUDIT_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/target-guide.md "$(PROFILE_AUDIT_DIR)/TARGET_GUIDE.md"
 >     cp Makefile "$(PROFILE_AUDIT_DIR)/Makefile"
 >     cp $(MK_DIR)/contract.mk "$(PROFILE_AUDIT_DIR)/mk/contract.mk"
 >     $(MAKE) help > "$(PROFILE_AUDIT_DIR)/help.txt"
@@ -371,8 +371,8 @@ repro:
 >     '  2. repro/05-mkdir-race.mk' \
 >     '  3. repro/06-order-only-misuse.mk' \
 >     '' \
->     'For the capstone teaching route, read docs/REPRO_GUIDE.md' \
->     'For the course route, read course-book/repro-catalog.md'
+>     'For the capstone teaching route, read ../course-book/capstone-docs/repro-guide.md' \
+>     'For the course route, read course-book/capstone-docs/repro-guide.md'
 
 discovery-audit:
 >     printf '%s\n' $(DYN_SRCS) | LC_ALL=C sort -c
@@ -402,8 +402,8 @@ selftest-report:
 >     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
 >     MAKE="$(MAKE)" SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" $(TST_DIR)/run.sh
->     cp $(DOCS_DIR)/SELFTEST_GUIDE.md "$(SELFTEST_REPORT_DIR_ABS)/SELFTEST_GUIDE.md"
->     cp $(DOCS_DIR)/PROOF_GUIDE.md "$(SELFTEST_REPORT_DIR_ABS)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/selftest-guide.md "$(SELFTEST_REPORT_DIR_ABS)/SELFTEST_GUIDE.md"
+>     cp $(DOCS_DIR)/proof-guide.md "$(SELFTEST_REPORT_DIR_ABS)/PROOF_GUIDE.md"
 >     printf '%s\n' \
 >       'Selftest review route:' \
 >       '  1. Read summary.txt for the top-level verdict.' \

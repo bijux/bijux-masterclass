@@ -25,8 +25,8 @@ contract.
 
 The capstone corroboration surface for this module is the set of shared verification and
 remote-backed review routes: `capstone/Makefile`, `capstone/dvc.lock`,
-`capstone/docs/REVIEW_ROUTE_GUIDE.md`, `capstone/docs/RECOVERY_GUIDE.md`,
-`capstone/docs/PUBLISH_CONTRACT.md`, and the `make -C capstone confirm` route.
+`course-book/capstone-docs/review-route-guide.md`, `course-book/capstone-docs/recovery-guide.md`,
+`course-book/capstone-docs/publish-contract.md`, and the `make -C capstone confirm` route.
 
 ## Why this module exists
 
@@ -121,9 +121,9 @@ Best corroboration surfaces for this module:
 
 - `capstone/Makefile`
 - `capstone/dvc.lock`
-- `capstone/docs/REVIEW_ROUTE_GUIDE.md`
-- `capstone/docs/RECOVERY_GUIDE.md`
-- `capstone/docs/PUBLISH_CONTRACT.md`
+- `course-book/capstone-docs/review-route-guide.md`
+- `course-book/capstone-docs/recovery-guide.md`
+- `course-book/capstone-docs/publish-contract.md`
 - `capstone/publish/v1/`
 
 Useful proof route:

@@ -17,7 +17,7 @@ pressure:
 The capstone corroboration surface for this module is the execution evidence and incident
 review route around it: `logs/`, `benchmarks/`, `publish/v1/provenance.json`,
 `make evidence-summary`, `make tour`, `make verify-report`, and
-`docs/TOUR.md`.
+`course-book/capstone-docs/tour.md`.
 
 ## Why this module exists
 
@@ -108,9 +108,9 @@ Best corroboration surfaces for this module:
 - `capstone/benchmarks/`
 - `capstone/publish/v1/provenance.json`
 - `capstone/Makefile`
-- `capstone/docs/PROOF_GUIDE.md`
-- `capstone/docs/TOUR.md`
-- `capstone/docs/TOUR.md`
+- `course-book/capstone-docs/proof-guide.md`
+- `course-book/capstone-docs/tour.md`
+- `course-book/capstone-docs/tour.md`
 
 Useful proof route:
 

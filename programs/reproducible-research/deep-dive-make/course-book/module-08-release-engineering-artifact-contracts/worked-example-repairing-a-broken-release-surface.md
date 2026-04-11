@@ -80,12 +80,12 @@ A healthier pattern is to stage the bundle tree:
 ```make
 DIST_STAGE := dist/tmp
 
-dist/app.tar.gz: app LICENSE docs/README.md dist/manifest.txt | dist/
+dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
 	@rm -rf $(DIST_STAGE)
 	@mkdir -p $(DIST_STAGE)/bin $(DIST_STAGE)/share/doc
 	@cp app $(DIST_STAGE)/bin/app
 	@cp LICENSE $(DIST_STAGE)/LICENSE
-	@cp docs/README.md $(DIST_STAGE)/share/doc/README.md
+	@cp capstone/README.md $(DIST_STAGE)/share/doc/README.md
 	@cp dist/manifest.txt $(DIST_STAGE)/manifest.txt
 	@tar -czf $@ -C $(DIST_STAGE) .
 ```
@@ -120,7 +120,7 @@ A healthier split is:
 For example:
 
 ```make
-dist/manifest.txt: app LICENSE docs/README.md | dist/
+dist/manifest.txt: app LICENSE capstone/README.md | dist/
 	@printf '%s\n' 'bin/app' 'LICENSE' 'share/doc/README.md' > $@
 
 dist/app.tar.gz.sha256: dist/app.tar.gz
@@ -202,15 +202,15 @@ release-check: test selftest dist
 
 dist: dist/app.tar.gz dist/app.tar.gz.sha256
 
-dist/manifest.txt: app LICENSE docs/README.md | dist/
+dist/manifest.txt: app LICENSE capstone/README.md | dist/
 	@printf '%s\n' 'bin/app' 'LICENSE' 'share/doc/README.md' > $@
 
-dist/app.tar.gz: app LICENSE docs/README.md dist/manifest.txt | dist/
+dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
 	@rm -rf $(DIST_STAGE)
 	@mkdir -p $(DIST_STAGE)/bin $(DIST_STAGE)/share/doc
 	@cp app $(DIST_STAGE)/bin/app
 	@cp LICENSE $(DIST_STAGE)/LICENSE
-	@cp docs/README.md $(DIST_STAGE)/share/doc/README.md
+	@cp capstone/README.md $(DIST_STAGE)/share/doc/README.md
 	@cp dist/manifest.txt $(DIST_STAGE)/manifest.txt
 	@tar -czf $@ -C $(DIST_STAGE) .
 

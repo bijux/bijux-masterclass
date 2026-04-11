@@ -3,7 +3,7 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 PYTHON ?= python3
-DOCS_DIR := docs
+DOCS_DIR := ../course-book/capstone-docs
 ARTIFACTS_DIR ?= ../../../../artifacts
 REPO_ROOT := $(abspath ../../../../)
 VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-dvc/capstone

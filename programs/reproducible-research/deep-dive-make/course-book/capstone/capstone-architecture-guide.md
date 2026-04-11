@@ -12,7 +12,7 @@ proof, and failure teaching each keep a readable home.
 | layered build policy | `capstone/mk/contract.mk` and `capstone/mk/common.mk` | shell, tool, and shared policy choices |
 | graph membership and dependencies | `capstone/mk/objects.mk` and `capstone/mk/stamps.mk` | what belongs in the graph and which hidden inputs are modeled |
 | proof harness | `capstone/tests/run.sh` | convergence, serial and parallel equivalence, and negative checks |
-| release and packaging surfaces | `capstone/scripts/` and `capstone/docs/` | packaging, publish boundaries, and learner-facing review material |
+| release and packaging surfaces | `capstone/scripts/` and `course-book/capstone-docs/` | packaging, publish boundaries, and learner-facing review material |
 | failure teaching surfaces | `capstone/repro/` | isolated broken examples that teach one defect class clearly |
 
 ## Read the repository in this order

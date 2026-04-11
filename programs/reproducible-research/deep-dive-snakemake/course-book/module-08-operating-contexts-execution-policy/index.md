@@ -91,7 +91,7 @@ Best corroboration surfaces for this module:
 - `capstone/profiles/ci/config.yaml`
 - `capstone/profiles/slurm/config.yaml`
 - `capstone/Makefile`
-- [Profile Audit Guide](../capstone/profile-audit-guide.md)
+- [Profile Audit Guide](../capstone-docs/profile-audit-guide.md)
 - [Capstone File Guide](../capstone/capstone-file-guide.md)
 
 Useful proof route:

@@ -69,12 +69,12 @@ tree before publishing the final artifact.
 For example:
 
 ```make
-dist/app.tar.gz: app LICENSE docs/README.md dist/manifest.txt | dist/
+dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
 	@rm -rf dist/tmp
 	@mkdir -p dist/tmp/bin dist/tmp/share/doc
 	@cp app dist/tmp/bin/app
 	@cp LICENSE dist/tmp/LICENSE
-	@cp docs/README.md dist/tmp/share/doc/README.md
+	@cp capstone/README.md dist/tmp/share/doc/README.md
 	@cp dist/manifest.txt dist/tmp/manifest.txt
 	@tar -czf $@ -C dist/tmp .
 ```
@@ -161,15 +161,15 @@ Then the Makefile should model that tree on purpose:
 ```make
 DIST_ROOT := dist/tmp
 
-dist/manifest.txt: app LICENSE docs/README.md | dist/
+dist/manifest.txt: app LICENSE capstone/README.md | dist/
 	@printf '%s\n' 'bin/app' 'LICENSE' 'share/doc/README.md' > $@
 
-dist/app.tar.gz: app LICENSE docs/README.md dist/manifest.txt | dist/
+dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
 	@rm -rf $(DIST_ROOT)
 	@mkdir -p $(DIST_ROOT)/bin $(DIST_ROOT)/share/doc
 	@cp app $(DIST_ROOT)/bin/app
 	@cp LICENSE $(DIST_ROOT)/LICENSE
-	@cp docs/README.md $(DIST_ROOT)/share/doc/README.md
+	@cp capstone/README.md $(DIST_ROOT)/share/doc/README.md
 	@cp dist/manifest.txt $(DIST_ROOT)/manifest.txt
 	@tar -czf $@ -C $(DIST_ROOT) .
 ```

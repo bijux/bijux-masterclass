@@ -17,7 +17,7 @@ This module is about making that invisible boundary visible:
 
 The capstone corroboration surface for this module is the set of files and commands that
 make the runtime boundary legible: `make platform-report`, `params.yaml`,
-`docs/EXPERIMENT_GUIDE.md`, `docs/ARCHITECTURE.md`, and the install/runtime surface
+`course-book/capstone-docs/experiment-guide.md`, `course-book/capstone-docs/architecture.md`, and the install/runtime surface
 in the capstone Makefile.
 
 ## Why this module exists
@@ -106,8 +106,8 @@ Best corroboration surfaces for this module:
 
 - `capstone/Makefile`
 - `capstone/params.yaml`
-- `capstone/docs/EXPERIMENT_GUIDE.md`
-- `capstone/docs/ARCHITECTURE.md`
+- `course-book/capstone-docs/experiment-guide.md`
+- `course-book/capstone-docs/architecture.md`
 - `make -C capstone platform-report`
 
 Useful proof route:

@@ -100,7 +100,7 @@ Suppose the release policy says the bundle should contain:
 Then a good manifest might say exactly that:
 
 ```make
-dist/manifest.txt: app LICENSE docs/README.md | dist/
+dist/manifest.txt: app LICENSE capstone/README.md | dist/
 	@printf '%s\n' \
 	  'bin/app' \
 	  'LICENSE' \

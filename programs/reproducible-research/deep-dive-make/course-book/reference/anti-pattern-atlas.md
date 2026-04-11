@@ -73,4 +73,4 @@ Use these with the atlas:
 - [`self-review-prompts.md`](self-review-prompts.md) for debugging order under pressure
 - [`module-dependency-map.md`](module-dependency-map.md) for where the idea is taught in sequence
 - [`capstone-map.md`](../capstone/capstone-map.md) for module-aware capstone routing
-- [`repro-catalog.md`](../capstone/repro-catalog.md) for the curated failure pack
+- [`repro-catalog.md`](../capstone-docs/repro-guide.md) for the curated failure pack

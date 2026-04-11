@@ -71,7 +71,7 @@ right places?"
 Recommended route:
 
 1. Read [Capstone Guide](index.md).
-2. Compare this page with [Repository Layer Guide](../reference/repository-layer-guide.md).
+2. Compare this page with [Architecture Guide](../capstone-docs/architecture.md).
 3. Inspect the matching capstone files in the order named above.
 4. Use [Proof Matrix](../guides/proof-matrix.md) to pick the strongest command for the boundary you are reviewing.
 
@@ -87,4 +87,3 @@ Best moments to use it:
 - after Module 04, when repository growth and interface boundaries become central
 - after Module 07, when the full repository architecture becomes part of the lesson
 - after Module 10, when reviewing the capstone as a long-lived workflow product
-

@@ -18,9 +18,9 @@ This module is about stewardship:
 - drawing honest tool boundaries instead of fashionable ones
 
 The capstone corroboration surface for this module is the repository review route around
-its public and operational boundaries: `docs/FILE_API.md`, `make walkthrough`,
-`make verify-report`, `make profile-audit`, `docs/PUBLISH_REVIEW_GUIDE.md`, and
-`docs/PROFILE_AUDIT_GUIDE.md`.
+its public and operational boundaries: `course-book/capstone-docs/file-api.md`, `make walkthrough`,
+`make verify-report`, `make profile-audit`, `course-book/capstone-docs/publish-review-guide.md`, and
+`course-book/capstone-docs/profile-audit-guide.md`.
 
 ## Why this module exists
 
@@ -107,10 +107,10 @@ Use the capstone only after the local module ideas are already legible.
 Best corroboration surfaces for this module:
 
 - `capstone/Snakefile`
-- `capstone/docs/FILE_API.md`
-- `capstone/docs/PUBLISH_REVIEW_GUIDE.md`
-- `capstone/docs/PROFILE_AUDIT_GUIDE.md`
-- `capstone/docs/INDEX.md`
+- `course-book/capstone-docs/file-api.md`
+- `course-book/capstone-docs/publish-review-guide.md`
+- `course-book/capstone-docs/profile-audit-guide.md`
+- `course-book/capstone-docs/index.md`
 - `capstone/Makefile`
 
 Useful proof route:

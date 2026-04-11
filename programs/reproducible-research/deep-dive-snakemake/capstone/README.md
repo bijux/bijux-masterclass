@@ -62,12 +62,12 @@ make PROGRAM=reproducible-research/deep-dive-snakemake proof
 ## First honest pass
 
 1. Run `make walkthrough`.
-2. Read [INDEX.md](docs/INDEX.md).
-3. Read [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md).
+2. Read [INDEX.md](../course-book/capstone-docs/index.md).
+3. Read [WALKTHROUGH_GUIDE.md](../course-book/capstone-docs/walkthrough-guide.md).
 4. Read `Snakefile` and the rule files it exposes first.
-5. Read [FILE_API.md](docs/FILE_API.md).
+5. Read [FILE_API.md](../course-book/capstone-docs/file-api.md).
 6. Run `make verify`.
-7. Read [PROOF_GUIDE.md](docs/PROOF_GUIDE.md).
+7. Read [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md).
 
 Stop there first. That is enough to see the workflow contract, repository shape, and one
 bounded proof route without turning the capstone into a browsing exercise.
@@ -97,18 +97,18 @@ Use these surfaces deliberately:
 
 ## Capstone docs
 
-All capstone documentation lives under `docs/`:
+All capstone documentation lives under `course-book/capstone-docs/`:
 
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [DOMAIN_GUIDE.md](docs/DOMAIN_GUIDE.md)
-- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
-- [FILE_API.md](docs/FILE_API.md)
-- [INDEX.md](docs/INDEX.md)
-- [PROFILE_AUDIT_GUIDE.md](docs/PROFILE_AUDIT_GUIDE.md)
-- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
-- [PUBLISH_REVIEW_GUIDE.md](docs/PUBLISH_REVIEW_GUIDE.md)
-- [TOUR.md](docs/TOUR.md)
-- [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
+- [ARCHITECTURE.md](../course-book/capstone-docs/architecture.md)
+- [DOMAIN_GUIDE.md](../course-book/capstone-docs/domain-guide.md)
+- [EXTENSION_GUIDE.md](../course-book/capstone-docs/extension-guide.md)
+- [FILE_API.md](../course-book/capstone-docs/file-api.md)
+- [INDEX.md](../course-book/capstone-docs/index.md)
+- [PROFILE_AUDIT_GUIDE.md](../course-book/capstone-docs/profile-audit-guide.md)
+- [PROOF_GUIDE.md](../course-book/capstone-docs/proof-guide.md)
+- [PUBLISH_REVIEW_GUIDE.md](../course-book/capstone-docs/publish-review-guide.md)
+- [TOUR.md](../course-book/capstone-docs/tour.md)
+- [WALKTHROUGH_GUIDE.md](../course-book/capstone-docs/walkthrough-guide.md)
 
 ## Good stopping point
 

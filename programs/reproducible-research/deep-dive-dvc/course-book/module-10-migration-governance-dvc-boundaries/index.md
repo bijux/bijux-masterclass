@@ -23,8 +23,8 @@ If that answer stays vague, future improvements will become accidental rewrites.
 
 The capstone corroboration surface for this module is the full project review route:
 `capstone/dvc.yaml`, `capstone/dvc.lock`, `capstone/params.yaml`, `capstone/publish/v1/`,
-`capstone/docs/ARCHITECTURE.md`, `capstone/docs/REVIEW_ROUTE_GUIDE.md`,
-`capstone/docs/RECOVERY_GUIDE.md`, and the `make -C capstone confirm` route.
+`course-book/capstone-docs/architecture.md`, `course-book/capstone-docs/review-route-guide.md`,
+`course-book/capstone-docs/recovery-guide.md`, and the `make -C capstone confirm` route.
 
 ## Why this module exists
 
@@ -117,9 +117,9 @@ Best corroboration surfaces for this module:
 - `capstone/dvc.lock`
 - `capstone/params.yaml`
 - `capstone/publish/v1/`
-- `capstone/docs/ARCHITECTURE.md`
-- `capstone/docs/REVIEW_ROUTE_GUIDE.md`
-- `capstone/docs/RECOVERY_GUIDE.md`
+- `course-book/capstone-docs/architecture.md`
+- `course-book/capstone-docs/review-route-guide.md`
+- `course-book/capstone-docs/recovery-guide.md`
 - `capstone/Makefile`
 
 Useful proof route:
