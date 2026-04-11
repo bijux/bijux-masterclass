@@ -1,4 +1,4 @@
-README.md
+project-docs/index.md
 docs/ARCHITECTURE.md
 docs/CONTROL_SURFACE_GUIDE.md
 docs/DATA_PROFILE_GUIDE.md
