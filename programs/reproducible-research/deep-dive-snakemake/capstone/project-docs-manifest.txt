@@ -1,0 +1,10 @@
+project-docs/index.md
+docs/ARCHITECTURE.md
+docs/DOMAIN_GUIDE.md
+docs/EXTENSION_GUIDE.md
+docs/FILE_API.md
+docs/PROFILE_AUDIT_GUIDE.md
+docs/PROOF_GUIDE.md
+docs/PUBLISH_REVIEW_GUIDE.md
+docs/REVIEW_ROUTE_GUIDE.md
+docs/WALKTHROUGH_GUIDE.md
