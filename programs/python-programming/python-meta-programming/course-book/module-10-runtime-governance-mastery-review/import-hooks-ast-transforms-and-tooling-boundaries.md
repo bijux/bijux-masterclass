@@ -76,7 +76,7 @@ finally:
 
 The important part is not the trick. It is the cleanup.
 
-Without the reversible lifetime, even a didactic example teaches the wrong instinct.
+Without the reversible lifetime, even a bounded example encourages the wrong instinct.
 
 ## AST transforms can preserve shape or quietly destroy evidence
 
@@ -188,17 +188,17 @@ When reviewing import hooks or AST transforms, ask these questions:
 
 If the answer to the last question is fuzzy, the design is not yet governable.
 
-## What this page is really teaching
+## What this page makes clear
 
-The lesson is not "never touch import machinery."
+The point is not "never touch import machinery."
 
-The lesson is:
+The boundary is:
 
 - global semantics demand global responsibility
 - tooling can justify powers that ordinary application code usually cannot
 - reversibility and evidence preservation matter even more at the highest-power layer
 
-That is why Module 10 treats this topic as a boundary lesson, not a celebration.
+That is why Module 10 treats this topic as a boundary review, not a celebration.
 
 ## What to practice from this page
 

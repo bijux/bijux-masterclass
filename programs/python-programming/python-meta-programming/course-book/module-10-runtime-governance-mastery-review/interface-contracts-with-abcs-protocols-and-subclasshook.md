@@ -193,11 +193,11 @@ When reviewing ABCs, protocols, or virtual subclass hooks, ask these questions:
 If the answer to the last question is "not really," the interface surface is doing too much
 reputational work.
 
-## What this page is really teaching
+## What this page makes clear
 
-The lesson is not "choose the fanciest contract surface."
+The point is not "choose the fanciest contract surface."
 
-The lesson is:
+The boundary is:
 
 - nominal and structural contracts solve different problems
 - runtime checks are often weaker than their names suggest

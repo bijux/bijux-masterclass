@@ -137,11 +137,11 @@ Runtime governance checklist
 
 This is the practical heart of Module 10.
 
-## What this page is really teaching
+## What this page makes clear
 
-The lesson is not "always stay at the bottom of the ladder."
+The point is not "always stay at the bottom of the ladder."
 
-The lesson is:
+The boundary is:
 
 - higher-power tools need stronger ownership arguments
 - rejecting escalation is often the most professional decision

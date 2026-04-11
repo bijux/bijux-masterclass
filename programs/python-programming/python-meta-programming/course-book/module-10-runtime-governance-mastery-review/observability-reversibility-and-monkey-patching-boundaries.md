@@ -139,7 +139,7 @@ def patch_attr(obj, name, new_value):
         setattr(obj, name, old_value)
 ```
 
-That pattern is simple, but it teaches the right habit:
+That pattern is simple, but it keeps the right habit visible:
 
 - patches have an owner
 - patches have a lifetime
@@ -206,11 +206,11 @@ When reviewing wrappers, registries, or patches, ask these questions:
 
 If no one can answer those quickly, the mechanism is already too magical.
 
-## What this page is really teaching
+## What this page makes clear
 
-The lesson is not "dynamic behavior is bad."
+The point is not "dynamic behavior is bad."
 
-The lesson is:
+The boundary is:
 
 - dynamic behavior owes an operational explanation
 - debugging evidence is part of correctness

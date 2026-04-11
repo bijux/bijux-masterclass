@@ -130,7 +130,7 @@ Operational commands:
 That split is excellent Module 10 discipline because reviewers can learn a great deal
 before they cross into behavior execution.
 
-In other words, the public interface respects the same rule the course teaches: inspect
+In other words, the public interface respects the same course rule: inspect
 first, run later.
 
 ## Step 6: pressure-test traceability
@@ -155,7 +155,7 @@ That is exactly the kind of double evidence Module 10 wants.
 
 ## Step 7: name the strongest rejections
 
-The capstone becomes a stronger teaching example because it visibly refuses several higher
+The capstone becomes a stronger review example because it visibly refuses several higher
 power temptations.
 
 Strong refusals include:
@@ -191,11 +191,11 @@ The same runtime would become harder to defend if it changed in any of these dir
 
 These are exactly the changes you should reject in Module 10 review.
 
-## What this worked example is really teaching
+## What this worked example makes clear
 
-The lesson is not "the capstone is perfect."
+The point is not "the capstone is perfect."
 
-The lesson is:
+The boundary is:
 
 - powerful runtime mechanisms can still be reviewable
 - their reviewability depends on explicit proof surfaces and narrow ownership

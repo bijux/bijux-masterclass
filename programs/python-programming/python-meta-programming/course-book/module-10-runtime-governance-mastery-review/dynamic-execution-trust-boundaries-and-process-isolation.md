@@ -159,11 +159,11 @@ When `compile`, `eval`, or `exec` appear in code review, ask these questions fir
 
 If those answers feel vague, the design is not ready.
 
-## What this page is really teaching
+## What this page makes clear
 
-The lesson is not "never use dynamic execution under any circumstance."
+The point is not "never use dynamic execution under any circumstance."
 
-The lesson is:
+The boundary is:
 
 - dynamic execution is a review and operations problem before it is a Python trick
 - namespace control is weaker than many designs pretend
