@@ -8,7 +8,7 @@ enough to stop it from spreading.
 
 ## Why antipatterns matter this late in the course
 
-By Module 10, the learner already knows a lot of individual facts:
+By Module 10, you already know a lot of individual facts:
 
 - honest prerequisites matter
 - parallel safety matters

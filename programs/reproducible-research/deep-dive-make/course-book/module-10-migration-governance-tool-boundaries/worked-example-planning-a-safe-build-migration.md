@@ -5,7 +5,7 @@ plan that changes the system without erasing the proof harness.
 
 ## The situation
 
-Assume the learner inherits a repository used by a research team:
+Assume you inherit a repository used by a research team:
 
 - `make all` builds analysis outputs and figures
 - `make release` packages a report bundle
@@ -54,7 +54,7 @@ Nothing here is cartoonishly broken. That is exactly why it is a good teaching e
 
 ## Step 1: write the review before the plan
 
-The learner starts with Core 1 and writes a short review.
+You start with Core 1 and write a short review.
 
 ### Public target findings
 
@@ -74,7 +74,7 @@ The learner starts with Core 1 and writes a short review.
 
 ### Pressure findings
 
-The learner runs:
+You run:
 
 ```sh
 make -n release
@@ -98,7 +98,7 @@ That is already a big improvement.
 
 ## Step 2: preserve proof before splitting targets
 
-The learner now applies Core 2.
+You now apply Core 2.
 
 Before changing target names or scripts, they preserve ways to compare old and new
 behavior:
@@ -128,7 +128,7 @@ Without that, every later edit becomes harder to trust.
 
 The next repair is not technical cleverness. It is target meaning.
 
-The learner rewrites the public surface conceptually as:
+You rewrite the public surface conceptually as:
 
 - `all`: build the normal analysis outputs
 - `release-check`: run the validations required before packaging
@@ -144,7 +144,7 @@ It resolves two issues immediately:
 
 ## Step 4: move one boundary at a time
 
-The learner does not redesign everything at once.
+You do not redesign everything at once.
 
 First boundary move:
 
@@ -201,7 +201,7 @@ That is the migration win.
 
 ## Step 6: write governance before drift returns
 
-Now the learner uses Core 3 so the repaired surface does not dissolve a month later.
+Now you use Core 3 so the repaired surface does not dissolve a month later.
 
 They add a short stewardship note with rules like these:
 
@@ -217,7 +217,7 @@ boundary that was hard-won during migration.
 
 ## Step 7: classify the recurring antipatterns
 
-Using Core 4, the learner can now name what was wrong in the inherited system:
+Using Core 4, you can now name what was wrong in the inherited system:
 
 1. multi-writer outputs
    `render-analysis.sh` ran under several targets
@@ -265,9 +265,9 @@ flowchart TD
   boundary --> result["Safer migration path and teachable ownership model"]
 ```
 
-This is the real value of the module. The learner now has a method, not just opinions.
+This is the real value of the module. You now have a method, not just opinions.
 
-## What a strong learner summary sounds like
+## What a strong summary sounds like
 
 A strong summary sounds like this:
 
