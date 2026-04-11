@@ -12,6 +12,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SITE_DIR = REPO_ROOT / "artifacts" / "site" / "bijux-masterclass"
+PROGRAMS_ROOT = REPO_ROOT / "programs"
 COURSE_ROW_LABELS = (
     "Home",
     "Guides",
@@ -30,6 +31,7 @@ COURSE_ROW_LABELS = (
     "Capstone Docs",
     "Reference",
 )
+MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 
 
 @dataclass(frozen=True)
@@ -299,6 +301,59 @@ def check_sidebar(html: str, page: PageCheck) -> None:
         forbid_text(sidebar_html, label, f"sidebar label for {page.path}")
 
 
+def same_directory_link_targets(index_path: Path) -> set[str]:
+    linked_names: set[str] = set()
+    directory = index_path.parent
+    for match in MARKDOWN_LINK_RE.finditer(index_path.read_text(encoding="utf-8")):
+        target = match.group(1).strip().split("#", 1)[0]
+        if not target or target.startswith(("http://", "https://", "mailto:", "#")):
+            continue
+        target_path = Path(target)
+        if target_path.is_absolute():
+            continue
+
+        parts = [part for part in target_path.parts if part != "."]
+        if not parts or parts[0] == "..":
+            continue
+
+        candidate = (directory / target_path).resolve()
+        if (
+            candidate.exists()
+            and candidate.is_file()
+            and candidate.parent == directory.resolve()
+            and candidate.suffix == ".md"
+            and candidate.name != "index.md"
+        ):
+            linked_names.add(candidate.name)
+    return linked_names
+
+
+def check_authored_source_navigation(programs_root: Path) -> int:
+    checked_directories = 0
+    failures: list[str] = []
+    for index_path in sorted(programs_root.glob("**/index.md")):
+        directory = index_path.parent
+        md_files = sorted(
+            path.name
+            for path in directory.glob("*.md")
+            if path.name != "index.md"
+        )
+        if not md_files:
+            continue
+
+        checked_directories += 1
+        linked_names = same_directory_link_targets(index_path)
+        missing = [name for name in md_files if name not in linked_names]
+        if missing:
+            failures.append(
+                f"{directory.relative_to(REPO_ROOT)} missing authored order for: {', '.join(missing)}"
+            )
+
+    if failures:
+        fail("\n".join(failures))
+    return checked_directories
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -309,12 +364,16 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    checked_directories = check_authored_source_navigation(PROGRAMS_ROOT)
     for page in PAGE_CHECKS:
         html = read_page(args.site_dir, page)
         check_course_row(html, page)
         check_sidebar(html, page)
 
-    print(f"navigation checks passed for {len(PAGE_CHECKS)} rendered pages")
+    print(
+        "navigation checks passed for "
+        f"{checked_directories} source directories and {len(PAGE_CHECKS)} rendered pages"
+    )
     return 0
 
 

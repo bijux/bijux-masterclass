@@ -28,6 +28,7 @@ whether it belongs at all, where it belongs, or how to prove it cleanly.
 ## Guide set
 
 - [Glossary](glossary.md)
+- [Runtime Power Ladder](runtime-power-ladder.md)
 - [Module Dependency Map](module-dependency-map.md)
 - [Practice Map](practice-map.md)
 - [Review Checklist](review-checklist.md)

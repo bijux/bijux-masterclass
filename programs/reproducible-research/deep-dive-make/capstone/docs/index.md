@@ -34,13 +34,12 @@ Use this page as the stable entry route for the Make capstone docs.
 
 ## Stable local doc surface
 
-- `ARCHITECTURE.md`
-- `CONTRACT_AUDIT_GUIDE.md`
-- `INCIDENT_REVIEW_GUIDE.md`
-- `INDEX.md`
-- `PROFILE_AUDIT_GUIDE.md`
-- `PROOF_GUIDE.md`
-- `REPRO_GUIDE.md`
-- `SELFTEST_GUIDE.md`
-- `TARGET_GUIDE.md`
-- `WALKTHROUGH_GUIDE.md`
+- [Architecture Guide](architecture.md)
+- [Contract Audit Guide](contract-audit-guide.md)
+- [Incident Review Guide](incident-review-guide.md)
+- [Profile Audit Guide](profile-audit-guide.md)
+- [Proof Guide](proof-guide.md)
+- [Repro Guide](repro-guide.md)
+- [Selftest Guide](selftest-guide.md)
+- [Target Guide](target-guide.md)
+- [Walkthrough Guide](walkthrough-guide.md)

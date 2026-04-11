@@ -67,6 +67,18 @@ has one stable entry hub instead of two overlapping arrival pages.
 - Change route: `ARCHITECTURE.md`, `EXTENSION_GUIDE.md`, `TEST_GUIDE.md`,
   `PROOF_GUIDE.md`
 
+## Guide map
+
+- [FuncPipe Architecture Map](architecture.md)
+- [FuncPipe Command Guide](command-guide.md)
+- [FuncPipe Extension Guide](extension-guide.md)
+- [FuncPipe Package Guide](package-guide.md)
+- [FuncPipe Proof Guide](proof-guide.md)
+- [FuncPipe Public Surface Map](public-surface-map.md)
+- [FuncPipe Test Guide](test-guide.md)
+- [FuncPipe Capstone Tour](tour.md)
+- [FuncPipe Walkthrough Guide](walkthrough-guide.md)
+
 ## Good stopping point
 
 Stop when you can answer:
