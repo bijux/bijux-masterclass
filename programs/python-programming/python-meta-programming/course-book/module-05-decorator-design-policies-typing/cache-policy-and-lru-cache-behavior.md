@@ -134,3 +134,10 @@ Try these before moving on:
 
 If those feel ordinary, the final core can focus on the bigger design judgment: when a
 wrapper should stop growing and hand policy off elsewhere.
+
+## Continue through Module 05
+
+- Previous: [Annotation-Aware Runtime Contracts](annotation-aware-runtime-contracts.md)
+- Next: [Wrapper Policy Boundaries](wrapper-policy-boundaries.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

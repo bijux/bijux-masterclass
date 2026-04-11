@@ -5,29 +5,49 @@
 
 ```mermaid
 flowchart TD
-  directory["This directory"] --> glossary["Glossary"]
-  glossary --> terms["Stable local terms"]
-  terms --> reading["Reading and examples"]
-  terms --> practice["Exercises and review"]
-  terms --> proof["Capstone proof and discussion"]
+  directory["Module 05"] --> glossary["Glossary"]
+  glossary --> lessons["Core lessons"]
+  glossary --> example["Worked example"]
+  glossary --> practice["Exercises and answers"]
 ```
 
 ```mermaid
 flowchart TD
-  pressure["Hit an unfamiliar term"] --> lookup["Open the glossary entry"]
-  lookup --> confirm["Match the term to the local meaning"]
-  confirm --> return["Return to the lesson or guide"]
-  return --> reuse["Reuse the same wording in notes, code review, and proof"]
+  unknown["Hit an unfamiliar term"] --> lookup["Open the glossary"]
+  lookup --> local["Confirm the Module 05 meaning"]
+  local --> reuse["Reuse the same wording in notes, review, and design decisions"]
 ```
 <!-- page-maps:end -->
 
-This glossary belongs to **Module 05: Decorator Design, Policies, and Typing** in **Python Metaprogramming**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+This glossary belongs to **Module 05: Decorator Design, Policies, and Typing** in
+**Python Metaprogramming**. It keeps the language of this directory stable so the same
+ideas keep the same names across lessons, practice, and capstone discussion.
 
 ## How to use this glossary
 
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
+Use the glossary when a wrapper discussion starts to blur together thin transformation,
+control-flow policy, runtime validation, and explicit service ownership. Module 05 is
+meant to keep those boundaries named and reviewable.
 
 ## Terms in this directory
 
 | Term | Meaning in this directory |
 | --- | --- |
+| Annotation-aware decorator | A wrapper that reads type hints at runtime and uses them for a limited contract or policy decision. |
+| Cache policy | The keying, eviction, and reset behavior a cache wrapper owns across calls. |
+| Configuration capture | The once-at-definition-time closure capture performed by a decorator factory. |
+| Control-flow wrapper | A wrapper that changes how, when, or how often the underlying callable is allowed to run. |
+| Decorator factory | A function that returns a decorator after capturing configuration. |
+| Operational hook | An explicit control or inspection surface such as `cache_info()` or `cache_clear()` on a stateful wrapper. |
+| Partial runtime contract | A limited, explicitly scoped runtime check rather than a claim of full type-system enforcement. |
+| Policy-heavy decorator | A wrapper that owns retries, timeouts, validation, caching, or other broader rules beyond thin callable transformation. |
+| Resilience wrapper | A decorator that adds retry, timeout, or rate-limit behavior around a call. |
+| Wrapper policy boundary | The design point where behavior may be better owned by an explicit object, field, or service instead of another decorator layer. |
+| `Any` passthrough | The decision to treat `Any` as always passing in a partial runtime validator. |
+| `lru_cache` reference point | The standard-library cache decorator used as the production-grade comparison for custom cache patterns. |
+
+## Keep the module connected
+
+- Return to [Module 05 Overview](index.md) for the full learning route.
+- Use [Exercises](exercises.md) and [Exercise Answers](exercise-answers.md) to pressure-test the policy and typing vocabulary.
+- Revisit the [Worked Example](worked-example-building-a-partial-validated-decorator.md) when a wrapper starts to overclaim what runtime typing can prove.

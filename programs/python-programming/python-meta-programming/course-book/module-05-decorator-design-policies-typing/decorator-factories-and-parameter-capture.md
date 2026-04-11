@@ -186,3 +186,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is to study policy-heavy wrappers that change
 control flow and error behavior directly.
+
+## Continue through Module 05
+
+- Previous: [Overview](index.md)
+- Next: [Resilience and Control-Flow Wrappers](resilience-and-control-flow-wrappers.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

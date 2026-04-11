@@ -144,3 +144,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is annotation-aware runtime behavior, where the
 wrapper begins to claim knowledge about types and contracts.
+
+## Continue through Module 05
+
+- Previous: [Decorator Factories and Parameter Capture](decorator-factories-and-parameter-capture.md)
+- Next: [Annotation-Aware Runtime Contracts](annotation-aware-runtime-contracts.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

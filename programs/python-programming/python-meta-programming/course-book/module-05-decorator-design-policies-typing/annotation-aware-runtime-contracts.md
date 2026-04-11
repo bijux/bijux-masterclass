@@ -166,3 +166,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is cache policy, where wrapper state becomes visible,
 inspectable, and operationally significant.
+
+## Continue through Module 05
+
+- Previous: [Resilience and Control-Flow Wrappers](resilience-and-control-flow-wrappers.md)
+- Next: [Cache Policy and lru_cache Behavior](cache-policy-and-lru-cache-behavior.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

@@ -193,3 +193,10 @@ When you inherit or design an annotation-aware decorator, run this loop:
 
 If you can do that here, Module 05 has done its job and the course can move into
 class-level customization with a stronger sense of wrapper limits.
+
+## Continue through Module 05
+
+- Previous: [Wrapper Policy Boundaries](wrapper-policy-boundaries.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)

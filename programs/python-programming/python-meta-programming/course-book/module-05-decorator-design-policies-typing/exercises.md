@@ -80,3 +80,10 @@ Across all six answers, the module wants the same habits:
 - you preserve transparency even when wrappers become more powerful
 
 If an answer still sounds like "the decorator just handles it," keep going.
+
+## Continue through Module 05
+
+- Previous: [Worked Example: Building a Partial `@validated` Decorator](worked-example-building-a-partial-validated-decorator.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

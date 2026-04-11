@@ -148,3 +148,10 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds like "the decorator can just handle it," revise it until you can
 say what policy it owns, what it refuses to own, and why that boundary is honest.
+
+## Continue through Module 05
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 06](../module-06-class-customization-pre-metaclasses/index.md)
+- Terms: [Glossary](glossary.md)

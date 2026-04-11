@@ -136,3 +136,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can combine the module's policy and typing
 pressures inside one deliberately partial validator.
+
+## Continue through Module 05
+
+- Previous: [Cache Policy and lru_cache Behavior](cache-policy-and-lru-cache-behavior.md)
+- Next: [Worked Example: Building a Partial `@validated` Decorator](worked-example-building-a-partial-validated-decorator.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)
