@@ -34,6 +34,5 @@ Read the directory index first, then return here whenever a page, command, or re
 | Anti-Pattern Atlas | the recurring failure catalog for anti-pattern atlas, used to recognize defect shapes before they harden into local folklore. |
 | Boundary Review Prompts | the review surface for boundary review prompts, used to turn judgment into explicit keep, change, or reject calls. |
 | Review Checklist | the review surface for review checklist, used to turn judgment into explicit keep, change, or reject calls. |
-| Runtime Power Ladder | the routing surface for runtime power ladder, used to find the right dependency, practice, or evidence path quickly. |
 | Self-Review Prompts | the review surface for self-review prompts, used to turn judgment into explicit keep, change, or reject calls. |
 | Topic Boundaries | the durable rule surface for topic boundaries, used when a design or review decision needs stable language instead of intuition. |

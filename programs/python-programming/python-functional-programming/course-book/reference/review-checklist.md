@@ -1,4 +1,4 @@
-# Functional Review Checklist
+# Review Checklist
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
-  program --> reference["Functional Review Checklist"]
+  program --> reference["Review Checklist"]
   reference --> review["Design or review decision"]
   review --> capstone["Capstone proof surface"]
 ```
@@ -30,6 +30,13 @@ influenced by this course.
 - Is the pure core free from hidden I/O, globals, randomness, timestamps, and ambient mutation?
 - Are inputs, outputs, and failure shapes explicit enough to reason about locally?
 - Are public data structures immutable or at least mutation-disciplined?
+
+## Functional defaults
+
+- Is the core pure by default, with effects kept at explicit boundaries?
+- Is configuration passed as data instead of read ambiently inside the core?
+- Are standard-library composition tools enough before inventing a new abstraction?
+- If clarity required a loop, eager materialization, or a named intermediate step, was that choice made explicit instead of hidden?
 
 ## Pipeline design
 

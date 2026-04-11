@@ -33,7 +33,6 @@ Read the directory index first, then return here whenever a page, command, or re
 | --- | --- |
 | Boundary Review Prompts | the review surface for boundary review prompts, used to turn judgment into explicit keep, change, or reject calls. |
 | Functional Anti-Pattern Atlas | the recurring failure catalog for functional anti-pattern atlas, used to recognize defect shapes before they harden into local folklore. |
-| Functional Python Standards | the durable rule surface for functional python standards, used when a design or review decision needs stable language instead of intuition. |
-| Functional Review Checklist | the review surface for functional review checklist, used to turn judgment into explicit keep, change, or reject calls. |
+| Review Checklist | the review surface used to turn functional design judgment into explicit keep, change, or reject calls. |
 | Self-Review Prompts | the review surface for self-review prompts, used to turn judgment into explicit keep, change, or reject calls. |
 | Topic Boundaries | the durable rule surface for topic boundaries, used when a design or review decision needs stable language instead of intuition. |

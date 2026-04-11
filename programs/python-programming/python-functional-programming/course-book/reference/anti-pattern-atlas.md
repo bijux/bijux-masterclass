@@ -161,7 +161,7 @@ Repair route:
 
 ## Best companion pages
 
-- `fp-standards.md`
+- `review-checklist.md`
 - `review-checklist.md`
 - `boundary-review-prompts.md`
 - `topic-boundaries.md`

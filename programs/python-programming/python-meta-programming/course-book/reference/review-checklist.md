@@ -31,6 +31,12 @@ force it to justify itself.
 - Which invariant actually requires this mechanism?
 - Is the behavior local enough to explain without a live walkthrough?
 
+## Escalation rule
+
+- Could plain code, inspection, or an explicit class solve this before decorators or descriptors?
+- If a descriptor or metaclass is involved, what exact invariant could not be owned at a lower rung?
+- Is the stronger tool more invasive than the value it adds?
+
 ## Observability
 
 - Does signature, docstring, name, and traceback visibility survive wrapping?

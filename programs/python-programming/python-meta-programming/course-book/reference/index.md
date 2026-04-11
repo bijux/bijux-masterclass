@@ -29,7 +29,7 @@ module arc for the first time.
 
 ### "Should this use a stronger runtime mechanism at all?"
 
-- [Runtime Power Ladder](runtime-power-ladder.md)
+- [Review Checklist](review-checklist.md)
 - [Topic Boundaries](topic-boundaries.md)
 - [Anti-Pattern Atlas](anti-pattern-atlas.md)
 

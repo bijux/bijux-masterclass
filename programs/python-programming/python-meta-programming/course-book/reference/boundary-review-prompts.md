@@ -56,3 +56,10 @@ the mechanism lives on the right boundary.
 - Is this mechanism easier to debug than the boring alternative, or harder?
 - Would you trust this hook in ordinary application code, or only in tooling?
 - What rollback path exists if the dynamic behavior causes trouble under real use?
+
+## Power-ladder prompts
+
+- What lower rung almost solved this problem?
+- What new failure mode did the higher rung introduce?
+- Would a reviewer still understand the behavior one file at a time?
+- Is this mechanism still proportionate to the invariant it claims to own?

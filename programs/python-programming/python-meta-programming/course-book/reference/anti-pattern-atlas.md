@@ -70,7 +70,7 @@ This keeps the course aligned with real maintenance work instead of theatrical r
 
 Use these with the atlas:
 
-- [Runtime Power Ladder](runtime-power-ladder.md) for the lower-power decision rule
+- [Review Checklist](review-checklist.md) and [Boundary Review Prompts](boundary-review-prompts.md) for the lower-power decision rule
 - [Review Checklist](review-checklist.md) for reviewer questions
 - [Topic Boundaries](topic-boundaries.md) for what belongs inside this course
 - [Module Dependency Map](../guides/module-dependency-map.md) for where the idea is taught in sequence
