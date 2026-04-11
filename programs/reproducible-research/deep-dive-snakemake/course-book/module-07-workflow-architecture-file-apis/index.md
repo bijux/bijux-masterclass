@@ -101,7 +101,7 @@ Best corroboration surfaces for this module:
 - `capstone/workflow/CONTRACT.md`
 - `capstone/workflow/contracts/FILE_API.md`
 - [Repository Layer Guide](../reference/repository-layer-guide.md)
-- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md)
+- [Capstone File Guide](../capstone/capstone-file-guide.md)
 
 Useful proof route:
 

@@ -92,7 +92,7 @@ Best corroboration surfaces for this module:
 - `capstone/profiles/slurm/config.yaml`
 - `capstone/Makefile`
 - [Profile Audit Guide](../capstone/profile-audit-guide.md)
-- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md)
+- [Capstone File Guide](../capstone/capstone-file-guide.md)
 
 Useful proof route:
 

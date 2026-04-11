@@ -31,7 +31,7 @@ rather than about rule contracts alone.
 
 ## Recommended Route
 
-1. Read [Capstone Architecture Guide](capstone-architecture-guide.md).
+1. Read the architecture review route in [Capstone File Guide](capstone-file-guide.md).
 2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit`.
 3. Compare the resulting bundle with [Capstone Review Worksheet](capstone-review-worksheet.md) and [Boundary Map](../reference/boundary-map.md).
 
