@@ -35,6 +35,18 @@ We now treat failure, absence, observability, config, and state as first-class e
 **Core question**  
 How do you make a single monadic pipeline fully configurable at runtime — toggling validation, logging, metrics, and other cross-cutting concerns — using only pure higher-order combinators and Reader, with zero duplication, zero globals, and zero runtime `if` statements inside the pipeline itself?
 
+## Where The Branching Actually Lives
+
+“No runtime `if` statements inside the pipeline itself” does **not** mean there is no
+branching anywhere in the system. It means:
+
+- the core business pipeline stays free of toggle checks
+- the builder or configuration boundary chooses which wrappers to apply
+- the resulting pipeline runs as one coherent flow for the chosen config
+
+That distinction helps students read the example correctly. The config-dependent
+branching belongs at pipeline construction time, not inside every business step.
+
 This is the true capstone of Module 6. You now have every tool required to ship real-world pipelines that are pure, composable, observable, refactor-safe, and fully configurable with a single config value.
 
 **Audience**: Engineers who want their beautiful monadic pipelines to actually run in production with different behaviours for dev/prod/test — without compromising on purity or testability.
@@ -135,6 +147,13 @@ def toggle_metrics(
 Three combinators. Zero boilerplate. Everything else is composition.
 
 ## 3. Real-World Example – Full RAG Pipeline with Runtime Toggles
+
+Read the example below in four layers:
+
+1. define the pure core step
+2. define optional wrappers such as validation, metrics, and logging
+3. assemble those wrappers according to `PipelineConfig`
+4. run the finished pipeline chosen for the current environment
 
 ```python
 @dataclass(frozen=True)
