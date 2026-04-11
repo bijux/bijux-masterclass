@@ -2,56 +2,39 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Equational Reasoning"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  rewrite["Start with a proposed rewrite"] --> law["Name the law that justifies it"]
+  law --> conditions["Check the side conditions honestly"]
+  conditions --> verify["Verify the rewrite on real code"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is not about doing algebra for its own sake. It is about having a principled
+answer to "why is this rewrite safe?"
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Review Situation
 
-Here's a snippet from the progression map:
+Most engineers already make equational-reasoning moves informally:
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+- fusing two passes into one
+- moving a filter earlier
+- inlining a helper into a pipeline
+
+The problem is not making those moves. The problem is making them without a clear reason.
+
+## Keep This Question In View
 
 
-> **Core question:**  
-> How do you use algebraic laws to rewrite pure code confidently—so that optimizations like fusing maps or moving filters are provably safe, and local changes don't break distant callers?
+> How do you use algebraic laws to rewrite pure code confidently so that local changes are safe for real callers?
 
-This core builds on **Core 1**'s mindset, **Core 2**'s contracts, **Core 3**'s immutability, **Core 4**'s composition, **Core 5**'s refactorings, **Core 6**'s combinators, **Core 7**'s typed pipelines, and **Core 8**'s explicit deps by teaching **equational reasoning and rewrite rules**:  
-- Treat pure expressions as mathematical equals that can be substituted.  
-- Apply laws like map fusion (map(f) ∘ map(g) = map(f ∘ g)) or filter-map commute.  
-- Prove safety with Hypothesis for non-obvious cases.  
-- Rewrite locally without breaking callers.  
+By the end of this lesson, you should be able to explain:
 
-We continue the **running project** from Core 1-8: refactoring the FuncPipe RAG Builder, now applying rewrites.
-
-**Audience:** Developers who use Core 8's pure core but still fear optimizing pipelines without full re-testing.  
-**Outcome:**  
-1. Spot and apply 3–5 common rewrite rules (e.g., fuse maps, move filter before map) in < 10 lines.  
-2. State side conditions for each rule (e.g., "holds if f, g are pure and total").  
-3. Add Hypothesis properties backing up non-obvious rewrites.  
-4. Perform a non-trivial pipeline refactor using equations + Hypothesis verification.  
-5. Explain why equations beat "just test it" for local reasoning.
+- which law justifies a rewrite
+- which side conditions must hold before the law is safe
+- when you still need executable verification because the conditions are easy to lie about
 
 ---
 
@@ -67,13 +50,15 @@ We continue the **running project** from Core 1-8: refactoring the FuncPipe RAG 
 
 ### 1.3 Why This Matters Now
 
-Equations operationalize Core 8's pure core for optimization; without them, rewrites feel risky.
+Equational reasoning makes refactoring more disciplined. Instead of "this looks
+equivalent," you get to say "this follows from map fusion" or "this only works if the
+function is pure and total."
 
 ### 1.4 Three Rewrite Patterns You’ll Actually Use
 
-1. Fuse maps: map(f) ∘ map(g) == map(f ∘ g)  
-2. Move filter before map: If q(x) == p(f(x)) for all x, then filter(p) ∘ map(f) == map(f) ∘ filter(q)  
-3. Eliminate second traversal: map(f) ∘ filter(p) == [f(x) for x in xs if p(x)]  
+1. Fuse maps: one traversal instead of two.
+2. Move filter before map when the predicate can be translated honestly.
+3. Collapse filter-plus-map into one comprehension when the behavior really matches.
 
 ### 1.5 Rewrite Laws Table
 
@@ -90,16 +75,12 @@ Equations operationalize Core 8's pure core for optimization; without them, rewr
 ### 2.1 One Picture
 
 ```text
-Risky Hack (no equations)                  Safe Rewrite (with laws)
-+---------------------------+            +------------------------------+
-| # Before                  |            | # Equation:                  |
-| for x in xs:              |            | map(f) ∘ map(g) == map(f ∘ g)|
-|     y = g(x)              |            | # Side condition:            |
-|     z = f(y)              |            | f,g pure/total               |
-| # After (fingers crossed) |            | # After:                     |
-| for x in xs:              |            | map(lambda x: f(g(x)))(xs)   |
-|     z = f(g(x))           |            |                              |
-+---------------------------+            +------------------------------+
+Risky rewrite                              Safe rewrite
++---------------------------+             +------------------------------+
+| "These look the same"     |             | name the law                 |
+| side conditions unspoken  |             | check purity / totality      |
+| confidence is hand-wavy   |             | then apply the rewrite       |
++---------------------------+             +------------------------------+
 ```
 
 ### 2.2 Contract Table
@@ -111,7 +92,8 @@ Risky Hack (no equations)                  Safe Rewrite (with laws)
 | Local reasoning            | Distant callers break on rewrite       | Hypothesis golden tests                  |
 | Totality                   | Partial f in law                       | Hypothesis + explicit checks             |
 
-**Note on Contracts:** Every law has side conditions (e.g., "holds if f is pure and total").
+**Note on Contracts:** Every law comes with side conditions. If the page says "pure and
+total," that is not decoration. It is the thing that makes the rewrite legal.
 
 ---
 

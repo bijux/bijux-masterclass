@@ -2,56 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Idempotent Transforms"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  repeat["Start with a repeated-cleanup step"] --> test["Ask whether one pass should be enough"]
+  test --> stabilize["Design a stable canonical transform"]
+  stabilize --> verify["Verify fixed-point behavior explicitly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about making repeated cleanup boring and predictable.
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Maintenance Smell
 
-Here's a snippet from the progression map:
+When you see code that says "keep applying this until nothing changes," you should pause.
+Sometimes that loop is necessary. Often it is hiding the fact that the transform itself
+was never designed to land on a stable representation.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+The goal of this lesson is to teach the review question behind that smell.
+
+## Keep This Question In View
 
 
-> **Core question:**  
-> How do you design pure transforms that are safe to apply repeatedly—idempotent (f(f(x)) == f(x)) and canonicalizing (mapping to a standard form like sorted and deduped)—so pipelines converge reliably without loops or guards?
+> How do you design pure transforms that are safe to apply repeatedly so pipelines converge without loops or guards?
 
-This core builds on **Core 1**'s mindset, **Core 2**'s contracts, **Core 3**'s immutability, **Core 4**'s composition, **Core 5**'s refactorings, **Core 6**'s combinators, **Core 7**'s typed pipelines, **Core 8**'s explicit deps, and **Core 9**'s equational reasoning by ensuring pure transforms are **stable under repetition**:  
-- Idempotent: applying twice = applying once.  
-- Canonicalizing: output order determined by key, not by original input order; maps to a standard form that doesn’t depend on input order or duplicates.  
-- Convergent: repeated application reaches fixed point (often in 1 step).  
-- Checked with Hypothesis + manual bounds.  
+By the end of this lesson, you should be able to explain:
 
-We continue the **running project** from Core 1-9: refactoring the FuncPipe RAG Builder, now with stable transforms.
-
-**Audience:** Developers who use Core 9 equations but still write `while changed: apply()` loops in normalization/dedup/cleaning code.  
-**Outcome:**  
-1. Refactor any “repeat until stable” loop into a single idempotent/canonicalizing call in < 10 lines.  
-2. State and check idempotence + canonicalization (e.g. sorted, deduped, deterministic) for your domain transforms.  
-3. Add Hypothesis properties checking convergence and fixed-point reachability.  
-4. Spot and fix three classic instability smells: non-idempotent normalize, order-flipping ops, divergent iteration.  
-5. Perform a non-trivial data-cleaning refactor using only stable combinators + Hypothesis verification.
+- whether a transform is supposed to be idempotent
+- what "canonical form" means for your domain
+- when a loop is genuinely required and when it is just hiding unstable design
 
 ---
 
@@ -65,11 +45,14 @@ We continue the **running project** from Core 1-9: refactoring the FuncPipe RAG 
 
 > An idempotent transform satisfies f(f(x)) == f(x), reaching a fixed point in one step; when also canonicalizing (e.g., sorted, deduped, deterministic), it maps to a standard form that doesn’t depend on input order or duplicates.
 
-**Note on Canonicalization:** In data pipelines, “canonicalizing” usually means: dedupe, sort by a key, and produce a deterministic representation so that logically-equal collections look byte-for-byte the same.
+**Note on Canonicalization:** In data pipelines, canonicalizing usually means choosing one
+standard representation so logically-equal data stops bouncing between multiple forms.
 
 ### 1.3 Why This Matters Now
 
-Stable transforms add convergence to Core 9's equations; without it, pipelines need guards/loops.
+Stable transforms matter because they remove a whole class of defensive control flow. If a
+transform lands on a canonical form in one pass, callers do not need to keep asking "did
+it settle yet?"
 
 ### 1.4 Fixed Points in One Sentence
 
@@ -96,15 +79,12 @@ x --> f(x) --> f(f(x)) = f(x)  (fixed point; no change)
 ### 2.1 One Picture
 
 ```text
-Unstable Loop (imperative)                 Stable Transform (pure)
-+---------------------------+            +---------------------------+
-| changed = True            |            | result = normalize(data)  |
-| while changed:            |            | # f(f(x)) == f(x)         |
-|     changed = False       |            | # apply once → fixed point|
-|     if bad:               |            |                           |
-|         fix()             |            | no loop, no guard         |
-|         changed = True    |            +---------------------------+
-+---------------------------+            
+Unstable cleanup loop                      Stable transform
++---------------------------+             +---------------------------+
+| keep trying until stable  |             | normalize(data) once      |
+| repeated control logic    |             | fixed point reached       |
+| easy to hide oscillation  |             | extra calls do nothing    |
++---------------------------+             +---------------------------+
 ```
 
 ### 2.2 Contract Table
@@ -117,7 +97,8 @@ Unstable Loop (imperative)                 Stable Transform (pure)
 | Stability                  | Divergence / oscillation               | Hypothesis bounded search                |
 | Refactor safety            | Manual loop → infinite                 | Executable properties                    |
 
-**Note on Contracts:** Stability catches what loops never could.
+**Note on Contracts:** A loop can hide instability for a long time. An idempotence check
+forces you to name what "stable" is supposed to mean.
 
 ---
 
