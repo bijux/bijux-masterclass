@@ -143,6 +143,15 @@ nav:
           - Glossary: module-06-generated-files-multi-output-pipeline-boundaries/glossary.md
       - "Module 07: Reusable Build Architecture and Build APIs":
           - Overview: module-07-build-architecture-layered-includes-apis/index.md
+          - Public Targets and Build API Design: module-07-build-architecture-layered-includes-apis/public-targets-and-build-api-design.md
+          - Layered Includes and Responsibility Boundaries: module-07-build-architecture-layered-includes-apis/layered-includes-and-responsibility-boundaries.md
+          - "Macros, call, and Reuse Without Opaqueness": module-07-build-architecture-layered-includes-apis/macros-call-and-reuse-without-opaqueness.md
+          - Discovery, Namespacing, and Repository Growth: module-07-build-architecture-layered-includes-apis/discovery-namespacing-and-repository-growth.md
+          - Architecture Review and Maintenance Discipline: module-07-build-architecture-layered-includes-apis/architecture-review-and-maintenance-discipline.md
+          - "Worked Example: Refactoring a Tangled Build Layout": module-07-build-architecture-layered-includes-apis/worked-example-refactoring-a-tangled-build-layout.md
+          - Exercises: module-07-build-architecture-layered-includes-apis/exercises.md
+          - Exercise Answers: module-07-build-architecture-layered-includes-apis/exercise-answers.md
+          - Glossary: module-07-build-architecture-layered-includes-apis/glossary.md
       - "Module 08: Release Engineering and Artifact Publication":
           - Overview: module-08-release-engineering-artifact-contracts/index.md
       - "Module 09: Observability and Build Incident Response":
