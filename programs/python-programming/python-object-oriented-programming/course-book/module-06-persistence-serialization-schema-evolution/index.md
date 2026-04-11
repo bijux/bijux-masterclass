@@ -73,6 +73,21 @@ semantics instead of flattening them away.
 3. Move into transactional publication, testing, and migration strategy after the storage boundary is clear.
 4. Finish with the refactor chapter to see persistence added without corrupting the domain.
 
+## Lesson map
+
+- [Repository Contracts and Aggregate Rehydration](repository-contracts-and-aggregate-rehydration.md)
+- [Mapping Domain Objects to Storage Models](mapping-domain-objects-to-storage-models.md)
+- [Serialization Boundaries and Explicit Codecs](serialization-boundaries-and-explicit-codecs.md)
+- [ORMs, Identity Maps, and Session Boundaries](orms-identity-map-and-session-boundaries.md)
+- [Snapshots, Events, and Rebuild Trade-Offs](snapshots-events-and-rebuild-trade-offs.md)
+- [Schema Versioning and Upcasters](schema-versioning-and-upcasters.md)
+- [Optimistic Concurrency and Conflict Detection](optimistic-concurrency-and-conflict-detection.md)
+- [Transactional Boundaries and Outbox Thinking](transactional-boundaries-and-outbox-thinking.md)
+- [Persistence Tests and Backend Swappability](persistence-tests-and-backend-swappability.md)
+- [Migrating Stored Data without Domain Corruption](migrating-stored-data-without-domain-corruption.md)
+- [Refactor: Repositories, Codecs, and Schema Evolution](refactor-repositories-codecs-and-schema-evolution.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the persistence promise tied to one evidence route.

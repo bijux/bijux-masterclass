@@ -72,6 +72,21 @@ than as a later concern owned by "infrastructure people."
 3. Then move to public API boundaries, smells, copying, and compatibility.
 4. Finish with the refactor chapter to test whether the design can evolve without collapse.
 
+## Lesson map
+
+- [Resources and Context Managers](resource-ownership-and-context-managers.md)
+- [Unit of Work and Failure Handling](unit-of-work-and-failure-handling.md)
+- [Deterministic Cleanup and Leak Prevention](deterministic-cleanup-and-leak-prevention.md)
+- [Domain Errors, Recovery Contracts, and Compensating Actions](domain-errors-recovery-contracts-and-compensating-actions.md)
+- [Idempotent Operations and Safe Retries](idempotent-operations-and-safe-retries.md)
+- [Logging and Error Propagation](logging-and-error-propagation.md)
+- [Public versus Internal Modules](public-versus-internal-modules.md)
+- [Design Smells and Refactoring Patterns](design-smells-and-refactoring-patterns.md)
+- [Copying and Versioning over Time](copying-and-versioning-over-time.md)
+- [Compatibility Contracts and Evolution](compatibility-contracts-and-evolution.md)
+- [Refactor 4: New Feature without Breaking Behavior](refactor-new-feature-without-breaking-behavior.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the survivability promise tied to executable evidence.

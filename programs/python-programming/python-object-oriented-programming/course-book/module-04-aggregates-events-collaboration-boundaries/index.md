@@ -75,6 +75,20 @@ This module is about finding the boundary between those extremes.
 3. Study policies, adapters, and collaboration surfaces after the boundary is clear.
 4. Use the refactor chapter as the test of whether the model stays coherent under extension.
 
+## Lesson map
+
+- [Aggregates and Consistency Boundaries](aggregates-and-consistency-boundaries.md)
+- [Cross-Object Invariants](cross-object-invariants.md)
+- [Aggregate Lifecycle and Failure Semantics](aggregate-lifecycle-and-failure-semantics.md)
+- [Domain Events without Full Event Sourcing](domain-events-without-event-sourcing.md)
+- [Projections, Read Models, and Debug Views](projections-read-models-and-debug-views.md)
+- [Strategy and Policy Objects](strategy-and-policy-objects.md)
+- [In-Process Event Bus](in-process-event-bus.md)
+- [Collaboration Surfaces without Tangle](collaboration-surfaces-without-tangle.md)
+- [Adapters and Bridges](adapters-and-bridges.md)
+- [Refactor 3: Aggregates, Events, and Strategies](refactor-aggregates-events-and-strategies.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the authority and collaboration promise tied to one proof surface.

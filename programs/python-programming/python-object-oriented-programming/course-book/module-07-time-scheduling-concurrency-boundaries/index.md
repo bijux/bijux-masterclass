@@ -75,6 +75,20 @@ plumbing to bolt on later.
 3. Then study async bridges, cancellation, and API design as one boundary cluster.
 4. Finish with the refactor chapter to see the runtime gain temporal discipline without losing readability.
 
+## Lesson map
+
+- [Clocks, Timezones, and Monotonic Time](clocks-timezones-and-monotonic-time.md)
+- [Deadlines, Timeouts, and Expiration Policies](deadlines-timeouts-and-expiration-policies.md)
+- [Schedulers, Timers, and Coordination Objects](schedulers-timers-and-coordination-objects.md)
+- [Threads, Locks, and Owned Mutation](threads-locks-and-owned-mutation.md)
+- [Queues, Workers, and Backpressure Boundaries](queues-workers-and-backpressure-boundaries.md)
+- [Concurrency-Safe Caches and Memoization](concurrency-safe-caches-and-memoization.md)
+- [Asyncio Tasks and Sync-Async Bridges](asyncio-tasks-and-sync-async-bridges.md)
+- [Designing Thread-Aware and Async-Aware APIs](designing-thread-aware-and-async-aware-apis.md)
+- [Cancellation, Retries, and Resumable Operations](cancellation-retries-and-resumable-operations.md)
+- [Refactor: Runtime around Time and Concurrency Boundaries](refactor-runtime-around-time-and-concurrency-boundaries.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the time and concurrency promise tied to a proof route.
