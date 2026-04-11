@@ -61,16 +61,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `repeatability-versus-reproducibility.md` | teaches the difference between local reruns and durable trust |
-| `hidden-state-and-undeclared-inputs.md` | teaches which influential inputs ordinary workflows usually leave out |
-| `why-git-and-scripts-are-not-enough.md` | teaches what Git does well and where it stops |
-| `what-dvc-does-and-does-not-own.md` | teaches DVC's authority, boundaries, and non-goals |
-| `the-first-honest-workflow-inventory.md` | teaches how to audit your own workflow before touching DVC |
-| `worked-example-auditing-a-fragile-ml-workflow.md` | walks through one realistic Git-plus-script failure story |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Repeatability versus Reproducibility](repeatability-versus-reproducibility.md) | teaches the difference between local reruns and durable trust |
+| [Hidden State and Undeclared Inputs](hidden-state-and-undeclared-inputs.md) | teaches which influential inputs ordinary workflows usually leave out |
+| [Why Git and Scripts Are Not Enough](why-git-and-scripts-are-not-enough.md) | teaches what Git does well and where it stops |
+| [What DVC Does and Does Not Own](what-dvc-does-and-does-not-own.md) | teaches DVC's authority, boundaries, and non-goals |
+| [The First Honest Workflow Inventory](the-first-honest-workflow-inventory.md) | teaches how to audit your own workflow before touching DVC |
+| [Worked Example: Auditing a Fragile ML Workflow](worked-example-auditing-a-fragile-ml-workflow.md) | walks through one realistic Git-plus-script failure story |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

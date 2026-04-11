@@ -64,16 +64,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `execution-environment-as-part-of-the-input-surface.md` | teaches why runtime belongs in the workflow story |
-| `determinism-is-a-spectrum-not-a-switch.md` | teaches why divergence can be honest rather than mysterious |
-| `what-dvc-records-indirectly-and-what-it-does-not-manage.md` | teaches DVC's boundary around environments |
-| `lockfiles-containers-and-ci-as-environment-strategies.md` | teaches the main environment-control approaches and their tradeoffs |
-| `reviewing-environment-drift-and-runtime-evidence.md` | teaches how to inspect and diagnose runtime differences without guesswork |
-| `worked-example-explaining-a-local-versus-ci-drift.md` | walks through one realistic environment drift story |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Execution Environment as Part of the Input Surface](execution-environment-as-part-of-the-input-surface.md) | teaches why runtime belongs in the workflow story |
+| [Determinism Is a Spectrum, Not a Switch](determinism-is-a-spectrum-not-a-switch.md) | teaches why divergence can be honest rather than mysterious |
+| [What DVC Records Indirectly and What It Does Not Manage](what-dvc-records-indirectly-and-what-it-does-not-manage.md) | teaches DVC's boundary around environments |
+| [Lockfiles, Containers, and CI as Environment Strategies](lockfiles-containers-and-ci-as-environment-strategies.md) | teaches the main environment-control approaches and their tradeoffs |
+| [Reviewing Environment Drift and Runtime Evidence](reviewing-environment-drift-and-runtime-evidence.md) | teaches how to inspect and diagnose runtime differences without guesswork |
+| [Worked Example: Explaining a Local versus CI Drift](worked-example-explaining-a-local-versus-ci-drift.md) | walks through one realistic environment drift story |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

@@ -59,16 +59,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `paths-are-locators-not-data-identity.md` | teaches why filenames and directories are not durable identity |
-| `content-addressing-cache-and-pointer-files.md` | teaches how DVC records content identity and references it |
-| `workspace-git-cache-remote-and-published-state.md` | teaches how the major DVC state layers differ |
-| `dvc-add-push-pull-and-checkout-as-state-moves.md` | teaches the main DVC commands as movements between state layers |
-| `failure-modes-recovery-and-trust.md` | teaches how identity and recovery failures should be interpreted |
-| `worked-example-restoring-a-dataset-after-local-loss.md` | walks through one realistic recovery-oriented identity story |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Paths Are Locators, Not Data Identity](paths-are-locators-not-data-identity.md) | teaches why filenames and directories are not durable identity |
+| [Content Addressing, Cache, and Pointer Files](content-addressing-cache-and-pointer-files.md) | teaches how DVC records content identity and references it |
+| [Workspace, Git, Cache, Remote, and Published State](workspace-git-cache-remote-and-published-state.md) | teaches how the major DVC state layers differ |
+| [DVC Add, Push, Pull, and Checkout as State Moves](dvc-add-push-pull-and-checkout-as-state-moves.md) | teaches the main DVC commands as movements between state layers |
+| [Failure Modes, Recovery, and Trust](failure-modes-recovery-and-trust.md) | teaches how identity and recovery failures should be interpreted |
+| [Worked Example: Restoring a Dataset after Local Loss](worked-example-restoring-a-dataset-after-local-loss.md) | walks through one realistic recovery-oriented identity story |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 
