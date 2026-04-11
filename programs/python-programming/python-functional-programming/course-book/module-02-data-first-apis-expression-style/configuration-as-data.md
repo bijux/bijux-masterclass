@@ -12,14 +12,14 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson needs to make one boundary unforgettable: raw configuration belongs at the edge, modeled configuration belongs inside the system. Once students understand that split, a lot of hidden-state bugs stop looking normal.
+Make one boundary unforgettable: raw configuration belongs at the edge, modeled configuration belongs inside the system. Once that split is clear, a lot of hidden-state bugs stop looking normal.
 
 ## Start With the Configuration Smell
 
-Teams rarely say "we want hidden state." They say "it is only one env var" or "we will parse it right where we need it." This lesson should help students recognize why those shortcuts keep spreading.
+Teams rarely say "we want hidden state." They say "it is only one env var" or "we will parse it right where we need it." This page shows why those shortcuts keep spreading.
 
 - If the core reads environment variables directly, configuration is still hidden.
-- If validation is scattered across helpers, students cannot tell when the config becomes trustworthy.
+- If validation is scattered across helpers, you cannot tell when the config becomes trustworthy.
 - If changing one setting requires tracing several call sites, the configuration is not yet behaving like data.
 
 ## Keep This Question In View

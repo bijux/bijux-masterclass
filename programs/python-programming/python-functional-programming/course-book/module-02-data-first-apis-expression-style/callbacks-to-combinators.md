@@ -12,14 +12,14 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should help students see combinators as a readability tool before they see them as an abstraction tool. The payoff is that a pipeline becomes something you can scan stage by stage instead of mentally stepping through nesting and control glue.
+Treat combinators as a readability tool before treating them as an abstraction tool. The payoff is that a pipeline becomes something you can scan stage by stage instead of mentally stepping through nesting and control glue.
 
 ## Start With the Composition Problem
 
 Students often know each individual function they want, but still wire them together with loops, callbacks, and local bookkeeping. That wiring is the thing this lesson needs to simplify.
 
 - If the pipeline shape is hidden inside callback nesting, the composition is hard to inspect.
-- If each stage is configured but the orchestration is still imperative, students cannot see the full flow.
+- If each stage is configured but the orchestration is still imperative, the full flow is still hard to see.
 - If adding one new transformation means rewriting control glue, combinators are likely missing.
 
 ## Keep This Question In View
@@ -55,7 +55,7 @@ The running project keeps the lesson practical: a combinator chain should make t
 
 ### 1.3 Why This Matters Now
 
-By this point in the module, students know how to configure behavior, express value-producing logic, and stream data lazily. What still gets in the way is the orchestration layer. When the pipeline itself is hard to read, all the earlier improvements become harder to review. Combinators solve that by making the sequence of stages explicit.
+By this point in the module, you can configure behavior, express value-producing logic, and stream data lazily. What still gets in the way is the orchestration layer. When the pipeline itself is hard to read, all the earlier improvements become harder to review. Combinators solve that by making the sequence of stages explicit.
 
 ### 1.4 Combinators as Values in 5 Lines
 

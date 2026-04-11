@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is about exposing the value a piece of code is trying to compute. When students can name that value, flags and mutation stop looking necessary and expression-oriented rewrites become much easier to justify.
+This lesson is about exposing the value a piece of code is trying to compute. When you can name that value, flags and mutation stop looking necessary and expression-oriented rewrites become much easier to justify.
 
 ## Start With the Review Smell
 
@@ -27,7 +27,7 @@ Most imperative code in this module is not wrong because it uses a loop. It is h
 > **Core question:**  
 > How do you replace statement-heavy imperative code (loops + flags + breaks) with expressions, comprehensions, and data-driven conditionals—so control flow becomes explicit, composable, and easy to reason about?
 
-This lesson introduces the expression-oriented mindset in the form students actually use:
+This lesson introduces the expression-oriented mindset in the form you actually use:
 
 - treat core logic as value-producing expressions rather than a sequence of state updates
 - use comprehensions and built-ins like `any`, `all`, and `next` when they say the result directly
@@ -75,7 +75,7 @@ For a **real, runnable Module 01 codebase**, refresh the generated history route
 
 ### 1.3 Why This Matters Now
 
-Closures gave us a clean way to build configured variants, but the inside of those variants can still be messy. A function may be pure and still force the reader to trace flags, breaks, and partially updated locals. Expression-oriented code improves the inside of the function: it turns "change state until we get the answer" into "compute the answer directly." That shift makes later refactors, proofs, and reviews much safer.
+Closures gave us a clean way to build configured variants, but the inside of those variants can still be messy. A function may be pure and still force you to trace flags, breaks, and partially updated locals. Expression-oriented code improves the inside of the function: it turns "change state until we get the answer" into "compute the answer directly." That shift makes later refactors, proofs, and reviews much safer.
 
 ### 1.4 Expressions as Values in 5 Lines
 

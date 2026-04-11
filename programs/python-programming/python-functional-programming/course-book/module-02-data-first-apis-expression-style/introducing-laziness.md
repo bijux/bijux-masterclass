@@ -27,7 +27,7 @@ Students often learn generators as syntax first and purpose second. The purpose 
 > **Core question:**  
 > How do you replace eager, memory-hungry list comprehensions with lazy generators—so pipelines stay efficient, composable, and only compute what’s needed?
 
-This lesson introduces laziness in the way students need to apply it:
+This lesson introduces laziness in the way you need to apply it:
 
 - treat intermediate results as on-demand streams instead of permanent collections
 - keep generator-based stages composable with the configurators and expressions introduced earlier
@@ -65,7 +65,7 @@ For a **real, runnable Module 01 codebase**, refresh the generated history route
 
 ### 1.3 Why This Matters Now
 
-Expression-oriented code made pipeline steps easier to see, but it did not stop those steps from eagerly building whole collections. This lesson addresses that gap. A lazy stage lets us preserve the same visible dataflow while postponing work until the next item is actually requested. That is what students need to understand before they can judge when laziness helps and when it only adds complexity.
+Expression-oriented code made pipeline steps easier to see, but it did not stop those steps from eagerly building whole collections. This page addresses that gap. A lazy stage preserves the same visible dataflow while postponing work until the next item is actually requested. That is the key distinction to understand before you judge when laziness helps and when it only adds complexity.
 
 ### 1.4 Laziness as Values in 5 Lines
 

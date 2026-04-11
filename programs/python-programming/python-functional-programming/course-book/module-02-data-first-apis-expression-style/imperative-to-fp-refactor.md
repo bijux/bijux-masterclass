@@ -18,7 +18,7 @@ This lesson should feel like a trustworthy migration guide. Students are no long
 
 The hard part of a real refactor is rarely naming the target style. It is deciding where to cut first and how to keep the result understandable while the codebase is in motion.
 
-- If the script mixes parsing, I/O, domain logic, and orchestration, students need a cutting order, not just a wish list.
+- If the script mixes parsing, I/O, domain logic, and orchestration, you need a cutting order, not just a wish list.
 - If "make it functional" means rewriting everything at once, the lesson is not giving a safe path.
 - If a reviewer cannot compare old and new behavior while modules are being extracted, the refactor route is too vague.
 
@@ -27,7 +27,7 @@ The hard part of a real refactor is rarely naming the target style. It is decidi
 > **Core question:**  
 > How do you take a messy imperative script full of loops, globals, and side effects and refactor it into clean FP modules—so the whole codebase becomes composable, testable, and maintainable using only M02C01–M02C09 patterns?
 
-This lesson introduces the refactor as a sequence students can apply:
+This lesson introduces the refactor as a sequence you can apply:
 
 - turn the entry point into a thin orchestrator instead of a place where all decisions happen
 - extract pure logic before polishing abstractions so the behavior becomes easier to preserve
@@ -70,7 +70,7 @@ Use this mechanical checklist to refactor imperative scripts:
 
 ### 1.4 FP Modules as Values in 5 Lines
 
-The next example matters because it demonstrates the final shape students are aiming for: small pure units that can be configured and reused without rebuilding the whole script around them.
+The next example matters because it demonstrates the final shape to aim for: small pure units that can be configured and reused without rebuilding the whole script around them.
 
 ```python
 from collections.abc import Callable, Iterable

@@ -16,7 +16,7 @@ This lesson is where the module stops being purely about elegant code and starts
 
 ## Start With the Boundary Mistake
 
-The most common mistake here is not using effects. It is letting them sneak into the middle of code that students still want to test and rewrite as if it were pure.
+The most common mistake here is not using effects. It is letting them sneak into the middle of code you still want to test and rewrite as if it were pure.
 
 - If a core helper opens files or catches broad exceptions, the boundary is in the wrong place.
 - If tests must patch built-ins or global services, dependencies are still hidden.

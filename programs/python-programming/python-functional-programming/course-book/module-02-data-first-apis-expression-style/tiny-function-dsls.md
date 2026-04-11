@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson needs to make a modest promise, not an inflated one: students do not need a grand language framework. They need a small way to move domain rules out of scattered conditionals and into data they can inspect and change deliberately.
+Keep the promise modest, not inflated: you do not need a grand language framework. You need a small way to move domain rules out of scattered conditionals and into data you can inspect and change deliberately.
 
 ## Start With the Rule Smell
 
@@ -55,7 +55,7 @@ The running project matters because filtering rules are exactly the sort of logi
 
 ### 1.3 Why This Matters Now
 
-Combinators made the pipeline shape clearer, but they did not solve the problem of policy scattered across branches. This lesson addresses that missing piece. Once the rule itself becomes data, students can inspect, compare, serialize, and test policy without hunting through control flow.
+Combinators made the pipeline shape clearer, but they did not solve the problem of policy scattered across branches. This page addresses that missing piece. Once the rule itself becomes data, you can inspect, compare, serialize, and test policy without hunting through control flow.
 
 ### 1.4 DSLs as Values in 5 Lines
 

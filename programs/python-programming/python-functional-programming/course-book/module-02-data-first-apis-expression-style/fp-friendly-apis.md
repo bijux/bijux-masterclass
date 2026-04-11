@@ -16,7 +16,7 @@ This lesson is about making a function boundary easy to inspect. Students should
 
 ## Start With the Review Pressure
 
-Large signatures and hidden dependencies usually appear one "small" requirement at a time. The lesson needs to show students how to stop that drift early.
+Large signatures and hidden dependencies usually appear one "small" requirement at a time. This page shows how to stop that drift early.
 
 - If a function needs many unrelated arguments, the model of the operation is still blurry.
 - If callers must know about globals, environment variables, or service singletons, the API is lying about what it needs.

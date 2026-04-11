@@ -12,11 +12,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should reassure students that debugging does not require abandoning the design principles from the rest of the module. The goal is to observe the pipeline honestly, not to punch ad-hoc holes in it whenever something feels mysterious.
+Debugging does not require abandoning the design principles from the rest of the module. The goal is to observe the pipeline honestly, not to punch ad-hoc holes in it whenever something feels mysterious.
 
 ## Start With the Debugging Trap
 
-The common trap is easy to recognize: once a composed pipeline feels opaque, students start inserting prints, eager `list(...)` calls, and mutable debug switches. Those moves reveal something, but they also distort the code they are trying to understand.
+The common trap is easy to recognize: once a composed pipeline feels opaque, it is tempting to insert prints, eager `list(...)` calls, and mutable debug switches. Those moves reveal something, but they also distort the code you are trying to understand.
 
 - If debugging changes evaluation order or forces materialization, it is changing more than visibility.
 - If log statements are mixed into core transforms, the lesson boundary between pure logic and effects is disappearing.
@@ -55,7 +55,7 @@ The running project keeps the lesson grounded: debugging support should help exp
 
 ### 1.3 Why This Matters Now
 
-Once a pipeline becomes more declarative, a new student fear appears: "it is cleaner, but how do I see what is happening?" This lesson answers that fear directly. We do not go backward to print-driven debugging. We add observation points that respect the pipeline structure students have already learned.
+Once a pipeline becomes more declarative, a new fear appears: "it is cleaner, but how do I see what is happening?" This page answers that fear directly. Do not go backward to print-driven debugging. Add observation points that respect the pipeline structure you have already built.
 
 ### 1.4 Debugging as Values in 5 Lines
 

@@ -27,7 +27,7 @@ Students usually do not struggle with the syntax of `partial`. They struggle wit
 > **Core question:**  
 > How do closures and partial application create pure configurators that capture immutable config to produce reusable, deterministic variants of RAG pipelines without globals or mutable defaults?
 
-This lesson introduces pure configurators in the practical sense students need:
+This lesson introduces pure configurators in the practical sense you need:
 
 - treat configuration as explicit immutable data that can be captured once and inspected later
 - build variants by returning new callables instead of mutating shared state
@@ -75,7 +75,7 @@ We refactor the hypothetical pre-refactor shapes into the real Module 02 API acr
 
 ### 1.3 Why This Matters Now
 
-Module 01 taught students to protect purity inside one function. This lesson shows how to preserve that discipline when the same behavior needs several named variants. Without configurators, teams often add a global setting, a mutable default, or an environment lookup. The code still looks small, but reasoning gets worse because behavior now depends on hidden history instead of just inputs.
+Module 01 showed how to protect purity inside one function. This lesson shows how to preserve that discipline when the same behavior needs several named variants. Without configurators, teams often add a global setting, a mutable default, or an environment lookup. The code still looks small, but reasoning gets worse because behavior now depends on hidden history instead of just inputs.
 
 ### 1.4 Configurators as Values in 5 Lines
 

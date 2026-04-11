@@ -34,10 +34,10 @@ Read the directory index first, then return here whenever a page, command, or re
 | Callbacks to Combinators | the module's treatment of callbacks to combinators, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | Closures & Partials | the module's treatment of closures & partials, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | Configuration as Data | the module's treatment of configuration as data, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Configuration Review and Validation | the review surface that pressure-tests the module after the first read so the learner can check judgment, not just recall. |
+| Configuration Review and Validation | the review surface that pressure-tests the module after the first read so you can check judgment, not just recall. |
 | Debugging Compositions | the module's treatment of debugging compositions, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | Effect Boundaries | the module's treatment of effect boundaries, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Expression Review and Trade-Offs | the review surface that pressure-tests the module after the first read so the learner can check judgment, not just recall. |
+| Expression Review and Trade-Offs | the review surface that pressure-tests the module after the first read so you can check judgment, not just recall. |
 | Expression-Oriented Python | the module's treatment of expression-oriented python, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | FP-Friendly APIs | the module's treatment of fp-friendly apis, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
 | Imperative to FP Refactor | the module's treatment of imperative to fp refactor, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
