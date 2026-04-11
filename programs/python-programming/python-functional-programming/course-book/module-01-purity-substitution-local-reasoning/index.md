@@ -2,29 +2,28 @@
 
 
 <!-- page-maps:start -->
-## Module Position
+## Module Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
-```
-
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
+flowchart LR
+  purpose["Start here: what purity protects"] --> identify["Identify hidden state and side effects"]
+  identify --> refactor["Refactor toward explicit inputs and return values"]
+  refactor --> compose["Compose small transforms safely"]
+  compose --> review["Review with substitution, laws, and stability checks"]
+  review --> capstone["Check the same ideas in the capstone"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+This module teaches the semantic floor for the whole course:
 
-## Keep These Pages Open
+- which functions are safe to reason about locally
+- which kinds of hidden state break substitution
+- how to refactor toward explicit data flow before the abstractions get fancier
+
+If this module does not feel concrete, later topics like combinators, typed pipelines, and
+effect management will feel ornamental instead of useful.
+
+## Keep These Pages Nearby
 
 Use these support surfaces while reading so the semantic floor stays attached to the
 course promise and the capstone proof route:
@@ -38,18 +37,16 @@ Carry this question into the module:
 
 > Which code can still be trusted as a local transform, and what immediately stops being substitutable once hidden state or effects enter?
 
-This module establishes the semantic floor for the whole course. If the learner cannot
-separate pure transforms from hidden state here, every later abstraction will feel
-ornamental instead of necessary.
+## What You Should Learn Here
 
-## Learning outcomes
+- How purity and substitution change the way you review Python code.
+- How immutability and value semantics reduce hidden coupling.
+- How small composable transforms make testing and refactoring cheaper.
+- How to judge whether a rewrite preserves behavior instead of only reshaping syntax.
 
-- how purity and substitution change the way you review Python code
-- how immutability and value semantics reduce hidden coupling
-- how small composable transforms make testing and refactoring cheaper
-- how to judge whether a rewrite preserves behavior instead of only reshaping syntax
+## Reading Route
 
-## Lesson map
+Read the pages in this order:
 
 - [Imperative vs Functional](imperative-vs-functional.md)
 - [Pure Functions and Contracts](pure-functions-and-contracts.md)
@@ -65,31 +62,38 @@ ornamental instead of necessary.
 - [Idempotent Transforms](idempotent-transforms.md)
 - [Refactoring Guide](refactoring-guide.md)
 
+If you are reviewing instead of reading front-to-back:
+
+- Open `Imperative vs Functional`, `Pure Functions and Contracts`, and `Isolating Side Effects` when you need the boundary between pure core and effectful shell.
+- Open `Immutability and Value Semantics`, `Higher-Order Composition`, and `Local FP Refactors` when you need to improve real code without changing the behavior.
+- Open `Typed Pipelines`, `Equational Reasoning`, and `Idempotent Transforms` when the code is already pure enough that you want stronger review tools.
+
 ## Exercises
 
 - Take one helper from the capstone and classify it as pure, effectful, or mixed, then justify the classification in terms of substitution.
 - Rewrite one small imperative branch as a value-preserving transform and state what behavioral evidence would prove the refactor safe.
 - Pick one input transformation and explain whether repeated application is idempotent, conditional, or unsafe.
 
-## Capstone checkpoints
+## Capstone Checks
 
 - Identify which helpers in FuncPipe stay pure across refactors.
 - Trace where configuration is explicit instead of ambient.
 - Check whether tests prove behavior or only exercise examples.
 
-## Before moving on
+## Before Moving On
 
 You should be able to explain why a function is pure, why that matters for substitution,
 and where a thin effect wrapper belongs when purity is impossible. Use
 [Refactoring Guide](refactoring-guide.md) and compare against
 `capstone/_history/worktrees/module-01` before moving forward.
 
-## Closing criteria
+## Closing Criteria
 
 - You can defend a purity judgment without appealing to taste or syntax alone.
 - You can point to the exact place where an effect wrapper belongs when the transform itself cannot stay pure.
 - You can compare two implementations and explain whether they are meaning-preserving under substitution.
 
-## Directory glossary
+## Directory Glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Glossary](glossary.md) when you want the recurring language in this module kept stable
+while you move between lessons, exercises, and capstone checkpoints.
