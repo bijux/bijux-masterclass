@@ -107,6 +107,7 @@ nav:
           - "Worked Example: Explaining a Local Versus CI Drift": module-03-execution-environments-reproducible-inputs/worked-example-explaining-a-local-versus-ci-drift.md
           - Exercises: module-03-execution-environments-reproducible-inputs/exercises.md
           - Exercise Answers: module-03-execution-environments-reproducible-inputs/exercise-answers.md
+          - Glossary: module-03-execution-environments-reproducible-inputs/glossary.md
       - "Module 04: Pipelines as Truthful DAGs":
           - Overview: module-04-truthful-pipelines-declared-dependencies/index.md
       - "Module 05: Metrics, Parameters, and Meaning":
