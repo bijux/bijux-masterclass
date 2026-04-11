@@ -1,127 +1,305 @@
 # Law-Guided Design
 
+
 <!-- page-maps:start -->
 ## Lesson Map
 
 ```mermaid
 flowchart LR
-  intuition["Start with 'this refactor seems fine'"] --> law["State the rule the combinator should obey"]
-  law --> property["Turn that rule into a property test"]
-  property --> feedback["Use counterexamples to catch broken composition early"]
+  hope["Start with \"this composition seems to work\""] --> law["State the law the code should satisfy"]
+  law --> property["Turn the law into a property test"]
+  property --> regress["Catch regressions before they become folklore"]
 ```
 <!-- page-maps:end -->
 
-This lesson exists because elegant-looking composition is not enough. Students need a
-reason to trust a refactor beyond a few example inputs.
+This lesson should make laws feel practical and defensive. Students do not need to admire algebra from a distance. They need to understand that the laws are the reason a refactor can be trusted instead of manually re-checked at every chaining site.
 
-## Core Question
+## Start With the Confidence Gap
 
-How do you turn the laws behind `map` and `and_then` into executable tests so that
-refactors stay reviewable instead of relying on intuition?
+Once chaining looks elegant, a new risk appears: people trust it because it “seems right” rather than because its behavior is nailed down. This lesson should close that gap.
 
-## Why Laws Matter in Practice
+- If the team cannot state the laws a combinator is supposed to satisfy, regressions become hard to name.
+- If a refactor changes grouping or extracted helper boundaries, the laws are what tell us whether the meaning should stay the same.
+- If CI only checks a few examples, composition can still drift while the happy path passes.
 
-The laws are not there to decorate the code with algebra vocabulary. They answer very
-practical refactoring questions:
+**Core question**  
+How do you use property-based testing with Hypothesis to **machine-check** that your `and_then` (and `map`) implementations satisfy the monad/functor laws — giving you high, mechanically verified confidence for the modeled compositions and function families you actually run in CI?
 
-- can I extract part of this chain into a helper?
-- can I regroup the pipeline to improve readability?
-- can I trust the container implementation not to invent new behavior?
+This lesson introduces laws as executable specifications:
 
-If the laws hold, those changes are safer. If the laws fail, the pipeline may still pass
-happy-path examples while becoming brittle in real maintenance work.
+- name the intended composition behavior precisely
+- encode that behavior as property tests over realistic function families
+- use shrinking and CI to turn abstract guarantees into concrete feedback when something breaks
 
-## The Three Laws Students Need First
+The central point for students is simple: laws are the reason “safe to refactor” can mean more than “I reran a couple of examples.”
 
-| Law | Statement | What it buys you |
-|-----|-----------|------------------|
-| Left identity | `Ok(x).and_then(f) == f(x)` | lifting a value into the container does not change the next step |
-| Right identity | `m.and_then(Ok) == m` | extracting a sub-pipeline and returning it unchanged is safe |
-| Associativity | `m.and_then(f).and_then(g) == m.and_then(lambda x: f(x).and_then(g))` | regrouping a chain does not change the result |
+**Audience**: Engineers who already write `and_then` chains and want mechanical confidence, not hope, that those chains remain safe under refactoring.
 
-For `Option`, the same laws apply with `Some` in place of `Ok`.
+**Outcome**
+1. You will have a reusable, DRY test suite that machine-checks monad/functor laws for Result and Option.
+2. You will see exactly how a broken implementation fails the properties (and shrinks to a minimal counterexample).
+3. You will internalise why these laws are what protect the modeled composition space from becoming “works on happy path” folklore.
 
-## What the Laws Cover and What They Do Not
+## Why Laws Matter – One Sentence Each
+- **Left identity**: Wrapping a value and immediately unwrapping is a no-op → you can safely insert `Ok(x)` or `Some(x)` anywhere without changing meaning.
+- **Right identity**: Feeding the identity function (`Ok`/`Some`) does nothing → you can refactor by extracting sub-pipelines without fear.
+- **Associativity**: Parentheses don’t matter → you can regroup chains freely during refactoring; the code stays correct even when the structure changes dramatically.
 
-The laws cover the behavior of the composition machinery.
+Violate any of these and the pipeline may still appear fine in simple examples while quietly becoming unsafe to regroup, extract, or extend.
 
-- they tell you that the combinators behave consistently
-- they protect refactors that only reorganize lawful composition
-- they make regressions show up as counterexamples instead of folklore
+## 1. Laws & Invariants (machine-checked in CI)
 
-The laws do not cover everything.
+| Law                          | Formal Statement                                                            | Why it matters in practice                                |
+|------------------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
+| Monad Left Identity          | `Ok(x).and_then(f) == f(x)`                                                 | Safe to lift plain values into the monad                  |
+| Monad Right Identity         | `m.and_then(Ok) == m`   /   `m.and_then(Some) == m`                         | Safe to extract sub-pipelines                             |
+| Monad Associativity          | `m.and_then(f).and_then(g) == m.and_then(lambda x: f(x).and_then(g))`       | Refactor grouping without changing semantics              |
+| Functor Identity             | `m.map(id) == m`                                                            | Mapping identity does nothing                             |
+| Functor Composition          | `m.map(f).map(g) == m.map(lambda x: g(f(x)))`                               | Order of mapping is predictable                           |
+| Result Bifunctor Identity    | `m.map_err(id) == m`                                                        | Error mapping identity is no-op                           |
+| Result Bifunctor Composition | `m.map_err(f).map_err(g) == m.map_err(lambda e: g(f(e)))`                   | Error transformation composes correctly                   |
+| Short-circuit                | `Err(e).and_then(any) == Err(e)` / `NoneVal().and_then(any) == NoneVal()`   | Forgotten propagation paths impossible                    |
 
-- they do not prove that your domain rule is correct
-- they do not prove that the chosen error type is useful
-- they do not replace example-based tests for concrete business cases
+These laws are verified with Hypothesis in CI for the repository's modeled strategies and
+function families. A single failing example breaks the build.
 
-That boundary matters. A lawful pipeline can still implement the wrong business rule.
-
-## Turning the Law Into a Property
-
-Here is the smallest useful example:
-
-```python
-@given(x=st.integers())
-def test_result_left_identity(x):
-    f = lambda value: Ok(value * 2)
-    assert Ok(x).and_then(f) == f(x)
-```
-
-The pattern is always the same:
-
-1. write the law in one line
-2. generate many values and function families
-3. let Hypothesis search for a counterexample
-
-## Why Function Strategies Matter
-
-Property tests for laws are only convincing if the generated functions are varied enough
-to exercise both branches of the container.
+## 2. Strategies – Shrinkable, Deterministic Function Families (capstone/tests/strategies.py)
 
 ```python
+from __future__ import annotations
+from typing import Callable
+from hypothesis import strategies as st
+from funcpipe_rag.result.types import Ok, Err, Some, NoneVal, Result, Option
+
+def st_values() -> st.SearchStrategy[int]:
+    return st.integers(-20, 20)
+
+def st_errors() -> st.SearchStrategy[str]:
+    return st.text(min_size=0, max_size=8)
+
+def st_result() -> st.SearchStrategy[Result[int, str]]:
+    return st.one_of(
+        st.builds(Ok, st_values()),
+        st.builds(Err, st_errors()),
+    )
+
+def st_option() -> st.SearchStrategy[Option[int]]:
+    return st.one_of(
+        st.builds(Some, st_values()),
+        st.just(NoneVal()),
+    )
+
 @st.composite
 def st_func_to_result(draw) -> Callable[[int], Result[int, str]]:
-    ok_val = draw(st.integers(-20, 20))
-    err_val = draw(st.text(min_size=0, max_size=8))
+    ok_val = draw(st_values())
+    err_val = draw(st_errors())
     threshold = draw(st.integers(-10, 10))
-
     def f(x: int) -> Result[int, str]:
-        if x % 2 == 0:
-            return Ok(ok_val if x >= threshold else x * 2)
-        return Err(err_val)
+        return Ok(ok_val if x >= threshold else x * 2) if x % 2 == 0 else Err(err_val)
+    return f
 
+@st.composite
+def st_func_to_option(draw) -> Callable[[int], Option[int]]:
+    some_val = draw(st_values())
+    threshold = draw(st.integers(-10, 10))
+    def f(x: int) -> Option[int]:
+        return (
+            Some(some_val if x >= threshold else x + 1)
+            if (x % 3) != 0
+            else NoneVal()
+        )
     return f
 ```
 
-This is the real teaching move: students see that law tests are not magic. They are
-ordinary property tests aimed at the composition layer.
+These families are deliberately rich (both branches hit frequently) yet shrink beautifully.
 
-## A Helpful Failure Mode to Remember
+## 3. Law Templates (capstone/tests/law_templates.py – completely DRY)
 
-If an `and_then` implementation accidentally re-wraps or drops values incorrectly,
-associativity often fails first. Hypothesis then shrinks the failing case until the
-problem is small enough to reason about.
+```python
+from __future__ import annotations
+from typing import TypeVar, Callable
+from funcpipe_rag.result.types import Result, Option, Some
 
-That is why law tests are so useful in review:
+A = TypeVar("A")
+B = TypeVar("B")
+C = TypeVar("C")
+E = TypeVar("E")
 
-- they fail on the contract, not only on a single example
-- they produce a small witness for the bug
-- they protect future edits to the container implementation
+# ====================== Result monad laws ======================
 
-## Minimal Checklist for This Module
+def result_monad_left_identity(
+    pure: Callable[[A], Result[A, E]],
+    x: A,
+    f: Callable[[A], Result[B, E]],
+) -> None:
+    assert pure(x).and_then(f) == f(x)
 
-For Module 06, students should be able to answer these questions:
+def result_monad_right_identity(
+    m: Result[A, E],
+    pure: Callable[[A], Result[A, E]],
+) -> None:
+    assert m.and_then(pure) == m
 
-- which laws matter for `Result` and `Option`?
-- which property test checks each law?
-- which kinds of refactors become safer when those tests pass?
+def result_monad_associativity(
+    m: Result[A, E],
+    f: Callable[[A], Result[B, E]],
+    g: Callable[[B], Result[C, E]],
+) -> None:
+    left = m.and_then(f).and_then(g)
+    right = m.and_then(lambda x: f(x).and_then(g))
+    assert left == right
 
-If they can answer those, the laws are doing their job.
+# ====================== Option monad laws ======================
 
-## Practice Prompt
+def option_monad_left_identity(
+    pure: Callable[[A], Some[A]],
+    x: A,
+    f: Callable[[A], Option[B]],
+) -> None:
+    assert pure(x).and_then(f) == f(x)
 
-Take one law from this page and write the same property for `Option` instead of
-`Result`. Then explain, in one sentence, what kind of refactor that law protects.
+def option_monad_right_identity(
+    m: Option[A],
+    pure: Callable[[A], Some[A]],
+) -> None:
+    assert m.and_then(pure) == m
 
-**Continue with:** [Reader Pattern](reader-pattern.md)
+def option_monad_associativity(
+    m: Option[A],
+    f: Callable[[A], Option[B]],
+    g: Callable[[B], Option[C]],
+) -> None:
+    left = m.and_then(f).and_then(g)
+    right = m.and_then(lambda x: f(x).and_then(g))
+    assert left == right
+```
+
+## 4. Property-Based Proofs (capstone/tests/test_monad_laws.py)
+
+```python
+from hypothesis import given, settings
+from hypothesis import strategies as st
+from tests.strategies import (
+    st_result,
+    st_option,
+    st_func_to_result,
+    st_func_to_option,
+    st_errors,
+)
+from tests.law_templates import (
+    result_monad_left_identity,
+    result_monad_right_identity,
+    result_monad_associativity,
+    option_monad_left_identity,
+    option_monad_right_identity,
+    option_monad_associativity,
+)
+from funcpipe_rag.result.types import Ok, Err, Some, NoneVal
+
+# Reproducible, fast, CI-friendly profile
+settings.register_profile("ci", max_examples=500, derandomize=True, deadline=None)
+settings.load_profile("ci")
+
+# ====================== Result ======================
+
+@given(x=st.integers(-20,20), f=st_func_to_result())
+def test_result_left_identity(x, f):
+    result_monad_left_identity(Ok, x, f)
+
+@given(m=st_result())
+def test_result_right_identity(m):
+    result_monad_right_identity(m, Ok)
+
+@given(m=st_result(), f=st_func_to_result(), g=st_func_to_result())
+def test_result_associativity(m, f, g):
+    result_monad_associativity(m, f, g)
+
+@given(m=st_result())
+def test_result_functor_identity(m):
+    assert m.map(lambda x: x) == m
+
+@given(m=st_result(), a=st.integers(-10,10), b=st.integers(-10,10))
+def test_result_functor_composition(m, a, b):
+    f = lambda x: x + a
+    g = lambda x: x * b
+    assert m.map(f).map(g) == m.map(lambda x: g(f(x)))
+
+@given(m=st_result())
+def test_result_bifunctor_identity(m):
+    assert m.map_err(lambda e: e) == m
+
+@given(m=st_result(), prefix=st.text(max_size=4), suffix=st.text(max_size=4))
+def test_result_bifunctor_composition(m, prefix, suffix):
+    f = lambda e: prefix + e
+    g = lambda e: e + suffix
+    assert m.map_err(f).map_err(g) == m.map_err(lambda e: g(f(e)))
+
+@given(e=st_errors())
+def test_result_short_circuit(e):
+    assert Err(e).and_then(lambda _: Ok(999)) == Err(e)
+
+# ====================== Option ======================
+
+@given(x=st.integers(-20,20), f=st_func_to_option())
+def test_option_left_identity(x, f):
+    option_monad_left_identity(Some, x, f)
+
+@given(o=st_option())
+def test_option_right_identity(o):
+    option_monad_right_identity(o, Some)
+
+@given(o=st_option(), f=st_func_to_option(), g=st_func_to_option())
+def test_option_associativity(o, f, g):
+    option_monad_associativity(o, f, g)
+
+@given(o=st_option())
+def test_option_functor_identity(o):
+    assert o.map(lambda x: x) == o
+
+@given(o=st_option(), a=st.integers(-10,10), b=st.integers(-10,10))
+def test_option_functor_composition(o, a, b):
+    f = lambda x: x + a
+    g = lambda x: x * b
+    assert o.map(f).map(g) == o.map(lambda x: g(f(x)))
+
+def test_option_short_circuit():
+    assert NoneVal().and_then(lambda _: Some(999)) == NoneVal()
+```
+
+All tests pass with the correct ADT implementation.  
+If you deliberately break `Err.and_then` to return `Ok(0)` instead of `self`, the right-identity test fails with the minimal counterexample `Err('')` in < 0.1 s.
+
+## 5. Gotchas & Best Practices
+
+- **Domain restriction**: Always bound integers/text you feed into functions; unbounded strategies generate values that trigger slow paths or overflow.
+- **Floating-point values**: Never use `==` on floats in laws; use `math.isclose` or stick to exact domains (int, str).
+- **Vacuous laws**: If your function strategy is too weak (e.g. always returns `Ok(42)`), associativity becomes trivially true. Use rich predicates that hit both branches.
+- **Performance**: The `"ci"` profile above is deterministic and fast enough for CI (≈ 3–4 seconds total).
+
+## 6. Anti-Patterns & Immediate Fixes
+
+| Anti-Pattern                     | Symptom                              | Fix                                      |
+|----------------------------------|--------------------------------------|------------------------------------------|
+| Only unit tests for laws         | Misses subtle corner cases           | Use Hypothesis properties                |
+| Random lambdas in tests          | Flaky shrinks, non-reproducible      | Deterministic function families          |
+| Ignoring a failing law           | “It works in my case”                | Fix the implementation – laws are non-negotiable |
+| Duplicated law checks            | Test rot                             | DRY templates + shared strategies        |
+
+## 7. Pre-Core Quiz
+
+1. Left identity guarantees…? → **You can safely lift plain values**  
+2. Right identity guarantees…? → **You can safely extract sub-pipelines**  
+3. Associativity guarantees…? → **Grouping/refactoring never changes meaning**  
+4. Hypothesis gives you…? → **Minimal counterexamples when a law breaks**  
+5. Why not just unit tests? → **They miss the infinite corner cases laws protect against**
+
+## 8. Post-Core Exercise
+
+1. Deliberately break `Err.and_then` to return `Ok(0)` instead of `self`. Run the suite and observe which law fails first and the shrunk counterexample.
+2. Add a new combinator `result_bimap(f_ok, f_err)` and prove it satisfies the expected bifunctor laws.
+3. Write a property that proves `result_sequence([Ok(x) for x in xs]) == Ok(list(xs))` and short-circuits on the first `Err`.
+4. Implement the same laws for a tiny custom monad of your own (e.g. a `Logger[str, A]` Writer) and get the suite green.
+
+**Continue with:** [Lifting Plain Functions](../module-06-monadic-flow-explicit-context/lifting-plain-functions.md)
+
+You now have **mechanical verification** that your core abstractions satisfy the algebraic laws — meaning every pipeline you write for the rest of the project is extremely unlikely to break under composition or refactoring, because the laws have been checked over thousands of generated examples.
