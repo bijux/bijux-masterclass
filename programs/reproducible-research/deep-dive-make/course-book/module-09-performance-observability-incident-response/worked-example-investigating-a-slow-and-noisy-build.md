@@ -13,7 +13,7 @@ This example starts from exactly that situation.
 
 ## The incident
 
-Assume the learner inherits a repository with these complaints:
+Assume you inherit a repository with these complaints:
 
 1. a normal `make all` route now feels slow compared with last month
 2. `make --trace all` produces far more output than the team can comfortably inspect
@@ -215,9 +215,9 @@ flowchart TD
 This is why the module is organized as five cores and then one worked example. The example
 is where the operational advice becomes a reusable incident story.
 
-## What the learner should say at the end
+## What you should say at the end
 
-A strong learner summary sounds like this:
+A strong summary sounds like this:
 
 > The build felt slow, but measurement showed the main cost was parse and evaluation rather
 > than recipe execution. The observability surface was also too noisy to use well. We
