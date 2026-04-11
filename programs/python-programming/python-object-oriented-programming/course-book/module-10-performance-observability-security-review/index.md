@@ -84,12 +84,12 @@ made the system understandable in the first place.
 ## Operational audit route
 
 1. Start with [Capstone Walkthrough](../capstone/capstone-walkthrough.md) and [Command Guide](../capstone/command-guide.md).
-2. Compare those learner-facing routes with [Capstone Proof Guide](../capstone/capstone-proof-guide.md).
+2. Compare those review routes with [Capstone Proof Guide](../capstone/capstone-proof-guide.md).
 3. Only then inspect the implementation surfaces that make the operational claim plausible.
 
 This route keeps the final module honest: operational hardening should improve confidence,
-observability, and trust boundaries without forcing the reader to abandon the ownership
-model built earlier in the course.
+observability, and trust boundaries without forcing you to abandon the ownership model
+built earlier in the course.
 
 ## Audit questions to keep explicit
 
