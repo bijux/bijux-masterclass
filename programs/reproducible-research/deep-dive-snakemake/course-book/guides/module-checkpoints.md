@@ -57,7 +57,7 @@ For each module:
 | 05 | why software ownership, runtime contracts, and provenance must stay reviewable together | explain where rule logic ends, where software begins, and what evidence supports a rebuild | `proof` |
 | 06 | what makes a versioned publish bundle trustworthy downstream | explain which files are public, which changes are compatible, and what evidence defends the bundle | `capstone-verify-report` |
 | 07 | how repository architecture keeps ownership, path contracts, and helper boundaries reviewable | explain where assembly lives, where path promises live, and why the repository shape still tells the truth | `proof` |
-| 08 | what may change across local, CI, and cluster contexts | explain which differences are policy and which would be semantic drift | `capstone-profile-audit` |
+| 08 | what may change across local, CI, and cluster contexts without rewriting workflow meaning | explain which differences are policy, which are leaks, and what evidence justifies the distinction | `capstone-profile-audit` |
 | 09 | how to move from workflow symptom to evidence-backed diagnosis | choose the right observability or incident surface first | `proof` |
 | 10 | when Snakemake should stop owning a concern | review a workflow as a long-lived product with migration judgment | `capstone-confirm` |
 

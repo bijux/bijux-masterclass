@@ -152,6 +152,15 @@ nav:
           - Glossary: module-07-workflow-architecture-file-apis/glossary.md
       - "Module 08: Operating Contexts and Execution Policy":
           - Overview: module-08-operating-contexts-execution-policy/index.md
+          - Profiles as Policy and Semantic Boundaries: module-08-operating-contexts-execution-policy/profiles-as-policy-and-semantic-boundaries.md
+          - Executors, Queues, and Context-Invariant Workflow Meaning: module-08-operating-contexts-execution-policy/executors-queues-and-context-invariant-workflow-meaning.md
+          - Retries, Latency, and Failure Discipline: module-08-operating-contexts-execution-policy/retries-latency-and-failure-discipline.md
+          - Staging, Storage, and Filesystem Assumptions: module-08-operating-contexts-execution-policy/staging-storage-and-filesystem-assumptions.md
+          - Reviewing Operating-Context Drift and Policy Leaks: module-08-operating-contexts-execution-policy/reviewing-operating-context-drift-and-policy-leaks.md
+          - "Worked Example: Auditing Local, CI, and SLURM Without Semantic Drift": module-08-operating-contexts-execution-policy/worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md
+          - Exercises: module-08-operating-contexts-execution-policy/exercises.md
+          - Exercise Answers: module-08-operating-contexts-execution-policy/exercise-answers.md
+          - Glossary: module-08-operating-contexts-execution-policy/glossary.md
       - "Module 09: Observability, Performance, and Incident Response":
           - Overview: module-09-performance-observability-incident-response/index.md
       - "Module 10: Governance, Migration, and Tool Boundaries":
