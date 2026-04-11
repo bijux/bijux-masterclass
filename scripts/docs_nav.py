@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from functools import lru_cache
 import re
 from pathlib import Path
 from typing import Any
@@ -10,6 +11,7 @@ from typing import Any
 
 CAPSTONE_DOCS_DIRNAMES = {"capstone-docs"}
 MODULE_DIR_PATTERN = re.compile(r"module-(\d+)")
+MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 
 
 def first_h1(path: Path) -> str:
@@ -46,13 +48,51 @@ def directory_sort_key(path: Path) -> tuple[int, int, str]:
     return (5, -1, name)
 
 
-def child_sort_key(path: Path) -> tuple[int, int, int, str]:
+def normalize_link_target(target: str) -> str:
+    target = target.strip()
+    if not target or target.startswith(("http://", "https://", "mailto:", "#")):
+        return ""
+    return target.split("#", 1)[0]
+
+
+@lru_cache(maxsize=None)
+def index_child_order(directory: Path) -> dict[str, int]:
+    index_path = directory / "index.md"
+    if not index_path.exists():
+        return {}
+
+    order: dict[str, int] = {}
+    for match in MARKDOWN_LINK_RE.finditer(index_path.read_text(encoding="utf-8")):
+        target = normalize_link_target(match.group(1))
+        if not target:
+            continue
+
+        target_path = Path(target)
+        if target_path.is_absolute():
+            continue
+
+        parts = [part for part in target_path.parts if part not in (".",)]
+        if not parts or parts[0] == "..":
+            continue
+
+        child_name = parts[0]
+        child_path = directory / child_name
+
+        if child_name == "index.md" or not child_path.exists():
+            continue
+        order.setdefault(child_name, len(order))
+
+    return order
+
+
+def child_sort_key(path: Path, sibling_order: dict[str, int]) -> tuple[int, int, int, int, str]:
+    explicit_position = sibling_order.get(path.name, 10_000)
     if path.name == "index.md":
-        return (0, -1, -1, path.name)
+        return (0, explicit_position, -1, -1, path.name)
     if path.is_dir():
         group, number, name = directory_sort_key(path)
-        return (1, group, number, name)
-    return (2, -1, -1, path.name)
+        return (1, explicit_position, group, number, name)
+    return (2, explicit_position, -1, -1, path.name)
 
 
 def directory_title(path: Path) -> str:
@@ -76,12 +116,13 @@ def build_tree_nav(
     include_root_home: bool = True,
 ) -> list[Any]:
     nav: list[Any] = []
+    sibling_order = index_child_order(directory)
 
     index_path = directory / "index.md"
     if include_root_home and index_path.exists():
         nav.append({"Home": nav_path(prefix, "index.md")})
 
-    for child in sorted(directory.iterdir(), key=child_sort_key):
+    for child in sorted(directory.iterdir(), key=lambda path: child_sort_key(path, sibling_order)):
         if child.name == "index.md":
             continue
         if child.is_file() and child.suffix == ".md":

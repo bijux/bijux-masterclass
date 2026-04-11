@@ -38,6 +38,7 @@ class PageCheck:
     course_title: str
     current_label: str
     sidebar_labels: tuple[str, ...] = ()
+    sidebar_ordered_labels: tuple[str, ...] = ()
     sidebar_absent_labels: tuple[str, ...] = ()
 
 
@@ -57,6 +58,18 @@ PAGE_CHECKS = (
         course_title="Deep Dive Make",
         current_label="M01",
         sidebar_labels=(
+            "Home",
+            "Build Graph Mental Model",
+            "Rebuild Truth and Convergence",
+            "Rule Shapes and Target Ownership",
+            "Evaluation and Expansion",
+            "Atomic Publication and Dependency Tracking",
+            "Worked Example: Tiny C Build",
+            "Exercises",
+            "Exercise Answers",
+            "Glossary",
+        ),
+        sidebar_ordered_labels=(
             "Home",
             "Build Graph Mental Model",
             "Rebuild Truth and Convergence",
@@ -89,6 +102,18 @@ PAGE_CHECKS = (
             "Exercise Answers",
             "Glossary",
         ),
+        sidebar_ordered_labels=(
+            "Home",
+            "Parallel Scheduling and Runnable Targets",
+            "Parallel Safety Contract",
+            "Ordering Tools and Honest Edges",
+            "Project Structure with One DAG",
+            "Selftests and Race Repro Pack",
+            "Worked Example: Parallel-Safe Build",
+            "Exercises",
+            "Exercise Answers",
+            "Glossary",
+        ),
         sidebar_absent_labels=("Capstone", "Capstone Docs", "Reference", "M03"),
     ),
     PageCheck(
@@ -99,6 +124,18 @@ PAGE_CHECKS = (
         course_title="Deep Dive Make",
         current_label="M03",
         sidebar_labels=(
+            "Home",
+            "Determinism and Stable Discovery",
+            "Forensic Debugging with Make Evidence",
+            "CI Targets as a Public Contract",
+            "Build-System Selftests",
+            "Macros and Quarantined Eval",
+            "Worked Example: Production Simulator",
+            "Exercises",
+            "Exercise Answers",
+            "Glossary",
+        ),
+        sidebar_ordered_labels=(
             "Home",
             "Determinism and Stable Discovery",
             "Forensic Debugging with Make Evidence",
@@ -141,6 +178,20 @@ PAGE_CHECKS = (
             "Folds and Reductions",
             "Memoization",
             "Refactoring Guide",
+        ),
+        sidebar_ordered_labels=(
+            "Structural Recursion and Iteration",
+            "Folds and Reductions",
+            "Memoization",
+            "Result and Option Failures",
+            "Streaming Error Handling",
+            "Error Aggregation",
+            "Circuit Breakers",
+            "Resource-Aware Streams",
+            "Functional Retries",
+            "Structured Error Reports",
+            "Module 04 Refactoring Guide",
+            "Module Glossary",
         ),
     ),
     PageCheck(
@@ -193,6 +244,17 @@ def forbid_text(html: str, text: str, context: str) -> None:
         fail(f"unexpected {context}: {text}")
 
 
+def require_ordered_text(html: str, texts: tuple[str, ...], context: str) -> None:
+    cursor = -1
+    for text in texts:
+        position = html.find(text, cursor + 1)
+        if position == -1:
+            fail(f"missing ordered {context}: {text}")
+        if position < cursor:
+            fail(f"out-of-order {context}: {text}")
+        cursor = position
+
+
 def scoped_sidebar_html(html: str, page: PageCheck) -> str:
     marker = 'bijux-nav--scoped" aria-label="Navigation"'
     start = html.find(marker)
@@ -227,6 +289,12 @@ def check_sidebar(html: str, page: PageCheck) -> None:
     )
     for label in page.sidebar_labels:
         require_text(sidebar_html, label, f"sidebar label for {page.path}")
+    if page.sidebar_ordered_labels:
+        require_ordered_text(
+            sidebar_html,
+            page.sidebar_ordered_labels,
+            f"sidebar label order for {page.path}",
+        )
     for label in page.sidebar_absent_labels:
         forbid_text(sidebar_html, label, f"sidebar label for {page.path}")
 
