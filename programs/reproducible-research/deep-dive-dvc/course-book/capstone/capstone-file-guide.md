@@ -12,8 +12,8 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | which parameters are part of comparable state | `capstone/params.yaml` | the declared `params:` keys in `capstone/dvc.yaml` |
 | how publish artifacts are assembled and promoted | `capstone/src/incident_escalation_capstone/publish.py` | `capstone/publish/v1/manifest.json` |
 | how promoted state is verified | `capstone/src/incident_escalation_capstone/verify.py` | `capstone/tests/test_verify.py` |
-| what downstream users are allowed to trust | `capstone/publish/v1/manifest.json` | [Release Review Guide](release-review-guide.md) |
-| what survives local loss and remote restore | `capstone/.dvc-remote/` as the durability source, then `capstone/dvc.lock` | [Recovery Review Guide](recovery-review-guide.md) |
+| what downstream users are allowed to trust | `capstone/publish/v1/manifest.json` | [Capstone Proof Guide](capstone-proof-guide.md) |
+| what survives local loss and remote restore | `capstone/.dvc-remote/` as the durability source, then `capstone/dvc.lock` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | what learner-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
 
 ## Directory responsibilities
@@ -81,7 +81,7 @@ If this is your first serious repository pass, use this sequence:
 5. `capstone/src/incident_escalation_capstone/publish.py`
 6. `capstone/src/incident_escalation_capstone/verify.py`
 7. `capstone/publish/v1/manifest.json`
-8. one route page that matches your question: experiment, recovery, or release
+8. one standard route page that matches your question: walkthrough, proof, or review
 
 That order keeps declaration first, recorded state second, enforcement third, and
 promotion last.
@@ -104,6 +104,5 @@ The most useful companion pages for this guide are:
 
 * [`capstone-map.md`](capstone-map.md)
 * [`command-guide.md`](command-guide.md)
+* [`capstone-proof-guide.md`](capstone-proof-guide.md)
 * [`authority-map.md`](../reference/authority-map.md)
-* [`proof-matrix.md`](../guides/proof-matrix.md)
-

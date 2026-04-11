@@ -55,7 +55,7 @@ Ask:
 Best evidence:
 
 - `capstone/publish/v1/`
-- [Release Review Guide](release-review-guide.md)
+- [Capstone Proof Guide](capstone-proof-guide.md)
 - verify or verify-report bundle surfaces
 
 ## Recovery and durability
@@ -70,7 +70,7 @@ Best evidence:
 
 - `capstone/.dvc-remote/`
 - `capstone/dvc.lock`
-- [Recovery Review Guide](recovery-review-guide.md)
+- [Capstone Proof Guide](capstone-proof-guide.md)
 - recovery review bundle surfaces
 
 ## Ownership and change placement
