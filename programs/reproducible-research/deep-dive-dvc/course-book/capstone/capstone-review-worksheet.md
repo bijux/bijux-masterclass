@@ -55,7 +55,6 @@ Ask:
 Best evidence:
 
 - `capstone/publish/v1/`
-- [Release Audit Checklist](release-audit-checklist.md)
 - [Release Review Guide](release-review-guide.md)
 - verify or verify-report bundle surfaces
 

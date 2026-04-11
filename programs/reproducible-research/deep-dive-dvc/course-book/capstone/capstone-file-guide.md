@@ -14,7 +14,7 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | which parameters are part of comparable state | `capstone/params.yaml` | the declared `params:` keys in `capstone/dvc.yaml` |
 | how publish artifacts are assembled and promoted | `capstone/src/incident_escalation_capstone/publish.py` | `capstone/publish/v1/manifest.json` |
 | how promoted state is verified | `capstone/src/incident_escalation_capstone/verify.py` | `capstone/tests/test_verify.py` |
-| what downstream users are allowed to trust | `capstone/publish/v1/manifest.json` | [Release Audit Checklist](release-audit-checklist.md) |
+| what downstream users are allowed to trust | `capstone/publish/v1/manifest.json` | [Release Review Guide](release-review-guide.md) |
 | what survives local loss and remote restore | `capstone/.dvc-remote/` as the durability source, then `capstone/dvc.lock` | [Recovery Review Guide](recovery-review-guide.md) |
 | what learner-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
 

@@ -41,7 +41,7 @@ Return to the module first if:
 | what this repository promises | [Capstone Guide](index.md) | [Command Guide](command-guide.md) |
 | which repository surface matches the current module | the table below | [Capstone File Guide](capstone-file-guide.md) |
 | which command should prove the current claim | [Command Guide](command-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
-| what is safe for downstream trust | [Release Audit Checklist](release-audit-checklist.md) | [Release Review Guide](release-review-guide.md) |
+| what is safe for downstream trust | [Release Review Guide](release-review-guide.md) | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` |
 | what survives local loss and remote restore | [Recovery Review Guide](recovery-review-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
 ## Choose the route by module arc
@@ -51,7 +51,7 @@ Return to the module first if:
 | Modules 01-03 | state identity, cache truth, and environment boundaries | [Command Guide](command-guide.md) |
 | Modules 04-06 | truthful stage edges, params, metrics, and experiment comparison | [Capstone File Guide](capstone-file-guide.md) |
 | Modules 07-08 | collaboration pressure and recovery boundaries | [Recovery Review Guide](recovery-review-guide.md) |
-| Modules 09-10 | downstream trust, migration boundaries, and stewardship judgment | [Release Audit Checklist](release-audit-checklist.md) |
+| Modules 09-10 | downstream trust, migration boundaries, and stewardship judgment | [Release Review Guide](release-review-guide.md) |
 
 ## Module-to-capstone map
 

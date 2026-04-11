@@ -55,7 +55,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | another person can run the same proof targets through the public interface | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `Makefile`, `programs/reproducible-research/deep-dive-dvc/Makefile`, `capstone/Makefile` |
 | remote-backed recovery still works after local loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | `capstone/.dvc-remote/`, `capstone/publish/v1/` |
 | the full repository can defend itself under review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `course-book/capstone/index.md`, `capstone/dvc.yaml`, `capstone/dvc.lock`, `course-book/capstone/capstone-review-worksheet.md` |
-| the promoted bundle can be audited without the whole internal repository story | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/publish/v1/manifest.json`, `course-book/capstone/release-audit-checklist.md` |
+| the promoted bundle can be audited without the whole internal repository story | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/publish/v1/manifest.json`, `course-book/capstone/release-review-guide.md` |
 
 [Back to top](#top)
 
@@ -72,7 +72,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | which verification route fits my question | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `course-book/reference/verification-route-guide.md` |
 | what should I inspect before migration | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `capstone/dvc.yaml` |
 | how should I read the repository layers | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `course-book/capstone/capstone-file-guide.md` |
-| how should I audit the promoted release boundary | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `course-book/capstone/release-audit-checklist.md` |
+| how should I audit the promoted release boundary | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `course-book/capstone/release-review-guide.md` |
 
 [Back to top](#top)
 
@@ -89,6 +89,6 @@ The most useful companion pages for this matrix are:
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 * [`capstone-map.md`](../capstone/capstone-map.md)
 * [`practice-map.md`](../reference/practice-map.md)
-* [`release-audit-checklist.md`](../capstone/release-audit-checklist.md)
+* [`release-review-guide.md`](../capstone/release-review-guide.md)
 
 [Back to top](#top)

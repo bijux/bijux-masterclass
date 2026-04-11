@@ -67,7 +67,7 @@ than one module chapter.
 - [Capstone Map](../capstone/capstone-map.md) for module and question routing
 - [Capstone File Guide](../capstone/capstone-file-guide.md) for file responsibilities
 - [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for steward-level repository review
-- [Release Audit Checklist](../capstone/release-audit-checklist.md) for downstream contract review
+- [Release Review Guide](../capstone/release-review-guide.md) for downstream contract review
 - [Capstone Extension Guide](../capstone/capstone-extension-guide.md) for safe evolution
 
 ## Good stopping point
