@@ -189,7 +189,7 @@ The same runtime would become harder to defend if it changed in any of these dir
 - action wrappers stopped preserving signature visibility
 - review commands became side-effecting commands
 
-These are exactly the changes a strong Module 10 reader should reject.
+These are exactly the changes you should reject in Module 10 review.
 
 ## What this worked example is really teaching
 

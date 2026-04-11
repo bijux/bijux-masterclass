@@ -27,7 +27,7 @@ flowchart TD
 <!-- page-maps:end -->
 
 Module 09 is the highest-power runtime mechanism in the course, which is exactly why it
-has to stay narrower than readers usually expect. The goal is not to make metaclasses look
+has to stay narrower than you might expect. The goal is not to make metaclasses look
 impressive. The goal is to understand what truly belongs to class creation time, what
 lower-power tools still own more honestly, and how to keep metaclass designs
 deterministic, inspectable, and reviewable.
