@@ -11,6 +11,158 @@ edit_uri: edit/master/programs/reproducible-research/deep-dive-snakemake/course-
 docs_dir: course-book
 site_dir: ../../../artifacts/site/reproducible-research/deep-dive-snakemake
 
+nav:
+- Home: index.md
+- Guides:
+  - Home: guides/index.md
+  - Start Here: guides/start-here.md
+  - Course Guide: guides/course-guide.md
+  - Learning Contract: guides/learning-contract.md
+  - Pressure Routes: guides/pressure-routes.md
+  - Proof Ladder: guides/proof-ladder.md
+  - Module Promise Map: guides/module-promise-map.md
+  - Module Checkpoints: guides/module-checkpoints.md
+  - Proof Matrix: guides/proof-matrix.md
+  - Platform Setup: guides/platform-setup.md
+- 'Module 00: Orientation and Study Practice':
+  - Home: module-00-orientation/index.md
+  - Course Map: module-00-orientation/course-map.md
+  - First-Contact Map: module-00-orientation/first-contact-map.md
+  - Mid-Course Map: module-00-orientation/mid-course-map.md
+  - Mastery Map: module-00-orientation/mastery-map.md
+- 'Module 01: First Principles and the File-DAG Contract':
+  - Home: module-01-file-contracts-workflow-graph-truth/index.md
+  - File Contracts, Targets, and Job Planning: module-01-file-contracts-workflow-graph-truth/file-contracts-targets-and-job-planning.md
+  - Convergence, Rerun Causes, and Hidden Inputs: module-01-file-contracts-workflow-graph-truth/convergence-rerun-causes-and-hidden-inputs.md
+  - Wildcards, Binding, Ambiguity, and Constraints: module-01-file-contracts-workflow-graph-truth/wildcards-binding-ambiguity-and-constraints.md
+  - Config as Data, Profiles as Policy: module-01-file-contracts-workflow-graph-truth/config-as-data-profiles-as-policy.md
+  - Atomic Publication, Logs, and Failure Evidence: module-01-file-contracts-workflow-graph-truth/atomic-publication-logs-and-failure-evidence.md
+  - 'Worked Example: Repairing a Lying First Workflow': module-01-file-contracts-workflow-graph-truth/worked-example-repairing-a-lying-first-workflow.md
+  - Exercises: module-01-file-contracts-workflow-graph-truth/exercises.md
+  - Exercise Answers: module-01-file-contracts-workflow-graph-truth/exercise-answers.md
+  - Glossary: module-01-file-contracts-workflow-graph-truth/glossary.md
+- 'Module 02: Dynamic DAGs, Discovery, and Integrity':
+  - Home: module-02-dynamic-dags-discovery-integrity/index.md
+  - Deterministic Target Lists and Sample Discovery: module-02-dynamic-dags-discovery-integrity/deterministic-target-lists-and-sample-discovery.md
+  - Wildcard Domains and Fanout Control: module-02-dynamic-dags-discovery-integrity/wildcard-domains-and-fanout-control.md
+  - Checkpoints and Reviewed DAG Changes: module-02-dynamic-dags-discovery-integrity/checkpoints-and-reviewed-dag-changes.md
+  - Provenance, Manifests, and Publish Boundaries: module-02-dynamic-dags-discovery-integrity/provenance-manifests-and-publish-boundaries.md
+  - Software Stacks and Scheduler Cost: module-02-dynamic-dags-discovery-integrity/software-stacks-and-scheduler-cost.md
+  - 'Worked Example: Making Checkpoint Discovery Reviewable': module-02-dynamic-dags-discovery-integrity/worked-example-making-checkpoint-discovery-reviewable.md
+  - Exercises: module-02-dynamic-dags-discovery-integrity/exercises.md
+  - Exercise Answers: module-02-dynamic-dags-discovery-integrity/exercise-answers.md
+  - Glossary: module-02-dynamic-dags-discovery-integrity/glossary.md
+- 'Module 03: Production Operations and Policy Boundaries':
+  - Home: module-03-production-operations-policy-boundaries/index.md
+  - Profiles, Defaults, and Workflow Meaning: module-03-production-operations-policy-boundaries/profiles-defaults-and-workflow-meaning.md
+  - Failure Policy, Retries, and Incomplete Outputs: module-03-production-operations-policy-boundaries/failure-policy-retries-and-incomplete-outputs.md
+  - Staging, Shared Filesystems, and Data Locality: module-03-production-operations-policy-boundaries/staging-shared-filesystems-and-data-locality.md
+  - Proof Routes, Selftests, and Clean-Room Confirmation: module-03-production-operations-policy-boundaries/proof-routes-selftests-and-clean-room-confirmation.md
+  - Operational Governance and Policy Review: module-03-production-operations-policy-boundaries/operational-governance-and-policy-review.md
+  - 'Worked Example: Hardening a Workflow for Production Use': module-03-production-operations-policy-boundaries/worked-example-hardening-a-workflow-for-production-use.md
+  - Exercises: module-03-production-operations-policy-boundaries/exercises.md
+  - Exercise Answers: module-03-production-operations-policy-boundaries/exercise-answers.md
+  - Glossary: module-03-production-operations-policy-boundaries/glossary.md
+- 'Module 04: Scaling Workflows and Interface Boundaries':
+  - Home: module-04-scaling-workflows-interface-boundaries/index.md
+  - Rule Families, Includes, and Named Ownership: module-04-scaling-workflows-interface-boundaries/rule-families-includes-and-named-ownership.md
+  - Modules, Reuse, and Explicit Interfaces: module-04-scaling-workflows-interface-boundaries/modules-reuse-and-explicit-interfaces.md
+  - File APIs, Schemas, and Public Contracts: module-04-scaling-workflows-interface-boundaries/file-apis-schemas-and-public-contracts.md
+  - CI Gates, Drift Control, and Review Surfaces: module-04-scaling-workflows-interface-boundaries/ci-gates-drift-control-and-review-surfaces.md
+  - Resource Boundaries and Executor-Proof Workflow Design: module-04-scaling-workflows-interface-boundaries/resource-boundaries-and-executor-proof-workflow-design.md
+  - 'Worked Example: Refactoring a Growing Workflow Without Hiding It': module-04-scaling-workflows-interface-boundaries/worked-example-refactoring-a-growing-workflow-without-hiding-it.md
+  - Exercises: module-04-scaling-workflows-interface-boundaries/exercises.md
+  - Exercise Answers: module-04-scaling-workflows-interface-boundaries/exercise-answers.md
+  - Glossary: module-04-scaling-workflows-interface-boundaries/glossary.md
+- 'Module 05: Software Boundaries and Reproducible Rules':
+  - Home: module-05-software-boundaries-reproducible-rules/index.md
+  - Rule Logic, Scripts, and Software Ownership: module-05-software-boundaries-reproducible-rules/rule-logic-scripts-and-software-ownership.md
+  - Environments, Containers, and Runtime Contracts: module-05-software-boundaries-reproducible-rules/environments-containers-and-runtime-contracts.md
+  - Helper Code, Packages, and Reusable Boundaries: module-05-software-boundaries-reproducible-rules/helper-code-packages-and-reusable-boundaries.md
+  - Software Provenance, Drift, and Rebuild Evidence: module-05-software-boundaries-reproducible-rules/software-provenance-drift-and-rebuild-evidence.md
+  - Failure Modes at the Software Boundary: module-05-software-boundaries-reproducible-rules/failure-modes-at-the-software-boundary.md
+  - 'Worked Example: Moving a Workflow Across the Software Boundary Safely': module-05-software-boundaries-reproducible-rules/worked-example-moving-a-workflow-across-the-software-boundary-safely.md
+  - Exercises: module-05-software-boundaries-reproducible-rules/exercises.md
+  - Exercise Answers: module-05-software-boundaries-reproducible-rules/exercise-answers.md
+  - Glossary: module-05-software-boundaries-reproducible-rules/glossary.md
+- 'Module 06: Publishing and Downstream Contracts':
+  - Home: module-06-publishing-downstream-contracts/index.md
+  - Internal Results Versus Public Contracts: module-06-publishing-downstream-contracts/internal-results-vs-public-contracts.md
+  - Versioned Publish Boundaries and Compatible Change: module-06-publishing-downstream-contracts/versioned-publish-boundaries-and-compatible-change.md
+  - Manifests, Checksums, and Bundle Integrity: module-06-publishing-downstream-contracts/manifests-checksums-and-bundle-integrity.md
+  - Reports, File APIs, and Human Versus Machine Surfaces: module-06-publishing-downstream-contracts/reports-file-apis-and-human-vs-machine-surfaces.md
+  - Reviewing Publish Drift and Downstream Risk: module-06-publishing-downstream-contracts/reviewing-publish-drift-and-downstream-risk.md
+  - 'Worked Example: Promoting Results Into a Versioned Publish Bundle': module-06-publishing-downstream-contracts/worked-example-promoting-results-into-a-versioned-publish-bundle.md
+  - Exercises: module-06-publishing-downstream-contracts/exercises.md
+  - Exercise Answers: module-06-publishing-downstream-contracts/exercise-answers.md
+  - Glossary: module-06-publishing-downstream-contracts/glossary.md
+- 'Module 07: Workflow Architecture and File APIs':
+  - Home: module-07-workflow-architecture-file-apis/index.md
+  - Entrypoints, Repository Layers, and Visible Assembly: module-07-workflow-architecture-file-apis/entrypoints-repository-layers-and-visible-assembly.md
+  - Rule Families, Modules, and Ownership Boundaries: module-07-workflow-architecture-file-apis/rule-families-modules-and-ownership-boundaries.md
+  - File APIs, Public Paths, and Contract Docs: module-07-workflow-architecture-file-apis/file-apis-public-paths-and-contract-docs.md
+  - Helpers, Scripts, Packages, and Coupling Control: module-07-workflow-architecture-file-apis/helpers-scripts-packages-and-coupling-control.md
+  - Architecture Review, Drift, and Refactor Triggers: module-07-workflow-architecture-file-apis/architecture-review-drift-and-refactor-triggers.md
+  - 'Worked Example: Reading a Snakemake Repository Like an Architect': module-07-workflow-architecture-file-apis/worked-example-reading-a-snakemake-repository-like-an-architect.md
+  - Exercises: module-07-workflow-architecture-file-apis/exercises.md
+  - Exercise Answers: module-07-workflow-architecture-file-apis/exercise-answers.md
+  - Glossary: module-07-workflow-architecture-file-apis/glossary.md
+- 'Module 08: Operating Contexts and Execution Policy':
+  - Home: module-08-operating-contexts-execution-policy/index.md
+  - Profiles as Policy and Semantic Boundaries: module-08-operating-contexts-execution-policy/profiles-as-policy-and-semantic-boundaries.md
+  - Executors, Queues, and Context-Invariant Workflow Meaning: module-08-operating-contexts-execution-policy/executors-queues-and-context-invariant-workflow-meaning.md
+  - Retries, Latency, and Failure Discipline: module-08-operating-contexts-execution-policy/retries-latency-and-failure-discipline.md
+  - Staging, Storage, and Filesystem Assumptions: module-08-operating-contexts-execution-policy/staging-storage-and-filesystem-assumptions.md
+  - Reviewing Operating-Context Drift and Policy Leaks: module-08-operating-contexts-execution-policy/reviewing-operating-context-drift-and-policy-leaks.md
+  - 'Worked Example: Auditing Local, CI, and SLURM Without Semantic Drift': module-08-operating-contexts-execution-policy/worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md
+  - Exercises: module-08-operating-contexts-execution-policy/exercises.md
+  - Exercise Answers: module-08-operating-contexts-execution-policy/exercise-answers.md
+  - Glossary: module-08-operating-contexts-execution-policy/glossary.md
+- 'Module 09: Performance, Observability, and Incident Response':
+  - Home: module-09-performance-observability-incident-response/index.md
+  - Workflow Cost Models and Timing Surfaces: module-09-performance-observability-incident-response/workflow-cost-models-and-timing-surfaces.md
+  - Logs, Benchmarks, Summaries, and Provenance: module-09-performance-observability-incident-response/logs-benchmarks-summaries-and-provenance.md
+  - Incident Triage for Slow and Flaky Runs: module-09-performance-observability-incident-response/incident-triage-for-slow-and-flaky-runs.md
+  - Performance Tuning Without Semantic Drift: module-09-performance-observability-incident-response/performance-tuning-without-semantic-drift.md
+  - Runbooks, Escalation, and Operational Review: module-09-performance-observability-incident-response/runbooks-escalation-and-operational-review.md
+  - 'Worked Example: Investigating a Slow and Noisy Workflow': module-09-performance-observability-incident-response/worked-example-investigating-a-slow-and-noisy-workflow.md
+  - Exercises: module-09-performance-observability-incident-response/exercises.md
+  - Exercise Answers: module-09-performance-observability-incident-response/exercise-answers.md
+  - Glossary: module-09-performance-observability-incident-response/glossary.md
+- 'Module 10: Governance, Migration, and Tool Boundaries':
+  - Home: module-10-governance-migration-tool-boundaries/index.md
+  - Reviewing Workflow Contracts and Current Truth: module-10-governance-migration-tool-boundaries/reviewing-workflow-contracts-and-current-truth.md
+  - Migration Plans That Preserve Proof: module-10-governance-migration-tool-boundaries/migration-plans-that-preserve-proof.md
+  - Governance Rules for Long-Lived Workflows: module-10-governance-migration-tool-boundaries/governance-rules-for-long-lived-workflows.md
+  - Recurring Workflow Antipatterns and Recovery: module-10-governance-migration-tool-boundaries/recurring-workflow-antipatterns-and-recovery.md
+  - Deciding When Snakemake Should Stop Owning a Concern: module-10-governance-migration-tool-boundaries/deciding-when-snakemake-should-stop-owning-a-concern.md
+  - 'Worked Example: Planning a Safe Workflow Migration': module-10-governance-migration-tool-boundaries/worked-example-planning-a-safe-workflow-migration.md
+  - Exercises: module-10-governance-migration-tool-boundaries/exercises.md
+  - Exercise Answers: module-10-governance-migration-tool-boundaries/exercise-answers.md
+  - Glossary: module-10-governance-migration-tool-boundaries/glossary.md
+- Deep Dive Snakemake Capstone Guide:
+  - Home: capstone/index.md
+  - Deep Dive Snakemake Capstone Map: capstone/capstone-map.md
+  - Command Guide: capstone/command-guide.md
+  - Capstone File Guide: capstone/capstone-file-guide.md
+  - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
+  - Capstone Proof Guide: capstone/capstone-proof-guide.md
+  - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+  - Capstone Extension Guide: capstone/capstone-extension-guide.md
+  - Capstone Walkthrough: capstone/capstone-walkthrough.md
+  - Capstone Glossary: capstone/glossary.md
+- Reference:
+  - Home: reference/index.md
+  - Reference Glossary: reference/glossary.md
+  - Module Dependency Map: reference/module-dependency-map.md
+  - Practice Map: reference/practice-map.md
+  - Review Checklist: reference/review-checklist.md
+  - Boundary Review Prompts: reference/boundary-review-prompts.md
+  - Self-Review Prompts: reference/self-review-prompts.md
+  - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
+  - Completion Rubric: reference/completion-rubric.md
+  - Topic Boundaries: reference/topic-boundaries.md
+
 theme:
   custom_dir: ../../../docs/overrides
   logo: ../../../docs/assets/bijux_logo_hq.png
