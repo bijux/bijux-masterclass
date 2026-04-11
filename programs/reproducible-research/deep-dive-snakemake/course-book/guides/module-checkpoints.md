@@ -2,92 +2,58 @@
 
 # Module Checkpoints
 
+Use this page when you are about to move on and want an honest readiness bar. Reading a
+module once is not the same thing as being ready for the next one. These checkpoints are
+meant to tell you whether the next module will build on stable understanding or on vague
+recognition.
 
-<!-- page-maps:start -->
-## Guide Fit
-
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Module Checkpoints"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
-
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This page is the missing study contract at the end of each module. It gives a human bar
-for readiness instead of assuming that reading the prose once means the concept is
-stable.
-
-Use it when you are about to move on and want to know whether you are ready, what you are
-still fuzzy on, and which proof route should settle the question.
-
----
-
-## How To Use The Checkpoints
+## How to use this page
 
 For each module:
 
-1. read the module overview and main lessons
-2. answer the checkpoint questions without looking at the text
-3. run the smallest honest proof route
-4. only advance when the concept feels explainable, not merely recognizable
+1. answer the checkpoint question without looking at the text
+2. run the listed proof or inspection route
+3. stop if you still cannot explain the result in plain language
+
+If you need to reread, reread the narrowest lesson that matches the gap instead of the
+whole module.
 
 [Back to top](#top)
 
----
+## Readiness table
 
-## Checkpoint Table
-
-| Module | You are ready when you can explain | You should be able to do | Useful proof route |
+| Module | You are ready to move on when you can explain... | Quick proof or inspection route | Go back when... |
 | --- | --- | --- | --- |
-| 01 | why rules and targets form a file-driven DAG | explain a dry-run without hand-waving | `capstone-walkthrough` |
-| 02 | why dynamic discovery needs one durable discovered-set artifact and one honest publish trail | describe what discovery is allowed to change and what must stay stable | `make verify` |
-| 03 | why profiles, failure handling, and proof routes are policy surfaces rather than workflow meaning | distinguish execution context from workflow semantics and choose the right production proof route | `capstone-profile-audit` |
-| 04 | how repository growth stays legible through named boundaries and review gates | name which file or interface boundary should absorb one scaling change | `capstone-tour` |
-| 05 | why software ownership, runtime contracts, and provenance must stay reviewable together | explain where rule logic ends, where software begins, and what evidence supports a rebuild | `proof` |
-| 06 | what makes a versioned publish bundle trustworthy downstream | explain which files are public, which changes are compatible, and what evidence defends the bundle | `capstone-verify-report` |
-| 07 | how repository architecture keeps ownership, path contracts, and helper boundaries reviewable | explain where assembly lives, where path promises live, and why the repository shape still tells the truth | `proof` |
-| 08 | what may change across local, CI, and cluster contexts without rewriting workflow meaning | explain which differences are policy, which are leaks, and what evidence justifies the distinction | `capstone-profile-audit` |
-| 09 | how to move from workflow symptom to evidence-backed diagnosis | choose the right observability or incident surface first | `proof` |
-| 10 | when Snakemake should stop owning a concern | review a workflow as a long-lived product with migration judgment | `capstone-confirm` |
+| [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md) | why one target exists in the workflow plan and another does not | `snakemake -n` on the module example or [Capstone Walkthrough](../capstone/capstone-walkthrough.md) | Snakemake still feels like a command runner instead of a file-contract system |
+| [Module 02](../module-02-dynamic-dags-discovery-integrity/index.md) | how discovery becomes a durable artifact instead of an ambient side effect | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | you can point to a checkpoint but not to the artifact that records what it discovered |
+| [Module 03](../module-03-production-operations-policy-boundaries/index.md) | what belongs in a profile and what would change workflow meaning | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | your explanation depends on one machine or one shell command |
+| [Module 04](../module-04-scaling-workflows-interface-boundaries/index.md) | where a scaling change belongs: rule file, module, file API, or validation surface | [Workflow Modularization](workflow-modularization.md) plus `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | you are splitting files by discomfort rather than by ownership |
+| [Module 05](../module-05-software-boundaries-reproducible-rules/index.md) | where workflow orchestration ends and helper software begins | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | you still treat scripts, packages, and environments as invisible implementation detail |
+| [Module 06](../module-06-publishing-downstream-contracts/index.md) | what is public in `publish/v1/` and why it is smaller than the internal run state | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | you are still treating `results/` as the downstream contract |
+| [Module 07](../module-07-workflow-architecture-file-apis/index.md) | which file owns workflow entry, rule families, file APIs, and helper code boundaries | [Capstone File Guide](../capstone/capstone-file-guide.md) | you can name folders but not explain their responsibilities |
+| [Module 08](../module-08-operating-contexts-execution-policy/index.md) | which differences across local, CI, and SLURM are policy and which would be semantic drift | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | you are treating context drift as harmless because the workflow still runs |
+| [Module 09](../module-09-performance-observability-incident-response/index.md) | which evidence surface you would inspect before editing a slow or flaky workflow | [Incident Review Guide](../capstone/incident-review-guide.md) or `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | your first move is to change retries, threads, or grouping |
+| [Module 10](../module-10-governance-migration-tool-boundaries/index.md) | how to improve or migrate the repository without losing proof and public trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | your migration plan is mostly taste, not preserved evidence |
 
 [Back to top](#top)
 
----
+## Common false positives
 
-## Failure Signals
+Do not call a module done just because:
 
-Do not advance yet if any of these are still true:
+- the examples looked familiar
+- you can repeat the vocabulary
+- the strongest route passed once
+- you can follow the capstone without naming why the evidence matters
 
-* you recognize the term but cannot explain the invariant it protects
-* you know the strongest proof command but not the smallest honest one
-* you can follow the capstone mechanically but cannot name the owning boundary
-* you can repeat the repair pattern but cannot say what failure it prevents
-
-These are not small study gaps. They are signals that the next module will feel more
-arbitrary than it should.
+Those usually mean you have seen the surface, not learned the boundary.
 
 [Back to top](#top)
 
----
+## Best companion pages
 
-## Best Companion Pages
-
-Use these with the checkpoints:
-
-* [`module-promise-map.md`](module-promise-map.md) to see what each title promised
-* [`proof-ladder.md`](proof-ladder.md) to keep proof proportional to the question
-* [`practice-map.md`](../reference/practice-map.md) to match module work with proof loops
-* [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) when you want to record what the evidence actually showed
+- [Module Promise Map](module-promise-map.md) when you need the module contract restated
+- [Proof Ladder](proof-ladder.md) when the proof route feels heavier than the claim
+- [Capstone Map](../capstone/capstone-map.md) when the concept is clear but the repository route is not
 
 [Back to top](#top)
