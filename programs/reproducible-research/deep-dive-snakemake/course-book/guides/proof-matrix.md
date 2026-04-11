@@ -83,6 +83,6 @@ The most useful companion pages for this matrix are:
 * [`practice-map.md`](../reference/practice-map.md)
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
 * [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md)
-* [`incident-review-guide.md`](../capstone/incident-review-guide.md)
+* [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md)
 
 [Back to top](#top)

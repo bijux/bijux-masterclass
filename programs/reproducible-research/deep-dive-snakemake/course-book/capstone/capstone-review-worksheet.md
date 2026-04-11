@@ -119,6 +119,25 @@ Best evidence:
 
 [Back to top](#top)
 
+## Incident review
+
+Use this section when the question is about incident response, reproducibility under
+pressure, or workflow debugging with evidence instead of intuition.
+
+Recommended route:
+
+1. Read [Capstone Walkthrough](capstone-walkthrough.md).
+2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command for the current symptom.
+3. Compare the result with [Profile Audit Guide](profile-audit-guide.md) and the earlier sections of this worksheet if the problem spans multiple boundaries.
+
+A good incident review should answer:
+
+- whether the failure is about workflow semantics, execution policy, or downstream trust
+- which command gives the most honest first evidence
+- which files should remain unchanged until stronger proof exists
+
+[Back to top](#top)
+
 ## Record the result
 
 Finish with one of these judgments:

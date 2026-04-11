@@ -97,7 +97,7 @@ repository, and the terms here keep those routes distinct.
 | [Profile Audit Guide](profile-audit-guide.md) | review local, CI, and scheduler policy drift |
 | [Capstone Review Worksheet](capstone-review-worksheet.md) | review the repository as a steward, not only as a learner |
 | [Capstone Extension Guide](capstone-extension-guide.md) | evolve the repository without weakening its teaching or review value |
-| [Incident Review Guide](incident-review-guide.md) | narrow a failure review to the evidence that matters |
+| [Capstone Review Worksheet](capstone-review-worksheet.md) | narrow a failure review to the evidence that matters |
 
 ## Reading rule
 
