@@ -2,43 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Functional Retries"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  flaky["Start with transient failures in an otherwise useful stream"] --> policy["Describe retry limits and delays as policy data"]
+  policy --> engine["Run retries through a bounded fair engine"]
+  engine --> stop["Stop cleanly when the policy or outer breaker says enough"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make retries feel controlled rather than hopeful. Students need to see that retrying is not just "do it again." It is a bounded policy choice with fairness, cleanup, and final provenance requirements.
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Retry Smell
 
-Here's a snippet from the progression map:
+The common anti-pattern here is easy to recognize: a nested retry loop that blocks the whole stream around one slow item. This lesson needs to replace that picture quickly.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If retries are unbounded, the policy is no longer safe.
+- If one item can monopolize the whole pipeline while retrying, the engine is not fair.
+- If final errors do not record attempts and policy context, the retry layer has hidden important operational evidence.
 
 > **Core question:**  
 > How do you implement pure, bounded, fair retries over a `Result` stream using policies as ordinary data — guaranteeing termination, no side effects, and perfect composability with breakers and resource managers?
 
-We now take the `Iterator[Result[Chunk, ErrInfo]]` stream from M04C05–C08 and face the final reliability question:
+This lesson introduces retries as explicit policy plus engine design:
 
-**“My embedding calls are flaky — network timeouts, rate limits, transient GPU OOM. I want to retry each failing chunk a few times with exponential backoff, but I refuse to block the whole pipeline or leak resources on abort.”**
+- represent retry decisions as data rather than hidden loop logic
+- keep retries bounded and fair across items
+- preserve composability with breakers and resource managers instead of fighting them
+
+The motivating flaky-embedder example matters because it captures the real case where retries are valuable: transient failure, not permanent bad input.
 
 The naïve solution is a manual retry loop:
 
@@ -57,7 +50,7 @@ for chunk in chunks:
 
 This blocks the entire stream on one slow chunk, leaks resources on early breaker termination, and is duplicated everywhere.
 
-The production solution uses a pure, lazy retry combinator that treats retry policy as ordinary data and executes as a fair, bounded loop over the `Result` stream.
+The production solution applies a pure retry combinator that separates policy from execution and keeps the stream behavior reviewable.
 
 **Audience:** Engineers who call flaky external services (embedding APIs, vector DBs, OCR) inside RAG pipelines and need per-chunk resilience without sacrificing throughput or resource safety.
 
@@ -66,7 +59,7 @@ The production solution uses a pure, lazy retry combinator that treats retry pol
 2. You will get bounded, fair retries with full provenance on final errors.  
 3. You will ship a RAG pipeline that automatically retries transient failures while respecting breakers and resource cleanup.
 
-We formalise exactly what we want from correct, production-ready retries: bounded execution, fairness, purity, bounded completion semantics, and seamless composition.
+We formalise exactly what students should review in retry code: bounded execution, fairness, purity, completion guarantees, and clean composition with the rest of the resilience stack.
 
 ---
 
