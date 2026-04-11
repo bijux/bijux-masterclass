@@ -65,7 +65,7 @@ Keep the FuncPipe capstone open while reading this module and inspect:
 The capstone should make one point concrete: architecture is the continuation of purity under pressure.
 
 **Core question**  
-How do you structure a real production system so that the pure domain core depends **only** on abstract ports while all concrete effects live in swappable adapters — giving you perfect testability, zero hidden dependencies, and the ability to change infrastructure without touching the core?
+How do you structure a real production system so that the pure domain core depends **only** on abstract ports while concrete effects live in swappable adapters — making the core testable, keeping dependencies explicit, and reducing infrastructure coupling under change?
 
 This is the architectural pattern that finally lets you ship the beautiful monadic pipelines from Module 6 to production **without compromise**.
 
@@ -201,6 +201,14 @@ The RAG pipeline surface itself remains the Module 02–06 config-as-data API in
 - Migration equivalence (legacy call vs IOPlan): `capstone/tests/unit/domain/test_io_plan_migration_equivalence.py`
 - Idempotent writes, retry, tx bracketing: `capstone/tests/unit/domain/test_idempotent.py`, `capstone/tests/unit/domain/test_retry.py`, `capstone/tests/unit/domain/test_session.py`
 - Structured logging helpers: `capstone/tests/unit/domain/test_logging.py`
+
+## 7. Review Questions
+
+Use this page as a review aid, not only as a definition page:
+
+- can I point to the seam where infrastructure enters the system?
+- does the core depend on a capability shape or on a concrete adapter detail?
+- would swapping the adapter change business behavior, or only the way effects are performed?
 
 ## 8. Anti-Patterns & Immediate Fixes
 
