@@ -176,3 +176,12 @@ nav:
           - Glossary: module-09-promotion-registry-boundaries-auditability/glossary.md
       - "Module 10: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries":
           - Overview: module-10-migration-governance-dvc-boundaries/index.md
+          - Repository Review Without Wishful Thinking: module-10-migration-governance-dvc-boundaries/repository-review-without-wishful-thinking.md
+          - Safe Migration Plans for State Boundaries: module-10-migration-governance-dvc-boundaries/safe-migration-plans-for-state-boundaries.md
+          - Governance Rules for Long-Lived Repositories: module-10-migration-governance-dvc-boundaries/governance-rules-for-long-lived-repositories.md
+          - Anti-Patterns and Review Interventions: module-10-migration-governance-dvc-boundaries/anti-patterns-and-review-interventions.md
+          - DVC Tool Boundaries and System Ownership: module-10-migration-governance-dvc-boundaries/dvc-tool-boundaries-and-system-ownership.md
+          - "Worked Example: Reviewing a DVC Repository for Stewardship": module-10-migration-governance-dvc-boundaries/worked-example-reviewing-a-dvc-repository-for-stewardship.md
+          - Exercises: module-10-migration-governance-dvc-boundaries/exercises.md
+          - Exercise Answers: module-10-migration-governance-dvc-boundaries/exercise-answers.md
+          - Glossary: module-10-migration-governance-dvc-boundaries/glossary.md
