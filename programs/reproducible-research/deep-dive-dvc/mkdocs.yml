@@ -99,6 +99,7 @@ nav:
           - Glossary: module-02-data-identity-content-addressing/glossary.md
       - "Module 03: Execution Environments as Inputs":
           - Overview: module-03-execution-environments-reproducible-inputs/index.md
+          - Execution Environment as Part of the Input Surface: module-03-execution-environments-reproducible-inputs/execution-environment-as-part-of-the-input-surface.md
       - "Module 04: Pipelines as Truthful DAGs":
           - Overview: module-04-truthful-pipelines-declared-dependencies/index.md
       - "Module 05: Metrics, Parameters, and Meaning":
