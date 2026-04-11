@@ -173,3 +173,10 @@ Try these before moving on:
 3. Write down one example of a thin wrapper and one example that already feels too stateful to stay on this page.
 
 If those feel ordinary, the next step is to study the stateful boundary directly.
+
+## Continue through Module 04
+
+- Previous: [Decorator Syntax and Definition-Time Rebinding](decorator-syntax-and-definition-time-rebinding.md)
+- Next: [Stateful Wrappers and Semantic Drift](stateful-wrappers-and-semantic-drift.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

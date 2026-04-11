@@ -80,3 +80,10 @@ Across all six answers, the module wants the same habits:
 - you name when a decorator has grown beyond a simple function transformation
 
 If an answer still sounds like "it just decorates the function," keep going.
+
+## Continue through Module 04
+
+- Previous: [Worked Example: Building a Didactic Cache Decorator](worked-example-building-a-didactic-cache-decorator.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

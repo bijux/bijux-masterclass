@@ -185,3 +185,10 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds like "decorators just add behavior," revise it until you can say
 what changed, when it changed, and what still remains visible to tools and reviewers.
+
+## Continue through Module 04
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 05](../module-05-decorator-design-policies-typing/index.md)
+- Terms: [Glossary](glossary.md)

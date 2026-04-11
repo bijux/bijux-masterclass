@@ -177,3 +177,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can stress-test transparency and state together
 inside a deliberately limited cache decorator.
+
+## Continue through Module 04
+
+- Previous: [Stateful Wrappers and Semantic Drift](stateful-wrappers-and-semantic-drift.md)
+- Next: [Worked Example: Building a Didactic Cache Decorator](worked-example-building-a-didactic-cache-decorator.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

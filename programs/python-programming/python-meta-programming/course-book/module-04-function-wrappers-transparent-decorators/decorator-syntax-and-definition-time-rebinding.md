@@ -217,3 +217,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is practical thin wrappers that change call-time
 behavior while still trying to stay transparent.
+
+## Continue through Module 04
+
+- Previous: [Nested Functions and Wrapper Skeletons](nested-functions-and-wrapper-skeletons.md)
+- Next: [Thin Practical Wrappers at Call Time](thin-practical-wrappers-at-call-time.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

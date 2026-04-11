@@ -191,3 +191,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is to make the rebinding explicit through
 `@decorator` syntax and stacked decoration.
+
+## Continue through Module 04
+
+- Previous: [Overview](index.md)
+- Next: [Decorator Syntax and Definition-Time Rebinding](decorator-syntax-and-definition-time-rebinding.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

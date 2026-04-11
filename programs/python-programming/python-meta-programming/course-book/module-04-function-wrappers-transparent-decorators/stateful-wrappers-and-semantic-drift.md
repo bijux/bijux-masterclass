@@ -147,3 +147,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is to keep wrapped callables honest to tools and
 reviewers with `functools.wraps`.
+
+## Continue through Module 04
+
+- Previous: [Thin Practical Wrappers at Call Time](thin-practical-wrappers-at-call-time.md)
+- Next: [Wraps and Signature Transparency](wraps-and-signature-transparency.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

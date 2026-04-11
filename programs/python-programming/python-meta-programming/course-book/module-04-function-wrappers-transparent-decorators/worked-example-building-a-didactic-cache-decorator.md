@@ -206,3 +206,10 @@ When you inherit or design a stateful decorator, run this loop:
 
 If you can do that here, Module 04 has done its job and the next decorator module can take
 on heavier policy and typing concerns with less ambiguity.
+
+## Continue through Module 04
+
+- Previous: [Wraps and Signature Transparency](wraps-and-signature-transparency.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)
