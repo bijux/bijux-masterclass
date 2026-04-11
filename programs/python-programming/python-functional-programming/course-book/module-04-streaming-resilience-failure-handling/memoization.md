@@ -2,45 +2,38 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Memoization"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  repeat["Start with a pure expensive function called on repeated inputs"] --> cache["Insert a cache that is observationally invisible"]
+  cache --> bound["Choose bounds or persistence deliberately"]
+  bound --> review["Review keys, eviction, and purity before speed claims"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make memoization feel narrower and safer than students often assume. The right mental model is not "cache anything expensive." It is "cache only when the function is pure and the cache does not change what observers can see except performance."
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Repeated Work Problem
 
-Here's a snippet from the progression map:
+Students usually arrive here after seeing the same text, subtree, or request shape recur many times. The important teaching step is to connect that duplication to a safe optimization boundary.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If repeated inputs are triggering the same pure work again and again, memoization may be the right optimization.
+- If the function reads hidden state, time, or external services, caching can change behavior instead of only improving speed.
+- If cache growth is unbounded on unbounded input, the optimization has created a new reliability problem.
 
 > **Core question:**  
 > How do you safely memoize pure but expensive computations (e.g., embedding, hashing, parsing) so that repeated or recursive calls on identical inputs become O(1), while guaranteeing the cache is observationally invisible and never breaks purity or determinism?
 
-We now take the `TreeDoc` hierarchy from M04C01–C02 and ask the most common performance question in real RAG systems:
+This lesson introduces memoization as a disciplined optimization boundary:
 
-**“We have 100 000 nodes but only ~8 000 unique text values scattered throughout the tree. Computing the embedding (or deterministic content hash) for each one costs 50–200 ms. How do we avoid doing the same work millions of times?”**
+- cache only pure computations whose outputs depend entirely on their inputs
+- make keys, bounds, and persistence explicit so the cache behavior is reviewable
+- preserve the same observable results whether the cache is cold, warm, or absent
 
-The naïve solution is to just call the expensive pure function everywhere:
+The repeated-text example matters because it is both realistic and easy to reason about: lots of duplicate work, but no change in intended output.
+
+The naïve solution is simply to recompute the same pure value everywhere:
 
 ```python
 def embed_all_naive(tree: TreeDoc) -> None:
@@ -49,16 +42,11 @@ def embed_all_naive(tree: TreeDoc) -> None:
         embed_all_naive(child)
 ```
 
-Total time → minutes of wasted CPU.
+That keeps the semantics honest, but wastes a huge amount of time when the same normalized content appears again and again.
 
-The production solution must:
-- be pure and deterministic,
-- turn repeated calls on identical inputs into O(1) cache hits,
-- support in-process LRU and optional disk persistence,
-- remain observationally invisible (`cached_f(x) == f(x)` always),
-- work seamlessly with folds and lazy pipelines.
+The production solution must improve performance without changing the function contract students have already learned to trust.
 
-This is exactly what safe memoization gives us.
+That is the standard for safe memoization in this course: a pure optimization that can be removed without changing the result.
 
 **Audience:** Engineers who have expensive pure functions (embedding models, parsers, hashers, normalizers) called repeatedly in recursive or streaming contexts and refuse to waste CPU on recomputation.
 
@@ -67,7 +55,7 @@ This is exactly what safe memoization gives us.
 2. You will build bounded or persistent caches when the stdlib decorator is insufficient.  
 3. You will ship memoized operations that are observationally pure and integrate cleanly with folds and lazy streams.
 
-We formalise exactly what we want from a correct, production-ready cache: observational purity, hit/miss correctness, bounded memory when required, and optional persistence.
+We formalise exactly what students should review in caching code: observational purity, hit and miss correctness, bounded memory when required, and explicit persistence rules when disk is involved.
 
 ---
 
