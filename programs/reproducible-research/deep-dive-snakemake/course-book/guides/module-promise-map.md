@@ -2,93 +2,58 @@
 
 # Module Promise Map
 
+Use this page when a module title sounds right but still too compressed. A strong module
+title should tell you what kind of judgment you will leave with, not just which topic
+bucket the chapter belongs to.
 
-<!-- page-maps:start -->
-## Guide Fit
+## How to read this map
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Module Promise Map"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+Each row answers four practical questions:
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+1. what the module is trying to change in your mental model
+2. what boundary that promise is really about
+3. what you should be able to do afterward
+4. what capstone route first corroborates the lesson
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This page exists because strong module titles are not enough. A learner should be able to
-ask, for every module, “what is this module promising me, and how will I know it was
-delivered?”
-
-Use this guide when a title sounds right but still feels too broad, too compressed, or
-too weakly tied to proof.
-
----
-
-## How To Read This Page
-
-Each row names four things:
-
-* the module promise
-* the boundary of that promise
-* the learner outcome the module should leave behind
-* the first honest capstone corroboration route
-
-If a module page drifts away from this contract, the drift should become visible here.
+If a module drifts away from that contract, the drift should be visible here.
 
 [Back to top](#top)
 
----
+## Module contracts
 
-## Promise Table
-
-| Module | Promise | Boundary | Learner outcome | First corroboration |
+| Module | The promise | The boundary | You should leave able to... | First corroboration route |
 | --- | --- | --- | --- | --- |
-| 01 File-DAG Contract | teach Snakemake as explicit file semantics, not command folklore | rules, targets, dry-runs, publish boundary | explain why planned work exists before execution | `capstone-walkthrough` |
-| 02 Dynamic DAGs | teach staged discovery without turning the plan into magic | checkpoints, discovered-set artifacts, deterministic planning, publish integrity | explain what a checkpoint may discover, what discovery must record, and how that fact reaches the public boundary | `make verify` |
-| 03 Production Operations | teach policy surfaces without semantic drift | profiles, retries, staging, governance, and proof routes | distinguish workflow meaning from run-context policy and choose the right production proof route | `capstone-profile-audit` |
-| 04 Scaling Boundaries | teach larger repository design without interface blur | rule families, modules, file APIs, CI gates, and executor-proof semantics | inspect a repository boundary without guessing where the contract lives | `capstone-tour` |
-| 05 Software Boundaries | teach the line between workflow orchestration and software surfaces that carry execution meaning | rule ownership, helper-code placement, runtime contracts, provenance, and rebuild evidence | explain where logic belongs, which runtime boundary matters, and how software drift changes output trust | `proof` |
-| 06 Downstream Contracts | teach publish surfaces as explicit downstream contracts rather than accidental output folders | internal versus public boundaries, versioned publish bundles, manifests, reports, provenance, and compatibility review | review whether a downstream consumer could trust the bundle and explain why | `capstone-verify-report` |
-| 07 Workflow Architecture | teach repository architecture as a reviewable system of ownership rather than a pile of folders | entrypoint assembly, rule families, workflow modules, file APIs, helper boundaries, and drift review | point to the owning layer, contract doc, or helper surface for a workflow change | `proof` |
-| 08 Operating Contexts | teach operating-context changes as reviewable policy rather than hidden workflow forks | profiles, executors, retries, storage, staging, and policy-leak review | explain what may change across contexts, what must remain invariant, and how to audit that claim | `capstone-profile-audit` |
-| 09 Incident Response | teach diagnosis under workflow pressure | logs, benchmarks, workflow-tour evidence, review order | move from symptom to responsible boundary with less guesswork | `proof` |
-| 10 Tool Boundaries | teach stewardship, migration, and orchestration judgment | governance, anti-patterns, handoff boundaries, review method | decide whether Snakemake should still own the concern | `capstone-confirm` |
+| [01 File Contracts](../module-01-file-contracts-workflow-graph-truth/index.md) | make Snakemake legible as a file-contract system instead of command folklore | rules, targets, rerun causes, publish discipline | explain why a job appears in the DAG before any execution happens | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
+| [02 Dynamic DAGs](../module-02-dynamic-dags-discovery-integrity/index.md) | show how discovery can change the DAG without becoming magic | checkpoints, discovered-set artifacts, wildcard limits, publish integrity | point to the artifact that records what discovery found | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
+| [03 Production Operations](../module-03-production-operations-policy-boundaries/index.md) | separate workflow meaning from operational policy | profiles, retries, staging, clean-room proof, governance | explain what may vary across runs without changing workflow semantics | [Profile Audit Guide](../capstone/profile-audit-guide.md) |
+| [04 Scaling Workflows](../module-04-scaling-workflows-interface-boundaries/index.md) | grow the repository without hiding the visible workflow graph | includes, modules, file APIs, validation, CI review surfaces | decide where a scaling change belongs before splitting files | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
+| [05 Software Boundaries](../module-05-software-boundaries-reproducible-rules/index.md) | teach the line between workflow orchestration and the software it drives | scripts, packages, environments, provenance, runtime contracts | explain where rule logic ends and helper software begins | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+| [06 Publishing](../module-06-publishing-downstream-contracts/index.md) | make publish surfaces explicit downstream contracts instead of convenience folders | `results/` versus `publish/v1/`, manifests, reports, provenance | explain which outputs a downstream consumer is allowed to trust | [Publish Review Guide](../capstone/publish-review-guide.md) |
+| [07 Workflow Architecture](../module-07-workflow-architecture-file-apis/index.md) | teach repository architecture as part of reproducibility and reviewability | entrypoints, rule families, file APIs, helper boundaries, repository layers | point to the owning layer for a structural workflow change | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| [08 Operating Contexts](../module-08-operating-contexts-execution-policy/index.md) | keep executor and profile differences reviewable without semantic drift | local, CI, and scheduler policy; retries; storage and staging assumptions | explain what changed across contexts and why the workflow promise stayed stable | [Profile Audit Guide](../capstone/profile-audit-guide.md) |
+| [09 Incident Response](../module-09-performance-observability-incident-response/index.md) | make workflow incidents diagnosable before edits begin | logs, benchmarks, summaries, provenance, triage routes | choose the next evidence surface before touching the workflow | [Incident Review Guide](../capstone/incident-review-guide.md) |
+| [10 Governance](../module-10-governance-migration-tool-boundaries/index.md) | teach stewardship, migration order, and honest tool boundaries | review method, migration sequencing, governance rules, handoff decisions | improve the repository while preserving trust in current outputs and proof routes | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 
 [Back to top](#top)
 
----
+## What this page prevents
 
-## Promise Failures This Page Guards Against
+This map exists to prevent four common course failures:
 
-When module titles are strong but unchecked, courses usually fail in one of four ways:
+- a module promises judgment but only delivers syntax
+- a module promises operations but never reaches executable proof
+- a module promises architecture but leaves ownership blurry
+- a module promises stewardship but never turns into review behavior
 
-* the title promises judgment, but the module only delivers syntax
-* the title promises operations, but the proof routes stay abstract
-* the title promises architecture, but ownership remains blurry
-* the title promises publish trust or governance, but the capstone surface never corroborates it
-
-This page makes those failures visible before they harden into course drift.
+If you notice one of those failures while reading, come back here and name the missing
+piece directly.
 
 [Back to top](#top)
 
----
+## Best companion pages
 
-## Best Companion Pages
-
-Use these pages with the promise map:
-
-* [`course-guide.md`](course-guide.md) for the stable learner hub
-* [`module-checkpoints.md`](module-checkpoints.md) for the end-of-module review bar
-* [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
-* [`capstone/capstone-map.md`](../capstone/capstone-map.md) for module-to-capstone entry routes
+- [Module Checkpoints](module-checkpoints.md) when you need the exit bar after the promise
+- [Proof Ladder](proof-ladder.md) when the corroboration route feels too heavy
+- [Capstone Map](../capstone/capstone-map.md) when the promise is clear but the repository route is not
 
 [Back to top](#top)
