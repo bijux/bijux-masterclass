@@ -47,6 +47,18 @@ The central point for students is simple: laws are the reason “safe to refacto
 
 Violate any of these and the pipeline may still appear fine in simple examples while quietly becoming unsafe to regroup, extract, or extend.
 
+## What These Laws Do Not Prove
+
+The laws protect the composition machinery. They do **not** prove that:
+
+- the domain rule itself is correct
+- the chosen error messages or error codes are useful
+- a refactor preserved every business-level side condition outside the modeled function family
+
+That distinction matters for students because “lawful” and “correct for the product” are
+not the same claim. This page is about the first claim, while the rest of the codebase
+still needs ordinary example-based and domain-focused tests for the second.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Law                          | Formal Statement                                                            | Why it matters in practice                                |
@@ -62,6 +74,18 @@ Violate any of these and the pipeline may still appear fine in simple examples w
 
 These laws are verified with Hypothesis in CI for the repository's modeled strategies and
 function families. A single failing example breaks the build.
+
+## Reading The Proof Scope Correctly
+
+In this module, “machine-checked” means:
+
+- the repository generates many representative values and function families
+- the listed laws hold for those modeled spaces in CI
+- a counterexample produces a concrete failing case instead of a vague warning
+
+This is exactly the right kind of confidence for refactoring the container layer. It is
+stronger than a handful of examples, but it is still intentionally scoped to the
+strategies and behaviors the repository models.
 
 ## 2. Strategies – Shrinkable, Deterministic Function Families (capstone/tests/strategies.py)
 
