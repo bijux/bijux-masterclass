@@ -1,6 +1,5 @@
 # Capstone Tour
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -19,80 +18,48 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
-  inspect --> run["Run the confirm, demo, selftest, or proof command"]
-  run --> compare["Compare output with the stated contract"]
-  compare --> review["Return to the course claim with evidence"]
+  orient["Start from the executed bundle"] --> declaration["Read declared and recorded state"]
+  declaration --> release["Read promoted release evidence"]
+  release --> recovery["Read recovery and durability evidence if needed"]
+  recovery --> next["Escalate only if the question changes"]
 ```
 <!-- page-maps:end -->
 
-This tour is the executed proof route for the DVC capstone. It builds a bundle that
-captures the repository state the course asks you to reason about: declared pipeline
-shape, recorded execution state, tracked metrics, promoted artifacts, and the stable
-publish boundary.
+This tour is the executed proof route for the DVC capstone. It builds a bundle under
+`artifacts/tour/reproducible-research/deep-dive-dvc/` so you can inspect declared
+pipeline shape, recorded execution state, promoted artifacts, and the saved summaries
+that explain how those surfaces fit together.
 
-If you want a lighter first step, run `make walkthrough` first. That bundle contains the
-repository contract, pipeline declaration, recorded lock state, params surface, and a
-suggested reading route without executing the workflow.
-
-Read [BUNDLE_MANIFEST_GUIDE.md](BUNDLE_MANIFEST_GUIDE.md) when the next question is not
-which proof route to use, but exactly what a saved bundle captured.
-
-Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the bundle and stage routes are clear but
-you need the exact owning file for one behavior.
-
-Read [REVIEW_ROUTE_GUIDE.md](REVIEW_ROUTE_GUIDE.md) when the main question is whether the
-tour is the right route at all or whether a smaller summary or saved bundle would be cleaner.
+If you want a lighter first step, run `make walkthrough` first.
 
 ## What the tour produces
 
-- `status.txt`: DVC's current view of whether the repository is up to date
-- `pipeline.dot`: the declared stage graph in Graphviz DOT format
-- `dvc.yaml`: the declared pipeline contract
-- `dvc.lock`: the recorded state transition after execution
-- `params.yaml`: the declared control surface for the run
-- `metrics.json`: the tracked evaluation result
-- `state-summary.json`: the combined declaration, execution, and release summary
-- `release-summary.json`: the promoted release summary
-- `review-queue.json`: the structured prediction review queue
-- `publish-v1/`: the promoted artifact bundle that downstream consumers should trust
+- `status.txt` for DVC's current up-to-date state
+- `remote.txt` for the configured DVC remote list
+- `pipeline.dot` for the declared stage graph in Graphviz DOT format
+- `dvc.yaml`, `dvc.lock`, and `params.yaml` for declared versus recorded state and control surface
+- `metrics.json` for the tracked evaluation result
+- `manifest-summary.json`, `profile-summary.json`, `model-summary.json`, `stage-summary.json`, `state-summary.json`, `release-summary.json`, `review-queue.json`, and `threshold-review.json` for compact saved review surfaces
+- `publish-v1/` for the promoted downstream contract
+- `PUBLISH_CONTRACT.md`, `ARCHITECTURE.md`, `EXPERIMENT_GUIDE.md`, `RECOVERY_GUIDE.md`, and `RELEASE_REVIEW_GUIDE.md` for the matching interpretation guides
 
-## How to run it
+## Good first reading order
 
-From the capstone directory:
+1. `status.txt`
+2. `stage-summary.json`
+3. `dvc.yaml` and `dvc.lock`
+4. `params.yaml`
+5. `manifest-summary.json` and `publish-v1/manifest.json`
+6. `profile-summary.json`, `model-summary.json`, `threshold-review.json`, and `publish-v1/metrics.json`
+7. `release-summary.json`, `publish-v1/report.md`, and `review-queue.json`
+8. `remote.txt` and `RECOVERY_GUIDE.md` when the question turns to durability after loss
 
-```bash
-make walkthrough
-make tour
-```
+That order keeps declaration and recorded state ahead of promotion, and promotion ahead
+of recovery.
 
-From the repository root:
+## When to step out of the tour
 
-```bash
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
-```
-
-## What to inspect first
-
-1. `README.md`
-2. `DOMAIN_GUIDE.md`
-3. `STAGE_CONTRACT_GUIDE.md`
-4. `dvc.yaml`
-5. `dvc.lock`
-6. `params.yaml`
-7. `metrics.json`
-8. `state-summary.json`
-9. `release-summary.json`
-10. `review-queue.json`
-11. `publish-v1/manifest.json`
-12. `publish-v1/report.md`
-
-That order mirrors the course: repository contract, declared graph, recorded execution,
-declared inputs, measured outcome, promoted interface, and human-readable report.
-
-## What this tour does not replace
-
-The tour is corroboration, not first-contact teaching. If state identity, promotion, or
-recovery still feels abstract, return to the course module first and then come back.
+- use `REVIEW_ROUTE_GUIDE.md` when the question might be narrower than the tour
+- use `PUBLISH_CONTRACT.md` when the question is specifically downstream trust
+- use `RECOVERY_GUIDE.md` when the question is specifically restore and remote durability
+- use `SOURCE_GUIDE.md` when you know the question but not the owning file
