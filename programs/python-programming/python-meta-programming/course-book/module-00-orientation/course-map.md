@@ -71,7 +71,7 @@ Use this when you are reviewing stronger runtime hooks or deciding whether the d
 | Where should this behavior live: wrapper, attribute, or class boundary? | control and ownership route | Modules 04 to 08 |
 | Is a metaclass or other high-power hook truly justified? | class-creation and governance route | Modules 09 to 10 |
 
-This keeps the course tied to human questions instead of forcing the learner to remember module numbers first.
+This keeps the course tied to human questions instead of forcing you to remember module numbers first.
 
 ## Quick module summary
 
