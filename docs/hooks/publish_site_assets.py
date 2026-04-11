@@ -13,6 +13,21 @@ ROOT_ICON_FILENAMES = (
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SHARED_ICON_SOURCE_DIR = REPO_ROOT / "docs" / "assets" / "site-icons"
+ROOT_REDIRECT_TARGET = "library/"
+ROOT_REDIRECT_HTML = f"""<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Bijux Masterclass</title>
+    <meta http-equiv="refresh" content="0; url={ROOT_REDIRECT_TARGET}">
+    <link rel="canonical" href="{ROOT_REDIRECT_TARGET}">
+    <script>location.replace("{ROOT_REDIRECT_TARGET}");</script>
+  </head>
+  <body>
+    <p>Redirecting to <a href="{ROOT_REDIRECT_TARGET}">{ROOT_REDIRECT_TARGET}</a>.</p>
+  </body>
+</html>
+"""
 
 
 def _icon_source_dir(config) -> Path:
@@ -24,7 +39,7 @@ def _icon_source_dir(config) -> Path:
 
 
 def on_post_build(config) -> None:
-    """Publish browser-probed site icons into the built site root."""
+    """Publish root assets needed by the built site."""
     site_dir = Path(config.site_dir)
     icon_source_dir = _icon_source_dir(config)
 
@@ -35,3 +50,5 @@ def on_post_build(config) -> None:
         destination_path = site_dir / filename
         destination_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source_path, destination_path)
+
+    (site_dir / "index.html").write_text(ROOT_REDIRECT_HTML, encoding="utf-8")
