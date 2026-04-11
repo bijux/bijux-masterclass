@@ -48,7 +48,7 @@ and expected outputs visible while following the story.
 | activate rules | where lifecycle permission actually lives | `tests/test_policy_lifecycle.py` |
 | observe samples | which boundary evaluates behavior versus coordinates flow | `runtime.py` and `policies.py` |
 | publish incidents | which outputs are derived rather than authoritative | `read_models.py` and `projections.py` |
-| inspect snapshot | which learner-facing route best shows current state | `PROOF_GUIDE.md` |
+| inspect snapshot | which inspection route best shows current state | `PROOF_GUIDE.md` |
 
 ## Best command route
 
@@ -58,13 +58,13 @@ and expected outputs visible while following the story.
 
 The current demo output is intentionally staged: it prints policy creation, rule
 registration, activation, sample observation, and derived-state inspection as separate
-moments so the learner can follow the story without reading code first.
+moments so you can follow the story without reading code first.
 
 ## Why this route matters
 
 The tour reveals the architectural promise of the capstone:
 
-- the learner drives the system through a readable application surface
+- you drive the system through a readable application surface
 - the aggregate stays responsible for lifecycle and evaluation decisions
 - the runtime coordinates external concerns without owning the domain rules
 - the read models remain derived artifacts after events are emitted

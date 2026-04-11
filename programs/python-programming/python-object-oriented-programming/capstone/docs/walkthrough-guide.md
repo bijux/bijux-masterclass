@@ -21,8 +21,8 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this guide when you want the shortest sane first pass through the capstone. It is for
-learners who need a deliberate route from scenario story to ownership and proof.
+Use this guide when you want the shortest sane first pass through the capstone and need
+a deliberate route from scenario story to ownership and proof.
 
 ## Recommended first route
 
@@ -38,7 +38,7 @@ That route keeps story first, package ownership second, inspection third, and pr
 
 ## What to look for
 
-- where the learner-facing application surface ends and aggregate authority begins
+- where the public application surface ends and aggregate authority begins
 - how a rule moves from registration to activation before evaluation
 - where incidents become derived views instead of authoritative state
 - which inspection route is best for summary, rule state, or incident history
@@ -47,7 +47,7 @@ That route keeps story first, package ownership second, inspection third, and pr
 
 | After you inspect... | You should be able to answer... | If not, go next to... |
 | --- | --- | --- |
-| `make demo` output | what story the learner can follow without internals and where each stage hands off | `TOUR.md` |
+| `make demo` output | what story you can follow without internals and where each stage hands off | `TOUR.md` |
 | `TOUR.md` | where the scenario hands off from application surface to domain ownership | `PACKAGE_GUIDE.md` |
 | inspection bundles | which outputs describe state versus derived incident history | `PROOF_GUIDE.md` |
 | `TEST_GUIDE.md` | which suite would fail first if the story stopped matching the design | `PROOF_GUIDE.md` |
@@ -69,7 +69,7 @@ Goal: understand the scenario and the main ownership boundaries.
 * `make inspect-history`
 * `TEST_GUIDE.md`
 
-Goal: connect the story to the learner-facing review surfaces and the tests.
+Goal: connect the story to the review surfaces and the tests.
 
 ### 45-minute route
 
