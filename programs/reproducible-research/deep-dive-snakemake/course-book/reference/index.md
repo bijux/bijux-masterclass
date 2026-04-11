@@ -2,7 +2,6 @@
 
 # Reference
 
-
 <!-- page-maps:start -->
 ## Reference Position
 
@@ -16,53 +15,48 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
+  question["Name the question"] --> page["Choose the page that answers it"]
+  page --> compare["Compare the current repository or claim against that boundary"]
+  compare --> decision["Turn that comparison into a keep, change, or reject call"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
+This shelf is for recurring questions, not first exposure. Use it when you already know
+roughly what the course is teaching and need a durable answer about language, ownership,
+workflow boundaries, or review routes.
 
-Use this page when you already know the course flow and need a stable reference surface
-instead of a learner-entry guide.
+## Start here by question
 
----
+| If the question is... | Start here | Then read |
+| --- | --- | --- |
+| what does this term mean locally | [Glossary](glossary.md) | the page or module that used it |
+| where does this idea sit in the course | [Module Dependency Map](module-dependency-map.md) | [Practice Map](practice-map.md) |
+| which surface is authoritative for this trust question | [Boundary Map](boundary-map.md) | [Repository Layer Guide](repository-layer-guide.md) |
+| what kind of workflow mistake am I seeing | [Anti-Pattern Atlas](anti-pattern-atlas.md) | the matching module or capstone guide |
+| what should count as finished understanding | [Completion Rubric](completion-rubric.md) | the capstone route that corroborates it |
 
-## Vocabulary And Concepts
+## What these pages are for
 
-* [Glossary](glossary.md)
-* [Topic Boundaries](topic-boundaries.md)
+- vocabulary that stays stable across modules and capstone review
+- ownership maps for workflow meaning, policy, and downstream trust
+- symptom-led routes into common Snakemake mistakes
+- standards for deciding whether learning or review work is actually complete
+
+## What this shelf is not for
+
+Do not use these pages as a substitute for the modules when the underlying concept is
+still new. These pages compress decisions and boundaries. They work best after at least
+one full read of the relevant lesson or capstone guide.
+
+## Reference pages
+
+- [Glossary](glossary.md)
+- [Topic Boundaries](topic-boundaries.md)
+- [Module Dependency Map](module-dependency-map.md)
+- [Practice Map](practice-map.md)
+- [Boundary Map](boundary-map.md)
+- [Repository Layer Guide](repository-layer-guide.md)
+- [Anti-Pattern Atlas](anti-pattern-atlas.md)
+- [Completion Rubric](completion-rubric.md)
 
 [Back to top](#top)
-
----
-
-## Study And Proof Routing
-
-* [Module Dependency Map](module-dependency-map.md)
-* [Practice Map](practice-map.md)
-* [Anti-Pattern Atlas](anti-pattern-atlas.md)
-
-[Back to top](#top)
-
----
-
-## Boundary And Repository Review
-
-* [Boundary Map](boundary-map.md)
-* [Repository Layer Guide](repository-layer-guide.md)
-
-[Back to top](#top)
-
----
-
-## Completion And Stewardship
-
-* [Completion Rubric](completion-rubric.md)
-
-[Back to top](#top)
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between standards, checklists, prompts, and boundary calls.
