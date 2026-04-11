@@ -2,49 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Introducing Laziness"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  eager["Start with a pipeline that keeps building lists"] --> cost["Notice the memory cost and forced work"]
+  cost --> stream["Replace intermediate lists with generators"]
+  stream --> edge["Materialize only at a deliberate edge"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson becomes important the moment a pipeline is conceptually simple but operationally wasteful. If the code keeps building full intermediate lists just to throw most of them away, laziness is not an optimization trick anymore. It is the clearer design.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Waste Pattern
 
-Here's a snippet from the progression map:
+Students often learn generators as syntax first and purpose second. The purpose here is simpler: stop doing all the work up front when the consumer only needs a stream.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If each stage returns a new list, ask whether the next stage really needs the whole collection.
+- If memory usage grows with every intermediate transformation, the pipeline boundary is probably in the wrong place.
+- If the code only needs a prefix or one pass, eager materialization is hiding unnecessary work.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you replace eager, memory-hungry list comprehensions with lazy generators—so pipelines stay efficient, composable, and only compute what’s needed?
 
-This core introduces **laziness with generators** in Python:  
-- Treat data as **on-demand streams** rather than materialized lists.  
-- Default to **generator expressions** for lazy computation, no upfront allocation.  
-- Build on Core 1/2 for streaming pipelines.
+This lesson introduces laziness in the way students need to apply it:
 
-We continue the **running project** from `m02-rag.md`—extending the FuncPipe RAG Builder—to ground every concept. This project evolves across all 10 cores: start with an eager, memory-bound version; end with lazy, scalable streams.
+- treat intermediate results as on-demand streams instead of permanent collections
+- keep generator-based stages composable with the configurators and expressions introduced earlier
+- choose one place where materialization is allowed instead of letting it leak everywhere
 
-**Audience:** Developers from Core 2 using expression-oriented pipelines but still materializing large lists with `[...]` comprehensions, risking OOM.  
+The running project keeps the lesson honest: laziness is useful when it preserves a readable pipeline while reducing waste, not when it turns every example into a generator puzzle.
+
+**Audience:** Developers using expression-oriented pipelines but still materializing large lists with `[...]` comprehensions, risking unnecessary memory use and accidental eager work.  
 **Outcome:**  
 1. Spot eager materialization in code and explain why it wastes memory.  
 2. Refactor an eager list comprehension to a lazy generator.  
@@ -74,11 +65,11 @@ For a **real, runnable Module 01 codebase**, refresh the generated history route
 
 ### 1.3 Why This Matters Now
 
-With Core 2 expressions, your pipelines are declarative but eager (materializing huge lists mid-flow risks OOM on big data). Laziness makes them streaming, enabling infinite datasets and constant memory while composing with Core 1 configurators.
+Expression-oriented code made pipeline steps easier to see, but it did not stop those steps from eagerly building whole collections. This lesson addresses that gap. A lazy stage lets us preserve the same visible dataflow while postponing work until the next item is actually requested. That is what students need to understand before they can judge when laziness helps and when it only adds complexity.
 
 ### 1.4 Laziness as Values in 5 Lines
 
-Generators as first-class enable dynamic streams:
+The next snippet matters because it turns a chunking strategy into a reusable stream-producing value rather than a list-building helper.
 
 ```python
 from collections.abc import Callable, Generator
