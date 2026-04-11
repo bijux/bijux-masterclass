@@ -1,36 +1,44 @@
 # Reference
 
+This shelf is for durable object-oriented vocabulary, ownership questions, and review
+standards. Use it when the design pressure is already recognizable and you need a stable
+reference surface for making or reviewing a boundary decision.
 
-<!-- page-maps:start -->
-## Reference Position
+## Choose the right reference route
 
-```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
-```
+| If your question is... | Best page |
+| --- | --- |
+| What does this term mean locally? | [Glossary](glossary.md) |
+| Where does this design pressure sit in the course sequence? | [Module Dependency Map](module-dependency-map.md) |
+| What should I practice or prove next? | [Practice Map](practice-map.md) |
+| How should I review this object boundary? | [Review Checklist](review-checklist.md) |
+| Which sharper boundary question should I ask? | [Boundary Review Prompts](boundary-review-prompts.md) |
+| How can I turn this idea into active recall? | [Self-Review Prompts](self-review-prompts.md) |
+| What failure shape am I seeing? | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
+| What counts as genuinely complete understanding? | [Completion Rubric](completion-rubric.md) |
+| Does this question belong in the course center or at its edge? | [Topic Boundaries](topic-boundaries.md) |
 
-```mermaid
-flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
-```
-<!-- page-maps:end -->
+## What this shelf is for
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
+- keeping ownership, lifecycle, and collaboration language stable
+- reviewing object, aggregate, and extension boundaries with explicit criteria
+- connecting module order to local practice and capstone proof routes
+- deciding whether a boundary earns its complexity or should be simplified
 
-Use this section when you need stable review standards rather than a reading route.
-These pages are meant to stay open while designing or reviewing code, not only while
-reading the course front to back.
+## Guide set
 
-## Pages in this section
+- [Glossary](glossary.md)
+- [Module Dependency Map](module-dependency-map.md)
+- [Practice Map](practice-map.md)
+- [Review Checklist](review-checklist.md)
+- [Boundary Review Prompts](boundary-review-prompts.md)
+- [Self-Review Prompts](self-review-prompts.md)
+- [Anti-Pattern Atlas](anti-pattern-atlas.md)
+- [Completion Rubric](completion-rubric.md)
+- [Topic Boundaries](topic-boundaries.md)
 
-- [Glossary](glossary.md) for the recurring vocabulary around ownership, lifecycle, and collaboration boundaries
-- [Object Design Checklist](object-design-checklist.md) for object-level and aggregate-level design review
-- [Self-Review Prompts](self-review-prompts.md) for retrieval practice that sounds like design judgment instead of trivia
-- [Boundary Review Prompts](boundary-review-prompts.md) for API, persistence, runtime, and extension pressure
-- [Topic Boundaries](topic-boundaries.md) for what belongs in the center of the course and what only touches its edges
-- [Anti-Pattern Atlas](anti-pattern-atlas.md) for common OOP failure shapes and the modules that repair them
+## Stop here when
+
+- you know which object or layer the current question belongs to
+- you can turn that page into one explicit design judgment
+- you know whether the next move is back to a module or into the capstone

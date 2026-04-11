@@ -1,81 +1,44 @@
 # Reference
 
-<!-- page-maps:start -->
-## Reference Position
+This shelf is for durable Make vocabulary, boundary questions, and completion standards.
+Use it when the build concept is already recognizable and you need a stable review
+surface for graph truth, public targets, proof routes, or stewardship.
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
-```
+## Choose the right reference route
 
-```mermaid
-flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Choose the page that answers that question"]
-  lookup --> compare["Compare the current design or claim against the stated boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
-```
-<!-- page-maps:end -->
-
-This shelf is for recurring questions, not first exposure. Use it when you already know
-roughly what the course is teaching and need a durable answer about language, ownership,
-debugging order, or proof routes.
-
-## Start here by question
-
-| If the question is... | Start here | Then read |
-| --- | --- | --- |
-| what does this term mean locally | the vocabulary section on this page | the page or module that used it |
-| where does this idea belong in the program | [Concept Index](concept-index.md) | the module-order section on that page |
-| which target is public and which is internal | [Public Targets](public-targets.md) | [Mk Layer Guide](mk-layer-guide.md) |
-| why is this build incident happening | [Incident Ladder](incident-ladder.md) | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
-| where should this artifact or review output live | [Artifact Boundary Guide](artifact-boundary-guide.md) | [Completion Rubric](completion-rubric.md) |
-
-## What these pages are for
-
-- maps: reading order, concept placement, and proof routing
-- boundaries: what belongs in the course, the capstone, and the public target surface
-- review aids: standards for judging clarity, stability, and build truth
-- failure aids: symptom-led routes into incidents and repair work
-
-## What this shelf is not for
-
-Do not use reference pages as a substitute for a module when the concept is still new.
-These pages compress ideas so you can move faster later. They are strongest after at
-least one full read of the relevant lesson or capstone guide.
-
-## Reference pages
-
-- [Topic Boundaries](topic-boundaries.md) for what the course treats as core, supporting, and boundary material
-- [Concept Index](concept-index.md) for locating where an idea is taught
-- [Anti-Pattern Atlas](anti-pattern-atlas.md) for routing common Make smells to the right repair path
-- [Completion Rubric](completion-rubric.md) for module-to-proof routing and review standards
-- [Public Targets](public-targets.md) for stable command surfaces
-- [Incident Ladder](incident-ladder.md) for debugging order under pressure
-- [Mk Layer Guide](mk-layer-guide.md) for the layered build architecture
-- [Artifact Boundary Guide](artifact-boundary-guide.md) for separating outputs, proofs, and teaching surfaces
-- [Public Targets](public-targets.md) for stable command surfaces and the selftest proof harness
-- [Completion Rubric](completion-rubric.md) for course and repository review
-
-## Shelf vocabulary
-
-Use this section when a reference-page name is familiar enough to recognize but still too
-fuzzy to choose confidently. The point is not to memorize the shelf. The point is to keep
-the local meaning of each page stable while you move between modules, repository review,
-and capstone evidence.
-
-| Term | Meaning in Deep Dive Make |
+| If your question is... | Best page |
 | --- | --- |
-| Anti-Pattern Atlas | A symptom-led catalog of recurring build mistakes, used when you recognize a smell before you recognize the module that explains it. |
-| Artifact Boundary Guide | The reference page that separates build outputs, review bundles, and teaching materials so publication and proof do not blur together. |
-| Completion Rubric | The review standard for deciding whether a module, capstone change, or teaching surface is clear enough to keep as-is. |
-| Concept Index | A lookup page that tells you where a concept is taught, reinforced, and proven across the program. |
-| Incident Ladder | The debugging order for build incidents: start with intent, then trace causality, then escalate into smaller repros only when needed. |
-| Mk Layer Guide | The description of what belongs in the top-level `Makefile` versus `mk/*.mk` helper layers. |
-| Module Dependency Map | The reading-order map that shows which modules support later ones and which lessons should come first. |
-| Practice Map | The crosswalk from module work to the capstone routes that corroborate the same ideas. |
-| Public Targets | The stable command surface a learner or reviewer should rely on without reading every recipe in the repository. |
-| Selftest Map | The page that explains how the selftest harness demonstrates convergence, schedule equivalence, and hidden-input detection. |
-| Topic Boundaries | The page that distinguishes core course material from supporting context and out-of-scope extensions. |
+| What does this term mean locally? | [Glossary](glossary.md) |
+| Where does this idea sit in the course sequence? | [Module Dependency Map](module-dependency-map.md) |
+| What should I practice or prove next? | [Practice Map](practice-map.md) |
+| How should I review this build claim? | [Review Checklist](review-checklist.md) |
+| Which sharper boundary question should I ask? | [Boundary Review Prompts](boundary-review-prompts.md) |
+| How can I turn this idea into active recall? | [Self-Review Prompts](self-review-prompts.md) |
+| What failure shape am I seeing? | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
+| What counts as genuinely complete understanding? | [Completion Rubric](completion-rubric.md) |
+| Does this question belong in the course center or at its edge? | [Topic Boundaries](topic-boundaries.md) |
+
+## What this shelf is for
+
+- keeping graph truth, public target, artifact, and stewardship language stable
+- turning build review into explicit keep, change, or reject calls
+- connecting module order to local proof loops and capstone follow-up
+- deciding whether a Make build deserves trust beyond one successful run
+
+## Guide set
+
+- [Glossary](glossary.md)
+- [Module Dependency Map](module-dependency-map.md)
+- [Practice Map](practice-map.md)
+- [Review Checklist](review-checklist.md)
+- [Boundary Review Prompts](boundary-review-prompts.md)
+- [Self-Review Prompts](self-review-prompts.md)
+- [Anti-Pattern Atlas](anti-pattern-atlas.md)
+- [Completion Rubric](completion-rubric.md)
+- [Topic Boundaries](topic-boundaries.md)
+
+## Stop here when
+
+- you know which reference page answers the current build or review question
+- you can turn that page into one explicit judgment
+- you know whether the next move is back to a module or into the capstone

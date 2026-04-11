@@ -1,55 +1,44 @@
 # Reference
 
-<!-- page-maps:start -->
-## Reference Position
+This shelf is for durable metaprogramming vocabulary, escalation rules, and review
+judgment. Use it when the mechanism is already recognizable and you need help deciding
+whether it belongs at all, where it belongs, or how to prove it cleanly.
 
-```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Metaprogramming"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
-```
+## Choose the right reference route
 
-```mermaid
-flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
-```
-<!-- page-maps:end -->
+| If your question is... | Best page |
+| --- | --- |
+| What does this term mean locally? | [Glossary](glossary.md) |
+| Where does this mechanism sit in the course sequence? | [Module Dependency Map](module-dependency-map.md) |
+| What should I practice or prove next? | [Practice Map](practice-map.md) |
+| How should I review this mechanism? | [Review Checklist](review-checklist.md) |
+| Which sharper boundary question should I ask? | [Boundary Review Prompts](boundary-review-prompts.md) |
+| How can I turn this idea into active recall? | [Self-Review Prompts](self-review-prompts.md) |
+| What failure shape am I seeing? | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
+| What counts as genuinely complete understanding? | [Completion Rubric](completion-rubric.md) |
+| Does this mechanism belong in the course center or at its edge? | [Topic Boundaries](topic-boundaries.md) |
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
+## What this shelf is for
 
-Use this section when you need durable course standards rather than a reading route.
-These pages are meant to stay open while you review code, not only while you learn the
-module arc for the first time.
+- keeping lower-power and higher-power runtime choices distinguishable
+- reviewing decorators, descriptors, and metaclasses without magic-language shortcuts
+- connecting module order to practice and capstone proof surfaces
+- forcing stronger runtime tools to justify their blast radius
 
-## Start with the decision you need to make
+## Guide set
 
-### "Should this use a stronger runtime mechanism at all?"
-
-- [Review Checklist](review-checklist.md)
-- [Topic Boundaries](topic-boundaries.md)
-- [Anti-Pattern Atlas](anti-pattern-atlas.md)
-
-### "How should I review or reject this design?"
-
+- [Glossary](glossary.md)
+- [Module Dependency Map](module-dependency-map.md)
+- [Practice Map](practice-map.md)
 - [Review Checklist](review-checklist.md)
 - [Boundary Review Prompts](boundary-review-prompts.md)
 - [Self-Review Prompts](self-review-prompts.md)
+- [Anti-Pattern Atlas](anti-pattern-atlas.md)
+- [Completion Rubric](completion-rubric.md)
+- [Topic Boundaries](topic-boundaries.md)
 
-### "What does this course mean by this term?"
+## Stop here when
 
-- [Glossary](glossary.md)
-
-## Good use of this shelf
-
-- Bring one reference page into an active review question.
-- Compare the current code against the boundary on that page.
-- Leave with one keep, change, or reject decision.
-- Return to modules or capstone guides only after the decision is named.
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between standards, checklists, prompts, and boundary calls.
+- you know the lowest honest mechanism for the current problem
+- you can turn that judgment into one keep, change, or reject call
+- you know whether the next move is back to a module or into the capstone

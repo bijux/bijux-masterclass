@@ -1,59 +1,44 @@
 # Reference
 
-<!-- page-maps:start -->
-## Reference Position
+This shelf is for durable Snakemake vocabulary, boundary questions, and completion
+standards. Use it when the workflow concept is already recognizable and you need a stable
+review surface for contracts, dynamic discovery, operating policy, or publish trust.
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
-```
+## Choose the right reference route
 
-```mermaid
-flowchart TD
-  question["Name the question"] --> page["Choose the page that answers it"]
-  page --> compare["Compare the current repository or claim against that boundary"]
-  compare --> decision["Turn that comparison into a keep, change, or reject call"]
-```
-<!-- page-maps:end -->
+| If your question is... | Best page |
+| --- | --- |
+| What does this term mean locally? | [Glossary](glossary.md) |
+| Where does this idea sit in the course sequence? | [Module Dependency Map](module-dependency-map.md) |
+| What should I practice or prove next? | [Practice Map](practice-map.md) |
+| How should I review this workflow claim? | [Review Checklist](review-checklist.md) |
+| Which sharper boundary question should I ask? | [Boundary Review Prompts](boundary-review-prompts.md) |
+| How can I turn this idea into active recall? | [Self-Review Prompts](self-review-prompts.md) |
+| What workflow failure shape am I seeing? | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
+| What counts as genuinely complete understanding? | [Completion Rubric](completion-rubric.md) |
+| Does this question belong in the course center or at its edge? | [Topic Boundaries](topic-boundaries.md) |
 
-This shelf is for recurring questions, not first exposure. Use it when you already know
-roughly what the course is teaching and need a durable answer about language, ownership,
-workflow boundaries, or review routes.
+## What this shelf is for
 
-## Start here by question
+- keeping workflow contracts, discovery evidence, policy, and publish language stable
+- turning workflow review into explicit keep, change, or reject calls
+- connecting module order to local proof loops and capstone follow-up
+- deciding whether a workflow claim is backed by the right contract or evidence surface
 
-| If the question is... | Start here | Then read |
-| --- | --- | --- |
-| what does this term mean locally | [Glossary](glossary.md) | the page or module that used it |
-| where does this idea sit in the course | [Module Dependency Map](module-dependency-map.md) | [Practice Map](practice-map.md) |
-| which surface is authoritative for this trust question | [Boundary Map](boundary-map.md) | [Repository Layer Guide](repository-layer-guide.md) |
-| what kind of workflow mistake am I seeing | [Anti-Pattern Atlas](anti-pattern-atlas.md) | the matching module or capstone guide |
-| what should count as finished understanding | [Completion Rubric](completion-rubric.md) | the capstone route that corroborates it |
-
-## What these pages are for
-
-- vocabulary that stays stable across modules and capstone review
-- ownership maps for workflow meaning, policy, and downstream trust
-- symptom-led routes into common Snakemake mistakes
-- standards for deciding whether learning or review work is actually complete
-
-## What this shelf is not for
-
-Do not use these pages as a substitute for the modules when the underlying concept is
-still new. These pages compress decisions and boundaries. They work best after at least
-one full read of the relevant lesson or capstone guide.
-
-## Reference pages
+## Guide set
 
 - [Glossary](glossary.md)
-- [Topic Boundaries](topic-boundaries.md)
 - [Module Dependency Map](module-dependency-map.md)
 - [Practice Map](practice-map.md)
-- [Boundary Map](boundary-map.md)
-- [Repository Layer Guide](repository-layer-guide.md)
+- [Review Checklist](review-checklist.md)
+- [Boundary Review Prompts](boundary-review-prompts.md)
+- [Self-Review Prompts](self-review-prompts.md)
 - [Anti-Pattern Atlas](anti-pattern-atlas.md)
 - [Completion Rubric](completion-rubric.md)
+- [Topic Boundaries](topic-boundaries.md)
 
+## Stop here when
+
+- you know which workflow boundary owns the current question
+- you can turn that page into one explicit trust judgment
+- you know whether the next move is back to a module or into the capstone

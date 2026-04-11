@@ -1,59 +1,44 @@
 # Reference
 
-<!-- page-maps:start -->
-## Reference Position
+This shelf is for durable DVC vocabulary, boundary questions, and completion standards.
+Use it when the module idea is already recognizable and you need a stable review surface
+for state authority, comparability, promotion, or recovery.
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
-```
+## Choose the right reference route
 
-```mermaid
-flowchart TD
-  question["Name the question"] --> page["Choose the page that answers it"]
-  page --> compare["Compare the current repository or claim against that boundary"]
-  compare --> decision["Turn that comparison into a keep, change, or reject call"]
-```
-<!-- page-maps:end -->
+| If your question is... | Best page |
+| --- | --- |
+| What does this term mean locally? | [Glossary](glossary.md) |
+| Where does this idea sit in the course sequence? | [Module Dependency Map](module-dependency-map.md) |
+| What should I practice or prove next? | [Practice Map](practice-map.md) |
+| How should I review this repository claim? | [Review Checklist](review-checklist.md) |
+| Which sharper boundary question should I ask? | [Boundary Review Prompts](boundary-review-prompts.md) |
+| How can I turn this idea into active recall? | [Self-Review Prompts](self-review-prompts.md) |
+| What reproducibility failure shape am I seeing? | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
+| What counts as genuinely complete understanding? | [Completion Rubric](completion-rubric.md) |
+| Does this question belong in the course center or at its edge? | [Topic Boundaries](topic-boundaries.md) |
 
-This shelf is for recurring DVC questions, not first exposure. Use it when you already
-know roughly what the course is teaching and need a durable answer about state authority,
-evidence boundaries, or route selection.
+## What this shelf is for
 
-## Start here by question
+- keeping state authority, evidence types, and recovery language stable
+- turning repository review into explicit keep, change, or reject calls
+- connecting module order to practice loops and capstone proof routes
+- deciding whether a trust claim is backed by the right evidence surface
 
-| If the question is... | Start here | Then read |
-| --- | --- | --- |
-| what does this term mean locally | [Glossary](glossary.md) | the page or module that used it |
-| which state layer is allowed to settle this question | [Authority Map](authority-map.md) | [Evidence Boundary Guide](evidence-boundary-guide.md) |
-| what kind of reproducibility mistake am I seeing | [Anti-Pattern Atlas](anti-pattern-atlas.md) | the matching module or capstone guide |
-| which command or bundle should I use first | [Verification Route Guide](verification-route-guide.md) | the matching capstone route |
-| what should count as finished understanding | [Completion Rubric](completion-rubric.md) | the capstone route that corroborates it |
+## Guide set
 
-## What these pages are for
-
-- vocabulary that stays stable across modules and capstone review
-- authority maps for declaration, execution, promotion, and recovery
-- symptom-led routes into common DVC mistakes
-- standards for deciding whether learning or review work is actually complete
-
-## What this shelf is not for
-
-Do not use these pages as a substitute for the modules when the underlying concept is
-still new. These pages compress boundaries and decisions. They work best after at least
-one full read of the relevant lesson or capstone guide.
-
-## Reference pages
-
-- [Module Dependency Map](module-dependency-map.md)
-- [Authority Map](authority-map.md)
-- [Evidence Boundary Guide](evidence-boundary-guide.md)
 - [Glossary](glossary.md)
-- [Topic Boundaries](topic-boundaries.md)
+- [Module Dependency Map](module-dependency-map.md)
 - [Practice Map](practice-map.md)
+- [Review Checklist](review-checklist.md)
+- [Boundary Review Prompts](boundary-review-prompts.md)
+- [Self-Review Prompts](self-review-prompts.md)
 - [Anti-Pattern Atlas](anti-pattern-atlas.md)
-- [Verification Route Guide](verification-route-guide.md)
 - [Completion Rubric](completion-rubric.md)
+- [Topic Boundaries](topic-boundaries.md)
+
+## Stop here when
+
+- you know which state or evidence surface owns the current question
+- you can turn that page into one explicit trust judgment
+- you know whether the next move is back to a module or into the capstone

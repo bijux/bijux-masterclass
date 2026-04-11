@@ -1,36 +1,44 @@
 # Reference
 
-<!-- page-maps:start -->
-## Reference Position
+This shelf is for durable functional-programming vocabulary, review questions, and
+completion standards. Use it when the module idea is already recognizable and you need a
+stable reference surface for design or review.
 
-```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
-```
+## Choose the right reference route
 
-```mermaid
-flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
-```
-<!-- page-maps:end -->
+| If your question is... | Best page |
+| --- | --- |
+| What does this term mean locally? | [Glossary](glossary.md) |
+| Where does this idea sit in the course sequence? | [Module Dependency Map](module-dependency-map.md) |
+| What should I practice or prove next? | [Practice Map](practice-map.md) |
+| How should I review this design? | [Review Checklist](review-checklist.md) |
+| Which sharper boundary question should I ask? | [Boundary Review Prompts](boundary-review-prompts.md) |
+| How can I turn this idea into active recall? | [Self-Review Prompts](self-review-prompts.md) |
+| What failure shape am I seeing? | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
+| What counts as genuinely complete understanding? | [Completion Rubric](completion-rubric.md) |
+| Does this question even belong in the course center? | [Topic Boundaries](topic-boundaries.md) |
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
+## What this shelf is for
 
-Use this section when you need durable language, review criteria, or proof prompts rather
-than a reading route. Keep these pages open while designing or reviewing code in the
-course or the capstone.
+- keeping purity, failure modelling, and effect boundaries described with stable language
+- turning review into explicit keep, change, or reject calls
+- connecting module order to practice surfaces and capstone follow-up
+- deciding whether a claimed functional design actually deserves trust
 
-## Pages in this section
+## Guide set
 
-- [Glossary](glossary.md) for the course vocabulary that appears across modules and the capstone
-- [Review Checklist](review-checklist.md) for the stable engineering rules and review defaults that define acceptable functional design in this course
-- [Functional Anti-Pattern Atlas](anti-pattern-atlas.md) for recurring failure shapes and the repair route back to the course
-- [Boundary Review Prompts](boundary-review-prompts.md) for sharper keep, change, or reject questions during review
-- [Review Checklist](review-checklist.md) for code review and capstone inspection
-- [Self-Review Prompts](self-review-prompts.md) for turning module ideas into retrieval practice and design judgment
-- [Topic Boundaries](topic-boundaries.md) for deciding whether a question belongs in the course center, on its edge, or outside it
+- [Glossary](glossary.md)
+- [Module Dependency Map](module-dependency-map.md)
+- [Practice Map](practice-map.md)
+- [Review Checklist](review-checklist.md)
+- [Boundary Review Prompts](boundary-review-prompts.md)
+- [Self-Review Prompts](self-review-prompts.md)
+- [Anti-Pattern Atlas](anti-pattern-atlas.md)
+- [Completion Rubric](completion-rubric.md)
+- [Topic Boundaries](topic-boundaries.md)
+
+## Stop here when
+
+- you know which reference page answers the current design or review question
+- you can turn that page into one explicit judgment
+- you know whether the next move is back to a module or into the capstone
