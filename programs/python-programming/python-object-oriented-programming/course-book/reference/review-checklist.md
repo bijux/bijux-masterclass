@@ -1,4 +1,4 @@
-# Object Design Checklist
+# Review Checklist
 
 
 <!-- page-maps:start -->
@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> reference["Object Design Checklist"]
+  program --> reference["Review Checklist"]
   reference --> review["Design or review decision"]
   review --> capstone["Capstone proof surface"]
 ```

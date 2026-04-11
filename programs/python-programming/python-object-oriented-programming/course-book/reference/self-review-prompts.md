@@ -61,7 +61,7 @@ design decisions, not like a glossary quiz.
 
 ## Best companion pages
 
-- `object-design-checklist.md`
+- `review-checklist.md`
 - `boundary-review-prompts.md`
 - `anti-pattern-atlas.md`
 - `topic-boundaries.md`
