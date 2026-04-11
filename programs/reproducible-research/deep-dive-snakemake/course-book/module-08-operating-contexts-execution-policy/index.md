@@ -1,299 +1,107 @@
-<a id="top"></a>
-
 # Module 08: Operating Contexts and Execution Policy
 
-
-<!-- page-maps:start -->
-## Module Position
-
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> module["Module 08: Operating Contexts and Execution Policy"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
-```
-
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
-
 A workflow that only works under one command on one machine is not yet operationally
-sound. Snakemake becomes much more useful when the workflow semantics stay stable while
-the operating context changes: local development, CI, scheduled execution, scratch space,
-or a different executor plugin.
+serious.
 
-This module is about drawing that line cleanly. Profiles, executor settings, latency
-knobs, storage choices, retries, and staging policies should change *how* the workflow is
-run, not silently rewrite what the workflow means.
+But a workflow that changes meaning every time the operating context changes is not
+reproducible either.
 
-Capstone exists here as corroboration. The local exercises should already make the
-execution-policy boundary understandable before you compare local, CI, and scheduler
-profiles in the reference workflow.
+This module is about keeping those two truths separate.
 
-### Before You Begin
+You will learn how to:
 
-This module works best after Modules 01-07, especially the parts on dynamic DAGs,
-profiles, file APIs, and publish boundaries.
+- treat profiles as policy rather than hidden workflow logic
+- compare local, CI, and scheduler contexts without semantic drift
+- decide which retries and latency settings are operational help versus correctness crutches
+- reason about storage, staging, and scratch boundaries honestly
+- review operating-context changes before “works here, fails there” becomes normal
 
-Use this module if you need to learn how to:
+The capstone corroboration surface for this module is the set of operating-policy files and
+audit routes around them: `profiles/local/config.yaml`, `profiles/ci/config.yaml`,
+`profiles/slurm/config.yaml`, the `profile-audit` bundle in the Makefile, and the guides
+that explain profile review and execution evidence.
 
-* separate workflow semantics from local, CI, and cluster policy
-* keep retries, latency waits, and staging decisions from becoming hidden correctness crutches
-* review whether executor or storage changes are safe before a workflow is scaled up
+## Why this module exists
 
-Proof loop for this module:
+Many workflow teams eventually hit the same confusion:
+
+- a profile changes and nobody knows whether the workflow meaning changed too
+- retries are raised because failures are unexplained
+- CI, local, and cluster runs all feel slightly different, but the difference is not named
+- storage or latency assumptions live in folklore instead of in reviewable policy
+
+This module repairs those problems by teaching operating context as a boundary, not as a
+grab bag of flags.
+
+## Study route
+
+```mermaid
+flowchart LR
+  overview["Overview"] --> core1["Core 1: profiles as policy"]
+  core1 --> core2["Core 2: executors and semantic stability"]
+  core2 --> core3["Core 3: retries, latency, and failure discipline"]
+  core3 --> core4["Core 4: staging, storage, and scratch boundaries"]
+  core4 --> core5["Core 5: operating-context review"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
+```
+
+Read the module in that order if profiles and execution contexts still feel like one
+undifferentiated topic.
+
+If the basic problem is already clear, use this shortcut:
+
+- open Core 1 if your question is mostly about profile boundaries
+- open Core 3 if your question is mostly about retries, incomplete outputs, and failure policy
+- open Core 5 if your question is mostly about review and drift across contexts
+
+## Module map
+
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `profiles-as-policy-and-semantic-boundaries.md` | teaches what profiles may and may not own |
+| `executors-queues-and-context-invariant-workflow-meaning.md` | teaches how execution surfaces can vary without changing the workflow contract |
+| `retries-latency-and-failure-discipline.md` | teaches operational help versus hidden correctness debt |
+| `staging-storage-and-filesystem-assumptions.md` | teaches where operating contexts touch data locality and visibility |
+| `reviewing-operating-context-drift-and-policy-leaks.md` | teaches how to review profile and executor changes honestly |
+| `worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md` | walks through a concrete policy audit route |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
+
+## What should be clear by the end
+
+By the end of this module, you should be able to explain:
+
+- which settings belong in profiles and which do not
+- why executor changes should alter operations rather than workflow meaning
+- how retries and latency waits can help or hide problems
+- why staging and storage assumptions need explicit review
+- how to tell whether an operating-context change is policy drift or semantic drift
+
+## Capstone route
+
+Use the capstone only after the local module ideas are already legible.
+
+Best corroboration surfaces for this module:
+
+- `capstone/profiles/local/config.yaml`
+- `capstone/profiles/ci/config.yaml`
+- `capstone/profiles/slurm/config.yaml`
+- `capstone/Makefile`
+- [Profile Audit Guide](../capstone/profile-audit-guide.md)
+- [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md)
+
+Useful proof route:
 
 ```bash
 snakemake --profile profiles/local -n
 snakemake --profile profiles/ci -n
-snakemake --summary
+snakemake --profile profiles/slurm -n
+make profile-audit
 ```
 
-Capstone corroboration:
-
-* inspect `capstone/profiles/local/config.yaml`
-* inspect `capstone/profiles/ci/config.yaml`
-* inspect `capstone/profiles/slurm/config.yaml`
-* inspect `capstone/Makefile`
-
-## At a Glance
-
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| profiles as policy | "Which settings may change execution context without changing workflow meaning?" | inspect profile files only after the policy-versus-semantics split is explicit |
-| executor and storage boundaries | "What should stay true when the workflow moves from local runs to CI or SLURM?" | compare local, CI, and SLURM surfaces side by side |
-| failure discipline | "Which retries or staging choices are operational help, and which would hide a correctness problem?" | use the capstone when you are ready to read policy as evidence |
-
----
-
-<a id="toc"></a>
-## 1) Table of Contents
-
-1. [Table of Contents](#toc)
-2. [Learning Outcomes](#outcomes)
-3. [How to Use This Module](#usage)
-4. [Core 1 — Profiles as Policy, Not Workflow Logic](#core1)
-5. [Core 2 — Executor and Storage Boundaries](#core2)
-6. [Core 3 — Retries, Incomplete Output Handling, and Failure Discipline](#core3)
-7. [Core 4 — Staging, Scratch Space, and Shared Filesystem Reality](#core4)
-8. [Core 5 — Reviewing Operating Contexts for Drift](#core5)
-9. [Capstone Sidebar](#capstone)
-10. [Exercises](#exercises)
-11. [Closing Criteria](#closing)
-
----
-
-<a id="outcomes"></a>
-## 2) Learning Outcomes
-
-By the end of this module, you can:
-
-* use profiles to encode operating policy without changing workflow semantics
-* explain which executor or storage differences should matter and which should not
-* treat retries and incomplete-output handling as explicit failure contracts
-* stage workflow data safely without hiding assumptions about shared filesystems
-* review operational drift before it causes “works here, fails there” behavior
-
-[Back to top](#top)
-
----
-
-<a id="usage"></a>
-## 3) How to Use This Module
-
-Set up one workflow with at least two profiles:
-
-```text
-lab/
-  workflow/
-    Snakefile
-  profiles/
-    local/
-      config.yaml
-    ci/
-      config.yaml
-  data/
-  config/
-```
-
-Make both profiles target the same logical workflow but with different operating policy:
-
-1. local development defaults
-2. stricter CI or batch-oriented defaults
-
-Then verify that changing profiles changes execution behavior and diagnostics, not the set
-of trusted outputs.
-
-[Back to top](#top)
-
----
-
-<a id="core1"></a>
-## 4) Core 1 — Profiles as Policy, Not Workflow Logic
-
-Profiles are where you put:
-
-* executor choice
-* core and resource defaults
-* printed command policy
-* latency and retry settings
-* storage or scheduler settings
-
-Profiles are *not* where you should hide:
-
-* changes to workflow inputs
-* silent output-path rewrites
-* config values that alter the scientific or analytical contract
-
-If moving from `profiles/local` to `profiles/ci` changes what the workflow is supposed to
-produce, your policy boundary is leaking into semantics.
-
-[Back to top](#top)
-
----
-
-<a id="core2"></a>
-## 5) Core 2 — Executor and Storage Boundaries
-
-Different operating contexts are real:
-
-* local execution
-* CI execution
-* SLURM or another scheduler
-* remote or staged storage
-
-But the workflow should still answer the same core questions:
-
-* what are the declared inputs?
-* what outputs are authoritative?
-* what changes are expected when a job is delayed, retried, or staged?
-
-Executor or storage differences are safest when:
-
-* the workflow file contract stays unchanged
-* resource expectations are declared rather than guessed
-* any staging path or scratch policy is explicit in review
-
-[Back to top](#top)
-
----
-
-<a id="core3"></a>
-## 6) Core 3 — Retries, Incomplete Output Handling, and Failure Discipline
-
-Retries are useful, but only when they represent a conscious failure contract.
-
-Good retry questions:
-
-* which failures are plausibly transient?
-* which failures indicate a wrong rule or broken environment?
-* what output cleanup happens if a job stops halfway?
-
-Bad retry habits:
-
-* adding retries because failures are unexplained
-* treating retries as a substitute for atomic outputs
-* leaving incomplete artifacts behind and hoping Snakemake will “sort it out”
-
-Operational discipline means a failed run remains understandable. Retries should make that
-easier, not murkier.
-
-[Back to top](#top)
-
----
-
-<a id="core4"></a>
-## 7) Core 4 — Staging, Scratch Space, and Shared Filesystem Reality
-
-Operating context becomes fragile when the workflow assumes:
-
-* metadata is instantly visible everywhere
-* scratch and publish paths behave the same
-* temporary state can be inspected later even though it is node-local
-* a shared filesystem will always make output discovery immediate
-
-Staging discipline means:
-
-* know where temporary work happens
-* know when a staged result becomes visible as a trusted output
-* keep publish boundaries separate from scratch policy
-* document latency-sensitive assumptions instead of treating them as folklore
-
-[Back to top](#top)
-
----
-
-<a id="core5"></a>
-## 8) Core 5 — Reviewing Operating Contexts for Drift
-
-Review questions for mature workflows:
-
-* does the profile encode policy or sneak in semantics?
-* do local and CI runs still agree on the published outputs?
-* are retries hiding an actual correctness defect?
-* would a filesystem or executor change alter only operations, or also meaning?
-* are staging assumptions written down where another engineer can find them?
-
-Operational drift often looks like convenience:
-
-* “just add this flag to the profile”
-* “CI can use a different path”
-* “the scheduler is flaky, raise retries”
-
-The right response is not always “never do that.” It is “name the boundary clearly before
-the workflow starts depending on accidents.”
-
-[Back to top](#top)
-
----
-
-<a id="capstone"></a>
-## 9) Capstone Sidebar
-
-Use the capstone to inspect:
-
-* `profiles/local`, `profiles/ci`, and `profiles/slurm` as policy surfaces
-* `Makefile` targets such as `wf-dryrun`, `verify`, and `confirm`
-* the distinction between clean-room confirmation and ordinary local workflow runs
-* how published artifacts remain the same even when the operating context changes
-
-[Back to top](#top)
-
----
-
-<a id="exercises"></a>
-## 10) Exercises
-
-1. Create two profiles for one workflow and show that they change operations without changing published results.
-2. Add a retry policy and explain which failures it is allowed to treat as transient.
-3. Simulate a staging or shared-filesystem assumption, then document the boundary that keeps publish results trustworthy.
-4. Review a profile file and identify one setting that belongs there and one that should move back into workflow or config code.
-
-[Back to top](#top)
-
----
-
-<a id="closing"></a>
-## 11) Closing Criteria
-
-You pass this module only if you can demonstrate:
-
-* at least two operating profiles with clear policy roles
-* stable workflow semantics across those profiles
-* failure handling that explains retries and incomplete outputs explicitly
-* operating-context assumptions documented well enough for another engineer to review
-
-[Back to top](#top)
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is not only to compare flags. It is to inspect whether the
+workflow promise stays stable while the operating policy changes.
