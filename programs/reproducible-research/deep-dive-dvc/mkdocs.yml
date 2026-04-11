@@ -85,6 +85,7 @@ nav:
           - "Worked Example: Auditing a Fragile ML Workflow": module-01-reproducibility-failures-real-teams/worked-example-auditing-a-fragile-ml-workflow.md
           - Exercises: module-01-reproducibility-failures-real-teams/exercises.md
           - Exercise Answers: module-01-reproducibility-failures-real-teams/exercise-answers.md
+          - Glossary: module-01-reproducibility-failures-real-teams/glossary.md
       - "Module 02: Data Identity and Content Addressing":
           - Overview: module-02-data-identity-content-addressing/index.md
       - "Module 03: Execution Environments as Inputs":
