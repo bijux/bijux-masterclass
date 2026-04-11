@@ -37,7 +37,7 @@ with executable code, tests, and operational boundaries.
 | What does this repository prove for the course? | [`INDEX.md`](docs/INDEX.md) | [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md) |
 | Which files should I read first? | [`INDEX.md`](docs/INDEX.md) | [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md) |
 | Which commands should I run? | [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md) | `make inspect`, `make verify-report`, or `make confirm` |
-| Which tests or artifacts justify a claim? | [`TEST_GUIDE.md`](docs/TEST_GUIDE.md) | [`SOURCE_TO_PROOF_MAP.md`](docs/SOURCE_TO_PROOF_MAP.md) |
+| Which tests or artifacts justify a claim? | [`TEST_GUIDE.md`](docs/TEST_GUIDE.md) | [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md) |
 | Where do purity, effects, and adapters live? | [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) | [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md) |
 | How should I review the repository as a human? | [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md) | [`TOUR.md`](docs/TOUR.md) |
 
@@ -122,12 +122,8 @@ History route:
 Proof route:
 
 - [`INDEX.md`](docs/INDEX.md)
-- [`CODE_ROUTE_MAP.md`](docs/CODE_ROUTE_MAP.md)
 - [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md)
 - [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md)
-- [`SOURCE_TO_PROOF_MAP.md`](docs/SOURCE_TO_PROOF_MAP.md)
-- [`TEST_READING_MAP.md`](docs/TEST_READING_MAP.md)
-- [`REVIEW_ROUTE_MAP.md`](docs/REVIEW_ROUTE_MAP.md)
 - [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md)
 - [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
 - [`TOUR.md`](docs/TOUR.md)
@@ -138,15 +134,15 @@ Proof route:
 
 - `INDEX.md` for the smallest honest route into the capstone doc set
 - `COMMAND_GUIDE.md` for choosing the smallest honest command and artifact route
-- `TEST_GUIDE.md` and `TEST_READING_MAP.md` for proof-first reading
-- `PACKAGE_GUIDE.md` and `CODE_ROUTE_MAP.md` for code-first reading
+- `TEST_GUIDE.md` and `PROOF_GUIDE.md` for proof-first reading
+- `PACKAGE_GUIDE.md` for code-first reading
 - `ARCHITECTURE.md` and `PUBLIC_SURFACE_MAP.md` for boundary ownership
-- `PROOF_GUIDE.md`, `REVIEW_ROUTE_MAP.md`, and `TOUR.md` for saved review routes
+- `PROOF_GUIDE.md` and `TOUR.md` for saved review routes
 
 Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
 effects, or orchestration should live.
 Use `INDEX.md` first whenever the capstone itself still feels too large.
-Use `CODE_ROUTE_MAP.md` first whenever you know the concept but not the current file route.
+Use `PACKAGE_GUIDE.md` first whenever you know the concept but not the current file route.
 Use `PUBLIC_SURFACE_MAP.md` when you ran a route and still need to know what it actually exposed.
 Use `PROOF_GUIDE.md` when you need to choose between fast inspection, saved review output,
 and the strongest confirmation route.
@@ -158,17 +154,13 @@ All capstone documentation lives under `docs/`. Use this index when you want
 the full guide surface from one place:
 
 - [`ARCHITECTURE.md`](docs/ARCHITECTURE.md)
-- [`CODE_ROUTE_MAP.md`](docs/CODE_ROUTE_MAP.md)
 - [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md)
 - [`EXTENSION_GUIDE.md`](docs/EXTENSION_GUIDE.md)
 - [`INDEX.md`](docs/INDEX.md)
 - [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md)
 - [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md)
 - [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md)
-- [`REVIEW_ROUTE_MAP.md`](docs/REVIEW_ROUTE_MAP.md)
-- [`SOURCE_TO_PROOF_MAP.md`](docs/SOURCE_TO_PROOF_MAP.md)
 - [`TEST_GUIDE.md`](docs/TEST_GUIDE.md)
-- [`TEST_READING_MAP.md`](docs/TEST_READING_MAP.md)
 - [`TOUR.md`](docs/TOUR.md)
 - [`WALKTHROUGH_GUIDE.md`](docs/WALKTHROUGH_GUIDE.md)
 

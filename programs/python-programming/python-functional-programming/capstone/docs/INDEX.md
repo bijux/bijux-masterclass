@@ -48,24 +48,24 @@ has one stable entry hub instead of two overlapping arrival pages.
 | what this capstone proves for the course | `README.md` |
 | what to read on a first pass | `ARCHITECTURE.md` |
 | which package owns this behavior | `PACKAGE_GUIDE.md` |
-| which current files should I open first for this concept | `CODE_ROUTE_MAP.md` |
+| which current files should I open first for this concept | `PACKAGE_GUIDE.md` |
 | which tests prove this claim | `TEST_GUIDE.md` |
-| which proof should fail first for this claim | `TEST_READING_MAP.md` |
+| which proof should fail first for this claim | `TEST_GUIDE.md` |
 | which command should I run | `COMMAND_GUIDE.md` |
 | what a command or artifact actually exposed | `PUBLIC_SURFACE_MAP.md` |
 | what the shortest human reading route is | `WALKTHROUGH_GUIDE.md` |
-| which route fits the current review pressure | `REVIEW_ROUTE_MAP.md` |
+| which route fits the current review pressure | `PROOF_GUIDE.md` |
 | where a change should go | `EXTENSION_GUIDE.md` |
-| how to prove a package or boundary change | `SOURCE_TO_PROOF_MAP.md` |
+| how to prove a package or boundary change | `PROOF_GUIDE.md` |
 
 ## Route groups
 
 - Arrival route: `README.md`, `ARCHITECTURE.md`, `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`
-- Code route: `ARCHITECTURE.md`, `CODE_ROUTE_MAP.md`, `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`
+- Code route: `ARCHITECTURE.md`, `PACKAGE_GUIDE.md`, `TEST_GUIDE.md`
 - Proof route: `COMMAND_GUIDE.md`, `PUBLIC_SURFACE_MAP.md`, `PROOF_GUIDE.md`,
-  `TEST_READING_MAP.md`, `REVIEW_ROUTE_MAP.md`, `TOUR.md`, `WALKTHROUGH_GUIDE.md`
+  `TOUR.md`, `WALKTHROUGH_GUIDE.md`
 - Change route: `ARCHITECTURE.md`, `EXTENSION_GUIDE.md`, `TEST_GUIDE.md`,
-  `SOURCE_TO_PROOF_MAP.md`
+  `PROOF_GUIDE.md`
 
 ## Good stopping point
 

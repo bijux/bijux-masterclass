@@ -51,9 +51,35 @@ large undifferentiated tree.
 
 That order keeps semantic floor before orchestration and keeps the outer edges last.
 
+## Question to test map
+
+| If the question is about... | Read this test group first | Then open |
+| --- | --- | --- |
+| algebraic laws, mapping, chaining, folds, or reusable result behavior | `tests/unit/fp/laws/`, `tests/unit/result/`, `tests/unit/tree/` | `src/funcpipe_rag/fp/`, `result/`, `tree/` |
+| pure helper behavior, iterator composition, or stream laziness | `tests/unit/fp/`, `tests/unit/streaming/` | `src/funcpipe_rag/fp/`, `streaming/` |
+| domain values, stage composition, or RAG-specific rules | `tests/unit/rag/`, `tests/unit/rag/domain/` | `src/funcpipe_rag/core/`, `rag/`, `rag/domain/` |
+| configured pipelines, retries, breakers, or runtime policy | `tests/unit/pipelines/`, `tests/unit/policies/` | `src/funcpipe_rag/pipelines/`, `policies/` |
+| resource plans, async behavior, capabilities, or effect descriptions | `tests/unit/domain/` | `src/funcpipe_rag/domain/`, `domain/effects/`, `boundaries/` |
+| adapters, serialization, storage, or infrastructure edges | `tests/unit/boundaries/`, `tests/unit/infra/adapters/` | `src/funcpipe_rag/boundaries/`, `infra/` |
+| stdlib or external-library compatibility | `tests/unit/interop/` | `src/funcpipe_rag/interop/` |
+
+## Failure-first reading order
+
+1. State the behavior that should fail first.
+2. Open the matching test group from the table above.
+3. Name the owning package before you open implementation files.
+4. Escalate into `make inspect`, `make verify-report`, or `make tour` only when the tests need more context.
+
 ## Review questions
 
 - Which tests here prove laws or invariants rather than only a happy path?
 - Which package should stay unchanged if this test still passes?
 - Which proof route should you run after reading this group: `make test`, `make tour`, or `make proof`?
 - Which future change would require a new test group instead of another test in the current folder?
+
+## Best companion files
+
+- `PACKAGE_GUIDE.md`
+- `PUBLIC_SURFACE_MAP.md`
+- `PROOF_GUIDE.md`
+- `ARCHITECTURE.md`
