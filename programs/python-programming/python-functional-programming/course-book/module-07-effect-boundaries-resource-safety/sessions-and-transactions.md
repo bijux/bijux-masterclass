@@ -81,7 +81,7 @@ These laws eliminate the most common source of Heisenbugs in effectful systems: 
 
 **Golden rule**: Never use a global or module-level session/transaction. Always pass them explicitly.
 
-## 3. Public API – Session & Transaction ADTs (`capstone/src/funcpipe_rag/fp/effects/tx.py`)
+## 3. Public API – Session & Transaction ADTs (`capstone/src/funcpipe_rag/domain/effects/tx.py`)
 
 ```python
 # capstone/src/funcpipe_rag/fp/effects/tx.py – mypy --strict clean
@@ -176,12 +176,12 @@ def some_core_op():
 
 ```python
 # Illustrative use-case sketch (not a repo file): a Tx-specific storage capability.
-	from typing import Iterator, Protocol
+from typing import Iterator, Protocol
 
-	from funcpipe_rag.core.rag_types import Chunk
-	from funcpipe_rag.domain.effects.io_plan import IOPlan, io_delay, perform
-	from funcpipe_rag.domain.effects.tx import Session, Tx, TxProtocol, with_tx
-	from funcpipe_rag.result.types import ErrInfo, Result
+from funcpipe_rag.core.rag_types import Chunk
+from funcpipe_rag.domain.effects.io_plan import IOPlan, io_delay, perform
+from funcpipe_rag.domain.effects.tx import Session, Tx, TxProtocol, with_tx
+from funcpipe_rag.result.types import ErrInfo, Result
 
 class StorageTxCap(Protocol):
     def write_chunks_in_tx(
@@ -226,8 +226,14 @@ except:
     raise
 
 # After – explicit, composable, safe
+from funcpipe_rag.domain.effects.io_plan import io_bind
+
 session = Session("conn")
-plan = with_tx(tx_cap, session, lambda tx: op1(tx).bind(lambda _: op2(tx)))
+plan = with_tx(
+    tx_cap,
+    session,
+    lambda tx: io_bind(op1(tx), lambda _: op2(tx)),
+)
 result = perform(plan)
 ```
 
