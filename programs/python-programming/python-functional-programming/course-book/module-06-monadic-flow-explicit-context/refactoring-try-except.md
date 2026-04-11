@@ -55,6 +55,17 @@ This is the core where you finally pay off the promise of the entire module: you
 
 Do this once per function and you’ll never go back.
 
+## Keep The Public Contract Stable First
+
+The safest first pass is usually **internal refactor, external contract unchanged**:
+
+- rewrite the internals into `Result`, `Option`, or `Validation`
+- keep a thin boundary adapter that preserves the old return type if callers still depend on it
+- prove equivalence before deciding whether the public API itself should change
+
+That ordering keeps the refactor reviewable. It separates “the flow is now cleaner” from
+“the public contract changed,” which are two different decisions.
+
 ## 1. Laws & Invariants (machine-checked in CI)
 
 | Invariant                       | Description                                                                                  | Enforcement          |
@@ -166,6 +177,8 @@ def load_and_process_legacy(path: str) -> dict | None:
 ```
 
 Zero nesting. Happy path is three lines. Every error is typed and testable.
+The thin legacy adapter is part of the refactoring story, not a hack. It is what lets
+you improve the internals without forcing a contract change on every caller at once.
 
 ### 4.2 Multi-field Validation (independent errors)
 
@@ -270,6 +283,16 @@ def test_json_refactor_equivalence(raw: str):
 ```
 
 Run this in CI. If it ever fails, you broke the refactor.
+
+## Review The Rewrite In Three Passes
+
+When reviewing one of these refactors, read it in this order:
+
+1. contract pass: does the boundary still return the old public shape?
+2. classification pass: are expected failures, absence, and bugs now separated more clearly?
+3. composition pass: do the extracted helpers and combinators actually make the flow easier to inspect?
+
+That order keeps the review grounded in behavior first and style second.
 
 ## 6. Anti-Patterns & Immediate Fixes
 
