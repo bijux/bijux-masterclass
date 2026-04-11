@@ -32,6 +32,31 @@ PROJECT_DOC_SOURCE_PARTS = {
     "workflow",
     "publish",
 }
+LIBRARY_LINK_ALIASES = {
+    "python-programming/python-object-oriented-programming": {
+        "capstone/capstone-review-checklist.md": "capstone/capstone-review-worksheet.md",
+        "reference/object-design-checklist.md": "reference/review-checklist.md",
+    },
+    "reproducible-research/deep-dive-dvc": {
+        "capstone/experiment-review-guide.md": "project-docs/experiment-guide.md",
+        "capstone/recovery-review-guide.md": "project-docs/recovery-guide.md",
+        "capstone/release-review-guide.md": "project-docs/release-review-guide.md",
+        "reference/authority-map.md": "reference/review-checklist.md",
+        "reference/verification-route-guide.md": "project-docs/review-route-guide.md",
+    },
+    "reproducible-research/deep-dive-make": {
+        "capstone/capstone-proof-checklist.md": "project-docs/proof-guide.md",
+        "capstone/repro-catalog.md": "project-docs/repro-guide.md",
+        "reference/mk-layer-guide.md": "project-docs/target-guide.md",
+        "reference/selftest-map.md": "project-docs/selftest-guide.md",
+    },
+    "reproducible-research/deep-dive-snakemake": {
+        "capstone/profile-audit-guide.md": "project-docs/profile-audit-guide.md",
+        "capstone/publish-review-guide.md": "project-docs/publish-review-guide.md",
+        "reference/boundary-map.md": "reference/boundary-review-prompts.md",
+        "reference/repository-layer-guide.md": "project-docs/architecture.md",
+    },
+}
 
 
 def include_target(text: str) -> str | None:
@@ -68,19 +93,23 @@ def slugify_path_part(value: str) -> str:
 
 
 def project_doc_target_path(relative_path: Path) -> Path:
-    if relative_path == Path(PROJECT_DOCS_DIRNAME) / "index.md":
-        return Path(PROJECT_DOCS_DIRNAME) / "index.md"
-
     if relative_path == Path("README.md"):
         return Path(PROJECT_DOCS_DIRNAME) / "index.md"
 
-    name_parts = [slugify_path_part(part) for part in relative_path.parts[:-1]]
-    if relative_path.parts and relative_path.parts[0] == "docs":
-        name_parts = []
-    elif relative_path.parts and relative_path.parts[0] == PROJECT_DOCS_DIRNAME:
-        name_parts = [slugify_path_part(part) for part in relative_path.parts[1:-1]]
-    name_parts.append(slugify_path_part(relative_path.stem))
-    return Path(PROJECT_DOCS_DIRNAME) / ("-".join(name_parts) + ".md")
+    parts = list(relative_path.parts)
+    if parts and parts[0] in {"docs", PROJECT_DOCS_DIRNAME}:
+        parts = parts[1:]
+
+    if not parts:
+        return Path(PROJECT_DOCS_DIRNAME) / "index.md"
+
+    target_parts = [slugify_path_part(part) for part in parts[:-1]]
+    filename = parts[-1]
+    if filename.lower() == "readme.md":
+        target_parts.append("index.md")
+    else:
+        target_parts.append(f"{slugify_path_part(Path(filename).stem)}.md")
+    return Path(PROJECT_DOCS_DIRNAME, *target_parts)
 
 
 def project_doc_sources(capstone_dir: Path) -> list[Path]:
@@ -150,6 +179,43 @@ def rewrite_markdown_links(
     return re.sub(r"\]\(([^)]+)\)", replacer, text)
 
 
+def rewrite_library_alias_links(
+    text: str,
+    program_key: str,
+    source_relative_path: Path,
+) -> str:
+    alias_map = LIBRARY_LINK_ALIASES.get(program_key)
+    if not alias_map:
+        return text
+
+    def replacer(match: re.Match[str]) -> str:
+        raw_target = match.group(1)
+        if "://" in raw_target or raw_target.startswith(("#", "/")):
+            return match.group(0)
+
+        target_path, fragment = (raw_target.split("#", 1) + [""])[:2]
+        if not target_path.endswith(".md"):
+            return match.group(0)
+
+        normalized_target = Path(
+            posixpath.normpath((source_relative_path.parent / target_path).as_posix())
+        ).as_posix()
+        rewritten_target = alias_map.get(normalized_target)
+        if rewritten_target is None:
+            return match.group(0)
+
+        relative_target = Path(
+            posixpath.relpath(
+                rewritten_target,
+                source_relative_path.parent.as_posix() or ".",
+            )
+        ).as_posix()
+        fragment_suffix = f"#{fragment}" if fragment else ""
+        return f"]({relative_target}{fragment_suffix})"
+
+    return re.sub(r"\]\(([^)]+)\)", replacer, text)
+
+
 def copy_markdown_tree(
     program_dir: Path,
     source_dir: Path,
@@ -157,6 +223,7 @@ def copy_markdown_tree(
     skip_path: Callable[[Path], bool] | None = None,
 ) -> None:
     path_filter = skip_path or should_skip
+    program_key = str(program_dir.relative_to(PROGRAMS_DIR))
     for source_path in sorted(source_dir.rglob("*.md")):
         if path_filter(source_path.relative_to(program_dir)):
             continue
@@ -170,6 +237,8 @@ def copy_markdown_tree(
         if include_path is not None:
             text = (program_dir / include_path).read_text(encoding="utf-8")
             text = rewrite_included_links(text, include_path)
+
+        text = rewrite_library_alias_links(text, program_key, relative_path)
 
         target_path.write_text(text, encoding="utf-8")
 
