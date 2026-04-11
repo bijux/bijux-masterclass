@@ -49,7 +49,7 @@ from ownership.
 
 ## Best companion guides
 
-- `SOURCE_GUIDE.md`
+- `PACKAGE_GUIDE.md`
 - `TEST_GUIDE.md`
 - `COMMAND_GUIDE.md`
 - `PROOF_GUIDE.md`

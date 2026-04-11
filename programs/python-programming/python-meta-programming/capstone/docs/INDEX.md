@@ -33,7 +33,7 @@ has one stable entry hub instead of two overlapping arrival pages.
 1. Run `make manifest`.
 2. Read [README.md](../README.md).
 3. Read [ARCHITECTURE.md](ARCHITECTURE.md).
-4. Read [PLUGIN_RUNTIME_GUIDE.md](PLUGIN_RUNTIME_GUIDE.md).
+4. Read [DESIGN_BOUNDARIES.md](DESIGN_BOUNDARIES.md).
 5. Open `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
 6. Read `tests/test_registry.py` and `tests/test_fields.py`.
 7. Stop there unless your current question clearly requires invocation or CLI detail.
@@ -45,7 +45,7 @@ has one stable entry hub instead of two overlapping arrival pages.
 | `make manifest` | what the runtime exposes publicly without invoking plugin behavior |
 | `README.md` | what this repository is for and which commands matter |
 | `ARCHITECTURE.md` | which file owns each mechanism and why |
-| `PLUGIN_RUNTIME_GUIDE.md` | how definition-time, attribute-time, and invocation-time behavior differ |
+| `DESIGN_BOUNDARIES.md` | how definition-time, attribute-time, and invocation-time behavior differ |
 | `framework.py`, `fields.py`, `actions.py` | where registration, field behavior, and action wrapping actually live |
 | `test_registry.py`, `test_fields.py` | what proof already exists for class creation and descriptor ownership |
 
@@ -55,7 +55,7 @@ has one stable entry hub instead of two overlapping arrival pages.
 
 - [README.md](../README.md)
 - [INDEX.md](INDEX.md)
-- [PLUGIN_RUNTIME_GUIDE.md](PLUGIN_RUNTIME_GUIDE.md)
+- [DESIGN_BOUNDARIES.md](DESIGN_BOUNDARIES.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ### "Which file owns which mechanism?"
@@ -63,7 +63,6 @@ has one stable entry hub instead of two overlapping arrival pages.
 - [ARCHITECTURE.md](ARCHITECTURE.md)
 - [DESIGN_BOUNDARIES.md](DESIGN_BOUNDARIES.md)
 - [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
-- [SOURCE_GUIDE.md](SOURCE_GUIDE.md)
 
 ### "Which command should I run first?"
 
@@ -77,10 +76,8 @@ has one stable entry hub instead of two overlapping arrival pages.
 
 ### "How do wrappers, fields, and constructors work?"
 
-- [ACTION_GUIDE.md](ACTION_GUIDE.md)
-- [FIELD_GUIDE.md](FIELD_GUIDE.md)
-- [CONSTRUCTOR_GUIDE.md](CONSTRUCTOR_GUIDE.md)
-- [DEFINITION_TIME_GUIDE.md](DEFINITION_TIME_GUIDE.md)
+- [DESIGN_BOUNDARIES.md](DESIGN_BOUNDARIES.md)
+- [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md)
 
 ### "How do I review or extend the project safely?"
 
@@ -88,7 +85,6 @@ has one stable entry hub instead of two overlapping arrival pages.
 - [TEST_GUIDE.md](TEST_GUIDE.md)
 - [TEST_READING_MAP.md](TEST_READING_MAP.md)
 - [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md)
-- [MECHANISM_SELECTION_GUIDE.md](MECHANISM_SELECTION_GUIDE.md)
 - [SOURCE_TO_PROOF_MAP.md](SOURCE_TO_PROOF_MAP.md)
 
 ### "How do I read the saved review bundles?"

@@ -34,7 +34,7 @@ Read `PluginMeta`, then `PluginBase.manifest()`, then `build_manifest()`. This i
 best place to understand what happens at class-definition time and what stays visible
 from the public surface.
 
-Keep [DEFINITION_TIME_GUIDE.md](DEFINITION_TIME_GUIDE.md) nearby if the class-definition
+Keep [DESIGN_BOUNDARIES.md](DESIGN_BOUNDARIES.md) nearby if the class-definition
 timeline is still harder to hold than the file names.
 
 ## Stop 2: `fields.py`
@@ -51,7 +51,7 @@ Read `action()`. Focus on what the wrapper preserves and what extra runtime stat
 Read `ConsoleNotifier`, `WebhookNotifier`, and `PagerNotifier`. These make the abstractions
 concrete enough to review like ordinary production code.
 
-Use [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when the differences between the built-in
+Use [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when the differences between the built-in
 plugins are more useful than the shared framework machinery.
 
 ## Stop 5: tests
@@ -70,5 +70,5 @@ each source file is trying to own.
 Read [TRACE_GUIDE.md](TRACE_GUIDE.md) when the trace output is the most important surface
 for the question you are holding.
 
-Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the tour gives enough overall shape but you
+Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when the tour gives enough overall shape but you
 need a narrower source route for one specific question.

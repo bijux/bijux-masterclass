@@ -112,10 +112,37 @@ Reject or redesign when:
 - debugging now requires folklore instead of public commands and tests
 - the proof route no longer matches the design claims the capstone is teaching
 
+## Definition-time sequence
+
+1. `PluginMeta.__prepare__` returns `DefinitionNamespace`.
+2. The class body executes and places fields and wrapped actions into that namespace.
+3. Descriptors receive `__set_name__` and learn their storage keys.
+4. `PluginMeta.__new__` gathers inherited and local fields and action specs.
+5. A constructor signature is generated from the collected fields.
+6. Concrete plugins receive their group and public plugin name.
+7. Concrete plugins are registered in the deterministic runtime registry.
+
+## Choose the lowest-power honest mechanism
+
+| If the requirement is about... | Prefer this mechanism | First owning surface |
+| --- | --- | --- |
+| configuration validation, defaults, or schema metadata | descriptor | `fields.py` |
+| invocation metadata, preserved signatures, or action history | decorator | `actions.py` |
+| class registration, generated constructors, or manifest assembly | metaclass or framework helper | `framework.py` |
+| one concrete adapter behavior | ordinary plugin class | `plugins.py` |
+| one public inspection or invocation route | CLI command | `cli.py` |
+
+## Strong proof pairings
+
+- pair descriptors with `make field` and `tests/test_fields.py`
+- pair decorators with `make action`, `make trace`, and runtime tests
+- pair metaclass changes with `make registry`, `make signatures`, and `tests/test_registry.py`
+- pair plugin changes with `make plugin`, `make demo`, and runtime tests
+- pair CLI changes with `tests/test_cli.py` and the closest saved bundle route
+
 ## Best companion guides
 
 - `ARCHITECTURE.md`
 - `PACKAGE_GUIDE.md`
-- `MECHANISM_SELECTION_GUIDE.md`
 - `EXTENSION_GUIDE.md`
 - `TEST_GUIDE.md`

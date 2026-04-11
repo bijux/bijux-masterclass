@@ -49,7 +49,7 @@ If you are new to this capstone, the best first route is:
 1. Read [INDEX.md](docs/INDEX.md).
 2. Run `make manifest`.
 3. Read [INDEX.md](docs/INDEX.md).
-4. Read [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md).
+4. Read [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md).
 5. Read [ARCHITECTURE.md](docs/ARCHITECTURE.md).
 6. Read `src/incident_plugins/framework.py`, then `fields.py`, then `actions.py`.
 7. Read the matching tests.
@@ -112,7 +112,6 @@ your pressure instead of reading the full list in alphabetical order.
 ### First-pass orientation
 
 - [INDEX.md](docs/INDEX.md)
-- [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md)
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
 
@@ -122,15 +121,10 @@ your pressure instead of reading the full list in alphabetical order.
 
 ### Mechanism and ownership guides
 
-- [ACTION_GUIDE.md](docs/ACTION_GUIDE.md)
-- [CONSTRUCTOR_GUIDE.md](docs/CONSTRUCTOR_GUIDE.md)
-- [DEFINITION_TIME_GUIDE.md](docs/DEFINITION_TIME_GUIDE.md)
-- [FIELD_GUIDE.md](docs/FIELD_GUIDE.md)
-- [MECHANISM_SELECTION_GUIDE.md](docs/MECHANISM_SELECTION_GUIDE.md)
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
 - [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
-- [SCENARIO_GUIDE.md](docs/SCENARIO_GUIDE.md)
-- [SCENARIO_SELECTION_GUIDE.md](docs/SCENARIO_SELECTION_GUIDE.md)
-- [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
+- [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
 - [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md)
 
 ### Review, proof, and saved bundles
@@ -148,8 +142,8 @@ your pressure instead of reading the full list in alphabetical order.
 
 ### Concrete runtime examples
 
+- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
 - [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
-- [PLUGIN_CATALOG.md](docs/PLUGIN_CATALOG.md)
 
 ## Read it by question
 
@@ -164,7 +158,6 @@ your pressure instead of reading the full list in alphabetical order.
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
 - [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
-- [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
 - [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md)
 - `src/incident_plugins/actions.py`
 - `src/incident_plugins/fields.py`
@@ -176,8 +169,8 @@ your pressure instead of reading the full list in alphabetical order.
 - `make field`
 - `make action`
 - `make signatures`
-- [PLUGIN_CATALOG.md](docs/PLUGIN_CATALOG.md)
-- [CONSTRUCTOR_GUIDE.md](docs/CONSTRUCTOR_GUIDE.md)
+- [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
+- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
 
 ### "How do I review the full learner-facing route?"
 
@@ -206,7 +199,7 @@ defaults above and escalate only one guide at a time.
 
 - Observation modules: start with `make manifest`, `COMMAND_GUIDE.md`, `make registry`, and `PROOF_GUIDE.md`
 - Decorator modules: inspect `src/incident_plugins/actions.py` and the runtime tests
-- Descriptor modules: inspect `src/incident_plugins/fields.py`, `CONSTRUCTOR_GUIDE.md`, and `tests/test_fields.py`
+- Descriptor modules: inspect `src/incident_plugins/fields.py`, `DESIGN_BOUNDARIES.md`, and `tests/test_fields.py`
 - Metaclass module: inspect `src/incident_plugins/framework.py` and `tests/test_registry.py`
 - Governance and mastery: return to `make inspect`, `make verify-report`, and the saved `artifacts/` bundles
 
@@ -242,7 +235,7 @@ all interact here, so the implementation has to stay honest about:
 - `make confirm` runs the strongest local executable confirmation route.
 - `make proof` builds the published learner-facing review route.
 
-Read [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md) first when the runtime terms still
+Read [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) first when the runtime terms still
 feel fuzzier than the commands.
 
 ## Best companion guides
@@ -255,9 +248,7 @@ feel fuzzier than the commands.
 - [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md) for choosing the right local route, command, and bundle
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) for ownership boundaries
 - [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) for what each mechanism owns and what it should not own
-- [PLUGIN_RUNTIME_GUIDE.md](docs/PLUGIN_RUNTIME_GUIDE.md) for the timing model
-- [MECHANISM_SELECTION_GUIDE.md](docs/MECHANISM_SELECTION_GUIDE.md) for change placement
-- [SCENARIO_SELECTION_GUIDE.md](docs/SCENARIO_SELECTION_GUIDE.md) for smallest-route selection
+- [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) for the timing model and ownership rules
 - [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md) for safe evolution
 
 ## Definition of done

@@ -57,26 +57,35 @@ discipline third, concrete plugin behavior fourth, and proof surfaces last.
 - Open `plugins.py` when you need the concrete behavior that keeps the framework honest.
 - Open `cli.py` when you need to inspect the public surface without importing private internals yourself.
 
-Read [DEFINITION_TIME_GUIDE.md](DEFINITION_TIME_GUIDE.md) when the metaclass and descriptor
-order needs a sequence view before the file-by-file route.
+Read [DESIGN_BOUNDARIES.md](DESIGN_BOUNDARIES.md) when the metaclass, descriptor, and
+generated-constructor boundaries still need a sequence view before the file-by-file route.
 
-Read [CONSTRUCTOR_GUIDE.md](CONSTRUCTOR_GUIDE.md) when the main question is how declared
-fields become the concrete plugin constructor and visible call signature.
-
-Read [FIELD_GUIDE.md](FIELD_GUIDE.md) when `fields.py` is the main pressure and you want
-the descriptor contract isolated from the rest of the runtime.
-
-Read [ACTION_GUIDE.md](ACTION_GUIDE.md) when `actions.py` is the main pressure and you
-want the wrapper contract isolated from the rest of the runtime.
-
-Read [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when the framework is clear but the concrete
-adapter differences still need a purpose-driven explanation.
+Read [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md) when the framework is clear but the concrete
+adapter differences or next change placement still need a purpose-driven explanation.
 
 Read [COMMAND_GUIDE.md](COMMAND_GUIDE.md) when the question is no longer only
 internal ownership, but what the package intentionally exports.
 
-Read [SOURCE_GUIDE.md](SOURCE_GUIDE.md) when the package route is still too broad and you
-need the exact class or function that owns the behavior.
+## Best class and function route
+
+| Question | Open this first | Then inspect |
+| --- | --- | --- |
+| How are plugin classes registered? | `framework.py` | `PluginMeta.__new__`, `_register_plugin()`, `PluginMeta.registry()` |
+| How is the plugin constructor generated? | `framework.py` | `_build_signature()`, `_build_init()` |
+| How are configuration values validated and stored? | `fields.py` | `Field`, `StringField`, `ChoiceField`, `Field.initialize()` |
+| How are action signatures preserved and history recorded? | `actions.py` | `action()`, `ActionSpec.manifest()` |
+| What concrete adapters make the framework honest? | `plugins.py` | `ConsoleNotifier`, `WebhookNotifier`, `PagerNotifier` |
+| Which public commands expose the runtime? | `cli.py` | `_build_parser()` and the `_handle_*` functions |
+| Which executable proof backs this claim? | `tests/` | `test_registry.py`, `test_fields.py`, `test_cli.py`, `test_runtime.py` |
+
+## Concrete review scenarios
+
+| Scenario | Best route | What it teaches |
+| --- | --- | --- |
+| inspect the public shape before invocation | `make manifest`, `make registry`, `make plugin` | what exists before runtime work starts |
+| inspect generated call shapes | `make signatures` | how declared fields become visible constructors and action shapes |
+| inspect one concrete action | `make demo` or `make trace` | how one built-in adapter keeps the framework honest |
+| inspect one saved review bundle | `make inspect`, `make tour`, or `make verify-report` | how ownership and proof surfaces stay durable for later review |
 
 ## What this guide prevents
 

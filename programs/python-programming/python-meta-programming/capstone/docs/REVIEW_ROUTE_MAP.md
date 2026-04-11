@@ -31,7 +31,7 @@ the local guides, public commands, and saved bundles.
 | one concrete field or action contract | [COMMAND_GUIDE.md](COMMAND_GUIDE.md) | `make field`, `make action`, or `make inspect` | [TEST_READING_MAP.md](TEST_READING_MAP.md) |
 | one realistic invocation story | [INDEX.md](INDEX.md) or [COMMAND_GUIDE.md](COMMAND_GUIDE.md) | `make demo`, `make trace`, or `make tour` | `tests/test_runtime.py` |
 | source ownership for a change | [SOURCE_TO_PROOF_MAP.md](SOURCE_TO_PROOF_MAP.md) | the matching public route from the file map | [TEST_GUIDE.md](TEST_GUIDE.md) |
-| which proof file should fail first | [TEST_READING_MAP.md](TEST_READING_MAP.md) | the matching test file | [SOURCE_GUIDE.md](SOURCE_GUIDE.md) |
+| which proof file should fail first | [TEST_READING_MAP.md](TEST_READING_MAP.md) | the matching test file | [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) |
 | a saved artifact bundle for another reviewer | [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md) | `make inspect`, `make tour`, or `make verify-report` | [BUNDLE_MANIFEST_GUIDE.md](BUNDLE_MANIFEST_GUIDE.md) |
 | the strongest local confidence route | [PROOF_GUIDE.md](PROOF_GUIDE.md) | `make verify-report`, `make confirm`, or `make proof` | [TEST_GUIDE.md](TEST_GUIDE.md) |
 

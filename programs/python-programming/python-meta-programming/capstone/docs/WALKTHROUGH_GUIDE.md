@@ -65,5 +65,5 @@ before you dive into metaclasses, descriptors, and wrappers.
 Stop when you can explain one plugin action from public manifest to trace output without
 opening the entire source tree or defaulting to the full test route.
 
-Read [SCENARIO_SELECTION_GUIDE.md](SCENARIO_SELECTION_GUIDE.md) when the order is clear
+Read [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md) when the order is clear
 but the right starting route for the current question is not.

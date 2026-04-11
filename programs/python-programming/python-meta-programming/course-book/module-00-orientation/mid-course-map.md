@@ -53,7 +53,7 @@ class creation.
 - keep the lower-power alternative explicit before you continue upward
 
 **Capstone check:** inspect generated constructor behavior in `framework.py`,
-`CONSTRUCTOR_GUIDE.md`, and `tests/test_runtime.py`.
+`DESIGN_BOUNDARIES.md`, and `tests/test_runtime.py`.
 
 ## Modules 07 to 08: Attribute Ownership and Field Architecture
 
@@ -64,7 +64,7 @@ or class-wide hooks.
 - place validation, coercion, and defaults on the field boundary deliberately
 - distinguish one-field behavior from framework-wide behavior
 
-**Capstone check:** inspect `fields.py`, `make field`, `FIELD_GUIDE.md`, and
+**Capstone check:** inspect `fields.py`, `make field`, `DESIGN_BOUNDARIES.md`, and
 `tests/test_fields.py`.
 
 ## How to know you are ready for Module 09

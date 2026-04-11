@@ -38,7 +38,7 @@ goal is to show exactly what the wrapper contributes and what it leaves alone.
 
 ## Best companion guides
 
-- read [SCENARIO_GUIDE.md](SCENARIO_GUIDE.md) for the fixed trace inputs
+- read [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md) for the fixed trace inputs
 - read [TEST_GUIDE.md](TEST_GUIDE.md) when you want the closest proof file
-- read [ACTION_GUIDE.md](ACTION_GUIDE.md) when the wrapper contract itself is still fuzzy
-- read [PLUGIN_CATALOG.md](PLUGIN_CATALOG.md) when you want to understand why `pager` is the best trace example
+- read [DESIGN_BOUNDARIES.md](DESIGN_BOUNDARIES.md) when the wrapper contract itself is still fuzzy
+- read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when you want to understand why `pager` is the best trace example

@@ -55,5 +55,12 @@ Every extension should answer:
 - why a lower-power hook was not enough
 - which proof keeps the new behavior visible instead of magical
 
-Read [MECHANISM_SELECTION_GUIDE.md](MECHANISM_SELECTION_GUIDE.md) when the main extension
-decision is still which metaprogramming mechanism deserves the change.
+## Shipped review scenarios
+
+| If the question is about... | Start with | Then |
+| --- | --- | --- |
+| what exists publicly before invocation | `make manifest`, `make registry`, `make plugin` | `ARCHITECTURE.md` and `INSPECTION_GUIDE.md` |
+| what generated call shapes look like | `make signatures` | `DESIGN_BOUNDARIES.md` and `tests/test_registry.py` |
+| what one concrete action does | `make demo` or `make trace` | `PACKAGE_GUIDE.md` and `tests/test_runtime.py` |
+| what can be reviewed later without rerunning commands | `make inspect`, `make tour`, or `make verify-report` | `BUNDLE_GUIDE.md` and `PROOF_GUIDE.md` |
+| what the strongest local bar is | `make confirm` | `TEST_GUIDE.md` |
