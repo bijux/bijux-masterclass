@@ -2,7 +2,6 @@
 
 # Anti-Pattern Atlas
 
-
 <!-- page-maps:start -->
 ## Reference Position
 
@@ -16,78 +15,67 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
+  symptom["Name the symptom"] --> pattern["Match it to the likely failure class"]
+  pattern --> question["Ask the repair question that belongs to that class"]
+  question --> route["Choose the module or capstone route that proves the fix"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-This page is the missing failure crosswalk for Deep Dive DVC. It exists because humans
-rarely remember course structure by module title during a real reproducibility problem.
-They remember symptoms, smells, and clumsy patterns.
-
-Use this page when the question is “what kind of bad DVC idea is this?” rather than
-“which module was that in?”
+Use this page when you recognize the smell before you remember the module. A useful
+atlas turns "this DVC repository feels wrong" into a smaller statement about identity,
+state truth, comparability, promotion, recovery, or ownership drift.
 
 ---
 
-## Common Anti-Patterns
+## Symptom-led lookup
 
-| Anti-pattern | Why it is clumsy | Primary modules | First proof or review route |
+| Symptom | Likely failure class | Ask this next | First route |
 | --- | --- | --- | --- |
-| path names treated as identity | location is mistaken for recoverable truth | 01, 02 | `capstone-verify` |
-| environments treated as background luck | runtime drift is excluded from the state model | 03 | `capstone-verify` |
-| `dvc.yaml` and `dvc.lock` telling different stories | declared and recorded execution drift apart | 04 | `capstone-repro` |
-| metrics compared after semantic meaning changed | comparisons turn decorative instead of trustworthy | 05 | `capstone-verify-report` |
-| experiments treated as freedom without baseline discipline | changed runs muddy the state story | 06 | `capstone-experiment-review` |
-| collaboration that depends on private cache state | another person cannot trust or restore the repo | 07, 08 | `capstone-recovery-review` |
-| release surfaces that mirror internal repository complexity | downstream trust becomes too large and too vague | 09 | `capstone-release-review` |
-| DVC kept as owner after its boundary is exceeded | governance and migration drift become chronic | 10 | `capstone-confirm` |
+| the path is stable, so people assume the data identity is stable too | path is standing in for identity | which content-addressed state actually proves the claim | `make verify` |
+| the pipeline reran, so people assume the result is trustworthy | rerun is standing in for state truth | which declared inputs, params, and recorded state were actually captured | `make verify` |
+| a metric changed, but no one knows whether it still means the same thing | semantic comparability drifted | what stayed comparable across runs and what changed in the control surface | `make verify-report` |
+| experiments pile up without a clear baseline story | changed runs are muddying the state story | which parameter changes are being compared and which candidate is promotion-worthy | `make experiment-review` |
+| the repo works here, but no one can say what survives elsewhere | local cache and remote durability were never separated | which layer is authoritative after local loss | `make recovery-review` |
+| the published bundle exists, but downstream trust still feels vague | promoted state is larger or blurrier than it should be | what smaller contract is actually safe for downstream use | `make release-review` |
 
 [Back to top](#top)
 
 ---
 
-## Symptom To Anti-Pattern
+## Recurring failure classes
 
-| Symptom | Likely anti-pattern | Better question |
+| Failure class | Why it matters | Where the course or capstone teaches the repair |
 | --- | --- | --- |
-| “the data path is stable, so we are reproducible” | path is standing in for identity | what content-addressed state actually proves the claim |
-| “the pipeline reran, so the result is trustworthy” | rerun is standing in for explicit state truth | which inputs, params, and environment assumptions were actually declared |
-| “the metric changed, but I do not know whether it means anything” | semantic meaning drifted | what stayed comparable across runs |
-| “the repo works here, but I do not know what survives elsewhere” | local cache and remote durability were never separated | which layer is authoritative after local loss |
-| “the published bundle exists, but I still do not trust it” | promoted state is larger or blurrier than it should be | what smaller contract is safe for downstream use |
+| path names treated as identity | location is mistaken for recoverable truth | modules 01-02, `AUTHORITY_MAP`, `verify` |
+| environments treated as background luck | runtime drift is excluded from the state model | module 03, version support and verification routes |
+| `dvc.yaml` and `dvc.lock` telling different stories | declared and recorded execution drift apart | module 04, `stage-summary`, `verify` |
+| metrics compared after their meaning changed | comparisons turn decorative instead of trustworthy | module 05, control-surface guides and verify reports |
+| experiments treated as freedom without baseline discipline | changed runs muddy the state story | module 06, `experiment-review` |
+| collaboration that depends on private cache state | another person cannot trust or restore the repository | modules 07-08, `recovery-review` |
+| release surfaces that mirror internal repository complexity | downstream trust becomes too large and too vague | module 09, `release-review` |
+| DVC kept as owner after its boundary is exceeded | governance and migration drift become chronic | module 10, stewardship and change-placement routes |
 
 [Back to top](#top)
 
 ---
 
-## Repair Direction
+## Repair order
 
-When you identify an anti-pattern, do not jump straight to rewriting everything.
+When you identify a likely anti-pattern:
 
-Use this order:
-
-1. name the failure class precisely
-2. find the matching module and repository review route
-3. inspect the authoritative layer
-4. apply the narrowest repair that restores state truth
-
-This keeps the course aligned with real maintenance work instead of theatrical refactoring.
+1. name the failure class in one sentence
+2. point to the layer or evidence surface that is lying
+3. choose the smallest capstone route that demonstrates the same defect or claim
+4. repair the contract before polishing the implementation
 
 [Back to top](#top)
 
 ---
 
-## Best Companion Pages
+## Companion pages
 
-Use these with the atlas:
-
-* [`authority-map.md`](authority-map.md) for state-layer review
-* [`module-dependency-map.md`](module-dependency-map.md) for where the idea is taught in sequence
-* [`capstone-map.md`](../capstone/capstone-map.md) for module-aware repository routing
-* [`verification-route-guide.md`](verification-route-guide.md) for narrower proof selection
+- [`authority-map.md`](authority-map.md)
+- [`evidence-boundary-guide.md`](evidence-boundary-guide.md)
+- [`verification-route-guide.md`](verification-route-guide.md)
 
 [Back to top](#top)
