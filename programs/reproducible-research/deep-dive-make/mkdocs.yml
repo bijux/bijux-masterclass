@@ -110,6 +110,15 @@ nav:
           - Glossary: module-03-determinism-debugging-self-testing/glossary.md
       - "Module 04: CLI Semantics, Includes, and Rule Edge Cases":
           - Overview: module-04-rule-semantics-precedence-edge-cases/index.md
+          - CLI Semantics and Debug Control: module-04-rule-semantics-precedence-edge-cases/cli-semantics-and-debug-control.md
+          - Variable Precedence and Expansion: module-04-rule-semantics-precedence-edge-cases/variable-precedence-and-expansion.md
+          - Conditionals and Capability Gates: module-04-rule-semantics-precedence-edge-cases/conditionals-and-capability-gates.md
+          - Includes, Remake Semantics, and Search Paths: module-04-rule-semantics-precedence-edge-cases/includes-remake-semantics-and-search-paths.md
+          - Rule Selection, Multi-Output, and Special Targets: module-04-rule-semantics-precedence-edge-cases/rule-selection-multi-output-and-special-targets.md
+          - "Worked Example: Diagnosing Semantic Failures": module-04-rule-semantics-precedence-edge-cases/worked-example-diagnosing-semantic-failures.md
+          - Exercises: module-04-rule-semantics-precedence-edge-cases/exercises.md
+          - Exercise Answers: module-04-rule-semantics-precedence-edge-cases/exercise-answers.md
+          - Glossary: module-04-rule-semantics-precedence-edge-cases/glossary.md
       - "Module 05: Portability, Hermeticity, and Failure Modes":
           - Overview: module-05-portability-hermeticity-failure-modes/index.md
       - "Module 06: Generated Files and Pipeline Boundaries":
