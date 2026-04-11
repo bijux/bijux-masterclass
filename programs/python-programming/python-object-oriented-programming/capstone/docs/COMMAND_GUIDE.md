@@ -54,7 +54,7 @@ the question instead of defaulting to the heaviest command.
 
 ## Best companion files
 
-- `GUIDE_INDEX.md`
+- `INDEX.md`
 - `PROOF_GUIDE.md`
 - `INSPECTION_GUIDE.md`
 - `TARGET_GUIDE.md`

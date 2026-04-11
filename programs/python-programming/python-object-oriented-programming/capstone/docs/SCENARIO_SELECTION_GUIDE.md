@@ -42,4 +42,4 @@ smallest honest one for the question in front of you.
 
 - read [TARGET_GUIDE.md](TARGET_GUIDE.md) when you want the command choice restated at the target level
 - read [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md) when the scenario should be reviewed through saved directories
-- read [COURSE_STAGE_MAP.md](COURSE_STAGE_MAP.md) when you want the scenario choice tied back to the wider course
+- read [INDEX.md](INDEX.md) when you want the scenario choice tied back to the wider course

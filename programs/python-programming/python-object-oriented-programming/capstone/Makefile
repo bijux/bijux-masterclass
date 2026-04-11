@@ -43,8 +43,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@mkdir -p $(TOUR_DIR) $(TOUR_DIR)/docs
 	@PYTHONPATH=src $(PYTHON) -m service_monitoring.demo > $(TOUR_DIR)/walkthrough.txt
 	@cp README.md $(TOUR_DIR)/README.md
-	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(TOUR_DIR)/GUIDE_INDEX.md
-	@cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(TOUR_DIR)/FIRST_SESSION_GUIDE.md
+	@cp $(DOCS_DIR)/INDEX.md $(TOUR_DIR)/INDEX.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/OWNERSHIP_BOUNDARIES.md $(TOUR_DIR)/OWNERSHIP_BOUNDARIES.md
 	@cp $(DOCS_DIR)/SCENARIO_BOUNDARY_MAP.md $(TOUR_DIR)/SCENARIO_BOUNDARY_MAP.md
@@ -70,7 +69,7 @@ tour: ## Build the learner-facing walkthrough bundle
 	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/docs/
 	@printf '%s\n' \
 		'Walkthrough route:' \
-		'  1. Read GUIDE_INDEX.md and FIRST_SESSION_GUIDE.md for the smallest local route.' \
+		'  1. Read INDEX.md for the smallest local route.' \
 		'  2. Read walkthrough.txt for the scenario output.' \
 		'  3. Read DOMAIN_GUIDE.md, SCENARIO_GUIDE.md, RULE_LIFECYCLE_GUIDE.md, OWNERSHIP_BOUNDARIES.md, and TOUR.md for the vocabulary, authority model, lifecycle, and narrative sequence.' \
 		'  4. Read SCENARIO_BOUNDARY_MAP.md, WALKTHROUGH_GUIDE.md, EVENT_FLOW_GUIDE.md, TARGET_GUIDE.md, and COMMAND_GUIDE.md for the scenario and command route.' \
@@ -119,8 +118,7 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change > $(INSPECT_DIR)/rate_of_change.txt
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json > $(INSPECT_DIR)/snapshot.json
 	@cp README.md $(INSPECT_DIR)/README.md
-	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(INSPECT_DIR)/GUIDE_INDEX.md
-	@cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(INSPECT_DIR)/FIRST_SESSION_GUIDE.md
+	@cp $(DOCS_DIR)/INDEX.md $(INSPECT_DIR)/INDEX.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/OWNERSHIP_BOUNDARIES.md $(INSPECT_DIR)/OWNERSHIP_BOUNDARIES.md
 	@cp $(DOCS_DIR)/SCENARIO_BOUNDARY_MAP.md $(INSPECT_DIR)/SCENARIO_BOUNDARY_MAP.md
@@ -146,7 +144,7 @@ inspect: ## Build the capstone learner-facing inspection bundle
 	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/docs/
 	@printf '%s\n' \
 		'Inspection route:' \
-		'  1. Read GUIDE_INDEX.md, FIRST_SESSION_GUIDE.md, and COMMAND_GUIDE.md for the smallest local route.' \
+		'  1. Read INDEX.md and COMMAND_GUIDE.md for the smallest local route.' \
 		'  2. Read summary.txt for the current policy and open incident state.' \
 		'  3. Read rules.txt for rule lifecycle state.' \
 		'  4. Read history.txt, timeline.txt, retirement.txt, rate_of_change.txt, and snapshot.json for shipped scenario variants and the structured state surface.' \
@@ -167,8 +165,7 @@ verify-report: ## Build the capstone verification report bundle
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli rate-of-change > $(VERIFY_REPORT_DIR)/rate_of_change.txt
 	@PYTHONPATH=src $(VENV_PY) -m service_monitoring.cli snapshot-json > $(VERIFY_REPORT_DIR)/snapshot.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
-	@cp $(DOCS_DIR)/GUIDE_INDEX.md $(VERIFY_REPORT_DIR)/GUIDE_INDEX.md
-	@cp $(DOCS_DIR)/FIRST_SESSION_GUIDE.md $(VERIFY_REPORT_DIR)/FIRST_SESSION_GUIDE.md
+	@cp $(DOCS_DIR)/INDEX.md $(VERIFY_REPORT_DIR)/INDEX.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/OWNERSHIP_BOUNDARIES.md $(VERIFY_REPORT_DIR)/OWNERSHIP_BOUNDARIES.md
 	@cp $(DOCS_DIR)/SCENARIO_BOUNDARY_MAP.md $(VERIFY_REPORT_DIR)/SCENARIO_BOUNDARY_MAP.md
@@ -189,7 +186,7 @@ verify-report: ## Build the capstone verification report bundle
 	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/docs/
 	@printf '%s\n' \
 		'Verification route:' \
-		'  1. Read GUIDE_INDEX.md, FIRST_SESSION_GUIDE.md, and COMMAND_GUIDE.md for the local route into the saved bundle.' \
+		'  1. Read INDEX.md and COMMAND_GUIDE.md for the local route into the saved bundle.' \
 		'  2. Read pytest.txt for executable confirmation.' \
 		'  3. Read summary.txt, history.txt, timeline.txt, retirement.txt, rate_of_change.txt, and snapshot.json for the learner-facing state, variants, and structured snapshot captured alongside the tests.' \
 		'  4. Read PROOF_GUIDE.md, OWNERSHIP_BOUNDARIES.md, SCENARIO_BOUNDARY_MAP.md, and EVENT_FLOW_GUIDE.md for claim-to-evidence and authority routing.' \

@@ -81,8 +81,7 @@ make PROGRAM=python-programming/python-object-oriented-programming proof
 All supporting capstone guides live under `docs/`. The root stays focused on the
 entry route while still linking the complete local documentation set:
 
-- [GUIDE_INDEX.md](docs/GUIDE_INDEX.md)
-- [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md)
+- [INDEX.md](docs/INDEX.md)
 - [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md)
 - [OWNERSHIP_BOUNDARIES.md](docs/OWNERSHIP_BOUNDARIES.md)
 - [SCENARIO_BOUNDARY_MAP.md](docs/SCENARIO_BOUNDARY_MAP.md)
@@ -102,7 +101,6 @@ entry route while still linking the complete local documentation set:
 - [PUBLIC_API_GUIDE.md](docs/PUBLIC_API_GUIDE.md)
 - [SCENARIO_SELECTION_GUIDE.md](docs/SCENARIO_SELECTION_GUIDE.md)
 - [SOURCE_GUIDE.md](docs/SOURCE_GUIDE.md)
-- [COURSE_STAGE_MAP.md](docs/COURSE_STAGE_MAP.md)
 - [TOUR.md](docs/TOUR.md)
 - [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
 - [TEST_GUIDE.md](docs/TEST_GUIDE.md)
@@ -114,7 +112,7 @@ entry route while still linking the complete local documentation set:
 
 If this is your first honest pass through the capstone, use this order:
 
-Read [FIRST_SESSION_GUIDE.md](docs/FIRST_SESSION_GUIDE.md) for the stable local route, then
+Read [INDEX.md](docs/INDEX.md) for the stable local route, then
 come back to this README for the broader guide list and review routes.
 
 ## Review routes
@@ -138,7 +136,7 @@ directories kept explicit.
 
 | If you want to... | Start with | Then |
 | --- | --- | --- |
-| understand the domain before reading code | `GUIDE_INDEX.md`, this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` and `TOUR.md` |
+| understand the domain before reading code | `INDEX.md`, this README, `DOMAIN_GUIDE.md`, and `RULE_LIFECYCLE_GUIDE.md` | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` and `TOUR.md` |
 | inspect ownership boundaries file by file | `OWNERSHIP_BOUNDARIES.md` and `PACKAGE_GUIDE.md` | `SOURCE_GUIDE.md` and `ARCHITECTURE.md` |
 | pick the smallest scenario for the current pressure | `SCENARIO_BOUNDARY_MAP.md` | the matching scenario guide and inspect route |
 | confirm one design claim with evidence | `PROOF_GUIDE.md` | `make inspect` or `make verify-report` |
@@ -179,7 +177,7 @@ Use this loop throughout the capstone:
 2. Explain which object or boundary owns the behavior.
 3. Prove that claim with one named command or one named test.
 
-Use [COURSE_STAGE_MAP.md](docs/COURSE_STAGE_MAP.md) when you want that loop tied directly to the current stage of the course instead of the full capstone at once.
+Use [INDEX.md](docs/INDEX.md) when you want that loop tied directly to the current stage of the course instead of the full capstone at once.
 
 ## Currency audit
 
