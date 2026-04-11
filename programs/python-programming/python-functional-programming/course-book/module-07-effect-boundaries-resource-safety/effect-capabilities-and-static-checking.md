@@ -69,6 +69,16 @@ You are now five steps away from a complete production-grade functional architec
 
 These laws turn capability injection from a runtime pattern into a **type-checked + property-tested + review-enforced discipline**.
 
+## What mypy Enforces, and What It Does Not
+
+Students often benefit from separating two different guardrails:
+
+- `mypy --strict` enforces protocol usage, explicit types, and undeclared-method errors
+- CI or review rules enforce architectural layering, such as “domain modules do not import infra adapters”
+
+That split is important. Static typing protects capability *shape*. Layering checks
+protect dependency *direction*. Module 07 needs both.
+
 ## 2. Decision Table – When to Use Which Protocol Pattern?
 
 | Scenario                           | Runtime Check Needed? | Composition Needed? | Recommended Pattern                  |
@@ -146,7 +156,9 @@ def bad_core(adapter: StorageRead):
     _ = FileStorage()                    # ← mypy allows it, but layering forbids it
 ```
 
-**Explanation**: mypy enforces protocol method usage. Import layering (no infra in domain) is enforced separately in CI (e.g. import-linter or mypy per-module rules).
+**Explanation**: mypy enforces protocol method usage. Import layering (no infra in
+domain) is enforced separately in CI or review rules. Treat them as cooperating checks,
+not as one tool doing everything.
 
 ### 4.3 Core Using Only Declared Capabilities
 
