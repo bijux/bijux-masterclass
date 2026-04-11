@@ -2,90 +2,68 @@
 
 # Proof Ladder
 
+Use this page when you know the question but not the right amount of evidence. The common
+failure in this program is not too little effort. It is jumping straight to the strongest
+bundle, then losing the original claim inside the output.
 
-<!-- page-maps:start -->
-## Guide Fit
+## Rule for using the ladder
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Proof Ladder"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+Start at the smallest route that could honestly falsify your claim. Move down only when
+the smaller route leaves an important part of the question unanswered.
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+That means:
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-This page fixes a recurring problem: the course has enough proof routes that learners can
-easily overreach. They run the strongest command first, get buried in evidence, and lose
-the idea they were trying to verify.
-
-Use this page to keep proof proportional to the question.
-
----
-
-## The Ladder
-
-Move down this ladder only when the smaller step no longer answers the question honestly.
-
-| Proof level | Command | Best use | Cost |
-| --- | --- | --- | --- |
-| 1 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | first contact with repository meaning | low |
-| 2 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | executed repository review with bounded scope | low to medium |
-| 3 | `make PROGRAM=reproducible-research/deep-dive-snakemake test` | ordinary executable proof of the reference workflow | medium |
-| 4 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | durable saved publish-contract evidence | medium |
-| 5 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | targeted execution-policy and context review | medium |
-| 6 | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | sanctioned multi-bundle corroboration | high |
-| 7 | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | strongest stewardship and confirmation pass | highest |
+- first contact should not start with `proof` or `capstone-confirm`
+- a publish-boundary question does not need a full stewardship pass
+- a profile question should start with profile evidence, not a generic run log
 
 [Back to top](#top)
 
----
+## The ladder
 
-## Which Questions Belong To Which Level
+| Level | Start here when the question is... | First route |
+| --- | --- | --- |
+| 1 | what does this repository even claim to do | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
+| 2 | how does the repository behave when executed once end to end | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` |
+| 3 | does the workflow still execute and validate its published outputs | `make PROGRAM=reproducible-research/deep-dive-snakemake test` |
+| 4 | do I need a saved publish-contract bundle I can review later | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
+| 5 | do I need to compare local, CI, and scheduler policy surfaces | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` |
+| 6 | do I need the sanctioned multi-bundle stewardship route | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
+| 7 | am I ready for the strongest clean-room confirmation pass | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
 
-| Question | Start at |
+[Back to top](#top)
+
+## Start points by claim
+
+| Claim | Start here |
 | --- | --- |
-| what is this repository trying to prove | capstone-walkthrough |
-| how is the repository organized in executable form | capstone-tour |
-| does the workflow still behave correctly | test |
-| do I need durable proof I can review later | capstone-verify-report |
-| what differs across local, CI, and cluster policy | capstone-profile-audit |
-| how do the larger proof surfaces fit together | proof |
-| is this repository ready for the strongest review pass | capstone-confirm |
+| "I need a bounded first pass through the capstone." | capstone-walkthrough |
+| "I need one executed workflow story with saved evidence." | capstone-tour |
+| "I need to know whether the repository still works normally." | test |
+| "I need durable publish-contract evidence, not terminal scrollback." | capstone-verify-report |
+| "I need to review execution-policy differences across contexts." | capstone-profile-audit |
+| "I need the full review route another maintainer could repeat." | proof |
+| "I need the strongest confirmation before major change." | capstone-confirm |
 
 [Back to top](#top)
 
----
+## Bad escalation habits
 
-## Anti-Patterns This Ladder Prevents
+If you are using the ladder badly, it usually looks like one of these:
 
-The ladder exists to prevent these clumsy review habits:
+- choosing `capstone-confirm` because you feel uncertain, not because the question needs it
+- using `proof` when `capstone-verify-report` would answer the publish question directly
+- reading large saved bundles before you know what claim they are supposed to support
+- treating a stronger route as automatically more honest than a narrower one
 
-* running `capstone-confirm` when `capstone-walkthrough` would answer the question
-* treating one large proof bundle as automatically better than a narrower one
-* confusing publish review with operating-context review
-* burying a first-contact learner in incident evidence before the workflow contract is legible
+The stronger route is only better when it answers a different question.
 
 [Back to top](#top)
 
----
+## Best companion pages
 
-## Best Companion Pages
-
-Use these with the ladder:
-
-* [`capstone/command-guide.md`](../capstone/command-guide.md) for command-layer boundaries
-* [`proof-matrix.md`](proof-matrix.md) for claim-to-evidence routing
-* [`capstone/capstone-map.md`](../capstone/capstone-map.md) for module-aware entry routes
-* [`glossary.md`](../reference/glossary.md) when the question is still too fuzzy to prove well
+- [Proof Matrix](proof-matrix.md) when you know the claim but need the first evidence surface
+- [Command Guide](../capstone/command-guide.md) when the command layer itself is unclear
+- [Capstone Map](../capstone/capstone-map.md) when you know the module but not the repository route
 
 [Back to top](#top)
