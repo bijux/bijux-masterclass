@@ -1,5 +1,30 @@
 # DVC Repro, Staleness, and Lock Evidence
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Truthful Pipelines Declared Dependencies"]
+  page["DVC Repro, Staleness, and Lock Evidence"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 `dvc repro` is easiest to misunderstand when you treat it like a smarter shell script.
 
 It is better to treat it as a graph reviewer:

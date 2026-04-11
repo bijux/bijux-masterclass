@@ -1,22 +1,26 @@
 # Module 00: Orientation and Study Practice
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> orientation["Orientation pages"]
-  orientation --> lessons["Modules 01-10"]
-  lessons --> capstone["Capstone proof routes"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Orientation"]
+  page["Module 00: Orientation and Study Practice"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  first_question["Start with your current pressure"] --> route["Choose the orientation page that answers it"]
-  route --> module_path["Pick the module path"]
-  module_path --> proof["Use the capstone only when it clarifies the current lesson"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

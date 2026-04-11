@@ -1,21 +1,26 @@
 # Pressure Routes
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete question you need answered"]
-  pressure --> guide["Pressure Routes"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Guides"]
+  page["Pressure Routes"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Name the pressure honestly"] --> route["Choose one bounded route"]
-  route --> proof["Use one matching proof surface"]
-  proof --> next_move["Stop when the owning state boundary is visible"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

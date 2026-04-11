@@ -1,5 +1,30 @@
 # Worked Example: Auditing a Fragile ML Workflow
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Reproducibility Failures Real Teams"]
+  page["Worked Example: Auditing a Fragile ML Workflow"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This example shows what Module 01 looks like when you apply it to a workflow that seems
 fine at first glance.
 

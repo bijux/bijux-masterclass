@@ -1,5 +1,30 @@
 # Module 04: Truthful Pipelines and Declared Dependencies
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Truthful Pipelines Declared Dependencies"]
+  page["Module 04: Truthful Pipelines and Declared Dependencies"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Module 04 turns DVC from a storage story into an execution story.
 
 By now, you already know two important facts:

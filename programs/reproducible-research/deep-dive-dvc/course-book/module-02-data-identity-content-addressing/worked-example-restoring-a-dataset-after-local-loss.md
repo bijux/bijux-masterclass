@@ -1,5 +1,30 @@
 # Worked Example: Restoring a Dataset After Local Loss
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Data Identity Content Addressing"]
+  page["Worked Example: Restoring a Dataset After Local Loss"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This example shows how Module 02 ideas fit together when you stop talking about files
 abstractly and start asking what survives real failure.
 

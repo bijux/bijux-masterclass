@@ -1,21 +1,26 @@
 # Course Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["Course Map"]
-  concept --> modules["Modules 01-10"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive DVC"]
+  section["Orientation"]
+  page["Course Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  pressure["Name your current pressure"] --> arc["Choose the matching course arc"]
-  arc --> module_path["Open the module cluster that owns it"]
-  module_path --> proof["Use the matching capstone route later"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 
