@@ -2,83 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Imperative vs Functional"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  question["Start with one review question"] --> smell["Find hidden state or mutation"]
+  smell --> rewrite["Rewrite the same logic with explicit inputs and outputs"]
+  rewrite --> compare["Compare what became easier to trust"]
+  compare --> carry["Carry that boundary into the next lesson"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about a review skill, not a style preference:
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+- In imperative code, behavior often depends on mutation order and hidden state.
+- In functional code, behavior is pushed into explicit inputs, explicit outputs, and small transforms.
+- The real question is not "which style looks nicer?" but "which version can another engineer trust locally?"
 
-Here's a snippet from the progression map:
+## Keep This Question In View
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+> How does hidden state prevent substitution, and how do you refactor imperative code to pure functions that enable equational reasoning?
 
-## Why this module matters in the course
+If you can answer that clearly after this page, the rest of Module 01 has a solid base.
 
-This is the semantic floor for everything that follows. If the learner leaves Module 01
-without a strong grasp of substitution, explicit inputs, and hidden-state smell detection,
-the later abstractions will look impressive but stay operationally hollow.
-
-The point of this module is not to admire purity in the abstract. It is to make local
-reasoning possible again in ordinary Python code.
-
-## Questions this module should answer
-
-By the end of the module, you should be able to answer:
-
-- What exactly makes a function pure in Python rather than merely tidy?
-- Which forms of hidden state break substitution and refactoring safety?
-- Why do small pure transforms make testing and composition cheaper later?
-- What does "equivalence proof" mean in a production-minded Python course?
-
-If those answers are still fuzzy, do not rush into laziness or monadic flows yet.
-
-## What to inspect in the capstone
-
-Keep the FuncPipe capstone open while reading this module and inspect:
+## What to Inspect in the Capstone
 
 - the pure transformation helpers under `capstone/src/funcpipe_rag/`
 - the corresponding test surfaces under `capstone/tests/`
 - places where explicit configuration and explicit values replace ambient state
 
 The capstone should make one idea concrete here: purity is a design boundary, not a slogan.
-
-
-> **Core question:**  
-> How does hidden state prevent substitution, and how do you refactor imperative code to pure functions that enable equational reasoning?
-
-This core introduces the **functional mindset** in Python:  
-- Treat code as **substitutable expressions** (referential transparency) rather than sequences of mutations.  
-- Default to **pure functions** (same inputs → same outputs, no side effects) for predictability and composability.  
-- Isolate impurities (globals, mutation, I/O) to thin edges.
-
-We use a **running project**—refactoring the FuncPipe RAG Builder (documented in `module-01/funcpipe-rag-01/README.md`)—to ground every concept. This project evolves across all 10 cores: start with an impure, stateful version; end with a pure, composable pipeline.
-
-**Audience:** Python developers writing imperative scripts (loops, shared mutation) who face bugs from "it worked last time" or struggle with parallel/testing due to the menace of parallelism and flaky tests.  
-**Outcome:**  
-1. Spot impurity in code and explain why it breaks substitution.  
-2. Refactor a 20–50 line impure function to pure using explicit state.  
-3. Write a Hypothesis property proving equivalence, including a shrinking example.
 
 ---
 
@@ -92,18 +45,27 @@ We use a **running project**—refactoring the FuncPipe RAG Builder (documented 
 
 > An expression is referentially transparent if you can replace it with its value without changing program behavior—enabled by purity (no side effects, determinism).
 
-In this series, a function is “pure” if:
+In this lesson, a function counts as pure when all three are true:
+
 - It depends only on its arguments (no mutable globals, no I/O),
 - It does not mutate its arguments or any shared state, and
 - Given the same arguments, it always returns the same result or raises the same exception.
 
 ### 1.3 Why This Matters Now
 
-Without referential transparency, you cannot reason locally about code; your tests and parallel execution become guesswork due to hidden dependencies. For example, a function that passes unit tests might fail in production under concurrent calls because of shared globals, leading to data races that are hard to reproduce.
+Without referential transparency, code review turns into archaeology. You cannot trust a
+line by reading it in place because the result may depend on shared globals, previous
+mutation, time, random values, or call order.
+
+That is why imperative code often feels harder to parallelize, test, and refactor:
+
+- the relevant state is spread across time instead of carried in the function signature
+- two calls that look identical may not mean the same thing
+- "small safe change" becomes hard to defend
 
 ### 1.4 Functions as Values in 5 Lines
 
-Functions as first-class values enable dynamic strategies:
+Functions as first-class values matter because they let us move behavior around like data:
 
 ```python
 from collections.abc import Callable
@@ -121,7 +83,8 @@ def run_job(strategy_key: str, price: float, tax_rate: float) -> float:
     return strategies[strategy_key](price, tax_rate)
 ```
 
-Because discount_price is pure (no hidden state, no I/O), we can safely store it in a dict, pass it around, and test it in isolation — just like data.
+Because `discount_price` is pure, we can store it in a dict, pass it around, and test it
+in isolation without worrying that moving it changed its meaning.
 
 ---
 
@@ -130,14 +93,13 @@ Because discount_price is pure (no hidden state, no I/O), we can safely store it
 ### 2.1 One Picture
 
 ```text
-Imperative (Hidden State)               Functional (Explicit + Substitutable)
-+-----------------------+               +------------------------------+
-| globals / RNG / time  |               |   all inputs    + function   |
-|        ↓              |               |        ↓              ↓      |
-| mutate X → do Y → Z   |               |   output = f(all inputs)     |
-| result = hidden deps  |               |   value substitutable        |
-+-----------------------+               +------------------------------+
-   ↑ Races / Heisenbugs                    ↑ Parallel-safe / Testable
+Imperative review question               Functional review question
++-----------------------------+          +------------------------------+
+| What happened before this?  |          | What are the explicit inputs?|
+| What else can change this?  |          | What value comes back out?   |
+| Which mutation matters?     |          | Can I substitute this call?  |
++-----------------------------+          +------------------------------+
+        history-dependent                     locally reviewable
 ```
 
 ### 2.2 Contract Table
