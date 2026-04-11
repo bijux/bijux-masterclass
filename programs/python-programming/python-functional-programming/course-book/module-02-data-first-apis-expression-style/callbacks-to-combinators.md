@@ -2,49 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Callbacks to Combinators"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  chain["Start with nested callbacks or hand-rolled loops"] --> stages["Name each transformation stage"]
+  stages --> combinators["Compose the stages with combinators"]
+  combinators --> inspect["Inspect the pipeline as one readable chain"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should help students see combinators as a readability tool before they see them as an abstraction tool. The payoff is that a pipeline becomes something you can scan stage by stage instead of mentally stepping through nesting and control glue.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Composition Problem
 
-Here's a snippet from the progression map:
+Students often know each individual function they want, but still wire them together with loops, callbacks, and local bookkeeping. That wiring is the thing this lesson needs to simplify.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If the pipeline shape is hidden inside callback nesting, the composition is hard to inspect.
+- If each stage is configured but the orchestration is still imperative, students cannot see the full flow.
+- If adding one new transformation means rewriting control glue, combinators are likely missing.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you replace nested callbacks and imperative chains with combinators (flow, fmap, ffilter, flatmap) that compose lazy, configured, boundary-sealed functions—so pipelines from M02C01–M02C06 are efficient, readable, and testable?
 
-This core introduces **combinators for pipelines** in Python:  
-- Use `flow` to build a 0-arg pipeline from a producer + iterable stages; you run it with `pipeline()`.  
-- Apply `fmap`, `ffilter`, `flatmap` for lazy mapping/filtering/flattening with bound pure functions.  
-- Build on M02C06 config-as-data to bind settings, M02C03 laziness for streams, and M02C05 boundaries for effects.  
+This lesson introduces combinators as disciplined orchestration:
 
-We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder—evolving from callback-heavy chains to clear combinator pipelines that preserve Module 1 equivalence for the chunk sequence.
+- use `flow` to make the overall pipeline shape visible
+- use `fmap`, `ffilter`, and `flatmap` when the stage purpose is transform, keep, or expand
+- keep earlier configuration and boundary work intact instead of burying it under control glue
 
-**Audience:** Developers from M02C06 with config-as-data but still using nested callbacks or imperative loops that break readability and laziness.  
+The running project keeps the lesson practical: a combinator chain should make the document pipeline easier to read, not more magical.
+
+**Audience:** Developers with config-as-data who still wire stages together with nested callbacks or imperative loops that hide the real pipeline.  
 **Outcome:**  
 1. Identify callback smells (nested functions, imperative chains) and explain their impact on composability.  
 2. Refactor a callback chain into combinators with bound pure functions.  
@@ -64,11 +55,11 @@ We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder�
 
 ### 1.3 Why This Matters Now
 
-M02C06 gave immutable config data, but nested callbacks or loops obscure pipelines. Combinators make them declarative chains, leveraging M02C03 laziness, M02C05 boundaries, and M02C06 binding for scalable code.
+By this point in the module, students know how to configure behavior, express value-producing logic, and stream data lazily. What still gets in the way is the orchestration layer. When the pipeline itself is hard to read, all the earlier improvements become harder to review. Combinators solve that by making the sequence of stages explicit.
 
 ### 1.4 Combinators as Values in 5 Lines
 
-Combinators as first-class enable dynamic pipelines:
+The next example matters because it contrasts a hand-built loop with a stage that can be dropped into a larger pipeline without rewriting the surrounding control flow.
 
 ```python
 from funcpipe_rag import CleanDoc, ChunkWithoutEmbedding, RagEnv
