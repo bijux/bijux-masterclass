@@ -25,7 +25,8 @@ Read the first diagram as a placement map: this page is one concept inside its p
 **Module 07 – Main Track Core**
 
 > **Main track**: Cores 1, 3–10 (Ports & Adapters + Capability Protocols → Production).  
-> This is a **required** core. Every production FuncPipe **core** uses Writer-based logging.
+> This is a **required** core. Writer-based logging is the default pure-core pattern in
+> this course when logs need to stay reviewable as data.
 
 ## Progression Note
 Module 7 takes the lawful containers and pipelines from Module 6 and puts all effects behind explicit boundaries.
@@ -77,9 +78,10 @@ These laws make logging **composable, predictable, and zero-cost in terms of pur
 | `Logger` capability (direct) | Yes        | No                  | Simple scripts | Minimal overhead         |
 | **Writer[Value, Logs]**    | No           | Yes                 | All cores      | **Canonical – pure, composable, testable** |
 
-**Verdict**: Default to **Writer** for the pure core surfaces in this course. Drain to a
-concrete `Logger` adapter (or file, Prometheus, etc.) in the shell, and treat direct
-logging inside domain code as a conscious exception rather than the baseline.
+**Verdict**: Default to **Writer** for the pure core surfaces in this course when logs
+are part of the review or test story. Drain to a concrete `Logger` adapter (or file,
+Prometheus, etc.) in the shell, and treat direct logging inside domain code as a
+conscious exception rather than the baseline.
 
 ## 3. Public API – Structured Logging Helpers (`capstone/src/funcpipe_rag/domain/logging.py`)
 
@@ -121,7 +123,10 @@ def trace_value(name: str, value: object, level: Level = "DEBUG") -> Writer[None
     return log_tell(LogEntry(level=level, msg=f"{name}={value!r}"))
 ```
 
-**Performance note**: In this repo the Writer log is a `tuple`, so concatenation is O(n+m). This keeps the implementation tiny and predictable for teaching; if you need very high-volume logging, use a list-backed log accumulator in the shell or a different Writer representation.
+**Performance note**: In this repo the Writer log is a `tuple`, so concatenation is
+`O(n + m)`. This keeps the implementation tiny and predictable for teaching; if you need
+very high-volume logging, use a list-backed accumulator in the shell or a different
+Writer representation.
 
 ## 4. Reference Implementations
 
@@ -235,13 +240,15 @@ def test_order_preservation(entries):
 
 ## 6. Big-O & Allocation Guarantees
 
-| Operation         | Time               | Heap               | Notes                                           |
-|-------------------|--------------------|--------------------|-------------------------------------------------|
-| `tell` / `log_tell` | Amortized O(1)     | O(1) per entry     | Internal `list.append`                          |
-| `run_writer`      | O(total entries)   | O(total entries)   | Freezes internal list to immutable tuple        |
-| `mappend` (tuple+) | O(n + m)           | O(n + m)           | Used only at coarse boundaries (e.g. shell)    |
+| Operation           | Time       | Heap             | Notes                                                  |
+|---------------------|------------|------------------|--------------------------------------------------------|
+| `tell` / `log_tell` | O(1)       | O(1) per entry   | Creates a one-entry tuple-backed Writer                |
+| `and_then`          | O(n + m)   | O(n + m)         | Concatenates tuple logs from left and right branches   |
+| `run_writer`        | O(1)`*`    | O(1)`*`          | `*` beyond whatever log accumulation already occurred  |
 
-Writer is efficient enough for millions of log entries in long-running pipelines.
+That is a good teaching trade-off for this repository. If a production pipeline needs
+extremely high-volume logging, the representation should be revisited deliberately rather
+than assumed to be free.
 
 ## 7. Anti-Patterns & Immediate Fixes
 
