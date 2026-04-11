@@ -44,7 +44,7 @@ class PageCheck:
 
 PAGE_CHECKS = (
     PageCheck(
-        path="library/reproducible-research/deep-dive-make/index.html",
+        path="reproducible-research/deep-dive-make/index.html",
         course_title="Deep Dive Make",
         current_label="Home",
         sidebar_labels=("Home",),
@@ -52,7 +52,7 @@ PAGE_CHECKS = (
     ),
     PageCheck(
         path=(
-            "library/reproducible-research/deep-dive-make/"
+            "reproducible-research/deep-dive-make/"
             "module-01-build-graph-foundations-truth/index.html"
         ),
         course_title="Deep Dive Make",
@@ -85,7 +85,7 @@ PAGE_CHECKS = (
     ),
     PageCheck(
         path=(
-            "library/reproducible-research/deep-dive-make/"
+            "reproducible-research/deep-dive-make/"
             "module-02-parallel-safety-project-structure/index.html"
         ),
         course_title="Deep Dive Make",
@@ -118,7 +118,7 @@ PAGE_CHECKS = (
     ),
     PageCheck(
         path=(
-            "library/reproducible-research/deep-dive-make/"
+            "reproducible-research/deep-dive-make/"
             "module-03-determinism-debugging-self-testing/index.html"
         ),
         course_title="Deep Dive Make",
@@ -151,7 +151,7 @@ PAGE_CHECKS = (
     ),
     PageCheck(
         path=(
-            "library/reproducible-research/deep-dive-make/"
+            "reproducible-research/deep-dive-make/"
             "capstone-docs/index.html"
         ),
         course_title="Deep Dive Make",
@@ -160,7 +160,7 @@ PAGE_CHECKS = (
         sidebar_absent_labels=("Reference", "M01"),
     ),
     PageCheck(
-        path="library/python-programming/python-functional-programming/index.html",
+        path="python-programming/python-functional-programming/index.html",
         course_title="Python Functional Programming",
         current_label="Home",
         sidebar_labels=("Home",),
@@ -168,7 +168,7 @@ PAGE_CHECKS = (
     ),
     PageCheck(
         path=(
-            "library/python-programming/python-functional-programming/"
+            "python-programming/python-functional-programming/"
             "module-04-streaming-resilience-failure-handling/"
             "structural-recursion-and-iteration/index.html"
         ),
@@ -196,7 +196,7 @@ PAGE_CHECKS = (
     ),
     PageCheck(
         path=(
-            "library/reproducible-research/deep-dive-snakemake/"
+            "reproducible-research/deep-dive-snakemake/"
             "module-04-scaling-workflows-interface-boundaries/index.html"
         ),
         course_title="Deep Dive Snakemake",

@@ -13,7 +13,9 @@ artifacts/
 venv/
 env/
 site/
-docs/library/
+docs/index.md
+docs/python-programming/
+docs/reproducible-research/
 *.egg-info/
 __pycache__/
 .pytest_cache/

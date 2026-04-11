@@ -17,7 +17,7 @@ if str(REPO_ROOT) not in sys.path:
 from scripts.docs_nav import build_tree_nav
 
 SOURCE_CONFIG = REPO_ROOT / "mkdocs.yml"
-LIBRARY_ROOT = REPO_ROOT / "docs" / "library"
+DOCS_ROOT = REPO_ROOT / "docs"
 OUTPUT_CONFIG = REPO_ROOT / "artifacts" / "mkdocs.root.yml"
 
 
@@ -51,12 +51,12 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
     for family_item in source_nav[1:]:
         family_name, family_home = next(iter(family_item.items()))
         family_slug = Path(family_home).parent.name
-        family_root = LIBRARY_ROOT / family_slug
+        family_root = DOCS_ROOT / family_slug
         generated.append(
             {
                 family_name: build_tree_nav(
                     family_root,
-                    f"library/{family_slug}",
+                    family_slug,
                 )
             }
         )

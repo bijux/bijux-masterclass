@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sync the public library directly from program README and course-book trees."""
+"""Sync the public catalog directly from program README and course-book trees."""
 
 from __future__ import annotations
 
@@ -10,7 +10,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROGRAMS_DIR = REPO_ROOT / "programs"
-TARGET_ROOT = REPO_ROOT / "docs" / "library"
+DOCS_ROOT = REPO_ROOT / "docs"
+LEGACY_LIBRARY_ROOT = DOCS_ROOT / "library"
 SKIP_PARTS = {
     ".pytest_cache",
     "__pycache__",
@@ -29,10 +30,21 @@ def family_dirs() -> list[Path]:
     return sorted(path for path in PROGRAMS_DIR.iterdir() if path.is_dir())
 
 
-def reset_target_root() -> None:
-    if TARGET_ROOT.exists():
-        shutil.rmtree(TARGET_ROOT)
-    TARGET_ROOT.mkdir(parents=True, exist_ok=True)
+def generated_family_targets() -> list[Path]:
+    return [DOCS_ROOT / family_dir.name for family_dir in family_dirs()]
+
+
+def reset_generated_catalog() -> None:
+    for family_target in generated_family_targets():
+        if family_target.exists():
+            shutil.rmtree(family_target)
+
+    generated_root_index = DOCS_ROOT / "index.md"
+    if generated_root_index.exists():
+        generated_root_index.unlink()
+
+    if LEGACY_LIBRARY_ROOT.exists():
+        shutil.rmtree(LEGACY_LIBRARY_ROOT)
 
 
 def split_anchor(target: str) -> tuple[str, str]:
@@ -92,15 +104,15 @@ def copy_markdown_tree(source_dir: Path, target_dir: Path) -> None:
         copy_markdown_file(source_path, target_path)
 
 
-def library_index_sources() -> list[tuple[Path, Path]]:
-    sources = [(PROGRAMS_DIR / "README.md", TARGET_ROOT / "index.md")]
+def catalog_index_sources() -> list[tuple[Path, Path]]:
+    sources = [(PROGRAMS_DIR / "README.md", DOCS_ROOT / "index.md")]
     for family_dir in family_dirs():
-        sources.append((family_dir / "README.md", TARGET_ROOT / family_dir.name / "index.md"))
+        sources.append((family_dir / "README.md", DOCS_ROOT / family_dir.name / "index.md"))
     return sources
 
 
 def main() -> int:
-    index_sources = library_index_sources()
+    index_sources = catalog_index_sources()
     missing_sources = [
         source_path.relative_to(REPO_ROOT)
         for source_path, _ in index_sources
@@ -108,9 +120,9 @@ def main() -> int:
     ]
     if missing_sources:
         missing = ", ".join(str(path) for path in missing_sources)
-        raise FileNotFoundError(f"missing library README source: {missing}")
+        raise FileNotFoundError(f"missing catalog README source: {missing}")
 
-    reset_target_root()
+    reset_generated_catalog()
 
     for source_path, target_path in index_sources:
         copy_markdown_file(source_path, target_path, rewrite_links=True)
@@ -124,10 +136,10 @@ def main() -> int:
             if not course_book_dir.exists():
                 continue
 
-            program_target_dir = TARGET_ROOT / family_dir.name / program_dir.name
+            program_target_dir = DOCS_ROOT / family_dir.name / program_dir.name
             copy_markdown_tree(course_book_dir, program_target_dir)
 
-    print(f"Synced docs into {TARGET_ROOT.relative_to(REPO_ROOT)}")
+    print(f"Synced docs into {DOCS_ROOT.relative_to(REPO_ROOT)}")
     return 0
 
 

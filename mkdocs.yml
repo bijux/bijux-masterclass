@@ -38,6 +38,6 @@ extra:
         url: https://bijux.io/bijux-masterclass/
 
 nav:
-  - Home: library/index.md
-  - Reproducible Research: library/reproducible-research/index.md
-  - Python Programming: library/python-programming/index.md
+  - Home: index.md
+  - Reproducible Research: reproducible-research/index.md
+  - Python Programming: python-programming/index.md
