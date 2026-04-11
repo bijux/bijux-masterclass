@@ -48,6 +48,18 @@ strongest command. The point of this ladder is to keep proof proportional to the
 | 8. Sanctioned full route | whether the official learner-facing route still builds end to end | `make PROGRAM=python-programming/python-functional-programming proof` | the sanctioned course bundle route |
 | 9. Strongest capstone route | whether the capstone survives its strictest local confirmation bar | `make PROGRAM=python-programming/python-functional-programming capstone-confirm` | lint, build, saved bundles, and executable confirmation together |
 
+## Module comparison routes
+
+Use these when the question is not “does the current repository pass?” but “what changed
+between module endpoints, and which surface is tracked truth versus generated study
+state?”
+
+| Need | Route | Surface |
+| --- | --- | --- |
+| rebuild the learner-facing module comparison surface | `make PROGRAM=python-programming/python-functional-programming history-refresh` | `capstone/_history/worktrees/module-XX/` plus per-module manifests |
+| verify the generated comparison surface against tracked snapshot sources | `make PROGRAM=python-programming/python-functional-programming history-verify` | `capstone/module-reference-states/` and `_history/manifests/module-XX.json` |
+| remove generated comparison state before rebuilding cleanly | `make PROGRAM=python-programming/python-functional-programming history-clean` | local `_history/` worktrees, tags, and generated history metadata |
+
 ## Start with the smallest honest route
 
 ### Start at level 1 or 2 when the question is about ownership
@@ -91,6 +103,8 @@ Use these when the question sounds like:
   evidence instead of terminal output.
 - Escalate from `capstone-walkthrough` to `capstone-tour` when you need the fuller
   learner-facing bundle instead of the first-pass route.
+- Use the history routes only when the question is about module-to-module comparison,
+  not as a substitute for understanding the current claim first.
 
 ## Success signal
 

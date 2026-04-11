@@ -69,7 +69,7 @@ claim becomes inspectable.
 
 ## Best companion pages
 
-- `module-dependency-map.md`
-- `outcomes-and-proof-map.md`
-- `practice-map.md`
+- `../reference/module-dependency-map.md`
+- `proof-matrix.md`
+- `../reference/practice-map.md`
 - `../reference/self-review-prompts.md`

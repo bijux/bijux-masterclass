@@ -62,7 +62,7 @@ By the end of the course, you should be able to:
 | I want to know what each module is supposed to change in my judgment. | [Module Promise Map](guides/module-promise-map.md) | [Module Checkpoints](guides/module-checkpoints.md) |
 | I want a paced first pass through the semantic floor. | [Start Here](guides/start-here.md) | [Learning Contract](guides/learning-contract.md) |
 | My question is already practical and I need the owning module. | [Pressure Routes](guides/pressure-routes.md) | [Proof Matrix](guides/proof-matrix.md) |
-| The capstone domain still feels noisy. | [FuncPipe RAG Primer](guides/funcpipe-rag-primer.md) | [FuncPipe Capstone Guide](capstone/index.md) |
+| The capstone domain still feels noisy. | [Start Here](guides/start-here.md) | [FuncPipe Capstone Guide](capstone/index.md) |
 | I am returning after a break and do not want to restart from zero. | [Return Map](module-00-orientation/return-map.md) | [Module Promise Map](guides/module-promise-map.md) |
 
 ## Read the support shelf by job
@@ -71,11 +71,11 @@ By the end of the course, you should be able to:
 | --- | --- |
 | the shortest stable route through the whole course | [Guides](guides/index.md) |
 | the course promise, module arc, and capstone role in one place | [Course Guide](guides/course-guide.md) |
-| the explicit contract between learning goals and proof | [Outcomes and Proof Map](guides/outcomes-and-proof-map.md) |
+| the explicit contract between learning goals and proof | [Proof Matrix](guides/proof-matrix.md) |
 | the promise and evidence route for each module | [Module Promise Map](guides/module-promise-map.md) |
 | an honest bar for finishing a module | [Module Checkpoints](guides/module-checkpoints.md) |
 | the fastest route from a claim to executable evidence | [Proof Matrix](guides/proof-matrix.md) |
-| the generated module comparison route | [History Guide](guides/history-guide.md) |
+| the generated module comparison route | [Proof Ladder](guides/proof-ladder.md) |
 
 ## Module Table of Contents
 

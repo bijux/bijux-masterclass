@@ -42,6 +42,16 @@ pytest suite.
 | effect boundaries stay visible instead of leaking into the core | inspect [`capstone-architecture-guide.md`](../capstone/capstone-architecture-guide.md) | `src/funcpipe_rag/domain/`, `src/funcpipe_rag/boundaries/`, `src/funcpipe_rag/infra/` |
 | async coordination remains bounded and reviewable | `make PROGRAM=python-programming/python-functional-programming test` | `tests/unit/domain/`, `src/funcpipe_rag/domain/effects/async_/` |
 
+## Course contract to proof surface
+
+| Course outcome | Best first route | Best first surface |
+| --- | --- | --- |
+| separate pure transforms from effectful coordination in ordinary Python systems | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `tests/unit/fp/`, `src/funcpipe_rag/fp/`, `src/funcpipe_rag/boundaries/` |
+| design pipelines that stay configurable, lazy, and testable under growth | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `tests/unit/pipelines/`, `tests/unit/streaming/`, `src/funcpipe_rag/pipelines/` |
+| model expected failures and domain states as data instead of tangled control flow | `make PROGRAM=python-programming/python-functional-programming capstone-test` | `tests/unit/result/`, `src/funcpipe_rag/result/`, `src/funcpipe_rag/fp/validation.py` |
+| move infrastructure behind explicit protocols, adapters, and async coordination layers | `make PROGRAM=python-programming/python-functional-programming capstone-tour` | `src/funcpipe_rag/domain/`, `src/funcpipe_rag/infra/`, `src/funcpipe_rag/domain/effects/async_/` |
+| sustain a long-lived codebase with evidence, review standards, and migration discipline | `make PROGRAM=python-programming/python-functional-programming proof` | learner-facing bundles under `artifacts/`, review guides, and capstone proof surfaces |
+
 ## Capstone review claims
 
 | Review question | Best first route | Best first surface |
@@ -51,6 +61,7 @@ pytest suite.
 | what is the strongest learner-facing proof route | `make PROGRAM=python-programming/python-functional-programming proof` | [`capstone-proof-guide.md`](../capstone/capstone-proof-guide.md), `artifacts/tour/python-programming/python-functional-programming/` |
 | what lets a human reviewer inspect the repository quickly | `make PROGRAM=python-programming/python-functional-programming capstone-tour` | [`capstone-walkthrough.md`](../capstone/capstone-walkthrough.md), `package-tree.txt`, `test-tree.txt` |
 | which review questions should I carry into a change | inspect [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) | the matching code and test folders |
+| which earlier module state should I compare against | `make PROGRAM=python-programming/python-functional-programming history-refresh` | `capstone/_history/worktrees/module-XX/`, `_history/manifests/module-XX.json`, `capstone/module-reference-states/` |
 
 ## Module-to-proof bridge
 

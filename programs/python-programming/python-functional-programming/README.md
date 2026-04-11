@@ -102,7 +102,7 @@ Primary reading route:
 - `course-book/guides/start-here.md`
 - `course-book/index.md`
 - `course-book/module-00-orientation/index.md`
-- `course-book/guides/history-guide.md`
+- `course-book/guides/proof-ladder.md`
 - `course-book/capstone/index.md`
 - `course-book/capstone/capstone-map.md`
 

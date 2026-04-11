@@ -37,21 +37,21 @@ surface, or capstone bridge.
 | I want a lighter first pass through the semantic floor. | [Start Here](start-here.md) | [Module Promise Map](module-promise-map.md) |
 | I need to know what each module is supposed to change. | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
 | My question is already practical. | [Pressure Routes](pressure-routes.md) | the owning module or [Proof Matrix](proof-matrix.md) |
-| I need to connect learning goals to proof. | [Outcomes and Proof Map](outcomes-and-proof-map.md) | [Proof Matrix](proof-matrix.md) |
-| The capstone domain still feels unfamiliar. | [FuncPipe RAG Primer](funcpipe-rag-primer.md) | [FuncPipe Capstone Guide](../capstone/index.md) |
-| I am resuming after a break. | [History Guide](history-guide.md) | [Return Map](../module-00-orientation/return-map.md) |
+| I need to connect learning goals to proof. | [Proof Matrix](proof-matrix.md) | [Proof Ladder](proof-ladder.md) |
+| The capstone domain still feels unfamiliar. | [Start Here](start-here.md) | [FuncPipe Capstone Guide](../capstone/index.md) |
+| I am resuming after a break. | [Return Map](../module-00-orientation/return-map.md) | [Proof Ladder](proof-ladder.md) |
 
 ## Use the shelf by job
 
 | Job | Best page |
 | --- | --- |
 | understand the module arc and support-page roles | [Course Guide](course-guide.md) |
-| see the sequence justified | [Module Dependency Map](module-dependency-map.md) |
+| see the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) |
 | check the promise and evidence route for one module | [Module Promise Map](module-promise-map.md) |
 | decide whether you are ready to move on | [Module Checkpoints](module-checkpoints.md) |
-| rehearse the module-to-proof loop | [Practice Map](practice-map.md) |
+| rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) |
 | route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
-| compare current work with generated history surfaces | [History Guide](history-guide.md) |
+| compare current work with generated history surfaces | [Proof Ladder](proof-ladder.md) |
 | hold the teaching bar steady | [Learning Contract](learning-contract.md) |
 
 ## Cross into the capstone deliberately
@@ -82,4 +82,4 @@ surface, or capstone bridge.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.
+Use [Glossary](../reference/glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.

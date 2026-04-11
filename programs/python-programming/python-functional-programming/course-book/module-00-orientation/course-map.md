@@ -94,5 +94,5 @@ Keep the FuncPipe RAG capstone open while reading the map.
 - `course-orientation.md`
 - `how-to-study-this-course.md`
 - `../guides/start-here.md`
-- `../guides/outcomes-and-proof-map.md`
+- `../guides/proof-matrix.md`
 - `../capstone/capstone-file-guide.md`

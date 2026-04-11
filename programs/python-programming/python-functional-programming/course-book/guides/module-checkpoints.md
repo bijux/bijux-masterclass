@@ -93,6 +93,6 @@ Pause and revisit the owning material when:
 ## Best companion pages
 
 - `module-promise-map.md`
-- `practice-map.md`
+- `../reference/practice-map.md`
 - `proof-matrix.md`
 - `../reference/self-review-prompts.md`

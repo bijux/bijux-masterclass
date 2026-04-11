@@ -50,9 +50,20 @@ effects into explicit contracts.
 4. Choose one pace:
    - use the lower-density route below if you want Modules 01 to 03 broken into smaller slices
    - [Functional Programming Course Map](../module-00-orientation/course-map.md) if you want the full route visible at once
-5. Read [FuncPipe RAG Primer](funcpipe-rag-primer.md) if the capstone domain is unfamiliar.
+5. Read the capstone note below if the repository vocabulary is unfamiliar.
 6. Read [Platform Setup](platform-setup.md) before your first proof command or after any Python-toolchain drift.
 7. Keep [FuncPipe Capstone Guide](../capstone/index.md) nearby so each module has an executable mirror.
+
+## Capstone domain in one paragraph
+
+FuncPipe RAG is a small document-processing system. It loads source documents, cleans and
+splits them into chunks, attaches retrieval-ready metadata, and serves or reviews the
+result through explicit boundaries. The course uses that domain because it makes
+configuration, laziness, failures, effect boundaries, and async coordination concrete
+without turning the program into an LLM product-design course.
+
+If the capstone still feels noisy, keep this rule in view: the interesting questions here
+are about contracts and boundaries, not about retrieval novelty.
 
 ## Lower-density route through Modules 01 to 03
 
@@ -178,7 +189,7 @@ Can you explain where laziness stops being a win and starts needing explicit cle
 | --- | --- |
 | I need the full orientation shelf before Module 01. | [Orientation](../module-00-orientation/index.md) |
 | I want the promise and proof route for each module. | [Module Promise Map](module-promise-map.md) |
-| I want the course contract stated as outcomes and evidence. | [Outcomes and Proof Map](outcomes-and-proof-map.md) |
+| I want the course contract stated as outcomes and evidence. | [Proof Matrix](proof-matrix.md) |
 | My question is already practical. | [Pressure Routes](pressure-routes.md) |
 | I am leaving the semantic floor and entering failures, effects, or async pressure. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) |
 | I am returning after a break. | [Return Map](../module-00-orientation/return-map.md) |

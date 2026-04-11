@@ -35,7 +35,7 @@ systems that remain testable and reviewable under operational pressure.
 | --- | --- |
 | the shortest entry route | [Start Here](start-here.md) |
 | the promise and evidence route for one module | [Module Promise Map](module-promise-map.md) |
-| the sequence justified | [Module Dependency Map](module-dependency-map.md) |
+| the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) |
 | an honest bar for moving on | [Module Checkpoints](module-checkpoints.md) |
 | the capstone route kept explicit | [FuncPipe Capstone Guide](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) |
 | the proof route from claim to evidence | [Proof Matrix](proof-matrix.md) |
@@ -99,9 +99,9 @@ Modules 09 to 10 ask whether the design can survive a team and a production life
 | before you start Module 01 | [Learning Contract](learning-contract.md) |
 | when a module title sounds familiar but the promise is fuzzy | [Module Promise Map](module-promise-map.md) |
 | when your pressure is concrete and engineering-shaped | [Pressure Routes](pressure-routes.md) |
-| when you want the rehearsal loop in one place | [Practice Map](practice-map.md) |
+| when you want the rehearsal loop in one place | [Practice Map](../reference/practice-map.md) |
 | when you need executable proof | [Proof Matrix](proof-matrix.md) |
-| when you need generated history comparisons | [History Guide](history-guide.md) |
+| when you need generated history comparisons | [Proof Ladder](proof-ladder.md) |
 
 ## Honest Expectation
 
