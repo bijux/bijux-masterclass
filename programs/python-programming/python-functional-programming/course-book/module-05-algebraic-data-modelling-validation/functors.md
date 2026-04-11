@@ -2,41 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["Functors"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  unwrap["Start with repeated unboxing and reboxing boilerplate"] --> map["Move the transformation into lawful map operations"]
+  map --> compose["Compose transformations without touching container structure"]
+  compose --> review["Review the laws as refactor safety rather than theory only"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make functors feel like a relief from repetitive container plumbing. Students often do not need more abstraction for its own sake here. They need a safe way to transform values inside `Option`, `Result`, and collections without rewriting the same structural boilerplate every time.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the Unboxing Smell
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines | bind/and_then, Reader/State-like patterns, error-typed flows                |
+The pain point here is easy to recognize: the actual transformation is tiny, but the code around it keeps checking `Err`, `Some`, empty cases, and manual loops.
+
+- If the same `if Err` or `if Some` structure appears in many places, the transformation logic is being drowned by container handling.
+- If a minor refactor changes structure-handling inconsistently across functions, the codebase no longer has one reliable transformation pattern.
+- If students cannot describe what stays the same and what changes under `map`, the abstraction has not yet become useful.
 
 **Core question**  
 How do you replace ad-hoc unboxing, duplicated `if err/None` boilerplate, and manual loops with lawful functor mapping over Option, Result, and List — guaranteeing type-safe, composable transformations in every FuncPipe pipeline stage?
 
-We now take the immutable state ADTs from C02 and ask the question every pipeline eventually faces:
+This lesson introduces functors as the standard answer to “transform the value, keep the container contract”:
 
-**“Why do I have the same 6-line unboxing pattern copied into 50 functions, and why does a tiny refactor in one transformation break half the pipeline without mypy noticing?”**
+- transform values without rewriting error, absence, or collection structure
+- keep the container behavior stable while the inner function changes
+- use the functor laws as a way to trust refactors, not as decorative mathematics
+
+The motivating pipeline examples matter because they show the same smell in several shapes: optional values, fallible values, and batches all repeating structural handling.
 
 The naïve pattern everyone writes first:
 
@@ -63,9 +58,9 @@ def embed_batch(chunks: list[Chunk]) -> list[Result[Success, ErrInfo]]:
     return out
 ```
 
-Duplicated boilerplate, mixed Optional/Result, manual loops, silent inconsistencies.
+This is the structural repetition the lesson should help students eliminate.
 
-The production pattern: every container implements a **curried** lawful `map` that applies a pure function **only when there is a value**, preserving structure automatically.
+The production pattern makes the transformation itself the center of attention and lets the container preserve its own structure automatically.
 
 ```python
 # AFTER – uniform, composable, zero boilerplate
@@ -78,9 +73,9 @@ embed_batch = iter_map(embed_chunk) >> iter_map(postprocess)
 embed_batch = list_map(embed_chunk) >> list_map(postprocess)
 ```
 
-Now every transformation is a single, composable, type-checked line — forever.
+Now the value transformation becomes the readable part again, and later composition has fewer places to drift apart.
 
-**Audience**: Engineers drowning in duplicated unboxing who want mathematically lawful, uniformly mappable containers.
+**Audience**: Engineers drowning in duplicated unboxing who want one consistent way to transform optional, fallible, and batched values.
 
 **Outcome**
 1. Every manual `if Err/None` or loop replaced with functor `map`.
