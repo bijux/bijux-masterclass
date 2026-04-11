@@ -48,7 +48,7 @@ stable documentation set for the reference repository that the course keeps poin
 | how should I study one controlled failure route | [Repro Guide](repro-guide.md) | [Incident Review Guide](incident-review-guide.md) |
 | how do I review the published contract instead of only the implementation | [Contract Audit Guide](contract-audit-guide.md) | [Proof Guide](proof-guide.md) |
 | how do I review portability, policy, or precedence surfaces | [Profile Audit Guide](profile-audit-guide.md) | [Target Guide](target-guide.md) |
-| how do I package the repository as clean tracked source | [Source Baseline Guide](source-baseline-guide.md) | [Walkthrough Guide](walkthrough-guide.md) |
+| how do I package the repository as clean tracked source | [Target Guide](target-guide.md) | [Walkthrough Guide](walkthrough-guide.md) |
 
 ## Project doc set
 
@@ -61,7 +61,6 @@ stable documentation set for the reference repository that the course keeps poin
 - [Profile Audit Guide](profile-audit-guide.md) for execution-policy and precedence review
 - [Incident Review Guide](incident-review-guide.md) for one executed failure bundle
 - [Repro Guide](repro-guide.md) for controlled failure specimens
-- [Source Baseline Guide](source-baseline-guide.md) for tracked-source packaging discipline
 
 ## How this shelf relates to the rest of the course
 
