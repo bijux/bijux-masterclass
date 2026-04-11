@@ -24,14 +24,14 @@ Read the first diagram as a lookup map: this page is part of the review shelf, n
 
 This course should end with demonstrated judgment, not passive familiarity.
 
-Use this rubric to decide whether a learner has actually completed Deep Dive Make in a
+Use this rubric to decide whether someone has actually completed Deep Dive Make in a
 meaningful way.
 
 ---
 
 ## Core Standards
 
-The learner should be able to do all of this without guessing:
+You should be able to do all of this without guessing:
 
 | Standard | Evidence |
 | --- | --- |
@@ -113,7 +113,7 @@ make -p > build/make.dump
 
 Completion does not require memorizing the capstone. It does require using it correctly.
 
-The learner should be able to:
+You should be able to:
 
 * run `make PROGRAM=reproducible-research/deep-dive-make test` and explain what it proves
 * identify at least one hidden input modeled in the capstone
@@ -158,4 +158,3 @@ For each module:
 4. enter the capstone only after the local result is legible
 
 This keeps the course centered on comprehension instead of file tourism.
-

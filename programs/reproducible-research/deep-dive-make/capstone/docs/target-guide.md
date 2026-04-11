@@ -58,7 +58,7 @@ question honestly.
 | `walkthrough` | the bounded first-pass bundle | you need an ordered entry route |
 | `tour` | the shortest printed walkthrough plus supporting bundle | you need quick orientation |
 | `contract-audit` | the public-contract review bundle | you are reviewing promises and boundaries |
-| `inspect` | the same contract route under learner-facing naming | you want the smallest honest review route |
+| `inspect` | the same contract route under reader-facing naming | you want the smallest honest review route |
 | `incident-audit` | one executed incident bundle | you want one failure class with evidence |
 | `profile-audit` | the execution-profile review bundle | you are reviewing portability and precedence |
 | `selftest-report` | the saved selftest evidence bundle | you need durable proof output |
@@ -84,7 +84,7 @@ question honestly.
 ## Source packaging route
 
 Use this route when the question is not "does the build pass?" but "would the tracked
-source tree be safe to hand to another learner or reviewer?"
+source tree be safe to hand to another reader or reviewer?"
 
 Run these commands from the capstone directory:
 
@@ -122,4 +122,3 @@ What belongs in the source bundle:
 - [CONTRACT_AUDIT_GUIDE.md](contract-audit-guide.md)
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
-

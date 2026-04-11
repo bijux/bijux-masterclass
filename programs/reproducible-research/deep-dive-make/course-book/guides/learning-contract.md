@@ -1,7 +1,7 @@
 # Learning Contract
 
 Use this page when you need to reset how to study the course. Deep Dive Make is not built
-for passive reading. It is built for learners who can explain what changed, prove it with
+for passive reading. It is built for readers who can explain what changed, prove it with
 one fitting command, and stop before a larger surface hides the point.
 
 ## What the course is asking from you
@@ -81,4 +81,3 @@ Stop and reset if any of these are true:
 
 Those are not small study gaps. They usually mean the previous page needs a slower, more
 bounded pass.
-

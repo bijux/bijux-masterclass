@@ -67,7 +67,7 @@ third.
 By the end of the profile audit, you should be able to answer:
 
 - which assumptions are hard requirements of this repository
-- which parts of the command surface are stable enough for a learner or reviewer to rely on
+- which parts of the command surface are stable enough for a reader or reviewer to rely on
 - which variables are intended to be overridden, and from which sources
 - whether a portability concern belongs in policy, documentation, or a stronger proof route
 
@@ -90,4 +90,3 @@ Avoid these:
 - `TARGET_GUIDE.md`
 - `CONTRACT_AUDIT_GUIDE.md`
 - `SELFTEST_GUIDE.md`
-

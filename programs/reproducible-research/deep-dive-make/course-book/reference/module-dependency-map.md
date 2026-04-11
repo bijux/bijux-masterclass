@@ -43,6 +43,6 @@ graph TD
 
 ## Fastest safe paths
 
-- new learner: read Modules 01 through 10 in order
+- first-time reader: read Modules 01 through 10 in order
 - working maintainer: start with Modules 03, 05, 07, and 09, then backfill earlier modules when graph truth gets fuzzy
 - build steward: start with Modules 03, 07, 08, 09, and 10, then revisit earlier modules when a policy or artifact boundary points backward

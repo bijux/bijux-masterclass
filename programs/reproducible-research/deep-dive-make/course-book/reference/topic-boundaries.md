@@ -41,7 +41,7 @@ job.
 | truthful dependency graphs | Make is only trustworthy when edges are real | 01, 02, 06 | `make --trace`, convergence, depfile checks |
 | parallel safety | `-j` must change throughput, not meaning | 02, 03, 05 | serial versus parallel equivalence |
 | deterministic build behavior | flaky rebuild meaning destroys confidence | 02, 03, 09 | selftest, rooted discovery, incident evidence |
-| public target contracts | learners and maintainers need a stable build API | 03, 07, 08 | `make help`, contract audit, review bundles |
+| public target contracts | readers and maintainers need a stable build API | 03, 07, 08 | `make help`, contract audit, review bundles |
 | generated-file boundaries | generators are where build truth often collapses | 05, 06 | generated-header routes and repros |
 | release and publication contracts | outputs need a trustworthy downstream surface | 06, 08 | dist, attest, install, contract audit |
 | operational review and migration judgment | a long-lived build needs stewardship, not only syntax | 09, 10 | incident audit, review dump, migration rubric |
@@ -78,7 +78,7 @@ These are real topics, but they are not treated as the main point of Deep Dive M
 | CI platform administration | CI is a proof surface, not the main topic | teach stable targets and deterministic checks instead |
 | generalized workflow orchestration | Make is one tool among several | Module 10 teaches when to stop using Make |
 
-When a learner asks for more on one of these topics, the honest answer is not “the course
+When you want more on one of these topics, the honest answer is not “the course
 covers everything.” The honest answer is “the course touches this where it affects build
 truth, then hands off.”
 
@@ -101,7 +101,7 @@ badge of Make sophistication.
 
 ## Blind Spots This Page Protects Against
 
-Without an explicit boundary page, learners can come away with the wrong conclusions:
+Without an explicit boundary page, readers can come away with the wrong conclusions:
 
 * “The course forgot shell and compiler topics.”
   It did not forget them. It scoped them to what Make truth actually depends on.

@@ -34,7 +34,7 @@ start following individual rules.
 
 ## Architectural Claim
 
-This capstone is organized so a learner can separate five concerns without guesswork:
+This capstone is organized so you can separate five concerns without guesswork:
 
 * public entrypoints
 * policy and platform boundary
@@ -110,7 +110,7 @@ graph TD
 
 | Question | Owning surface | Why |
 | --- | --- | --- |
-| what is publicly supported | `Makefile` and [TARGET_GUIDE.md](target-guide.md) | they define the durable learner-facing API |
+| what is publicly supported | `Makefile` and [TARGET_GUIDE.md](target-guide.md) | they define the durable reader-facing API |
 | what platform assumptions are declared | `mk/contract.mk` | policy belongs in one explicit boundary |
 | how discovery stays deterministic | `mk/objects.mk` | object enumeration is rooted there |
 | how hidden inputs stay modeled | `mk/stamps.mk` | flag and state stamps are declared there |
@@ -128,4 +128,3 @@ Read these after this guide:
 * [TARGET_GUIDE.md](target-guide.md) for the stable command surface
 * [PROOF_GUIDE.md](proof-guide.md) for claim-to-evidence routing
 * [WALKTHROUGH_GUIDE.md](walkthrough-guide.md) for the first-pass reading order
-
