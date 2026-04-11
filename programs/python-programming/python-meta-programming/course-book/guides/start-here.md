@@ -46,13 +46,15 @@ Use this route when you are new to the course and want the smallest honest seque
 3. Read [Learning Contract](learning-contract.md) so the study bar is explicit before the dense modules begin.
 4. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study model.
 5. Read [First-Contact Map](../module-00-orientation/first-contact-map.md) if you want the shortest route through the foundations.
-6. Start [Module 01](../module-01-runtime-objects-object-model/index.md) once you can explain what the course means by lower-power and higher-power hooks.
+6. Read [Platform Setup](platform-setup.md) before the first public command or after local Python drift.
+7. Start [Module 01](../module-01-runtime-objects-object-model/index.md) once you can explain what the course means by lower-power and higher-power hooks.
 
 ## Switch routes when the pressure changes
 
 - Use [Pressure Routes](pressure-routes.md) when you are entering from a code review, framework change, or debugging problem.
 - Use [Reading Routes](reading-routes.md) when you want a slower or mechanism-shaped sequence instead of the default path.
 - Use [Return Map](../module-00-orientation/return-map.md) when you are resuming after a break and need the last stable module boundary.
+- Use [Platform Setup](platform-setup.md) when the environment or public command surface is the blocker.
 - Use [Capstone Guide](../capstone/index.md) and [Capstone Map](../capstone/capstone-map.md) once the current module claim is clear enough to inspect in executable code.
 
 ## Route By Pressure
@@ -86,4 +88,5 @@ By the end of the course, you should be able to explain:
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)
 - [Module 00](../module-00-orientation/index.md)
+- [Platform Setup](platform-setup.md)
 - [Runtime Power Ladder](../reference/runtime-power-ladder.md)

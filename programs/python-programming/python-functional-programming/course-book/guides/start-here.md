@@ -51,7 +51,8 @@ effects into explicit contracts.
    - [Foundations Reading Plan](foundations-reading-plan.md) if you want a lower-density first pass
    - [Functional Programming Course Map](../module-00-orientation/course-map.md) if you want the full route visible at once
 5. Read [FuncPipe RAG Primer](funcpipe-rag-primer.md) if the capstone domain is unfamiliar.
-6. Keep [FuncPipe Capstone Guide](../capstone/index.md) nearby so each module has an executable mirror.
+6. Read [Platform Setup](platform-setup.md) before your first proof command or after any Python-toolchain drift.
+7. Keep [FuncPipe Capstone Guide](../capstone/index.md) nearby so each module has an executable mirror.
 
 ## Choose your next page by pressure
 
@@ -63,6 +64,7 @@ effects into explicit contracts.
 | My question is already practical. | [Engineering Question Map](engineering-question-map.md) |
 | I am leaving the semantic floor and entering failures, effects, or async pressure. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) |
 | I am returning after a break. | [Return Map](../module-00-orientation/return-map.md) |
+| I need to trust the local Python and proof environment first. | [Platform Setup](platform-setup.md) |
 | I need the executable route. | [Proof Matrix](proof-matrix.md) and [Capstone Map](../capstone/capstone-map.md) |
 
 ## Use The Arcs Deliberately

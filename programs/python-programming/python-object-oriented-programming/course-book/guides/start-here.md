@@ -57,10 +57,11 @@ If those still feel shaky, slow down and treat [Orientation](../module-00-orient
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
 4. Read [Outcomes And Proof Map](outcomes-and-proof-map.md) so the learner promises stay tied to evidence from the start.
 5. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
-6. Use [Design Question Map](design-question-map.md), [Module Promise Map](module-promise-map.md), and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
-7. Keep [Capstone](../capstone/index.md) open while reading so the ownership claims stay tied to one executable system.
-8. Use [Study Routes](study-routes.md) when you need a session-sized plan instead of the full course at once.
-9. Use [Proof Ladder](proof-ladder.md), [Command Guide](../capstone/command-guide.md), and [Capstone Map](../capstone/capstone-map.md) when you want the executable route.
+6. Read [Platform Setup](platform-setup.md) before your first executable route or after local Python drift.
+7. Use [Design Question Map](design-question-map.md), [Module Promise Map](module-promise-map.md), and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
+8. Keep [Capstone](../capstone/index.md) open while reading so the ownership claims stay tied to one executable system.
+9. Use [Study Routes](study-routes.md) when you need a session-sized plan instead of the full course at once.
+10. Use [Proof Ladder](proof-ladder.md), [Command Guide](../capstone/command-guide.md), and [Capstone Map](../capstone/capstone-map.md) when you want the executable route.
 
 ## Choose a reading mode before you continue
 
@@ -103,4 +104,5 @@ surprising place for the behavior to live.
 - [Course Home](../index.md)
 - [Course Guide](course-guide.md)
 - [Orientation](../module-00-orientation/index.md)
+- [Platform Setup](platform-setup.md)
 - [Capstone](../capstone/index.md)
