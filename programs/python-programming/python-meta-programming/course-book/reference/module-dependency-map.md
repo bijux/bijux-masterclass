@@ -43,6 +43,6 @@ graph TD
 
 ## Fastest safe paths
 
-- new learner: read Modules 01 through 10 in order
+- new to metaprogramming: read Modules 01 through 10 in order
 - working maintainer: start with Modules 03, 04, 07, and 09, then backfill when the lower-power alternative is unclear
 - runtime steward: start with Modules 05, 08, 09, and 10, then revisit earlier modules when transparency or blast radius questions appear

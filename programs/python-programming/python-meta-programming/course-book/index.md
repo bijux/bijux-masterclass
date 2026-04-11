@@ -25,7 +25,7 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so learners do not mistake the capstone or reference pages for the first stop.
+Read the first diagram as the shape of the whole book: it shows where the home page sits relative to the module sequence, the support shelf, and the capstone. Read the second diagram as the intended entry route so you do not mistake the capstone or reference pages for the first stop.
 
 This course teaches Python metaprogramming as a discipline of runtime honesty. The goal
 is not to make code look advanced. The goal is to understand what Python is doing when
@@ -39,13 +39,13 @@ code inspects, wraps, validates, or registers other code and objects.
 
 ## Who this course is not for
 
-- first-contact Python learners
+- people learning Python for the first time
 - trick collecting
 - designs that still have a simpler explicit solution available
 
 ## Choose your entry route
 
-### New learner to metaprogramming
+### New to metaprogramming
 
 Use this when the vocabulary is still new and you need the safest honest ramp:
 
@@ -148,7 +148,7 @@ instead of ornamental.
 - using dynamic power because it feels clever
 - breaking signatures, metadata, or tracebacks during wrapping
 - putting class-creation behavior into code that should stay ordinary and explicit
-- teaching metaclasses before the learner understands descriptors
+- teaching metaclasses before descriptor behavior is clear
 - approving meta-heavy code without a proof route
 
 ## What success looks like
