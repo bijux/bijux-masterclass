@@ -221,8 +221,8 @@ This worked example ties the module together:
 - structural inspection beats eager dynamic evaluation when representation should stay safe
 - strong runtime evidence and best-effort context should not be confused
 
-That is the real lesson. The `__repr__` helper is just one concrete place where evidence
-discipline produces a better design.
+That is the durable takeaway. The `__repr__` helper is just one concrete place where
+evidence discipline produces a better design.
 
 ## The review loop to keep
 

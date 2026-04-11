@@ -69,7 +69,7 @@ def print_source(func):
     print("".join(result), end="")
 ```
 
-The helper is not nonsense. That is exactly why it is a good teaching example.
+The helper is not nonsense. That is exactly why it is a useful review example.
 
 It uses real runtime facts from the function object. The mistake is treating those facts
 as a stable source-recovery contract.
@@ -157,12 +157,12 @@ In a REPL, notebook, zipapp, or tool-managed runtime:
 - the original file may not exist anymore
 - the code may have been transformed before execution
 
-The helper reacts by raising `OSError`, but the deeper lesson is broader:
+The helper reacts by raising `OSError`, but the runtime point is broader:
 
 > a function object is real even when its original source file is absent, synthetic, or
 > transformed.
 
-That is why source recovery is the wrong mental model for the core runtime object lesson.
+That is why source recovery is the wrong mental model for the core runtime object boundary.
 
 ## Step 5: formatting breaks the heuristic even in files
 
@@ -231,8 +231,8 @@ This worked example ties the module together:
 - modules matter because filenames and globals come from runtime context, not from abstract source alone
 - supported and diagnostic surfaces must be kept separate
 
-That is the real lesson. The helper fails not because Python is inconsistent, but because
-the tool asked the runtime object model to promise more than it actually promises.
+That is the durable takeaway. The helper fails not because Python is inconsistent, but
+because the tool asked the runtime object model to promise more than it actually promises.
 
 ## The review loop to keep
 

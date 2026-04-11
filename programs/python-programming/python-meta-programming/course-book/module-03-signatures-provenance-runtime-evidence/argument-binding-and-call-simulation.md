@@ -160,7 +160,7 @@ def validate_call(func, *args, **kwargs):
     return ba.arguments
 ```
 
-This is intentionally small, but the lesson is large:
+This is intentionally small, but the runtime contract is large:
 
 - cache the signature in real code when repeated calls matter
 - let binding establish argument truth

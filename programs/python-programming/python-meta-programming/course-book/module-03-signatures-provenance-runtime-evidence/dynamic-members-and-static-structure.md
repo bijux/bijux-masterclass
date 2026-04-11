@@ -97,7 +97,7 @@ raw = inspect.getattr_static(Example, "expensive")
 assert isinstance(raw, property)
 ```
 
-The printed side effect is the whole lesson:
+The printed side effect is the important boundary:
 
 - `getmembers` resolved the value dynamically
 - `getattr_static` revealed the attached structure without evaluation

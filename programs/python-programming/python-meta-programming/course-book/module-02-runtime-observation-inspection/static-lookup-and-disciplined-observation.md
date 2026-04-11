@@ -92,7 +92,7 @@ resolved = getattr(obj, "value")
 assert resolved == 10
 ```
 
-The printed line only appears during the dynamic read. That is the whole teaching point:
+The printed line only appears during the dynamic read. That is the runtime boundary:
 
 - static lookup reveals the property object
 - dynamic lookup executes the property
