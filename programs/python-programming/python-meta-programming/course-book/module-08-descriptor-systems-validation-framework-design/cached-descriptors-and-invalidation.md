@@ -101,7 +101,7 @@ Post.word_count.invalidate(post)
 print(post.word_count)  # 3
 ```
 
-This is a small example, but it teaches the right instinct:
+This is a small example, but it keeps the right instinct visible:
 
 dependencies matter just as much as the cache itself.
 
@@ -137,11 +137,11 @@ This is why cache review is really state review.
 
 You may see educational examples that use simple locks around first-load caching.
 
-That can be useful as a teaching artifact, but the key point is:
+That can be useful as a bounded example, but the key point is:
 
 serious concurrent caching is larger than one clever descriptor.
 
-For this course, the important lesson is to name the boundary honestly:
+For this course, the important boundary is:
 
 - per-instance cache mechanics can be shown in a descriptor
 - real concurrent cache coordination usually belongs to stronger infrastructure

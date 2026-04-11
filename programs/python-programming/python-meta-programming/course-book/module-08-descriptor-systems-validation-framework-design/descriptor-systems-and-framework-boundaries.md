@@ -20,7 +20,7 @@ Descriptor systems stay honest when they still own one attribute contract at a t
 they start coordinating identity, transactions, query planning, object graphs, or broader
 lifecycle behavior, the design has crossed into framework architecture.
 
-That is the boundary the module is really teaching.
+That is the boundary the module keeps visible.
 
 ## Why this boundary matters
 

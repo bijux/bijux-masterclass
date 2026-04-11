@@ -98,7 +98,7 @@ A relationship field such as `OneToMany` can demonstrate:
 
 This is exactly where the framework boundary starts to show.
 
-## A didactic implementation
+## A bounded implementation
 
 ```python
 import json
@@ -269,7 +269,7 @@ class Comment(metaclass=ModelMeta):
     text: str = BaseField(external=True)
 ```
 
-## Why this is a good teaching artifact
+## Why this is useful for review
 
 This example keeps every major responsibility visible:
 
@@ -294,7 +294,7 @@ field forever:
 That is the exact point of the exercise. The field layer is still useful, but it is no
 longer the whole architecture.
 
-## What this example teaches about Module 08
+## What this example makes clear about Module 08
 
 This worked example ties the module together:
 
@@ -304,8 +304,9 @@ This worked example ties the module together:
 - hint-driven validation creates a declarative field surface
 - the whole system still needs broader architectural owners once it grows
 
-That is the real lesson. The point is not to produce an ORM. The point is to see where a
-descriptor system stops being just a set of fields and starts becoming framework design.
+That is the durable takeaway. The point is not to produce an ORM. The point is to see
+where a descriptor system stops being just a set of fields and starts becoming framework
+design.
 
 ## Continue through Module 08
 
