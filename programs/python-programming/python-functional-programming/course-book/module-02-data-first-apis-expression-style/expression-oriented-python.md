@@ -2,54 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Expression-Oriented Python"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  loop["Start with a loop full of flags and breaks"] --> question["Ask what value the code is really computing"]
+  question --> rewrite["Rewrite the control flow as an expression"]
+  rewrite --> review["Review the expression as one visible transformation"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about exposing the value a piece of code is trying to compute. When students can name that value, flags and mutation stop looking necessary and expression-oriented rewrites become much easier to justify.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Review Smell
 
-Here's a snippet from the progression map:
+Most imperative code in this module is not wrong because it uses a loop. It is hard to review because the important result is buried under control variables, scattered exits, and temporary state.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If the code introduces `found`, `done`, or `valid`, ask what final value those names are trying to summarize.
+- If the loop mixes selection, transformation, and stopping rules, the logic is probably easier to read as nested expressions.
+- If a reviewer has to simulate state changes mentally, the expression boundary is still missing.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you replace statement-heavy imperative code (loops + flags + breaks) with expressions, comprehensions, and data-driven conditionals—so control flow becomes explicit, composable, and easy to reason about?
 
-This core introduces the **expression-oriented mindset** in Python:
+This lesson introduces the expression-oriented mindset in the form students actually use:
 
-- Treat core logic as **value-producing expressions**, not sequences of mutations.
-- Default to **comprehensions, conditional expressions, and built-ins** (`any`, `all`, `next`) for control flow.
-- Eliminate **mutable control flags** from core logic—keep them only at trivial edges, if at all.
+- treat core logic as value-producing expressions rather than a sequence of state updates
+- use comprehensions and built-ins like `any`, `all`, and `next` when they say the result directly
+- remove mutable control flags from the core path so dataflow stays visible
 
-We continue the **running project** from `m02-rag.md`, extending the FuncPipe RAG Builder:
+The running project matters here because expression style is not just "shorter Python." It is a way to make filtering, selection, and branching reviewable inside a configurable pipeline.
 
-- **Baseline:** a composition of the pure stages (clean → chunk → embed → dedup).
-- **Module 2 (Core 1):** `make_rag_fn(...)` – closure-based configurators.
-- **This core:** Replace imperative loops in the RAG core with **expression-oriented code** that is easier to configure, test, and prove equivalent to the baseline.
-
-**Audience:** Developers who understand purity and configurators (Core 1) but still write loops like:
+**Audience:** Developers who understand purity and configurators but still write loops like:
 
 ```python
 found = False
@@ -89,25 +75,11 @@ For a **real, runnable Module 01 codebase**, refresh the generated history route
 
 ### 1.3 Why This Matters Now
 
-Core 1 gave you pure functions and closure-based configurators:
-
-* `make_rag_fn(...) -> Callable[[list[RawDoc]], tuple[list[Chunk], Observations]]` is pure and deterministic.
-* But the implementation of the RAG core can still be **imperative**:
-
-  * Loops with flags, early breaks, scattered `if` blocks.
-  * Harder to reason about, harder to transform, and easier to subtly break when adding new behaviors.
-
-Expression-oriented code:
-
-* Turns “do this, then maybe that” into “compute this value, then transform it”.
-* Makes pipelines **equational**: each step is an expression you can substitute and test in isolation.
-* Aligns perfectly with Core 1’s closure-based configurators: you configure **expressions**, not control-flow spaghetti.
-
-Core 1 configures what RAG function we call (`make_rag_fn`); Core 2 refactors how that function is implemented internally (`full_rag_api` expressed as comprehensions instead of flags).
+Closures gave us a clean way to build configured variants, but the inside of those variants can still be messy. A function may be pure and still force the reader to trace flags, breaks, and partially updated locals. Expression-oriented code improves the inside of the function: it turns "change state until we get the answer" into "compute the answer directly." That shift makes later refactors, proofs, and reviews much safer.
 
 ### 1.4 Expressions as Values in 5 Lines
 
-We start with a simple, RAG-flavored predicate table:
+The point of the next example is not brevity. It is to make the chosen predicate and the returned collection visible in one place.
 
 ```python
 from collections.abc import Callable
