@@ -184,3 +184,10 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still depends on "I just checked the attribute," revise it until you can say
 what kind of observation or execution actually happened.
+
+## Continue through Module 02
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md)
+- Terms: [Glossary](glossary.md)

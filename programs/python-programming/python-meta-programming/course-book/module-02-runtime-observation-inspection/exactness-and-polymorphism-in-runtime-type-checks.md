@@ -189,3 +189,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is callability: a value may be observable, classifiable,
 and still raise new review questions the moment someone wants to invoke it.
+
+## Continue through Module 02
+
+- Previous: [Dynamic Attribute Access Is Not Inspection](dynamic-attribute-access-is-not-inspection.md)
+- Next: [Callable Objects and the Call Protocol](callable-objects-and-the-call-protocol.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

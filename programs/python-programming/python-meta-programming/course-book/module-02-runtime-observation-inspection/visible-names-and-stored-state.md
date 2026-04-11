@@ -225,3 +225,10 @@ Try these before moving on:
 
 If those feel ordinary, you are ready for the next boundary: dynamic attribute access is
 powerful, but it is not passive inspection.
+
+## Continue through Module 02
+
+- Previous: [Overview](index.md)
+- Next: [Dynamic Attribute Access Is Not Inspection](dynamic-attribute-access-is-not-inspection.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

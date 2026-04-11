@@ -206,3 +206,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is classification: when you inspect a value, what
 kind of object is it really, and how exact does your type check need to be?
+
+## Continue through Module 02
+
+- Previous: [Visible Names and Stored State](visible-names-and-stored-state.md)
+- Next: [Exactness and Polymorphism in Runtime Type Checks](exactness-and-polymorphism-in-runtime-type-checks.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

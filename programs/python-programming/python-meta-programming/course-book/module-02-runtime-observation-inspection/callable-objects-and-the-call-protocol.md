@@ -165,3 +165,10 @@ Try these before moving on:
 
 If those feel ordinary, the last core can connect the whole module into one disciplined
 observation workflow with static lookup.
+
+## Continue through Module 02
+
+- Previous: [Exactness and Polymorphism in Runtime Type Checks](exactness-and-polymorphism-in-runtime-type-checks.md)
+- Next: [Static Lookup and Disciplined Observation](static-lookup-and-disciplined-observation.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

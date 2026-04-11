@@ -83,3 +83,10 @@ Across all six answers, the module wants the same habits:
 - you avoid treating dynamic access as harmless by default
 
 If an answer still sounds like "I just checked the attribute," keep going.
+
+## Continue through Module 02
+
+- Previous: [Worked Example: Building a Safer Debug Printer](worked-example-building-a-safer-debug-printer.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

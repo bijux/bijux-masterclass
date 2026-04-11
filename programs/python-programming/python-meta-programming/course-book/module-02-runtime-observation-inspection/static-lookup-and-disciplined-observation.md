@@ -178,3 +178,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can pressure-test the workflow in a realistic
 debug-printing tool.
+
+## Continue through Module 02
+
+- Previous: [Callable Objects and the Call Protocol](callable-objects-and-the-call-protocol.md)
+- Next: [Worked Example: Building a Safer Debug Printer](worked-example-building-a-safer-debug-printer.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

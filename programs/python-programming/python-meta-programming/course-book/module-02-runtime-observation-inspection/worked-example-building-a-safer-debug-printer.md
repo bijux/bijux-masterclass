@@ -249,3 +249,10 @@ When you inherit a runtime-inspection helper, run this loop:
 
 If you can do that here, Module 02 has done its job and Module 03 can build on a much
 cleaner observation discipline.
+
+## Continue through Module 02
+
+- Previous: [Static Lookup and Disciplined Observation](static-lookup-and-disciplined-observation.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)
