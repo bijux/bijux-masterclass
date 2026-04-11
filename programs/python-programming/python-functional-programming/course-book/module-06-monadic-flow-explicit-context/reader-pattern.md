@@ -1,91 +1,106 @@
 # Reader Pattern
 
-
 <!-- page-maps:start -->
 ## Lesson Map
 
 ```mermaid
 flowchart LR
-  hidden["Start with globals or closure-captured dependencies"] --> explicit["Make the environment an explicit typed input"]
-  explicit --> swap["Swap configurations at the call site without rewriting logic"]
-  swap --> review["Review dependency use from the Reader shape itself"]
+  hidden["Start with hidden config in globals or closures"] --> explicit["Move the environment into Reader[Config, T]"]
+  explicit --> run["Choose the config at the call site with .run(cfg)"]
+  run --> review["Review the pipeline by reading its declared dependency shape"]
 ```
 <!-- page-maps:end -->
 
-This lesson should make Reader feel like a dependency-visibility tool, not a clever container. Students need to see that the real gain is simple: configuration and services stop hiding in globals and closures and become explicit in the compositional shape of the pipeline.
+Reader is useful when the code still works but the dependency story is hard to see.
+Students usually feel that pain when a pipeline depends on configuration, services, or
+policies that are captured somewhere off-screen.
+
+## Core Question
+
+How do you make shared configuration explicit in the shape of the pipeline so that the
+call site tells the truth about what the pipeline needs?
 
 ## Start With the Hidden Dependency Problem
 
-By this point students can chain fallible steps well, but they may still be smuggling models, tokenizers, or config through closure capture. Reader matters when that hidden context starts making tests and reviews harder.
+These are the usual warning signs:
 
-- If dependencies are captured invisibly, the call site no longer tells the truth about what the pipeline needs.
-- If swapping one config or service requires rebuilding a whole chain manually, the dependency story is too implicit.
-- If students cannot tell which parts of the environment a step actually reads, the abstraction is still hiding too much.
+- a function reads `config`, `model`, or `tokenizer` without taking them as arguments
+- changing one environment means rebuilding or patching several helpers
+- tests need monkeypatching or globals because the dependency is not visible in the type
 
-**Core question**  
-How do you completely eliminate closure-captured variables and globals from monadic pipelines by making configuration an explicit, typed, injectable dependency — giving you pure, testable, refactor-safe code that scales from 3 lines to 300 without ever hiding a dependency again?
+The problem is not that closures are bad. The problem is that hidden dependencies are
+harder to review than explicit ones.
 
-This lesson introduces Reader as the explicit-context version of patterns students have already seen:
+## Reader in One Sentence
 
-- keep the pipeline pure while still depending on shared configuration
-- expose the environment in the type and combinator structure
-- make swapping environments a call-site concern instead of a hidden construction trick
-
-The earlier closure examples matter because Reader is easiest to understand as a disciplined replacement for patterns students already use.
-
-**Audience**: Engineers who have tasted the power of `.and_then` chains but are still fighting hidden dependencies that break tests and refactors.
-
-**Outcome**
-1. You will write every config-dependent pipeline as a pure `Reader[Config, T]`.
-2. You will swap entire configurations (dev/prod/debug) at the call-site with `.run(new_config)`.
-3. You will have mechanical proof that your Reader compositions satisfy the monad laws — meaning refactoring is always safe.
-
-## Why Reader Is the Final Piece – Three Patterns Compared
-
-| Pattern                  | Visibility | Testability | Reconfigurability | Refactor Safety | Verdict                  |
-|--------------------------|------------|-------------|-------------------|-----------------|--------------------------|
-| Manual threading         | Explicit   | Good        | Poor              | Poor            | Verbose, error-prone     |
-| Closure capture          | Hidden     | Bad         | Bad               | Bad             | Works until it doesn't   |
-| Reader (this core)       | Explicit   | Strong      | Strong            | Strong          | Best fit for this core   |
-
-Reader is best understood here as “explicit, lawful closure capture” rather than as a mysterious new runtime mechanism.
-
-## 1. Laws & Invariants (machine-checked in CI)
-
-| Law                 | Formal Statement                                                            | Why it matters                                            |
-|---------------------|-----------------------------------------------------------------------------|-----------------------------------------------------------|
-| Left Identity       | `pure(x).and_then(f) == f(x)`                                               | Safe to lift plain values                                 |
-| Right Identity      | `r.and_then(pure) == r`                                                     | Safe to extract sub-pipelines                             |
-| Associativity       | `r.and_then(f).and_then(g) == r.and_then(lambda x: f(x).and_then(g))`       | Grouping never changes meaning                            |
-| Ask Identity        | `ask().map(lambda c: c) == ask()`                                           | Reading config is a no-op                                 |
-| Local Composition   | `local(f, local(g, r)) == local(lambda c: f(g(c)), r)`                      | Local modifications compose predictably                    |
-
-All laws verified with Hypothesis. A single counterexample breaks CI.
-
-## 2. Public API – Reader is a one-field dataclass (mypy --strict clean)
+`Reader[Config, T]` is just a pure function `Config -> T` wrapped in a small API that
+makes mapping and chaining consistent.
 
 ```python
-# capstone/src/funcpipe_rag/fp/effects/reader.py – end-of-Module-06 (mypy --strict clean target)
-
-from __future__ import annotations
-from dataclasses import dataclass
-from typing import Generic, Callable, TypeVar
-
-C = TypeVar("C")   # Config / Environment
-T = TypeVar("T")
-U = TypeVar("U")
-
 @dataclass(frozen=True)
 class Reader(Generic[C, T]):
     run: Callable[[C], T]
 
-    def map(self, f: Callable[[T], U]) -> "Reader[C, U]":
+    def map(self, f: Callable[[T], U]) -> Reader[C, U]:
         return Reader(lambda cfg: f(self.run(cfg)))
 
-    def and_then(self, f: Callable[[T], "Reader[C, U]"]) -> "Reader[C, U]":
+    def and_then(self, f: Callable[[T], Reader[C, U]]) -> Reader[C, U]:
         return Reader(lambda cfg: f(self.run(cfg)).run(cfg))
+```
 
-# Core primitives
+That is the whole mental model for this lesson.
+
+## Before and After
+
+```python
+# BEFORE – dependencies are real, but hidden
+def embed_chunk(chunk: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
+    tokens = tokenizer(chunk.text.content)[:config.chunk_size]
+    vec = model.encode(tokens, temperature=config.temperature)
+    return Ok(replace(chunk, embedding=Embedding(vec, config.model_name)))
+```
+
+```python
+# AFTER – the dependency is visible at the call site
+@dataclass(frozen=True)
+class Config:
+    model_name: str
+    chunk_size: int
+    temperature: float = 0.0
+
+def embed_chunk(chunk: Chunk) -> Reader[Config, Result[EmbeddedChunk, ErrInfo]]:
+    def run(cfg: Config) -> Result[EmbeddedChunk, ErrInfo]:
+        tokenizer = get_tokenizer(cfg.model_name)
+        model = load_model(cfg.model_name)
+        tokens = tokenizer(chunk.text.content)[: cfg.chunk_size]
+        vec = model.encode(tokens, temperature=cfg.temperature)
+        return Ok(replace(chunk, embedding=Embedding(vec, cfg.model_name)))
+
+    return Reader(run)
+
+dev_result = embed_chunk(chunk).run(dev_config)
+prod_result = embed_chunk(chunk).run(prod_config)
+```
+
+The improvement is not hidden cleverness. The improvement is that the environment moved
+to a single, explicit place.
+
+## When Reader Is Worth It
+
+Use Reader when:
+
+- many steps depend on the same environment
+- you want to swap that environment at the boundary
+- keeping the dependency explicit helps review and testing
+
+Do not reach for Reader when one plain argument is enough. A direct parameter is often
+clearer than a container.
+
+## Small Building Blocks
+
+The helper functions are deliberately small:
+
+```python
 def pure(x: T) -> Reader[C, T]:
     return Reader(lambda _: x)
 
@@ -99,131 +114,72 @@ def local(modify: Callable[[C], C], r: Reader[C, T]) -> Reader[C, T]:
     return Reader(lambda cfg: r.run(modify(cfg)))
 ```
 
-That's it. No more primitives needed.
+Students usually need only this reading of them:
 
-## 3. Canonical Style – The Way You Will Actually Write 99% of Reader Pipelines
+- `ask()`: give me the whole config
+- `asks(f)`: give me one selected part
+- `local(...)`: run the same pipeline under a temporary modified config
 
-```python
-@dataclass(frozen=True)
-class Config:
-    model_name: str
-    chunk_size: int
-    temperature: float = 0.0
+## Reusable Composition Example
 
-def embed_chunk(chunk: Chunk) -> Reader[Config, Result[EmbeddedChunk, ErrInfo]]:
-    def run(cfg: Config) -> Result[EmbeddedChunk, ErrInfo]:
-        # NOTE: get_tokenizer / load_model are impure boundaries.
-        # They will be pushed behind ports in Module 7.
-        tokenizer = get_tokenizer(cfg.model_name)
-        model     = load_model(cfg.model_name)
-
-        tokens = tokenizer(chunk.text.content)[:cfg.chunk_size]
-        vec    = model.encode(tokens, temperature=cfg.temperature)
-
-        # Real failures (e.g. OOM, network) will be added later.
-        # We use Result now so the type is stable when we do.
-        return Ok(replace(chunk, embedding=Embedding(vec, cfg.model_name)))
-    return Reader(run)
-
-# Usage – swap entire behaviour with one line
-dev_result  = embed_chunk(chunk).run(dev_config)
-prod_result = embed_chunk(chunk).run(prod_config)
-test_result = embed_chunk(chunk).run(mock_config)  # perfect for unit tests
-```
-
-This is the style you will use every day.  
-Pure, linear, no closures, no globals, instantly testable.
-
-## 4. Composition When You Need It (optional, for reusable steps)
+When the steps themselves are reusable, you can stay inside Reader all the way:
 
 ```python
-def get_tokenizer_r() -> Reader[Config, Tokenizer]:
-    # Wrap the existing impure get_tokenizer(model_name) in a Reader
+def tokenizer_r() -> Reader[Config, Tokenizer]:
     return asks(lambda cfg: get_tokenizer(cfg.model_name))
 
-def get_model() -> Reader[Config, Model]:
+def model_r() -> Reader[Config, Model]:
     return asks(lambda cfg: load_model(cfg.model_name))
 
 def embed_chunk_composed(chunk: Chunk) -> Reader[Config, EmbeddedChunk]:
     return (
-        pure(chunk.text.content)
-        .and_then(lambda text: get_tokenizer_r().map(lambda tok: tok(text)))
-        .and_then(lambda tokens: get_model_r().map(lambda model: model.encode(tokens)))
+        tokenizer_r()
         .and_then(
-            lambda vec: ask().map(
-                lambda cfg: replace(chunk, embedding=Embedding(vec, cfg.model_name))
+            lambda tokenizer: model_r().and_then(
+                lambda model: ask().map(
+                    lambda cfg: replace(
+                        chunk,
+                        embedding=Embedding(
+                            model.encode(
+                                tokenizer(chunk.text.content)[: cfg.chunk_size],
+                                temperature=cfg.temperature,
+                            ),
+                            cfg.model_name,
+                        ),
+                    )
+                )
             )
         )
     )
 ```
 
-Both styles are valid. The `def run(cfg):` version is the daily driver; the composed version is for when you truly need reusable sub-pipelines.
+This style is useful when the sub-steps are worth reusing. If not, the `def run(cfg):`
+style is usually easier to teach and easier to read.
 
-## 5. Before → After – The Same Pipeline
+## What the Laws Buy You
 
-```python
-# BEFORE – closure soup (from earlier cores)
-def embed_chunk(chunk: Chunk) -> Result[EmbeddedChunk, ErrInfo]:
-    text = chunk.text.content[:config.chunk_size]      # config from where?
-    tokens = tokenizer(text)                           # tokenizer from where?
-    vec = model.encode(tokens, temperature=config.temperature)
-    return Ok(replace(chunk, embedding=Embedding(vec, config.model_name)))
+The Reader laws matter for the same reason the earlier monad laws mattered:
 
-# AFTER – pure, explicit, testable
-def embed_chunk(chunk: Chunk) -> Reader[Config, Result[EmbeddedChunk, ErrInfo]]:
-    def run(cfg: Config) -> Result[EmbeddedChunk, ErrInfo]:
-        tokenizer = get_tokenizer(cfg.model_name)
-        model     = load_model(cfg.model_name)
-        tokens    = tokenizer(chunk.text.content)[:cfg.chunk_size]
-        vec       = model.encode(tokens, temperature=cfg.temperature)
-        return Ok(replace(chunk, embedding=Embedding(vec, cfg.model_name)))
-    return Reader(run)
-```
+- you can extract environment-dependent helpers safely
+- you can regroup the pipeline without changing how config flows through it
+- you can review dependency use from the shape of the composition
 
-Zero closures. Zero globals. Full type safety. Instant testability.
+## Review Checklist
 
-## 6. Property-Based Proofs (capstone/tests/test_reader_laws.py)
+Ask these questions when reading a Reader pipeline:
 
-```python
-from hypothesis import given
-import strategies as st  # your Hypothesis strategies for Readers
+- what part of the environment is actually needed?
+- is Reader clarifying the dependency, or hiding a plain argument?
+- would swapping the config at `.run(cfg)` change behavior in an understandable way?
 
-@given(x=st.integers())
-def test_reader_left_identity(x):
-    f = lambda n: Reader(lambda cfg: n + cfg.inc)
-    cfg = test_config()
-    assert pure(x).and_then(f).run(cfg) == f(x).run(cfg)
+## Practice Prompt
 
-@given(r=st.readers())
-def test_reader_associativity(r):
-    f = lambda a: Reader(lambda cfg: a + cfg.inc)
-    g = lambda b: Reader(lambda cfg: b * cfg.mul)
-    cfg = test_config()
-    assert r.and_then(f).and_then(g).run(cfg) == r.and_then(lambda x: f(x).and_then(g)).run(cfg)
-```
+Take one closure-captured dependency from your codebase and rewrite it either as:
 
-## 7. Anti-Patterns & Immediate Fixes
+1. a direct function parameter, or
+2. a Reader input
 
-| Anti-Pattern              | Symptom                           | Fix                          |
-|---------------------------|-----------------------------------|------------------------------|
-| Closure-captured config   | Hidden dependencies, untestable   | Use `def run(cfg):` + Reader |
-| Global config             | Impossible to mock/swap           | Inject via `.run(cfg)`       |
-| Manual config threading   | Signatures explode                | Reader composes automatically |
+Then explain why the second option is better only if the dependency is shared across a
+pipeline rather than local to one function.
 
-## 8. Pre-Core Quiz
-
-1. Reader replaces…? → **Closure-captured dependencies**  
-2. You read config with…? → **ask() or asks(selector)**  
-3. You temporarily override config with…? → **local**  
-4. You run a Reader with…? → **.run(config)**  
-5. The golden rule? → **Never capture config in a closure again**
-
-## 9. Post-Core Exercise
-
-1. Take your largest closure-heavy pipeline and rewrite it using the `def run(cfg):` style inside a Reader.
-2. Add a debug flag that enables extra validation — implement with `local`.
-3. Write a test that runs the same pipeline with two different configs and asserts different behaviour.
-
-**Continue with:** [Explicit State Threading](../module-06-monadic-flow-explicit-context/explicit-state-threading.md)
-
-You have now completely eliminated closure-captured variables from your monadic pipelines. Configuration is now a **first-class, typed, injectable dependency** — and your pipelines are pure, composable, and proven correct by Hypothesis. The final core removes the last remaining effect: local mutable state.
+**Continue with:** [Explicit State Threading](explicit-state-threading.md)
