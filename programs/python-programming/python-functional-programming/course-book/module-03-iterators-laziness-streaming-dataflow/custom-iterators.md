@@ -2,50 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Custom Iterators"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  limit["Start with a generator that cannot express the lifecycle cleanly"] --> split["Split iterable factory from iterator cursor"]
+  split --> state["Keep state and cleanup rules explicit"]
+  state --> reuse["Reuse the iterable safely with fresh cursors"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should not make class-based iterators feel like the default. It should make them feel justified. Students need a clear reason to leave generators behind: more explicit control over state, reuse, or cleanup than a simple generator can provide cleanly.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Generator Limit
 
-Here's a snippet from the progression map:
+Generators solve most streaming problems in this module. That is exactly why this lesson needs a careful opening. Students should learn when a custom iterator is warranted, not come away thinking classes are automatically more advanced and therefore better.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If a stream needs explicit cleanup, restartable iteration, or more structured state handling, a class may be the clearer design.
+- If the same object is both iterable and iterator by accident, students may blur reuse and consumption semantics.
+- If the lifecycle is hidden, reviewers cannot tell when resources are released or whether iteration can safely restart.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you design custom iterator classes that implement `__iter__` and `__next__` for complex stateful logic, ensuring purity, laziness, and equivalence while enabling reuse beyond simple generators?
 
-This core builds on **Core 8**'s time-aware patterns by introducing custom iterator classes:
-- Use separate Iterable factories and Iterator cursors for reusability.
-- Implement `__iter__` for factories (return fresh cursor), `__next__` for cursors.
-- Handle resources with context managers and `.close()`.
-- Preserve laziness, purity, and freshness.
+This lesson introduces custom iterators as an explicit lifecycle pattern:
 
-We extend the **running project** from Core 8 (FuncPipe RAG Builder from `m03-rag.md`) and add cross-domain examples like stateful CSV readers, log followers with state, and API pagers to prove scalability.
+- separate the reusable iterable from the single-pass cursor
+- keep state transitions and cleanup obligations visible in the class design
+- preserve laziness while giving the reader a clearer story about restartability and resource control
 
-**Audience:** Developers needing complex, stateful streams beyond generators.
+The running and cross-domain examples matter because custom iterators should feel like a practical response to a real lifecycle need, not like ceremony for its own sake.
+
+**Audience:** Developers who have hit the limits of generators for reusable, stateful, or resource-aware streams.
 
 **Outcome:**
 1. Spot generator limits like no reuse.
@@ -84,11 +74,11 @@ In this series, enables resources; preserves laziness.
 
 ### 1.3 Why This Matters Now
 
-Generators one-shot; classes reusable with state.
+Up to this point, generators have been enough for almost every lesson. That is a feature, not a problem. This page matters because it marks the boundary where a generator stops being the clearest representation. Students need to recognize that boundary so they can choose a custom iterator intentionally rather than out of habit or novelty.
 
 ### 1.4 Custom Iter in 5 Lines
 
-Class example:
+The next snippet matters because it separates "object you can iterate over again" from "cursor currently walking the data."
 
 ```python
 class MyIterable:
