@@ -95,6 +95,7 @@ nav:
           - Failure Modes, Recovery, and Trust: module-02-data-identity-content-addressing/failure-modes-recovery-and-trust.md
           - "Worked Example: Restoring a Dataset After Local Loss": module-02-data-identity-content-addressing/worked-example-restoring-a-dataset-after-local-loss.md
           - Exercises: module-02-data-identity-content-addressing/exercises.md
+          - Exercise Answers: module-02-data-identity-content-addressing/exercise-answers.md
       - "Module 03: Execution Environments as Inputs":
           - Overview: module-03-execution-environments-reproducible-inputs/index.md
       - "Module 04: Pipelines as Truthful DAGs":
