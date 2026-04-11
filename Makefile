@@ -15,6 +15,10 @@ VENV_BIN := $(VENV_DIR)/bin
 VENV_PY := $(abspath $(VENV_BIN)/python)
 PIP := $(VENV_PY) -m pip
 MKDOCS := $(VENV_PY) -m mkdocs
+DOCS_HOST ?= 127.0.0.1
+DOCS_PORT ?= 8000
+DOCS_PORT_SEARCH_LIMIT ?= 25
+SERVE_DOCS := $(VENV_PY) scripts/serve_docs.py --host $(DOCS_HOST) --port $(DOCS_PORT) --port-search-limit $(DOCS_PORT_SEARCH_LIMIT)
 SYNC_SERIES_DOCS := $(VENV_PY) scripts/sync_series_docs.py
 RENDER_ROOT_MKDOCS := $(VENV_PY) scripts/render_root_mkdocs.py
 DOCS_ENV = NO_MKDOCS_2_WARNING=true
@@ -42,7 +46,7 @@ program-docs-build: series-docs-install ## Build docs for the selected program
 
 .PHONY: program-docs-serve
 program-docs-serve: series-docs-install ## Serve docs for the selected program
-	@cd $(PROGRAM_DIR) && $(DOCS_ENV) $(MKDOCS) serve -f mkdocs.yml
+	@$(DOCS_ENV) $(SERVE_DOCS) --config $(abspath $(PROGRAM_DIR)/mkdocs.yml)
 
 .PHONY: docs-build
 docs-build: series-docs-install ## Build the full catalog, or one program if PROGRAM is set explicitly
@@ -59,9 +63,9 @@ docs-serve: series-docs-install ## Serve the full catalog, or one program if PRO
 ifeq ($(PROGRAM_IS_EXPLICIT),)
 	@$(SYNC_SERIES_DOCS)
 	@$(RENDER_ROOT_MKDOCS)
-	@$(DOCS_ENV) $(MKDOCS) serve -f $(ROOT_MKDOCS_FILE)
+	@$(DOCS_ENV) $(SERVE_DOCS) --config $(abspath $(ROOT_MKDOCS_FILE))
 else
-	@cd $(PROGRAM_DIR) && $(DOCS_ENV) $(MKDOCS) serve -f mkdocs.yml
+	@$(DOCS_ENV) $(SERVE_DOCS) --config $(abspath $(PROGRAM_DIR)/mkdocs.yml)
 endif
 
 .PHONY: test
@@ -224,4 +228,4 @@ series-docs-build: series-docs-install ## Build the series documentation site
 series-docs-serve: series-docs-install ## Serve the series documentation site locally
 	@$(SYNC_SERIES_DOCS)
 	@$(RENDER_ROOT_MKDOCS)
-	@$(DOCS_ENV) $(MKDOCS) serve -f $(ROOT_MKDOCS_FILE)
+	@$(DOCS_ENV) $(SERVE_DOCS) --config $(abspath $(ROOT_MKDOCS_FILE))
