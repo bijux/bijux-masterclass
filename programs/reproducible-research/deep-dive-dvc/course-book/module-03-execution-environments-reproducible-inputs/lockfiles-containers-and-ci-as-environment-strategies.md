@@ -6,8 +6,8 @@ Once the environment is treated as part of the input surface, the next question 
 
 There is no single correct answer for every workflow.
 
-Module 03 goes better when learners see lockfiles, containers, and CI as different
-strategies with different strengths rather than as competing slogans.
+Module 03 goes better when you see lockfiles, containers, and CI as different strategies
+with different strengths rather than as competing slogans.
 
 ## Three common strategies
 
@@ -132,4 +132,4 @@ Ask:
 > which strategy gives this workflow the right balance of explicitness, stability, and
 > shared authority?
 
-That is the question Module 03 wants learners to carry forward.
+That is the question Module 03 wants you to carry forward.

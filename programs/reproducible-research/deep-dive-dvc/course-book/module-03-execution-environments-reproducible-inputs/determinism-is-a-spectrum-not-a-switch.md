@@ -9,7 +9,7 @@ sensitivity.
 
 ## Why this matters
 
-If learners imagine determinism as an all-or-nothing property, they make bad diagnoses:
+If you imagine determinism as an all-or-nothing property, you make bad diagnoses:
 
 - small numeric drift looks like chaos
 - any mismatch looks like user error
@@ -65,8 +65,8 @@ flowchart LR
   conditional --> variable["declared variability or tolerance"]
 ```
 
-The point of the picture is not classification for its own sake. It is to help learners
-choose the right response.
+The point of the picture is not classification for its own sake. It is to help you choose
+the right response.
 
 ## What strong response looks like
 
@@ -86,7 +86,7 @@ DVC helps keep data, stages, and recorded state explicit.
 That makes divergence easier to interpret, but it does not force the runtime world into
 perfect sameness.
 
-So the learner needs two ideas at once:
+So you need two ideas at once:
 
 - DVC makes important parts of the workflow more inspectable
 - inspectable is not the same as mathematically identical under every runtime condition

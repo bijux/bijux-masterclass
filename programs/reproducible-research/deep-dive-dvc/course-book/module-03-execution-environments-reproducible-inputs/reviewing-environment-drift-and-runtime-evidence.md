@@ -45,8 +45,8 @@ For Module 03, useful environment evidence includes:
 - declared install surface
 - any documented environment strategy such as lockfiles or containers
 
-The capstone's `make platform-report` is helpful because it gives learners a concrete
-example of environment evidence that is small, reviewable, and relevant.
+The capstone's `make platform-report` is helpful because it gives you a concrete example of
+environment evidence that is small, reviewable, and relevant.
 
 ## Distinguish three kinds of findings
 

@@ -7,7 +7,7 @@ the local run and the CI run are both honest, but the result is not exactly the 
 
 ## The situation
 
-A learner runs the DVC capstone locally and sees one set of metrics.
+Suppose you run the DVC capstone locally and see one set of metrics.
 
 CI runs the same repository and reports a slightly different metric.
 
@@ -34,7 +34,7 @@ Module 03 asks for a slower, better question:
 
 ## Step 2: Confirm the explicit workflow state first
 
-The learner checks:
+You check:
 
 - DVC-tracked data identity
 - `params.yaml`
@@ -47,7 +47,7 @@ mysterious anymore.
 
 ## Step 3: Inspect runtime evidence
 
-Next the learner compares environment clues:
+Next you compare environment clues:
 
 - local toolchain versions
 - CI toolchain versions
@@ -63,7 +63,7 @@ from folklore into a reviewable runtime difference.
 
 ## Step 4: Classify the drift honestly
 
-The learner now has to decide:
+You now have to decide:
 
 - is this an expected amount of conditional determinism
 - or is it meaningful enough to tighten the environment strategy

@@ -74,8 +74,8 @@ flowchart TD
   run --> result["result"]
 ```
 
-The learner does not need to worship this diagram. They need to use it as a reminder not
-to drop one whole class of inputs from the story.
+You do not need to worship this diagram. You need to use it as a reminder not to drop one
+whole class of inputs from the story.
 
 ## Why teams overlook this
 

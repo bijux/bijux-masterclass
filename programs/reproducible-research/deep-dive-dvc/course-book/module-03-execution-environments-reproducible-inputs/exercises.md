@@ -29,7 +29,7 @@ Explain:
 
 ## Exercise 3: Draw DVC's environment boundary
 
-A learner says:
+A teammate says:
 
 > once we use DVC, environment drift stops being our problem.
 

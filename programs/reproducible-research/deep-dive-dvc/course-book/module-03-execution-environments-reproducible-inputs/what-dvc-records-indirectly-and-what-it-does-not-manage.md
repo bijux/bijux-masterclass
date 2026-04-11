@@ -69,9 +69,9 @@ about the environment boundary than about hidden data or parameter drift.
 
 That narrowing is valuable.
 
-## Why clear boundaries protect learners
+## Why clear boundaries matter
 
-Without a clear DVC boundary, learners tend to fall into one of two bad stories:
+Without a clear DVC boundary, it is easy to fall into one of two bad stories:
 
 - DVC should have prevented every runtime difference
 - DVC is irrelevant because it did not prevent every runtime difference
@@ -96,8 +96,8 @@ without pretending one tool owns everything.
 
 ## Keep this standard
 
-When a learner asks what DVC contributes to environment reproducibility, do not answer only
-with "not much" or "everything."
+When you ask what DVC contributes to environment reproducibility, do not answer only with
+"not much" or "everything."
 
 Answer more precisely:
 

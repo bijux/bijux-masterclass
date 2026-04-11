@@ -1,6 +1,6 @@
 # Module 03: Execution Environments as Reproducible Inputs
 
-By Module 03, learners already know that stable data identity matters.
+By Module 03, you already know that stable data identity matters.
 
 The next surprise is harder:
 
@@ -33,8 +33,8 @@ and still get different outcomes.
 That is where reproducibility gets more honest. The environment is often the missing input
 surface hiding in plain sight.
 
-This module exists so learners stop treating runtime as accidental background and start
-treating it as part of the system they need to reason about.
+This module exists so you stop treating runtime as accidental background and start
+treating it as part of the system you need to reason about.
 
 ## Study route
 

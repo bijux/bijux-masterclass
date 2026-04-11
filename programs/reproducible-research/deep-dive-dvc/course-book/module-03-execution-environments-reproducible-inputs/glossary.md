@@ -2,8 +2,8 @@
 
 This glossary keeps the language of Module 03 stable.
 
-The goal is practical runtime clarity: when learners keep environment, determinism, and
-tool boundaries distinct, drift becomes reviewable instead of spooky.
+The goal is practical runtime clarity: when you keep environment, determinism, and tool
+boundaries distinct, drift becomes reviewable instead of spooky.
 
 ## Terms
 
