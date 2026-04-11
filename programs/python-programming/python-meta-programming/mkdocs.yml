@@ -13,6 +13,159 @@ edit_uri: edit/master/programs/python-programming/python-meta-programming/course
 docs_dir: course-book
 site_dir: ../../../artifacts/site/python-programming/python-meta-programming
 
+nav:
+- Home: index.md
+- Guides:
+  - Home: guides/index.md
+  - Start Here: guides/start-here.md
+  - Course Guide: guides/course-guide.md
+  - Learning Contract: guides/learning-contract.md
+  - Pressure Routes: guides/pressure-routes.md
+  - Module Promise Map: guides/module-promise-map.md
+  - Module Checkpoints: guides/module-checkpoints.md
+  - Proof Matrix: guides/proof-matrix.md
+  - Proof Ladder: guides/proof-ladder.md
+  - Platform Setup: guides/platform-setup.md
+- 'Module 00: Orientation and Study Practice':
+  - Home: module-00-orientation/index.md
+  - Course Map: module-00-orientation/course-map.md
+  - First-Contact Map: module-00-orientation/first-contact-map.md
+  - Mid-Course Map: module-00-orientation/mid-course-map.md
+  - Mastery Map: module-00-orientation/mastery-map.md
+- 'Module 01: Runtime Objects and the Python Object Model':
+  - Home: module-01-runtime-objects-object-model/index.md
+  - Functions as Runtime Objects: module-01-runtime-objects-object-model/functions-as-runtime-objects.md
+  - Classes as Runtime Objects: module-01-runtime-objects-object-model/classes-as-runtime-objects.md
+  - Modules as Runtime Objects: module-01-runtime-objects-object-model/modules-as-runtime-objects.md
+  - Instances as Runtime Objects: module-01-runtime-objects-object-model/instances-as-runtime-objects.md
+  - Object Graph and Runtime Cycle: module-01-runtime-objects-object-model/object-graph-and-runtime-cycle.md
+  - 'Worked Example: Reviewing a Brittle Source-Recovery Tool': module-01-runtime-objects-object-model/worked-example-reviewing-a-brittle-source-recovery-tool.md
+  - Exercises: module-01-runtime-objects-object-model/exercises.md
+  - Exercise Answers: module-01-runtime-objects-object-model/exercise-answers.md
+  - Module Glossary: module-01-runtime-objects-object-model/glossary.md
+- 'Module 02: Safe Runtime Observation and Inspection':
+  - Home: module-02-runtime-observation-inspection/index.md
+  - Visible Names and Stored State: module-02-runtime-observation-inspection/visible-names-and-stored-state.md
+  - Dynamic Attribute Access Is Not Inspection: module-02-runtime-observation-inspection/dynamic-attribute-access-is-not-inspection.md
+  - Exactness and Polymorphism in Runtime Type Checks: module-02-runtime-observation-inspection/exactness-and-polymorphism-in-runtime-type-checks.md
+  - Callable Objects and the Call Protocol: module-02-runtime-observation-inspection/callable-objects-and-the-call-protocol.md
+  - Static Lookup and Disciplined Observation: module-02-runtime-observation-inspection/static-lookup-and-disciplined-observation.md
+  - 'Worked Example: Building a Safer Debug Printer': module-02-runtime-observation-inspection/worked-example-building-a-safer-debug-printer.md
+  - Exercises: module-02-runtime-observation-inspection/exercises.md
+  - Exercise Answers: module-02-runtime-observation-inspection/exercise-answers.md
+  - Module Glossary: module-02-runtime-observation-inspection/glossary.md
+- 'Module 03: Signatures, Provenance, and Runtime Evidence':
+  - Home: module-03-signatures-provenance-runtime-evidence/index.md
+  - Signature Contracts and Parameter Kinds: module-03-signatures-provenance-runtime-evidence/signature-contracts-and-parameter-kinds.md
+  - Argument Binding and Call Simulation: module-03-signatures-provenance-runtime-evidence/argument-binding-and-call-simulation.md
+  - Provenance Helpers and Best-Effort Recovery: module-03-signatures-provenance-runtime-evidence/provenance-helpers-and-best-effort-recovery.md
+  - Dynamic Members and Static Structure: module-03-signatures-provenance-runtime-evidence/dynamic-members-and-static-structure.md
+  - Frames and Diagnostic-Only Runtime Evidence: module-03-signatures-provenance-runtime-evidence/frames-and-diagnostic-only-runtime-evidence.md
+  - 'Worked Example: Building a Safe Signature-Guided `__repr__`': module-03-signatures-provenance-runtime-evidence/worked-example-building-a-safe-signature-guided-repr.md
+  - Exercises: module-03-signatures-provenance-runtime-evidence/exercises.md
+  - Exercise Answers: module-03-signatures-provenance-runtime-evidence/exercise-answers.md
+  - Module Glossary: module-03-signatures-provenance-runtime-evidence/glossary.md
+- 'Module 04: Function Wrappers and Transparent Decorators':
+  - Home: module-04-function-wrappers-transparent-decorators/index.md
+  - Nested Functions and Wrapper Skeletons: module-04-function-wrappers-transparent-decorators/nested-functions-and-wrapper-skeletons.md
+  - Decorator Syntax and Definition-Time Rebinding: module-04-function-wrappers-transparent-decorators/decorator-syntax-and-definition-time-rebinding.md
+  - Thin Practical Wrappers at Call Time: module-04-function-wrappers-transparent-decorators/thin-practical-wrappers-at-call-time.md
+  - Stateful Wrappers and Semantic Drift: module-04-function-wrappers-transparent-decorators/stateful-wrappers-and-semantic-drift.md
+  - Wraps and Signature Transparency: module-04-function-wrappers-transparent-decorators/wraps-and-signature-transparency.md
+  - 'Worked Example: Building a Bounded Cache Decorator': module-04-function-wrappers-transparent-decorators/worked-example-building-a-bounded-cache-decorator.md
+  - Exercises: module-04-function-wrappers-transparent-decorators/exercises.md
+  - Exercise Answers: module-04-function-wrappers-transparent-decorators/exercise-answers.md
+  - Module Glossary: module-04-function-wrappers-transparent-decorators/glossary.md
+- 'Module 05: Decorator Design, Policies, and Typing':
+  - Home: module-05-decorator-design-policies-typing/index.md
+  - Decorator Factories and Parameter Capture: module-05-decorator-design-policies-typing/decorator-factories-and-parameter-capture.md
+  - Resilience and Control-Flow Wrappers: module-05-decorator-design-policies-typing/resilience-and-control-flow-wrappers.md
+  - Annotation-Aware Runtime Contracts: module-05-decorator-design-policies-typing/annotation-aware-runtime-contracts.md
+  - Cache Policy and lru_cache Behavior: module-05-decorator-design-policies-typing/cache-policy-and-lru-cache-behavior.md
+  - Wrapper Policy Boundaries: module-05-decorator-design-policies-typing/wrapper-policy-boundaries.md
+  - 'Worked Example: Building a Partial `@validated` Decorator': module-05-decorator-design-policies-typing/worked-example-building-a-partial-validated-decorator.md
+  - Exercises: module-05-decorator-design-policies-typing/exercises.md
+  - Exercise Answers: module-05-decorator-design-policies-typing/exercise-answers.md
+  - Module Glossary: module-05-decorator-design-policies-typing/glossary.md
+- 'Module 06: Class Customization Before Metaclasses':
+  - Home: module-06-class-customization-pre-metaclasses/index.md
+  - Class Decorators and Post-Construction Transformation: module-06-class-customization-pre-metaclasses/class-decorators-and-post-construction-transformation.md
+  - Dataclass Generation Boundaries: module-06-class-customization-pre-metaclasses/dataclass-generation-boundaries.md
+  - Properties and Attribute-Boundary Control: module-06-class-customization-pre-metaclasses/properties-and-attribute-boundary-control.md
+  - Type Hints and Descriptor-Backed Validation: module-06-class-customization-pre-metaclasses/type-hints-and-descriptor-backed-validation.md
+  - Class Customization Boundaries: module-06-class-customization-pre-metaclasses/class-customization-boundaries.md
+  - 'Worked Example: Building a Minimal `@frozen` Class Decorator': module-06-class-customization-pre-metaclasses/worked-example-building-a-minimal-frozen-class-decorator.md
+  - Exercises: module-06-class-customization-pre-metaclasses/exercises.md
+  - Exercise Answers: module-06-class-customization-pre-metaclasses/exercise-answers.md
+  - Module Glossary: module-06-class-customization-pre-metaclasses/glossary.md
+- 'Module 07: Descriptors, Lookup, and Attribute Control':
+  - Home: module-07-descriptors-lookup-attribute-control/index.md
+  - Descriptor Protocol and `__set_name__`: module-07-descriptors-lookup-attribute-control/descriptor-protocol-and-set-name.md
+  - Data and Non-Data Descriptor Precedence: module-07-descriptors-lookup-attribute-control/data-and-non-data-descriptor-precedence.md
+  - Functions, Binding, and Method Descriptors: module-07-descriptors-lookup-attribute-control/functions-binding-and-method-descriptors.md
+  - Reusable Field Descriptors and Storage: module-07-descriptors-lookup-attribute-control/reusable-field-descriptors-and-storage.md
+  - Descriptor Boundaries and Attribute Ownership: module-07-descriptors-lookup-attribute-control/descriptor-boundaries-and-attribute-ownership.md
+  - 'Worked Example: Building a Unit-Aware Quantity Descriptor': module-07-descriptors-lookup-attribute-control/worked-example-building-a-unit-aware-quantity-descriptor.md
+  - Exercises: module-07-descriptors-lookup-attribute-control/exercises.md
+  - Exercise Answers: module-07-descriptors-lookup-attribute-control/exercise-answers.md
+  - Module Glossary: module-07-descriptors-lookup-attribute-control/glossary.md
+- 'Module 08: Descriptor Systems, Validation, and Framework Design':
+  - Home: module-08-descriptor-systems-validation-framework-design/index.md
+  - Cached Descriptors and Invalidation: module-08-descriptor-systems-validation-framework-design/cached-descriptors-and-invalidation.md
+  - External Storage Descriptors: module-08-descriptor-systems-validation-framework-design/external-storage-descriptors.md
+  - Descriptor Composition and Wrapper Fields: module-08-descriptor-systems-validation-framework-design/descriptor-composition-and-wrapper-fields.md
+  - Hint-Driven Validation and Coercion: module-08-descriptor-systems-validation-framework-design/hint-driven-validation-and-coercion.md
+  - Descriptor Systems and Framework Boundaries: module-08-descriptor-systems-validation-framework-design/descriptor-systems-and-framework-boundaries.md
+  - 'Worked Example: Building an Educational Mini Relational Model': module-08-descriptor-systems-validation-framework-design/worked-example-building-an-educational-mini-relational-model.md
+  - Exercises: module-08-descriptor-systems-validation-framework-design/exercises.md
+  - Exercise Answers: module-08-descriptor-systems-validation-framework-design/exercise-answers.md
+  - Module Glossary: module-08-descriptor-systems-validation-framework-design/glossary.md
+- 'Module 09: Metaclass Design and Class Creation':
+  - Home: module-09-metaclass-design-class-creation/index.md
+  - Manual Class Creation with `type(...)`: module-09-metaclass-design-class-creation/manual-class-creation-with-type.md
+  - Metaclass Resolution, Timing, and Conflicts: module-09-metaclass-design-class-creation/metaclass-resolution-timing-and-conflicts.md
+  - Metaclass `__new__` and `__init__`: module-09-metaclass-design-class-creation/metaclass-new-and-init.md
+  - '`__prepare__` and Declaration-Time Enforcement': module-09-metaclass-design-class-creation/prepare-and-declaration-time-enforcement.md
+  - Metaclass Boundaries and Class-Creation Ownership: module-09-metaclass-design-class-creation/metaclass-boundaries-and-class-creation-ownership.md
+  - 'Worked Example: Building a Deterministic Plugin Registry with `PluginMeta`': module-09-metaclass-design-class-creation/worked-example-building-a-deterministic-plugin-registry-with-pluginmeta.md
+  - Exercises: module-09-metaclass-design-class-creation/exercises.md
+  - Exercise Answers: module-09-metaclass-design-class-creation/exercise-answers.md
+  - Module Glossary: module-09-metaclass-design-class-creation/glossary.md
+- 'Module 10: Runtime Governance and Mastery Review':
+  - Home: module-10-runtime-governance-mastery-review/index.md
+  - Dynamic Execution, Trust Boundaries, and Process Isolation: module-10-runtime-governance-mastery-review/dynamic-execution-trust-boundaries-and-process-isolation.md
+  - Interface Contracts with ABCs, Protocols, and `__subclasshook__`: module-10-runtime-governance-mastery-review/interface-contracts-with-abcs-protocols-and-subclasshook.md
+  - Observability, Reversibility, and Monkey-Patching Boundaries: module-10-runtime-governance-mastery-review/observability-reversibility-and-monkey-patching-boundaries.md
+  - Import Hooks, AST Transforms, and Tooling Boundaries: module-10-runtime-governance-mastery-review/import-hooks-ast-transforms-and-tooling-boundaries.md
+  - Mechanism Selection, Review Gates, and Escalation Boundaries: module-10-runtime-governance-mastery-review/mechanism-selection-review-gates-and-escalation-boundaries.md
+  - 'Worked Example: Reviewing a Plugin Runtime for Observability and Control': module-10-runtime-governance-mastery-review/worked-example-reviewing-a-plugin-runtime-for-observability-and-control.md
+  - Exercises: module-10-runtime-governance-mastery-review/exercises.md
+  - Exercise Answers: module-10-runtime-governance-mastery-review/exercise-answers.md
+  - Module Glossary: module-10-runtime-governance-mastery-review/glossary.md
+- Python Metaprogramming Capstone Guide:
+  - Home: capstone/index.md
+  - Capstone Map: capstone/capstone-map.md
+  - Capstone File Guide: capstone/capstone-file-guide.md
+  - Capstone Architecture Guide: capstone/capstone-architecture-guide.md
+  - Capstone Proof Guide: capstone/capstone-proof-guide.md
+  - Capstone Review Worksheet: capstone/capstone-review-worksheet.md
+  - Capstone Extension Guide: capstone/capstone-extension-guide.md
+  - Capstone Walkthrough: capstone/capstone-walkthrough.md
+  - Command Guide: capstone/command-guide.md
+  - Capstone Glossary: capstone/glossary.md
+- Reference:
+  - Home: reference/index.md
+  - Reference Glossary: reference/glossary.md
+  - Module Dependency Map: reference/module-dependency-map.md
+  - Practice Map: reference/practice-map.md
+  - Review Checklist: reference/review-checklist.md
+  - Boundary Review Prompts: reference/boundary-review-prompts.md
+  - Self-Review Prompts: reference/self-review-prompts.md
+  - Anti-Pattern Atlas: reference/anti-pattern-atlas.md
+  - Completion Rubric: reference/completion-rubric.md
+  - Topic Boundaries: reference/topic-boundaries.md
+  - Runtime Power Ladder: reference/runtime-power-ladder.md
+
 theme:
   custom_dir: ../../../docs/overrides
   logo: ../../../docs/assets/bijux_logo_hq.png
