@@ -15,7 +15,6 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from scripts.docs_nav import (
-    build_tree_nav,
     child_sort_key,
     explicit_course_nav,
     explicit_course_title,
@@ -71,10 +70,9 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
                 program_root,
                 prefix=f"{family_slug}/{child.name}",
             )
-            child_nav = explicit_nav or build_tree_nav(
-                child,
-                f"{family_slug}/{child.name}",
-            )
+            if explicit_nav is None:
+                raise ValueError(f"missing explicit course nav in {program_root / 'mkdocs.yml'}")
+            child_nav = explicit_nav
             title = (
                 explicit_course_title(program_root)
                 or child.name.replace("-", " ").title()
