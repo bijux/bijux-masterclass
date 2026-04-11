@@ -52,7 +52,6 @@ one full read of the relevant lesson or capstone guide.
 - [Authority Map](authority-map.md)
 - [Evidence Boundary Guide](evidence-boundary-guide.md)
 - [Glossary](glossary.md)
-- [Version Support Guide](version-support-guide.md)
 - [Topic Boundaries](topic-boundaries.md)
 - [Practice Map](practice-map.md)
 - [Anti-Pattern Atlas](anti-pattern-atlas.md)
