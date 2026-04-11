@@ -2,49 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Generators vs Comprehensions"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  listcomp["Start with an eager list comprehension"] --> boundary["Ask whether the result must be stored now"]
+  boundary --> genexp["Switch to a generator expression when one pass is enough"]
+  genexp --> review["Review the new stage for demand and reuse expectations"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about one of the highest-leverage edits in the whole module: deciding whether a comprehension is describing a stored collection or a stream. Students need a crisp review rule here because `[]` and `()` look almost identical while their execution costs are very different.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Accidental Materialization
 
-Here's a snippet from the progression map:
+Many pipelines become eager again one comprehension at a time. The syntax feels harmless, so students need stronger instincts about when list construction is a real requirement and when it is an unnecessary boundary.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If the result is consumed once from left to right, a list may be doing work too early.
+- If the caller wants only a prefix, a generator expression can avoid computing the rest.
+- If later code needs random access or repeated passes, then a list is an honest choice instead of a bug.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you replace list comprehensions with generator expressions to eliminate unnecessary materialization, improve readability, and gain short-circuiting — while keeping mathematically tight equivalence laws to the eager version?
 
-This core builds directly on **Core 1**’s generator functions by introducing **generator expressions** — the single most common laziness upgrade in real codebases:
-- Use `(f(x) for x in xs if cond)` instead of `[f(x) for x in xs if cond]` for any simple map/filter.
-- Achieve O(1) memory for the transform itself with identical syntax.
-- Preserve full equivalence when materialised, with explicit prefix and order laws.
+This lesson builds directly on generator functions by introducing the simplest laziness upgrade in real code:
 
-We continue the **running project** from `m03-rag.md`, now replacing every remaining list comprehension in the RAG pipeline with generator expressions.
+- use `(f(x) for x in xs if cond)` when the pipeline only needs one pass
+- keep the readable map/filter shape students already know
+- make demand and short-circuit behavior explicit without changing the conceptual transform
 
-**Audience:** Developers who already use generator functions but still sprinkle list comprehensions throughout their pipelines and wonder why memory usage is still high.
+The running project keeps the lesson honest: not every list should become a generator, but every comprehension should be justified as either a stored result or a stream.
+
+**Audience:** Developers who already know generator functions but still default to list comprehensions inside streaming code.
 
 **Outcome:**
 1. Spot any list comprehension that produces on the order of tens of thousands of items and instantly know it’s a likely memory footgun.
@@ -65,11 +56,11 @@ We continue the **running project** from `m03-rag.md`, now replacing every remai
 
 ### 1.3 Why This Matters Now
 
-Core 1 gave you generator functions for complex logic.  
-In practice, 80 % of laziness wins come from simply changing `[]` → `()` in existing comprehensions.  
-The memory savings are dramatic, the code reads the same, and you instantly gain short-circuiting.
+Generator functions solve the complex cases, but most day-to-day laziness wins come from smaller decisions. This lesson teaches students to notice when a comprehension is silently forcing full evaluation. Once they can spot that boundary, switching from `[]` to `()` becomes a deliberate design move instead of a cosmetic trick.
 
 ### 1.4 Generator Expressions in 5 Lines
+
+The next example matters because it shows how a nearly invisible syntax change produces a completely different evaluation model.
 
 ```python
 # Eager — allocates everything
