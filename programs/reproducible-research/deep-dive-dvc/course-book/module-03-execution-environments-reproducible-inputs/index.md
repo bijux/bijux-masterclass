@@ -1,250 +1,122 @@
 # Module 03: Execution Environments as Reproducible Inputs
 
+By Module 03, learners already know that stable data identity matters.
 
-<!-- page-maps:start -->
-## Module Position
+The next surprise is harder:
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 03: Execution Environments as Reproducible Inputs"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
-```
+even when code and data look stable, results can still drift because the execution
+environment is part of the input surface.
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+This module is about making that invisible boundary visible:
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+- environment is not background weather
+- honest runs can diverge without anyone being careless
+- DVC can record some environment-adjacent evidence, but it does not own environment
+  management by itself
+- lockfiles, containers, and CI all solve different parts of the problem
 
-*The invisible variable that breaks reproducibility even when everything else is correct*
+The capstone corroboration surface for this module is the set of files and commands that
+make the runtime boundary legible: `make platform-report`, `params.yaml`,
+`docs/CONTROL_SURFACE_GUIDE.md`, `docs/ARCHITECTURE.md`, and the install/runtime surface
+in the capstone Makefile.
 
----
+## Why this module exists
 
-## Purpose of this Module
+Many workflow teams say:
 
-By this point the learner knows that stable data identity matters and that bytes can be
-recovered. This module deals with the next surprise: even when code and data look stable,
-results can still drift because the execution environment is part of the input surface.
+- the code did not change
+- the data did not change
+- the parameters did not change
 
-The teaching goal is simple: stop treating the runtime boundary as background luck. When
-this module lands, the learner should be able to say which parts of the environment must
-be declared, which parts DVC can record indirectly, and which parts still need outside
-governance.
+and still get different outcomes.
 
----
+That is where reproducibility gets more honest. The environment is often the missing input
+surface hiding in plain sight.
 
-## At a Glance
+This module exists so learners stop treating runtime as accidental background and start
+treating it as part of the system they need to reason about.
 
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| environment boundary | "What part of the result depends on runtime rather than code or data?" | inspect the capstone only after you accept environment as state |
-| determinism spectrum | "Why can two honest runs still diverge?" | use capstone surfaces to inspect declared boundaries, not to promise sameness |
-| tool responsibility | "What should DVC record, and what should another tool own?" | compare DVC to lockfiles and containers intentionally |
-
-## Learning outcomes
-
-- treat the execution environment as part of the input surface rather than background luck
-- distinguish which runtime facts DVC can record indirectly and which must be governed by other tooling or policy
-- explain why honest runs can diverge without any one person “making a mistake”
-
-## Verification route
-
-- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-platform-report` and inspect the reported Python, Git, and DVC versions as concrete environment evidence.
-- Compare the module’s environment boundary claims with the capstone’s declared install and runtime surface.
-- State clearly which environment facts DVC tracks, which ones it only influences indirectly, and which ones must be governed elsewhere.
-
----
-
-## 3.1 The Erroneous Presumption: Identical Code and Data Yield Identical Results
-
-This belief is entrenched, particularly within software engineering paradigms, yet it proves invalid in machine learning (ML) contexts. Identical scripts, datasets, and parameters can produce divergent outcomes, not due to overt errors, but through unrecognized input alterations residing within the environment.
-
----
-
-## 3.2 Precise Definition of the Environment
-
-The environment encompasses all factors influencing execution that remain undeclared as dependencies, including:
-
-### Software Stack
-- Operating system.
-- Python interpreter version.
-- Library dependencies.
-- Compiler directives.
-- Implementations such as BLAS, LAPACK, or CUDA.
-
-### Hardware
-- CPU architecture.
-- GPU configuration.
-- Thread count.
-- Instruction set extensions.
-
-### Runtime Context
-- Locale settings.
-- Timezone configurations.
-- File enumeration sequences.
-- Parallelism orchestration.
-- Non-deterministic computational kernels.
-
-### Randomness Sources
-- Pseudorandom number seeds.
-- Hardware-derived entropy.
-- Inherently stochastic algorithms.
-
-These components can alter results without modifications to code or data.
-
-That is the main conceptual move in this module: the environment is not background
-weather. It is part of the state surface.
-
-**Illustration**:
+## Study route
 
 ```mermaid
-graph TD
-  env["Execution Environment"]
-  software["Software Stack<br/>OS<br/>Python Version<br/>Libraries<br/>Compiler Flags<br/>BLAS or CUDA"]
-  hardware["Hardware<br/>CPU<br/>GPU<br/>Threads<br/>Instruction Sets"]
-  runtime["Runtime Context<br/>Locale<br/>Timezone<br/>File Order<br/>Scheduling<br/>Kernel Behavior"]
-  randomness["Randomness Sources<br/>Seeds<br/>Hardware Entropy<br/>Stochastic Algorithms"]
-  env --> software
-  env --> hardware
-  env --> runtime
-  env --> randomness
+flowchart LR
+  overview["Overview"] --> core1["Core 1: environment as input"]
+  core1 --> core2["Core 2: determinism is a spectrum"]
+  core2 --> core3["Core 3: what DVC records and what it does not"]
+  core3 --> core4["Core 4: lockfiles, containers, and CI"]
+  core4 --> core5["Core 5: diagnosing environment drift"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
----
+Read the module in that order the first time.
 
-## 3.3 The Spectrum of Determinism
+If the problem is already partly clear, use this shortcut:
 
-A common oversight is viewing programs as strictly deterministic or otherwise. Determinism, however, operates along a continuum.
+- open Core 1 when the main confusion is "why does runtime count as input?"
+- open Core 2 when the main confusion is "how can honest runs still diverge?"
+- open Core 3 when the main confusion is "what part of this is DVC actually helping with?"
+- open Core 4 when the main confusion is "which environment strategy fits which pressure?"
+- open Core 5 when the main confusion is "how do I review or diagnose drift sanely?"
 
-### Theoretically Deterministic
-- Pure functional computations.
-- Sequential arithmetic operations.
-- Single-threaded processes.
+## Module map
 
-### Conditionally Deterministic
-- Floating-point calculations.
-- Parallel summation reductions.
-- GPU kernels susceptible to race conditions.
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `execution-environment-as-part-of-the-input-surface.md` | teaches why runtime belongs in the workflow story |
+| `determinism-is-a-spectrum-not-a-switch.md` | teaches why divergence can be honest rather than mysterious |
+| `what-dvc-records-indirectly-and-what-it-does-not-manage.md` | teaches DVC's boundary around environments |
+| `lockfiles-containers-and-ci-as-environment-strategies.md` | teaches the main environment-control approaches and their tradeoffs |
+| `reviewing-environment-drift-and-runtime-evidence.md` | teaches how to inspect and diagnose runtime differences without guesswork |
+| `worked-example-explaining-a-local-versus-ci-drift.md` | walks through one realistic environment drift story |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
-### Inherently Non-Deterministic
-- Asynchronous task handling.
-- Hardware scheduling variances.
-- Optimized mathematical procedures.
+## What should be clear by the end
 
-ML tasks predominantly occupy the conditionally deterministic domain, where minor variances compound, leading to subtle divergences and unexplained metric shifts. This reflects fundamental physical constraints, not procedural lapses.
+By the end of this module, you should be able to explain:
 
----
+- why the environment is part of the input surface
+- why determinism is often conditional rather than absolute
+- which runtime facts DVC helps surface and which it does not manage directly
+- how lockfiles, containers, and CI differ as environment strategies
+- how to review and diagnose environment drift without superstition
 
-## 3.4 DVC's Deliberate Exclusion of Environment Management
+## Commands to keep close
 
-DVC intentionally refrains from overseeing environments, establishing a clear demarcation rather than an omission. It assures data usage, pipeline execution, and stage timing, but not uniform floating-point outcomes, library behaviors, or hardware executions. Anticipating such from DVC mirrors expecting Git to dictate compiler semantics. The appropriate strategy involves integration with complementary tools.
+These commands form the evidence loop for Module 03:
 
----
-
-## 3.5 Strategies for Explicit Environment Management
-
-Achieving reproducibility necessitates deliberate decisions on environmental fixation, balancing trade-offs without a singular solution.
-
-### Strategy 1: Lockfiles (Lightweight and Partial)
-Examples include `requirements.txt`, `poetry.lock`, and `conda-lock.yml`.
-
-**Advantages**: Simplicity in adoption, rapid iteration, suitability for CPU-intensive tasks.
-
-**Disadvantages**: Dependence on operating systems and hardware, incomplete determinism.
-
-Applicable when prioritizing development speed and tolerating minor numerical variations.
-
-### Strategy 2: Containers (Robust and Intermediate)
-Examples encompass Docker images and OCI-compliant containers.
-
-**Advantages**: Operating system consistency, cross-machine portability, compatibility with continuous integration (CI).
-
-**Disadvantages**: Increased artifact size, complexities in GPU integration, residual hardware dependencies.
-
-Suitable for ensuring cross-machine stability and CI reliability.
-
-### Strategy 3: CI as the Authoritative Environment (Comprehensive Approach)
-This framework posits: **Reproducibility is confirmed if achieved in CI.** Local executions are deemed exploratory and provisional, while CI serves as the definitive executor, correctness adjudicator, and reproducibility benchmark. This model harmonizes priorities and mitigates uncertainties.
-
-**Example Integration Snippet** (Illustrative Docker configuration for DVC):
-```
-FROM python:3.10-slim
-
-RUN pip install dvc[all]
-COPY . /app
-WORKDIR /app
-RUN dvc repro
+```bash
+make -C capstone platform-report
+make -C capstone verify
+make -C capstone walkthrough
 ```
 
----
+The point is not to collect more output. The point is to tie environment discussion to
+concrete evidence instead of vague intuition.
 
-## 3.6 DVC's Integrative Role
+## Capstone route
 
-DVC functions as a connector among environment tools (e.g., Docker, Conda), data identity mechanisms, and pipeline orchestration. It guarantees consistent input delivery, step execution, and deviation detection, but not numerical equivalence across environments. This boundary is fundamental.
+Use the capstone only after the runtime boundary already feels concrete.
 
----
+Best corroboration surfaces for this module:
 
-## 3.7 Failure Modes and Their Analyses
+- `capstone/Makefile`
+- `capstone/params.yaml`
+- `capstone/docs/CONTROL_SURFACE_GUIDE.md`
+- `capstone/docs/ARCHITECTURE.md`
+- `make -C capstone platform-report`
 
-| Symptom                        | Interpretation                     |
-| ------------------------------ | ---------------------------------- |
-| Inter-machine metric variances | Environmental divergence           |
-| CI-local discrepancies         | Non-authoritative local setup      |
-| Minor numerical alterations    | Floating-point variability         |
-| Substantial metric shifts      | Probable concealed dependency      |
+Useful proof route:
 
-Address these by identifying altered inputs, rather than superficial fixes like arbitrary seed pinning.
+```bash
+make -C capstone platform-report
+make -C capstone walkthrough
+make -C capstone verify
+```
 
----
-
-## 3.8 Diagnostic Exercise
-
-Conduct this systematically:
-1. Execute a pipeline locally, documenting metrics and environment specifications (e.g., via `pip freeze`).
-2. Replicate in a CI environment.
-3. Compare outputs, logs, and behaviors.
-4. Assess: Which variances are tolerable? Which require resolution? Which are intrinsic?
-
-This practical evaluation surpasses theoretical descriptions.
-
-**Guidance**: Utilize a sample repository if unavailable; record insights for future reference.
-
----
-
-## 3.9 Essential Conceptual Model
-
-> **Data, code, parameters, and the environment each represent inputs.**
-
-Influential factors must be captured, constrained, or acknowledged as variable; no alternatives exist.
-
----
-
-## Module 03: Invariants Checklist
-
-Affirm and substantiate:
-
-- [ ] Environments impact outcomes despite identical data.
-- [ ] Determinism is conditional, not unequivocal.
-- [ ] DVC excludes environment management intentionally.
-- [ ] CI may function as a canonical executor.
-- [ ] Environmental drifts are identifiable, not enigmatic.
-
-Proceed if these resonate intuitively.
-
----
-
-## Transition to Module 04
-
-With immutable data identity and explicit environments secured, pipeline unpredictability endures due to misrepresented dependencies. Module 04 presents truthful directed acyclic graphs (DAGs)—pipelines that execute selectively and precisely, transforming reproducibility from aspirational to systematic.
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is to make the capstone's declared runtime surface inspectable,
+not to pretend the capstone eliminates every environment question by itself.
