@@ -14,7 +14,7 @@ source-only guide, or generated review bundle into the exported surface.
 ## What this shelf does not include
 
 - internal-only reading routes for source placement or bundle packing
-- learner walkthrough aids that are only useful inside the full capstone repository
+- walkthrough aids that are only useful inside the full capstone repository
 - generated release artifacts that should stay under the review bundles, not the authored docs surface
 
 ## Recommended reading order

@@ -20,8 +20,8 @@ flowchart LR
 <!-- page-maps:end -->
 
 Use this guide when `dvc.yaml` feels mechanically readable but the stage boundaries still
-feel implicit. The goal is to make each stage promise explicit enough that a learner can
-name what belongs to that edge and what does not.
+feel implicit. The goal is to make each stage promise explicit enough that you can name
+what belongs to that edge and what does not.
 
 ## Stage promises
 

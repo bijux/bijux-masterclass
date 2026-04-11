@@ -70,7 +70,7 @@ graph TD
 
 ## Fastest Safe Paths
 
-### New learner
+### First pass through the course
 
 Read Modules 01 through 10 in order.
 
@@ -94,4 +94,3 @@ question points back to fundamentals.
 | after 04-05 | inspect truthful stages, params, and metrics |
 | after 06-08 | inspect experiment, collaboration, and recovery surfaces |
 | after 09-10 | review the repository as a stewardship specimen |
-

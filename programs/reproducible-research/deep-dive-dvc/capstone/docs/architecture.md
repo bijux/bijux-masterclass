@@ -26,9 +26,9 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This capstone is intentionally small, but its architecture is strict. The learner goal is
-to see where state is declared, where it is recorded, where it is promoted, and where it
-is verified.
+This capstone is intentionally small, but its architecture is strict. The goal is to see
+where state is declared, where it is recorded, where it is promoted, and where it is
+verified.
 
 ## Ownership boundaries
 
@@ -58,12 +58,11 @@ review meaning.
 
 ## Why this architecture matters
 
-The course is about authority and evidence. This capstone only teaches that well if the
-learner can point to the exact file that owns declaration, execution, promotion, or
-verification.
+The course is about authority and evidence. This capstone only teaches that well if you
+can point to the exact file that owns declaration, execution, promotion, or verification.
 
-Use [Domain Guide](domain-guide.md) when the architecture is clear but the learner still
-needs the fastest route back to the modeled problem and the promoted review surface.
+Use [Domain Guide](domain-guide.md) when the architecture is clear but you still need the
+fastest route back to the modeled problem and the promoted review surface.
 
 When the main pressure is no longer reading the current design, start from the owning
 layer above and then inspect the matching implementation file that already owns the

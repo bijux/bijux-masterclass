@@ -1,9 +1,8 @@
 # Learning Contract
 
 Use this page when you need to reset how to study the program. Deep Dive DVC is not built
-for passive reading. It is built for learners who can explain one trust question, name
-the authoritative layer behind it, and point to the command or artifact that proves the
-claim.
+for passive reading. It is built for people who can explain one trust question, name the
+authoritative layer behind it, and point to the command or artifact that proves the claim.
 
 ## What the program is asking from you
 

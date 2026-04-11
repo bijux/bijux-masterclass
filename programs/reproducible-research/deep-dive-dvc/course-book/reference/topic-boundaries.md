@@ -76,7 +76,7 @@ These topics are real, but they are not treated as the main point of Deep Dive D
 | notebook craft | notebooks may exist, but they are not the authoritative state boundary here | teach committed data, params, metrics, and published outputs instead |
 | general data-platform architecture | DVC has limits and neighbors | Module 10 teaches tool boundaries instead of pretending DVC should own everything |
 
-When a learner wants more on one of these, the honest answer is not “the course covers
+When you want more on one of these, the honest answer is not “the course covers
 everything.” The honest answer is “the course touches this where it affects state truth,
 then hands off.”
 
@@ -99,7 +99,7 @@ badges of DVC sophistication.
 
 ## Blind Spots This Page Protects Against
 
-Without an explicit boundary page, learners can leave with the wrong conclusions:
+Without an explicit boundary page, you can leave with the wrong conclusions:
 
 * “The course forgot model-building topics.”
   It did not forget them. It scoped them outside the central reproducibility argument.
@@ -120,4 +120,3 @@ Use these with this page:
 * [`module-dependency-map.md`](module-dependency-map.md) to see the safe learning order
 * [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest repository proof route
 * [`completion-rubric.md`](completion-rubric.md) to review whether the course is actually keeping its promises
-

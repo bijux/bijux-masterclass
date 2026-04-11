@@ -24,8 +24,8 @@ Read the first diagram as a lookup map: this page is part of the review shelf, n
 
 Deep Dive DVC should finish with more than command familiarity.
 
-Use this rubric to judge whether the learner can reason about state, evidence, recovery,
-and promotion without hand-waving.
+Use this rubric to judge whether you can reason about state, evidence, recovery, and
+promotion without hand-waving.
 
 ---
 
@@ -76,5 +76,4 @@ A reviewer should be able to ask:
 * what survives cache loss
 * what would you inspect before changing this repository
 
-If those answers stay vague, the learner is not done yet.
-
+If those answers stay vague, you are not done yet.
