@@ -51,7 +51,7 @@ Write a short review note that explains:
 
 ## Exercise 4: Draw the DVC boundary honestly
 
-A learner says:
+Suppose someone on your team says:
 
 > DVC will solve our reproducibility problem once we start tracking the data.
 

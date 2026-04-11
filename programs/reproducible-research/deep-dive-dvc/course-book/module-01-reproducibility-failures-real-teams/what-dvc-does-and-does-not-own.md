@@ -53,7 +53,7 @@ DVC is part of the trust story. It is not the whole trust story.
 
 ## Why this distinction matters in Module 01
 
-If learners expect DVC to solve everything, later frustrations will sound like:
+If you expect DVC to solve everything, later frustrations will sound like:
 
 - "DVC tracked the data, but the dataset was still wrong"
 - "DVC recorded the run, but the model is still a bad model"

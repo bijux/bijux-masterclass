@@ -46,7 +46,7 @@ flowchart TD
   run --> result["result and metrics"]
 ```
 
-The learner does not need to fear this diagram. They need to use it.
+You do not need to fear this diagram. You need to use it.
 
 Every real workflow has both categories at first. The engineering work is deciding which
 hidden inputs must become explicit.
@@ -72,7 +72,7 @@ But the real run may also depend on:
 
 The repo did not lie exactly. It simply did not tell the whole story.
 
-## Common hidden inputs learners should look for first
+## Common hidden inputs to look for first
 
 Start with these categories:
 
@@ -110,7 +110,7 @@ It can also be:
 - a path assumed by convention but never tracked
 - a cloud or local dataset that multiple people call "the same" without byte identity
 
-Once learners start seeing this pattern, later DVC concepts have a place to land.
+Once you start seeing this pattern, later DVC concepts have a place to land.
 
 ## A good first inventory question
 

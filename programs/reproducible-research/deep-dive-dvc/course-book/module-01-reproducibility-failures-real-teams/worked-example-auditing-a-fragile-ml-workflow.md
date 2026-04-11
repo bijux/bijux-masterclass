@@ -74,7 +74,7 @@ That is not Git failing. That is Git being asked to carry a larger story than it
 
 ## Step 4: Ask what DVC would help with
 
-At this point a learner can make a stronger statement:
+At this point you can make a stronger statement:
 
 > the problem is not merely that we need version control. The problem is that data
 > identity, derived artifacts, and the path from inputs to outputs are still too implicit.

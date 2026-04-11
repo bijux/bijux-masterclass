@@ -1,6 +1,6 @@
 # The First Honest Workflow Inventory
 
-Before learners start using DVC, they need one skill that is more basic than any command:
+Before you start using DVC, you need one skill that is more basic than any command:
 
 they need to describe their current workflow without flattering it.
 
@@ -105,7 +105,7 @@ The point is to stop pretending they are not there.
 
 ## A small example
 
-Imagine a learner writes this inventory:
+Imagine writing this inventory:
 
 - source input: `customers.csv`
 - control input: `threshold=0.8` inside `score.py`
@@ -117,7 +117,7 @@ That is already a strong Module 01 result.
 
 It is concrete, honest, and ready for later modules.
 
-## A useful diagram for learners
+## A useful diagram for this inventory
 
 ```mermaid
 flowchart LR
@@ -137,7 +137,7 @@ specificity.
 
 That is useful discomfort.
 
-The inventory is working when the learner can say:
+The inventory is working when you can say:
 
 - here is what we really trust
 - here is what still depends on memory

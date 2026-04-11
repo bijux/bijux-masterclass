@@ -2,8 +2,8 @@
 
 This glossary keeps the language of Module 01 stable.
 
-The goal is practical clarity: when learners use the same words for the same failure
-patterns, the rest of Deep Dive DVC becomes easier to reason about.
+The goal is practical clarity: when you use the same words for the same failure patterns,
+the rest of Deep Dive DVC becomes easier to reason about.
 
 ## Terms
 

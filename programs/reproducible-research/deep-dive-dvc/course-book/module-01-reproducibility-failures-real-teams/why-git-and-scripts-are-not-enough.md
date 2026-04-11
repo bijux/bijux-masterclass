@@ -1,6 +1,6 @@
 # Why Git and Scripts Are Not Enough
 
-Module 01 should not leave learners with the impression that Git is weak or useless.
+Module 01 should not leave you with the impression that Git is weak or useless.
 
 Git is excellent at what it owns.
 
