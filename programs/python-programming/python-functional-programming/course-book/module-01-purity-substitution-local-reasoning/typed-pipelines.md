@@ -2,56 +2,38 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 01: Purity, Substitution, and Local Reasoning"]
-  module --> concept["Typed Pipelines"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  mismatch["Start with a pipeline mismatch"] --> surface["Make stage input/output types explicit"]
+  surface --> typecheck["Use typing to reject invalid composition"]
+  typecheck --> preserve["Preserve decorator and context signatures honestly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson is about making pipeline mistakes visible before runtime.
 
-## Progression Note
-By the end of Module 1, you'll master purity laws, write pure functions, and refactor impure code using Hypothesis. This builds the foundation for lazy streams in Module 3. See the series progression map in the repo root for full details.
+## Start With the Runtime Failure
 
-Here's a snippet from the progression map:
+Without types, pipeline bugs often look like this:
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: ... | ... | ... |
-| ... | ... | ... |
+- one stage returns a different shape than the next stage expects
+- a decorator quietly erases the real call signature
+- a context parameter gets threaded through `*args` and disappears from review
 
+Typing helps when it tells the truth about those boundaries. It hurts when it becomes a
+layer of `Any` that only hides the mismatch better.
 
-> **Core question:**  
-> How do you use Python’s static typing (TypeVar, ParamSpec, Concatenate) to precisely describe pure functions and higher-order pipelines—so that composition errors are caught by the type checker instead of at 02:00 in production?
+## Keep This Question In View
 
-This core builds on **Core 1**'s mindset, **Core 2**'s contracts, **Core 3**'s immutability, **Core 4**'s composition, **Core 5**'s refactorings, and **Core 6**'s combinators by making them **machine-checkable**:  
-- **TypeVar** for generic pure functions over arbitrary types.  
-- **ParamSpec** to preserve full call signatures across decorators and wrappers.  
-- **Concatenate** to inject context/dependencies without lying to the type checker.  
-- Typed `compose2` and `Pipeline` that reject incompatible stages, with notes on typing `flow`/`pipe`.  
+> How do you use Python’s static typing to describe pure functions and higher-order pipelines so that composition errors are caught by the type checker instead of at 02:00 in production?
 
-We continue the **running project** from Core 1-6: refactoring the FuncPipe RAG Builder, now with typed pipelines.
+By the end of this lesson, you should be able to explain:
 
-**Audience:** Developers comfortable with Core 6 combinators who now want **static guarantees** about their pure functions and higher-order utilities.  
-**Outcome:**  
-1. Declare generic pure functions with `TypeVar` (`fmap`, `ffilter`, `foldl`).  
-2. Implement type-safe `compose`/`Pipeline` utilities that reject incompatible stages.  
-3. Write decorators with `ParamSpec` that preserve original signatures.  
-4. Use `Concatenate` to bind context (config/logger/db) in a type-safe way.  
-5. Add Hypothesis properties proving typed pipelines preserve behavior while the type checker guards composition.
+- where the type boundary between two stages actually is
+- when a generic helper needs `TypeVar`
+- when a decorator or context binder needs `ParamSpec` or `Concatenate`
 
 ---
 
@@ -67,7 +49,9 @@ We continue the **running project** from Core 1-6: refactoring the FuncPipe RAG 
 
 ### 1.3 Why This Matters Now
 
-Typed FP enforces Core 6's combinators at compile time, enabling effect extraction (Core 8) and laws (Core 9); without it, mismatches hide until runtime.
+Typed pipelines are useful because they turn "I think these stages line up" into something
+the tooling can check repeatedly. The type system is not the goal. Honest pipeline
+boundaries are the goal.
 
 ### 1.4 Typed Spectrum Table (Recap with Focus on Typing)
 
@@ -77,7 +61,9 @@ Typed FP enforces Core 6's combinators at compile time, enabling effect extracti
 | Partially Typed    | Hard-coded types                     | `def fmap(fn: Callable[[int], str], xs: list[int]) -> list[str]: ...` |
 | Fully Typed        | Generics with TypeVar                | `def fmap(fn: Callable[[T], U], xs: Iterable[T]) -> list[U]: ...` |
 
-**Note on Typing:** This builds on the purity spectrum from earlier cores, focusing on how types make purity enforceable.
+**Note on Typing:** Good annotations make data flow easier to review. If the annotations
+make the code harder to understand than the pipeline itself, the API usually needs
+simplification.
 
 ---
 
@@ -86,14 +72,13 @@ Typed FP enforces Core 6's combinators at compile time, enabling effect extracti
 ### 2.1 One Picture
 
 ```text
-Untyped Jungle                             Typed Contracts
-+---------------------------+            +---------------------------+
-| pipe: Any -> ... -> Any   |            | compose2(f: B->C, g: A->B) |
-| decorators: ... -> Any    |            |         -> (A->C)          |
-| context: *args/**kwargs   |            | with_context:              |
-| Everything compiles...    |            |   Ctx, Callable[Concat...  |
-| ...until runtime crash    |            |         -> Callable[P, R]  |
-+---------------------------+            +---------------------------+
+Untyped pipeline                           Typed pipeline
++---------------------------+             +-----------------------------+
+| stage output shape unclear |            | each stage states input/out  |
+| decorators return Any      |            | bad composition is rejected  |
+| context hidden in *args    |            | context binding is explicit  |
+| crash discovered late      |            | mismatch discovered early    |
++---------------------------+             +-----------------------------+
 ```
 
 ### 2.2 Contract Table
