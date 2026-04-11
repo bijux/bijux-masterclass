@@ -119,7 +119,6 @@ All capstone documentation lives under `docs/`:
 - [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
 - [REPRO_GUIDE.md](docs/REPRO_GUIDE.md)
 - [SELFTEST_GUIDE.md](docs/SELFTEST_GUIDE.md)
-- [SOURCE_BASELINE_GUIDE.md](docs/SOURCE_BASELINE_GUIDE.md)
 - [TARGET_GUIDE.md](docs/TARGET_GUIDE.md)
 - [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
 

@@ -93,7 +93,7 @@ Ask:
 
 Best evidence:
 
-- `capstone/docs/SOURCE_BASELINE_GUIDE.md`
+- `capstone/docs/TARGET_GUIDE.md`
 - `capstone/scripts/mkdist.py`
 - [Capstone Extension Guide](capstone-extension-guide.md)
 

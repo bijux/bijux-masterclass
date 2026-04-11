@@ -89,6 +89,41 @@ question honestly.
 
 ---
 
+## Source packaging route
+
+Use this route when the question is not "does the build pass?" but "would the tracked
+source tree be safe to hand to another learner or reviewer?"
+
+Run these commands from the capstone directory:
+
+```bash
+gmake clean
+gmake source-baseline-check
+gmake source-bundle
+```
+
+They do different jobs:
+
+- `gmake clean` removes generated build state
+- `gmake source-baseline-check` proves the tree no longer carries local build residue
+- `gmake source-bundle` writes a tracked-source archive from `git ls-files`
+
+What must stay out of the source bundle:
+
+- `build/` and `stamps/` because they are derived state, not source inputs
+- `app`, `all`, and `dist.tar.gz` because they are generated deliverables
+- temporary files such as `*.tmp`, `*.tmp.*`, and `*.d.tmp` because they are local residue
+
+What belongs in the source bundle:
+
+- `Makefile` and `mk/` because they define the build contract
+- `README.md`, `TARGET_GUIDE.md`, and `PROOF_GUIDE.md` because they explain the repository surface
+- `src/`, `include/`, `tests/`, `repro/`, and helper scripts because they are tracked project inputs
+
+[Back to top](#top)
+
+---
+
 ## Useful companions
 
 - `PROOF_GUIDE.md`
@@ -97,6 +132,5 @@ question honestly.
 - `CONTRACT_AUDIT_GUIDE.md`
 - `INCIDENT_REVIEW_GUIDE.md`
 - `PROFILE_AUDIT_GUIDE.md`
-- `SOURCE_BASELINE_GUIDE.md`
 
 [Back to top](#top)
