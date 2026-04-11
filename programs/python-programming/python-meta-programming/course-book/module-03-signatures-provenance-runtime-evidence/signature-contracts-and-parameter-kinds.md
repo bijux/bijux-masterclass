@@ -209,3 +209,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is to turn the contract surface into action with
 argument binding.
+
+## Continue through Module 03
+
+- Previous: [Overview](index.md)
+- Next: [Argument Binding and Call Simulation](argument-binding-and-call-simulation.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

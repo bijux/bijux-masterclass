@@ -200,3 +200,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is provenance: useful evidence about where code came
 from, with honest limits.
+
+## Continue through Module 03
+
+- Previous: [Signature Contracts and Parameter Kinds](signature-contracts-and-parameter-kinds.md)
+- Next: [Provenance Helpers and Best-Effort Recovery](provenance-helpers-and-best-effort-recovery.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

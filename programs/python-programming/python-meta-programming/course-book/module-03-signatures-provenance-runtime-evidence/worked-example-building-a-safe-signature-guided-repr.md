@@ -235,3 +235,10 @@ When you inherit a runtime-description helper, run this loop:
 
 If you can do that here, Module 03 has done its job and later wrapper modules can build on
 stronger inspection habits.
+
+## Continue through Module 03
+
+- Previous: [Frames and Diagnostic-Only Runtime Evidence](frames-and-diagnostic-only-runtime-evidence.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)

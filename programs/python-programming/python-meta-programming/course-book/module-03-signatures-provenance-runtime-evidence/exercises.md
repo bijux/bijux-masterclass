@@ -79,3 +79,10 @@ Across all six answers, the module wants the same habits:
 - you use `inspect` to clarify behavior rather than to make vague claims sound technical
 
 If an answer still says only "I inspected it," keep going.
+
+## Continue through Module 03
+
+- Previous: [Worked Example: Building a Safe Signature-Guided `__repr__`](worked-example-building-a-safe-signature-guided-repr.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

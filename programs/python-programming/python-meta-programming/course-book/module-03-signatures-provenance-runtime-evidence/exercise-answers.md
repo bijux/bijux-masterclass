@@ -175,3 +175,10 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds like "inspect told me so," revise it until you can say what
 kind of evidence `inspect` actually gave you.
+
+## Continue through Module 03
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 04](../module-04-function-wrappers-transparent-decorators/index.md)
+- Terms: [Glossary](glossary.md)

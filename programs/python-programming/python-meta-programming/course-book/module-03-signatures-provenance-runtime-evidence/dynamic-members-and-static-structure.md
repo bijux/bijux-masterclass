@@ -171,3 +171,10 @@ Try these before moving on:
 
 If those feel ordinary, the final core can close the module with the highest-risk
 introspection surface here: frames and stack inspection.
+
+## Continue through Module 03
+
+- Previous: [Provenance Helpers and Best-Effort Recovery](provenance-helpers-and-best-effort-recovery.md)
+- Next: [Frames and Diagnostic-Only Runtime Evidence](frames-and-diagnostic-only-runtime-evidence.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

@@ -170,3 +170,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can combine the module's evidence tools inside
 a safer `__repr__` helper.
+
+## Continue through Module 03
+
+- Previous: [Dynamic Members and Static Structure](dynamic-members-and-static-structure.md)
+- Next: [Worked Example: Building a Safe Signature-Guided `__repr__`](worked-example-building-a-safe-signature-guided-repr.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

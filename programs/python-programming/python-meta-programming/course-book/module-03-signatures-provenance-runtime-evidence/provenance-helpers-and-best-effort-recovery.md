@@ -187,3 +187,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is member inspection: how to distinguish dynamic
 enumeration from safe structural inspection.
+
+## Continue through Module 03
+
+- Previous: [Argument Binding and Call Simulation](argument-binding-and-call-simulation.md)
+- Next: [Dynamic Members and Static Structure](dynamic-members-and-static-structure.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)
