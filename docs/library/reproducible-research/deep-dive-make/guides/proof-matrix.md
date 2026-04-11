@@ -24,10 +24,6 @@ flowchart TD
 
 Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
 This page maps the course's main claims to the commands and files that prove them.
 
 Use it when you know what concept you care about but want the fastest evidence route.
@@ -57,7 +53,7 @@ reference build directly.
 
 | Claim | Command | File surfaces |
 | --- | --- | --- |
-| the build has a stable public API | `make PROGRAM=reproducible-research/deep-dive-make program-help` | `capstone/Makefile` |
+| the build has a stable public API | `make PROGRAM=reproducible-research/deep-dive-make help` | `capstone/Makefile` |
 | the layered `mk/*.mk` structure has explicit responsibilities | inspect [`mk-layer-guide.md`](../reference/mk-layer-guide.md) | `capstone/mk/*.mk` |
 | artifact boundaries are smaller than the whole repository | inspect [`artifact-boundary-guide.md`](../reference/artifact-boundary-guide.md) | `capstone/build/`, `capstone/repro/`, `capstone/tests/` |
 | the build can explain rebuild behavior | `gmake -C capstone --trace all` | `capstone/Makefile`, `capstone/mk/*.mk` |
@@ -76,7 +72,7 @@ reference build directly.
 | where should a new learner start in the capstone | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `course-book/capstone/index.md` |
 | why did this rebuild | `gmake -C capstone --trace all` | `capstone/mk/stamps.mk` |
 | why is `-j` unsafe | `make PROGRAM=reproducible-research/deep-dive-make test` | `capstone/repro/01-shared-log.mk` |
-| where is the build API | `make PROGRAM=reproducible-research/deep-dive-make program-help` | `capstone/Makefile` |
+| where is the build API | `make PROGRAM=reproducible-research/deep-dive-make help` | `capstone/Makefile` |
 | how is code generation modeled | `gmake -C capstone --trace dyn` | `capstone/scripts/gen_dynamic_h.py` |
 | what would I review before migration | `gmake -C capstone -p > build/review.dump` | `capstone/mk/` |
 
@@ -92,6 +88,6 @@ The most useful companion pages for this matrix are:
 * [`public-targets.md`](../reference/public-targets.md)
 * [`completion-rubric.md`](../reference/completion-rubric.md)
 * [`capstone-file-guide.md`](../capstone/capstone-file-guide.md)
-* [`public-targets.md`](../reference/public-targets.md)
+* [`capstone-proof-checklist.md`](../capstone/capstone-proof-checklist.md)
 
 [Back to top](#top)
