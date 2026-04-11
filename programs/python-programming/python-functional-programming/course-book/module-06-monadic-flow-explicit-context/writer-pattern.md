@@ -55,6 +55,11 @@ For config → Reader. For failure → Result. For local state → State.
 The trade-off is a bit more combinator noise; in return you get perfectly deterministic, testable logs.  
 A very common logging-heavy shape is `Reader[Config, Writer[Result[T, ErrInfo]]]` when you want both config and logs even on error paths.
 
+That does **not** mean Writer replaces every ordinary logger. It is the right fit when
+the accumulated trace should be reviewed, tested, or returned as part of the pipeline
+story itself. Boundary logging is still fine when you only need to emit operational
+signals outward.
+
 
 ## 1. Laws & Invariants (machine-checked in CI)
 
@@ -79,24 +84,25 @@ from typing import Callable, Generic, Tuple, TypeVar
 
 T = TypeVar("T")
 U = TypeVar("U")
+LogEntryT = TypeVar("LogEntryT")
 
-LogEntry = str
-Log = Tuple[LogEntry, ...]   # fixed monoid: identity = (), append = +
+Log = Tuple[LogEntryT, ...]
 # In general, Writer can use any log type that forms a monoid
 # (has an identity element and an associative combine operation);
-# we fix it to a tuple of strings here to keep the Python implementation simple.
+# Module 06 examples use strings, while the repository later generalizes the log entry
+# type for structured logging.
 
 @dataclass(frozen=True)
-class Writer(Generic[T]):
+class Writer(Generic[T, LogEntryT]):
     run: Callable[[], Tuple[T, Log]]
 
-    def map(self, f: Callable[[T], U]) -> "Writer[U]":
+    def map(self, f: Callable[[T], U]) -> "Writer[U, LogEntryT]":
         def run() -> Tuple[U, Log]:
             value, log = self.run()
             return f(value), log
         return Writer(run)
 
-    def and_then(self, f: Callable[[T], "Writer[U]"]) -> "Writer[U]":
+    def and_then(self, f: Callable[[T], "Writer[U, LogEntryT]"]) -> "Writer[U, LogEntryT]":
         def run() -> Tuple[U, Log]:
             value, log1 = self.run()
             next_writer = f(value)
@@ -105,28 +111,28 @@ class Writer(Generic[T]):
         return Writer(run)
 
 # Primitives
-def pure(x: T) -> Writer[T]:
+def pure(x: T) -> Writer[T, LogEntryT]:
     return Writer(lambda: (x, ()))
 
-def tell(entry: LogEntry) -> Writer[None]:
+def tell(entry: LogEntryT) -> Writer[None, LogEntryT]:
     return Writer(lambda: (None, (entry,)))
 
-def tell_many(entries: Log) -> Writer[None]:
+def tell_many(entries: Log) -> Writer[None, LogEntryT]:
     return Writer(lambda: (None, entries))
 
-def listen(p: Writer[T]) -> Writer[Tuple[T, Log]]:
+def listen(p: Writer[T, LogEntryT]) -> Writer[Tuple[T, Log], LogEntryT]:
     def run() -> Tuple[Tuple[T, Log], Log]:
         value, log = p.run()
         return (value, log), log
     return Writer(run)
 
-def censor(f: Callable[[Log], Log], p: Writer[T]) -> Writer[T]:
+def censor(f: Callable[[Log], Log], p: Writer[T, LogEntryT]) -> Writer[T, LogEntryT]:
     def run() -> Tuple[T, Log]:
         value, log = p.run()
         return value, f(log)
     return Writer(run)
 
-def run_writer(p: Writer[T]) -> Tuple[T, Log]:
+def run_writer(p: Writer[T, LogEntryT]) -> Tuple[T, Log]:
     return p.run()
 ```
 
