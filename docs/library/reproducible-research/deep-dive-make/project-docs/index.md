@@ -25,6 +25,10 @@ public targets, proof bundles, architecture, incidents, or review documents gene
 the build. These pages are not another first-contact route into the course. They are the
 stable documentation set for the reference repository that the course keeps pointing to.
 
+In this course shelf, the mirrored filenames are lowercase with dashes such as
+`target-guide.md`. Inside the capstone repository and its generated bundles, the
+corresponding documents appear as uppercase names such as `docs/TARGET_GUIDE.md`.
+
 ## Use this shelf when
 
 - you are already inside the capstone repository or one of its generated bundles
@@ -61,6 +65,20 @@ stable documentation set for the reference repository that the course keeps poin
 - [Profile Audit Guide](profile-audit-guide.md) for execution-policy and precedence review
 - [Incident Review Guide](incident-review-guide.md) for one executed failure bundle
 - [Repro Guide](repro-guide.md) for controlled failure specimens
+
+## Naming crosswalk
+
+| Course shelf page | Capstone repository document |
+| --- | --- |
+| [Architecture](architecture.md) | `docs/ARCHITECTURE.md` |
+| [Walkthrough Guide](walkthrough-guide.md) | `docs/WALKTHROUGH_GUIDE.md` |
+| [Target Guide](target-guide.md) | `docs/TARGET_GUIDE.md` |
+| [Proof Guide](proof-guide.md) | `docs/PROOF_GUIDE.md` |
+| [Contract Audit Guide](contract-audit-guide.md) | `docs/CONTRACT_AUDIT_GUIDE.md` |
+| [Selftest Guide](selftest-guide.md) | `docs/SELFTEST_GUIDE.md` |
+| [Profile Audit Guide](profile-audit-guide.md) | `docs/PROFILE_AUDIT_GUIDE.md` |
+| [Incident Review Guide](incident-review-guide.md) | `docs/INCIDENT_REVIEW_GUIDE.md` |
+| [Repro Guide](repro-guide.md) | `docs/REPRO_GUIDE.md` |
 
 ## How this shelf relates to the rest of the course
 
