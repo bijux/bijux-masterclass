@@ -110,6 +110,15 @@ nav:
           - Glossary: module-03-execution-environments-reproducible-inputs/glossary.md
       - "Module 04: Pipelines as Truthful DAGs":
           - Overview: module-04-truthful-pipelines-declared-dependencies/index.md
+          - Stage Contracts and Declared Truth: module-04-truthful-pipelines-declared-dependencies/stage-contracts-and-declared-truth.md
+          - Dependency, Parameter, and Output Boundaries: module-04-truthful-pipelines-declared-dependencies/dependency-parameter-output-boundaries.md
+          - DVC Repro, Staleness, and Lock Evidence: module-04-truthful-pipelines-declared-dependencies/dvc-repro-staleness-and-lock-evidence.md
+          - False Reruns and Stale Outputs: module-04-truthful-pipelines-declared-dependencies/false-reruns-and-stale-outputs.md
+          - Safe Pipeline Refactoring and Shared Outputs: module-04-truthful-pipelines-declared-dependencies/safe-pipeline-refactoring-and-shared-outputs.md
+          - "Worked Example: Repairing a Deceptive Pipeline": module-04-truthful-pipelines-declared-dependencies/worked-example-repairing-a-deceptive-pipeline.md
+          - Exercises: module-04-truthful-pipelines-declared-dependencies/exercises.md
+          - Exercise Answers: module-04-truthful-pipelines-declared-dependencies/exercise-answers.md
+          - Glossary: module-04-truthful-pipelines-declared-dependencies/glossary.md
       - "Module 05: Metrics, Parameters, and Meaning":
           - Overview: module-05-metrics-parameters-comparable-meaning/index.md
       - "Module 06: Experiments Without Chaos":
