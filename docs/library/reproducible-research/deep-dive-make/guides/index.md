@@ -49,7 +49,7 @@ than one module chapter.
 
 - [Module Promise Map](module-promise-map.md) when you want each title translated into a learner contract
 - [Module Checkpoints](module-checkpoints.md) when you need an exit bar before moving on
-- [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
+- [Concept Index](../reference/concept-index.md) when the reading order needs justification
 - [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
 
 ## Proof and command routes
