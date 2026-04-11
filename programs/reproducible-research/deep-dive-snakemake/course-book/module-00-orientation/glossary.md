@@ -21,13 +21,18 @@ flowchart TD
 ```
 <!-- page-maps:end -->
 
-This glossary belongs to **Module 00: Orientation and Study Practice** in **Deep Dive Snakemake**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+Use this glossary when a Module 00 page uses a word that feels familiar but still needs a
+precise local meaning before Module 01 starts.
 
-## How to use this glossary
+## Terms in this module
 
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
-
-## Terms in this directory
-
-| Term | Meaning in this directory |
+| Term | Meaning in Deep Dive Snakemake |
 | --- | --- |
+| File contract | The declared relationship between inputs, outputs, logs, benchmarks, and the rule that owns them. |
+| Dry-run | A plan-reading route that shows what the workflow intends to do before any jobs execute. |
+| Checkpoint | A deliberate dynamic-discovery boundary that records a discovered set instead of hiding it. |
+| Profile | An execution-policy surface for resources, executor choice, staging, and retries that should not change workflow meaning. |
+| Publish boundary | The smaller versioned output surface another person may trust downstream. |
+| Rule family | A coherent group of rules that own one workflow concern without hiding the overall DAG. |
+| File API | The documented set of paths and payloads the workflow or downstream consumers are allowed to rely on. |
+| Verification route | The command or saved bundle that proves a specific workflow claim with evidence. |
