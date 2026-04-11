@@ -34,7 +34,7 @@ than one module chapter.
 | the full support-page map | [Course Guide](course-guide.md) | [Learning Contract](learning-contract.md) |
 | a route shaped by urgency | [Pressure Routes](pressure-routes.md) | [Proof Ladder](proof-ladder.md) |
 | module promises and exit bars | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
-| state truth and evidence rules | [Truth Contracts](truth-contracts.md) | [Authority Map](../reference/authority-map.md) |
+| state truth and evidence rules | [Course Guide](course-guide.md) | [Authority Map](../reference/authority-map.md) |
 | capstone entry | [Capstone Guide](../capstone/index.md) | [Capstone Map](../capstone/capstone-map.md) |
 
 ## Study routes
@@ -47,7 +47,7 @@ than one module chapter.
 
 ## Module support
 
-- [Truth Contracts](truth-contracts.md) when you need change-detection and evidence rules in one place
+- [Course Guide](course-guide.md) when you need change-detection and evidence rules in one place
 - [Module Promise Map](module-promise-map.md) when you want each title translated into a learner contract
 - [Module Checkpoints](module-checkpoints.md) when you need an exit bar before moving on
 - [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
@@ -109,7 +109,7 @@ without changing what the words mean halfway through.
 | [Pressure Routes](pressure-routes.md) | shortest honest route when urgency is shaping the reading order |
 | [Proof Ladder](proof-ladder.md) | how to choose a smaller or larger proof route without guessing |
 | [Proof Matrix](proof-matrix.md) | where a specific claim is first corroborated |
-| [Truth Contracts](truth-contracts.md) | how to decide what counts as authoritative state and what actually proves it |
+| [Course Guide](course-guide.md) | how to decide what counts as authoritative state and what actually proves it |
 
 ## Reading rule
 

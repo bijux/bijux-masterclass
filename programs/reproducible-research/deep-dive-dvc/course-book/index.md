@@ -63,7 +63,7 @@ later.
 | stable support hub | [Course Guide](guides/course-guide.md) |
 | module titles translated into promises | [Module Promise Map](guides/module-promise-map.md) |
 | module exit bar | [Module Checkpoints](guides/module-checkpoints.md) |
-| state change and comparison rules | [Truth Contracts](guides/truth-contracts.md) |
+| state change and comparison rules | [Course Guide](guides/course-guide.md) |
 | smallest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
 | capstone entry by module and question | [Capstone Map](capstone/capstone-map.md) |
 

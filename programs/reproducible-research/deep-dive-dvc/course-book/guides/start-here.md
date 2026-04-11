@@ -60,7 +60,7 @@ state contract, and capstone timing visible.
 ## What to keep open
 
 - [Course Guide](course-guide.md)
-- [Truth Contracts](truth-contracts.md)
+- [Proof Ladder](proof-ladder.md)
 - [Module Promise Map](module-promise-map.md)
 - [Authority Map](../reference/authority-map.md)
 - [Capstone Guide](../capstone/index.md), but only as a later corroboration surface
