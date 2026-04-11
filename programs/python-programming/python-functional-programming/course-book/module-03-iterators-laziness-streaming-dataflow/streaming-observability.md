@@ -2,50 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Streaming Observability"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  opaque["Start with a stream that is hard to inspect"] --> tap["Add explicit taps, counters, or samplers"]
+  tap --> preserve["Preserve single-pass behavior and output order"]
+  preserve --> review["Review observability as a boundary, not hidden evaluation"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson closes the module by answering a practical fear students often have about laziness: "How do I see what is happening without ruining the stream?" The page should make it clear that observability is compatible with streaming only when it stays explicit and disciplined.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Visibility Trap
 
-Here's a snippet from the progression map:
+When a lazy pipeline becomes hard to inspect, students often reach for prints, ad-hoc counters, or eager materialization. Those moves can reveal data, but they also risk changing the very behavior they are trying to understand.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If observation forces a second pass, the stream contract has already changed.
+- If a tap mutates ordering, demand, or failure behavior, it is no longer "just observability."
+- If students cannot tell which effects are intentional and where they are confined, the instrumentation is too implicit.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you add observability to iterator pipelines through counting, sampling, and tapping, using pure or minimally effectful stages that preserve laziness, equivalence, and single-pass processing?
 
-This core concludes **Module 3** by building on **Core 9**'s custom iterators with observability patterns:
-- Use side-effect taps for logging/counting.
-- Inject callbacks for metrics without globals.
-- Handle single-pass and determinism.
-- Preserve laziness, purity (where possible), and freshness.
+This lesson introduces observability as explicit stream instrumentation:
 
-We finalize the **running project** from Core 9 (FuncPipe RAG Builder from `m03-rag.md`) by adding observability, and include cross-domain examples like monitored CSV ETL, sampled logs, and tapped APIs to prove scalability.
+- use taps for explicit side-effectful observation when the stream itself must stay unchanged
+- use samplers when a stable subset is enough
+- keep metrics callbacks injected and reviewable instead of hidden in global state
 
-**Audience:** Developers debugging or monitoring lazy pipelines without disrupting flow.
+The running project matters because the capstone already pressures students to balance streaming behavior with visibility. This page should give them a way to do that honestly.
+
+**Audience:** Developers debugging or monitoring lazy pipelines who want visibility without collapsing them into eager scripts.
 
 **Outcome:**
 1. Spot opacity smells like no metrics.
@@ -81,11 +71,11 @@ In this series, preserves single-pass; explicit effects.
 
 ### 1.3 Why This Matters Now
 
-Opaque pipes hard to debug; obs enables metrics without materialization.
+Students have now learned how to build pipelines that are lazy, bounded, reusable, and sometimes time-aware. The last missing piece is confidence: how to inspect those pipelines without undoing the design. This lesson makes that inspection strategy explicit so students can debug and monitor streams without abandoning the single-pass model.
 
 ### 1.4 Observability in 5 Lines
 
-Tap example:
+The next snippet matters because the observation happens inside a named stage that still yields the original values.
 
 ```python
 def make_tap(cb: Callable[[T], None]) -> Transform[T, T]:
