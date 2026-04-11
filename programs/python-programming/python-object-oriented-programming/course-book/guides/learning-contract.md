@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Learning Contract"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -32,7 +32,7 @@ surface tied together.
 - the capstone gives one stable domain so abstractions stay grounded
 - the prose tries to name trade-offs and failure modes directly instead of hiding them
 
-## Commitments the learner should make back
+## Commitments you should make back
 
 - read module overviews before diving into leaf pages
 - do not skip the refactor and checkpoint chapters
@@ -49,7 +49,7 @@ Use one of these modes deliberately instead of blending them together:
 - diagnosis mode: start from one design pressure or ownership question, then use the guide maps to find the narrowest module and capstone surface
 - review mode: inspect the capstone guide, package boundary, and proof route first when you are auditing an existing design rather than learning the topic for the first time
 
-If you switch modes, name it explicitly. The course feels clumsy when a learner tries to
+If you switch modes, name it explicitly. The course feels clumsy when you try to
 review architecture with foundation-level gaps still unresolved.
 
 ## What progress looks like

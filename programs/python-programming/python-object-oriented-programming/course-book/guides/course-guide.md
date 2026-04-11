@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Course Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -72,7 +72,7 @@ Modules 08 to 10 ask whether the model can be trusted:
 - Treat Modules 04 to 07 as the explanation for the capstone's shape.
 - Treat Modules 08 to 10 as the audit of whether that shape deserves confidence.
 
-## Route by learner state
+## Route by reading state
 
 - If object semantics still feel slippery, stay with Modules 01 to 03 before you escalate into architecture advice.
 - If your real problem is collaboration or persistence drift, start with [Pressure Routes](pressure-routes.md) and then come back to the relevant arc here.
@@ -83,7 +83,7 @@ Modules 08 to 10 ask whether the model can be trusted:
 
 - [Proof Matrix](proof-matrix.md) when you want the course promises tied directly to evidence
 - [Pressure Routes](pressure-routes.md) when the design question is clearer than the module name
-- [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
+- [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit course promises
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
 - [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
 - [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place

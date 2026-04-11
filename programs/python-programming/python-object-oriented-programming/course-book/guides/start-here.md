@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Start Here"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -55,7 +55,7 @@ If those still feel shaky, slow down and treat [Orientation](../module-00-orient
 1. Read [Course Home](../index.md) for the course promise and module arc.
 2. Read [Course Guide](course-guide.md) for the module sequence and page roles.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
-4. Read [Proof Matrix](proof-matrix.md) so the learner promises stay tied to evidence from the start.
+4. Read [Proof Matrix](proof-matrix.md) so the course promises stay tied to evidence from the start.
 5. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
 6. Read [Platform Setup](platform-setup.md) before your first executable route or after local Python drift.
 7. Use [Pressure Routes](pressure-routes.md), [Module Promise Map](module-promise-map.md), and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.

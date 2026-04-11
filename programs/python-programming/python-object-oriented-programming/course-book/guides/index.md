@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Guides"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -68,7 +68,7 @@ module tree can stay focused on long-lived content.
 ## Keep The Layout Stable
 
 - `index.md` stays the course home
-- `guides/` stays the learner route and proof shelf
+- `guides/` stays the reading route and proof shelf
 - `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable review shelf
 - `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc

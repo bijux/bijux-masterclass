@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Pressure Routes"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -81,5 +81,5 @@ Use this shorter arc instead of treating Modules 04 to 10 as seven isolated topi
 At each step, inspect one capstone surface before escalating to the strongest proof
 route.
 
-This course gets stronger when the learner can enter from pressure honestly instead of
+This course gets stronger when you can enter from pressure honestly instead of
 pretending every reader should always start from the same place.
