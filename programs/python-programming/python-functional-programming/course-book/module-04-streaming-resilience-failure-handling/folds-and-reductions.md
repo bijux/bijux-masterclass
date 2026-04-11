@@ -2,43 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 04: Streaming Resilience and Failure Handling"]
-  module --> concept["Folds and Reductions"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  repeat["Start with several separate recursive aggregations"] --> fuse["Notice they walk the same tree repeatedly"]
+  fuse --> fold["Move the aggregation into one fold"]
+  fold --> review["Review the traversal count and accumulator shape directly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make folds feel practical before they feel abstract. Students need to see a fold as the answer to a repeated-work problem: one traversal, one accumulator story, one place to reason about what is combined and when.
 
-## Progression Note
-By the end of Module 4, you will master safe recursion over unpredictable tree-shaped data, monoidal folds as the universal recursion pattern, Result/Option for streaming error handling, validation aggregators, retries, and structured error reporting — all while preserving laziness, equational reasoning, and constant call-stack usage.
+## Start With the Repeated Traversal Smell
 
-Here's a snippet from the progression map:
+Once students can traverse a tree safely, the next temptation is to walk it again and again for each statistic they want. That is the waste this lesson needs to surface.
 
-| Module | Focus                                    | Key Outcomes                                                                 |
-|--------|------------------------------------------|-------------------------------------------------------------------------------|
-| 3      | Lazy Iteration & Generators              | Memory-efficient streaming, itertools mastery, short-circuiting, observability |
-| 4      | Safe Recursion & Error Handling in Streams | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries/reports |
-| 5      | Advanced Type-Driven Design              | ADTs, exhaustive pattern matching, total functions, refined types             |
+- If count, max depth, and text length are computed in separate passes, the design is repeating the same traversal logic.
+- If the accumulator shape is unclear, the fold reads like machinery instead of a summary of what the code is collecting.
+- If a streaming scan changes order or work bounds, the fold implementation has stopped matching the traversal contract from the previous lesson.
 
 > **Core question:**  
 > How do you replace any structural-recursive aggregation with an iterative fold (catamorphism) that is stack-safe, fully lazy when needed, and capable of fusing arbitrary numbers of independent aggregations into a single O(N) traversal?
 
-We now take the `TreeDoc` hierarchy from M04C01 and ask the most common real-world question:
+This lesson introduces folds as the disciplined aggregation layer on top of safe traversal:
 
-**“How many nodes are in this document tree, what is the total length of all text across all nodes, and what is the maximum depth?”**
+- use one traversal to compute several related summaries
+- make the accumulator explicit so readers can see exactly what state is carried
+- preserve preorder and bounded-work behavior when moving from a simple fold to a streaming scan
+
+The motivating tree statistics are useful because they are easy to explain and immediately show why fusion matters.
 
 The naïve recursive solution is beautiful and obvious:
 
@@ -55,15 +48,11 @@ def recursive_stats(tree: TreeDoc) -> tuple[int, int, int]:
     return count, length, max_d
 ```
 
-It works perfectly… until the tree is 2000 levels deep and you get `RecursionError`.
+It works perfectly as a specification of the aggregate… until the tree is 2000 levels deep and the recursion strategy itself becomes the weak point.
 
-The production solution must:
-- be iterative (O(1) call-stack),
-- compute all three values in one pass (fusion),
-- optionally be streaming (`scan_tree` yields running totals),
-- remain provably equivalent to the recursive spec.
+The production solution must still tell the same aggregation story, but it has to do so in a way that is iterative, fused, and optionally streaming.
 
-This is exactly what a fold (catamorphism) gives us — “reduce over a tree” with the recursion made explicit and safe.
+That is what a fold gives us in this module: one explicit reduction over the tree where the recursion strategy is safe and the aggregation logic remains reviewable.
 
 **Audience:** Engineers who routinely aggregate statistics over tree/document/graph structures and refuse to ship code that can `RecursionError` on pathological but legal inputs.
 
@@ -72,7 +61,7 @@ This is exactly what a fold (catamorphism) gives us — “reduce over a tree”
 2. You will fuse arbitrary numbers of independent aggregations into a single traversal using immutable tuple accumulators.  
 3. You will ship streaming reductions (`scan_tree`) that are truly lazy and short-circuitable.
 
-We formalise exactly what we want from a correct, production-ready fold: termination, stack-safety, perfect preorder, fusion, and (when scanning) bounded work.
+We formalise exactly what students should be able to defend: termination, stack-safety, preorder consistency, fusion of aggregates, and bounded work for scans.
 
 ---
 
