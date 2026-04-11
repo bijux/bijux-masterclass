@@ -34,7 +34,7 @@ reference alone.
 5. Read the generated `pytest.txt`, `focus-areas.txt`, `package-tree.txt`, and `test-tree.txt` in that order.
 6. Run `make PROGRAM=python-programming/python-functional-programming capstone-tour` only when you want the learner-facing proof bundle after the walkthrough is already clear.
 7. Run `make PROGRAM=python-programming/python-functional-programming capstone-verify-report` when you need a saved review bundle with the executed test record.
-8. Compare what you learned with [Capstone Architecture Guide](capstone-architecture-guide.md), [Capstone Test Guide](capstone-test-guide.md), and [Capstone Review Worksheet](capstone-review-worksheet.md).
+8. Compare what you learned with [Capstone Architecture Guide](capstone-architecture-guide.md), [Capstone Proof Guide](capstone-proof-guide.md), and [Capstone Review Worksheet](capstone-review-worksheet.md).
 
 ## What the walkthrough should teach
 
