@@ -81,7 +81,7 @@ directory wandering and move them from concept to package to proof with one stab
 
 ## When this guide is the wrong tool
 
-- Use `FIRST_SESSION_GUIDE.md` when the whole capstone still feels too large.
+- Use `INDEX.md` when the whole capstone still feels too large.
 - Use `PACKAGE_GUIDE.md` when you want the package-reading order rather than the
   concept-to-code route.
 - Use `SOURCE_TO_PROOF_MAP.md` when you already know the package and need the fastest

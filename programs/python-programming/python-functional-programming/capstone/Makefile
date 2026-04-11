@@ -57,7 +57,7 @@ inspect: install ## Build the learner-facing inspection bundle
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(INSPECT_DIR)/summary.txt
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(INSPECT_DIR)/summary.json
 	cp README.md $(INSPECT_DIR)/README.md
-	for doc in FIRST_SESSION_GUIDE.md GUIDE_INDEX.md COMMAND_GUIDE.md ARCHITECTURE.md CODE_ROUTE_MAP.md EXTENSION_GUIDE.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
+	for doc in INDEX.md COMMAND_GUIDE.md ARCHITECTURE.md CODE_ROUTE_MAP.md EXTENSION_GUIDE.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
 		cp $(DOCS_DIR)/$$doc $(INSPECT_DIR)/$$doc; \
 		cp $(DOCS_DIR)/$$doc $(INSPECT_DIR)/docs/$$doc; \
 	done
@@ -65,7 +65,7 @@ inspect: install ## Build the learner-facing inspection bundle
 		'Inspection route:' \
 		'  1. Read summary.txt for the human review map.' \
 		'  2. Read summary.json for the machine-readable package and test groups.' \
-		'  3. Read PACKAGE_GUIDE.md, TEST_GUIDE.md, and TEST_READING_MAP.md for the local reading routes.' \
+		'  3. Read INDEX.md, PACKAGE_GUIDE.md, TEST_GUIDE.md, and TEST_READING_MAP.md for the local reading routes.' \
 		'  4. Read PUBLIC_SURFACE_MAP.md, SOURCE_TO_PROOF_MAP.md, and REVIEW_ROUTE_MAP.md when you need ownership and route depth.' \
 		'  5. Read ARCHITECTURE.md and PROOF_GUIDE.md when you need the broader package and proof map.' \
 		> $(INSPECT_DIR)/route.txt
@@ -79,7 +79,7 @@ verify-report: install ## Build the structured capstone verification report bund
 	$(VENV)/bin/funcpipe-rag-review summary --format json --project-root . > $(VERIFY_REPORT_DIR)/review-summary.json
 	$(VENV)/bin/funcpipe-rag-review summary --format text --project-root . > $(VERIFY_REPORT_DIR)/review-summary.txt
 	cp README.md $(VERIFY_REPORT_DIR)/README.md
-	for doc in ARCHITECTURE.md CODE_ROUTE_MAP.md COMMAND_GUIDE.md EXTENSION_GUIDE.md FIRST_SESSION_GUIDE.md GUIDE_INDEX.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
+	for doc in ARCHITECTURE.md CODE_ROUTE_MAP.md COMMAND_GUIDE.md EXTENSION_GUIDE.md INDEX.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
 		cp $(DOCS_DIR)/$$doc $(VERIFY_REPORT_DIR)/$$doc; \
 		cp $(DOCS_DIR)/$$doc $(VERIFY_REPORT_DIR)/docs/$$doc; \
 	done
@@ -87,7 +87,7 @@ verify-report: install ## Build the structured capstone verification report bund
 		'Verification report route:' \
 		'  1. Read pytest.txt for the executed verification result.' \
 		'  2. Read review-summary.txt for the package, test, and route inventory.' \
-		'  3. Read PROOF_GUIDE.md, TEST_READING_MAP.md, and SOURCE_TO_PROOF_MAP.md when you need claim-to-evidence routing.' \
+		'  3. Read INDEX.md, PROOF_GUIDE.md, TEST_READING_MAP.md, and SOURCE_TO_PROOF_MAP.md when you need claim-to-evidence routing.' \
 		'  4. Read PUBLIC_SURFACE_MAP.md and REVIEW_ROUTE_MAP.md when you need to connect the saved artifact back to the published routes.' \
 		'  5. Read WALKTHROUGH_GUIDE.md and TOUR.md when you want the matching human review order.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
@@ -102,7 +102,7 @@ tour: install ## Build the learner-facing proof bundle
 	find tests -type d | sort > $(TOUR_DIR)/test-tree.txt
 	cp README.md $(TOUR_DIR)/README.md
 	cp pyproject.toml $(TOUR_DIR)/pyproject.toml
-	for doc in ARCHITECTURE.md CODE_ROUTE_MAP.md COMMAND_GUIDE.md EXTENSION_GUIDE.md FIRST_SESSION_GUIDE.md GUIDE_INDEX.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
+	for doc in ARCHITECTURE.md CODE_ROUTE_MAP.md COMMAND_GUIDE.md EXTENSION_GUIDE.md INDEX.md PACKAGE_GUIDE.md PROOF_GUIDE.md PUBLIC_SURFACE_MAP.md REVIEW_ROUTE_MAP.md SOURCE_TO_PROOF_MAP.md TEST_GUIDE.md TEST_READING_MAP.md TOUR.md WALKTHROUGH_GUIDE.md; do \
 		cp $(DOCS_DIR)/$$doc $(TOUR_DIR)/$$doc; \
 		cp $(DOCS_DIR)/$$doc $(TOUR_DIR)/docs/$$doc; \
 	done

@@ -28,7 +28,7 @@ path through the guides, commands, and saved bundles.
 
 | If you need to review... | Start with | Then run or inspect | Escalate with |
 | --- | --- | --- | --- |
-| repository shape and learner routing | `FIRST_SESSION_GUIDE.md` or `GUIDE_INDEX.md` | `make inspect` and the inspection bundle | `PROOF_GUIDE.md` |
+| repository shape and learner routing | `INDEX.md` | `make inspect` and the inspection bundle | `PROOF_GUIDE.md` |
 | what a published command or artifact actually exposed | `PUBLIC_SURFACE_MAP.md` | the matching command from `COMMAND_GUIDE.md` | `PROOF_GUIDE.md` |
 | which package owns a behavior and how to read it | `ARCHITECTURE.md` or `PACKAGE_GUIDE.md` | the package route and matching test group | `SOURCE_TO_PROOF_MAP.md` |
 | which proof should fail first for a claim | `TEST_READING_MAP.md` | the closest test group | `TEST_GUIDE.md` |
@@ -45,7 +45,7 @@ path through the guides, commands, and saved bundles.
 
 ## Best companion files
 
-- `GUIDE_INDEX.md`
+- `INDEX.md`
 - `COMMAND_GUIDE.md`
 - `PROOF_GUIDE.md`
 - `TOUR.md`

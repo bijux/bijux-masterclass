@@ -34,8 +34,8 @@ with executable code, tests, and operational boundaries.
 
 | If your question is... | Start here | Then go to... |
 | --- | --- | --- |
-| What does this repository prove for the course? | [`GUIDE_INDEX.md`](docs/GUIDE_INDEX.md) | [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md) |
-| Which files should I read first? | [`FIRST_SESSION_GUIDE.md`](docs/FIRST_SESSION_GUIDE.md) | [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md) |
+| What does this repository prove for the course? | [`INDEX.md`](docs/INDEX.md) | [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md) |
+| Which files should I read first? | [`INDEX.md`](docs/INDEX.md) | [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md) |
 | Which commands should I run? | [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md) | `make inspect`, `make verify-report`, or `make confirm` |
 | Which tests or artifacts justify a claim? | [`TEST_GUIDE.md`](docs/TEST_GUIDE.md) | [`SOURCE_TO_PROOF_MAP.md`](docs/SOURCE_TO_PROOF_MAP.md) |
 | Where do purity, effects, and adapters live? | [`ARCHITECTURE.md`](docs/ARCHITECTURE.md) | [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md) |
@@ -53,7 +53,7 @@ with executable code, tests, and operational boundaries.
 
 ## First honest pass
 
-1. Read [`FIRST_SESSION_GUIDE.md`](docs/FIRST_SESSION_GUIDE.md).
+1. Read [`INDEX.md`](docs/INDEX.md).
 2. Open [`TEST_GUIDE.md`](docs/TEST_GUIDE.md) or [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md), depending on whether you want proof-first or code-first reading.
 3. Run the smallest command that answers your question.
 4. Stop when you can name one boundary, one proof surface, and one next page.
@@ -121,8 +121,7 @@ History route:
 
 Proof route:
 
-- [`FIRST_SESSION_GUIDE.md`](docs/FIRST_SESSION_GUIDE.md)
-- [`GUIDE_INDEX.md`](docs/GUIDE_INDEX.md)
+- [`INDEX.md`](docs/INDEX.md)
 - [`CODE_ROUTE_MAP.md`](docs/CODE_ROUTE_MAP.md)
 - [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md)
 - [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md)
@@ -137,8 +136,7 @@ Proof route:
 
 ## Recommended review path
 
-- `FIRST_SESSION_GUIDE.md` for the smallest honest first pass through the capstone
-- `GUIDE_INDEX.md` for the smallest route into the capstone doc set
+- `INDEX.md` for the smallest honest route into the capstone doc set
 - `COMMAND_GUIDE.md` for choosing the smallest honest command and artifact route
 - `TEST_GUIDE.md` and `TEST_READING_MAP.md` for proof-first reading
 - `PACKAGE_GUIDE.md` and `CODE_ROUTE_MAP.md` for code-first reading
@@ -147,7 +145,7 @@ Proof route:
 
 Use `ARCHITECTURE.md` first whenever a course module asks you to review where purity,
 effects, or orchestration should live.
-Use `FIRST_SESSION_GUIDE.md` first whenever the capstone itself still feels too large.
+Use `INDEX.md` first whenever the capstone itself still feels too large.
 Use `CODE_ROUTE_MAP.md` first whenever you know the concept but not the current file route.
 Use `PUBLIC_SURFACE_MAP.md` when you ran a route and still need to know what it actually exposed.
 Use `PROOF_GUIDE.md` when you need to choose between fast inspection, saved review output,
@@ -163,8 +161,7 @@ the full guide surface from one place:
 - [`CODE_ROUTE_MAP.md`](docs/CODE_ROUTE_MAP.md)
 - [`COMMAND_GUIDE.md`](docs/COMMAND_GUIDE.md)
 - [`EXTENSION_GUIDE.md`](docs/EXTENSION_GUIDE.md)
-- [`FIRST_SESSION_GUIDE.md`](docs/FIRST_SESSION_GUIDE.md)
-- [`GUIDE_INDEX.md`](docs/GUIDE_INDEX.md)
+- [`INDEX.md`](docs/INDEX.md)
 - [`PACKAGE_GUIDE.md`](docs/PACKAGE_GUIDE.md)
 - [`PROOF_GUIDE.md`](docs/PROOF_GUIDE.md)
 - [`PUBLIC_SURFACE_MAP.md`](docs/PUBLIC_SURFACE_MAP.md)
