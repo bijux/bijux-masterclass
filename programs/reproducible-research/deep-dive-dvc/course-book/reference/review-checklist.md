@@ -15,6 +15,12 @@ The goal is to leave with explicit keep, change, or reject calls rather than vag
 - Has a changed parameter or metric altered meaning without being named as a boundary change?
 - Is an experiment being judged against a stable baseline rather than folklore?
 
+## Evidence types
+
+- Are you reading declaration, recorded execution, comparison, promotion, experiment, or recovery evidence?
+- Does the current evidence type actually settle the question being asked?
+- Has any stronger claim been attached to evidence that only supports a narrower boundary?
+
 ## Promotion and recovery
 
 - Which artifacts are safe for downstream trust?

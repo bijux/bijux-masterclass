@@ -9,6 +9,12 @@ Use this page when a DVC review feels fuzzy and you need sharper keep, change, o
 - Is the implementation readable without weakening the declared pipeline boundary?
 - Would a reviewer know which file should win if declaration and execution seem to disagree?
 
+## Authority prompts
+
+- Which state layer is actually allowed to settle this question?
+- Is a workspace path being mistaken for durable identity or authority?
+- Would another reviewer know which surface should win when multiple files look plausible?
+
 ## Promotion versus internal state
 
 - Is the promoted bundle smaller and clearer than the whole repository?

@@ -75,6 +75,16 @@ make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill
 make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review
 ```
 
+### Route-choice loop
+
+Use when the main question is which proof command or bundle should come first.
+
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm
+```
+
 ---
 
 ## Best Study Habit
@@ -87,4 +97,3 @@ For each module:
 4. write down what would break if the contract were false
 
 That keeps the course centered on comprehension instead of command accumulation.
-

@@ -66,7 +66,6 @@ When you identify a likely anti-pattern:
 
 ## Companion pages
 
-- [`authority-map.md`](authority-map.md)
-- [`evidence-boundary-guide.md`](evidence-boundary-guide.md)
-- [`verification-route-guide.md`](verification-route-guide.md)
-
+- [`review-checklist.md`](review-checklist.md)
+- [`boundary-review-prompts.md`](boundary-review-prompts.md)
+- [`practice-map.md`](practice-map.md)
