@@ -33,7 +33,7 @@ Read the directory index first, then return here whenever a page, command, or re
 | --- | --- |
 | Course Guide | the guided support surface for course guide, used to study or review the course without wandering. |
 | Pressure Routes | the routing surface for practical engineering pressure, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
-| Foundations Reading Plan | the routing surface for foundations reading plan, used when the learner needs the next honest page, exercise, or proof step instead of a full reread. |
+| Start Here | the entry route that now also carries the lower-density first pass through the semantic floor when the first three modules feel dense. |
 | FuncPipe RAG Primer | the guided support surface for funcpipe rag primer, used to study or review the course without wandering. |
 | History Guide | the guided support surface for history guide, used to study or review the course without wandering. |
 | Learning Contract | the stable study contract for the course, used to define what the learner owes the material and what the proof route should show. |

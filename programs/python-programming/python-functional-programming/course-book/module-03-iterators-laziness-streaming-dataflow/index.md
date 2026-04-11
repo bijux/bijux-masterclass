@@ -30,7 +30,7 @@ Use these support surfaces while reading so laziness stays tied to execution tim
 materialization, and proof instead of becoming stream vocabulary on its own:
 
 - [First-Contact Map](../module-00-orientation/first-contact-map.md) for the full foundation route that ends here
-- [Foundations Reading Plan](../guides/foundations-reading-plan.md) for the paced route through Modules 01 to 03
+- [Start Here](../guides/start-here.md) for the paced route through Modules 01 to 03
 - [Proof Matrix](../guides/proof-matrix.md) for the smallest honest evidence route
 - [Capstone Map](../capstone/capstone-map.md) for the streaming and tree-fold surfaces in FuncPipe
 

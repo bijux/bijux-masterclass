@@ -34,7 +34,7 @@ surface, or capstone bridge.
 | If your pressure is... | Best page | Then go to... |
 | --- | --- | --- |
 | I need the shortest honest entry route. | [Start Here](start-here.md) | [Course Guide](course-guide.md) |
-| I want a lighter first pass through the semantic floor. | [Foundations Reading Plan](foundations-reading-plan.md) | [Module Promise Map](module-promise-map.md) |
+| I want a lighter first pass through the semantic floor. | [Start Here](start-here.md) | [Module Promise Map](module-promise-map.md) |
 | I need to know what each module is supposed to change. | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
 | My question is already practical. | [Pressure Routes](pressure-routes.md) | the owning module or [Proof Matrix](proof-matrix.md) |
 | I need to connect learning goals to proof. | [Outcomes and Proof Map](outcomes-and-proof-map.md) | [Proof Matrix](proof-matrix.md) |
