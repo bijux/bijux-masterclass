@@ -73,7 +73,7 @@ def _is_instance(value, hint) -> bool:
         raise NotImplementedError(f"Unsupported hint: {hint!r}") from exc
 ```
 
-That helper is intentionally small because the module is teaching a shallow validation
+That helper is intentionally small because the module focuses on a shallow validation
 bridge, not a full runtime typing system.
 
 ## A typed descriptor gives the enforcement a real owner

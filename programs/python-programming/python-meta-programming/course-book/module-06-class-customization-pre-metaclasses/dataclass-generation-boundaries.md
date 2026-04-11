@@ -125,7 +125,7 @@ That design is healthy because it keeps the generated part and the explicit part
 
 ## A minimal manual emulation makes the limits clearer
 
-Even a tiny home-grown dataclass-like decorator quickly teaches the right lesson:
+Even a tiny home-grown dataclass-like decorator quickly exposes the right boundary:
 
 - field discovery is one thing
 - method generation is another

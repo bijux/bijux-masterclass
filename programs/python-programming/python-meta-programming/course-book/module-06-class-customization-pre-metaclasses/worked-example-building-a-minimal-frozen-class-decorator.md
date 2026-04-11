@@ -82,7 +82,7 @@ It should not:
 
 If the design needs those guarantees, this decorator is no longer the right owner.
 
-## A didactic implementation
+## A bounded implementation
 
 ```python
 import functools
@@ -121,7 +121,7 @@ def frozen(cls):
     return cls
 ```
 
-## Why this version teaches the right thing
+## Why this version shows the right boundary
 
 This decorator is useful because it keeps every important choice visible:
 
@@ -152,7 +152,7 @@ settings.tags.append("admin")  # still allowed
 The list object inside `tags` is still mutable. The decorator blocks rebinding
 `settings.tags`, but it does not freeze the list itself.
 
-That is not a bug in the example. That is the exact lesson.
+That is not a bug in the example. That is the exact boundary.
 
 ## Why this does not need a metaclass
 
@@ -177,7 +177,7 @@ When you see a frozen-class pattern like this, review it with these questions:
 - is the design pretending to guarantee deep immutability when it only controls the instance surface?
 - would a plain explicit class be clearer if only one class needs this behavior?
 
-## What this example teaches about Module 06
+## What this example makes clear about Module 06
 
 This worked example ties the module together:
 
@@ -186,7 +186,7 @@ This worked example ties the module together:
 - attribute control lives at the `__setattr__` and `__delattr__` boundary
 - the smallest honest owner matters more than using the most powerful tool
 
-That is the real lesson. The decorator is here as a clean case study in class
+That is the durable takeaway. The decorator is here as a clean case study in class
 customization boundaries, not as a universal immutability recipe.
 
 ## Continue through Module 06

@@ -164,8 +164,8 @@ requirement depends on:
 - changing how descriptors receive `__set_name__`
 - owning class-creation-time invariants that must run before the class exists
 
-That is exactly why this module exists before the metaclass module. The course wants this
-boundary to feel obvious, not mysterious.
+That is exactly why this module comes before the metaclass module. This boundary should
+feel obvious, not mysterious.
 
 ## Review rules for class decorators
 

@@ -5,7 +5,7 @@ Properties are the friendliest place in the course to say something very importa
 > attribute access is still runtime machinery, even when the syntax looks like a plain
 > field.
 
-That is why this page matters in Module 06. It teaches one attribute boundary at a time
+That is why this page matters in Module 06. It keeps one attribute boundary visible
 without yet escalating into broader descriptor systems.
 
 ## The sentence to keep
