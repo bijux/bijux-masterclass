@@ -2,41 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["Pydantic Smart Constructors"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  raw["Start with raw input data at the system edge"] --> validate["Validate and derive values once with Pydantic"]
+  validate --> bridge["Bridge into plain frozen domain models"]
+  bridge --> core["Keep framework concerns out of the core pipeline"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make the Pydantic boundary explicit enough that students stop arguing with themselves about where it belongs. The answer in this course is simple: use it where raw data enters or leaves, then cross into plain domain values and keep the core clean.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the Boundary Leak
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines | bind/and_then, Reader/State-like patterns, error-typed flows                |
+Many teams either skip validation entirely or let framework models leak through the whole system. The lesson needs to show that there is a narrower, more durable middle path.
+
+- If raw dicts become core dataclasses directly, bad data may explode much later than it should.
+- If Pydantic models are passed everywhere, framework semantics start replacing domain semantics.
+- If derived fields and serialization rules are not centralized at the edge, the same invariants get reimplemented repeatedly.
 
 **Core question**  
 How do you use Pydantic v2 **only at the edges** as smart constructors — enforcing runtime invariants, providing stable serialization, and computing derived fields — while keeping the core domain as plain frozen dataclasses for maximum performance and purity?
 
-Every production system eventually discovers the same painful truth:
+This lesson introduces Pydantic as an edge-only construction tool:
 
-**“Our ‘simple’ JSON → dataclass pipeline silently accepts garbage data, crashes deep inside the embedding stage, and produces unversioned, unstable serialization that breaks every deployment.”**
+- validate and normalize raw input once
+- compute derived fields where the boundary information still exists
+- convert to plain domain values before business logic and hot paths begin
+
+The motivating raw-JSON example matters because it shows the whole failure chain: silent acceptance now, expensive confusion later.
 
 The naïve pattern everyone writes first:
 
@@ -46,9 +41,9 @@ chunk = make_chunk(**raw_json)   # accepts missing fields, wrong types, NaN embe
 serialized = json.dumps(asdict(chunk))   # order-unstable, no version, no validation on read
 ```
 
-Garbage in, explosion later.
+This is the boundary leak the lesson needs students to catch early.
 
-The production pattern: use Pydantic **only at the edges** (ingress/egress, config loading) to validate, compute derived fields, and serialize stably — then immediately bridge to pure frozen core ADTs for the rest of the pipeline.
+The production pattern keeps runtime validation at the edge, then crosses into pure domain values quickly so the rest of the system stays predictable and fast.
 
 ```python
 # AFTER – safe at edge, pure in core
@@ -57,9 +52,9 @@ core_chunk = to_core_chunk(validated)             # → frozen dataclass, zero r
 serialized = validated.model_dump_json(by_alias=True)  # stable, versioned, reproducible
 ```
 
-Validation happens once at the boundary. Core stays fast, pure, and type-checked.
+That one-time validation boundary is the key design idea this lesson should lock in.
 
-**Audience**: Engineers who have ever debugged “why did this field become None?” hours after ingestion and want bulletproof I/O with zero runtime cost in hot paths.
+**Audience**: Engineers who have debugged bad input too late and want strong runtime validation without dragging framework models through the core.
 
 **Outcome**
 1. Every raw JSON/dict → validated Pydantic model → core frozen ADT.
