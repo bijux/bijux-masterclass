@@ -1,285 +1,137 @@
-<a id="top"></a>
-
 # Module 09: Promotion, Registry Boundaries, and Auditability
 
+Module 09 turns recoverable state into trusted release state.
 
-<!-- page-maps:start -->
-## Module Position
+By now, learners know how to recover important artifacts and protect them over time. That
+does not mean every recoverable result should be trusted downstream. Promotion is a
+smaller, stronger promise: this specific bundle is approved for someone else to consume,
+review, or audit.
+
+This module is about release boundaries:
+
+- what is being promoted
+- what evidence must travel with it
+- what stays internal to the pipeline
+- how a registry or published directory becomes a contract
+- how another reviewer can defend the released state later
+
+The central learner question is:
+
+> If a downstream user trusts this promoted result, what exactly are they trusting, and
+> what evidence lets us defend it?
+
+If the answer is "the latest files," the promotion boundary is not strong enough.
+
+The capstone corroboration surface for this module is the promoted bundle and its review
+evidence: `capstone/publish/v1/`, `capstone/publish/v1/manifest.json`,
+`capstone/publish/v1/metrics.json`, `capstone/publish/v1/params.yaml`,
+`capstone/docs/PUBLISH_CONTRACT.md`, `capstone/docs/RELEASE_REVIEW_GUIDE.md`, and the
+`make -C capstone release-audit` route.
+
+## Why this module exists
+
+Promotion failures often look neat from the outside.
+
+The directory exists. The report renders. A model file is present. A metric file has
+numbers. But the bundle may still be indefensible if:
+
+- promoted metrics do not match promoted parameters
+- a model is copied without a manifest
+- internal pipeline paths leak into downstream usage
+- a release bundle mixes exploratory and approved files
+- the registry entry has no audit trail back to DVC state
+- a future maintainer cannot tell which result was actually promoted
+
+The point of Module 09 is not to copy artifacts into a prettier directory. The point is to
+define the trust boundary that downstream readers are allowed to depend on.
+
+## Study route
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 09: Promotion, Registry Boundaries, and Auditability"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
+flowchart LR
+  overview["Overview"] --> core1["Core 1: promotion contract"]
+  core1 --> core2["Core 2: release surface"]
+  core2 --> core3["Core 3: audit evidence"]
+  core3 --> core4["Core 4: registry boundary"]
+  core4 --> core5["Core 5: promotion failures"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+Read the module in that order the first time.
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+If the problem is already partly clear, use this shortcut:
 
-## Purpose of this Module
+- open Core 1 when the main confusion is "what makes promotion different from copying?"
+- open Core 2 when the main confusion is "what belongs in the release surface?"
+- open Core 3 when the main confusion is "what evidence must travel with the release?"
+- open Core 4 when the main confusion is "what does a registry boundary promise?"
+- open Core 5 when the main confusion is "how do promotion failures hide in neat bundles?"
 
-Recoverable state is not automatically trusted state. This module is where the learner
-separates exploratory, baseline, and promoted state and learns why downstream trust
-requires a deliberately smaller contract than the internal repository story.
+## Module map
 
-Use this module to answer three questions clearly:
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `promotion-contracts-and-downstream-trust.md` | teaches promotion as a downstream trust contract |
+| `release-surfaces-and-bundle-shape.md` | teaches small, stable release surfaces and manifests |
+| `audit-evidence-params-metrics-locks-manifests.md` | teaches the evidence needed to defend promoted state |
+| `registry-boundaries-and-consumer-contracts.md` | teaches registry or publish boundaries as consumer contracts |
+| `promotion-failures-and-review-repairs.md` | teaches common promotion failures and how to repair them |
+| `worked-example-repairing-an-incomplete-release-bundle.md` | walks through one realistic promotion repair |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
-* What exactly is being promoted for downstream use?
-* Which params, metrics, manifests, and files must travel with that promotion?
-* What evidence would another reviewer need to defend the released state later?
+## What should be clear by the end
 
-## At a Glance
+By the end of this module, you should be able to explain:
 
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| promotion boundary | "What exactly is being trusted downstream?" | inspect `publish/v1/` once baseline and experimental state are already distinct |
-| release evidence | "Which params, metrics, and manifests must travel with a promoted result?" | compare the publish bundle to `dvc.lock` and tracked metrics |
-| auditability | "Can another person defend this state later?" | use `verify` as the proof loop, not just as a convenience |
+- why promotion is a trust contract, not a file copy
+- how promoted state differs from baseline or exploratory state
+- which files belong in a release bundle
+- why params, metrics, locks, manifests, and review notes need to agree
+- how registry boundaries protect downstream consumers from internal churn
+- how to reject or repair a promotion that cannot be audited
 
-Proof loop for this module:
+## Commands to keep close
+
+These commands form the evidence loop for Module 09:
 
 ```bash
+make -C capstone release-audit
+make -C capstone manifest-summary
+make -C capstone verify
 dvc status
 dvc metrics diff
-make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify
 ```
 
-Capstone corroboration:
+Use the `make` routes for the course-provided capstone review. Use the DVC commands to
+inspect whether the promoted state has a defensible link back to the recorded pipeline
+state.
 
-* inspect `capstone/publish/v1/`
-* inspect `capstone/params.yaml`
-* inspect `capstone/dvc.lock`
-* inspect [Release Review Guide](../capstone/release-review-guide.md)
+## Capstone route
 
-The learner should leave this module able to say why promoted state is trusted more than
-baseline or exploratory state.
+Use the capstone after you can distinguish internal pipeline state from promoted state.
 
----
+Best corroboration surfaces for this module:
 
-<a id="toc"></a>
-## 1) Table of Contents
+- `capstone/publish/v1/`
+- `capstone/publish/v1/manifest.json`
+- `capstone/publish/v1/metrics.json`
+- `capstone/publish/v1/params.yaml`
+- `capstone/docs/PUBLISH_CONTRACT.md`
+- `capstone/docs/RELEASE_REVIEW_GUIDE.md`
+- `capstone/dvc.lock`
 
-1. [Table of Contents](#toc)
-2. [Learning Outcomes](#outcomes)
-3. [How to Use This Module](#usage)
-4. [Core 1 — Promotion Is a Contract, Not a Copy Step](#core1)
-5. [Core 2 — Stable Release Surfaces and Registry Boundaries](#core2)
-6. [Core 3 — Audit Evidence: Params, Metrics, Locks, and Manifests](#core3)
-7. [Core 4 — Reviewable Promotion Workflows](#core4)
-8. [Core 5 — Failure Modes in State Promotion](#core5)
-9. [Capstone Sidebar](#capstone)
-10. [Exercises](#exercises)
-11. [Closing Criteria](#closing)
+Useful proof route:
 
----
-
-<a id="outcomes"></a>
-## 2) Learning Outcomes
-
-By the end of this module, you can:
-
-* distinguish experimental state, baseline state, and promoted state clearly
-* define a stable release boundary around DVC-managed outputs
-* decide which params, metrics, manifests, and lock evidence must accompany a promoted result
-* design a reviewable promotion workflow that survives handoff and audit pressure
-* spot promotion shortcuts that make downstream trust impossible
-
-[Back to top](#top)
-
----
-
-<a id="usage"></a>
-## 3) How to Use This Module
-
-Set up a repository with these surfaces:
-
-```text
-lab/
-  dvc.yaml
-  dvc.lock
-  params.yaml
-  metrics/
-  publish/
-    v1/
+```bash
+make -C capstone manifest-summary
+make -C capstone release-audit
 ```
 
-Then force yourself to name three categories of state:
-
-1. experimental outputs that are useful for exploration but not yet trustworthy downstream
-2. baseline outputs that remain comparable over time
-3. promoted outputs that downstream users are allowed to depend on
-
-The teaching goal is not just to "publish files." It is to make the learner say exactly
-why one state is trusted more than another.
-
-[Back to top](#top)
-
----
-
-<a id="core1"></a>
-## 4) Core 1 — Promotion Is a Contract, Not a Copy Step
-
-Promotion should answer a question such as:
-
-* which model or report is now approved for downstream use?
-* which params and metrics define that promoted result?
-* which state is still exploratory and must not leak into a release boundary?
-
-If promotion is treated as "copy the latest files somewhere stable," then the repository
-is quietly delegating trust to human memory.
-
-Good promotion discipline:
-
-* a stable publish directory or release boundary
-* explicit params and metrics that explain what was promoted
-* a lockfile or equivalent state record tied to that promotion
-* a clear rule for when a new version is warranted
-
-[Back to top](#top)
-
----
-
-<a id="core2"></a>
-## 5) Core 2 — Stable Release Surfaces and Registry Boundaries
-
-A release surface should stay small and durable enough that downstream users do not have
-to know the internal repository layout.
-
-Examples of a useful release surface:
-
-* a versioned `publish/v1/` directory
-* a manifest naming the promoted files
-* a report that explains the run in human terms
-* parameters and metrics captured in their promoted form
-
-The key distinction:
-
-* internal pipeline state helps the system operate
-* promoted state helps another person trust, consume, or review the result
-
-Those are related, but they are not interchangeable.
-
-[Back to top](#top)
-
----
-
-<a id="core3"></a>
-## 6) Core 3 — Audit Evidence: Params, Metrics, Locks, and Manifests
-
-Auditability depends on enough evidence to answer:
-
-* what exactly was run?
-* which inputs and params mattered?
-* what metrics were observed?
-* which files form the promoted result?
-
-Four surfaces matter especially in DVC:
-
-| Surface | Why it matters |
-| --- | --- |
-| `params.yaml` | shows the declared control surface |
-| metrics | makes comparisons reviewable |
-| `dvc.lock` | records the executed state graph |
-| publish manifest | tells a consumer what the release contains |
-
-If one of those is missing, a promotion can still happen. It just becomes much harder to
-defend later.
-
-[Back to top](#top)
-
----
-
-<a id="core4"></a>
-## 7) Core 4 — Reviewable Promotion Workflows
-
-A strong promotion workflow should be reviewable by another engineer who was not present
-for the experiment cycle.
-
-That review should be able to answer:
-
-* what changed from baseline?
-* why is this promoted state better or more appropriate?
-* which artifact bundle is now the contract?
-* how would a future recovery drill restore this exact result?
-
-Useful practice:
-
-* promote from an explicit baseline or experiment comparison
-* require verification before promotion
-* keep published artifacts stable enough for consumers and audits
-* document the downstream contract where a reviewer will actually see it
-
-[Back to top](#top)
-
----
-
-<a id="core5"></a>
-## 8) Core 5 — Failure Modes in State Promotion
-
-Practice identifying these failures:
-
-* the promoted report no longer matches the promoted params
-* metrics are diffed, but the compared runs are not semantically comparable
-* a release bundle exists, but the lock state needed to explain it is unclear
-* baseline and experiment outputs are mixed into one publish directory
-* a consumer depends on internal pipeline paths because the release surface is vague
-
-Promotion failures are dangerous because they often look neat from the outside. The
-directory exists, the report renders, and the metrics are present. The problem is that
-the repository can no longer explain why that state deserves trust.
-
-[Back to top](#top)
-
----
-
-<a id="capstone"></a>
-## 9) Capstone Sidebar
-
-Use the capstone to inspect:
-
-* `publish/v1/` as the stable promoted surface
-* `params.yaml` and `metrics/metrics.json` as the semantic comparison surfaces
-* `dvc.lock` as evidence of the executed state graph
-* `TOUR.md` and the tour bundle as review artifacts for promoted state
-
-[Back to top](#top)
-
----
-
-<a id="exercises"></a>
-## 10) Exercises
-
-1. Define a stable publish boundary for one DVC repository and explain which internal paths are excluded.
-2. Promote one experimental result and write down exactly which params, metrics, and lock evidence justify it.
-3. Create a manifest for a promoted bundle and explain how a downstream user should validate it.
-4. Review a repository promotion story and list the top three reasons it would fail under audit.
-
-[Back to top](#top)
-
----
-
-<a id="closing"></a>
-## 11) Closing Criteria
-
-You pass this module only if you can demonstrate:
-
-* a clear distinction between exploratory state and promoted state
-* a stable release surface another consumer can trust
-* enough params, metrics, and lock evidence to defend a promoted result
-* a promotion flow that another reviewer can understand without private context
-
-[Back to top](#top)
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is not to prove that a bundle exists. It is to prove that the
+bundle carries enough evidence for another maintainer or downstream consumer to understand
+what was promoted and why it deserves trust.
