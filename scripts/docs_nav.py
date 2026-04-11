@@ -55,12 +55,26 @@ def normalize_link_target(target: str) -> str:
     return target.split("#", 1)[0]
 
 
+def uses_structural_directory_order(directory: Path) -> bool:
+    return any(
+        child.is_dir() and (
+            child.name == "guides"
+            or child.name == "reference"
+            or child.name == "capstone"
+            or child.name in CAPSTONE_DOCS_DIRNAMES
+            or module_number(child.name) is not None
+        )
+        for child in directory.iterdir()
+    )
+
+
 @lru_cache(maxsize=None)
 def index_child_order(directory: Path) -> dict[str, int]:
     index_path = directory / "index.md"
     if not index_path.exists():
         return {}
 
+    structural_directory_order = uses_structural_directory_order(directory)
     order: dict[str, int] = {}
     for match in MARKDOWN_LINK_RE.finditer(index_path.read_text(encoding="utf-8")):
         target = normalize_link_target(match.group(1))
@@ -79,6 +93,8 @@ def index_child_order(directory: Path) -> dict[str, int]:
         child_path = directory / child_name
 
         if child_name == "index.md" or not child_path.exists():
+            continue
+        if structural_directory_order and child_path.is_dir():
             continue
         order.setdefault(child_name, len(order))
 
