@@ -174,3 +174,4 @@ nav:
           - Glossary: module-09-performance-observability-incident-response/glossary.md
       - "Module 10: Governance, Migration, and Tool Boundaries":
           - Overview: module-10-governance-migration-tool-boundaries/index.md
+          - Reviewing Workflow Contracts and Current Truth: module-10-governance-migration-tool-boundaries/reviewing-workflow-contracts-and-current-truth.md
