@@ -9,7 +9,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from scripts.docs_nav import build_tree_nav, explicit_course_nav
+from scripts.docs_nav import explicit_course_nav
 from scripts.sync_series_docs import sync_program_docs
 
 
@@ -32,5 +32,7 @@ def on_config(config):
 
     config.docs_dir = str(staged_docs_dir)
     explicit_nav = explicit_course_nav(program_root)
-    config.nav = explicit_nav or build_tree_nav(staged_docs_dir)
+    if explicit_nav is None:
+        raise ValueError(f"missing explicit course nav in {program_root / 'mkdocs.yml'}")
+    config.nav = explicit_nav
     return config
