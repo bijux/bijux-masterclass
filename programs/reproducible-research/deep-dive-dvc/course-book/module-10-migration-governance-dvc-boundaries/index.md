@@ -69,16 +69,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `repository-review-without-wishful-thinking.md` | teaches an evidence-first review method |
-| `safe-migration-plans-for-state-boundaries.md` | teaches migration planning that preserves trust |
-| `governance-rules-for-long-lived-repositories.md` | teaches small durable rules for future changes |
-| `anti-patterns-and-review-interventions.md` | teaches recurring DVC shortcuts and how to stop them |
-| `dvc-tool-boundaries-and-system-ownership.md` | teaches where DVC should and should not be authoritative |
-| `worked-example-reviewing-a-dvc-repository-for-stewardship.md` | walks through one final repository review |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Repository Review without Wishful Thinking](repository-review-without-wishful-thinking.md) | teaches an evidence-first review method |
+| [Safe Migration Plans for State Boundaries](safe-migration-plans-for-state-boundaries.md) | teaches migration planning that preserves trust |
+| [Governance Rules for Long-Lived Repositories](governance-rules-for-long-lived-repositories.md) | teaches small durable rules for future changes |
+| [Anti-Patterns and Review Interventions](anti-patterns-and-review-interventions.md) | teaches recurring DVC shortcuts and how to stop them |
+| [DVC Tool Boundaries and System Ownership](dvc-tool-boundaries-and-system-ownership.md) | teaches where DVC should and should not be authoritative |
+| [Worked Example: Reviewing a DVC Repository for Stewardship](worked-example-reviewing-a-dvc-repository-for-stewardship.md) | walks through one final repository review |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

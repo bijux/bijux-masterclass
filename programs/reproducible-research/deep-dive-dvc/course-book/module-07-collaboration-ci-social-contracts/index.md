@@ -74,16 +74,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `collaboration-failures-and-social-contracts.md` | teaches how social failures become reproducibility failures |
-| `ci-as-shared-reproducibility-executor.md` | teaches what CI should verify and why local success is not enough |
-| `merge-review-and-branch-protection.md` | teaches merge gates, branch rules, and review evidence |
-| `dvc-remotes-and-shared-artifact-stewardship.md` | teaches remote-backed collaboration and artifact stewardship |
-| `recovery-drills-and-incident-readiness.md` | teaches recovery rehearsal and incident response as proof surfaces |
-| `worked-example-fixing-a-missing-data-push-review.md` | walks through one realistic collaboration failure and repair |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Collaboration Failures and Social Contracts](collaboration-failures-and-social-contracts.md) | teaches how social failures become reproducibility failures |
+| [CI as Shared Reproducibility Executor](ci-as-shared-reproducibility-executor.md) | teaches what CI should verify and why local success is not enough |
+| [Merge Review and Branch Protection](merge-review-and-branch-protection.md) | teaches merge gates, branch rules, and review evidence |
+| [DVC Remotes and Shared Artifact Stewardship](dvc-remotes-and-shared-artifact-stewardship.md) | teaches remote-backed collaboration and artifact stewardship |
+| [Recovery Drills and Incident Readiness](recovery-drills-and-incident-readiness.md) | teaches recovery rehearsal and incident response as proof surfaces |
+| [Worked Example: Fixing a Missing Data Push Review](worked-example-fixing-a-missing-data-push-review.md) | walks through one realistic collaboration failure and repair |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

@@ -72,16 +72,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `durability-boundaries-and-recovery-goals.md` | teaches what must survive local cache loss and maintainer turnover |
-| `retention-policy-and-history-value.md` | teaches how to decide which historical states deserve durable recovery |
-| `garbage-collection-and-cache-safety.md` | teaches cleanup discipline around `dvc gc` and cache removal |
-| `remote-migration-and-ci-drift.md` | teaches remote transitions and CI drift as long-lived system risks |
-| `incident-response-and-maintainer-handoffs.md` | teaches incident response and knowledge continuity |
-| `worked-example-restoring-after-local-cache-loss.md` | walks through one realistic recovery check |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Durability Boundaries and Recovery Goals](durability-boundaries-and-recovery-goals.md) | teaches what must survive local cache loss and maintainer turnover |
+| [Retention Policy and History Value](retention-policy-and-history-value.md) | teaches how to decide which historical states deserve durable recovery |
+| [Garbage Collection and Cache Safety](garbage-collection-and-cache-safety.md) | teaches cleanup discipline around `dvc gc` and cache removal |
+| [Remote Migration and CI Drift](remote-migration-and-ci-drift.md) | teaches remote transitions and CI drift as long-lived system risks |
+| [Incident Response and Maintainer Handoffs](incident-response-and-maintainer-handoffs.md) | teaches incident response and knowledge continuity |
+| [Worked Example: Restoring after Local Cache Loss](worked-example-restoring-after-local-cache-loss.md) | walks through one realistic recovery check |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

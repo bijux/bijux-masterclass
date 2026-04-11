@@ -73,16 +73,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `promotion-contracts-and-downstream-trust.md` | teaches promotion as a downstream trust contract |
-| `release-surfaces-and-bundle-shape.md` | teaches small, stable release surfaces and manifests |
-| `audit-evidence-params-metrics-locks-manifests.md` | teaches the evidence needed to defend promoted state |
-| `registry-boundaries-and-consumer-contracts.md` | teaches registry or publish boundaries as consumer contracts |
-| `promotion-failures-and-review-repairs.md` | teaches common promotion failures and how to repair them |
-| `worked-example-repairing-an-incomplete-release-bundle.md` | walks through one realistic promotion repair |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Promotion Contracts and Downstream Trust](promotion-contracts-and-downstream-trust.md) | teaches promotion as a downstream trust contract |
+| [Release Surfaces and Bundle Shape](release-surfaces-and-bundle-shape.md) | teaches small, stable release surfaces and manifests |
+| [Audit Evidence: Params, Metrics, Locks, and Manifests](audit-evidence-params-metrics-locks-manifests.md) | teaches the evidence needed to defend promoted state |
+| [Registry Boundaries and Consumer Contracts](registry-boundaries-and-consumer-contracts.md) | teaches registry or publish boundaries as consumer contracts |
+| [Promotion Failures and Review Repairs](promotion-failures-and-review-repairs.md) | teaches common promotion failures and how to repair them |
+| [Worked Example: Repairing an Incomplete Release Bundle](worked-example-repairing-an-incomplete-release-bundle.md) | walks through one realistic promotion repair |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 
