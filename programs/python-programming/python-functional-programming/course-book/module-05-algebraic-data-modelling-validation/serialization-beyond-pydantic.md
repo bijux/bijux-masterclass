@@ -2,41 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["Serialization Beyond Pydantic"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  dump["Start with an ad hoc dump/load approach"] --> contract["Define an explicit envelope and codec contract"]
+  contract --> version["Make version changes and migration rules explicit"]
+  version --> persist["Persist values without hidden schema drift"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should make persistence feel like a modeling problem, not a library feature. Students need to see that once a value crosses time or process boundaries, “just dump the dataclass” is no longer a harmless shortcut. It becomes a schema contract whether the team admits it or not.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the Drift Problem
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines | bind/and_then, Reader/State-like patterns, error-typed flows                |
+Schema drift usually appears long after the first dump/load helper looked convenient. The lesson needs to pull that future failure into view immediately.
+
+- If the serialized form has no explicit tag or version, change will become guesswork later.
+- If a persisted sum type has no stable discriminator, decoding logic will eventually become ambiguous.
+- If students cannot explain how old data becomes new data, the serialization story is still incomplete.
 
 **Core question**  
 How do you define stable, versioned, round-trippable serialization contracts for your core ADTs — using only plain dataclasses and lightweight codecs — so that persistence never silently breaks when you evolve the schema?
 
-Every production system eventually discovers the same painful truth:
+This lesson introduces serialization as an explicit contract around domain values:
 
-**“Our ‘quick’ JSON dump broke six months later when we added a field, and now half the stored chunks are unreadable with no migration path.”**
+- wrap persisted values in a stable envelope
+- pair each persisted ADT with explicit encoders and decoders
+- make versioning and migration rules reviewable instead of accidental
+
+The motivating persistence failure matters because it is the most common reason teams discover too late that serialization was already part of the model.
 
 The naïve pattern everyone writes first:
 
@@ -46,9 +41,9 @@ serialized = json.dumps(asdict(chunk))        # field order changes, no tag for 
 chunk = Chunk(**json.loads(serialized))       # missing fields → None, wrong types → crash later
 ```
 
-Schema drift, silent corruption, no forward compatibility.
+This is the drift problem the lesson needs students to recognize before they ship it.
 
-The production pattern: every persisted ADT is wrapped in a stable **Envelope** `{tag: str, ver: int, payload: dict}` and serialized with explicit encoder/decoder factories + migrators → guaranteed round-trip, explicit versioning, zero surprises forever.
+The production pattern turns persistence into an intentional format with explicit structure and migration behavior.
 
 ```python
 # AFTER – stable, versioned, migratable
@@ -57,9 +52,9 @@ serialized = to_json(core_chunk, enc)           # {"tag":"chunk","ver":1,"payloa
 core_chunk = from_json(serialized, dec_chunk()) # migrates automatically
 ```
 
-Schema changes are explicit, migratable, and never silent.
+That explicitness is the whole point: changes stop being silent and start becoming governed.
 
-**Audience**: Engineers who have ever lost production data to “just add a field” and want mathematically stable persistence contracts.
+**Audience**: Engineers who have been burned by “just add a field” persistence changes and want durable contracts instead of lucky dumps.
 
 **Outcome**
 1. Every core ADT gains explicit encoder/decoder factories + Envelope.
