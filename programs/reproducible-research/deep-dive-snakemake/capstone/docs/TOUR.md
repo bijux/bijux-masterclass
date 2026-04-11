@@ -1,6 +1,5 @@
 # Workflow Tour
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -19,68 +18,47 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
-  inspect --> run["Run the confirm, demo, selftest, or proof command"]
-  run --> compare["Compare output with the stated contract"]
-  compare --> review["Return to the course claim with evidence"]
+  walkthrough["Start from the executed bundle"] --> plan["Read visible workflow shape"]
+  plan --> run["Read execution and verification evidence"]
+  run --> publish["Read the published contract surfaces"]
+  publish --> next["Escalate only if the question changes"]
 ```
 <!-- page-maps:end -->
 
 This tour is the executed proof route for the Snakemake capstone. It creates a bundle
-under `artifacts/workflow-tour/` so you can inspect the workflow the same way the course
-asks you to reason about it: through declared rules, planned jobs, real execution,
-published outputs, summary evidence, and the core interpretation guides that tell you
-what each surface is supposed to settle.
+under `artifacts/tour/reproducible-research/deep-dive-snakemake/` so you can inspect the
+workflow through declared rules, planned jobs, actual execution, published outputs, and
+the guides that explain what each surface should settle.
 
-If you want a lighter first step, run `make walkthrough` first. That bundle focuses on
-the repository guide, rule list, dry-run plan, and public file contract without executing
-the workflow.
+If the workflow has not been run yet, start with `make walkthrough` instead.
 
 ## What the tour produces
 
-- `list-rules.txt`: the public rule surface exposed by the workflow
-- `dryrun.txt`: the planned jobs and commands without executing them
-- `run.txt`: the execution log from the real workflow run
-- `summary.txt`: Snakemake’s summary view after the run
-- `discovered_samples.json`: the durable checkpoint artifact that fixed the dynamic sample set
-- `publish-manifest.json`: the stable publish boundary inventory
-- `provenance.json`: the reproducibility record for the run
-- `summary.tsv` and `report/index.html`: the compact public review surfaces
-- `FILE_API.md`: the documented publish contract copied into the bundle
-- the core guides: domain, stage, checkpoint, publish review, incident review, profile audit, and exact source routing
-- `bundle-manifest.json`: the inventory of files packaged into the review bundle itself
+- `list-rules.txt` for the visible rule surface
+- `dryrun.txt` for the planned jobs before execution
+- `run.txt` for the real workflow execution log
+- `summary.txt` for Snakemake's post-run summary
+- `verify.txt` for publish verification output
+- `discovered_samples.json` for the durable checkpoint-resolved sample set
+- `publish-manifest.json`, `summary.json`, `summary.tsv`, `provenance.json`, and `report/index.html` for the published contract
+- copied guides for domain, stage ownership, checkpoint review, publish trust, profile drift, incident review, extension ownership, and exact source routing
+- `bundle-manifest.json` for the inventory of the tour bundle itself
 
-## How to use it
-
-From the capstone directory:
-
-```bash
-make walkthrough
-make tour
-```
-
-From the repository root:
-
-```bash
-make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour
-```
-
-## What to inspect first
+## Good first reading order
 
 1. `README.md`
 2. `DOMAIN_GUIDE.md` and `WORKFLOW_STAGE_GUIDE.md`
 3. `list-rules.txt` and `dryrun.txt`
 4. `CHECKPOINT_GUIDE.md` and `discovered_samples.json`
-5. `summary.txt` and `run.txt`
-6. `publish-manifest.json`, `summary.json`, `summary.tsv`, and `provenance.json`
+5. `summary.txt`, `run.txt`, and `verify.txt`
+6. `publish-manifest.json`, `summary.json`, `summary.tsv`, `provenance.json`, and `report/index.html`
 
-That order mirrors the course: repository contract, rule surface, planned DAG, resulting
-evidence, published interface, and reproducibility metadata.
+That order keeps declared workflow meaning ahead of executed evidence, and executed
+evidence ahead of downstream trust.
 
-If that route feels too broad, step back to `WALKTHROUGH_GUIDE.md`. If it feels too
-narrow, continue into `PUBLISH_REVIEW_GUIDE.md` or `INCIDENT_REVIEW_GUIDE.md` depending
-on the question you are reviewing.
+## When to step out of the tour
 
-Use `EXECUTION_EVIDENCE_GUIDE.md` when the blocker is not where the files are, but what
-each executed evidence surface is actually supposed to prove.
+- use `PUBLISH_REVIEW_GUIDE.md` when the question is specifically downstream trust
+- use `PROFILE_AUDIT_GUIDE.md` when the question is profile or executor drift
+- use `INCIDENT_REVIEW_GUIDE.md` when the question is determinism or incident diagnosis
+- use `EXACT_SOURCE_GUIDE.md` when you know the question but not the next file
