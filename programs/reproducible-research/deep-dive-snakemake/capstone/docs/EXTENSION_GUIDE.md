@@ -2,87 +2,113 @@
 
 # Extension Guide
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
 ```mermaid
 graph LR
-  change["New workflow change"] --> rules["Rule or DAG change"]
-  change --> policy["Profile or config change"]
-  change --> publish["Publish contract change"]
-  change --> code["Helper or package change"]
-  rules --> proof["Strengthen proof route"]
-  policy --> proof
-  publish --> proof
-  code --> proof
+  change["New change"] --> workflow["Workflow meaning"]
+  change --> policy["Execution policy"]
+  change --> publish["Publish contract"]
+  change --> code["Helper implementation"]
+  workflow --> owner["Choose the owning layer"]
+  policy --> owner
+  publish --> owner
+  code --> owner
+  owner --> evidence["Update the matching proof surface"]
 ```
 
 ```mermaid
 flowchart TD
-  question["What kind of change is this?"] --> workflow["Workflow meaning"]
-  question --> operating["Operating policy"]
-  question --> publish_boundary["Public publish boundary"]
-  question --> helper["Helper implementation"]
-  workflow --> owner["Choose the owning layer"]
-  operating --> owner
-  publish_boundary --> owner
-  helper --> owner
-  owner --> verify["Update the matching review evidence"]
+  question["What kind of change is this"] --> route["Place it in the right layer first"]
+  route --> proof["Strengthen the guide, bundle, or check that should notice drift"]
 ```
 <!-- page-maps:end -->
 
-This guide explains how to extend the capstone without weakening the boundary story the
-course depends on.
+Use this guide when a change seems reasonable in more than one place. The main job is to
+keep ownership obvious a year later: workflow meaning in workflow files, policy in
+profiles or config, reusable code in code, and public trust changes in the publish
+contract.
 
 ---
 
-## If The Change Is Workflow Meaning
+## If the change affects workflow meaning
 
-- prefer `Snakefile`, `workflow/rules/`, or `workflow/modules/`
-- keep the new rule contracts visible
-- strengthen walkthrough, dry-run, and tour evidence
+Prefer:
+
+- `Snakefile`
+- `workflow/rules/`
+- `workflow/modules/`
+
+Also update:
+
+- `WALKTHROUGH_GUIDE.md` or `WORKFLOW_STAGE_GUIDE.md` if a new reader should notice it
+- `make walkthrough` or `make tour` evidence if the visible route changed
 
 [Back to top](#top)
 
 ---
 
-## If The Change Is Operating Policy
+## If the change affects execution policy
 
-- prefer `profiles/` or validated config surfaces
-- keep the change operational rather than analytical
-- prove the boundary again with `make profile-audit`
+Prefer:
 
-[Back to top](#top)
+- `profiles/`
+- validated config under `config/`
 
----
+Also update:
 
-## If The Change Is Public Publish Contract
+- `PROFILE_AUDIT_GUIDE.md`
+- `make profile-audit` expectations
 
-- prefer `FILE_API.md`, publish rules, and verification surfaces
-- treat versioned publish changes as trust-boundary changes, not convenience edits
-- strengthen `make verify-report` and publish review documentation
+If the change would alter analytical meaning, it does not belong here.
 
 [Back to top](#top)
 
 ---
 
-## If The Change Is Helper Implementation
+## If the change affects the public publish contract
 
-- prefer `workflow/scripts/` for workflow-adjacent helpers
-- prefer `src/capstone/` for reusable implementation code
-- do not let helper code bury visible workflow meaning
+Prefer:
 
-Use `MODULE_BOUNDARY_GUIDE.md` when the question is not just "which file," but which
-kind of reusable surface should own the change.
+- `FILE_API.md`
+- publish rules
+- verification surfaces such as `verify-report`
+
+Also update:
+
+- `PUBLISH_REVIEW_GUIDE.md`
+- compatibility expectations and versioning decisions
+
+Treat this as a trust-boundary change, not a convenience edit.
 
 [Back to top](#top)
 
 ---
 
-## Final Review Question
+## If the change affects helper implementation
 
-If another maintainer saw this change a year later, would the owning layer still feel
-obvious from the repository structure and proof surface?
+Prefer:
+
+- `workflow/scripts/` for orchestration-adjacent helpers
+- `src/capstone/` for reusable implementation code with clearer software boundaries
+
+Also update:
+
+- the tests or verification surfaces that would catch drift in that helper
+
+Do not let helper code become the only place where workflow meaning can be found.
+
+[Back to top](#top)
+
+---
+
+## Final ownership test
+
+Before merging a change, ask:
+
+1. would another maintainer know where this belongs without reading the diff twice
+2. which guide or audit bundle should mention it
+3. which route would fail first if this change drifted later
 
 [Back to top](#top)
