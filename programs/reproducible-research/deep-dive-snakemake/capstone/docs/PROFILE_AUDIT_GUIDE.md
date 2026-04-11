@@ -2,7 +2,6 @@
 
 # Profile Audit Guide
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -22,47 +21,46 @@ graph LR
 ```mermaid
 flowchart LR
   profiles["profiles/local, ci, slurm"] --> audit["make profile-audit"]
-  audit --> bundle["profile audit bundle"]
-  bundle --> compare["Compare dry-runs and profile files"]
-  compare --> decision["Separate policy from workflow meaning"]
+  audit --> bundle["dry-run comparison bundle"]
+  bundle --> compare["Separate policy differences from workflow meaning"]
+  compare --> decision["Decide whether the profile boundary is still honest"]
 ```
 <!-- page-maps:end -->
 
-This guide explains how to review execution policy honestly. The key question is not
-whether the profiles differ. The key question is whether they differ only in policy, not
-in workflow meaning.
+Use this guide when the question is about execution policy: executor choice, resources,
+or operating context. The point is not whether the profiles differ. The point is whether
+they differ only in policy, not in workflow meaning.
 
-Use `CONFIG_CONTRACT_GUIDE.md` first when the confusion is about config truth in
-general, not profile comparison specifically.
+Use `profile-summary` after `profile-audit` when you want the compact comparison JSON.
 
 ---
 
-## Primary Review Route
+## Primary review route
 
 1. Run `make profile-audit`.
-2. Run `make profile-summary` when you want the shortest comparison of shared and differing settings.
-3. Read `route.txt`, `review-questions.txt`, and `profile-summary.json`.
-4. Compare `profiles/local/config.yaml`, `profiles/ci/config.yaml`, and `profiles/slurm/config.yaml`.
-5. Compare `local-dryrun.txt`, `ci-dryrun.txt`, and `slurm-dryrun.txt`.
+2. Read `route.txt` and `review-questions.txt`.
+3. Compare `profiles/local/config.yaml`, `profiles/ci/config.yaml`, and `profiles/slurm/config.yaml`.
+4. Compare `local-dryrun.txt`, `ci-dryrun.txt`, and `slurm-dryrun.txt`.
+5. Run `make profile-summary` only if you want the compact comparison surface.
 
 [Back to top](#top)
 
 ---
 
-## What The Audit Should Prove
+## What the audit should prove
 
 - executor and resource policy are visible as configuration
-- the workflow plan remains semantically stable across operating contexts
+- the workflow plan stays semantically stable across operating contexts
 - profile differences do not become hidden analytical changes
 
 [Back to top](#top)
 
 ---
 
-## Review Questions
+## Review questions
 
-- Which profile differences are expected because of execution context?
-- Which profile difference would worry you because it smells like semantic drift?
-- Which profile should a maintainer inspect first before approving a migration to new infrastructure?
+- Which differences are expected because of execution context?
+- Which difference would worry you because it smells like semantic drift?
+- Which profile should a maintainer inspect first before approving a move to new infrastructure?
 
 [Back to top](#top)
