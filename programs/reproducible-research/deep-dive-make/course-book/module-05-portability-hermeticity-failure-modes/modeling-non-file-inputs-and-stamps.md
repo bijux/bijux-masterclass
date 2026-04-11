@@ -1,6 +1,6 @@
 # Modeling Non-File Inputs and Stamps
 
-By Module 05, learners usually understand file prerequisites well enough to see one of the
+By Module 05, you usually understand file prerequisites well enough to see one of the
 remaining problems clearly:
 
 the build depends on more than files.
@@ -135,7 +135,7 @@ Now the file changes only when the declared inputs change.
 
 ## Stamps are not junk files
 
-Learners sometimes dislike stamps because they feel artificial. The healthier view is:
+Stamps can feel artificial at first. The healthier view is:
 
 > a stamp is a named graph node for a semantic fact that does not already have a natural
 > file output.

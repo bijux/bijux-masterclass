@@ -15,7 +15,7 @@ That is exactly the kind of build many teams inherit.
 
 ## The incident report
 
-Assume the learner inherits a repository with these complaints:
+Assume you inherit a repository with these complaints:
 
 1. CI fails on a machine with an older Make
 2. local `make -j8` seems fine, but a recursive sub-build behaves almost serially
@@ -73,7 +73,7 @@ make -q all; echo $?
 /usr/bin/time -p make all >/dev/null
 ```
 
-This gives the learner four immediate facts:
+This gives you four immediate facts:
 
 - whether the build converges
 - whether decision cost is large
@@ -339,9 +339,9 @@ flowchart TD
 This is why the module is organized the way it is. Hardening is not one trick. It is a
 series of clarifications.
 
-## What the learner should say at the end
+## What you should say at the end
 
-A strong learner summary sounds like this:
+A strong summary sounds like this:
 
 > The build was not mainly broken because "Make is flaky." It had an undeclared version
 > contract, a recursive boundary that leaked jobserver semantics, a non-convergent

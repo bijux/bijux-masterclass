@@ -88,7 +88,7 @@ The answer is strong if it explains what the comparison means:
 - expensive full build with cheap `make -n` suggests recipe cost dominates
 - very high trace volume suggests the evidence surface itself may be operationally costly
 
-The learner does not need a fancy profiler first. They need a baseline that separates the
+You do not need a fancy profiler first. You need a baseline that separates the
 layers honestly.
 
 ## Exercise 5: Decide whether Make should still own the problem

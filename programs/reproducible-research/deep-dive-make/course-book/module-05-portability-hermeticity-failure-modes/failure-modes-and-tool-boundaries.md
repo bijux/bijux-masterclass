@@ -1,6 +1,6 @@
 # Failure Modes and Tool Boundaries
 
-By this point in the course, learners often become much better at repairing Makefiles.
+By this point in the course, you have usually become much better at repairing Makefiles.
 That is useful, but it creates a new risk:
 
 they start believing every problem should be solved inside Make if they are clever enough.

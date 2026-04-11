@@ -43,7 +43,7 @@ If any one of those is left implied, the build starts leaning on workstation luc
 
 ## Required is different from optional
 
-One of the biggest mistakes learners make is treating every tool or feature as if it were
+One of the biggest mistakes people make is treating every tool or feature as if it were
 equally negotiable.
 
 They are not.

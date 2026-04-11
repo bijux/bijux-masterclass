@@ -72,7 +72,7 @@ Make, write `$(MAKE)` and mean it.
 
 ## Why the `+` prefix matters too
 
-Learners often fix the previous mistake and stop here:
+It is common to fix the previous mistake and stop here:
 
 ```make
 subdir:
@@ -177,7 +177,7 @@ subdir:
 	@$(MAKE) -C lib all
 ```
 
-The learner may think the dry run proved something about the subtree when it actually
+You may think the dry run proved something about the subtree when it actually
 suppressed or obscured the recursive behavior.
 
 This is why Module 05 insists on observability. Hardening is not only about correctness. It
@@ -213,7 +213,7 @@ more harm than good.
 
 ## A good pattern for recursive boundaries
 
-If you do need recursion, document it in a way the learner can explain:
+If you do need recursion, document it in a way you can explain clearly:
 
 ```make
 .PHONY: thirdparty
