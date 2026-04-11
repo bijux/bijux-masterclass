@@ -121,6 +121,15 @@ nav:
           - Glossary: module-04-truthful-pipelines-declared-dependencies/glossary.md
       - "Module 05: Metrics, Parameters, and Meaning":
           - Overview: module-05-metrics-parameters-comparable-meaning/index.md
+          - Metrics as Semantic Claims: module-05-metrics-parameters-comparable-meaning/metrics-as-semantic-claims.md
+          - Parameters as Comparison Controls: module-05-metrics-parameters-comparable-meaning/parameters-as-comparison-controls.md
+          - Metric Files, Schemas, and Stability: module-05-metrics-parameters-comparable-meaning/metric-files-schemas-and-stability.md
+          - Metrics Diff and Review Boundaries: module-05-metrics-parameters-comparable-meaning/metrics-diff-and-review-boundaries.md
+          - Plots and Release Interpretation: module-05-metrics-parameters-comparable-meaning/plots-and-release-interpretation.md
+          - "Worked Example: Repairing a Misleading Metric Comparison": module-05-metrics-parameters-comparable-meaning/worked-example-repairing-a-misleading-metric-comparison.md
+          - Exercises: module-05-metrics-parameters-comparable-meaning/exercises.md
+          - Exercise Answers: module-05-metrics-parameters-comparable-meaning/exercise-answers.md
+          - Glossary: module-05-metrics-parameters-comparable-meaning/glossary.md
       - "Module 06: Experiments Without Chaos":
           - Overview: module-06-experiments-baselines-controlled-change/index.md
       - "Module 07: Collaboration, CI, and Social Contracts":
