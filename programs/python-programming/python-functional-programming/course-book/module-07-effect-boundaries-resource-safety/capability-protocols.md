@@ -82,6 +82,12 @@ These laws turn dependency injection from a runtime pattern into a **type-checke
 
 **Important**: Logging and clock are deliberately **best-effort** and **infallible** in the model. Concrete implementations should swallow or separately report their own failures (e.g. broken stdout) – they must never crash the core pipeline.
 
+`Logger` still belongs in this page because it is a valid **shell-side capability**.
+For pure-core instrumentation in this course, the usual preference is still Writer-based
+logging, with the shell draining `Writer[..., LogEntry]` into a concrete `Logger`
+adapter. That keeps the capability story and the purity story aligned instead of forcing
+students to choose one and forget the other.
+
 ## 3. Public API – Capability Protocols (`capstone/src/funcpipe_rag/domain/capabilities.py`)
 
 ```python
@@ -197,7 +203,8 @@ for entry in logs:
     logger.log(entry)
 ```
 
-**Never pass `Logger` into the core** – logging stays pure via `Writer`.
+For the main pure-core surfaces in this series, prefer `Writer` for instrumentation and
+use `Logger` at the shell or adapter boundary where logs are actually emitted.
 
 ## 5. Property-Based Proofs (selected)
 
@@ -233,7 +240,7 @@ Protocols introduce no additional runtime overhead beyond normal method dispatch
 1. Capability protocols are…? → **Typed interfaces for exactly one responsibility**  
 2. Core depends on…? → **Only the protocol, never the concrete adapter**  
 3. Cache miss is modeled as…? → **`Option[Chunk]` (never `Chunk | None`)**  
-4. Logging in core uses…? → **`Writer[_, LogEntry]` – never `Logger`**  
+4. Pure-core logging usually uses…? → **`Writer[_, LogEntry]`, with shell code draining to `Logger` when effects must happen**  
 5. Real power comes from…? → **Static checking + runtime swappability**
 
 ## 9. Post-Core Exercise
