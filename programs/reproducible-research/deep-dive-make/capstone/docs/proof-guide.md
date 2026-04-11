@@ -45,7 +45,7 @@ start narrower.
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
 | variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
 | one failure class can be studied with captured evidence | `make incident-audit` | `INCIDENT_REVIEW_GUIDE.md`, `command.txt`, `run.txt`, copied repro file |
-| a new reader can enter the capstone without browsing randomly | `make walkthrough` | `WALKTHROUGH_GUIDE.md`, `README.md`, `TARGET_GUIDE.md` |
+| the capstone can be entered without browsing randomly | `make walkthrough` | `WALKTHROUGH_GUIDE.md`, `README.md`, `TARGET_GUIDE.md` |
 | this repository still deserves stewardship trust | `make confirm` | `PROOF_GUIDE.md`, `tests/run.sh`, audit bundles as needed |
 
 ---
@@ -89,4 +89,3 @@ Read these with this guide:
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
 - [SELFTEST_GUIDE.md](selftest-guide.md)
-

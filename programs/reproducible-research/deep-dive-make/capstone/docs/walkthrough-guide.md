@@ -25,9 +25,9 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this guide for first contact with the capstone. It exists to keep the first pass
-bounded and human-readable, so a new reader does not have to choose between random
-browsing and the strongest route in the repository.
+Use this guide for first contact with the capstone. It keeps the first pass bounded and
+human-readable, so you do not have to choose between random browsing and the strongest
+route in the repository.
 
 ---
 
@@ -103,4 +103,3 @@ The walkthrough has done its job if you can answer these without guessing:
 - when to choose `inspect` instead of `proof`
 - which file declares the execution boundary
 - which repro you would use to show a concurrency defect to another engineer
-

@@ -38,7 +38,7 @@ the same selftest bundle.
 3. `settings.env` to confirm which make binary and guardrails were used.
 4. `convergence.txt` to confirm the graph reaches an up-to-date state.
 5. `serial.sum` and `parallel.sum` to compare the artifact inventories across schedules.
-6. `trace-count.txt` to confirm observability costs stayed inside the teaching guardrail.
+6. `trace-count.txt` to confirm observability costs stayed inside the review guardrail.
 7. `hidden-input.txt` to confirm the harness can still detect a dishonest boundary.
 
 ## What each file proves

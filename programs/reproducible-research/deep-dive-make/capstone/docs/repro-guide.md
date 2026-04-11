@@ -26,7 +26,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-The repro pack exists to turn build failures into reviewable teaching surfaces. Use it
+The repro pack turns build failures into reviewable failure surfaces. Use it
 when you want to study one failure class at a time instead of treating concurrency and
 graph defects as random incidents.
 When you want one curated executed example instead of choosing a repro by hand, use
@@ -82,4 +82,3 @@ Ask these while using a repro:
 * which dependency is missing or misclassified
 * whether the failure changes under `-j`
 * which repair pattern belongs in the real capstone
-

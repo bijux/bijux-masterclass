@@ -110,7 +110,7 @@ graph TD
 
 | Question | Owning surface | Why |
 | --- | --- | --- |
-| what is publicly supported | `Makefile` and [TARGET_GUIDE.md](target-guide.md) | they define the durable reader-facing API |
+| what is publicly supported | `Makefile` and [TARGET_GUIDE.md](target-guide.md) | they define the durable review API |
 | what platform assumptions are declared | `mk/contract.mk` | policy belongs in one explicit boundary |
 | how discovery stays deterministic | `mk/objects.mk` | object enumeration is rooted there |
 | how hidden inputs stay modeled | `mk/stamps.mk` | flag and state stamps are declared there |

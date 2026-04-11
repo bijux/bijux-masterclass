@@ -27,7 +27,7 @@ flowchart LR
 
 Use this guide when you want one executed failure bundle instead of scanning the whole
 repro pack. The point is to study one defect class with concrete evidence and then route
-that lesson back into the real capstone.
+that evidence back into the real capstone.
 
 ---
 
@@ -68,12 +68,12 @@ By the end of one bundle review, you should be able to say:
 
 - which output, edge, or boundary was modeled dishonestly
 - whether the defect depends on scheduling or appears in serial mode too
-- which repair belongs in the real capstone rather than in the teaching repro
+- which repair belongs in the real capstone rather than in the controlled repro
 - which proof route would confirm the repaired behavior in production
 
 ---
 
-## Good sequence for new readers
+## Good first sequence
 
 If the repro pack is new, start with incidents in this order:
 
@@ -91,4 +91,3 @@ That sequence moves from obvious corruption toward subtler graph lies.
 - `REPRO_GUIDE.md`
 - `PROOF_GUIDE.md`
 - `ARCHITECTURE.md`
-
