@@ -2,49 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Configuration as Data"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  raw["Start with raw env, CLI, or file values"] --> parse["Parse and validate them once"]
+  parse --> model["Store the result as immutable configuration data"]
+  model --> bind["Bind behavior from that data instead of rereading sources"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson needs to make one boundary unforgettable: raw configuration belongs at the edge, modeled configuration belongs inside the system. Once students understand that split, a lot of hidden-state bugs stop looking normal.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Configuration Smell
 
-Here's a snippet from the progression map:
+Teams rarely say "we want hidden state." They say "it is only one env var" or "we will parse it right where we need it." This lesson should help students recognize why those shortcuts keep spreading.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If the core reads environment variables directly, configuration is still hidden.
+- If validation is scattered across helpers, students cannot tell when the config becomes trustworthy.
+- If changing one setting requires tracing several call sites, the configuration is not yet behaving like data.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you turn raw settings from env, files, or CLI into immutable, validated data (frozen dataclasses or dicts) that drive behaviour via partial and closures—so pipelines from M02C01–M02C05 are deterministic and testable?
 
-This core introduces **configuration-as-data** in Python:  
-- Parse raw sources (env, files, CLI) into **immutable data** at M02C05 boundaries.  
-- Use frozen dataclasses for self-documenting config, bound via M02C01 partial/closures.  
-- Validate at edges, ensuring core sees only typed, complete data.  
+This lesson introduces configuration-as-data as a reviewable workflow:
 
-We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder—evolving from leaky globals/env to validated immutable data that preserves Module 1 equivalence.
+- parse raw sources once at the boundary instead of reading them throughout the core
+- validate before the core starts using the values
+- keep configuration immutable so behavior changes only when the config value changes
 
-**Audience:** Developers from M02C05 with sealed boundaries but still using globals, env leaks, or mutable config that break determinism.  
+The running project matters because real pipelines often have many settings. Students need to see how modeling those settings improves inspection rather than adding ceremony for its own sake.
+
+**Audience:** Developers with sealed boundaries who still use globals, environment leaks, or mutable config that break determinism.  
 **Outcome:**  
 1. Identify config smells (globals, env leaks) and explain their impact on testing.  
 2. Refactor raw sources to validated immutable data + binding.  
@@ -64,11 +55,11 @@ We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder�
 
 ### 1.3 Why This Matters Now
 
-M02C05 sealed effects at boundaries, but globals or env leaks introduce hidden state. Config-as-data makes settings explicit values from raw sources, enabling full M02C01–M02C05 power with testable variants.
+Sealing effects was a big step, but configuration can still punch holes through that boundary if the code rereads environment state or mutates settings objects after construction. This lesson closes that gap by showing when config becomes a stable value and how the rest of the pipeline should depend on that value instead of its raw source.
 
 ### 1.4 Config-as-Data as Values in 5 Lines
 
-Config as first-class enables dynamic variants:
+The example below matters because it separates the reusable modeled config from the raw source that created it.
 
 ```python
 from dataclasses import dataclass
