@@ -20,7 +20,7 @@ Schema drift usually appears long after the first dump/load helper looked conven
 
 - If the serialized form has no explicit tag or version, change will become guesswork later.
 - If a persisted sum type has no stable discriminator, decoding logic will eventually become ambiguous.
-- If students cannot explain how old data becomes new data, the serialization story is still incomplete.
+- If you cannot explain how old data becomes new data, the serialization story is still incomplete.
 
 **Core question**  
 How do you define stable, versioned, round-trippable serialization contracts for your core ADTs — using only plain dataclasses and lightweight codecs — so that persistence never silently breaks when you evolve the schema?
@@ -41,7 +41,7 @@ serialized = json.dumps(asdict(chunk))        # field order changes, no tag for 
 chunk = Chunk(**json.loads(serialized))       # missing fields → None, wrong types → crash later
 ```
 
-This is the drift problem the lesson needs students to recognize before they ship it.
+This is the drift problem to recognize before you ship it.
 
 The production pattern turns persistence into an intentional format with explicit structure and migration behavior.
 

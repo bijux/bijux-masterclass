@@ -19,7 +19,7 @@ This lesson needs to make state modelling feel concrete. Students should not lea
 The first sign that a state model is too weak is usually not a type error. It is a workflow bug: something stays “running” forever, skips required payload, or silently accepts an impossible event.
 
 - If state is a string plus several optional fields, illegal combinations are probably still representable.
-- If transitions mutate in place, students cannot easily reason about previous versus next state.
+- If transitions mutate in place, you cannot easily reason about previous versus next state.
 - If terminal states do not have explicit behavior, later code will keep inventing its own rules.
 
 **Core question**  
@@ -47,7 +47,7 @@ class Job:
             self.status = "done"     # someone forgets to copy artifact_id
 ```
 
-This is the state-machine smell the lesson needs students to recognize: silent invalid transitions, mutable corruption, and missing payload at exactly the moment it matters.
+This is the state-machine smell to recognize: silent invalid transitions, mutable corruption, and missing payload at exactly the moment it matters.
 
 The production pattern: every state is a tagged variant with its own payload; every transition is a pure function forced to handle all cases.
 

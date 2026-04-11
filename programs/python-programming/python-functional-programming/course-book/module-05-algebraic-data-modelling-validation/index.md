@@ -39,8 +39,8 @@ Carry this question into the module:
 > Which states, failures, and construction rules deserve first-class value shapes instead of scattered conditionals?
 
 This module gives the course a stronger modelling language. Instead of encoding domain
-states and validation rules with flags, `None`, and scattered conditionals, the learner
-starts using explicit data shapes that are easier to reason about and test.
+states and validation rules with flags, `None`, and scattered conditionals, you start
+using explicit data shapes that are easier to reason about and test.
 
 ## Learning outcomes
 

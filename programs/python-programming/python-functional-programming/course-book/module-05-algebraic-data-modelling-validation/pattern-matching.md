@@ -20,7 +20,7 @@ Once a codebase has explicit variants, the next problem is how to handle them cl
 
 - If every handler repeats the same variant tests and attribute extraction, the branch structure is harder to review than it needs to be.
 - If adding a new variant can slip past existing handlers, the dispatch style is still too fragile.
-- If students cannot tell what each branch assumes about the payload, the case analysis is not yet readable enough.
+- If you cannot tell what each branch assumes about the payload, the case analysis is not yet readable enough.
 
 **Core question**  
 How do you replace verbose, fragile `if isinstance` chains with Python 3.10+ `match` statements that destructuringly pattern-match on ADTs — guaranteeing exhaustive handling, automatic type narrowing, and refactor-safety in every FuncPipe pipeline stage?
@@ -31,7 +31,7 @@ This lesson introduces `match` as the natural case-analysis syntax for ADTs:
 - keep guards and payload extraction close to the matching branch
 - use the final `assert_never` pattern to keep the closed-union promise honest
 
-The motivating `Result` example matters because it is exactly the kind of branch-heavy code students write everywhere once they have variants available.
+The motivating `Result` example matters because it is exactly the kind of branch-heavy code that appears everywhere once variants are available.
 
 The naïve pattern everyone writes first:
 
@@ -48,7 +48,7 @@ def handle_result(res: Result[T, ErrInfo]) -> T:
     # oops, someone added Pending and forgot to handle it → silent crash or wrong path
 ```
 
-This is the branching boilerplate the lesson should help students replace.
+This is the branching boilerplate to replace.
 
 The production pattern makes the variant structure visible in the code shape itself and gives tooling a better chance to help.
 
@@ -66,7 +66,7 @@ def handle_result(res: Result[T, ErrInfo]) -> T:
             assert_never(other)   # mypy errors if you add Pending and forget to handle
 ```
 
-That is the real promise students should care about: changes to the model become visible pressure on the handling sites instead of silent drift.
+That is the real promise to care about: changes to the model become visible pressure on the handling sites instead of silent drift.
 
 **Audience**: Engineers tired of `isinstance` spaghetti who want clearer and more trustworthy case analysis over ADTs.
 

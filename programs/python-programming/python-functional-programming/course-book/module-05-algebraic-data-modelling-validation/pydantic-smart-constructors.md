@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make the Pydantic boundary explicit enough that students stop arguing with themselves about where it belongs. The answer in this course is simple: use it where raw data enters or leaves, then cross into plain domain values and keep the core clean.
+Make the Pydantic boundary explicit enough that you stop arguing with yourself about where it belongs. The answer in this course is simple: use it where raw data enters or leaves, then cross into plain domain values and keep the core clean.
 
 ## Start With the Boundary Leak
 
@@ -41,7 +41,7 @@ chunk = make_chunk(**raw_json)   # accepts missing fields, wrong types, NaN embe
 serialized = json.dumps(asdict(chunk))   # order-unstable, no version, no validation on read
 ```
 
-This is the boundary leak the lesson needs students to catch early.
+This is the boundary leak to catch early.
 
 The production pattern keeps runtime validation at the edge, then crosses into pure domain values quickly so the rest of the system stays predictable and fast.
 

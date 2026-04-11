@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson needs to make one modelling question visible right away: is the concept “all of these fields together” or “exactly one of these variants”? Once students can ask that question clearly, a lot of accidental complexity in Python models stops looking inevitable.
+Make one modelling question visible right away: is the concept “all of these fields together” or “exactly one of these variants”? Once you can ask that question clearly, a lot of accidental complexity in Python models stops looking inevitable.
 
 ## Start With the Invalid-State Smell
 
@@ -25,7 +25,7 @@ Students often know the data they care about, but still encode it with booleans,
 **Core question**  
 How do you replace ad-hoc dicts, mutable classes, and fragile inheritance with pure product and tagged sum types — guaranteeing exhaustive handling, immutability, and stable serialization in every pipeline stage?
 
-This lesson introduces ADTs as the first modelling tool students should reach for in this module:
+This lesson introduces ADTs as the first modelling tool to reach for in this module:
 
 - use product types when the value is a fixed bundle of fields
 - use tagged sums when the value is one of several distinct cases
@@ -47,7 +47,7 @@ if state.success:
     index(state.embedding)   # oops, someone forgot to check error is not None
 ```
 
-This is the core modelling smell the lesson should help students recognize instantly: boolean blindness and null soup.
+This is the core modelling smell to recognize instantly: boolean blindness and null soup.
 
 The production solution: model every domain concept as either a **product type** (AND) or a **tagged sum type** (OR — exactly one variant).
 
@@ -68,7 +68,7 @@ class Failure:
     attempt: int
 ```
 
-Now the model itself tells readers which cases exist, and later tools like `match` and `assert_never` can enforce that understanding mechanically.
+Now the model itself tells you which cases exist, and later tools like `match` and `assert_never` can enforce that understanding mechanically.
 
 **Audience**: Engineers tired of incomplete state handling, silent `None` paths, and mutable model shapes that let bad combinations slip through review.
 

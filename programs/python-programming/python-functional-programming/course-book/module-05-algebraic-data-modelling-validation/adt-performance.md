@@ -12,13 +12,13 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should reassure students that good modeling and good performance are not enemies, but they are not automatically aligned either. The key discipline here is to compromise representation only when profiling justifies it and only when equivalence to the pure model is still demonstrable.
+Good modeling and good performance are not enemies, but they are not automatically aligned either. The key discipline here is to compromise representation only when profiling justifies it and only when equivalence to the pure model is still demonstrable.
 
 ## Start With the Performance Panic
 
 Teams often hit this lesson at the moment they are tempted to throw out their ADTs and “just use arrays and mutable structs everywhere.” The page should slow that reaction down and make the tradeoff reviewable.
 
-- If a path is slow but unmeasured, students do not yet know whether representation is the real problem.
+- If a path is slow but unmeasured, you do not yet know whether representation is the real problem.
 - If optimization changes public semantics, it is not a safe performance compromise.
 - If there is no easy way back to a pure fallback, the optimization is harder to trust and harder to test.
 
@@ -57,7 +57,7 @@ obatch.embeddings = embed_many([r.text for r in obatch.rows])  # NumPy, zero-cop
 validated_chunks = from_optimized_batch(obatch)         # back to pure ADTs, proven equivalent
 ```
 
-That is the standard this lesson should leave students with: compromise representation, never meaning.
+That is the standard to leave with: compromise representation, never meaning.
 
 **Audience**: Engineers who value ADTs but need a principled path through real performance pressure.
 

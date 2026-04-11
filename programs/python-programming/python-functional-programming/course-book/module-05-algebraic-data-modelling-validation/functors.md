@@ -20,7 +20,7 @@ The pain point here is easy to recognize: the actual transformation is tiny, but
 
 - If the same `if Err` or `if Some` structure appears in many places, the transformation logic is being drowned by container handling.
 - If a minor refactor changes structure-handling inconsistently across functions, the codebase no longer has one reliable transformation pattern.
-- If students cannot describe what stays the same and what changes under `map`, the abstraction has not yet become useful.
+- If you cannot describe what stays the same and what changes under `map`, the abstraction has not yet become useful.
 
 **Core question**  
 How do you replace ad-hoc unboxing, duplicated `if err/None` boilerplate, and manual loops with lawful functor mapping over Option, Result, and List — guaranteeing type-safe, composable transformations in every FuncPipe pipeline stage?
@@ -58,7 +58,7 @@ def embed_batch(chunks: list[Chunk]) -> list[Result[Success, ErrInfo]]:
     return out
 ```
 
-This is the structural repetition the lesson should help students eliminate.
+This is the structural repetition to eliminate.
 
 The production pattern makes the transformation itself the center of attention and lets the container preserve its own structure automatically.
 

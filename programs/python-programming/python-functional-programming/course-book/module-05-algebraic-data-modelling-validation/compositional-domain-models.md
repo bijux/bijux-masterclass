@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should help students separate two ideas that often get blurred together: a domain can be one business concept and still be best modeled as several smaller value types. The crucial move is not just splitting. It is making recombination explicit and reviewable.
+Separate two ideas that often get blurred together: a domain can be one business concept and still be best modeled as several smaller value types. The crucial move is not just splitting. It is making recombination explicit and reviewable.
 
 ## Start With the God-Object Smell
 
@@ -49,7 +49,7 @@ class Chunk:
 # Every subsystem imports and mutates the same type → merge hell
 ```
 
-This is the composition problem the lesson should help students name.
+This is the composition problem to name.
 
 The production pattern keeps each subsystem small and then makes integration the one place where cross-cutting rules are enforced deliberately.
 

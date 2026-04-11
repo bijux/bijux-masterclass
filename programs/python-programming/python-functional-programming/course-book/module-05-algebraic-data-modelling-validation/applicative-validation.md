@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should help students stop conflating “validation” with “first error wins.” The key question is whether the checks depend on each other. If they do not, then forcing users to fix one field at a time is usually a design failure, not a necessity.
+Stop conflating “validation” with “first error wins.” The key question is whether the checks depend on each other. If they do not, then forcing users to fix one field at a time is usually a design failure, not a necessity.
 
 ## Start With the Feedback Problem
 
@@ -20,7 +20,7 @@ Students usually feel the pain of fail-fast validation before they know the name
 
 - If all the checks are independent, reporting only the first failure is usually unnecessary friction.
 - If one validation step depends on the output of another, then applicative accumulation is no longer the right default.
-- If students cannot explain how errors are combined, the validation policy is still too magical to trust.
+- If you cannot explain how errors are combined, the validation policy is still too magical to trust.
 
 **Core question**  
 How do you replace short-circuiting validation that reports only the first error with lawful applicative combinators that run every check independently and return **all** errors at once — giving perfect diagnostics in one pass?
@@ -47,7 +47,7 @@ def validate_user(raw: RawUser) -> Result[User, ErrInfo]:
     return Ok(User(name.value, email.value, age.value))
 ```
 
-This is the poor feedback loop the lesson needs students to spot immediately.
+This is the poor feedback loop to spot immediately.
 
 The production pattern uses a dedicated validation container that treats error accumulation as a first-class rule rather than an ad hoc side effect of control flow.
 

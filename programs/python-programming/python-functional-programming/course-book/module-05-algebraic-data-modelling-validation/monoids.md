@@ -19,7 +19,7 @@ This lesson should make monoids feel like a reliability tool before they feel li
 Production teams usually meet monoids through symptoms, not vocabulary: totals differ by grouping, log merges are slow, or mutable accumulation becomes a concurrency problem.
 
 - If regrouping the same inputs can change the result, the aggregation is not safe to parallelize.
-- If there is no honest empty value, students may be describing a semigroup rather than a monoid.
+- If there is no honest empty value, you may be describing a semigroup rather than a monoid.
 - If performance claims rely on tree reduction, the combine law has to be explicit instead of assumed.
 
 **Core question**  
@@ -27,7 +27,7 @@ How do you replace order-dependent, quadratic-time, or mutable aggregation with 
 
 This lesson introduces monoids as the stable aggregation contract behind folds and parallel reduction:
 
-- define a lawful combine operation students can regroup without fear
+- define a lawful combine operation you can regroup without fear
 - supply an identity when empty input must still produce a valid aggregate
 - use those laws to justify tree reduction and performance improvements honestly
 
@@ -50,7 +50,7 @@ for r in results:
         metrics["sum"] += r.value.latency_ms   # mutable, race-prone
 ```
 
-This is the aggregation drift the lesson needs students to recognize.
+This is the aggregation drift to recognize.
 
 The production pattern names the combine rule explicitly and then builds the reduction strategy around that rule instead of around incidental loop structure.
 
