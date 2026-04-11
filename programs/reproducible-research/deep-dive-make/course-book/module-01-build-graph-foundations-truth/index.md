@@ -1,5 +1,30 @@
 # Module 01: Build Graph Foundations and Truth
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Build Graph Foundations Truth"]
+  page["Module 01: Build Graph Foundations and Truth"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Make becomes much easier once you stop treating it like a shell script runner and start
 treating it like a decision system. The central question of this module is simple:
 

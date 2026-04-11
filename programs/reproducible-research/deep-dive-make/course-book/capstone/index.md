@@ -1,5 +1,30 @@
 # Deep Dive Make Capstone Guide
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Capstone"]
+  page["Deep Dive Make Capstone Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This capstone is the executable reference build for Deep Dive Make. It keeps graph truth,
 atomic publication, parallel safety, determinism, and self-testing in one compact
 repository so the course can point to real evidence instead of slogans.

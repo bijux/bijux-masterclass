@@ -1,5 +1,30 @@
 # Parallel Scheduling and Runnable Targets
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Parallel Safety Project Structure"]
+  page["Parallel Scheduling and Runnable Targets"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The first thing to settle is what Make actually parallelizes.
 
 It does not parallelize "lines in a Makefile." It does not parallelize "all files." It

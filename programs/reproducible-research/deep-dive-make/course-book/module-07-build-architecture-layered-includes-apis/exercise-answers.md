@@ -1,5 +1,30 @@
 # Exercise Answers
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Build Architecture Layered Includes Apis"]
+  page["Exercise Answers"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Use this after you have written your own answers. The point is comparison, not copying.
 
 Strong Module 07 answers do not just propose a prettier file layout. They explain:

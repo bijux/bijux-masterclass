@@ -9,7 +9,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Make"]
   guide["Capstone docs"]
-  section["REPRO_GUIDE"]
+  section["Docs"]
   page["Repro Guide"]
   proof["Proof route"]
 

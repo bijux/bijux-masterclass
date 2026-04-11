@@ -5,18 +5,23 @@
 
 ```mermaid
 graph LR
-  question["Current review question"] --> index["INDEX.md"]
-  index --> target["TARGET_GUIDE.md"]
-  index --> proof["PROOF_GUIDE.md"]
-  index --> repro["REPRO_GUIDE.md"]
-  index --> walk["WALKTHROUGH_GUIDE.md"]
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["Deep Dive Make Capstone Docs"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  start["Name the current claim"] --> choose["Choose the smallest guide"]
-  choose --> inspect["Inspect the matching target, file, or bundle"]
-  inspect --> escalate["Escalate only if the claim changes"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

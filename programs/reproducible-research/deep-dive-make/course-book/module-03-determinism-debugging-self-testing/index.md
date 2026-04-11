@@ -1,5 +1,30 @@
 # Module 03: Determinism, Debugging, and Self-Testing
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Determinism Debugging Self Testing"]
+  page["Module 03: Determinism, Debugging, and Self-Testing"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Modules 01 and 02 teach truth and parallel safety. Module 03 asks what happens after the
 build starts living in the real world:
 

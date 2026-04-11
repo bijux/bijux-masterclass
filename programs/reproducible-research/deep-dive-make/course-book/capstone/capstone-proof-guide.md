@@ -1,21 +1,26 @@
 # Capstone Proof Guide
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete question you need answered"]
-  pressure --> guide["Capstone Proof Guide"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Capstone"]
+  page["Capstone Proof Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Do you need one full proof pass?"] --> route["Run the bounded proof route"]
-  route --> inspect["Inspect the saved evidence in order"]
-  inspect --> judgment["Leave with one explicit judgment about trust"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

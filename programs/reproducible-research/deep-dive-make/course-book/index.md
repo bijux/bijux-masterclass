@@ -1,26 +1,26 @@
 # Deep Dive Make
 
 <!-- page-maps:start -->
-## Course Shape
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> home["Deep Dive Make"]
-  home --> modules["Modules 00-10"]
-  home --> guides["Guides"]
-  home --> reference["Reference"]
-  modules --> capstone["Capstone"]
-  guides --> capstone
-  reference --> capstone
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Course home"]
+  page["Deep Dive Make"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  promise["Read the course promise and fit"] --> route["Choose one stable entry lane"]
-  route --> orientation["Anchor the mental model in Module 00"]
-  orientation --> modules["Read the modules in order"]
-  modules --> proof["Use guides, reference, and capstone only when they answer the current question"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

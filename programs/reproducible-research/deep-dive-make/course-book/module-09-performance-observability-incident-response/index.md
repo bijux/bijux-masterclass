@@ -1,5 +1,30 @@
 # Module 09: Performance, Observability, and Incident Response
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Performance Observability Incident Response"]
+  page["Module 09: Performance, Observability, and Incident Response"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 By this point the build is correct, layered, and publishable. Module 09 is about the moment
 it becomes slow, noisy, or operationally brittle under real team pressure.
 

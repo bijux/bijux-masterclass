@@ -1,21 +1,26 @@
 # Start Here
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete question you need answered"]
-  pressure --> guide["Start Here"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Guides"]
+  page["Start Here"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Name the current pressure"] --> route["Choose one starting route"]
-  route --> orient["Anchor in Module 00"]
-  orient --> next_move["Leave with one stable next module or guide"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

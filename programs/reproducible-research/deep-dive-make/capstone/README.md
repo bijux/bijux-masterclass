@@ -5,18 +5,23 @@
 
 ```mermaid
 graph LR
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> capstone["Capstone"]
-  capstone --> readme["README"]
-  readme --> docs["docs/"]
-  readme --> proof["Build and review routes"]
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  guide["Capstone docs"]
+  section["README"]
+  page["Deep Dive Make Capstone"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  question["Name the current question"] --> route["Choose the smallest capstone route"]
-  route --> review["Read the matching guide or bundle"]
-  review --> next["Escalate only if the question changes"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

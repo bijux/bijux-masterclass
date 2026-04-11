@@ -9,7 +9,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Make"]
   guide["Capstone docs"]
-  section["ARCHITECTURE"]
+  section["Docs"]
   page["Architecture Guide"]
   proof["Proof route"]
 
@@ -19,10 +19,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  contract["Public target contract"] --> layers["Read the build layers"]
-  layers --> generators["Inspect generator and publication boundaries"]
-  generators --> proof["Trace the proof harness"]
-  proof --> review["Return to the course claim with ownership"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

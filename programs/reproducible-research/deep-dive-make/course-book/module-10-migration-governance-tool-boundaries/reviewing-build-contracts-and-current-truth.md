@@ -1,5 +1,30 @@
 # Reviewing Build Contracts and Current Truth
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Migration Governance Tool Boundaries"]
+  page["Reviewing Build Contracts and Current Truth"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 This page is about the first pass over an inherited build: not how to rewrite it, but how
 to understand what it currently promises, what it currently breaks, and what evidence
 separates those two things.

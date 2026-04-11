@@ -9,7 +9,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Make"]
   guide["Capstone docs"]
-  section["CONTRACT_AUDIT_GUIDE"]
+  section["Docs"]
   page["Contract Audit Guide"]
   proof["Proof route"]
 
@@ -19,10 +19,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  command["Run contract-audit"] --> contract["Read public target and boundary files"]
-  contract --> portability["Inspect portability and discovery evidence"]
-  portability --> questions["Answer the review questions"]
-  questions --> decision["Decide whether the published contract is honest"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

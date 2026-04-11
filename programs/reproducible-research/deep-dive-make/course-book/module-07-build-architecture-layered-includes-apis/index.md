@@ -1,5 +1,30 @@
 # Module 07: Build Architecture, Layered Includes, and Build APIs
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Build Architecture Layered Includes Apis"]
+  page["Module 07: Build Architecture, Layered Includes, and Build APIs"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Once a Make build starts working, teams usually try to reuse it, extend it, and share it.
 That is where many repositories become hard to explain:
 

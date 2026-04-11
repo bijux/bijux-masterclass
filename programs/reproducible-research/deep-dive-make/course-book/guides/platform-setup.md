@@ -1,5 +1,30 @@
 # Platform Setup
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Guides"]
+  page["Platform Setup"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Use this page before you trust local results. Deep Dive Make depends on GNU Make features
 that are not available in every default `make`, especially on macOS. The goal here is
 not to produce a perfect workstation. The goal is to prove you are running the same class

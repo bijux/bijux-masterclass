@@ -1,21 +1,26 @@
 # Mid-Course Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["Mid-Course Map"]
-  concept --> capstone["Capstone pressure point"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Orientation"]
+  page["Mid-Course Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  pressure["Name the mid-course pressure"] --> route["Choose the matching module cluster"]
-  route --> check["Open one guide and one proof surface"]
-  check --> resume["Resume with one explicit build question"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

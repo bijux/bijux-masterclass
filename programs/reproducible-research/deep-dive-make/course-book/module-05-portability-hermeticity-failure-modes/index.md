@@ -1,5 +1,30 @@
 # Module 05: Portability, Hermeticity, and Failure Modes
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Portability Hermeticity Failure Modes"]
+  page["Module 05: Portability, Hermeticity, and Failure Modes"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Modules 01 to 04 teach graph truth, parallel safety, determinism, and exact Make
 semantics. Module 05 asks a harder question:
 

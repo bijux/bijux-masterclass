@@ -1,21 +1,26 @@
 # Mastery Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["Mastery Map"]
-  concept --> capstone["Capstone pressure point"]
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Orientation"]
+  page["Mastery Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  pressure["Return with a stewardship question"] --> module["Choose the owning late-course module"]
-  module --> review["Open one review or proof surface"]
-  review --> decision["Leave with one keep, change, or migrate call"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

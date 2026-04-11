@@ -1,5 +1,30 @@
 # Module 08: Release Engineering and Artifact Contracts
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Release Engineering Artifact Contracts"]
+  page["Module 08: Release Engineering and Artifact Contracts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Building something locally is not the same as delivering it. Module 08 is about the point
 where a build becomes a release contract:
 

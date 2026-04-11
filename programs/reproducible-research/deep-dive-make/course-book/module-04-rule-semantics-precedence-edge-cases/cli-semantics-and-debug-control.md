@@ -1,5 +1,30 @@
 # CLI Semantics and Debug Control
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Rule Semantics Precedence Edge Cases"]
+  page["CLI Semantics and Debug Control"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 When a Make build behaves strangely, many engineers reach for flags in the wrong order.
 They add `-B`, sprinkle `-j1`, or run `clean` until the symptom disappears.
 

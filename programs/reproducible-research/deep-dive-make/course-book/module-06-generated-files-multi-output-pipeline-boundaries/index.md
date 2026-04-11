@@ -1,5 +1,30 @@
 # Module 06: Generated Files, Multi-Output Rules, and Pipeline Boundaries
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Generated Files Multi Output Pipeline Boundaries"]
+  page["Module 06: Generated Files, Multi-Output Rules, and Pipeline Boundaries"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Modules 01 to 05 teach graph truth, parallel safety, determinism, semantics, and build
 hardening. Module 06 turns that discipline toward one of the easiest places for a build to
 start lying:

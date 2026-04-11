@@ -8,7 +8,7 @@ graph LR
   family["Reproducible Research"]
   program["Deep Dive Make"]
   guide["Capstone docs"]
-  section["PROFILE_AUDIT_GUIDE"]
+  section["Docs"]
   page["Profile Audit Guide"]
   proof["Proof route"]
 
@@ -18,9 +18,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  command["Run profile-audit"] --> boundary["Read the declared execution boundary"]
-  boundary --> precedence["Inspect target exposure and variable sources"]
-  precedence --> review["Decide whether the repository is explicit enough to audit"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

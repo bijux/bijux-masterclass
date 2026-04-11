@@ -1,5 +1,30 @@
 # Capstone Architecture Guide
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Capstone"]
+  page["Capstone Architecture Guide"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 Use this page when the question is about build ownership rather than about one command.
 The Make capstone stays reviewable only if public targets, graph modeling, helper logic,
 proof, and failure specimens each keep a readable home.

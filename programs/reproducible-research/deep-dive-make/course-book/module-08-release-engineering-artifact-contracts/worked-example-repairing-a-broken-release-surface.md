@@ -1,5 +1,30 @@
 # Worked Example: Repairing a Broken Release Surface
 
+
+<!-- page-maps:start -->
+## Page Maps
+
+```mermaid
+graph LR
+  family["Reproducible Research"]
+  program["Deep Dive Make"]
+  section["Release Engineering Artifact Contracts"]
+  page["Worked Example: Repairing a Broken Release Surface"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
+
+```mermaid
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
+```
+<!-- page-maps:end -->
+
 The five core lessons in Module 08 make the most sense when they all appear in one release
 surface that still works often enough to mislead people.
 
