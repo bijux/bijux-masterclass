@@ -180,3 +180,4 @@ nav:
           - Recurring Workflow Antipatterns and Recovery: module-10-governance-migration-tool-boundaries/recurring-workflow-antipatterns-and-recovery.md
           - Deciding When Snakemake Should Stop Owning a Concern: module-10-governance-migration-tool-boundaries/deciding-when-snakemake-should-stop-owning-a-concern.md
           - "Worked Example: Planning a Safe Workflow Migration": module-10-governance-migration-tool-boundaries/worked-example-planning-a-safe-workflow-migration.md
+          - Exercises: module-10-governance-migration-tool-boundaries/exercises.md
