@@ -34,7 +34,7 @@ than one module chapter.
 | the full support-page map | [Course Guide](course-guide.md) | [Learning Contract](learning-contract.md) |
 | a route shaped by urgency | [Pressure Routes](pressure-routes.md) | [Proof Ladder](proof-ladder.md) |
 | module promises and exit bars | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
-| workflow split decisions | [Workflow Modularization](workflow-modularization.md) | [Boundary Map](../reference/boundary-map.md) |
+| workflow split decisions | [Boundary Map](../reference/boundary-map.md) | [Repository Layer Guide](../reference/repository-layer-guide.md) |
 | capstone entry | [Capstone Guide](../capstone/index.md) | [Capstone Map](../capstone/capstone-map.md) |
 
 ## Study routes
@@ -47,7 +47,6 @@ than one module chapter.
 
 ## Module support
 
-- [Workflow Modularization](workflow-modularization.md) when the question is how far to split the repository
 - [Module Promise Map](module-promise-map.md) when you want each title translated into a learner contract
 - [Module Checkpoints](module-checkpoints.md) when you need an exit bar before moving on
 - [Module Dependency Map](../reference/module-dependency-map.md) when the reading order needs justification
@@ -109,7 +108,6 @@ without changing what the words mean.
 | [Pressure Routes](pressure-routes.md) | shortest honest route when urgency is shaping the reading order |
 | [Proof Ladder](proof-ladder.md) | how to choose a smaller or larger proof route without guessing |
 | [Proof Matrix](proof-matrix.md) | where a specific claim is first corroborated |
-| [Workflow Modularization](workflow-modularization.md) | how to decide whether a repository split clarifies or hides the workflow |
 
 ## Reading rule
 

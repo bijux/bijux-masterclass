@@ -52,7 +52,7 @@ Deep Dive Snakemake has four durable surfaces:
 
 ## The support shelf by job
 
-- Read [Workflow Modularization](workflow-modularization.md) when repository splits or module boundaries feel fuzzy.
+- Read [Boundary Map](../reference/boundary-map.md) when repository splits or module boundaries feel fuzzy.
 - Read [Module Promise Map](module-promise-map.md) when module titles feel too compressed.
 - Read [Module Checkpoints](module-checkpoints.md) when you need a visible exit bar.
 - Read [Pressure Routes](pressure-routes.md) when the reading order is shaped by urgency.
