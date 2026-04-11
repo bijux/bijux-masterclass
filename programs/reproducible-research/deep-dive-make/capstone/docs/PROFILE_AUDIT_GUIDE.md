@@ -2,7 +2,6 @@
 
 # Profile Audit Guide
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -21,87 +20,85 @@ graph LR
 
 ```mermaid
 flowchart LR
-  command["Run profile-audit"] --> boundary["Read declared execution settings"]
-  boundary --> metrics["Inspect trace and runtime evidence"]
-  metrics --> policy["Compare behavior to the stated policy"]
-  policy --> review["Return with a concrete performance or boundary judgment"]
+  command["Run profile-audit"] --> boundary["Read the declared execution boundary"]
+  boundary --> precedence["Inspect target exposure and variable sources"]
+  precedence --> review["Decide whether the repository is explicit enough to audit"]
 ```
 <!-- page-maps:end -->
 
-Use this guide when the question is about execution policy: trace volume, runtime knobs,
-tool boundaries, or whether the capstone keeps observability and throughput concerns
-explicit instead of accidental.
+Use this guide when the question is about execution policy rather than product behavior:
+tool assumptions, shell expectations, GNU Make features, or variable precedence. This
+bundle is an audit route, not a benchmark report.
 
 ---
 
-## Reading Order
+## Reading order
 
 Read the profile audit bundle in this order:
 
 1. `route.txt`
-2. `README.md`
-3. `summary.txt`
-4. `settings.env`
-5. `trace-count.txt`
-6. `help.txt`
+2. `portability.txt`
+3. `mk/contract.mk`
+4. `help.txt`
+5. `TARGET_GUIDE.md`
+6. `origins.txt`
 7. `PROOF_GUIDE.md`
 8. `review-questions.txt`
 
-That route keeps declared boundary first, measured evidence second, and interpretation
+This keeps declared boundary first, published interface second, and precedence evidence
 third.
 
 [Back to top](#top)
 
 ---
 
-## What Each File Tells You
+## What each file tells you
 
 | File | Review purpose |
 | --- | --- |
-| `summary.txt` | shortest description of the audit result |
-| `settings.env` | make binary, shell, and guardrail settings used for the run |
-| `trace-count.txt` | whether observability cost stayed within the declared heuristic |
-| `help.txt` | which targets and variables are exposed publicly |
-| `PROOF_GUIDE.md` | how the profile audit fits into the wider proof surface |
-| `review-questions.txt` | prompts that force you to make an operational judgment |
+| `portability.txt` | records the toolchain, shell, and GNU Make feature boundary |
+| `mk/contract.mk` | shows where the policy and platform assumptions are declared in code |
+| `help.txt` | shows which targets and variables are actually published |
+| `TARGET_GUIDE.md` | explains how the public targets are meant to be used |
+| `origins.txt` | captures variable-origin information for precedence review |
+| `PROOF_GUIDE.md` | shows how this audit connects to the wider proof surface |
+| `review-questions.txt` | forces a concrete judgment instead of vague unease |
 
 [Back to top](#top)
 
 ---
 
-## What The Audit Should Help You Decide
+## What the audit should help you decide
 
 By the end of the profile audit, you should be able to answer:
 
-* whether the capstone declares its execution boundary clearly enough for another machine
-* whether trace volume is still a deliberate teaching guardrail instead of drift
-* whether a performance question belongs in the build graph, the harness, or a release path
-* whether the course is presenting execution policy as a first-class design concern
+- which assumptions are hard requirements of this repository
+- which parts of the command surface are stable enough for a learner or reviewer to rely on
+- which variables are intended to be overridden, and from which sources
+- whether a portability concern belongs in policy, documentation, or a stronger proof route
 
 [Back to top](#top)
 
 ---
 
-## Common Review Mistakes
+## Common review mistakes
 
 Avoid these:
 
-* treating `trace-count` as a benchmark instead of a guardrail
-* assuming portability questions can be answered from output files alone
-* treating profile review as separate from proof or contract review
-* ignoring `settings.env` and then reasoning from the wrong make binary or shell
+- treating this audit as a performance benchmark
+- reasoning about portability without reading `mk/contract.mk`
+- reviewing variable precedence from memory instead of `origins.txt`
+- assuming every documented command is part of the stable public surface without checking `help.txt`
 
 [Back to top](#top)
 
 ---
 
-## Best Companion Guides
+## Companion guides
 
-Use these with the profile audit:
-
-* `PROOF_GUIDE.md`
-* `SELFTEST_GUIDE.md`
-* `TARGET_GUIDE.md`
-* `CONTRACT_AUDIT_GUIDE.md`
+- `PROOF_GUIDE.md`
+- `TARGET_GUIDE.md`
+- `CONTRACT_AUDIT_GUIDE.md`
+- `SELFTEST_GUIDE.md`
 
 [Back to top](#top)
