@@ -48,7 +48,7 @@ The goal is to keep new work readable, bounded, and provable two years from now.
 
 ## Risky extensions
 
-- teaching the aggregate about infrastructure concerns
+- moving infrastructure concerns into the aggregate
 - adding procedural branching where a policy or value object should absorb variation
 - letting projections or repositories become authoritative
 - changing public behavior without updating the named proof route that justifies it

@@ -77,7 +77,7 @@ instead of engineering decisions.
 
 ## Keep these support surfaces open
 
-- `../guides/proof-matrix.md` when you want the learner outcome tied directly to a proof route.
+- `../guides/proof-matrix.md` when you want the module outcome tied directly to a proof route.
 - `../guides/module-promise-map.md` when you want this module kept honest as a semantic-floor contract.
 - `../reference/self-review-prompts.md` when you want to test whether identity, equality, and mutation already sound like review language instead of vocabulary recall.
 

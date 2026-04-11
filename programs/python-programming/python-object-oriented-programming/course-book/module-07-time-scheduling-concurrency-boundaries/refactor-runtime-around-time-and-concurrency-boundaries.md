@@ -54,4 +54,4 @@ workers, and bridge async adapters without corrupting the aggregate or hiding te
 1. Which object now owns time and scheduling policy?
 2. What state, if any, is intentionally shared across threads?
 3. Which API surfaces are sync-only, async-only, or bridge layers?
-4. Can a reader tell what happens if a scheduled action is retried or cancelled?
+4. Can you tell what happens if a scheduled action is retried or cancelled?
