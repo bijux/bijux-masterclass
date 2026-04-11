@@ -2,50 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 03: Iterators, Laziness, and Streaming Dataflow"]
-  module --> concept["Reusable Pipeline Stages"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  hardcoded["Start with a one-off streaming script"] --> config["Extract the choices into explicit captured configuration"]
+  config --> factory["Return a fresh stage or source each time"]
+  factory --> reuse["Reuse the stage without hidden globals or shared cursor state"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should help students tell the difference between a reusable stage and a script fragment that only looks reusable. The key distinction is whether configuration and iterator freshness are explicit or merely assumed.
 
-## Progression Note
-By the end of Module 3, you will master lazy generators, itertools mastery, and streaming pipelines that never materialize unnecessary data. This prepares you for safe recursion and error handling in streams (Module 4). See the series progression map in the repo root for full details.
+## Start With the Reuse Smell
 
-Here's a snippet from the progression map:
+Many codebases have "pipeline helpers" that still read globals, capture mutable state accidentally, or hand back iterators that cannot safely be reused. This lesson needs to make those failure modes obvious.
 
-| Module | Focus                                   | Key Outcomes                                           |
-|--------|-----------------------------------------|--------------------------------------------------------|
-| 2      | First-Class Functions & Expressive Python | Configurable pure pipelines without globals           |
-| 3      | Lazy Iteration & Generators             | Memory-efficient streaming, itertools mastery, short-circuiting |
-| 4      | Recursion & Error Handling in Streams   | Safe recursion, Result/Option, streaming errors        |
+- If a stage depends on globals, it is configured implicitly rather than honestly.
+- If calling the factory twice shares state, it is not producing fresh iterators.
+- If students cannot explain what is captured and what is passed in, the reuse boundary is still blurry.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you build reusable, composable iterator stages using closures and higher-order functions to create configurable pipelines instead of rigid one-off scripts, while preserving purity and equivalence?
 
-This core builds on **Core 5**'s fencing by introducing closures for truly reusable stages:
-- Use closures to configure generators.
-- Avoid globals/hardcoding; explicit frozen config.
-- Enable pipeline factories for tests, configs, and variants.
-- Preserve laziness and equivalence.
+This lesson introduces reusable streaming stages as explicit factories:
 
-We expand beyond the **running project** from Core 5 (FuncPipe RAG Builder from `m03-rag.md`) by adding cross-domain examples like log ETL, CSV streaming, API pagination, filesystem walks, and telemetry to prove scalability.
+- capture immutable configuration in a closure instead of reading hidden process state
+- return fresh iterators each time so reuse is real rather than accidental
+- keep the stage small enough that tests can exercise the contract independently of the full pipeline
 
-**Audience:** Developers with ad-hoc scripts needing reusable, testable pipelines.
+The broader examples matter here because the lesson is not only about one RAG pipeline. It is about recognizing a reusable streaming shape that survives across domains.
+
+**Audience:** Developers with ad-hoc streaming scripts who want reusable, testable stages instead of copy-pasted variants.
 
 **Outcome:**
 1. Spot hardcoding smells like globals.
@@ -76,11 +66,11 @@ We expand beyond the **running project** from Core 5 (FuncPipe RAG Builder from 
 
 ### 1.3 Why This Matters Now
 
-Hardcoded scripts are brittle; factories make reusable, configurable pipelines across domains like ETL, logging, and APIs.
+The previous lessons taught students how to make one pipeline lazy and safe. This lesson teaches them how to keep those properties when a stage needs variants, tests, and reuse across several pipelines. Without an explicit factory boundary, teams often slide back into globals, shared cursors, or duplicated logic.
 
 ### 1.4 Reusable Stages in 5 Lines
 
-Closure factory:
+The next snippet matters because it packages the configuration choice once and then leaves the actual stream input explicit.
 
 ```python
 def make_gen(env):
