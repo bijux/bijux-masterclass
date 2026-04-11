@@ -36,7 +36,7 @@ each suite to the boundary it is defending instead of reading `tests/` alphabeti
 6. `tests/test_cli.py`
 
 That route moves from aggregate authority into orchestration, persistence, and finally
-the learner-facing review surface.
+the public review surface.
 
 ## What each suite proves
 
@@ -44,10 +44,10 @@ the learner-facing review surface.
 | --- | --- |
 | `test_policy_lifecycle.py` | does the aggregate own lifecycle change directly and reject invalid transitions |
 | `test_policy_evaluation.py` | do policy objects express evaluation behavior without leaking it into the aggregate |
-| `test_application.py` | does the learner-facing facade preserve readable use cases without hiding domain ownership |
+| `test_application.py` | does the public facade preserve readable use cases without hiding domain ownership |
 | `test_runtime.py` | does runtime coordination stay outside the aggregate while still publishing incidents correctly |
 | `test_unit_of_work.py` | do repository and rollback boundaries behave as explicit persistence intent |
-| `test_cli.py` | do the learner-facing inspection commands reflect the scenario honestly |
+| `test_cli.py` | do the inspection commands reflect the scenario honestly |
 
 ## Failure-first routing
 
@@ -56,7 +56,7 @@ the learner-facing review surface.
 | lifecycle rules moved out of the aggregate | `model.py` | `test_policy_lifecycle.py` |
 | a new rule mode became a condition ladder instead of a policy seam | `policies.py` | `test_policy_evaluation.py` |
 | orchestration started deciding domain truth | `runtime.py` and `application.py` | `test_runtime.py` |
-| the learner-facing scenario stopped matching the intended use case | `application.py` and demo output | `test_application.py` or `test_demo.py` |
+| the public scenario stopped matching the intended use case | `application.py` and demo output | `test_application.py` or `test_demo.py` |
 | persistence or rollback semantics became blurry | `repository.py` | `test_unit_of_work.py` |
 | inspection output stopped telling the truth about the state | saved bundles and CLI output | `test_cli.py` |
 
@@ -65,7 +65,7 @@ the learner-facing review surface.
 - Which test would fail first if rule activation moved out of the aggregate?
 - Which test would fail first if a new rule mode were implemented with condition ladders?
 - Which test would fail first if projections started mutating authoritative state?
-- Which test would fail first if the learner-facing inspection route stopped matching the scenario?
+- Which test would fail first if the inspection route stopped matching the scenario?
 
 Keep [DOMAIN_GUIDE.md](domain-guide.md) nearby when the test names are
 clearer than the state transitions but you still need the lifecycle model in one place.
@@ -75,7 +75,7 @@ clearer than the state transitions but you still need the lifecycle model in one
 - pair lifecycle and evaluation suites when a change touches both aggregate ownership and replaceable policy behavior
 - pair application and runtime suites when a scenario route crosses the public facade and orchestration boundary
 - pair runtime and unit-of-work suites when infrastructure flow changes could blur persistence intent
-- pair CLI and application suites when learner-facing output must still reflect the same story and ownership claims
+- pair CLI and application suites when public output must still reflect the same story and ownership claims
 
 ## What this guide prevents
 

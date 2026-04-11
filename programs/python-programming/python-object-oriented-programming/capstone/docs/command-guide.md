@@ -25,11 +25,11 @@ the question instead of defaulting to the heaviest command.
 | If you want to... | Run | What you get |
 | --- | --- | --- |
 | inspect the current scenario state quickly | `make inspect` | a saved inspection bundle with summary, rules, history, variants, and local guides |
-| walk the learner-facing scenario first | `make tour` | a walkthrough bundle with scenario output and reading routes |
+| walk the scenario route first | `make tour` | a walkthrough bundle with scenario output and reading routes |
 | capture executable proof plus saved artifacts | `make verify-report` | pytest output plus saved review surfaces |
-| run the complete published learner route | `make proof` | inspect, tour, and verify-report together |
+| run the complete published review route | `make proof` | inspect, tour, and verify-report together |
 | run the simplest executable test route | `make test` | the pytest suite only |
-| run the strongest local confirmation route | `make confirm` | test plus the full learner proof route |
+| run the strongest local confirmation route | `make confirm` | test plus the full proof route |
 
 ## Choose the route by pressure
 
@@ -49,7 +49,7 @@ the question instead of defaulting to the heaviest command.
 
 - using `make proof` before the boundary question is clear
 - reading raw test output when the saved inspection or walkthrough bundle would answer the question better
-- treating `make test` as equivalent to the learner-facing proof route
+- treating `make test` as equivalent to the full proof route
 - skipping straight to `make confirm` when a lighter route would expose the same issue faster
 
 ## Best companion files

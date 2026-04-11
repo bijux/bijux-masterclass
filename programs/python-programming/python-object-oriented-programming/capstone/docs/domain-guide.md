@@ -50,7 +50,7 @@ the downstream read models record those alerts as open incidents and incident hi
 | `MonitoringPolicy` and its managed rules | authoritative domain state |
 | emitted domain events | durable description of what happened |
 | `ActiveRuleIndex` and `IncidentLedger` | derived read-model state |
-| CLI output and saved bundles | learner-facing review artifacts |
+| CLI output and saved bundles | guided review artifacts |
 
 ## Questions this guide should settle
 
