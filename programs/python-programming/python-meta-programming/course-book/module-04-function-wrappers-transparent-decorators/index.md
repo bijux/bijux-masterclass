@@ -60,7 +60,7 @@ By the end of Module 04, you should be able to explain five things clearly:
 4. [Thin Practical Wrappers at Call Time](thin-practical-wrappers-at-call-time.md)
 5. [Stateful Wrappers and Semantic Drift](stateful-wrappers-and-semantic-drift.md)
 6. [Wraps and Signature Transparency](wraps-and-signature-transparency.md)
-7. [Worked Example: Building a Didactic Cache Decorator](worked-example-building-a-didactic-cache-decorator.md)
+7. [Worked Example: Building a Bounded Cache Decorator](worked-example-building-a-bounded-cache-decorator.md)
 8. [Exercises](exercises.md)
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
@@ -74,7 +74,7 @@ By the end of Module 04, you should be able to explain five things clearly:
 | study thin practical wrappers such as timing and deprecation without hiding call-time costs | [Thin Practical Wrappers at Call Time](thin-practical-wrappers-at-call-time.md) |
 | judge when wrapper state turns a thin decorator into hidden policy | [Stateful Wrappers and Semantic Drift](stateful-wrappers-and-semantic-drift.md) |
 | preserve names, docs, signatures, and unwrapping routes honestly | [Wraps and Signature Transparency](wraps-and-signature-transparency.md) |
-| stress-test transparency and state inside one deliberately limited cache wrapper | [Worked Example: Building a Didactic Cache Decorator](worked-example-building-a-didactic-cache-decorator.md) |
+| stress-test transparency and state inside one deliberately limited cache wrapper | [Worked Example: Building a Bounded Cache Decorator](worked-example-building-a-bounded-cache-decorator.md) |
 | test your understanding before moving into heavier decorator policy | [Exercises](exercises.md) |
 | compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
 | stabilize the wrapper vocabulary | [Glossary](glossary.md) |

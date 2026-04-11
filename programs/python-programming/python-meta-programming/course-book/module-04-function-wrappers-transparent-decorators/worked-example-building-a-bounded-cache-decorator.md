@@ -1,4 +1,4 @@
-# Worked Example: Building a Didactic Cache Decorator
+# Worked Example: Building a Bounded Cache Decorator
 
 The five core lessons in Module 04 become much easier to trust when they all show up in
 one wrapper that is useful, tempting, and clearly not production-ready.
@@ -15,7 +15,7 @@ That makes it the right worked example for this module.
 
 ## The incident
 
-Assume a team wants a teaching cache decorator for small demos and local experiments.
+Assume a team wants a bounded cache decorator for small demos and local experiments.
 
 The decorator should:
 
@@ -29,7 +29,7 @@ up behaving like unreviewed framework features.
 
 ## The design boundary
 
-This worked example is deliberately didactic, not production-grade.
+This worked example is deliberately bounded, not production-grade.
 
 That means the design will:
 
@@ -39,7 +39,7 @@ That means the design will:
 - remain single-threaded and intentionally limited
 
 Those choices are not accidental. They make the wrapper more inspectable and easier to
-review as a teaching artifact.
+review as a small policy surface.
 
 ## Step 1: make the decorator factory timing explicit
 
@@ -82,7 +82,7 @@ The wrapper should keep the original function inspectable:
 
 That combination gives both transparency and testability.
 
-## A didactic implementation
+## A bounded implementation
 
 ```python
 import functools
@@ -145,7 +145,7 @@ def cache(maxsize: Optional[int] = 128) -> Callable:
     return decorator
 ```
 
-## Why this version is useful as a teaching artifact
+## Why this version is useful for review
 
 This cache is intentionally not pretending to be perfect.
 
@@ -161,7 +161,7 @@ That transparency is more important here than raw cleverness.
 
 ## The limitations are part of the lesson
 
-This decorator is didactic because it leaves real limitations visible:
+This decorator is bounded because it leaves real limitations visible:
 
 - it is not concurrency-safe
 - it uses a simple O(n) eviction path
@@ -169,7 +169,7 @@ This decorator is didactic because it leaves real limitations visible:
 - it is not a substitute for `functools.lru_cache`
 
 Those limitations are not embarrassing leftovers. They are the proof that the wrapper is
-being taught honestly.
+scoped honestly.
 
 ## Order and policy still matter
 
@@ -183,7 +183,7 @@ If you stack this cache with other decorators, semantics change:
 That reinforces the module's central point: stacked decorator order is semantic, not
 ornamental.
 
-## What this example teaches about Module 04
+## What this example makes clear about Module 04
 
 This worked example ties the module together:
 
@@ -192,8 +192,8 @@ This worked example ties the module together:
 - stateful wrappers deserve policy-level review
 - `functools.wraps` and explicit state surfaces keep the wrapper inspectable
 
-That is the real lesson. The cache is not here as a production recommendation. It is here
-as a clear specimen of where transparency starts to give way to policy.
+That is the durable takeaway. The cache is not here as a production recommendation. It is
+here as a clear specimen of where transparency starts to give way to policy.
 
 ## The review loop to keep
 

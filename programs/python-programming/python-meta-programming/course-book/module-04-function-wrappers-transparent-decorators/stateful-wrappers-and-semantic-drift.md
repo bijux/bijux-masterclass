@@ -124,7 +124,7 @@ If a wrapper owns meaningful state, the design may need an explicit hook such as
 - reset methods for tests
 - visible attributes for debugging
 
-That is one reason the worked example uses a didactic cache with explicit state surfaces
+That is one reason the worked example uses a bounded cache with explicit state surfaces
 instead of hiding everything behind one opaque closure.
 
 ## Review rules for stateful wrappers

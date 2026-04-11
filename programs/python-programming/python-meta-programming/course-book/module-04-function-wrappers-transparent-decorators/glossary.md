@@ -53,4 +53,4 @@ keep those boundaries explicit.
 
 - Return to [Module 04 Overview](index.md) for the full learning route.
 - Use [Exercises](exercises.md) and [Exercise Answers](exercise-answers.md) to pressure-test the wrapper vocabulary.
-- Revisit the [Worked Example](worked-example-building-a-didactic-cache-decorator.md) when a decorator starts to drift from transparent transformation into policy.
+- Revisit the [Worked Example](worked-example-building-a-bounded-cache-decorator.md) when a decorator starts to drift from transparent transformation into policy.

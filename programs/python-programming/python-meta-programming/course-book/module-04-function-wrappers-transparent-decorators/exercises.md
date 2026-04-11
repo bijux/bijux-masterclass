@@ -83,7 +83,7 @@ If an answer still sounds like "it just decorates the function," keep going.
 
 ## Continue through Module 04
 
-- Previous: [Worked Example: Building a Didactic Cache Decorator](worked-example-building-a-didactic-cache-decorator.md)
+- Previous: [Worked Example: Building a Bounded Cache Decorator](worked-example-building-a-bounded-cache-decorator.md)
 - Next: [Exercise Answers](exercise-answers.md)
 - Return: [Overview](index.md)
 - Terms: [Glossary](glossary.md)
