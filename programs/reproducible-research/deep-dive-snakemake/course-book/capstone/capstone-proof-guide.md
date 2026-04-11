@@ -40,7 +40,7 @@ repository stays smaller than the concept you are learning.
 | repository shape without execution | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `capstone-tour` |
 | executed workflow behavior | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `proof` |
 | publish-boundary trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `capstone-confirm` |
-| execution-policy differences | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | `proof` |
+| execution-policy differences | [Capstone Architecture Guide](capstone-architecture-guide.md) | `proof` |
 | steward-level confidence | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `capstone-confirm` |
 
 ## Bounded proof pass

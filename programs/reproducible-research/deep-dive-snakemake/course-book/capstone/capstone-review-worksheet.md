@@ -56,7 +56,7 @@ Best evidence:
 - `capstone/profiles/local/config.yaml`
 - `capstone/profiles/ci/config.yaml`
 - `capstone/profiles/slurm/config.yaml`
-- [Profile Audit Guide](profile-audit-guide.md)
+- [Capstone Architecture Guide](capstone-architecture-guide.md)
 
 ## Publish boundary
 
@@ -112,7 +112,7 @@ Recommended route:
 
 1. Read [Capstone Walkthrough](capstone-walkthrough.md).
 2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command for the current symptom.
-3. Compare the result with [Profile Audit Guide](profile-audit-guide.md) and the earlier sections of this worksheet if the problem spans multiple boundaries.
+3. Compare the result with [Capstone Architecture Guide](capstone-architecture-guide.md) and the earlier sections of this worksheet if the problem spans multiple boundaries.
 
 A good incident review should answer:
 
@@ -130,4 +130,3 @@ Finish with one of these judgments:
 
 If your conclusion is longer than a short paragraph, the review probably drifted away
 from one bounded question.
-
