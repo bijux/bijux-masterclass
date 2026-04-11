@@ -2,41 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["Applicative Validation"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  failfast["Start with fail-fast validation that hides later issues"] --> independent["Separate independent checks from dependent steps"]
+  independent --> accumulate["Accumulate all independent errors applicatively"]
+  accumulate --> review["Review the error combination rule explicitly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should help students stop conflating “validation” with “first error wins.” The key question is whether the checks depend on each other. If they do not, then forcing users to fix one field at a time is usually a design failure, not a necessity.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the Feedback Problem
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines | bind/and_then, Reader/State-like patterns, error-typed flows                |
+Students usually feel the pain of fail-fast validation before they know the name “applicative.” The lesson needs to begin from that user-facing problem.
+
+- If all the checks are independent, reporting only the first failure is usually unnecessary friction.
+- If one validation step depends on the output of another, then applicative accumulation is no longer the right default.
+- If students cannot explain how errors are combined, the validation policy is still too magical to trust.
 
 **Core question**  
 How do you replace short-circuiting validation that reports only the first error with lawful applicative combinators that run every check independently and return **all** errors at once — giving perfect diagnostics in one pass?
 
-Every real-world system eventually hits this wall:
+This lesson introduces applicative validation as the right tool for independent checks:
 
-**“Why does the user have to fix one validation error at a time in a 27-step cycle when every single problem was detectable from the start?”**
+- run each independent check without waiting for earlier checks to succeed
+- accumulate all errors using an explicit combination rule
+- keep constructor assembly separate from the error-reporting policy
+
+The motivating registration example matters because it captures the end-user impact clearly: repeated resubmission is often the direct result of the wrong validation shape.
 
 The naïve pattern (monadic / short-circuiting):
 
@@ -52,9 +47,9 @@ def validate_user(raw: RawUser) -> Result[User, ErrInfo]:
     return Ok(User(name.value, email.value, age.value))
 ```
 
-One error → resubmit → next error → resubmit → rage.
+This is the poor feedback loop the lesson needs students to spot immediately.
 
-The production pattern: use a dedicated **Validation** applicative that runs **all** checks independently and accumulates **every** error monoidally.
+The production pattern uses a dedicated validation container that treats error accumulation as a first-class rule rather than an ad hoc side effect of control flow.
 
 ```python
 # AFTER – one lawful, composable line
@@ -70,9 +65,9 @@ validated: Validation[User, ErrInfo] = validate_user(raw_user)
 # → VFailure(errors=("name too short", "invalid email", "age negative"))
 ```
 
-All errors, instantly. User loves you.
+Now the diagnostic behavior is part of the design, and it scales better both for users and for code review.
 
-**Audience**: Engineers tired of “fix one field, resubmit, repeat” who want mathematically correct, all-errors reporting.
+**Audience**: Engineers tired of “fix one field, resubmit, repeat” who want complete and principled validation feedback.
 
 **Outcome**
 1. Every short-circuit validator replaced with `Validation`.
