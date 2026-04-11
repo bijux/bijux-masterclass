@@ -1,21 +1,26 @@
 # Platform Setup
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete question you need answered"]
-  pressure --> guide["Platform Setup"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Guides"]
+  page["Platform Setup"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Name the exact setup question"] --> surface["Check the owning file or command"]
-  surface --> verify["Run one setup or proof route"]
-  verify --> next_move["Leave with one smaller next move"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

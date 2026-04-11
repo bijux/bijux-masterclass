@@ -2,26 +2,26 @@
 
 
 <!-- page-maps:start -->
-## Course Shape
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> home["Python Object-Oriented Programming"]
-  home --> modules["Modules 00-10"]
-  home --> guides["Guides"]
-  home --> reference["Reference"]
-  modules --> capstone["Capstone"]
-  guides --> capstone
-  reference --> capstone
+graph LR
+  family["Python Programming"]
+  program["Python Object-Oriented Programming"]
+  section["Course home"]
+  page["Python Object-Oriented Programming"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  promise["Read the course promise and scope"] --> orientation["Open Module 00 to anchor the mental model"]
-  orientation --> modules["Move into the module sequence that matches your pressure"]
-  modules --> support["Use guides and reference pages when they answer a concrete question"]
-  modules --> capstone["Bring the capstone in after the current idea is clear"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 
