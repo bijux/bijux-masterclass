@@ -43,3 +43,8 @@ Before the first technical module, you should be able to answer:
 - what this course treats as the core promises of a good workflow repository
 - why the capstone is executable corroboration rather than the first thing to read
 - which course arc matches your current pressure: file contracts, operations, publish trust, or stewardship
+
+## When to leave this route
+
+Move to [mid-course-map.md](mid-course-map.md) once Modules 01 to 03 feel stable and the
+main question becomes scaling, publish trust, software boundaries, or operating contexts.
