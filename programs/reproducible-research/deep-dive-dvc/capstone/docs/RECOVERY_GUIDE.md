@@ -19,18 +19,20 @@ graph TD
 flowchart LR
   before["Record before-status and remote config"] --> erase["Simulate local loss"]
   erase --> restore["Restore from remote-backed state"]
-  restore --> validate["Validate publish contract"]
-  validate --> inspect["Inspect the recovery evidence"]
+  restore --> validate["Validate the publish contract again"]
+  validate --> inspect["Inspect the saved recovery evidence"]
 ```
 <!-- page-maps:end -->
 
-This guide exists because recovery is easy to talk about loosely and hard to evaluate honestly.
+Recovery is easy to talk about loosely and hard to evaluate honestly. Use this guide when
+the question is not just whether `dvc pull` works, but what a successful restore actually
+proves.
 
 ## What the recovery drill proves
 
 - tracked state can be restored after local cache loss
 - the promoted publish bundle can be validated after restore
-- the remote is part of the repository’s durable story, not an optional convenience
+- the remote is part of the repository's durable story, not an optional convenience
 
 ## What the recovery drill does not prove
 
@@ -38,11 +40,12 @@ This guide exists because recovery is easy to talk about loosely and hard to eva
 - that experiments remain semantically comparable
 - that every local convenience file is reproducible or durable
 
-Read [STATE_LAYER_GUIDE.md](STATE_LAYER_GUIDE.md) when the main confusion is not the
-recovery sequence itself but which layer is authoritative before and after recovery.
+## Good route
 
-## Best route
+1. run `make recovery-drill` when you want the raw restore rehearsal
+2. run `make recovery-review` when you want a durable bundle for later inspection
+3. read `remote.txt`, `before-status.txt`, `pull.txt`, `checkout.txt`, `verify.json`, and `after-status.txt` in that order
+4. read `publish-v1/manifest.json` and the release summaries when the next question is downstream trust after restore
 
-1. Run `make recovery-drill` when you want the raw restore rehearsal.
-2. Run `make recovery-review` when you want a durable bundle for later inspection.
-3. Read `before-status.txt`, `pull.txt`, `checkout.txt`, `verify.json`, and `publish-v1/manifest.json` in that order.
+Read `STATE_LAYER_GUIDE.md` when the main confusion is not the recovery sequence itself
+but which layer is authoritative before and after recovery.
