@@ -2,43 +2,36 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 05: Algebraic Data Modelling and Validation"]
-  module --> concept["Domain State ADTs"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  flags["Start with status strings and mutable progress fields"] --> states["Split the lifecycle into explicit state variants"]
+  states --> transitions["Define transitions as pure functions"]
+  transitions --> review["Review terminal behavior and illegal moves directly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson needs to make state modelling feel concrete. Students should not leave thinking “ADTs for status values” is just a nicer syntax. They should see that explicit states and transitions remove entire classes of stuck, partial, and contradictory workflow bugs.
 
-## Progression Note
-By the end of Module 5, you will model **every** domain concept as immutable algebraic data types (products and tagged sums), eliminating whole classes of runtime errors through exhaustive pattern matching, mypy-checked totality, and pure serialization contracts.
+## Start With the Lifecycle Smell
 
-| Module | Focus                                 | Key Outcomes                                                                 |
-|--------|---------------------------------------|-------------------------------------------------------------------------------|
-| 4      | Safe Recursion & Error Handling       | Stack-safe tree recursion, folds, Result/Option, streaming validation/retries |
-| 5      | Advanced Type-Driven Design           | ADTs, exhaustive pattern matching, total functions, refined types           |
-| 6      | Monadic Flows as Composable Pipelines | bind/and_then, Reader/State-like patterns, error-typed flows                |
+The first sign that a state model is too weak is usually not a type error. It is a workflow bug: something stays “running” forever, skips required payload, or silently accepts an impossible event.
+
+- If state is a string plus several optional fields, illegal combinations are probably still representable.
+- If transitions mutate in place, students cannot easily reason about previous versus next state.
+- If terminal states do not have explicit behavior, later code will keep inventing its own rules.
 
 **Core question**  
 How do you model domain states like Pending/Running/Done/Failed as algebraic data types in Python — ensuring exhaustive handling, type-safe transitions, and total functions in every FuncPipe pipeline stage?
 
-We extend Core 1’s product/sum types to real domain state machines. The question every seasoned team eventually asks:
+This lesson extends the product/sum lesson into real state machines:
 
-**“Why do we still ship pipelines that mysteriously get stuck in half-finished states, process events out-of-order, or silently ignore terminal failures?”**
+- make each lifecycle state a first-class variant with the payload it truly owns
+- define transitions as pure functions so state movement is reviewable and testable
+- keep terminal and invalid-transition behavior explicit rather than scattered through callers
 
-The answer is always the same: you’re using strings, booleans, or mutable status objects instead of proper state ADTs with payloads and validated transitions.
+The motivating processing example matters because it shows how “just one status field” quickly turns into a brittle hidden protocol unless the states themselves are modeled directly.
 
 The naïve pattern everyone writes first:
 
@@ -54,7 +47,7 @@ class Job:
             self.status = "done"     # someone forgets to copy artifact_id
 ```
 
-Silent invalid transitions, mutable corruption, missed cases everywhere.
+This is the state-machine smell the lesson needs students to recognize: silent invalid transitions, mutable corruption, and missing payload at exactly the moment it matters.
 
 The production pattern: every state is a tagged variant with its own payload; every transition is a pure function forced to handle all cases.
 
@@ -87,9 +80,9 @@ def transition(state: ProcessingState, event: Event) -> ProcessingState:
     raise ValueError("invalid transition")
 ```
 
-Invalid transitions impossible, terminal states idempotent, adding a new event/state forces every transition site to update — forever.
+With explicit state variants and transition functions, the lifecycle becomes something the team can inspect and evolve deliberately instead of a hidden agreement spread across methods.
 
-**Audience**: Engineers tired of “stuck in running forever” bugs who want mathematically provable state machines.
+**Audience**: Engineers tired of “stuck in running forever” and “missing failure payload” bugs who want state machines the codebase can actually defend.
 
 **Outcome**
 1. Every flag/field soup replaced with exhaustive, payload-carrying state ADTs.
