@@ -11,7 +11,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PROGRAMS_DIR = REPO_ROOT / "programs"
 TARGET_ROOT = REPO_ROOT / "docs" / "library"
-ROOT_DOCS_HOME = REPO_ROOT / "docs" / "index.md"
 SKIP_PARTS = {
     ".pytest_cache",
     "__pycache__",
@@ -61,27 +60,10 @@ def rewrite_link_target(target: str) -> str:
     return normalize_catalog_path(target)
 
 
-def rewrite_root_link_target(target: str) -> str:
-    if "://" in target or target.startswith(("mailto:", "#")):
-        return target
-    normalized = normalize_catalog_path(target)
-    path, anchor = split_anchor(normalized)
-    return f"library/{path}{anchor}"
-
-
 def rewrite_markdown_links(content: str) -> str:
     return MARKDOWN_LINK_RE.sub(
         lambda match: (
             f"{match.group(1)}{rewrite_link_target(match.group(2))}{match.group(3)}"
-        ),
-        content,
-    )
-
-
-def rewrite_root_markdown_links(content: str) -> str:
-    return MARKDOWN_LINK_RE.sub(
-        lambda match: (
-            f"{match.group(1)}{rewrite_root_link_target(match.group(2))}{match.group(3)}"
         ),
         content,
     )
@@ -92,13 +74,10 @@ def copy_markdown_file(
     target_path: Path,
     *,
     rewrite_links: bool = False,
-    rewrite_root_links: bool = False,
 ) -> None:
     content = source_path.read_text(encoding="utf-8")
     if rewrite_links:
         content = rewrite_markdown_links(content)
-    if rewrite_root_links:
-        content = rewrite_root_markdown_links(content)
     target_path.parent.mkdir(parents=True, exist_ok=True)
     target_path.write_text(content, encoding="utf-8")
 
@@ -132,12 +111,6 @@ def main() -> int:
         raise FileNotFoundError(f"missing library README source: {missing}")
 
     reset_target_root()
-
-    copy_markdown_file(
-        PROGRAMS_DIR / "README.md",
-        ROOT_DOCS_HOME,
-        rewrite_root_links=True,
-    )
 
     for source_path, target_path in index_sources:
         copy_markdown_file(source_path, target_path, rewrite_links=True)

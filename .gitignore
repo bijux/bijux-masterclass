@@ -14,7 +14,6 @@ venv/
 env/
 site/
 docs/library/
-docs/index.md
 *.egg-info/
 __pycache__/
 .pytest_cache/
