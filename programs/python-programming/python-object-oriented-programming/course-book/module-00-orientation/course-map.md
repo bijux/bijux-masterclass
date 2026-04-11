@@ -86,4 +86,4 @@ Use this when you are reviewing capstone hardening or planning real extensions.
 
 - First-Contact Map: keep [Module Promise Map](../guides/module-promise-map.md) open.
 - Mid-Course Map: keep [Pressure Routes](../guides/pressure-routes.md) and [Capstone Map](../capstone/capstone-map.md) open.
-- Mastery Map: keep [Proof Ladder](../guides/proof-ladder.md) and [Capstone Review Checklist](../capstone/capstone-review-checklist.md) open.
+- Mastery Map: keep [Proof Ladder](../guides/proof-ladder.md) and [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) open.

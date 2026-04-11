@@ -119,6 +119,8 @@ The FuncPipe RAG capstone matures with the course:
 - You know which orientation page to revisit when you need the short route, the full route, or the capstone route.
 - You can describe how Modules 01 to 10 change the capstone, not just what topics they mention.
 
-## Directory glossary
+## Stable vocabulary
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Reference Glossary](../reference/glossary.md) when you want the recurring language in
+this course kept stable while you move between orientation, modules, guides, and capstone
+proof.

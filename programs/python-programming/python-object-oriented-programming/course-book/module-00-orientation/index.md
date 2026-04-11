@@ -124,6 +124,8 @@ The monitoring-system capstone matures with the course:
 - You know which guide to revisit when you need the course map, the module promise map, or the checkpoint bar.
 - You can describe how the capstone grows from semantic example to operational review surface across the ten modules.
 
-## Directory glossary
+## Stable vocabulary
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Reference Glossary](../reference/glossary.md) when you want the recurring language in
+this course kept stable while you move between orientation, modules, guides, and capstone
+proof.

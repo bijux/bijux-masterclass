@@ -112,7 +112,7 @@ to see what each rung looks like in practice.
 | lower-power class customization | [Module 06](module-06-class-customization-pre-metaclasses/index.md) | generated constructors in `capstone/src/incident_plugins/framework.py` | `make signatures` and `capstone/tests/test_runtime.py` |
 | descriptors and attribute ownership | [Modules 07-08](module-07-descriptors-lookup-attribute-control/index.md) | `capstone/src/incident_plugins/fields.py`, [Capstone File Guide](capstone/capstone-file-guide.md) | `make field` and `capstone/tests/test_fields.py` |
 | metaclass design and class creation | [Module 09](module-09-metaclass-design-class-creation/index.md) | registration in `capstone/src/incident_plugins/framework.py` | `make registry` and `capstone/tests/test_registry.py` |
-| runtime governance and review judgment | [Module 10](module-10-runtime-governance-mastery-review/index.md) | saved bundles from `make inspect`, `make tour`, and `make verify-report` | [Capstone Proof Checklist](capstone/capstone-proof-checklist.md) and `pytest.txt` |
+| runtime governance and review judgment | [Module 10](module-10-runtime-governance-mastery-review/index.md) | saved bundles from `make inspect`, `make tour`, and `make verify-report` | [Capstone Proof Guide](capstone/capstone-proof-guide.md) and `pytest.txt` |
 
 ### Review judgment
 
