@@ -1,6 +1,5 @@
 # Publish Contract
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -19,26 +18,25 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
-  inspect --> run["Run the confirm, demo, selftest, or proof command"]
-  run --> compare["Compare output with the stated contract"]
-  compare --> review["Return to the course claim with evidence"]
+  question["What may a downstream reviewer trust"] --> inventory["Read the promoted inventory"]
+  inventory --> meaning["Read the promoted control, model, metric, and record surfaces"]
+  meaning --> limit["Decide what this contract covers and what it does not"]
 ```
 <!-- page-maps:end -->
 
 `publish/v1/` is the stable downstream interface for this DVC capstone. It is smaller
-than the full repository on purpose: downstream reviewers should not need the entire
+than the full repository on purpose. A downstream reviewer should not need the entire
 internal training story to understand what was promoted.
 
 ## Published files
 
 | File | Meaning | Why it belongs in the promoted contract |
 | --- | --- | --- |
-| `data-profile.json` | row counts and dataset profile from the split step | it explains what population the evaluation summarizes |
-| `metrics.json` | accuracy, precision, recall, f1, threshold, and eval row count | it is the first quantitative review surface |
+| `data-profile.json` | row counts and population profile from the split step | it explains what population the evaluation summarizes |
+| `metrics.json` | promoted accuracy, precision, recall, f1, threshold, and eval row count | it is the first quantitative review surface |
 | `model.json` | trained model coefficients and metadata | it preserves the promoted scoring behavior |
 | `params.yaml` | promoted split, training, and decision parameters | it keeps the semantic control surface explicit |
-| `predictions.csv` | eval predictions with identifiers and outcomes | it supports spot checks on real records |
+| `predictions.csv` | promoted eval predictions with identifiers and outcomes | it supports spot checks on real rows |
 | `report.md` | human-readable summary of the promoted state | it gives a concise review surface without forcing raw file inspection |
 | `manifest.json` | promoted inventory with hashes and training summary | it binds the release boundary into one auditable record |
 
@@ -53,12 +51,7 @@ internal training story to understand what was promoted.
 
 Those questions still belong to the wider repository and its recorded execution state.
 
-Read [STATE_LAYER_GUIDE.md](STATE_LAYER_GUIDE.md) when the next question is why
-`publish/v1/` is authoritative for downstream review but not for the entire repository story.
-
-## Best review route
-
-Use this order:
+## Good review order
 
 1. `manifest.json`
 2. `data-profile.json`
@@ -67,16 +60,12 @@ Use this order:
 5. `metrics.json`
 6. `report.md`
 7. `predictions.csv`
-8. `release-summary.json` from the tour or release review bundle when you want the compact review surface
 
 That route moves from contract inventory into control surface, then into evaluation, then
 into record-level evidence.
 
-Read [MODEL_GUIDE.md](MODEL_GUIDE.md) when the next review question is what exact scoring
-behavior was promoted rather than only what metrics came out of it.
+## Companion routes
 
-Use `make manifest-summary` when you want the promoted inventory, training metadata, and
-decision threshold rendered into one compact review surface before opening the raw manifest.
-
-Read [DATA_PROFILE_GUIDE.md](DATA_PROFILE_GUIDE.md) when the next review question is
-which population the promoted metrics and predictions actually describe.
+- use `make manifest-summary` when you want the promoted inventory rendered into one compact surface
+- use `make release-review` when you need the surrounding summaries and saved review bundle
+- use `STATE_LAYER_GUIDE.md` when the next question is why `publish/v1/` is authoritative for downstream trust but not for the entire repository story
