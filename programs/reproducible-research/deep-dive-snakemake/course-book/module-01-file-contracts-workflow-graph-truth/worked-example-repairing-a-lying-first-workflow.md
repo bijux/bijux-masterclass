@@ -5,7 +5,7 @@ that tells the truth about files, reruns, and published outputs.
 
 ## The situation
 
-Assume a learner is building a tiny workflow over two text files:
+Assume you are building a tiny workflow over two text files:
 
 - `data/A.txt`
 - `data/B.txt`
@@ -21,7 +21,7 @@ where beginners accidentally build a workflow that looks fine while teaching bad
 
 ## The first draft
 
-The learner writes this:
+You write this:
 
 ```python
 import time
@@ -95,7 +95,7 @@ Right now `rule all` says the finished result is `results/summary.txt`.
 That means `prepare` is outside the real target story unless its output becomes part of an
 explicit input chain.
 
-This is Core 1 in action. The learner realizes:
+This is Core 1 in action. You realize:
 
 - `prepare` is not "forgotten by Snakemake"
 - it is irrelevant to the requested target
@@ -109,7 +109,7 @@ In this example, the right answer is removal. The flag is not real workflow trut
 
 ## Step 2: fix the rerun lie
 
-The learner then runs:
+You then run:
 
 ```bash
 snakemake
@@ -126,7 +126,7 @@ The reason is not mysterious:
 
 This is Core 2.
 
-The repair is to remove the unstable time value from the rule's meaning. If the learner
+The repair is to remove the unstable time value from the rule's meaning. If you
 actually needs a run identifier, it should be an explicit stable config value or sidecar
 audit artifact, not part of the summary's semantic content.
 
@@ -161,7 +161,7 @@ avoidance.
 
 ## Step 4: separate meaning from policy
 
-Suppose the learner now wants to make the sample list configurable.
+Suppose you now want to make the sample list configurable.
 
 A weak move would be putting samples into a profile.
 
@@ -194,14 +194,14 @@ validate(config, "config/schema.yaml")
 SAMPLES = config["samples"]
 ```
 
-This is Core 4. The learner now has a clean story:
+This is Core 4. You now have a clean story:
 
 - config changes workflow meaning
 - profile changes execution behavior
 
 ## Step 5: repair publication and failure evidence
 
-The learner also notices that the summary rule writes directly to the final output.
+You also notice that the summary rule writes directly to the final output.
 
 That means a failure could leave a half-written `results/summary/counts.tsv`.
 
@@ -244,7 +244,7 @@ This is Core 5:
 
 ## The repaired workflow
 
-After the fixes, the learner has something much healthier:
+After the fixes, you have something much healthier:
 
 ```python
 from snakemake.utils import validate
@@ -301,7 +301,7 @@ This version is not advanced. It is honest.
 
 ## The evidence after repair
 
-The learner can now ask much better questions and get clear answers.
+You can now ask much better questions and get clear answers.
 
 Dry-run:
 
@@ -333,13 +333,13 @@ DAG:
 snakemake --dag | dot -Tpdf > dag.pdf
 ```
 
-The learner should now see:
+You should now see:
 
 - two `stage_upper` jobs
 - one `summarize_counts` job
 - one `all` target
 
-That is a workflow the learner can explain, not just run.
+That is a workflow you can explain, not just run.
 
 ## What changed conceptually
 
@@ -356,9 +356,9 @@ flowchart TD
 That diagram is the real lesson of the example. Each repair made the workflow easier to
 predict.
 
-## What a strong learner summary sounds like
+## What a strong summary sounds like
 
-A strong learner summary sounds like this:
+A strong summary sounds like this:
 
 > The first draft looked acceptable, but it lied about what mattered. One helper rule was
 > not part of the target graph, the summary rule changed meaning every run, staged outputs
