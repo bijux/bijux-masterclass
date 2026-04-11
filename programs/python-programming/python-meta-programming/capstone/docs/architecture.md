@@ -29,8 +29,8 @@ flowchart LR
 <!-- page-maps:end -->
 
 This capstone is intentionally small, but its architecture is strict. Each file owns one
-layer of the runtime so the learner can see where class-definition behavior ends and
-runtime behavior begins.
+layer of the runtime so you can see where class-definition behavior ends and runtime
+behavior begins.
 
 ## Architectural boundaries
 
@@ -77,8 +77,8 @@ Owns concrete delivery adapters that make the abstractions tangible.
 ## Why this architecture is pedagogic
 
 The files are separated by mechanism rather than by framework convention alone. That
-lets the learner ask, file by file, which behavior belongs to a field, a wrapper, a
-metaclass, or ordinary runtime code.
+lets you ask, file by file, which behavior belongs to a field, a wrapper, a metaclass,
+or ordinary runtime code.
 
 ## Best review routes for architecture questions
 

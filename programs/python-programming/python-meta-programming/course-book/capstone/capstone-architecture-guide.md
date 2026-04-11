@@ -47,7 +47,7 @@ metaclass each own one narrow boundary and the CLI exposes those boundaries with
 
 | Slice | Owner | What it owns | What it does not own |
 | --- | --- | --- | --- |
-| public observation | `src/incident_plugins/cli.py` and manifest helpers in `framework.py` | learner-facing inspection routes, manifest export, registry and signature reporting | business policy hidden behind private helper magic |
+| public observation | `src/incident_plugins/cli.py` and manifest helpers in `framework.py` | guided inspection routes, manifest export, registry and signature reporting | business policy hidden behind private helper magic |
 | callable transformation | `src/incident_plugins/actions.py` | action wrapping, signature preservation, and action-history recording | field validation, registry design, or class creation |
 | attribute contracts | `src/incident_plugins/fields.py` | field metadata, coercion, validation, and per-instance storage behavior | action invocation semantics or plugin registration |
 | class-creation rules | `src/incident_plugins/framework.py` | plugin registration, generated constructor signatures, and manifest assembly | application-specific delivery behavior |
@@ -57,8 +57,8 @@ metaclass each own one narrow boundary and the CLI exposes those boundaries with
 
 - The wrapper logic is visible in one file instead of being spread across plugins.
 - The field logic is visible in one file instead of being buried inside plugin constructors.
-- The metaclass stays narrow enough that learners can compare it to class decorators and explicit registration.
-- The CLI and saved bundles make the runtime observable before learners read internals.
+- The metaclass stays narrow enough that you can compare it to class decorators and explicit registration.
+- The CLI and saved bundles make the runtime observable before you read internals.
 
 ## Architecture questions to ask while reading
 
