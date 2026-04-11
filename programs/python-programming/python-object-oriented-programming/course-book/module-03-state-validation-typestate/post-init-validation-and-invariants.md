@@ -63,7 +63,7 @@ class Threshold:
             raise ValueError("Threshold must be non-negative")
 ```
 
-This yields a powerful teaching guarantee:
+This yields a powerful design guarantee:
 > “If you have a `Threshold`, it’s valid.”
 
 The rest of the system can rely on that without re-validating.

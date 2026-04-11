@@ -98,7 +98,7 @@ Similarly, hashing:
 - frozen dataclasses can generate `__hash__`,
 - but only if equality is by value and the fields are hashable.
 
-If ordering has domain meaning, implement it explicitly or define a key function. Avoid “accidental ordering” as a teaching rule.
+If ordering has domain meaning, implement it explicitly or define a key function. Avoid “accidental ordering” as a design rule.
 
 ## 6. `__post_init__` and Inheritance Can Double-Run or Not Run
 
