@@ -87,6 +87,5 @@ them.
 - You can add or remove behavior with smaller blast radius than before.
 - You can point to one proof surface that would fail first if the anti-pattern returned.
 
-An atlas like this keeps the course honest. It proves the book is not just teaching
-clean examples; it is also teaching how to recognize and repair the clumsy code people
-actually inherit.
+An atlas like this keeps the course honest. It shows more than clean examples; it also
+helps you recognize and repair the clumsy code people actually inherit.

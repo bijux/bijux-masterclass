@@ -43,7 +43,7 @@ remains governable under change, it belongs in the center of this course.
 
 ## Topics that are adjacent, not central
 
-These matter, but they are supporting material rather than the main teaching target:
+These matter, but they are supporting material rather than the main design target:
 
 - type-checker details beyond what is needed for protocols, contracts, and object design
 - ORM or framework APIs beyond the design pressure they introduce

@@ -41,7 +41,7 @@ evidence.
 
 | Claim | Best first command | Best first surface |
 | --- | --- | --- |
-| a reader can inspect the capstone in one bounded walkthrough | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` | `walkthrough.txt`, `TOUR.md`, `WALKTHROUGH_GUIDE.md` |
+| the capstone can be inspected in one bounded walkthrough | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` | `walkthrough.txt`, `TOUR.md`, `WALKTHROUGH_GUIDE.md` |
 | executable tests and saved review state still agree | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` | `pytest.txt`, `summary.txt`, `history.txt`, `snapshot.json` |
 | the strongest local confirmation route still holds | `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` | executable suite plus saved review bundles |
 | the full public proof route still builds end to end | `make PROGRAM=python-programming/python-object-oriented-programming proof` | inspection, walkthrough, and verification bundles together |

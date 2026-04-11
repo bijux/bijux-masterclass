@@ -82,4 +82,4 @@ At each step, inspect one capstone surface before escalating to the strongest pr
 route.
 
 This course gets stronger when you can enter from pressure honestly instead of
-pretending every reader should always start from the same place.
+pretending every route should always start from the same place.

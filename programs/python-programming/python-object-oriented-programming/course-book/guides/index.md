@@ -71,7 +71,7 @@ module tree can stay focused on long-lived content.
 - `guides/` stays the reading route and proof shelf
 - `capstone/` stays the capstone-specific reading, proof, and review shelf
 - `reference/` stays the durable review shelf
-- `module-00-orientation/` plus Modules `01` to `10` stay the teaching arc
+- `module-00-orientation/` plus Modules `01` to `10` stay the course arc
 
 ## Directory glossary
 
