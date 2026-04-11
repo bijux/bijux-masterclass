@@ -1,301 +1,118 @@
 # Module 02: Data Identity and Content Addressing
 
+Module 02 turns the first big DVC claim into something concrete:
 
-<!-- page-maps:start -->
-## Module Position
+paths are not identity.
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> module["Module 02: Data Identity and Content Addressing"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
-```
+If a workflow still treats `data/train.csv` as if the filename itself were the truth, the
+rest of the program will stay brittle. Pipelines, experiments, release bundles, and
+recovery drills all depend on a more durable idea:
 
-```mermaid
-flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
-```
-<!-- page-maps:end -->
+- identity comes from content, not location
+- mutable workspace files are not the same thing as authoritative recorded state
+- caches and remotes are part of the trust model, not implementation trivia
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+This module is where learners stop saying "the file is over there" and start saying "the
+system is claiming these exact bytes."
 
-*Why data must be immutable, and how DVC enforces identity*
+The capstone corroboration surface for this module is the set of files and review routes
+that separate state layers and recovery: `dvc.lock`, `publish/v1/`, `make state-summary`,
+`make recovery-review`, `docs/STATE_LAYER_GUIDE.md`, and `docs/RECOVERY_GUIDE.md`.
 
----
+## Why this module exists
 
-## Purpose of this Module
+Many teams can describe where a file lives today and still cannot answer:
 
-This module makes the first non-negotiable rule explicit: paths are not identity. A
-reproducible system needs a way to say what a datum is, not only where it happened to
-live when someone last touched it.
+- whether the same bytes existed last month
+- which copy is authoritative
+- how a lost workspace gets rebuilt honestly
+- why a renamed file can still represent the same data
 
-Use this module to shift from location-based thinking to identity-based thinking. By the
-end, you should be able to explain why content addressing, caches, remotes, and recovery
-boundaries are all part of the same trust story.
+This module repairs that confusion by replacing location-based thinking with
+content-based identity and explicit state layers.
 
-If that foundation is weak, later lessons about pipelines and experiments will rest on
-the wrong assumption that filenames preserve truth.
-
-## Why this module matters in the course
-
-This is the first module where the course stops talking about failure symptoms and starts
-defining a repair boundary. If the learner leaves this module still thinking that
-`data/train.csv` is the identity of the data, every later practice will be brittle:
-
-- pipeline reruns will be hard to interpret
-- experiment comparisons will be weak
-- remote recovery will feel magical instead of mechanical
-
-The point of this module is not merely to explain DVC's cache layout. It is to replace
-"where the file lives" with "what bytes the system is claiming."
-
-## Questions this module should answer
-
-By the end of the module, you should be able to answer:
-
-- Why is a path only a locator and not an identity?
-- What is the difference between workspace state, Git state, cache state, and remote state?
-- Which layer is mutable, and which layer is authoritative?
-- Why does content addressing make collaboration and recovery possible?
-
-If those answers are still fuzzy, pause here before moving on to pipeline semantics.
-
-## At a Glance
-
-| Focus | Learner question | Capstone timing |
-| --- | --- | --- |
-| content identity | "What makes two datasets the same?" | use the capstone after you can name the state layers clearly |
-| state layers | "Which copy is mutable, and which one is authoritative?" | inspect `dvc.lock`, cache, remote, and publish state deliberately |
-| recovery logic | "How does content identity make restoration possible?" | do not let remote behavior feel magical |
-
-## Learning outcomes
-
-- explain why paths are locators rather than identity and why content addressing changes the trust story
-- distinguish workspace, Git, cache, remote, and promoted state without treating them as one blob of “the repo”
-- describe how content identity enables recovery and collaboration instead of relying on private memory
-
-## Verification route
-
-- Inspect `capstone/dvc.lock`, the local cache, and the configured remote together so each state layer has a concrete artifact.
-- Run `make PROGRAM=reproducible-research/deep-dive-dvc capstone-state-summary` after the module’s state layers feel legible.
-- Confirm that you can explain which copy is mutable, which copy is authoritative, and which copy is only a recovery source before moving on.
-
-## What to inspect in the capstone
-
-Keep the capstone open while reading this module and inspect:
-
-- `data/raw/service_incidents.csv` as committed source state
-- `dvc.lock` as the recorded state transition after execution
-- `.dvc/cache/` and the configured remote as content-addressed storage layers
-- `publish/v1/` as a versioned projection for downstream consumers
-
-That contrast matters. The course is trying to teach that these locations do different
-jobs even when they all contain "the data."
-
-If the learner still thinks a filename is the identity of the data, this module is not
-done yet.
-
----
-
-## 2.1 The Fundamental Error: Equating Paths with Identity
-
-Conventional machine learning (ML) workflows tacitly presume: "This file constitutes the data," where "this file" denotes a path, filename, or directory. This presumption proves profoundly erroneous.
-
-### Limitations of Path-Based Identity
-Paths exhibit mutability, context-dependence, machine specificity, and reliance on interpersonal consensus. For instance, identical byte sequences might reside at:
-
-- `data/train.csv`
-- `data/final/train.csv`
-- `/mnt/datasets/train.csv`
-- `~/Downloads/train.csv`
-
-Path-dependent identity undermines refactoring, invalidates historical records, and complicates collaboration. Paths signify location, not essence; systems anchoring identity to location are inherently unstable.
-
-**Illustration**:
+## Study route
 
 ```mermaid
-graph TD
-  bytes["Same Bytes"]
-  paths["Different Paths<br/>data/train.csv<br/>data/final/train.csv<br/>/mnt/datasets/train.csv"]
-  impact["Broken Provenance<br/>Invalid History<br/>Ambiguous Collaboration"]
-  bytes --> paths --> impact
+flowchart LR
+  overview["Overview"] --> core1["Core 1: paths are locators"]
+  core1 --> core2["Core 2: content addressing and pointer files"]
+  core2 --> core3["Core 3: workspace, Git, cache, remote, publish"]
+  core3 --> core4["Core 4: add, push, pull, checkout as state moves"]
+  core4 --> core5["Core 5: failure, recovery, and trust"]
+  core5 --> example["Worked example"]
+  example --> practice["Exercises and answers"]
+  practice --> glossary["Glossary"]
 ```
 
----
+Read the module in that order the first time.
 
-## 2.2 Content-Derived Identity as the Sole Viable Approach
+If the problem is already partly clear, use this shortcut:
 
-DVC asserts unequivocally: **Two data artifacts are identical if, and only if, their byte sequences match.**
+- open Core 1 when the main confusion is "why isn't the path enough?"
+- open Core 2 when the main confusion is "what does DVC actually record?"
+- open Core 3 when the main confusion is "which copy is authoritative?"
+- open Core 4 when the main confusion is "what is `dvc add` or `dvc pull` really doing?"
+- open Core 5 when the main confusion is "how does this help recovery rather than folklore?"
 
-This is a deliberate architectural decision, representing the singular definition aligned with reproducibility imperatives.
+## Module map
 
-### Advantages of Content-Based Identity
-Such identity remains location-agnostic, resilient to renames and restructurings, facilitates deduplication, and permits mathematical corroboration. Files sharing a content hash are substitutable, cacheable singularly, and recoverable universally. A single-byte divergence designates distinct data, precluding conflation and mandating divergent downstream results. No intermediary states exist.
+| Page | Purpose |
+| --- | --- |
+| `index.md` | explains the module promise and study route |
+| `paths-are-locators-not-data-identity.md` | teaches why filenames and directories are not durable identity |
+| `content-addressing-cache-and-pointer-files.md` | teaches how DVC records content identity and references it |
+| `workspace-git-cache-remote-and-published-state.md` | teaches how the major DVC state layers differ |
+| `dvc-add-push-pull-and-checkout-as-state-moves.md` | teaches the main DVC commands as movements between state layers |
+| `failure-modes-recovery-and-trust.md` | teaches how identity and recovery failures should be interpreted |
+| `worked-example-restoring-a-dataset-after-local-loss.md` | walks through one realistic recovery-oriented identity story |
+| `exercises.md` | gives five mastery exercises |
+| `exercise-answers.md` | explains model answers and review logic |
+| `glossary.md` | keeps the module vocabulary stable |
 
----
+## What should be clear by the end
 
-## 2.3 The Four Layers of State: A Precise Delineation
+By the end of this module, you should be able to explain:
 
-DVC repositories comprise four stratified layers, each with delineated duties.
+- why a path is only a locator and not the identity of the data
+- how content addressing changes the trust story
+- how workspace, Git, cache, remote, and published state differ
+- what `dvc add`, `dvc push`, `dvc pull`, and `dvc checkout` actually move or restore
+- how identity and recovery failures should be read without mysticism
 
-### 1. Workspace (Working Tree)
-- Visible disk files.
-- Inherently mutable.
-- Entirely deletable without loss.
+## Commands to keep close
 
-The workspace serves as a transient projection, not an authoritative repository.
+These commands form the evidence loop for Module 02:
 
-### 2. Git Repository
-- Versions compact text artifacts, including `.dvc` files, `dvc.yaml`, `params.yaml`, and `dvc.lock`.
-- Manages references, excluding raw data.
-
-Git documents intended existence, not actual presence.
-
-### 3. Local DVC Cache
-- Content-addressed storage mechanism.
-- Append-only structure.
-- Branch-agnostic sharing.
-
-Objects reside under hash-derived paths, such as `.dvc/cache/ab/cdef1234...`. This layer holds local authority but lacks cross-machine durability.
-
-### 4. Remote Storage
-- Persistent backend (e.g., S3, GCS, SSH).
-- Hash-indexed.
-- Supports recovery and cooperative workflows.
-
-The remote constitutes the definitive recovery source, superseding Git.
-
-### Layer Hierarchy
-Authority propagates downward: Remote → Cache → Git pointers → Workspace. Upward flows are precluded.
-
-**Illustration**:
-
-```mermaid
-graph LR
-  remote["Remote<br/>Durable"]
-  cache["Cache<br/>Local Authority"]
-  git["Git<br/>References"]
-  workspace["Workspace<br/>Mutable Projection"]
-  remote --> cache --> git --> workspace
+```bash
+make -C capstone state-summary
+make -C capstone manifest-summary
+make -C capstone recovery-review
 ```
 
----
+The point is not to memorize commands. It is to tie each state layer to a concrete file or
+bundle so the learner stops treating the repository as one undifferentiated blob.
 
-## 2.4 Mechanics of `dvc add`: A Stepwise Analysis
+## Capstone route
 
-Users often overlook these intricacies; this section provides clarity.
+Use the capstone only after the state layers are already legible in your head.
 
-Executing `dvc add data/raw.csv` entails three indivisible operations:
+Best corroboration surfaces for this module:
 
-1. **Byte Reading and Hashing**: Computes a cryptographic hash (MD5 default).
+- `capstone/dvc.lock`
+- `capstone/publish/v1/manifest.json`
+- `capstone/docs/STATE_LAYER_GUIDE.md`
+- `capstone/docs/RECOVERY_GUIDE.md`
+- `capstone/docs/PUBLISH_CONTRACT.md`
+- `capstone/Makefile`
 
-2. **Cache Storage**: Places bytes under a hash-derived path, ensuring immutability post-writing.
+Useful proof route:
 
-3. **Pointer File Generation**: Creates `data/raw.csv.dvc`, embedding hash, size, and path metadata.
-
-Git subsequently versions the pointer, decoupling data from direct management. Resultantly, data achieves path independence, rename resilience, and global identifiability.
-
-**Example Command Output (Illustrative)**:
-```
-$ dvc add data/raw.csv
-Adding...
-!WARNING! "data/raw.csv" is located outside of Git repository.
-To track the contents with Git, run:
-
-    git add data/raw.csv.dvc
-
-Use `dvc push` to send it to remote storage.
+```bash
+make -C capstone state-summary
+make -C capstone manifest-summary
+make -C capstone recovery-review
 ```
 
----
-
-## 2.5 Elements Explicitly Excluded from DVC Tracking
-
-Understanding omissions is paramount.
-
-DVC omits: semantic interpretation, accuracy, schema integrity, timestamps, permissions, ownership, and intent. Erroneous data (e.g., mislabeled CSV columns) is versioned indifferently. This reflects deliberate separation of concerns: DVC assures identity, not quality.
-
----
-
-## 2.6 Immutability of Identity and Its Implications
-
-Cached objects remain unaltered, unoverwritable, and unupdatable. File modifications generate new hashes and objects, preserving predecessors. This enables branch-efficient operations, historical retrieval, audit trails, and reliable comparisons. Mutable historical systems compromise provenance.
-
----
-
-## 2.7 Empirical Verification: The Destruction Test
-
-Assertions demand validation.
-
-### Clean-Room Recovery Protocol
-1. Commit `.dvc` files and metadata to Git.
-2. Upload cache objects remotely.
-3. Erase the workspace completely.
-4. Clone afresh on another machine.
-5. Execute: `dvc pull` followed by `dvc checkout`.
-
-Byte-for-byte restoration affirms the invariant; discrepancies indicate implicit dependencies. This procedure defines success, not an elective.
-
-**Guidance**: Perform in a controlled environment to avoid data loss; document outcomes for reference.
-
----
-
-## 2.8 Failure Modes and Interpretations
-
-Failures serve diagnostic purposes.
-
-| Symptom                      | Interpretation                |
-| ---------------------------- | ----------------------------- |
-| Data absence post-checkout   | Incomplete cache or remote    |
-| Hash mismatch                | External workspace alteration |
-| Inter-machine data variance  | Uncaptured identity           |
-| `dvc pull` failure           | Absent remote objects         |
-
-Each aligns with an invariant breach; DVC's rigor prioritizes clarity over leniency.
-
----
-
-## 2.9 Prevalent Anti-Patterns and Their Detriments
-
-- **Redownloading Data**: Eradicates historical identity.
-- **Git LFS for Data**: Sustains storage but neglects semantics and lineage.
-- **Reliance on Trust**: Fails at scale; systemic safeguards prevail.
-
----
-
-## 2.10 Essential Conceptual Framework
-
-> **Git manages decisions; DVC manages facts; the workspace is expendable.**
-
-Discomfort with this paradigm signals productive reevaluation of prior practices.
-
----
-
-## Module 02: Invariants Checklist
-
-Affirm and justify:
-
-- [ ] Data identity derives exclusively from content.
-- [ ] Paths do not constitute identity.
-- [ ] Identity remains immutable.
-- [ ] Workspace is disposable.
-- [ ] Cache holds local authority.
-- [ ] Remote facilitates recovery.
-- [ ] Recovery validates correctness.
-
-Resolve ambiguities before advancement.
-
----
-
-## Transition to Module 03
-
-This module resolves data identification and recovery comprehensively. Yet reproducibility persists in faltering due to unaddressed execution environments as inputs. Module 03 illuminates this concealed factor undermining robust systems.
-
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+The point of that route is not to admire the capstone. It is to practice naming which
+layer is authoritative for which fact before trusting what you see.
