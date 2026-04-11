@@ -7,7 +7,7 @@ The goal is not to reject the run. The goal is to say exactly what the run can s
 
 ## The situation
 
-A learner compares a current run against the last release.
+Suppose you compare a current run against the last release.
 
 The metric diff looks encouraging:
 
@@ -25,7 +25,7 @@ Module 05 asks for a better question:
 
 ## Step 1: Inspect the parameter surface
 
-The learner checks the parameter diff:
+You check the parameter diff:
 
 ```text
 evaluate.threshold  0.65 -> 0.50
@@ -34,7 +34,7 @@ fit.model_family    logistic_regression -> logistic_regression
 
 Now the story changes. The model family did not change, but the evaluation threshold did.
 
-The learner writes a more honest first note:
+You write a more honest first note:
 
 > F1 increased, but the evaluation threshold changed. This is not yet a same-control model
 > improvement claim.
@@ -44,7 +44,7 @@ were pure model improvement.
 
 ## Step 2: Check population and schema
 
-Next the learner inspects the metric file:
+Next you inspect the metric file:
 
 ```json
 {
@@ -68,7 +68,7 @@ The threshold still changed, so the conclusion still needs a limit.
 
 ## Step 3: Read the direction of the tradeoff
 
-The learner compares the supporting metrics:
+You compare the supporting metrics:
 
 ```text
 precision_at_fixed_threshold  0.78 -> 0.75
@@ -81,7 +81,7 @@ That may be exactly what the team wants for incident escalation, where missed es
 are costly. But it must be stated as a release judgment, not hidden behind one aggregate
 number.
 
-The learner writes:
+You write:
 
 > The threshold change improved recall substantially while reducing precision. Promotion
 > would be a policy decision favoring recall, not a simple quality win.
@@ -90,11 +90,11 @@ The learner writes:
 
 The release review includes a calibration plot.
 
-The learner does not say:
+You do not say:
 
 > The plot looks fine.
 
-Instead, the learner checks:
+Instead, you check:
 
 - same evaluation population
 - same binning rule
@@ -112,7 +112,7 @@ The plot supports the review. It does not replace it.
 
 ## Step 5: Decide what can be promoted
 
-The learner prepares a release-facing note:
+You prepare a release-facing note:
 
 > Compared with release `v1`, fixed-threshold F1 increased from 0.81 to 0.84 on the same
 > metric schema and evaluation population size. The evaluation threshold changed from 0.65
@@ -147,5 +147,5 @@ This one story exercises the whole module:
 - Core 4: metric diff was used as a starting point, not a conclusion
 - Core 5: plot evidence and release judgment were kept inside a clear review note
 
-The learner goal is not to make every comparison impossible. It is to make each
-comparison honest enough to survive review.
+The goal is not to make every comparison impossible. It is to make each comparison honest
+enough to survive review.
