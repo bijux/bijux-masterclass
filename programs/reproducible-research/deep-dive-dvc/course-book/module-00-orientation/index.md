@@ -38,6 +38,7 @@ promotion, remote-backed recovery, and the review habits that keep those claims 
 | what journey does the whole course take | [course-map.md](course-map.md) |
 | what should my first session look like | [first-contact-map.md](first-contact-map.md) |
 | how should I bridge from state foundations into comparison, recovery, and promotion | [mid-course-map.md](mid-course-map.md) |
+| how should I re-enter the course for stewardship, migration, or trust review | [mastery-map.md](mastery-map.md) |
 | which recurring terms matter before Module 01 | [glossary.md](glossary.md) |
 
 ## What this course is trying to build
@@ -66,5 +67,6 @@ the concept you are studying.
 - [course-map.md](course-map.md)
 - [first-contact-map.md](first-contact-map.md)
 - [mid-course-map.md](mid-course-map.md)
+- [mastery-map.md](mastery-map.md)
 - [how-to-study-this-course.md](how-to-study-this-course.md)
 - [glossary.md](glossary.md)

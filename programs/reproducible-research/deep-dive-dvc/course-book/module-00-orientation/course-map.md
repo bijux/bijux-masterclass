@@ -67,3 +67,5 @@ Leave this arc able to review a real DVC repository and justify what should chan
   starting route.
 - Read [Mid-Course Map](mid-course-map.md) when Modules 01 to 04 already feel stable and
   you need the bridge into comparison, collaboration, recovery, and promotion.
+- Read [Mastery Map](mastery-map.md) when the pressure is stewardship, migration, or
+  downstream trust review.

@@ -67,6 +67,11 @@ state.
 Leave this step able to explain what belongs in the promoted bundle and what must remain
 internal evidence.
 
+## When to leave this route
+
+Move to [mastery-map.md](mastery-map.md) once the question becomes stewardship,
+migration, or whether DVC should keep owning the concern at all.
+
 ## Good next move after this map
 
 Open exactly one of these before resuming:
