@@ -95,6 +95,15 @@ nav:
           - Overview: module-08-descriptor-systems-validation-framework-design/index.md
       - "Module 09: Metaclass Design and Class Creation":
           - Overview: module-09-metaclass-design-class-creation/index.md
-      - "Module 10: Runtime Governance and Mastery":
+      - "Module 10: Runtime Governance and Mastery Review":
           - Overview: module-10-runtime-governance-mastery-review/index.md
+          - Dynamic Execution, Trust Boundaries, and Process Isolation: module-10-runtime-governance-mastery-review/dynamic-execution-trust-boundaries-and-process-isolation.md
+          - Interface Contracts with ABCs, Protocols, and __subclasshook__: module-10-runtime-governance-mastery-review/interface-contracts-with-abcs-protocols-and-subclasshook.md
+          - Observability, Reversibility, and Monkey-Patching Boundaries: module-10-runtime-governance-mastery-review/observability-reversibility-and-monkey-patching-boundaries.md
+          - Import Hooks, AST Transforms, and Tooling Boundaries: module-10-runtime-governance-mastery-review/import-hooks-ast-transforms-and-tooling-boundaries.md
+          - Mechanism Selection, Review Gates, and Escalation Boundaries: module-10-runtime-governance-mastery-review/mechanism-selection-review-gates-and-escalation-boundaries.md
+          - Worked Example: module-10-runtime-governance-mastery-review/worked-example-reviewing-a-plugin-runtime-for-observability-and-control.md
+          - Exercises: module-10-runtime-governance-mastery-review/exercises.md
+          - Exercise Answers: module-10-runtime-governance-mastery-review/exercise-answers.md
+          - Glossary: module-10-runtime-governance-mastery-review/glossary.md
           - Mastery Review: module-10-runtime-governance-mastery-review/mastery-review.md
