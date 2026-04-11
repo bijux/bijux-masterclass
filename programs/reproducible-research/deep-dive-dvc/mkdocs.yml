@@ -154,6 +154,15 @@ nav:
           - Glossary: module-07-collaboration-ci-social-contracts/glossary.md
       - "Module 08: Production, Scale, and Incident Survival":
           - Overview: module-08-recovery-scale-incident-survival/index.md
+          - Durability Boundaries and Recovery Goals: module-08-recovery-scale-incident-survival/durability-boundaries-and-recovery-goals.md
+          - Retention Policy and History Value: module-08-recovery-scale-incident-survival/retention-policy-and-history-value.md
+          - Garbage Collection and Cache Safety: module-08-recovery-scale-incident-survival/garbage-collection-and-cache-safety.md
+          - Remote Migration and CI Drift: module-08-recovery-scale-incident-survival/remote-migration-and-ci-drift.md
+          - Incident Response and Maintainer Handoffs: module-08-recovery-scale-incident-survival/incident-response-and-maintainer-handoffs.md
+          - "Worked Example: Restoring After Local Cache Loss": module-08-recovery-scale-incident-survival/worked-example-restoring-after-local-cache-loss.md
+          - Exercises: module-08-recovery-scale-incident-survival/exercises.md
+          - Exercise Answers: module-08-recovery-scale-incident-survival/exercise-answers.md
+          - Glossary: module-08-recovery-scale-incident-survival/glossary.md
       - "Module 09: Promotion, Registry Boundaries, Release Contracts, and Auditability":
           - Overview: module-09-promotion-registry-boundaries-auditability/index.md
       - "Module 10: Migration, Governance, Anti-Patterns, and DVC Tool Boundaries":
