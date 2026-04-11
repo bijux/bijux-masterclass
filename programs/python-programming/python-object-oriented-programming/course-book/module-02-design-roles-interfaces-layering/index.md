@@ -77,7 +77,7 @@ should collaborate without turning the system into framework theater.
 ## Keep these support surfaces open
 
 - `../guides/outcomes-and-proof-map.md` when you want the role-assignment promise tied to a capstone proof route.
-- `../guides/design-question-map.md` when the ownership question feels clearer than the chapter title.
+- `../guides/pressure-routes.md` when the ownership question feels clearer than the chapter title.
 - `../reference/self-review-prompts.md` when you want to test whether you can justify one owner and reject a nearby wrong owner.
 
 ## Common failure modes

@@ -37,11 +37,9 @@ module tree can stay focused on long-lived content.
 
 ## Use These For Study Planning
 
-- [Design Question Map](design-question-map.md) when you know the design problem faster than the module name
+- [Pressure Routes](pressure-routes.md) when you know the design problem faster than the module name
 - [Module Promise Map](module-promise-map.md) when you want each module title translated into a learner contract
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
-- [Study Routes](study-routes.md) when you need a session-sized reading plan
-- [Systems Route](systems-route.md) when you want the heavier second half of the course treated as one design arc
 - [Pressure Routes](pressure-routes.md) when your route is shaped by a concrete design or review problem
 - [Module Dependency Map](module-dependency-map.md) and [Practice Map](practice-map.md) when you need the sequence and rehearsal loop explained
 

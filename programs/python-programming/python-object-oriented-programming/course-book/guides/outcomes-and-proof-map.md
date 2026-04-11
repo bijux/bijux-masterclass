@@ -27,7 +27,7 @@ stable proof route in the capstone or the review shelf.
 | If the intended outcome is... | Read first | Inspect next | Best proof route |
 | --- | --- | --- | --- |
 | explain what an object means instead of treating it like a bag of fields | Module 01 and [Module Promise Map](module-promise-map.md) | `src/service_monitoring/model.py`, lifecycle tests | `make inspect` |
-| assign behavior to values, entities, policies, services, and adapters honestly | Module 02 and [Design Question Map](design-question-map.md) | `model.py`, `application.py`, `policies.py` | `make tour` |
+| assign behavior to values, entities, policies, services, and adapters honestly | Module 02 and [Pressure Routes](pressure-routes.md) | `model.py`, `application.py`, `policies.py` | `make tour` |
 | make illegal states and lifecycle errors harder to construct | Module 03 and [Module Checkpoints](module-checkpoints.md) | lifecycle methods and validation paths in `model.py` | `make inspect` |
 | keep cross-object invariants inside the right aggregate boundary | Module 04 and [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) | aggregate events, projections, and event flow | `make verify-report` |
 | place retries, cleanup, recovery, and orchestration outside domain ownership | Module 05 and [Pressure Routes](pressure-routes.md) | `runtime.py`, unit-of-work surfaces, error handling tests | `make tour` |

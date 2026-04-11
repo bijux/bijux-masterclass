@@ -81,13 +81,11 @@ Modules 08 to 10 ask whether the model can be trusted:
 
 ## Support Pages To Keep Open
 
-- [Outcomes And Proof Map](outcomes-and-proof-map.md) when you want the course promises tied directly to evidence
-- [Design Question Map](design-question-map.md) when the design question is clearer than the module name
+- [Proof Matrix](proof-matrix.md) when you want the course promises tied directly to evidence
+- [Pressure Routes](pressure-routes.md) when the design question is clearer than the module name
 - [Module Promise Map](module-promise-map.md) when you want the module titles translated into explicit learner contracts
 - [Module Checkpoints](module-checkpoints.md) when you need a module-end exit bar
 - [Module Dependency Map](module-dependency-map.md) when the reading order needs justification
-- [Study Routes](study-routes.md) when you need a human-sized session plan instead of the full course at once
-- [Systems Route](systems-route.md) when Modules 04 to 10 need to feel like one coherent design climb
 - [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
 - [Pressure Routes](pressure-routes.md) when the next useful module depends on the design pressure you are under
 - [Proof Ladder](proof-ladder.md) when you need to size proof correctly

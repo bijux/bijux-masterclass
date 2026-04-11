@@ -55,13 +55,12 @@ If those still feel shaky, slow down and treat [Orientation](../module-00-orient
 1. Read [Course Home](../index.md) for the course promise and module arc.
 2. Read [Course Guide](course-guide.md) for the module sequence and page roles.
 3. Read [Learning Contract](learning-contract.md) before you start Module 01.
-4. Read [Outcomes And Proof Map](outcomes-and-proof-map.md) so the learner promises stay tied to evidence from the start.
+4. Read [Proof Matrix](proof-matrix.md) so the learner promises stay tied to evidence from the start.
 5. Read [Orientation](../module-00-orientation/index.md) and [Course Map](../module-00-orientation/course-map.md) for the full structure.
 6. Read [Platform Setup](platform-setup.md) before your first executable route or after local Python drift.
-7. Use [Design Question Map](design-question-map.md), [Module Promise Map](module-promise-map.md), and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
+7. Use [Pressure Routes](pressure-routes.md), [Module Promise Map](module-promise-map.md), and [Module Checkpoints](module-checkpoints.md) to keep the titles honest as you move forward.
 8. Keep [Capstone](../capstone/index.md) open while reading so the ownership claims stay tied to one executable system.
-9. Use [Study Routes](study-routes.md) when you need a session-sized plan instead of the full course at once.
-10. Use [Proof Ladder](proof-ladder.md), [Command Guide](../capstone/command-guide.md), and [Capstone Map](../capstone/capstone-map.md) when you want the executable route.
+9. Use [Proof Ladder](proof-ladder.md), [Command Guide](../capstone/command-guide.md), and [Capstone Map](../capstone/capstone-map.md) when you want the executable route.
 
 ## Choose a reading mode before you continue
 
@@ -71,6 +70,17 @@ If those still feel shaky, slow down and treat [Orientation](../module-00-orient
 
 The course is easier to trust when you decide which mode you are in before opening more
 pages.
+
+## If you need a session-sized plan
+
+Use this simple session recipe instead of opening more route pages:
+
+- 20 minutes: read one module overview, inspect one named capstone file, and stop after one stable ownership answer.
+- 45 minutes: read one overview, one key chapter, and one checkpoint or promise page, then inspect one capstone file and one proof surface.
+- 90 minutes: read one full module, inspect the matching capstone guide and source surface, then use the narrowest proof route that actually answers the question.
+
+If the second half of the course is the real source of density, switch to the
+Modules 04 to 10 arc inside [Pressure Routes](pressure-routes.md) instead of browsing the shelf.
 
 ## If you have one hour
 
@@ -83,7 +93,7 @@ pages.
 ## If you are tired but still want honest progress
 
 1. Read one module overview only.
-2. Read one support page that narrows the question: [Design Question Map](design-question-map.md), [Pressure Routes](pressure-routes.md), or [Module Checkpoints](module-checkpoints.md).
+2. Read one support page that narrows the question: [Pressure Routes](pressure-routes.md) or [Module Checkpoints](module-checkpoints.md).
 3. Inspect one capstone surface named by that page.
 4. Stop after you can say which boundary owns the behavior.
 
