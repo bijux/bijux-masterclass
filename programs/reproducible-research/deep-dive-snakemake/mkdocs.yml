@@ -108,6 +108,15 @@ nav:
           - Glossary: module-03-production-operations-policy-boundaries/glossary.md
       - "Module 04: Scaling Workflows and Interface Boundaries":
           - Overview: module-04-scaling-workflows-interface-boundaries/index.md
+          - Rule Families, Includes, and Named Ownership: module-04-scaling-workflows-interface-boundaries/rule-families-includes-and-named-ownership.md
+          - Modules, Reuse, and Explicit Interfaces: module-04-scaling-workflows-interface-boundaries/modules-reuse-and-explicit-interfaces.md
+          - File APIs, Schemas, and Public Contracts: module-04-scaling-workflows-interface-boundaries/file-apis-schemas-and-public-contracts.md
+          - CI Gates, Drift Control, and Review Surfaces: module-04-scaling-workflows-interface-boundaries/ci-gates-drift-control-and-review-surfaces.md
+          - Resource Boundaries and Executor-Proof Workflow Design: module-04-scaling-workflows-interface-boundaries/resource-boundaries-and-executor-proof-workflow-design.md
+          - "Worked Example: Refactoring a Growing Workflow Without Hiding It": module-04-scaling-workflows-interface-boundaries/worked-example-refactoring-a-growing-workflow-without-hiding-it.md
+          - Exercises: module-04-scaling-workflows-interface-boundaries/exercises.md
+          - Exercise Answers: module-04-scaling-workflows-interface-boundaries/exercise-answers.md
+          - Glossary: module-04-scaling-workflows-interface-boundaries/glossary.md
       - "Module 05: Software Boundaries and Reproducible Rules":
           - Overview: module-05-software-boundaries-reproducible-rules/index.md
       - "Module 06: Publishing and Downstream Contracts":

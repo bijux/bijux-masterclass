@@ -60,7 +60,7 @@ Return to the module first if:
 | 01 File Contracts | what makes the workflow file-driven instead of script-shaped | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make walkthrough` |
 | 02 Dynamic DAGs | where discovery becomes explicit instead of magical | checkpoint rule files, discovered-set artifacts, `publish/v1/discovered_samples.json` | `make verify` |
 | 03 Production Operation | what counts as workflow semantics versus operating policy | `profiles/`, `Makefile`, `tests/selftest.sh` | `make profile-audit` |
-| 04 Scaling Patterns | how repository structure stays legible as the workflow grows | `workflow/rules/`, `FILE_API.md`, `TOUR.md` | `make tour` |
+| 04 Scaling Patterns | how repository structure stays legible as the workflow grows | `workflow/rules/`, `workflow/modules/`, `FILE_API.md`, `TOUR.md` | `make tour` |
 | 05 Rule Boundaries | where helper code, wrappers, and environments belong | `workflow/envs/`, `workflow/scripts/`, `src/capstone/` | `make proof` |
 | 06 Publish Contracts | what downstream consumers may trust from the workflow | `publish/v1/`, `FILE_API.md`, publish bundle evidence | `make verify-report` |
 | 07 Workflow Architecture | how rules, helpers, and file APIs are split deliberately | `Snakefile`, `workflow/rules/`, `src/capstone/` | `make proof` |
