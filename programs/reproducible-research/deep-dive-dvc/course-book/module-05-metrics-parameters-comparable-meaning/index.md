@@ -80,16 +80,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `metrics-as-semantic-claims.md` | teaches why metric values need population, definition, and intent |
-| `parameters-as-comparison-controls.md` | teaches which controls belong to `params.yaml` and review |
-| `metric-files-schemas-and-stability.md` | teaches stable metric file structure and meaning over time |
-| `metrics-diff-and-review-boundaries.md` | teaches what DVC diffs can show and what humans must still judge |
-| `plots-and-release-interpretation.md` | teaches plots, visual evidence, and release-facing metric discipline |
-| `worked-example-repairing-a-misleading-metric-comparison.md` | walks through one realistic comparison repair |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Metrics as Semantic Claims](metrics-as-semantic-claims.md) | teaches why metric values need population, definition, and intent |
+| [Parameters as Comparison Controls](parameters-as-comparison-controls.md) | teaches which controls belong to `params.yaml` and review |
+| [Metric Files, Schemas, and Stability](metric-files-schemas-and-stability.md) | teaches stable metric file structure and meaning over time |
+| [Metrics Diff and Review Boundaries](metrics-diff-and-review-boundaries.md) | teaches what DVC diffs can show and what humans must still judge |
+| [Plots and Release Interpretation](plots-and-release-interpretation.md) | teaches plots, visual evidence, and release-facing metric discipline |
+| [Worked Example: Repairing a Misleading Metric Comparison](worked-example-repairing-a-misleading-metric-comparison.md) | walks through one realistic comparison repair |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

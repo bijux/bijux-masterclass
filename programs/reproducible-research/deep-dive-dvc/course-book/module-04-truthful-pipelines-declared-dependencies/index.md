@@ -75,16 +75,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `stage-contracts-and-declared-truth.md` | teaches the promise each DVC stage makes |
-| `dependency-parameter-output-boundaries.md` | teaches how to place inputs, controls, and outputs in the graph |
-| `dvc-repro-staleness-and-lock-evidence.md` | teaches how `dvc repro` decides and how `dvc.lock` records evidence |
-| `false-reruns-and-stale-outputs.md` | teaches how to distinguish wasteful reruns from dangerous stale results |
-| `safe-pipeline-refactoring-and-shared-outputs.md` | teaches graph change, shared intermediates, and multi-output care |
-| `worked-example-repairing-a-deceptive-pipeline.md` | walks through one realistic pipeline review and repair |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Stage Contracts and Declared Truth](stage-contracts-and-declared-truth.md) | teaches the promise each DVC stage makes |
+| [Dependency, Parameter, and Output Boundaries](dependency-parameter-output-boundaries.md) | teaches how to place inputs, controls, and outputs in the graph |
+| [DVC Repro, Staleness, and Lock Evidence](dvc-repro-staleness-and-lock-evidence.md) | teaches how `dvc repro` decides and how `dvc.lock` records evidence |
+| [False Reruns and Stale Outputs](false-reruns-and-stale-outputs.md) | teaches how to distinguish wasteful reruns from dangerous stale results |
+| [Safe Pipeline Refactoring and Shared Outputs](safe-pipeline-refactoring-and-shared-outputs.md) | teaches graph change, shared intermediates, and multi-output care |
+| [Worked Example: Repairing a Deceptive Pipeline](worked-example-repairing-a-deceptive-pipeline.md) | walks through one realistic pipeline review and repair |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 

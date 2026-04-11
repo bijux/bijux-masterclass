@@ -74,16 +74,16 @@ If the problem is already partly clear, use this shortcut:
 
 | Page | Purpose |
 | --- | --- |
-| `index.md` | explains the module promise and study route |
-| `baseline-authority-and-experiment-intent.md` | teaches how a baseline anchors controlled exploration |
-| `experiment-scope-and-change-boundaries.md` | teaches which changes belong in one experiment and which require stronger review |
-| `dvc-experiment-records-and-isolation.md` | teaches what DVC experiments record, compare, and keep separate |
-| `comparing-experiments-and-selecting-candidates.md` | teaches candidate comparison without metric cherry-picking |
-| `promotion-cleanup-and-history-integrity.md` | teaches deliberate promotion, discard, and baseline protection |
-| `worked-example-promoting-a-controlled-threshold-experiment.md` | walks through one realistic experiment review |
-| `exercises.md` | gives five mastery exercises |
-| `exercise-answers.md` | explains model answers and review logic |
-| `glossary.md` | keeps the module vocabulary stable |
+| [Overview](index.md) | explains the module promise and study route |
+| [Baseline Authority and Experiment Intent](baseline-authority-and-experiment-intent.md) | teaches how a baseline anchors controlled exploration |
+| [Experiment Scope and Change Boundaries](experiment-scope-and-change-boundaries.md) | teaches which changes belong in one experiment and which require stronger review |
+| [DVC Experiment Records and Isolation](dvc-experiment-records-and-isolation.md) | teaches what DVC experiments record, compare, and keep separate |
+| [Comparing Experiments and Selecting Candidates](comparing-experiments-and-selecting-candidates.md) | teaches candidate comparison without metric cherry-picking |
+| [Promotion, Cleanup, and History Integrity](promotion-cleanup-and-history-integrity.md) | teaches deliberate promotion, discard, and baseline protection |
+| [Worked Example: Promoting a Controlled Threshold Experiment](worked-example-promoting-a-controlled-threshold-experiment.md) | walks through one realistic experiment review |
+| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
+| [Glossary](glossary.md) | keeps the module vocabulary stable |
 
 ## What should be clear by the end
 
