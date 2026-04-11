@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import socket
 import subprocess
 import sys
@@ -102,6 +103,9 @@ def main() -> int:
         file=sys.stderr,
     )
 
+    env = os.environ.copy()
+    env["SITE_URL"] = f"http://{args.host}:{selected_port}/"
+
     command = [
         sys.executable,
         "-m",
@@ -113,7 +117,7 @@ def main() -> int:
         f"{args.host}:{selected_port}",
     ]
     try:
-        return subprocess.call(command)
+        return subprocess.call(command, env=env)
     except KeyboardInterrupt:
         return 130
 
