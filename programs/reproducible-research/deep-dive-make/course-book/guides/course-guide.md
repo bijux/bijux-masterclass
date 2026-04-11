@@ -26,7 +26,7 @@ matching surface, then leave with one smaller next move.
 Deep Dive Make has four durable surfaces:
 
 1. course home and orientation for entry and reading order
-2. modules for the teaching arc itself
+2. modules for the course arc itself
 3. capstone pages for executable corroboration
 4. reference pages for durable review and repair maps
 
@@ -41,7 +41,7 @@ Deep Dive Make has four durable surfaces:
 | module-to-repository routing | [Capstone Map](../capstone/capstone-map.md) | raw repository files |
 | durable review maps | [Reference](../reference/index.md) | course-home prose |
 
-## The teaching arc
+## The Course Arc
 
 | Arc | Modules | What becomes legible |
 | --- | --- | --- |

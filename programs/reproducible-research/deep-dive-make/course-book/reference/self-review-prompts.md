@@ -12,7 +12,7 @@ judgment instead of command memorization.
 ## Public contract and artifacts
 
 - Which target is truly public, and which one are you only assuming is public?
-- Which output is a build result, which is proof evidence, and which is only teaching material?
+- Which output is a build result, which is proof evidence, and which is only controlled example material?
 - What would another maintainer inspect first before trusting this build?
 
 ## Incidents and stewardship

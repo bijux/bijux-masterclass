@@ -24,7 +24,7 @@ Read the first diagram as a lookup map: this page is part of the review shelf, n
 
 This page answers a question the rest of the course only implied: which Make topics are
 core to this program, which ones support the core, and which ones are intentionally
-treated as boundaries rather than as central teaching goals.
+treated as boundaries rather than as central course goals.
 
 Use it when the course feels incomplete, too opinionated, or too selective. The point is
 to make that selectivity explicit instead of accidental.
@@ -41,7 +41,7 @@ job.
 | truthful dependency graphs | Make is only trustworthy when edges are real | 01, 02, 06 | `make --trace`, convergence, depfile checks |
 | parallel safety | `-j` must change throughput, not meaning | 02, 03, 05 | serial versus parallel equivalence |
 | deterministic build behavior | flaky rebuild meaning destroys confidence | 02, 03, 09 | selftest, rooted discovery, incident evidence |
-| public target contracts | readers and maintainers need a stable build API | 03, 07, 08 | `make help`, contract audit, review bundles |
+| public target contracts | review and maintenance need a stable build API | 03, 07, 08 | `make help`, contract audit, review bundles |
 | generated-file boundaries | generators are where build truth often collapses | 05, 06 | generated-header routes and repros |
 | release and publication contracts | outputs need a trustworthy downstream surface | 06, 08 | dist, attest, install, contract audit |
 | operational review and migration judgment | a long-lived build needs stewardship, not only syntax | 09, 10 | incident audit, review dump, migration rubric |
@@ -101,7 +101,7 @@ badge of Make sophistication.
 
 ## Blind Spots This Page Protects Against
 
-Without an explicit boundary page, readers can come away with the wrong conclusions:
+Without an explicit boundary page, it is easy to come away with the wrong conclusions:
 
 * “The course forgot shell and compiler topics.”
   It did not forget them. It scoped them to what Make truth actually depends on.

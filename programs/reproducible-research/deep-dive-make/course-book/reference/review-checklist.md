@@ -19,13 +19,13 @@ goal is to turn build feelings into explicit review judgments.
 
 - Which layer should own this behavior: top-level `Makefile`, `mk/*.mk`, tests, or repros?
 - Does the current placement make the build easier to review or only more indirect?
-- Would a reader know where to look without oral history?
+- Does the review path make the right file discoverable without oral history?
 
 ## Artifact and proof boundaries
 
-- Which outputs are build results, which are review evidence, and which are only teaching specimens?
+- Which outputs are build results, which are review evidence, and which are only failure specimens?
 - Is proof output kept separate from artifact identity?
-- Does the repro material teach one failure class clearly without masquerading as production advice?
+- Does the repro material isolate one failure class clearly without masquerading as production advice?
 
 ## Stewardship
 

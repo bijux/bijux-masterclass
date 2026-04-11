@@ -12,7 +12,7 @@ output.
 ## Public and proof boundaries
 
 - Is this target part of the supported command surface?
-- Does this artifact belong to the build, the proof bundle, or the teaching material?
+- Does this artifact belong to the build, the proof bundle, or the controlled example material?
 - Has review evidence leaked into artifact identity or vice versa?
 
 ## Layer boundaries
@@ -24,5 +24,5 @@ output.
 ## Stewardship boundaries
 
 - Which layer should own this change: top-level `Makefile`, `mk/*.mk`, tests, or repros?
-- Would a new reader know where to look without oral history?
+- Does the review path make the right file discoverable without oral history?
 - What would make you reject this change as too clever for the trust it earns?
