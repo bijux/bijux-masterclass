@@ -1,6 +1,6 @@
 # Helper Code, Packages, and Reusable Boundaries
 
-Once learners accept that some logic should move out of rules, the next question appears
+Once you accept that some logic should move out of rules, the next question appears
 immediately:
 
 > where should that code live?
@@ -75,7 +75,7 @@ then the wrapper has reduced clarity rather than improved it.
 | `src/` package code | the repository's software layer | reusable logic, tests, direct imports |
 | wrapper | a stable external command surface | standard invocation without repeating plumbing |
 
-This table gives learners a practical way to reason about placement without memorizing
+This table gives you a practical way to reason about placement without memorizing
 rules blindly.
 
 ## A concrete split
@@ -159,4 +159,4 @@ Before leaving this page, you should be able to:
 - explain when `workflow/scripts/` is the right home for code
 - explain when code should move into `src/`
 - describe what a wrapper should clarify rather than hide
-- explain why repository layout is part of pedagogy and reviewability
+- explain why repository layout is part of clarity and reviewability
