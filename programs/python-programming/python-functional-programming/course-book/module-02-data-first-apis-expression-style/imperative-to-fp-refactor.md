@@ -2,51 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Imperative to FP Refactor"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  script["Start with one large imperative script"] --> split["Separate configuration, core logic, and boundaries"]
+  split --> compose["Reconnect them through explicit modules"]
+  compose --> verify["Verify the new structure still preserves behavior"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson should feel like a trustworthy migration guide. Students are no longer learning isolated tools. They are learning how to use the whole module to reshape a script without losing behavior or creating a maze of half-finished abstractions.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Refactor Fear
 
-Here's a snippet from the progression map:
+The hard part of a real refactor is rarely naming the target style. It is deciding where to cut first and how to keep the result understandable while the codebase is in motion.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If the script mixes parsing, I/O, domain logic, and orchestration, students need a cutting order, not just a wish list.
+- If "make it functional" means rewriting everything at once, the lesson is not giving a safe path.
+- If a reviewer cannot compare old and new behavior while modules are being extracted, the refactor route is too vague.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you take a messy imperative script full of loops, globals, and side effects and refactor it into clean FP modules—so the whole codebase becomes composable, testable, and maintainable using only M02C01–M02C09 patterns?
 
-This core introduces **refactoring imperative scripts** in Python:  
-- Entry point (`if __name__ == "__main__"`) becomes thin boundary orchestrator.  
-- Imperative loops → pure functions over lazy pipelines (M02C07).  
-- Globals/mutables → M02C06 frozen config + explicit params.  
-- Side effects → sealed at module edges (M02C05).  
-- No more "script spaghetti"—just pure modules + one orchestrator.  
+This lesson introduces the refactor as a sequence students can apply:
 
-We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder (indexing side of RAG)—evolving from an imperative script to FP modules that preserve baseline equivalence.
+- turn the entry point into a thin orchestrator instead of a place where all decisions happen
+- extract pure logic before polishing abstractions so the behavior becomes easier to preserve
+- isolate configuration and effects in explicit modules that support the core instead of dominating it
 
-**Audience:** Developers with legacy imperative scripts who mastered M02C01–M02C09 and want to refactor the whole thing.  
+The running project matters because it shows a realistic end state: not "functional everything," but a codebase where responsibilities are separated clearly enough to test and evolve.
+
+**Audience:** Developers with legacy imperative scripts who want a concrete route from mixed concerns to a modular functional design.  
 **Outcome:**  
 1. Refactor non-trivial scripts into FP modules + orchestrator in a few small modules.  
 2. Spot and fix three refactor smells: global state, implicit I/O, god functions.  
@@ -68,7 +57,7 @@ We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder (
 
 ### 1.3 Why This Matters Now
 
-M02C01–M02C09 gave the tools; M02C10 assembles them into real codebases: modules = pure + boundary, scripts = orchestrators. This is the small-scale refactor (a single script); Module 10 is the system-scale version.
+The previous lessons each removed one source of confusion: hidden config, flag-driven control flow, eager waste, leaky effects, scattered rules, opaque composition. This final lesson shows how those improvements fit together during a real refactor. Students need that synthesis so the module feels like a usable method instead of a stack of disconnected techniques.
 
 ### 1.3.1 Refactor Steps Checklist
 
@@ -81,7 +70,7 @@ Use this mechanical checklist to refactor imperative scripts:
 
 ### 1.4 FP Modules as Values in 5 Lines
 
-Modules as pure enable dynamic orchestration:
+The next example matters because it demonstrates the final shape students are aiming for: small pure units that can be configured and reused without rebuilding the whole script around them.
 
 ```python
 from collections.abc import Callable, Iterable
