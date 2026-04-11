@@ -2,50 +2,40 @@
 
 
 <!-- page-maps:start -->
-## Concept Position
+## Lesson Map
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 02: Data-First APIs and Expression Style"]
-  module --> concept["Tiny Function DSLs"]
-  concept --> capstone["Capstone pressure point"]
-```
-
-```mermaid
-flowchart TD
-  problem["Start with the design or failure question"] --> example["Study the worked example and trade-offs"]
-  example --> boundary["Name the boundary this page is trying to protect"]
-  boundary --> proof["Carry that question into code review or the capstone"]
+flowchart LR
+  sprawl["Start with scattered if-else rule checks"] --> extract["Extract the rule choices into data"]
+  extract --> interpret["Use one interpreter to run the rule data"]
+  interpret --> audit["Audit or change behavior by reading the rule values"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+This lesson needs to make a modest promise, not an inflated one: students do not need a grand language framework. They need a small way to move domain rules out of scattered conditionals and into data they can inspect and change deliberately.
 
-## Progression Note
-By the end of Module 2, you'll master first-class functions for configurability, expression-oriented code, and debugging taps. This prepares for lazy iteration in Module 3. See the series progression map in the repo root for full details.
+## Start With the Rule Smell
 
-Here's a snippet from the progression map:
+The pain here is rarely "too many functions." It is that business rules are spread through helpers, branches, and one-off exceptions until nobody can see the actual policy in one place.
 
-| Module | Focus | Key Outcomes |
-|--------|-------|--------------|
-| 1: Foundational FP Concepts | Purity, contracts, refactoring | Spot impurities, write pure functions, prove equivalence with Hypothesis |
-| 2: First-Class Functions & Expressive Python | Closures, partials, composable configurators | Configure pure pipelines without globals |
-| 3: Lazy Iteration & Generators | Streaming/lazy pipelines | Efficient data processing without materializing everything |
+- If a change request starts with "find every branch that mentions category filtering," the rules are too scattered.
+- If the only way to understand policy is to simulate the control flow, the policy is not yet represented as data.
+- If reviewers cannot print or compare the active rule set, the design is still harder to audit than it needs to be.
 
+## Keep This Question In View
 
 > **Core question:**  
 > How do you replace sprawling if-else chains and hard-coded domain logic with tiny, composable data-driven DSLs—so rules become printable, testable, evolvable, and flow through M02C07 pipelines without scattering behaviour across the codebase?
 
-This core introduces **tiny data-driven DSLs** in Python:  
-- Represent rules as **frozen data** (dataclasses with paths, operators, values).  
-- Use pure interpreters to evaluate rule data into behaviour.  
-- Compose via combinators like All/AnyOf/Not.  
-- Build on M02C06 config-as-data for rules as values, M02C07 combinators for orchestration.  
+This lesson introduces a small data-driven DSL in concrete terms:
 
-We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder—evolving from hard-coded rules to data-driven DSLs that preserve baseline equivalence for the chunk sequence.
+- represent the rule itself as immutable data
+- use one interpreter to turn that data into a decision
+- compose rules without scattering domain logic across the pipeline
 
-**Audience:** Developers from M02C07 with combinator pipelines but still embedding domain logic in if-else or scattered predicates.  
+The running project matters because filtering rules are exactly the sort of logic that keeps drifting into helpers unless the team gives them a stable representation.
+
+**Audience:** Developers with combinator pipelines who still embed domain logic in if-else branches or scattered predicates.  
 **Outcome:**  
 1. Identify rule smells (if-else sprawl, mutable flags) and explain their impact on evolvability.  
 2. Refactor domain logic to frozen rule data + pure interpreter.  
@@ -65,11 +55,11 @@ We extend the **running project** from `m02-rag.md`—the FuncPipe RAG Builder�
 
 ### 1.3 Why This Matters Now
 
-M02C07 gave combinators for pipelines, but hard-coded rules limit evolvability. Data-driven DSLs make rules data, enabling full M02C01–M02C07 power with printable, testable domain logic.
+Combinators made the pipeline shape clearer, but they did not solve the problem of policy scattered across branches. This lesson addresses that missing piece. Once the rule itself becomes data, students can inspect, compare, serialize, and test policy without hunting through control flow.
 
 ### 1.4 DSLs as Values in 5 Lines
 
-DSLs as first-class enable dynamic rules:
+The next snippet matters because it shows the rule value and the interpreter role separately.
 
 ```python
 from functools import partial
