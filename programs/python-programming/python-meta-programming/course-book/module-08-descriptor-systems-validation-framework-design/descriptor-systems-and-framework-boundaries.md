@@ -155,3 +155,10 @@ Try these before moving on:
 
 If those feel ordinary, the worked example can now combine the module's mechanisms inside
 one intentionally bounded educational model layer.
+
+## Continue through Module 08
+
+- Previous: [Hint-Driven Validation and Coercion](hint-driven-validation-and-coercion.md)
+- Next: [Worked Example: Building an Educational Mini Relational Model](worked-example-building-an-educational-mini-relational-model.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

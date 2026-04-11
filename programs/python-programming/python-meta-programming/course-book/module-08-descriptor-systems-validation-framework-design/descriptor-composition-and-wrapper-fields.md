@@ -168,3 +168,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is hint-driven validation and coercion, where the
 descriptor starts reading type metadata as runtime evidence.
+
+## Continue through Module 08
+
+- Previous: [External Storage Descriptors](external-storage-descriptors.md)
+- Next: [Hint-Driven Validation and Coercion](hint-driven-validation-and-coercion.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

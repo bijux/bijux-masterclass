@@ -81,3 +81,10 @@ Across all six answers, the module wants the same habits:
 - you name the point where field logic turns into framework architecture
 
 If an answer still sounds like "the smart descriptor handles it," keep going.
+
+## Continue through Module 08
+
+- Previous: [Worked Example: Building an Educational Mini Relational Model](worked-example-building-an-educational-mini-relational-model.md)
+- Next: [Exercise Answers](exercise-answers.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

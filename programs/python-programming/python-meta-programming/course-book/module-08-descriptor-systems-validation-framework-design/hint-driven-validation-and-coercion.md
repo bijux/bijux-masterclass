@@ -182,3 +182,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is the module's design page: where descriptor
 systems stop being just fields and start needing broader framework ownership.
+
+## Continue through Module 08
+
+- Previous: [Descriptor Composition and Wrapper Fields](descriptor-composition-and-wrapper-fields.md)
+- Next: [Descriptor Systems and Framework Boundaries](descriptor-systems-and-framework-boundaries.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

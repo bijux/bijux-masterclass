@@ -204,3 +204,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is composition: layering field behavior without
 turning every variation into a new subclass.
+
+## Continue through Module 08
+
+- Previous: [Cached Descriptors and Invalidation](cached-descriptors-and-invalidation.md)
+- Next: [Descriptor Composition and Wrapper Fields](descriptor-composition-and-wrapper-fields.md)
+- Return: [Overview](index.md)
+- Terms: [Glossary](glossary.md)

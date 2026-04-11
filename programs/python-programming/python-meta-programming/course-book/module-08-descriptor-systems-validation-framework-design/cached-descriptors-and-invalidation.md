@@ -188,3 +188,10 @@ Try these before moving on:
 
 If those feel ordinary, the next step is external storage, where the descriptor stops
 owning the source of truth entirely.
+
+## Continue through Module 08
+
+- Previous: [Overview](index.md)
+- Next: [External Storage Descriptors](external-storage-descriptors.md)
+- Practice: [Exercises](exercises.md)
+- Terms: [Glossary](glossary.md)

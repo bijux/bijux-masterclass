@@ -124,3 +124,10 @@ Across the whole set, strong answers share the same habits:
 If an answer still sounds like "framework behavior can live in the descriptor somehow,"
 revise it until you can say exactly what the descriptor owns and what should move out of
 it.
+
+## Continue through Module 08
+
+- Previous: [Exercises](exercises.md)
+- Return: [Overview](index.md)
+- Next module: [Module 09](../module-09-metaclass-design-class-creation/index.md)
+- Terms: [Glossary](glossary.md)

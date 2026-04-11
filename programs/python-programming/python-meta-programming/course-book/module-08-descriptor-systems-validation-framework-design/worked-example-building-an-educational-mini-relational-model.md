@@ -306,3 +306,10 @@ This worked example ties the module together:
 
 That is the real lesson. The point is not to produce an ORM. The point is to see where a
 descriptor system stops being just a set of fields and starts becoming framework design.
+
+## Continue through Module 08
+
+- Previous: [Descriptor Systems and Framework Boundaries](descriptor-systems-and-framework-boundaries.md)
+- Next: [Exercises](exercises.md)
+- Reference: [Exercise Answers](exercise-answers.md)
+- Terms: [Glossary](glossary.md)
