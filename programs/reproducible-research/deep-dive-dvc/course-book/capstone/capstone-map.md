@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Deep Dive DVC Capstone Map"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -55,7 +55,7 @@ Return to the module first if:
 
 ## Module-to-capstone map
 
-| Module | Main learner question | Capstone surface | First command |
+| Module | Main question | Capstone surface | First command |
 | --- | --- | --- | --- |
 | 01 Reproducibility Failures | why rerunnable scripts are weaker than explicit state contracts | `README.md`, `data/raw/`, [Capstone File Guide](capstone-file-guide.md) | `make walkthrough` |
 | 02 Data Identity | what makes state durable instead of path-shaped | `dvc.lock`, `.dvc/cache`, `.dvc-remote/` | `make verify` |

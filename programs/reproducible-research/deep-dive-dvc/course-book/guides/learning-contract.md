@@ -26,8 +26,7 @@ The material should present each important idea in an order a human can actually
 4. the proof route that can confirm the claim
 5. the capstone route only after the local idea is clear
 
-When a page jumps from slogan to command list, the learner is doing the course-design
-work alone.
+When a page jumps from slogan to command list, you are doing the course-design work alone.
 
 ## How to work a module honestly
 
@@ -84,4 +83,3 @@ Stop and reset if any of these are true:
 
 Those are not minor study gaps. They usually mean the previous page needs a slower,
 smaller pass.
-

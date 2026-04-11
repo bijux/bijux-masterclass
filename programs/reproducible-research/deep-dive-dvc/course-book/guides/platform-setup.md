@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Platform Setup"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -25,7 +25,7 @@ Read the first diagram as a timing map: this guide is for a named pressure, not 
 Deep Dive DVC depends on more than a `dvc` binary existing somewhere on the machine. The
 course assumes a small, explicit platform contract.
 
-This page makes that contract clear before the learner hits avoidable setup failures.
+This page makes that contract clear before you hit avoidable setup failures.
 
 Network note:
 
@@ -129,7 +129,7 @@ If `make platform-report` and `make verify` both succeed, the capstone is runnin
 the supported toolchain and can validate the publish bundle and read the configured
 remote-backed state surfaces.
 
-If you also need a clean learner or review archive, continue with:
+If you also need a clean study or review archive, continue with:
 
 ```sh
 make source-baseline-clean
@@ -169,4 +169,3 @@ Treat these as signs that you need to re-check the support contract:
 
 That restraint is intentional. Reproducibility training should be explicit about where
 tool support stops and verification begins.
-

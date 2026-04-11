@@ -27,7 +27,7 @@ Use this page for your first honest session with the course.
 1. Read `../index.md` for the program promise.
 2. Read `index.md` for the Module 00 role.
 3. Read `course-map.md` to see the four course arcs.
-4. Read `../guides/start-here.md` when you want the shortest learner route.
+4. Read `../guides/start-here.md` when you want the shortest starting route.
 5. Read `../capstone/capstone-map.md` only if a repository specimen will clarify, not blur, the current idea.
 6. Run one bounded command:
 

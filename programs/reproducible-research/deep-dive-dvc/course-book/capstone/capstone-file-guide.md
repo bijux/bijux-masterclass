@@ -14,7 +14,7 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | how promoted state is verified | `capstone/src/incident_escalation_capstone/verify.py` | `capstone/tests/test_verify.py` |
 | what downstream users are allowed to trust | `capstone/publish/v1/manifest.json` | [Capstone Proof Guide](capstone-proof-guide.md) |
 | what survives local loss and remote restore | `capstone/.dvc-remote/` as the durability source, then `capstone/dvc.lock` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
-| what learner-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
+| what course-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
 
 ## Directory responsibilities
 

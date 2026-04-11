@@ -17,7 +17,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  promise["Read the course promise and learner fit"] --> route["Choose one stable entry lane"]
+  promise["Read the course promise and fit"] --> route["Choose one stable entry lane"]
   route --> orientation["Anchor the state model in Module 00"]
   orientation --> modules["Read the modules in order"]
   modules --> proof["Use guides, reference, and capstone only when they answer the current question"]
@@ -25,8 +25,8 @@ flowchart TD
 <!-- page-maps:end -->
 
 Read the first diagram as the shape of the whole book. Read the second diagram as the
-intended learner route so the capstone and support shelves do not become accidental first
-lessons.
+intended route through it so the capstone and support shelves do not become accidental
+first lessons.
 
 Deep Dive DVC teaches reproducibility as a discipline of explicit state. The goal is not
 to memorize commands. The goal is to make data, parameters, metrics, experiments,
@@ -71,7 +71,7 @@ later.
 
 | Module | Title | Why it matters |
 | --- | --- | --- |
-| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof surfaces, and capstone timing |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the entry route, proof surfaces, and capstone timing |
 | [Module 01](module-01-reproducibility-failures-real-teams/index.md) | Reproducibility Failures in Real Teams | names the failure modes before teaching tools |
 | [Module 02](module-02-data-identity-content-addressing/index.md) | Data Identity and Content Addressing | separates stable paths from stable bytes and stable meaning |
 | [Module 03](module-03-execution-environments-reproducible-inputs/index.md) | Execution Environments as Reproducible Inputs | treats environment assumptions as part of the contract |

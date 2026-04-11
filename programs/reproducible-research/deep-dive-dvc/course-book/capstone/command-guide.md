@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
   family["Reproducible Research"] --> program["Deep Dive DVC"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Command Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -25,7 +25,7 @@ matches the current job, run the smallest honest command, then escalate only if 
 question changes.
 
 Deep Dive DVC has three command layers: repository root, program directory, and capstone
-directory. The layers exist so learners do not have to guess where a command belongs.
+directory. The layers exist so you do not have to guess where a command belongs.
 
 ## Choose the command layer
 
