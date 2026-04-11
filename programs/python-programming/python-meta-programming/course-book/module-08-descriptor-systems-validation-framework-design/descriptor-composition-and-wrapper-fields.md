@@ -155,7 +155,7 @@ When reviewing descriptor composition, keep these questions close:
 - what does the inner descriptor own?
 - what one extra concern does this wrapper add?
 - is `__set_name__` delegated correctly and only once?
-- how many layers does a reader need to traverse to understand one attribute write?
+- how many layers do you need to traverse to understand one attribute write?
 - has the stack grown large enough that a different framework abstraction would be clearer?
 
 ## What to practice from this page

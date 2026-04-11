@@ -85,7 +85,7 @@ Check these in order:
 1. `make install` completes and creates the virtual environment under `artifacts/venv/...`.
 2. `make test` passes before you trust any saved bundle.
 3. `make manifest` and `make registry` render public output without import-time surprises.
-4. `make inspect` writes the learner-facing inspection bundle.
+4. `make inspect` writes the guided inspection bundle.
 
 If step 2 fails, do not escalate to `proof` yet. Fix the environment or the executable
 suite first.

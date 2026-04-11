@@ -31,7 +31,7 @@ question instead of defaulting to the largest route every time.
 
 ## Two kinds of proof pressure
 
-- Human-review pressure: use levels 1 to 6 when the question is what a learner or reviewer can honestly inspect.
+- Human-review pressure: use levels 1 to 6 when the question is what you can honestly inspect or review.
 - Executable-confidence pressure: use level 7 when the question is whether the runnable capstone still passes its strongest local confirmation route.
 
 ## Proof ladder
@@ -69,7 +69,7 @@ Use `demo` or `trace` when the question sounds like:
 
 Use `inspect` or `tour` when the question sounds like:
 
-- What should a learner read first?
+- What should I read first?
 - Which saved files prove the public runtime story?
 - How do the CLI outputs connect to the source layout?
 
@@ -84,10 +84,10 @@ Use `verify-report`, `proof`, or `confirm` when the question sounds like:
 ## Escalation rules
 
 - Do not jump to `proof` when `manifest` or `registry` would settle the question.
-- Do not jump to `confirm` when you need a learner-facing review bundle rather than test output.
+- Do not jump to `confirm` when you need a guided review bundle rather than test output.
 - Escalate from `inspect` to `tour` when you need source ownership, not just public runtime shape.
 - Escalate from `tour` to `verify-report` when you need executable confirmation instead of reading guidance.
-- Treat `confirm` as a different kind of pressure from the bundle routes: stronger confidence, but weaker learner-facing explanation.
+- Treat `confirm` as a different kind of pressure from the bundle routes: stronger confidence, but weaker guided explanation.
 
 ## Success signal
 

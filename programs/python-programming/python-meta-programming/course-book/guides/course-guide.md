@@ -22,8 +22,8 @@ flowchart TD
 Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
 This guide explains how the course is organized and what each part is trying to teach.
-The learner goal is not "know more hooks." The learner goal is "choose the lowest-power
-hook that solves the problem without damaging debuggability."
+The goal is not "know more hooks." The goal is to choose the lowest-power hook that
+solves the problem without damaging debuggability.
 
 ## Course spine
 

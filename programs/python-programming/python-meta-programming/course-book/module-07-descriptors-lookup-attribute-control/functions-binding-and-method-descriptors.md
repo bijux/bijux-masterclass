@@ -97,7 +97,7 @@ If a decorator returns something stranger that does not behave like a function d
 ordinary method access can become much harder to reason about.
 
 That is why helpers such as `functools.wraps` matter: they preserve the function surface
-that tools and readers expect to find.
+that you and your tools expect to find.
 
 ## `classmethod` and `staticmethod` are descriptor variants
 

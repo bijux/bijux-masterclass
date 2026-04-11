@@ -42,8 +42,8 @@ route to evidence.
 
 | Claim | Best first command | Best first surface |
 | --- | --- | --- |
-| a learner can inspect the runtime without reading source first | `make PROGRAM=python-programming/python-meta-programming inspect` | `artifacts/inspect/...`, `COMMAND_GUIDE.md`, `PROOF_GUIDE.md` |
-| a learner can follow a guided repository walkthrough honestly | `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` | `artifacts/tour/...`, `WALKTHROUGH_GUIDE.md`, `TOUR.md` |
+| you can inspect the runtime without reading source first | `make PROGRAM=python-programming/python-meta-programming inspect` | `artifacts/inspect/...`, `COMMAND_GUIDE.md`, `PROOF_GUIDE.md` |
+| you can follow a guided repository walkthrough honestly | `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough` | `artifacts/tour/...`, `WALKTHROUGH_GUIDE.md`, `TOUR.md` |
 | executable tests and public review surfaces still agree | `make PROGRAM=python-programming/python-meta-programming capstone-verify-report` | `pytest.txt`, `manifest.json`, `trace.json` |
 | the raw executable suite still passes | `make PROGRAM=python-programming/python-meta-programming test` | `tests/test_runtime.py`, `tests/test_registry.py`, `tests/test_fields.py`, `tests/test_cli.py` |
 | the strongest local confirmation route still holds | `make PROGRAM=python-programming/python-meta-programming capstone-confirm` | executable suite plus the command-level public surfaces |
@@ -60,7 +60,7 @@ route to evidence.
 
 ## Module-to-proof bridge
 
-| Module range | Main learner question | Best first evidence surface |
+| Module range | Main module question | Best first evidence surface |
 | --- | --- | --- |
 | Modules 01 to 03 | what can be observed safely without accidental execution | `manifest`, `registry`, `signatures`, `inspect` |
 | Modules 04 to 05 | did a wrapper preserve signature, metadata, and traceability honestly | `action`, `trace`, `tests/test_runtime.py` |
