@@ -55,6 +55,17 @@ export, and runtime invocation behavior.
 - `make tour` writes the learner-facing walkthrough bundle.
 - `make verify-report` writes executable proof together with public-surface evidence.
 
+## Choose the saved bundle by review need
+
+| If you need to review... | Choose this bundle | Do not start with |
+| --- | --- | --- |
+| public runtime shape without invocation | inspect bundle | verify-report bundle |
+| one saved learner-facing story from manifest to trace | tour bundle | inspect bundle plus ad hoc commands |
+| strongest saved executable confirmation | verify-report bundle | confirm output alone |
+
+Each bundle also includes `bundle-manifest.json`, which records stable file paths, file
+sizes, and SHA-256 hashes for the saved route.
+
 ## Public-surface proof
 
 Run the public proof surface:
@@ -89,6 +100,29 @@ public surface without opening private internals first.
 - `confirm` proves the strongest local regression surface.
 - `proof` publishes the full learner-facing review route.
 
+## File to proof map
+
+| Source file | Best public route | Best executable proof | Best saved review route |
+| --- | --- | --- | --- |
+| `src/incident_plugins/framework.py` | `make manifest`, `make registry`, `make signatures` | `tests/test_registry.py` and `tests/test_runtime.py` | `make inspect` or `make verify-report` |
+| `src/incident_plugins/fields.py` | `make field` and `make plugin` | `tests/test_fields.py` | `make inspect` |
+| `src/incident_plugins/actions.py` | `make action`, `make trace`, and `make signatures` | `tests/test_runtime.py` and `tests/test_cli.py` | `make tour` or `make verify-report` |
+| `src/incident_plugins/plugins.py` | `make plugin`, `make demo`, and `make trace` | `tests/test_runtime.py` | `make tour` |
+| `src/incident_plugins/cli.py` | `make manifest`, `make registry`, `make trace`, and `make demo` | `tests/test_cli.py` | `make inspect`, `make tour`, or `make verify-report` |
+| `scripts/write_bundle_manifest.py` | `make inspect`, `make tour`, or `make verify-report` | `tests/test_bundle_manifest.py` | the matching bundle directory under `artifacts/` |
+
+## Review pressure to route
+
+| If you need to review... | Start with | Then run or inspect | Escalate with |
+| --- | --- | --- | --- |
+| public shape without invocation | `COMMAND_GUIDE.md` | `make manifest`, `make registry`, or `make inspect` | `PROOF_GUIDE.md` |
+| one concrete field or action contract | `COMMAND_GUIDE.md` | `make field`, `make action`, or `make inspect` | `TEST_GUIDE.md` |
+| one realistic invocation story | `INDEX.md` or `COMMAND_GUIDE.md` | `make demo`, `make trace`, or `make tour` | `tests/test_runtime.py` |
+| source ownership for a change | `PACKAGE_GUIDE.md` or `EXTENSION_GUIDE.md` | the matching public route from the file map | `TEST_GUIDE.md` |
+| which proof file should fail first | `TEST_GUIDE.md` | the matching test file | `PACKAGE_GUIDE.md` |
+| a saved artifact bundle for another reviewer | `PROOF_GUIDE.md` | `make inspect`, `make tour`, or `make verify-report` | `TEST_GUIDE.md` |
+| the strongest local confidence route | `PROOF_GUIDE.md` | `make verify-report`, `make confirm`, or `make proof` | `TEST_GUIDE.md` |
+
 ## Read the proof route by module stage
 
 - Observation modules: inspect `manifest` and `registry` output before running actions.
@@ -106,5 +140,5 @@ public export shape, deterministic registration, or target choice instead of act
 - Which proof demonstrates preserved callable metadata?
 - Which proof demonstrates that the manifest stays observational rather than operational?
 
-Use [TRACE_GUIDE.md](TRACE_GUIDE.md) when the key proof question is really about wrapper
-history and visible invocation metadata.
+Use [TEST_GUIDE.md](TEST_GUIDE.md) when the key proof question is really about wrapper
+history, visible invocation metadata, or the closest failing test file.

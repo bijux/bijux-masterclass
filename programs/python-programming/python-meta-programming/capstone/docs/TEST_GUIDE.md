@@ -55,6 +55,23 @@ invocation third, and public CLI proof last.
 | `test_cli.py` | public command behavior for manifest, invoke, and trace routes | `cli.py`, `framework.py` |
 | `test_bundle_manifest.py` | stable saved-bundle inventory generation | `scripts/write_bundle_manifest.py` |
 
+## Question to test map
+
+| If the question is about... | Read this test file first | Then open |
+| --- | --- | --- |
+| registration order, duplicate protection, or manifest shape rooted in class creation | `tests/test_registry.py` | `framework.py` and `COMMAND_GUIDE.md` |
+| field defaults, coercion, required values, or per-instance descriptor storage | `tests/test_fields.py` | `fields.py` and `DESIGN_BOUNDARIES.md` |
+| action history, generated constructors, or one concrete plugin invocation path | `tests/test_runtime.py` | `actions.py`, `framework.py`, and `plugins.py` |
+| CLI behavior for manifest, registry, invoke, or trace routes | `tests/test_cli.py` | `cli.py` and `COMMAND_GUIDE.md` |
+| saved bundle inventory and artifact manifests | `tests/test_bundle_manifest.py` | `scripts/write_bundle_manifest.py` and `PROOF_GUIDE.md` |
+
+## Failure-first reading order
+
+1. Name the behavior that should fail first.
+2. Open the matching test file from the table above.
+3. Read the source file the failing test is meant to protect.
+4. Expand into broader bundle or tour routes only when the test alone is not enough.
+
 ## Best proof questions
 
 - Which test would fail first if registration started doing hidden work at import time?

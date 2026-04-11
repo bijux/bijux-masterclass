@@ -88,13 +88,9 @@ inspect: ## Build the learner-facing inspection bundle
 	@PYTHONPATH=src $(CLI) signatures --group delivery > $(INSPECT_DIR)/signatures.json
 	@cp README.md $(INSPECT_DIR)/README.md
 	@cp $(DOCS_DIR)/INDEX.md $(INSPECT_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(INSPECT_DIR)/BUNDLE_GUIDE.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(INSPECT_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(INSPECT_DIR)/DESIGN_BOUNDARIES.md
 	@cp $(DOCS_DIR)/PACKAGE_GUIDE.md $(INSPECT_DIR)/PACKAGE_GUIDE.md
-	@cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(INSPECT_DIR)/REVIEW_ROUTE_MAP.md
-	@cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(INSPECT_DIR)/SOURCE_TO_PROOF_MAP.md
-	@cp $(DOCS_DIR)/INSPECTION_GUIDE.md $(INSPECT_DIR)/INSPECTION_GUIDE.md
 	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(INSPECT_DIR)/PROOF_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/
 	@cp $(DOCS_DIR)/*.md $(INSPECT_DIR)/docs/
@@ -106,8 +102,8 @@ inspect: ## Build the learner-facing inspection bundle
 		'Inspection route:' \
 		'  1. Read manifest.json for group-level field and action metadata.' \
 		'  2. Read registry.json, plugin.json, field.json, action.json, and signatures.json for registered plugins, one concrete plugin, one concrete field, one concrete action, and generated callable shapes.' \
-		'  3. Read INSPECTION_GUIDE.md and COMMAND_GUIDE.md for the next review route.' \
-		'  4. Read PACKAGE_GUIDE.md and SOURCE_TO_PROOF_MAP.md when you need to connect the outputs back to source ownership and proof.' \
+		'  3. Read COMMAND_GUIDE.md and PROOF_GUIDE.md for the next review route.' \
+		'  4. Read PACKAGE_GUIDE.md when you need to connect the outputs back to source ownership and proof.' \
 		> $(INSPECT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(INSPECT_DIR) --output $(INSPECT_DIR)/bundle-manifest.json
 	@echo "wrote learner-facing inspection bundle to $(INSPECT_DIR)"
@@ -132,14 +128,10 @@ verify-report: ## Build the structured capstone verification report
 		> $(VERIFY_REPORT_DIR)/trace.json
 	@cp README.md $(VERIFY_REPORT_DIR)/README.md
 	@cp $(DOCS_DIR)/INDEX.md $(VERIFY_REPORT_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(VERIFY_REPORT_DIR)/BUNDLE_GUIDE.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(VERIFY_REPORT_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(VERIFY_REPORT_DIR)/DESIGN_BOUNDARIES.md
 	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(VERIFY_REPORT_DIR)/PROOF_GUIDE.md
-	@cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(VERIFY_REPORT_DIR)/REVIEW_ROUTE_MAP.md
-	@cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(VERIFY_REPORT_DIR)/SOURCE_TO_PROOF_MAP.md
 	@cp $(DOCS_DIR)/TEST_GUIDE.md $(VERIFY_REPORT_DIR)/TEST_GUIDE.md
-	@cp $(DOCS_DIR)/TEST_READING_MAP.md $(VERIFY_REPORT_DIR)/TEST_READING_MAP.md
 	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(VERIFY_REPORT_DIR)/WALKTHROUGH_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/
 	@cp $(DOCS_DIR)/*.md $(VERIFY_REPORT_DIR)/docs/
@@ -151,8 +143,8 @@ verify-report: ## Build the structured capstone verification report
 		'Verification route:' \
 		'  1. Read pytest.txt for executable proof.' \
 		'  2. Read manifest.json, plugin.json, signatures.json, and trace.json for the saved public-surface evidence.' \
-		'  3. Read TEST_GUIDE.md, TEST_READING_MAP.md, and PROOF_GUIDE.md for the closest claim-to-proof route.' \
-		'  4. Read SOURCE_TO_PROOF_MAP.md and REVIEW_ROUTE_MAP.md when you need to connect a code change back to the saved proof.' \
+		'  3. Read TEST_GUIDE.md and PROOF_GUIDE.md for the closest claim-to-proof route.' \
+		'  4. Read PACKAGE_GUIDE.md when you need to connect a code change back to the saved proof.' \
 		> $(VERIFY_REPORT_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(VERIFY_REPORT_DIR) --output $(VERIFY_REPORT_DIR)/bundle-manifest.json
 	@echo "wrote capstone verification report to $(VERIFY_REPORT_DIR)"
@@ -183,13 +175,10 @@ tour: ## Build the learner-facing walkthrough bundle
 	@find tests -type f | sort > $(TOUR_DIR)/test-files.txt
 	@cp README.md $(TOUR_DIR)/README.md
 	@cp $(DOCS_DIR)/INDEX.md $(TOUR_DIR)/INDEX.md
-	@cp $(DOCS_DIR)/BUNDLE_GUIDE.md $(TOUR_DIR)/BUNDLE_GUIDE.md
 	@cp $(DOCS_DIR)/COMMAND_GUIDE.md $(TOUR_DIR)/COMMAND_GUIDE.md
 	@cp $(DOCS_DIR)/ARCHITECTURE.md $(TOUR_DIR)/ARCHITECTURE.md
 	@cp $(DOCS_DIR)/DESIGN_BOUNDARIES.md $(TOUR_DIR)/DESIGN_BOUNDARIES.md
 	@cp $(DOCS_DIR)/PROOF_GUIDE.md $(TOUR_DIR)/PROOF_GUIDE.md
-	@cp $(DOCS_DIR)/REVIEW_ROUTE_MAP.md $(TOUR_DIR)/REVIEW_ROUTE_MAP.md
-	@cp $(DOCS_DIR)/SOURCE_TO_PROOF_MAP.md $(TOUR_DIR)/SOURCE_TO_PROOF_MAP.md
 	@cp $(DOCS_DIR)/TOUR.md $(TOUR_DIR)/TOUR.md
 	@cp $(DOCS_DIR)/WALKTHROUGH_GUIDE.md $(TOUR_DIR)/WALKTHROUGH_GUIDE.md
 	@cp $(DOCS_DIR)/*.md $(TOUR_DIR)/
@@ -212,7 +201,7 @@ tour: ## Build the learner-facing walkthrough bundle
 		'  2. Read demo.json for one concrete invocation.' \
 		'  3. Read trace.json for configuration and action-history visibility.' \
 		'  4. Read WALKTHROUGH_GUIDE.md, COMMAND_GUIDE.md, and TOUR.md for the review order.' \
-		'  5. Read REVIEW_ROUTE_MAP.md and SOURCE_TO_PROOF_MAP.md when you need to connect the tour back to local guides or source ownership.' \
+		'  5. Read PACKAGE_GUIDE.md and PROOF_GUIDE.md when you need to connect the tour back to local guides or source ownership.' \
 		> $(TOUR_DIR)/route.txt
 	@$(WRITE_BUNDLE_MANIFEST) --bundle-dir $(TOUR_DIR) --output $(TOUR_DIR)/bundle-manifest.json
 	@echo "wrote learner-facing walkthrough bundle to $(TOUR_DIR)"

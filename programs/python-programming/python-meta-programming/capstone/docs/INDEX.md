@@ -71,8 +71,8 @@ has one stable entry hub instead of two overlapping arrival pages.
 
 ### "How do I inspect the public runtime shape?"
 
-- [INSPECTION_GUIDE.md](INSPECTION_GUIDE.md)
 - [COMMAND_GUIDE.md](COMMAND_GUIDE.md)
+- [PROOF_GUIDE.md](PROOF_GUIDE.md)
 
 ### "How do wrappers, fields, and constructors work?"
 
@@ -83,17 +83,13 @@ has one stable entry hub instead of two overlapping arrival pages.
 
 - [PROOF_GUIDE.md](PROOF_GUIDE.md)
 - [TEST_GUIDE.md](TEST_GUIDE.md)
-- [TEST_READING_MAP.md](TEST_READING_MAP.md)
 - [EXTENSION_GUIDE.md](EXTENSION_GUIDE.md)
-- [SOURCE_TO_PROOF_MAP.md](SOURCE_TO_PROOF_MAP.md)
 
 ### "How do I read the saved review bundles?"
 
-- [BUNDLE_GUIDE.md](BUNDLE_GUIDE.md)
-- [BUNDLE_MANIFEST_GUIDE.md](BUNDLE_MANIFEST_GUIDE.md)
 - [WALKTHROUGH_GUIDE.md](WALKTHROUGH_GUIDE.md)
 - [TOUR.md](TOUR.md)
-- [REVIEW_ROUTE_MAP.md](REVIEW_ROUTE_MAP.md)
+- [PROOF_GUIDE.md](PROOF_GUIDE.md)
 
 ## Escalation rule
 

@@ -125,19 +125,12 @@ your pressure instead of reading the full list in alphabetical order.
 - [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
 - [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
 - [EXTENSION_GUIDE.md](docs/EXTENSION_GUIDE.md)
-- [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md)
 
 ### Review, proof, and saved bundles
 
-- [BUNDLE_GUIDE.md](docs/BUNDLE_GUIDE.md)
-- [BUNDLE_MANIFEST_GUIDE.md](docs/BUNDLE_MANIFEST_GUIDE.md)
-- [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
 - [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
-- [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md)
 - [TEST_GUIDE.md](docs/TEST_GUIDE.md)
-- [TEST_READING_MAP.md](docs/TEST_READING_MAP.md)
 - [TOUR.md](docs/TOUR.md)
-- [TRACE_GUIDE.md](docs/TRACE_GUIDE.md)
 - [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
 
 ### Concrete runtime examples
@@ -158,7 +151,6 @@ your pressure instead of reading the full list in alphabetical order.
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md)
 - [PACKAGE_GUIDE.md](docs/PACKAGE_GUIDE.md)
-- [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md)
 - `src/incident_plugins/actions.py`
 - `src/incident_plugins/fields.py`
 - `src/incident_plugins/framework.py`
@@ -178,8 +170,6 @@ your pressure instead of reading the full list in alphabetical order.
 - `make PROGRAM=python-programming/python-meta-programming capstone-walkthrough`
 - `make inspect`
 - `make tour`
-- [INSPECTION_GUIDE.md](docs/INSPECTION_GUIDE.md)
-- [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md)
 - [WALKTHROUGH_GUIDE.md](docs/WALKTHROUGH_GUIDE.md)
 - [TOUR.md](docs/TOUR.md)
 
@@ -189,7 +179,6 @@ your pressure instead of reading the full list in alphabetical order.
 - `make proof`
 - `make confirm`
 - [TEST_GUIDE.md](docs/TEST_GUIDE.md)
-- [TEST_READING_MAP.md](docs/TEST_READING_MAP.md)
 - [PROOF_GUIDE.md](docs/PROOF_GUIDE.md)
 
 Use these question routes when you already know the pressure. Otherwise, stay with the
@@ -243,9 +232,7 @@ feel fuzzier than the commands.
 - [INDEX.md](docs/INDEX.md) for the smallest honest local route into the doc set
 - [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md) for local command selection and artifact locations
 - [COMMAND_GUIDE.md](docs/COMMAND_GUIDE.md) for connecting commands, outputs, and owning files
-- [SOURCE_TO_PROOF_MAP.md](docs/SOURCE_TO_PROOF_MAP.md) for change-to-proof alignment
-- [TEST_READING_MAP.md](docs/TEST_READING_MAP.md) for finding the first proof file by question
-- [REVIEW_ROUTE_MAP.md](docs/REVIEW_ROUTE_MAP.md) for choosing the right local route, command, and bundle
+- [PROOF_GUIDE.md](docs/PROOF_GUIDE.md) for change-to-proof alignment and saved review routes
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) for ownership boundaries
 - [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) for what each mechanism owns and what it should not own
 - [DESIGN_BOUNDARIES.md](docs/DESIGN_BOUNDARIES.md) for the timing model and ownership rules

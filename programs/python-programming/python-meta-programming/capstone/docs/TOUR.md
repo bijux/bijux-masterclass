@@ -67,7 +67,7 @@ each source file is trying to own.
 4. Run `make tour` to save that full route for review.
 5. Run `make confirm` when you want the stronger executable proof.
 
-Read [TRACE_GUIDE.md](TRACE_GUIDE.md) when the trace output is the most important surface
+Read [TEST_GUIDE.md](TEST_GUIDE.md) when the trace output is the most important surface
 for the question you are holding.
 
 Read [PACKAGE_GUIDE.md](PACKAGE_GUIDE.md) when the tour gives enough overall shape but you

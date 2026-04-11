@@ -45,7 +45,7 @@ observable and the ownership boundary explicit.
 1. Update the closest test file in `tests/`.
 2. Run `make confirm`.
 3. Run `make inspect`, `make trace`, or `make verify-report` if the public review surface changed.
-4. Update `PROOF_GUIDE.md`, `COMMAND_GUIDE.md`, or `INSPECTION_GUIDE.md` if the best review route changed.
+4. Update `PROOF_GUIDE.md`, `COMMAND_GUIDE.md`, or `WALKTHROUGH_GUIDE.md` if the best review route changed.
 
 ## Review rule
 
@@ -59,8 +59,8 @@ Every extension should answer:
 
 | If the question is about... | Start with | Then |
 | --- | --- | --- |
-| what exists publicly before invocation | `make manifest`, `make registry`, `make plugin` | `ARCHITECTURE.md` and `INSPECTION_GUIDE.md` |
+| what exists publicly before invocation | `make manifest`, `make registry`, `make plugin` | `ARCHITECTURE.md` and `PROOF_GUIDE.md` |
 | what generated call shapes look like | `make signatures` | `DESIGN_BOUNDARIES.md` and `tests/test_registry.py` |
 | what one concrete action does | `make demo` or `make trace` | `PACKAGE_GUIDE.md` and `tests/test_runtime.py` |
-| what can be reviewed later without rerunning commands | `make inspect`, `make tour`, or `make verify-report` | `BUNDLE_GUIDE.md` and `PROOF_GUIDE.md` |
+| what can be reviewed later without rerunning commands | `make inspect`, `make tour`, or `make verify-report` | `PROOF_GUIDE.md` and `WALKTHROUGH_GUIDE.md` |
 | what the strongest local bar is | `make confirm` | `TEST_GUIDE.md` |
