@@ -41,9 +41,9 @@ do not have to repeat that scaffolding.
 
 ### Builder choosing a mechanism
 
-- [Mechanism Selection](mechanism-selection.md)
-- [Module Dependency Map](module-dependency-map.md)
-- [Outcomes and Proof Map](outcomes-and-proof-map.md)
+- [Pressure Routes](pressure-routes.md)
+- [Module Dependency Map](../reference/module-dependency-map.md)
+- [Proof Matrix](proof-matrix.md)
 
 ## Read these first
 
@@ -59,10 +59,10 @@ do not have to repeat that scaffolding.
 - [Start Here](start-here.md) when you want a paced path through dense modules
 - [Module Promise Map](module-promise-map.md) when you want the promise of each module stated plainly
 - [Module Checkpoints](module-checkpoints.md) when you need to know whether you are ready for the next module
-- [Outcomes and Proof Map](outcomes-and-proof-map.md) when you want learner outcomes tied directly to evidence
-- [Mechanism Selection](mechanism-selection.md) when you need a concrete "use this, not that" guide
-- [Module Dependency Map](module-dependency-map.md) when you need the sequence explained
-- [Practice Map](practice-map.md) when you want the module-to-proof loop in one place
+- [Proof Matrix](proof-matrix.md) when you want learner outcomes tied directly to evidence
+- [Pressure Routes](pressure-routes.md) when you need a concrete lower-power comparison
+- [Module Dependency Map](../reference/module-dependency-map.md) when you need the sequence explained
+- [Practice Map](../reference/practice-map.md) when you want the module-to-proof loop in one place
 
 ## Use These For Commands And Proof
 
@@ -103,4 +103,4 @@ do not have to repeat that scaffolding.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.
+Use [Glossary](../reference/glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.

@@ -32,7 +32,7 @@ proof instead of becoming a generic decorator enthusiasm page:
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge from observation into callable transformation
 - [Pressure Routes](../guides/pressure-routes.md) for the shortest route into wrapper review pressure
-- [Mechanism Selection](../guides/mechanism-selection.md) for the lower-power check before policy grows
+- [Pressure Routes](../guides/pressure-routes.md) for the lower-power check before policy grows
 - [Capstone Map](../capstone/capstone-map.md) for the matching wrapper and trace surfaces in the runtime
 
 Carry this question into the module:

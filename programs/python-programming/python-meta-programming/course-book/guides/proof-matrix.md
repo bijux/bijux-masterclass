@@ -49,6 +49,15 @@ route to evidence.
 | the strongest local confirmation route still holds | `make PROGRAM=python-programming/python-meta-programming capstone-confirm` | executable suite plus the command-level public surfaces |
 | the full public proof route still builds | `make PROGRAM=python-programming/python-meta-programming proof` | inspection, walkthrough, and verification bundles together |
 
+## Course contract to proof surface
+
+| Course outcome | Best first route | Best first surface |
+| --- | --- | --- |
+| inspect runtime structure without accidental execution | `capstone-manifest`, `capstone-registry`, or `inspect` | public CLI outputs plus `framework.py` |
+| preserve callable metadata and public shape through wrappers | `capstone-action`, `capstone-signatures`, or `capstone-trace` | `actions.py`, `tests/test_runtime.py`, and saved trace output |
+| choose honestly between plain code, decorators, descriptors, class decorators, and metaclasses | `capstone-field`, `capstone-registry`, or `capstone-verify-report` | `fields.py`, `framework.py`, and the matching tests |
+| keep the public CLI and review bundle observational rather than magical | `inspect`, `capstone-verify-report`, or `proof` | saved bundle outputs plus `tests/test_cli.py` |
+
 ## Module-to-proof bridge
 
 | Module range | Main learner question | Best first evidence surface |

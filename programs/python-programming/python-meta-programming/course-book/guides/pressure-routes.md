@@ -28,14 +28,29 @@ concrete design or review decision.
 Use this page when you are entering the course from a real code review, framework change,
 or debugging problem instead of from a full front-to-back reading plan.
 
+## Lowest-power comparison rules
+
+Keep these in view while using the routes below:
+
+| If the real problem is... | Prefer this first | Do not jump to... |
+| --- | --- | --- |
+| observing runtime structure safely | `inspect`, `type`, `vars`, `getattr_static` | decorators or descriptors |
+| changing one callable's behavior while preserving identity | a decorator with `functools.wraps` | descriptors or metaclasses |
+| changing one class after it already exists | a class decorator | a metaclass |
+| owning validation or computed behavior for one attribute | `property` or a descriptor | a class decorator or metaclass |
+| sharing field behavior across many attributes or classes | a descriptor with `__set_name__` | a metaclass |
+| enforcing a rule while the class body is being built | a narrow metaclass hook | global patching or import hooks |
+
+If you cannot explain why the higher-power option is necessary, stay on the lower rung.
+
 ## Route by design question
 
 | If the question is... | Start with | Keep nearby | First capstone cross-check |
 | --- | --- | --- | --- |
 | What is Python actually doing at runtime here? | Modules 01 to 03 | [First-Contact Map](../module-00-orientation/first-contact-map.md) | manifest output and `framework.py` |
 | How can I inspect this safely without accidentally running business logic? | Module 02 | [Proof Ladder](proof-ladder.md) | `make manifest`, `make registry`, and `cli.py` |
-| Did this wrapper preserve the callable contract honestly? | Modules 03 to 05 | [Mechanism Selection](mechanism-selection.md) | `make action`, `make signatures`, and `actions.py` |
-| Should this behavior live in a wrapper, a property, or a descriptor? | Modules 06 to 08 | [Mechanism Selection](mechanism-selection.md) | `fields.py`, `make field`, and field tests |
+| Did this wrapper preserve the callable contract honestly? | Modules 03 to 05 | [Proof Matrix](proof-matrix.md) | `make action`, `make signatures`, and `actions.py` |
+| Should this behavior live in a wrapper, a property, or a descriptor? | Modules 06 to 08 | [Proof Matrix](proof-matrix.md) | `fields.py`, `make field`, and field tests |
 | Does this rule truly belong at class creation time? | Module 09 | [Mastery Map](../module-00-orientation/mastery-map.md) | `make registry`, `framework.py`, and registry tests |
 | Which runtime hooks are too dangerous to approve casually? | Module 10 | [Review Checklist](../reference/review-checklist.md) | `make verify-report` and the saved public evidence |
 | What would I reject as making the system more magical than necessary? | Module 10 | [Topic Boundaries](../reference/topic-boundaries.md) | capstone proof bundle and review worksheet |
@@ -78,7 +93,7 @@ Use this when the real confusion is around properties, descriptors, validation, 
 1. Read [Module 06](../module-06-class-customization-pre-metaclasses/index.md) for class decorators, properties, and lower-power alternatives.
 2. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) for descriptor lookup and precedence.
 3. Read [Module 08](../module-08-descriptor-systems-validation-framework-design/index.md) for framework-shaped field systems and their limits.
-4. Keep [Mechanism Selection](mechanism-selection.md) open while reading.
+4. Keep the lowest-power comparison rules on this page open while reading.
 5. Cross-check [Capstone Map](../capstone/capstone-map.md) and `capstone/src/incident_plugins/fields.py`.
 
 Use this route when the core question sounds like:
@@ -99,7 +114,7 @@ Use this when a design is proposing class-creation hooks, registries, or import-
 1. Read [Module 06](../module-06-class-customization-pre-metaclasses/index.md) to revisit lower-power class customization.
 2. Read [Module 09](../module-09-metaclass-design-class-creation/index.md) for class-creation timing and metaclass scope.
 3. Read [Module 10](../module-10-runtime-governance-mastery-review/index.md) for red lines and review policy.
-4. Keep [Review Checklist](../reference/review-checklist.md) and [Mechanism Selection](mechanism-selection.md) open.
+4. Keep [Review Checklist](../reference/review-checklist.md) plus the lowest-power comparison rules on this page open.
 5. Cross-check `capstone/src/incident_plugins/framework.py` and `capstone/tests/test_registry.py`.
 
 Use this route when the core question sounds like:
@@ -141,7 +156,7 @@ Use this when you are authoring library code and need the design to stay inspect
 1. Read [Module 01](../module-01-runtime-objects-object-model/index.md) through [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) for the observation floor.
 2. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) through [Module 06](../module-06-class-customization-pre-metaclasses/index.md) for lower-power customization.
 3. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) through [Module 09](../module-09-metaclass-design-class-creation/index.md) only where the lower-power alternatives genuinely fail.
-4. Keep [Mechanism Selection](mechanism-selection.md) and [Review Checklist](../reference/review-checklist.md) open while designing.
+4. Keep the lowest-power comparison rules on this page and [Review Checklist](../reference/review-checklist.md) open while designing.
 5. Cross-check [Capstone Guide](../capstone/index.md), [Capstone Map](../capstone/capstone-map.md), and the tests under `capstone/tests/`.
 
 Use this route when the core question sounds like:

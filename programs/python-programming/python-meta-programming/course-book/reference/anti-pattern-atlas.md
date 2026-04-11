@@ -73,5 +73,5 @@ Use these with the atlas:
 - [Review Checklist](review-checklist.md) and [Boundary Review Prompts](boundary-review-prompts.md) for the lower-power decision rule
 - [Review Checklist](review-checklist.md) for reviewer questions
 - [Topic Boundaries](topic-boundaries.md) for what belongs inside this course
-- [Module Dependency Map](../guides/module-dependency-map.md) for where the idea is taught in sequence
+- [Module Dependency Map](module-dependency-map.md) for where the idea is taught in sequence
 - [Capstone Map](../capstone/capstone-map.md) for the module-aware repository route

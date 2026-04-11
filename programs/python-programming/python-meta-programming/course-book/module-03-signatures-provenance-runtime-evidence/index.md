@@ -31,7 +31,7 @@ Use these support surfaces while reading so signatures, provenance, and evidence
 part of a larger review discipline rather than a bag of inspection tricks:
 
 - [First-Contact Map](../module-00-orientation/first-contact-map.md) for the foundation route that ends here before wrappers begin
-- [Outcomes and Proof Map](../guides/outcomes-and-proof-map.md) for the learner outcome this module is meant to unlock
+- [Proof Matrix](../guides/proof-matrix.md) for the learner outcome this module is meant to unlock
 - [Proof Ladder](../guides/proof-ladder.md) for the smallest honest evidence route
 - [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for the first proof pass through signatures and public outputs
 

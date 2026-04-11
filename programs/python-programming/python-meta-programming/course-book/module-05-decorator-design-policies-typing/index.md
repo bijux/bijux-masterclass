@@ -31,7 +31,7 @@ Use these support surfaces while reading so policy-heavy decorators are judged a
 clear boundaries instead of against novelty:
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the ownership bridge through the middle of the course
-- [Mechanism Selection](../guides/mechanism-selection.md) for deciding when wrapper policy has outgrown a decorator
+- [Pressure Routes](../guides/pressure-routes.md) for deciding when wrapper policy has outgrown a decorator
 - [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) for symptom-first review of hidden policy sprawl
 - [Capstone Walkthrough](../capstone/capstone-walkthrough.md) for the action-wrapper proof route
 

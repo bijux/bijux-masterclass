@@ -69,8 +69,8 @@ Use this when the question is not "what does this mechanism do?" but "which mech
 should own this behavior?":
 
 1. [Course Guide](guides/course-guide.md)
-2. [Mechanism Selection](guides/mechanism-selection.md)
-3. [Module Dependency Map](guides/module-dependency-map.md)
+2. [Pressure Routes](guides/pressure-routes.md)
+3. [Module Dependency Map](reference/module-dependency-map.md)
 4. [Capstone Guide](capstone/index.md)
 
 ## Keep these pages nearby
@@ -116,8 +116,8 @@ to see what each rung looks like in practice.
 
 ### Review judgment
 
-Use [Review Checklist](reference/review-checklist.md), [Practice Map](guides/practice-map.md), and
-[Capstone Proof Checklist](capstone/capstone-proof-checklist.md) to keep the material pedagogic
+Use [Review Checklist](reference/review-checklist.md), [Practice Map](reference/practice-map.md), and
+[Capstone Proof Guide](capstone/capstone-proof-guide.md) to keep the material pedagogic
 instead of ornamental.
 
 ## Best reading route

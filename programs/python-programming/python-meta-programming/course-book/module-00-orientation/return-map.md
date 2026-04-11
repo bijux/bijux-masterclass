@@ -49,8 +49,8 @@ Use the last module you can still explain without rereading as your re-entry bou
 | If you still trust yourself through... | Re-enter with... | Keep open... |
 | --- | --- | --- |
 | Modules 01 to 03 | [Mid-Course Map](mid-course-map.md) and Module 04 | [Proof Ladder](../guides/proof-ladder.md), [Capstone Map](../capstone/capstone-map.md) |
-| Modules 04 to 06 | Module 07 and [Mechanism Selection](../guides/mechanism-selection.md) | [Module Checkpoints](../guides/module-checkpoints.md), [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) |
-| Modules 07 to 08 | Module 09 and [Mastery Map](mastery-map.md) | [Review Checklist](../reference/review-checklist.md), [Outcomes and Proof Map](../guides/outcomes-and-proof-map.md) |
+| Modules 04 to 06 | Module 07 and [Pressure Routes](../guides/pressure-routes.md) | [Module Checkpoints](../guides/module-checkpoints.md), [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) |
+| Modules 07 to 08 | Module 09 and [Mastery Map](mastery-map.md) | [Review Checklist](../reference/review-checklist.md), [Proof Matrix](../guides/proof-matrix.md) |
 | Module 09 or later | Module 10 and the capstone proof routes | [Boundary Review Prompts](../reference/boundary-review-prompts.md), [Capstone Guide](../capstone/index.md) |
 
 ## Step 3: Use one proof route before resuming

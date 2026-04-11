@@ -31,7 +31,7 @@ Use these support surfaces while reading so metaclasses stay narrow, reviewable,
 clearly downstream of the lower-power alternatives:
 
 - [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course review route into class creation and governance
-- [Mechanism Selection](../guides/mechanism-selection.md) for the last lower-power check before metaclasses
+- [Pressure Routes](../guides/pressure-routes.md) for the last lower-power check before metaclasses
 - [Review Checklist](../reference/review-checklist.md) for the design bar applied to high-power hooks
 - [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) for the definition-time registration boundary in the runtime
 
