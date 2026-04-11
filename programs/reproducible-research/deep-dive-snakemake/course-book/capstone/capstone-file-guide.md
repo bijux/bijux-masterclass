@@ -2,100 +2,70 @@
 
 # Capstone File Guide
 
+Use this page when you know the repository is the right surface but do not yet know which
+file owns the answer. The goal is to shorten the path from question to owning file.
 
-<!-- page-maps:start -->
-## Guide Fit
+## Start with the file that owns the question
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Snakemake"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Capstone File Guide"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+| If the question is about... | Open this file first | Then open |
+| --- | --- | --- |
+| how the repository is assembled at the top level | `capstone/Snakefile` | `capstone/workflow/rules/common.smk` |
+| how the workflow discovers and fans out sample work | `capstone/workflow/rules/preprocess.smk` | `capstone/publish/v1/discovered_samples.json` after execution |
+| how publish artifacts are assembled and promoted | `capstone/workflow/rules/publish.smk` | `capstone/workflow/contracts/FILE_API.md` |
+| how summary and report surfaces are produced | `capstone/workflow/rules/summarize_report.smk` | `capstone/publish/v1/summary.json` |
+| what downstream users are allowed to trust | `capstone/workflow/contracts/FILE_API.md` | [Publish Review Guide](publish-review-guide.md) |
+| where local, CI, and SLURM policy differ | `capstone/profiles/local/config.yaml` | `capstone/profiles/ci/config.yaml` and `capstone/profiles/slurm/config.yaml` |
+| what learner-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
+| where helper logic lives outside the rule files | `capstone/workflow/scripts/provenance.py` or `capstone/src/capstone/` | `capstone/environment.yaml` or `capstone/workflow/envs/` |
+| how the repository is defended | `capstone/tests/` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+[Back to top](#top)
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+## Directory responsibilities
 
-This page explains which capstone files matter first and what responsibility each one
-holds.
-
-Use it when the repository feels understandable at a directory level but not yet at a
-file level.
-
----
-
-## Start With These Files
-
-| File | Why it matters |
+| Path | What belongs there |
 | --- | --- |
-| [Capstone Guide](index.md) | defines the repository contract and the teaching route through the workflow |
-| `capstone/Snakefile` | shows the orchestration entrypoint and how rule families are assembled |
-| `capstone/workflow/rules/common.smk` | establishes shared functions, path logic, and workflow-wide conventions |
-| `capstone/workflow/rules/preprocess.smk` | contains discovery and per-sample processing contracts |
-| `capstone/workflow/rules/publish.smk` | defines the stable publish boundary and integrity evidence |
-| [Publish Review Guide](publish-review-guide.md) | documents which files are public contracts and which remain internal |
-| `capstone/Makefile` | exposes the learner-facing proof and verification commands |
-| [Capstone Walkthrough](capstone-walkthrough.md) | explains the repository as a guided review surface rather than only a runnable workflow |
+| `capstone/Snakefile` | top-level assembly and workflow entry |
+| `capstone/workflow/rules/` | rule families with visible workflow meaning |
+| `capstone/workflow/modules/` | reusable workflow boundaries with explicit interfaces |
+| `capstone/workflow/contracts/` | published file-level contracts |
+| `capstone/workflow/scripts/` | helper code that belongs beside orchestration |
+| `capstone/src/capstone/` | reusable Python implementation code |
+| `capstone/profiles/` | operating-policy differences across execution contexts |
+| `capstone/tests/` | unit and workflow-level proof surfaces |
+| `capstone/publish/v1/` | downstream-facing publish boundary |
 
 [Back to top](#top)
 
----
+## Good first reading order
 
-## Directory Responsibilities
+If this is your first serious repository pass, use this sequence:
 
-| Path | Responsibility |
-| --- | --- |
-| `capstone/data/raw/` | committed toy inputs that begin the discovery story |
-| `capstone/data/reference/` and `capstone/data/panel/` | small reference assets used by the screening rules |
-| `capstone/config/` | workflow configuration and schema validation surfaces |
-| `capstone/workflow/rules/` | Snakemake rule families and orchestration boundaries |
-| `capstone/workflow/modules/` | modular rule bundles used to keep repository growth legible |
-| `capstone/workflow/scripts/` | helper scripts that belong beside workflow orchestration rather than the Python package |
-| `capstone/src/capstone/` | reusable Python implementation for data-processing steps |
-| `capstone/profiles/` | operating-context policy for local, CI, and SLURM execution |
-| `capstone/tests/` | unit and workflow-level checks that defend repository truth |
+1. `capstone/Snakefile`
+2. `capstone/workflow/rules/common.smk`
+3. `capstone/workflow/rules/preprocess.smk`
+4. `capstone/workflow/rules/summarize_report.smk`
+5. `capstone/workflow/rules/publish.smk`
+6. `capstone/workflow/contracts/FILE_API.md`
+7. `capstone/Makefile`
+8. one profile file
+9. one test surface
 
-[Back to top](#top)
-
----
-
-## Best Reading Order
-
-1. [Capstone Guide](index.md)
-2. `capstone/Snakefile`
-3. `capstone/workflow/rules/common.smk`
-4. `capstone/workflow/rules/preprocess.smk`
-5. `capstone/workflow/rules/summarize_report.smk`
-6. `capstone/workflow/rules/publish.smk`
-7. [Publish Review Guide](publish-review-guide.md)
-8. `capstone/Makefile`
-9. `capstone/profiles/`
-10. `capstone/tests/`
-
-That order keeps the learner anchored in contract first, workflow meaning second,
-operational proof third, and published evidence last.
+That order keeps workflow meaning first, publish trust second, policy third, and proof
+surfaces last.
 
 [Back to top](#top)
 
----
+## Wrong reading orders
 
-## Common Wrong Reading Order
+Avoid these:
 
-Avoid starting with:
+- opening helper Python code before reading the visible rule contract
+- starting with `publish/v1/` before you know how the repository promotes files into it
+- reading profiles before you know which workflow behavior must remain invariant
+- using folder names as a substitute for ownership
 
-* helper Python files before reading the workflow contract
-* published artifacts before understanding how discovery and preprocessing work
-* profile files before you know which workflow behavior must remain stable
-* tests before you know what the repository is promising to downstream users
-
-That route teaches fragments without the boundary story that makes them useful.
+If you are still navigating by directory names alone, the repository has not become
+legible yet.
 
 [Back to top](#top)
