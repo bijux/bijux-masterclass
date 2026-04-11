@@ -28,7 +28,7 @@ flowchart TD
 <!-- page-maps:end -->
 
 This guide explains how the capstone is partitioned and why those partitions matter. The
-workflow is small enough to execute fully, but large enough that a learner can still get
+workflow is small enough to execute fully, but large enough that you can still get
 lost if the ownership of each layer is not made explicit.
 
 ---

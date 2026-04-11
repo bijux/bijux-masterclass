@@ -82,7 +82,7 @@ the workflow honestly.
 - It is not claiming high-performance bioinformatics.
 - It is not claiming realistic production-scale genomics.
 
-The workflow is deliberately toy-sized so the learner can focus on workflow truth:
+The workflow is deliberately toy-sized so you can focus on workflow truth:
 checkpoint discovery, rule contracts, publish boundaries, profile policy, and
 reviewable evidence.
 

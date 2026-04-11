@@ -28,7 +28,7 @@ flowchart LR
 
 This guide explains the lightest honest entry into the capstone. The walkthrough bundle
 exists for first contact: it shows the visible rule surface, dry-run plan, policy files,
-contract-enforcement scripts, and the core study guides before the learner has to reason
+contract-enforcement scripts, and the core study guides before you have to reason
 about full execution.
 
 ---
