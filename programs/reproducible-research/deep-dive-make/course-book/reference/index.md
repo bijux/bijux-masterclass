@@ -28,7 +28,7 @@ debugging order, or proof routes.
 | If the question is... | Start here | Then read |
 | --- | --- | --- |
 | what does this term mean locally | the vocabulary section on this page | the page or module that used it |
-| where does this idea belong in the program | [Concept Index](concept-index.md) | [Module Dependency Map](module-dependency-map.md) |
+| where does this idea belong in the program | [Concept Index](concept-index.md) | the module-order section on that page |
 | which target is public and which is internal | [Public Targets](public-targets.md) | [Mk Layer Guide](mk-layer-guide.md) |
 | why is this build incident happening | [Incident Ladder](incident-ladder.md) | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
 | where should this artifact or review output live | [Artifact Boundary Guide](artifact-boundary-guide.md) | [Completion Rubric](completion-rubric.md) |
@@ -48,7 +48,6 @@ least one full read of the relevant lesson or capstone guide.
 
 ## Reference pages
 
-- [Module Dependency Map](module-dependency-map.md) for concept order and safe reading sequence
 - [Topic Boundaries](topic-boundaries.md) for what the course treats as core, supporting, and boundary material
 - [Concept Index](concept-index.md) for locating where an idea is taught
 - [Anti-Pattern Atlas](anti-pattern-atlas.md) for routing common Make smells to the right repair path

@@ -32,6 +32,55 @@ theme across the whole course.
 
 ---
 
+## Module order and safe reading sequence
+
+Deep Dive Make is not ten independent essays. Later modules assume earlier mental models,
+and the course becomes much easier when that dependency shape is explicit.
+
+```mermaid
+graph TD
+  m01["01 Foundations"]
+  m02["02 Scaling"]
+  m03["03 Production Practice"]
+  m04["04 Semantics Under Pressure"]
+  m05["05 Hardening"]
+  m06["06 Generated Files"]
+  m07["07 Build Architecture"]
+  m08["08 Release Engineering"]
+  m09["09 Incident Response"]
+  m10["10 Mastery"]
+
+  m01 --> m02 --> m03
+  m03 --> m04 --> m05
+  m03 --> m06 --> m07 --> m08
+  m05 --> m09 --> m10
+  m07 --> m10
+  m08 --> m10
+```
+
+| Module | Depends most on | Reason |
+| --- | --- | --- |
+| 01 Foundations | none | it establishes the graph model and rebuild truth |
+| 02 Scaling | 01 | parallel safety only makes sense after graph truth |
+| 03 Production Practice | 01-02 | deterministic discovery and selftests assume basic correctness |
+| 04 Semantics Under Pressure | 01-03 | debugging semantics matter most once the build already has structure |
+| 05 Hardening | 03-04 | you need a build contract before you can harden it |
+| 06 Generated Files | 03-05 | generators become safe only when truth and boundaries are already clear |
+| 07 Build Architecture | 02-06 | reusable structure depends on both graph truth and boundary discipline |
+| 08 Release Engineering | 03-07 | release contracts depend on a stable build API and trustworthy outputs |
+| 09 Incident Response | 03-08 | good triage assumes the build already expresses its contracts clearly |
+| 10 Mastery | all earlier modules | migration and governance require the whole mental model |
+
+Fastest safe paths:
+
+- new learner: read in order from Module 01 through Module 10
+- working maintainer: start with Modules 04, 05, and 09, then backfill earlier modules when you find a gap in your mental model
+- build steward: start with Modules 03, 07, 08, 09, and 10, then revisit earlier modules when a policy or graph-truth question points back to fundamentals
+
+[Back to top](#top)
+
+---
+
 ## Core Build Truth
 
 | Concept | Primary modules | Typical proof |
@@ -91,7 +140,7 @@ theme across the whole course.
 
 When using this index, the most useful companion pages are:
 
-* [`glossary.md`](glossary.md)
+* [`index.md`](index.md)
 * [`incident-ladder.md`](incident-ladder.md)
 * [`capstone-map.md`](../capstone/capstone-map.md)
 * [`completion-rubric.md`](completion-rubric.md)
