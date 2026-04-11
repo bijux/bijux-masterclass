@@ -57,7 +57,7 @@ least one full read of the relevant lesson or capstone guide.
 - [Incident Ladder](incident-ladder.md) for debugging order under pressure
 - [Mk Layer Guide](mk-layer-guide.md) for the layered build architecture
 - [Artifact Boundary Guide](artifact-boundary-guide.md) for separating outputs, proofs, and teaching surfaces
-- [Selftest Map](selftest-map.md) for reading the build proof harness
+- [Public Targets](public-targets.md) for stable command surfaces and the selftest proof harness
 - [Completion Rubric](completion-rubric.md) for course and repository review
 
 ## Shelf vocabulary
