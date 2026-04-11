@@ -1,6 +1,5 @@
 # Module 06: Monadic Flow and Explicit Context
 
-
 <!-- page-maps:start -->
 ## Module Position
 
@@ -8,86 +7,104 @@
 flowchart TD
   family["Python Programming"] --> program["Python Functional Programming"]
   program --> module["Module 06: Monadic Flow and Explicit Context"]
-  module --> lessons["Lesson pages and worked examples"]
-  module --> checkpoints["Exercises and closing criteria"]
-  module --> capstone["Related capstone evidence"]
+  module --> lessons["Lessons and worked examples"]
+  module --> exercises["Exercises and closing checks"]
+  module --> capstone["Capstone comparison points"]
 ```
 
 ```mermaid
 flowchart TD
-  purpose["Start with the module purpose and main questions"] --> lesson_map["Use the lesson map to choose reading order"]
-  lesson_map --> study["Read the lessons and examples with one review question in mind"]
-  study --> proof["Test the idea with exercises and capstone checkpoints"]
-  proof --> close["Move on only when the closing criteria feel concrete"]
+  question["Start with the control-flow problem you want to remove"] --> order["Follow the suggested reading order"]
+  order --> examples["Study one worked example at a time"]
+  examples --> compare["Compare the lesson with the capstone code"]
+  compare --> close["Use the closing criteria before moving on"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+Read the first diagram as a placement map: this module sits between the data modelling
+work from Module 05 and the boundary-focused design work in Module 07. Read the second
+diagram as a study route: start from a concrete propagation or context problem, then
+move through the lessons in a deliberate order instead of treating the pages as isolated
+reference notes.
+
+Module 06 is about one practical question:
+
+> When several steps depend on each other, which parts of the flow should stay explicit
+> in the code so that failure, configuration, logging, and local state remain easy to
+> review?
 
 ## Keep These Pages Open
 
-Use these support surfaces while reading so explicit context and composition stay tied to
-reviewable flow rather than container jargon:
+Use these pages alongside Module 06 so the new abstractions stay connected to the rest
+of the course:
 
-- [Mid-Course Map](../module-00-orientation/mid-course-map.md) for the bridge through failure and modelling pressure
-- [Pressure Routes](../guides/pressure-routes.md) for flow and context questions
-- [Boundary Review Prompts](../reference/boundary-review-prompts.md) for keep/change/reject pressure
-- [Capstone Map](../capstone/capstone-map.md) for the context, result, and pipeline surfaces in FuncPipe
+- [Mid-Course Map](../module-00-orientation/mid-course-map.md): where this module fits in the overall progression
+- [Pressure Routes](../guides/pressure-routes.md): review questions for flow, context, and trade-offs
+- [Boundary Review Prompts](../reference/boundary-review-prompts.md): prompts for deciding what belongs in a container and what belongs at a boundary
+- [Capstone Map](../capstone/capstone-map.md): where the same ideas surface in FuncPipe
 
-Carry this question into the module:
+## What Changes In This Module
 
-> Which context should remain explicit in the composition itself, and which abstraction would make the flow harder to inspect than ordinary Python dataflow?
+Module 05 focused on shaping data honestly. Module 06 keeps that data modelling work,
+but shifts the attention to sequencing:
 
-This module takes the data models from Module 05 and shows how dependent steps can be
-chained without tangling failure handling, configuration lookup, or local state updates.
-The emphasis is on readability, lawfulness, and explicit context.
+- dependent steps should read in the same order they execute
+- failure and absence should propagate without repetitive branching
+- configuration, local state, and log data should stay visible instead of leaking
+  through globals or hidden mutation
 
-## Learning outcomes
+The goal is not to use more container names. The goal is to make flow easier to read,
+change, and test.
 
-- how lawful chaining removes repetitive propagation code
-- how Reader, State, and Writer patterns make context explicit
-- how to lift ordinary functions into container-based flows
-- how to refactor ad hoc exception handling into reviewable composition
+## Learning Outcomes
 
-## Lesson map
+By the end of the module, you should be able to:
 
-- [and_then and bind](and-then-and-bind.md)
-- [Law-Guided Design](law-guided-design.md)
-- [Lifting Plain Functions](lifting-plain-functions.md)
-- [Reader Pattern](reader-pattern.md)
-- [Explicit State Threading](explicit-state-threading.md)
-- [Error-Typed Flows](error-typed-flows.md)
-- [Layered Containers](layered-containers.md)
-- [Writer Pattern](writer-pattern.md)
-- [Refactoring try/except](refactoring-try-except.md)
-- [Configurable Pipelines](configurable-pipelines.md)
-- [Refactoring Guide](refactoring-guide.md)
+- explain when `map`, `and_then`, and applicative lifting solve different composition problems
+- choose when Reader, State, or Writer clarifies a pipeline and when ordinary functions are still enough
+- separate expected domain errors from unexpected failures at effect boundaries
+- review nested container shapes without losing track of which effect dominates the flow
+- refactor imperative branching into smaller, law-guided steps without changing the public behavior
+
+## Suggested Reading Order
+
+Use this order if you are reading the module front to back:
+
+1. [and_then and bind](and-then-and-bind.md): remove repetitive propagation from dependent steps
+2. [Lifting Plain Functions](lifting-plain-functions.md): decide when to use `map`, `and_then`, `map_err`, or `liftA2`
+3. [Law-Guided Design](law-guided-design.md): understand what makes those refactors safe
+4. [Reader Pattern](reader-pattern.md): make shared configuration explicit
+5. [Explicit State Threading](explicit-state-threading.md): keep local updates pure and reviewable
+6. [Error-Typed Flows](error-typed-flows.md): separate expected errors from bugs
+7. [Layered Containers](layered-containers.md): combine effects without losing track of behavior
+8. [Writer Pattern](writer-pattern.md): accumulate logs and trace data as values
+9. [Refactoring try/except](refactoring-try-except.md): turn the ideas into a repeatable rewrite process
+10. [Configurable Pipelines](configurable-pipelines.md): choose behavior from configuration instead of duplicating pipelines
+11. [Refactoring Guide](refactoring-guide.md): compare the module ideas against the capstone surfaces
 
 ## Exercises
 
-- Rewrite one nested propagation path with lawful chaining and explain which repetition disappears.
-- Identify one place where Reader, State, or Writer is warranted and one place where ordinary functions are still enough.
-- Review one logging or context-carrying helper and explain whether it preserves the underlying payload contract.
+- Rewrite one manual propagation path with `and_then`, and name the branches you no longer have to maintain by hand.
+- Find one hidden dependency and decide whether it should become a Reader input or stay as an ordinary function argument.
+- Review one logging or stateful helper and explain whether Writer or State would clarify the behavior or only add ceremony.
 
-## Capstone checkpoints
+## Capstone Checkpoints
 
-- Inspect where dependent operations short-circuit automatically.
-- Compare implicit globals with explicit context carried through the pipeline.
-- Review whether logging and tracing stay data-first instead of mutating flow control.
+- Trace one capstone pipeline and identify where short-circuiting happens.
+- Compare one implicit dependency with an explicit context value carried through the flow.
+- Inspect whether logs, metrics, or counters are treated as ordinary data or as hidden side effects.
 
-## Before moving on
+## Closing Criteria
 
-You should be able to explain why lawful composition matters for refactoring, and how
-explicit context keeps abstractions honest instead of magical. Use
-[Refactoring Guide](refactoring-guide.md) and compare against
-`capstone/_history/worktrees/module-06` before moving forward.
+Before moving on, you should be able to:
 
-## Closing criteria
+- explain why lawful composition matters for refactoring, not just for theory
+- point to the part of a pipeline where context is introduced, transformed, and consumed
+- compare an exception-heavy path with a compositional path and explain which one is easier to review
+- use [Refactoring Guide](refactoring-guide.md) together with
+  `capstone/_history/worktrees/module-06` to check whether the ideas feel concrete in real code
 
-- You can explain why a lawful composition rule matters for maintenance instead of treating it as theory trivia.
-- You can identify when explicit context clarifies behavior and when a container abstraction would hide too much.
-- You can compare an exception-driven path with a compositional path and explain which one is easier to review.
+## Directory Glossary
 
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Glossary](glossary.md) when you want the recurring terms in this module to stay
+stable while you move between lessons, exercises, and capstone checkpoints.
