@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Capstone Walkthrough"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -35,7 +35,7 @@ alone.
 
 ## What the walkthrough should teach
 
-- how the learner-facing application surface differs from the lower-level runtime
+- how the application surface differs from the lower-level runtime
 - how rule lifecycle moves from draft to active before evaluation begins
 - how alerts become events and derived read models
 - how small object boundaries create a readable operational story
@@ -45,7 +45,7 @@ alone.
 
 | Stage in the walkthrough | Main boundary to notice | Why it matters |
 | --- | --- | --- |
-| policy creation | `application.py` into `model.py` | the learner-facing facade should not own the domain rules |
+| policy creation | `application.py` into `model.py` | the facade should not own the domain rules |
 | rule activation | aggregate lifecycle rules | invalid transitions should fail at the authoritative boundary |
 | sample evaluation | `policies.py` plus aggregate coordination | evaluation variability should not turn into condition ladders inside the aggregate |
 | alert publication | runtime orchestration and sink boundary | integration work should stay outside the domain model |

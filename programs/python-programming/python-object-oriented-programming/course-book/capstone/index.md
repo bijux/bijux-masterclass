@@ -39,7 +39,7 @@ and why?
 
 | If you need... | From the repository root | From the capstone directory |
 | --- | --- | --- |
-| the learner-facing walkthrough | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` | `make walkthrough` |
+| the walkthrough route | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` | `make walkthrough` |
 | executable verification | `make PROGRAM=python-programming/python-object-oriented-programming test` | `make confirm` |
 | saved proof bundles | `make PROGRAM=python-programming/python-object-oriented-programming proof` | `make proof` |
 

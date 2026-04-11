@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Capstone Architecture Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -41,7 +41,7 @@ only its syntax.
 
 ## Dependency direction to keep in mind
 
-- learner-facing commands may pass through `application.py`, but they should not bypass aggregate ownership
+- public commands may pass through `application.py`, but they should not bypass aggregate ownership
 - `runtime.py` may coordinate multiple boundaries, but it should depend on domain decisions rather than redefine them
 - projections may depend on emitted events, but the aggregate should not depend on projection state
 - repository and unit-of-work mechanics may serve the aggregate, but they should not hide business rules from review

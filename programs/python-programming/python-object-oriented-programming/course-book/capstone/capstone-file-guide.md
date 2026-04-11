@@ -7,7 +7,7 @@
 ```mermaid
 flowchart TD
   family["Python Programming"] --> program["Python Object-Oriented Programming"]
-  program --> pressure["A concrete learner or reviewer question"]
+  program --> pressure["A concrete question you need answered"]
   pressure --> guide["Capstone File Guide"]
   guide --> next["Modules, capstone, and reference surfaces"]
 ```
@@ -38,7 +38,7 @@ alphabetically. The goal is to understand how the system is partitioned.
 
 ## What each area is for
 
-- `application.py` gives learner-facing use cases and keeps the entry surface readable.
+- `application.py` gives readable use cases and keeps the entry surface clear.
 - `model.py` owns the aggregate, rule lifecycle, and domain invariants.
 - `policies.py` owns replaceable evaluation behavior.
 - `runtime.py` coordinates adapters, projections, and publication without becoming the domain.
@@ -52,7 +52,7 @@ alphabetically. The goal is to understand how the system is partitioned.
 | --- | --- | --- |
 | Which object actually owns the rule lifecycle? | `model.py` | `tests/test_policy_lifecycle.py` |
 | Where does evaluation variation belong? | `policies.py` | `tests/test_policy_evaluation.py` |
-| What is learner-facing versus internal orchestration? | `application.py` | `runtime.py` and `tests/test_application.py` |
+| What is public-facing versus internal orchestration? | `application.py` | `runtime.py` and `tests/test_application.py` |
 | Where would persistence or rollback concerns land? | `repository.py` | `tests/test_unit_of_work.py` |
 | Which views are derived instead of authoritative? | `read_models.py` and `projections.py` | `tests/test_runtime.py` |
 
@@ -61,7 +61,7 @@ alphabetically. The goal is to understand how the system is partitioned.
 - Read `PACKAGE_GUIDE.md` when you want the code layout at the package boundary.
 - Read `TEST_GUIDE.md` when you want the fastest route from a claim to an executable check.
 - Read `COMMAND_GUIDE.md` when you want the command-level review route.
-- Read `PROOF_GUIDE.md` when you want the learner-facing output route.
+- Read `PROOF_GUIDE.md` when you want the saved output route.
 - Read `EXTENSION_GUIDE.md` when you want to place a new feature in the right boundary.
 
 ## Route by module stage
