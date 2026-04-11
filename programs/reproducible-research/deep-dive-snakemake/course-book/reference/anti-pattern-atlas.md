@@ -2,7 +2,6 @@
 
 # Anti-Pattern Atlas
 
-
 <!-- page-maps:start -->
 ## Reference Position
 
@@ -16,80 +15,65 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  trigger["Hit a naming, boundary, or trade-off question"] --> lookup["Use this page as a glossary, map, rubric, or atlas"]
-  lookup --> compare["Compare the current code or workflow against the boundary"]
-  compare --> decision["Turn the comparison into a keep, change, or reject call"]
+  symptom["Name the symptom"] --> pattern["Match it to the likely failure class"]
+  pattern --> question["Ask the repair question that belongs to that class"]
+  question --> route["Choose the module or capstone route that proves the fix"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-This page is the missing failure crosswalk for Deep Dive Snakemake. It exists because
-humans rarely remember course structure by module title during a real workflow problem.
-They remember symptoms, smells, and clumsy patterns.
-
-Use this page when the question is “what kind of bad Snakemake idea is this?” rather than
-“which module was that in?”
+Use this page when you recognize the smell before you remember the module. A useful
+atlas turns "this workflow feels wrong" into a smaller statement about hidden logic,
+checkpoint abuse, profile drift, weak publish contracts, or ownership collapse.
 
 ---
 
-## Common Anti-Patterns
+## Symptom-led lookup
 
-| Anti-pattern | Why it is clumsy | Primary modules | First proof or review route |
+| Symptom | Likely failure class | Ask this next | First route |
 | --- | --- | --- | --- |
-| shell scripts used as hidden workflow logic | the real contract disappears outside the DAG | 01, 05 | `capstone-walkthrough` |
-| checkpoints used as magic rather than staged discovery | the plan becomes opaque and unstable | 02 | `test` |
-| profiles used to smuggle semantic changes | execution policy starts mutating workflow meaning | 03, 08 | `capstone-profile-audit` |
-| modularity that hides the real file API | larger repositories become harder, not easier, to review | 04, 07 | `capstone-tour` |
-| wrappers and envs treated as unquestioned truth | software boundaries become tribal instead of reviewable | 05 | `proof` |
-| publish directories treated as informal output piles | downstream trust becomes accidental | 06 | `capstone-verify-report` |
-| architecture pages that do not match code ownership | repository review becomes ceremonial | 07, 10 | `proof` |
-| executor differences mistaken for workflow semantics | context drift is normalized instead of bounded | 08 | `capstone-profile-audit` |
-| logs and benchmarks collected without a review route | incidents stay noisy instead of explainable | 09 | `proof` |
-| Snakemake kept as owner after its boundary is exceeded | governance and migration drift become chronic | 10 | `capstone-confirm` |
+| the workflow only makes sense if someone explains it out loud | hidden logic escaped the DAG | which behavior lives in shell or helper code instead of visible rule contracts | `make walkthrough` |
+| the checkpoint feels magical | staged discovery is not explicit enough | where is the discovered sample set recorded and reviewed | `make walkthrough` |
+| a profile change changed results, not just execution context | policy leaked into semantics | which setting should have stayed in workflow or config, not a profile | `make profile-audit` |
+| outputs exist but still do not feel trustworthy downstream | publish contract is weaker than execution evidence | which file or check actually defines downstream trust | `make verify-report` |
+| the repository is modular, but no one knows where a change belongs | ownership boundaries are blurry | which layer should own workflow meaning, helper code, or policy | `make tour` |
+| logs are everywhere, but incident review is still vague | evidence lacks a review route | which smaller bundle or guide should answer the current question first | `make proof` |
 
 [Back to top](#top)
 
 ---
 
-## Symptom To Anti-Pattern
+## Recurring failure classes
 
-| Symptom | Likely anti-pattern | Better question |
+| Failure class | Why it matters | Where the course or capstone teaches the repair |
 | --- | --- | --- |
-| “the workflow only works with this one command line” | policy is leaking into semantics | which setting belongs in a profile or file contract |
-| “the checkpoint feels magical” | staged discovery is not explicit enough | where is the discovered set recorded and reviewed |
-| “the outputs exist, but I do not trust them” | publish contract is weak or informal | what stable surface proves downstream trust |
-| “the repository is modular, but I still do not know where to change it” | architecture boundaries are blurry | which file API or layer owns the change |
-| “the incident evidence is there, but I still cannot diagnose it” | observability lacks a review route | what narrower review surface should I inspect first |
+| hidden workflow logic in shell or helper code | readers stop being able to trust the DAG by inspection | modules 01 and 05, `WALKTHROUGH_GUIDE.md` |
+| checkpoint discovery used as a black box | dynamic behavior becomes harder to audit than it needs to be | module 02, `CHECKPOINT_GUIDE.md` |
+| profiles used to carry semantic differences | execution context starts changing analytical meaning | modules 03 and 08, `PROFILE_AUDIT_GUIDE.md` |
+| modularity that hides the file contract | a larger repository becomes less legible instead of more | modules 04 and 07, `ARCHITECTURE.md` |
+| publish directories treated as informal output piles | downstream trust becomes accidental | module 06, `FILE_API.md`, `PUBLISH_REVIEW_GUIDE.md` |
+| governance questions left until after drift is visible | stewardship turns reactive and expensive | module 10, `EXTENSION_GUIDE.md` |
 
 [Back to top](#top)
 
 ---
 
-## Repair Direction
+## Repair order
 
-When you identify an anti-pattern, do not jump straight to rewriting everything.
+When you identify a likely anti-pattern:
 
-Use this order:
-
-1. name the failure class precisely
-2. find the matching module and capstone review route
-3. inspect the owning boundary
-4. apply the narrowest repair that restores workflow truth
-
-This keeps the course aligned with real maintenance work instead of theatrical refactoring.
+1. name the failure class in one sentence
+2. point to the output, config, or boundary that is lying
+3. choose the smallest capstone route that demonstrates the same defect or claim
+4. repair the contract before polishing the implementation
 
 [Back to top](#top)
 
 ---
 
-## Best Companion Pages
+## Companion pages
 
-Use these with the atlas:
-
-* [`boundary-map.md`](boundary-map.md) for workflow-boundary review
-* [`module-dependency-map.md`](module-dependency-map.md) for where the idea is taught in sequence
-* [`capstone-map.md`](../capstone/capstone-map.md) for module-aware workflow routing
-* [`incident-review-guide.md`](../capstone/incident-review-guide.md) for a narrower incident review surface
+- [`boundary-map.md`](boundary-map.md)
+- [`repository-layer-guide.md`](repository-layer-guide.md)
+- [`module-dependency-map.md`](module-dependency-map.md)
 
 [Back to top](#top)
