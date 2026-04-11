@@ -42,7 +42,7 @@ In this core, we integrate property-based testing (PBT) into the FuncPipe RAG Bu
 - **Mypy Config:** --strict; strategies typed.
 - **Exit:** Key laws pass, diversity targets hit (via events/targets), runtime budget met, CI green. Code coverage >80% (via pytest-cov) as side metric.
 
-**Audience:** Engineers ensuring pipeline reliability via automated laws.
+Use this when you need pipeline reliability backed by automated laws.
 
 **Outcome:**
 1. Write PBT for invariants/regressions.

@@ -42,7 +42,7 @@ In this core, we establish enforceable governance for the FuncPipe RAG Builder (
 - Enforcement: CODEOWNERS (primary required), pre-commit hooks, PBT for unsafe facades, static scanners (forbidden-imports for random/time/IO libs in core; custom AST for globals/shared state in core).
 - Deprecation: exactly two major versions (aligned with Core 8).
 
-**Audience:** Tech leads/architects maintaining large FP codebases.
+Use this when you are maintaining a large FP codebase and need governance that does not erase design clarity.
 
 **Outcome:**
 1. Assign primary owners per context.

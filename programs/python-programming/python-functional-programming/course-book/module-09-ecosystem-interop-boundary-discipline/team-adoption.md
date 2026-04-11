@@ -38,7 +38,7 @@ In this final core of Module 09, we focus on strategies for team adoption of fun
 - **Semantics:** Laws like consistency (same patterns yield similar code); gradualism (start small, measure wins); verified via mock reviews and team surveys.
 - **Integration:** Apply to RAG; extend Module 7 migration with team processes.
 - **Mypy Config:** --strict; add FP linters like ruff.
-**Audience:** Team leads promoting FP in Python teams, focusing on scalability and collaboration.
+Use this when you are promoting FP in a Python team and need the adoption path to scale collaboratively.
 **Outcome:**
 1. Draft FP coding standards for your team.
 2. Identify and apply key FP patterns in code.

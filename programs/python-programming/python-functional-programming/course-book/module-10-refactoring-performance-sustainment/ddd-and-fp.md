@@ -49,7 +49,7 @@ Contexts evolve independently. Orchestration is thin wiring governed by explicit
 - Orchestration owns workflow and delivery guarantees (ordering, retries, dedup) as platform/system context policy – not domain invariants.
 - Isolation enforced via layered import-linter contracts (CI) + runtime smoke test.
 
-**Audience:** Architects/engineers building large, long-lived FP systems.
+Use this when you are building large, long-lived FP systems.
 
 **Outcome:**
 1. Split system into bounded contexts with local types/events.

@@ -39,7 +39,7 @@ In this core, we build FP-style web services with FastAPI in the FuncPipe RAG Bu
 - **Integration:** Wrap RAG core in FastAPI endpoints; use Pydantic for ADTs (Module 5); test with overrides; map FPResult to HTTP (Ok→200, Err(domain)→4xx, Err(unexpected)→5xx).
 - **Mypy Config:** --strict; fastapi/pydantic typing.
 
-**Audience:** Web developers building services around FP pipelines, needing pure cores with testable adapters.
+Use this when you are building services around FP pipelines and need pure cores with testable adapters.
 
 **Outcome:**
 1. Build FastAPI services with thin adapters/pure cores.

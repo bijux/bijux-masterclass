@@ -47,7 +47,7 @@ In this core, we establish rigorous, enforceable versioning for the FuncPipe RAG
 - Stored events/reprocessing: keep upcasters for the last two majors in a separate "archive" toolchain; old logs require explicit migration or archive runner.
 - Enforcement: PBT compatibility suite + runtime version guards + mypy.
 
-**Audience:** Architects/engineers managing evolving FP systems.
+Use this when you are managing an evolving FP system.
 
 **Outcome:**
 1. Version all contracts with explicit rules.

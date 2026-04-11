@@ -42,7 +42,7 @@ In this core, we apply advanced Python features and scaling techniques to the Fu
 - **Mypy Config:** --strict.
 - **Exit:** Features pass mypy, parallel passes PBT equiv, scales near-linearly (with GIL/serialization overhead).
 
-**Audience:** Engineers building expressive, scalable FP pipelines.
+Use this when you are building expressive, scalable FP pipelines.
 
 **Outcome:**
 1. Use match for ADTs.

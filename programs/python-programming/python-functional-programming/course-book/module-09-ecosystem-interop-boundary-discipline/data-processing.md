@@ -39,7 +39,7 @@ In this core, we adapt data processing libraries to FP principles in the FuncPip
 - **Integration:** Wrap RAG CSV loading/processing in FP chains; convert to/from FuncPipe iterators/ADTs at boundaries; preserve laziness until sink. Note: Dask paths compute entire dataset into memory at boundary—use only at terminal sink.
 - **Mypy Config:** --strict; pandas-stubs/polars typing; dask optional.
 
-**Audience:** Data engineers integrating Pandas/Polars/Dask into FP pipelines for scalable, pure transforms.
+Use this when you are integrating Pandas, Polars, or Dask into FP pipelines for scalable, pure transforms.
 
 **Outcome:**
 1. Adapt these libs to FP for pure chains/pipelines.

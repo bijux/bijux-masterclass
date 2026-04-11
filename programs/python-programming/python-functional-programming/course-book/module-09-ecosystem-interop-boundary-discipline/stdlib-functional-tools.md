@@ -40,7 +40,7 @@ In this core, we explore functional programming patterns in Python's standard li
 - **Integration:** Replace custom combinators with stdlib equivalents in RAG.
 - **Mypy Config:** --strict, with Callable typing.
 
-**Audience:** Engineers building FP pipelines who want stdlib-only solutions for composability without external deps.
+Use this when you want stdlib-only solutions for composable FP pipelines without external dependencies.
 
 **Outcome:**
 1. Use itertools/functools/operator/pathlib for FP patterns, handling gotchas.

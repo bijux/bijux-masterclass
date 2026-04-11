@@ -40,7 +40,7 @@ In this core, we construct data and ML pipelines in FP style within the FuncPipe
 - **Integration:** Wrap RAG stages (clean, chunk, embed) in config-driven pipeline; convert to/from iterators/ADTs; handle ML effects at boundaries (fit/load outside core); effectful steps last (lift to FPResult boundary).
 - **Mypy Config:** --strict; pydantic typing.
 
-**Audience:** ML engineers seeking reproducible, FP-style pipelines for data processing and model workflows.
+Use this when you need reproducible, FP-style pipelines for data processing and model workflows.
 
 **Outcome:**
 1. Build stateless, config-driven data/ML pipelines with compatibility/param validation.

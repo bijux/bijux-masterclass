@@ -32,7 +32,7 @@ In this core, we outline a heuristics-guided migration cycle for refactoring imp
 
 **Delta from Module 09:** Standards define good FP; this gives the adaptive playbook.
 
-**Audience:** Engineers refactoring legacies safely.
+Use this when you are refactoring legacy code safely.
 
 **Outcome:**
 1. Audit/classify impurities, including structural tangles.

@@ -42,7 +42,7 @@ In this core, we add observability patterns to the FuncPipe RAG Builder (now at 
 - **Mypy Config:** --strict; Callable for probes.
 - **Exit:** Traces complete, equivalence holds, overhead in budget.
 
-**Audience:** Engineers debugging/maintaining FP pipelines.
+Use this when you are debugging or maintaining FP pipelines.
 
 **Outcome:**
 1. Add pure traces/metrics to compositions.

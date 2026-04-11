@@ -25,7 +25,7 @@ Read the first diagram as a placement map: this page is one concept inside its p
 > **Core question:**  
 > How do you add command-line entry points to FuncPipe without letting framework choice take over the architecture, while keeping config loading, overrides, and pipeline assembly explicit and testable?
 
-In this core, the shipped learner route is deliberately boring: a stdlib `argparse` shell at the repository edge, pure override helpers in `pipelines/cli.py`, and pipeline assembly that stays outside the shell. That is the canonical implementation because it proves the architectural point without extra framework noise. Typer and Click still matter, but here they are optional extension seams that should preserve the same contract rather than redefine it. The real lesson is thin shell adapters, config-driven execution, override precedence, explicit exit-code mapping, and tests that compare CLI behavior against the same core pipeline logic.
+In this core, the shipped default route is deliberately boring: a stdlib `argparse` shell at the repository edge, pure override helpers in `pipelines/cli.py`, and pipeline assembly that stays outside the shell. That is the canonical implementation because it proves the architectural point without extra framework noise. Typer and Click still matter, but here they are optional extension seams that should preserve the same contract rather than redefine it. The real lesson is thin shell adapters, config-driven execution, override precedence, explicit exit-code mapping, and tests that compare CLI behavior against the same core pipeline logic.
 
 **Motivation Bug:** Hard-coded scripts mix I/O with logic, leading to untestable entry points; CLI integration with config-driving separates concerns for reusable, testable FuncPipe.
 
@@ -40,7 +40,7 @@ In this core, the shipped learner route is deliberately boring: a stdlib `argpar
 - **Integration:** Keep the shipped route stdlib-first; optional Typer or Click shells should reuse the same pure override/config helpers instead of forking the design.
 - **Mypy Config:** --strict on the shipped helpers and stdlib shell; optional framework shells may stay import-guarded.
 
-**Audience:** Developers exposing FuncPipe as tools/scripts and needing one honest CLI boundary before deciding whether extra framework features are worth the dependency.
+Use this when you are exposing FuncPipe as tools or scripts and need one honest CLI boundary before deciding whether extra framework features are worth the dependency.
 
 **Outcome:**
 1. Build a thin CLI shell that delegates to pure FuncPipe helpers instead of mixing policy into argument parsing.
@@ -62,7 +62,7 @@ These laws ensure CLI doesn't break FuncPipe properties.
 ## 2. Decision Table
 | Scenario | Type Safety | Subcommands Needed | Recommended |
 |-----------------------|-------------|---------------------|-------------|
-| Canonical learner route | Sufficient | No | stdlib `argparse` |
+| Canonical default route | Sufficient | No | stdlib `argparse` |
 | Type-driven shell with framework help | High | No | Typer |
 | Complex callback-heavy groups | Medium | Yes | Click |
 | Config overrides with the same pure helper split | Any | Any | keep the repo's stdlib helper layer, then wrap as needed |
@@ -78,7 +78,7 @@ Commands are thin adapters. Start with the shipped shell, then compare optional 
 - Override parsing/merge lives in `capstone/src/funcpipe_rag/pipelines/cli.py`.
 - A minimal optional Typer shell exists at `capstone/src/funcpipe_rag/boundaries/shells/typer_cli.py` (import-guarded).
 
-**Canonical learner route:**
+**Canonical default route:**
 - Open `boundaries/shells/cli.py` first.
 - Open `pipelines/cli.py` second.
 - Treat the Typer block below as an optional extension sketch, not as a competing production path.
@@ -293,7 +293,7 @@ def rag_process(input_path, config_path, overrides, seed, output_format, dry_run
 ```
 ### 4.2 Optional Typer Extension Sketch
 ```python
-# See Public API above. The shipped repo keeps argparse as the canonical learner route
+# See Public API above. The shipped repo keeps argparse as the canonical default route
 # and offers the Typer shell as an optional extension seam with the same helper split.
 ```
 ### 4.3 Config Loading/Overrides

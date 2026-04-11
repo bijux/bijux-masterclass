@@ -42,7 +42,7 @@ In this core, we extend property-based testing (PBT) to async and streaming pipe
 - **Mypy Config:** --strict; async typing.
 - **Exit:** Laws pass, diversity hit, no flakiness, CI green.
 
-**Audience:** Engineers testing async FP pipelines reliably.
+Use this when you need reliable tests for async FP pipelines.
 
 **Outcome:**
 1. Write PBT for invariants in async/stream layers.

@@ -42,7 +42,7 @@ In this core, we introduce performance budgeting for the FuncPipe RAG Builder (n
 - **Mypy Config:** --strict; type extensions (e.g., Numba types).
 - **Exit:** Budgets met, equivalence holds.
 
-**Audience:** Engineers optimizing FP pipelines without sacrificing design.
+Use this when you are optimizing FP pipelines without sacrificing design.
 
 **Outcome:**
 1. Set/enforce budgets via profiling.

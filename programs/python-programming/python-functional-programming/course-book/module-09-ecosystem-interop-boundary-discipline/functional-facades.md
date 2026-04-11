@@ -42,7 +42,7 @@ Dependencies: Varies (e.g., `pip install openai requests psycopg2 boto3 confluen
 - **Integration:** Use Module 07 IoAction/AsyncAction; compose with bind/map; interpret at sinks.
 - **Mypy Config:** --strict; protocols for ports.
 
-**Audience:** Engineers integrating real-world libs into FP pipelines without compromising purity.
+Use this when you are integrating real-world libraries into FP pipelines without compromising purity.
 
 **Outcome:**
 1. Design pure facades returning algebraic descriptions.

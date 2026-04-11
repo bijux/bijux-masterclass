@@ -40,7 +40,7 @@ In this core, we introduce external FP helpers as optional enhancements in the F
 - **Integration:** Runtime-checked imports with stdlib fallbacks preserving types; converters at boundaries. Refactor RAG optionally.
 - **Mypy Config:** --strict; returns[mypy] plugin required for typing; ignore toolz if untyped.
 
-**Audience:** Engineers seeking ergonomics/typed monads beyond stdlib, with safe boundaries to preserve pipeline coherence.
+Use this when you need ergonomics or typed monads beyond the stdlib while keeping safe boundaries that preserve pipeline coherence.
 
 **Outcome:**
 1. Use toolz for curried/pipe syntax; returns for boundary monads with converters.

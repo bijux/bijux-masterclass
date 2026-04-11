@@ -31,7 +31,7 @@ sustainment guide instead of one more topic pile at the end of the course:
 
 - [Mastery Map](../module-00-orientation/mastery-map.md) for the late-course review route
 - [Review Checklist](../reference/review-checklist.md) for the stable engineering bar
-- [Self-Review Prompts](../reference/self-review-prompts.md) for learner-side judgment checks
+- [Self-Review Prompts](../reference/self-review-prompts.md) for self-review judgment checks
 - [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) for the full claim-to-evidence route through FuncPipe
 
 Carry this question into the module:

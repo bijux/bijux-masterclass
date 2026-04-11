@@ -25,11 +25,11 @@ Read the first diagram as a placement map: this page is one concept inside its p
 > **Core question:**
 > How do you reason about distributed execution seams without pretending the default FuncPipe capstone already ships a distributed backend, while still preserving the same functional contracts you would need if one were added later?
 
-In this core, the most important honesty rule comes first: the shipped repository does not include a working Dask or Beam backend. What it does include is the architectural seam where one could be added without rewriting the course's pure helpers, pipeline assembly, or review story. That means the learner route here is about design discipline before implementation breadth: what contracts a distributed boundary would need, what kinds of operators remain lawful under partitioning and retries, and how to keep optional backends from polluting the default proof surface.
+In this core, the most important honesty rule comes first: the shipped repository does not include a working Dask or Beam backend. What it does include is the architectural seam where one could be added without rewriting the course's pure helpers, pipeline assembly, or review story. That means the default route here is about design discipline before implementation breadth: what contracts a distributed boundary would need, what kinds of operators remain lawful under partitioning and retries, and how to keep optional backends from polluting the default proof surface.
 
 To align these systems with FP, we model pipelines as lazy graphs of operators, where each operator has an explicit algebraic contract that guarantees correct behavior under distribution (e.g., associativity for reductions to allow parallel aggregation without order-dependence). We focus on pure transforms (stateless functions operating on individual elements or partitions without side effects), explicit sinks (final steps confined to I/O, such as writing results to files or databases, with idempotence guarantees), and simple stateful operators (like combines with monoids for aggregations). Pipelines are configured via data structures (e.g., YAML specifying operator sequence, contracts like monoids, runner/backend settings, resources, serialization rules, and materialization points), seamlessly integrating with FuncPipe's ADTs (e.g., mapping FPResult over partitions to handle per-element failures). We refactor the RAG ingestion process (e.g., processing massive document sets into embeddings) into these distributed FP pipelines, verifying equivalence to local versions and laws like purity (fixed inputs yield identical outputs under a fixed scheduler) and associativity for reducers.
 
-If you later build this seam out locally, Dask is usually the closer Python-native fit and Beam is the broader portability fit. But those are extension decisions, not current learner obligations in this repo.
+If you later build this seam out locally, Dask is usually the closer Python-native fit and Beam is the broader portability fit. But those are extension decisions, not current obligations in this repo.
 
 **Motivation Bug:** Imperative distributed code often embeds effects (e.g., I/O or state mutation) directly in computation steps, leading to non-reproducible runs, hard-to-test graphs, and failures under retries or shuffles. FP style enforces a clear boundary: pure, composable transforms build the graph lazily, while effects are confined to idempotent sinks, enabling reliable scaling without sacrificing testability or debuggability.
 
@@ -44,7 +44,7 @@ If you later build this seam out locally, Dask is usually the closer Python-nati
 - **Integration:** Keep distributed backends behind explicit compilers or adapters so the shipped local proof route stays unchanged.
 - **Mypy Config:** --strict on the local seam; optional backend imports stay guarded.
 
-**Audience:** Engineers scaling FP pipelines to distributed systems, needing pure transforms in dataflows while handling state, shuffles, and failures gracefully.
+Use this when you are scaling FP pipelines to distributed systems and need pure transforms in dataflows while handling state, shuffles, and failures gracefully.
 
 **Outcome:**
 1. Define the operator and sink contracts a distributed backend would have to preserve.
@@ -65,7 +65,7 @@ These laws ensure distributed layers don't break FP properties. Enforcement uses
 ## 2. Decision Table
 | Scenario | Portability Needed | Data Type | Recommended |
 |-----------------------|--------------------|-----------|-------------|
-| Default learner route in this repo | N/A | Local review and proof | stay on the shipped local pipeline |
+| Default route in this repo | N/A | Local review and proof | stay on the shipped local pipeline |
 | Python-only scale | No | Arrays/DF | Dask DataFrame |
 | Python-only scale | No | Unstructured | Dask Bag |
 | Custom tasks | No | Any | Dask Delayed |
@@ -82,7 +82,7 @@ Builders as funcs. Guard imports. We define an intermediate representation (IR) 
 - This repo includes an import-guarded extension seam stub for compilers at `capstone/src/funcpipe_rag/pipelines/distributed.py`.
 - That file is intentionally a boundary marker: it documents where distributed backends would attach without claiming that Dask or Beam are part of the default proof route.
 
-**Canonical learner route:**
+**Canonical default route:**
 - Open `capstone/src/funcpipe_rag/pipelines/distributed.py` to see the seam.
 - Keep reading the local pipeline and proof surfaces as the canonical implementation.
 - Treat the code below as design scaffolding for an optional backend, not as a promise that this repo already ships one.

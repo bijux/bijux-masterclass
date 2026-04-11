@@ -40,7 +40,7 @@ Dependencies: `pip install pyyaml`; tradeoffs: Specs add reconstruction overhead
 - **Integration:** Extend Module 6 configs; serialize graphs from Core 7. Op params are resolved via registry (e.g., partials/Reader); no explicit params in specs to keep them data-only.
 - **Mypy Config:** --strict; Pydantic for schemas.
 
-**Audience:** Engineers building distributed/multi-stage FP systems needing safe, versioned composition.
+Use this when you are building distributed or multi-stage FP systems that need safe, versioned composition.
 
 **Outcome:**
 1. Design serializable specs for pipelines.
