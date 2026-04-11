@@ -2,7 +2,6 @@
 
 # Target Guide
 
-
 <!-- page-maps:start -->
 ## Guide Maps
 
@@ -21,139 +20,83 @@ graph LR
 
 ```mermaid
 flowchart LR
-  question["Pick the question you have"] --> target["Choose the public target"]
-  target --> output["Inspect the bundle or console evidence"]
-  output --> owner["Name the owning file or boundary"]
-  owner --> review["Return to the course with a precise answer"]
+  question["Name the question"] --> target["Choose the smallest public target"]
+  target --> output["Read the bundle or console output"]
+  output --> next["Escalate only if the question changes"]
 ```
 <!-- page-maps:end -->
 
-Use this guide when `make help` shows many names but you still need to know which target
-matches your question. The goal is not target memorization. The goal is choosing the
-smallest honest command.
+Use this guide when `make help` gives you names, but not judgment. The point is not to
+memorize every target. The point is to pick the smallest command that answers the
+question honestly.
 
 ---
 
-## Stable Review Targets
+## Choose by question
+
+| Question | Start here | Escalate if needed |
+| --- | --- | --- |
+| what does this repository promise publicly | `make inspect` | `make contract-audit` |
+| what are the stable public targets | `make help` | `make inspect` |
+| does the ordinary build succeed | `make all` | `make test` |
+| does the build graph still tell the truth | `make selftest` | `make verify-report` |
+| do I need the proof saved as a review bundle | `make verify-report` | `make proof` |
+| what is the shortest human-first route into the capstone | `make walkthrough` | `make tour` |
+| which failure class does the repro pack teach | `make incident-audit` | `make repro` |
+| what does this repository assume about tools or variable sources | `make profile-audit` | `make portability-audit` and `make show-origins` |
+| can this tree be published as source without local residue | `make source-baseline-check` | `make source-bundle` |
+| what is the strongest shared stewardship route | `make confirm` | none; this is the top route |
+
+[Back to top](#top)
+
+---
+
+## Stable review targets
 
 | Target | What it produces | Use when |
 | --- | --- | --- |
-| `help` | public target list and key variables | you are orienting yourself |
-| `all` | main build outputs and convergence sentinel | you need the ordinary build result |
-| `show` | `CFLAGS` origin, flavor, and raw value | you are inspecting precedence without environment override |
-| `show-e` | `CFLAGS` origin, flavor, and raw value under `-e` | you are proving the environment-override branch from Module 04 |
-| `source-baseline-check` | release-safety check for local build residue | you need to prove the working tree is safe to package as source |
-| `source-bundle` | tracked-source archive under `artifacts/dist/` | you need a clean learner or review distribution |
+| `help` | the published target list and key variables | you need the supported surface |
+| `all` | the ordinary build outputs and convergence sentinel | you need the baseline build result |
 | `test` | runtime behavior checks | you need product-facing validation |
-| `selftest` | convergence, schedule equivalence, and negative hidden-input checks | you need build-system proof |
-| `walkthrough` | learner-first walkthrough bundle | you need a bounded first pass |
-| `tour` | printed review route and focused follow-up surfaces | you need the shortest review entrypoint |
-| `contract-audit` | public-contract review bundle | you need boundary and API review |
-| `incident-audit` | executed failure review bundle | you need one defect class with evidence |
-| `profile-audit` | execution-profile review bundle | you need policy and performance boundaries |
-| `selftest-report` | saved selftest evidence bundle | you need durable proof output |
-| `proof` | bundled learner-facing proof route | you need the sanctioned multi-bundle review path |
-| `hardened` | strongest built-in validation set | you need confirmation before deeper changes |
+| `selftest` | convergence, schedule equivalence, and hidden-input checks | you need build-system proof |
+| `walkthrough` | the bounded first-pass bundle | you need an ordered entry route |
+| `tour` | the shortest printed walkthrough plus supporting bundle | you need quick orientation |
+| `contract-audit` | the public-contract review bundle | you are reviewing promises and boundaries |
+| `inspect` | the same contract route under learner-facing naming | you want the smallest honest review route |
+| `incident-audit` | one executed incident bundle | you want one failure class with evidence |
+| `profile-audit` | the execution-profile review bundle | you are reviewing portability and precedence |
+| `selftest-report` | the saved selftest evidence bundle | you need durable proof output |
+| `verify-report` | the same selftest bundle under shared catalog naming | you need the catalog label used elsewhere |
+| `proof` | the sanctioned multi-bundle review set | one question now spans multiple routes |
+| `hardened` | selftest, audits, attestation, and runtime checks | you want the strongest built-in validation body |
+| `confirm` | the same strongest route under shared naming | you are closing stewardship review |
 
 [Back to top](#top)
 
 ---
 
-## Fast Target Selection
+## Distinctions that matter
 
-### If the question is "what does this build promise?"
-
-Use:
-
-* `make help`
-* `make contract-audit`
-
-### If the question is "why did this variable change?"
-
-Use:
-
-* `make show`
-* `make show-e`
-* `make show-origins`
-
-### If the question is "can I publish this repository as source?"
-
-Use:
-
-* `make clean`
-* `make source-baseline-check`
-* `make source-bundle`
-
-### If the question is "is the graph still honest?"
-
-Use:
-
-* `make selftest`
-* `make selftest-report`
-
-### If the question is "how should I enter the capstone?"
-
-Use:
-
-* `make walkthrough`
-* `make tour`
-
-### If the question is "which failure class does this teach?"
-
-Use:
-
-* `make repro`
-* `make incident-audit`
-
-### If the question is "what is the smallest honest proof?"
-
-Use:
-
-* `make walkthrough` for first repository contact
-* `make inspect` for public-boundary review
-* `make selftest` for build-contract proof
-* `make proof` only when the narrower bundles are no longer enough
+- `all` builds outputs once; `selftest` proves the build contract
+- `walkthrough` writes a first-pass bundle; `tour` prints the shortest route and focused follow-ups
+- `contract-audit` and `inspect` are the same route with different naming context
+- `selftest-report` and `verify-report` are the same saved evidence bundle
+- `profile-audit` is about declared execution boundary and variable sources, not raw performance benchmarking
+- `proof` is not "better selftest"; it is the point where one review question has become several
+- `hardened` and `confirm` are the strongest built-in routes, not the default starting point
 
 [Back to top](#top)
 
 ---
 
-## Important Distinctions
+## Useful companions
 
-Do not confuse these pairs:
-
-* `all` versus `selftest`
-  `all` builds artifacts once. `selftest` proves the build contract.
-* `show` versus `show-e`
-  `show` reports file and command-line precedence under the normal rules. `show-e`
-  reruns the same introspection with GNU Make's environment-override mode.
-* `clean` versus `source-bundle`
-  `clean` removes generated build state. `source-bundle` proves the tree is clean and
-  writes the tracked-source archive you can actually distribute.
-* `tour` versus `walkthrough`
-  `tour` is the shortest review route. `walkthrough` writes the bounded first-pass bundle.
-* `selftest-report` versus `proof`
-  `selftest-report` saves one proof bundle. `proof` writes the sanctioned multi-bundle set.
-* `contract-audit` versus `profile-audit`
-  contract review is about public promises and boundary declarations; profile review is
-  about execution-policy and observability assumptions.
-* `selftest` versus `confirm`
-  `selftest` proves the build contract. `confirm` performs the strongest shared stewardship pass.
-
-[Back to top](#top)
-
----
-
-## Best Companion Guides
-
-Use these with the target guide:
-
-* `PROOF_GUIDE.md`
-* `ARCHITECTURE.md`
-* `SELFTEST_GUIDE.md`
-* `CONTRACT_AUDIT_GUIDE.md`
-* `INCIDENT_REVIEW_GUIDE.md`
-* `PROFILE_AUDIT_GUIDE.md`
-* `SOURCE_BASELINE_GUIDE.md`
+- `PROOF_GUIDE.md`
+- `WALKTHROUGH_GUIDE.md`
+- `SELFTEST_GUIDE.md`
+- `CONTRACT_AUDIT_GUIDE.md`
+- `INCIDENT_REVIEW_GUIDE.md`
+- `PROFILE_AUDIT_GUIDE.md`
+- `SOURCE_BASELINE_GUIDE.md`
 
 [Back to top](#top)
