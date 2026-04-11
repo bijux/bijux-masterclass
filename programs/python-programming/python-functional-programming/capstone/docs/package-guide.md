@@ -9,7 +9,7 @@ graph LR
   family["Python Programming"]
   program["Python Functional Programming"]
   guide["Capstone docs"]
-  section["PACKAGE_GUIDE"]
+  section["Docs"]
   page["FuncPipe Package Guide"]
   proof["Proof route"]
 
@@ -18,11 +18,11 @@ graph LR
 ```
 
 ```mermaid
-flowchart TD
-  tests["Read the proving tests first"] --> fp["Read the pure functional packages"]
-  fp --> rag["Read the RAG and pipeline model"]
-  rag --> policy["Read orchestration and policy packages"]
-  policy --> edges["Read boundaries, infra, and interop edges"]
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

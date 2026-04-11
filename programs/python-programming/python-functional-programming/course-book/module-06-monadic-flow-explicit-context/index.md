@@ -1,23 +1,26 @@
 # Module 06: Monadic Flow and Explicit Context
 
 <!-- page-maps:start -->
-## Module Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 06: Monadic Flow and Explicit Context"]
-  module --> lessons["Lessons and worked examples"]
-  module --> exercises["Exercises and closing checks"]
-  module --> capstone["Capstone comparison points"]
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Monadic Flow Explicit Context"]
+  page["Module 06: Monadic Flow and Explicit Context"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Start with the control-flow problem you want to remove"] --> order["Follow the suggested reading order"]
-  order --> examples["Study one worked example at a time"]
-  examples --> compare["Compare the lesson with the capstone code"]
-  compare --> close["Use the closing criteria before moving on"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

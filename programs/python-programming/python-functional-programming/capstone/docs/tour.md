@@ -9,7 +9,7 @@ graph LR
   family["Python Programming"]
   program["Python Functional Programming"]
   guide["Capstone docs"]
-  section["TOUR"]
+  section["Docs"]
   page["FuncPipe Capstone Tour"]
   proof["Proof route"]
 

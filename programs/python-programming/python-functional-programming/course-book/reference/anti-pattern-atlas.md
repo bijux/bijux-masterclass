@@ -1,21 +1,26 @@
 # Functional Anti-Pattern Atlas
 
 <!-- page-maps:start -->
-## Reference Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Reference"]
+  page["Functional Anti-Pattern Atlas"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  smell["Notice a recurring code smell"] --> pattern["Find the matching anti-pattern"]
-  pattern --> cost["Read the review cost and failure mode"]
-  cost --> repair["Choose the module or proof route that repairs it"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

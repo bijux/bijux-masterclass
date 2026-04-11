@@ -6,21 +6,23 @@
 
 ```mermaid
 graph LR
-  claim["Course claim"] --> inspect["make inspect"]
-  claim --> report["make verify-report"]
-  claim --> proof["make proof"]
-  inspect --> compare["Compare results with the stated boundary"]
-  report --> compare
-  proof --> compare
-  compare --> review["Return to code and review worksheet"]
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["FuncPipe Proof Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
-flowchart TD
-  behavior["Expected behavior"] --> route["Choose the strongest proof route"]
-  route --> output["Inspect test output or tour artifacts"]
-  output --> owner["Name the package or boundary responsible"]
-  owner --> confidence["Decide whether the claim is really proven"]
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

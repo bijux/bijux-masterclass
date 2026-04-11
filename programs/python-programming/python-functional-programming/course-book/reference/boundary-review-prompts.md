@@ -1,21 +1,26 @@
 # Boundary Review Prompts
 
 <!-- page-maps:start -->
-## Reference Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> reference["Reference"]
-  reference --> review["Design or review decision"]
-  review --> capstone["Capstone proof surface"]
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Reference"]
+  page["Boundary Review Prompts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  trigger["Need a sharper review question"] --> prompt["Choose the prompt family below"]
-  prompt --> inspect["Inspect one file, route, or proof surface"]
-  inspect --> decision["Turn the answer into a keep, change, or reject call"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

@@ -6,23 +6,23 @@
 
 ```mermaid
 graph LR
-  change["New requirement"] --> core["Pure core or modelling change"]
-  change --> policy["Policy or pipeline change"]
-  change --> edge["Boundary or adapter change"]
-  core --> tests["Update matching tests"]
-  policy --> tests
-  edge --> tests
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["FuncPipe Extension Guide"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
-flowchart TD
-  question["What kind of change is this?"] --> pure["Pure transform or value model"]
-  question --> effect["Effect boundary or adapter"]
-  question --> interop["Interop or external-library bridge"]
-  pure --> package["Choose the owning package"]
-  effect --> package
-  interop --> package
-  package --> proof["Strengthen proof and review surfaces"]
+flowchart LR
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

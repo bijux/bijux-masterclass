@@ -6,16 +6,23 @@
 
 ```mermaid
 graph LR
-  command["Published command"] --> output["Saved output or terminal surface"]
-  output --> owner["Owning guide or package route"]
-  owner --> proof["Next proof route"]
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  guide["Capstone docs"]
+  section["Docs"]
+  page["FuncPipe Public Surface Map"]
+  proof["Proof route"]
+
+  family --> program --> guide --> section --> page
+  page -.checks against.-> proof
 ```
 
 ```mermaid
 flowchart LR
-  question["What did this command really expose?"] --> output["Name the output or artifact"]
-  output --> owner["Trace it to the owning guide or package map"]
-  owner --> proof["Escalate only if the current surface is not enough"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

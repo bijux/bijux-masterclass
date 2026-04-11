@@ -9,7 +9,7 @@ graph LR
   family["Python Programming"]
   program["Python Functional Programming"]
   guide["Capstone docs"]
-  section["WALKTHROUGH_GUIDE"]
+  section["Docs"]
   page["FuncPipe Walkthrough Guide"]
   proof["Proof route"]
 
@@ -19,10 +19,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  route["Run the walkthrough route"] --> bundle["Inspect the tour bundle"]
-  bundle --> guides["Return to package and test guides"]
-  guides --> code["Read the owning code and tests"]
-  code --> review["Decide whether the claim is justified"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 

@@ -9,7 +9,7 @@ graph LR
   family["Python Programming"]
   program["Python Functional Programming"]
   guide["Capstone docs"]
-  section["TEST_GUIDE"]
+  section["Docs"]
   page["FuncPipe Test Guide"]
   proof["Proof route"]
 
@@ -19,10 +19,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  claim["State a design claim"] --> group["Choose the closest test group"]
-  group --> files["Read a few representative tests"]
-  files --> owner["Name the package or boundary under review"]
-  owner --> command["Run the proof route"]
+  orient["Read the guide boundary"] --> inspect["Inspect the named files, targets, or artifacts"]
+  inspect --> run["Run the confirm, demo, selftest, or proof command"]
+  run --> compare["Compare output with the stated contract"]
+  compare --> review["Return to the course claim with evidence"]
 ```
 <!-- page-maps:end -->
 
