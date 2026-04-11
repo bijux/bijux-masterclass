@@ -49,6 +49,12 @@ This is the core that shows you how to stack the containers from earlier cores i
 > Note: “outer” / “inner” here are about **effect dominance in the type**  
 > (who owns the short-circuit behaviour), not literal Python call order.
 
+The most reliable reading habit is to go **outside in**:
+
+- what does the caller encounter first?
+- which branch can stop the rest of the work?
+- what information is still available when that branch wins?
+
 | Outer → Inner          | Short-circuit behaviour                                      | State/Config on failure? | Recommended for                              |
 |------------------------|--------------------------------------------------------------|--------------------------|----------------------------------------------|
 | Result → anything      | Err stops everything immediately                             | No                       | Most pipelines (failure dominates)           |
@@ -140,6 +146,9 @@ absent_first = transpose_result_option(query_user(id))  # Option[Result[User, Ne
 | Count failed operations              | `State[PipelineState, Result[Reader[Config, T], ErrInfo]]` | State threaded even on Err                                                         |
 
 Pick the **type layer order** that matches your dominance needs.
+If a recommended stack feels hard to read, translate it into a sentence from the
+caller’s view before committing to it. That usually reveals whether the chosen outer
+layer is really the one you want readers to notice first.
 
 
 ## 5. Before → After – Nested Container Handling
