@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson should make memoization feel narrower and safer than students often assume. The right mental model is not "cache anything expensive." It is "cache only when the function is pure and the cache does not change what observers can see except performance."
+Memoization should feel narrower and safer than it often does at first. The right mental model is not "cache anything expensive." It is "cache only when the function is pure and the cache does not change what observers can see except performance."
 
 ## Start With the Repeated Work Problem
 
@@ -44,7 +44,7 @@ def embed_all_naive(tree: TreeDoc) -> None:
 
 That keeps the semantics honest, but wastes a huge amount of time when the same normalized content appears again and again.
 
-The production solution must improve performance without changing the function contract students have already learned to trust.
+The production solution must improve performance without changing the function contract you have already learned to trust.
 
 That is the standard for safe memoization in this course: a pure optimization that can be removed without changing the result.
 
@@ -55,7 +55,7 @@ That is the standard for safe memoization in this course: a pure optimization th
 2. You will build bounded or persistent caches when the stdlib decorator is insufficient.  
 3. You will ship memoized operations that are observationally pure and integrate cleanly with folds and lazy streams.
 
-We formalise exactly what students should review in caching code: observational purity, hit and miss correctness, bounded memory when required, and explicit persistence rules when disk is involved.
+This section formalises exactly what you should review in caching code: observational purity, hit and miss correctness, bounded memory when required, and explicit persistence rules when disk is involved.
 
 ---
 

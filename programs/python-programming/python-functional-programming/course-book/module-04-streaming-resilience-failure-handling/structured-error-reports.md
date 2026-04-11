@@ -20,7 +20,7 @@ Without a structured report, the earlier resilience work still tends to collapse
 
 - If the only output is raw log lines, counts and patterns are hard to trust.
 - If sample errors are unbounded, the report becomes another memory risk.
-- If grouping rules are implicit, students cannot explain why the report is actionable rather than just verbose.
+- If grouping rules are implicit, you cannot explain why the report is actionable rather than just verbose.
 
 > **Core question:**  
 > How do you turn every error in a streaming pipeline into structured, serialisable, grouped reports — complete with counts, ordered samples, and retry metadata — while keeping the pipeline pure and memory-bounded?
@@ -41,7 +41,7 @@ for r in embedded:
         logger.error("Embedding failed: %s", r.error)
 ```
 
-This loses the structure students have spent the whole module building.
+This loses the structure the whole module has been building.
 
 The production solution folds the `Result` stream into an immutable report that preserves the counts, samples, and provenance worth carrying forward.
 
@@ -52,7 +52,7 @@ The production solution folds the `Result` stream into an immutable report that 
 2. You will group by code/stage/path_prefix and extract retry metadata automatically.  
 3. You will ship perfect JSON error reports that survive 1 % or 50 % failure rates.
 
-We formalise exactly what students should review in reporting code: completeness, bounded memory, ordered samples, and purity of the resulting report value.
+This section formalises exactly what you should review in reporting code: completeness, bounded memory, ordered samples, and purity of the resulting report value.
 
 ---
 

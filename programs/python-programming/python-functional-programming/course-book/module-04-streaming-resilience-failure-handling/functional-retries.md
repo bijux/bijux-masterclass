@@ -16,7 +16,7 @@ This lesson should make retries feel controlled rather than hopeful. Students ne
 
 ## Start With the Retry Smell
 
-The common anti-pattern here is easy to recognize: a nested retry loop that blocks the whole stream around one slow item. This lesson needs to replace that picture quickly.
+The common anti-pattern here is easy to recognize: a nested retry loop that blocks the whole stream around one slow item. Replace that picture quickly.
 
 - If retries are unbounded, the policy is no longer safe.
 - If one item can monopolize the whole pipeline while retrying, the engine is not fair.
@@ -59,7 +59,7 @@ The production solution applies a pure retry combinator that separates policy fr
 2. You will get bounded, fair retries with full provenance on final errors.  
 3. You will ship a RAG pipeline that automatically retries transient failures while respecting breakers and resource cleanup.
 
-We formalise exactly what students should review in retry code: bounded execution, fairness, purity, completion guarantees, and clean composition with the rest of the resilience stack.
+This section formalises exactly what you should review in retry code: bounded execution, fairness, purity, completion guarantees, and clean composition with the rest of the resilience stack.
 
 ---
 

@@ -16,7 +16,7 @@ This lesson should make folds feel practical before they feel abstract. Students
 
 ## Start With the Repeated Traversal Smell
 
-Once students can traverse a tree safely, the next temptation is to walk it again and again for each statistic they want. That is the waste this lesson needs to surface.
+Once you can traverse a tree safely, the next temptation is to walk it again and again for each statistic you want. That is the waste this lesson surfaces.
 
 - If count, max depth, and text length are computed in separate passes, the design is repeating the same traversal logic.
 - If the accumulator shape is unclear, the fold reads like machinery instead of a summary of what the code is collecting.
@@ -28,7 +28,7 @@ Once students can traverse a tree safely, the next temptation is to walk it agai
 This lesson introduces folds as the disciplined aggregation layer on top of safe traversal:
 
 - use one traversal to compute several related summaries
-- make the accumulator explicit so readers can see exactly what state is carried
+- make the accumulator explicit so you can see exactly what state is carried
 - preserve preorder and bounded-work behavior when moving from a simple fold to a streaming scan
 
 The motivating tree statistics are useful because they are easy to explain and immediately show why fusion matters.
@@ -61,7 +61,7 @@ That is what a fold gives us in this module: one explicit reduction over the tre
 2. You will fuse arbitrary numbers of independent aggregations into a single traversal using immutable tuple accumulators.  
 3. You will ship streaming reductions (`scan_tree`) that are truly lazy and short-circuitable.
 
-We formalise exactly what students should be able to defend: termination, stack-safety, preorder consistency, fusion of aggregates, and bounded work for scans.
+This section formalises exactly what you should be able to defend: termination, stack-safety, preorder consistency, fusion of aggregates, and bounded work for scans.
 
 ---
 

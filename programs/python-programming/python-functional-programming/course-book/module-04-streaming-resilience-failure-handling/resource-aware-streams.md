@@ -16,10 +16,10 @@ This lesson should make cleanup feel first-class. Once a stream owns a connectio
 
 ## Start With the Leak Risk
 
-Resource leaks often hide behind otherwise elegant streaming code. The lesson needs to foreground that risk before students get lost in wrapper APIs.
+Resource leaks often hide behind otherwise elegant streaming code. Foreground that risk before wrapper APIs become the main focus.
 
 - If the consumer can stop early, cleanup cannot rely on natural exhaustion alone.
-- If a breaker or exception changes control flow, students need to know whether release still happens.
+- If a breaker or exception changes control flow, you need to know whether release still happens.
 - If resource management is handwritten differently in each pipeline, correctness becomes hard to review and easy to miss.
 
 > **Core question:**  
@@ -55,7 +55,7 @@ The production solution wraps the stream in small resource managers whose whole 
 2. You will compose nested resources safely and prove closure via Hypothesis.  
 3. You will ship a RAG pipeline that never leaks resources — even when breakers abort early.
 
-We formalise exactly what students should review here: cleanup on all paths, scoped effects, preserved laziness, and compatibility with breakers and exceptions.
+This section formalises exactly what you should review here: cleanup on all paths, scoped effects, preserved laziness, and compatibility with breakers and exceptions.
 
 ---
 

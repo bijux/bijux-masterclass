@@ -19,7 +19,7 @@ This lesson is where failure handling becomes a data-modeling problem instead of
 Before this lesson, bad items often appear as raised exceptions, skipped records, or vague `None` values. The page needs to make those tradeoffs explicit instead of letting them blur together.
 
 - If a value may simply be missing and no further explanation is needed, `Option` is usually enough.
-- If later stages need cause, path, or stage metadata, students need `Result` rather than a silent absence.
+- If later stages need cause, path, or stage metadata, you need `Result` rather than a silent absence.
 - If exceptions are still being used for ordinary per-record control flow, the stream contract is too implicit to compose safely.
 
 > **Core question:**  
@@ -58,7 +58,7 @@ The production solution treats success and failure as ordinary values so the pip
 2. You will compose `.map()`, `.bind()`, `.recover()`, and streaming combinators to handle mixed good/bad streams elegantly.  
 3. You will ship a RAG pipeline that processes 99 % of chunks even when 1 % fail, collecting rich structured errors for reporting.
 
-We formalise exactly what students should be able to defend here: lawful mapping and binding, bounded work, faithful equivalence to wrapped try/except behavior, and complete containment of per-record failures.
+This section formalises exactly what you should be able to defend here: lawful mapping and binding, bounded work, faithful equivalence to wrapped try/except behavior, and complete containment of per-record failures.
 
 ---
 

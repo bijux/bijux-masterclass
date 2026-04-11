@@ -12,7 +12,7 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson needs to make one tension clear from the start: the recursive version is often the best specification, but not always the safest production implementation. Students should see iteration here as a way to preserve the same traversal meaning under deeper, messier inputs, not as a rejection of structural reasoning.
+Keep one tension clear from the start: the recursive version is often the best specification, but not always the safest production implementation. Treat iteration here as a way to preserve the same traversal meaning under deeper, messier inputs, not as a rejection of structural reasoning.
 
 ## Start With the Depth Problem
 
@@ -20,7 +20,7 @@ The first failure mode in this module is not a fancy resilience pattern. It is t
 
 - If the input may be thousands of levels deep, a pretty recursive definition is not enough.
 - If traversal order or metadata changes during the iterative rewrite, the implementation is no longer equivalent to the spec.
-- If a "safe" version pre-scans the whole tree first, it has already broken the laziness contract students need later in the module.
+- If a "safe" version pre-scans the whole tree first, it has already broken the laziness contract needed later in the module.
 
 > **Core question:**  
 > When should you prefer structural recursion over iteration in Python, and how do you guarantee termination, stack-safety, **and full laziness** while preserving equational reasoning?
@@ -70,7 +70,7 @@ The naïve recursive implementation is still worth studying because it names the
 2. You will refactor any structural-recursive function into a constant-call-stack, fully lazy version without losing clarity or equational reasoning.  
 3. You will ship a public `flatten` that obeys all laws for any finite acyclic input — no matter how deep or bushy — with zero pre-scan.
 
-We formalise exactly what students should defend in code review: termination, stack-safety, preorder correctness, correct metadata, and true laziness where consuming `k` items does only `k` nodes of work.
+This section formalises exactly what you should defend in code review: termination, stack-safety, preorder correctness, correct metadata, and true laziness where consuming `k` items does only `k` nodes of work.
 
 ---
 

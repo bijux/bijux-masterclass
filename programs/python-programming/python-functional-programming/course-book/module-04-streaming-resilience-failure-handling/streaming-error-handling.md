@@ -16,7 +16,7 @@ This lesson should answer a simple but high-pressure question: once failures are
 
 ## Start With the Mixed-Stream Problem
 
-Once a pipeline yields `Ok` and `Err` values together, students need better tools than "collect everything and sort it out later." The lesson should make one-pass separation and recovery feel normal.
+Once a pipeline yields `Ok` and `Err` values together, you need better tools than "collect everything and sort it out later." One-pass separation and recovery should feel normal here.
 
 - If one bad item still kills the whole stream, typed failures have not been integrated properly.
 - If separating successes from failures requires an early list build, the routing layer is hiding lost laziness.
@@ -60,7 +60,7 @@ The stream continues forever; good chunks flow through immediately; every failur
 2. You will route, log, recover, or aggregate errors in one pass using lazy combinators.  
 3. You will ship a RAG pipeline that survives any per-chunk catastrophe and delivers rich, structured error reports.
 
-We formalise exactly what students should review in this layer: continuation, ordering, one-pass separation, bounded work, and complete containment of wrapped failures.
+This section formalises exactly what you should review in this layer: continuation, ordering, one-pass separation, bounded work, and complete containment of wrapped failures.
 
 ---
 

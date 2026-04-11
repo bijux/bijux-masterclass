@@ -61,7 +61,7 @@ The production solution expresses that stopping rule as a lazy, composable break
 2. You will choose between observable breakers (emit `BreakInfo`) and silent truncate breakers.  
 3. You will ship a RAG pipeline that aborts gracefully the moment it becomes hopeless, with full provenance on why.
 
-We formalise exactly what students should review in breaker code: short-circuiting position, preserved ordering up to the break, bounded work, cleanup behavior, and equivalence to a straightforward reference policy.
+This section formalises exactly what you should review in breaker code: short-circuiting position, preserved ordering up to the break, bounded work, cleanup behavior, and equivalence to a straightforward reference policy.
 
 ---
 

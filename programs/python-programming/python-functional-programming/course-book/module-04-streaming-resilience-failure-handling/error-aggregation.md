@@ -20,7 +20,7 @@ Once failures are flowing through the stream as values, the next question is not
 
 - If one failure invalidates everything downstream, fail-fast is usually the honest design.
 - If the run exists to diagnose many bad records, collecting errors to completion is worth the extra work.
-- If students cannot explain memory bounds on collected errors, the accumulation policy is still underspecified.
+- If you cannot explain memory bounds on collected errors, the accumulation policy is still underspecified.
 
 > **Core question:**  
 > How do you aggregate errors from a `Result` stream — choosing between fail-fast (stop on first error for quick feedback) and full accumulation (collect every error for complete diagnostics) — while preserving laziness when possible and keeping the pipeline pure and composable?
@@ -31,7 +31,7 @@ This lesson introduces error aggregation as a fold-level policy decision:
 - choose complete accumulation when the job must report every failing record
 - cap memory intentionally when full diagnostics would otherwise scale too far
 
-The central idea students should hold onto is that both strategies are valid, but they make different promises about work, memory, and insight.
+The central idea to hold onto is that both strategies are valid, but they make different promises about work, memory, and insight.
 
 1. **Fail-fast**: stop on the first error — perfect for interactive debugging or when one failure invalidates everything downstream.
 
@@ -61,7 +61,7 @@ The production solution expresses each strategy as a small fold over the `Result
 2. You will cap error collection, aggregate monoidally, and prove short-circuiting works.  
 3. You will ship a RAG pipeline that either fails instantly on the first bad chunk or delivers a perfect error report covering every failure.
 
-We formalise exactly what students should review here: short-circuit behavior, full-collection behavior, bounded memory when capped, preserved ordering, and equivalence to straightforward reference loops.
+This section formalises exactly what you should review here: short-circuit behavior, full-collection behavior, bounded memory when capped, preserved ordering, and equivalence to straightforward reference loops.
 
 ---
 
