@@ -2,13 +2,26 @@
 
 
 <!-- page-maps:start -->
-## Lesson Map
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Purity Substitution Local Reasoning"]
+  page["Pure Functions & Contracts"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
 
 ```mermaid
 flowchart LR
-  leak["Find the hidden input or hidden effect"] --> clause["Name the contract clause it breaks"]
-  clause --> detect["Choose how to detect it: type, check, or property"]
-  detect --> refactor["Refactor toward explicit inputs and deterministic output"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

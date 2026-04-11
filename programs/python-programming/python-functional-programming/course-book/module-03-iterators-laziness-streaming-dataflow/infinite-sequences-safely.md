@@ -2,13 +2,26 @@
 
 
 <!-- page-maps:start -->
-## Lesson Map
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Iterators Laziness Streaming Dataflow"]
+  page["Infinite Sequences Safely"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
 
 ```mermaid
 flowchart LR
-  unbounded["Start with an unbounded or untrusted source"] --> fence["Fence demand with an explicit stop rule"]
-  fence --> prove["State what termination and pull count are guaranteed"]
-  prove --> protect["Protect expensive downstream work with that fence"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

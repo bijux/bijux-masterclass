@@ -2,13 +2,26 @@
 
 
 <!-- page-maps:start -->
-## Lesson Map
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Streaming Resilience Failure Handling"]
+  page["Streaming Error Handling"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
 
 ```mermaid
 flowchart LR
-  mixed["Start with a stream containing both successes and failures"] --> continue["Keep the stream moving item by item"]
-  continue --> route["Route, recover, or log in one pass"]
-  route --> preserve["Preserve order and avoid early materialization"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

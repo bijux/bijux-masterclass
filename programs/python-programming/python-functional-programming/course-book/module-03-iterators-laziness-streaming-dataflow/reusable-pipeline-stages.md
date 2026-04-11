@@ -2,13 +2,26 @@
 
 
 <!-- page-maps:start -->
-## Lesson Map
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Iterators Laziness Streaming Dataflow"]
+  page["Reusable Pipeline Stages"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
 
 ```mermaid
 flowchart LR
-  hardcoded["Start with a one-off streaming script"] --> config["Extract the choices into explicit captured configuration"]
-  config --> factory["Return a fresh stage or source each time"]
-  factory --> reuse["Reuse the stage without hidden globals or shared cursor state"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

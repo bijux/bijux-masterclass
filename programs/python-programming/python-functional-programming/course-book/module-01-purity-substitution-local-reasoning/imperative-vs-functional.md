@@ -2,14 +2,26 @@
 
 
 <!-- page-maps:start -->
-## Lesson Map
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Purity Substitution Local Reasoning"]
+  page["Imperative vs Functional"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
 
 ```mermaid
 flowchart LR
-  question["Start with one review question"] --> smell["Find hidden state or mutation"]
-  smell --> rewrite["Rewrite the same logic with explicit inputs and outputs"]
-  rewrite --> compare["Compare what became easier to trust"]
-  compare --> carry["Carry that boundary into the next lesson"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

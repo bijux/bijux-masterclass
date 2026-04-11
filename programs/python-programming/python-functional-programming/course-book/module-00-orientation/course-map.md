@@ -1,22 +1,26 @@
 # Functional Programming Course Map
 
 <!-- page-maps:start -->
-## Concept Position
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> module["Module 00: Orientation and Study Practice"]
-  module --> concept["Functional Programming Course Map"]
-  concept --> capstone["Capstone pressure point"]
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Orientation"]
+  page["Functional Programming Course Map"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
 flowchart LR
-  start["Name your current pressure"] --> arc["Choose the matching course arc"]
-  arc --> module["Open the module that owns that pressure"]
-  module --> proof["Inspect the matching capstone or proof surface"]
-  proof --> return["Return with one clearer design rule"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

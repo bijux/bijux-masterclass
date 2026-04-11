@@ -1,22 +1,26 @@
 # Proof Ladder
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete study or review question"]
-  pressure --> guide["Proof Ladder"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Guides"]
+  page["Proof Ladder"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  question["Name the exact claim you need to prove"] --> small["Start with the smallest honest route"]
-  small --> inspect["Inspect the saved surface or test group"]
-  inspect --> escalate["Escalate only when the smaller route leaves the claim open"]
-  escalate --> next_move["Leave with evidence instead of intuition"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

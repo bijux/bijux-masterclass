@@ -2,15 +2,26 @@
 
 
 <!-- page-maps:start -->
-## Module Map
+## Page Maps
+
+```mermaid
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Purity Substitution Local Reasoning"]
+  page["Module 01: Purity, Substitution, and Local Reasoning"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
+```
 
 ```mermaid
 flowchart LR
-  purpose["Start here: what purity protects"] --> identify["Identify hidden state and side effects"]
-  identify --> refactor["Refactor toward explicit inputs and return values"]
-  refactor --> compose["Compose small transforms safely"]
-  compose --> review["Review with substitution, laws, and stability checks"]
-  review --> capstone["Check the same ideas in the capstone"]
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 

@@ -1,22 +1,26 @@
 # Module Checkpoints
 
 <!-- page-maps:start -->
-## Guide Fit
+## Page Maps
 
 ```mermaid
-flowchart TD
-  family["Python Programming"] --> program["Python Functional Programming"]
-  program --> pressure["A concrete study or review question"]
-  pressure --> guide["Module Checkpoints"]
-  guide --> next["Modules, capstone, and reference surfaces"]
+graph LR
+  family["Python Programming"]
+  program["Python Functional Programming"]
+  section["Guides"]
+  page["Module Checkpoints"]
+  capstone["Capstone evidence"]
+
+  family --> program --> section --> page
+  page -.applies in.-> capstone
 ```
 
 ```mermaid
-flowchart TD
-  module["Finish a module or pause after a dense section"] --> questions["Answer the checkpoint questions honestly"]
-  questions --> gap["Notice what still feels vague"]
-  gap --> route["Revisit the module, guide, or capstone proof surface"]
-  route --> move["Move on only when the boundary feels explicit again"]
+flowchart LR
+  orient["Orient on the page map"] --> read["Read the main claim and examples"]
+  read --> inspect["Inspect the related code, proof, or capstone surface"]
+  inspect --> verify["Run or review the verification path"]
+  verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 
