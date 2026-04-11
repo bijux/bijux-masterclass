@@ -2,119 +2,105 @@
 
 # Platform Setup
 
+Use this page before you trust local results. Deep Dive Make depends on GNU Make features
+that are not available in every default `make`, especially on macOS. The goal here is
+not to produce a perfect workstation. The goal is to prove you are running the same class
+of toolchain the course assumes.
 
-<!-- page-maps:start -->
-## Guide Fit
+## What you need
 
-```mermaid
-flowchart TD
-  family["Reproducible Research"] --> program["Deep Dive Make"]
-  program --> pressure["A concrete learner or reviewer question"]
-  pressure --> guide["Platform Setup"]
-  guide --> next["Modules, capstone, and reference surfaces"]
-```
+The program assumes:
 
-```mermaid
-flowchart TD
-  question["Name the exact question you need answered"] --> skim["Skim only the sections that match that pressure"]
-  skim --> crosscheck["Open the linked module, proof surface, or capstone route"]
-  crosscheck --> next_move["Leave with one next decision, page, or command"]
-```
-<!-- page-maps:end -->
+- GNU Make 4.3 or newer
+- a POSIX shell at `/bin/sh`
+- a working C compiler
+- Python 3 for helper scripts inside the capstone
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Deep Dive Make depends on GNU Make semantics, not merely on the presence of a `make`
-binary. This page makes the platform contract explicit before the learner hits avoidable
-tooling failures.
-
----
-
-## Minimum Tooling
-
-You need:
-
-* GNU Make 4.3 or newer
-* a POSIX shell available as `/bin/sh`
-* a working C compiler toolchain
-* Python 3 for helper scripts in the capstone
+If one of those is missing, the course can still teach concepts, but the executable proof
+routes stop being trustworthy.
 
 [Back to top](#top)
 
----
+## First check
+
+Run these from the repository root:
+
+```sh
+make PROGRAM=reproducible-research/deep-dive-make program-help
+make PROGRAM=reproducible-research/deep-dive-make test
+```
+
+Those commands prove two things quickly:
+
+- the program-level wrapper targets are available
+- the selected `make` is good enough to run the capstone selftest route
+
+[Back to top](#top)
 
 ## macOS
 
-macOS often ships `/usr/bin/make` as GNU Make 3.81, which does not satisfy the course
-requirement.
+macOS commonly ships `/usr/bin/make` as GNU Make 3.81. That is too old for this course.
 
-Install GNU Make:
+Install a current GNU Make:
 
 ```sh
 brew install make
 ```
 
-Then keep using the published course commands from the repository root:
+Then keep the command layers straight:
 
-```sh
-make PROGRAM=reproducible-research/deep-dive-make program-help
-make PROGRAM=reproducible-research/deep-dive-make test
-```
+- from repository root: keep using `make PROGRAM=reproducible-research/deep-dive-make ...`
+- from `programs/reproducible-research/deep-dive-make/`: use `make ...`
+- from `programs/reproducible-research/deep-dive-make/capstone/`: use `gmake ...`
 
-If you step down into `capstone/` for the raw executable reference build, use `gmake` there.
+The first two layers call the program wrappers. The last layer runs the raw capstone
+build directly.
 
 [Back to top](#top)
 
----
-
 ## Linux
 
-Most Linux distributions already provide a compatible GNU Make, but you should still
-verify it:
+Most Linux distributions already ship a compatible GNU Make, but check anyway:
 
 ```sh
 make --version | head -1
 ```
 
-If the reported version is older than 4.3, upgrade before trusting the course results.
+If the version is older than 4.3, upgrade it before relying on any proof output.
 
 [Back to top](#top)
 
----
+## Raw capstone check
 
-## Verify Your Setup
-
-From repository root:
+When you want to verify the executable reference build directly, run:
 
 ```sh
-make PROGRAM=reproducible-research/deep-dive-make program-help
-make PROGRAM=reproducible-research/deep-dive-make test
+gmake -C programs/reproducible-research/deep-dive-make/capstone help
+gmake -C programs/reproducible-research/deep-dive-make/capstone selftest
 ```
 
-From `programs/reproducible-research/deep-dive-make/capstone/`:
-
-```sh
-gmake help
-gmake selftest
-```
-
-Use `make` instead of `gmake` on Linux only if `make --version` confirms GNU Make 4.3+.
+On Linux, replace `gmake` with `make` only after confirming `make --version` reports GNU
+Make 4.3 or newer.
 
 [Back to top](#top)
 
----
+## Common setup failures
 
-## Common Setup Failures
-
-| Symptom | Likely cause | Fix |
+| Symptom | Likely cause | What to fix |
 | --- | --- | --- |
-| grouped-target or pattern support errors | old GNU Make | install GNU Make 4.3+ |
-| commands behave differently on macOS than the course says | using `/usr/bin/make` | switch to `gmake` |
-| selftest fails before the build logic is really exercised | missing compiler or shell assumptions | verify C toolchain and `/bin/sh` |
-| helper scripts fail unexpectedly | missing Python 3 | install Python 3 and rerun |
+| grouped target or recipe-prefix errors | old GNU Make | install or invoke GNU Make 4.3+ |
+| docs say one command, local shell needs another | wrong command layer | decide whether you are at repo root, program root, or capstone root |
+| selftest fails before build logic is exercised | missing compiler or broken shell assumption | verify `cc` and `/bin/sh` first |
+| helper scripts fail | missing Python 3 | install Python 3 and rerun the capstone route |
+
+[Back to top](#top)
+
+## Good stopping point
+
+Stop when you can answer three questions clearly:
+
+- which `make` binary you are using
+- which command layer you are currently in
+- whether the failure is a setup problem or a course concept you still need to learn
 
 [Back to top](#top)
