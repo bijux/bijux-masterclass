@@ -178,3 +178,4 @@ nav:
           - Migration Plans That Preserve Proof: module-10-governance-migration-tool-boundaries/migration-plans-that-preserve-proof.md
           - Governance Rules for Long-Lived Workflows: module-10-governance-migration-tool-boundaries/governance-rules-for-long-lived-workflows.md
           - Recurring Workflow Antipatterns and Recovery: module-10-governance-migration-tool-boundaries/recurring-workflow-antipatterns-and-recovery.md
+          - Deciding When Snakemake Should Stop Owning a Concern: module-10-governance-migration-tool-boundaries/deciding-when-snakemake-should-stop-owning-a-concern.md
