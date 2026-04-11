@@ -75,6 +75,15 @@ nav:
   - Modules:
       - "Module 01: First Principles and the File-DAG Contract":
           - Overview: module-01-file-contracts-workflow-graph-truth/index.md
+          - File Contracts, Targets, and Job Planning: module-01-file-contracts-workflow-graph-truth/file-contracts-targets-and-job-planning.md
+          - Convergence, Rerun Causes, and Hidden Inputs: module-01-file-contracts-workflow-graph-truth/convergence-rerun-causes-and-hidden-inputs.md
+          - Wildcards, Binding, Ambiguity, and Constraints: module-01-file-contracts-workflow-graph-truth/wildcards-binding-ambiguity-and-constraints.md
+          - Config as Data, Profiles as Policy: module-01-file-contracts-workflow-graph-truth/config-as-data-profiles-as-policy.md
+          - Atomic Publication, Logs, and Failure Evidence: module-01-file-contracts-workflow-graph-truth/atomic-publication-logs-and-failure-evidence.md
+          - "Worked Example: Repairing a Lying First Workflow": module-01-file-contracts-workflow-graph-truth/worked-example-repairing-a-lying-first-workflow.md
+          - Exercises: module-01-file-contracts-workflow-graph-truth/exercises.md
+          - Exercise Answers: module-01-file-contracts-workflow-graph-truth/exercise-answers.md
+          - Glossary: module-01-file-contracts-workflow-graph-truth/glossary.md
       - "Module 02: Dynamic DAGs, Integrity, and Deterministic Discovery":
           - Overview: module-02-dynamic-dags-discovery-integrity/index.md
       - "Module 03: Production Operations and Policy Boundaries":
