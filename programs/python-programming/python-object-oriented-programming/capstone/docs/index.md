@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-  reader["Capstone reader"] --> index["INDEX"]
+  entry["Capstone entry"] --> index["INDEX"]
   index --> arrival["Arrival route"]
   index --> ownership["Ownership route"]
   index --> proof["Proof route"]

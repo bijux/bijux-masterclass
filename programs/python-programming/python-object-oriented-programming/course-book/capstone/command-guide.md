@@ -22,8 +22,8 @@ flowchart TD
 
 Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
 
-This page exists so you do not have to reverse-engineer the executable surface.
-Use it whenever you want to connect course claims to runnable evidence.
+Use this page when you do not want to reverse-engineer the executable surface.
+Keep it nearby whenever you want to connect course claims to runnable evidence.
 
 ## Stable commands from the repository root
 

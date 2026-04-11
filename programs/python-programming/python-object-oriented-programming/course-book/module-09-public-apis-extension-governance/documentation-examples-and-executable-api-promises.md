@@ -34,7 +34,7 @@ modules, bypasses invariants, or omits error handling, you have published the wr
 
 ## 2. Make Documentation Reviewable
 
-A good API guide should show:
+A reviewable API guide shows:
 
 - the supported entrypoint
 - expected inputs and outputs

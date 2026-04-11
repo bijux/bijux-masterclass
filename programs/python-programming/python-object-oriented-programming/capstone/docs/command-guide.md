@@ -34,7 +34,7 @@ the question instead of defaulting to the heaviest command.
 ## Choose the route by pressure
 
 - If the question is "what does the system currently do?" start with `make inspect`.
-- If the question is "how does the story unfold for a human reader?" start with `make tour`.
+- If the question is "how does the story unfold before opening internals?" start with `make tour`.
 - If the question is "what evidence should I save for review?" start with `make verify-report`.
 - If the question is "does the published route still hold end to end?" use `make proof`.
 - If the question is only "are the tests green?" use `make test`.

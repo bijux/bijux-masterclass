@@ -111,7 +111,7 @@ These details aid debugging (e.g., via `ctypes` to inspect addresses) but must n
 
 ## 3. Design Semantics
 
-While Python provides only objects, effective modeling distinguishes *value-like objects* (immutable, equality-focused) from *entity-like objects* (identity-focused, potentially mutable). Python’s object model does not distinguish value vs entity; this is purely a design lens we will use in this course to guide type choices. In this course we treat ‘mutable and equality depends on mutable state’ as a hard prohibition for dict/set keys.
+While Python provides only objects, effective modeling distinguishes *value-like objects* (immutable, equality-focused) from *entity-like objects* (identity-focused, potentially mutable). Python's object model does not distinguish value vs entity; use this design lens to guide type choices. Treat "mutable and equality depends on mutable state" as a hard prohibition for dict/set keys.
 
 - **Value-Like Objects**: Emphasize interchangeability via state equality (override `__eq__` and `__hash__`). Use for comparable data without lifecycle (e.g., a `Point` with fixed coordinates). Immutability ensures safe sharing and hashability.
 - **Entity-Like Objects**: Rely on identity for uniqueness (e.g., a `Session` with mutable state). As a rule of thumb, do not use mutable, entity-like objects as dict/set keys at all.

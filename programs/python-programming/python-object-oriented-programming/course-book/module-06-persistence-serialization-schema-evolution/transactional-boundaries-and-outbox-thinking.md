@@ -42,8 +42,8 @@ That is not just infrastructure trouble. It changes system meaning.
 An outbox persists domain changes and publishable messages inside the same commit
 boundary, then ships the messages later.
 
-You do not need a full distributed architecture to learn from this pattern. The lesson
-is simpler: publication intent should be stored with persistence intent.
+You do not need a full distributed architecture to learn from this pattern. The core
+point is simpler: publication intent should be stored with persistence intent.
 
 ## 3. Keep Domain Events Distinct from Integration Messages
 

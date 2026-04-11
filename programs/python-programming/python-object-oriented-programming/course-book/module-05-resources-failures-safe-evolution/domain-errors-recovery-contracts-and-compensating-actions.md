@@ -30,8 +30,8 @@ language for domain errors, recovery contracts, and compensating actions.
 
 ## Why this topic matters
 
-If a course covers resources and evolution but does not cover error modeling well, it
-leaves readers with one of the most common real-world blind spots:
+If a course covers resources and evolution but does not cover error modeling well, one of
+the most common real-world blind spots remains:
 
 - domain failures and infrastructure failures get mixed together
 - callers cannot tell which errors are part of the public contract
