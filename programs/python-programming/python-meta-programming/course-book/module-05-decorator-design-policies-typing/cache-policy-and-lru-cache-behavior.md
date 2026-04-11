@@ -90,12 +90,12 @@ That is a great example of honest decorator design:
 
 That is exactly the opposite of hidden statefulness.
 
-## The didactic comparison matters
+## The bounded comparison matters
 
-Module 04 used a didactic cache to make state visible. This module uses `lru_cache` as
+Module 04 used a bounded cache to make state visible. This module uses `lru_cache` as
 the production-grade reference point.
 
-That comparison teaches two important habits:
+That comparison makes two important habits explicit:
 
 - simple educational wrappers are useful when they reveal the design space
 - production wrappers should not be reimplemented casually when the standard library
@@ -111,7 +111,7 @@ Even a well-designed cache becomes more expensive under concurrency:
 - hit and eviction logic must remain consistent
 - operational hooks still need to stay safe and meaningful
 
-The built-in `lru_cache` already handles more of this than the didactic examples earlier
+The built-in `lru_cache` already handles more of this than the bounded examples earlier
 in the course. That is part of why it is the right reference point here.
 
 ## Review rules for cache decorators
@@ -130,7 +130,7 @@ Try these before moving on:
 
 1. Use `functools.lru_cache` and inspect `cache_info()` and `cache_clear()`.
 2. Compare `typed=False` with `typed=True` on inputs such as `1` and `1.0`.
-3. Explain one reason a hand-rolled cache decorator should stay didactic unless there is a very specific need not met by the standard tool.
+3. Explain one reason a hand-rolled cache decorator should stay bounded unless there is a very specific need not met by the standard tool.
 
 If those feel ordinary, the final core can focus on the bigger design judgment: when a
 wrapper should stop growing and hand policy off elsewhere.

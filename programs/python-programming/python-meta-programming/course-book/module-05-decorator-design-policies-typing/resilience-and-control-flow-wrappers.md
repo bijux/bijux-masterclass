@@ -89,7 +89,7 @@ Resilience wrapper:
 
 That diagram is the difference between observation and governance.
 
-## Single-threaded teaching boundaries matter here
+## Single-threaded boundaries matter here
 
 The examples in this module stay synchronous and single-threaded on purpose.
 

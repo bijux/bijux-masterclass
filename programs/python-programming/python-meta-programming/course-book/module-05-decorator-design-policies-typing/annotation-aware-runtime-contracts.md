@@ -32,7 +32,7 @@ That sequence matters because it avoids guesswork:
 
 This is much stronger than trying to inspect raw `args` and `kwargs` ad hoc.
 
-## A partial validator is the right teaching target
+## A partial validator is the right review target
 
 For Volume I, the honest approach is a partial checker.
 

@@ -89,7 +89,7 @@ A compact helper such as `_is_instance` should stay honest about its scope:
 
 That clarity keeps the wrapper from drifting into fake comprehensiveness.
 
-## A didactic implementation
+## A bounded implementation
 
 ```python
 import functools
@@ -148,7 +148,7 @@ def validated(raise_on_error: bool = True) -> Callable:
     return decorator
 ```
 
-## Why this version is a good teaching artifact
+## Why this version is useful for review
 
 This wrapper is useful because it keeps all the important choices visible:
 
@@ -169,7 +169,7 @@ One especially important design boundary is:
 The wrapped function can still fail internally after the warning. That is exactly why the
 module frames this as a partial runtime contract rather than as a complete safety system.
 
-## What this example teaches about Module 05
+## What this example makes clear about Module 05
 
 This worked example ties the module together:
 
@@ -179,8 +179,8 @@ This worked example ties the module together:
 - metadata preservation still matters
 - the wrapper is useful only because it refuses to overclaim
 
-That is the real lesson. The validator is not here as a universal recipe. It is here as a
-clear case study in policy ownership and boundary honesty.
+That is the durable takeaway. The validator is not here as a universal recipe. It is here
+as a clear case study in policy ownership and boundary honesty.
 
 ## The review loop to keep
 

@@ -73,7 +73,7 @@ By the end of Module 05, you should be able to explain five things clearly:
 | understand how configurable decorators capture policy parameters | [Decorator Factories and Parameter Capture](decorator-factories-and-parameter-capture.md) |
 | inspect retries, timeouts, and rate limits as control-flow changes instead of ornament | [Resilience and Control-Flow Wrappers](resilience-and-control-flow-wrappers.md) |
 | judge annotation-driven runtime behavior without pretending it is a full type system | [Annotation-Aware Runtime Contracts](annotation-aware-runtime-contracts.md) |
-| compare didactic caches with the standard-library cache model | [Cache Policy and lru_cache Behavior](cache-policy-and-lru-cache-behavior.md) |
+| compare bounded caches with the standard-library cache model | [Cache Policy and lru_cache Behavior](cache-policy-and-lru-cache-behavior.md) |
 | decide when policy has outgrown a decorator | [Wrapper Policy Boundaries](wrapper-policy-boundaries.md) |
 | see those tradeoffs inside one partial runtime validator | [Worked Example: Building a Partial `@validated` Decorator](worked-example-building-a-partial-validated-decorator.md) |
 | test your understanding before class-level customization begins | [Exercises](exercises.md) |

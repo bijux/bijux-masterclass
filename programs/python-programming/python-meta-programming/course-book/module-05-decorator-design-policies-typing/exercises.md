@@ -42,7 +42,7 @@ What to hand in:
 
 ## Exercise 4: Inspect cache policy instead of only cache speed
 
-Use `functools.lru_cache` or a didactic cache wrapper.
+Use `functools.lru_cache` or a bounded cache wrapper.
 
 What to hand in:
 
