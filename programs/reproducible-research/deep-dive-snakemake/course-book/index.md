@@ -17,7 +17,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  promise["Read the course promise and learner fit"] --> route["Choose one stable entry lane"]
+  promise["Read the course promise and fit"] --> route["Choose one stable entry lane"]
   route --> orientation["Anchor the workflow model in Module 00"]
   orientation --> modules["Read the modules in order"]
   modules --> proof["Use guides, reference, and capstone only when they answer the current question"]
@@ -25,7 +25,7 @@ flowchart TD
 <!-- page-maps:end -->
 
 Read the first diagram as the shape of the whole book. Read the second diagram as the
-intended learner route so the capstone and support shelves do not become accidental first
+intended route so the capstone and support shelves do not become accidental first
 lessons.
 
 Deep Dive Snakemake teaches workflow design as a discipline of explicit file contracts,
@@ -71,7 +71,7 @@ can inspect, trust, and extend without folklore.
 
 | Module | Title | Why it matters |
 | --- | --- | --- |
-| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the learner route, proof surfaces, and capstone timing |
+| [Module 00](module-00-orientation/index.md) | Orientation and Study Practice | establishes the entry route, proof surfaces, and capstone timing |
 | [Module 01](module-01-file-contracts-workflow-graph-truth/index.md) | File Contracts and Workflow Graph Truth | teaches the workflow as a file-driven DAG instead of a script |
 | [Module 02](module-02-dynamic-dags-discovery-integrity/index.md) | Dynamic DAGs, Discovery, and Integrity | teaches deterministic discovery, checkpoint discipline, and publish integrity |
 | [Module 03](module-03-production-operations-policy-boundaries/index.md) | Production Operations and Policy Boundaries | teaches profiles, recovery policy, staging discipline, and production proof routes |
