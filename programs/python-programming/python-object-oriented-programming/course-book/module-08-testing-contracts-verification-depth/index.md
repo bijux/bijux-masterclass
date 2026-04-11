@@ -74,6 +74,20 @@ test count.
 3. Finish with runtime checks, approval boundaries, and confidence ladders.
 4. Use the refactor chapter to reshape the capstone test suite around contracts instead of convenience.
 
+## Lesson map
+
+- [Behavior-First Tests for Domain Objects](behavior-first-tests-for-domain-objects.md)
+- [Stateful Testing and Transition Coverage](stateful-testing-and-transition-coverage.md)
+- [Contract Tests for Repositories and Adapters](contract-tests-for-repositories-and-adapters.md)
+- [Property-Based Testing for Object Models](property-based-testing-for-object-models.md)
+- [Fixtures, Builders, and Test Data Ownership](fixtures-builders-and-test-data-ownership.md)
+- [Fakes, Stubs, Spies, and When Mocks Hurt](fakes-stubs-spies-and-when-mocks-hurt.md)
+- [Runtime Contracts, Assertions, and Defensive Checks](runtime-contracts-assertions-and-defensive-checks.md)
+- [Golden Files, Snapshots, and Approval Boundaries](golden-files-snapshots-and-approval-boundaries.md)
+- [Integration Suites and Confidence Ladders](integration-suites-and-confidence-ladders.md)
+- [Refactor: Tests toward Contract-Driven Confidence](refactor-tests-toward-contract-driven-confidence.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want each verification claim tied to one evidence route.

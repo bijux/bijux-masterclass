@@ -74,6 +74,20 @@ into an ungoverned surface area.
 3. Finish with import discipline, review governance, and compatibility suites.
 4. Use the refactor chapter to expose a clean capstone API without leaking internals.
 
+## Lesson map
+
+- [Facades, Entrypoints, and Public Surface Area](facades-entrypoints-and-public-surface-area.md)
+- [Capability Protocols and Stable Extension Points](capability-protocols-and-stable-extension-points.md)
+- [Plugin Discovery, Registration, and Sandboxing](plugin-discovery-registration-and-sandboxing.md)
+- [Deprecation, Versioning, and Removal Policy](deprecation-versioning-and-removal-policy.md)
+- [Documentation, Examples, and Executable API Promises](documentation-examples-and-executable-api-promises.md)
+- [Import Boundaries and Layer Enforcement](import-boundaries-and-layer-enforcement.md)
+- [Review Checklists for Extension Safety](review-checklists-for-extension-safety.md)
+- [Third-Party Integration Contracts and Compatibility Suites](third-party-integration-contracts-and-compatibility-suites.md)
+- [Architectural Decision Records and Change Control](architectural-decision-records-and-change-control.md)
+- [Refactor: Public API for Safe Customization](refactor-public-api-for-safe-customization.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the public-surface promise tied to evidence.

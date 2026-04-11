@@ -47,6 +47,18 @@ map so the capstone has one stable entry hub instead of several overlapping star
 - Scenario route: `DOMAIN_GUIDE.md`, `DOMAIN_GUIDE.md`, `ARCHITECTURE.md`
 - Extension route: `EXTENSION_GUIDE.md`, `COMMAND_GUIDE.md`
 
+## Guide map
+
+- [Architecture Guide](architecture.md)
+- [Monitoring System Command Guide](command-guide.md)
+- [Domain Guide](domain-guide.md)
+- [Extension Guide](extension-guide.md)
+- [Package Guide](package-guide.md)
+- [Proof Guide](proof-guide.md)
+- [Test Guide](test-guide.md)
+- [Tour Guide](tour.md)
+- [Walkthrough Guide](walkthrough-guide.md)
+
 ## Route by course stage
 
 | Course stage | Start here | Then inspect | Best command |

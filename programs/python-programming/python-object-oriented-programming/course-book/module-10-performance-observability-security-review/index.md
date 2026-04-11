@@ -75,6 +75,20 @@ made the system understandable in the first place.
 3. Finish with runbooks, capstone review, and the final mastery checkpoint.
 4. Treat the closing chapters as a full-system audit, not just another feature pass.
 
+## Lesson map
+
+- [Measuring Allocation Costs and Object Hot Paths](measuring-allocation-costs-and-object-hot-paths.md)
+- [Profiling before Optimization](profiling-before-optimization.md)
+- [Caching, Batching, and Lazy Work](caching-batching-and-lazy-work.md)
+- [Observability Signals for Object Systems](observability-signals-for-object-systems.md)
+- [Input Hardening and Secure Defaults](input-hardening-and-secure-defaults.md)
+- [Safe Serialization, Secrets, and Trust Boundaries](safe-serialization-secrets-and-trust-boundaries.md)
+- [Operational Readiness, Runbooks, and Failure Drills](operational-readiness-runbooks-and-failure-drills.md)
+- [Capstone Architecture Review](capstone-architecture-review.md)
+- [Capstone Hardening and Extension Strategy](capstone-hardening-and-extension-strategy.md)
+- [Final Mastery Checkpoint](final-mastery-checkpoint.md)
+- [Glossary](glossary.md)
+
 ## Keep these support surfaces open
 
 - `../guides/proof-matrix.md` when you want the final operational promise tied directly to proof.
