@@ -1,8 +1,24 @@
 # Reproducible Research
 
-This family collects programs about reproducibility, workflow truth, data state, and
-publication boundaries. The goal is not to organize tools by popularity. The goal is
-to help a reader choose the system model that matches the failure mode they need to fix.
+<section class="bijux-hero">
+  <div class="bijux-hero__eyebrow">Program Family</div>
+  <h1 class="bijux-hero__title">Choose the workflow model that matches the failure you need to fix.</h1>
+  <p class="bijux-hero__lede">This family collects programs about reproducibility, workflow truth, data state, and publication boundaries. The goal is not to organize tools by popularity. The goal is to help a reader choose the system model that matches the failure mode they need to fix.</p>
+  <div class="bijux-topic-row">
+    <span class="bijux-topic-pill">Build graphs</span>
+    <span class="bijux-topic-pill">Workflow orchestration</span>
+    <span class="bijux-topic-pill">State identity</span>
+    <span class="bijux-topic-pill">Recovery</span>
+  </div>
+</section>
+
+<div class="bijux-callout"><strong>Route by system pressure first.</strong> These programs overlap in tooling territory, but they do not solve the same trust problem. Start from the failure mode that is hurting you now, then move into the one course that owns that pressure honestly.</div>
+
+<div class="bijux-quicklinks">
+  <a class="md-button md-button--primary" href="deep-dive-make/course-book/index.md">Open Deep Dive Make</a>
+  <a class="md-button" href="deep-dive-snakemake/course-book/index.md">Open Deep Dive Snakemake</a>
+  <a class="md-button" href="deep-dive-dvc/course-book/index.md">Open Deep Dive DVC</a>
+</div>
 
 ## Family Map
 
@@ -38,6 +54,21 @@ route: choose the pressure first, then open the course that owns that pressure.
 | dependency truth, rebuild behavior, publication layout, and build repair | [Deep Dive Make](deep-dive-make/course-book/index.md) | graph honesty, target design, portability, release-safe build boundaries |
 | file contracts, workflow orchestration, profiles, and downstream publish surfaces | [Deep Dive Snakemake](deep-dive-snakemake/course-book/index.md) | workflow structure, policy boundaries, file APIs, operational review |
 | data identity, params, metrics, experiments, and promotion or recovery discipline | [Deep Dive DVC](deep-dive-dvc/course-book/index.md) | state contracts, experiment meaning, registry boundaries, trustworthy recovery |
+
+<div class="bijux-panel-grid">
+  <div class="bijux-panel">
+    <h3><a href="deep-dive-make/course-book/index.md">Deep Dive Make</a></h3>
+    <p>Use this program when you need graph honesty, rebuild trust, target design clarity, and portable publication boundaries.</p>
+  </div>
+  <div class="bijux-panel">
+    <h3><a href="deep-dive-snakemake/course-book/index.md">Deep Dive Snakemake</a></h3>
+    <p>Use this program when orchestration policy, file contracts, workflow scale, and downstream publication surfaces are the main pressure.</p>
+  </div>
+  <div class="bijux-panel">
+    <h3><a href="deep-dive-dvc/course-book/index.md">Deep Dive DVC</a></h3>
+    <p>Use this program when experiment state, metrics, parameters, recovery, and promotion discipline are the real trust boundary.</p>
+  </div>
+</div>
 
 ## Stable Entry Routes
 
