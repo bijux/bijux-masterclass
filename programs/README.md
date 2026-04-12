@@ -1,11 +1,32 @@
 # Bijux Masterclass
 
-Bijux Masterclass is the root catalog for the full program collection. Start here when
-you need to choose a family first, then narrow down to the specific course that matches
-the design or reproducibility pressure in front of you.
+<section class="bijux-hero">
+  <div class="bijux-hero__eyebrow">Catalog Handbook</div>
+  <h1 class="bijux-hero__title">Choose the right program family before you choose the course.</h1>
+  <p class="bijux-hero__lede">Bijux Masterclass is the root catalog for the full program collection. Start here when you need to choose a family first, then narrow down to the course that matches the real design or reproducibility pressure in front of you.</p>
+  <div class="bijux-topic-row">
+    <span class="bijux-topic-pill">Python design</span>
+    <span class="bijux-topic-pill">Workflow truth</span>
+    <span class="bijux-topic-pill">Reproducible systems</span>
+    <span class="bijux-topic-pill">Long-form courses</span>
+  </div>
+</section>
 
-This README is the maintained source for the root catalog page, and the family README
-files under `programs/` are the maintained source for the family landing pages.
+<div class="bijux-callout"><strong>The catalog should route by pressure, not by tool branding.</strong> Use the family pages to decide which system model you need first. Drop into one course only after the boundary is clear enough that the course home is the honest next page.</div>
+
+<div class="bijux-panel-grid">
+  <div class="bijux-panel"><h3>Python Programming</h3><p>Open this family when the pressure is about object boundaries, functional composition, runtime hooks, or long-lived API behavior.</p></div>
+  <div class="bijux-panel"><h3>Reproducible Research</h3><p>Open this family when the pressure is about build graphs, workflow orchestration, state identity, publication, and recoverable change.</p></div>
+  <div class="bijux-panel"><h3>Stable Routing</h3><p>Use the root catalog to compare families first, then use family pages to choose one course home with the right learner entry and capstone route.</p></div>
+</div>
+
+<div class="bijux-quicklinks">
+  <a class="md-button md-button--primary" href="python-programming/README.md">Open Python Programming</a>
+  <a class="md-button" href="reproducible-research/README.md">Open Reproducible Research</a>
+</div>
+
+This README is the maintained source for the root catalog page, and the family
+README files under `programs/` are the maintained source for the family landing pages.
 
 ## Catalog Maps
 
@@ -45,23 +66,26 @@ need to compare families before switching.
 
 ## Program Families
 
-### [Python Programming](python-programming/README.md)
-
-Use this family when the pressure is about Python design itself: object boundaries,
-functional flow, runtime hooks, long-lived semantics, and reviewable code structure.
-
-- [Python Object-Oriented Programming](python-programming/python-object-oriented-programming/course-book/index.md)
-- [Python Functional Programming](python-programming/python-functional-programming/course-book/index.md)
-- [Python Metaprogramming](python-programming/python-meta-programming/course-book/index.md)
-
-### [Reproducible Research](reproducible-research/README.md)
-
-Use this family when the pressure is about build graphs, workflow orchestration, data
-state, reproducibility, publication, and recovery under change.
-
-- [Deep Dive Make](reproducible-research/deep-dive-make/course-book/index.md)
-- [Deep Dive Snakemake](reproducible-research/deep-dive-snakemake/course-book/index.md)
-- [Deep Dive DVC](reproducible-research/deep-dive-dvc/course-book/index.md)
+<div class="bijux-panel-grid">
+  <div class="bijux-panel">
+    <h3><a href="python-programming/README.md">Python Programming</a></h3>
+    <p>Use this family when the pressure is about Python design itself: object boundaries, functional flow, runtime hooks, long-lived semantics, and reviewable code structure.</p>
+    <ul>
+      <li><a href="python-programming/python-object-oriented-programming/course-book/index.md">Python Object-Oriented Programming</a></li>
+      <li><a href="python-programming/python-functional-programming/course-book/index.md">Python Functional Programming</a></li>
+      <li><a href="python-programming/python-meta-programming/course-book/index.md">Python Metaprogramming</a></li>
+    </ul>
+  </div>
+  <div class="bijux-panel">
+    <h3><a href="reproducible-research/README.md">Reproducible Research</a></h3>
+    <p>Use this family when the pressure is about build graphs, workflow orchestration, data state, reproducibility, publication, and recovery under change.</p>
+    <ul>
+      <li><a href="reproducible-research/deep-dive-make/course-book/index.md">Deep Dive Make</a></li>
+      <li><a href="reproducible-research/deep-dive-snakemake/course-book/index.md">Deep Dive Snakemake</a></li>
+      <li><a href="reproducible-research/deep-dive-dvc/course-book/index.md">Deep Dive DVC</a></li>
+    </ul>
+  </div>
+</div>
 
 ## Local Commands
 
