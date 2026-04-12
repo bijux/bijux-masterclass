@@ -375,7 +375,7 @@ flowchart TD
   c2 --> c3["Core 3: tighten output naming and wildcard ownership"]
   c3 --> c4["Core 4: move workflow meaning into config"]
   c4 --> c5["Core 5: publish atomically and log failures"]
-  c5 --> end["Small workflow with honest file contracts"]
+  c5 --> outcome["Small workflow with honest file contracts"]
 ```
 
 That diagram is the real lesson of the example. Each repair made the workflow easier to
