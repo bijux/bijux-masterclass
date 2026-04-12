@@ -66,6 +66,17 @@
 {% if bijux_root_home_page %}
   {% set scoped.visible = false %}
 {% endif %}
+{% if bijux_index_page and current_page and current_page.children %}
+  {% set has_leaf_child = namespace(value=false) %}
+  {% for child in current_page.children %}
+    {% if not child.children %}
+      {% set has_leaf_child.value = true %}
+    {% endif %}
+  {% endfor %}
+  {% if not has_leaf_child.value %}
+    {% set scoped.visible = false %}
+  {% endif %}
+{% endif %}
 {% set bijux_expand_scoped_groups = false %}
 {% if scoped.visible and current_page and current_page.title == "Overview" %}
   {% set bijux_expand_scoped_groups = true %}
