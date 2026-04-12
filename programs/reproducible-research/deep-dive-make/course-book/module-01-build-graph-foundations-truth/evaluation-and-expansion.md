@@ -52,8 +52,8 @@ any recipe runs.
 ```mermaid
 flowchart LR
   read["Make reads the file"] --> expand["Variables and functions expand"]
-  expand --> graph["Rules and prerequisites become the working graph"]
-  graph --> decide["Make decides what is out of date"]
+  expand --> buildGraph["Rules and prerequisites become the working graph"]
+  buildGraph --> decide["Make decides what is out of date"]
   decide --> shell["Recipes run in the shell for eligible targets"]
 ```
 
