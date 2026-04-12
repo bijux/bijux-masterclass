@@ -79,11 +79,11 @@ Same deep Markdown-derived tree from M04C01–C02, now with heavy duplication (b
 ```mermaid
 graph TD
   root["Root (title)<br/>unique"]
-  s1["Section 1<br/>\"Introduction...\" repeated 500x"]
+  s1["Section 1<br/>Introduction... repeated 500x"]
   s11["Subsection 1.1<br/>unique"]
-  s12["Subsection 1.2<br/>\"Introduction...\" again"]
-  s2["Section 2<br/>\"Introduction...\" again"]
-  s21["Subsection 2.1<br/>\"Introduction...\" again"]
+  s12["Subsection 1.2<br/>Introduction... again"]
+  s2["Section 2<br/>Introduction... again"]
+  s21["Subsection 2.1<br/>Introduction... again"]
   leaf["Deep leaves<br/>identical legal footer"]
   root --> s1
   root --> s2
