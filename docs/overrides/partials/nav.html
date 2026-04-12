@@ -66,7 +66,7 @@
 {% if bijux_root_home_page %}
   {% set scoped.visible = false %}
 {% endif %}
-{% if bijux_index_page and current_page and current_page.children %}
+{% if current_page and current_page.children %}
   {% set has_leaf_child = namespace(value=false) %}
   {% for child in current_page.children %}
     {% if not child.children %}
