@@ -66,14 +66,16 @@
 {% if bijux_root_home_page %}
   {% set scoped.visible = false %}
 {% endif %}
-{% if current_page and current_page.children %}
-  {% set has_leaf_child = namespace(value=false) %}
-  {% for child in current_page.children %}
-    {% if not child.children %}
-      {% set has_leaf_child.value = true %}
+{% if bijux_index_page and current_page and current_page.parent and current_page.parent.children %}
+  {% set current_page_path = (current_page.url | trim("/")) if current_page.url else "" %}
+  {% set matches_nested_node = namespace(value=false) %}
+  {% for child in current_page.parent.children %}
+    {% set child_path = (child.url | trim("/")) if child.url else "" %}
+    {% if child_path == current_page_path and child.children %}
+      {% set matches_nested_node.value = true %}
     {% endif %}
   {% endfor %}
-  {% if not has_leaf_child.value %}
+  {% if matches_nested_node.value %}
     {% set scoped.visible = false %}
   {% endif %}
 {% endif %}
