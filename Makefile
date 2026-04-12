@@ -208,6 +208,7 @@ docs-audit: ## Audit course-book and capstone documentation rules
 docs-nav-check: series-docs-build ## Check rendered masterclass navigation rows
 	@$(PYTHON) scripts/check_masterclass_navigation.py
 	@$(PYTHON) scripts/check_masterclass_library_tree.py
+	@$(PYTHON) scripts/check_masterclass_shell.py
 
 .PHONY: series-docs-venv
 series-docs-venv: ## Create the virtual environment for the series site
