@@ -9,7 +9,7 @@ graph LR
   family["Python Programming"]
   program["Python Meta-Programming"]
   section["Metaclass Design Class Creation"]
-  page["`__prepare__` and Declaration-Time Enforcement"]
+  page["__prepare__ and Declaration-Time Enforcement"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page

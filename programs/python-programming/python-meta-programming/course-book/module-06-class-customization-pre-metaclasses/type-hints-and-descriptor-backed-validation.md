@@ -62,12 +62,12 @@ still staying below metaclass power.
 
 ```mermaid
 graph TD
-  classDef["Class definition"]
+  classNode["Class definition"]
   hints["Resolved type hints"]
   cache["Per-class hint cache"]
   descriptor["Descriptor __set__"]
   store["Validated storage"]
-  classDef --> hints --> cache --> descriptor --> store
+  classNode --> hints --> cache --> descriptor --> store
 ```
 
 Caption: type hints provide declarative input, but the descriptor still owns the runtime enforcement.

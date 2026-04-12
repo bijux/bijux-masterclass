@@ -77,11 +77,11 @@ That makes the split useful:
 graph TD
   callable["Callable contract"]
   sig["Signature"]
-  call["Incoming args / kwargs"]
+  incomingCall["Incoming args / kwargs"]
   bound["BoundArguments<br/>parameter -> value mapping"]
   defaults["apply_defaults()<br/>fills omitted defaulted parameters"]
   callable --> sig
-  call --> bound
+  incomingCall --> bound
   sig --> bound --> defaults
 ```
 

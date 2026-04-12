@@ -83,11 +83,11 @@ checks are broader than they really are.
 graph TD
   decorate["Decoration time"]
   cache["Cache signature and resolved hints"]
-  call["Call time"]
+  callSite["Call time"]
   bind["Bind args and kwargs"]
   check["Check supported hints only"]
   delegate["Call original function"]
-  decorate --> cache --> call --> bind --> check --> delegate
+  decorate --> cache --> callSite --> bind --> check --> delegate
 ```
 
 Caption: runtime annotation use is strongest when it stays narrow, explicit, and bound to the real call shape.
