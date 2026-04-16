@@ -82,13 +82,6 @@
           {% set next_parent.item = child %}
         {% endif %}
       {% endfor %}
-      {% if not next_parent.item %}
-        {% for child in parent.children %}
-          {% if child.children and not next_parent.item %}
-            {% set next_parent.item = child %}
-          {% endif %}
-        {% endfor %}
-      {% endif %}
       {% if next_parent.item %}
         {{ render_detail_rows(next_parent.item, depth + 1) }}
       {% endif %}
