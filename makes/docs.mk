@@ -1,16 +1,3 @@
-BIJUX_DOCS_SYNC_SCRIPT ?= internal/scripts/sync_bijux_docs.sh
-BIJUX_DOCS_SOT_GUARD ?= internal/scripts/verify_bijux_docs_source_of_truth.sh
-BIJUX_DOCS_CONTRACT_GUARD ?= internal/quality/validate_bijux_docs_contract.py
-
-.PHONY: bijux-docs-sync
-bijux-docs-sync: ## Synchronize shared Bijux docs shell into docs assets
-	@bash "$(BIJUX_DOCS_SYNC_SCRIPT)"
-
-.PHONY: bijux-docs-check
-bijux-docs-check: ## Validate Bijux docs shell contract and drift checks
-	@"$(PYTHON_BIN)" "$(BIJUX_DOCS_CONTRACT_GUARD)" .
-	@bash "$(BIJUX_DOCS_SOT_GUARD)"
-
 .PHONY: docs-build
 docs-build: series-docs-install bijux-docs-sync ## Build the full catalog, or one program if PROGRAM is set explicitly
 ifeq ($(PROGRAM_IS_EXPLICIT),)
