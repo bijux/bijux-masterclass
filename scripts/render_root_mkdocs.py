@@ -84,9 +84,27 @@ def root_nav(source_nav: list[Any]) -> list[Any]:
     return generated
 
 
+def rebase_watch_paths(config: dict[str, Any]) -> None:
+    watch_paths = config.get("watch")
+    if not isinstance(watch_paths, list):
+        return
+
+    rebased: list[Any] = []
+    for entry in watch_paths:
+        if not isinstance(entry, str):
+            rebased.append(entry)
+            continue
+        if Path(entry).is_absolute() or entry.startswith("../"):
+            rebased.append(entry)
+            continue
+        rebased.append(f"../{entry.lstrip('./')}")
+    config["watch"] = rebased
+
+
 def main() -> int:
     config = load_yaml(SOURCE_CONFIG)
     config["nav"] = root_nav(config["nav"])
+    rebase_watch_paths(config)
     config["INHERIT"] = "../mkdocs.shared.yml"
     config["docs_dir"] = "../docs"
     config["site_dir"] = "site/bijux-masterclass"
