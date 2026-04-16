@@ -279,14 +279,18 @@ def row_html(html: str, row: str, title: str | None = None) -> str:
     title_pattern = ""
     if title:
         title_pattern = rf'(?=[^>]*data-bijux-course-title="{re.escape(title)}")'
-    match = re.search(
+    matches = re.findall(
         rf'<nav\b(?=[^>]*data-bijux-nav-row="{row}"){title_pattern}[^>]*>.*?</nav>',
         html,
         flags=re.DOTALL,
     )
-    if not match:
+    if not matches:
         fail(f"missing {row} navigation row")
-    return match.group(0)
+    for match in matches:
+        tag = match.split(">", 1)[0]
+        if " hidden" not in tag:
+            return match
+    fail(f"{row} navigation row is hidden")
 
 
 def require_text(html: str, text: str, context: str) -> None:
@@ -328,7 +332,12 @@ def check_course_row(html: str, page: PageCheck) -> None:
         if not re.search(rf">\s*{re.escape(label)}\s*</a>", program_html):
             fail(f"missing program row label for {page.path}: {label}")
     if page.course_title is None:
-        if re.search(r'<nav\b(?=[^>]*data-bijux-nav-row="course")', html):
+        visible_course_rows = [
+            tag
+            for tag in re.findall(r'<nav\b(?=[^>]*data-bijux-nav-row="course")[^>]*>', html)
+            if " hidden" not in tag
+        ]
+        if visible_course_rows:
             fail(f"unexpected course navigation row for {page.path}")
     else:
         course_html = row_html(html, "course", page.course_title)
