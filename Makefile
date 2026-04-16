@@ -23,10 +23,23 @@ SYNC_SERIES_DOCS := $(VENV_PY) scripts/sync_series_docs.py
 RENDER_ROOT_MKDOCS := $(VENV_PY) scripts/render_root_mkdocs.py
 DOCS_ENV = NO_MKDOCS_2_WARNING=true
 ROOT_MKDOCS_FILE := artifacts/mkdocs.root.yml
+PYTHON_BIN ?= $(shell command -v python3 2>/dev/null)
+BIJUX_DOCS_SYNC_SCRIPT ?= internal/scripts/sync_bijux_docs.sh
+BIJUX_DOCS_SOT_GUARD ?= internal/scripts/verify_bijux_docs_source_of_truth.sh
+BIJUX_DOCS_CONTRACT_GUARD ?= internal/quality/validate_bijux_docs_contract.py
 
 .PHONY: help
 help: ## Show available targets
 	@awk 'BEGIN {FS = ":.*##"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+.PHONY: bijux-docs-sync
+bijux-docs-sync: ## Synchronize shared Bijux docs shell into docs assets
+	@bash "$(BIJUX_DOCS_SYNC_SCRIPT)"
+
+.PHONY: bijux-docs-check
+bijux-docs-check: ## Validate Bijux docs shell contract and drift checks
+	@"$(PYTHON_BIN)" "$(BIJUX_DOCS_CONTRACT_GUARD)" .
+	@bash "$(BIJUX_DOCS_SOT_GUARD)"
 
 .PHONY: programs
 programs: ## List available programs
@@ -49,7 +62,7 @@ program-docs-serve: series-docs-install ## Serve docs for the selected program
 	@$(DOCS_ENV) $(SERVE_DOCS) --config $(abspath $(PROGRAM_DIR)/mkdocs.yml)
 
 .PHONY: docs-build
-docs-build: series-docs-install ## Build the full catalog, or one program if PROGRAM is set explicitly
+docs-build: series-docs-install bijux-docs-sync ## Build the full catalog, or one program if PROGRAM is set explicitly
 ifeq ($(PROGRAM_IS_EXPLICIT),)
 	@$(SYNC_SERIES_DOCS)
 	@$(RENDER_ROOT_MKDOCS)
@@ -59,7 +72,7 @@ else
 endif
 
 .PHONY: docs-serve
-docs-serve: series-docs-install ## Serve the full catalog, or one program if PROGRAM is set explicitly
+docs-serve: series-docs-install bijux-docs-sync ## Serve the full catalog, or one program if PROGRAM is set explicitly
 ifeq ($(PROGRAM_IS_EXPLICIT),)
 	@$(SYNC_SERIES_DOCS)
 	@$(RENDER_ROOT_MKDOCS)
@@ -205,7 +218,7 @@ docs-audit: ## Audit course-book and capstone documentation rules
 	@$(PYTHON) scripts/audit_masterclass_docs.py
 
 .PHONY: docs-nav-check
-docs-nav-check: series-docs-build ## Check rendered masterclass navigation rows
+docs-nav-check: series-docs-build bijux-docs-check ## Check rendered masterclass navigation rows
 	@$(PYTHON) scripts/check_masterclass_navigation.py
 	@$(PYTHON) scripts/check_masterclass_library_tree.py
 	@$(PYTHON) scripts/check_masterclass_shell.py
@@ -220,13 +233,13 @@ series-docs-install: series-docs-venv ## Install series documentation dependenci
 	@$(PIP) install -r requirements-docs.txt
 
 .PHONY: series-docs-build
-series-docs-build: series-docs-install ## Build the series documentation site
+series-docs-build: series-docs-install bijux-docs-sync ## Build the series documentation site
 	@$(SYNC_SERIES_DOCS)
 	@$(RENDER_ROOT_MKDOCS)
 	@$(DOCS_ENV) $(MKDOCS) build -f $(ROOT_MKDOCS_FILE) --strict
 
 .PHONY: series-docs-serve
-series-docs-serve: series-docs-install ## Serve the series documentation site locally
+series-docs-serve: series-docs-install bijux-docs-sync ## Serve the series documentation site locally
 	@$(SYNC_SERIES_DOCS)
 	@$(RENDER_ROOT_MKDOCS)
 	@$(DOCS_ENV) $(SERVE_DOCS) --config $(abspath $(ROOT_MKDOCS_FILE))

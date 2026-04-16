@@ -10,10 +10,19 @@ edit_uri: edit/main/docs/
 
 docs_dir: docs
 site_dir: artifacts/site/bijux-masterclass
+watch:
+  - docs
+  - docs/assets
+  - docs/overrides
+  - shared/bijux-docs
+  - mkdocs.yml
+  - mkdocs.shared.yml
 
 extra:
   bijux:
     repository: bijux-masterclass
+    nav_mode: default
+    theme_key: bijux:theme
     hub_links:
       - key: bijux
         label: Bijux
