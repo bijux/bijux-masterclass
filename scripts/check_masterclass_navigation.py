@@ -39,8 +39,10 @@ MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)]+)\)")
 @dataclass(frozen=True)
 class PageCheck:
     path: str
-    course_title: str
     current_label: str
+    program_labels: tuple[str, ...]
+    course_title: str | None = None
+    sidebar_visible: bool = True
     sidebar_labels: tuple[str, ...] = ()
     sidebar_ordered_labels: tuple[str, ...] = ()
     sidebar_absent_labels: tuple[str, ...] = ()
@@ -48,10 +50,17 @@ class PageCheck:
 
 PAGE_CHECKS = (
     PageCheck(
-        path="reproducible-research/deep-dive-make/index.html",
-        course_title="Deep Dive Make",
+        path="reproducible-research/index.html",
         current_label="Home",
-        sidebar_labels=("Home",),
+        program_labels=("Home", "Deep Dive Make", "Deep Dive Snakemake", "Deep Dive DVC"),
+        sidebar_visible=False,
+    ),
+    PageCheck(
+        path="reproducible-research/deep-dive-make/index.html",
+        current_label="Home",
+        program_labels=("Home", "Deep Dive Make", "Deep Dive Snakemake", "Deep Dive DVC"),
+        course_title="Deep Dive Make",
+        sidebar_visible=False,
         sidebar_absent_labels=("Guides", "Guides Home", "Start Here", "M01", "Capstone", "Reference"),
     ),
     PageCheck(
@@ -59,8 +68,9 @@ PAGE_CHECKS = (
             "reproducible-research/deep-dive-make/"
             "module-01-build-graph-foundations-truth/index.html"
         ),
-        course_title="Deep Dive Make",
         current_label="M01",
+        program_labels=("Home", "Deep Dive Make", "Deep Dive Snakemake", "Deep Dive DVC"),
+        course_title="Deep Dive Make",
         sidebar_labels=(
             "Home",
             "Build Graph Mental Model",
@@ -92,8 +102,9 @@ PAGE_CHECKS = (
             "reproducible-research/deep-dive-make/"
             "module-02-parallel-safety-project-structure/index.html"
         ),
-        course_title="Deep Dive Make",
         current_label="M02",
+        program_labels=("Home", "Deep Dive Make", "Deep Dive Snakemake", "Deep Dive DVC"),
+        course_title="Deep Dive Make",
         sidebar_labels=(
             "Home",
             "Parallel Scheduling and Runnable Targets",
@@ -125,8 +136,9 @@ PAGE_CHECKS = (
             "reproducible-research/deep-dive-make/"
             "module-03-determinism-debugging-self-testing/index.html"
         ),
-        course_title="Deep Dive Make",
         current_label="M03",
+        program_labels=("Home", "Deep Dive Make", "Deep Dive Snakemake", "Deep Dive DVC"),
+        course_title="Deep Dive Make",
         sidebar_labels=(
             "Home",
             "Determinism and Stable Discovery",
@@ -158,16 +170,34 @@ PAGE_CHECKS = (
             "reproducible-research/deep-dive-make/"
             "capstone-docs/index.html"
         ),
-        course_title="Deep Dive Make",
         current_label="Capstone Docs",
+        program_labels=("Home", "Deep Dive Make", "Deep Dive Snakemake", "Deep Dive DVC"),
+        course_title="Deep Dive Make",
         sidebar_labels=("Home", "Architecture Guide", "Proof Guide"),
         sidebar_absent_labels=("Reference", "M01"),
     ),
     PageCheck(
-        path="python-programming/python-functional-programming/index.html",
-        course_title="Python Functional Programming",
+        path="python-programming/index.html",
         current_label="Home",
-        sidebar_labels=("Home",),
+        program_labels=(
+            "Home",
+            "Python Object-Oriented Programming",
+            "Python Functional Programming",
+            "Python Metaprogramming",
+        ),
+        sidebar_visible=False,
+    ),
+    PageCheck(
+        path="python-programming/python-functional-programming/index.html",
+        current_label="Home",
+        program_labels=(
+            "Home",
+            "Python Object-Oriented Programming",
+            "Python Functional Programming",
+            "Python Metaprogramming",
+        ),
+        course_title="Python Functional Programming",
+        sidebar_visible=False,
         sidebar_absent_labels=("Guides", "M01", "Capstone", "Capstone Docs", "Reference"),
     ),
     PageCheck(
@@ -176,8 +206,14 @@ PAGE_CHECKS = (
             "module-04-streaming-resilience-failure-handling/"
             "structural-recursion-and-iteration/index.html"
         ),
-        course_title="Python Functional Programming",
         current_label="M04",
+        program_labels=(
+            "Home",
+            "Python Object-Oriented Programming",
+            "Python Functional Programming",
+            "Python Metaprogramming",
+        ),
+        course_title="Python Functional Programming",
         sidebar_labels=(
             "Folds and Reductions",
             "Memoization",
@@ -203,8 +239,9 @@ PAGE_CHECKS = (
             "reproducible-research/deep-dive-snakemake/"
             "module-04-scaling-workflows-interface-boundaries/index.html"
         ),
-        course_title="Deep Dive Snakemake",
         current_label="M04",
+        program_labels=("Home", "Deep Dive Make", "Deep Dive Snakemake", "Deep Dive DVC"),
+        course_title="Deep Dive Snakemake",
         sidebar_labels=("Home", "Glossary"),
         sidebar_absent_labels=("Capstone", "Capstone Docs", "Reference", "M05"),
     ),
@@ -236,6 +273,20 @@ def visible_row_tag(html: str, row: str, title: str | None = None) -> str:
         if " hidden" not in tag:
             return tag
     fail(f"{row} navigation row is hidden")
+
+
+def row_html(html: str, row: str, title: str | None = None) -> str:
+    title_pattern = ""
+    if title:
+        title_pattern = rf'(?=[^>]*data-bijux-course-title="{re.escape(title)}")'
+    match = re.search(
+        rf'<nav\b(?=[^>]*data-bijux-nav-row="{row}"){title_pattern}[^>]*>.*?</nav>',
+        html,
+        flags=re.DOTALL,
+    )
+    if not match:
+        fail(f"missing {row} navigation row")
+    return match.group(0)
 
 
 def require_text(html: str, text: str, context: str) -> None:
@@ -272,11 +323,18 @@ def scoped_sidebar_html(html: str, page: PageCheck) -> str:
 
 def check_course_row(html: str, page: PageCheck) -> None:
     visible_row_tag(html, "site")
-    visible_row_tag(html, "program")
-    visible_row_tag(html, "course", page.course_title)
-    for label in COURSE_ROW_LABELS:
-        if not re.search(rf">\s*{re.escape(label)}\s*</a>", html):
-            fail(f"missing course row label for {page.course_title}: {label}")
+    program_html = row_html(html, "program")
+    for label in page.program_labels:
+        if not re.search(rf">\s*{re.escape(label)}\s*</a>", program_html):
+            fail(f"missing program row label for {page.path}: {label}")
+    if page.course_title is None:
+        if re.search(r'<nav\b(?=[^>]*data-bijux-nav-row="course")', html):
+            fail(f"unexpected course navigation row for {page.path}")
+    else:
+        course_html = row_html(html, "course", page.course_title)
+        for label in COURSE_ROW_LABELS:
+            if not re.search(rf">\s*{re.escape(label)}\s*</a>", course_html):
+                fail(f"missing course row label for {page.course_title}: {label}")
     if not re.search(
         rf'aria-current="page">\s*{re.escape(page.current_label)}\s*</a>',
         html,
@@ -286,11 +344,14 @@ def check_course_row(html: str, page: PageCheck) -> None:
 
 def check_sidebar(html: str, page: PageCheck) -> None:
     sidebar_html = scoped_sidebar_html(html, page)
+    expected_empty = "false" if page.sidebar_visible else "true"
     require_text(
         sidebar_html,
-        'bijux-nav--scoped" aria-label="Navigation" data-bijux-nav-empty="false"',
+        f'bijux-nav--scoped" aria-label="Navigation" data-bijux-nav-empty="{expected_empty}"',
         f"scoped sidebar for {page.path}",
     )
+    if not page.sidebar_visible:
+        return
     for label in page.sidebar_labels:
         require_text(sidebar_html, label, f"sidebar label for {page.path}")
     if page.sidebar_ordered_labels:
