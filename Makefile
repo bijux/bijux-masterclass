@@ -15,6 +15,7 @@ VENV_BIN := $(VENV_DIR)/bin
 VENV_PY := $(abspath $(VENV_BIN)/python)
 PIP := $(VENV_PY) -m pip
 MKDOCS := $(VENV_PY) -m mkdocs
+DOCS_REQUIREMENTS ?= configs/docs/requirements-docs.txt
 DOCS_HOST ?= 127.0.0.1
 DOCS_PORT ?= 8000
 DOCS_PORT_SEARCH_LIMIT ?= 25
@@ -27,6 +28,9 @@ PYTHON_BIN ?= $(shell command -v python3 2>/dev/null)
 BIJUX_DOCS_SYNC_SCRIPT ?= internal/scripts/sync_bijux_docs.sh
 BIJUX_DOCS_SOT_GUARD ?= internal/scripts/verify_bijux_docs_source_of_truth.sh
 BIJUX_DOCS_CONTRACT_GUARD ?= internal/quality/validate_bijux_docs_contract.py
+BIJUX_STD_CHECK_SCRIPT ?= shared/bijux-makes-py/ci/check-bijux-std.sh
+BIJUX_STD_REF ?= main
+BIJUX_STD_REMOTE ?= https://raw.githubusercontent.com/bijux/bijux-std
 
 .PHONY: help
 help: ## Show available targets
@@ -40,6 +44,10 @@ bijux-docs-sync: ## Synchronize shared Bijux docs shell into docs assets
 bijux-docs-check: ## Validate Bijux docs shell contract and drift checks
 	@"$(PYTHON_BIN)" "$(BIJUX_DOCS_CONTRACT_GUARD)" .
 	@bash "$(BIJUX_DOCS_SOT_GUARD)"
+
+.PHONY: bijux-std
+bijux-std: ## Verify shared directories match bijux-std (set BIJUX_STD_REF for pinning)
+	@BIJUX_STD_REF="$(BIJUX_STD_REF)" BIJUX_STD_REMOTE="$(BIJUX_STD_REMOTE)" bash "$(BIJUX_STD_CHECK_SCRIPT)"
 
 .PHONY: programs
 programs: ## List available programs
@@ -230,7 +238,7 @@ series-docs-venv: ## Create the virtual environment for the series site
 
 .PHONY: series-docs-install
 series-docs-install: series-docs-venv ## Install series documentation dependencies
-	@$(PIP) install -r requirements-docs.txt
+	@$(PIP) install -r $(DOCS_REQUIREMENTS)
 
 .PHONY: series-docs-build
 series-docs-build: series-docs-install bijux-docs-sync ## Build the series documentation site
