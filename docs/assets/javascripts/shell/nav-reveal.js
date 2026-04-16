@@ -30,9 +30,11 @@
     const activeSiteLink = document.querySelector(
       ".bijux-site-tabs .bijux-tabs__item--active a"
     );
-    const activeDetailLink = document.querySelector(
-      "[data-bijux-detail-strip]:not([hidden]) .bijux-tabs__item--active a"
+    const detailActiveLinks = document.querySelectorAll(
+      "[data-bijux-detail-strip] .bijux-tabs__item--active a"
     );
+    const activeDetailLink =
+      detailActiveLinks[detailActiveLinks.length - 1] || null;
     const activeSidebarLink = document.querySelector(
       ".md-sidebar--primary .md-nav__link--active"
     );
