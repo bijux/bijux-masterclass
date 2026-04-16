@@ -32,7 +32,7 @@ venv: ## Create/update local virtualenv in ./.venv
 > $(PIP) install -U pip
 
 install: venv ## Install dev+docs extras into the venv
-> $(PIP) install -r ../../../requirements-docs.txt
+> $(PIP) install -r ../../../configs/docs/requirements-docs.txt
 > $(PIP) install "ruff>=0.5,<1" "mypy>=1.10,<2"
 
 install-dev: venv ## Install dev tooling into the venv
