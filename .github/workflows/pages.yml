@@ -30,7 +30,7 @@ jobs:
       - name: Install documentation dependencies
         run: |
           python -m pip install -U pip
-          pip install -r requirements-docs.txt
+          pip install -r configs/docs/requirements-docs.txt
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
