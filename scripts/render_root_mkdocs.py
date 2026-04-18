@@ -97,7 +97,8 @@ def rebase_watch_paths(config: dict[str, Any]) -> None:
         if Path(entry).is_absolute() or entry.startswith("../"):
             rebased.append(entry)
             continue
-        rebased.append(f"../{entry.lstrip('./')}")
+        normalized = entry[2:] if entry.startswith("./") else entry
+        rebased.append(f"../{normalized}")
     config["watch"] = rebased
 
 
