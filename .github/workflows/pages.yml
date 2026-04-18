@@ -33,7 +33,7 @@ jobs:
           pip install -r configs/docs/requirements-docs.txt
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Build series site
         run: |
