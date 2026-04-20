@@ -5,8 +5,7 @@ on:
     types: [opened, reopened, synchronize, ready_for_review]
   pull_request_review:
     types: [submitted]
-  workflow_run:
-    workflows: [bijux-std]
+  check_suite:
     types: [completed]
 
 permissions:
@@ -24,22 +23,12 @@ jobs:
             let pullNumber = null;
             if (context.payload.pull_request && context.payload.pull_request.number) {
               pullNumber = context.payload.pull_request.number;
-            } else if (context.payload.workflow_run) {
-              const workflowRun = context.payload.workflow_run;
-              if (workflowRun.event !== "pull_request") {
-                core.info("Workflow run is not for pull_request; skipping.");
-                return;
+            }
+            if (!pullNumber && context.payload.check_suite && Array.isArray(context.payload.check_suite.pull_requests)) {
+              const suitePullRequests = context.payload.check_suite.pull_requests;
+              if (suitePullRequests.length > 0 && suitePullRequests[0] && suitePullRequests[0].number) {
+                pullNumber = suitePullRequests[0].number;
               }
-              if (workflowRun.conclusion !== "success") {
-                core.info("Workflow run did not complete successfully; skipping auto-merge enablement.");
-                return;
-              }
-              const linkedPrs = Array.isArray(workflowRun.pull_requests) ? workflowRun.pull_requests : [];
-              if (linkedPrs.length === 0 || !linkedPrs[0].number) {
-                core.info("No pull requests linked to workflow run; skipping.");
-                return;
-              }
-              pullNumber = linkedPrs[0].number;
             }
 
             if (!pullNumber) {
