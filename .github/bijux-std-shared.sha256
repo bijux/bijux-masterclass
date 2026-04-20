@@ -19,3 +19,4 @@ dbadf750b1b2e0efa68e124b0e0c74561606eb13956cb3c280d6190ee769fbf3  .github/script
 f12348438f100b187a1afa6ed0bd165f8ab815753af55730f56076229bc751d4  .github/standards/workflow-inventory.json
 b57effa4f26c78cfe64d00d9c3c421da0171567823f516c07ca588c1cce293af  .github/workflows/automerge-pr.yml
 84d731437897001b7c0794773a4fca991c4949df746829700c7966ec0a47c24d  .github/workflows/bijux-std.yml
+acea612a11472069e6c97561e8097ba9cfa3a77011729b36f8ba0e887401b1d8  .github/workflows/deploy-docs.yml
