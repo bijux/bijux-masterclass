@@ -3,5 +3,5 @@ mkdocs-material>=9.5,<10
 mkdocs-autorefs>=1.4,<2
 pymdown-extensions>=10.8,<11
 mkdocs-macros-plugin>=1,<2
-mkdocs-git-revision-date-localized-plugin>=1.2,<2
+mkdocs-git-revision-date-localized-plugin>=1.5.1,<2
 mkdocs-minify-plugin>=0.8,<1
