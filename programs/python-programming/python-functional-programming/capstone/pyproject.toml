@@ -26,9 +26,9 @@ funcpipe-rag-review = "funcpipe_rag.boundaries.shells.review_cli:main"
 
 [project.optional-dependencies]
 docs = [
-  "mkdocs>=1.6,<2",
-  "mkdocs-material>=9.5,<10",
-  "pymdown-extensions>=10.8,<11",
+  "mkdocs>=1.6.1,<2",
+  "mkdocs-material>=9.7.6,<10",
+  "pymdown-extensions>=10.21.2,<11",
 ]
 dev = [
   # testing
@@ -48,10 +48,10 @@ dev = [
   "pandas>=2.0,<3",
   "kaggle>=1.6",
   # MkDocs site (Material theme + common plugins)
-  "mkdocs>=1.6,<2",
-  "mkdocs-material>=9.5,<10",
-  "pymdown-extensions>=10.8,<11",
-  "mkdocs-git-revision-date-localized-plugin>=1.2,<2",
+  "mkdocs>=1.6.1,<2",
+  "mkdocs-material>=9.7.6,<10",
+  "pymdown-extensions>=10.21.2,<11",
+  "mkdocs-git-revision-date-localized-plugin>=1.5.1,<2",
   "mkdocs-minify-plugin>=0.8,<1",
   "mkdocs-redirects>=1.2,<2",
 ]
