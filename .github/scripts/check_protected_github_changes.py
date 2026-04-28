@@ -34,13 +34,16 @@ BASE_PROTECTED_PATHS = {
 }
 
 ALLOWED_CONTROL_PATHS = {
+    ".github/standards/bijux-std.sha",
     ".github/standards/repo-config.manifest.json",
     ".github/standards/workflow-inventory.json",
     ".github/scripts/build_repo_manifest.py",
+    ".github/scripts/check_protected_github_changes.py",
     ".github/scripts/render_repo_configs.py",
     ".github/scripts/sync_github_standards.py",
     ".github/bijux-std-shared.sha256",
     ".bijux/shared/shared-dir-sha256.txt",
+    "shared/shared-dir-sha256.txt",
 }
 
 
