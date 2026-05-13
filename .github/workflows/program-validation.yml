@@ -7,8 +7,32 @@ on:
     branches: [master, main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+
+concurrency:
+  group: program-validation-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  policy-gate:
+    name: policy-prerequisites
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+      - name: Wait for policy and standards prerequisites
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/check_workflow_prerequisites.py
+
   validate:
+    needs: policy-gate
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
