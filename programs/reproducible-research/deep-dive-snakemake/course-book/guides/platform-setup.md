@@ -39,7 +39,7 @@ This page makes that contract clear before you hit avoidable setup failures.
 You need:
 
 * Python 3.11 or newer
-* Snakemake **9.14.x** if you are using a preinstalled global binary
+* Snakemake in the supported `>=9.14,<9.24` window if you are using a preinstalled global binary
 * a writable local filesystem for the capstone working directories
 * `dot` from Graphviz if you want DAG or rulegraph rendering
 
@@ -51,14 +51,20 @@ installed globally.
 
 ## Version Contract
 
-The course and capstone teach **Snakemake 9.14.x semantics**. That matters because the
-course relies on modern behavior around profiles, modules, reporting, and current CLI
-surfaces.
+The course and capstone keep **9.14.x** as the clean-room classroom baseline, and the
+packaging surfaces accept the broader supported window `>=9.14,<9.24`. That split is
+intentional:
+
+* `environment.yaml` preserves the pinned 9.14 baseline for a stable teaching and container contract
+* `pyproject.toml` and `make bootstrap` accept newer compatible 9.x releases without pretending the capstone is version-agnostic
+
+That matters because the course relies on modern behavior around profiles, modules,
+reporting, and current CLI surfaces.
 
 Use one of these two routes:
 
-* preferred: `make bootstrap-confirm` to create the pinned local toolchain and run the strongest clean-room proof route
-* acceptable: use a preinstalled `snakemake`, but verify `snakemake --version` reports `9.14.x` before trusting course commands literally
+* preferred: `make bootstrap-confirm` to create a repo-managed local toolchain inside the supported window and run the strongest clean-room proof route
+* acceptable: use a preinstalled `snakemake`, but verify `snakemake --version` falls inside `>=9.14,<9.24` before trusting course commands literally
 
 ---
 

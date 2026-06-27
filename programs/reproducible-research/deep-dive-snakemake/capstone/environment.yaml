@@ -5,5 +5,7 @@ channels:
   - defaults
 dependencies:
   - python=3.11
+  # Keep the classroom baseline pinned while packaging surfaces accept the broader
+  # supported 9.x window declared in pyproject.toml and bootstrap.
   - snakemake=9.14.*
   # No external bioinformatics tools required (pure Python)
