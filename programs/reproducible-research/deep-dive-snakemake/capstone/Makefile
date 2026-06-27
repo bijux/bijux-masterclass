@@ -72,7 +72,7 @@ bootstrap: ## Create the supported local toolchain and print the resolved versio
 	@rm -rf "$(TOOLS_VENV_DIR_ABS)"
 	@$(SYSTEM_PYTHON) -m venv "$(TOOLS_VENV_DIR_ABS)"
 	@$(TOOLS_PIP) install -U pip
-	@$(TOOLS_PIP) install "snakemake>=8" pytest ruff pyyaml jsonschema
+	@$(TOOLS_PIP) install "snakemake>=9.14,<9.24" pytest ruff pyyaml jsonschema
 	@$(MAKE) info SNAKEMAKE="$(TOOLS_BIN)/snakemake" PYTHON="$(TOOLS_PY)" PYTEST="$(TOOLS_BIN)/pytest" RUFF="$(TOOLS_BIN)/ruff"
 
 bootstrap-confirm: bootstrap ## Create the supported toolchain and run clean-room confirmation

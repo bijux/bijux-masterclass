@@ -16,6 +16,10 @@ PROVENANCE_HEADER = (
     "bijux-std/shared/bijux-gh/workflows/.\n"
     "# Do not edit this generated copy directly.\n\n"
 )
+REQUIRED_VERIFY_TRIGGER_PATHS = [
+    ".bijux/**",
+    ".github/**",
+]
 
 
 def resolve_repo_root(repo_name: str) -> Path:
@@ -191,11 +195,54 @@ def remove_if_generated(path: Path) -> None:
         path.unlink()
 
 
+def normalize_verify_trigger_paths(
+    wrapper_definition: dict[str, Any],
+) -> dict[str, Any]:
+    on_section = wrapper_definition.get("on")
+    if not isinstance(on_section, dict):
+        return wrapper_definition
+
+    for event_name in ("push", "pull_request"):
+        event_definition = on_section.get(event_name)
+        if not isinstance(event_definition, dict):
+            continue
+
+        raw_paths = event_definition.get("paths")
+        if not isinstance(raw_paths, list):
+            continue
+
+        normalized_paths: list[str] = []
+        seen_paths: set[str] = set()
+
+        def add_path(path: str) -> None:
+            if path in seen_paths:
+                return
+            seen_paths.add(path)
+            normalized_paths.append(path)
+
+        for required_path in REQUIRED_VERIFY_TRIGGER_PATHS:
+            add_path(required_path)
+
+        for raw_path in raw_paths:
+            if not isinstance(raw_path, str):
+                continue
+            if raw_path.startswith(".github/") or raw_path.startswith(".bijux/"):
+                continue
+            add_path(raw_path)
+
+        event_definition["paths"] = normalized_paths
+
+    return wrapper_definition
+
+
 def inject_policy_gate(
     wrapper_name: str,
     wrapper_definition: dict[str, Any],
 ) -> dict[str, Any]:
-    if wrapper_name != "verify":
+    if wrapper_name == "verify":
+        wrapper_definition = normalize_verify_trigger_paths(wrapper_definition)
+
+    if wrapper_name not in {"ci", "verify"}:
         return wrapper_definition
 
     jobs = wrapper_definition.get("jobs")
@@ -212,7 +259,7 @@ def inject_policy_gate(
         "runs-on": "ubuntu-latest",
         "steps": [
             {
-                "uses": "actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8",
+                "uses": "actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0",
             },
             {
                 "name": "Wait for policy and standards prerequisites",
