@@ -18,7 +18,7 @@ T = TypeVar("T")
 def _returns() -> Any | None:
     try:
         return importlib.import_module("returns")
-    except Exception:
+    except ImportError:
         return None
 
 
@@ -37,15 +37,15 @@ def to_result(obj: Any, *, map_exc: Any | None = None) -> Result[Any, ErrInfo]:
     try:
         # `returns.result.Success` / `returns.result.Failure`
         if obj.__class__.__name__ == "Success":
-            return Ok(getattr(obj, "_inner_value"))
+            return Ok(obj._inner_value)
         if obj.__class__.__name__ == "Failure":
-            inner = getattr(obj, "_inner_value")
+            inner = obj._inner_value
             if isinstance(inner, BaseException):
                 return Err(ErrInfo.from_exception(inner))
             if map_exc is not None:
                 return Err(map_exc(inner))
             return Err(ErrInfo(code="FAILURE", msg=str(inner)))
-    except Exception as exc:  # pragma: no cover - defensive
+    except AttributeError as exc:  # pragma: no cover - defensive
         return Err(ErrInfo.from_exception(exc))
 
     return Err(ErrInfo(code="UNSUPPORTED", msg=f"unsupported returns object: {type(obj).__name__}"))
@@ -59,14 +59,13 @@ def to_option(obj: Any) -> Option[Any]:
 
     try:
         if obj.__class__.__name__ == "Some":
-            return Some(getattr(obj, "_inner_value"))
+            return Some(obj._inner_value)
         if obj.__class__.__name__ == "Nothing":
             return NONE
-    except Exception as exc:  # pragma: no cover - defensive
+    except AttributeError as exc:  # pragma: no cover - defensive
         raise RuntimeError("invalid returns object") from exc
 
     raise ValueError(f"unsupported returns object: {type(obj).__name__}")
 
 
-__all__ = ["RETURNS_AVAILABLE", "to_result", "to_option"]
-
+__all__ = ["RETURNS_AVAILABLE", "to_option", "to_result"]

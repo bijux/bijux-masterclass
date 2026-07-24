@@ -7,8 +7,9 @@ End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Generic, TypeVar
+from typing import Generic, TypeVar
 
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
@@ -47,5 +48,5 @@ def perform(plan: IOPlan[A]) -> Result[A, ErrInfo]:
     return plan.thunk()
 
 
-__all__ = ["IOPlan", "io_pure", "io_delay", "io_bind", "io_map", "perform"]
+__all__ = ["IOPlan", "io_bind", "io_delay", "io_map", "io_pure", "perform"]
 

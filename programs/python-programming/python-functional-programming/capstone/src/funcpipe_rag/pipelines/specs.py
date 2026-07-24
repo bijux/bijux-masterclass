@@ -6,10 +6,10 @@ deterministically using allow-listed registries.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Iterator, Mapping
-from dataclasses import dataclass
 import hashlib
 import json
+from collections.abc import Callable, Iterable, Iterator, Mapping
+from dataclasses import dataclass
 from typing import Any, Literal, TypeAlias, TypeVar, cast
 
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result, is_err, is_ok
@@ -106,7 +106,7 @@ def reconstruct_pipeline(
                         return r
                     try:
                         return Ok(_f(r.value))
-                    except Exception as exc:
+                    except Exception as exc:  # noqa: BLE001 - pipeline specs must capture arbitrary operator failures
                         return Err(ErrInfo.from_exception(exc, stage=_fid))
 
                 it = _apply_policy(
@@ -128,7 +128,7 @@ def reconstruct_pipeline(
                     try:
                         for x in cast(Iterable[Any], _f(r.value)):
                             yield Ok(x)
-                    except Exception as exc:
+                    except Exception as exc:  # noqa: BLE001 - pipeline specs must capture arbitrary operator failures
                         yield Err(ErrInfo.from_exception(exc, stage=_fid))
 
                 it = _apply_policy(
@@ -148,6 +148,6 @@ __all__ = [
     "PipelineSpec",
     "SpecRegistry",
     "canonical_json",
-    "spec_hash",
     "reconstruct_pipeline",
+    "spec_hash",
 ]

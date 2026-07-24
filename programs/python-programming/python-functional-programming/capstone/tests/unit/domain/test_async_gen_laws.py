@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 import asyncio
+from dataclasses import dataclass
 
 from hypothesis import given, settings
 from hypothesis import strategies as st
@@ -13,7 +13,6 @@ from funcpipe_rag.domain.effects.async_ import (
     async_gen_using,
 )
 from funcpipe_rag.result.types import Err, ErrInfo, Ok
-
 from tests.helpers import collect
 
 

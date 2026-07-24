@@ -152,16 +152,16 @@ def split_results_to_sinks_guarded(
 
 
 __all__ = [
-    "map_result_iter",
-    "filter_ok",
     "filter_err",
-    "partition_results",
-    "try_map_iter",
+    "filter_ok",
+    "map_result_iter",
     "par_try_map_iter",
-    "tap_ok",
-    "tap_err",
+    "partition_results",
     "recover_iter",
     "recover_result_iter",
     "split_results_to_sinks",
     "split_results_to_sinks_guarded",
+    "tap_err",
+    "tap_ok",
+    "try_map_iter",
 ]

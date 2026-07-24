@@ -6,10 +6,11 @@ Most of these types are introduced in Module 02 and extended in Module 03
 
 from __future__ import annotations
 
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
-from typing import Any, Callable, Mapping
+from typing import Any
 
-from funcpipe_rag.core.rag_types import Chunk, CleanDoc, RawDoc, DocRule
+from funcpipe_rag.core.rag_types import Chunk, CleanDoc, DocRule, RawDoc
 from funcpipe_rag.streaming import TraceLens
 
 TapDocs = Callable[[tuple[RawDoc, ...]], None]
@@ -65,4 +66,4 @@ class RagTraceV3:
     embedded: TraceLens[Any] = field(default_factory=TraceLens)  # typically Chunk
 
 
-__all__ = ["DocRule", "RagTaps", "DebugConfig", "Observations", "TraceLens", "RagTraceV3"]
+__all__ = ["DebugConfig", "DocRule", "Observations", "RagTaps", "RagTraceV3", "TraceLens"]

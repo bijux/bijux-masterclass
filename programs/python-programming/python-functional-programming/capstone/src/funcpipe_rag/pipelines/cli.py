@@ -76,4 +76,4 @@ def apply_step_params(cfg: PipelineConfig, step_name: str, params: dict[str, Any
     return replace(cfg, steps=tuple(steps))
 
 
-__all__ = ["deep_merge", "parse_override", "apply_step_params"]
+__all__ = ["apply_step_params", "deep_merge", "parse_override"]

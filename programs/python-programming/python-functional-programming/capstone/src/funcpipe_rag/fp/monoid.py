@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Callable, Dict, Generic, Iterable, List, Tuple, TypeVar
 import math
+from collections.abc import Callable, Iterable
+from dataclasses import dataclass
+from typing import Generic, TypeVar
 
 T = TypeVar("T")
 U = TypeVar("U")
@@ -37,7 +38,7 @@ def fold_map(m: Monoid[T], f: Callable[[U], T], xs: Iterable[U]) -> T:
 
 
 def tree_reduce(m: Monoid[T], xs: Iterable[T], chunk: int = 2048) -> T:
-    buf: List[T] = []
+    buf: list[T] = []
     for x in xs:
         buf.append(x)
         if len(buf) >= chunk:
@@ -45,9 +46,9 @@ def tree_reduce(m: Monoid[T], xs: Iterable[T], chunk: int = 2048) -> T:
     return _tree_combine(m, buf) if buf else m.empty()
 
 
-def _tree_combine(m: Monoid[T], items: List[T]) -> T:
+def _tree_combine(m: Monoid[T], items: list[T]) -> T:
     while len(items) > 1:
-        next_items: List[T] = []
+        next_items: list[T] = []
         it = iter(items)
         for a in it:
             b = next(it, None)
@@ -64,19 +65,19 @@ class Sum:
 SUM_INT: Monoid[Sum] = Monoid(empty=lambda: Sum(0), combine=lambda a, b: Sum(a.value + b.value))
 
 
-LIST_STR: Monoid[List[str]] = Monoid(empty=list, combine=lambda a, b: a + b)
+LIST_STR: Monoid[list[str]] = Monoid(empty=list, combine=lambda a, b: a + b)
 
 
-DICT_RIGHT_WINS: Monoid[Dict[str, object]] = Monoid(empty=dict, combine=lambda a, b: {**a, **b})
+DICT_RIGHT_WINS: Monoid[dict[str, object]] = Monoid(empty=dict, combine=lambda a, b: {**a, **b})
 
 
-def map_monoid(value_m: Monoid[T]) -> Monoid[Dict[str, T]]:
-    def empty() -> Dict[str, T]:
+def map_monoid(value_m: Monoid[T]) -> Monoid[dict[str, T]]:
+    def empty() -> dict[str, T]:
         return {}
 
-    def combine(a: Dict[str, T], b: Dict[str, T]) -> Dict[str, T]:
+    def combine(a: dict[str, T], b: dict[str, T]) -> dict[str, T]:
         keys = a.keys() | b.keys()
-        out: Dict[str, T] = {}
+        out: dict[str, T] = {}
         for k in keys:
             if k in a and k in b:
                 out[k] = value_m.combine(a[k], b[k])
@@ -89,14 +90,14 @@ def map_monoid(value_m: Monoid[T]) -> Monoid[Dict[str, T]]:
     return Monoid(empty, combine)
 
 
-def product_monoid(m1: Monoid[T], m2: Monoid[U]) -> Monoid[Tuple[T, U]]:
+def product_monoid(m1: Monoid[T], m2: Monoid[U]) -> Monoid[tuple[T, U]]:
     return Monoid(
         empty=lambda: (m1.empty(), m2.empty()),
         combine=lambda a, b: (m1.combine(a[0], b[0]), m2.combine(a[1], b[1])),
     )
 
 
-def product3(m1: Monoid[T1], m2: Monoid[T2], m3: Monoid[T3]) -> Monoid[Tuple[T1, T2, T3]]:
+def product3(m1: Monoid[T1], m2: Monoid[T2], m3: Monoid[T3]) -> Monoid[tuple[T1, T2, T3]]:
     return Monoid(
         empty=lambda: (m1.empty(), m2.empty(), m3.empty()),
         combine=lambda a, b: (
@@ -132,14 +133,14 @@ METRICS: Monoid[Metrics] = Monoid(
 )
 
 
-def nonempty_tuple_semigroup() -> Semi[Tuple[T, ...]]:
+def nonempty_tuple_semigroup() -> Semi[tuple[T, ...]]:
     return Semi(lambda a, b: a + b)
 
 
-def dedup_stable_semigroup() -> Semi[Tuple[E, ...]]:
-    def combine(a: Tuple[E, ...], b: Tuple[E, ...]) -> Tuple[E, ...]:
+def dedup_stable_semigroup() -> Semi[tuple[E, ...]]:
+    def combine(a: tuple[E, ...], b: tuple[E, ...]) -> tuple[E, ...]:
         seen: set[E] = set()
-        out: List[E] = []
+        out: list[E] = []
         for e in a + b:
             if e not in seen:
                 seen.add(e)
@@ -150,20 +151,20 @@ def dedup_stable_semigroup() -> Semi[Tuple[E, ...]]:
 
 
 __all__ = [
+    "DICT_RIGHT_WINS",
+    "LIST_STR",
+    "METRICS",
+    "SUM_INT",
+    "Metrics",
     "Monoid",
     "Semi",
+    "Sum",
+    "dedup_stable_semigroup",
     "fold",
     "fold_map",
-    "tree_reduce",
-    "Sum",
-    "SUM_INT",
-    "LIST_STR",
-    "DICT_RIGHT_WINS",
     "map_monoid",
-    "product_monoid",
-    "product3",
-    "Metrics",
-    "METRICS",
     "nonempty_tuple_semigroup",
-    "dedup_stable_semigroup",
+    "product3",
+    "product_monoid",
+    "tree_reduce",
 ]

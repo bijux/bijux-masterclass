@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from collections import deque
+from collections.abc import Callable, Iterable, Iterator
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Any, Callable, Generic, Iterable, Iterator, NamedTuple, TypeVar, cast
+from typing import Any, Generic, NamedTuple, TypeVar, cast
 
 from funcpipe_rag.result import Err, Ok, Result
 
@@ -157,13 +158,13 @@ def restore_input_order(tagged: Iterable[tuple[int, Result[Y, E]]]) -> Iterator[
 
 
 __all__ = [
-    "RetryCtx",
-    "RetryDecision",
     "Classifier",
     "Policy",
-    "retry_map_iter",
-    "fixed_policy",
+    "RetryCtx",
+    "RetryDecision",
     "exp_policy",
+    "fixed_policy",
     "is_retriable_errinfo",
     "restore_input_order",
+    "retry_map_iter",
 ]

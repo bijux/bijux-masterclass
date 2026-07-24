@@ -3,8 +3,9 @@ from __future__ import annotations
 from hypothesis import given
 from hypothesis import strategies as st
 
-from funcpipe_rag.result import Err, Ok
 from funcpipe_rag.result import (
+    Err,
+    Ok,
     all_ok_fail_fast,
     fold_results_collect_errs,
     fold_results_collect_errs_capped,

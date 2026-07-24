@@ -26,7 +26,12 @@ from funcpipe_rag.policies.breakers import (
     short_circuit_on_err_emit,
     short_circuit_on_err_truncate,
 )
-from funcpipe_rag.policies.memo import DiskCache, content_hash_key, lru_cache_custom, memoize_keyed
+from funcpipe_rag.policies.memo import (
+    DiskCache,
+    content_hash_key,
+    lru_cache_custom,
+    memoize_keyed,
+)
 from funcpipe_rag.policies.reports import (
     ErrGroup,
     ErrReport,
@@ -34,56 +39,11 @@ from funcpipe_rag.policies.reports import (
     fold_error_report,
     report_to_jsonable,
 )
-from funcpipe_rag.policies.resources import auto_close, managed_stream, nested_managed, with_resource_stream
-from funcpipe_rag.streaming import multicast, throttle, trace_iter as _trace_iter
-from funcpipe_rag.result import (
-    Err,
-    ErrInfo,
-    NoneVal,
-    NONE,
-    Ok,
-    Option,
-    Result,
-    Some,
-    bind_option,
-    bind_result,
-    filter_err,
-    filter_ok,
-    is_err,
-    is_none,
-    is_ok,
-    is_some,
-    make_errinfo,
-    map_err,
-    map_option,
-    map_result,
-    map_result_iter,
-    partition_results,
-    recover,
-    result_and_then,
-    result_map,
-    to_option,
-    unwrap_or,
-    unwrap_or_else,
-    option_from_nullable,
-    option_to_nullable,
-)
-from funcpipe_rag.result import (
-    ResultsBoth,
-    all_ok_fail_fast,
-    collect_both,
-    fold_results_collect_errs,
-    fold_results_collect_errs_capped,
-    fold_results_fail_fast,
-    fold_until_error_rate,
-    par_try_map_iter,
-    recover_iter,
-    recover_result_iter,
-    split_results_to_sinks,
-    split_results_to_sinks_guarded,
-    tap_err,
-    tap_ok,
-    try_map_iter,
+from funcpipe_rag.policies.resources import (
+    auto_close,
+    managed_stream,
+    nested_managed,
+    with_resource_stream,
 )
 from funcpipe_rag.policies.retries import (
     RetryCtx,
@@ -94,26 +54,79 @@ from funcpipe_rag.policies.retries import (
     restore_input_order,
     retry_map_iter,
 )
+from funcpipe_rag.result import (
+    NONE,
+    Err,
+    ErrInfo,
+    NoneVal,
+    Ok,
+    Option,
+    Result,
+    ResultsBoth,
+    Some,
+    all_ok_fail_fast,
+    bind_option,
+    bind_result,
+    collect_both,
+    filter_err,
+    filter_ok,
+    fold_results_collect_errs,
+    fold_results_collect_errs_capped,
+    fold_results_fail_fast,
+    fold_until_error_rate,
+    is_err,
+    is_none,
+    is_ok,
+    is_some,
+    make_errinfo,
+    map_err,
+    map_option,
+    map_result,
+    map_result_iter,
+    option_from_nullable,
+    option_to_nullable,
+    par_try_map_iter,
+    partition_results,
+    recover,
+    recover_iter,
+    recover_result_iter,
+    result_and_then,
+    result_map,
+    split_results_to_sinks,
+    split_results_to_sinks_guarded,
+    tap_err,
+    tap_ok,
+    to_option,
+    try_map_iter,
+    unwrap_or,
+    unwrap_or_else,
+)
+from funcpipe_rag.streaming import multicast, throttle
+from funcpipe_rag.streaming import trace_iter as _trace_iter
 from funcpipe_rag.tree import (
     assert_acyclic,
     flatten,
     flatten_via_fold,
-    iter_flatten,
-    iter_flatten_buffered,
-    max_depth,
-    recursive_flatten,
-)
-from funcpipe_rag.tree import (
     fold_count_length_maxdepth,
     fold_tree,
     fold_tree_buffered,
     fold_tree_no_path,
+    iter_flatten,
+    iter_flatten_buffered,
     linear_accumulate,
     linear_reduce,
+    max_depth,
+    recursive_flatten,
     scan_count_length_maxdepth,
     scan_tree,
 )
-from .chunking import gen_chunk_doc, gen_chunk_spans, gen_overlapping_chunks, sliding_windows
+
+from .chunking import (
+    gen_chunk_doc,
+    gen_chunk_spans,
+    gen_overlapping_chunks,
+    sliding_windows,
+)
 from .rag_api import (
     full_rag_api,
     full_rag_api_docs,
@@ -131,8 +144,7 @@ from .streaming_rag import (
     stream_chunks,
 )
 
-
-__all__ = [
+__all__ = [  # noqa: RUF022
     # Module 04: Tree traversal + folds
     "assert_acyclic",
     "flatten",

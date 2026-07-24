@@ -6,7 +6,6 @@ from dataclasses import dataclass
 
 from funcpipe_rag.domain.effects.async_ import AsyncGen, async_gen_gather
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
-
 from tests.helpers import collect
 
 

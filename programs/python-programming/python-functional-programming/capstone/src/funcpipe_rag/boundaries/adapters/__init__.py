@@ -17,7 +17,7 @@ from .exception_bridge import (
 from .pydantic_edges import ChunkModel, deserialize_model, serialize_model
 from .serde import Envelope, from_json, to_json
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     # serde
     "Envelope",
     "to_json",

@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
-from hypothesis import given
 import hypothesis.strategies as st
+from hypothesis import given
 
-from funcpipe_rag import clean_doc, chunk_doc, embed_chunk, structural_dedup_chunks
-from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, RawDoc, RagEnv
-
-from tests.strategies import doc_list_strategy, env_strategy, pipeline_chunk_strategy, raw_doc_strategy
+from funcpipe_rag import chunk_doc, clean_doc, embed_chunk, structural_dedup_chunks
+from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, RagEnv, RawDoc
+from tests.strategies import (
+    doc_list_strategy,
+    env_strategy,
+    pipeline_chunk_strategy,
+    raw_doc_strategy,
+)
 
 
 @given(doc=raw_doc_strategy())

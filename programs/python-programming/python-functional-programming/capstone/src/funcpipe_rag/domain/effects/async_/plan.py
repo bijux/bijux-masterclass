@@ -54,7 +54,7 @@ def lift_sync(f: Callable[..., Result[T, ErrInfo]]) -> Callable[..., AsyncPlan[T
         async def _act() -> Result[T, ErrInfo]:
             try:
                 return f(*args, **kwargs)
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001 - async plan boundaries must capture arbitrary sync failures
                 return Err(ErrInfo.from_exception(exc))
 
         return lambda: _act()
@@ -73,7 +73,7 @@ def lift_sync_with_executor(
             loop = asyncio.get_running_loop()
             try:
                 return await loop.run_in_executor(executor, lambda: f(*args, **kwargs))
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001 - executor-backed boundaries must capture arbitrary sync failures
                 return Err(ErrInfo.from_exception(exc))
 
         return lambda: _act()
@@ -84,7 +84,7 @@ def lift_sync_with_executor(
 def lift_sync_gen_with_executor(
     f: Callable[..., Result[list[T], ErrInfo]],
     executor: Executor,
-) -> Callable[..., "AsyncGen[T]"]:
+) -> Callable[..., AsyncGen[T]]:
     """Lift a `Result[list[T]]` function into an async stream description.
 
     This is a convenience adapter for synchronous stages that naturally return a
@@ -92,7 +92,7 @@ def lift_sync_gen_with_executor(
     blocking the event loop.
     """
 
-    def lifted(*args: Any, **kwargs: Any) -> "AsyncGen[T]":
+    def lifted(*args: Any, **kwargs: Any) -> AsyncGen[T]:
         async def _gen() -> AsyncIterator[Result[T, ErrInfo]]:
             loop = asyncio.get_running_loop()
             try:
@@ -102,7 +102,7 @@ def lift_sync_gen_with_executor(
                         yield Ok(item)
                 else:
                     yield Err(res.error)
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001 - async stream lift must convert arbitrary sync failures
                 yield Err(ErrInfo.from_exception(exc))
 
         return lambda: _gen()
@@ -160,7 +160,7 @@ def async_gather(plans: list[AsyncPlan[A]], *, concurrency: int = 16) -> AsyncPl
                 return i, await plan()
             except asyncio.CancelledError:
                 raise
-            except Exception as exc:  # pragma: no cover - defensive
+            except Exception as exc:  # noqa: BLE001  # pragma: no cover - defensive
                 return i, Err(ErrInfo.from_exception(exc))
             finally:
                 sem.release()
@@ -204,15 +204,15 @@ def async_gather(plans: list[AsyncPlan[A]], *, concurrency: int = 16) -> AsyncPl
 
 
 __all__ = [
-    "AsyncPlan",
     "AsyncAction",
-    "async_pure",
-    "async_from_result",
-    "lift_sync",
-    "lift_sync_with_executor",
-    "lift_sync_gen_with_executor",
+    "AsyncPlan",
     "async_bind",
-    "async_map",
-    "async_lift",
+    "async_from_result",
     "async_gather",
+    "async_lift",
+    "async_map",
+    "async_pure",
+    "lift_sync",
+    "lift_sync_gen_with_executor",
+    "lift_sync_with_executor",
 ]

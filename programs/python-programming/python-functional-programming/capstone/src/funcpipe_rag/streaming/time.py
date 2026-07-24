@@ -122,4 +122,4 @@ def make_call_gate(
     return gate
 
 
-__all__ = ["make_throttle", "throttle", "make_rate_limit", "make_timestamp", "make_call_gate"]
+__all__ = ["make_call_gate", "make_rate_limit", "make_throttle", "make_timestamp", "throttle"]

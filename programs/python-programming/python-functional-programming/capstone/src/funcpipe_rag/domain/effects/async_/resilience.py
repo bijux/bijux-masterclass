@@ -88,7 +88,7 @@ class ResilienceEnv:
     clock: Clock
 
     @staticmethod
-    def default() -> "ResilienceEnv":
+    def default() -> ResilienceEnv:
         async def _sleep(seconds: float) -> None:
             await asyncio.sleep(seconds)
 
@@ -181,7 +181,7 @@ def async_with_resilience(
                     return Err(last_err)
             except asyncio.CancelledError:
                 raise
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001 - resilience must translate arbitrary task failures
                 last_err = ErrInfo.from_exception(exc)
                 if last_err.code not in retry.retriable_codes:
                     return Err(last_err)
@@ -233,18 +233,17 @@ def resilient_mapper(
 
 
 __all__ = [
-    "TimeoutCtx",
     "Clock",
-    "SystemClock",
     "FakeClock",
     "FakeTimeout",
-    "make_fake_timeout_ctx",
-    "Sleep",
     "ResilienceEnv",
-    "make_test_resilience_env",
     "RetryPolicy",
+    "Sleep",
+    "SystemClock",
+    "TimeoutCtx",
     "TimeoutPolicy",
     "async_with_resilience",
+    "make_fake_timeout_ctx",
+    "make_test_resilience_env",
     "resilient_mapper",
 ]
-

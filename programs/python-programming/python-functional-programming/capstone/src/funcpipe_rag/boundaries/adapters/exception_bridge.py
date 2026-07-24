@@ -10,7 +10,8 @@ End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
-from typing import Callable, NoReturn, TypeAlias, TypeVar
+from collections.abc import Callable
+from typing import NoReturn, TypeAlias, TypeVar
 
 from funcpipe_rag.fp.core import Validation, VFailure, VSuccess
 from funcpipe_rag.result.types import Err, Ok, Result
@@ -97,10 +98,10 @@ def unexpected_fail(msg: str) -> NoReturn:
 
 
 __all__ = [
-    "try_result",
-    "result_map_try",
-    "v_try",
-    "v_map_try",
     "UnexpectedFailure",
+    "result_map_try",
+    "try_result",
     "unexpected_fail",
+    "v_map_try",
+    "v_try",
 ]

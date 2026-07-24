@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-from hypothesis import given, strategies as st
+from hypothesis import given
+from hypothesis import strategies as st
 
-from funcpipe_rag.rag.domain import Embedding, ChunkMetadata, ChunkText, assemble
-from funcpipe_rag.fp.validation import VFailure, VSuccess
 from funcpipe_rag.fp.error import ErrorCode
+from funcpipe_rag.fp.validation import VFailure, VSuccess
+from funcpipe_rag.rag.domain import ChunkMetadata, ChunkText, Embedding, assemble
 
 raw_tags = st.lists(st.text(min_size=1), min_size=0, max_size=15)
 

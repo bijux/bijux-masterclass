@@ -7,8 +7,9 @@ End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable, Generic, TypeVar
+from typing import Generic, TypeVar
 
 C = TypeVar("C")
 T = TypeVar("T")
@@ -19,10 +20,10 @@ U = TypeVar("U")
 class Reader(Generic[C, T]):
     run: Callable[[C], T]
 
-    def map(self, f: Callable[[T], U]) -> "Reader[C, U]":
+    def map(self, f: Callable[[T], U]) -> Reader[C, U]:
         return Reader(lambda cfg: f(self.run(cfg)))
 
-    def and_then(self, f: Callable[[T], "Reader[C, U]"]) -> "Reader[C, U]":
+    def and_then(self, f: Callable[[T], Reader[C, U]]) -> Reader[C, U]:
         return Reader(lambda cfg: f(self.run(cfg)).run(cfg))
 
 
@@ -42,4 +43,4 @@ def local(modify: Callable[[C], C], r: Reader[C, T]) -> Reader[C, T]:
     return Reader(lambda cfg: r.run(modify(cfg)))
 
 
-__all__ = ["Reader", "pure", "ask", "asks", "local"]
+__all__ = ["Reader", "ask", "asks", "local", "pure"]

@@ -129,12 +129,12 @@ def scan_count_length_maxdepth(tree: TreeDoc) -> Iterator[tuple[int, int, int]]:
 
 __all__ = [
     "Path",
-    "fold_tree",
-    "fold_tree_no_path",
-    "fold_tree_buffered",
-    "scan_tree",
-    "linear_reduce",
-    "linear_accumulate",
     "fold_count_length_maxdepth",
+    "fold_tree",
+    "fold_tree_buffered",
+    "fold_tree_no_path",
+    "linear_accumulate",
+    "linear_reduce",
     "scan_count_length_maxdepth",
+    "scan_tree",
 ]

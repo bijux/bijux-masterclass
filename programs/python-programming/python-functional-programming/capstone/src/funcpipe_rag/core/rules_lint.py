@@ -5,6 +5,7 @@ End-of-Module-09 snapshot."""
 from __future__ import annotations
 
 import ast
+from typing import ClassVar
 
 
 class SafeVisitor(ast.NodeVisitor):
@@ -34,22 +35,22 @@ class SafeVisitor(ast.NodeVisitor):
     )
     _ALLOWED_BOOL_OPS = (ast.And, ast.Or)
     _ALLOWED_UNARY_OPS = (ast.Not,)
-    _ALLOWED_CALL_NAMES = {"len"}
-    _ALLOWED_ATTRIBUTE_CALLS = {"startswith", "lower"}
+    _ALLOWED_CALL_NAMES: ClassVar[frozenset[str]] = frozenset({"len"})
+    _ALLOWED_ATTRIBUTE_CALLS: ClassVar[frozenset[str]] = frozenset({"startswith", "lower"})
 
     def generic_visit(self, node: ast.AST) -> None:  # pragma: no cover
         if not isinstance(node, self._ALLOWED_NODES):
-            raise ValueError(f"Forbidden node type: {type(node).__name__}")
+            raise TypeError(f"Forbidden node type: {type(node).__name__}")
         super().generic_visit(node)
 
     def visit_BoolOp(self, node: ast.BoolOp) -> None:
         if not isinstance(node.op, self._ALLOWED_BOOL_OPS):
-            raise ValueError(f"Forbidden boolean op: {type(node.op).__name__}")
+            raise TypeError(f"Forbidden boolean op: {type(node.op).__name__}")
         self.generic_visit(node)
 
     def visit_UnaryOp(self, node: ast.UnaryOp) -> None:
         if not isinstance(node.op, self._ALLOWED_UNARY_OPS):
-            raise ValueError(f"Forbidden unary op: {type(node.op).__name__}")
+            raise TypeError(f"Forbidden unary op: {type(node.op).__name__}")
         self.generic_visit(node)
 
     def visit_Call(self, node: ast.Call) -> None:
@@ -60,7 +61,7 @@ class SafeVisitor(ast.NodeVisitor):
             if node.func.attr not in self._ALLOWED_ATTRIBUTE_CALLS:
                 raise ValueError(f"Forbidden attribute call: {node.func.attr}")
         else:
-            raise ValueError("Only simple function calls are allowed")
+            raise TypeError("Only simple function calls are allowed")
         self.generic_visit(node)
 
     def visit_Name(self, node: ast.Name) -> None:

@@ -1,11 +1,16 @@
 from __future__ import annotations
 
-from hypothesis import given, strategies as st
 import numpy as np
+from hypothesis import given
+from hypothesis import strategies as st
 
-from funcpipe_rag.rag.domain import Chunk, ChunkMetadata, ChunkText, process_batch_hybrid
 from funcpipe_rag.fp.validation import VFailure, VSuccess
-
+from funcpipe_rag.rag.domain import (
+    Chunk,
+    ChunkMetadata,
+    ChunkText,
+    process_batch_hybrid,
+)
 
 chunk_strat = st.builds(
     Chunk,

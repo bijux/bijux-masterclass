@@ -1,7 +1,11 @@
 from __future__ import annotations
 
 from funcpipe_rag.core.rag_types import RawDoc
-from funcpipe_rag.pipelines.configured import PipelineConfig, StepConfig, build_rag_pipeline
+from funcpipe_rag.pipelines.configured import (
+    PipelineConfig,
+    StepConfig,
+    build_rag_pipeline,
+)
 from funcpipe_rag.result.types import is_ok
 
 

@@ -4,9 +4,11 @@ End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
-from typing import Callable, TypeVar
+from collections.abc import Callable
+from typing import TypeVar
 
 from funcpipe_rag.result.types import Result
+
 from .writer import Writer, tell
 
 T = TypeVar("T")
@@ -59,4 +61,4 @@ def toggle_metrics(
     return wrapped
 
 
-__all__ = ["toggle_validation", "toggle_logging", "toggle_metrics"]
+__all__ = ["toggle_logging", "toggle_metrics", "toggle_validation"]

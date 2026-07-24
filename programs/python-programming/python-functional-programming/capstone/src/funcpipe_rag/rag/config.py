@@ -6,15 +6,26 @@ and extended in Module 03 with streaming entry points.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from collections.abc import Iterable, Iterator
-from typing import Callable, Mapping, Protocol
+from collections.abc import Callable, Iterable, Iterator, Mapping
+from dataclasses import dataclass, field
+from typing import Protocol
 
-from funcpipe_rag.rag.clean_cfg import CleanConfig, DEFAULT_CLEAN_CONFIG, RULES, make_cleaner
-from funcpipe_rag.rag.types import DebugConfig, Observations, RagTaps
+from funcpipe_rag.core.rag_types import (
+    Chunk,
+    ChunkWithoutEmbedding,
+    CleanDoc,
+    RagEnv,
+    RawDoc,
+)
 from funcpipe_rag.core.rules_pred import DEFAULT_RULES, RulesConfig
+from funcpipe_rag.rag.clean_cfg import (
+    DEFAULT_CLEAN_CONFIG,
+    RULES,
+    CleanConfig,
+    make_cleaner,
+)
 from funcpipe_rag.rag.stages import embed_chunk
-from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RagEnv, RawDoc
+from funcpipe_rag.rag.types import DebugConfig, Observations, RagTaps
 from funcpipe_rag.result import Err, Ok, Result
 
 
@@ -27,7 +38,7 @@ class RagConfig:
     env: RagEnv
     keep: RulesConfig = DEFAULT_RULES
     clean: CleanConfig = DEFAULT_CLEAN_CONFIG
-    debug: DebugConfig = DebugConfig()
+    debug: DebugConfig = field(default_factory=DebugConfig)
 
 
 @dataclass(frozen=True)
@@ -53,14 +64,19 @@ def make_rag_fn(
     chunk_size: int,
     clean_cfg: CleanConfig = DEFAULT_CLEAN_CONFIG,
     keep: RulesConfig = DEFAULT_RULES,
-    debug: DebugConfig = DebugConfig(),
+    debug: DebugConfig | None = None,
     taps: RagTaps | None = None,
 ) -> Callable[[list[RawDoc]], tuple[list[Chunk], Observations]]:
     """Pure configurator: capture immutable config into a reusable callable."""
 
     from funcpipe_rag.rag.rag_api import full_rag_api
 
-    config = RagConfig(env=RagEnv(chunk_size), keep=keep, clean=clean_cfg, debug=debug)
+    config = RagConfig(
+        env=RagEnv(chunk_size),
+        keep=keep,
+        clean=clean_cfg,
+        debug=DebugConfig() if debug is None else debug,
+    )
     deps = get_deps(config, taps=taps)
 
     def run(docs: list[RawDoc]) -> tuple[list[Chunk], Observations]:
@@ -110,11 +126,11 @@ def boundary_rag_config(raw: Mapping[str, object]) -> Result[RagConfig, str]:
 
 __all__ = [
     "DocsReader",
+    "RagBoundaryDeps",
     "RagConfig",
     "RagCoreDeps",
-    "RagBoundaryDeps",
-    "get_deps",
-    "make_rag_fn",
-    "make_gen_rag_fn",
     "boundary_rag_config",
+    "get_deps",
+    "make_gen_rag_fn",
+    "make_rag_fn",
 ]

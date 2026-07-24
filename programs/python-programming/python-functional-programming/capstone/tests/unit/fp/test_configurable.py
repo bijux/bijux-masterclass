@@ -1,12 +1,15 @@
 from __future__ import annotations
 
-from hypothesis import given, settings
 import hypothesis.strategies as st
+from hypothesis import given, settings
 
-from funcpipe_rag.fp.effects.configurable import toggle_logging, toggle_metrics, toggle_validation
+from funcpipe_rag.fp.effects.configurable import (
+    toggle_logging,
+    toggle_metrics,
+    toggle_validation,
+)
 from funcpipe_rag.fp.effects.writer import Writer
 from funcpipe_rag.result.types import Err, Ok, Result
-
 
 settings.register_profile("ci", max_examples=200, derandomize=True, deadline=None)
 settings.load_profile("ci")

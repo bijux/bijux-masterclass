@@ -14,13 +14,14 @@ live under `funcpipe_rag.domain.effects` as domain-owned effect interfaces.
 
 from .configurable import toggle_logging, toggle_metrics, toggle_validation
 from .layering import transpose_option_result, transpose_result_option
-from .reader import Reader, ask, asks, local, pure as reader_pure
-from .state import State, get, modify, put, pure as state_pure, run_state
+from .reader import Reader, ask, asks, local
+from .reader import pure as reader_pure
+from .state import State, get, modify, put, run_state
+from .state import pure as state_pure
 from .writer import (
     Writer,
     censor,
     listen,
-    pure as writer_pure,
     run_writer,
     tell,
     tell_many,
@@ -28,7 +29,11 @@ from .writer import (
     wr_map,
     wr_pure,
 )
-__all__ = [
+from .writer import (
+    pure as writer_pure,
+)
+
+__all__ = [  # noqa: RUF022
     # Reader
     "Reader",
     "reader_pure",

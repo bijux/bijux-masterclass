@@ -15,7 +15,13 @@ from functools import partial
 from itertools import chain
 from operator import attrgetter
 
-from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RagEnv, RawDoc
+from funcpipe_rag.core.rag_types import (
+    Chunk,
+    ChunkWithoutEmbedding,
+    CleanDoc,
+    RagEnv,
+    RawDoc,
+)
 from funcpipe_rag.rag.stages import clean_doc, embed_chunk, iter_chunk_doc
 
 
@@ -43,4 +49,4 @@ def rag_iter_stdlib(docs: Iterable[RawDoc], env: RagEnv) -> Iterator[Chunk]:
 get_doc_id = attrgetter("doc_id")
 
 
-__all__ = ["clean_docs", "chunk_docs", "rag_iter_stdlib", "get_doc_id"]
+__all__ = ["chunk_docs", "clean_docs", "get_doc_id", "rag_iter_stdlib"]

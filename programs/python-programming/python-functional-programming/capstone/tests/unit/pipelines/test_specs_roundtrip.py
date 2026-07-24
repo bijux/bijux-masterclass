@@ -3,7 +3,12 @@ from __future__ import annotations
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from funcpipe_rag.pipelines.specs import OperatorSpec, PipelineSpec, reconstruct_pipeline, spec_hash
+from funcpipe_rag.pipelines.specs import (
+    OperatorSpec,
+    PipelineSpec,
+    reconstruct_pipeline,
+    spec_hash,
+)
 from funcpipe_rag.result.types import ErrInfo, Ok, Result, is_ok
 
 

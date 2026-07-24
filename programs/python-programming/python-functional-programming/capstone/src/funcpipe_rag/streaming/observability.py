@@ -78,5 +78,5 @@ def make_peek(
     return stage
 
 
-__all__ = ["make_tap", "make_counter", "make_peek"]
+__all__ = ["make_counter", "make_peek", "make_tap"]
 

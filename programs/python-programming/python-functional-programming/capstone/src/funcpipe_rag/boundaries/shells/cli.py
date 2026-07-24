@@ -17,7 +17,11 @@ from typing import Any, cast
 from funcpipe_rag.core.rag_types import RawDoc
 from funcpipe_rag.infra.adapters.file_storage import FileStorage
 from funcpipe_rag.pipelines.cli import deep_merge, parse_override
-from funcpipe_rag.pipelines.configured import PipelineConfig, StepConfig, build_rag_pipeline
+from funcpipe_rag.pipelines.configured import (
+    PipelineConfig,
+    StepConfig,
+    build_rag_pipeline,
+)
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 
@@ -27,7 +31,7 @@ def _load_config(path: Path) -> PipelineConfig:
         raise ValueError("config must be an object with a 'steps' field")
     steps_raw = data["steps"]
     if not isinstance(steps_raw, list):
-        raise ValueError("config.steps must be a list")
+        raise TypeError("config.steps must be a list")
     steps: list[StepConfig] = []
     for s in steps_raw:
         if not isinstance(s, dict) or "name" not in s:
@@ -35,7 +39,7 @@ def _load_config(path: Path) -> PipelineConfig:
         name = s["name"]
         params = s.get("params", {})
         if not isinstance(name, str) or not isinstance(params, dict):
-            raise ValueError("step.name must be str and step.params must be object")
+            raise TypeError("step.name must be str and step.params must be object")
         steps.append(StepConfig(name=name, params=params))
     return PipelineConfig(steps=tuple(steps))
 

@@ -7,7 +7,11 @@ from hypothesis import given
 from hypothesis import strategies as st
 
 from funcpipe_rag.policies.breakers import short_circuit_on_err_truncate
-from funcpipe_rag.policies.resources import managed_stream, nested_managed, with_resource_stream
+from funcpipe_rag.policies.resources import (
+    managed_stream,
+    nested_managed,
+    with_resource_stream,
+)
 from funcpipe_rag.result import Err, Ok
 
 
@@ -38,11 +42,10 @@ def test_cleanup_on_consumer_exception() -> None:
         finally:
             closed = True
 
-    with with_resource_stream(gen()) as it:
-        with pytest.raises(ValueError):
-            for x in it:
-                if x == 2:
-                    raise ValueError("boom")
+    with with_resource_stream(gen()) as it, pytest.raises(ValueError):
+        for x in it:
+            if x == 2:
+                raise ValueError("boom")
     assert closed
 
 
@@ -73,9 +76,8 @@ def test_cleanup_on_producer_exception() -> None:
         finally:
             closed = True
 
-    with with_resource_stream(gen()) as it:
-        with pytest.raises(ValueError):
-            list(it)
+    with with_resource_stream(gen()) as it, pytest.raises(ValueError):
+        list(it)
     assert closed
 
 

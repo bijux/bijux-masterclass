@@ -7,8 +7,8 @@ from __future__ import annotations
 import ast
 from typing import Any
 
-from funcpipe_rag.core.rules_lint import SafeVisitor
 from funcpipe_rag.core.rag_types import DocRule, RawDoc
+from funcpipe_rag.core.rules_lint import SafeVisitor
 
 
 def any_doc(_: RawDoc) -> bool:
@@ -144,14 +144,14 @@ def parse_rule(expr: str) -> DocRule:
 
 
 __all__ = [
-    "any_doc",
-    "none_doc",
-    "category_startswith",
-    "title_contains",
     "abstract_min_len",
-    "rule_and",
-    "rule_or",
-    "rule_not",
-    "rule_all",
+    "any_doc",
+    "category_startswith",
+    "none_doc",
     "parse_rule",
+    "rule_all",
+    "rule_and",
+    "rule_not",
+    "rule_or",
+    "title_contains",
 ]

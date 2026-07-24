@@ -31,9 +31,10 @@ def create_app() -> Any:
 
     router = APIRouter(prefix="/rag")
     app = FastAPI()
+    required_docs = Body(...)
 
     @router.post("/echo")
-    async def echo(docs: list[DocIn] = Body(...)) -> list[dict[str, Any]]:
+    async def echo(docs: list[DocIn] = required_docs) -> list[dict[str, Any]]:
         # A tiny example endpoint; real endpoints should delegate to pure core.
         return [d.model_dump() for d in docs]
 

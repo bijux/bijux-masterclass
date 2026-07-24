@@ -10,12 +10,12 @@ from collections import deque
 from collections.abc import Iterable, Iterator
 from typing import TypeVar
 
+from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, CleanDoc, RagEnv
 from funcpipe_rag.rag.stages import (
     iter_chunk_doc,
     iter_chunk_spans,
     iter_overlapping_chunks_text,
 )
-from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding, CleanDoc, RagEnv
 
 T = TypeVar("T")
 

@@ -4,13 +4,13 @@ from __future__ import annotations
 
 import csv
 import json
+from collections.abc import Iterable
 from dataclasses import asdict
-from typing import Iterable
 
+from funcpipe_rag.core.rag_types import Chunk, RawDoc
 from funcpipe_rag.rag.config import DocsReader, RagBoundaryDeps, RagConfig, get_deps
 from funcpipe_rag.rag.rag_api import full_rag_api
 from funcpipe_rag.rag.types import Observations
-from funcpipe_rag.core.rag_types import Chunk, RawDoc
 from funcpipe_rag.result import Err, Ok, Result
 
 
@@ -52,4 +52,4 @@ def run(input_path: str, output_path: str, *, config: RagConfig) -> Result[Obser
     return Ok(obs)
 
 
-__all__ = ["DocsReader", "FSReader", "write_chunks_jsonl", "run"]
+__all__ = ["DocsReader", "FSReader", "run", "write_chunks_jsonl"]

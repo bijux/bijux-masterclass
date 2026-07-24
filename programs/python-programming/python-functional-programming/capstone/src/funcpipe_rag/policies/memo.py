@@ -7,9 +7,10 @@ import hashlib
 import os
 import threading
 from collections import OrderedDict
+from collections.abc import Callable, Hashable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Hashable, Optional, ParamSpec, TypeVar, cast
+from typing import Any, ParamSpec, TypeVar, cast
 
 from funcpipe_rag.core.rag_types import ChunkWithoutEmbedding
 
@@ -19,7 +20,7 @@ P = ParamSpec("P")
 R = TypeVar("R")
 
 
-def lru_cache_custom(maxsize: Optional[int] = 512) -> Callable[[Callable[..., V]], Callable[..., V]]:
+def lru_cache_custom(maxsize: int | None = 512) -> Callable[[Callable[..., V]], Callable[..., V]]:
     """Drop-in wrapper around functools.lru_cache with a project default maxsize."""
 
     return functools.lru_cache(maxsize=maxsize)
@@ -35,7 +36,7 @@ class CacheInfo:
 def memoize_keyed(
     key_fn: Callable[P, K],
     *,
-    maxsize: Optional[int] = None,
+    maxsize: int | None = None,
 ) -> Callable[[Callable[P, R]], Callable[P, R]]:
     """Memoize a pure function by an explicit key function.
 
@@ -116,7 +117,7 @@ class DiskCache:
         h = hashlib.sha256(key.encode("utf-8")).hexdigest()
         return self.dir / f"{self.prefix}{h}.bin"
 
-    def get(self, key: str) -> Optional[bytes]:
+    def get(self, key: str) -> bytes | None:
         p = self._path(key)
         return p.read_bytes() if p.exists() else None
 
@@ -139,9 +140,9 @@ def content_hash_key(chunk: ChunkWithoutEmbedding, *, norm_version: str = "v1") 
 
 
 __all__ = [
-    "lru_cache_custom",
-    "memoize_keyed",
     "CacheInfo",
     "DiskCache",
     "content_hash_key",
+    "lru_cache_custom",
+    "memoize_keyed",
 ]

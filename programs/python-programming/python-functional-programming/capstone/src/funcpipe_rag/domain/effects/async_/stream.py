@@ -128,7 +128,7 @@ def async_gen_gather(gens: list[AsyncGen[T]], *, max_buffer: int = 16) -> AsyncG
                     await queue.put(item)
             except asyncio.CancelledError:
                 raise
-            except Exception as exc:  # pragma: no cover - defensive
+            except Exception as exc:  # noqa: BLE001  # pragma: no cover - defensive
                 await queue.put(Err(ErrInfo.from_exception(exc)))
             finally:
                 aclose = getattr(it, "aclose", None)
@@ -279,7 +279,7 @@ def async_gen_chunk(
     return make_chunked
 
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     # streams
     "AsyncGen",
     "async_gen_return",
@@ -298,4 +298,3 @@ __all__ = [
     "ChunkPolicy",
     "async_gen_chunk",
 ]
-

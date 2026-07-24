@@ -13,13 +13,19 @@ from collections.abc import Callable, Iterable, Iterator, Sequence
 from itertools import chain
 from typing import TypeVar
 
+from funcpipe_rag.core.rag_types import (
+    Chunk,
+    ChunkWithoutEmbedding,
+    CleanDoc,
+    DocRule,
+    RagEnv,
+    RawDoc,
+)
 from funcpipe_rag.core.rules_dsl import any_doc
 from funcpipe_rag.core.rules_pred import eval_pred
-from funcpipe_rag.rag.stages import embed_chunk, structural_dedup_chunks
-from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, DocRule, RawDoc, RagEnv
-from funcpipe_rag.result import Err, Ok, Result
-
 from funcpipe_rag.fp import StageInstrumentation, instrument_stage
+from funcpipe_rag.rag.stages import embed_chunk, structural_dedup_chunks
+from funcpipe_rag.result import Err, Ok, Result
 
 from .chunking import gen_chunk_doc
 from .config import RagBoundaryDeps, RagConfig, RagCoreDeps
@@ -206,10 +212,10 @@ def full_rag_api_path(
 
 
 __all__ = [
-    "iter_rag",
-    "iter_rag_core",
-    "iter_chunks_from_cleaned",
     "full_rag_api",
     "full_rag_api_docs",
     "full_rag_api_path",
+    "iter_chunks_from_cleaned",
+    "iter_rag",
+    "iter_rag_core",
 ]

@@ -15,23 +15,6 @@ from .concurrency import (
     async_gen_fair_merge,
     async_gen_rate_limited,
 )
-from .stream import (
-    AsyncGen,
-    async_gen_and_then,
-    async_gen_flat_map,
-    async_gen_from_list,
-    async_gen_gather,
-    async_gen_map,
-    async_gen_map_action,
-    async_gen_chunk,
-    async_gen_return,
-    async_gen_using,
-    ChunkPolicy,
-    FakeSleeper,
-    lift_async_item,
-    RealSleeper,
-    Sleeper,
-)
 from .plan import (
     AsyncAction,
     AsyncPlan,
@@ -60,8 +43,25 @@ from .resilience import (
     make_test_resilience_env,
     resilient_mapper,
 )
+from .stream import (
+    AsyncGen,
+    ChunkPolicy,
+    FakeSleeper,
+    RealSleeper,
+    Sleeper,
+    async_gen_and_then,
+    async_gen_chunk,
+    async_gen_flat_map,
+    async_gen_from_list,
+    async_gen_gather,
+    async_gen_map,
+    async_gen_map_action,
+    async_gen_return,
+    async_gen_using,
+    lift_async_item,
+)
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     # plans
     "AsyncPlan",
     "AsyncAction",

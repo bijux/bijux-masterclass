@@ -61,7 +61,7 @@ def async_gen_bounded_map(
                     return await f(value)()
                 except asyncio.CancelledError:
                     raise
-                except Exception as exc:  # pragma: no cover - defensive
+                except Exception as exc:  # noqa: BLE001  # pragma: no cover - defensive
                     return Err(ErrInfo.from_exception(exc))
                 finally:
                     sem.release()
@@ -109,7 +109,7 @@ def async_gen_bounded_map(
                 return i, res
             except asyncio.CancelledError:
                 raise
-            except Exception as exc:  # pragma: no cover - defensive
+            except Exception as exc:  # noqa: BLE001  # pragma: no cover - defensive
                 return i, Err(ErrInfo.from_exception(exc))
             finally:
                 sem.release()
@@ -242,7 +242,7 @@ def async_gen_fair_merge(
                     break
                 except asyncio.CancelledError:
                     raise
-                except Exception as exc:  # pragma: no cover - defensive
+                except Exception as exc:  # noqa: BLE001  # pragma: no cover - defensive
                     buffers[i].append(Err(ErrInfo.from_exception(exc)))
                     break
 
@@ -286,10 +286,9 @@ def async_gen_fair_merge(
 
 __all__ = [
     "BackpressurePolicy",
-    "async_gen_bounded_map",
-    "RateLimitPolicy",
-    "async_gen_rate_limited",
     "FairnessPolicy",
+    "RateLimitPolicy",
+    "async_gen_bounded_map",
     "async_gen_fair_merge",
+    "async_gen_rate_limited",
 ]
-

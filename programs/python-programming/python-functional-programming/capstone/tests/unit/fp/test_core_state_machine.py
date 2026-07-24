@@ -3,13 +3,14 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 import pytest
-from hypothesis import given, strategies as st
+from hypothesis import given
+from hypothesis import strategies as st
 
 from funcpipe_rag.fp.core import (
+    Done,
     ErrorCode,
     EvAdvance,
     Failed,
-    Done,
     advance_event,
     done,
     fail_event,

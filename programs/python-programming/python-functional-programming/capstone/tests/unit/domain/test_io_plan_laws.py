@@ -1,11 +1,16 @@
 from __future__ import annotations
 
-from hypothesis import given, settings
 import hypothesis.strategies as st
+from hypothesis import given, settings
 
-from funcpipe_rag.domain.effects.io_plan import IOPlan, io_bind, io_delay, io_pure, perform
+from funcpipe_rag.domain.effects.io_plan import (
+    IOPlan,
+    io_bind,
+    io_delay,
+    io_pure,
+    perform,
+)
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
-
 
 settings.register_profile("ci", max_examples=200, derandomize=True, deadline=None)
 settings.load_profile("ci")

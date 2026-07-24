@@ -13,7 +13,13 @@ from dataclasses import dataclass, field
 from itertools import chain
 from typing import Any, cast
 
-from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RagEnv, RawDoc
+from funcpipe_rag.core.rag_types import (
+    Chunk,
+    ChunkWithoutEmbedding,
+    CleanDoc,
+    RagEnv,
+    RawDoc,
+)
 from funcpipe_rag.rag.stages import clean_doc, embed_chunk, iter_chunk_doc
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
@@ -106,7 +112,7 @@ def build_rag_pipeline(
             ) -> Result[Chunk, ErrInfo]:
                 try:
                     return Ok(_embedder(x))
-                except Exception as exc:
+                except Exception as exc:  # noqa: BLE001 - pipeline boundaries must translate embedder failures
                     return Err(ErrInfo.from_exception(exc, stage="embed"))
 
             steps.append(("map", _embed))
@@ -132,4 +138,4 @@ def build_rag_pipeline(
     return pipeline
 
 
-__all__ = ["StepConfig", "PipelineConfig", "build_rag_pipeline"]
+__all__ = ["PipelineConfig", "StepConfig", "build_rag_pipeline"]

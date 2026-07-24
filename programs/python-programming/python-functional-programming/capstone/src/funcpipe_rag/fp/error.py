@@ -18,4 +18,4 @@ class ErrorCode(str, Enum):
     EMB_DIM_MISMATCH = "EMB_DIM_MISMATCH"
 
 
-__all__ = ["ErrorCode", "ErrInfo", "make_errinfo"]
+__all__ = ["ErrInfo", "ErrorCode", "make_errinfo"]

@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Generic, Iterable, Literal, Mapping, Sequence, TypeAlias, TypeVar
+from typing import Generic, Literal, TypeAlias, TypeVar
 
-from .error import ErrorCode
 from funcpipe_rag.result.types import (
+    NONE,
     Err,
     ErrInfo,
     NoneVal,
@@ -15,9 +16,12 @@ from funcpipe_rag.result.types import (
     Option,
     Result,
     Some,
-    NONE,
+)
+from funcpipe_rag.result.types import (
     make_errinfo as _make_errinfo,
 )
+
+from .error import ErrorCode
 
 T = TypeVar("T")
 U = TypeVar("U")
@@ -36,22 +40,22 @@ def _freeze_metadata(m: Mapping[str, JSON]) -> tuple[tuple[str, JSON], ...]:
 
 def _json_object(value: JSON, *, field: str) -> dict[str, JSON]:
     if not isinstance(value, Mapping):
-        raise ValueError(f"{field} must be a JSON object")
+        raise TypeError(f"{field} must be a JSON object")
     result: dict[str, JSON] = {}
     for key, item in value.items():
         if not isinstance(key, str):
-            raise ValueError(f"{field} keys must be strings")
+            raise TypeError(f"{field} keys must be strings")
         result[key] = item
     return result
 
 
 def _json_number_array(value: JSON, *, field: str) -> list[float]:
     if not isinstance(value, Sequence) or isinstance(value, (str, bytes)):
-        raise ValueError(f"{field} must be a JSON array of numbers")
+        raise TypeError(f"{field} must be a JSON array of numbers")
     result: list[float] = []
     for item in value:
         if not isinstance(item, (int, float)):
-            raise ValueError(f"{field} must be a JSON array of numbers")
+            raise TypeError(f"{field} must be a JSON array of numbers")
         result.append(float(item))
     return result
 
@@ -84,21 +88,21 @@ def chunk_from_dict(d: Mapping[str, JSON]) -> Chunk:
         raise ValueError("unsupported version")
     text_raw = d.get("text")
     if not isinstance(text_raw, str):
-        raise ValueError("text must be str")
+        raise TypeError("text must be str")
 
     path_raw = d.get("path")
     if not isinstance(path_raw, Sequence) or isinstance(path_raw, (str, bytes)):
-        raise ValueError("path must be a JSON array of ints")
+        raise TypeError("path must be a JSON array of ints")
     path_items: list[int] = []
     for i in path_raw:
         if not isinstance(i, int):
-            raise ValueError("path must be a JSON array of ints")
+            raise TypeError("path must be a JSON array of ints")
         path_items.append(i)
     path = tuple(path_items)
 
     meta_raw = d.get("metadata")
     if not isinstance(meta_raw, Mapping):
-        raise ValueError("metadata must be a JSON object")
+        raise TypeError("metadata must be a JSON object")
     return make_chunk(text=text_raw, path=path, metadata=meta_raw)
 
 
@@ -145,7 +149,7 @@ def chunk_state_from_dict(d: Mapping[str, JSON]) -> ChunkState:
         raise ValueError("unsupported version")
     kind_raw = d.get("kind")
     if not isinstance(kind_raw, str):
-        raise ValueError("kind must be str")
+        raise TypeError("kind must be str")
     if kind_raw == "success":
         return success(
             embedding=_json_number_array(d.get("embedding"), field="embedding"),
@@ -346,7 +350,7 @@ def transition(state: ProcessingState, event: Event) -> ProcessingState:
     raise ValueError(f"invalid transition {state.kind} ← {event.__class__.__name__}")
 
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     # JSON + chunk ADTs
     "JSONPrimitive",
     "JSON",
