@@ -24,5 +24,5 @@ class MonotonicTestClock(Clock):
         return self._now
 
 
-__all__ = ["SystemClock", "MonotonicTestClock"]
+__all__ = ["MonotonicTestClock", "SystemClock"]
 

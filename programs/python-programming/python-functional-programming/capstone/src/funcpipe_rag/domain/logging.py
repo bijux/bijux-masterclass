@@ -50,4 +50,4 @@ def trace_value(name: str, value: object, level: Level = "DEBUG") -> Writer[None
     return log_tell(LogEntry(level=level, msg=f"{name}={value!r}"))
 
 
-__all__ = ["Level", "LogEntry", "Logs", "LogMonoid", "log_tell", "trace_stage", "trace_value"]
+__all__ = ["Level", "LogEntry", "LogMonoid", "Logs", "log_tell", "trace_stage", "trace_value"]

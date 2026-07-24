@@ -7,11 +7,11 @@ from dataclasses import replace
 
 from funcpipe_rag.boundaries.app_config import AppConfig
 from funcpipe_rag.boundaries.shells.rag_api_shell import FSReader, write_chunks_jsonl
+from funcpipe_rag.core.rag_types import Chunk, RagEnv, RawDoc
 from funcpipe_rag.rag.clean_cfg import CleanConfig
 from funcpipe_rag.rag.config import RagConfig, get_deps
 from funcpipe_rag.rag.rag_api import full_rag_api_docs
 from funcpipe_rag.rag.types import DebugConfig
-from funcpipe_rag.core.rag_types import Chunk, RawDoc, RagEnv
 from funcpipe_rag.result import Err, Ok, Result, result_and_then, result_map
 
 
@@ -45,7 +45,7 @@ def boundary_app_config(args: list[str]) -> Result[AppConfig, str]:
 
     try:
         cfg = RagConfig(env=RagEnv(ns.chunk_size), clean=CleanConfig(rule_names=rule_names))
-    except Exception as exc:
+    except (TypeError, ValueError) as exc:
         return Err(f"Invalid config: {exc}")
 
     cfg = replace(cfg, debug=debug)
@@ -71,4 +71,4 @@ def _run(cfg: AppConfig) -> Result[None, str]:
     return result_and_then(core_res, lambda res: write_chunks(cfg.output_path, res[0]))
 
 
-__all__ = ["boundary_app_config", "read_docs", "write_chunks", "orchestrate"]
+__all__ = ["boundary_app_config", "orchestrate", "read_docs", "write_chunks"]

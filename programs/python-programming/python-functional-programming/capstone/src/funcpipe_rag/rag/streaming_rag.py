@@ -11,9 +11,9 @@ from itertools import dropwhile, groupby, islice
 from operator import attrgetter
 from typing import TypeVar
 
+from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RawDoc
 from funcpipe_rag.core.rules_pred import eval_pred
 from funcpipe_rag.core.structural_dedup import structural_dedup_lazy
-from funcpipe_rag.core.rag_types import Chunk, ChunkWithoutEmbedding, CleanDoc, RawDoc
 from funcpipe_rag.streaming import TraceLens, ensure_contiguous, trace_iter
 
 from .chunking import gen_chunk_doc
@@ -108,10 +108,10 @@ def safe_rag_pipeline(
 
 
 __all__ = [
-    "gen_grouped_chunks",
-    "stream_chunks",
-    "gen_stream_embedded",
-    "gen_stream_deduped",
     "gen_bounded_chunks",
+    "gen_grouped_chunks",
+    "gen_stream_deduped",
+    "gen_stream_embedded",
     "safe_rag_pipeline",
+    "stream_chunks",
 ]

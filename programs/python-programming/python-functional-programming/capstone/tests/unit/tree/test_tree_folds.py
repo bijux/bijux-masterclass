@@ -2,9 +2,13 @@ from __future__ import annotations
 
 from hypothesis import given
 
-from funcpipe_rag.tree import flatten
-from funcpipe_rag.tree import fold_count_length_maxdepth, fold_tree, fold_tree_buffered, fold_tree_no_path
-
+from funcpipe_rag.tree import (
+    flatten,
+    fold_count_length_maxdepth,
+    fold_tree,
+    fold_tree_buffered,
+    fold_tree_no_path,
+)
 from tests.strategies import tree_strategy
 
 
@@ -43,7 +47,6 @@ def test_fold_preorder_matches_flatten(tree) -> None:
 
     def step(_, _n, _d, p):
         order_via_fold.append(p)
-        return None
 
     fold_tree(tree, None, step)
     order_via_flatten = [c.metadata["path"] for c in flatten(tree)]

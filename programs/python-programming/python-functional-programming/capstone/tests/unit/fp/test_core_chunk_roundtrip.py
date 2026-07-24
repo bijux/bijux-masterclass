@@ -5,7 +5,9 @@ from dataclasses import dataclass
 from typing import Literal
 
 import pytest
-from hypothesis import given, strategies as st
+from hypothesis import given
+from hypothesis import strategies as st
+from typing_extensions import assert_never
 
 from funcpipe_rag.fp.core import (
     Chunk,
@@ -20,9 +22,6 @@ from funcpipe_rag.fp.core import (
     make_chunk,
     success,
 )
-
-from typing_extensions import assert_never
-
 
 json_value = st.recursive(
     st.none() | st.booleans() | st.integers() | st.floats(allow_nan=False, allow_infinity=False) | st.text(),
@@ -104,13 +103,13 @@ class TextNode:
 class SectionNode:
     kind: Literal["section"] = "section"
     title: str
-    children: tuple["Node", ...]
+    children: tuple[Node, ...]
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
 class ListNode:
     kind: Literal["list"] = "list"
-    items: tuple["Node", ...]
+    items: tuple[Node, ...]
 
 
 Node = TextNode | SectionNode | ListNode

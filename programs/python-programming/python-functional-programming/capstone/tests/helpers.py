@@ -4,9 +4,8 @@ from collections import Counter
 from collections.abc import AsyncIterator, Callable
 from typing import TypeVar
 
-from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
-
 from funcpipe_rag.domain.effects.async_ import AsyncGen
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 T = TypeVar("T")
 

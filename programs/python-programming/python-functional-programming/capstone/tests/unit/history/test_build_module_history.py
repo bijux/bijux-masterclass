@@ -6,7 +6,6 @@ from pathlib import Path
 
 import pytest
 
-
 SCRIPT_PATH = Path(__file__).resolve().parents[3] / "scripts" / "build_module_history.py"
 SPEC = importlib.util.spec_from_file_location("build_module_history", SCRIPT_PATH)
 assert SPEC and SPEC.loader

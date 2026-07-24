@@ -131,10 +131,10 @@ def flatten_via_fold(tree: TreeDoc) -> Iterator[ChunkWithoutEmbedding]:
 __all__ = [
     "Path",
     "assert_acyclic",
-    "max_depth",
     "flatten",
-    "recursive_flatten",
+    "flatten_via_fold",
     "iter_flatten",
     "iter_flatten_buffered",
-    "flatten_via_fold",
+    "max_depth",
+    "recursive_flatten",
 ]

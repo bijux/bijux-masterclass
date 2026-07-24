@@ -10,12 +10,12 @@ End-of-Module-09 snapshot."""
 from __future__ import annotations
 
 import csv
-from dataclasses import asdict
 import json
 import os
 import tempfile
 from collections.abc import Iterator
 from contextlib import ExitStack
+from dataclasses import asdict
 
 from funcpipe_rag.core.rag_types import Chunk, RawDoc
 from funcpipe_rag.domain.capabilities import Storage
@@ -39,7 +39,7 @@ class FileStorage(Storage):
                 for row_num, row in enumerate(reader, start=1):
                     try:
                         yield Ok(RawDoc(**row))
-                    except Exception as ex:
+                    except TypeError as ex:
                         yield Err(
                             ErrInfo(
                                 code="PARSE_ROW",
@@ -67,7 +67,7 @@ class FileStorage(Storage):
                 os.fsync(tmp.fileno())
             os.replace(tmp_path, path)
             return Ok(None)
-        except Exception as ex:
+        except Exception as ex:  # noqa: BLE001 - storage boundary must translate arbitrary serialization failures
             if tmp_path and os.path.exists(tmp_path):
                 try:
                     os.unlink(tmp_path)
@@ -79,4 +79,3 @@ class FileStorage(Storage):
 
 
 __all__ = ["FileStorage"]
-

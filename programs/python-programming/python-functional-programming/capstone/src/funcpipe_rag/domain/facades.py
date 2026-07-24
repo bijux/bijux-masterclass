@@ -51,4 +51,4 @@ def deterministic_embedder_port(
     return _Port()
 
 
-__all__ = ["Keyed", "EmbedderPort", "deterministic_embedder_port"]
+__all__ = ["EmbedderPort", "Keyed", "deterministic_embedder_port"]

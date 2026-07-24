@@ -32,158 +32,92 @@ from __future__ import annotations
 
 from typing_extensions import assert_never
 
+from .boundaries.adapters.exception_bridge import (
+    UnexpectedFailure,
+    result_map_try,
+    try_result,
+    unexpected_fail,
+    v_map_try,
+    v_try,
+)
+from .boundaries.app_config import AppConfig
+from .boundaries.shells.rag_api_shell import FSReader, write_chunks_jsonl
+
 # Domain value types – immutable, hashable where needed
 from .core.rag_types import (
-    RawDoc,
-    CleanDoc,
-    ChunkWithoutEmbedding,
     Chunk,
+    ChunkWithoutEmbedding,
+    CleanDoc,
     RagEnv,
+    RawDoc,
     TextNode,
     TreeDoc,
 )
-
-# Pure pipeline stages – the building blocks
-from .rag.stages import (
-    clean_doc,
-    chunk_doc,
-    iter_chunk_spans,
-    iter_chunk_doc,
-    iter_overlapping_chunks_text,
-    embed_chunk,
-    structural_dedup_chunks,
+from .core.rules_dsl import (
+    abstract_min_len,
+    any_doc,
+    category_startswith,
+    none_doc,
+    parse_rule,
+    rule_all,
+    rule_and,
+    rule_not,
+    rule_or,
+    title_contains,
+)
+from .core.rules_lint import SafeVisitor, assert_rule_is_safe_expr
+from .core.rules_pred import (
+    DEFAULT_RULES,
+    All,
+    AnyOf,
+    Eq,
+    LenGt,
+    Not,
+    Pred,
+    RulesConfig,
+    StartsWith,
+    eval_pred,
 )
 from .core.structural_dedup import DedupIterator, structural_dedup_lazy
 
 # Functional composition helpers (Modules 02–03)
 from .fp import (
     FakeTime,
-    StageInstrumentation,
     Reader,
+    StageInstrumentation,
     State,
     Writer,
+    ask,
+    asks,
+    censor,
     compose,
-    flow,
     ffilter,
     flatmap,
+    flow,
     fmap,
+    get,
     identity,
     instrument_stage,
+    listen,
+    local,
+    modify,
     pipe,
     probe,
     producer_pipeline,
-    tee,
-    ask,
-    asks,
-    local,
-    get,
     put,
-    modify,
     run_state,
+    run_writer,
+    tee,
     tell,
     tell_many,
-    listen,
-    censor,
-    run_writer,
-    wr_pure,
-    wr_map,
-    wr_and_then,
-    transpose_result_option,
-    transpose_option_result,
-    toggle_validation,
     toggle_logging,
     toggle_metrics,
-)
-
-# Modules 02–09 public API layer (end-of-Module-09)
-from .result import (
-    Result,
-    Ok,
-    Err,
-    ErrInfo,
-    make_errinfo,
-    is_ok,
-    is_err,
-    map_result,
-    map_err,
-    bind_result,
-    recover,
-    unwrap_or,
-    to_option,
-    Option,
-    Some,
-    NoneVal,
-    NONE,
-    is_some,
-    is_none,
-    map_option,
-    bind_option,
-    unwrap_or_else,
-    map_result_iter,
-    filter_ok,
-    filter_err,
-    partition_results,
-    result_map,
-    result_and_then,
-    option_from_nullable,
-    option_to_nullable,
-)
-from .rag.clean_cfg import CleanConfig, DEFAULT_CLEAN_CONFIG, make_cleaner
-from .rag.types import DocRule, RagTaps, DebugConfig, Observations
-from .rag.types import RagTraceV3, TraceLens
-from .core.rules_pred import (
-    Pred,
-    Eq,
-    LenGt,
-    StartsWith,
-    All,
-    AnyOf,
-    Not,
-    RulesConfig,
-    DEFAULT_RULES,
-    eval_pred,
-)
-from .core.rules_dsl import (
-    any_doc,
-    none_doc,
-    category_startswith,
-    title_contains,
-    abstract_min_len,
-    rule_and,
-    rule_or,
-    rule_not,
-    rule_all,
-    parse_rule,
-)
-from .core.rules_lint import SafeVisitor, assert_rule_is_safe_expr
-from .rag.config import (
-    RagConfig,
-    RagCoreDeps,
-    RagBoundaryDeps,
-    DocsReader,
-    get_deps,
-    make_rag_fn,
-    make_gen_rag_fn,
-    boundary_rag_config,
-)
-from .rag.core import (
-    _trace_iter,
-    gen_chunk_doc,
-    gen_chunk_spans,
-    gen_overlapping_chunks,
-    iter_rag,
-    iter_rag_core,
-    stream_chunks,
-    gen_stream_embedded,
-    gen_stream_deduped,
-    sliding_windows,
-    gen_grouped_chunks,
-    gen_bounded_chunks,
-    safe_rag_pipeline,
-    iter_chunks_from_cleaned,
-    full_rag_api,
-    full_rag_api_docs,
-    full_rag_api_path,
+    toggle_validation,
+    transpose_option_result,
+    transpose_result_option,
+    wr_and_then,
+    wr_map,
+    wr_pure,
 )
 from .policies.breakers import (
     BreakInfo,
@@ -197,8 +131,19 @@ from .policies.breakers import (
     short_circuit_on_err_truncate,
 )
 from .policies.memo import DiskCache, content_hash_key, lru_cache_custom, memoize_keyed
-from .policies.reports import ErrGroup, ErrReport, fold_error_counts, fold_error_report, report_to_jsonable
-from .policies.resources import auto_close, managed_stream, nested_managed, with_resource_stream
+from .policies.reports import (
+    ErrGroup,
+    ErrReport,
+    fold_error_counts,
+    fold_error_report,
+    report_to_jsonable,
+)
+from .policies.resources import (
+    auto_close,
+    managed_stream,
+    nested_managed,
+    with_resource_stream,
+)
 from .policies.retries import (
     RetryCtx,
     RetryDecision,
@@ -208,43 +153,99 @@ from .policies.retries import (
     restore_input_order,
     retry_map_iter,
 )
-from .tree import (
-    assert_acyclic,
-    flatten,
-    flatten_via_fold,
-    iter_flatten,
-    iter_flatten_buffered,
-    max_depth,
-    recursive_flatten,
+from .rag.clean_cfg import DEFAULT_CLEAN_CONFIG, CleanConfig, make_cleaner
+from .rag.config import (
+    DocsReader,
+    RagBoundaryDeps,
+    RagConfig,
+    RagCoreDeps,
+    boundary_rag_config,
+    get_deps,
+    make_gen_rag_fn,
+    make_rag_fn,
 )
-from .tree import (
-    fold_count_length_maxdepth,
-    fold_tree,
-    fold_tree_buffered,
-    fold_tree_no_path,
-    linear_accumulate,
-    linear_reduce,
-    scan_count_length_maxdepth,
-    scan_tree,
+from .rag.core import (
+    _trace_iter,
+    full_rag_api,
+    full_rag_api_docs,
+    full_rag_api_path,
+    gen_bounded_chunks,
+    gen_chunk_doc,
+    gen_chunk_spans,
+    gen_grouped_chunks,
+    gen_overlapping_chunks,
+    gen_stream_deduped,
+    gen_stream_embedded,
+    iter_chunks_from_cleaned,
+    iter_rag,
+    iter_rag_core,
+    safe_rag_pipeline,
+    sliding_windows,
+    stream_chunks,
 )
-from .boundaries.shells.rag_api_shell import FSReader, write_chunks_jsonl
-from .boundaries.app_config import AppConfig
-from .boundaries.adapters.exception_bridge import (
-    UnexpectedFailure,
-    result_map_try,
-    try_result,
-    unexpected_fail,
-    v_map_try,
-    v_try,
+
+# Pure pipeline stages – the building blocks
+from .rag.stages import (
+    chunk_doc,
+    clean_doc,
+    embed_chunk,
+    iter_chunk_doc,
+    iter_chunk_spans,
+    iter_overlapping_chunks_text,
+    structural_dedup_chunks,
+)
+from .rag.types import (
+    DebugConfig,
+    DocRule,
+    Observations,
+    RagTaps,
+    RagTraceV3,
+    TraceLens,
+)
+
+# Modules 02–09 public API layer (end-of-Module-09)
+from .result import (
+    NONE,
+    Err,
+    ErrInfo,
+    NoneVal,
+    Ok,
+    Option,
+    Result,
+    Some,
+    bind_option,
+    bind_result,
+    filter_err,
+    filter_ok,
+    is_err,
+    is_none,
+    is_ok,
+    is_some,
+    make_errinfo,
+    map_err,
+    map_option,
+    map_result,
+    map_result_iter,
+    option_from_nullable,
+    option_to_nullable,
+    partition_results,
+    recover,
+    result_and_then,
+    result_map,
+    to_option,
+    unwrap_or,
+    unwrap_or_else,
 )
 from .streaming import (
     Source,
     Transform,
     as_source,
+    compose2_transforms,
+    compose_transforms,
     ensure_contiguous,
     fence_k,
     fork2_lockstep,
-    multicast,
+    make_call_gate,
     make_chain,
     make_counter,
     make_merge,
@@ -256,18 +257,32 @@ from .streaming import (
     make_sampler_stable,
     make_tap,
     make_throttle,
-    throttle,
     make_timestamp,
-    make_call_gate,
-    tap_prefix,
-    trace_iter,
-    compose2_transforms,
-    compose_transforms,
+    multicast,
     source_to_transform,
+    tap_prefix,
+    throttle,
+    trace_iter,
+)
+from .tree import (
+    assert_acyclic,
+    flatten,
+    flatten_via_fold,
+    fold_count_length_maxdepth,
+    fold_tree,
+    fold_tree_buffered,
+    fold_tree_no_path,
+    iter_flatten,
+    iter_flatten_buffered,
+    linear_accumulate,
+    linear_reduce,
+    max_depth,
+    recursive_flatten,
+    scan_count_length_maxdepth,
+    scan_tree,
 )
 
-
-__all__ = [
+__all__ = [  # noqa: RUF022
     "assert_never",
     # Types
     "RawDoc",

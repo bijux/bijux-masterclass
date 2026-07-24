@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, replace
 from hashlib import sha256
-from typing import Literal, Sequence
+from typing import Literal
 from uuid import UUID
 
 import numpy as np
@@ -20,9 +21,9 @@ from .text import ChunkText
 
 __all__ = [
     "OBatch",
-    "to_optimized_batch",
     "from_optimized_batch",
     "process_batch_hybrid",
+    "to_optimized_batch",
 ]
 
 
@@ -55,7 +56,7 @@ def pure_embed(chunk: Chunk) -> Validation[Chunk, ErrInfo]:
 
 @dataclass(slots=True)
 class OBatch:
-    rows: list["OChunk"]
+    rows: list[OChunk]
     embeddings: NDArray[np.float32] | None = None
 
 

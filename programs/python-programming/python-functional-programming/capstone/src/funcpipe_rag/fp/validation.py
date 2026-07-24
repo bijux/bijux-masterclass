@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
-from typing import Protocol, Tuple, TypeVar, cast
+from typing import Protocol, TypeVar, cast
 
 from .core import Err, Ok, Result, Validation, VFailure, VSuccess
 
@@ -36,7 +36,7 @@ def compose(f: Callable[[B1], C1]) -> Callable[[Callable[[A1], B1]], Callable[[A
 
 
 class CombineErrors(Protocol[E]):
-    def __call__(self, left: Tuple[E, ...], right: Tuple[E, ...]) -> Tuple[E, ...]: ...
+    def __call__(self, left: tuple[E, ...], right: tuple[E, ...]) -> tuple[E, ...]: ...
 
 
 def v_pure(x: T) -> Validation[T, E]:
@@ -156,20 +156,20 @@ def dedup_stable(left: tuple[E, ...], right: tuple[E, ...]) -> tuple[E, ...]:
 
 
 __all__ = [
-    "Validation",
-    "VSuccess",
     "VFailure",
-    "v_pure",
-    "v_success",
-    "v_failure",
-    "v_map",
+    "VSuccess",
+    "Validation",
+    "compose",
+    "dedup_stable",
+    "from_validation",
+    "to_validation",
     "v_ap",
+    "v_failure",
     "v_liftA2",
     "v_liftA3",
+    "v_map",
+    "v_pure",
     "v_sequence",
+    "v_success",
     "v_traverse",
-    "to_validation",
-    "from_validation",
-    "dedup_stable",
-    "compose",
 ]

@@ -3,7 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeAlias, TypeVar
 
-from hypothesis import given, strategies as st
+from hypothesis import given
+from hypothesis import strategies as st
 from typing_extensions import assert_never
 
 from funcpipe_rag.fp.core import NoneVal, Some

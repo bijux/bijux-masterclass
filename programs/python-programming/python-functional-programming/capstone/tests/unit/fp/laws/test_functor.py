@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from hypothesis import given, strategies as st
+from hypothesis import given
+from hypothesis import strategies as st
 
+from funcpipe_rag.fp.core import Err, Ok
 from funcpipe_rag.fp.functor import (
     NONE,
     Some,
@@ -13,7 +15,6 @@ from funcpipe_rag.fp.functor import (
     option_map,
     result_map,
 )
-from funcpipe_rag.fp.core import Err, Ok
 
 
 @dataclass(frozen=True)

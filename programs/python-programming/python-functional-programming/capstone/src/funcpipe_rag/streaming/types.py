@@ -11,14 +11,14 @@ from typing import Generic, Protocol, TypeVar
 T = TypeVar("T")
 A = TypeVar("A")
 B = TypeVar("B")
-A_lens = TypeVar("A_lens", contravariant=True)
+A_lens_contra = TypeVar("A_lens_contra", contravariant=True)
 
 Source = Callable[[], Iterator[T]]
 Transform = Callable[[Iterable[A]], Iterator[B]]
 
 
-class Lens(Protocol, Generic[A_lens]):
-    def note(self, item: A_lens) -> None: ...
+class Lens(Protocol, Generic[A_lens_contra]):
+    def note(self, item: A_lens_contra) -> None: ...
 
 
 @dataclass
@@ -43,5 +43,4 @@ def trace_iter(items: Iterable[T], lens: Lens[T]) -> Iterator[T]:
         yield item
 
 
-__all__ = ["Source", "Transform", "Lens", "TraceLens", "trace_iter"]
-
+__all__ = ["Lens", "Source", "TraceLens", "Transform", "trace_iter"]

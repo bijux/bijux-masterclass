@@ -5,8 +5,7 @@ from itertools import islice
 from hypothesis import given
 from hypothesis import strategies as st
 
-from funcpipe_rag.result import Err, Ok
-from funcpipe_rag.result import par_try_map_iter, try_map_iter
+from funcpipe_rag.result import Err, Ok, par_try_map_iter, try_map_iter
 
 
 @given(items=st.lists(st.integers()))
@@ -25,7 +24,7 @@ def test_ordering_preservation(items: list[int]) -> None:
     tagged = list(enumerate(items))
 
     def f(iv: tuple[int, int]) -> tuple[int, int]:
-        i, v = iv
+        _i, v = iv
         if v % 2 == 0:
             raise ValueError("even")
         return iv

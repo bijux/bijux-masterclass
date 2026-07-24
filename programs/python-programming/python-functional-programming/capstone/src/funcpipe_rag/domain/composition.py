@@ -13,10 +13,10 @@ from collections.abc import Callable, Iterator
 from typing import TypeVar
 
 from funcpipe_rag.core.rag_types import RawDoc
+from funcpipe_rag.domain.effects.io_plan import IOPlan, io_bind, io_delay
 from funcpipe_rag.result.types import ErrInfo, Ok, Result
 
 from .capabilities import Logger, StorageRead
-from funcpipe_rag.domain.effects.io_plan import IOPlan, io_bind, io_delay
 from .logging import LogEntry
 
 A = TypeVar("A")

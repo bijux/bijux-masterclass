@@ -4,8 +4,9 @@ End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
+from collections.abc import Callable, Iterable, Iterator
 from itertools import islice
-from typing import Any, Callable, Iterable, Iterator, TypeVar
+from typing import Any, TypeVar
 
 from .types import Source, Transform
 
@@ -60,5 +61,5 @@ def source_to_transform(src: Source[T]) -> Transform[None, T]:
     return stage
 
 
-__all__ = ["fence_k", "compose2_transforms", "compose_transforms", "source_to_transform"]
+__all__ = ["compose2_transforms", "compose_transforms", "fence_k", "source_to_transform"]
 

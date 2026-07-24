@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-from itertools import islice
+from itertools import islice, pairwise
 
 import pytest
 from hypothesis import given
 
-from funcpipe_rag.tree import flatten, iter_flatten, iter_flatten_buffered, recursive_flatten
-
+from funcpipe_rag.tree import (
+    flatten,
+    iter_flatten,
+    iter_flatten_buffered,
+    recursive_flatten,
+)
 from tests.strategies import deep_chain_strategy, tree_strategy
 
 
@@ -41,6 +45,6 @@ def test_metadata_and_order_invariants(tree) -> None:
     assert len(set(paths)) == len(paths)
     assert paths == sorted(paths)  # preorder monotonicity for tuple paths
 
-    for p, q in zip(paths, paths[1:]):
+    for p, q in pairwise(paths):
         if len(p) == len(q) and len(p) > 0 and p[:-1] == q[:-1]:
             assert p[-1] < q[-1]

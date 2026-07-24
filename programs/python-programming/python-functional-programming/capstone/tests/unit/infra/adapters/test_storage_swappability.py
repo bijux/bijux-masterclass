@@ -4,14 +4,13 @@ import csv
 import os
 import tempfile
 
-from hypothesis import given, settings
 import hypothesis.strategies as st
+from hypothesis import given, settings
 
 from funcpipe_rag.core.rag_types import RawDoc
 from funcpipe_rag.infra.adapters.file_storage import FileStorage
 from funcpipe_rag.infra.adapters.memory_storage import InMemoryStorage
 from funcpipe_rag.result.types import Ok
-
 
 settings.register_profile("ci", max_examples=100, derandomize=True, deadline=None)
 settings.load_profile("ci")

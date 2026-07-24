@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import contextlib
+from collections.abc import Callable, Iterable, Iterator, Mapping
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Callable, Generic, Iterable, Iterator, Mapping, TypeVar, cast
+from typing import Generic, TypeVar, cast
 
 from funcpipe_rag.result import Err, Ok, Result
 
@@ -15,10 +17,8 @@ E = TypeVar("E")
 def _close_if_possible(it: object) -> None:
     close = getattr(it, "close", None)
     if callable(close):
-        try:
+        with contextlib.suppress(Exception):
             close()
-        except Exception:  # noqa: BLE001 - never mask the original termination
-            pass
 
 
 @dataclass(frozen=True)
@@ -262,12 +262,12 @@ def circuit_breaker_pred_truncate(xs: Iterable[Result[T, E]], pred: Callable[[Re
 
 __all__ = [
     "BreakInfo",
-    "short_circuit_on_err_emit",
-    "short_circuit_on_err_truncate",
-    "circuit_breaker_rate_emit",
-    "circuit_breaker_rate_truncate",
     "circuit_breaker_count_emit",
     "circuit_breaker_count_truncate",
     "circuit_breaker_pred_emit",
     "circuit_breaker_pred_truncate",
+    "circuit_breaker_rate_emit",
+    "circuit_breaker_rate_truncate",
+    "short_circuit_on_err_emit",
+    "short_circuit_on_err_truncate",
 ]

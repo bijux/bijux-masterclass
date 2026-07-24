@@ -24,5 +24,5 @@ class CollectingLogger(Logger):
         self.entries.append(entry)
 
 
-__all__ = ["ConsoleLogger", "CollectingLogger"]
+__all__ = ["CollectingLogger", "ConsoleLogger"]
 

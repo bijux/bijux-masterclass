@@ -3,14 +3,20 @@
 from __future__ import annotations
 
 import contextlib
+from collections.abc import Callable, Iterator, Sequence
 from contextlib import AbstractContextManager
 from types import TracebackType
-from typing import Any, Callable, ContextManager, Generic, Iterator, Sequence, TypeVar, cast
+from typing import (
+    Any,
+    Generic,
+    TypeVar,
+    cast,
+)
 
 R = TypeVar("R")
 
 
-class _ResourceStream(Generic[R], AbstractContextManager[Iterator[R]]):
+class _ResourceStream(AbstractContextManager[Iterator[R]], Generic[R]):
     def __init__(self, gen: Iterator[R]) -> None:
         self._gen = gen
 
@@ -26,20 +32,17 @@ class _ResourceStream(Generic[R], AbstractContextManager[Iterator[R]]):
         del exc_type, exc, tb
         close = getattr(self._gen, "close", None)
         if callable(close):
-            try:
+            with contextlib.suppress(Exception):
                 close()
-            except Exception:  # noqa: BLE001 - never mask the original exception
-                pass
-        return None
 
 
-def with_resource_stream(gen: Iterator[R]) -> ContextManager[Iterator[R]]:
+def with_resource_stream(gen: Iterator[R]) -> AbstractContextManager[Iterator[R]]:
     """Wrap an existing generator; guarantees .close() on all exit paths."""
 
     return _ResourceStream(gen)
 
 
-class _ManagedStream(Generic[R], AbstractContextManager[Iterator[R]]):
+class _ManagedStream(AbstractContextManager[Iterator[R]], Generic[R]):
     def __init__(self, factory: Callable[[], Iterator[R]]) -> None:
         self._factory = factory
         self._gen: Iterator[R] | None = None
@@ -58,24 +61,23 @@ class _ManagedStream(Generic[R], AbstractContextManager[Iterator[R]]):
         if self._gen is not None:
             close = getattr(self._gen, "close", None)
             if callable(close):
-                try:
+                with contextlib.suppress(Exception):
                     close()
-                except Exception:  # noqa: BLE001 - never mask the original exception
-                    pass
-        return None
 
 
-def managed_stream(factory: Callable[[], Iterator[R]]) -> ContextManager[Iterator[R]]:
+def managed_stream(factory: Callable[[], Iterator[R]]) -> AbstractContextManager[Iterator[R]]:
     """Create generator from factory inside context; guarantees cleanup."""
 
     return _ManagedStream(factory)
 
 
-def nested_managed(managers: Sequence[ContextManager[Any]]) -> ContextManager[tuple[Any, ...]]:
+def nested_managed(
+    managers: Sequence[AbstractContextManager[Any]],
+) -> AbstractContextManager[tuple[Any, ...]]:
     """Compose multiple context managers; returns tuple of entered values."""
 
     class _Nested(AbstractContextManager[tuple[Any, ...]]):
-        def __init__(self, managers: Sequence[ContextManager[Any]]) -> None:
+        def __init__(self, managers: Sequence[AbstractContextManager[Any]]) -> None:
             self._managers = managers
             self._stack: contextlib.ExitStack | None = None
 
@@ -91,16 +93,15 @@ def nested_managed(managers: Sequence[ContextManager[Any]]) -> ContextManager[tu
         ) -> None:
             assert self._stack is not None
             self._stack.__exit__(exc_type, exc, tb)
-            return None
 
     return _Nested(managers)
 
 
-def auto_close(obj: Any) -> ContextManager[Any]:
+def auto_close(obj: Any) -> AbstractContextManager[Any]:
     """Close obj if it has .close(); respect context protocol; otherwise no-op."""
 
     if hasattr(obj, "__enter__") and hasattr(obj, "__exit__"):
-        return cast(ContextManager[Any], obj)
+        return cast(AbstractContextManager[Any], obj)
 
     @contextlib.contextmanager
     def _cm() -> Iterator[Any]:
@@ -109,17 +110,15 @@ def auto_close(obj: Any) -> ContextManager[Any]:
         finally:
             close = getattr(obj, "close", None)
             if callable(close):
-                try:
+                with contextlib.suppress(Exception):
                     close()
-                except Exception:  # noqa: BLE001
-                    pass
 
     return _cm()
 
 
 __all__ = [
-    "with_resource_stream",
+    "auto_close",
     "managed_stream",
     "nested_managed",
-    "auto_close",
+    "with_resource_stream",
 ]

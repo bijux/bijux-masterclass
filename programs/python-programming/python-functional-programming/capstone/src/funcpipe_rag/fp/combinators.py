@@ -11,8 +11,8 @@ Import via `funcpipe_rag.fp` (package) or `funcpipe_rag.fp.combinators` (module)
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from collections.abc import Callable, Iterable, Iterator
+from dataclasses import dataclass
 from typing import Any, TypeVar
 
 A = TypeVar("A")
@@ -199,17 +199,17 @@ class FakeTime:
 
 
 __all__ = [
-    "identity",
+    "FakeTime",
+    "StageInstrumentation",
     "compose",
-    "producer_pipeline",
-    "flow",
-    "pipe",
-    "fmap",
     "ffilter",
     "flatmap",
-    "tee",
-    "probe",
-    "StageInstrumentation",
+    "flow",
+    "fmap",
+    "identity",
     "instrument_stage",
-    "FakeTime",
+    "pipe",
+    "probe",
+    "producer_pipeline",
+    "tee",
 ]

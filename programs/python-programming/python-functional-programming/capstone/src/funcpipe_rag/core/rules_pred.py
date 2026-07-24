@@ -5,7 +5,7 @@ End-of-Module-09 snapshot."""
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Union
+from typing import Any
 
 from funcpipe_rag.core.rag_types import RawDoc
 
@@ -30,20 +30,20 @@ class LenGt:
 
 @dataclass(frozen=True)
 class All:
-    rules: tuple["Pred", ...]
+    rules: tuple[Pred, ...]
 
 
 @dataclass(frozen=True)
 class AnyOf:
-    rules: tuple["Pred", ...]
+    rules: tuple[Pred, ...]
 
 
 @dataclass(frozen=True)
 class Not:
-    rule: "Pred"
+    rule: Pred
 
 
-Pred = Union[Eq, StartsWith, LenGt, All, AnyOf, Not]
+Pred = Eq | StartsWith | LenGt | All | AnyOf | Not
 
 
 @dataclass(frozen=True)
@@ -72,12 +72,12 @@ def eval_pred(doc: RawDoc, pred: Pred) -> bool:
     if isinstance(pred, StartsWith):
         value = _get_path(doc, pred.path)
         if not isinstance(value, str):
-            raise ValueError(f"StartsWith path must be str, got {type(value).__name__}")
+            raise TypeError(f"StartsWith path must be str, got {type(value).__name__}")
         return value.startswith(pred.value)
     if isinstance(pred, LenGt):
         value = _get_path(doc, pred.path)
         if not isinstance(value, (str, tuple, list)):
-            raise ValueError(f"LenGt path must be sized, got {type(value).__name__}")
+            raise TypeError(f"LenGt path must be sized, got {type(value).__name__}")
         return len(value) > pred.value
     if isinstance(pred, All):
         return all(eval_pred(doc, p) for p in pred.rules)
@@ -89,14 +89,14 @@ def eval_pred(doc: RawDoc, pred: Pred) -> bool:
 
 
 __all__ = [
-    "Pred",
-    "Eq",
-    "StartsWith",
-    "LenGt",
+    "DEFAULT_RULES",
     "All",
     "AnyOf",
+    "Eq",
+    "LenGt",
     "Not",
+    "Pred",
     "RulesConfig",
-    "DEFAULT_RULES",
+    "StartsWith",
     "eval_pred",
 ]

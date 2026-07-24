@@ -6,8 +6,8 @@ import pytest
 from hypothesis import given
 
 from funcpipe_rag import (
-    All,
     DEFAULT_RULES,
+    All,
     Err,
     LenGt,
     Ok,
@@ -26,10 +26,9 @@ from funcpipe_rag import (
     parse_rule,
     structural_dedup_chunks,
 )
+from funcpipe_rag.core.rag_types import RagEnv, RawDoc
 from funcpipe_rag.core.rules_lint import assert_rule_is_safe_expr
-from funcpipe_rag.core.rag_types import RawDoc, RagEnv
 from funcpipe_rag.result import Result
-
 from tests.strategies import doc_list_strategy, env_strategy
 
 

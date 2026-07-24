@@ -40,4 +40,4 @@ def transpose_option_result(or_: Option[Result[T, E]]) -> Result[Option[T], E]:
     return Ok(Some(inner.value))
 
 
-__all__ = ["transpose_result_option", "transpose_option_result"]
+__all__ = ["transpose_option_result", "transpose_result_option"]

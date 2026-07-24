@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from funcpipe_rag.fp.core import Err, ErrInfo, NoneVal, Ok, Some
+from hypothesis import given
+from hypothesis import strategies as st
+
 from funcpipe_rag.boundaries.adapters.serde import (
-    Envelope,
     MIGRATORS,
+    Envelope,
     dec_option,
     dec_result,
     enc_option,
@@ -14,8 +16,7 @@ from funcpipe_rag.boundaries.adapters.serde import (
     to_json,
     to_msgpack,
 )
-
-from hypothesis import given, strategies as st
+from funcpipe_rag.fp.core import Err, ErrInfo, NoneVal, Ok, Some
 
 
 @given(opt=st.one_of(st.builds(Some, st.integers()), st.just(NoneVal())))

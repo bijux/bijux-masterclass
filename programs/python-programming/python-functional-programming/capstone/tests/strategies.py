@@ -92,14 +92,14 @@ def pipeline_chunk_strategy(draw) -> Chunk:
 
 __all__ = [
     "SearchStrategy",
-    "raw_doc_strategy",
-    "doc_list_strategy",
-    "unique_doc_list_strategy",
-    "env_strategy",
-    "text_node_strategy",
-    "tree_strategy",
     "deep_chain",
     "deep_chain_strategy",
+    "doc_list_strategy",
+    "env_strategy",
     "pipeline_chunk_strategy",
+    "raw_doc_strategy",
+    "text_node_strategy",
+    "tree_strategy",
+    "unique_doc_list_strategy",
 ]
 

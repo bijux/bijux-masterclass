@@ -7,8 +7,8 @@ End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 from funcpipe_rag.core.rag_types import CleanDoc, RawDoc
 
@@ -58,12 +58,12 @@ def make_cleaner(cfg: CleanConfig) -> Callable[[RawDoc], CleanDoc]:
 
 
 __all__ = [
-    "TextRule",
-    "CleanConfig",
     "DEFAULT_CLEAN_CONFIG",
     "RULES",
-    "collapse_ws",
-    "replace_newlines",
+    "CleanConfig",
+    "TextRule",
     "clean_abstract",
+    "collapse_ws",
     "make_cleaner",
+    "replace_newlines",
 ]

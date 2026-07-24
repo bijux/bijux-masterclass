@@ -3,7 +3,11 @@ from __future__ import annotations
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
 
-from funcpipe_rag.domain.effects.async_ import lift_sync, lift_sync_gen_with_executor, lift_sync_with_executor
+from funcpipe_rag.domain.effects.async_ import (
+    lift_sync,
+    lift_sync_gen_with_executor,
+    lift_sync_with_executor,
+)
 from funcpipe_rag.infra.adapters.async_runtime import perform_async
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 

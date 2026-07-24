@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field, replace
-from typing import Callable, TypeAlias
+from typing import TypeAlias
 from uuid import UUID, uuid4
 
 from funcpipe_rag.fp.error import ErrInfo, ErrorCode
@@ -59,11 +60,11 @@ def upcast_metadata_v1(v1: ChunkMetadataV1) -> ChunkMetadata:
 
 
 __all__ = [
-    "ChunkId",
     "Chunk",
-    "assemble",
-    "try_set_embedding",
-    "map_metadata_checked",
+    "ChunkId",
     "ChunkMetadataV1",
+    "assemble",
+    "map_metadata_checked",
+    "try_set_embedding",
     "upcast_metadata_v1",
 ]

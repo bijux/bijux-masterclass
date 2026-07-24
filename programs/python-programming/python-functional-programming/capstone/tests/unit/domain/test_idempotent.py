@@ -3,8 +3,8 @@ from __future__ import annotations
 from collections.abc import Iterator
 
 from funcpipe_rag.core.rag_types import Chunk
-from funcpipe_rag.domain.idempotent import AtomicWriteCap, content_key, idempotent_write
 from funcpipe_rag.domain.effects.io_plan import perform
+from funcpipe_rag.domain.idempotent import AtomicWriteCap, content_key, idempotent_write
 from funcpipe_rag.result.types import ErrInfo, Ok, Result
 
 

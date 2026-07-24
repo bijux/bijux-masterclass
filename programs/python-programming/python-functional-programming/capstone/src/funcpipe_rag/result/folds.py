@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
-from typing import Callable, Generic, Iterable, TypeVar
+from typing import Generic, TypeVar
 
 from .types import Err, Ok, Result
 
@@ -123,10 +124,10 @@ def collect_both(xs: Iterable[Result[T, E]]) -> ResultsBoth[T, E]:
 
 __all__ = [
     "ResultsBoth",
-    "fold_results_fail_fast",
-    "fold_results_collect_errs",
-    "fold_results_collect_errs_capped",
-    "fold_until_error_rate",
     "all_ok_fail_fast",
     "collect_both",
+    "fold_results_collect_errs",
+    "fold_results_collect_errs_capped",
+    "fold_results_fail_fast",
+    "fold_until_error_rate",
 ]

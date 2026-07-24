@@ -9,9 +9,8 @@ from hashlib import sha256
 from typing import Protocol, TypeVar
 
 from funcpipe_rag.core.rag_types import Chunk
-from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
-
 from funcpipe_rag.domain.effects.io_plan import IOPlan, io_delay
+from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
 T = TypeVar("T")
 

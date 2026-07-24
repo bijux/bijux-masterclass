@@ -21,7 +21,7 @@ V = TypeVar("V")
 def _try_import_toolz() -> Any | None:
     try:
         return importlib.import_module("toolz")
-    except Exception:
+    except ImportError:
         return None
 
 
@@ -104,11 +104,10 @@ def reduceby(
 
 __all__ = [
     "TOOLZ_AVAILABLE",
-    "pipe",
     "compose",
-    "curried_map",
     "curried_filter",
+    "curried_map",
     "partition_all",
+    "pipe",
     "reduceby",
 ]
-

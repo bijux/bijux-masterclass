@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from hypothesis import given, settings
 import hypothesis.strategies as st
+from hypothesis import given, settings
 
 from funcpipe_rag.result.types import Err, NoneVal, Ok, Option, Result, Some
-
 
 settings.register_profile("ci", max_examples=300, derandomize=True, deadline=None)
 settings.load_profile("ci")

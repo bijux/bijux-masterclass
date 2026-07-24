@@ -102,4 +102,4 @@ def multicast(items: Iterable[T], n: int, *, maxlen: int = 1024) -> tuple[Iterat
     return tuple(sub(i) for i in range(n))
 
 
-__all__ = ["tap_prefix", "fork2_lockstep", "multicast"]
+__all__ = ["fork2_lockstep", "multicast", "tap_prefix"]

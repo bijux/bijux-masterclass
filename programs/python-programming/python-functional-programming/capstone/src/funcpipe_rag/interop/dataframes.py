@@ -14,7 +14,7 @@ from typing import Any
 def _import(name: str) -> Any | None:
     try:
         return importlib.import_module(name)
-    except Exception:
+    except ImportError:
         return None
 
 
@@ -51,11 +51,10 @@ def pandas_filter_ai(df: Any) -> Any:
 
 
 __all__ = [
+    "DASK_AVAILABLE",
     "PANDAS_AVAILABLE",
     "POLARS_AVAILABLE",
-    "DASK_AVAILABLE",
     "normalize_records",
     "pandas_clean_abstract",
     "pandas_filter_ai",
 ]
-

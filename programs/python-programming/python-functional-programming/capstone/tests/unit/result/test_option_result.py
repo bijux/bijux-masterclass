@@ -4,7 +4,7 @@ import pytest
 from hypothesis import given
 from hypothesis import strategies as st
 
-from funcpipe_rag.result import Err, NoneVal, Ok, Some, NONE
+from funcpipe_rag.result import NONE, Err, NoneVal, Ok, Some
 
 
 @given(x=st.integers())

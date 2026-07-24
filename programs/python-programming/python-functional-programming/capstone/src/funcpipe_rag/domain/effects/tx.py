@@ -4,9 +4,10 @@ End-of-Module-09 snapshot."""
 
 from __future__ import annotations
 
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field, replace
 from types import MappingProxyType
-from typing import Callable, Mapping, Protocol, TypeVar
+from typing import Protocol, TypeVar
 
 from funcpipe_rag.result.types import Err, ErrInfo, Ok, Result
 
@@ -35,11 +36,11 @@ class TxProtocol(Protocol):
     Implementers should make begin/commit/rollback idempotent where possible.
     """
 
-    def begin(self, session: Session) -> IOPlan[Result["Tx", ErrInfo]]: ...
+    def begin(self, session: Session) -> IOPlan[Result[Tx, ErrInfo]]: ...
 
-    def commit(self, tx: "Tx") -> IOPlan[Result[None, ErrInfo]]: ...
+    def commit(self, tx: Tx) -> IOPlan[Result[None, ErrInfo]]: ...
 
-    def rollback(self, tx: "Tx") -> IOPlan[Result[None, ErrInfo]]: ...
+    def rollback(self, tx: Tx) -> IOPlan[Result[None, ErrInfo]]: ...
 
 
 @dataclass(frozen=True)
@@ -78,5 +79,5 @@ def with_tx(
     return io_bind(tx_cap.begin(session), after_begin)
 
 
-__all__ = ["Session", "session_with", "TxProtocol", "Tx", "with_tx"]
+__all__ = ["Session", "Tx", "TxProtocol", "session_with", "with_tx"]
 

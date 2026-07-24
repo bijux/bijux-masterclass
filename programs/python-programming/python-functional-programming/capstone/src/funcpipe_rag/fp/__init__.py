@@ -51,7 +51,7 @@ from .effects import (
     wr_pure,
 )
 
-__all__ = [
+__all__ = [  # noqa: RUF022
     "identity",
     "compose",
     "producer_pipeline",

@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from hypothesis import given
 import hypothesis.strategies as st
+from hypothesis import given
 
-from funcpipe_rag import fmap, ffilter, flatmap, identity, pipe
+from funcpipe_rag import ffilter, flatmap, fmap, identity, pipe
 
 
 @given(xs=st.lists(st.integers()))

@@ -2,12 +2,18 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, BinaryIO, Callable, Iterable, Iterator, Mapping, Tuple, TypeAlias, TypeVar, cast
 import json
+from collections.abc import Callable, Iterable, Iterator, Mapping
+from dataclasses import dataclass
+from typing import (
+    Any,
+    BinaryIO,
+    TypeAlias,
+    TypeVar,
+    cast,
+)
 
 import msgpack  # type: ignore[import-untyped]
-
 from typing_extensions import assert_never
 
 from funcpipe_rag.fp.core import (
@@ -57,21 +63,21 @@ def _default_enc_err(e: ErrInfo) -> JSON:
 
 def _default_dec_err(j: JSON) -> ErrInfo:
     if not isinstance(j, Mapping):
-        raise ValueError("ErrInfo payload must be an object")
+        raise TypeError("ErrInfo payload must be an object")
     code = j.get("code")
     msg = j.get("msg")
     if not isinstance(code, str) or not isinstance(msg, str):
-        raise ValueError("ErrInfo requires string fields: code, msg")
+        raise TypeError("ErrInfo requires string fields: code, msg")
     stage = j.get("stage", "")
     if not isinstance(stage, str):
-        raise ValueError("ErrInfo.stage must be str when present")
+        raise TypeError("ErrInfo.stage must be str when present")
     path_val = j.get("path", [])
     if not isinstance(path_val, list):
-        raise ValueError("ErrInfo.path must be list[int] when present")
+        raise TypeError("ErrInfo.path must be list[int] when present")
     path_items: list[int] = []
     for x in path_val:
         if not isinstance(x, int):
-            raise ValueError("ErrInfo.path must be list[int] when present")
+            raise TypeError("ErrInfo.path must be list[int] when present")
         path_items.append(x)
     return ErrInfo(code=code, msg=msg, stage=stage, path=tuple(path_items))
 
@@ -207,17 +213,17 @@ _MP_UNPACK: dict[str, object] = {"raw": False}
 
 def _check_env(obj: Any) -> None:
     if not isinstance(obj, dict):
-        raise ValueError("invalid envelope: not a dict")
+        raise TypeError("invalid envelope: not a dict")
     required = {"tag", "ver", "payload"}
     missing = required - set(obj)
     if missing:
         raise ValueError(f"invalid envelope: missing {missing}")
     if not isinstance(obj["tag"], str):
-        raise ValueError("tag must be str")
+        raise TypeError("tag must be str")
     if not isinstance(obj["ver"], int):
-        raise ValueError("ver must be int")
+        raise TypeError("ver must be int")
     if not isinstance(obj["payload"], dict):
-        raise ValueError("payload must be dict")
+        raise TypeError("payload must be dict")
 
 
 def to_json(x: T, enc: Encoder[T]) -> str:
@@ -251,14 +257,14 @@ def from_msgpack(b: bytes, dec: Decoder[T]) -> T:
 
 @dataclass(frozen=True, slots=True)
 class DecodeErr:
-    path: Tuple[str, ...] = ()
+    path: tuple[str, ...] = ()
     msg: str = ""
 
 
 def from_json_safe(s: str, dec: Decoder[T]) -> Validation[T, DecodeErr]:
     try:
         return VSuccess(from_json(s, dec))
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001 - safe decode must collapse arbitrary decode failures
         return VFailure((DecodeErr(msg=str(exc)),))
 
 
@@ -297,22 +303,22 @@ def iter_msgpack(fp: BinaryIO, dec: Decoder[T]) -> Iterator[T]:
 
 
 __all__ = [
-    "Envelope",
-    "Encoder",
-    "Decoder",
-    "enc_option",
-    "dec_option",
-    "enc_result",
-    "dec_result",
-    "enc_validation",
-    "dec_validation",
-    "to_json",
-    "from_json",
-    "to_msgpack",
-    "from_msgpack",
-    "from_json_safe",
     "MIGRATORS",
-    "migrate",
-    "iter_ndjson",
+    "Decoder",
+    "Encoder",
+    "Envelope",
+    "dec_option",
+    "dec_result",
+    "dec_validation",
+    "enc_option",
+    "enc_result",
+    "enc_validation",
+    "from_json",
+    "from_json_safe",
+    "from_msgpack",
     "iter_msgpack",
+    "iter_ndjson",
+    "migrate",
+    "to_json",
+    "to_msgpack",
 ]

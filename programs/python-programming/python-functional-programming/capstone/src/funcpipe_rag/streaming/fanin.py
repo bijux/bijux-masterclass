@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import heapq
 from collections.abc import Callable, Iterator, Sequence
-from typing import Any, TypeVar
+from typing import Any, TypeVar, cast
 
 from .types import Source
 
@@ -59,10 +59,12 @@ def make_merge(
 
     def merged() -> Iterator[T]:
         iters = [src() for src in sources]
-        yield from heapq.merge(*iters, key=key, reverse=reverse)
+        if key is None:
+            yield from cast(Iterator[T], heapq.merge(*iters, reverse=reverse))
+            return
+        yield from cast(Iterator[T], heapq.merge(*iters, key=key, reverse=reverse))
 
     return merged
 
 
-__all__ = ["as_source", "make_chain", "make_roundrobin", "make_merge"]
-
+__all__ = ["as_source", "make_chain", "make_merge", "make_roundrobin"]

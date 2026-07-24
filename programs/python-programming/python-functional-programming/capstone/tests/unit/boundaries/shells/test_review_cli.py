@@ -5,7 +5,6 @@ from pathlib import Path
 
 from funcpipe_rag.boundaries.shells.review_cli import build_summary, main, render_text
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 
 

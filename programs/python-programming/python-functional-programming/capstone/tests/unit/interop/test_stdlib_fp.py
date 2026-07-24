@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import operator
 from functools import partial, reduce
 from itertools import chain
-import operator
 
 from hypothesis import given, settings
 from hypothesis import strategies as st

@@ -128,11 +128,11 @@ def structural_dedup_chunks(chunks: Iterable[Chunk]) -> list[Chunk]:
 
 
 __all__ = [
-    "clean_doc",
     "chunk_doc",
+    "clean_doc",
+    "embed_chunk",
+    "iter_chunk_doc",
     "iter_chunk_spans",
     "iter_overlapping_chunks_text",
-    "iter_chunk_doc",
-    "embed_chunk",
     "structural_dedup_chunks",
 ]

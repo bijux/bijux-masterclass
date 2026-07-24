@@ -7,7 +7,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-
 PACKAGE_GROUPS: tuple[dict[str, Any], ...] = (
     {
         "name": "functional-core",

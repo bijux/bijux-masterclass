@@ -16,7 +16,7 @@ def dask_available() -> bool:
         importlib.import_module("dask")
         importlib.import_module("dask.bag")
         return True
-    except Exception:
+    except ImportError:
         return False
 
 
@@ -24,7 +24,7 @@ def beam_available() -> bool:
     try:
         importlib.import_module("apache_beam")
         return True
-    except Exception:
+    except ImportError:
         return False
 
 
@@ -44,4 +44,4 @@ def compile_to_beam(*_args: Any, **_kwargs: Any) -> Any:
     raise NotImplementedError("Apache Beam is an optional extension seam here; no Beam backend ships in the default repository")
 
 
-__all__ = ["dask_available", "beam_available", "compile_to_dask_bag", "compile_to_beam"]
+__all__ = ["beam_available", "compile_to_beam", "compile_to_dask_bag", "dask_available"]

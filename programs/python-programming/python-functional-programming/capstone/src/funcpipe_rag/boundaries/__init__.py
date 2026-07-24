@@ -6,7 +6,6 @@ the outside world (CLI, filesystem, JSON/MessagePack, Pydantic schemas).
 Reusable edge adapters live in `funcpipe_rag.boundaries.adapters`.
 """
 
-from .app_config import AppConfig
 from .adapters.exception_bridge import (
     UnexpectedFailure,
     result_map_try,
@@ -15,13 +14,14 @@ from .adapters.exception_bridge import (
     v_map_try,
     v_try,
 )
+from .app_config import AppConfig
 
 __all__ = [
     "AppConfig",
-    "try_result",
-    "result_map_try",
-    "v_try",
-    "v_map_try",
     "UnexpectedFailure",
+    "result_map_try",
+    "try_result",
     "unexpected_fail",
+    "v_map_try",
+    "v_try",
 ]
