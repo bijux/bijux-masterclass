@@ -2169,7 +2169,7 @@
             "schedule": {
               "interval": "weekly"
             },
-            "open-pull-requests-limit": 10,
+            "open-pull-requests-limit": 0,
             "labels": [
               "dependencies",
               "github"
@@ -2181,7 +2181,7 @@
             "schedule": {
               "interval": "weekly"
             },
-            "open-pull-requests-limit": 10,
+            "open-pull-requests-limit": 0,
             "labels": [
               "dependencies",
               "python"
@@ -2193,7 +2193,7 @@
             "schedule": {
               "interval": "weekly"
             },
-            "open-pull-requests-limit": 10,
+            "open-pull-requests-limit": 0,
             "labels": [
               "dependencies",
               "python"
@@ -2205,7 +2205,7 @@
             "schedule": {
               "interval": "weekly"
             },
-            "open-pull-requests-limit": 10,
+            "open-pull-requests-limit": 0,
             "labels": [
               "dependencies",
               "python"
@@ -2217,7 +2217,7 @@
             "schedule": {
               "interval": "weekly"
             },
-            "open-pull-requests-limit": 10,
+            "open-pull-requests-limit": 0,
             "labels": [
               "dependencies",
               "python"
@@ -2229,7 +2229,7 @@
             "schedule": {
               "interval": "weekly"
             },
-            "open-pull-requests-limit": 10,
+            "open-pull-requests-limit": 0,
             "labels": [
               "dependencies",
               "python"
@@ -2241,7 +2241,7 @@
             "schedule": {
               "interval": "weekly"
             },
-            "open-pull-requests-limit": 10,
+            "open-pull-requests-limit": 0,
             "labels": [
               "dependencies",
               "python"
