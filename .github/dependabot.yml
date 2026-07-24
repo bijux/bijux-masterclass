@@ -4,7 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - github
@@ -13,7 +13,7 @@ updates:
     directory: "/configs/docs"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - python
@@ -22,7 +22,7 @@ updates:
     directory: "/programs/python-programming/python-functional-programming/capstone"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - python
@@ -31,7 +31,7 @@ updates:
     directory: "/programs/python-programming/python-meta-programming/capstone"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - python
@@ -40,7 +40,7 @@ updates:
     directory: "/programs/python-programming/python-object-oriented-programming/capstone"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - python
@@ -49,7 +49,7 @@ updates:
     directory: "/programs/reproducible-research/deep-dive-dvc/capstone"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - python
@@ -58,7 +58,7 @@ updates:
     directory: "/programs/reproducible-research/deep-dive-snakemake/capstone"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     labels:
       - dependencies
       - python
