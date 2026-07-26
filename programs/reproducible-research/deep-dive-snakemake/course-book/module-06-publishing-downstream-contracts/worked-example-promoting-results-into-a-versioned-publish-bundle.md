@@ -1,65 +1,51 @@
 # Worked Example: Promoting Results Into a Versioned Publish Bundle
 
+This file ties the whole module together around one realistic problem:
 
-<!-- page-maps:start -->
-## Page Maps
+> a workflow already produces useful results, but downstream users still have no clear, reviewable contract they can trust.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Worked Example: Promoting Results Into a Versioned Publish Bundle"]
-  capstone["Capstone evidence"]
+The question is not "how do we copy more files into `publish/`?" The question is how to
+turn internal results into a smaller, versioned bundle that another program can use
+honestly.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## The lab route
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Work through the example in this order:
 
-This worked example ties the module together.
+1. separate internal workflow detail from files a downstream consumer should see
+2. promote the smallest honest public bundle into `publish/v1/`
+3. assign one clear job to each artifact in that bundle
+4. verify the bundle through manifest and consumer checks
+5. finish by classifying one compatible change and one breaking change
 
-The goal is not to show every publication pattern. The goal is to show how a workflow
-turns internal results into a smaller, reviewable downstream contract.
+## The starting situation
 
-## Starting situation
-
-Imagine a workflow that already produces detailed internal outputs under `results/`:
+Assume the workflow already produces rich internal outputs under `results/`, such as:
 
 - per-sample QC JSON files
 - trimming summaries
 - deduplication summaries
 - screening summaries
 
-Those files are useful, but they are not yet a downstream bundle.
-
-If a notebook or another pipeline has to browse `results/{sample}/` to figure out what is
-safe to use, the public contract is still weak.
-
-## Better target
-
-The capstone points toward a better structure:
-
-- `results/` keeps workflow-operational detail
-- `publish/v1/summary.json` and `publish/v1/summary.tsv` provide structured downstream summaries
-- `publish/v1/report/index.html` gives a human-readable view
-- `publish/v1/provenance.json` records software context
-- `publish/v1/manifest.json` inventories the published files with digests
-- `publish/v1/discovered_samples.json` preserves the reviewed discovery set
-
-This is no longer “whatever the run happened to create.” It is a designed bundle.
+Those files are useful, but they are not yet a downstream contract. If another notebook
+or pipeline must browse `results/{sample}/` to discover what is safe to read, the publish
+story is still weak.
 
 ## Promote only the right surfaces
 
-The summarize and report rules already show a useful pattern:
+Start by choosing the smallest bundle that another program can understand:
+
+- `publish/v1/summary.json`
+- `publish/v1/summary.tsv`
+- `publish/v1/report/index.html`
+- `publish/v1/provenance.json`
+- `publish/v1/manifest.json`
+- `publish/v1/discovered_samples.json`
+
+That bundle is smaller than the full workflow state, but stronger as a contract because
+each file has a named role.
+
+The summarize and report rules should make the promotion visible:
 
 ```python
 rule summarize:
@@ -74,18 +60,30 @@ rule report:
         html="publish/v1/report/index.html"
 ```
 
-This pattern teaches two things:
+This matters because the report now depends on a machine-readable contract file rather
+than inventing a separate truth.
 
-- structured summaries become part of the public contract
-- the report is built from a structured public artifact rather than inventing a separate truth
+## Give every artifact one job
 
-That is a strong promotion path from internal details to downstream deliverables.
+The bundle works only if each artifact has a stable role:
 
-## Inventory the bundle explicitly
+- `summary.json` and `summary.tsv`: machine-facing contract files
+- `report/index.html`: human-facing interpretation
+- `manifest.json`: inventory and checksum evidence
+- `provenance.json`: software-context evidence
+- `discovered_samples.json`: reviewed discovery record
 
-The publish rule then gathers the promoted surfaces into `manifest.json`.
+Once those roles are clear, a downstream maintainer can ask better questions:
 
-Conceptually:
+- which file should my code read
+- which file should a human inspect
+- which file tells me whether the bundle is damaged
+- which file tells me what software context produced the bundle
+
+## Inventory the contract explicitly
+
+The publish rule should gather the promoted surfaces into a manifest with stable relative
+paths:
 
 ```python
 rule manifest:
@@ -99,21 +97,10 @@ rule manifest:
         json = "publish/v1/manifest.json"
 ```
 
-That rule matters because the bundle now says, explicitly, which files belong to the
-published contract.
+The important thing is not the syntax. It is the claim the manifest makes: these are the
+files that belong to the public bundle.
 
-In the current capstone bundle, the manifest paths are:
-
-- `discovered_samples.json`
-- `provenance.json`
-- `report/index.html`
-- `summary.json`
-- `summary.tsv`
-
-That list is already a reviewable statement about the bundle.
-
-The manifest should use stable relative paths and enough identity to verify every
-contract file:
+Use stable relative paths and checksums, for example:
 
 ```json
 {
@@ -125,81 +112,60 @@ contract file:
 }
 ```
 
-Exclude `manifest.json` from its own checksum list, or define an explicit detached
-signature scheme. Never write machine-specific absolute paths into the public inventory.
+Do not write absolute machine-specific paths into the manifest. The contract must travel
+with the bundle.
 
-## Keep artifact roles distinct
+## Verify the bundle from the consumer side
 
-The publish bundle works well because each artifact has one clear job:
-
-- `summary.json` and `summary.tsv`: machine-facing outputs
-- `report/index.html`: human-facing interpretation
-- `manifest.json`: inventory and digest evidence
-- `provenance.json`: software-context evidence
-- `discovered_samples.json`: reviewed discovery record
-
-This keeps downstream use clearer than a bundle where every file claims to be “the output.”
-
-## Verify the bundle as a contract
-
-The capstone's `verify_publish.py` script checks several important publish assumptions:
-
-- required files exist and are non-empty
-- schema versions are current
-- manifest paths match the expected published set
-- discovered samples match the summary units
-- the report still looks like HTML
-
-That matters because publish review should ask more than whether the workflow finished.
-
-It should ask whether the public bundle is still coherent.
-
-Verification should run from the bundle root and require no access to internal results:
+Now make the bundle prove itself through two routes:
 
 ```sh
 python scripts/verify_publish.py --publish publish/v1
 python scripts/consume_summary.py publish/v1/summary.json
 ```
 
-The second command is deliberately consumer-shaped. It catches a contract that looks
-valid to its producer but cannot be used through the documented interface.
+The first route checks the bundle’s internal coherence. The second route checks whether a
+consumer can use the documented machine-facing surface without any secret knowledge of the
+repository.
 
-## Think through a change scenario
+That second test is often where weak publish boundaries become obvious.
+
+## Think through change scenarios
 
 Now imagine three possible changes:
 
-1. `summary.json` gets a new optional field for extra downstream metadata.
+1. `summary.json` gains a new optional field.
 2. `report/index.html` is renamed to `report/report.html`.
-3. another team starts reading `results/sample-a/kmer.json` directly because it is convenient.
+3. another team starts reading `results/sample-a/kmer.json` because the publish bundle does not yet expose what they need.
 
-These changes do not mean the same thing.
+These changes do not mean the same thing:
 
 - the first may be a compatible additive change
-- the second is a likely publish-boundary change because the stable path moved
-- the third is a warning that the publish bundle may no longer be satisfying downstream needs
+- the second is likely a public-path compatibility problem
+- the third is a warning that the bundle may need to grow, not permission to bypass it
 
-That is exactly the kind of judgment this module is trying to teach.
+That is exactly the judgment this module is trying to teach.
 
-## What this example teaches
+## The repaired publish story
 
-```mermaid
-flowchart LR
-  internal["results/ internal detail"] --> promote["promote selected artifacts"]
-  promote --> bundle["publish/v1/ bundle"]
-  bundle --> manifest["manifest and checksums"]
-  bundle --> provenance["provenance evidence"]
-  bundle --> report["human-readable report"]
-  bundle --> downstream["downstream trust and reuse"]
-```
+By the end of the repair, the workflow can be described cleanly:
 
-The point is not to hide the internal workflow. The point is to stop forcing downstream
-users to depend on it directly.
+1. internal results remain workflow-operational detail
+2. a smaller versioned bundle becomes the downstream contract
+3. machine and human artifacts have different jobs
+4. manifests and provenance defend different parts of trust
+5. consumer tests review the bundle from the outside
 
-## Review summary
+That is what it means to promote results into a versioned publish bundle.
 
-If you can explain this example well, you understand the module:
+## Review questions for the repaired design
 
-- why internal results and published outputs are different promises
-- why the publish bundle needs distinct artifact roles
-- why manifests and provenance support bundle trust
-- why publish review is a contract review, not only a run review
+When you inspect a repository shaped like this, ask:
+
+1. which files are public promises and which remain internal workflow state
+2. which machine-facing artifact a downstream program should read first
+3. where integrity evidence lives and what it can actually prove
+4. which change would require a version discussion
+5. how the bundle would behave for a consumer that knows nothing about `results/`
+
+If those answers are visible, the module’s publish story has landed.

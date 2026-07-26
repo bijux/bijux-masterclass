@@ -1,176 +1,153 @@
 # Exercises
 
+Use these after reading the five core lessons and the worked example. The goal is to make
+your publish decisions visible through bundle design, verification evidence, and consumer
+tests, not through vague claims that the output “looks ready.”
 
-<!-- page-maps:start -->
-## Page Maps
+Do them in order. The set is one day-long progression:
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Publishing Downstream Contracts"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+- Exercises 1-3 separate internal outputs from public promises.
+- Exercises 4-6 build the versioned bundle and define artifact roles.
+- Exercises 7-8 defend integrity and consumer use.
+- Exercises 9-10 classify change and review downstream risk.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+For every answer, keep three things:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+- the boundary you are protecting
+- the evidence route you actually used
+- one short sentence explaining why the chosen publish surface helps a downstream user
 
-Use these exercises to practice publish judgment, not only publish vocabulary.
+## Exercise 1: Classify the current outputs
 
-The strongest answers will make the downstream contract visible and defensible.
+Take a workflow that produces internal results, logs, reports, and one or more structured
+summaries. Classify every output as one of these:
 
-## Exercise 1: Separate internal state from the public bundle
-
-You inherit a workflow with these outputs:
-
-- `results/sample-a/qc.json`
-- `results/sample-a/trim.json`
-- `results/sample-b/qc.json`
-- `logs/summarize.log`
-- `publish/summary.tsv`
-- `publish/report.html`
-
-Write a short review note that explains:
-
-- which files should remain internal
-- which files could belong in the published contract
-- what is still missing before the publish bundle is trustworthy
-
-Your answer should justify the boundary rather than only list files.
-
-## Exercise 2: Decide whether a change is compatible
-
-A workflow currently publishes `publish/v1/summary.json`.
-
-You are considering three changes:
-
-1. add a new optional field to the JSON
-2. rename the file to `published-summary.json`
-3. remove an existing field because it seems redundant
-
-Explain which of these may be compatible within `v1` and which should trigger a versioning
-discussion.
-
-## Exercise 3: Diagnose a weak integrity surface
-
-A publish bundle contains:
-
-- `summary.json`
-- `report/index.html`
-
-It does not contain:
-
-- a manifest
-- checksums
-- provenance
-
-Explain:
-
-- what downstream trust questions this bundle cannot answer well
-- why the report is not enough by itself
-- what integrity surfaces you would add first
-
-## Exercise 4: Clarify artifact roles
-
-A team says:
-
-> downstream users can scrape the report HTML, and maintainers can check the JSON if needed.
-
-Write a short response that explains:
-
-- why this is a weak contract design
-- which artifact should be authoritative for machine use
-- what role the report should play instead
-
-## Exercise 5: Review publish drift
-
-During a pull request review, you notice:
-
-- `publish/v1/report/index.html` was renamed
-- `manifest.json` was not updated
-- a notebook in another repository reads from `results/`
-
-Describe:
-
-- the publish-boundary risks you see
-- what should be repaired before approval
-- whether this looks like a versioning discussion, a repair within the current version, or both
-
-## Exercise 6: Build a minimal versioned bundle
-
-Promote a machine-readable summary and a human report from internal results into
-`publish/v1/`. Do not copy logs, scratch files, or unowned intermediates.
+- internal workflow state
+- diagnostic artifact
+- human-facing publish artifact
+- machine-facing publish artifact
 
 What to hand in:
 
-- the internal and public trees
-- an artifact-role table
+- the artifact-role table
+- one file that must remain internal
+- one file that should become part of the public contract
+- one missing artifact that keeps the current publish story weak
+
+## Exercise 2: Draw the first publish boundary
+
+Promote the smallest honest set of downstream-facing artifacts into `publish/v1/`.
+
+What to hand in:
+
+- the internal tree and public tree
 - the rules that own publication
-- an explanation of why each excluded file remains internal
+- one sentence for each included file explaining its job
+- one sentence for each excluded file explaining why it stays internal
 
-## Exercise 7: Generate and verify a manifest
+## Exercise 3: Separate machine and human surfaces
 
-Create a manifest with relative paths, sizes, and SHA-256 checksums. Verify it from the
-bundle root, then alter one byte in a published file and observe failure.
-
-What to hand in:
-
-- the manifest format and deterministic ordering rule
-- successful and failed verification transcripts
-- the corrupted path reported by the verifier
-- an explanation of what checksum verification proves and does not prove
-
-## Exercise 8: Write a downstream consumer test
-
-Write a small program that receives only the bundle path, validates `summary.json`, and
-uses one documented field. Prevent it from reading `results/` or repository configuration.
+Choose one machine-readable summary and one human-readable report from the same workflow.
+Explain why they are related but not interchangeable.
 
 What to hand in:
 
-- the consumer and schema
+- the authoritative machine-facing artifact
+- the human-facing artifact
+- the data relationship between them
+- one reason scraping the report would weaken the contract
+
+## Exercise 4: Write a manifest for the bundle
+
+Create a manifest that inventories the public files with stable relative paths and SHA-256
+checksums.
+
+What to hand in:
+
+- the manifest format
+- the ordering rule for entries
+- one successful verification transcript
+- one reason absolute paths do not belong in the contract
+
+## Exercise 5: Add provenance without confusing its role
+
+Generate a provenance artifact for the published bundle that records enough software
+context to explain the run later.
+
+What to hand in:
+
+- the provenance file
+- the software details it records
+- one trust question provenance answers well
+- one trust question provenance does not answer without the contract itself
+
+## Exercise 6: Write a consumer test
+
+Create a small program that receives only the bundle path and uses one documented
+machine-facing artifact. It must not read `results/`, repository configuration, or
+producer-only paths.
+
+What to hand in:
+
+- the consumer
+- the schema or validation route it relies on
 - a successful run against the bundle
-- a failure against an invalid fixture
 - one producer detail the consumer intentionally does not know
 
-## Exercise 9: Classify compatible changes
+## Exercise 7: Corrupt the bundle and detect it
 
-Test an optional field addition, a required field addition, a type change, and a path
-rename against the consumer from Exercise 8.
-
-What to hand in:
-
-- the outcome of each trial
-- a compatibility classification with reasoning
-- any schema or consumer adaptation needed
-- the change that requires a new public version
-
-## Exercise 10: Design a version migration
-
-Create a `publish/v2/` contract for one deliberate breaking change while preserving a
-clear route for existing `v1` consumers.
+Alter one published file after the manifest is generated and run the verifier again.
 
 What to hand in:
 
-- both contract trees
-- a migration note and deprecation policy
-- consumer tests for supported versions
-- evidence that internal workflow layout is still not part of either API
+- the corrupted path
+- the failed verification output
+- an explanation of what checksum verification proves
+- an explanation of what checksum verification does not prove
 
-## Mastery check
+## Exercise 8: Simulate a downstream compatibility check
 
-You have a strong grasp of this module if all ten answers consistently keep four ideas visible:
+Change one bundle field, path, or artifact role and test the consumer from Exercise 6
+against the new bundle.
 
-- internal workflow state is not automatically public
-- publish paths and meanings are a contract
-- manifests, checksums, provenance, and reports have different jobs
-- downstream trust must be reviewed, not assumed
+What to hand in:
+
+- the specific change
+- the consumer outcome
+- your compatibility classification
+- whether the fix belongs in the current version or in a new public version
+
+## Exercise 9: Design a deliberate version migration
+
+Create a `publish/v2/` contract for one breaking change while preserving a clear route for
+existing `v1` consumers.
+
+What to hand in:
+
+- both public trees
+- the migration note
+- supported-consumer tests
+- the reason internal workflow layout still does not belong to either API
+
+## Exercise 10: Review a full publish change like a downstream maintainer
+
+Review a change that touches publication rules, bundle contents, manifest logic,
+provenance, and a consumer-facing schema.
+
+What to hand in:
+
+- findings ordered by downstream trust impact
+- one corrected artifact-role table
+- the narrow verification route for each correction
+- one change that should be versioned, postponed, or removed
+
+## Mastery standard for this exercise set
+
+Across all ten answers, Module 06 wants the same habits:
+
+- you treat internal workflow state and public contracts as different promises
+- you keep machine and human surfaces distinct
+- you use manifests, checksums, and provenance for different jobs
+- you review publish drift from the consumer’s point of view
+
+If your answer says only "the files are in publish now," keep going.
