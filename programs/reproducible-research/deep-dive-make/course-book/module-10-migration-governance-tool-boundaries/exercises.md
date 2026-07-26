@@ -120,9 +120,71 @@ What to hand in:
 - the handoff artifact or interface if another tool becomes involved
 - one sentence on what evidence would prove the boundary is working
 
+## Exercise 6: Inventory target and output ownership
+
+List every public target, its promised outputs or side effects, and the rule or external
+system that owns them. Identify outputs with zero or multiple writers.
+
+What to hand in:
+
+- the inventory table
+- the commands used to find callers and writers
+- one ownership gap and one multi-writer risk
+
+## Exercise 7: Write characterization checks
+
+Before changing an inherited build, create durable checks for current package layout,
+no-op convergence, and serial-versus-parallel agreement.
+
+What to hand in:
+
+- the three checks
+- their initial results
+- an explanation of which behavior is contractual and which observed defect should not be
+  preserved
+
+## Exercise 8: Turn governance prose into verification
+
+Choose two governance rules, such as "CI calls only public targets" or "each trusted
+output has one writer," and design automated checks for them.
+
+What to hand in:
+
+- the enforceable rule text
+- the check command or test
+- one passing and one deliberately failing example
+- the review owner for changing the rule
+
+## Exercise 9: Compare Make with a neighboring tool
+
+Choose one real concern and compare Make with a workflow engine, package manager, CI
+service, or deployment system. Evaluate file-graph fit, remote state, retries,
+observability, and handoff artifacts.
+
+What to hand in:
+
+- a comparison table
+- the ownership decision
+- the exact interface between tools
+- independent verification on both sides of the boundary
+
+## Exercise 10: Produce a stewardship portfolio
+
+Review one real Make-based repository from entrypoint to release boundary. Make one
+bounded repair or boundary change while preserving proof and documenting ownership.
+
+What to hand in:
+
+- current-contract and risk review
+- durable characterization checks
+- the bounded change and its commit rationale
+- before-and-after evidence
+- governance rules and tool-boundary decision
+- a maintainer handoff that states remaining risks honestly
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants the same habits:
+Across all ten answers, the module wants the same habits:
 
 - you review behavior before proposing rewrites
 - you preserve proof while changing boundaries

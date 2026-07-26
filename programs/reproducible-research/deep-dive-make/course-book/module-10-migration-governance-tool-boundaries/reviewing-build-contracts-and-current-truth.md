@@ -97,7 +97,7 @@ For a first review, use this order:
 
 That order works because it turns a vague build into a legible product surface.
 
-## Step 1: name the public target contract
+## Name the public target contract
 
 Take the top-level target surface and write it down in plain language.
 
@@ -121,7 +121,7 @@ Look for contract drift:
 
 If the target contract is muddy, the review should say so explicitly.
 
-## Step 2: trace who owns each output
+## Trace who owns each output
 
 The next review question is simple:
 
@@ -151,7 +151,7 @@ The review issue is not "this uses a script." The issue is output ownership drif
 That is a real finding. It predicts flaky releases, confusing reruns, and bad incident
 triage later.
 
-## Step 3: look for hidden state on purpose
+## Look for hidden state on purpose
 
 Many build reviews stop at visible prerequisites. Strong reviews also ask what the build is
 quietly depending on.
@@ -180,7 +180,7 @@ The review question is not "does `MODE` exist?" It is:
 
 If the answer is no, you have found a semantic input the graph does not model.
 
-## Step 4: compare calm conditions to pressure conditions
+## Compare calm conditions to pressure conditions
 
 A legacy build often looks fine when run one way:
 
@@ -213,7 +213,7 @@ Many "legacy quirks" are really one of these:
 
 A review that never applies pressure is incomplete.
 
-## Step 5: classify findings before suggesting fixes
+## Classify findings before suggesting fixes
 
 Do not jump straight from evidence to edits. First classify the finding.
 

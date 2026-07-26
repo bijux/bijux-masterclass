@@ -40,6 +40,21 @@ This module is about stewardship:
 - recognizing anti-patterns before they turn into team folklore
 - drawing honest tool boundaries instead of fashionable ones
 
+## Plan for the day
+
+| Time | Activity | Evidence you keep |
+| --- | --- | --- |
+| 45 minutes | Inventory public targets, outputs, and writers | a current-contract table |
+| 75 minutes | Characterize serial, parallel, and no-op behavior | durable comparison results |
+| 60 minutes | Classify risks and tool ownership | a boundary decision record |
+| 75 minutes | Design enforceable governance checks | policy statements with proof routes |
+| 90 minutes | Work through the inherited research build | a review and change sequence |
+| 90 minutes | Complete the ten exercises | a stewardship portfolio |
+
+You are not required to replace Make. You are required to understand the current system
+well enough that keeping, repairing, or handing off a concern becomes an evidence-based
+decision.
+
 ## What this module is for
 
 By the end of Module 10, you should be able to explain five things clearly:
@@ -144,5 +159,6 @@ Do not move on until all of these are true:
 - you can write governance rules another maintainer could enforce
 - you can name recurring anti-patterns and explain why they are costly
 - you can defend one tool-boundary choice in terms of ownership and evidence
+- you can complete all ten exercises and leave a durable review another maintainer can repeat
 
 When those feel ordinary, Module 10 has done its job.

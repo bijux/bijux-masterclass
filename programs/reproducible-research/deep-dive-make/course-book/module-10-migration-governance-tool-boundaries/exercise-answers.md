@@ -35,7 +35,7 @@ vary. What should stay stable is the reasoning shape:
 - classify the finding before recommending a repair
 - preserve proof while changing contracts or boundaries
 
-## Answer 1: Write a first-pass build review
+## Exercise 1: Write a first-pass build review
 
 A strong answer does not try to solve everything. It makes the current system legible.
 
@@ -57,7 +57,7 @@ Why this is strong:
 
 Weak answers usually say only "the Makefile is messy" or "we should use a different tool."
 
-## Answer 2: Sequence a safe migration
+## Exercise 2: Sequence a safe migration
 
 A strong migration answer changes one boundary and preserves one proof route.
 
@@ -77,7 +77,7 @@ Why this is strong:
 - the answer does not remove evidence before the new route is trusted
 - retirement is based on proof, not optimism
 
-## Answer 3: Write a governance note that could actually be enforced
+## Exercise 3: Write a governance note that could actually be enforced
 
 A strong answer is short and operational.
 
@@ -101,7 +101,7 @@ Why this is strong:
 Weak governance notes use language like "try to keep things simple" because nobody can
 enforce that.
 
-## Answer 4: Diagnose one recurring antipattern
+## Exercise 4: Diagnose one recurring antipattern
 
 Choose one pattern and name the first honest recovery move.
 
@@ -119,7 +119,7 @@ Example:
 The key is to explain why the repair restores truth or ownership clarity, not just why it
 looks cleaner.
 
-## Answer 5: Make the tool-boundary argument
+## Exercise 5: Make the tool-boundary argument
 
 A strong answer focuses on ownership fit.
 
@@ -141,7 +141,81 @@ Why this is strong:
 - it keeps Make where it is still honest
 - it defines the handoff surface explicitly
 
-## What all five answers have in common
+## Exercise 6: Inventory target and output ownership
+
+A useful inventory distinguishes interfaces, files, and side effects:
+
+| Public target | Promise | Owned output or side effect | Writer |
+| --- | --- | --- | --- |
+| `all` | build normal analysis | `build/report.html` | report rule |
+| `dist` | build release bundle | `dist/report.tar.gz` | package rule |
+| `publish` | submit verified bundle | remote release record | publication service |
+
+Use `rg` to find target callers and `make --trace` to observe writers. An output absent
+from the table may be unowned; an output written by both `all` and `dist` is a
+multi-writer risk. The table is useful only when observed behavior and declared ownership
+agree.
+
+## Exercise 7: Write characterization checks
+
+Durable checks might include:
+
+```sh
+make all
+make -q all
+make -j1 dist && find dist -type f | sort > artifacts/layout-serial.txt
+make clean
+make -j8 dist && find dist -type f | sort > artifacts/layout-parallel.txt
+diff -u artifacts/layout-serial.txt artifacts/layout-parallel.txt
+```
+
+The paths can follow the repository's governed artifact location. Preserve intended
+package contents and convergence. Do not enshrine partial publication or nondeterministic
+files merely because the inherited build currently produces them; characterization must
+label defects separately from contracts.
+
+## Exercise 8: Turn governance prose into verification
+
+For "CI calls only public targets," parse or maintain the declared public-target list,
+search workflow Make invocations, and fail when a caller uses anything else. For
+"trusted outputs have one writer," inspect the Make database or maintain a targeted
+contract test for critical outputs.
+
+A strong submission deliberately changes a workflow to call an internal helper and shows
+the check fail. It also names who may approve public API changes. Automation enforces the
+rule; ownership governs legitimate changes to the rule.
+
+## Exercise 9: Compare Make with a neighboring tool
+
+A defensible comparison could look like:
+
+| Concern | Make | Publication service |
+| --- | --- | --- |
+| local file graph | strong fit | weak fit |
+| credentials and approvals | weak fit | strong fit |
+| remote retry state | awkward | owned feature |
+| handoff | archive plus checksum | accepted release record |
+
+The resulting boundary keeps deterministic local artifact production in Make and hands
+authentication, approval, retries, and remote status to the service. Both sides verify the
+archive checksum: Make before handoff and the service on receipt.
+
+## Exercise 10: Produce a stewardship portfolio
+
+A mastery portfolio is concise enough to review but complete enough to repeat. It contains:
+
+- public target, output writer, hidden input, and side-effect inventory
+- classified risks supported by dry-run, trace, database, convergence, and pressure checks
+- characterization checks that remain useful after the change
+- one bounded repair with the smallest credible ownership change
+- evidence that current contracts remain intact or deliberately changed
+- enforceable governance and an explicit tool handoff
+- unresolved risks, owners, and verification routes
+
+The change itself may be small. The advanced skill is preserving trust while improving
+ownership, not maximizing diff size.
+
+## What all ten answers have in common
 
 The best answers in this module usually do five things:
 

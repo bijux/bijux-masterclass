@@ -28,6 +28,21 @@ flowchart LR
 This example will follow one inherited Make-based build from first review to a migration
 plan that changes the system without erasing the proof harness.
 
+## Begin with an ownership inventory
+
+Before judging the build, fill one table:
+
+| Surface | Current owner | Observable evidence |
+| --- | --- | --- |
+| public target meanings | top-level `Makefile` and `make help` | dry-run and help output |
+| generated output writers | target rules and scripts | trace for each output |
+| release artifact contents | package rule | sorted archive listing |
+| remote publication state | upload script or service | remote receipt or status |
+
+An empty cell is a finding. This inventory is deliberately accessible to a beginner: it
+asks who owns a promise and how you would observe it, not whether the Makefile uses an
+advanced feature.
+
 ## The situation
 
 Assume you inherit a repository used by a research team:
@@ -77,7 +92,7 @@ publish:
 
 Nothing here is cartoonishly broken. That is exactly why it is a good teaching example.
 
-## Step 1: write the review before the plan
+## Write the review before the plan
 
 You start with Core 1 and write a short review.
 
@@ -121,25 +136,25 @@ The review conclusion is not "rewrite it." The review conclusion is:
 
 That is already a big improvement.
 
-## Step 2: preserve proof before splitting targets
+## Preserve proof before splitting targets
 
 You now apply Core 2.
 
-Before changing target names or scripts, they preserve ways to compare old and new
-behavior:
+Before changing target names or scripts, preserve durable ways to compare behavior:
 
 ```make
-.PHONY: legacy-release-check compare-release-layout
+.PHONY: release-consistency release-layout
 
-legacy-release-check:
+release-consistency:
 	@$(MAKE) -j1 release
 	@$(MAKE) -j8 release
 
-compare-release-layout:
+release-layout:
 	@find dist -type f | sort > build/current-release-layout.txt
 ```
 
-These are not permanent design triumphs. They are migration proof surfaces.
+These are contract checks, not disposable migration scaffolding. Keep them useful after
+the boundary changes by pointing them at the supported public route.
 
 The point is to preserve three questions:
 
@@ -149,7 +164,7 @@ The point is to preserve three questions:
 
 Without that, every later edit becomes harder to trust.
 
-## Step 3: narrow the target contracts
+## Narrow the target contracts
 
 The next repair is not technical cleverness. It is target meaning.
 
@@ -167,7 +182,7 @@ It resolves two issues immediately:
 - `prepare-release` no longer masquerades as a semi-public target
 - `publish` no longer needs to pretend it owns local package production
 
-## Step 4: move one boundary at a time
+## Move one boundary at a time
 
 You do not redesign everything at once.
 
@@ -186,7 +201,7 @@ Third boundary move:
 The important part is the order. Packaging must become truthful before the remote handoff
 can be argued clearly.
 
-## Step 5: sketch the repaired local build surface
+## Sketch the repaired local build surface
 
 After those moves, the shape is closer to this:
 
@@ -210,7 +225,9 @@ dist/report-bundle.tar.gz.sha256: dist/report-bundle.tar.gz
 	@sha256sum $< > $@
 
 publish: dist/report-bundle.tar.gz dist/report-bundle.tar.gz.sha256
-	@./scripts/upload-report.sh dist/report-bundle.tar.gz
+	@./scripts/upload-report.sh \
+	  dist/report-bundle.tar.gz \
+	  dist/report-bundle.tar.gz.sha256
 ```
 
 This is still not perfect. It is dramatically easier to review.
@@ -224,7 +241,7 @@ Why:
 
 That is the migration win.
 
-## Step 6: write governance before drift returns
+## Write governance before drift returns
 
 Now you use Core 3 so the repaired surface does not dissolve a month later.
 
@@ -240,7 +257,7 @@ They add a short stewardship note with rules like these:
 Notice how specific that last rule is. Governance works best when it protects the exact
 boundary that was hard-won during migration.
 
-## Step 7: classify the recurring antipatterns
+## Classify the recurring antipatterns
 
 Using Core 4, you can now name what was wrong in the inherited system:
 
@@ -255,7 +272,7 @@ Using Core 4, you can now name what was wrong in the inherited system:
 
 Once these are named, future reviews become faster and calmer.
 
-## Step 8: decide the real tool boundary
+## Decide the real tool boundary
 
 This is where Core 5 matters.
 
