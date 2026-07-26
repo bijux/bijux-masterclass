@@ -1,32 +1,17 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Generated Files Multi Output Pipeline Boundaries"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is not to
 show off Make syntax. The goal is to make your generation and pipeline reasoning visible.
+
+## How to work this exercise set
+
+Treat these as publication-design exercises, not just as codegen exercises.
+
+Work in this order:
+
+- Exercises 1-3: name generated boundaries and decide what the graph should represent
+- Exercises 4-6: create small truthful generation rules
+- Exercises 7-8: test recovery and failure behavior
+- Exercises 9-10: defend a full publication protocol under pressure
 
 Each exercise asks for three things:
 
@@ -41,6 +26,14 @@ For every generator, include a publication record:
 
 If the “commit event” column names several unrelated moves, explain how consumers are
 protected from observing a mixed generation.
+
+## Minimum evidence for every answer
+
+Try to include:
+
+- one graph or pipeline sketch
+- one trace or run transcript
+- one clear description of when outputs become trustworthy
 
 ## Exercise 1: Tell the graph story of one generated file
 
@@ -170,6 +163,15 @@ What to hand in:
 - the six command transcripts
 - a graph drawing that distinguishes generation, validation, publication, and consumption
 - one paragraph identifying the remaining publication guarantee and its limits
+
+## Before you read the answers
+
+Do not open `exercise-answers.md` until you can already point to:
+
+- one generated boundary you modeled honestly
+- one coupled-output repair you can defend
+- one failure that leaves trusted outputs untouched
+- one recovery path after deleting a generated artifact
 
 ## Mastery standard for this exercise set
 
