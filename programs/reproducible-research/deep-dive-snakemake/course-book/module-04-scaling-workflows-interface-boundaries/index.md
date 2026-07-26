@@ -35,13 +35,27 @@ and CI gates matter because they keep repository growth from turning into hidden
 
 ## What this module is for
 
-By the end of Module 04, you should be able to explain five things in plain language:
+By the end of Module 04, you should be able to explain these ideas in plain language:
 
 - when a workflow should stay in one visible graph and when it should split into named rule families
 - how `include:` and `module` solve different scaling problems
 - which files belong to a public file interface and which remain internal execution detail
 - how schemas and validation keep repository boundaries reviewable
 - what CI or proof gates should defend before a larger workflow change is trusted
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| baseline | map rule ownership and render the current rule graph | ownership table and graph |
+| includes | split coherent rule families while keeping orchestration visible | before/after rule lists |
+| modules | define one reusable boundary and reject one premature abstraction | interface decision record |
+| file APIs | document stable paths, schemas, and internal state | consumer-facing contract |
+| portable resources | declare needs without embedding scheduler commands | profile comparison |
+| independent practice | complete all ten exercises | refactored repository and review |
+
+The aim is not the largest number of files. Every split must make ownership, interfaces,
+or review easier to explain.
 
 ## Study route
 
@@ -153,5 +167,6 @@ Do not move on until all of these are true:
 - you can describe one schema or validation check that protects an interface boundary
 - you can say which gate should fail first if a scaling change quietly breaks the contract
 - you can explain one resource declaration without treating it as accidental scheduler trivia
+- you have completed all ten exercises and proved that the refactor preserved behavior
 
 When those become ordinary, Module 04 has done its job.

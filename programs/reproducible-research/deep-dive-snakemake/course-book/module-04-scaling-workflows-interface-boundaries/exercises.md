@@ -99,9 +99,69 @@ What to hand in:
 - the workflow-side resource distinction you would make visible
 - one sentence explaining what should remain policy rather than workflow meaning
 
+## Exercise 6: Refactor one Snakefile into rule families
+
+Start from a working Snakefile with at least six rules. Group them into two or three
+ownership-based includes while retaining a readable entrypoint.
+
+What to hand in:
+
+- the ownership map that justified each split
+- the resulting tree and top-level Snakefile
+- before/after `--list-rules` and dry-run evidence
+- one split you deliberately rejected
+
+## Exercise 7: Specify a module interface
+
+Choose a genuinely reusable rule family and write its interface before moving code.
+
+What to hand in:
+
+- named inputs, outputs, parameters, and software assumptions
+- the mapping from caller paths to module paths
+- one hidden global dependency you removed
+- a test showing the caller can consume the promised output
+
+## Exercise 8: Break and defend a file API
+
+Define a JSON or TSV public output with a schema. Deliberately remove or rename one
+required field and observe the validation failure.
+
+What to hand in:
+
+- the documented path and schema
+- valid and invalid fixtures
+- the targeted validation command
+- an explanation of why this is an interface change rather than an internal refactor
+
+## Exercise 9: Keep resource declarations portable
+
+Give two rule families meaningfully different CPU, memory, or runtime needs. Map those
+declarations through local and cluster-oriented profiles without embedding scheduler
+commands in the rules.
+
+What to hand in:
+
+- workflow-side resource declarations
+- both policy mappings
+- paired dry-runs
+- the invariant that makes the workflow executor-independent
+
+## Exercise 10: Review a complete scaling change
+
+Review a repository change that adds includes, one module, a file schema, and CI checks.
+Decide whether each boundary is justified and whether the evidence matches the claim.
+
+What to hand in:
+
+- findings ordered by impact
+- a graph comparison and public-contract validation
+- any abstraction that should be removed or postponed
+- the smallest sufficient gate set for future changes
+
 ## Mastery standard for this exercise set
 
-Across all five answers, Module 04 wants the same habits:
+Across all ten answers, Module 04 wants the same habits:
 
 - you split by named ownership rather than by file length alone
 - you treat interfaces as contracts rather than folder preferences

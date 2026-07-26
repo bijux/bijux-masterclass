@@ -50,7 +50,7 @@ The problem is growth:
 That is a good Module 04 starting point because the workflow is not broken. It is only
 getting hard to trust at scale.
 
-## Step 1: split by named rule ownership
+## Split by named rule ownership
 
 The first repair is not a module. It is a rule-family split.
 
@@ -71,7 +71,26 @@ the ownership boundary quickly.
 
 This is Core 1 becoming visible.
 
-## Step 2: promote only real reusable boundaries into modules
+Keep the entrypoint short but informative:
+
+```python
+configfile: "config/config.yaml"
+
+include: "workflow/rules/preprocess.smk"
+include: "workflow/rules/summarize_report.smk"
+include: "workflow/rules/publish.smk"
+
+rule all:
+    input:
+        "publish/v1/manifest.json"
+```
+
+The entrypoint still reveals the major rule families and final contract. A reader can
+follow one include at a time without losing the destination of the graph. Capture
+`snakemake --list-rules` and the rule graph before and after the split; file movement is
+not a successful refactor unless those surfaces preserve the intended behavior.
+
+## Promote only real reusable boundaries into modules
 
 Now ask whether one sub-workflow has a stable interface of its own.
 
@@ -85,7 +104,11 @@ This is Core 2:
 - includes group one visible graph by ownership
 - modules represent reusable workflow boundaries with explicit interfaces
 
-## Step 3: document the file contract explicitly
+An interface decision should name required inputs, promised outputs, configurable
+parameters, and assumptions. Hidden access to top-level globals is evidence that the
+candidate is not ready to become a module.
+
+## Document the file contract explicitly
 
 The refactor is still weak if another engineer cannot tell which paths are public.
 
@@ -98,7 +121,16 @@ So add or strengthen `FILE_API.md`:
 This is Core 3: a growing repository needs a smaller, documented public contract instead
 of letting `results/` become accidental API.
 
-## Step 4: align gates with the new boundaries
+Write the contract from a consumer's perspective:
+
+| Path | Stability | Meaning |
+| --- | --- | --- |
+| `publish/v1/manifest.json` | public | inventory and checksums for the release bundle |
+| `publish/v1/summary.json` | public | validated run-level summary with a documented schema |
+| `results/staged/` | internal | rebuildable intermediates with no compatibility promise |
+| `.snakemake/` | engine state | private execution metadata |
+
+## Align gates with the new boundaries
 
 After the split, CI should answer real review questions:
 
@@ -115,7 +147,7 @@ That means:
 
 This is Core 4: gates defend named boundaries instead of adding generic noise.
 
-## Step 5: keep executor-facing assumptions explainable
+## Keep executor-facing assumptions explainable
 
 Finally, the team reviews resources and executor-facing assumptions.
 

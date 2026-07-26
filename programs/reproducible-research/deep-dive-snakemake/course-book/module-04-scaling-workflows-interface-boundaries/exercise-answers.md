@@ -35,7 +35,7 @@ The strongest Module 04 answers usually do four things:
 - they choose one proportionate review surface
 - they describe the repair in terms of repository clarity, not architecture fashion
 
-## Answer 1: Choose one healthy rule-family split
+## Exercise 1: Choose one healthy rule-family split
 
 A strong answer sounds like this:
 
@@ -50,7 +50,7 @@ Why this is strong:
 - it names one real concern
 - it distinguishes an include-level split from a module-level split
 
-## Answer 2: Decide whether a boundary should become a module
+## Exercise 2: Decide whether a boundary should become a module
 
 A strong answer asks interface questions first.
 
@@ -72,7 +72,7 @@ Why this is strong:
 - it makes interface clarity the criterion
 - it avoids promoting a split just because the folder looks cleaner
 
-## Answer 3: Write a small file contract
+## Exercise 3: Write a small file contract
 
 A strong answer sounds like this:
 
@@ -86,7 +86,7 @@ Why this is strong:
 - it distinguishes public from internal paths clearly
 - it explains what kind of change becomes an interface event
 
-## Answer 4: Choose the right scaling gate
+## Exercise 4: Choose the right scaling gate
 
 A strong answer matches each question to the smallest honest surface:
 
@@ -103,7 +103,7 @@ The strongest answers also explain why the routes are different:
 - dry-run is too weak for public contract trust
 - verification is stronger than lint when the question is boundary alignment
 
-## Answer 5: Review one resource or executor-facing assumption
+## Exercise 5: Review one resource or executor-facing assumption
 
 A strong answer sounds like this:
 
@@ -117,7 +117,45 @@ Why this is strong:
 - it keeps resource distinctions visible in the workflow
 - it still leaves executor adaptation in the right layer
 
-## What all five answers should have in common
+## Exercise 6: Refactor one Snakefile into rule families
+
+A strong split groups rules by owned concern such as preprocessing, analysis, and
+publication. The entrypoint retains configuration, include order where relevant, and the
+final target. Before/after rule lists and dry-runs agree on visible rules and planned
+outputs. A rejected split might isolate one tiny rule with no distinct ownership; that
+would increase navigation cost without clarifying the graph.
+
+## Exercise 7: Specify a module interface
+
+The interface names what the reusable boundary consumes and promises without relying on
+caller globals. Path mappings are explicit at the call site, software assumptions are
+owned by the module, and a focused consumer test requests the mapped output. If callers
+must know private intermediate paths, the interface remains incomplete.
+
+## Exercise 8: Break and defend a file API
+
+The valid fixture passes a schema that describes required fields, types, and allowed
+values. Renaming a required field fails the targeted contract check even when the file is
+valid JSON. That failure is correct: parseability is weaker than compatibility, and a
+consumer-visible field change requires deliberate versioning or migration.
+
+## Exercise 9: Keep resource declarations portable
+
+Rules declare abstract needs such as threads, memory, and runtime. A local profile maps
+them to bounded workstation execution; a cluster profile maps the same needs to scheduler
+resources. Neither rule contains a queue name or submission command. The invariant is
+that resource policy can change without changing target paths, algorithms, or output
+semantics.
+
+## Exercise 10: Review a complete scaling change
+
+A strong review checks ownership before accepting new files, explicit interfaces before
+accepting a module, and consumer semantics before accepting a schema change. It compares
+the rule graph and validates public fixtures. Redundant wrappers or modules with hidden
+globals should be removed. Future gates should separately defend syntax/lint, planned
+graph shape, and the public file contract rather than rerunning unrelated heavy suites.
+
+## What all ten answers should have in common
 
 The best Module 04 answers usually:
 
