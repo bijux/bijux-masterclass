@@ -1,8 +1,10 @@
 # Deep Dive Make
 
-A program guide and executable capstone that teaches **GNU Make as a build-graph engine**—not a scripting language. The goal is simple: help you write Makefiles that are **truthful, race-free under `-j`, deterministic, and self-tested**, from your first real Makefile to long-lived build-system stewardship.
-
-> Validation runs from the monorepo root against the shared `program-validation.yml` workflow.
+A standalone course and executable capstone that teaches **GNU Make as a build-graph
+engine**, not a scripting language. It starts with a three-line Makefile and develops the
+skills needed to design truthful, parallel-safe, deterministic, and self-tested builds.
+Orientation, ten full-day modules, and 100 exercises take you from first contact to
+long-lived build-system stewardship.
 ---
 
 ## What this is
@@ -12,14 +14,15 @@ Most Makefiles “work” until they don’t: hidden inputs, phony ordering, sta
 **Deep Dive Make** is a structured path out of that mess. It teaches Make through a strict contract:
 
 - **Truthful DAG**: every dependency edge is explicit (depfiles, manifests, or principled stamps).
-- **Atomic publication**: no partial artifacts, no half-written outputs.
+- **Safe publication**: validate before publishing and use set-level atomicity where the
+  consumer contract requires it.
 - **Parallel safety**: `-j` speeds up builds without changing semantics.
 - **Determinism**: serial and parallel builds converge to identical results.
 - **Self-testing**: the build validates itself (convergence, equivalence, and failure modes).
 
 This is a practical step toward *real* understanding of Make: what it guarantees, what it does not, and how to design Makefiles that remain correct as projects grow.
 
-The course-book now has four stable surfaces:
+The course book has four learning surfaces:
 
 - `course-book/guides/` for learner routes, module promises, checkpoints, and capstone entry
 - `course-book/capstone/` for repository entry, command routing, review worksheets, and proof reading
@@ -57,12 +60,12 @@ Use the course in this order:
 
 ## What you get
 
-### 1) The program guide (10 modules)
+### 1) Orientation and ten teaching modules
 
-A compact, opinionated handbook with patterns, anti-patterns, exercises, and a real
-beginner-to-mastery progression. The module map above is the stable table of contents:
-each module title is short enough to scan, specific enough to guide review, and aligned
-to one shared naming style across the course-book surfaces.
+A beginner-to-advanced handbook with explanations, runnable demonstrations, worked
+examples, and ten exercises per teaching module. The 100 exercises move from reading a
+small graph to diagnosing concurrency, generation, release, performance, and governance
+problems in real repositories.
 
 Read on the website: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/
 
@@ -102,10 +105,10 @@ make PROGRAM=reproducible-research/deep-dive-make proof
 
 ```sh
 brew install make
-make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
-make PROGRAM=reproducible-research/deep-dive-make inspect
-make PROGRAM=reproducible-research/deep-dive-make test
-make PROGRAM=reproducible-research/deep-dive-make proof
+gmake PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough
+gmake PROGRAM=reproducible-research/deep-dive-make inspect
+gmake PROGRAM=reproducible-research/deep-dive-make test
+gmake PROGRAM=reproducible-research/deep-dive-make proof
 ```
 
 Use `capstone-walkthrough` first, `inspect` when you need the public boundary, `test`
@@ -167,11 +170,10 @@ Contributions that improve correctness, clarity, or reproducibility are welcome 
    ```sh
    make PROGRAM=reproducible-research/deep-dive-make test
    ```
-4. Open a PR against `master` or `main`
+4. Open a PR against `main`
 
 ---
 
 ## License
 
-MIT — see the repository root [LICENSE](https://github.com/bijux/bijux-masterclass/blob/master/LICENSE). © 2025 Bijan Mousavi <bijan@bijux.io>.
-
+MIT — see the repository root [LICENSE](https://github.com/bijux/bijux-masterclass/blob/main/LICENSE). © 2025-2026 Bijan Mousavi <bijan@bijux.io>.

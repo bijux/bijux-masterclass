@@ -2,14 +2,14 @@ INHERIT: ../../../mkdocs.shared.yml
 
 site_name: Deep Dive Make
 site_description: >-
-  Deep Dive Make is a ten-module program guide that teaches GNU Make from first-contact
-  basics to build-system mastery, with a correctness-first focus on deterministic,
+  Deep Dive Make is an orientation and ten-module course with 100 exercises that teaches
+  GNU Make from first contact to build-system stewardship through deterministic,
   parallel-safe design.
 site_author: Bijan Mousavi <bijan@bijux.io>
 site_url: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-make/
 repo_name: bijux/bijux-masterclass
 repo_url: https://github.com/bijux/bijux-masterclass
-edit_uri: edit/master/programs/reproducible-research/deep-dive-make/course-book/
+edit_uri: edit/main/programs/reproducible-research/deep-dive-make/course-book/
 
 docs_dir: course-book
 site_dir: ../../../artifacts/site/reproducible-research/deep-dive-make
@@ -197,4 +197,3 @@ plugins:
   - search
   - macros:
       include_dir: .
-

@@ -35,6 +35,21 @@ Deep Dive Make has four durable surfaces:
 3. capstone pages for executable corroboration
 4. reference pages for durable review and repair maps
 
+## A full module day
+
+Each teaching module is designed to support a complete day of self-study:
+
+1. run the smallest demonstration before reading the advanced case
+2. read the five core lessons and reproduce their commands
+3. work through the realistic example without skipping the evidence loop
+4. complete Exercises 1-5 to establish the module contract
+5. complete Exercises 6-10 to apply, pressure-test, and integrate it
+6. compare your reasoning with the answers only after recording your own
+7. keep the resulting commands, observations, and explanation in your portfolio
+
+Module 00 is orientation rather than one of the ten exercise-bearing modules. Modules
+01-10 contribute ten exercises each, for 100 exercises across the course.
+
 ## Choose the right surface
 
 | If you need... | Start here | Do not start with |
@@ -73,6 +88,7 @@ Use these as your stable defaults unless the current pressure gives you a strong
 3. read modules in order
 4. keep [Proof Ladder](proof-ladder.md) nearby
 5. enter the capstone through [Capstone Map](../capstone/capstone-map.md)
+6. use the [Completion Rubric](../reference/completion-rubric.md) to review your exercise evidence
 
 ## Good stopping point
 

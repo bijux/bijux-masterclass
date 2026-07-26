@@ -33,6 +33,25 @@ under change, concurrency, publication pressure, and review. The goal is not to 
 syntax. The goal is to build systems that another engineer can inspect, trust, and
 repair without folklore.
 
+## What you will build and prove
+
+Module 00 prepares your environment and study route. Modules 01-10 each provide a
+full-day learning plan, a runnable worked example, ten exercises, and detailed answer
+guidance. Across the course you will complete 100 exercises.
+
+```mermaid
+flowchart LR
+  orient["Orient and run a first Makefile"] --> foundations["01-03: graph truth and proof"]
+  foundations --> hardening["04-06: semantics, portability, generation"]
+  hardening --> systems["07-08: architecture and releases"]
+  systems --> stewardship["09-10: incidents and stewardship"]
+  stewardship --> portfolio["100-exercise evidence portfolio"]
+```
+
+Keep commands, observations, and short explanations for each exercise. The goal is not
+100 pasted snippets. The goal is a portfolio showing that you can predict behavior,
+observe what Make decided, and repair the graph without hiding a failure.
+
 ## Use this course if
 
 - you want a correct graph model instead of memorized recipes
@@ -103,6 +122,7 @@ The course home has done its job when you know:
 - which support page answers the next question
 - why the capstone is a proof surface rather than a first-contact playground
 - why later modules are consequences of earlier graph truth and publication choices
+- how the ten exercises in each module contribute to one cumulative evidence portfolio
 
 ## Failure modes this course is designed to prevent
 
