@@ -103,6 +103,32 @@ Describe:
 - what you would check after applying it
 - what a strong promotion note should include
 
+## Exercise 6: Queue a controlled parameter sweep
+
+Choose two parameters with three meaningful values each. Queue the candidates, predict
+the comparison table shape, and explain why the search space is scientifically justified.
+
+## Exercise 7: Reproduce one experiment outside the queue
+
+Select a candidate and reconstruct it from its recorded code, data, parameters, and
+environment. Compare the reproduced metrics with the experiment record.
+
+## Exercise 8: Detect a contaminated baseline
+
+Introduce one uncommitted semantic change before running a candidate. Use status and
+experiment evidence to show why comparison with the named baseline is no longer clean.
+
+## Exercise 9: Write a promotion review
+
+Prepare a promotion note that names baseline, candidate, changed controls, metric outcome,
+known limitations, and exact Git state to preserve. Include a reason to reject promotion.
+
+## Exercise 10: Manage experiment retention
+
+Classify a set of experiments as disposable, reproducible, decision-relevant, or
+release-relevant. Define what metadata and artifacts each class must retain and when
+cleanup is allowed.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep five ideas

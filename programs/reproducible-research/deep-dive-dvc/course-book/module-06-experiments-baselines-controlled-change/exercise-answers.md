@@ -121,6 +121,36 @@ Strong promotion note should include:
 The main lesson is that applying is not promotion until the intended state is reviewed and
 committed.
 
+## Answer 6: Queue a controlled parameter sweep
+
+A good sweep has a stated hypothesis and bounded values, not arbitrary combinatorics. The
+comparison table should preserve one row per candidate with stable parameter and metric
+columns. Resource limits belong in execution policy, not candidate meaning.
+
+## Answer 7: Reproduce one experiment outside the queue
+
+The recovered run should identify the same source, data, controls, and environment before
+comparing metrics. A mismatch is evidence to investigate; the experiment table alone does
+not prove every artifact needed for independent recovery still exists.
+
+## Answer 8: Detect a contaminated baseline
+
+Uncommitted semantic changes blur whether a result belongs to the baseline or candidate.
+Strong evidence names the dirty paths and either commits the intended state, stashes
+irrelevant work, or discards the run. Renaming the candidate does not repair provenance.
+
+## Answer 9: Write a promotion review
+
+The note must make the decision reconstructable. Rejection is appropriate when the gain
+violates safeguards, inputs differ unexpectedly, evidence is incomplete, or the candidate
+cannot be reproduced from preserved state.
+
+## Answer 10: Manage experiment retention
+
+Disposable trials may keep only aggregate learning. Reproducible candidates need semantic
+inputs and metrics. Decision-relevant candidates also need review rationale.
+Release-relevant candidates require durable artifacts, provenance, and recovery proof.
+
 ## Self-check
 
 If your answers consistently explain:
