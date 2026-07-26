@@ -1,42 +1,29 @@
 # Worked Example: Reading a Snakemake Repository Like an Architect
 
+This file ties the whole module together around one realistic problem:
 
-<!-- page-maps:start -->
-## Page Maps
+> a workflow repository still works, but new contributors cannot explain its shape without an oral tour.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Workflow Architecture File Apis"]
-  page["Worked Example: Reading a Snakemake Repository Like an Architect"]
-  capstone["Capstone evidence"]
+The question is not "how do we inspect every file?" The question is how to read the
+repository in an order that reveals ownership, path contracts, and drift risk quickly.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## The lab route
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Work through the example in this order:
 
-This worked example ties the module together.
+1. start at the entrypoint and identify visible assembly
+2. inspect named rule families before any helper code
+3. separate reusable workflow modules from local assembly boundaries
+4. confirm the public file contract and path promises
+5. finish by deciding which architectural drift matters now
 
-The goal is not to inspect every file in the repository. The goal is to show how a
-reviewer reads a growing workflow without getting lost in helper code or folder noise.
+## The starting situation
 
-## Starting situation
+Assume you inherit the capstone and need to answer three questions quickly:
 
-Imagine you inherit the capstone and need to answer three questions quickly:
-
-1. where is the workflow assembled?
-2. where do the main rule families live?
-3. where are path contracts and public promises documented?
+1. where is the workflow assembled
+2. where do the main rule families live
+3. where are public promises documented
 
 If you cannot answer those questions in a stable order, the repository architecture is
 already too opaque.
@@ -45,138 +32,114 @@ already too opaque.
 
 The top-level `Snakefile` is the right first file because it visibly:
 
-- loads and validates config
-- sets directory defaults
-- includes rule-family files
+- loads or validates config
+- includes rule families or modules
+- sets directory defaults when needed
 - defines the main target
 
 That is exactly what a good entrypoint should do.
 
-A reviewer learns the repository shape immediately:
+The entrypoint should tell a reviewer, early, which visible workflow story they are about
+to inspect. That is why the first architectural read should begin there rather than in
+`src/` or a helper directory.
 
-- `workflow/rules/common.smk`
-- `workflow/rules/preprocess.smk`
-- `workflow/rules/summarize_report.smk`
-- `workflow/rules/publish.smk`
+## Read rule families before helpers
 
-This is better than starting in helper code, because the entrypoint shows the visible DAG
-assembly first.
+Once the entrypoint is clear, inspect the named rule families.
 
-## Inspect rule families before helpers
+This gives a workflow story such as:
 
-Once the entrypoint is clear, the next useful move is to inspect the named rule families.
+- preprocessing creates internal working surfaces
+- summarization promotes selected artifacts toward publication
+- publishing assembles and verifies the public contract
 
-This gives a workflow story:
+That sequence teaches repository architecture and workflow meaning at the same time. If
+you jump into helper code first, you lose the visible graph and start from implementation
+detail instead of ownership.
 
-- preprocessing builds internal per-sample surfaces
-- summarize and report promote selected artifacts
-- publish defines the public bundle and its integrity surface
+## Separate local assembly from reusable workflow modules
 
-That sequence teaches architecture and workflow meaning at the same time.
+Now inspect `workflow/modules/` only after rule-family ownership is already visible.
 
-## Inspect reusable workflow surfaces separately
+That distinction matters:
 
-The repository also contains `workflow/modules/`.
+- rule families group one repository’s visible graph
+- workflow modules expose reusable workflow bundles with their own boundary
 
-That tells a reviewer something different:
+Seeing both in the same pass helps a reviewer ask a better question: is this file here
+because the repository needs local readability, or because the workflow boundary is
+genuinely reusable?
 
-- these are reusable workflow bundles
-- they are not the same kind of surface as the locally assembled rule families
+## Confirm the file API explicitly
 
-For example, `workflow/modules/qc_module/Snakefile` and
-`workflow/modules/screen_module/Snakefile` show reusable rule-template style boundaries,
-while `workflow/scripts/provenance.py` remains workflow-adjacent step logic.
+Architecture review is incomplete until the path contracts are visible.
 
-That is a useful architectural distinction.
-
-## Inspect package code only after workflow boundaries are visible
-
-The capstone also has `src/capstone/`.
-
-That is the right place to expect reusable implementation code such as:
-
-- `trim_fastq.py`
-- `kmer_profile.py`
-- `screen_panel.py`
-
-By the time a reviewer reaches this layer, they should already know which rule or module
-surface owns the orchestration boundary.
-
-That prevents package code from becoming the first and only story of the repository.
-
-## Confirm path contracts
-
-Architecture review is incomplete until the path contracts are visible too.
-
-The capstone keeps those in:
+The capstone keeps those in surfaces such as:
 
 - `workflow/CONTRACT.md`
 - `workflow/contracts/FILE_API.md`
-- `capstone/docs/file-api.md`
+- publish-facing contract notes
 
-Those docs answer questions the directory tree alone cannot:
+Those docs answer questions the tree alone cannot:
 
-- which workflow paths are stable
+- which workflow paths are public
 - which published paths are stable
-- what kinds of changes count as contract changes
+- which changes count as contract changes instead of internal refactors
 
-This is where architecture becomes reviewable rather than intuitive.
+This is where architecture stops being intuitive and becomes reviewable.
 
-## Trace one artifact end to end
+## Trace one artifact through its owners
 
-Use a concrete public output such as `publish/v1/summary.json` and record the chain:
+Take one concrete public output such as `publish/v1/summary.json` and record the route:
 
 ```mermaid
 flowchart LR
-  entry["Snakefile<br/>requests publish target"]
-  family["workflow/rules/publish.smk<br/>owns promotion"]
-  script["workflow/scripts/<br/>adapts execution"]
-  package["src/<br/>owns reusable logic"]
-  api["FILE_API.md<br/>defines consumer promise"]
+  entry["Snakefile requests publish target"]
+  family["workflow/rules/... owns promotion"]
+  script["workflow/scripts/... adapts execution"]
+  package["src/... owns reusable logic"]
+  api["FILE_API.md defines consumer promise"]
 
   entry --> family --> script --> package --> api
 ```
 
-Not every artifact passes through every layer. That is useful information. A missing
-layer is not a defect, while an unexplained dependency between nonadjacent layers often
-is.
+Not every artifact passes through every layer. That is useful information. A missing layer
+is not a defect. An unexplained jump across layers often is.
 
-## A bounded review route
+## Catch architecture drift before it hardens
 
-```mermaid
-flowchart LR
-  snakefile["Snakefile"] --> rules["workflow/rules/"]
-  rules --> modules["workflow/modules/"]
-  rules --> scripts["workflow/scripts/"]
-  modules --> package["src/capstone/"]
-  rules --> contracts["workflow/CONTRACT.md + FILE_API.md"]
-  contracts --> publish["publish/v1/"]
-```
+Now compare the documented repository shape with the actual one.
 
-The point of this route is to keep visible ownership ahead of implementation detail.
+Typical drift signals include:
 
-## A useful contrast
+- a crowded entrypoint accumulating hidden logic again
+- helper code becoming the first place reviewers must look
+- public paths being used without contract updates
+- modules or directories whose names no longer reveal ownership
 
-Weak reading order:
+At this stage, the review should not ask only “does it run?” It should ask “does the
+repository still teach its own shape?”
 
-- open `src/capstone/` first
-- browse helpers until the workflow shape slowly appears
+## The repaired architecture story
 
-Strong reading order:
+By the end of the walkthrough, the repository can be described cleanly:
 
-- start with `Snakefile`
-- inspect named rule families
-- inspect modules and scripts by role
-- inspect package code once orchestration is already legible
-- confirm path contracts in the contract docs
+1. the entrypoint reveals visible assembly
+2. rule families carry named ownership
+3. reusable modules are distinct from local structure
+4. file APIs define public path promises
+5. helper and package code support the workflow instead of replacing its story
 
-The second route produces architectural understanding faster and with less guesswork.
+That is what it means to read a Snakemake repository like an architect.
 
-## What this example teaches
+## Review questions for the repaired design
 
-If you can explain this example well, you understand the module:
+When you inspect a repository shaped like this, ask:
 
-- why entrypoint clarity matters
-- why rule families and modules solve different architecture questions
-- why helper code should not become the first repository story
-- why file APIs and contract docs belong to architecture review
+1. which surface should a new maintainer read first and why
+2. which layer owns one public artifact at each step
+3. where the path contract becomes explicit
+4. which helper or package boundary is supporting the workflow and which one is swallowing it
+5. which drift signal would justify the next structural refactor
+
+If those answers are visible, the module’s architecture story has landed.
