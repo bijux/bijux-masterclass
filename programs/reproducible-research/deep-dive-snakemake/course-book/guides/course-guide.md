@@ -1,32 +1,10 @@
 # Course Guide
+Use this page when you want the big picture without losing the learner-first route. Deep
+Dive Snakemake has several surfaces, but they are not equally useful at every stage. The
+central rule is simple:
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Course Guide"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this guide is a support hub, not another chapter.
-Read the second diagram as the loop: identify the kind of help you need, choose the
-matching surface, then leave with one smaller next move.
+> Learn the workflow idea in a small setting first, then use the capstone to confirm it
+> in a larger repository.
 
 Deep Dive Snakemake has four durable surfaces:
 
@@ -37,6 +15,23 @@ Deep Dive Snakemake has four durable surfaces:
 
 The teaching arc contains ten learning days and one hundred exercises. Modules are the
 course; guides and references help you navigate or diagnose them.
+
+## The recommended reading order
+
+```mermaid
+flowchart LR
+  start["Start Here"] --> orient["Module 00"]
+  orient --> early["Modules 01-03"]
+  early --> middle["Modules 04-06"]
+  middle --> late["Modules 07-10"]
+  late --> capstone["Capstone and review surfaces"]
+```
+
+That order matters because later skills depend on earlier clarity:
+
+- dynamic workflows are weak without file-contract discipline
+- publish trust is weak without explicit internal boundaries
+- stewardship language is weak without working evidence
 
 ## Choose the right surface
 
@@ -57,6 +52,15 @@ course; guides and references help you navigate or diagnose them.
 | policy and scaling boundaries | Modules 03-05 | profiles, scaling interfaces, helper-code boundaries, and honest software seams |
 | publish and architecture surfaces | Modules 06-08 | downstream contracts, repository file APIs, and operating-context boundaries |
 | incident and governance judgment | Modules 09-10 | observability, incident evidence, migration boundaries, and stewardship judgment |
+
+## What belongs in each surface
+
+| Surface | Use it for | Do not expect it to do |
+| --- | --- | --- |
+| orientation | getting ready, building study rhythm, seeing the whole arc | teaching advanced Snakemake features |
+| modules | learning one day-sized concept deeply | proving everything about the capstone |
+| capstone | seeing the idea survive a realistic repository | acting as first contact for a beginner |
+| reference | reviewing, repairing, and checking boundaries | replacing the lesson sequence |
 
 ## Daily learning route
 
@@ -89,6 +93,18 @@ Use these as your stable defaults unless the current pressure gives you a strong
 3. read modules in order
 4. keep [Proof Ladder](proof-ladder.md) nearby
 5. enter the capstone through [Capstone Map](../capstone/capstone-map.md)
+
+## A warning about skipping ahead
+
+The course is intentionally cumulative. If you jump to a later module because it sounds
+more advanced, you often borrow vocabulary without the model underneath it.
+
+If a later module feels compelling, ask which earlier skill it depends on:
+
+- executor policy depends on workflow semantics
+- publish review depends on explicit internal surfaces
+- incident response depends on stable proof routes
+- migration judgment depends on all of the above
 
 ## Good stopping point
 

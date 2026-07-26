@@ -1,36 +1,23 @@
 # Start Here
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Start Here"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this page is for choosing the first honest route,
-not for replacing the course. Read the second diagram as the loop: choose one route,
-anchor in Module 00, and leave with one stable next move.
-
 Deep Dive Snakemake begins with one text file and grows toward production workflow
 stewardship. You will run examples, predict DAG behavior, inject failures, and complete
 one hundred exercises. No previous Snakemake experience is required.
+
+Start with one small workflow, not with the capstone. Your first job is to see Snakemake
+plan and execute one honest file contract.
+
+## Your first hour
+
+If you only have one hour today, use it like this:
+
+1. Confirm `snakemake --version` works.
+2. Complete the first workflow in [Module 00](../module-00-orientation/index.md).
+3. Run a dry-run and explain why the planned job exists.
+4. Run the workflow twice and explain why the second run does no work.
+5. Change the input file and explain why the output becomes eligible again.
+
+That is enough for a real start. You do not need checkpoints, clusters, or the capstone
+yet.
 
 ## Use this page when
 
@@ -43,6 +30,13 @@ one hundred exercises. No previous Snakemake experience is required.
 - replace the module sequence with support-page browsing
 - enter the capstone before the local concept is legible
 - choose the strongest proof route by default
+
+## What not to do on day one
+
+- Do not start with the whole capstone repository.
+- Do not treat dry-run output as optional.
+- Do not rush into profiles or executors before one local rule is clear.
+- Do not read answer pages before you already have your own failed prediction.
 
 ## Best first pass
 

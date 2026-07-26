@@ -1,34 +1,19 @@
 # Learning Contract
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Learning Contract"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when you need to reset how to study the program. Deep Dive Snakemake is not
 built for passive reading. It is built for readers who can explain one workflow
 boundary, name the failure it prevents, and point to the command or artifact that proves
 the claim.
+
+## The short version
+
+The course asks you to do three honest things:
+
+1. predict before you run
+2. observe what Snakemake actually planned or did
+3. explain the result in workflow-contract language, not in vibes
+
+If you skip prediction, you lose the chance to test your model. If you skip observation,
+you fall back to guessing. If you skip explanation, commands become rituals.
 
 ## What the program is asking from you
 
@@ -66,6 +51,17 @@ Use this loop:
 
 The goal is not speed. The goal is leaving each module with something you can defend in
 review.
+
+## What good progress looks like
+
+At the end of a strong study session, you should have:
+
+- one workflow, dry-run, or review artifact you can explain without notes
+- one mistake you can now describe clearly
+- one smaller next step, not five open reading tabs
+- one believable reason the current proof route was enough
+
+That is stronger than finishing more pages without understanding them.
 
 ## The proof surfaces you should keep reaching for
 

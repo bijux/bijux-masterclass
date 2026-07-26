@@ -5,6 +5,15 @@ workflow stewardship. Across ten teaching modules and one hundred exercises, you
 Snakemake through runnable examples, failure experiments, architecture reviews, and a
 complete capstone.
 
+This is a ten-session course for self-study as much as for classroom follow-up. Each
+session is meant to stand on its own for a learner who missed the live demos:
+
+- a plain-language overview of the day’s workflow idea
+- a smallest useful demonstration you can run quickly
+- a worked example that expands the same idea under pressure
+- ten exercises that move from warm-up to repair, design, and review
+- an exit bar so you know whether to continue or repeat the lesson
+
 > CI executes full confirmation runs including workflow execution and artifact validation.
 
 ---
@@ -54,6 +63,22 @@ Use the course in this order:
 4. Use `course-book/guides/module-checkpoints.md` at the end of each learning day.
 5. Enter the capstone only when the smaller module example is already clear.
 6. Use reference and pressure-route pages for a specific question, not as a replacement for the teaching arc.
+
+## How one study day works
+
+Every module is written to support a serious day of independent study.
+
+| Study block | What you do | What you keep |
+| --- | --- | --- |
+| first contact | run the smallest workflow example | one prediction and one observed result |
+| core lesson | read the concept pages slowly | notes on what changed in your mental model |
+| guided practice | rebuild the worked example yourself | a workflow artifact you can explain |
+| exercises 1-5 | establish the local contract and evidence loop | dry-runs, summaries, and short explanations |
+| exercises 6-10 | repair, extend, or review a stronger workflow | a small portfolio of commands and outcomes |
+| exit check | test yourself before moving on | a clear yes-or-no answer about readiness |
+
+If the course starts feeling like too many pages, return to this table. The goal is to
+learn by predicting, running, observing, and explaining, not by browsing.
 
 ---
 
