@@ -28,6 +28,15 @@ flowchart LR
 Use these after reading the five core lessons and the worked example. The goal is to make
 your reasoning explicit.
 
+For every proposed selftest, include a deliberate defect that should make it fail. State
+the protected claim before showing the test implementation. A check that cannot detect a
+small relevant defect is activity, not evidence.
+
+Keep the positive and negative runs together:
+
+| Protected claim | Healthy observation | Injected defect | Expected failure |
+| --- | --- | --- | --- |
+
 ## Exercise 1: Stabilize discovery
 
 Take one discovery step in the simulator and explain how you would guarantee stable order

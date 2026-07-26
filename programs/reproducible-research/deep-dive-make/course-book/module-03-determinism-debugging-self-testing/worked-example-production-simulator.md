@@ -186,6 +186,47 @@ Open `tests/run.sh` and find the hidden-input check. Before running it, explain 
 the test introduces and what observation should make the test pass. A negative test is
 useful only when you understand why failure is expected.
 
+## Make the proof fail on purpose
+
+A selftest you have only seen pass is difficult to trust. Choose one reversible defect:
+
+- remove one generated-header prerequisite
+- replace a sorted discovery list with unsorted shell discovery
+- make two parallel recipes share a temporary path
+- change a modeled flag without updating its evidence
+
+Before editing, write the selftest section you expect to fail and why. Introduce only
+that defect, run the narrow section, and save the failure. Restore the correct rule and
+rerun the same section.
+
+Your record should contain:
+
+```text
+Claim:
+Defect introduced:
+Expected failing check:
+Observed failure:
+Repair:
+Observed pass:
+```
+
+This is mutation testing at a human scale. It proves that the check is connected to the
+contract it claims to protect. If the selftest still passes, do not congratulate the
+build; strengthen the test or correct your understanding of its scope.
+
+## Build a causality note from one trace
+
+Choose one rebuilt target and write no more than five lines:
+
+1. requested target
+2. prerequisite that changed
+3. trace line that names the reason
+4. downstream target made stale by that rebuild
+5. whether the next identical run converged
+
+This bounded note is more useful in review than a complete terminal transcript. It turns
+diagnostic output into an explanation another learner can check.
+
 ## What this example should teach you
 
 By the time you finish this file, you should be able to point at the simulator and say:

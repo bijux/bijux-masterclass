@@ -44,6 +44,30 @@ By the end of Module 03, you should be able to explain four things clearly:
 - which targets are real public contracts for CI and which are only local conveniences
 - how to test the build system itself for convergence and equivalence
 
+## Debug one claim at a time
+
+“The build is nondeterministic” is too large to investigate. Replace it with a claim you
+can falsify:
+
+- the discovered source list changes order
+- the same declared inputs produce different bytes
+- a second successful run still executes recipes
+- `-j1` and `-j8` publish different artifact sets
+- CI calls a target whose meaning differs from the local target
+
+Use the narrowest observation for the claim:
+
+| Claim | First observation |
+| --- | --- |
+| source membership or order changed | print the rooted, sorted source variable |
+| a target rebuilt unexpectedly | `make --trace TARGET` |
+| the graph does not converge | build, then `make -q TARGET; echo $?` |
+| concurrency changes results | compare sorted checksum manifests |
+| CI and local behavior differ | compare the exact public target and inputs |
+
+This table is a debugging discipline, not a list of magic commands. If the first
+observation does not answer the question, record what it ruled out before escalating.
+
 ## Plan for the day
 
 | Block | Activity | Evidence you should produce |
@@ -57,6 +81,10 @@ By the end of Module 03, you should be able to explain four things clearly:
 
 Do not treat deterministic output as “the command succeeded twice.” Compare the declared
 artifacts or their checksums.
+
+Likewise, do not treat a passing product test as proof that the build graph is correct.
+A stale binary can pass its tests. Build-system tests must manipulate inputs and inspect
+rebuild, no-op, failure, and concurrency behavior.
 
 ## Study route
 
