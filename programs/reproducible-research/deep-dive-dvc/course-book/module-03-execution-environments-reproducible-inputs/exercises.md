@@ -96,6 +96,36 @@ Describe:
 - how you would decide whether the difference is acceptable or needs escalation
 - what kind of repair might follow if the current environment strategy is too weak
 
+## Exercise 6: Capture an environment fingerprint
+
+Run one pipeline stage and record the interpreter, operating system, dependency lock
+digest, relevant tool versions, and container image digest if used. Identify which values
+can change result meaning.
+
+## Exercise 7: Break an environment deliberately
+
+Change one dependency version while keeping code, data, and parameters fixed. Compare the
+output and logs, then decide whether the difference is deterministic, tolerated, or a
+release blocker.
+
+## Exercise 8: Compare lockfile and container guarantees
+
+Write a table showing what a language lockfile and a container digest each constrain.
+Include operating-system libraries, hardware, environment variables, network access, and
+entry commands.
+
+## Exercise 9: Design an environment drift gate
+
+Specify a CI check that detects accidental environment drift before accepting a result.
+Name its inputs, evidence artifact, failure message, and the exception process for an
+intentional upgrade.
+
+## Exercise 10: Reproduce across two contexts
+
+Run a small stage locally and in a second context such as CI, a container, or another
+machine. Compare content digests and runtime evidence, and explain any difference without
+assuming byte identity is always required.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep four ideas

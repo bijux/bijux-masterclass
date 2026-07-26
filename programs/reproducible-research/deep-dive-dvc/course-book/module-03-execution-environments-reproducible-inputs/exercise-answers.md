@@ -111,6 +111,38 @@ Possible repair if the strategy is too weak:
 - treat CI more explicitly as the canonical proof environment
 - document acceptable drift more clearly
 
+## Answer 6: Capture an environment fingerprint
+
+A useful fingerprint is compact but discriminating: exact runtime and tool versions,
+lockfile hash, image digest, platform, and declared variables. Values that alter numerical
+libraries, locale, seeds, or external services may affect meaning and belong in review.
+
+## Answer 7: Break an environment deliberately
+
+The answer should preserve all non-environment inputs, show the changed dependency, and
+compare outputs with an appropriate tolerance. A difference becomes actionable only after
+the team states whether exact bytes, bounded metrics, or semantic equivalence is required.
+
+## Answer 8: Compare lockfile and container guarantees
+
+A lockfile constrains resolved language packages but not the host kernel or all native
+libraries. A container digest constrains a broader filesystem image but not hardware,
+runtime flags, secrets, or network responses. Neither removes the need for declared
+execution policy.
+
+## Answer 9: Design an environment drift gate
+
+A strong gate compares governed lock or image identities, records the resolved environment
+as an artifact, and fails with the exact changed boundary. Intentional upgrades should
+arrive with result comparison and review, not a blanket bypass.
+
+## Answer 10: Reproduce across two contexts
+
+The comparison should include input identities, commands, environment fingerprints, and
+output criteria. Matching digests are strong evidence when expected. For numerically
+sensitive work, documented tolerances and stable scientific conclusions may be the honest
+contract.
+
 ## Self-check
 
 If your answers consistently explain:
