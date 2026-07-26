@@ -82,6 +82,34 @@ Decide whether you would reject the promotion or repair it before acceptance.
 
 Explain what evidence or bundle changes you would require.
 
+## Exercise 6: Build a deterministic release manifest
+
+Create a manifest that lists every promoted file, byte size, checksum, source revision,
+data identity, parameter identity, and schema version. Regenerate it and explain any
+unstable field.
+
+## Exercise 7: Verify a bundle as a consumer
+
+Move a release bundle outside the working repository. Using only its public instructions,
+verify integrity, identify provenance, read metrics, and determine compatibility.
+
+## Exercise 8: Separate registry and DVC-remote duties
+
+Write an ownership table for internal cache objects, approved release artifacts, metadata,
+retention, access control, and consumer support. Assign each duty to the DVC remote,
+registry, repository, or another named system.
+
+## Exercise 9: Compare two promoted releases
+
+Produce a review that connects source, data, parameters, metrics, and artifact checksums
+across two releases. Distinguish intended change from unexplained drift.
+
+## Exercise 10: Design a promotion gate
+
+Specify ordered checks for completeness, reproducibility, policy approval, immutable
+identity, and consumer verification. State which failures block publication and which
+require an explicit documented exception.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep five ideas

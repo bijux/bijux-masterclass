@@ -105,6 +105,37 @@ If the evidence can be regenerated and matched to recorded DVC state, repair is 
 If the team cannot establish which state produced the files, the promotion should not be
 accepted.
 
+## Answer 6: Build a deterministic release manifest
+
+The manifest should sort entries and exclude creation times or absolute workspace paths
+unless they are deliberate contract fields. Repeated generation from identical inputs
+should produce identical bytes so the manifest itself can be verified.
+
+## Answer 7: Verify a bundle as a consumer
+
+A consumer should not need the producer's cache, shell history, or private directory
+layout. The bundle must carry integrity data, provenance, schema and compatibility
+information, metric meaning, and a clear verification command.
+
+## Answer 8: Separate registry and DVC-remote duties
+
+The DVC remote commonly supports producer-side recovery and reuse. A registry or release
+store serves approved immutable products and consumer policy. Git records declarations
+and review history. Treating the cache as a public registry weakens both retention and
+support expectations.
+
+## Answer 9: Compare two promoted releases
+
+The review traces every intended difference to a governed input or decision and verifies
+new artifact identities. A changed checksum without a corresponding source, data,
+parameter, or process explanation is drift requiring investigation.
+
+## Answer 10: Design a promotion gate
+
+Integrity, required files, provenance, recovery evidence, approval, and consumer-side
+verification should block publication when absent. Exceptions must name owner, scope,
+expiry, and residual risk; an undocumented retry is not an exception process.
+
 ## Self-check
 
 If your answers consistently explain:
