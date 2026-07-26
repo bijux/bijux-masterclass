@@ -1,30 +1,4 @@
 # Module 08: Release Engineering and Artifact Contracts
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Release Engineering Artifact Contracts"]
-  page["Module 08: Release Engineering and Artifact Contracts"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Building something locally is not the same as delivering it. Module 08 is about the point
 where a build becomes a release contract:
 
@@ -34,6 +8,12 @@ where a build becomes a release contract:
 - and which publication steps other humans and systems are allowed to trust
 
 This module turns "the build finished" into "the release boundary is clear."
+
+## Why this day matters
+
+Release work is where a build becomes public. A vague local artifact may still help the
+developer who created it, but it is not yet a trustworthy contract for another human,
+another machine, or a later audit.
 
 ## Plan for the day
 
@@ -59,6 +39,20 @@ By the end of Module 08, you should be able to explain five things clearly:
 - how to make install and publication steps safe and repeatable
 - how to diagnose whether a broken release came from build truth, package truth, or publish truth
 
+## The live demo for this module
+
+Use one tiny bundle and one repeatable install rehearsal as the anchors for the day:
+
+```mermaid
+flowchart LR
+  stage["Stage a small bundle tree"] --> archive["Archive it with declared layout"]
+  archive --> verify["List contents and verify identity"]
+  verify --> install["Install into an empty destination root"]
+  install --> repeat["Repeat and compare manifests"]
+```
+
+That sequence keeps the lesson focused on what the consumer can inspect and trust.
+
 ## Review the release as its consumer
 
 The producer knows which command ran. The consumer receives files. Review from that side:
@@ -82,6 +76,14 @@ For a candidate release, answer:
 
 A green `make dist` answers none of these by itself. The module is successful when the
 artifact is understandable without access to the producer’s terminal history.
+
+## The question to keep asking
+
+Whenever you add a release step, ask:
+
+> What exact promise does this step make to the consumer?
+
+If the promise is unclear, the release surface is unclear too.
 
 ## Study route
 
@@ -142,6 +144,16 @@ Good Module 08 answers usually mention one or more of these:
 - evidence that travels with the release without redefining it
 - an install step that treats the destination as a contract
 - a failure classified by the truth boundary it violated
+
+## What a strong Module 08 day looks like
+
+By the end of the day, you should have:
+
+- defined one release target in plain language
+- staged one bundle tree you can explain file by file
+- verified one artifact without re-running the build
+- installed once into an empty root and repeated the installation safely
+- classified one release defect by the boundary it violated
 
 ## Commands to keep close
 

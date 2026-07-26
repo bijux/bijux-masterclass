@@ -1,32 +1,15 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Release Engineering Artifact Contracts"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is not to
 show off packaging commands. The goal is to make your release-boundary reasoning visible.
+
+## How to work this exercise set
+
+Treat these as release rehearsals, not as packaging trivia:
+
+- Exercises 1-3: define the release contract, layout, and evidence policy
+- Exercises 4-6: stage and inspect consumer-facing artifacts
+- Exercises 7-9: prove repeatability, verification, and install safety
+- Exercise 10: combine the whole release route in one bounded rehearsal
 
 Each exercise asks for three things:
 
@@ -40,6 +23,14 @@ Submit a consumer evidence packet for Exercises 6-10:
 | --- | --- | --- | --- | --- |
 
 The packet must be understandable without the command history that produced the release.
+
+## Minimum evidence for every answer
+
+Try to include:
+
+- one consumer-visible artifact or listing
+- one identity or verification observation
+- one explanation of what belongs inside the release and what stays outside
 
 ## Exercise 1: Write a clear `dist` contract
 
@@ -171,6 +162,15 @@ What to hand in:
 - a transcript of the successful rehearsal
 - both failure transcripts and the boundary each one protects
 - a statement of what remains deliberately outside Make
+
+## Before you read the answers
+
+Do not open `exercise-answers.md` until you can already point to:
+
+- one release target with a clear contract
+- one bundle boundary you can defend
+- one checksum or manifest that supports, but does not redefine, artifact identity
+- one installation route that stays inside its declared destination
 
 ## Mastery standard for this exercise set
 
