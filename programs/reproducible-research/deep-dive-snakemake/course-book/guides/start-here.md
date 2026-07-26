@@ -28,9 +28,9 @@ Read the first diagram as a timing map: this page is for choosing the first hone
 not for replacing the course. Read the second diagram as the loop: choose one route,
 anchor in Module 00, and leave with one stable next move.
 
-Deep Dive Snakemake is not a syntax reference. It is a course about workflow design as an
-engineering contract: explicit file boundaries, safe dynamic behavior, publishable
-artifacts, and operationally stable execution.
+Deep Dive Snakemake begins with one text file and grows toward production workflow
+stewardship. You will run examples, predict DAG behavior, inject failures, and complete
+one hundred exercises. No previous Snakemake experience is required.
 
 ## Use this page when
 
@@ -46,15 +46,13 @@ artifacts, and operationally stable execution.
 
 ## Best first pass
 
-1. Read [Course Home](../index.md).
-2. Read [Course Guide](course-guide.md).
-3. Read [Learning Contract](learning-contract.md).
-4. Read [Platform Setup](platform-setup.md).
-5. Read [Module 00](../module-00-orientation/index.md).
-6. Continue to [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md).
+1. Use [Platform Setup](platform-setup.md) to confirm that `snakemake --version` works.
+2. Build [your first workflow](../module-00-orientation/index.md#your-first-workflow).
+3. Read the [Course Map](../module-00-orientation/course-map.md).
+4. Continue to [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md).
 
-Stop there before opening more shelves. That is enough to make the reading contract,
-workflow contract, and capstone timing visible.
+Stop there before opening the capstone or the reference shelf. The first workflow and
+Module 01 provide enough context to make those larger surfaces useful later.
 
 ## Choose the route that matches your pressure
 
@@ -66,6 +64,7 @@ workflow contract, and capstone timing visible.
 
 ## What to keep open
 
+- [First-Contact Map](../module-00-orientation/first-contact-map.md)
 - [Course Guide](course-guide.md)
 - [Module Promise Map](module-promise-map.md)
 - [Module Checkpoints](module-checkpoints.md)
@@ -77,6 +76,7 @@ workflow contract, and capstone timing visible.
 You are using the course correctly if you can explain:
 
 - what makes a workflow contract truthful
+- why a target selects the rules Snakemake needs
 - why the capstone is not your first lesson
 - which support page answers the next question without opening everything
 - which proof route is proportionate to the claim in front of you
