@@ -1,12 +1,12 @@
 INHERIT: ../../../mkdocs.shared.yml
 
 site_name: Deep Dive Snakemake
-site_description: Ten-module Snakemake program guide and reference workflow from beginner to mastery.
+site_description: Ten-module Snakemake course with one hundred exercises from first workflow to stewardship.
 site_author: Bijan Mousavi <bijan@bijux.io>
 site_url: https://bijux.io/bijux-masterclass/reproducible-research/deep-dive-snakemake/
 repo_name: bijux/bijux-masterclass
 repo_url: https://github.com/bijux/bijux-masterclass
-edit_uri: edit/master/programs/reproducible-research/deep-dive-snakemake/course-book/
+edit_uri: edit/main/programs/reproducible-research/deep-dive-snakemake/course-book/
 
 docs_dir: course-book
 site_dir: ../../../artifacts/site/reproducible-research/deep-dive-snakemake
@@ -196,4 +196,3 @@ plugins:
       include_dir: .
   - minify:
       minify_html: true
-

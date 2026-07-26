@@ -38,11 +38,12 @@ behavior, policy boundaries, and publish contracts without hand-waving.
 
 You should be able to do all of the following:
 
-* explain why a workflow reruns with evidence rather than intuition
-* distinguish rule semantics from profile or executor policy
-* describe what a checkpoint may discover and what it must never hide
-* identify which outputs are internal versus safe for downstream trust
-* explain which artifacts another reviewer should inspect before approving change
+- explain why a workflow reruns with evidence rather than intuition
+- distinguish rule semantics from profile or executor policy
+- describe what a checkpoint may discover and what it must never hide
+- identify which outputs are internal versus safe for downstream trust
+- explain which artifacts another reviewer should inspect before approving change
+- complete all one hundred exercises and retain the requested evidence
 
 ---
 
@@ -55,6 +56,16 @@ You should be able to do all of the following:
 | operational policy | you can show which profile changes are safe and which would leak into semantics |
 | publish boundaries | you can defend the public file API and the promoted evidence bundle |
 | stewardship | you can review the workflow for drift, risk, and migration pressure |
+
+## Exercise evidence
+
+Reading every page does not satisfy the course contract. A complete portfolio includes:
+
+- ten exercises from each of the ten teaching modules
+- runnable workflow files where implementation was requested
+- dry-runs, logs, graphs, manifests, comparisons, or review notes named by each exercise
+- corrections recorded after comparing your work with the model answers
+- one final stewardship review that connects Modules 01-10
 
 ---
 

@@ -34,20 +34,20 @@ prove before you enter the capstone.
 
 ---
 
-## Module Practice Surfaces
+## Hundred-exercise route
 
-| Module | Primary practice surface | Main proof loop | Best capstone follow-up |
+| Module | Exercises 1-5 | Exercises 6-10 | Evidence to retain |
 | --- | --- | --- | --- |
-| 01 | tiny file-contract workflow | `snakemake -n`, then one concrete target | inspect stable output patterns only after the local contract is predictable |
-| 02 | dynamic-discovery lab with checkpoints | `snakemake -n`, `snakemake --summary` | compare discovered outputs with the capstone checkpoint story |
-| 03 | profile-driven workflow lab | `snakemake --profile profiles/local -n`, then `--profile profiles/ci -n` | inspect verification and operating-policy targets |
-| 04 | modular repository sketch | `snakemake --list-rules`, `snakemake -n` | compare local module boundaries with `FILE_API.md` |
-| 05 | rule-and-script split lab | `snakemake -n`, then one end-to-end run with recorded environment evidence | inspect scripts, packages, and environment boundaries together |
-| 06 | versioned publish lab | `snakemake --summary`, then `snakemake publish/v1/manifest.json` | inspect `publish/v1/` and manifest structure deliberately |
-| 07 | architecture review lab | `snakemake --list-rules`, `snakemake --summary` | read `Snakefile`, `workflow/rules/`, and `FILE_API.md` in sequence |
-| 08 | multi-profile operating lab | compare local, CI, and scheduler dry-runs | inspect `profiles/` and the Makefile policy targets together |
-| 09 | incident review lab | `snakemake -n -p`, `snakemake --list-changes input code params` | compare logs, benchmarks, and verification surfaces |
-| 10 | written workflow review | review rubric plus evidence commands | use the capstone as the specimen for governance and migration judgment |
+| 01 | targets, convergence, wildcards, config, atomic outputs | build, plan, selectively rebuild, diagnose missing input, complete a tiny project | dry-runs, DAG, logs |
+| 02 | discovery, fanout, checkpoint choice, integrity, overhead | validated registry, paired records, runtime discovery, change trials, publish bundle | registries and graph changes |
+| 03 | policy, failure classes, storage, proof routes, review | compare profiles, inject failures, stage data, clean-room run, review policy | profile diffs and failure logs |
+| 04 | rule families, module choice, file API, gates, resources | refactor includes, specify module, break schema, map resources, review scaling | graph and contract comparisons |
+| 05 | placement, runtime, hidden inputs, wrappers, drift | extract script, test package, reproduce environment, observe drift, review boundary | tests and provenance |
+| 06 | public boundary, compatibility, integrity, roles, drift | build bundle, verify manifest, test consumer, classify changes, migrate version | consumer and checksum tests |
+| 07 | entrypoint, splits, file API, coupling, refactor | trace artifact, map responsibilities, detect drift, compare designs, review repository | ownership map and findings |
+| 08 | profile safety, retries, storage, contexts, leaks | policy matrix, plan comparison, resource mapping, scratch promotion, drift gate | normalized context audit |
+| 09 | cost class, evidence choice, triage, tuning, runbook | baseline, evidence packet, controlled tuning, context regression, runbook rehearsal | repeated measurements |
+| 10 | current truth, migration order, governance, anti-patterns, handoff | inventory, characterize, migrate owner, enforce policy, design tool handoff | equivalence and stewardship record |
 
 ---
 
@@ -99,8 +99,9 @@ snakemake --summary
 For each module:
 
 1. build the smallest local example first
-2. write down what the proof command is supposed to demonstrate
-3. run the proof command and explain the result in words
-4. enter the capstone only after the local result is legible
+2. complete the first five exercises without the answer page
+3. apply Exercises 6-10 and retain their requested evidence
+4. compare your reasoning with the model answers
+5. enter the capstone only after the local result is legible
 
 That order keeps the course centered on comprehension instead of repository tourism.

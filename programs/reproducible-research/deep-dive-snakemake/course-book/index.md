@@ -33,6 +33,10 @@ deterministic planning, safe dynamic behavior, and durable operational boundarie
 goal is not to collect workflow tricks. The goal is to build workflows another engineer
 can inspect, trust, and extend without folklore.
 
+No previous Snakemake experience is required. Orientation builds the first workflow;
+ten teaching modules then provide ten exercises each, for one hundred exercises from
+basic target reasoning through migration and governance.
+
 ## Use this course if
 
 - you want a workflow model instead of disconnected Snakemake snippets
@@ -94,6 +98,18 @@ Use it in this order:
 2. choose the smallest honest route with [Proof Ladder](guides/proof-ladder.md)
 3. enter the repository through [Capstone Map](capstone/capstone-map.md) or [Command Guide](capstone/command-guide.md)
 4. escalate to stronger review only when the current question actually needs it
+
+## Practice contract
+
+Each module is a full learning day:
+
+- Exercises 1-5 establish the module's core model.
+- Exercises 6-10 require implementation, failure injection, comparison, or review.
+- The answer page is for comparison after an attempt, not for following as instructions.
+- The module checkpoint decides whether the next day will build on understanding or recognition.
+
+Course completion means producing the exercise evidence and explaining it, not merely
+reading all pages or running the strongest capstone command once.
 
 ## Success signal
 

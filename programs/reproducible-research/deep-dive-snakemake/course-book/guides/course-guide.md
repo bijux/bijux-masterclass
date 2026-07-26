@@ -35,6 +35,9 @@ Deep Dive Snakemake has four durable surfaces:
 3. capstone pages for executable corroboration
 4. reference pages for durable review and repair maps
 
+The teaching arc contains ten learning days and one hundred exercises. Modules are the
+course; guides and references help you navigate or diagnose them.
+
 ## Choose the right surface
 
 | If you need... | Start here | Do not start with |
@@ -54,6 +57,18 @@ Deep Dive Snakemake has four durable surfaces:
 | policy and scaling boundaries | Modules 03-05 | profiles, scaling interfaces, helper-code boundaries, and honest software seams |
 | publish and architecture surfaces | Modules 06-08 | downstream contracts, repository file APIs, and operating-context boundaries |
 | incident and governance judgment | Modules 09-10 | observability, incident evidence, migration boundaries, and stewardship judgment |
+
+## Daily learning route
+
+1. reproduce the smallest example and predict its behavior
+2. read the core lessons while keeping the running question visible
+3. work through the guided example without copying commands blindly
+4. complete Exercises 1-5 before opening the answer page
+5. complete the applied Exercises 6-10 on a fresh or inherited workflow
+6. use [Module Checkpoints](module-checkpoints.md) to decide whether to continue
+
+If you cannot explain surprising output in terms of files, boundaries, and evidence,
+reduce the example before entering the capstone.
 
 ## The support shelf by job
 
