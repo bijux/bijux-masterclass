@@ -24,57 +24,69 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this page is for choosing the first honest route,
-not for replacing the course. Read the second diagram as the loop: choose one route,
-anchor in Module 00, and leave with one stable next move.
+Start with a terminal, not with the capstone.
 
-Deep Dive Make is not a syntax catalog. It is a correctness-first course about truthful
-graphs, safe publication, bounded proof, and long-lived build-system judgment.
+## If Make is completely new
 
-## Use this page when
+1. Complete the first Makefile in [Module 00](../module-00-orientation/index.md).
+2. Confirm that `make --version` reports GNU Make 4 or newer.
+3. Create a directory dedicated to course experiments.
+4. Begin [Module 01](../module-01-build-graph-foundations-truth/index.md).
 
-- Make still feels new and you want the safest ramp
-- the build is already hurting and you need the smallest justifiable route
-- you steward a build system and need the course without random browsing
+Keep each module’s files in a separate practice directory. Breaking a practice build is
+part of learning; isolating it makes experimentation safe.
 
-## Do not use this page to
+## If you already use Make
 
-- replace the module sequence with support-page browsing
-- enter the capstone before the local concept is legible
-- choose the heaviest proof route by default
+Do not skip Module 01 merely because targets and recipes look familiar. First answer:
 
-## Best first pass
+- Can you predict exactly which targets rebuild after changing a header?
+- Can you explain the answer with `make --trace`?
+- Can you run the same successful build twice and show that the second run does no work?
 
-1. Read [Course Home](../index.md).
-2. Read [Course Guide](course-guide.md).
-3. Read [Learning Contract](learning-contract.md).
-4. Read [Module 00](../module-00-orientation/index.md).
-5. Continue to [Module 01](../module-01-build-graph-foundations-truth/index.md).
+If any answer is uncertain, begin with Module 01. Familiar syntax and a reliable mental
+model are different achievements.
 
-Stop there before opening more shelves. That is enough to make the reading contract,
-proof contract, and capstone timing visible.
+## If you inherited a failing build
 
-## Choose the route that matches your pressure
+Use the focused routes below, but return to the full sequence after the immediate problem
+is understood.
 
-| If you need... | Read next | Keep nearby |
+| Symptom | Read first | Command to gather evidence |
 | --- | --- | --- |
-| first contact with Make | [Module 01](../module-01-build-graph-foundations-truth/index.md), [Module 02](../module-02-parallel-safety-project-structure/index.md) | [Module Checkpoints](module-checkpoints.md) |
-| repair of an existing build | [Pressure Routes](pressure-routes.md), [Module 04](../module-04-rule-semantics-precedence-edge-cases/index.md), [Module 05](../module-05-portability-hermeticity-failure-modes/index.md) | [Anti-Pattern Atlas](../reference/anti-pattern-atlas.md) |
-| stewardship of a long-lived build system | [Module 03](../module-03-determinism-debugging-self-testing/index.md), [Module 07](../module-07-build-architecture-layered-includes-apis/index.md), [Module 08](../module-08-release-engineering-artifact-contracts/index.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+| target never rebuilds | Module 01 | `make --trace TARGET` |
+| target always rebuilds | Modules 01 and 03 | `make -q TARGET; echo $?` |
+| `make -j` fails | Module 02 | compare `make -j1` with `make -j8` |
+| variable has a surprising value | Module 04 | `make --warn-undefined-variables` |
+| generated files are incomplete | Module 06 | inspect producer rules and failed-run leftovers |
+| release contents vary | Modules 08 and 09 | compare sorted manifests and checksums |
 
-## What to keep open
+## What to save from each day
 
-- [Course Guide](course-guide.md)
-- [Module Promise Map](module-promise-map.md)
-- [Module Checkpoints](module-checkpoints.md)
-- [Proof Ladder](proof-ladder.md)
-- [Capstone Guide](../capstone/index.md), but only as a later corroboration surface
+Create a small learning record containing:
 
-## Success signal
+- the final Makefile or repository change
+- the command used to verify it
+- one prediction that was wrong
+- one sentence explaining the corrected model
 
-You are using the course correctly if you can explain:
+Do not save generated build directories unless an exercise explicitly asks for failure
+evidence.
 
-- why a target rebuilt using `make --trace`
-- why the capstone is not your first lesson
-- which support page answers the next question without opening everything
-- which proof route is proportionate to the claim in front of you
+## When to read answers
+
+Attempt an exercise first. If you are blocked for more than 20 minutes:
+
+1. write down the exact behavior you expected
+2. capture the command and output you observed
+3. read only the matching answer
+4. close the answer and reproduce the repair yourself
+
+An answer is a teaching aid, not proof that you can perform the skill.
+
+## Your next page
+
+Read [Module 00](../module-00-orientation/index.md) for setup and study rhythm, then
+continue directly to [Module 01](../module-01-build-graph-foundations-truth/index.md).
+Use the [course guide](course-guide.md) only when you need a route through an existing
+problem.
