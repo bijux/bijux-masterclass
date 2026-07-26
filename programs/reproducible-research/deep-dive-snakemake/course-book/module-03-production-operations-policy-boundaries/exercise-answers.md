@@ -35,7 +35,7 @@ The strongest Module 03 answers usually do four things:
 - they choose one proportionate proof route
 - they describe the repair in terms of repository discipline, not heroics
 
-## Answer 1: Separate policy from workflow meaning
+## Exercise 1: Separate policy from workflow meaning
 
 A strong answer sounds like this:
 
@@ -50,7 +50,7 @@ Why this is strong:
 - it gives two good policy examples and two bad ones
 - it explains the review risk, not only the placement rule
 
-## Answer 2: Write a small failure policy
+## Exercise 2: Write a small failure policy
 
 A strong answer distinguishes failure classes cleanly.
 
@@ -70,7 +70,7 @@ Why this is strong:
 - it makes retry, fail-fast, and rerun-incomplete different on purpose
 - it treats logs as evidence for the decision, not as decoration
 
-## Answer 3: Review one staging or locality assumption
+## Exercise 3: Review one staging or locality assumption
 
 A strong answer sounds like this:
 
@@ -84,7 +84,7 @@ Why this is strong:
 - it allows context variation honestly
 - it protects the stable trust surface
 
-## Answer 4: Choose the smallest honest proof route
+## Exercise 4: Choose the smallest honest proof route
 
 A strong answer matches the route to the question:
 
@@ -101,7 +101,7 @@ The strongest answers also explain why the routes are not interchangeable:
 - dry-run is too weak for the strongest clean-room claim
 - profile-audit is better than intuition for context-comparison review
 
-## Answer 5: Review one operational diff like a maintainer
+## Exercise 5: Review one operational diff like a maintainer
 
 A strong answer begins with the owning boundary:
 
@@ -116,7 +116,48 @@ Why this is strong:
 - it reviews in boundary order
 - it does not let a policy diff drift into vague trust language
 
-## What all five answers should have in common
+## Exercise 6: Compare local and CI profiles
+
+A strong comparison keeps targets, semantic config, and publish paths identical. Local
+may use more cores and shorter latency patience; CI may serialize work, show failed logs,
+and wait longer for filesystem visibility. The paired dry-runs should resolve the same
+jobs and dependencies for the same requested target. A line-by-line table prevents a
+harmless operational difference from concealing semantic drift.
+
+## Exercise 7: Inject and classify failures
+
+The transient simulation may be retried only if repetition can plausibly change the
+outcome, such as a temporary service or storage interruption. Invalid configuration
+fails before work and must not be retried. An interrupted write requires removal or
+replacement of incomplete state before rerun. Logs should capture the command, failure
+class, and relevant context; a retry count alone cannot explain correctness.
+
+## Exercise 8: Design a staging route
+
+The route should copy or link a declared source into job-specific scratch, execute there,
+validate the result, and atomically publish to the declared final path. Failure cleanup
+must not delete unrelated jobs or present scratch files as final outputs. Scratch root,
+transfer mechanism, and latency assumptions belong to operating context. Input identity,
+result content, and final contract remain stable.
+
+## Exercise 9: Prove a clean-room run
+
+A strong clean-room route begins from documented inputs and a declared software
+environment, executes into an empty work area, and verifies an expected output inventory.
+Checksums or semantic assertions establish more than file existence. The exercise rules
+out ambient files, previously solved environments, undeclared variables, and stale
+outputs as hidden dependencies.
+
+## Exercise 10: Review a production policy change
+
+Higher resources are acceptable when they only alter scheduling capacity. Retries require
+a named transient failure class, a bounded count, and evidence that repeated execution is
+safe. A new staging root is acceptable only when scratch remains private and publication
+returns to the unchanged final boundary. Compare profile dry-runs and run the smallest
+executed selftest that traverses staging and recovery; do not invoke the strongest suite
+without a claim that needs it.
+
+## What all ten answers should have in common
 
 The best Module 03 answers usually:
 

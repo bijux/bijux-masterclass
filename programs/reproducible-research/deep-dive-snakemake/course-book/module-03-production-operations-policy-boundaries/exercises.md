@@ -99,9 +99,69 @@ What to hand in:
 - the second proof route or artifact you would check
 - two review questions you would ask before approving the change
 
+## Exercise 6: Compare local and CI profiles
+
+Create minimal local and CI profiles for the Module 01 workflow. Vary cores, failed-log
+display, and latency handling while keeping semantic inputs and targets unchanged.
+
+What to hand in:
+
+- both profile files
+- paired dry-runs against the same target
+- a table classifying every differing setting
+- evidence that the target graph is semantically unchanged
+
+## Exercise 7: Inject and classify failures
+
+Cause three controlled failures: one transient simulation, one invalid configuration, and
+one interrupted write to a temporary output.
+
+What to hand in:
+
+- the trigger and observed evidence for each failure
+- the retry, fail-fast, or rerun decision
+- the log location for each case
+- an explanation of why indiscriminate retries would be harmful
+
+## Exercise 8: Design a staging route
+
+Design data movement for a rule that reads shared storage, computes on node-local scratch,
+and publishes a declared final output back to shared storage.
+
+What to hand in:
+
+- a diagram of source, scratch, execution, and publication
+- cleanup behavior after success and failure
+- the profile-owned settings or environment assumptions
+- the invariant that must remain identical across local and cluster contexts
+
+## Exercise 9: Prove a clean-room run
+
+Run a small workflow from a fresh work directory or isolated checkout without reusing its
+previous outputs, caches, or shell history.
+
+What to hand in:
+
+- the exact bounded command route
+- environment and input prerequisites
+- expected output inventory and checksum evidence
+- one hidden dependency the clean-room run exposed or ruled out
+
+## Exercise 10: Review a production policy change
+
+Write a review for a proposed profile change that raises resources, enables retries, and
+changes a staging location. Treat each line independently.
+
+What to hand in:
+
+- acceptance or rejection for each change
+- the failure class the retry policy is intended to cover
+- evidence that final outputs and publish boundaries remain stable
+- the narrowest verification route that supports your conclusion
+
 ## Mastery standard for this exercise set
 
-Across all five answers, Module 03 wants the same habits:
+Across all ten answers, Module 03 wants the same habits:
 
 - you name the policy boundary directly
 - you distinguish context changes from meaning changes

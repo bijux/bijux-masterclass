@@ -36,13 +36,27 @@ line instead of leaking into workflow semantics.
 
 ## What this module is for
 
-By the end of Module 03, you should be able to explain five things in plain language:
+By the end of Module 03, you should be able to explain these ideas in plain language:
 
 - what belongs in a profile and what belongs in workflow meaning
 - which failures may be retried and which should stop the run immediately
 - how incomplete outputs, logs, and failure evidence keep recovery honest
 - how staging and shared-filesystem assumptions affect operation without rewriting semantics
 - what proof route shows that a production workflow still deserves trust
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| policy baseline | run the same targets through local and CI profiles | paired dry-runs |
+| failure classes | separate transient, semantic, and incomplete-output failures | written response table |
+| failure injection | crash a rule after writing temporary state and recover it | log plus filesystem inspection |
+| storage contexts | model local disk, shared storage, and node-local scratch | data-movement diagram |
+| clean-room proof | reproduce a small run without relying on previous outputs | confirmation record |
+| independent practice | complete all ten exercises | profile diffs and operational review |
+
+The day is successful when changing a profile changes *how* jobs run but not *which
+scientific outputs* define success.
 
 ## Study route
 
@@ -153,5 +167,6 @@ Do not move on until all of these are true:
 - you can say where a partial output becomes safe to trust or must be rerun
 - you can name one proof route stronger than dry-run and one reason it matters
 - you can explain how another maintainer should review a policy change later
+- you have completed all ten exercises, including failure injection and clean-room proof
 
 When those become ordinary, Module 03 has done its job.

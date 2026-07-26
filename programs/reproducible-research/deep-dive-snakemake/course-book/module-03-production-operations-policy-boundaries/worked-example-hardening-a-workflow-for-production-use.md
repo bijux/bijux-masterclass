@@ -51,7 +51,7 @@ The maintainers currently do this:
 
 That is a good Module 03 starting point because it is common and fixable.
 
-## Step 1: move stable run policy into profiles
+## Move stable run policy into profiles
 
 The first repair is not a scheduler change. It is naming the operating contexts.
 
@@ -72,7 +72,39 @@ Now the repository can answer:
 
 This is Core 1 becoming concrete. The team stops relying on private shell habits.
 
-## Step 2: give failures a small honest policy
+Start with profiles whose differences are easy to explain:
+
+**`profiles/local/config.yaml`**
+
+```yaml
+cores: 2
+printshellcmds: true
+rerun-incomplete: true
+latency-wait: 5
+```
+
+**`profiles/ci/config.yaml`**
+
+```yaml
+cores: 1
+printshellcmds: true
+show-failed-logs: true
+rerun-incomplete: true
+latency-wait: 20
+```
+
+Compare them against the same target:
+
+```sh
+snakemake --profile profiles/local --dry-run
+snakemake --profile profiles/ci --dry-run
+```
+
+The job dependencies and requested outputs should agree. Core count and latency patience
+may differ because those settings describe an operating context. If a profile changes
+sample membership, algorithm choice, or publish version, it has crossed the boundary.
+
+## Give failures a small honest policy
 
 The team then reviews how failed runs behave.
 
@@ -91,7 +123,31 @@ The repair is to state a failure policy:
 
 This is Core 2: recovery becomes a contract, not a mood.
 
-## Step 3: make storage assumptions explicit
+Practice the distinction by injecting a deterministic failure into a disposable rule:
+
+```python
+rule demonstrate_atomic_failure:
+    input:
+        "data/A.txt"
+    output:
+        "artifacts/failure-demo/A.txt"
+    log:
+        "artifacts/failure-demo/A.log"
+    shell:
+        """
+        mkdir -p artifacts/failure-demo
+        tr '[:lower:]' '[:upper:]' < {input} > {output}.building
+        printf 'intentional semantic failure\n' > {log}
+        false
+        mv {output}.building {output}
+        """
+```
+
+After the failure, the final output must be absent, the `.building` file shows interrupted
+work, and the log explains why retrying the identical command cannot help. Remove the
+deliberate `false`, rerun, and verify that publication occurs only after success.
+
+## Make storage assumptions explicit
 
 Next, the team notices that local runs and CI runs do not feel the same:
 
@@ -108,7 +164,20 @@ The stronger reaction is:
 
 This is Core 3: data locality changes how the workflow runs, not what the workflow means.
 
-## Step 4: connect operation to proof routes
+```mermaid
+flowchart LR
+  source["declared source"]
+  scratch["node-local scratch<br/>policy-owned"]
+  work["rule execution"]
+  final["declared output<br/>semantically stable"]
+
+  source --> scratch --> work --> final
+```
+
+The diagram permits scratch placement to change by environment. It does not permit the
+declared input or final output identity to drift.
+
+## Connect operation to proof routes
 
 At this point the repository has profiles and a failure story, but the team still needs a
 review route.
@@ -122,7 +191,7 @@ So define a proof ladder:
 
 This is Core 4: production trust grows by named routes, not by one giant ritual command.
 
-## Step 5: make policy review survivable for the next maintainer
+## Make policy review survivable for the next maintainer
 
 The last repair is governance.
 
