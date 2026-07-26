@@ -59,6 +59,36 @@ By the end of Module 06, you should be able to explain five things clearly:
 - how generator pipelines publish complete results instead of partial trust
 - how to repair broken generation behavior without blaming Make for a graph defect
 
+## Draw the publication event, not only the files
+
+A generator that creates `api.h` and `api.json` does not necessarily represent two
+independent build events. Ask whether consumers trust the pair only when both are from
+the same generator run.
+
+```mermaid
+flowchart LR
+  schema["schema.yml"] --> run["one generator invocation"]
+  run --> candidate["candidate directory"]
+  candidate --> validate["validate the complete set"]
+  validate --> publish["one publication event"]
+  publish --> header["api.h"]
+  publish --> metadata["api.json"]
+```
+
+If the generator fails after writing one candidate, neither final output should claim the
+new state. If one final output is deleted, the graph must know how to recover the set
+without launching duplicate generators.
+
+Before choosing grouped targets, a stamp, or a manifest, write:
+
+- the complete output set
+- the event that makes the set trustworthy
+- the consumers of each output
+- the leftovers allowed after failure
+- the recovery behavior after one output disappears
+
+The Make syntax comes after this contract.
+
 ## Study route
 
 ```mermaid

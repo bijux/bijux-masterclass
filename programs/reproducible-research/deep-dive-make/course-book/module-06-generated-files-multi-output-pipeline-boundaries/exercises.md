@@ -34,6 +34,14 @@ Each exercise asks for three things:
 - the evidence or command that would prove it
 - the repair or design choice that follows from that evidence
 
+For every generator, include a publication record:
+
+| Complete output set | Candidate location | Validation | Commit event | Allowed failure leftovers |
+| --- | --- | --- | --- | --- |
+
+If the “commit event” column names several unrelated moves, explain how consumers are
+protected from observing a mixed generation.
+
 ## Exercise 1: Tell the graph story of one generated file
 
 Choose a generated file such as a header, manifest, or report output. Explain what makes

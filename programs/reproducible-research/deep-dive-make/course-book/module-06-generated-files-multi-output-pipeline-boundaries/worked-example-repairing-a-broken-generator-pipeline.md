@@ -61,6 +61,22 @@ The first run creates the header, the second does nothing, and the source edit r
 exactly one output. That observable cycle is the foundation for every more complicated
 generator in this module.
 
+Now force the candidate command to fail before `mv`. The final `build/message.h` should
+remain absent or retain its previous known-good contents. Inspect both the final path and
+`build/message.h.candidate`, then restore the command and rerun.
+
+Record the result:
+
+| Moment | Final output | Candidate output | Is the final path trustworthy? |
+| --- | --- | --- | --- |
+| before generation |  |  |  |
+| after success |  |  |  |
+| after injected failure |  |  |  |
+| after recovery |  |  |  |
+
+This table turns “atomic publication” into something visible. The final path is a trust
+boundary; the candidate path is disposable work.
+
 This example starts with a build that "mostly works":
 
 - it generates files locally
@@ -331,3 +347,7 @@ Take one real generator incident and retell it in the same order:
 6. rerun convergence and a parallel check
 
 If you can do that cleanly, Module 06 has started to change how you think about generation.
+
+Run the deletion question for real. Delete each coupled output separately, one run at a
+time, and capture which recipe executes. A design that works only after deleting the
+entire output set has not yet defined honest recovery.
