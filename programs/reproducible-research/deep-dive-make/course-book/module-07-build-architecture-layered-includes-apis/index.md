@@ -60,6 +60,26 @@ By the end of Module 07, you should be able to explain five things clearly:
 - how naming and discovery rules keep a growing repository coherent
 - how to review a build architecture before it rots into folklore
 
+## Follow one request through the architecture
+
+Choose one public target, such as `test`, and trace it through the repository:
+
+```mermaid
+flowchart LR
+  user["make test"] --> public["public target contract"]
+  public --> graph["prerequisite graph"]
+  graph --> policy["tool and flag policy"]
+  graph --> rules["artifact-producing rules"]
+  rules --> evidence["test result and build evidence"]
+```
+
+For every transition, name the file that owns it. If two include files both appear to own
+compiler policy, or CI bypasses the public target and invokes an internal helper, mark
+that as architecture debt.
+
+Do this trace before moving files. Architecture is not the number of `mk/*.mk` files. It
+is whether responsibility and the path from request to evidence remain legible.
+
 ## Study route
 
 ```mermaid

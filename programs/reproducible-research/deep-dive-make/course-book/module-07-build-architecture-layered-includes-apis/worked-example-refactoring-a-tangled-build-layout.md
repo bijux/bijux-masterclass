@@ -50,6 +50,17 @@ Run `make help`, then ask whether a new learner can choose a target without open
 Makefile. This explicit list is intentionally boring. A public interface should optimize
 for trust, not clever extraction tricks.
 
+Ask a second person, or simulate a first-time reader, to complete three tasks using only
+the help output:
+
+1. build the default product
+2. run product tests
+3. verify build-system invariants
+
+Record where the interface was sufficient and where they needed source knowledge. Any
+required private knowledge belongs either in the target contract or in a nearby guide,
+not in a maintainer’s memory.
+
 This example starts with exactly that kind of build:
 
 - it builds successfully
@@ -331,3 +342,8 @@ Take one real Make repository and retell its architecture in the same order:
 5. write one short architecture review note about the remaining risk
 
 If you can do that cleanly, Module 07 has started to change how you refactor build layouts.
+
+Finally, choose one public target and annotate its path from command line to evidence.
+Your annotation should name the owner of target meaning, graph assembly, policy,
+artifact production, and verification. If one file owns all five, explain why that is
+still readable or split it by responsibility.

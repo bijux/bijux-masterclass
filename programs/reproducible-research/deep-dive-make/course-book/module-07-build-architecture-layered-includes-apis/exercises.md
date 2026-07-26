@@ -34,6 +34,13 @@ Each exercise asks for three things:
 - the evidence or inspection path that would establish it
 - the refactor or policy decision that follows from that evidence
 
+Use this ownership map in every architecture answer:
+
+| Responsibility | Owning file | Public consumer | Evidence that the boundary holds |
+| --- | --- | --- | --- |
+
+A file list without responsibilities is not an architecture explanation.
+
 ## Exercise 1: Define a public target surface
 
 Take a Make-based repository with several top-level targets and decide which ones should be
