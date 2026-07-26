@@ -1,32 +1,15 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Build Architecture Layered Includes Apis"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is not to
 show off Make cleverness. The goal is to make your architecture reasoning visible.
+
+## How to work this exercise set
+
+Treat these as architecture review and design exercises:
+
+- Exercises 1-3: define API boundaries and justify reuse choices
+- Exercises 4-6: make growth and public surfaces readable
+- Exercises 7-9: inspect real callers, variable ownership, and macro behavior
+- Exercise 10: refactor a mixed-responsibility build into a clearer structure
 
 Each exercise asks for three things:
 
@@ -40,6 +23,14 @@ Use this ownership map in every architecture answer:
 | --- | --- | --- | --- |
 
 A file list without responsibilities is not an architecture explanation.
+
+## Minimum evidence for every answer
+
+Try to include:
+
+- one ownership map
+- one public or internal caller
+- one inspection command that shows the structure is really behaving as claimed
 
 ## Exercise 1: Define a public target surface
 
@@ -163,6 +154,15 @@ What to hand in:
 - a source-to-object mapping for both roots
 - dry-run, no-op, and selftest evidence
 - a short architecture review naming one remaining risk
+
+## Before you read the answers
+
+Do not open `exercise-answers.md` until you can already point to:
+
+- one clear public target contract
+- one include layer with a single responsibility
+- one macro you kept or rejected for a reason you can defend
+- one future-growth risk you can already see
 
 ## Mastery standard for this exercise set
 

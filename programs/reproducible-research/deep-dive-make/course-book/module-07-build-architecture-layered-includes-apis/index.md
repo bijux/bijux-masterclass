@@ -1,30 +1,4 @@
 # Module 07: Build Architecture, Layered Includes, and Build APIs
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Build Architecture Layered Includes Apis"]
-  page["Module 07: Build Architecture, Layered Includes, and Build APIs"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Once a Make build starts working, teams usually try to reuse it, extend it, and share it.
 That is where many repositories become hard to explain:
 
@@ -34,6 +8,12 @@ That is where many repositories become hard to explain:
 - CI, release scripts, and humans all start depending on different unofficial entrypoints
 
 Module 07 is about scaling a Make build without turning it into a private language.
+
+## Why this day matters
+
+Architecture drift is slow and expensive. A build can keep working while becoming harder
+to review, harder to extend, and easier to misuse. This module is where the course shifts
+from correctness of one graph edge to clarity of the whole owned surface.
 
 ## Plan for the day
 
@@ -60,6 +40,20 @@ By the end of Module 07, you should be able to explain five things clearly:
 - how naming and discovery rules keep a growing repository coherent
 - how to review a build architecture before it rots into folklore
 
+## The live demo for this module
+
+Use one public target trace and one layered include split as the anchors for the day:
+
+```mermaid
+flowchart LR
+  request["Run one public target"] --> trace["Trace request to owning files"]
+  trace --> split["Separate policy, graph, and optional surfaces"]
+  split --> inspect["Inspect expanded rules and help output"]
+  inspect --> review["Review whether a new engineer could follow it"]
+```
+
+That sequence keeps architecture tied to user-facing behavior instead of style alone.
+
 ## Follow one request through the architecture
 
 Choose one public target, such as `test`, and trace it through the repository:
@@ -79,6 +73,14 @@ that as architecture debt.
 
 Do this trace before moving files. Architecture is not the number of `mk/*.mk` files. It
 is whether responsibility and the path from request to evidence remain legible.
+
+## The question to keep asking
+
+Whenever you consider a refactor, ask:
+
+> Does this change make ownership more obvious to someone who did not design the system?
+
+If the answer is no, the refactor may be busywork instead of architecture.
 
 ## Study route
 
@@ -139,6 +141,16 @@ Good Module 07 answers usually mention one or more of these:
 - reuse patterns that still leave the expanded graph inspectable
 - deterministic naming and discovery rules
 - architecture review questions that catch hidden assumptions early
+
+## What a strong Module 07 day looks like
+
+By the end of the day, you should have:
+
+- defined a small public target surface
+- traced one request from entrypoint to owned rules
+- separated at least two responsibilities into distinct include layers
+- inspected one macro expansion instead of trusting it
+- named one architectural risk before it becomes a build bug
 
 ## Commands to keep close
 
