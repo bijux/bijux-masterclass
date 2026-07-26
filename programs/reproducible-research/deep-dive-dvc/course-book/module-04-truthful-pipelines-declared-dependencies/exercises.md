@@ -126,6 +126,34 @@ Propose either:
 
 Your answer should explain how the refactor affects rerun behavior and review clarity.
 
+## Exercise 6: Build a three-stage pipeline
+
+Create prepare, train, and evaluate stages with explicit dependencies, parameters, and
+outputs. Run twice and use DVC evidence to show that the second run converges.
+
+## Exercise 7: Omit one dependency on purpose
+
+Remove a real dependency from one stage, change that input, and observe the plan. Explain
+why a successful command cannot compensate for a lying graph, then repair the declaration.
+
+## Exercise 8: Trace one parameter through the lockfile
+
+Change one tracked parameter and inspect the resulting `dvc.lock` changes. Identify the
+stage invalidated, the output identities replaced, and any stage that correctly remained
+unchanged.
+
+## Exercise 9: Repair shared-output ownership
+
+Construct two stages that write into the same output directory. Redesign them so each
+producer has exclusive ownership or a single aggregation stage publishes the shared
+artifact.
+
+## Exercise 10: Review a pipeline as a contract
+
+Review a real `dvc.yaml` from target outputs backward. For every stage, record its purpose,
+inputs, controls, outputs, failure residue, and evidence that its declared graph matches
+actual reads and writes.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep five ideas

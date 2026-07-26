@@ -164,6 +164,36 @@ or reuse value and the combined command truly owns both outputs as one cohesive 
 In that case, you should still explain why both outputs share the same inputs and
 controls.
 
+## Answer 6: Build a three-stage pipeline
+
+A strong pipeline exposes one artifact boundary per stage and reaches "data and pipelines
+are up to date" on the second run. The explanation follows edges from source data through
+the model to metrics rather than relying on declaration order.
+
+## Answer 7: Omit one dependency on purpose
+
+The changed input does not invalidate the stage because DVC cannot track an edge that was
+never declared. The repair is to declare the actual read, rerun, and commit updated lock
+evidence. Forcing execution would hide rather than correct the contract defect.
+
+## Answer 8: Trace one parameter through the lockfile
+
+The lock diff should show the parameter value and new hashes for affected outputs. An
+unrelated stage should remain stable. If everything reruns, inspect whether a coarse file
+dependency or stage boundary is wider than the intended semantic change.
+
+## Answer 9: Repair shared-output ownership
+
+Two independent writers make freshness and cleanup ambiguous. Prefer disjoint directories
+or let each stage publish an intermediate artifact and give one aggregation stage sole
+ownership of the final directory.
+
+## Answer 10: Review a pipeline as a contract
+
+The review should compare declarations with observed behavior, including files opened,
+parameters read, outputs written, and partial products after failure. A graph is truthful
+only when those operational facts agree with `dvc.yaml` and `dvc.lock`.
+
 ## Self-check
 
 If your answers consistently explain:
