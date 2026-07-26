@@ -36,13 +36,28 @@ Dynamic behavior is not the enemy. Hidden discovery is.
 
 ## What this module is for
 
-By the end of Module 02, you should be able to explain five things in plain language:
+By the end of Module 02, you should be able to explain these ideas in plain language:
 
 - how a changing sample set becomes an explicit target list instead of ambient filesystem luck
 - how wildcard domains stay narrow enough to prevent accidental fanout
 - what a checkpoint is allowed to discover and what it must never hide
 - which artifacts make dynamic behavior durable enough for review and downstream trust
 - when environment design and job granularity help the workflow, and when they quietly make it worse
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| static baseline | replace an ambient directory scan with a sorted, validated candidate manifest | manifest diff and dry-run |
+| domain design | model paired values without accidental Cartesian products | expected and actual target lists |
+| runtime discovery | implement a checkpoint for a usable subset known only after validation | checkpoint registry |
+| DAG review | compare the graph before and after checkpoint completion | two DAG renderings |
+| integrity | carry discovery, provenance, and inventory into a publish boundary | reviewable bundle |
+| independent practice | complete all ten exercises | implementation and design notes |
+
+The important progression is **static first, dynamic only when earned**. If configuration
+or a manifest already knows the targets, use it directly. A checkpoint is appropriate
+only when execution reveals a fact that planning could not know.
 
 ## Study route
 
@@ -123,7 +138,7 @@ These commands form the evidence loop for Module 02:
 ```bash
 snakemake -n
 snakemake --summary
-snakemake --dag | dot -Tpdf > dag.pdf
+snakemake --dag | dot -Tpdf > artifacts/dag.pdf
 snakemake --lint
 snakemake --list-changes params input code
 ```
@@ -155,5 +170,6 @@ Do not move on until all of these are true:
 - you can describe one checkpoint that is justified and one that is really a smell
 - you can say which artifacts are internal execution state and which are safe to publish
 - you can explain one performance repair without weakening workflow truth
+- you have completed all ten exercises and can defend each use or rejection of a checkpoint
 
 When those become ordinary, Module 02 has done its job.

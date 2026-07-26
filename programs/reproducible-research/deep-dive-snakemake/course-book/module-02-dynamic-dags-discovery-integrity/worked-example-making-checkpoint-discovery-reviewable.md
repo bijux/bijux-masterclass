@@ -72,45 +72,42 @@ This draft is small, but it already teaches four bad lessons:
 
 The code works only if you avoid asking serious questions.
 
-## Step 1: repair discovery first
+## Prefer a declared candidate set
 
-The first repair is not a checkpoint. The first repair is to admit that discovery is a
-workflow surface.
+The first repair is not a checkpoint. The first repair is to replace ambient directory
+state with a declared candidate set. A small `config/samples.tsv` can say:
 
-So give it one owned artifact:
+```text
+sample	path
+A	data/raw/A.fastq.gz
+B	data/raw/B.fastq.gz
+```
+
+Load, validate, and sort those records once near the top of the Snakefile. The concrete
+input paths can then drive ordinary static expansion:
 
 ```python
-rule discover_samples:
-    input:
-        directory("data/raw")
-    output:
-        "results/discovered_samples.json"
-    run:
-        import json
-        from pathlib import Path
+import csv
 
-        samples = sorted(
-            path.name.removesuffix(".fastq.gz")
-            for path in Path(input[0]).glob("*.fastq.gz")
-        )
-        Path(output[0]).parent.mkdir(parents=True, exist_ok=True)
-        Path(output[0]).write_text(
-            json.dumps({"samples": samples}, indent=2) + "\n",
-            encoding="utf-8",
-        )
+with open("config/samples.tsv", encoding="utf-8", newline="") as handle:
+    RECORDS = sorted(csv.DictReader(handle, delimiter="\t"), key=lambda row: row["sample"])
+
+SAMPLES = [record["sample"] for record in RECORDS]
+SOURCE_BY_SAMPLE = {record["sample"]: record["path"] for record in RECORDS}
 ```
 
 This changes the conversation immediately.
 
 Now the workflow can answer:
 
-- what it discovered
-- where that fact lives
-- which rule owns the discovery step
+- which samples were candidates
+- which path belongs to each sample
+- which version-controlled record defines the target set
 
-That is Core 1 becoming visible.
+If that is all the workflow needs, stop here. Adding a checkpoint would make a known
+target set harder to reason about.
 
-## Step 2: narrow the artifact family
+## Narrow the artifact family
 
 The original output shape was:
 
@@ -135,15 +132,16 @@ Now the workflow has:
 
 That is Core 2 in action: the wildcard owns a narrow, reviewable domain.
 
-## Step 3: introduce the checkpoint only if it earns its keep
+## Introduce a checkpoint only when execution reveals a new fact
 
-Suppose the course wants the workflow to fan out only after the discovered registry
-exists. That is a legitimate checkpoint use.
+Suppose a validation tool must read each candidate file and only non-empty, structurally
+valid samples may continue. The usable subset cannot be known until that tool executes.
+Now a checkpoint earns its place because runtime work reveals a new target domain.
 
 ```python
-checkpoint discover_samples:
+checkpoint validate_candidates:
     input:
-        directory("data/raw")
+        lambda wildcards: [SOURCE_BY_SAMPLE[sample] for sample in SAMPLES]
     output:
         directory("results/discovery")
     run:
@@ -153,8 +151,9 @@ checkpoint discover_samples:
         outdir = Path(output[0])
         outdir.mkdir(parents=True, exist_ok=True)
         samples = sorted(
-            path.name.removesuffix(".fastq.gz")
-            for path in Path(input[0]).glob("*.fastq.gz")
+            sample
+            for sample, source in SOURCE_BY_SAMPLE.items()
+            if Path(source).stat().st_size > 0
         )
         (outdir / "samples.json").write_text(
             json.dumps({"samples": samples}, indent=2) + "\n",
@@ -166,7 +165,7 @@ def qc_targets(_wildcards):
     import json
     from pathlib import Path
 
-    checkpoint_job = checkpoints.discover_samples.get()
+    checkpoint_job = checkpoints.validate_candidates.get()
     registry = Path(checkpoint_job.output[0]) / "samples.json"
     samples = json.loads(registry.read_text(encoding="utf-8"))["samples"]
     return expand("results/{sample}/qc.json", sample=samples)
@@ -178,12 +177,13 @@ rule all:
 ```
 
 The checkpoint is justified here because the downstream target set genuinely depends on
-the discovery result.
+the validation result. In a real workflow, replace the non-empty-file demonstration with
+a domain validator and record rejection reasons as well as accepted samples.
 
 The important part is not the keyword `checkpoint`. The important part is that the
 discovered set is written once and reused.
 
-## Step 4: keep discovery visible at the publish boundary
+## Keep discovery visible at the publish boundary
 
 Now imagine the workflow publishes a versioned result bundle.
 
@@ -211,7 +211,7 @@ publish/v1/
 This is Core 4: discovery should remain legible when the workflow crosses into public
 contract space.
 
-## Step 5: avoid accidental operational drag
+## Avoid accidental operational drag
 
 Even a correct design can become awkward if it creates too much setup cost.
 

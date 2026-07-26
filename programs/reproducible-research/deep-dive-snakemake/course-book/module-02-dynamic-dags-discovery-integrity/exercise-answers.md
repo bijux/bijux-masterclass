@@ -35,7 +35,7 @@ The strongest Module 02 answers usually do four things:
 - they point to one evidence route
 - they describe the repair in terms of reviewable artifacts, not workflow folklore
 
-## Answer 1: Turn ambient discovery into a declared contract
+## Exercise 1: Turn ambient discovery into a declared contract
 
 A strong answer sounds like this:
 
@@ -51,7 +51,7 @@ Why this is strong:
 - it adds one owned artifact instead of vague "better organization"
 - it explains why review got easier
 
-## Answer 2: Prevent one accidental fanout explosion
+## Exercise 2: Prevent one accidental fanout explosion
 
 A strong answer makes the multiplication visible.
 
@@ -71,7 +71,7 @@ Why this is strong:
 - it explains the wrong relationship, not just the wrong count
 - it keeps one data source of truth for paired values
 
-## Answer 3: Justify one checkpoint and reject one fake one
+## Exercise 3: Justify one checkpoint and reject one fake one
 
 A strong answer contrasts the two designs directly.
 
@@ -91,7 +91,7 @@ Why this is strong:
 - it shows that checkpoints are for genuine new facts
 - it rejects the temptation to use checkpoints as a dramatic wrapper for weak modeling
 
-## Answer 4: Design the integrity trail for a dynamic run
+## Exercise 4: Design the integrity trail for a dynamic run
 
 A strong answer gives three explicit paths and one explicit role for each:
 
@@ -108,7 +108,7 @@ A strong answer gives three explicit paths and one explicit role for each:
 The strongest answers also mention a published copy of the discovery artifact, such as
 `publish/v1/discovered_samples.json`, because downstream review often needs the same fact.
 
-## Answer 5: Improve performance without weakening truth
+## Exercise 5: Improve performance without weakening truth
 
 A strong answer sounds like this:
 
@@ -124,7 +124,69 @@ Why this is strong:
 - it repairs the boundary instead of deleting evidence
 - it explicitly says why workflow truth stayed intact
 
-## What all five answers should have in common
+## Exercise 6: Build a validated candidate registry
+
+A strong loader reads `config/samples.tsv`, validates required columns, rejects blank or
+duplicate identifiers, checks source existence, and sorts records by identifier. It then
+derives both the source lookup and concrete output list from those records. A duplicate
+sample should fail while the workflow is parsed, before any expensive job starts.
+
+Static planning is sufficient because the manifest already contains every fact needed to
+name the targets. A checkpoint would not discover new information; it would only defer
+known information and make the graph harder to inspect.
+
+## Exercise 7: Preserve paired relationships
+
+The source of truth should be records such as:
+
+```python
+RECORDS = [
+    {"sample": "A", "panel": "dna"},
+    {"sample": "B", "panel": "rna"},
+    {"sample": "C", "panel": "dna"},
+]
+```
+
+Build paths from each record, not from an independent cross-product of all samples and all
+panels. Validate that each sample appears once and every panel belongs to the supported
+domain. The corrected dry-run should show three jobs rather than six.
+
+## Exercise 8: Implement a justified checkpoint
+
+The checkpoint should own one directory containing a deterministic accepted registry and
+rejection record. Its downstream input function calls
+`checkpoints.validate_candidates.get()`, reads the accepted identifiers, sorts them, and
+expands concrete paths. Before completion the graph ends at validation; afterward
+Snakemake reevaluates the input function and extends the graph.
+
+The justification is not that files exist in a directory. It is that executing a
+validator determines which candidates satisfy a semantic condition that planning could
+not evaluate safely.
+
+## Exercise 9: Test discovery integrity under change
+
+A strong result compares registry versions rather than relying on memory:
+
+- adding a valid candidate adds one accepted record and one downstream target
+- removing a candidate removes it from the next registry and target set
+- corrupting a candidate moves it from accepted records to explicit rejection evidence
+
+The workflow must define whether stale outputs from removed candidates are retained,
+quarantined, or cleaned. Silently presenting them as current would make the publish
+boundary dishonest.
+
+## Exercise 10: Publish a reviewable dynamic result
+
+The public bundle should contain accepted and rejected discovery records, result files,
+resolved semantic configuration, provenance, and a checksummed manifest. A consumer can
+verify checksums, read the manifest, and connect every result to an accepted identifier
+without opening `results/` or `.snakemake/`.
+
+Checkpoint directories and scheduler logs remain internal unless they are deliberately
+part of the support contract. The accepted registry becomes public because it explains
+why the result set has exactly its observed membership.
+
+## What all ten answers should have in common
 
 The best Module 02 answers usually:
 

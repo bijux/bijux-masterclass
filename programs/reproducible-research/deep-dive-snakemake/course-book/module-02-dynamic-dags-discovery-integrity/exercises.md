@@ -111,9 +111,73 @@ What to hand in:
 - one sentence explaining why the repair lowers overhead
 - one sentence explaining why workflow truth stayed intact
 
+## Exercise 6: Build a validated candidate registry
+
+Create a tabular manifest with at least three sample identifiers and source paths. Load it
+once, reject duplicate identifiers and missing files, sort it, and use it to build
+concrete QC targets without a checkpoint.
+
+What to hand in:
+
+- the manifest and validation code
+- the deterministic target list
+- one deliberately invalid record and its early error
+- an explanation of why static planning is sufficient
+
+## Exercise 7: Preserve paired relationships
+
+Model three samples where each sample belongs to exactly one panel. First demonstrate the
+wrong Cartesian product produced by independent `sample=` and `panel=` lists, then
+generate only the valid pairs.
+
+What to hand in:
+
+- the record structure that owns each pair
+- the unintended and corrected target lists
+- a dry-run showing the corrected job count
+- one invariant your loader validates
+
+## Exercise 8: Implement a justified checkpoint
+
+Start from a declared candidate set, then make a validation checkpoint publish a registry
+containing only usable candidates. Fan out one downstream job per accepted identifier.
+
+What to hand in:
+
+- the checkpoint output contract
+- the input function that reads it through `checkpoints.<name>.get()`
+- evidence from before and after checkpoint completion
+- an explanation of the runtime fact that could not be known during initial planning
+
+## Exercise 9: Test discovery integrity under change
+
+Run the checkpoint workflow, then add one candidate, remove one candidate, and corrupt one
+candidate in separate trials. Predict the registry and downstream target changes before
+each run.
+
+What to hand in:
+
+- the three predictions
+- registry diffs for each trial
+- dry-run evidence for affected downstream jobs
+- the rejection evidence retained for the corrupt candidate
+
+## Exercise 10: Publish a reviewable dynamic result
+
+Publish a versioned bundle for the checkpoint workflow. Include the accepted registry,
+rejection record, results, resolved configuration, provenance, and a manifest with
+checksums.
+
+What to hand in:
+
+- the public directory tree
+- a machine-readable inventory and checksum verification command
+- a short consumer procedure that does not depend on internal working paths
+- an explanation of which artifacts are public contracts and which remain internal state
+
 ## Mastery standard for this exercise set
 
-Across all five answers, Module 02 wants the same habits:
+Across all ten answers, Module 02 wants the same habits:
 
 - you name the artifact or boundary that carries the truth
 - you explain dynamic behavior without using mystical language
