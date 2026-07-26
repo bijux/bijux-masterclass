@@ -30,7 +30,7 @@ These answers are model explanations, not the only acceptable wording.
 What matters is whether the reasoning makes repository ownership and review surfaces
 clearer.
 
-## Answer 1: Read the repository entrypoint
+## Exercise 1: Read the repository entrypoint
 
 What belongs in the entrypoint:
 
@@ -49,7 +49,7 @@ The entrypoint should announce the workflow shape. Once it starts hiding large
 implementation logic, the repository entry surface becomes less useful for review and
 onboarding.
 
-## Answer 2: Judge a rule split
+## Exercise 2: Judge a rule split
 
 Why the split is weak:
 
@@ -69,7 +69,7 @@ What a reviewer should infer from names:
 
 The key problem is not the number of files. It is the lack of an ownership signal.
 
-## Answer 3: Review a file-API gap
+## Exercise 3: Review a file-API gap
 
 What architecture problem this creates:
 
@@ -89,7 +89,7 @@ What to add first:
 
 The goal is to make path promises reviewable instead of implied.
 
-## Answer 4: Diagnose hidden coupling
+## Exercise 4: Diagnose hidden coupling
 
 A strong review comment would say:
 
@@ -103,7 +103,7 @@ Why:
 - architecture depends on visible boundaries staying trustworthy
 - hidden dependencies move meaning away from the declared repository surfaces
 
-## Answer 5: Decide whether to refactor
+## Exercise 5: Decide whether to refactor
 
 Architecture signals:
 
@@ -128,6 +128,46 @@ What kind of refactor is justified:
 - make the split between `workflow/scripts/` and `src/` easier to explain
 
 The refactor should improve reviewability, not only folder appearance.
+
+## Exercise 6: Trace one public artifact
+
+A strong trace begins with the documented public path and finds the publication rule,
+its declared source result, any step-local script, reusable package call, semantic
+configuration, and final target. It marks absent layers honestly rather than inventing
+them. An undeclared style file or directory scan is a finding because the visible chain
+does not explain the produced bytes.
+
+## Exercise 7: Write a repository responsibility table
+
+The entrypoint owns visible assembly; includes own coherent rule families; modules own
+reusable workflow interfaces; scripts adapt declared Snakemake values to step-local
+implementation; packages own independently testable logic; profiles own execution
+policy; schemas validate contract data; publish docs define consumer promises. Moving a
+hidden scan out of a package and declaring its path in the rule is a more direct repair
+than creating another abstraction.
+
+## Exercise 8: Detect architecture drift automatically
+
+A useful check encodes one narrow repository claim and names the violating path. For
+example, enumerate publish outputs, compare them with `FILE_API.md`, and fail on missing
+or stale entries. The failing fixture demonstrates that the check protects an actual
+boundary. A generic "architecture invalid" message is too vague to guide repair.
+
+## Exercise 9: Compare two possible refactors
+
+The ownership-based split is usually safer first because it improves navigation without
+creating a new interface. A module or package becomes worthwhile when reuse, independent
+testing, or a stable caller contract already exists. Choose the simplest structure that
+makes current ownership truthful, and record measurable triggers rather than promising a
+future abstraction by instinct.
+
+## Exercise 10: Conduct an architecture review
+
+Begin with the entrypoint and documented file API, compare the actual rule graph, then
+inspect scripts and packages only where the trace leads. Findings about undeclared inputs,
+unstable public paths, or hidden semantic config outrank naming preferences. Focused
+dry-runs, contract tests, and direct package tests support findings without spending time
+on unrelated full-suite execution.
 
 ## Self-check
 

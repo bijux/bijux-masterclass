@@ -44,6 +44,20 @@ You will learn how to:
 - place helper code where it supports the workflow instead of swallowing it
 - review architecture drift before the repository becomes oral tradition
 
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| repository tour | trace one public output backward from file API to entrypoint | path-to-owner map |
+| visible assembly | reduce the entrypoint to configuration, includes, and targets | annotated Snakefile |
+| ownership | classify rule families, modules, scripts, and package code | responsibility table |
+| coupling test | expose an undeclared file or import-time side effect | failing contract test |
+| architecture review | compare documented and actual repository shape | findings report |
+| independent practice | complete all ten exercises | architecture evidence packet |
+
+Architecture is successful when a new reader can follow a result without first receiving
+an oral tour from its original author.
+
 The capstone corroboration surface for this module is the repository architecture itself:
 `Snakefile`, `workflow/rules/`, `workflow/modules/`, `workflow/scripts/`,
 `workflow/contracts/FILE_API.md`, `src/capstone/`, and the review documents that connect
@@ -100,7 +114,7 @@ If the shape is already partly clear, use this shortcut:
 | [Helpers, Scripts, Packages, and Coupling Control](helpers-scripts-packages-and-coupling-control.md) | teaches where implementation code belongs and how coupling spreads |
 | [Architecture Review, Drift, and Refactor Triggers](architecture-review-drift-and-refactor-triggers.md) | teaches when architecture is getting harder to trust |
 | [Worked Example: Reading a Snakemake Repository like an Architect](worked-example-reading-a-snakemake-repository-like-an-architect.md) | walks through a concrete repository review path |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -138,3 +152,6 @@ make tour
 
 The point of that route is not only to prove the workflow runs. It is to inspect whether
 the repository shape is still understandable without guesswork.
+
+Do not move on until you have completed all ten exercises and can trace one public
+artifact through every repository layer that owns it.

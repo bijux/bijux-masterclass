@@ -41,7 +41,7 @@ Imagine you inherit the capstone and need to answer three questions quickly:
 If you cannot answer those questions in a stable order, the repository architecture is
 already too opaque.
 
-## Step 1: start at the entrypoint
+## Start at the entrypoint
 
 The top-level `Snakefile` is the right first file because it visibly:
 
@@ -62,7 +62,7 @@ A reviewer learns the repository shape immediately:
 This is better than starting in helper code, because the entrypoint shows the visible DAG
 assembly first.
 
-## Step 2: inspect rule families before helpers
+## Inspect rule families before helpers
 
 Once the entrypoint is clear, the next useful move is to inspect the named rule families.
 
@@ -74,7 +74,7 @@ This gives a workflow story:
 
 That sequence teaches architecture and workflow meaning at the same time.
 
-## Step 3: inspect reusable workflow surfaces separately
+## Inspect reusable workflow surfaces separately
 
 The repository also contains `workflow/modules/`.
 
@@ -89,7 +89,7 @@ while `workflow/scripts/provenance.py` remains workflow-adjacent step logic.
 
 That is a useful architectural distinction.
 
-## Step 4: inspect package code only after workflow boundaries are visible
+## Inspect package code only after workflow boundaries are visible
 
 The capstone also has `src/capstone/`.
 
@@ -104,7 +104,7 @@ surface owns the orchestration boundary.
 
 That prevents package code from becoming the first and only story of the repository.
 
-## Step 5: confirm path contracts
+## Confirm path contracts
 
 Architecture review is incomplete until the path contracts are visible too.
 
@@ -122,7 +122,26 @@ Those docs answer questions the directory tree alone cannot:
 
 This is where architecture becomes reviewable rather than intuitive.
 
-## One review route
+## Trace one artifact end to end
+
+Use a concrete public output such as `publish/v1/summary.json` and record the chain:
+
+```mermaid
+flowchart LR
+  entry["Snakefile<br/>requests publish target"]
+  family["workflow/rules/publish.smk<br/>owns promotion"]
+  script["workflow/scripts/<br/>adapts execution"]
+  package["src/<br/>owns reusable logic"]
+  api["FILE_API.md<br/>defines consumer promise"]
+
+  entry --> family --> script --> package --> api
+```
+
+Not every artifact passes through every layer. That is useful information. A missing
+layer is not a defect, while an unexplained dependency between nonadjacent layers often
+is.
+
+## A bounded review route
 
 ```mermaid
 flowchart LR

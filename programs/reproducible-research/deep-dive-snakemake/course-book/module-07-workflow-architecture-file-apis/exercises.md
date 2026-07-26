@@ -98,9 +98,71 @@ Describe:
 - what boundary you would inspect first
 - what kind of refactor would be justified before the repository grows further
 
+## Exercise 6: Trace one public artifact
+
+Choose one published file and trace it backward through its owning rule, inputs, scripts,
+package code, configuration, and entrypoint target.
+
+What to hand in:
+
+- an ownership diagram
+- every declared dependency on the route
+- any hidden dependency you discover
+- the file API statement a consumer relies on
+
+## Exercise 7: Write a repository responsibility table
+
+Assign stable responsibilities to the entrypoint, rule includes, modules, scripts,
+package code, profiles, schemas, and publish contract.
+
+What to hand in:
+
+- one sentence per layer
+- one forbidden responsibility per layer
+- two current files whose placement violates the table
+- the least disruptive correction
+
+## Exercise 8: Detect architecture drift automatically
+
+Create a focused check for one repository claim, such as every public path being
+documented, every include being reachable from the entrypoint, or scripts avoiding
+undeclared repository scans.
+
+What to hand in:
+
+- the claim and automated check
+- a passing repository state
+- one deliberately failing fixture or edit
+- the failure message a maintainer receives
+
+## Exercise 9: Compare two possible refactors
+
+Design two ways to repair the same crowded workflow: one ownership-based split and one
+more abstract module/package design. Compare navigation, coupling, testability, and
+consumer impact.
+
+What to hand in:
+
+- both proposed trees
+- explicit trade-offs
+- the design you choose now
+- the evidence that would justify the more complex design later
+
+## Exercise 10: Conduct an architecture review
+
+Review an unfamiliar Snakemake repository without running its strongest gate first.
+Follow entrypoint, rule graph, file API, code boundaries, and targeted checks.
+
+What to hand in:
+
+- findings ordered by reproducibility risk
+- an updated repository map
+- focused verification for each major finding
+- three onboarding questions the repaired architecture should answer without oral help
+
 ## Mastery check
 
-You have a strong grasp of this module if your answers consistently keep four ideas visible:
+You have a strong grasp of this module if all ten answers consistently keep four ideas visible:
 
 - repository layers need named responsibilities
 - workflow splits should reflect ownership
