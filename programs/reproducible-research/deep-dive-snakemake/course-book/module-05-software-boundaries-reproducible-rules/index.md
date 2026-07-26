@@ -36,13 +36,27 @@ workflow owns, what the software owns, and what changed when a run becomes unrep
 
 ## What this module is for
 
-By the end of this module, you should be able to explain five things in plain language:
+By the end of this module, you should be able to explain these ideas in plain language:
 
 - when logic belongs in a rule and when it belongs in a script or package
 - how environments and runtime images become semantic workflow inputs
 - how helper code can stay reusable without hiding file contracts
 - what software provenance is needed to defend a rerun or code review later
 - which failure modes mean "repair the workflow boundary" and which mean "repair the software boundary"
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| ownership audit | annotate a long rule by file contract, implementation, and reusable logic | placement map |
+| script extraction | move step-local code behind `script:` without hiding inputs | focused workflow run |
+| package boundary | extract and test logic shared by two steps | direct unit tests |
+| runtime contract | bind the rule to a pinned environment and inspect software changes | environment diff |
+| provenance | rebuild after code and runtime drift | output provenance record |
+| independent practice | complete all ten exercises | implementation and review evidence |
+
+The rule should become shorter because ownership became clearer, not because meaningful
+behavior disappeared behind another file.
 
 ## Study route
 
@@ -152,5 +166,6 @@ Do not move on until all of these are true:
 - you can say which helper code belongs in `workflow/scripts/` and which belongs in `src/`
 - you can explain one rerun using software provenance or code-drift evidence
 - you can classify one failure as a workflow-boundary problem or a software-boundary problem
+- you have completed all ten exercises and reproduced one software-driven rebuild
 
 When those become ordinary, Module 05 has done its job.

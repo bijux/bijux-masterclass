@@ -29,7 +29,7 @@ These answers are written as model explanations, not as the only acceptable word
 
 The standard to aim for is clear ownership reasoning.
 
-## Answer 1: Decide what stays in the rule
+## Exercise 1: Decide what stays in the rule
 
 What should stay in the rule:
 
@@ -53,7 +53,7 @@ The rule should remain the place where the file contract is obvious. Step-local
 implementation belongs in a script. Reusable logic belongs in the repository's package
 surface.
 
-## Answer 2: Choose the right runtime boundary
+## Exercise 2: Choose the right runtime boundary
 
 Rule-scoped environment:
 
@@ -76,7 +76,7 @@ They all describe software, but they protect different scopes. A repository envi
 too broad to explain every step. A rule-scoped environment is too narrow to replace a full
 machine boundary. A container solves portability problems an environment file alone cannot.
 
-## Answer 3: Diagnose a hidden dependency
+## Exercise 3: Diagnose a hidden dependency
 
 Why it is a software-boundary problem:
 
@@ -96,7 +96,7 @@ Repair:
 
 The core principle is simple: meaningful inputs should stay visible at the rule boundary.
 
-## Answer 4: Review a wrapper adoption decision
+## Exercise 4: Review a wrapper adoption decision
 
 A strong review comment would delay adoption for now:
 
@@ -111,7 +111,7 @@ Why this is the right reasoning:
 - the question is whether the wrapper increases clarity
 - if it hides behavior the team cannot review, it weakens the software boundary
 
-## Answer 5: Plan a rebuild after software drift
+## Exercise 5: Plan a rebuild after software drift
 
 Why outputs may no longer be trustworthy:
 
@@ -132,6 +132,46 @@ What provenance should accompany the rebuilt outputs:
 - any workflow configuration that materially affects meaning
 
 The main lesson is that unchanged input datasets do not cancel software drift.
+
+## Exercise 6: Extract a long rule into a script
+
+The resulting rule should still reveal every meaningful input, output, parameter, runtime,
+and log path. The script may transform those declared values but must not discover extra
+files behind the rule. A focused run proves integration, while reviewing file access or
+testing with an absent undeclared file helps establish that extraction did not hide a
+dependency.
+
+## Exercise 7: Promote reusable logic into tested code
+
+The package API should accept ordinary values or paths and return ordinary values rather
+than depending on the injected `snakemake` object. Both workflow scripts remain thin
+adapters. Tests cover a valid record, an empty or boundary case, and malformed input.
+Path wiring and publication remain workflow-owned; reusable parsing or calculation moves
+to the package.
+
+## Exercise 8: Reproduce a rule-scoped environment
+
+A strong environment pins direct dependencies closely enough to reproduce the rule and is
+created by running Snakemake with environment integration enabled. Record the resolved
+package list or explicit versions alongside run evidence. The rule no longer succeeds
+merely because a contributor happened to install a library globally.
+
+## Exercise 9: Observe code and environment drift
+
+The implementation change should mark outputs owned by that script as candidates for
+rebuilding while unrelated branches remain current. Runtime declaration changes require
+the same trust review even when source data is unchanged. After rebuilding, a dry-run
+converges and provenance records the repository revision, resolved environment, semantic
+configuration, and execution identity.
+
+## Exercise 10: Review a complete software boundary
+
+Prioritize undeclared meaningful inputs and unrecorded runtime drift over cosmetic file
+placement. Remove duplicate implementation between scripts and packages, keep the file
+contract in the rule, and test reusable code directly. A container is justified when OS
+or compiled-runtime portability is part of the claim; if a rule-scoped environment
+already satisfies the supported contexts, another image may add maintenance without
+additional trust.
 
 ## Self-check
 

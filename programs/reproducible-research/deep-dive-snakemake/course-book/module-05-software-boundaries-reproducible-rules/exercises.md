@@ -104,9 +104,70 @@ Describe:
 - what evidence you would want before approving the outputs again
 - what provenance information should accompany the rebuilt publication artifacts
 
+## Exercise 6: Extract a long rule into a script
+
+Take a rule with at least thirty lines of transformation logic. Keep its inputs, outputs,
+parameters, log, and runtime visible while moving step-local implementation behind
+`script:`.
+
+What to hand in:
+
+- the before and after rule
+- the script and its declared data access
+- a focused successful run
+- evidence that no hidden input was introduced
+
+## Exercise 7: Promote reusable logic into tested code
+
+Find logic needed by two workflow scripts. Move only that logic into a package module and
+write direct tests for normal, boundary, and invalid input.
+
+What to hand in:
+
+- the package API and both script call sites
+- three focused tests
+- an explanation of what remained workflow-specific
+- the command used to run tests without Snakemake
+
+## Exercise 8: Reproduce a rule-scoped environment
+
+Give one rule a pinned environment, create it from a clean cache or location, and record
+the resolved tool versions.
+
+What to hand in:
+
+- the environment declaration
+- the command that activates environment use
+- resolved version evidence
+- one ambient-host dependency the environment eliminates
+
+## Exercise 9: Observe code and environment drift
+
+Run a workflow to convergence, change its script implementation, then change its
+environment declaration. Inspect the reported change causes before rebuilding.
+
+What to hand in:
+
+- `--list-changes code` or equivalent evidence
+- predictions for affected and unaffected outputs
+- post-rebuild convergence evidence
+- provenance connecting the rebuilt output to both changes
+
+## Exercise 10: Review a complete software boundary
+
+Review a rule, script, shared package, environment, and container definition as one
+system. Identify hidden dependencies, duplicated ownership, and missing provenance.
+
+What to hand in:
+
+- findings ordered by trust impact
+- a corrected ownership diagram
+- the narrow verification route for each correction
+- a decision about whether the container adds necessary portability or redundant weight
+
 ## Mastery check
 
-You have a strong grasp of this module if you can answer all five exercises while keeping
+You have a strong grasp of this module if you can answer all ten exercises while keeping
 four ideas visible:
 
 - the rule owns the file contract

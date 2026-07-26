@@ -73,7 +73,7 @@ The capstone points toward a stronger design:
 
 That is already a meaningful boundary stack.
 
-## Step 1: keep the rule readable
+## Keep the rule readable
 
 Conceptually, the rule should look more like this:
 
@@ -98,7 +98,23 @@ This rule tells a reviewer four useful things immediately:
 
 That is a much stronger contract than a long `run:` block.
 
-## Step 2: keep step-local code in the right place
+The script receives declared values through the injected `snakemake` object. It should
+not scan directories or open configuration paths that the rule never declared. A minimal
+shape is:
+
+```python
+from pathlib import Path
+
+from capstone.provenance import build_provenance
+
+payload = build_provenance(Path(snakemake.input.results))
+Path(snakemake.output.json).write_text(payload, encoding="utf-8")
+```
+
+This makes `workflow/scripts/provenance.py` an adapter between Snakemake and ordinary
+Python. `build_provenance` can be tested directly without constructing a fake workflow.
+
+## Keep step-local code in the right place
 
 The capstone's `workflow/scripts/provenance.py` is a good example of code that belongs in
 `workflow/scripts/` rather than in a reusable package:
@@ -115,7 +131,7 @@ That is the important judgment:
 - step-local behavior stays near the workflow
 - reusable behavior moves into package code
 
-## Step 3: declare the runtime where it matters
+## Declare the runtime where it matters
 
 `workflow/envs/python.yaml` currently declares a small Python runtime:
 
@@ -138,7 +154,7 @@ At the repository level, `environment.yaml` serves a different purpose:
 And `Dockerfile` solves a broader boundary again by packaging that environment into a more
 portable machine-level contract.
 
-## Step 4: make provenance part of the output story
+## Make provenance part of the output story
 
 The current provenance script records several important pieces of software evidence:
 
@@ -155,7 +171,7 @@ finished.
 When a reviewer asks, "what software context produced this artifact?", the repository can
 answer with a file instead of a memory.
 
-## Step 5: think through change scenarios
+## Think through change scenarios
 
 Now imagine three different edits:
 
