@@ -34,6 +34,22 @@ semantics. Module 05 asks a harder question:
 This is the module where a build stops being "correct on my machine" and starts becoming a
 declared contract.
 
+## Plan for the day
+
+| Time | Activity | Evidence you keep |
+| --- | --- | --- |
+| 45 minutes | Run a toolchain and environment audit | a `doctor` report from two environments |
+| 75 minutes | Read the portability and recursion lessons | a written support contract |
+| 60 minutes | Build a convergent environment manifest | two identical no-op runs |
+| 60 minutes | Separate Make overhead from recipe cost | timings and a trace-line count |
+| 90 minutes | Harden the inherited-build example | a repaired graph and boundary decision |
+| 90 minutes | Complete the ten exercises | commands, observations, and explanations |
+
+If you have only one hour, run the environment audit in the worked example, read the
+portability contract, and complete Exercises 1, 6, and 7. Return for recursion,
+measurement, and tool boundaries when you can test them rather than merely read about
+them.
+
 ## What this module is for
 
 By the end of Module 05, you should be able to explain five things clearly:
@@ -138,5 +154,6 @@ Do not move on until all of these are true:
 - you can model one non-file input using a convergent stamp or manifest
 - you can produce one timing or trace-volume metric and explain what it means
 - you can classify one failure as a Make repair, a tool boundary, or a migration trigger
+- you can complete all ten exercises and defend each decision with observed evidence
 
 When those feel ordinary, Module 05 has done its job.

@@ -136,6 +136,112 @@ The best answers also say how proof survives the handoff. For example:
 
 That is much stronger than saying only "use another tool."
 
+## Exercise 6: Build a toolchain doctor
+
+A useful answer reports facts and fails only for declared requirements:
+
+```make
+SHELL := /bin/sh
+
+.PHONY: doctor
+doctor:
+	@printf 'make=%s\nshell=%s\nmakelevel=%s\n' \
+	  '$(MAKE_VERSION)' '$(SHELL)' '$(MAKELEVEL)'
+	@printf 'locale=%s\n' "$${LC_ALL:-not-set}"
+	@command -v "$(CC)" || { echo 'C compiler is required' >&2; exit 1; }
+	@command -v python3 || { echo 'python3 is required' >&2; exit 1; }
+```
+
+The answer should distinguish reporting from validation. An unset locale may be worth
+reporting without being fatal; a missing required generator must fail before the build
+reaches an obscure recipe error.
+
+## Exercise 7: Remove a hidden shell dependency
+
+POSIX `test` uses single brackets:
+
+```make
+SHELL := /bin/sh
+
+.PHONY: report
+report:
+	@if [ -f data.csv ]; then echo ready; fi
+```
+
+Test both branches:
+
+```sh
+rm -f data.csv && make report
+touch data.csv && make report
+```
+
+Other common audit points include arrays, brace expansion, `source`, process
+substitution, and `set -o pipefail`. If a Bash feature is genuinely needed, declare
+`SHELL := /bin/bash` and make Bash part of the portability contract instead of depending
+on a developer's interactive shell.
+
+## Exercise 8: Preserve the parallel budget across recursion
+
+The parent should use Make's recursive invocation:
+
+```make
+.PHONY: nested
+nested:
+	+$(MAKE) -C nested all
+```
+
+The nested build can make the evidence visible:
+
+```make
+.PHONY: all
+all:
+	@printf 'level=%s flags=%s\n' '$(MAKELEVEL)' '$(MAKEFLAGS)'
+```
+
+Under `make -j2 nested`, the child should report a larger `MAKELEVEL` and inherited
+parallel flags. `$(MAKE)` tells GNU Make that the command is recursive; the leading `+`
+also permits the recursive line to run under modes such as `-n`, where the child must
+interpret the dry run itself.
+
+## Exercise 9: Prove an environment manifest converges
+
+One valid rule is:
+
+```make
+MODE ?= release
+ENV_MANIFEST := build/environment.txt
+
+$(ENV_MANIFEST): | build/
+	@{ \
+	  printf 'MODE=%s\n' '$(MODE)'; \
+	  printf 'CC=%s\n' "$$($(CC) --version | sed -n '1p')"; \
+	  printf 'LC_ALL=%s\n' "$${LC_ALL:-not-set}"; \
+	} > $@.candidate
+	@cmp -s $@.candidate $@ 2>/dev/null || mv $@.candidate $@
+	@rm -f $@.candidate
+```
+
+The first run creates the manifest. The second produces identical candidate content, so
+`cmp` prevents a timestamp change. `make MODE=debug` changes semantic content and
+therefore replaces the file. A strong submission records checksums or modification times
+instead of merely asserting that this happened.
+
+## Exercise 10: Harden an inherited build
+
+A strong answer is an evidence packet rather than a rewritten Makefile alone. It should
+contain:
+
+- the supported GNU Make, shell, and required-tool contract
+- `doctor` output from two environments
+- a repaired recursive invocation or environment manifest where needed
+- `make -n` and full-build timings
+- a no-op check such as `make all && make -q all`
+- a reasoned ownership decision
+
+The two environments do not need to be two physical machines. A container, CI runner, or
+deliberately changed `PATH`, `LC_ALL`, and `MODE` can expose assumptions. What matters is
+that the comparison is controlled and the conclusion follows from observed differences.
+
 ## What mastery-level answers sound like
 
 A mastery-level answer set in this module does three things well:

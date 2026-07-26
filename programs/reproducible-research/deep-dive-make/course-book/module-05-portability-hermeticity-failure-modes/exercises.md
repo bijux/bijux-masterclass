@@ -113,9 +113,77 @@ What to hand in:
 - the concern that most strongly argues for another tool
 - one sentence explaining how you would preserve the proof route after the handoff
 
+## Exercise 6: Build a toolchain doctor
+
+Write a phony `doctor` target that reports the GNU Make version, shell, compiler path,
+Python path, locale, and recursion depth. Required tools must make the target fail with a
+useful message when absent.
+
+What to hand in:
+
+- the target
+- output from one successful run
+- the failure message for one deliberately unavailable tool
+
+## Exercise 7: Remove a hidden shell dependency
+
+This recipe works when a developer has configured Bash but fails under a POSIX shell:
+
+```make
+SHELL := /bin/sh
+
+report:
+	@if [[ -f data.csv ]]; then echo ready; fi
+```
+
+Repair the recipe without changing the declared shell. Explain why setting `SHELL` makes
+the contract more honest than relying on a login-shell preference.
+
+What to hand in:
+
+- the portable recipe
+- the command used to test it
+- one other shell feature you would audit before claiming portability
+
+## Exercise 8: Preserve the parallel budget across recursion
+
+Create a top-level build and a nested build that each print `MAKELEVEL` and
+`MAKEFLAGS`. Run the top level with `-j2`, then compare plain `make -C nested` with
+`+$(MAKE) -C nested`.
+
+What to hand in:
+
+- both recursive recipes
+- the observed `MAKELEVEL` and `MAKEFLAGS`
+- a short explanation of which invocation preserves Make's recursive contract
+
+## Exercise 9: Prove an environment manifest converges
+
+Represent `MODE`, compiler identity, and locale in one manifest. Run the build twice
+without changing those facts, then change only `MODE`.
+
+What to hand in:
+
+- the manifest rule
+- file timestamps or checksums from all three runs
+- an explanation of why the second run is a no-op and the third is not
+
+## Exercise 10: Harden an inherited build
+
+Choose a small Makefile with at least one undeclared tool, one shell assumption, one
+recursive call, or one environment-sensitive output. Audit it on two environment
+configurations and harden the weakest boundaries.
+
+What to hand in:
+
+- a before-and-after portability contract
+- evidence from both environments
+- one measurement that separates Make overhead from recipe cost
+- a decision about which concerns remain in Make and which belong elsewhere
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants the same habits:
+Across all ten answers, the module wants the same habits:
 
 - you name the assumption or boundary being tested
 - you choose evidence before you choose a fix

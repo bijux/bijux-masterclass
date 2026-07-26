@@ -28,6 +28,34 @@ flowchart LR
 The five core lessons in Module 05 are easiest to trust when they all appear in one build
 that is recognizably imperfect.
 
+## Begin with a toolchain audit
+
+Before hardening a large build, make the hidden environment visible in a tiny one. Create
+this `Makefile` in an empty directory:
+
+```make
+SHELL := /bin/sh
+
+.PHONY: doctor
+doctor:
+	@printf 'make=%s\n' '$(MAKE_VERSION)'
+	@printf 'shell=%s\n' '$(SHELL)'
+	@printf 'makelevel=%s\n' '$(MAKELEVEL)'
+	@printf 'locale=%s\n' "$${LC_ALL:-not-set}"
+	@command -v python3 >/dev/null || { echo 'python3 is required' >&2; exit 1; }
+```
+
+Run it once with your ordinary environment and once with a deliberately fixed locale:
+
+```sh
+make doctor
+LC_ALL=C make doctor
+```
+
+This is not hermeticity by itself. It is the first useful habit: identify which facts
+exist before deciding which ones affect artifact meaning. `MAKE_VERSION`, the shell, tool
+availability, and locale are now observable rather than folklore.
+
 This example starts with a build that "mostly works":
 
 - the lead developer can run it locally
@@ -85,7 +113,7 @@ mk/generated-env.mk:
 
 Every line here is plausible. That is what makes the example useful.
 
-## Step 1: stop speaking vaguely
+## Establish evidence before changing the build
 
 The first repair is not in the Makefile. It is in the investigation style.
 
@@ -107,7 +135,7 @@ This gives you four immediate facts:
 
 That already improves the quality of the conversation.
 
-## Step 2: establish the portability contract
+## Declare the portability contract
 
 CI fails on an older Make. Do not patch the symptom first. Ask what the build requires.
 
@@ -135,7 +163,7 @@ This is the Core 1 lesson in action:
 - unsupported environments fail early
 - the build stops pretending that all Make implementations are equivalent
 
-## Step 3: repair the recursive boundary
+## Repair the recursive boundary
 
 The inherited build uses:
 
@@ -171,7 +199,7 @@ This is Core 2:
 - `+` keeps dry-run honest
 - `MAKELEVEL` stops accidental depth growth
 
-## Step 4: make environment evidence converge
+## Make environment evidence converge
 
 The inherited file:
 
@@ -210,7 +238,7 @@ This is Core 3:
 - manifests converge
 - attestation sits beside the artifact instead of poisoning it
 
-## Step 5: identify whether Make is actually the performance problem
+## Identify whether Make is actually the performance problem
 
 The team says the build is slow.
 
@@ -245,7 +273,7 @@ This is Core 4:
 - separate performance layers before proposing fixes
 - use measurement to reject the wrong explanation
 
-## Step 6: fix a real graph problem instead of blaming the tool
+## Model coupled outputs as one generation event
 
 The build also has:
 
@@ -257,22 +285,41 @@ api.h api.json: gen_api.py schema.yml
 If this duplicates under `-j`, that is not a reason to migrate away from Make. It is a
 reason to model the generation honestly.
 
-For example:
+GNU Make 4.3 or newer can express the shared generation event directly with a grouped
+target:
+
+```make
+api.h api.json &: gen_api.py schema.yml
+	python3 gen_api.py
+```
+
+Make now runs the generator once and knows that one recipe updates both outputs. If your
+portability contract must support older GNU Make, a stamp can represent the event, but it
+needs an explicit integrity check: deleting `api.h` while leaving the stamp would
+otherwise look up to date. A guarded fallback verifies both outputs before publishing the
+stamp and fails clearly if one later disappears:
 
 ```make
 API_STAMP := build/api.stamp
 
 $(API_STAMP): gen_api.py schema.yml | build/
 	python3 gen_api.py
-	touch $@
+	@test -s api.h && test -s api.json
+	@touch $@
 
 api.h api.json: $(API_STAMP)
+	@test -s $@ || { \
+	  echo "$@ is missing; run 'make clean-generated all'" >&2; \
+	  exit 1; \
+	}
 ```
 
-This is still Make doing exactly what it should do: represent a generation event in a file
-or stamp graph.
+The grouped target is clearer when it is available. The fallback is shown to make the
+portability tradeoff visible, not to pretend that a stamp automatically proves every
+output still exists. Automatic recovery of independently deleted coupled outputs is one
+reason to prefer grouped targets when the supported Make version allows them.
 
-## Step 7: decide the real tool boundary
+## Decide the real tool boundary
 
 The remaining awkward part may be packaging:
 
@@ -320,7 +367,6 @@ endif
 MODE ?= release
 PYTHON ?= python3
 ENV_MANIFEST := build/env.manifest
-API_STAMP := build/api.stamp
 
 .PHONY: all thirdparty
 
@@ -334,11 +380,8 @@ $(ENV_MANIFEST): | build/
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
 
-$(API_STAMP): gen_api.py schema.yml | build/
+api.h api.json &: gen_api.py schema.yml
 	python3 gen_api.py
-	touch $@
-
-api.h api.json: $(API_STAMP)
 
 app: $(ENV_MANIFEST) api.h main.o
 	$(CC) $(CFLAGS) main.o -o $@
