@@ -40,6 +40,21 @@ You will learn how to:
 - use manifests, checksums, reports, and provenance without confusing their jobs
 - review publish drift before downstream trust is damaged
 
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| boundary audit | classify internal, diagnostic, human, and machine artifacts | artifact-role table |
+| versioned bundle | promote the smallest stable contract into `publish/v1/` | public tree |
+| integrity | generate and verify an inventory, checksums, provenance, and schemas | verification transcript |
+| consumer view | read the bundle from a separate program without using internal paths | consumer test |
+| compatibility | simulate additive and breaking changes | compatibility decision |
+| independent practice | complete all ten exercises | publish review packet |
+
+A published file is not trustworthy merely because it exists. The bundle must tell a
+consumer what belongs, what each artifact means, and how to detect damage or incompatible
+change.
+
 The capstone corroboration surface for this module is the versioned bundle under
 `publish/v1/`, especially `summary.json`, `summary.tsv`, `report/index.html`,
 `manifest.json`, `provenance.json`, and `discovered_samples.json`.
@@ -92,7 +107,7 @@ If you already know the basic problem, use this shortcut:
 | [Reports, File APIs, and Human versus Machine Surfaces](reports-file-apis-and-human-vs-machine-surfaces.md) | teaches which artifacts are for machines, humans, or both |
 | [Reviewing Publish Drift and Downstream Risk](reviewing-publish-drift-and-downstream-risk.md) | teaches how to review publish changes before trust is lost |
 | [Worked Example: Promoting Results into a Versioned Publish Bundle](worked-example-promoting-results-into-a-versioned-publish-bundle.md) | walks through a concrete publish-boundary design |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -128,3 +143,6 @@ python scripts/verify_publish.py --publish publish/v1
 
 The point of that route is not just to run the workflow. It is to inspect whether the
 published bundle still deserves downstream trust.
+
+Do not move on until you have completed all ten exercises and verified a bundle from a
+consumer that has no knowledge of `results/`.

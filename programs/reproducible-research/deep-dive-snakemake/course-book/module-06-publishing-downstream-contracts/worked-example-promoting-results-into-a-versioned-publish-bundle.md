@@ -57,7 +57,7 @@ The capstone points toward a better structure:
 
 This is no longer “whatever the run happened to create.” It is a designed bundle.
 
-## Step 1: promote only the right surfaces
+## Promote only the right surfaces
 
 The summarize and report rules already show a useful pattern:
 
@@ -81,7 +81,7 @@ This pattern teaches two things:
 
 That is a strong promotion path from internal details to downstream deliverables.
 
-## Step 2: inventory the bundle explicitly
+## Inventory the bundle explicitly
 
 The publish rule then gathers the promoted surfaces into `manifest.json`.
 
@@ -112,7 +112,23 @@ In the current capstone bundle, the manifest paths are:
 
 That list is already a reviewable statement about the bundle.
 
-## Step 3: keep artifact roles distinct
+The manifest should use stable relative paths and enough identity to verify every
+contract file:
+
+```json
+{
+  "contract_version": "v1",
+  "files": [
+    {"path": "summary.json", "sha256": "..."},
+    {"path": "summary.tsv", "sha256": "..."}
+  ]
+}
+```
+
+Exclude `manifest.json` from its own checksum list, or define an explicit detached
+signature scheme. Never write machine-specific absolute paths into the public inventory.
+
+## Keep artifact roles distinct
 
 The publish bundle works well because each artifact has one clear job:
 
@@ -124,7 +140,7 @@ The publish bundle works well because each artifact has one clear job:
 
 This keeps downstream use clearer than a bundle where every file claims to be “the output.”
 
-## Step 4: verify the bundle as a contract
+## Verify the bundle as a contract
 
 The capstone's `verify_publish.py` script checks several important publish assumptions:
 
@@ -138,7 +154,17 @@ That matters because publish review should ask more than whether the workflow fi
 
 It should ask whether the public bundle is still coherent.
 
-## Step 5: think through a change scenario
+Verification should run from the bundle root and require no access to internal results:
+
+```sh
+python scripts/verify_publish.py --publish publish/v1
+python scripts/consume_summary.py publish/v1/summary.json
+```
+
+The second command is deliberately consumer-shaped. It catches a contract that looks
+valid to its producer but cannot be used through the documented interface.
+
+## Think through a change scenario
 
 Now imagine three possible changes:
 

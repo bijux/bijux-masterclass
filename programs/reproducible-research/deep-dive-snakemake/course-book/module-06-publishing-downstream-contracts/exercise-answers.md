@@ -29,7 +29,7 @@ These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning protects downstream trust.
 
-## Answer 1: Separate internal state from the public bundle
+## Exercise 1: Separate internal state from the public bundle
 
 What should remain internal:
 
@@ -57,7 +57,7 @@ What is still missing:
 
 The main lesson is that copying a few files into `publish/` is not enough by itself.
 
-## Answer 2: Decide whether a change is compatible
+## Exercise 2: Decide whether a change is compatible
 
 Likely compatible within `v1`:
 
@@ -73,7 +73,7 @@ Why:
 An additive field can preserve the old contract if existing consumers still work. Path
 changes and field removals often alter the public promise directly.
 
-## Answer 3: Diagnose a weak integrity surface
+## Exercise 3: Diagnose a weak integrity surface
 
 What the bundle cannot answer well:
 
@@ -93,7 +93,7 @@ What to add first:
 
 The report should remain useful, but it should not be the entire trust story.
 
-## Answer 4: Clarify artifact roles
+## Exercise 4: Clarify artifact roles
 
 A strong response would say:
 
@@ -107,7 +107,7 @@ Why:
 - machine consumers need structured, stable data
 - reports are valuable for humans but brittle as programmatic interfaces
 
-## Answer 5: Review publish drift
+## Exercise 5: Review publish drift
 
 Risks:
 
@@ -127,6 +127,45 @@ Does this require versioning discussion, repair, or both:
 
 The manifest mismatch is a repair inside the current review. The path rename and internal
 file dependency both raise versioning and contract adequacy questions.
+
+## Exercise 6: Build a minimal versioned bundle
+
+A strong bundle exposes only stable machine and human surfaces plus integrity and
+provenance evidence. Publication rules copy or render from internal results and write
+atomically. Logs and intermediates remain internal because they support operation rather
+than the consumer promise. The role table makes path, format, semantics, stability, and
+intended audience explicit.
+
+## Exercise 7: Generate and verify a manifest
+
+The manifest orders normalized relative paths deterministically and records size and
+SHA-256 for each governed artifact. Verification proves that the listed bytes match the
+inventory; it does not prove scientific correctness or authenticate an untrusted
+manifest. Altering one byte must produce a specific mismatch and a nonzero exit.
+
+## Exercise 8: Write a downstream consumer test
+
+The consumer accepts `publish/v1/` as its only location input, validates the summary
+schema, and reads documented fields. An invalid type or absent required field fails with
+a useful message. It intentionally knows nothing about rule names, `results/`, profiles,
+or how the producer computed the summary. That separation proves the public boundary is
+real.
+
+## Exercise 9: Classify compatible changes
+
+An optional additive field is usually compatible when consumers tolerate unknown fields.
+A newly required field may break existing producers or fixtures. A type change and path
+rename are breaking for consumers that follow the documented contract. Test results, not
+hope, support the classification; a breaking path or semantic change requires a new
+version or a deliberate compatibility layer.
+
+## Exercise 10: Design a version migration
+
+`v1` remains immutable or receives only documented compatible repairs while `v2` carries
+the breaking contract. Migration documentation maps old paths and fields to new ones,
+states support dates, and provides examples. Separate consumer tests prove both supported
+versions. Neither version exposes internal working paths, so workflow internals can
+evolve independently of public compatibility.
 
 ## Self-check
 

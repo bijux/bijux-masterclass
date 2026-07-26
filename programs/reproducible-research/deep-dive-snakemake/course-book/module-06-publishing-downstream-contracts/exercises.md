@@ -106,9 +106,69 @@ Describe:
 - what should be repaired before approval
 - whether this looks like a versioning discussion, a repair within the current version, or both
 
+## Exercise 6: Build a minimal versioned bundle
+
+Promote a machine-readable summary and a human report from internal results into
+`publish/v1/`. Do not copy logs, scratch files, or unowned intermediates.
+
+What to hand in:
+
+- the internal and public trees
+- an artifact-role table
+- the rules that own publication
+- an explanation of why each excluded file remains internal
+
+## Exercise 7: Generate and verify a manifest
+
+Create a manifest with relative paths, sizes, and SHA-256 checksums. Verify it from the
+bundle root, then alter one byte in a published file and observe failure.
+
+What to hand in:
+
+- the manifest format and deterministic ordering rule
+- successful and failed verification transcripts
+- the corrupted path reported by the verifier
+- an explanation of what checksum verification proves and does not prove
+
+## Exercise 8: Write a downstream consumer test
+
+Write a small program that receives only the bundle path, validates `summary.json`, and
+uses one documented field. Prevent it from reading `results/` or repository configuration.
+
+What to hand in:
+
+- the consumer and schema
+- a successful run against the bundle
+- a failure against an invalid fixture
+- one producer detail the consumer intentionally does not know
+
+## Exercise 9: Classify compatible changes
+
+Test an optional field addition, a required field addition, a type change, and a path
+rename against the consumer from Exercise 8.
+
+What to hand in:
+
+- the outcome of each trial
+- a compatibility classification with reasoning
+- any schema or consumer adaptation needed
+- the change that requires a new public version
+
+## Exercise 10: Design a version migration
+
+Create a `publish/v2/` contract for one deliberate breaking change while preserving a
+clear route for existing `v1` consumers.
+
+What to hand in:
+
+- both contract trees
+- a migration note and deprecation policy
+- consumer tests for supported versions
+- evidence that internal workflow layout is still not part of either API
+
 ## Mastery check
 
-You have a strong grasp of this module if your answers consistently keep four ideas visible:
+You have a strong grasp of this module if all ten answers consistently keep four ideas visible:
 
 - internal workflow state is not automatically public
 - publish paths and meanings are a contract
