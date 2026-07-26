@@ -82,9 +82,85 @@ What to hand in:
 - the bounded generated target set
 - the proof that `selftest` still matters when `eval` is off
 
+## Exercise 6: Detect accidental discovery
+
+Create `src/real.c` and `src/scratch.c`. Use a broad wildcard that discovers both, then
+replace it with an explicit allowlist or a rooted filter that excludes the scratch file.
+
+What to hand in:
+
+- both discovery expressions
+- `make` output showing the discovered list
+- a rule for deciding which repository files are build inputs
+
+## Exercise 7: Explain a no-op build
+
+Run a successful build twice. On the second run, collect:
+
+```sh
+make --trace all
+make -q all
+printf '%s\n' "$?"
+```
+
+Explain both the absence of recipe work and the query exit status.
+
+What to hand in:
+
+- the exact commands and outputs
+- the newest target and prerequisite timestamps for one rule
+- one sentence defining convergence
+
+## Exercise 8: Separate product tests from build tests
+
+Design two targets:
+
+- `test`, which checks the built program’s behavior
+- `selftest`, which checks incremental convergence and serial/parallel equivalence
+
+Introduce a graph defect that product tests miss but `selftest` catches.
+
+What to hand in:
+
+- the target contracts
+- the deliberate defect
+- transcripts showing the different outcomes
+
+## Exercise 9: Make a CI target boring
+
+Define a `ci` target for a small repository. It must depend on named public targets rather
+than duplicating their recipes.
+
+Run it from a clean checkout or isolated directory with no local configuration files.
+
+What to hand in:
+
+- the `ci` rule
+- the public target dependency chain
+- the clean-room command and result
+- one local convenience target deliberately excluded from CI
+
+## Exercise 10: Build a diagnostic report
+
+For one surprising rebuild, collect a bounded report containing:
+
+- the command and GNU Make version
+- `make --trace TARGET`
+- relevant target and prerequisite timestamps
+- the variable values that shape the rule
+- your causal explanation
+
+Then repair the defect and collect the same evidence again.
+
+What to hand in:
+
+- before and after reports
+- the Makefile change
+- a two-sentence explanation suitable for a teammate who did not witness the failure
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants you to show three things:
+Across all ten answers, the module wants you to show three things:
 
 - you can name the contract being protected
 - you can point to evidence for that contract

@@ -44,6 +44,20 @@ By the end of Module 03, you should be able to explain four things clearly:
 - which targets are real public contracts for CI and which are only local conveniences
 - how to test the build system itself for convergence and equivalence
 
+## Plan for the day
+
+| Block | Activity | Evidence you should produce |
+| --- | --- | --- |
+| Determinism | compare unsorted shell discovery with canonical discovery | two captured source lists and an explanation |
+| Debugging | predict and trace one rebuild and one no-op run | exact trace lines tied to graph facts |
+| Interface | inventory targets consumed by humans and CI | a public target table with promises |
+| Self-testing | test convergence and serial/parallel equivalence | a selftest that fails on a deliberate defect |
+| Abstraction | inspect the optional `eval` example | proof that the core build works with it disabled |
+| Practice | complete all ten exercises | evidence from both positive and negative cases |
+
+Do not treat deterministic output as “the command succeeded twice.” Compare the declared
+artifacts or their checksums.
+
 ## Study route
 
 ```mermaid
@@ -91,7 +105,8 @@ the file that matches the failure or design decision you are facing.
 
 ## The running example
 
-This module uses a local production simulator that extends the earlier small builds with:
+This module uses the course `capstone/` as a production simulator. It extends the earlier
+small builds with:
 
 - dynamic source discovery under `src/dynamic/`
 - generated headers
@@ -153,5 +168,6 @@ Do not move on until all of these are true:
 - you can say which targets are part of the CI contract and why
 - you can run a selftest that fails meaningfully when hidden variability is introduced
 - you can explain why the optional `eval` surface does not control the core build
+- you completed ten exercises and can separate product tests from build-system tests
 
 When those become ordinary, Module 03 has done its job.
