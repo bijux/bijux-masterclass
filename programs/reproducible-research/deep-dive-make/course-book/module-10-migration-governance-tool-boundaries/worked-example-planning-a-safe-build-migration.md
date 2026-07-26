@@ -43,6 +43,18 @@ An empty cell is a finding. This inventory is deliberately accessible to a begin
 asks who owns a promise and how you would observe it, not whether the Makefile uses an
 advanced feature.
 
+Add one more table before planning change:
+
+| Surface | Current proof | Proof that must survive the change |
+| --- | --- | --- |
+| incremental build | no-op and changed-input traces | same rebuild set |
+| parallel build | serial/parallel artifact comparison | equivalent declared outputs |
+| release bundle | sorted contents and checksum | same consumer contract |
+| publication | remote receipt | explicit handoff and failure status |
+
+This becomes the migration bridge. A step is not complete when the new command runs; it
+is complete when the relevant old and new claims can be compared.
+
 ## The situation
 
 Assume you inherit a repository used by a research team:
@@ -334,3 +346,7 @@ Try the same exercise on one real repository:
 - write one governance rule that protects the improvement
 
 If you can do that without reaching for slogans, Module 10 is landing.
+
+Present the plan to someone who did not participate in the review. Ask them to identify
+the rollback point and the proof required after each boundary move. If either answer
+depends on your memory, the migration sequence is not yet durable.

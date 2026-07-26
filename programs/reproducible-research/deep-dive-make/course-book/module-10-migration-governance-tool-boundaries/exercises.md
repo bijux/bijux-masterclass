@@ -34,6 +34,13 @@ Each exercise asks for three things:
 - the evidence or review artifact you would rely on
 - the change, rule, or boundary decision that follows from that evidence
 
+For every migration proposal, include a proof bridge:
+
+| Boundary moved | Before evidence | After evidence | Rollback point | New owner |
+| --- | --- | --- | --- | --- |
+
+Do not accept “tests pass” unless the named tests protect the contract being moved.
+
 ## Exercise 1: Write a first-pass build review
 
 Choose one inherited Make-based repository. Write a short review that covers:

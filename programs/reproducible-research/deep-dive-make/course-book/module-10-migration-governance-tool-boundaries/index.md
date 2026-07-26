@@ -65,6 +65,32 @@ By the end of Module 10, you should be able to explain five things clearly:
 - which recurring build smells are worth stopping immediately
 - when Make is still the right owner and when another tool should take over
 
+## Decide by responsibility, not tool preference
+
+For each concern, compare the ownership it needs with the ownership Make can provide:
+
+| Concern | Local file graph? | External state? | Long-running orchestration? | Likely owner |
+| --- | ---: | ---: | ---: | --- |
+| compile sources into objects | yes | no | no | Make |
+| assemble and verify a local bundle | yes | no | no | Make |
+| upload and retry against a remote service | partly | yes | possibly | workflow or publication tool |
+| schedule a distributed research pipeline | partly | yes | yes | workflow scheduler |
+
+These are starting judgments, not universal answers. A handoff is justified when another
+tool has a clearer responsibility model for the concern, not merely because it is newer.
+
+Every proposed boundary must preserve an interface on both sides:
+
+```mermaid
+flowchart LR
+  make["Make-owned local artifact"] --> contract["versioned file and metadata contract"]
+  contract --> external["external owner"]
+  external --> receipt["status or receipt evidence"]
+```
+
+Without that contract, “migration” often means moving hidden coupling from one file to
+another.
+
 ## Study route
 
 ```mermaid
