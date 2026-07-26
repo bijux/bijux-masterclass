@@ -1,135 +1,108 @@
 # Exercises
 
+Use these after reading the five core lessons and the worked example. The goal is to make
+operating-context judgment visible through profile comparisons, failure models, and
+storage-boundary evidence, not through a pile of flags.
 
-<!-- page-maps:start -->
-## Page Maps
+Do them in order. The set is one day-long progression:
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+- Exercises 1-3 establish profile and semantic boundaries.
+- Exercises 4-6 compare contexts and classify settings.
+- Exercises 7-8 test resource and storage policy honestly.
+- Exercises 9-10 audit drift like a maintainer.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+For every answer, keep three things:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use these exercises to practice operating-context judgment, not only profile vocabulary.
-
-The strongest answers will make the policy boundary and the semantic boundary explicit.
+- the boundary you are protecting
+- the evidence route you actually used
+- one short sentence explaining why the decision belongs to operating policy or to workflow meaning
 
 ## Exercise 1: Decide whether a profile change is safe
 
-A teammate proposes these profile changes:
+Review a small set of proposed profile edits and decide which are operating policy and
+which are semantic leaks.
 
-- local: `latency-wait: 60`
-- CI: `printshellcmds: false`
-- SLURM: a different `publish_dir`
+What to hand in:
 
-Write a short review note that explains:
-
-- which changes look like operating policy
-- which change looks like a semantic leak
-- why the distinction matters
+- the proposed changes
+- one sentence per change explaining your classification
+- one change you reject immediately
+- one reason the distinction matters to downstream trust
 
 ## Exercise 2: Review retries honestly
 
-A workflow has started failing intermittently on one cluster. The proposed fix is:
+Choose a recurring failure and decide whether raising retries is justified.
 
-- increase retries from 1 to 5
-- do not inspect failed logs yet
+What to hand in:
 
-Explain:
-
-- why this may be a weak operating response
-- what failure classification question should be asked first
-- what evidence you would want before approving the change
+- the failure symptom
+- the failure class you suspect first
+- the evidence you inspect before approving retries
+- one case where retries would hide a real defect
 
 ## Exercise 3: Diagnose a storage-boundary problem
 
-A scheduler-backed run stages outputs onto node-local scratch and later copies some of
-them to shared storage. Reviewers have started checking the scratch directory directly when
-the shared output is delayed.
+Choose or simulate a workflow that stages outputs through scratch or intermediate storage.
 
-Explain:
+What to hand in:
 
-- what trust problem this creates
-- when a file should count as a trusted output
-- what policy or documentation boundary needs to be clarified
+- the storage route
+- the point where an output becomes trusted
+- one trust problem created by checking scratch directly
+- the policy or documentation boundary that repairs it
 
-## Exercise 4: Compare contexts
+## Exercise 4: Compare three contexts
 
-A repository has `profiles/local`, `profiles/ci`, and `profiles/slurm`. No one has ever
-compared their dry-runs side by side.
+Run the same target through local, CI, and scheduler-oriented profiles and compare the
+planned work.
 
-Write a short argument for why that comparison matters even if all three contexts appear to
-“work.”
+What to hand in:
 
-Your answer should focus on semantic drift rather than operational convenience.
+- the capture commands
+- the normalized comparison
+- one harmless policy difference
+- one semantic difference the comparison would catch
 
-## Exercise 5: Escalate a suspicious policy change
+## Exercise 5: Escalate a semantic profile leak
 
-During review, you notice that one profile now sets a different config value that changes
-how samples are filtered before publication.
+Create or study a profile change that alters config, sample filtering, publish paths, or
+some other semantic surface.
 
-Describe:
+What to hand in:
 
-- why this is not just a profile difference
-- which review surface should own that decision instead
-- what should happen before the change is approved
+- the leak
+- why it is not just a profile choice
+- which repository surface should own that decision instead
+- what must happen before approval
 
-## Exercise 6: Build a three-context policy matrix
+## Exercise 6: Build a governed policy matrix
 
-Inventory every setting in local, CI, and scheduler profiles. Classify each as capacity,
+Inventory local, CI, and scheduler profile keys and classify each as capacity,
 observability, recovery, filesystem, executor mapping, or semantic leak.
 
 What to hand in:
 
-- the complete matrix
+- the full matrix
 - disagreements that are justified by context
-- any duplicate default that should be centralized or documented
-- every setting that needs removal from profile policy
+- duplicate defaults that should be centralized or documented
+- every key that should be removed from profile policy
 
-## Exercise 7: Normalize and compare plans
+## Exercise 7: Map resources to two executors
 
-Request the same final target through all three profiles and capture dry-run evidence.
-Normalize only volatile presentation details, then compare jobs, dependencies, wildcards,
-and outputs.
-
-What to hand in:
-
-- the capture and normalization commands
-- the semantic comparison
-- one harmless operational difference
-- one deliberately introduced semantic difference that the comparison catches
-
-## Exercise 8: Map resources to two executors
-
-Declare threads, memory, runtime, and temporary disk for a heavy rule. Map the abstract
-resources to local limits and scheduler requests.
+Declare threads, memory, runtime, and temporary disk for a heavy rule family, then map
+those abstract needs into two operating contexts.
 
 What to hand in:
 
-- the rule declarations
+- the workflow-side resource declarations
 - both policy mappings
 - an explanation of units and defaults
 - evidence that changing the mapping does not change output meaning
 
-## Exercise 9: Verify scratch promotion
+## Exercise 8: Verify scratch promotion
 
-Execute or simulate a job through node-local scratch, validation, atomic promotion, and
-cleanup. Interrupt it before promotion and inspect every location.
+Execute or simulate a job through scratch, validation, atomic promotion, and cleanup.
+Interrupt it before promotion and inspect every location.
 
 What to hand in:
 
@@ -138,10 +111,10 @@ What to hand in:
 - the point where the output becomes trusted
 - recovery behavior that cannot mistake scratch for publication
 
-## Exercise 10: Write an operating-context drift gate
+## Exercise 9: Write an operating-context drift gate
 
 Implement a focused audit that compares governed profile keys and semantic dry-run
-surfaces. Make it fail on a changed publish path or sample-filter setting.
+surfaces.
 
 What to hand in:
 
@@ -150,11 +123,25 @@ What to hand in:
 - a precise failure message
 - an explanation of what remains intentionally context-specific
 
-## Mastery check
+## Exercise 10: Review a policy change like a maintainer
 
-You have a strong grasp of this module if all ten answers consistently keep four ideas visible:
+Review a change that touches local, CI, and scheduler profiles together with an audit
+route.
+
+What to hand in:
+
+- findings ordered by semantic risk
+- one accepted policy difference
+- one rejected leak
+- the narrow verification route supporting each decision
+
+## Mastery standard for this exercise set
+
+Across all ten answers, Module 08 wants the same habits:
 
 - profiles own policy, not workflow meaning
-- context changes should preserve trusted outputs
-- retries and latency settings need a failure model
-- storage and visibility assumptions must be reviewable
+- context comparisons protect trusted outputs
+- retries and latency changes require a failure model
+- storage and visibility assumptions are part of review, not folklore
+
+If your answer says only "the profiles are different," keep going.
