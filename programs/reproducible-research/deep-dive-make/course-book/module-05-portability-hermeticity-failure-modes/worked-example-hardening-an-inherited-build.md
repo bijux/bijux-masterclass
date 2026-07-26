@@ -56,6 +56,19 @@ This is not hermeticity by itself. It is the first useful habit: identify which 
 exist before deciding which ones affect artifact meaning. `MAKE_VERSION`, the shell, tool
 availability, and locale are now observable rather than folklore.
 
+Save both reports and compare them:
+
+| Fact | Ordinary environment | Fixed-locale environment | Changes artifact meaning? |
+| --- | --- | --- | --- |
+| Make version |  |  |  |
+| shell |  |  |  |
+| locale |  |  |  |
+| `python3` path |  |  |  |
+
+The last column is the lesson. A different path to an equivalent tool may be diagnostic
+context, while a different tool version may be a semantic input. Decide from the
+artifact contract, not from the convenience of capturing a value.
+
 This example starts with a build that "mostly works":
 
 - the lead developer can run it locally
@@ -432,3 +445,7 @@ Take one real inherited build and rewrite its story in the same order:
 6. decide whether any concern has crossed a tool boundary
 
 If you can do that, Module 05 has started to change how you harden builds.
+
+Ask another person to run only the doctor target and explain whether their environment
+is supported. If the report requires private knowledge to interpret, improve the
+contract or the message before adding more detection.

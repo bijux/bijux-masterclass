@@ -60,6 +60,24 @@ By the end of Module 05, you should be able to explain five things clearly:
 - how to measure Make overhead instead of guessing about performance
 - when a failure is a repairable Make problem and when it points to a tool boundary
 
+## Sort assumptions into three contracts
+
+Do not put every environmental fact into one stamp. Classify it first:
+
+| Kind | Example | Build response |
+| --- | --- | --- |
+| required capability | GNU Make 4.3, `python3`, POSIX shell | detect early and fail with a useful message |
+| semantic input | compiler, flags, target architecture | record stable evidence and make outputs depend on it |
+| diagnostic context | hostname, current time, terminal color | report separately; do not destabilize artifact identity |
+
+This distinction prevents two opposite mistakes. Ignoring a semantic input creates stale
+outputs. Recording every volatile diagnostic as an input creates endless rebuilds.
+
+For one build you know, write at least two facts in each row. If you cannot decide where
+a fact belongs, ask: “Could changing this fact change the bytes or meaning of a declared
+artifact?” A yes usually indicates a semantic input. A no may still matter for debugging,
+but it should not automatically control freshness.
+
 ## Study route
 
 ```mermaid

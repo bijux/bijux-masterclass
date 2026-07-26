@@ -35,6 +35,13 @@ Each exercise asks for three things:
 - the evidence or command that would establish it
 - the repair or design decision that follows from that evidence
 
+Keep an assumption ledger while you work:
+
+| Assumption | Required capability | Semantic input | Diagnostic only | Proof or failure message |
+| --- | ---: | ---: | ---: | --- |
+
+Every row must choose one ownership category. “Environment issue” is not a category.
+
 ## Exercise 1: Write a portability contract
 
 You inherit a Make build that uses grouped targets, `python3`, and POSIX shell syntax, but
