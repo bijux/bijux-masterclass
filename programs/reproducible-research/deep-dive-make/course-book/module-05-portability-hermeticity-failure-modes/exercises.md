@@ -1,33 +1,16 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Portability Hermeticity Failure Modes"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is not to
 recite vocabulary. The goal is to show that you can turn a fuzzy build complaint into a
 declared contract, a measured observation, or a justified boundary decision.
+
+## How to work this exercise set
+
+Work through these as if you are hardening a real inherited repository:
+
+- Exercises 1-3: declare assumptions and model semantic inputs
+- Exercises 4-6: inspect measurement, ownership, and failure messages
+- Exercises 7-9: repair shell and recursion boundaries
+- Exercise 10: combine the whole hardening workflow in one audit
 
 Each exercise asks for three things:
 
@@ -41,6 +24,14 @@ Keep an assumption ledger while you work:
 | --- | ---: | ---: | ---: | --- |
 
 Every row must choose one ownership category. “Environment issue” is not a category.
+
+## Minimum evidence for every answer
+
+Try to include:
+
+- one explicit contract statement
+- one observed command or report
+- one reason the chosen fix converges instead of creating more drift
 
 ## Exercise 1: Write a portability contract
 
@@ -187,6 +178,15 @@ What to hand in:
 - evidence from both environments
 - one measurement that separates Make overhead from recipe cost
 - a decision about which concerns remain in Make and which belong elsewhere
+
+## Before you read the answers
+
+Do not open `exercise-answers.md` until you can already point to:
+
+- one declared required capability
+- one modeled semantic input
+- one recursive invocation you can justify
+- one concern that clearly belongs outside Make
 
 ## Mastery standard for this exercise set
 
