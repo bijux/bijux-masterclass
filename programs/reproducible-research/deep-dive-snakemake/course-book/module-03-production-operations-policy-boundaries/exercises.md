@@ -1,38 +1,21 @@
 # Exercises
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is to make
-your operational reasoning visible, not to show off a pile of flags.
+your operational reasoning visible through concrete runs, failure evidence, and policy
+reviews, not through a pile of flags.
 
-Each answer should show three things:
+Do them in order. The set is one day-long progression:
 
-- the boundary you are defending
-- the evidence route you would use
-- the repair or decision that follows
+- Exercises 1-3 establish the policy boundary.
+- Exercises 4-6 compare contexts and proof routes.
+- Exercises 7-8 classify and repair failures.
+- Exercises 9-10 treat production policy as a review surface.
+
+For every answer, keep three things:
+
+- the setting, artifact, or failure class you are naming
+- the evidence route you actually used
+- one short sentence explaining why the decision belongs to policy or to workflow meaning
 
 ## Exercise 1: Separate policy from workflow meaning
 
@@ -47,7 +30,32 @@ What to hand in:
 - one sentence per setting explaining why it belongs where you placed it
 - one short explanation of what would go wrong if a semantic setting were moved into a profile
 
-## Exercise 2: Write a small failure policy
+## Exercise 2: Compare the same target across two profiles
+
+Create minimal local and CI profiles for the same small workflow. Vary only operational
+settings such as cores, failed-log display, and latency handling.
+
+What to hand in:
+
+- both profile files
+- paired dry-runs against the same target
+- a table classifying every differing setting
+- evidence that the target graph is semantically unchanged
+
+## Exercise 3: Choose the smallest honest proof route
+
+For each of these questions, choose the smallest honest route:
+
+- how does the workflow plan differ between local and CI contexts
+- does the repository still prove itself under its strongest built-in check
+- which profile differences are visible to a reviewer
+
+What to hand in:
+
+- the command or route for each question
+- one sentence per route explaining why a stronger or weaker route would be less appropriate
+
+## Exercise 4: Write a small failure policy
 
 Choose one workflow step and describe:
 
@@ -61,7 +69,7 @@ What to hand in:
 - the response for each one
 - one sentence explaining how logs help the reviewer tell them apart
 
-## Exercise 3: Review one staging or locality assumption
+## Exercise 5: Review one staging or locality assumption
 
 Describe a workflow that runs locally and on shared infrastructure.
 
@@ -74,20 +82,7 @@ What to hand in:
 - the semantically stable path or boundary
 - one sentence explaining why confusing the two would create review problems
 
-## Exercise 4: Choose the smallest honest proof route
-
-For each of these questions, choose the smallest honest route:
-
-- how does the workflow plan differ between local and CI contexts
-- does the repository still prove itself under its strongest built-in check
-- which profile differences are visible to a reviewer
-
-What to hand in:
-
-- the command or route for each question
-- one sentence per route explaining why a stronger or weaker route would be less appropriate
-
-## Exercise 5: Review one operational diff like a maintainer
+## Exercise 6: Review one operational diff like a maintainer
 
 Imagine a pull request that changes a CI profile and a confirmation target.
 
@@ -98,18 +93,6 @@ What to hand in:
 - the first file or surface you would inspect
 - the second proof route or artifact you would check
 - two review questions you would ask before approving the change
-
-## Exercise 6: Compare local and CI profiles
-
-Create minimal local and CI profiles for the Module 01 workflow. Vary cores, failed-log
-display, and latency handling while keeping semantic inputs and targets unchanged.
-
-What to hand in:
-
-- both profile files
-- paired dry-runs against the same target
-- a table classifying every differing setting
-- evidence that the target graph is semantically unchanged
 
 ## Exercise 7: Inject and classify failures
 

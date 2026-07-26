@@ -1,36 +1,21 @@
 # Worked Example: Hardening a Workflow for Production Use
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Worked Example: Hardening a Workflow for Production Use"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This file ties the whole module together around one realistic problem:
 
 > a workflow runs locally, but the team now wants to run it in CI and review it like a production repository.
 
 The question is not "how do we add more flags?" The question is how to make the workflow
 operable without blurring its meaning.
+
+## The lab route
+
+Work through the example in this order:
+
+1. name which current habits are private shell rituals rather than repository policy
+2. move stable operating defaults into profiles
+3. classify one controlled failure before choosing any retry policy
+4. separate scratch behavior from semantically stable outputs
+5. finish by proving the repository through a stronger confirmation route
 
 ## The starting situation
 
@@ -71,6 +56,9 @@ Now the repository can answer:
 - what scheduler-oriented policy looks like
 
 This is Core 1 becoming concrete. The team stops relying on private shell habits.
+
+That first move matters because production discipline begins with named operating contexts,
+not with bigger commands.
 
 Start with profiles whose differences are easy to explain:
 
@@ -122,6 +110,16 @@ The repair is to state a failure policy:
 - semantic errors fail fast instead of hiding under retries
 
 This is Core 2: recovery becomes a contract, not a mood.
+
+## The question every retry must answer
+
+Before raising retries, ask:
+
+- is this failure transient, semantic, or publication-related
+- what evidence would distinguish those classes
+- what state is safe to keep and what state must be discarded
+
+If those answers are missing, the retry policy is guessing.
 
 Practice the distinction by injecting a deterministic failure into a disposable rule:
 
@@ -190,6 +188,15 @@ So define a proof ladder:
 - `make confirm` for the strongest clean-room repository proof
 
 This is Core 4: production trust grows by named routes, not by one giant ritual command.
+
+## What to check before moving on
+
+After the production version works, confirm all of these:
+
+- profiles change execution behavior without changing target meaning
+- failed runs leave logs and untrusted intermediate state rather than poison outputs
+- scratch or latency assumptions are visible as policy
+- the strongest confirmation route still passes from a fresh state
 
 ## Make policy review survivable for the next maintainer
 
