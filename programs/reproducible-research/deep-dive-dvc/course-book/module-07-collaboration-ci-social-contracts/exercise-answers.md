@@ -137,6 +137,36 @@ Findings that should become fixes:
 
 The main lesson is that recovery claims become reliable only when rehearsed.
 
+## Answer 6: Review a data-changing pull request
+
+A strong checklist confirms why the data changed, identifies old and new content, verifies
+the new object is remotely recoverable, shows downstream impact, and preserves a rollback
+route. A pointer diff without these facts is not sufficient review evidence.
+
+## Answer 7: Build a remote-presence CI check
+
+CI should use read-only credentials where possible and report missing object identities
+without downloading unnecessary content. Forks need an explicit safe behavior because
+secrets are unavailable. The check must never mutate or garbage-collect the remote.
+
+## Answer 8: Resolve a pointer merge conflict
+
+The team first decides which content is authoritative or reruns the producing process from
+merged inputs. DVC then records the resulting object and Git records its pointer. Editing
+hash fragments by hand can create metadata that names no meaningful artifact.
+
+## Answer 9: Define ownership for shared artifacts
+
+Repository maintainers can own declarations, platform operators can own remote durability,
+domain reviewers can own scientific acceptance, and incident owners can coordinate
+recovery. Explicit separation creates review and continuity rather than bureaucracy.
+
+## Answer 10: Conduct a no-oral-history handoff
+
+Every undocumented credential route, command, data origin, expected metric, or recovery
+assumption is a real course finding. Repair the durable surface and repeat until the
+teammate can complete the route from written evidence.
+
 ## Self-check
 
 If your answers consistently explain:

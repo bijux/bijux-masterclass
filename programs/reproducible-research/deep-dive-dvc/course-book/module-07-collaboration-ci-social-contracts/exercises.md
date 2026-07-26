@@ -87,6 +87,32 @@ Your answer should include:
 - what success means
 - what kind of finding should become a repository fix
 
+## Exercise 6: Review a data-changing pull request
+
+Create a review checklist for a change to one tracked dataset and its pointer. Require
+evidence for origin, remote availability, affected stages, metric change, and rollback.
+
+## Exercise 7: Build a remote-presence CI check
+
+Design a non-destructive CI step that verifies every required DVC object is available
+before merge. Explain credentials, least privilege, failure output, and fork behavior.
+
+## Exercise 8: Resolve a pointer merge conflict
+
+Describe how two branches can legitimately change the same tracked artifact. Resolve the
+conflict by choosing or regenerating content, not by manually combining hash lines.
+
+## Exercise 9: Define ownership for shared artifacts
+
+Assign owners for pointer review, remote administration, retention, incident response,
+and scientific acceptance. Explain why one person should not silently own every boundary.
+
+## Exercise 10: Conduct a no-oral-history handoff
+
+Give a teammate only the repository and authorized remote access. Ask them to recover,
+reproduce, and explain one result. Turn every question they must ask into a documentation
+or automation repair.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep five ideas
