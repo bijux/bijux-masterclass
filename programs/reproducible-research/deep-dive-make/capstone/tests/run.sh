@@ -120,8 +120,18 @@ record hidden-input.txt "PASS"
 pass "negative: hidden input detected (non-convergence)"
 
 mv config.mk.bak config.mk
+
+# 4) Optional eval demo must remain executable without controlling the core build
+step "quarantined eval demo"
+"$MAKE_BIN" USE_EVAL=yes eval-demo >/dev/null
+test -s build/include/multi.h || fail "eval demo did not publish multi.h"
+test -s build/include/multi.c || fail "eval demo did not publish multi.c"
+record eval-demo.txt "PASS"
+pass "quarantined eval demo"
+
 record summary.txt "convergence=PASS
 serial_parallel_equivalence=PASS
 trace_guardrail=PASS
-hidden_input_detection=PASS"
+hidden_input_detection=PASS
+quarantined_eval_demo=PASS"
 echo "selftest: PASS: all checks completed"
