@@ -52,6 +52,13 @@ Keep commands, observations, and short explanations for each exercise. The goal 
 100 pasted snippets. The goal is a portfolio showing that you can predict behavior,
 observe what Make decided, and repair the graph without hiding a failure.
 
+The portfolio develops one concrete artifact per teaching day. Use the
+[Practice Map](reference/practice-map.md) to keep graph predictions, ownership tables,
+falsifiable selftest claims, semantic event logs, environment ledgers, publication
+records, architecture maps, consumer release packets, measured incident evidence, and
+migration proof bridges together. These artifacts show how your judgment developed;
+command transcripts alone do not.
+
 ## Use this course if
 
 - you want a correct graph model instead of memorized recipes
@@ -85,6 +92,7 @@ observe what Make decided, and repair the graph without hiding a failure.
 | smallest honest proof route | [Proof Ladder](guides/proof-ladder.md) |
 | capstone entry by module and question | [Capstone Map](capstone/capstone-map.md) |
 | stable review shelf | [Reference](reference/index.md) |
+| cumulative evidence portfolio | [Practice Map](reference/practice-map.md) |
 
 ## Module Table of Contents
 

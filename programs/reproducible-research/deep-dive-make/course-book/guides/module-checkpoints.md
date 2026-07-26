@@ -66,6 +66,16 @@ Do not call a module done just because:
 
 Those signals often mean you have seen the surface, not learned the boundary.
 
+## Keep the checkpoint evidence
+
+Passing a checkpoint should add one bounded artifact to your portfolio, not merely a
+checkmark. Save the smallest evidence that another learner could use to challenge the
+claim: a trace with your explanation, an ownership table, a failing and passing selftest,
+a consumer-side archive inspection, or a before-and-after proof bridge.
+
+Use the [Practice Map](../reference/practice-map.md) to see how these artifacts accumulate.
+If the evidence requires you to narrate undocumented context, revise it before moving on.
+
 ## Best companion pages
 
 Use these together with the checkpoints:
@@ -73,4 +83,3 @@ Use these together with the checkpoints:
 - [Module Promise Map](module-promise-map.md) when you need the module contract restated
 - [Proof Ladder](proof-ladder.md) when the proof route feels heavier than the claim
 - [Capstone Map](../capstone/capstone-map.md) when the idea is clear but the repository route is not
-
