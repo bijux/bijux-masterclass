@@ -1,77 +1,68 @@
 # Worked Example: Refactoring a Growing Workflow Without Hiding It
 
+This file ties the whole module together around one realistic problem:
 
-<!-- page-maps:start -->
-## Page Maps
+> a workflow still works, but every new rule makes the repository harder to review, teach, and change safely.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Scaling Workflows Interface Boundaries"]
-  page["Worked Example: Refactoring a Growing Workflow Without Hiding It"]
-  capstone["Capstone evidence"]
+The question is not "how do we create more files?" The question is how to make growth
+land in named places without hiding the graph.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## The lab route
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Work through the example in this order:
 
-This file ties the module together around one realistic problem:
-
-> a workflow still works, but the repository has become large enough that every change feels risky.
-
-The goal is not to make the repository look more "architectural." The goal is to make it
-easier for another engineer to explain the workflow after the refactor.
+1. name the current rule families that already exist implicitly
+2. split one concern into `workflow/rules/` without weakening the entrypoint
+3. decide whether one candidate boundary is only an include or a true module
+4. document the public file contract the refactor must preserve
+5. finish by choosing gates that prove the new structure still tells the truth
 
 ## The starting situation
 
-Assume a repository that already has:
+Assume the repository already has:
 
-- truthful rules
-- explicit dynamic discovery where needed
-- stable publish and production boundaries
+- truthful rule contracts from Module 01
+- disciplined dynamic discovery from Module 02
+- explicit production policy from Module 03
 
-The problem is growth:
+What it does not yet have is a calm scaling story.
 
-- one `Snakefile` has become hard to read
-- helper logic and path conventions are mixed together
-- public versus internal files are not documented clearly
-- CI runs, but reviewers cannot say which boundary each check protects
+The maintainers currently live with:
 
-That is a good Module 04 starting point because the workflow is not broken. It is only
-getting hard to trust at scale.
+- one `Snakefile` that mixes preprocessing, summarization, and publishing
+- helper path logic and structural logic in the same place
+- no clear public-versus-internal path note
+- CI checks that run, but do not clearly defend any structural claim
 
-## Split by named rule ownership
+That is a good Module 04 starting point because the workflow is not broken. It is merely
+becoming exhausting to explain.
 
-The first repair is not a module. It is a rule-family split.
+## Start with ownership, not abstraction
 
-Move coherent concerns into files such as:
+The first repair is a rule-family split, not a module promotion.
+
+Read the large file and write one sentence of ownership for each cluster of rules. A
+useful early outcome might look like this:
 
 ```text
 workflow/rules/
-  common.smk
   preprocess.smk
   summarize_report.smk
   publish.smk
 ```
 
-This works because each file can now be explained in one sentence.
+Each file now owns one coherent concern:
 
-The repository is better not because there are more files, but because a reviewer can name
-the ownership boundary quickly.
+- `preprocess.smk` prepares declared working data
+- `summarize_report.smk` turns processed data into public summaries and report inputs
+- `publish.smk` assembles and verifies the downstream contract
 
-This is Core 1 becoming visible.
+The repository improves because a reviewer can explain each boundary quickly, not because
+the file count increased.
 
-Keep the entrypoint short but informative:
+## Keep the entrypoint short and honest
+
+The top-level `Snakefile` should still reveal orchestration:
 
 ```python
 configfile: "config/config.yaml"
@@ -85,89 +76,106 @@ rule all:
         "publish/v1/manifest.json"
 ```
 
-The entrypoint still reveals the major rule families and final contract. A reader can
-follow one include at a time without losing the destination of the graph. Capture
-`snakemake --list-rules` and the rule graph before and after the split; file movement is
-not a successful refactor unless those surfaces preserve the intended behavior.
+This entrypoint still answers the most important questions:
 
-## Promote only real reusable boundaries into modules
+- where configuration starts
+- which major rule families exist
+- what final contract the workflow promises
 
-Now ask whether one sub-workflow has a stable interface of its own.
+If the entrypoint becomes a maze of indirection, the split has already gone too far.
 
-If a QC bundle or screen bundle is reused with named inputs and outputs, that is a good
-candidate for `workflow/modules/`.
+Capture evidence immediately:
 
-If a split only hides details without clarifying an interface, it should stay an include.
+```sh
+snakemake --list-rules
+snakemake --rulegraph mermaid-js > rulegraph.mmd
+snakemake -n
+```
 
-This is Core 2:
+The structural refactor is not successful unless those surfaces still tell the same
+workflow story.
 
-- includes group one visible graph by ownership
-- modules represent reusable workflow boundaries with explicit interfaces
+## Promote only a real reusable boundary
 
-An interface decision should name required inputs, promised outputs, configurable
-parameters, and assumptions. Hidden access to top-level globals is evidence that the
-candidate is not ready to become a module.
+Now inspect one candidate concern more closely.
 
-## Document the file contract explicitly
+Suppose the repository has a QC bundle used by two entrypoints. That *might* deserve
+`workflow/modules/`, but only if the interface is explicit:
 
-The refactor is still weak if another engineer cannot tell which paths are public.
+- named inputs
+- named outputs
+- parameters that callers can understand
+- software and config assumptions
 
-So add or strengthen `FILE_API.md`:
+If the candidate still reaches into top-level globals, undeclared path conventions, or
+shared hidden helpers, it is not ready.
 
-- define the stable publish paths
-- explain the meaning of those files
-- mark internal execution state as internal
+That is the key distinction:
 
-This is Core 3: a growing repository needs a smaller, documented public contract instead
-of letting `results/` become accidental API.
+- includes group one graph by ownership
+- modules expose a reusable boundary with an interface
 
-Write the contract from a consumer's perspective:
+Do not promote a module just because a file is long.
+
+## Write the public contract before the gate
+
+The refactor is still incomplete if another engineer cannot answer which files are safe
+for consumers.
+
+So add or strengthen a contract note such as `FILE_API.md`:
 
 | Path | Stability | Meaning |
 | --- | --- | --- |
-| `publish/v1/manifest.json` | public | inventory and checksums for the release bundle |
-| `publish/v1/summary.json` | public | validated run-level summary with a documented schema |
-| `results/staged/` | internal | rebuildable intermediates with no compatibility promise |
+| `publish/v1/manifest.json` | public | inventory and checksums for the published bundle |
+| `publish/v1/summary.json` | public | machine-readable summary with a defined schema |
+| `results/staged/` | internal | rebuildable intermediate state with no compatibility promise |
 | `.snakemake/` | engine state | private execution metadata |
 
-## Align gates with the new boundaries
+This step matters because public trust should live in a small documented surface, not in
+whoever happens to know the directory tree best.
 
-After the split, CI should answer real review questions:
+## Add gates that defend the claim you just made
 
-- does lint still pass
-- does the workflow still plan correctly
-- does the rule surface still look the way the repository now claims
-- does the public contract still verify
+Only now should you tighten validation.
 
-That means:
+After the split, different questions need different proof routes:
 
-- a rulegraph or `--list-rules` review surface protects architecture visibility
-- targeted verification protects public contract alignment
-- stronger routes remain available when the claim expands
+- does the visible graph still make sense
+- does the public file contract still verify
+- did the plan for the final target remain stable
 
-This is Core 4: gates defend named boundaries instead of adding generic noise.
+That usually leads to a gate set like this:
 
-## Keep executor-facing assumptions explainable
+- `snakemake --list-rules` or rulegraph review for architecture visibility
+- `snakemake -n` for target planning
+- targeted schema or file-contract validation for public paths
+- `snakemake --lint` for design smells that the split exposed
 
-Finally, the team reviews resources and executor-facing assumptions.
+This is the difference between a meaningful gate and generic CI noise.
 
-The workflow should still explain:
+## Keep resource assumptions portable
 
-- which rule families are heavier
-- which policy layers adapt execution by context
-- why the repository is not secretly tied to one scheduler story
+One last review often appears during scaling: some rule families are heavier than others.
 
-This is Core 5: resource assumptions are part of scaling design, not hidden trivia.
+Keep that distinction visible, but keep executor policy out of the rules. The repository
+should be able to say:
+
+- which concern is heavier
+- which resource declarations belong to the workflow
+- which cluster or local mapping belongs to operating policy
+
+If a rule hardcodes scheduler commands or node names, the structural cleanup has created a
+new portability problem.
 
 ## The repaired scaling story
 
-By the end of the refactor, the repository can be described cleanly:
+By the end of the refactor, the workflow can be described cleanly:
 
 1. top-level orchestration stays visible
 2. rule families are grouped by named ownership
-3. reusable workflow bundles become modules only when the interface is explicit
-4. public file contracts are documented separately from internal state
-5. gates and proof routes protect the boundaries the repository actually claims
+3. only genuine interfaces become modules
+4. public paths are documented separately from internal state
+5. gates defend the structural promises the repository actually makes
 
 That is what it means to refactor a growing workflow without hiding it.
 
@@ -175,10 +183,10 @@ That is what it means to refactor a growing workflow without hiding it.
 
 When you inspect a repository shaped like this, ask:
 
-1. which split is only an include and which is a true module boundary
-2. where is the public file contract documented
-3. which gate would fail first if the refactor broke the visible workflow surface
-4. which paths remain internal after the refactor
-5. where are executor-facing assumptions explained without distorting workflow meaning
+1. which split clarifies ownership and which only creates indirection
+2. where is the public contract documented
+3. which boundary, if broken, would fail first through validation
+4. which candidate module still depends on hidden globals
+5. how will the next growth change land without making the graph harder to teach
 
 If those answers are visible, the module’s scaling story has landed.
