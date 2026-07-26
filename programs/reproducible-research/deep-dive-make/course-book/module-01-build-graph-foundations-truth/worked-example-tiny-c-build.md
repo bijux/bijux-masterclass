@@ -242,6 +242,20 @@ good instincts baked in.
 
 ## Six demonstrations to run
 
+Before each demonstration, write one row in this table. Fill the last two columns only
+after the command finishes.
+
+| Change | Predicted targets | Observed targets | Graph fact that explains the result |
+| --- | --- | --- | --- |
+| clean checkout |  |  |  |
+| no change |  |  |  |
+| `src/util.c` |  |  |  |
+| `include/util.h` |  |  |  |
+| `CFLAGS` |  |  |  |
+
+Do not write “it rebuilt everything” as an observation. Name the targets. Precision is
+how you notice that one object rebuilt unnecessarily or failed to rebuild at all.
+
 ### Demonstration 1: First build
 
 Run `make --trace all` and read which targets fire first and why.
@@ -277,6 +291,19 @@ make -q all; echo $?
 You want exit code `0`. That is the quiet resting state the rest of the course depends
 on.
 
+## Explain one trace without Make vocabulary
+
+Choose the header-change demonstration and explain it to someone who has never seen Make:
+
+1. two compiled files both read the header
+2. the header became newer than those files
+3. both compiled files therefore became stale
+4. the application depends on them, so it became stale afterward
+
+Then translate the same explanation back into target and prerequisite language. Moving
+between ordinary language and graph language is a core course skill. If you can repeat
+the command but cannot explain the causal chain, the demonstration is not finished.
+
 ## Evidence loop
 
 Run these commands in `project/`:
@@ -302,6 +329,8 @@ can reason about line by line.
 - **Guessing after the run:** write the prediction before using `--trace`.
 - **Deleting everything to repair a graph:** `make clean` can hide missing dependencies.
   Use it for comparison, not as the normal solution.
+- **Reading a long trace as a blur:** choose one requested target and follow only its
+  prerequisite chain before trying to explain the entire build.
 
 ## What this example should teach you
 

@@ -28,6 +28,16 @@ flowchart LR
 Use these after reading the five core lessons and the worked example. The goal is not to
 produce clever Make syntax. The goal is to make your reasoning visible.
 
+For Exercises 6-10, keep a four-column evidence sheet:
+
+| Before the run | Command | What happened | What the graph now means |
+| --- | --- | --- | --- |
+| your prediction, written first | exact command | target-level observation | corrected explanation |
+
+This is not extra paperwork. It prevents the answer from becoming a polished story
+written after you already know the result. A wrong prediction with a precise correction
+is stronger evidence of learning than a command transcript with no prior claim.
+
 ## Exercise 1: Draw the graph
 
 Take the tiny C project and draw the dependency graph for `app`, `build/main.o`, and

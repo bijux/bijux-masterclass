@@ -47,6 +47,47 @@ Module 01 gives you a durable mental model for four things:
 The goal is not to memorize syntax like a parser. The goal is to look at a Makefile,
 predict the next rebuild decision, and explain it in plain language.
 
+## See a missing edge fail
+
+Create a fresh directory with `title.txt`, `body.txt`, and this Makefile:
+
+```make
+report.txt: body.txt
+	cat title.txt body.txt > $@
+```
+
+The recipe reads two files, but the graph names only one. Build once, change only the
+title, and ask Make what it intends to do:
+
+```sh
+printf 'First title\n' > title.txt
+printf 'Body\n' > body.txt
+make --trace report.txt
+printf 'Corrected title\n' > title.txt
+make --trace report.txt
+cat report.txt
+```
+
+The last file still contains `First title`. Make did exactly what the rule said:
+`body.txt` did not change, so `report.txt` looked current. The shell command knew about
+`title.txt`; the graph did not.
+
+Repair the rule:
+
+```make
+report.txt: title.txt body.txt
+	cat $^ > $@
+```
+
+Run the same experiment again. This is the first important failure in the course because
+it separates two ideas beginners often blend together:
+
+- a recipe can read a file
+- Make can react to that file only when the graph declares it
+
+Keep this directory. It is a smaller and better debugging tool than the C example when
+you need to recheck the meaning of an edge.
+
 ## Plan for the day
 
 | Block | Activity | Evidence you should produce |
@@ -141,6 +182,10 @@ project/
 That example is deliberately small enough to reason about by hand. You should be able to
 draw the dependency graph on paper, touch one file, and predict what Make ought to do
 before you run it.
+
+Do not begin by copying the reference Makefile. Build it in the layers shown by the
+worked example. At each layer, draw the graph you believe exists and compare that drawing
+with `make -n` and `make --trace`.
 
 ## The five commands to keep open
 
