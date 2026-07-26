@@ -1,32 +1,17 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Build Graph Foundations Truth"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is not to
 produce clever Make syntax. The goal is to make your reasoning visible.
+
+## How to use this exercise set
+
+The ten exercises are arranged like a real first-day lesson:
+
+- Exercises 1-3 make you name the graph honestly
+- Exercises 4-6 make you predict and observe rebuild behavior
+- Exercises 7-8 make you simplify or generalize a truthful design
+- Exercises 9-10 make you diagnose and defend a small build of your own
+
+If you are new to Make, do them in order. The sequence is deliberate.
 
 For Exercises 6-10, keep a four-column evidence sheet:
 
@@ -37,6 +22,15 @@ For Exercises 6-10, keep a four-column evidence sheet:
 This is not extra paperwork. It prevents the answer from becoming a polished story
 written after you already know the result. A wrong prediction with a precise correction
 is stronger evidence of learning than a command transcript with no prior claim.
+
+## Evidence habits for Module 01
+
+Across the whole set, prefer these artifacts:
+
+- a hand-drawn graph or text graph sketch
+- one `make --trace` line with your explanation
+- one before-and-after Makefile fragment
+- one example where `make clean` would hide the defect instead of fixing it
 
 ## Exercise 1: Draw the graph
 
@@ -186,6 +180,15 @@ What to hand in:
 - your predicted rebuild set for each change
 - traces confirming or correcting each prediction
 - one paragraph defending the ownership of every output path
+
+## Before you read the answers
+
+Before opening `exercise-answers.md`, make sure you have at least:
+
+- one wrong prediction you can now explain
+- one repaired hidden-input example
+- one graph diagram you would be willing to show a classmate
+- one reason a clean build is not an honest fix for stale outputs
 
 ## Mastery standard for this exercise set
 
