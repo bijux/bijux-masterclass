@@ -66,6 +66,17 @@ while the serial route approaches two. This tiny experiment gives "parallel spee
 visible meaning before a large repository introduces compiler caches, filesystem noise,
 or overloaded workers.
 
+Record all six measurements instead of keeping only the fastest:
+
+| Mode | Run 1 | Run 2 | Run 3 | Median | Interpretation |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `-j1` |  |  |  |  |  |
+| `-j2` |  |  |  |  |  |
+
+Now add a no-op file target and time that separately. The phony sleep targets always run,
+so they teach scheduling but not incremental build cost. Naming that limitation is part
+of sound measurement.
+
 ## The incident
 
 Assume you inherit a repository with these complaints:
@@ -296,3 +307,7 @@ Take one real build complaint and retell it in the same order:
 
 If you can do that cleanly, Module 09 has started to change how you respond under build
 pressure.
+
+Before merging an optimization, ask a reviewer to reproduce the baseline and the
+after-state from your saved commands. A percentage without reproducible inputs, machine
+context, and truth checks is not durable performance evidence.

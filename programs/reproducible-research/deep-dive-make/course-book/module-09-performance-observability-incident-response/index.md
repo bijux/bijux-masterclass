@@ -61,6 +61,32 @@ By the end of Module 09, you should be able to explain five things clearly:
 - which performance changes preserve truth and which ones merely hide it
 - how to write a runbook another engineer can use under time pressure
 
+## Turn “slow” into a testable statement
+
+Before profiling, rewrite the complaint with five facts:
+
+```text
+Requested target:
+Checkout state: clean, incremental, or no-op
+Execution mode: -j1, -jN, or inherited jobserver
+Observed duration and repeated sample count:
+Expected duration and source of that expectation:
+```
+
+Then separate the path:
+
+```mermaid
+flowchart LR
+  invoke["invoke Make"] --> parse["read and expand makefiles"]
+  parse --> decide["update graph and choose work"]
+  decide --> recipes["execute recipes"]
+  recipes --> evidence["render logs, traces, and reports"]
+```
+
+A change aimed at the wrong box can make measurements look better while leaving the real
+cost untouched. Worse, deleting prerequisites or checks can make a build faster by making
+it less truthful. Keep convergence and artifact comparisons beside every timing result.
+
 ## Study route
 
 ```mermaid

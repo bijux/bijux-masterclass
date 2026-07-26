@@ -35,6 +35,13 @@ Each exercise asks for three things:
 - the evidence or command that would establish it
 - the tuning or response decision that follows from that evidence
 
+Every timing answer must retain the semantic guardrail:
+
+| Baseline command and samples | Proposed change | After samples | Convergence check | Artifact-equivalence check |
+| --- | --- | --- | --- | --- |
+
+If the last two columns are absent, you have measured speed but not a safe optimization.
+
 ## Exercise 1: Split one "slow build" complaint into layers
 
 Take one build route and describe how you would tell whether the cost is mainly parse-time,
