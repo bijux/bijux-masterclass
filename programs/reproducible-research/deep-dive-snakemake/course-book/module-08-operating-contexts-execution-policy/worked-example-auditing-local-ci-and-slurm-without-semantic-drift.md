@@ -43,7 +43,7 @@ The repository claims that these contexts change execution policy, not workflow 
 
 That claim is only trustworthy if the review route can prove it.
 
-## Step 1: read the profile surfaces directly
+## Read the profile surfaces directly
 
 The capstone gives a good starting point:
 
@@ -63,7 +63,7 @@ They change policy surfaces such as:
 
 That is already a useful signal: the profiles are not trying to carry the whole workflow.
 
-## Step 2: compare the dry-runs, not only the flags
+## Compare the dry-runs, not only the flags
 
 The Makefile's `profile-audit` route then does something important:
 
@@ -81,7 +81,23 @@ It is:
 
 > does the planned workflow still mean the same thing?
 
-## Step 3: use a compact policy summary
+Capture comparison evidence in one place rather than relying on terminal memory:
+
+```sh
+mkdir -p artifacts/profile-audit
+snakemake --profile profiles/local --dry-run \
+  > artifacts/profile-audit/local.txt
+snakemake --profile profiles/ci --dry-run \
+  > artifacts/profile-audit/ci.txt
+snakemake --profile profiles/slurm --dry-run \
+  > artifacts/profile-audit/slurm.txt
+```
+
+Normalize volatile executor messages before comparison, but never discard target names,
+rule names, wildcard bindings, or declared inputs and outputs. Those are the semantic
+facts the audit exists to protect.
+
+## Use a compact policy summary
 
 The `profile-summary` route adds a smaller comparison surface.
 
@@ -96,7 +112,7 @@ That is useful because a reviewer can see, quickly, whether differences are:
 - expected operating policy differences
 - suspicious context-specific behavior
 
-## Step 4: decide what remains invariant
+## Decide what remains invariant
 
 At this point, the reviewer should still be able to say:
 
@@ -107,7 +123,7 @@ At this point, the reviewer should still be able to say:
 
 If that explanation stops being true, the repository has drifted beyond policy.
 
-## Step 5: think through a leak scenario
+## Think through a leak scenario
 
 Now imagine three possible changes:
 
@@ -123,7 +139,7 @@ These do not mean the same thing.
 
 That is exactly the kind of operating judgment this module is trying to teach.
 
-## One audit route
+## A bounded audit route
 
 ```mermaid
 flowchart LR

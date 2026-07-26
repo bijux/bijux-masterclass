@@ -89,9 +89,70 @@ Describe:
 - which review surface should own that decision instead
 - what should happen before the change is approved
 
+## Exercise 6: Build a three-context policy matrix
+
+Inventory every setting in local, CI, and scheduler profiles. Classify each as capacity,
+observability, recovery, filesystem, executor mapping, or semantic leak.
+
+What to hand in:
+
+- the complete matrix
+- disagreements that are justified by context
+- any duplicate default that should be centralized or documented
+- every setting that needs removal from profile policy
+
+## Exercise 7: Normalize and compare plans
+
+Request the same final target through all three profiles and capture dry-run evidence.
+Normalize only volatile presentation details, then compare jobs, dependencies, wildcards,
+and outputs.
+
+What to hand in:
+
+- the capture and normalization commands
+- the semantic comparison
+- one harmless operational difference
+- one deliberately introduced semantic difference that the comparison catches
+
+## Exercise 8: Map resources to two executors
+
+Declare threads, memory, runtime, and temporary disk for a heavy rule. Map the abstract
+resources to local limits and scheduler requests.
+
+What to hand in:
+
+- the rule declarations
+- both policy mappings
+- an explanation of units and defaults
+- evidence that changing the mapping does not change output meaning
+
+## Exercise 9: Verify scratch promotion
+
+Execute or simulate a job through node-local scratch, validation, atomic promotion, and
+cleanup. Interrupt it before promotion and inspect every location.
+
+What to hand in:
+
+- the storage lifecycle diagram
+- success and interruption inventories
+- the point where the output becomes trusted
+- recovery behavior that cannot mistake scratch for publication
+
+## Exercise 10: Write an operating-context drift gate
+
+Implement a focused audit that compares governed profile keys and semantic dry-run
+surfaces. Make it fail on a changed publish path or sample-filter setting.
+
+What to hand in:
+
+- the governed invariants
+- passing and failing evidence
+- a precise failure message
+- an explanation of what remains intentionally context-specific
+
 ## Mastery check
 
-You have a strong grasp of this module if your answers consistently keep four ideas visible:
+You have a strong grasp of this module if all ten answers consistently keep four ideas visible:
 
 - profiles own policy, not workflow meaning
 - context changes should preserve trusted outputs

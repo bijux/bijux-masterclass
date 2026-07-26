@@ -41,6 +41,21 @@ You will learn how to:
 - reason about storage, staging, and scratch boundaries honestly
 - review operating-context changes before “works here, fails there” becomes normal
 
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| context inventory | read local, CI, and scheduler profiles line by line | classified policy matrix |
+| plan comparison | request identical targets in every context | normalized dry-run summaries |
+| resource mapping | trace abstract rule resources into each executor policy | mapping table |
+| storage promotion | distinguish scratch completion from trusted publication | promotion diagram |
+| drift review | inject a semantic profile leak and make the audit fail | focused regression check |
+| independent practice | complete all ten exercises | operating-context audit |
+
+This module assumes the basic profile and failure-policy skills from Module 03. The new
+work is comparative: prove that multiple real operating contexts preserve one semantic
+workflow.
+
 The capstone corroboration surface for this module is the set of operating-policy files and
 audit routes around them: `profiles/local/config.yaml`, `profiles/ci/config.yaml`,
 `profiles/slurm/config.yaml`, the `profile-audit` bundle in the Makefile, and the guides
@@ -92,7 +107,7 @@ If the basic problem is already clear, use this shortcut:
 | [Staging, Storage, and Filesystem Assumptions](staging-storage-and-filesystem-assumptions.md) | teaches where operating contexts touch data locality and visibility |
 | [Reviewing Operating-Context Drift and Policy Leaks](reviewing-operating-context-drift-and-policy-leaks.md) | teaches how to review profile and executor changes honestly |
 | [Worked Example: Auditing Local, CI, and Slurm without Semantic Drift](worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md) | walks through a concrete policy audit route |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -130,3 +145,6 @@ make profile-audit
 
 The point of that route is not only to compare flags. It is to inspect whether the
 workflow promise stays stable while the operating policy changes.
+
+Do not move on until all ten exercises are complete and your audit can detect one
+deliberate semantic leak between contexts.

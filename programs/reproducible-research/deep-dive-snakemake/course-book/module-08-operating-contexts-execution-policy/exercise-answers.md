@@ -29,7 +29,7 @@ These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning keeps policy and workflow meaning separate.
 
-## Answer 1: Decide whether a profile change is safe
+## Exercise 1: Decide whether a profile change is safe
 
 Likely operating policy:
 
@@ -46,7 +46,7 @@ Latency waits and shell-command visibility change how the workflow is run and ob
 A different publish directory changes a trusted contract path and therefore changes more
 than policy.
 
-## Answer 2: Review retries honestly
+## Exercise 2: Review retries honestly
 
 Why this may be weak:
 
@@ -65,7 +65,7 @@ What evidence to request:
 
 The main lesson is that retries are not a substitute for diagnosis.
 
-## Answer 3: Diagnose a storage-boundary problem
+## Exercise 3: Diagnose a storage-boundary problem
 
 What trust problem this creates:
 
@@ -81,7 +81,7 @@ What needs clarification:
 - the boundary between scratch or staging locations and trusted output locations
 - the visibility and promotion model for outputs
 
-## Answer 4: Compare contexts
+## Exercise 4: Compare contexts
 
 A strong argument would say:
 
@@ -94,7 +94,7 @@ Why:
 - successful execution is not enough evidence against semantic drift
 - comparison makes hidden context-specific behavior much easier to spot
 
-## Answer 5: Escalate a suspicious policy change
+## Exercise 5: Escalate a suspicious policy change
 
 Why this is not just a profile difference:
 
@@ -109,6 +109,45 @@ What should happen before approval:
 - move the semantic setting into an explicit workflow or config boundary
 - review the effect on contracts and outputs
 - compare contexts again after the change is made honest
+
+## Exercise 6: Build a three-context policy matrix
+
+Every key belongs to one named policy class. Cores and concurrency are capacity;
+printed commands and failed logs are observability; bounded retries are recovery;
+latency and scratch roots are filesystem policy; queue and account are executor mapping.
+Sample sets, algorithm parameters, and publish paths are semantic leaks. Repeated settings
+may remain explicit when readability matters, but their ownership and consistency should
+be auditable.
+
+## Exercise 7: Normalize and compare plans
+
+Capture all plans for one explicit target. Remove timestamps, job identifiers, and
+executor presentation only. Rule names, wildcard values, dependency edges, input paths,
+and output paths must agree. A different core limit is harmless; a missing sample job or
+different publish path is semantic drift and must fail the comparison.
+
+## Exercise 8: Map resources to two executors
+
+The rule declares portable needs with documented units. Local policy caps concurrency and
+respects available memory; scheduler policy translates the same values into submission
+resources. Queue names and submission syntax never enter the rule. Output paths and
+algorithm parameters remain identical when mappings change.
+
+## Exercise 9: Verify scratch promotion
+
+Scratch holds private execution state. After computation, the job validates content,
+copies or renames through a temporary destination at the trusted location, and atomically
+publishes the final path. Interruption leaves no final output and retains enough logs or
+staged evidence for diagnosis. Reviewers never inspect scratch as a substitute for the
+declared contract.
+
+## Exercise 10: Write an operating-context drift gate
+
+The gate allowlists context-owned differences and compares semantic invariants. It fails
+with the profile, key or target, expected value, and observed value. A changed
+`publish_dir` or filtering parameter is rejected; cores, executor name, and account may
+differ under documented policy. This targeted gate complements execution tests rather
+than replacing them.
 
 ## Self-check
 
