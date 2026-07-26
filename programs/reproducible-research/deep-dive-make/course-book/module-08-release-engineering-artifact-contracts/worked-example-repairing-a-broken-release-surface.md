@@ -28,6 +28,34 @@ flowchart LR
 The five core lessons in Module 08 make the most sense when they all appear in one release
 surface that still works often enough to mislead people.
 
+## Inspect a tiny bundle
+
+Start with a file named `app`, a `LICENSE`, and this rule:
+
+```make
+.PHONY: dist
+
+dist: dist/app.tar.gz
+
+dist/app.tar.gz: app LICENSE
+	@rm -rf dist/stage
+	@mkdir -p dist/stage/bin
+	@cp app dist/stage/bin/app
+	@cp LICENSE dist/stage/LICENSE
+	@tar -czf $@ -C dist/stage .
+```
+
+Build and inspect it:
+
+```sh
+make dist
+tar -tzf dist/app.tar.gz | sort
+```
+
+Do not treat the archive as an opaque success token. Its file list is part of the
+contract, so a learner should be able to read that list before discussing checksums,
+attestations, or publication.
+
 This example starts with exactly that kind of system:
 
 - the project builds successfully
@@ -72,7 +100,7 @@ install:
 
 This is not a ridiculous Makefile. It is just not yet a trustworthy release surface.
 
-## Step 1: narrow the target meaning
+## Narrow the target meaning
 
 The first repair is not in the archive contents. It is in the target contract.
 
@@ -95,7 +123,7 @@ This is Core 1:
 - target names get one stable meaning
 - composition stays visible instead of hidden in one shell ritual
 
-## Step 2: model the package layout explicitly
+## Model the package layout explicitly
 
 The old `dist` target archives files directly from `dist/`, which also contains sidecar
 files and any leftovers from previous runs.
@@ -123,7 +151,7 @@ This is Core 2:
 - the staging tree becomes the pre-publication boundary
 - stray files stop leaking into the archive just because they happen to be nearby
 
-## Step 3: separate identity from evidence
+## Separate identity from evidence
 
 The old target wrote:
 
@@ -163,7 +191,35 @@ Now:
 
 This is Core 3.
 
-## Step 4: repair the install boundary
+## Make repeated archive construction deterministic
+
+A stable file list is necessary but not sufficient. Archive entry order, ownership,
+permissions, file modification times, and gzip headers can all change bytes.
+
+When GNU tar and gzip are declared release tools, a normalized rule can look like:
+
+```make
+SOURCE_DATE_EPOCH ?= 0
+
+dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
+	@rm -rf $(DIST_STAGE)
+	@mkdir -p $(DIST_STAGE)/bin $(DIST_STAGE)/share/doc
+	@cp app $(DIST_STAGE)/bin/app
+	@cp LICENSE $(DIST_STAGE)/LICENSE
+	@cp capstone/README.md $(DIST_STAGE)/share/doc/README.md
+	@cp dist/manifest.txt $(DIST_STAGE)/manifest.txt
+	@tar --sort=name --mtime="@$(SOURCE_DATE_EPOCH)" \
+	  --owner=0 --group=0 --numeric-owner \
+	  -cf - -C $(DIST_STAGE) . | gzip -n > $@.candidate
+	@mv $@.candidate $@
+```
+
+These flags are not portable to every `tar`. That is why the release toolchain must be
+declared and checked, often in a controlled release environment. Build twice from clean
+staging trees and compare checksums; reproducibility is observed evidence, not an
+adjective attached to a rule.
+
+## Repair the install boundary
 
 The old install route wrote directly into `/usr/local` during ordinary testing. That makes
 review awkward and reruns risky.
@@ -196,7 +252,7 @@ This is Core 4:
 - the destination tree is explicit
 - reruns can be evaluated against an idempotence expectation
 
-## Step 5: debug the release by truth boundary
+## Debug the release by truth boundary
 
 At this point, the original complaints can be reclassified cleanly:
 
@@ -220,6 +276,8 @@ After the cleanup, the release surface is closer to this:
 DIST_STAGE := dist/tmp
 PREFIX ?= /usr/local
 INSTALL_ROOT := $(DESTDIR)$(PREFIX)
+SOURCE_DATE_EPOCH ?= 0
+SHA256 ?= sha256sum
 
 .PHONY: dist release-check install
 
@@ -237,10 +295,13 @@ dist/app.tar.gz: app LICENSE capstone/README.md dist/manifest.txt | dist/
 	@cp LICENSE $(DIST_STAGE)/LICENSE
 	@cp capstone/README.md $(DIST_STAGE)/share/doc/README.md
 	@cp dist/manifest.txt $(DIST_STAGE)/manifest.txt
-	@tar -czf $@ -C $(DIST_STAGE) .
+	@tar --sort=name --mtime="@$(SOURCE_DATE_EPOCH)" \
+	  --owner=0 --group=0 --numeric-owner \
+	  -cf - -C $(DIST_STAGE) . | gzip -n > $@.candidate
+	@mv $@.candidate $@
 
 dist/app.tar.gz.sha256: dist/app.tar.gz
-	@sha256sum $< > $@
+	@$(SHA256) $< > $@
 
 dist/app.attest.txt: dist/app.tar.gz | dist/
 	@printf 'compiler=%s\nhost=%s\n' '$(CC)' "$$(uname -s)" > $@

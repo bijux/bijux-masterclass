@@ -35,6 +35,20 @@ where a build becomes a release contract:
 
 This module turns "the build finished" into "the release boundary is clear."
 
+## Plan for the day
+
+| Time | Activity | Evidence you keep |
+| --- | --- | --- |
+| 45 minutes | Stage and inspect a tiny bundle | a sorted archive listing |
+| 75 minutes | Define target and package contracts | an included/excluded file table |
+| 75 minutes | Build the same archive twice | two checksums and the tool contract |
+| 60 minutes | Install twice under `DESTDIR` | identical destination manifests |
+| 75 minutes | Repair the worked release surface | identity, evidence, and publish boundaries |
+| 90 minutes | Complete the ten exercises | a release rehearsal record |
+
+Do not publish anything during this module. Every exercise uses `dist/` or a temporary
+installation root so you can inspect and destroy the result safely.
+
 ## What this module is for
 
 By the end of Module 08, you should be able to explain five things clearly:
@@ -138,5 +152,6 @@ Do not move on until all of these are true:
 - you can explain which evidence is part of artifact identity and which is only adjacent proof
 - you can run an install route twice without changing the destination unexpectedly
 - you can classify one broken release by the exact truth boundary that failed
+- you can complete all ten exercises and reproduce the same artifact from the same inputs
 
 When those feel ordinary, Module 08 has done its job.

@@ -128,6 +128,99 @@ For example:
 The strongest answers do not jump straight to "rerun `dist`." They first decide what
 boundary likely lied.
 
+## Exercise 6: Inspect an archive as a contract
+
+A strong answer stages only declared content under a dedicated directory:
+
+```make
+dist/app.tar.gz: app LICENSE | dist/
+	@rm -rf dist/stage
+	@mkdir -p dist/stage/bin
+	@cp app dist/stage/bin/app
+	@cp LICENSE dist/stage/LICENSE
+	@tar -czf $@ -C dist/stage .
+```
+
+`tar -tzf dist/app.tar.gz | sort` should match the declared tree. A stray file under
+`dist/` remains outside because the archive root is `dist/stage`, not a directory shared
+with sidecars and old outputs.
+
+## Exercise 7: Reproduce an archive byte for byte
+
+With GNU tar and gzip explicitly required, a defensible rule normalizes common sources of
+byte drift:
+
+```make
+SOURCE_DATE_EPOCH ?= 0
+
+dist/app.tar.gz: app LICENSE | dist/
+	@rm -rf dist/stage
+	@mkdir -p dist/stage/bin
+	@cp app dist/stage/bin/app
+	@cp LICENSE dist/stage/LICENSE
+	@tar --sort=name --mtime="@$(SOURCE_DATE_EPOCH)" \
+	  --owner=0 --group=0 --numeric-owner \
+	  -cf - -C dist/stage . | gzip -n > $@.candidate
+	@mv $@.candidate $@
+```
+
+The submission should state GNU tar and gzip versions because those flags are not a
+universal `tar` contract. Two clean builds should have identical checksums. Repeating the
+experiment without normalized timestamps or `gzip -n` demonstrates why stable content
+alone does not guarantee stable archive bytes.
+
+## Exercise 8: Verify checksum evidence
+
+For GNU coreutils:
+
+```sh
+sha256sum dist/app.tar.gz > dist/app.tar.gz.sha256
+sha256sum --check dist/app.tar.gz.sha256
+printf x >> dist/app.tar.gz
+sha256sum --check dist/app.tar.gz.sha256
+```
+
+The first verification exits `0`; the altered archive verification exits nonzero. On
+another platform, declare and use its equivalent tool consistently. A checksum proves
+byte identity against the sidecar. It does not prove that the archive contains the right
+files, so the package listing and manifest remain necessary.
+
+## Exercise 9: Prove installation stays inside its destination
+
+A strong install rule roots every destination:
+
+```make
+PREFIX ?= /usr/local
+INSTALL_ROOT := $(DESTDIR)$(PREFIX)
+
+.PHONY: install
+install: app LICENSE
+	@install -d $(INSTALL_ROOT)/bin $(INSTALL_ROOT)/share/licenses/app
+	@install -m 0755 app $(INSTALL_ROOT)/bin/app
+	@install -m 0644 LICENSE $(INSTALL_ROOT)/share/licenses/app/LICENSE
+```
+
+Run it twice under a repository-owned test root and compare sorted paths plus checksums.
+An audit such as `rg -n '(/usr|/opt|/bin)/' Makefile mk` should reveal undeclared absolute
+destinations. The answer must also state whether installation overwrites declared files
+and whether uninstall is supported; silence is not a safe policy.
+
+## Exercise 10: Rehearse a complete release
+
+A complete answer separates composition from side effects:
+
+- `dist` creates the declared archive and checksum
+- `release-check` depends on tests, selftests, archive inspection, and checksum verification
+- `install` writes only below `DESTDIR`
+- deployment, credentials, approval, and remote publication remain outside the local
+  artifact graph unless their ownership is explicitly designed
+
+The successful transcript should include archive listing, checksum verification, and two
+identical clean-build checksums. A packaging failure must prevent the final archive from
+being replaced. A verification failure must return nonzero before publication. Strong
+answers identify which boundary stopped each failure instead of reporting only that the
+command failed.
+
 ## What mastery-level answers sound like
 
 A mastery-level answer set in this module does three things well:

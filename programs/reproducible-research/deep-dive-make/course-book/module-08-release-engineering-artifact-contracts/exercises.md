@@ -106,9 +106,68 @@ What to hand in:
 - the first evidence command
 - the likely contract or publication repair
 
+## Exercise 6: Inspect an archive as a contract
+
+Build a small archive, list its entries, and compare the listing with a declared package
+tree. Add one stray file to the staging parent and prove it does not enter the archive.
+
+What to hand in:
+
+- the declared tree
+- the sorted archive listing
+- the staging rule that excludes unrelated files
+
+## Exercise 7: Reproduce an archive byte for byte
+
+Build the same archive twice from clean staging directories. Normalize entry order,
+timestamps, ownership, and gzip metadata using a declared release toolchain.
+
+What to hand in:
+
+- the archive rule and tool versions
+- both checksums
+- one experiment showing that removing a normalization control can cause drift
+
+## Exercise 8: Verify checksum evidence
+
+Create a checksum sidecar, verify it successfully, alter one byte of the archive, and
+verify that the check fails.
+
+What to hand in:
+
+- checksum generation and verification commands
+- successful and failing exit statuses
+- an explanation of why the checksum is evidence about the archive, not a replacement for
+  its package contract
+
+## Exercise 9: Prove installation stays inside its destination
+
+Install under a fresh `DESTDIR`, run the installation again, and compare sorted file
+manifests and checksums. Audit the recipe for any absolute write that escapes the root.
+
+What to hand in:
+
+- the install rule
+- both destination manifests
+- the escape-audit command and result
+- one explicit policy for overwrite or removal behavior
+
+## Exercise 10: Rehearse a complete release
+
+Create a release route that builds, tests, stages, archives, checksums, verifies, and
+installs into a temporary root. Inject one packaging failure and one verification failure.
+
+What to hand in:
+
+- the public release-target contracts
+- the package tree and adjacent evidence files
+- a transcript of the successful rehearsal
+- both failure transcripts and the boundary each one protects
+- a statement of what remains deliberately outside Make
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants the same habits:
+Across all ten answers, the module wants the same habits:
 
 - you name the release promise or truth boundary being tested
 - you choose inspection and evidence before proposing the fix
