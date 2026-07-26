@@ -1,32 +1,15 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Migration Governance Tool Boundaries"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is to make
 your review and migration judgment visible, not to produce generic build advice.
+
+## How to work this exercise set
+
+Treat these as stewardship exercises, not as cleanup exercises:
+
+- Exercises 1-3: review the current build and define enforceable governance
+- Exercises 4-6: classify antipatterns, ownership, and target contracts
+- Exercises 7-9: preserve proof while comparing boundaries and neighboring tools
+- Exercise 10: produce a complete stewardship portfolio another maintainer could reuse
 
 Each exercise asks for three things:
 
@@ -40,6 +23,14 @@ For every migration proposal, include a proof bridge:
 | --- | --- | --- | --- | --- |
 
 Do not accept “tests pass” unless the named tests protect the contract being moved.
+
+## Minimum evidence for every answer
+
+Try to include:
+
+- one review artifact or contract table
+- one explicit rollback or proof-preservation point
+- one reason the boundary decision improves ownership clarity rather than just moving work
 
 ## Exercise 1: Write a first-pass build review
 
@@ -188,6 +179,15 @@ What to hand in:
 - before-and-after evidence
 - governance rules and tool-boundary decision
 - a maintainer handoff that states remaining risks honestly
+
+## Before you read the answers
+
+Do not open `exercise-answers.md` until you can already point to:
+
+- one review finding grounded in evidence rather than taste
+- one migration step small enough to verify honestly
+- one governance rule you could enforce in review
+- one boundary decision argued from responsibility instead of novelty
 
 ## Mastery standard for this exercise set
 

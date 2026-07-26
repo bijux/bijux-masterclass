@@ -1,30 +1,4 @@
 # Module 10: Migration, Governance, and Make Boundaries
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Migration Governance Tool Boundaries"]
-  page["Module 10: Migration, Governance, and Make Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Module 10 is where the course stops asking, "Can you make this build work?" and starts
 asking, "Can you inherit it responsibly?"
 
@@ -39,6 +13,12 @@ This module is about stewardship:
 - defining rules future maintainers can actually follow
 - recognizing anti-patterns before they turn into team folklore
 - drawing honest tool boundaries instead of fashionable ones
+
+## Why this day matters
+
+This is the stewardship lesson. Many engineers can patch a Makefile. Far fewer can review
+an inherited build calmly, preserve proof while changing it, and explain when the tool
+boundary itself should move.
 
 ## Plan for the day
 
@@ -65,6 +45,21 @@ By the end of Module 10, you should be able to explain five things clearly:
 - which recurring build smells are worth stopping immediately
 - when Make is still the right owner and when another tool should take over
 
+## The live demo for this module
+
+Use one inherited build review and one bounded handoff decision as the anchors for the
+day:
+
+```mermaid
+flowchart LR
+  review["Inventory targets, outputs, and writers"] --> characterize["Preserve current proof routes"]
+  characterize --> classify["Classify risks and ownership boundaries"]
+  classify --> move["Design one smallest responsible change"]
+  move --> govern["Write rules future maintainers can actually enforce"]
+```
+
+That sequence keeps migration work tied to trust instead of taste.
+
 ## Decide by responsibility, not tool preference
 
 For each concern, compare the ownership it needs with the ownership Make can provide:
@@ -90,6 +85,14 @@ flowchart LR
 
 Without that contract, “migration” often means moving hidden coupling from one file to
 another.
+
+## The question to keep asking
+
+Whenever someone says "we should replace this with another tool," ask:
+
+> Which responsibility is misfit for Make, and what evidence would prove that the new owner is better?
+
+That question keeps tool-boundary choices grounded in ownership rather than fashion.
 
 ## Study route
 
@@ -150,6 +153,16 @@ Strong Module 10 answers usually mention one or more of these:
 - a governance rule that protects public contracts and evidence surfaces
 - an anti-pattern described in terms of truth loss or ownership drift
 - a tool-boundary argument based on responsibility, not novelty
+
+## What a strong Module 10 day looks like
+
+By the end of the day, you should have:
+
+- reviewed one real Make system without collapsing into style complaints
+- preserved current proof routes before proposing a migration
+- staged one smallest boundary move instead of one dramatic rewrite
+- written governance language another maintainer could actually apply
+- defended one tool-boundary decision in terms of owned responsibility
 
 ## Commands to keep close
 
