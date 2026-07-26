@@ -89,8 +89,24 @@ Small, isolated examples of common pitfalls (races, stamp lies, mkdir hazards, g
 
 ---
 
-## Quick start
-From the monorepo root:
+## Begin with the smallest build
+
+If Make is new to you, do not begin by running the capstone. Start with
+[Module 00](course-book/module-00-orientation/index.md), where you create one file target,
+run it twice, change its input, and watch Make decide whether work is needed. Then complete
+Module 01 before using the repository-sized example.
+
+The progression is deliberate:
+
+```mermaid
+flowchart LR
+  first["One input and one output"] --> trace["Predict and trace a rebuild"]
+  trace --> module["Complete the module demonstration"]
+  module --> capstone["Inspect the same idea in the capstone"]
+  capstone --> proof["Run the proportionate proof route"]
+```
+
+From the monorepo root, use these commands after the module-sized example is clear:
 
 ### Linux (GNU Make)
 
@@ -111,8 +127,9 @@ gmake PROGRAM=reproducible-research/deep-dive-make test
 gmake PROGRAM=reproducible-research/deep-dive-make proof
 ```
 
-Use `capstone-walkthrough` first, `inspect` when you need the public boundary, `test`
-for routine proof, and `proof` only when the narrower routes are no longer enough.
+Use `capstone-walkthrough` to connect the lessons to the repository, `inspect` when you
+need the public boundary, `test` for routine proof, and `proof` only when the narrower
+routes are no longer enough.
 
 ---
 

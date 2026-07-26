@@ -90,6 +90,63 @@ Read the rule from left to right:
 If this works, your environment is ready. If it does not, compare the file character by
 character and consult the platform guide before continuing.
 
+## Your first file target
+
+The `hello` target proves that Make can run a named action. It does not yet show the idea
+that makes Make useful: deciding that an existing output is already current.
+
+In the same practice directory, create `message.txt`:
+
+```text
+small builds can tell the truth
+```
+
+Replace the Makefile with this one. The whitespace before `tr` is again a real tab.
+
+```make
+.DEFAULT_GOAL := all
+.PHONY: all
+
+all: message.upper.txt
+
+message.upper.txt: message.txt
+	tr '[:lower:]' '[:upper:]' < $< > $@
+```
+
+Before running anything, make three predictions:
+
+1. What command will the first `make` run?
+2. What command will the second `make` run?
+3. What will happen after you append another line to `message.txt`?
+
+Now test the predictions:
+
+```console
+$ make --trace
+Makefile:7: update target 'message.upper.txt' due to: message.txt
+tr '[:lower:]' '[:upper:]' < message.txt > message.upper.txt
+$ make --trace
+make: Nothing to be done for 'all'.
+$ printf 'and explain their decisions\n' >> message.txt
+$ make --trace
+Makefile:7: update target 'message.upper.txt' due to: message.txt
+tr '[:lower:]' '[:upper:]' < message.txt > message.upper.txt
+```
+
+The line number in your trace may differ. The decision should not:
+
+- the first run builds a missing output
+- the second run sees an output newer than its input and does no work
+- changing the input makes it newer, so the output rebuilds
+
+The automatic variable `$<` means the first prerequisite, `message.txt`. `$@` means the
+target, `message.upper.txt`. You will practice these names in Module 01; for now, read the
+recipe as “transform the input into the output.”
+
+If your second run executes `tr` again, stop and inspect timestamps with
+`ls -lT` on macOS or `stat message.txt message.upper.txt` on Linux. A no-op second run is
+your first proof that the graph describes reality.
+
 ## How one module fills a study day
 
 Each technical module is designed as a complete learning day. Adapt the times to your
@@ -122,6 +179,10 @@ flowchart LR
 Prediction is important. If you run commands first and explain afterward, it is easy to
 invent a story that fits the output. Writing a prediction gives you something honest to
 test.
+
+The first file-target experiment is the pattern for the whole course. Later examples are
+larger, but the learning move stays the same: predict the requested graph, run one bounded
+command, inspect the evidence, and change one fact.
 
 ## Choose a route
 

@@ -36,6 +36,16 @@ Start with a terminal, not with the capstone.
 Keep each module’s files in a separate practice directory. Breaking a practice build is
 part of learning; isolating it makes experimentation safe.
 
+Before leaving orientation, check that you can answer these without guessing:
+
+- Which path is the target in the file-building example?
+- Which path is its prerequisite?
+- Why does the second run do no work?
+- Which single edit makes the target stale again?
+
+If any answer is unclear, rerun the three commands with `make --trace`. Ten minutes spent
+reading that evidence now prevents hours of memorizing syntax without a graph model.
+
 ## If you already use Make
 
 Do not skip Module 01 merely because targets and recipes look familiar. First answer:
