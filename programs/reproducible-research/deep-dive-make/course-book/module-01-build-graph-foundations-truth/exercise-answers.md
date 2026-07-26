@@ -88,6 +88,120 @@ A stronger answer also includes the drill:
 
 That turns the answer from principle into evidence.
 
+## Exercise 6: Write the smallest useful Makefile
+
+A complete answer can stay small:
+
+```make
+.DEFAULT_GOAL := all
+.PHONY: all
+
+all: message.upper.txt
+
+message.upper.txt: message.txt
+	tr '[:lower:]' '[:upper:]' < $< > $@
+```
+
+The first run creates the target. The second run does nothing because
+`message.upper.txt` exists and is newer than `message.txt`. Editing `message.txt` makes
+the prerequisite newer, so the recipe runs again.
+
+Check that explanation with:
+
+```sh
+make --trace all
+make --trace all
+printf 'another line\n' >> message.txt
+make --trace all
+```
+
+## Exercise 7: Predict automatic variables
+
+For the rule shown:
+
+- `$@` expands to `report.txt`
+- `$<` expands to `title.txt`
+- `$^` expands to `title.txt results.txt`
+
+The resulting shell command is:
+
+```sh
+cat title.txt results.txt > report.txt
+```
+
+`$<` would be appropriate if the recipe consumed only the first input. `$^` is correct
+here because the recipe concatenates every declared prerequisite.
+
+## Exercise 8: Remove duplicated compile recipes
+
+The reusable rule is:
+
+```make
+build/%.o: src/%.c | build/
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+build/:
+	mkdir -p $@
+```
+
+If `build/gamma.o` is a prerequisite of the final target, Make binds `%` to `gamma` and
+looks for `src/gamma.c`. The rule reduces duplicated policy; it does not remove the need
+to list or discover which object files the final target requires.
+
+A strong answer also checks `make -n` before and after the refactor and confirms that the
+compile commands are equivalent.
+
+## Exercise 9: Diagnose a stale header build
+
+The broken shape is:
+
+```make
+build/alpha.o: src/alpha.c config.h
+build/beta.o: src/beta.c
+```
+
+Both recipes may compile successfully, but Make has no evidence connecting `config.h` to
+`build/beta.o`. The repair is:
+
+```make
+build/beta.o: src/beta.c config.h
+```
+
+After changing the header, both objects should rebuild. `make clean` deletes both objects,
+so both rebuild even with the edge missing. That proves only that a clean build works; it
+does not prove that the incremental graph is truthful.
+
+## Exercise 10: Design and defend a small graph
+
+One valid graph is:
+
+```make
+.PHONY: all
+all: summary.txt chart.svg
+
+cleaned.csv: raw.csv
+	cp $< $@
+
+summary.txt: cleaned.csv
+	printf 'summary from %s\n' "$<" > $@
+
+chart.svg: cleaned.csv
+	printf '<svg><!-- data from %s --></svg>\n' "$<" > $@
+```
+
+Expected rebuilds:
+
+| Change | Rebuilds |
+| --- | --- |
+| edit `raw.csv` | `cleaned.csv`, `summary.txt`, and `chart.svg` |
+| delete `summary.txt` | only `summary.txt` |
+| delete `chart.svg` | only `chart.svg` |
+| run twice without changes | no recipes on the second run |
+
+`cleaned.csv` has one writer. Each report output also has one writer. The fan-out is
+honest because both final outputs name `cleaned.csv` as the input that determines their
+contents.
+
 ## What a mastery-level answer set looks like
 
 A mastery-level submission does not just contain the right snippets. It shows that you can

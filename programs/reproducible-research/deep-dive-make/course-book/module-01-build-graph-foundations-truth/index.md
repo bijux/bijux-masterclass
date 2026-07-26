@@ -47,6 +47,35 @@ Module 01 gives you a durable mental model for four things:
 The goal is not to memorize syntax like a parser. The goal is to look at a Makefile,
 predict the next rebuild decision, and explain it in plain language.
 
+## Plan for the day
+
+| Block | Activity | Evidence you should produce |
+| --- | --- | --- |
+| First contact | Write one file target and one phony target | a Makefile you can explain character by character |
+| Graph reading | Draw the target-prerequisite graph before running Make | a graph with file and action nodes marked |
+| Incremental behavior | Build twice, then change one prerequisite | a written prediction and a `--trace` transcript |
+| Rule reuse | Replace repeated compile rules with one pattern rule | the same outputs with less duplicated policy |
+| Failure safety | Interrupt or fail a recipe before publication | proof that no partial final artifact remains |
+| Practice | Complete all ten exercises | commands, outputs, and short explanations |
+
+If this is your first day with Make, stop after each command and inspect the files that
+exist. The filesystem is part of Make’s memory.
+
+## Read a rule aloud
+
+For every rule, use the same sentence:
+
+```make
+target: prerequisites
+	recipe
+```
+
+> To update **target**, first update **prerequisites**. If the target is missing or older
+> than any prerequisite, run **recipe**.
+
+This sentence is intentionally simple. It remains useful when the rules become much more
+advanced.
+
 ## Study route
 
 ```mermaid
@@ -147,5 +176,6 @@ Do not move on to Module 02 until all of these are true:
 - you can explain why one writer per output path matters
 - you can force a failure and prove that no broken artifact remains behind
 - you can run `make -q all` after a successful build and understand the exit code
+- you completed ten exercises and can reproduce at least eight without reading the answers
 
 When those become ordinary, not dramatic, Module 01 has done its job.
