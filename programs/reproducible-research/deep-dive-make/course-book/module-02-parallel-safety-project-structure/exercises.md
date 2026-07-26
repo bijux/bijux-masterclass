@@ -1,32 +1,18 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Parallel Safety Project Structure"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is to make
 your reasoning visible, not to show off Make syntax.
+
+## How to approach these exercises
+
+This set is meant to teach judgment, not fear. Parallel builds are not mysterious. They
+become understandable when you track ownership and truthful edges carefully.
+
+Work through the set in this rhythm:
+
+- Exercises 1-3: identify where overlap is safe or unsafe
+- Exercises 4-6: choose honest ordering and proof surfaces
+- Exercises 7-8: build your own small concurrency examples
+- Exercises 9-10: repair and defend a real parallel-check workflow
 
 For each repair, submit both an ownership table and a graph. A useful ownership table is:
 
@@ -35,6 +21,14 @@ For each repair, submit both an ownership table and a graph. A useful ownership 
 
 If you cannot fill in the `Writes` column, you are not ready to add ordering. Remember
 that logs, temporary files, cache entries, and staging directories are outputs too.
+
+## Minimum evidence for every answer
+
+Try to include all three:
+
+- one graph sketch
+- one observed run under `-j`
+- one sentence that distinguishes scheduling from data ownership
 
 ## Exercise 1: Name the runnable targets
 
@@ -161,6 +155,15 @@ What to hand in:
 - the comparison implementation
 - one passing transcript
 - one deliberate race that makes the check fail
+
+## Before you check the answers
+
+Do not open `exercise-answers.md` until you can point to:
+
+- one concurrency example that is safe
+- one concurrency example that is unsafe
+- one repair that removes shared output ownership
+- one proof route that compares serial and parallel meaning rather than just terminal output
 
 ## Mastery standard for this exercise set
 

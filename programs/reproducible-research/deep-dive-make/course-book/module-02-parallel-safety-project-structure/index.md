@@ -1,30 +1,4 @@
 # Module 02: Parallel Safety and Project Structure
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Parallel Safety Project Structure"]
-  page["Module 02: Parallel Safety and Project Structure"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Module 01 taught you how to keep one small build graph truthful. Module 02 asks the next
 question:
 
@@ -34,6 +8,12 @@ This module treats parallelism as a correctness test, not a speed trick. If `mak
 changes the meaning of the build, the graph was already lying. Parallel execution merely
 made the lie easier to see.
 
+## Why this day matters
+
+Many learners first meet `-j` as a performance flag. In practice, it is one of the best
+ways to expose dishonesty in a build. A build that only works when work happens in one
+fortunate order is already broken.
+
 ## What this module is for
 
 By the end of Module 02, you should be able to explain three things in plain language:
@@ -41,6 +21,25 @@ By the end of Module 02, you should be able to explain three things in plain lan
 - what Make is actually allowed to run concurrently
 - what recipe and graph shapes keep parallel builds safe
 - how a larger repository can stay readable without splitting into hidden private DAGs
+
+## The live demo for this module
+
+Run this sequence before you generalize:
+
+```mermaid
+flowchart LR
+  safe["Run two independent targets under -j2"] --> collide["Make both write one path"]
+  collide --> observe["Observe unstable or corrupted output"]
+  observe --> repair["Give each worker its own output"]
+  repair --> merge["Publish through one final owner"]
+```
+
+That demo teaches the whole module:
+
+- overlap is not the same thing as a race
+- shared output ownership is the real danger
+- ordering is not a substitute for truthful graph design
+- one final publisher is often the clean repair
 
 ## Separate overlap from interference
 
@@ -86,6 +85,14 @@ files so you can see scheduling without compiling a large project.
 
 When terminal lines interleave, record that as evidence of overlap only. Prove a race
 with corrupted, missing, unstable, or prematurely consumed state.
+
+## A question to keep asking
+
+Every time you are tempted to add an ordering edge, stop and ask:
+
+> Am I modeling a real dependency, or am I trying to hide a shared-state bug?
+
+That question prevents a large amount of brittle Make design.
 
 ## Study route
 
@@ -146,6 +153,16 @@ learning surfaces:
 
 - a build you want to keep correct
 - several builds you expect to fail until you explain and repair them
+
+## What a strong Module 02 day looks like
+
+By the end of the day, you should have:
+
+- shown harmless concurrency with two separate outputs
+- created one reproducible race on purpose
+- repaired the race by changing ownership, not by disabling parallelism
+- compared one serial and one parallel artifact set
+- explained one case where an order-only prerequisite is honest and another where it is not
 
 ## The central review question
 
