@@ -1,32 +1,18 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Determinism Debugging Self Testing"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is to make
 your reasoning explicit.
+
+## How to work this exercise set
+
+This set trains a habit: move from vague instability language to a falsifiable claim and
+then to a proof route.
+
+Work in this order:
+
+- Exercises 1-3: stabilize claims about discovery, rebuilds, and CI contracts
+- Exercises 4-6: design proof routes and isolate variability
+- Exercises 7-8: distinguish convergence and build proof from product testing
+- Exercises 9-10: produce reports that another maintainer could trust
 
 For every proposed selftest, include a deliberate defect that should make it fail. State
 the protected claim before showing the test implementation. A check that cannot detect a
@@ -36,6 +22,14 @@ Keep the positive and negative runs together:
 
 | Protected claim | Healthy observation | Injected defect | Expected failure |
 | --- | --- | --- | --- |
+
+## Minimum evidence for every answer
+
+Try to include:
+
+- one exact command
+- one exact observation or trace line
+- one sentence explaining why that observation protects the named claim
 
 ## Exercise 1: Stabilize discovery
 
@@ -166,6 +160,15 @@ What to hand in:
 - before and after reports
 - the Makefile change
 - a two-sentence explanation suitable for a teammate who did not witness the failure
+
+## Before you open the answers
+
+Stop before `exercise-answers.md` and check that you can already point to:
+
+- one claim about determinism stated in precise terms
+- one trace line that explains a rebuild
+- one defect that product tests missed
+- one selftest that would have caught it
 
 ## Mastery standard for this exercise set
 

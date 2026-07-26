@@ -1,30 +1,4 @@
 # Module 03: Determinism, Debugging, and Self-Testing
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Determinism Debugging Self Testing"]
-  page["Module 03: Determinism, Debugging, and Self-Testing"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Modules 01 and 02 teach truth and parallel safety. Module 03 asks what happens after the
 build starts living in the real world:
 
@@ -35,6 +9,12 @@ This module is about keeping the build trustworthy under change. That means dete
 discovery, disciplined debugging, a stable CI-facing target surface, and selftests that
 prove the build system rather than simply exercising the binary.
 
+## Why this day matters
+
+A build can seem healthy for a long time while still carrying silent variability. Module
+03 teaches you to stop calling that "flaky" in the abstract and start naming the exact
+fact that changed.
+
 ## What this module is for
 
 By the end of Module 03, you should be able to explain four things clearly:
@@ -43,6 +23,21 @@ By the end of Module 03, you should be able to explain four things clearly:
 - how to debug a rebuild with Make-native evidence instead of folklore
 - which targets are real public contracts for CI and which are only local conveniences
 - how to test the build system itself for convergence and equivalence
+
+## The live demo for this module
+
+Use this sequence as the anchor for the day:
+
+```mermaid
+flowchart LR
+  build["Build once"] --> repeat["Build again and expect no work"]
+  repeat --> drift["Introduce one unstable input or discovery step"]
+  drift --> trace["Trace the resulting rebuild or mismatch"]
+  trace --> selftest["Write a selftest that catches it automatically"]
+```
+
+That pattern appears again and again in real repositories. The goal is to make it boring
+enough that you can do it under pressure.
 
 ## Debug one claim at a time
 
@@ -85,6 +80,17 @@ artifacts or their checksums.
 Likewise, do not treat a passing product test as proof that the build graph is correct.
 A stale binary can pass its tests. Build-system tests must manipulate inputs and inspect
 rebuild, no-op, failure, and concurrency behavior.
+
+## A question to keep asking
+
+Whenever someone says "the build is flaky," translate it into a smaller question:
+
+- Which input changed?
+- Which output changed?
+- Which target rebuilt or failed to rebuild?
+- Which proof route can show that directly?
+
+That translation is one of the most valuable skills in the entire course.
 
 ## Study route
 
@@ -144,6 +150,16 @@ small builds with:
 
 That gives you one build that is intentionally close to production pressure while still
 small enough to reason about.
+
+## What a strong Module 03 day looks like
+
+By the end of the day, you should have:
+
+- demonstrated one converged no-op build
+- created one deterministic-discovery failure or variability risk
+- explained one rebuild with a specific trace line
+- written or reviewed one selftest that fails on a deliberate defect
+- separated one CI-facing contract from one local convenience target
 
 ## The central review question
 
