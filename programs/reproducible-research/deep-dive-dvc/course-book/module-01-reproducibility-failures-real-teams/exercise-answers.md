@@ -107,6 +107,40 @@ There is no single correct inventory, but strong answers will clearly name:
 The main lesson is that the inventory should describe the present workflow truth, not an
 imagined future one.
 
+## Answer 6: Reproduce a result from a cold start
+
+A strong report names concrete blockers such as an unidentified dataset revision, an
+unrecorded preprocessing command, an implicit working directory, a missing dependency
+version, or an unexplained output path. It separates evidence found in the repository
+from facts supplied later by a person.
+
+## Answer 7: Build an evidence ladder
+
+The claims normally strengthen in the order given. Existence proves almost nothing about
+origin. A successful command adds execution evidence. Identified inputs add provenance.
+Independent recovery tests the handoff. Traceable publication connects the recovered
+result to what consumers actually received.
+
+## Answer 8: Classify ten workflow facts
+
+The exact facts vary, but every classification needs an owner. Git commonly owns source
+and small text controls. DVC can own large data identity and pipeline state. Environment
+locks, runtime policy, and scientific interpretation still require explicit owners.
+
+## Answer 9: Write a failure report without blaming a tool
+
+A useful report states the expected result, observed command and revision, first
+difference, available evidence, and next discriminating check. It does not assign a cause
+until evidence distinguishes missing data, changed code, environment drift, or process
+error.
+
+## Answer 10: Design an adoption boundary
+
+A credible proposal starts narrowly, for example with raw and prepared datasets. It
+names Git as pointer-history owner, a DVC remote as durable object owner, and environment
+management as a separate concern. A clean-clone recovery drill is a better success
+criterion than merely committing `.dvc` files.
+
 ## Self-check
 
 If your answers consistently explain:

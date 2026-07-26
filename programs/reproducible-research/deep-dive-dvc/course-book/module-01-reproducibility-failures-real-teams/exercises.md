@@ -99,6 +99,36 @@ Choose one of your own workflows and write a five-part inventory:
 The goal is not to fix the workflow yet. The goal is to describe it honestly enough that a
 future DVC design would have something real to improve.
 
+## Exercise 6: Reproduce a result from a cold start
+
+Exchange a small analysis repository with a classmate or use a clean directory. Attempt
+the documented result without using shell history or files outside the repository.
+Record the first five points where you need missing information.
+
+## Exercise 7: Build an evidence ladder
+
+For one result, order these claims from weakest to strongest: "the file exists," "the
+script ran," "the inputs are identified," "another person recovered it," and "the
+published result is traceable." Explain what evidence advances each claim.
+
+## Exercise 8: Classify ten workflow facts
+
+Find ten facts in a real project and classify each as source, data, parameter,
+environment, process, or output. Mark which facts Git records and which need another
+owner.
+
+## Exercise 9: Write a failure report without blaming a tool
+
+Describe a failed reproduction using observed facts, missing evidence, and the next
+smallest diagnostic action. Do not use phrases such as "DVC broke" or "the environment
+was weird."
+
+## Exercise 10: Design an adoption boundary
+
+Write a one-page DVC adoption proposal for the workflow from Exercise 5. Name the first
+artifact family DVC should own, what remains outside DVC, one recovery test, and one
+criterion for deciding whether adoption helped.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep four ideas
