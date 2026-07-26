@@ -115,6 +115,36 @@ Responsible release sentence:
 The main lesson is that a plot should support a bounded claim. It should not be treated as
 visual authority by itself.
 
+## Answer 6: Design a stable metric schema
+
+A stable schema makes meaning explicit, not just field names. The incompatible record
+should fail because its unit, population, aggregation, or schema version cannot be safely
+compared. Silent coercion would produce a precise but dishonest result.
+
+## Answer 7: Separate tuning controls from run policy
+
+Values that alter learned behavior, selected observations, or evaluation meaning belong
+in governed semantic inputs. Worker counts, cache location, and log verbosity usually
+belong to execution policy. The answer should justify edge cases by effect, not habit.
+
+## Answer 8: Recompute a comparison manually
+
+The manual calculation should reproduce the tool output and expose its assumptions.
+Different denominators, rounding stages, missing-value rules, or populations can reverse
+an interpretation even when both source numbers are correct.
+
+## Answer 9: Set a decision threshold before seeing results
+
+A defensible rule names the primary metric and direction, minimum meaningful change,
+allowed regression on safeguards, and an abstain outcome. Precommitment prevents the
+threshold from moving to fit a favored candidate.
+
+## Answer 10: Build a reviewable comparison packet
+
+An independent reviewer should be able to identify both runs, confirm comparable inputs
+and environments, reproduce the diff, and distinguish measured facts from interpretation.
+Questions that require oral history reveal missing evidence in the packet.
+
 ## Self-check
 
 If your answers consistently explain:

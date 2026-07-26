@@ -119,6 +119,32 @@ Describe what you would check before using the plot as evidence:
 
 Then write one sentence that uses the plot responsibly in a release note.
 
+## Exercise 6: Design a stable metric schema
+
+Define a machine-readable metric document with units, population, aggregation, direction,
+and schema version. Produce two valid records and one intentionally incompatible record.
+
+## Exercise 7: Separate tuning controls from run policy
+
+Classify ten settings from a real experiment as model parameter, data-selection control,
+evaluation rule, or execution policy. Explain which belong in `params.yaml`.
+
+## Exercise 8: Recompute a comparison manually
+
+Use two metric files and calculate the reported change independently. Check sign,
+denominator, rounding, missing values, and whether the compared populations match.
+
+## Exercise 9: Set a decision threshold before seeing results
+
+Write an acceptance rule for one metric before running a candidate. Include tolerance,
+secondary safeguards, and what happens when evidence is incomplete.
+
+## Exercise 10: Build a reviewable comparison packet
+
+Assemble parameter diff, metric diff, data identity, environment identity, and a short
+interpretation for two runs. Ask another learner to decide whether the comparison is
+valid without verbal context.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep five ideas
