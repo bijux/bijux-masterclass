@@ -93,6 +93,36 @@ Strong ownership split:
 DVC can provide evidence to those systems, but it should not become responsible for every
 production concern.
 
+## Answer 6: Audit a repository against current truth
+
+A mature audit distinguishes declared policy from observed state. Each finding cites a
+file, command, object, or recovery attempt and names the consequence. Maintainer memory
+can guide investigation but cannot close an evidence gap.
+
+## Answer 7: Migrate one artifact family safely
+
+The migration has an inventory, immutable identity comparison, clean recovery test,
+consumer validation, rollback route, and explicit cutover decision. The old path remains
+available until the new boundary proves every required property.
+
+## Answer 8: Write an exception with an expiry
+
+An exception is narrow and reviewable. It identifies accountable ownership and a
+measurable removal condition. A CI or review check surfaces expiry; prose hidden in a
+ticket does not prevent a temporary compromise from becoming permanent policy.
+
+## Answer 9: Decide whether DVC should keep ownership
+
+Choose by capability and contract. DVC can reference external identities and orchestrate
+commands, but it should not become a secret manager, scheduler, environment solver, or
+consumer registry merely because those concerns touch a pipeline.
+
+## Answer 10: Conduct a stewardship review
+
+Success means the incoming maintainer can execute and explain the critical routes without
+oral history. Every unexplained credential, authority, retention rule, interpretation, or
+rollback decision becomes a concrete governance repair.
+
 ## Self-check
 
 If your answers consistently explain:

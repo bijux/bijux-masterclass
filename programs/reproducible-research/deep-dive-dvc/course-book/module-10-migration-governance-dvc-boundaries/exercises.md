@@ -70,6 +70,35 @@ and alerting.
 
 Explain which concerns DVC should own and which should probably belong to another layer.
 
+## Exercise 6: Audit a repository against current truth
+
+Interview the files, not only the maintainers. Compare documentation, `dvc.yaml`,
+`dvc.lock`, remotes, CI, and release bundles. Record every promise that lacks executable
+or recoverable evidence.
+
+## Exercise 7: Migrate one artifact family safely
+
+Move one governed artifact family to a new storage or workflow boundary. Preserve old and
+new recovery routes during validation, compare identities, and define the rollback point.
+
+## Exercise 8: Write an exception with an expiry
+
+Document one justified departure from repository policy. Include owner, reason, affected
+artifacts, risk, compensating evidence, expiry condition, and the check that detects an
+overdue exception.
+
+## Exercise 9: Decide whether DVC should keep ownership
+
+Evaluate one concern such as model registry, secrets, streaming data, scheduler policy, or
+environment construction. Use requirements to decide whether DVC owns, references, or
+must not own it.
+
+## Exercise 10: Conduct a stewardship review
+
+Present the repository to a new maintainer. Demonstrate recovery, reproduction,
+comparison, promotion, incident response, and one safe change. Record every boundary the
+new maintainer cannot explain from durable evidence.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep five ideas
