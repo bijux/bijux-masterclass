@@ -42,6 +42,20 @@ By the end of Module 02, you should be able to explain three things in plain lan
 - what recipe and graph shapes keep parallel builds safe
 - how a larger repository can stay readable without splitting into hidden private DAGs
 
+## Plan for the day
+
+| Block | Activity | Evidence you should produce |
+| --- | --- | --- |
+| Scheduling | Run two independent targets serially and in parallel | timestamps showing overlap under `-j2` |
+| Race reproduction | Make two recipes write the same path | a repeatable failure or unstable output |
+| Graph repair | assign one writer and add only truthful edges | stable output across repeated `-j8` runs |
+| Structure | trace the top-level capstone DAG through included files | a map from public target to recipe owner |
+| Proof | compare declared outputs from `-j1` and `-j8` | checksums or a recursive directory diff |
+| Practice | complete all ten exercises | predictions, traces, repairs, and one selftest |
+
+Parallelism is observable even on a laptop. The exercises use short sleeps and small text
+files so you can see scheduling without compiling a large project.
+
 ## Study route
 
 ```mermaid
@@ -89,14 +103,15 @@ to the file that matches the failure or design question in front of you.
 
 ## The running example
 
-This module uses a small `m02/` build simulator with:
+This module uses the runnable build under `deep-dive-make/capstone/` with:
 
 - one top-level `Makefile`
 - layered `mk/*.mk` files
 - a tiny C program
 - a repro pack of intentionally broken Makefiles
 
-That gives you two learning surfaces:
+The intentionally broken examples live under `capstone/repro/`. That gives you two
+learning surfaces:
 
 - a build you want to keep correct
 - several builds you expect to fail until you explain and repair them
@@ -148,5 +163,6 @@ Do not move on until all of these are true:
 - you can fix a race by repairing the graph or the publication contract, not by hiding it
 - you can run a selftest that checks convergence and serial/parallel equivalence
 - you can explain why recursive make is not the default architecture here
+- you completed ten exercises and can distinguish scheduling from output ownership
 
 When those become routine, Module 02 has done its job.

@@ -30,8 +30,8 @@ your reasoning visible, not to show off Make syntax.
 
 ## Exercise 1: Name the runnable targets
 
-Take the `m02/` simulator and explain which targets may run concurrently during a clean
-build and why.
+Take the course `capstone/` and explain which object targets may run concurrently during
+a clean build and why.
 
 What to hand in:
 
@@ -41,8 +41,8 @@ What to hand in:
 
 ## Exercise 2: Repair a shared-log race
 
-Explain why `repro/01-shared-log.mk` is nondeterministic under `-j`, then redesign it so
-one target owns the final log.
+From the capstone directory, explain why `repro/01-shared-log.mk` is nondeterministic
+under `-j`, then redesign it so one target owns the final log.
 
 What to hand in:
 
@@ -82,9 +82,81 @@ What to hand in:
 - the artifact set it should compare
 - the failure signal that would tell you the build still lies
 
+## Exercise 6: Observe scheduling without a race
+
+Create two phony targets that each print a start line, sleep for two seconds, and print an
+end line. Make `all` depend on both.
+
+Compare elapsed time under `-j1` and `-j2`. Explain why interleaved terminal output is not
+enough to prove a data race.
+
+What to hand in:
+
+- the Makefile
+- elapsed times from both runs
+- a list of output paths owned by each target
+
+## Exercise 7: Turn harmless concurrency into a race
+
+Modify Exercise 6 so both targets write `result.txt`. Run the build at least ten times
+under `-j2` and record the final content.
+
+Repair the build by giving each worker its own file and adding one aggregation target.
+
+What to hand in:
+
+- the broken and repaired graph shapes
+- the ten observed results
+- a trace showing that the aggregator waits for both worker files
+
+## Exercise 8: Use an order-only prerequisite correctly
+
+Write a rule that creates `build/report.txt` from `source.txt`. Model `build/` as an
+order-only prerequisite.
+
+After a successful build, touch the directory, run Make again, then change `source.txt`
+and run Make again.
+
+What to hand in:
+
+- the complete rule
+- the trace for both changes
+- an explanation of why directory existence affects order but not content freshness
+
+## Exercise 9: Expose a missing edge with delay
+
+Create a producer for `generated.h` and a compile target that reads it, but initially omit
+the prerequisite edge. Add a short sleep to the generator and run with `-j2`.
+
+Repair the graph and repeat.
+
+What to hand in:
+
+- the smallest broken reproduction
+- the failure output
+- the repaired rule and three successful repeated runs
+
+## Exercise 10: Prove serial and parallel equivalence
+
+Choose a small build with at least three independently runnable targets. Write a
+`parallel-check` target or shell script that:
+
+1. performs a clean `-j1` build
+2. records checksums of declared outputs
+3. performs a clean `-j8` build
+4. records checksums again
+5. fails if the manifests differ
+
+What to hand in:
+
+- the declared artifact set
+- the comparison implementation
+- one passing transcript
+- one deliberate race that makes the check fail
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants three things:
+Across all ten answers, the module wants three things:
 
 - you name the graph fact being tested
 - you show which command or artifact proves it

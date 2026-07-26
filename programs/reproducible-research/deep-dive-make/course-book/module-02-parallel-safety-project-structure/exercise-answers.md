@@ -69,6 +69,111 @@ A strong answer includes convergence, serial/parallel equivalence, and a runtime
 the declared artifacts. The selftest should fail on the first observed divergence rather
 than printing vague reassurance.
 
+## Exercise 6: Observe scheduling without a race
+
+A minimal answer is:
+
+```make
+.PHONY: all alpha beta
+all: alpha beta
+
+alpha:
+	@printf 'alpha start\n'; sleep 2; printf 'alpha end\n'
+
+beta:
+	@printf 'beta start\n'; sleep 2; printf 'beta end\n'
+```
+
+`-j1` takes roughly four seconds and `-j2` roughly two. Output lines may appear in
+different orders because both targets are runnable. There is no shared file, directory,
+or external resource, so interleaving alone does not establish a race.
+
+## Exercise 7: Turn harmless concurrency into a race
+
+The repaired graph gives each worker one output and gives the combined file one writer:
+
+```make
+.PHONY: all
+all: result.txt
+
+alpha.txt:
+	@printf 'alpha\n' > $@
+
+beta.txt:
+	@printf 'beta\n' > $@
+
+result.txt: alpha.txt beta.txt
+	@cat $^ > $@
+```
+
+Make may build `alpha.txt` and `beta.txt` concurrently. `result.txt` cannot run until both
+are complete, and only its recipe writes the combined path.
+
+## Exercise 8: Use an order-only prerequisite correctly
+
+```make
+build/report.txt: source.txt | build/
+	cp $< $@
+
+build/:
+	mkdir -p $@
+```
+
+Touching `build/` does not rebuild the report because the directory is to the right of
+`|`. Changing `source.txt` does rebuild it because that prerequisite determines content.
+Using a normal edge for the directory would create noisy rebuilds whenever entries change
+the directory timestamp.
+
+## Exercise 9: Expose a missing edge with delay
+
+The broken version permits compilation and generation to run together:
+
+```make
+.PHONY: all
+all: object.o generated.h
+
+generated.h:
+	@sleep 1
+	@printf '#define VALUE 42\n' > $@
+
+object.o:
+	@grep VALUE generated.h > $@
+```
+
+The repair declares the fact the recipe already depends on:
+
+```make
+object.o: generated.h
+	@grep VALUE $< > $@
+```
+
+The sleep does not fix or cause the graph defect. It widens the timing window so the
+missing edge becomes reproducible.
+
+## Exercise 10: Prove serial and parallel equivalence
+
+A strong implementation creates sorted checksum manifests from the same declared output
+list:
+
+```sh
+set -eu
+outputs='build/alpha.txt build/beta.txt result.txt'
+
+make clean
+make -j1 all
+sha256sum $outputs | sort > serial.sha256
+
+make clean
+make -j8 all
+sha256sum $outputs | sort > parallel.sha256
+
+diff -u serial.sha256 parallel.sha256
+```
+
+The test should compare content, not timestamps or terminal output. A deliberate
+shared-writer race should make either the build fail or the manifests differ; otherwise
+the test is not exercising the intended risk.
+
 ## What a mastery-level answer set looks like
 
 A mastery-level submission moves comfortably between:

@@ -25,12 +25,57 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This file ties the module together around the `m02/` simulator.
+This file begins with a tiny scheduling demonstration, then ties the module together
+around the real course capstone.
+
+## See parallel scheduling in one minute
+
+Create this Makefile in an empty practice directory:
+
+```make
+.PHONY: all alpha beta
+
+all: alpha beta
+
+alpha:
+	@printf 'alpha start\n'
+	@sleep 2
+	@printf 'alpha end\n'
+
+beta:
+	@printf 'beta start\n'
+	@sleep 2
+	@printf 'beta end\n'
+```
+
+Compare:
+
+```sh
+time make -j1 all
+time make -j2 all
+```
+
+The serial run takes about four seconds. The parallel run takes about two because `alpha`
+and `beta` have no edge between them. Their printed lines may interleave. That is not
+automatically a race: the targets do not share output state.
+
+Now add a shared output to both recipes:
+
+```make
+alpha:
+	@printf 'alpha\n' > combined.txt
+
+beta:
+	@printf 'beta\n' > combined.txt
+```
+
+Run `make -j2 all` repeatedly. The final file depends on which recipe writes last. The
+graph allows concurrent work, but the recipes violate one-writer ownership.
 
 ## Layout
 
 ```text
-m02/
+capstone/
   Makefile
   mk/
     common.mk
@@ -44,12 +89,27 @@ m02/
     util.c
     sub/sub.c
   repro/
+    01-shared-append.mk
     01-shared-log.mk
     02-temp-collision.mk
     03-stamp-clobber.mk
     04-generated-header.mk
     05-mkdir-race.mk
 ```
+
+From the repository root, run capstone commands through:
+
+```sh
+make PROGRAM=reproducible-research/deep-dive-make capstone-selftest
+```
+
+From `programs/reproducible-research/deep-dive-make/capstone/`, use GNU Make directly:
+
+```sh
+make selftest
+```
+
+On macOS that second command may be `gmake selftest`.
 
 This example matters because it combines three things at once:
 
@@ -93,7 +153,7 @@ This worked example is the concrete home for the rest of the module.
 
 ## Layer responsibilities in this build
 
-Read the simulator in this order:
+Read the capstone in this order:
 
 1. `Makefile` for the public interface and selftest entry point
 2. `mk/common.mk` for stable policy knobs
@@ -104,7 +164,7 @@ That reading order helps you see structure before you see implementation detail.
 
 ## Four experiments to run
 
-### Experiment 1: Inspect the schedule
+### Demonstration 1: Inspect the schedule
 
 Run:
 
@@ -115,7 +175,7 @@ make --trace all
 
 The first command shows the candidate work. The second shows why each target is needed.
 
-### Experiment 2: Prove convergence
+### Demonstration 2: Prove convergence
 
 Run:
 
@@ -126,7 +186,7 @@ make -q all; echo $?
 
 You want exit code `0` after the successful build.
 
-### Experiment 3: Compare serial and parallel
+### Demonstration 3: Compare serial and parallel
 
 Run:
 
@@ -137,7 +197,7 @@ make clean && make -j8 all
 
 The simulator should produce equivalent declared artifacts across both runs.
 
-### Experiment 4: Use the repro pack as contrast
+### Demonstration 4: Use the repro pack as contrast
 
 Run one broken repro, for example:
 
@@ -146,7 +206,24 @@ make -f repro/02-temp-collision.mk clean
 make -f repro/02-temp-collision.mk -j8 all
 ```
 
-Then explain why the simulator does not suffer from the same problem.
+Then explain why the healthy capstone does not suffer from the same problem.
+
+### Demonstration 5: Observe an order-only directory
+
+Find a target that uses `| $(BUILD_DIR)/` or another directory prerequisite. Touch the
+directory and run the build again. The directory must exist before the recipe runs, but a
+directory timestamp change should not force content rebuilds.
+
+### Demonstration 6: Trace one object
+
+Choose one object file, delete only that file, and run:
+
+```sh
+make --trace all
+```
+
+Explain why that object and its downstream link rebuild while independent objects stay
+untouched.
 
 ## What this example should teach you
 
@@ -156,3 +233,4 @@ By the time you finish this file, you should be able to point at the simulator a
 - where output ownership is enforced
 - where hidden semantic state is modeled honestly
 - where selftest proves the build instead of merely running it
+- why the documented paths and commands correspond to files that actually exist
