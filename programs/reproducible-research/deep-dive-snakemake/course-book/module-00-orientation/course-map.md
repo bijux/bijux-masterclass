@@ -1,32 +1,9 @@
 # Course Map
+The modules form one continuous workflow story: you begin with one target and finish by
+reviewing a repository that other people may execute, trust, extend, and inherit. Each
+day introduces a pressure that the previous day’s model cannot yet absorb.
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Orientation"]
-  page["Course Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use this page to see how ten learning days turn a first file contract into a workflow
-you can operate, publish, diagnose, and govern. The modules build on one another; later
-operational techniques cannot repair an unclear file graph.
+## Course progression
 
 ```mermaid
 flowchart LR
@@ -39,6 +16,21 @@ flowchart LR
 
   beginner --> dynamic --> operations --> architecture --> publication --> stewardship
 ```
+
+## The ten study days
+
+| Module | Begin with | Finish able to | Classroom-style turning point |
+| --- | --- | --- | --- |
+| 01 · File contracts and workflow graph truth | one target and one rule | predict jobs and explain rebuilds from evidence | the DAG stops feeling mystical |
+| 02 · Dynamic DAGs, discovery, and integrity | a truthful static workflow | use checkpoints and discovery without hiding meaning | dynamic behavior becomes disciplined instead of magical |
+| 03 · Production operations and policy boundaries | a truthful local workflow | separate workflow semantics from retries, staging, and profiles | the command layer stops masquerading as workflow meaning |
+| 04 · Scaling workflows and interface boundaries | a small coherent workflow | split growing rule sets without hiding ownership | modularity becomes a clarity tool instead of file sprawl |
+| 05 · Software boundaries and reproducible rules | shell-heavy rules and ad hoc helpers | move logic into scripts, wrappers, and environments deliberately | helper code gains explicit ownership |
+| 06 · Publishing and downstream contracts | useful internal outputs | define a versioned publish surface people can trust | outputs are judged from the consumer side |
+| 07 · Workflow architecture and file APIs | a working repository | treat paths, formats, and file trees as APIs | repository structure becomes part of the workflow contract |
+| 08 · Operating contexts and execution policy | one local execution context | preserve workflow meaning across laptops, CI, and schedulers | context drift becomes visible policy |
+| 09 · Observability, performance, and incident response | a correct but pressured workflow | diagnose slow, flaky, or surprising runs from evidence | logs and summaries replace folklore |
+| 10 · Governance, migration, and tool boundaries | an inherited workflow | preserve proof while evolving ownership and scope | stewardship becomes an explicit design decision |
 
 ## Arc 1: file contracts and dynamic discovery
 
@@ -89,6 +81,40 @@ Modules 09 to 10 finish with long-lived workflow judgment.
 
 Leave this arc able to review a real workflow repository and justify what should change next.
 
+## Skills accumulate
+
+Later modules do not replace earlier ones. A publish contract in Module 06 still depends
+on the graph truth from Module 01, the discovery discipline from Module 02, and the
+policy separation from Module 03.
+
+```mermaid
+flowchart LR
+  graph["Graph truth"] --> dynamic["Dynamic discipline"]
+  graph --> policy["Policy boundaries"]
+  dynamic --> publish["Publish trust"]
+  policy --> operating["Operating contexts"]
+  publish --> architecture["Architecture"]
+  operating --> incidents["Incident response"]
+  architecture --> stewardship["Stewardship"]
+  incidents --> stewardship
+```
+
+When a later lesson feels unclear, move backward through the dependency. Do not solve a
+weak file contract with a stronger scheduler profile.
+
+## How the course grows in difficulty
+
+The first two modules teach you how Snakemake decides. The next three teach you how that
+decision process survives repository growth and software boundaries. The last five teach
+you how to publish, operate, review, and govern a workflow that other people depend on.
+
+```mermaid
+flowchart LR
+  first["Foundations"] --> pressure["Pressure and scaling"]
+  pressure --> publish["Publication and architecture"]
+  publish --> stewardship["Operations and stewardship"]
+```
+
 ## Practice commitment
 
 Every technical module contains ten exercises:
@@ -98,6 +124,31 @@ Every technical module contains ten exercises:
 
 That makes a hundred exercises across the course. The answer pages explain reasoning and
 trade-offs; they are not substitutes for making a prediction and testing it yourself.
+
+## Exercise progression in every module
+
+The ten exercises deliberately change character:
+
+- Exercises 1-2 check vocabulary, observation, and setup honesty.
+- Exercises 3-4 ask you to predict behavior before running it.
+- Exercises 5-6 ask you to diagnose or repair a broken workflow.
+- Exercises 7-8 ask you to design and test a small extension.
+- Exercises 9-10 ask you to explain trade-offs and apply the skill to a less familiar case.
+
+Completing only the first half gives you recognition. Completing all ten builds transfer.
+
+## Where the capstone enters
+
+Use the small module examples first. Enter the capstone only when you can state the
+question you want it to answer.
+
+| After module | Useful capstone question |
+| --- | --- |
+| 02 | Which files and checkpoints make discovery honest here? |
+| 04 | Which workflow splits improve ownership instead of scattering logic? |
+| 06 | Where is the public publish surface and how is it validated? |
+| 08 | Which differences across contexts are policy-only? |
+| 10 | Which responsibilities should remain in Snakemake at all? |
 
 ## Route markers
 

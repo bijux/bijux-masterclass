@@ -1,32 +1,9 @@
 # Worked Example: Repairing a Lying First Workflow
+This example is the lab version of Module 01. Do not read it like a post-mortem. Rebuild
+it as you go and predict each change before you run it.
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Worked Example: Repairing a Lying First Workflow"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-This example follows one small beginner workflow from misleading first draft to a version
-that tells the truth about files, reruns, and published outputs.
+The goal is to take one small workflow from misleading first draft to a version that tells
+the truth about files, reruns, wildcard ownership, and published outputs.
 
 ## Build an honest baseline first
 
@@ -68,6 +45,16 @@ One rule definition becomes two jobs because the concrete targets bind `{sample}
 `A` and `B`. Execute with `snakemake --cores 1`, then edit only `data/A.txt` and dry-run
 again. Predict that only the `A` job will run. This small observation is the foundation
 for the repair below.
+
+## The lab route
+
+Use the worked example in this order:
+
+1. build the honest baseline and prove selective rebuilds
+2. read the broken first draft and predict where it lies
+3. repair one defect at a time
+4. dry-run after every repair instead of waiting until the end
+5. finish with one output you would trust another rule to consume
 
 ## The situation
 
@@ -147,6 +134,19 @@ The first draft has at least five issues:
 5. there are no per-job logs, so failures are harder to inspect.
 
 That is a good Module 01 example because none of these problems are exotic.
+
+## Repair order matters
+
+Do not fix the shell first just because it looks concrete. Repair the workflow in this
+order:
+
+1. remove rules that are outside the target story
+2. restore convergence
+3. make output ownership easier to read
+4. add logs and atomic publication
+
+That order keeps the lesson tied to workflow truth instead of drifting straight into
+implementation details.
 
 ## Review the target story
 

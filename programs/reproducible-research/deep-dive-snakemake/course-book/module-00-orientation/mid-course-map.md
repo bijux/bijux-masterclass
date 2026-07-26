@@ -1,32 +1,17 @@
 # Mid-Course Map
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Orientation"]
-  page["Mid-Course Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when Modules 01 to 03 feel stable and you need a deliberate bridge into
 scaling, software boundaries, publish trust, and operating-context review. The goal is to
 keep the middle of the course shaped by workflow questions instead of by repository sprawl.
+
+## Mid-course route
+
+```mermaid
+flowchart LR
+  m4["Module 04<br/>scaling boundaries"] --> m5["Module 05<br/>software seams"]
+  m5 --> m6["Module 06<br/>publish trust"]
+  m6 --> m7["Module 07<br/>workflow architecture"]
+  m7 --> m8["Module 08<br/>operating contexts"]
+```
 
 ## Use this map for these pressures
 
@@ -66,6 +51,19 @@ Use this step when the main pressure is execution context rather than workflow m
 
 Leave this step able to explain what changed across contexts and why the workflow promise
 did or did not change.
+
+## Questions this map should answer
+
+When the course reaches its middle, the common failure is not lack of syntax. It is lack
+of ownership clarity. Use this page to answer questions like:
+
+- Is this change about the workflow graph or about helper software?
+- Is this value part of output meaning or only execution policy?
+- Is this path internal working state or a surface someone else can trust?
+- Would another repository file clarify ownership or merely hide it?
+
+If you cannot phrase the question in one of those forms yet, go back to the smaller
+module example before opening more repository surfaces.
 
 ## When to leave this route
 

@@ -1,32 +1,16 @@
 # Mastery Map
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Orientation"]
-  page["Mastery Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when the course is no longer about first contact or ordinary study rhythm.
 The goal here is stewardship: decide what the workflow can still promise honestly, what
 must change, and what should move outside Snakemake instead of being hidden inside it.
+
+## Stewardship route
+
+```mermaid
+flowchart LR
+  observe["Observe the pressured behavior"] --> prove["Choose the smallest honest proof route"]
+  prove --> judge["Decide whether the problem is semantic, policy, or architectural"]
+  judge --> govern["Choose repair, migration, or boundary change"]
+```
 
 ## Return by late-course pressure
 
@@ -51,6 +35,18 @@ Use Module 10 when the review question is long-lived ownership.
 - Re-read the module as a boundary decision, not as a recap.
 - Ask which responsibilities still belong in the workflow layer and which should move to
   clearer software, policy, or publish boundaries.
+
+## What mastery means here
+
+Mastery in this course does not mean memorizing every Snakemake feature. It means you can
+review a repository under pressure without becoming theatrical.
+
+You should be able to:
+
+- name the exact workflow claim under review
+- pick evidence that is proportionate instead of maximal
+- reject a change that merely makes the repository look more sophisticated
+- explain when another tool, service, or layer should own the concern instead
 
 ## Good mastery signal
 

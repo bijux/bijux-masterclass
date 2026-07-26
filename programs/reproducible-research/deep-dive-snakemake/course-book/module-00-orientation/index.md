@@ -1,28 +1,7 @@
 # Module 00: Orientation and Study Practice
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Orientation"]
-  page["Module 00: Orientation and Study Practice"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+You do not need previous workflow, data-engineering, or cluster experience to begin this
+course. You need a terminal, a text editor, and enough patience to run one small
+workflow twice and explain the difference between the two runs.
 
 This orientation gets you from no Snakemake experience to a working two-rule workflow.
 You will create an input file, ask Snakemake what it plans to do, build an output, and
@@ -30,8 +9,53 @@ observe why a second run has nothing to do. That small experiment supplies the m
 model used throughout the course: **a workflow describes files and the rules that can
 produce them; requested files determine which rules run**.
 
-You do not need an existing pipeline. Basic comfort entering commands in a terminal and
-editing a text file is enough.
+Snakemake answers one question:
+
+> Which files must be created or refreshed so the requested targets can exist honestly?
+
+It answers that question from rules in a `Snakefile`. This orientation starts with one
+input file and one output file. Later modules add discovery, scaling, software
+boundaries, publication, operating contexts, and stewardship, but they all depend on the
+same first truth: the workflow only makes sense when its file contracts are explicit.
+
+## What this orientation module is for
+
+Module 00 is not a disposable preface. It establishes the study habits that make the
+rest of the course work:
+
+- start from one small workflow, not from the capstone
+- dry-run before execution so the plan is visible
+- explain why a rule ran or did not run using files, not vibes
+- treat a no-op second run as evidence that the workflow can converge
+- carry one clear question into the next module instead of browsing support pages
+
+If you do that here, later modules feel cumulative. If you skip it, later pages can turn
+into syntax and vocabulary without a model underneath them.
+
+## Before the first lesson
+
+Open a terminal and confirm that Snakemake is available:
+
+```console
+$ snakemake --version
+9.13.3
+```
+
+The exact version may differ. If the command fails, stop and use the
+[platform setup guide](../guides/platform-setup.md) before continuing.
+
+You should also be comfortable with these shell actions:
+
+```sh
+pwd
+mkdir -p practice
+cd practice
+printf 'hello\n' > message.txt
+cat message.txt
+rm -rf results
+```
+
+You do not need to memorize them. You do need to be comfortable reading what they do.
 
 ## What you will accomplish
 
@@ -103,6 +127,28 @@ snakemake --dry-run --printshellcmds
 Snakemake now plans a rebuild because the input is newer than the output. You have just
 observed the central behavior of a file-driven workflow without relying on hidden state.
 
+## The first-day demo ladder
+
+Use this sequence before you open Module 01:
+
+```mermaid
+flowchart LR
+  request["request one target"] --> plan["dry-run the workflow"]
+  plan --> build["run one real job"]
+  build --> repeat["run the same command again"]
+  repeat --> change["change one input file"]
+  change --> explain["explain the rebuild"]
+```
+
+Each step adds one idea:
+
+- the request identifies the target the workflow owes you
+- the dry-run reveals planned work before any command executes
+- the first build turns the graph into a real artifact
+- the repeated run tests convergence
+- the changed input tests whether the dependency edge is truthful
+- your explanation turns command output into understanding
+
 ## Read the graph, not the file order
 
 ```mermaid
@@ -121,7 +167,7 @@ It does not transform data. Snakemake starts from that requested output, finds a
 that can create it, and follows that rule's inputs backward. The order of rules in the
 file does not define execution order; file dependencies do.
 
-## A full study day
+## How one module fills a study day
 
 Each technical module is designed as a complete learning day rather than a short article.
 Use this rhythm, changing the timing to fit your circumstances:
@@ -170,6 +216,18 @@ make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough
 
 If the capstone makes the concept harder to see, return to the small experiment. Larger
 is not more advanced when it hides the contract you are trying to learn.
+
+## Keep a short learning journal
+
+At the end of orientation, write four short answers:
+
+1. What did I predict incorrectly?
+2. Which command or artifact corrected me?
+3. Which file contract explains the behavior now?
+4. What would I check first in a real workflow with the same symptom?
+
+That journal becomes more useful as the course gets harder. It captures changes in your
+reasoning instead of just preserving command history.
 
 ## Orientation check
 

@@ -1,39 +1,24 @@
 # First-Contact Map
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Orientation"]
-  page["First-Contact Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use this page for your first session when Snakemake is new. You will leave with a working
-workflow, not merely a list of pages to read.
+Use this page for your first honest session with the course. The goal is not to cover as
+much ground as possible. The goal is to leave the first hour coherent enough that later
+reading choices feel deliberate instead of random.
 
 ## First session route
 
-1. Complete [Your first workflow](index.md#your-first-workflow).
-2. Predict the result before each dry-run and execution.
-3. Draw the three-node graph on paper: input, rule, output.
-4. Read [Course Map](course-map.md) and choose a realistic study schedule.
-5. Open [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md).
+```mermaid
+flowchart TD
+  promise["Read the program promise"] --> orient["Complete Module 00"]
+  orient --> dryrun["Run one dry-run and one real build"]
+  dryrun --> reflect["Write one plain-language explanation"]
+  reflect --> decide["Choose whether to continue into Module 01 now"]
+```
+
+1. Read `../index.md` for the program promise.
+2. Read `index.md` for the role of orientation.
+3. Complete [Your first workflow](index.md#your-first-workflow).
+4. Draw the three-node graph on paper: input, rule, output.
+5. Read [Course Map](course-map.md) and choose a realistic study schedule.
+6. Open [Module 01](../module-01-file-contracts-workflow-graph-truth/index.md).
 
 Do not open the capstone yet. Its size is useful after the basic graph is familiar, but
 at first contact it adds repository details that compete with the central idea.
@@ -57,6 +42,17 @@ Repeat the same rhythm through the first modules:
 3. change one input, output, or rule at a time
 4. explain the observed behavior in terms of files and dependencies
 5. complete the exercises before consulting their answers
+
+## A strong first-session outcome
+
+Your first session is successful if you can say all three of these without guessing:
+
+- what target you requested
+- why the first run had work to do
+- why the second run did not
+
+That may sound small. It is not small. It is the seed of every later topic in the
+course.
 
 ## If the first workflow does not run
 
