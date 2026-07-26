@@ -40,13 +40,28 @@ If that model is shaky, every later feature in the course becomes harder to reas
 
 ## What this module is for
 
-By the end of Module 01, you should be able to explain five things clearly:
+By the end of Module 01, you should be able to explain these ideas clearly:
 
 - how a rule acts as a file contract rather than a vague workflow step
 - how targets become a DAG and then concrete jobs
 - why convergence fails when hidden inputs or unstable parameters leak in
 - how wildcard binding can stay precise or become ambiguous
 - how config, profiles, logs, and atomic publication keep a small workflow trustworthy
+
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| first contact | extend the orientation workflow from one rule to a three-rule DAG | annotated dry-run |
+| file contracts | trace targets backward through inputs and outputs | hand-drawn DAG |
+| rebuild behavior | edit, delete, and preserve files while predicting reruns | `--summary` notes |
+| wildcard design | create two sample-specific jobs from one rule | concrete target list |
+| trustworthy output | inject a failure, inspect the damage, then publish atomically | failed log and repaired output |
+| independent practice | complete all ten exercises | workflow files and written reasoning |
+
+Spend more time predicting than typing. Before each command, state which jobs should
+appear and why. A correct prediction demonstrates the model; a surprising result gives
+you a precise question to investigate.
 
 ## Study route
 
@@ -147,5 +162,6 @@ Do not move on until all of these are true:
 - you can show one ambiguous wildcard design and repair it
 - you can distinguish config data from execution policy clearly
 - you can explain why a final output is trustworthy or why it is poison
+- you have completed all ten exercises without using the answer page as instructions
 
 When those feel ordinary, Module 01 has done its job.

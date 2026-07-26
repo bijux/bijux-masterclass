@@ -28,6 +28,47 @@ flowchart LR
 This example follows one small beginner workflow from misleading first draft to a version
 that tells the truth about files, reruns, and published outputs.
 
+## Build an honest baseline first
+
+Before repairing a larger workflow, make the smallest multi-job graph concrete. Continue
+in the orientation directory and replace its `Snakefile` with:
+
+```python
+SAMPLES = ["A", "B"]
+
+
+rule all:
+    input:
+        expand("results/{sample}.upper.txt", sample=SAMPLES)
+
+
+rule uppercase:
+    input:
+        "data/{sample}.txt"
+    output:
+        "results/{sample}.upper.txt"
+    shell:
+        """
+        mkdir -p results
+        tr '[:lower:]' '[:upper:]' < {input} > {output}.building
+        mv {output}.building {output}
+        """
+```
+
+Create the inputs and inspect the plan:
+
+```sh
+mkdir -p data
+printf 'alpha\n' > data/A.txt
+printf 'beta\n' > data/B.txt
+snakemake --dry-run --printshellcmds
+```
+
+One rule definition becomes two jobs because the concrete targets bind `{sample}` to
+`A` and `B`. Execute with `snakemake --cores 1`, then edit only `data/A.txt` and dry-run
+again. Predict that only the `A` job will run. This small observation is the foundation
+for the repair below.
+
 ## The situation
 
 Assume you are building a tiny workflow over two text files:
@@ -107,7 +148,7 @@ The first draft has at least five issues:
 
 That is a good Module 01 example because none of these problems are exotic.
 
-## Step 1: review the target story
+## Review the target story
 
 The first question is not "how do I fix the shell?"
 
@@ -132,7 +173,7 @@ The honest repair is either:
 
 In this example, the right answer is removal. The flag is not real workflow truth.
 
-## Step 2: fix the rerun lie
+## Remove the unstable rerun cause
 
 You then run:
 
@@ -141,7 +182,7 @@ snakemake
 snakemake -n
 ```
 
-and notices that the dry-run still wants to execute `summarize`.
+and notice that the dry-run still wants to execute `summarize`.
 
 The reason is not mysterious:
 
@@ -152,10 +193,10 @@ The reason is not mysterious:
 This is Core 2.
 
 The repair is to remove the unstable time value from the rule's meaning. If you
-actually needs a run identifier, it should be an explicit stable config value or sidecar
+actually need a run identifier, it should be an explicit stable config value or sidecar
 audit artifact, not part of the summary's semantic content.
 
-## Step 3: make the wildcard output teach the reader
+## Make the wildcard output teach the reader
 
 The next issue is the staging path:
 
@@ -184,7 +225,7 @@ This is Core 3:
 The fix is not about pretty naming only. It is about path precision and future ambiguity
 avoidance.
 
-## Step 4: separate meaning from policy
+## Separate meaning from policy
 
 Suppose you now want to make the sample list configurable.
 
@@ -224,7 +265,7 @@ This is Core 4. You now have a clean story:
 - config changes workflow meaning
 - profile changes execution behavior
 
-## Step 5: repair publication and failure evidence
+## Repair publication and failure evidence
 
 You also notice that the summary rule writes directly to the final output.
 
@@ -355,7 +396,8 @@ The important facts should be obvious:
 DAG:
 
 ```bash
-snakemake --dag | dot -Tpdf > dag.pdf
+mkdir -p artifacts
+snakemake --dag | dot -Tpdf > artifacts/dag.pdf
 ```
 
 You should now see:

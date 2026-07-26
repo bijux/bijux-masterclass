@@ -105,9 +105,71 @@ What to hand in:
 - the log path or evidence route you would keep for diagnosis
 - one sentence explaining why the repaired version is safer for downstream rules
 
+## Exercise 6: Build a two-sample workflow
+
+Create two input text files and one wildcard rule that publishes an uppercased output for
+each sample. Make `rule all` request both concrete outputs.
+
+What to hand in:
+
+- the complete `Snakefile`
+- the dry-run job list before execution
+- the output paths after execution
+- an explanation of why one rule definition creates two jobs
+
+## Exercise 7: Compare a plan with execution
+
+Delete one output from Exercise 6. Capture the dry-run, then run the workflow and capture
+`snakemake --summary`.
+
+What to hand in:
+
+- your prediction before the dry-run
+- the planned job and its wildcard binding
+- the summary status after execution
+- one distinction between planning evidence and completed-run evidence
+
+## Exercise 8: Trace a selective rebuild
+
+Change only one source file in the two-sample workflow. Predict the jobs that will rerun,
+then verify the prediction.
+
+What to hand in:
+
+- the source file you changed
+- the dry-run job list
+- the output that remained untouched
+- an explanation based on dependency edges rather than rule order
+
+## Exercise 9: Investigate a missing input
+
+Request a valid-looking target whose required source file does not exist. Read the full
+error before changing the workflow.
+
+What to hand in:
+
+- the requested target and inferred wildcard value
+- the missing input Snakemake reports
+- whether the defect belongs in the workflow, configuration, or source data
+- the smallest honest repair
+
+## Exercise 10: Complete a trustworthy tiny project
+
+Build a clean project that converts three text files and publishes a tabular line-count
+summary. Include explicit targets, informative output paths, per-rule logs, and atomic
+publication for the summary.
+
+What to hand in:
+
+- the project tree and complete `Snakefile`
+- a successful run followed by a converged dry-run
+- a DAG or rule graph written under `artifacts/`
+- one injected failure and evidence that no partial summary remained
+- a short review of which settings are workflow meaning and which are execution policy
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants the same habits:
+Across all ten answers, the module wants the same habits:
 
 - you explain behavior in terms of targets, files, and ownership
 - you use dry-run, summary, DAG, or logs as evidence

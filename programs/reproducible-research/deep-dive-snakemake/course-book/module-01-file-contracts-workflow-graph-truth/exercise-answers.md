@@ -35,7 +35,7 @@ stay stable is the shape of the explanation:
 - use one piece of workflow evidence
 - explain the repair in terms of truth, ownership, or publication
 
-## Answer 1: Explain why one rule does not run
+## Exercise 1: Explain why one rule does not run
 
 A strong answer sounds like this:
 
@@ -53,7 +53,7 @@ Why this is strong:
 
 Weak answers usually say only "Snakemake skipped the rule."
 
-## Answer 2: Prove convergence and then break it
+## Exercise 2: Prove convergence and then break it
 
 A strong answer shows both states clearly.
 
@@ -78,7 +78,7 @@ Why this is strong:
 - it proves both behaviors with the same evidence route
 - it explains non-convergence as unstable tracked meaning rather than as random behavior
 
-## Answer 3: Diagnose one wildcard ownership problem
+## Exercise 3: Diagnose one wildcard ownership problem
 
 A strong answer names the ownership defect directly.
 
@@ -95,7 +95,7 @@ Why this is strong:
 - it identifies ambiguity as a file-ownership problem
 - it fixes the path design instead of hiding the issue with precedence tricks
 
-## Answer 4: Separate workflow meaning from execution policy
+## Exercise 4: Separate workflow meaning from execution policy
 
 A strong answer shows one value on each side of the boundary.
 
@@ -118,7 +118,7 @@ Why this is strong:
 - it makes the semantic-versus-policy split explicit
 - it shows why early validation is humane, not just formal
 
-## Answer 5: Repair a poison output
+## Exercise 5: Repair a poison output
 
 A strong answer contrasts the broken and repaired publication contracts.
 
@@ -140,7 +140,78 @@ Why this is strong:
 - it explains publication trust, not just shell mechanics
 - it leaves behind evidence for the next investigation
 
-## What all five answers should have in common
+## Exercise 6: Build a two-sample workflow
+
+A strong solution uses a concrete target list to bind a precise wildcard:
+
+```python
+SAMPLES = ["A", "B"]
+
+rule all:
+    input:
+        expand("results/{sample}.upper.txt", sample=SAMPLES)
+
+rule uppercase:
+    input:
+        "data/{sample}.txt"
+    output:
+        "results/{sample}.upper.txt"
+    shell:
+        "mkdir -p results && tr '[:lower:]' '[:upper:]' < {input} > {output}"
+```
+
+The single `uppercase` definition creates two jobs because `rule all` requests two
+concrete output paths. Each path binds `{sample}` differently. The rule is reusable
+logic; a job is one concrete application of that logic.
+
+## Exercise 7: Compare a plan with execution
+
+After deleting `results/A.upper.txt`, a dry-run should plan only the `uppercase` job for
+sample `A` plus the target aggregation. It says what Snakemake *would* do from the current
+filesystem state. After execution, `--summary` should report the known outputs as current.
+That summary describes file ownership and status; it is not a record that every planned
+shell command succeeded in some earlier run.
+
+## Exercise 8: Trace a selective rebuild
+
+Editing `data/B.txt` should schedule the `B` job and leave `results/A.upper.txt`
+untouched. The explanation is the edge:
+
+```text
+data/B.txt -> uppercase(sample=B) -> results/B.upper.txt
+```
+
+The `A` input is not an ancestor of the changed file, so its output has no file-contract
+reason to rebuild. Rule order has no bearing on this decision.
+
+## Exercise 9: Investigate a missing input
+
+If the requested target is `results/C.upper.txt`, Snakemake can infer
+`sample=C` and then requires `data/C.txt`. The error is useful evidence: the output
+pattern matched, but its source contract could not be satisfied. Add the source if `C`
+is a legitimate sample, remove `C` from semantic configuration if it is not, or correct
+the path contract if the source lives elsewhere. Creating an empty file merely to silence
+the error would hide the real defect.
+
+## Exercise 10: Complete a trustworthy tiny project
+
+A strong project has three explicit source records, one wildcard transformation family,
+and one summary rule. `rule all` requests the summary and any intermediate files that are
+intended deliverables. The summary writes to a sibling temporary path and renames only
+after every row is complete. Logs are separate from published data.
+
+Verification should show:
+
+- the first dry-run plans three transformations and one summary
+- the first execution creates all expected files
+- the next dry-run converges
+- changing one source rebuilds its transformation and the dependent summary
+- an injected summary failure leaves no final partial file
+
+The final review should classify sample membership and transformation parameters as
+workflow meaning, while cores and shell-printing behavior remain execution policy.
+
+## What all ten answers should have in common
 
 The best Module 01 answers usually do five things:
 
