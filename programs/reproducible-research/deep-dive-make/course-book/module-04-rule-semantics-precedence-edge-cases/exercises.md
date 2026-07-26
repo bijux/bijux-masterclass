@@ -1,32 +1,18 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Rule Semantics Precedence Edge Cases"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is not to
 show off syntax. The goal is to make your semantic reasoning visible.
+
+## How to work this exercise set
+
+These exercises are easiest when you treat them as incident practice rather than as a
+syntax test.
+
+Work in this order:
+
+- Exercises 1-3: choose evidence and explain variable or include behavior
+- Exercises 4-6: make precedence and capability choices visible
+- Exercises 7-9: reproduce, observe, and repair advanced rule behavior
+- Exercise 10: combine several semantic failures in one calm investigation
 
 Each exercise asks for three things:
 
@@ -37,6 +23,14 @@ Each exercise asks for three things:
 Also label the semantic stage where the problem lives: read time, expansion, rule
 selection, or recipe execution. If more than one stage contributes, show the causal
 order rather than calling the whole build “complex.”
+
+## Minimum evidence for every answer
+
+Try to include:
+
+- one exact command
+- one exact semantic stage
+- one repair that becomes obvious once that stage is named
 
 ## Exercise 1: Choose the right CLI probe
 
@@ -196,6 +190,15 @@ What to hand in:
 - the evidence command chosen for each symptom
 - the semantic cause and repair for each
 - a final `make -q` or equivalent convergence result
+
+## Before you read the answers
+
+Do not open `exercise-answers.md` until you can already point to:
+
+- one variable whose origin you proved
+- one restart behavior you can explain
+- one ambiguous rule you made predictable
+- one incident where naming the semantic stage reduced the debugging scope
 
 ## Mastery standard for this exercise set
 

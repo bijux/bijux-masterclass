@@ -1,30 +1,4 @@
 # Module 04: Rule Semantics, Precedence, and Edge Cases
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Rule Semantics Precedence Edge Cases"]
-  page["Module 04: Rule Semantics, Precedence, and Edge Cases"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Modules 01 to 03 teach graph truth, parallel safety, and deterministic operation. Module
 04 is where you slow down and learn how GNU Make actually decides.
 
@@ -40,6 +14,12 @@ The goal is not to memorize trivia. The goal is to leave with a durable mental m
 Make semantics so you can tell the difference between a legitimate advanced feature and a
 bug disguised as one.
 
+## Why this day matters
+
+Without a semantic model, advanced Make usage turns into folklore. Learners end up with
+phrases like "sometimes Make gets weird" instead of being able to say which rule,
+precedence boundary, or include behavior caused the result.
+
 ## What this module is for
 
 By the end of Module 04, you should be able to explain five things with confidence:
@@ -49,6 +29,21 @@ By the end of Module 04, you should be able to explain five things with confiden
 - how to gate capabilities without scattering hidden inputs
 - why included makefiles can trigger restart behavior and how to keep that safe
 - which rule features preserve correctness and which ones quietly damage it
+
+## The live demo for this module
+
+Use one small variable-introspection target and one generated-include example as the
+anchors for the day:
+
+```mermaid
+flowchart LR
+  value["Print origin, flavor, and value"] --> compare["Override from file, env, and CLI"]
+  compare --> include["Generate and include one fragment"]
+  include --> restart["Observe stable or unstable restarts"]
+  restart --> explain["Name the semantic rule that caused each result"]
+```
+
+If you can do that calmly, the rest of the module becomes far easier to absorb.
 
 ## Ask Make where a value came from
 
@@ -95,6 +90,14 @@ the current ownership contract is correct.
 
 This module is dense. Run each small experiment before reading the compound worked
 example; otherwise several semantic rules arrive at once.
+
+## The question to keep asking
+
+Every time the build surprises you, ask:
+
+> Which semantic stage owns this surprise: read time, expansion, rule selection, or recipe execution?
+
+That question keeps the incident small enough to debug.
 
 ## Study route
 
@@ -154,6 +157,16 @@ Good Module 04 answers usually mention one or more of these:
 - a capability check that was spread across too many places
 - an include that changed evaluation order or restart behavior
 - an advanced rule form that was used without a matching correctness contract
+
+## What a strong Module 04 day looks like
+
+By the end of the day, you should have:
+
+- shown the origin and flavor of a surprising variable
+- observed one stable generated-include restart and one unstable one
+- diagnosed one rule-selection ambiguity with Make-native evidence
+- replaced one vague platform branch with a clearer capability gate
+- explained one incident by naming the semantic stage that caused it
 
 ## Commands to keep close
 
