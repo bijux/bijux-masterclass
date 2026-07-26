@@ -34,6 +34,13 @@ Each exercise asks for three things:
 - the evidence or inspection path that would establish it
 - the policy or repair decision that follows from that evidence
 
+Submit a consumer evidence packet for Exercises 6-10:
+
+| Artifact | Sorted contents | Identity check | Empty-destination result | Repeatability result |
+| --- | --- | --- | --- | --- |
+
+The packet must be understandable without the command history that produced the release.
+
 ## Exercise 1: Write a clear `dist` contract
 
 Choose one repository and define what `dist` should promise in one sentence.

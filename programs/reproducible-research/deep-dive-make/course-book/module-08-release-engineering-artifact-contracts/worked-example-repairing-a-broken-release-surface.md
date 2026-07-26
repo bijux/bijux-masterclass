@@ -56,6 +56,26 @@ Do not treat the archive as an opaque success token. Its file list is part of th
 contract, so a learner should be able to read that list before discussing checksums,
 attestations, or publication.
 
+Extract it into an empty directory and inspect it as a consumer:
+
+```sh
+rm -rf /tmp/make-course-release
+mkdir -p /tmp/make-course-release
+tar -xzf dist/app.tar.gz -C /tmp/make-course-release
+find /tmp/make-course-release -type f -print | sort
+```
+
+Write a two-column review before changing the release rule:
+
+| Consumer expects | Archive provides |
+| --- | --- |
+| executable path |  |
+| license path |  |
+| unexpected generated state |  |
+| stable top-level layout |  |
+
+This catches packaging mistakes that producer-side success messages hide.
+
 This example starts with exactly that kind of system:
 
 - the project builds successfully
@@ -354,3 +374,7 @@ Take one real release surface and retell it in the same order:
 5. classify one current release defect by truth boundary
 
 If you can do that cleanly, Module 08 has started to change how you think about publication.
+
+Give only the artifact, checksum, and consumer instructions to another person. If they
+need the source checkout or a private explanation to inspect and install it safely, the
+release contract is incomplete.

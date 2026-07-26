@@ -59,6 +59,30 @@ By the end of Module 08, you should be able to explain five things clearly:
 - how to make install and publication steps safe and repeatable
 - how to diagnose whether a broken release came from build truth, package truth, or publish truth
 
+## Review the release as its consumer
+
+The producer knows which command ran. The consumer receives files. Review from that side:
+
+```mermaid
+flowchart LR
+  inputs["declared source and tool inputs"] --> build["build"]
+  build --> stage["explicit bundle tree"]
+  stage --> archive["artifact identity"]
+  archive --> verify["checksum and manifest evidence"]
+  verify --> consume["extract or install in an empty destination"]
+```
+
+For a candidate release, answer:
+
+1. Can I list its contents without executing it?
+2. Does the archive have one predictable top-level layout?
+3. Can I verify its identity before installation?
+4. Can I install under an empty `DESTDIR` without touching the host?
+5. Can I repeat construction and explain any byte difference?
+
+A green `make dist` answers none of these by itself. The module is successful when the
+artifact is understandable without access to the producer’s terminal history.
+
 ## Study route
 
 ```mermaid
