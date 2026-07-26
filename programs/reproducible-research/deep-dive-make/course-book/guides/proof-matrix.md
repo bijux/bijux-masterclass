@@ -70,7 +70,7 @@ reference build directly.
 | --- | --- | --- |
 | where should the first capstone pass start | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `course-book/capstone/index.md` |
 | why did this rebuild | `gmake -C capstone --trace all` | `capstone/mk/stamps.mk` |
-| why is `-j` unsafe | `make PROGRAM=reproducible-research/deep-dive-make test` | `capstone/repro/01-shared-log.mk` |
+| why is `-j` unsafe | `make PROGRAM=reproducible-research/deep-dive-make test` | `capstone/repro/shared-log-interleaving.mk` |
 | where is the build API | `make PROGRAM=reproducible-research/deep-dive-make help` | `capstone/Makefile` |
 | how is code generation modeled | `gmake -C capstone --trace dyn` | `capstone/scripts/gen_dynamic_h.py` |
 | what would I review before migration | `gmake -C capstone -p > build/review.dump` | `capstone/mk/` |

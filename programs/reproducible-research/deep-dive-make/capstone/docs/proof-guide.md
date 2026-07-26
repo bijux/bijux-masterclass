@@ -42,7 +42,7 @@ start narrower.
 | the build converges after success | `make selftest` | `tests/run.sh`, `mk/stamps.mk` |
 | serial and parallel schedules produce the same result | `make selftest` | `serial.sum`, `parallel.sum`, `tests/run.sh` |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `settings.env` |
-| generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/04-generated-header.mk` |
+| generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/generated-header-edge.mk` |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
 | variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
 | one failure class can be studied with captured evidence | `make incident-audit` | `INCIDENT_REVIEW_GUIDE.md`, `command.txt`, `run.txt`, copied repro file |

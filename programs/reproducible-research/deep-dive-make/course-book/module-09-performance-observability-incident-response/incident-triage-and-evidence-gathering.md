@@ -85,7 +85,7 @@ Here is a strong default sequence:
 This ladder is intentionally simple. It is not the only valid approach. It is a stable one
 that another engineer can learn and repeat.
 
-## Step 1: confirm the symptom
+## Confirm the symptom
 
 Many incident reports begin with language like:
 
@@ -103,7 +103,7 @@ A stronger confirmation sounds like:
 
 That is already an improvement because it turns a feeling into a measurable claim.
 
-## Step 2: reproduce the same route
+## Reproduce the same route
 
 Once you have a measurable symptom, keep the route stable.
 
@@ -120,7 +120,7 @@ to reason about.
 The point here is not stubbornness. It is preserving a stable question long enough to get
 evidence.
 
-## Step 3: preview intent with `-n`
+## Preview intent with `-n`
 
 If the issue is about what Make intends to do, preview first:
 
@@ -137,7 +137,7 @@ This is useful for questions like:
 `-n` is not the answer to every incident. It is a preview tool. Use it when the incident is
 about intended actions rather than already-observed recipe side effects.
 
-## Step 4: explain causality with `--trace`
+## Explain causality with `--trace`
 
 If the issue is "why did this run?" or "why did this rebuild?", move quickly to:
 
@@ -153,7 +153,7 @@ This helps you see:
 
 That is much stronger evidence than human memory of what "should" have happened.
 
-## Step 5: inspect the evaluated world with `-p`
+## Inspect the evaluated world with `-p`
 
 If the incident smells like:
 
@@ -178,7 +178,7 @@ to:
 
 That is a much stronger debugging stance.
 
-## Step 6: isolate the failure boundary
+## Isolate the failure boundary
 
 After you gather the first evidence, try to classify the incident by boundary:
 

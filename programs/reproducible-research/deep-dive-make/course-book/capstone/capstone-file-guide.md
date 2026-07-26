@@ -40,7 +40,7 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | how hidden inputs and state evidence are modeled | `capstone/mk/stamps.mk` | `capstone/tests/run.sh` |
 | generated-header behavior | `capstone/scripts/gen_dynamic_h.py` | `capstone/Makefile` |
 | source and release packaging | `capstone/scripts/mkdist.py` | `capstone/docs/target-guide.md` |
-| one failure class in isolation | `capstone/repro/01-shared-log.mk` or another repro file | [Capstone Proof Guide](capstone-proof-guide.md) |
+| one failure class in isolation | `capstone/repro/shared-log-interleaving.mk` or another repro file | [Capstone Proof Guide](capstone-proof-guide.md) |
 
 ## Directory responsibilities
 

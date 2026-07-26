@@ -96,7 +96,7 @@ graph TD
 
 1. `scripts/gen_dynamic_h.py`
 2. `Makefile` rule for `build/include/dynamic.h`
-3. `repro/04-generated-header.mk`
+3. `repro/generated-header-edge.mk`
 
 ### If the question is incident learning
 

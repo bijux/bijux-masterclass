@@ -89,12 +89,11 @@ capstone/
     util.c
     sub/sub.c
   repro/
-    01-shared-append.mk
-    01-shared-log.mk
-    02-temp-collision.mk
-    03-stamp-clobber.mk
-    04-generated-header.mk
-    05-mkdir-race.mk
+    shared-log-interleaving.mk
+    shared-staging-collision.mk
+    clock-based-stamp.mk
+    generated-header-edge.mk
+    directory-creation-race.mk
 ```
 
 From the repository root, run capstone commands through:
@@ -202,8 +201,8 @@ The simulator should produce equivalent declared artifacts across both runs.
 Run one broken repro, for example:
 
 ```sh
-make -f repro/02-temp-collision.mk clean
-make -f repro/02-temp-collision.mk -j8 all
+make -f repro/shared-staging-collision.mk clean
+make -f repro/shared-staging-collision.mk -j8 all
 ```
 
 Then explain why the healthy capstone does not suffer from the same problem.

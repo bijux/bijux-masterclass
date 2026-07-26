@@ -122,7 +122,7 @@ mk/generated-config.mk:
 This Makefile is useful as a teaching example because none of the lines are absurd. Every
 mistake is plausible.
 
-## Step 1: prove the non-convergence
+## Prove the non-convergence
 
 Start with the smallest reliable claim:
 
@@ -137,7 +137,7 @@ thinks work remains after a successful build."
 
 This is the Core 1 habit: use `-q` to turn a vague complaint into an explicit signal.
 
-## Step 2: ask why Make still wants work
+## Ask why Make still wants work
 
 Now run:
 
@@ -152,7 +152,7 @@ This is an important emotional shift. When the binary is the thing that looks wr
 easy to inspect the link line first. The trace teaches you to follow causality instead of
 visible pain.
 
-## Step 3: inspect the included file contract
+## Inspect the included file contract
 
 Open the generator rule:
 
@@ -184,7 +184,7 @@ mk/generated-config.mk: config/mode.env
 Now the included file changes only when `config/mode.env` changes, and it is published
 atomically.
 
-## Step 4: explain the variable disagreement
+## Explain the variable disagreement
 
 You also said CI uses different flags.
 
@@ -248,7 +248,7 @@ This repair does three things:
 - makes the mode set explicit and finite
 - uses `:=` so `CFLAGS` is stable after mode selection
 
-## Step 5: repair the multi-output generator
+## Repair the multi-output generator
 
 You saw duplicate generator logs under `-j4`:
 
@@ -286,7 +286,7 @@ api.h api.json: $(API_STAMP)
 
 Now the graph contains one publication event that can be discussed and tested.
 
-## Step 6: remove the search-path ambiguity
+## Remove the search-path ambiguity
 
 The build also used:
 

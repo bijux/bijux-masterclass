@@ -55,8 +55,8 @@ before incident, profile, or migration questions.
 Use this route when the open question is about one failure class rather than the whole
 healthy build:
 
-1. Start with `capstone/repro/01-shared-log.mk`.
-2. Then inspect `capstone/repro/05-mkdir-race.mk` and `capstone/repro/06-order-only-misuse.mk`.
+1. Start with `capstone/repro/shared-log-interleaving.mk`.
+2. Then inspect `capstone/repro/directory-creation-race.mk` and `capstone/repro/order-only-dependency-misuse.mk`.
 3. State the defect class in words before proposing a repair.
 4. Return to `capstone/tests/run.sh` to compare the broken specimen with the healthy proof harness.
 

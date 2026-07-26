@@ -45,7 +45,7 @@ PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-make
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-make-capstone-source.tar.gz
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
-REPRO_CASE ?= $(REP_DIR)/05-mkdir-race.mk
+REPRO_CASE ?= $(REP_DIR)/directory-creation-race.mk
 
 DEPFLAGS := -MMD -MP
 
@@ -173,7 +173,7 @@ tour:
 >     cp $(MK_DIR)/common.mk "$(TOUR_DIR)/mk/common.mk"
 >     cp $(MK_DIR)/objects.mk "$(TOUR_DIR)/mk/objects.mk"
 >     cp $(MK_DIR)/stamps.mk "$(TOUR_DIR)/mk/stamps.mk"
->     cp $(REP_DIR)/01-shared-log.mk "$(TOUR_DIR)/repro/01-shared-log.mk"
+>     cp $(REP_DIR)/shared-log-interleaving.mk "$(TOUR_DIR)/repro/shared-log-interleaving.mk"
 >     $(MAKE) help > "$(TOUR_DIR)/help.txt"
 >     $(MAKE) trace-count > "$(TOUR_DIR)/trace-count.txt"
 >     printf '%s\n' \
@@ -184,12 +184,12 @@ tour:
 >       '  4. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
 >       '  5. Read ARCHITECTURE.md and WALKTHROUGH_GUIDE.md for ownership and first-pass order.' \
 >       '  6. Read tests/run.sh and trace-count.txt for proof and observability evidence.' \
->       '  7. Inspect REPRO_GUIDE.md and repro/01-shared-log.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
+>       '  7. Inspect REPRO_GUIDE.md and repro/shared-log-interleaving.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Focused routes:' \
 >       '  generators   -> make --trace dyn' \
 >       '  architecture -> read mk/contract.mk, mk/objects.mk, mk/stamps.mk' \
->       '  incidents    -> make -f repro/01-shared-log.mk -j2 all' \
+>       '  incidents    -> make -f repro/shared-log-interleaving.mk -j2 all' \
 >       '  integrity    -> make selftest' > "$(TOUR_DIR)/focused-routes.txt"
 >     @printf '%s\n' \
 >     'Capstone walkthrough:' \
@@ -205,7 +205,7 @@ tour:
 >     'Focused routes:' \
 >     '  generators  -> make --trace dyn' \
 >     '  architecture -> make help && make -p > build/review.dump' \
->     '  incidents    -> make trace-count && make -f repro/01-shared-log.mk -j2 all'
+>     '  incidents    -> make trace-count && make -f repro/shared-log-interleaving.mk -j2 all'
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(TOUR_DIR)" --output "$(TOUR_DIR)/manifest.json"
 
 walkthrough:
@@ -223,7 +223,7 @@ walkthrough:
 >     cp $(MK_DIR)/common.mk "$(WALKTHROUGH_DIR)/mk/common.mk"
 >     cp $(MK_DIR)/objects.mk "$(WALKTHROUGH_DIR)/mk/objects.mk"
 >     cp $(MK_DIR)/stamps.mk "$(WALKTHROUGH_DIR)/mk/stamps.mk"
->     cp $(REP_DIR)/01-shared-log.mk "$(WALKTHROUGH_DIR)/repro/01-shared-log.mk"
+>     cp $(REP_DIR)/shared-log-interleaving.mk "$(WALKTHROUGH_DIR)/repro/shared-log-interleaving.mk"
 >     printf '%s\n' \
 >       '1. Read INDEX.md to choose the smallest honest entry route.' \
 >       '2. Read WALKTHROUGH_GUIDE.md to understand the recommended first pass.' \
@@ -233,7 +233,7 @@ walkthrough:
 >       '6. Read mk/objects.mk and mk/stamps.mk for graph truth and modeled hidden inputs.' \
 >       '7. Run make help in the capstone directory.' \
 >       '8. Run make selftest when you want executed proof.' \
->       '9. Inspect repro/01-shared-log.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
+>       '9. Inspect repro/shared-log-interleaving.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Public entry commands:' \
 >       '  make help' \
@@ -253,7 +253,7 @@ walkthrough:
 >       '  mk/contract.mk       platform and policy boundaries' \
 >       '  mk/objects.mk        rooted discovery and object modeling' \
 >       '  mk/stamps.mk         build-state evidence surfaces' \
->       '  repro/01-shared-log.mk first concurrency failure route' > "$(WALKTHROUGH_DIR)/bundle-guide.txt"
+>       '  repro/shared-log-interleaving.mk first concurrency failure route' > "$(WALKTHROUGH_DIR)/bundle-guide.txt"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(WALKTHROUGH_DIR)" --output "$(WALKTHROUGH_DIR)/manifest.json"
 >     @echo "PASS: wrote capstone walkthrough to $(WALKTHROUGH_DIR)"
 
@@ -357,19 +357,18 @@ dist: all
 repro:
 >     @printf '%s\n' \
 >     'Repro pack:' \
->     '  make -f repro/01-shared-log.mk -j2 all       shared mutable log output' \
->     '  make -f repro/01-shared-append.mk -j2 all    alias for older material' \
->     '  make -f repro/02-temp-collision.mk -j2 all   unsafe temp/publication pattern' \
->     '  make -f repro/03-stamp-clobber.mk -j2 all    dishonest stamp boundary' \
->     '  make -f repro/04-generated-header.mk all      generated-file modeling' \
->     '  make -f repro/05-mkdir-race.mk -j2 all       directory creation race' \
->     '  make -f repro/06-order-only-misuse.mk all    order-only prerequisite misuse' \
->     '  make -f repro/07-pattern-ambiguity.mk all    ambiguous pattern rule selection' \
+>     '  make -f repro/shared-log-interleaving.mk -j2 all       shared mutable log output' \
+>     '  make -f repro/shared-staging-collision.mk -j2 all      shared staging-path collision' \
+>     '  make -f repro/clock-based-stamp.mk -j2 all             dishonest stamp boundary' \
+>     '  make -f repro/generated-header-edge.mk all             generated-file modeling' \
+>     '  make -f repro/directory-creation-race.mk -j2 all       directory creation race' \
+>     '  make -f repro/order-only-dependency-misuse.mk all      order-only prerequisite misuse' \
+>     '  make -f repro/pattern-rule-ambiguity.mk all             ambiguous pattern rule selection' \
 >     '' \
 >     'Suggested first route:' \
->     '  1. repro/01-shared-log.mk' \
->     '  2. repro/05-mkdir-race.mk' \
->     '  3. repro/06-order-only-misuse.mk' \
+>     '  1. repro/shared-log-interleaving.mk' \
+>     '  2. repro/directory-creation-race.mk' \
+>     '  3. repro/order-only-dependency-misuse.mk' \
 >     '' \
 >     'For the capstone teaching route, read docs/repro-guide.md' \
 >     'For the course route, read docs/repro-guide.md'

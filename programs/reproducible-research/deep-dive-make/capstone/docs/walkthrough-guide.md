@@ -39,7 +39,7 @@ route in the repository.
 4. read [PROOF_GUIDE.md](proof-guide.md) to see how claims map to evidence
 5. read `tests/run.sh` to understand what the proof harness actually checks
 6. read [ARCHITECTURE.md](architecture.md) and `mk/contract.mk` to place ownership and platform boundaries
-7. inspect `repro/01-shared-log.mk` to see one failure class in miniature
+7. inspect `repro/shared-log-interleaving.mk` to see one failure class in miniature
 
 That route keeps claim first, proof second, ownership third, and controlled failure last.
 
@@ -78,7 +78,7 @@ Read:
 - `mk/objects.mk`
 - `mk/stamps.mk`
 - [REPRO_GUIDE.md](repro-guide.md)
-- `repro/01-shared-log.mk`
+- `repro/shared-log-interleaving.mk`
 
 Outcome: you should be able to explain graph truth, modeled hidden inputs, and one
 failure class without hand-waving.

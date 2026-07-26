@@ -41,7 +41,7 @@ What to hand in:
 
 ## Exercise 2: Repair a shared-log race
 
-From the capstone directory, explain why `repro/01-shared-log.mk` is nondeterministic
+From the capstone directory, explain why `repro/shared-log-interleaving.mk` is nondeterministic
 under `-j`, then redesign it so one target owns the final log.
 
 What to hand in:
@@ -52,7 +52,7 @@ What to hand in:
 
 ## Exercise 3: Repair a temporary-file collision
 
-Explain why `repro/02-temp-collision.mk` is unsafe, then redesign it so each target uses
+Explain why `repro/shared-staging-collision.mk` is unsafe, then redesign it so each target uses
 its own temporary path.
 
 What to hand in:
