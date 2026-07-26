@@ -1,33 +1,18 @@
 # Learning Contract
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Guides"]
-  page["Learning Contract"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when you need to reset how to study the course. Deep Dive Make is not built
 for passive reading. It asks you to explain what changed, prove it with one fitting
 command, and stop before a larger surface hides the point.
+
+## The short version
+
+The course asks you to do three honest things:
+
+1. predict before you run
+2. observe what Make actually did
+3. explain the result in build-graph language, not in folklore
+
+If you skip prediction, you lose the chance to test your model. If you skip observation,
+you fall back to guessing. If you skip explanation, commands become rituals.
 
 ## What the course is asking from you
 
@@ -64,6 +49,17 @@ Use this loop:
 5. Move on only when you can explain the idea without copying the page's wording.
 
 The point is not speed. The point is leaving each module with something you can defend.
+
+## What good progress looks like
+
+At the end of a strong study session, you should have:
+
+- one Makefile, trace, or graph sketch you can explain without notes
+- one mistake you can now describe clearly
+- one smaller next step, not five open reading tabs
+- one believable reason the current proof route was enough
+
+That is stronger than finishing more pages without understanding them.
 
 ## The proof bar for this course
 

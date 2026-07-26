@@ -1,32 +1,10 @@
 # Course Guide
+Use this page when you want the big picture without losing the learner-first route. Deep
+Dive Make has several surfaces, but they do not have equal teaching value at every stage.
+The central rule is simple:
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Guides"]
-  page["Course Guide"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this guide is a support hub, not another chapter.
-Read the second diagram as the loop: identify the kind of help you need, choose the
-matching surface, then leave with one smaller next move.
+> Learn the idea in a small setting first, then use the capstone to confirm it in a
+> larger repository.
 
 Deep Dive Make has four durable surfaces:
 
@@ -34,6 +12,23 @@ Deep Dive Make has four durable surfaces:
 2. modules for the course arc itself
 3. capstone pages for executable corroboration
 4. reference pages for durable review and repair maps
+
+## The recommended reading order
+
+```mermaid
+flowchart LR
+  start["Start Here"] --> orient["Module 00"]
+  orient --> early["Modules 01-03"]
+  early --> middle["Modules 04-06"]
+  middle --> late["Modules 07-10"]
+  late --> capstone["Capstone and review surfaces"]
+```
+
+That order matters because later skills assume earlier honesty:
+
+- release work is weak without graph truth
+- performance tuning is risky without determinism
+- governance language is empty without working evidence
 
 ## A full module day
 
@@ -49,6 +44,15 @@ Each teaching module is designed to support a complete day of self-study:
 
 Module 00 is orientation rather than one of the ten exercise-bearing modules. Modules
 01-10 contribute ten exercises each, for 100 exercises across the course.
+
+## What belongs in each surface
+
+| Surface | Use it for | Do not expect it to do |
+| --- | --- | --- |
+| orientation | getting ready, building study rhythm, seeing the whole arc | teaching advanced Make features |
+| modules | learning one day-sized concept deeply | proving everything about the capstone |
+| capstone | seeing the idea survive a realistic repository | acting as first contact for a beginner |
+| reference | reviewing, repairing, and checking boundaries | replacing the lesson sequence |
 
 ## Choose the right surface
 
@@ -89,6 +93,22 @@ Use these as your stable defaults unless the current pressure gives you a strong
 4. keep [Proof Ladder](proof-ladder.md) nearby
 5. enter the capstone through [Capstone Map](../capstone/capstone-map.md)
 6. use the [Completion Rubric](../reference/completion-rubric.md) to review your exercise evidence
+
+## A warning about skipping ahead
+
+The course is intentionally cumulative. If you jump to a later module because it sounds
+more advanced, you often borrow vocabulary without the model underneath it. The common
+result is recognizable phrasing and weak decisions.
+
+If a later module feels compelling, ask which earlier skill it depends on:
+
+- parallel safety depends on truthful edges
+- generator design depends on honest output ownership
+- release discipline depends on stable artifact meaning
+- migration judgment depends on all of the above
+
+That is why the course begins with tiny file targets rather than with a large Make-based
+application.
 
 ## Good stopping point
 

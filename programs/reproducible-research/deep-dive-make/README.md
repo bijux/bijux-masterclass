@@ -1,8 +1,18 @@
 # Deep Dive Make
 
 A standalone course and executable capstone that teaches **GNU Make as a build-graph
-engine**, not a scripting language. It starts with a three-line Makefile and develops the
-skills needed to design truthful, parallel-safe, deterministic, and self-tested builds.
+engine**, not a scripting language. It starts with a three-line Makefile and grows toward
+parallel-safe, deterministic, reviewable builds that other people can trust.
+
+This is a ten-session course for self-study as much as for classroom follow-up. Each
+session is designed to stand on its own for a learner who missed the live explanation:
+
+- a plain-language overview
+- a small demonstration you can run in minutes
+- a worked example that expands the idea
+- ten exercises that move from warm-up to design and repair
+- explicit exit criteria so you know whether to continue
+
 Orientation, ten full-day modules, and 100 exercises take you from first contact to
 long-lived build-system stewardship.
 ---
@@ -86,6 +96,22 @@ The course now includes dedicated support pages for:
 ### 4) A repro pack of failure modes
 
 Small, isolated examples of common pitfalls (races, stamp lies, mkdir hazards, generated header modeling) meant to be *reproduced*, not merely described.
+
+## How one study day works
+
+Every module is written to fill a serious day of independent study.
+
+| Study block | What you do | What you keep |
+| --- | --- | --- |
+| First contact | run the smallest demonstration | one prediction and one observed result |
+| Core lesson | read the concept pages slowly | short notes on what changed in your mental model |
+| Guided practice | rebuild the worked example yourself | a working artifact you can explain |
+| Exercises 1-5 | establish the rule, vocabulary, and evidence loop | traces, diagrams, and short explanations |
+| Exercises 6-10 | repair, extend, and defend the design | a small portfolio of commands and outcomes |
+| Exit check | test yourself before moving on | a clear yes-or-no answer about readiness |
+
+If the course ever feels like a pile of pages, return to this table. The goal is to
+learn by predicting, running, observing, and explaining, not by browsing.
 
 ---
 

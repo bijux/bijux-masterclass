@@ -1,30 +1,19 @@
 # Start Here
+Start with a terminal, not with the capstone. Your first job is to see Make make one
+honest decision about one file. Everything else in the course grows from that.
 
-<!-- page-maps:start -->
-## Page Maps
+## Your first hour
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Guides"]
-  page["Start Here"]
-  capstone["Capstone evidence"]
+If you only have one hour today, use it like this:
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+1. Confirm you have GNU Make 4 or newer with `make --version`.
+2. Complete the first file-target exercise in [Module 00](../module-00-orientation/index.md).
+3. Run the same build twice and explain why the second run does no work.
+4. Change the input file and explain why the output becomes stale again.
+5. Begin [Module 01](../module-01-build-graph-foundations-truth/index.md) only after the previous four steps feel ordinary.
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Start with a terminal, not with the capstone.
+That is enough for a real start. You do not need the capstone, C code, CI, or advanced
+rule syntax yet.
 
 ## If Make is completely new
 
@@ -45,6 +34,13 @@ Before leaving orientation, check that you can answer these without guessing:
 
 If any answer is unclear, rerun the three commands with `make --trace`. Ten minutes spent
 reading that evidence now prevents hours of memorizing syntax without a graph model.
+
+## What not to do on day one
+
+- Do not copy the capstone and try to understand it all at once.
+- Do not rush into pattern rules before you understand one explicit file target.
+- Do not memorize automatic variables before you have seen the decision they describe.
+- Do not read exercise answers first unless you already have your own failed prediction.
 
 ## If you already use Make
 
