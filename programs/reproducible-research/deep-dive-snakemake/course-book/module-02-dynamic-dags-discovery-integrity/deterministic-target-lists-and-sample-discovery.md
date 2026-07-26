@@ -1,30 +1,5 @@
 # Deterministic Target Lists and Sample Discovery
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Deterministic Target Lists and Sample Discovery"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Dynamic workflows begin with a simple promise:
 
 > if the set of samples changes, the workflow can explain exactly how it learned that fact.
@@ -48,6 +23,18 @@ The healthy question is not "can Snakemake discover this?" The healthy question 
 > what exact input surface decides which targets exist?
 
 If that surface is unclear, the workflow may still run, but the run story is weak.
+
+## The discovery ladder
+
+Use these options in order:
+
+1. config or a sample sheet when the set is already knowable
+2. one deterministic scan when the filesystem is the real source of truth
+3. one discovery artifact when later rules or reviewers must trust the set
+4. a checkpoint only when runtime work reveals the set
+
+The rest of this page teaches the first three. The checkpoint case belongs later because
+it should be earned, not assumed.
 
 ## The stable model
 
@@ -204,6 +191,15 @@ This rule does two useful things for you:
 
 - it names discovery as a real step with a real output
 - it gives later review one file that answers "what did this run discover?"
+
+## What a learner should check immediately
+
+After implementing any discovery route, stop and verify four things:
+
+- the same input surface produces the same ordered list twice
+- invalid names fail early instead of drifting downstream
+- duplicate logical identities are rejected
+- later rules consume the normalized list instead of rescanning
 
 ## What makes discovery deterministic
 

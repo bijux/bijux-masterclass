@@ -1,35 +1,21 @@
 # Worked Example: Making Checkpoint Discovery Reviewable
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Worked Example: Making Checkpoint Discovery Reviewable"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This file pulls the whole module together around one realistic question:
 
 > how do you let a workflow discover samples from `data/raw/` without turning the DAG into a moving target?
 
-The example stays small on purpose. The point is to make the design visible.
+The example stays small on purpose. The point is to make the design visible and to show
+why a checkpoint is usually the fourth move, not the first.
+
+## The lab route
+
+Work through the example in this order:
+
+1. inspect the weak draft and name the hidden discovery assumptions
+2. repair the workflow with a declared candidate set first
+3. narrow the output family before you add more dynamism
+4. introduce a checkpoint only when runtime validation really changes the usable set
+5. carry the accepted set into the publish boundary
 
 ## The scenario
 
@@ -107,6 +93,8 @@ Now the workflow can answer:
 If that is all the workflow needs, stop here. Adding a checkpoint would make a known
 target set harder to reason about.
 
+That pause matters. More dynamic is not automatically more advanced.
+
 ## Narrow the artifact family
 
 The original output shape was:
@@ -182,6 +170,15 @@ a domain validator and record rejection reasons as well as accepted samples.
 
 The important part is not the keyword `checkpoint`. The important part is that the
 discovered set is written once and reused.
+
+## What to check before moving on
+
+After the checkpoint version works, confirm all of these:
+
+- the declared candidate set is still visible
+- the accepted registry is a deterministic function of declared inputs
+- downstream fanout reads the registry instead of the raw directory
+- a rejected candidate leaves reviewable evidence instead of disappearing silently
 
 ## Keep discovery visible at the publish boundary
 

@@ -1,30 +1,5 @@
 # Checkpoints and Reviewed DAG Changes
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Checkpoints and Reviewed DAG Changes"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Checkpoints are where many Snakemake courses become mystical.
 
 This module takes the opposite approach:
@@ -32,6 +7,17 @@ This module takes the opposite approach:
 > a checkpoint is acceptable only when it makes a data-dependent change to the DAG more explicit than the alternatives.
 
 If it hides the real target story, it is a bad checkpoint even if the code runs.
+
+## Ask these questions before you write one line
+
+Before you write a checkpoint, answer these in plain language:
+
+1. What fact is truly unknown at initial planning time?
+2. Which declared input surface will reveal that fact?
+3. What file will record the answer?
+4. Why is a config file or deterministic scan not enough here?
+
+If you cannot answer all four, stop. The design is probably not ready for a checkpoint.
 
 ## What a checkpoint actually does
 
@@ -80,6 +66,15 @@ A healthy checkpoint has four properties:
 4. downstream fanout that reads the recorded answer instead of rediscovering it
 
 If any of those are missing, the checkpoint usually leaves the workflow harder to review.
+
+## The beginner-safe mental model
+
+Treat a checkpoint as a two-part promise:
+
+- first promise: this step will discover one new fact and write it down
+- second promise: later jobs will read that written fact instead of rediscovering it
+
+That is a much safer mental model than “Snakemake reruns the DAG somehow.”
 
 ## A good shape
 

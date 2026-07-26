@@ -1,54 +1,51 @@
 # Exercises
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is to make
-your reasoning visible, not to prove that you can write the cleverest Snakefile.
+your discovery reasoning visible through runnable artifacts, not through checkpoint
+folklore.
 
-Each answer should show three things:
+Do them in order. The set is one day-long progression:
 
-- the workflow fact you are defending
-- the evidence route you would use
-- the repair or design choice that follows
+- Exercises 1-3 establish the discovery ladder.
+- Exercises 4-6 turn discovery into durable artifacts.
+- Exercises 7-8 justify or reject checkpoints.
+- Exercises 9-10 test whether dynamic behavior survives review and publication.
 
-## Exercise 1: Turn ambient discovery into a declared contract
+For every answer, keep three things:
 
-Start from a tiny workflow that scans `data/raw/` directly at parse time.
+- the workflow files or command sequence you actually used
+- the artifact that proves what the workflow discovered
+- one short sentence explaining why the design is honest
 
-Repair it so the workflow has one named discovery surface and one durable discovered-set
-artifact.
+## Exercise 1: Compare two discovery surfaces
+
+Model the same three-sample workflow in two ways:
+
+- one with a versioned sample sheet
+- one with a deterministic directory scan
+
+What to hand in:
+
+- both discovery shapes
+- one reason to prefer each in a real project
+- one command that proves they generate the same target list
+- one sentence naming the declared source of truth in each design
+
+## Exercise 2: Turn ambient discovery into a declared contract
+
+Start from a tiny workflow that scans `data/raw/` directly at parse time and relies on
+whatever filenames happen to be present.
+
+Repair it so the workflow has one named discovery surface and one normalization point.
 
 What to hand in:
 
 - the original discovery shape and why it was weak
 - the repaired discovery rule or helper
-- the path of the discovered-set artifact
+- the normalized sample list it produces
 - one sentence explaining why another reviewer could trust the new design more
 
-## Exercise 2: Prevent one accidental fanout explosion
+## Exercise 3: Prevent one accidental fanout explosion
 
 Design a small example where `expand()` creates more targets than the real domain calls
 for.
@@ -62,20 +59,6 @@ What to hand in:
 - the unintended targets it creates
 - the repaired target-list design
 - one command, such as `snakemake -n`, that would make the difference obvious
-
-## Exercise 3: Justify one checkpoint and reject one fake one
-
-Write two short design sketches:
-
-- one workflow shape where a checkpoint is justified
-- one workflow shape where a checkpoint would only hide weak modeling
-
-What to hand in:
-
-- the discovery question each sketch is trying to answer
-- the output artifact of the justified checkpoint
-- the cleaner alternative for the unjustified checkpoint
-- one sentence explaining the difference between the two cases
 
 ## Exercise 4: Design the integrity trail for a dynamic run
 
@@ -124,18 +107,19 @@ What to hand in:
 - one deliberately invalid record and its early error
 - an explanation of why static planning is sufficient
 
-## Exercise 7: Preserve paired relationships
+## Exercise 7: Justify one checkpoint and reject one fake one
 
-Model three samples where each sample belongs to exactly one panel. First demonstrate the
-wrong Cartesian product produced by independent `sample=` and `panel=` lists, then
-generate only the valid pairs.
+Write two short design sketches:
+
+- one workflow shape where a checkpoint is justified
+- one workflow shape where a checkpoint would only hide weak modeling
 
 What to hand in:
 
-- the record structure that owns each pair
-- the unintended and corrected target lists
-- a dry-run showing the corrected job count
-- one invariant your loader validates
+- the discovery question each sketch is trying to answer
+- the output artifact of the justified checkpoint
+- the cleaner alternative for the unjustified checkpoint
+- one sentence explaining the difference between the two cases
 
 ## Exercise 8: Implement a justified checkpoint
 
