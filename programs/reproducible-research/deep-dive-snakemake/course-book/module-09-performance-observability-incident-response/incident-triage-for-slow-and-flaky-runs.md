@@ -44,7 +44,7 @@ flowchart TD
 
 Do not skip steps because the workflow "probably" has the same issue as last time.
 
-## Step 1: Name the symptom precisely
+## Name the symptom precisely
 
 Bad incident opening:
 
@@ -61,7 +61,7 @@ That sentence gives you three anchors:
 - which scope changed
 - which comparison made the symptom visible
 
-## Step 2: Define the affected scope
+## Define the affected scope
 
 Before opening logs, answer:
 
@@ -72,7 +72,7 @@ Before opening logs, answer:
 Wide-scoped incidents often turn out to be planning, config, or storage questions. Narrow
 ones often turn out to be rule-local tool or script questions.
 
-## Step 3: Inspect planned work first
+## Inspect planned work first
 
 Use dry-run before real execution when you can:
 
@@ -90,7 +90,7 @@ Those commands answer three early questions:
 
 This often resolves the incident before you touch any runtime logs.
 
-## Step 4: Read the narrowest matching evidence
+## Read the narrowest matching evidence
 
 Once the scope is clear, inspect only the artifacts that match it:
 
@@ -101,7 +101,7 @@ Once the scope is clear, inspect only the artifacts that match it:
 This is where many teams lose time. They open every log in the repository instead of the
 one log that matches the claim.
 
-## Step 5: Classify the incident
+## Classify the incident
 
 By this point, push the problem into one primary class:
 
@@ -114,7 +114,7 @@ By this point, push the problem into one primary class:
 
 The point is not perfect taxonomy. The point is to stop treating all failures as one blur.
 
-## Step 6: Decide repair versus escalation
+## Decide repair versus escalation
 
 Once the class is named, decide whether the next move is:
 

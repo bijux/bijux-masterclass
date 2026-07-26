@@ -39,6 +39,20 @@ pressure:
 - improving feedback loops without hiding semantic drift
 - leaving behind a route another maintainer can follow
 
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| baseline | measure planning, queue, storage, and tool-runtime surfaces separately | cost model |
+| repeated measurement | compare distributions rather than one fast or slow run | benchmark table |
+| incident triage | classify one injected slow or flaky behavior before editing | evidence packet |
+| controlled tuning | change one boundary and preserve semantic outputs | before/after proof |
+| runbook rehearsal | hand the incident route to another learner | usability findings |
+| independent practice | complete all ten exercises | incident review record |
+
+Performance claims need a baseline, repeated measurements, and an unchanged semantic
+contract. A single elapsed time cannot tell you which boundary improved.
+
 The capstone corroboration surface for this module is the execution evidence and incident
 review route around it: `logs/`, `benchmarks/`, `publish/v1/provenance.json`,
 `make evidence-summary`, `make tour`, `make verify-report`, and
@@ -93,7 +107,7 @@ If the problem is already clear, use this shortcut:
 | [Performance Tuning without Semantic Drift](performance-tuning-without-semantic-drift.md) | teaches how to improve speed without making the workflow lie |
 | [Runbooks, Escalation, and Operational Review](runbooks-escalation-and-operational-review.md) | teaches how to leave behind a usable operating route |
 | [Worked Example: Investigating a Slow and Noisy Workflow](worked-example-investigating-a-slow-and-noisy-workflow.md) | walks through one realistic incident from symptom to repair |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -135,7 +149,6 @@ Best corroboration surfaces for this module:
 - `capstone/Makefile`
 - `capstone/docs/proof-guide.md`
 - `capstone/docs/tour.md`
-- `capstone/docs/tour.md`
 
 Useful proof route:
 
@@ -148,3 +161,6 @@ make -C capstone verify-report
 
 The point of that route is to confirm that workflow evidence stays reviewable before and
 after the workflow runs.
+
+Do not move on until all ten exercises are complete and another learner can follow your
+incident record without an oral explanation.

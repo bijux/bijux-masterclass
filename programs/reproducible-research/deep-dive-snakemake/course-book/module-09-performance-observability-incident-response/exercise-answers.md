@@ -29,7 +29,7 @@ These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning stays evidence-first and truth-preserving.
 
-## Answer 1: Name the dominant cost class
+## Exercise 1: Name the dominant cost class
 
 Strong diagnosis:
 
@@ -55,7 +55,7 @@ What to inspect next:
 
 The main lesson is to name the planning problem before touching execution settings.
 
-## Answer 2: Choose the right evidence surface
+## Exercise 2: Choose the right evidence surface
 
 First artifact to inspect:
 
@@ -78,7 +78,7 @@ Why:
 The important distinction is that `--summary` tells you what changed in workflow state,
 while the benchmark tells you what a specific rule cost.
 
-## Answer 3: Triage a flaky cluster-only incident
+## Exercise 3: Triage a flaky cluster-only incident
 
 Why the proposed fix is not yet sufficient:
 
@@ -103,7 +103,7 @@ Evidence to consult first:
 The main lesson is that cluster-only incidents should not be flattened into "needs more
 retries."
 
-## Answer 4: Review a suspicious optimization
+## Exercise 4: Review a suspicious optimization
 
 Potentially valid tuning move:
 
@@ -130,7 +130,7 @@ Proof required before approving the valid part:
 - benchmark evidence at the new grouped boundary
 - confirmation that output and failure visibility remain usable
 
-## Answer 5: Draft a runbook entry
+## Exercise 5: Draft a runbook entry
 
 A strong minimal runbook entry could say:
 
@@ -149,6 +149,44 @@ Why this is strong:
 - it separates workflow-state evidence from rule-local evidence
 - it includes a real escalation trigger
 - it ends with a proof route rather than with vague advice
+
+## Exercise 6: Establish a measured baseline
+
+Use identical inputs and context for repeated runs, retaining raw observations rather
+than only an average. Median resists one extreme value, while range reveals variability.
+Planning, end-to-end, and rule-local measurements answer different questions. The
+baseline remains conditional on input scale, cache state, storage load, software, and
+executor context.
+
+## Exercise 7: Build an incident evidence packet
+
+The packet states an observable symptom and bounded scope before offering a theory. It
+includes the planned jobs, file status, one relevant log, timing evidence, and provenance
+needed to reproduce the state. It separates known facts from hypotheses and avoids
+dumping unrelated logs. Another maintainer should be able to classify the incident
+without asking what command was run.
+
+## Exercise 8: Tune one boundary at a time
+
+Change only the hypothesized overhead source, repeat measurements, and compare semantic
+outputs or their governed checksums. Keep the change only when the distribution improves
+meaningfully and failure visibility, target membership, and output meaning remain intact.
+If results overlap the baseline or evidence weakens, revert rather than rationalize.
+
+## Exercise 9: Diagnose a context-specific regression
+
+Queue timestamps distinguish waiting from execution. Job launch records reveal scheduler
+overhead, logs and latency events reveal storage behavior, resource telemetry reveals
+pressure, and benchmarks isolate tool runtime. Reject higher retries until evidence shows
+a transient class. The smallest useful experiment changes one context factor while
+preserving the target and input set.
+
+## Exercise 10: Rehearse and revise a runbook
+
+Observed reader stalls are evidence that the runbook assumes hidden knowledge. Revise it
+with prerequisites, exact bounded commands, expected evidence, stop conditions, and
+escalation ownership. A successful rehearsal reaches the appropriate verification route
+without destructive cleanup, indiscriminate retries, or an unrelated full-suite run.
 
 ## Self-check
 

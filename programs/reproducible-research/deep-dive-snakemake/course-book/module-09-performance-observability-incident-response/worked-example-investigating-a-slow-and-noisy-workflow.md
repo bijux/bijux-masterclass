@@ -48,7 +48,7 @@ A weak response would jump straight to retries, threads, or job grouping.
 
 Instead, start with the Module 09 ladder.
 
-## Step 1: Name the symptom
+## Name the symptom
 
 The incident note becomes:
 
@@ -58,7 +58,7 @@ The incident note becomes:
 
 That is already better than "the workflow got weird."
 
-## Step 2: Check planned work before real execution
+## Check planned work before real execution
 
 Run:
 
@@ -79,7 +79,7 @@ That is the first big clue.
 
 The workflow is not only slow. It is planning more work.
 
-## Step 3: Separate cost classes
+## Separate cost classes
 
 At this point, do not say "the tools got slower."
 
@@ -92,7 +92,7 @@ The likely dominant cost class is now:
 
 Tool runtime is still only a possibility, not the current lead explanation.
 
-## Step 4: Open the narrowest evidence surfaces
+## Open the narrowest evidence surfaces
 
 Now inspect:
 
@@ -112,7 +112,7 @@ That is the second big clue.
 The workflow did not mostly get slower because the tools changed. It got slower because
 discovery widened and created extra tiny jobs.
 
-## Step 5: Find the boundary that moved
+## Find the boundary that moved
 
 A recent helper edit changed sample discovery from a tight file pattern to a broader glob.
 
@@ -129,7 +129,7 @@ This is a strong example of why performance and observability are connected.
 The performance symptom came from a workflow-semantics mistake, and the noisy evidence came
 from the same mistake.
 
-## Step 6: Repair the right thing
+## Repair the right thing
 
 The honest repair is not:
 
@@ -147,7 +147,7 @@ The honest repair is:
 Only after that repair should you reconsider whether any remaining speed issue is still
 worth tuning.
 
-## Step 7: Prove the repair honestly
+## Prove the repair honestly
 
 Use the same route again:
 

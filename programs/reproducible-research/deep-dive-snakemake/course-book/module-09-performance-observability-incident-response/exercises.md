@@ -99,9 +99,69 @@ Your runbook entry should include:
 - one escalation trigger
 - one command that proves the repair honestly
 
+## Exercise 6: Establish a measured baseline
+
+Measure planning time, total execution time, and one heavy rule across at least five
+comparable runs. Record input size, operating context, and software identity.
+
+What to hand in:
+
+- the measurement commands and raw records
+- median and range for each surface
+- environmental factors held constant
+- one reason the baseline may not generalize
+
+## Exercise 7: Build an incident evidence packet
+
+Inject a slow rule or intermittent failure into a disposable workflow and collect only
+the evidence needed for another maintainer to reproduce and classify it.
+
+What to hand in:
+
+- precise symptom, scope, and first observed time
+- dry-run, summary, relevant log, benchmark, and provenance excerpts
+- current incident classification
+- facts still unknown
+
+## Exercise 8: Tune one boundary at a time
+
+Choose a justified optimization such as grouping tiny jobs or reusing an environment.
+Measure before and after without changing inputs, target membership, or output semantics.
+
+What to hand in:
+
+- the hypothesis and single changed boundary
+- repeated measurements
+- semantic output comparison
+- a decision to keep or revert the change
+
+## Exercise 9: Diagnose a context-specific regression
+
+Create or study a run that is healthy locally but slow or flaky under a scheduler profile.
+Separate queue delay, launch overhead, filesystem latency, resource pressure, and tool time.
+
+What to hand in:
+
+- evidence for each plausible cost class
+- the class supported most strongly
+- one policy change you reject
+- the smallest experiment that tests your leading explanation
+
+## Exercise 10: Rehearse and revise a runbook
+
+Give your runbook to someone who did not write it. Ask them to diagnose the incident from
+the recorded state without additional verbal instructions.
+
+What to hand in:
+
+- the original runbook
+- points where the reader stalled or made an unsafe assumption
+- the revised route and escalation criteria
+- evidence that the revised route reaches the correct proof command
+
 ## Mastery check
 
-You have a strong grasp of this module if your answers consistently keep four ideas
+You have a strong grasp of this module if all ten answers consistently keep four ideas
 visible:
 
 - "slow" must be split into named cost classes
