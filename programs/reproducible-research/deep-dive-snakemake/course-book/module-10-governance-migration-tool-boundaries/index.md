@@ -42,6 +42,21 @@ This module is about stewardship:
 - spotting recurring anti-patterns before they become culture
 - drawing honest tool boundaries instead of fashionable ones
 
+## Plan for the day
+
+| Session | What you do | Evidence you keep |
+| --- | --- | --- |
+| current truth | inventory targets, consumers, policies, proof routes, and known debt | contract baseline |
+| characterization | encode trusted existing behavior before moving ownership | focused checks |
+| migration | move one boundary while comparing old and new outputs | equivalence report |
+| governance | turn recurring review expectations into precise checks | policy evidence |
+| tool handoff | define request, execution, status, and result ownership | handoff contract |
+| independent practice | complete all ten exercises | stewardship decision record |
+
+Begin with what the repository actually promises, including awkward behavior that current
+consumers rely on. Redesign without characterization destroys evidence before it earns a
+replacement.
+
 The capstone corroboration surface for this module is the repository review route around
 its public and operational boundaries: `capstone/docs/file-api.md`, `make walkthrough`,
 `make verify-report`, `make profile-audit`, `capstone/docs/publish-review-guide.md`, and
@@ -95,7 +110,7 @@ If the problem is already clear, use this shortcut:
 | [Recurring Workflow Antipatterns and Recovery](recurring-workflow-antipatterns-and-recovery.md) | teaches which patterns deserve early rejection and how to recover from them |
 | [Deciding When Snakemake Should Stop Owning a Concern](deciding-when-snakemake-should-stop-owning-a-concern.md) | teaches how to draw honest handoff boundaries |
 | [Worked Example: Planning a Safe Workflow Migration](worked-example-planning-a-safe-workflow-migration.md) | walks through one realistic migration plan from review to sequence |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -149,3 +164,7 @@ make -C capstone confirm
 
 The point of that route is not to admire the capstone. It is to practice how governance,
 migration, and tool-boundary questions stay grounded in visible evidence.
+
+Complete all ten exercises before claiming course completion. The final standard is not
+that you can design a cleaner workflow; it is that you can change ownership without
+losing a trusted contract or its proof.

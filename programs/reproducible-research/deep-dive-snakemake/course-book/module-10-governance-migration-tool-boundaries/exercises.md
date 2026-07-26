@@ -97,9 +97,69 @@ Write a short recommendation that explains:
 - what another system should own
 - what handoff artifact or review surface should make the split trustworthy
 
+## Exercise 6: Build a current-truth inventory
+
+Audit a workflow repository and record declared targets, actual consumers, semantic
+configuration, profile policy, software boundaries, publish contracts, and proof routes.
+
+What to hand in:
+
+- the inventory with evidence links or commands
+- mismatches between documentation and behavior
+- risks ordered by trust impact
+- facts that must be preserved before any migration
+
+## Exercise 7: Write characterization checks
+
+Choose one awkward but relied-upon behavior and encode focused checks for target
+membership, file schema, and representative output semantics.
+
+What to hand in:
+
+- the behavior and known consumers
+- checks that pass against the current implementation
+- a deliberately incompatible candidate that fails
+- an explanation of what the checks intentionally do not freeze
+
+## Exercise 8: Migrate one ownership boundary
+
+Move one report, helper, or discovery concern to a better owner while retaining the same
+public outputs. Run old and candidate implementations against identical fixtures.
+
+What to hand in:
+
+- the old and candidate ownership diagrams
+- byte-level or semantic comparison appropriate to each output
+- focused proof before and after the move
+- rollback criteria
+
+## Exercise 9: Enforce a governance rule
+
+Automate one recurring rule: published files require file-API coverage, profiles cannot
+own semantic keys, or important helpers require direct tests and declared inputs.
+
+What to hand in:
+
+- the durable policy statement
+- the focused implementation
+- passing and failing fixtures
+- a failure message that tells a maintainer how to repair the boundary
+
+## Exercise 10: Design and review a tool handoff
+
+Keep Snakemake responsible for file-based execution while an external service owns user
+requests, identity, access, or tenancy-aware scheduling. Define the contract between them.
+
+What to hand in:
+
+- request, status, cancellation, and result schemas
+- ownership and failure table
+- idempotency and provenance strategy
+- an end-to-end proof that the returned publish bundle remains independently verifiable
+
 ## Mastery check
 
-You have a strong grasp of this module if your answers consistently keep four ideas
+You have a strong grasp of this module if all ten answers consistently keep four ideas
 visible:
 
 - review comes before redesign

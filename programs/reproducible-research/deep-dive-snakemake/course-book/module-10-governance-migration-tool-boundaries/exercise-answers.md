@@ -29,7 +29,7 @@ These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning protects trust while change is being planned.
 
-## Answer 1: Review the current repository honestly
+## Exercise 1: Review the current repository honestly
 
 Strong top risks:
 
@@ -52,7 +52,7 @@ Evidence route to inspect first:
 
 The main lesson is to review the current trust boundary before touching implementation.
 
-## Answer 2: Sequence a migration
+## Exercise 2: Sequence a migration
 
 A safer order would be:
 
@@ -76,7 +76,7 @@ Why:
 - it changes the ownership boundary most broadly and should not be mixed with unresolved
   workflow-truth changes
 
-## Answer 3: Write governance rules
+## Exercise 3: Write governance rules
 
 A strong set of rules could be:
 
@@ -89,7 +89,7 @@ Why these work:
 - they are short enough to enforce
 - they each protect a recurring source of drift
 
-## Answer 4: Name the anti-pattern
+## Exercise 4: Name the anti-pattern
 
 Anti-pattern families:
 
@@ -111,7 +111,7 @@ Recovery step to require first:
 - move the semantic setting back into visible workflow or config boundaries, then audit the
   profile again
 
-## Answer 5: Decide the tool boundary
+## Exercise 5: Decide the tool boundary
 
 A strong recommendation would say:
 
@@ -125,6 +125,47 @@ Why this is strong:
 - it keeps file-based workflow truth where it is already visible
 - it hands platform-native concerns to the system built to own them
 - it names the handoff evidence rather than only naming the destination tool
+
+## Exercise 6: Build a current-truth inventory
+
+A strong inventory separates declared contract from observed dependence. It links each
+target to owners, consumers, semantic config, execution policy, software, and proof.
+Undocumented reads from `results/` and semantic profile keys rank above cosmetic
+structure. Preserve current public schema, representative semantics, and consumer routes
+before changing implementation, even when the current shape is inconvenient.
+
+## Exercise 7: Write characterization checks
+
+Characterization checks encode relied-upon behavior without declaring every incidental
+byte permanent. Assert expected target membership, required schema, identifiers, units,
+ordering only when contractual, and representative calculations. A candidate that drops
+a required field fails. Temporary paths, log wording, and internal rule names remain free
+to change unless they are documented public promises.
+
+## Exercise 8: Migrate one ownership boundary
+
+Move only one owner at a time and run both implementations against fixed fixtures.
+Byte equality is suitable for strictly deterministic contract files; schema plus semantic
+comparison is better when timestamps or harmless ordering differ. Keep current proof
+green, add focused evidence for the new owner, and revert if public meaning, failure
+visibility, or rebuild behavior cannot be explained.
+
+## Exercise 9: Enforce a governance rule
+
+The automated check should express one durable boundary and report the exact violating
+file or key. For example, compare publish outputs with file-API entries and fail when one
+is absent. A failing fixture proves enforcement. The message should direct maintainers to
+document, verify, version, or remove the public artifact rather than merely saying policy
+failed.
+
+## Exercise 10: Design and review a tool handoff
+
+The external service authenticates and authorizes requests, creates an idempotent run
+identity, submits bounded workflow inputs, exposes status and cancellation, and never
+redefines scientific targets. Snakemake owns declared file execution and the verifiable
+publish bundle. The handoff records request identity, workflow revision, semantic config,
+operating context, and result manifest so failures and retries cannot create ambiguous
+ownership.
 
 ## Self-check
 

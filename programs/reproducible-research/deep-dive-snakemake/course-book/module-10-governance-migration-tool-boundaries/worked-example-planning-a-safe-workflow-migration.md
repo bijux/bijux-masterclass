@@ -45,7 +45,7 @@ A team inherits a Snakemake repository with these characteristics:
 That last sentence creates risk immediately, because it sounds larger than the actual
 review has earned.
 
-## Step 1: Review current truth before proposing change
+## Review current truth before proposing change
 
 The first task is not migration. It is review.
 
@@ -65,7 +65,7 @@ That note already names three different problems:
 
 Without that review, the migration discussion would stay vague.
 
-## Step 2: Decide what must not move first
+## Decide what must not move first
 
 Before discussing platform migration, the team writes down what must remain stable:
 
@@ -79,7 +79,7 @@ This is the crucial shift.
 The migration is no longer "move onto the platform." It is now "keep trusted outputs and
 proof routes stable while improving weak boundaries."
 
-## Step 3: Sequence the boundary moves
+## Sequence the boundary moves
 
 A reckless plan would do all of this at once:
 
@@ -97,7 +97,7 @@ Instead, the team chooses this order:
 
 That order matters because it fixes truth problems before it adds architectural movement.
 
-## Step 4: Repair contract drift first
+## Repair contract drift first
 
 The team updates the file API and downstream review so that notebooks stop reading
 `results/` directly.
@@ -111,7 +111,7 @@ Proof route used:
 This is not glamorous work, but it removes one of the biggest migration traps: hidden
 consumers of internal state.
 
-## Step 5: Move semantic settings out of profiles
+## Move semantic settings out of profiles
 
 The suspicious sample filter is moved into visible workflow or config surfaces, and the
 profile is reduced back to operating policy.
@@ -124,7 +124,7 @@ Proof route used:
 At this point, the repository becomes easier to reason about even before any platform
 handoff discussion.
 
-## Step 6: Migrate implementation without changing outputs
+## Migrate implementation without changing outputs
 
 Now the team moves report-generation logic from a large helper script into package code.
 
@@ -138,7 +138,7 @@ They compare old and new report outputs and keep the same public boundary.
 
 This is a real migration step because ownership moved, but proof stayed visible.
 
-## Step 7: Revisit the platform request honestly
+## Revisit the platform request honestly
 
 Only now does the team ask:
 
@@ -154,7 +154,7 @@ This is a hybrid answer, and it is the correct one.
 The repository still explains workflow truth better than the platform would. The platform
 explains service behavior better than the repository would.
 
-## Step 8: Write governance rules so the problem does not return
+## Write governance rules so the problem does not return
 
 The team records three rules:
 
