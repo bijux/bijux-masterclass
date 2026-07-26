@@ -1,176 +1,153 @@
 # Exercises
 
+Use these after reading the five core lessons and the worked example. The goal is to make
+your software-boundary decisions visible through rule diffs, runtime evidence, direct
+tests, and rebuild notes, not through vague talk about “cleaner code.”
 
-<!-- page-maps:start -->
-## Page Maps
+Do them in order. The set is one day-long progression:
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Software Boundaries Reproducible Rules"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
+- Exercises 1-3 separate orchestration from implementation.
+- Exercises 4-6 place runtime and reusable code deliberately.
+- Exercises 7-8 defend hidden-dependency and rebuild boundaries.
+- Exercises 9-10 review the whole software stack like a maintainer.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+For every answer, keep three things:
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+- the boundary you are naming
+- the evidence route you actually used
+- one short sentence explaining why the placement decision improves trust rather than only aesthetics
 
-Use these exercises to practice the judgments behind the module, not only the vocabulary.
+## Exercise 1: Map one long rule by ownership
 
-The strongest answers will name ownership, runtime, and rebuild implications clearly.
+Take a rule with a long `run:` block or shell pipeline and label each part as one of
+these:
 
-## Exercise 1: Decide what stays in the rule
+- file contract
+- step-local implementation
+- reusable logic
+- runtime assumption
 
-You inherit a rule with a 90-line `run:` block that:
+What to hand in:
 
-- reads one declared input file
-- performs several data transformations
-- writes one declared output file
-- contains parsing logic that would also help another reporting step later
+- the original rule
+- the ownership labels
+- one section that should stay in the rule
+- one section that should move elsewhere and why
 
-Write a short redesign note that explains:
+## Exercise 2: Extract step-local logic into a script
 
-- what should stay in the rule
-- what should move into `workflow/scripts/`
-- what should move into `src/`
-
-Your answer should justify each placement decision.
-
-## Exercise 2: Choose the right runtime boundary
-
-A step uses a Python script that imports two libraries not guaranteed to exist on a fresh
-machine. The team also wants contributors to have a stable way to run Snakemake and edit
-the repository. Later, the workflow may need to move onto stricter infrastructure where
-host packages cannot be trusted.
-
-Explain the role of:
-
-- a rule-scoped environment
-- the repository-level `environment.yaml`
-- a container definition
-
-Your answer should make clear why these three surfaces are related but not interchangeable.
-
-## Exercise 3: Diagnose a hidden dependency
-
-A rule declares:
-
-- input: `results/sample.tsv`
-- output: `publish/v1/report.json`
-
-The script launched by the rule also reads `config/report-style.yaml`, but that file is
-not declared anywhere in the rule.
-
-Explain:
-
-- why this is a software-boundary problem rather than a minor implementation detail
-- what risks it creates for review and rebuild behavior
-- how you would repair the design
-
-## Exercise 4: Review a wrapper adoption decision
-
-Your team wants to replace a visible shell command with a wrapper. The wrapper shortens the
-rule, but nobody on the team can yet explain:
-
-- which external tool version it assumes
-- which extra runtime requirements it introduces
-- whether it hides meaningful file relationships
-
-Write a review comment that argues for either delaying or accepting the wrapper adoption.
-
-Your answer should focus on clarity and ownership rather than style preference.
-
-## Exercise 5: Plan a rebuild after software drift
-
-After publication outputs are generated, the team changes:
-
-- a helper function under `src/capstone/`
-- `workflow/envs/python.yaml`
-- nothing in the declared input datasets
-
-Describe:
-
-- why the published outputs may no longer be trustworthy
-- what evidence you would want before approving the outputs again
-- what provenance information should accompany the rebuilt publication artifacts
-
-## Exercise 6: Extract a long rule into a script
-
-Take a rule with at least thirty lines of transformation logic. Keep its inputs, outputs,
-parameters, log, and runtime visible while moving step-local implementation behind
-`script:`.
+Move one rule’s implementation behind `script:` while keeping all inputs, outputs,
+parameters, logs, and resources visible at the rule boundary.
 
 What to hand in:
 
 - the before and after rule
-- the script and its declared data access
-- a focused successful run
-- evidence that no hidden input was introduced
+- the script file
+- one focused successful run
+- one check showing no hidden input was introduced
 
-## Exercise 7: Promote reusable logic into tested code
+## Exercise 3: Diagnose a hidden dependency
 
-Find logic needed by two workflow scripts. Move only that logic into a package module and
-write direct tests for normal, boundary, and invalid input.
-
-What to hand in:
-
-- the package API and both script call sites
-- three focused tests
-- an explanation of what remained workflow-specific
-- the command used to run tests without Snakemake
-
-## Exercise 8: Reproduce a rule-scoped environment
-
-Give one rule a pinned environment, create it from a clean cache or location, and record
-the resolved tool versions.
+Choose or construct a rule whose implementation reads an undeclared config, lookup, or
+auxiliary file.
 
 What to hand in:
 
-- the environment declaration
-- the command that activates environment use
-- resolved version evidence
-- one ambient-host dependency the environment eliminates
+- the declared rule contract
+- the hidden dependency
+- the risk it creates for review or rebuild behavior
+- the repair that makes the dependency explicit
 
-## Exercise 9: Observe code and environment drift
+## Exercise 4: Decide whether code belongs in `workflow/scripts/` or `src/`
 
-Run a workflow to convergence, change its script implementation, then change its
-environment declaration. Inspect the reported change causes before rebuilding.
+Find logic used in two places and decide which portion is still workflow-adjacent and
+which portion is truly reusable.
+
+What to hand in:
+
+- the two call sites
+- the code that remains workflow-specific
+- the code that becomes package-owned
+- one reason you did not move even more code into `src/`
+
+## Exercise 5: Write a runtime contract
+
+Give one rule a pinned environment and compare that with the repository-level runtime
+surface and, if relevant, a container surface.
+
+What to hand in:
+
+- the rule-scoped environment declaration
+- the repository-level environment or toolchain surface
+- one sentence explaining how a container would change the portability boundary
+- one ambient host dependency the rule no longer relies on
+
+## Exercise 6: Test reusable code directly
+
+Move shared logic into package code and test it without running Snakemake.
+
+What to hand in:
+
+- the package API
+- at least three focused tests covering normal, boundary, and invalid input
+- the command used to run those tests
+- one workflow-specific detail that intentionally stayed outside the package
+
+## Exercise 7: Observe code and runtime drift
+
+Run a small workflow to convergence, then change the script implementation and the rule’s
+runtime declaration.
 
 What to hand in:
 
 - `--list-changes code` or equivalent evidence
-- predictions for affected and unaffected outputs
-- post-rebuild convergence evidence
-- provenance connecting the rebuilt output to both changes
+- your prediction about which outputs should rebuild
+- post-rebuild confirmation
+- a provenance note connecting the rebuilt output to both changes
+
+## Exercise 8: Review one wrapper or abstraction adoption
+
+Evaluate a wrapper, helper layer, or utility abstraction that shortens the visible rule
+surface.
+
+What to hand in:
+
+- the abstraction being proposed
+- what it hides
+- whether it strengthens or weakens ownership
+- the evidence you would demand before accepting it
+
+## Exercise 9: Rebuild a published artifact honestly
+
+Choose a publish-facing output and rebuild it after either code drift or runtime drift.
+Explain why the earlier artifact should no longer be trusted without rerunning.
+
+What to hand in:
+
+- the changed software surface
+- the affected output
+- the provenance artifact or rebuild note
+- the reason the old output became stale even though the input data did not change
 
 ## Exercise 10: Review a complete software boundary
 
-Review a rule, script, shared package, environment, and container definition as one
-system. Identify hidden dependencies, duplicated ownership, and missing provenance.
+Review a change that touches a rule, a workflow script, package code, an environment, and
+possibly a container or provenance artifact.
 
 What to hand in:
 
 - findings ordered by trust impact
-- a corrected ownership diagram
+- one corrected ownership diagram
 - the narrow verification route for each correction
-- a decision about whether the container adds necessary portability or redundant weight
+- one boundary that should be simplified, postponed, or split further
 
-## Mastery check
+## Mastery standard for this exercise set
 
-You have a strong grasp of this module if you can answer all ten exercises while keeping
-four ideas visible:
+Across all ten answers, Module 05 wants the same habits:
 
-- the rule owns the file contract
-- software placement expresses ownership
-- runtime declarations shape workflow meaning
-- provenance is part of publication trust
+- you keep file contracts visible at the rule boundary
+- you move code according to ownership, not prestige
+- you treat runtime declarations as part of workflow meaning
+- you leave enough provenance behind to explain rebuild trust later
+
+If your answer says only "this code should be cleaner," keep going.

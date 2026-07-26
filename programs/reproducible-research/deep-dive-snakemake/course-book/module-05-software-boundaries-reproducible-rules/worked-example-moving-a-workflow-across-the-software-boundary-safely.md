@@ -1,81 +1,45 @@
 # Worked Example: Moving a Workflow Across the Software Boundary Safely
 
+This file ties the whole module together around one realistic problem:
 
-<!-- page-maps:start -->
-## Page Maps
+> a workflow step still works, but the repository can no longer explain where orchestration ends, where software begins, and why a rebuild should be trusted.
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Software Boundaries Reproducible Rules"]
-  page["Worked Example: Moving a Workflow Across the Software Boundary Safely"]
-  capstone["Capstone evidence"]
+The question is not "how do we hide more code outside Snakemake?" The question is how to
+give each layer one clear job.
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+## The lab route
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
+Work through the example in this order:
 
-This worked example ties the module together.
+1. identify which parts of the current rule are file contract and which are implementation
+2. move step-local code behind `script:` without changing the declared boundary
+3. promote only genuinely reusable helpers into package code
+4. bind the rule to an explicit runtime contract
+5. finish by explaining a rebuild through provenance and drift evidence
 
-The goal is not to show every possible Snakemake feature. The goal is to show how a
-workflow step becomes more trustworthy when software ownership, runtime, and provenance are
-made explicit together.
+## The starting situation
 
-## Starting situation
+Assume the repository already has:
 
-Imagine a publication step that needs to write a provenance artifact for released results.
+- truthful rule contracts from Module 01
+- explicit dynamic discovery from Module 02
+- a stable publish boundary from Module 04
 
-A rushed first draft might keep everything inline:
+What it does not yet have is a strong software ownership story.
 
-```python
-rule build_provenance:
-    input:
-        "publish/v1/results.tsv"
-    output:
-        "publish/v1/provenance.json"
-    run:
-        import datetime
-        import json
-        import platform
-        import subprocess
-        import sys
-        ...
-```
+The maintainers currently live with:
 
-This works until the step becomes real software.
+- a publication rule with a long inline `run:` block
+- implicit reliance on ambient host Python and libraries
+- helper functions copied between scripts
+- no easy way to explain why a rebuilt artifact differs from an earlier one
 
-Now the repository has several problems:
+That is a good Module 05 starting point because the step still works. It is the trust
+story around the step that is weak.
 
-- the rule hides implementation detail in a large `run:` block
-- runtime assumptions are implicit
-- the publication artifact has no clearly owned software boundary
-- reviewers cannot easily separate file contract from implementation
+## Keep the rule readable and honest
 
-## Better target
-
-The capstone points toward a stronger design:
-
-- the rule owns the file contract
-- `workflow/scripts/provenance.py` owns step-local implementation
-- `workflow/envs/python.yaml` declares the step runtime
-- `environment.yaml` serves repository-level authoring and workflow execution setup
-- `Dockerfile` offers a stronger machine-portability surface
-
-That is already a meaningful boundary stack.
-
-## Keep the rule readable
-
-Conceptually, the rule should look more like this:
+Start by reducing the rule to orchestration and contract:
 
 ```python
 rule build_provenance:
@@ -89,18 +53,20 @@ rule build_provenance:
         "workflow/scripts/provenance.py"
 ```
 
-This rule tells a reviewer four useful things immediately:
+This shorter rule is better because it still answers the important questions:
 
-- which artifact is being produced
-- which input gives it context
+- which input gives the step context
+- which output the step promises
+- which runtime contract the step depends on
 - where the implementation lives
-- which runtime boundary the step relies on
 
-That is a much stronger contract than a long `run:` block.
+If the rule becomes short by hiding undeclared reads or hidden global state, the
+extraction failed.
 
-The script receives declared values through the injected `snakemake` object. It should
-not scan directories or open configuration paths that the rule never declared. A minimal
-shape is:
+## Make the script a workflow adapter
+
+`workflow/scripts/provenance.py` should translate declared Snakemake inputs and outputs
+into ordinary Python calls, nothing more:
 
 ```python
 from pathlib import Path
@@ -111,111 +77,91 @@ payload = build_provenance(Path(snakemake.input.results))
 Path(snakemake.output.json).write_text(payload, encoding="utf-8")
 ```
 
-This makes `workflow/scripts/provenance.py` an adapter between Snakemake and ordinary
-Python. `build_provenance` can be tested directly without constructing a fake workflow.
+That makes the script workflow-adjacent code:
 
-## Keep step-local code in the right place
+- it knows about the injected `snakemake` object
+- it stays tightly coupled to one workflow step
+- it should not grow into a general-purpose package by accident
 
-The capstone's `workflow/scripts/provenance.py` is a good example of code that belongs in
-`workflow/scripts/` rather than in a reusable package:
+The script is an adapter, not the whole software design.
 
-- it depends on the injected `snakemake` object
-- it is tightly coupled to one workflow step
-- its job is tied to publication metadata rather than broad domain reuse
+## Promote only the reusable part into package code
 
-If later multiple steps need shared formatting or metadata helpers, that reusable portion
-can graduate into `src/capstone/`.
+Now inspect the implementation itself.
 
-That is the important judgment:
+If several steps need common metadata formatting, checksum helpers, or schema-building
+logic, that reusable portion can move into `src/capstone/`. The key test is simple:
 
-- step-local behavior stays near the workflow
-- reusable behavior moves into package code
+- can the code be called directly without a Snakemake context
+- does it represent a reusable domain or utility behavior
+- can you test it without running the workflow
 
-## Declare the runtime where it matters
+If the answer is yes, package ownership is justified. If the logic still depends on
+workflow-specific path layout or the injected `snakemake` object, it should stay beside
+the workflow.
 
-`workflow/envs/python.yaml` currently declares a small Python runtime:
+That is the important distinction:
 
-```yaml
-name: capstone-python
-channels:
-  - conda-forge
-dependencies:
-  - python=3.11
-```
+- `workflow/scripts/` owns step-local adapters
+- `src/` owns reusable software behavior
 
-That file is not useful because it is long. It is useful because it says the
-provenance step should not depend on ambient host Python.
+## Name the runtime contract explicitly
 
-At the repository level, `environment.yaml` serves a different purpose:
+Next, bind the step to a runtime contract such as `workflow/envs/python.yaml`.
 
-- it gives contributors and workflow runners a predictable baseline
-- it pins the Snakemake family used for the project
+That file matters because it says the provenance step should not depend on whatever Python
+happens to be installed on the host. It makes the runtime a reviewable input.
 
-And `Dockerfile` solves a broader boundary again by packaging that environment into a more
-portable machine-level contract.
+At the same time, keep the layers distinct:
 
-## Make provenance part of the output story
+- the rule-scoped environment defines what the step needs
+- the repository-level environment helps contributors run and edit the project
+- the container, when needed, defines a broader machine-portability surface
 
-The current provenance script records several important pieces of software evidence:
+Those layers are related, but they do not replace each other.
 
-- timestamp
-- Python version and executable
-- platform
+## Leave a rebuild trail behind
+
+Finally, the repository needs to explain rebuilt outputs after software drift.
+
+A provenance artifact for a published output should record enough software context to
+answer questions later, for example:
+
+- Python version
 - Snakemake version
-- git commit
-- workflow config
+- package versions or image identity
+- git commit or source revision
+- relevant config or runtime metadata
 
-That design matters because publication outputs should be defensible after the run is
-finished.
+Now imagine three edits:
 
-When a reviewer asks, "what software context produced this artifact?", the repository can
-answer with a file instead of a memory.
+1. `workflow/scripts/provenance.py` changes serialization details.
+2. `workflow/envs/python.yaml` adds or updates a dependency.
+3. reusable helper code under `src/capstone/` changes field ordering or metadata logic.
 
-## Think through change scenarios
+These are different surfaces, but each can invalidate trust in earlier outputs. The point
+of provenance is to make that rebuild story explicit instead of folkloric.
 
-Now imagine three different edits:
+## The repaired software story
 
-1. `workflow/scripts/provenance.py` changes how metadata is serialized.
-2. `workflow/envs/python.yaml` adds another runtime dependency.
-3. `Dockerfile` changes because the execution surface is moving to a stricter container path.
+By the end of the repair, the workflow can be described cleanly:
 
-These edits do not all mean the same thing, but they all affect software trust.
+1. the rule owns the file contract
+2. the script owns step-local adaptation
+3. package code owns reusable behavior
+4. the runtime contract owns software context
+5. provenance explains why rebuilt outputs should be trusted
 
-The repository should now be able to reason clearly:
+That is what it means to move a workflow across the software boundary safely.
 
-- the rule contract is still visible
-- the step implementation changed in a named place
-- the runtime boundary changed in a named place
-- provenance artifacts can help distinguish earlier outputs from rebuilt outputs
+## Review questions for the repaired design
 
-That is what a healthy software boundary feels like in practice.
+When you inspect a repository shaped like this, ask:
 
-## What this example teaches
+1. which code still belongs at the rule boundary
+2. which script is only an adapter and which helper is genuinely reusable
+3. where is the runtime contract declared
+4. which hidden dependency would still break reproducibility on another machine
+5. how would a later maintainer explain a rebuild from provenance rather than memory
 
-```mermaid
-flowchart LR
-  rule["Visible rule contract"] --> script["Step-local implementation"]
-  rule --> env["Rule runtime contract"]
-  env --> container["Optional machine boundary"]
-  script --> prov["Published provenance artifact"]
-  container --> prov
-```
-
-The point is not complexity for its own sake.
-
-The point is that each layer now has one clear job:
-
-- rule: file meaning
-- script: implementation
-- environment: step runtime
-- container: machine portability when needed
-- provenance artifact: evidence after execution
-
-## Review summary
-
-If you can explain this example well, you understand the module:
-
-- why the rule remains visible even when implementation moves out
-- why runtime declarations belong next to execution boundaries
-- why not all code belongs in the same directory
-- why provenance is part of publication trust, not optional decoration
+If those answers are visible, the module’s software-boundary story has landed.
