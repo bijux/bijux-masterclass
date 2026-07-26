@@ -35,6 +35,21 @@ That is where many repositories become hard to explain:
 
 Module 07 is about scaling a Make build without turning it into a private language.
 
+## Plan for the day
+
+| Time | Activity | Evidence you keep |
+| --- | --- | --- |
+| 45 minutes | Publish a five-target build API | readable `make help` output |
+| 75 minutes | Split policy, discovery, and graph ownership | an include-boundary diagram |
+| 60 minutes | Compare explicit rules with one macro | expanded rules from `make -p` |
+| 60 minutes | Add a second source namespace | collision-free object paths |
+| 90 minutes | Refactor the tangled worked example | before-and-after public surfaces |
+| 90 minutes | Complete the ten exercises | an architecture review packet |
+
+Architecture work is successful when another person can predict where a change belongs.
+Keep that test in view throughout the day: if a split creates more files but not clearer
+ownership, it has not helped.
+
 ## What this module is for
 
 By the end of Module 07, you should be able to explain five things clearly:
@@ -138,5 +153,6 @@ Do not move on until all of these are true:
 - you can defend one macro as clarity-enhancing rather than graph-obscuring
 - you can show how naming and discovery stay stable as the tree grows
 - you can review one build layout and point to at least one architectural risk before it becomes a bug
+- you can complete all ten exercises and explain the resulting build without private context
 
 When those feel ordinary, Module 07 has done its job.

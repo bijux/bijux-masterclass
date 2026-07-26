@@ -98,9 +98,68 @@ What to hand in:
 - one reuse or naming risk
 - one recommendation that should be made before the next growth step lands
 
+## Exercise 6: Publish a useful help target
+
+Create a `help` target for five public targets. The output must explain the contract of
+each target in language a new contributor can act on.
+
+What to hand in:
+
+- the explicit public-target list
+- the `help` recipe and output
+- one helper target intentionally excluded from the interface
+
+## Exercise 7: Audit automation against the public API
+
+Search a repository's CI, release, and developer scripts for Make invocations. Compare
+every invoked target with the public target list.
+
+What to hand in:
+
+- the search command
+- a table of caller, target, and public/internal status
+- one repair for automation that calls an internal target
+
+## Exercise 8: Make variable ownership inspectable
+
+Choose a variable that several include files currently mutate. Assign one layer as its
+owner and define where command-line overrides are allowed.
+
+What to hand in:
+
+- the old mutation sites
+- the new ownership rule
+- output from `$(origin ...)`, `$(flavor ...)`, or `make -p` that proves the behavior
+
+## Exercise 9: Inspect a macro instead of trusting it
+
+Write or choose a bounded rule-generating macro. Inspect its expanded rules and compare
+them with equivalent explicit rules.
+
+What to hand in:
+
+- the invariant the macro protects
+- the macro and two call sites
+- the inspection output
+- a decision to keep or remove the macro, with reasoning
+
+## Exercise 10: Refactor a growing build
+
+Take a Makefile that mixes at least three responsibilities. Define its public API, split
+ownership into include layers, namespace discovery for two source roots, and keep CI on
+public targets.
+
+What to hand in:
+
+- before-and-after tree and include order
+- public target contracts
+- a source-to-object mapping for both roots
+- dry-run, no-op, and selftest evidence
+- a short architecture review naming one remaining risk
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants the same habits:
+Across all ten answers, the module wants the same habits:
 
 - you name the architectural boundary being tested
 - you choose inspection and evidence before proposing the cleanup

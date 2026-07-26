@@ -114,6 +114,100 @@ A strong answer names concrete risks, such as:
 The strongest answers also recommend one preventive change now rather than waiting for a
 later breakage.
 
+## Exercise 6: Publish a useful help target
+
+An explicit implementation is easy to review:
+
+```make
+PUBLIC_TARGETS := all test selftest clean help
+
+.PHONY: $(PUBLIC_TARGETS)
+help:
+	@printf '%-12s %s\n' \
+	  'all'      'build the default product' \
+	  'test'     'run product tests' \
+	  'selftest' 'verify build-system invariants' \
+	  'clean'    'remove generated state' \
+	  'help'     'show this public interface'
+```
+
+An internal target such as `build-objects` should not appear. Its name and behavior may
+change without breaking callers because automation and learners use the public contract.
+
+## Exercise 7: Audit automation against the public API
+
+A useful search begins broadly:
+
+```sh
+rg -n '(g?make)([[:space:]]|$)' .github scripts Makefile mk
+```
+
+The resulting table should identify each caller and target. If CI calls
+`build-objects`, either change it to a public target such as `all` or deliberately promote
+and document that contract. Merely adding the helper to `help` to silence the mismatch
+would enlarge the API without deciding ownership.
+
+## Exercise 8: Make variable ownership inspectable
+
+Suppose `mk/common.mk` owns defaults for `CFLAGS`:
+
+```make
+CFLAGS ?= -O2
+override CPPFLAGS += -Iinclude
+
+.PHONY: explain-flags
+explain-flags:
+	@printf 'CFLAGS origin=%s flavor=%s value=%s\n' \
+	  '$(origin CFLAGS)' '$(flavor CFLAGS)' '$(value CFLAGS)'
+```
+
+This example distinguishes an overridable user policy from a required include path.
+Strong answers avoid casual `override`; they use it only for an invariant that command-line
+input must not erase. The inspection output should prove command-line and environment
+behavior.
+
+## Exercise 9: Inspect a macro instead of trusting it
+
+A bounded macro can own one compile shape:
+
+```make
+define compile_object
+$1: $2 | $$(@D)/
+	$$(CC) $$(CPPFLAGS) $$(CFLAGS) -c $$< -o $$@
+endef
+
+$(eval $(call compile_object,build/app/main.o,src/app/main.c))
+$(eval $(call compile_object,build/lib/math.o,src/lib/math.c))
+```
+
+Use `make -np` and search for both object targets. Keep the macro only if the expanded
+rules are predictable and the shared invariant matters. Two short rules may be clearer
+than `call` and `eval`; removing an unjustified macro is a successful answer.
+
+## Exercise 10: Refactor a growing build
+
+A strong result has a shallow, explainable entrypoint:
+
+```make
+include mk/policy.mk
+include mk/discovery.mk
+include mk/artifacts.mk
+-include mk/local.mk
+```
+
+`policy.mk` owns tools and shell behavior, `discovery.mk` owns sorted rooted source lists
+and output mapping, and `artifacts.mk` owns product edges. Public targets remain in the
+top-level file or one clearly named interface layer. Evidence should show that:
+
+- `make -n all` reaches the intended graph
+- a second `make all` is a no-op
+- both source roots map to separate output namespaces
+- `selftest` verifies the interface and architecture invariants
+- CI invokes only declared public targets
+
+The remaining-risk note matters. Architecture review is not credible when it claims a
+growing build has no unresolved pressure.
+
 ## What mastery-level answers sound like
 
 A mastery-level answer set in this module does three things well:

@@ -28,6 +28,28 @@ flowchart LR
 The five core lessons in Module 07 are easiest to trust when they appear in one build that
 still works but is getting harder to explain.
 
+## Publish a tiny build API first
+
+Before splitting files, make one interface visible:
+
+```make
+PUBLIC_TARGETS := all test selftest clean help
+
+.PHONY: $(PUBLIC_TARGETS)
+
+help:
+	@printf '%-12s %s\n' \
+	  'all'      'build the default product' \
+	  'test'     'run product tests' \
+	  'selftest' 'verify build-system invariants' \
+	  'clean'    'remove generated state' \
+	  'help'     'show this public interface'
+```
+
+Run `make help`, then ask whether a new learner can choose a target without opening the
+Makefile. This explicit list is intentionally boring. A public interface should optimize
+for trust, not clever extraction tricks.
+
 This example starts with exactly that kind of build:
 
 - it builds successfully
@@ -87,7 +109,7 @@ verify:
 
 This is not absurd. It is just not very well-bounded.
 
-## Step 1: identify the public API
+## Identify the public API
 
 The first thing to repair is not layering. It is the interface.
 
@@ -116,7 +138,7 @@ This is Core 1:
 - demote private helpers
 - stop letting automation depend on archaeology
 
-## Step 2: give the include layers real jobs
+## Give the include layers real jobs
 
 The old include set:
 
@@ -153,7 +175,7 @@ This is Core 2:
 - include order becomes part of the architecture
 - hidden mutation becomes easier to spot
 
-## Step 3: shrink the macro boundary
+## Shrink the macro boundary
 
 Suppose `helpers.mk` contained a macro that generated compilation, linking, and packaging
 rules together.
@@ -185,7 +207,7 @@ This is Core 3:
 - keep call sites explicit
 - refuse abstraction that becomes a second language
 
-## Step 4: fix discovery and naming before the repository grows
+## Fix discovery and naming before the repository grows
 
 The current discovery may be:
 
@@ -216,7 +238,7 @@ This is Core 4:
 - namespaced outputs
 - one coherent story about how more code joins the build
 
-## Step 5: review the refactor like an architecture change
+## Review the refactor as an architecture change
 
 At this point the refactor looks better, but Module 07 insists on one more habit:
 
@@ -242,7 +264,9 @@ include mk/objects.mk
 include mk/targets.mk
 -include mk/local.mk
 
-.PHONY: all test selftest clean help
+PUBLIC_TARGETS := all test selftest clean help
+
+.PHONY: $(PUBLIC_TARGETS)
 
 all: app
 
@@ -254,6 +278,9 @@ selftest:
 
 clean:
 	rm -rf build dist app
+
+help:
+	@printf '%s\n' $(PUBLIC_TARGETS)
 ```
 
 And the internal architecture becomes:
