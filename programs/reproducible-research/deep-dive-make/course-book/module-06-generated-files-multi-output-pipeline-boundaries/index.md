@@ -34,6 +34,21 @@ start lying:
 This module is about treating generated outputs like real graph citizens instead of magical
 side effects that "just appear" when the build feels ready.
 
+## Plan for the day
+
+| Time | Activity | Evidence you keep |
+| --- | --- | --- |
+| 45 minutes | Generate one file from one source | a visible source-to-output edge |
+| 75 minutes | Compare independent and grouped outputs | a one-invocation trace under `-j` |
+| 60 minutes | Design a meaningful manifest | stable content across a no-op rebuild |
+| 75 minutes | Inject a generator failure | proof that untrusted output was not published |
+| 75 minutes | Repair the worked pipeline | a convergence and deletion-recovery record |
+| 90 minutes | Complete the ten exercises | commands, outputs, and graph explanations |
+
+The first lab needs only `printf` and Make. Do it even if you already maintain code
+generators: a one-input, one-output graph gives you a clean baseline before grouped
+targets, manifests, and publication protocols add complexity.
+
 ## What this module is for
 
 By the end of Module 06, you should be able to explain five things clearly:
@@ -137,5 +152,6 @@ Do not move on until all of these are true:
 - you can justify one manifest or stamp as a real boundary file
 - you can explain where a pipeline publishes and why partial outputs are not trusted
 - you can repair one broken generator incident with `--trace`, convergence, and a graph change
+- you can complete all ten exercises, including a deliberate failure and recovery
 
 When those feel ordinary, Module 06 has done its job.

@@ -28,6 +28,39 @@ flowchart LR
 The five core lessons in Module 06 are easiest to trust when they all show up inside one
 generator incident that feels real.
 
+## Generate one file before building a pipeline
+
+Create `message.txt` containing one line of text and this `Makefile`:
+
+```make
+.PHONY: all clean
+
+all: build/message.h
+
+build/message.h: message.txt | build/
+	@printf '#define MESSAGE "%s"\n' "$$(cat $<)" > $@.candidate
+	@mv $@.candidate $@
+
+build/:
+	mkdir -p $@
+
+clean:
+	rm -rf build
+```
+
+Run:
+
+```sh
+make --trace
+make --trace
+printf 'revised\n' > message.txt
+make --trace
+```
+
+The first run creates the header, the second does nothing, and the source edit rebuilds
+exactly one output. That observable cycle is the foundation for every more complicated
+generator in this module.
+
 This example starts with a build that "mostly works":
 
 - it generates files locally
@@ -82,7 +115,7 @@ all: api.h api.json api.manifest main.o
 
 Every line here is plausible. That is why the example is useful.
 
-## Step 1: identify the first lie
+## Identify the first graph lie
 
 Look at the consumer edge:
 
@@ -106,7 +139,7 @@ This is Core 1 in action:
 - the object file depends on what it actually reads
 - producer internals and consumer content are separated again
 
-## Step 2: explain the duplicate execution
+## Explain the duplicate execution
 
 The multi-output rule is:
 
@@ -126,27 +159,23 @@ running api generator
 
 The repair is not to blame parallelism. The repair is to name the single publication unit.
 
-One honest repair is a stamp:
+When GNU Make 4.3 or newer is part of the portability contract, grouped targets state the
+relationship directly:
 
 ```make
-API_GEN_STAMP := build/api.stamp
-
-$(API_GEN_STAMP): schema/api.yml scripts/gen_api.py | build/
+build/include/api.h build/api.json &: schema/api.yml scripts/gen_api.py | build/ build/include/
 	@python3 scripts/gen_api.py schema/api.yml --out-dir build/tmp
 	@mv build/tmp/api.h build/include/api.h
 	@mv build/tmp/api.json build/api.json
-	@touch $@
-
-build/include/api.h build/api.json: $(API_GEN_STAMP)
 ```
 
 This is Core 2:
 
 - one event owns both outputs
-- the graph now has one completion point
+- the graph now has one recipe for the coupled output set
 - duplicate execution is no longer left to chance
 
-## Step 3: repair the manifest boundary
+## Repair the manifest boundary
 
 The old manifest rule is:
 
@@ -178,27 +207,28 @@ This is Core 3:
 - they should converge
 - they should not replace direct content edges where those edges are still needed
 
-## Step 4: fix early publication
+## Define what atomic publication means
 
 The original generator wrote directly into final paths. That makes partial failure
 dangerous.
 
-Suppose the pipeline now becomes:
+Staging and validation make the common failure path safer:
 
 ```make
-$(API_GEN_STAMP): schema/api.yml scripts/gen_api.py | build/ build/include/
+build/include/api.h build/api.json &: schema/api.yml scripts/gen_api.py | build/ build/include/
+	@rm -rf build/tmp
+	@mkdir -p build/tmp
 	@python3 scripts/gen_api.py schema/api.yml --out-dir build/tmp
 	@python3 scripts/validate_api.py build/tmp/api.h build/tmp/api.json
 	@mv build/tmp/api.h build/include/api.h
 	@mv build/tmp/api.json build/api.json
-	@touch $@
 ```
 
 This is much stronger because:
 
 - validation happens before final publication
 - temporary work stays outside trusted output paths
-- the stamp is touched only after the full pipeline succeeded
+- final paths are untouched when generation or validation fails
 
 This is Core 4:
 
@@ -206,7 +236,13 @@ This is Core 4:
 - downstream trust begins at a named boundary
 - partial outputs stop pretending to be finished work
 
-## Step 5: run the failure-mode loop
+Be precise about the guarantee: two `mv` commands are two filesystem operations, not one
+transaction. A process interruption between them can still expose a mixed pair. When the
+output set must change atomically, publish an immutable versioned directory and replace
+one `current` symlink or pointer with an atomic rename. The unit of publication must then
+be that pointer, not each file separately.
+
+## Run the failure-mode loop
 
 Now take the original four symptoms and classify them:
 
@@ -228,7 +264,6 @@ After the hardening pass, the build is closer to this:
 
 ```make
 MODE ?= release
-API_GEN_STAMP := build/api.stamp
 
 build/:
 	mkdir -p $@
@@ -241,14 +276,13 @@ build/api.manifest: schema/api.yml | build/
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
 
-$(API_GEN_STAMP): schema/api.yml scripts/gen_api.py build/api.manifest | build/ build/include/
+build/include/api.h build/api.json &: schema/api.yml scripts/gen_api.py build/api.manifest | build/ build/include/
+	@rm -rf build/tmp
+	@mkdir -p build/tmp
 	@python3 scripts/gen_api.py schema/api.yml --out-dir build/tmp
 	@python3 scripts/validate_api.py build/tmp/api.h build/tmp/api.json
 	@mv build/tmp/api.h build/include/api.h
 	@mv build/tmp/api.json build/api.json
-	@touch $@
-
-build/include/api.h build/api.json: $(API_GEN_STAMP)
 
 main.o: src/main.c build/include/api.h
 	$(CC) -Ibuild/include -c $< -o $@

@@ -101,9 +101,71 @@ What to hand in:
 - the command that would give you the first useful evidence
 - the graph or publication repair you would try next
 
+## Exercise 6: Build your first generated target
+
+Generate `build/version.h` from a plain-text `VERSION` file. The generated header must
+rebuild when `VERSION` changes and remain untouched on a no-op build.
+
+What to hand in:
+
+- the complete rule
+- traces from the initial, no-op, and changed-input runs
+- the generated header after the change
+
+## Exercise 7: Recover from one deleted coupled output
+
+Create a grouped rule that produces `build/api.h` and `build/api.json`. Build both, delete
+only the JSON file, and ask Make to build both again.
+
+What to hand in:
+
+- the grouped-target rule
+- generator invocation counts before and after deletion
+- an explanation of why the whole grouped recipe runs
+
+## Exercise 8: Inject a generator failure
+
+Modify a toy generator so it can exit after writing temporary output but before
+validation. Run the failed build and inspect both temporary and trusted paths.
+
+What to hand in:
+
+- the failure switch or input
+- the failing command and exit status
+- proof that the previously trusted outputs were not replaced
+
+## Exercise 9: Choose a publication protocol
+
+Compare these requirements:
+
+- two generated files may briefly differ during an interrupted local build
+- a serving process must always observe both files from the same generation
+
+Choose a publication design for each requirement and explain why two final-path `mv`
+commands are insufficient for the second.
+
+What to hand in:
+
+- the local-build design
+- the strict publication design
+- a diagram showing the point where downstream trust begins
+
+## Exercise 10: Repair a complete generator pipeline
+
+Build a small pipeline with source input, generator, two coupled outputs, validator,
+manifest, and consumer. Demonstrate a clean build, no-op build, source edit, parallel
+build, deleted-output recovery, and injected failure.
+
+What to hand in:
+
+- the Makefile and generator
+- the six command transcripts
+- a graph drawing that distinguishes generation, validation, publication, and consumption
+- one paragraph identifying the remaining publication guarantee and its limits
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants the same habits:
+Across all ten answers, the module wants the same habits:
 
 - you name the publication or boundary truth being tested
 - you choose evidence before you choose a repair

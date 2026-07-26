@@ -74,6 +74,9 @@ $(API_STAMP): schema/api.yml scripts/gen_api.py | build/
 api.h api.json: $(API_STAMP)
 ```
 
+The stamp form needs an additional integrity policy if either output can be deleted while
+the stamp remains. A stamp alone does not make that case safe.
+
 The evidence command should usually include a pressured run, such as:
 
 ```sh
@@ -138,6 +141,94 @@ Or:
 
 The strongest answers avoid random shell edits and stay anchored to graph or publication
 truth.
+
+## Exercise 6: Build your first generated target
+
+A minimal answer is:
+
+```make
+.PHONY: all
+
+all: build/version.h
+
+build/version.h: VERSION | build/
+	@printf '#define VERSION "%s"\n' "$$(cat $<)" > $@.candidate
+	@mv $@.candidate $@
+
+build/:
+	mkdir -p $@
+```
+
+The evidence should show one recipe on the first run, no recipe on the second, and one
+recipe after changing `VERSION`. The order-only directory prerequisite avoids rebuilding
+the header merely because the directory timestamp changed.
+
+## Exercise 7: Recover from one deleted coupled output
+
+GNU Make 4.3 or newer can model the pair directly:
+
+```make
+build/api.h build/api.json &: schema.yml generate.py | build/
+	python3 generate.py schema.yml --output build
+```
+
+After both files exist, deleting `build/api.json` makes the grouped target out of date.
+Requesting the pair causes one generator invocation that refreshes both outputs. The
+submission should count actual generator starts, not infer them from file timestamps.
+
+## Exercise 8: Inject a generator failure
+
+A strong design writes only under a staging path before validation:
+
+```make
+build/api.h build/api.json &: schema.yml generate.py | build/
+	@rm -rf build/stage
+	@mkdir -p build/stage
+	@python3 generate.py schema.yml --output build/stage
+	@python3 validate.py build/stage/api.h build/stage/api.json
+	@mv build/stage/api.h build/api.h
+	@mv build/stage/api.json build/api.json
+```
+
+If generation or validation exits nonzero, the `mv` commands never run. Evidence should
+include the nonzero status and checksums proving that previously published files did not
+change. Temporary debris may remain for diagnosis; it is not trusted output.
+
+## Exercise 9: Choose a publication protocol
+
+For an ordinary local build, staging, validation, and final-path renames may be an
+acceptable contract. It prevents invalid generated content from being published during
+normal failures.
+
+For readers that must never observe a mixed generation, publish into a new immutable
+directory and atomically replace one pointer:
+
+```text
+build/releases/sha-a/api.h
+build/releases/sha-a/api.json
+build/current -> releases/sha-a
+```
+
+Build and validate `sha-b`, create a new symlink, then rename that symlink over `current`.
+The pointer is the publication event. Two separate file renames cannot provide the same
+set-level guarantee.
+
+## Exercise 10: Repair a complete generator pipeline
+
+A mastery submission proves behavior rather than presenting syntax alone. Its transcript
+should establish:
+
+- initial generation runs once
+- an immediate rebuild is a no-op
+- a semantic source edit runs generation once
+- `make -j2` does not duplicate the producer
+- deleting one grouped output reruns the producer once
+- an injected failure returns nonzero and preserves trusted output checksums
+
+The graph should show source and generator inputs entering one generation event,
+validation before publication, and consumers depending on published files. The final
+paragraph must state whether publication is failure-safe for ordinary command errors or
+atomic for concurrent readers; those are different guarantees.
 
 ## What mastery-level answers sound like
 
