@@ -35,6 +35,9 @@ Deep Dive DVC has four durable surfaces:
 3. capstone pages for executable corroboration
 4. reference pages for durable review and repair maps
 
+The teaching arc contains ten learning days and one hundred exercises. Modules are the
+course; guides, capstone pages, and references support the learning route.
+
 ## Choose the right surface
 
 | If you need... | Start here | Do not start with |
@@ -54,6 +57,18 @@ Deep Dive DVC has four durable surfaces:
 | truthful execution and experiments | Modules 04-06 | stage edges, params, metrics, and bounded experiment change |
 | collaboration and recovery pressure | Modules 07-08 | CI discipline, survivability, and remote-backed restoration |
 | promotion and governance | Modules 09-10 | downstream trust, migration boundaries, and stewardship judgment |
+
+## Daily learning route
+
+1. state the module's trust question in your own words
+2. reproduce the smallest example and predict the relevant state changes
+3. complete Exercises 1-5 before comparing model answers
+4. complete Exercises 6-10 in a clean or inherited repository
+5. retain the requested evidence and explain what it does not prove
+6. use [Module Checkpoints](module-checkpoints.md) before continuing
+
+When a command surprises you, reduce the state model until workspace, Git, cache, remote,
+and publish roles are legible again.
 
 ## The support shelf by job
 

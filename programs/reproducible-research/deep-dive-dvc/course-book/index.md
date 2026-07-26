@@ -33,6 +33,10 @@ to memorize commands. The goal is to make data, parameters, metrics, experiments
 promotion, and recovery boundaries precise enough that another person can trust them
 later.
 
+No previous DVC experience is required. Orientation establishes the state model; ten
+teaching modules then provide ten exercises each, for one hundred exercises from first
+recovery questions through repository stewardship.
+
 ## Use this course if
 
 - you want a state model instead of a command catalog
@@ -94,6 +98,19 @@ Use it in this order:
 2. choose the smallest honest route with [Proof Ladder](guides/proof-ladder.md)
 3. enter the repository through [Capstone Map](capstone/capstone-map.md) or [Command Guide](capstone/command-guide.md)
 4. escalate to stronger review only when the current question actually needs it
+
+## Practice contract
+
+Each teaching module is designed as a full learning day:
+
+- Exercises 1-5 establish the module's core reasoning.
+- Exercises 6-10 require execution, failure injection, independent recovery, or review.
+- Attempt the work before opening the model answers.
+- Retain commands, manifests, comparisons, diagrams, and review notes as a learning
+  portfolio.
+
+Completion means explaining the evidence produced across all one hundred exercises, not
+merely reading every page or running the capstone once.
 
 ## Success signal
 

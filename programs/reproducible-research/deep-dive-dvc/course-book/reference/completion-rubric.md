@@ -38,11 +38,12 @@ promotion without hand-waving.
 
 You should be able to do all of the following:
 
-* explain which state layer is authoritative for a given trust question
-* read `dvc.yaml` and `dvc.lock` together without confusing declaration and recorded state
-* explain which params and metrics remain semantically comparable across runs
-* identify which artifacts belong to the downstream publish contract
-* describe how the repository restores tracked state after local cache loss
+- explain which state layer is authoritative for a given trust question
+- read `dvc.yaml` and `dvc.lock` together without confusing declaration and recorded state
+- explain which params and metrics remain semantically comparable across runs
+- identify which artifacts belong to the downstream publish contract
+- describe how the repository restores tracked state after local cache loss
+- complete all one hundred exercises and retain the requested evidence
 
 ---
 
@@ -55,6 +56,18 @@ You should be able to do all of the following:
 | semantic comparison | you can say which metrics remain meaningful after a parameter change |
 | experiments and promotion | you can explain baseline, deviation, and promoted contract without mixing them |
 | recovery and stewardship | you can defend the repository's recovery story and review it for drift |
+
+## Exercise evidence
+
+Reading every page does not satisfy the course contract. A complete portfolio includes:
+
+- ten exercises from each of the ten teaching modules
+- commands and repository state where execution was requested
+- checksums, lock diffs, manifests, comparisons, diagrams, or review notes named by each
+  exercise
+- corrections recorded after comparing your work with the model answers
+- one stewardship review connecting state identity, pipelines, comparison, recovery, and
+  promotion
 
 ---
 
