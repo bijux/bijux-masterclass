@@ -31,6 +31,21 @@ they differ only in policy, not in workflow meaning.
 
 Use `profile-summary` after `profile-audit` when you want the compact comparison JSON.
 
+## What the Slurm profile represents
+
+`profiles/slurm/config.yaml` is the portable scheduler-policy surface used by this
+course. It deliberately defines only context-owned behavior that can be reviewed without
+access to a particular cluster.
+
+An operator supplies site-owned values such as executor plugin, account, partition,
+quality of service, and storage roots through a documented overlay or invocation. Those
+values may map declared resources and operating context; they may not replace sample
+membership, analytical parameters, final output identities, or publish paths.
+
+This division keeps the capstone executable on ordinary machines while still teaching a
+real scheduler boundary. It is not a claim that one profile can submit unchanged to every
+Slurm installation.
+
 ---
 
 ## Primary review route
@@ -56,4 +71,3 @@ Use `profile-summary` after `profile-audit` when you want the compact comparison
 - Which differences are expected because of execution context?
 - Which difference would worry you because it smells like semantic drift?
 - Which profile should a maintainer inspect first before approving a move to new infrastructure?
-
