@@ -1,29 +1,4 @@
 # Course Map
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Orientation"]
-  page["Course Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The modules form one continuous project: you begin with a three-line rule and finish by
 reviewing a build system that other people depend on. Each day introduces a pressure
 that the previous day’s model cannot yet handle.
@@ -48,18 +23,18 @@ flowchart TD
 
 ## The ten study days
 
-| Module | Begin with | Finish able to |
+| Module | Begin with | Finish able to | Classroom-style turning point |
 | --- | --- | --- |
-| 01 · Build graph foundations | one target, prerequisite, and recipe | predict rebuilds and explain missing dependencies |
-| 02 · Parallel safety | a correct serial build | expose and repair races without adding false ordering |
-| 03 · Determinism and self-testing | a parallel-safe graph | prove convergence and create a useful build selftest |
-| 04 · Rule semantics | familiar rules and variables | explain expansion timing, precedence, includes, and rule selection |
-| 05 · Portability and failure modes | a build that works locally | define supported environments and preserve jobserver behavior |
-| 06 · Generated files | one command that creates outputs | model generators, coupled outputs, manifests, and atomic publication |
-| 07 · Build architecture | one growing Makefile | split responsibilities while preserving one understandable graph |
-| 08 · Release engineering | trustworthy local outputs | construct, checksum, inspect, and safely install a release bundle |
-| 09 · Operations | a correct production build | measure cost, investigate incidents, and write a practical runbook |
-| 10 · Migration and governance | an inherited system | preserve proof while changing ownership or tools |
+| 01 · Build graph foundations | one target, prerequisite, and recipe | predict rebuilds and explain missing dependencies | a missing edge causes a stale file |
+| 02 · Parallel safety | a correct serial build | expose and repair races without adding false ordering | `make -j` becomes a truth test |
+| 03 · Determinism and self-testing | a parallel-safe graph | prove convergence and create a useful build selftest | a passing binary stops being enough evidence |
+| 04 · Rule semantics | familiar rules and variables | explain expansion timing, precedence, includes, and rule selection | surprising behavior gets traced to a named rule |
+| 05 · Portability and failure modes | a build that works locally | define supported environments and preserve jobserver behavior | machine-specific assumptions become visible policy |
+| 06 · Generated files | one command that creates outputs | model generators, coupled outputs, manifests, and atomic publication | generators stop being side-effect magic |
+| 07 · Build architecture | one growing Makefile | split responsibilities while preserving one understandable graph | the build gains an intentional public API |
+| 08 · Release engineering | trustworthy local outputs | construct, checksum, inspect, and safely install a release bundle | artifacts are judged from the consumer side |
+| 09 · Operations | a correct production build | measure cost, investigate incidents, and write a practical runbook | evidence replaces folklore under pressure |
+| 10 · Migration and governance | an inherited system | preserve proof while changing ownership or tools | tool boundaries become explicit design decisions |
 
 ## Skills accumulate
 
@@ -81,6 +56,19 @@ flowchart LR
 
 When a later lesson feels unclear, move backward along this diagram. Do not solve a weak
 dependency edge with a more complicated release script.
+
+## How the course grows in difficulty
+
+The first three modules teach you how Make decides. The next three teach you how that
+decision process holds up under pressure. The last four teach you how to steward a build
+that other people will use, review, or inherit.
+
+```mermaid
+flowchart LR
+  first["Foundations"] --> pressure["Pressure and failure"]
+  pressure --> architecture["Architecture and release"]
+  architecture --> stewardship["Operations and stewardship"]
+```
 
 ## Exercise progression in every module
 

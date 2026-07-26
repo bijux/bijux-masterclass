@@ -1,29 +1,4 @@
 # Module 00: Orientation and Study Practice
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Orientation"]
-  page["Module 00: Orientation and Study Practice"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 You do not need previous experience with Make, C, build systems, or continuous
 integration. You need a terminal, a text editor, and enough time to change a small file
 and observe what happens.
@@ -35,6 +10,19 @@ Make is a program that answers one question:
 It answers that question from rules in a file normally named `Makefile`. The rules form a
 graph. This course begins with that small idea and builds toward parallel execution,
 generated files, releases, incident diagnosis, and responsible migration.
+
+## What this orientation module is for
+
+Module 00 is not a warm-up you should rush through. It establishes the study habits that
+make the rest of the course work:
+
+- start from one small build, not from the capstone
+- predict what Make will do before you run it
+- inspect traces and files, not just terminal output
+- explain one decision clearly before learning a bigger feature
+
+If you do that here, later modules feel cumulative. If you skip it, later modules can
+turn into disconnected facts.
 
 ## Before the first lesson
 
@@ -147,6 +135,26 @@ If your second run executes `tr` again, stop and inspect timestamps with
 `ls -lT` on macOS or `stat message.txt message.upper.txt` on Linux. A no-op second run is
 your first proof that the graph describes reality.
 
+## The first-day demo ladder
+
+Use this sequence before you open Module 01:
+
+```mermaid
+flowchart LR
+  action["Run a phony target"] --> file["Build one file target"]
+  file --> repeat["Run the same build again"]
+  repeat --> change["Change one prerequisite"]
+  change --> explain["Explain the rebuild decision"]
+```
+
+Each step adds exactly one new idea:
+
+- phony targets show how Make receives a request
+- file targets show how Make reasons about freshness
+- repeated runs show convergence
+- changing one prerequisite shows dependency-driven rebuilds
+- your explanation turns output into understanding
+
 ## How one module fills a study day
 
 Each technical module is designed as a complete learning day. Adapt the times to your
@@ -184,6 +192,17 @@ The first file-target experiment is the pattern for the whole course. Later exam
 larger, but the learning move stays the same: predict the requested graph, run one bounded
 command, inspect the evidence, and change one fact.
 
+## Day-zero checklist
+
+Before you leave orientation, make sure all of these are true:
+
+- `make --version` or `gmake --version` reports GNU Make 4 or newer
+- you can create and run a phony target
+- you can create and run a file target
+- you can explain why the second file-target run does no work
+- you can change one input and predict the rebuild before you run it
+- you have one practice directory reserved for course experiments
+
 ## Choose a route
 
 | Your starting point | Recommended route |
@@ -219,7 +238,11 @@ reasoning.
 
 ## Continue
 
-Read the [course map](course-map.md), then begin
-[Module 01: Build Graph Foundations and Truth](../module-01-build-graph-foundations-truth/index.md).
-Use the [first-contact map](first-contact-map.md) if you want a shorter preview before
-committing to a full study day.
+Use the rest of Module 00 based on what you need:
+
+- Read [Course Map](course-map.md) if you want the full ten-session arc.
+- Read [First-Contact Map](first-contact-map.md) if you want the shortest route into the first week.
+- Read [Mid-Course Map](mid-course-map.md) if you are already comfortable with the basics and want to understand the second half of the course.
+- Read [Mastery Map](mastery-map.md) if you are returning later for review, migration, or stewardship.
+
+Then continue to [Module 01](../module-01-build-graph-foundations-truth/index.md).

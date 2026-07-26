@@ -1,29 +1,4 @@
 # Mid-Course Map
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Orientation"]
-  page["Mid-Course Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when Modules 01 to 03 feel stable and you need a deliberate bridge into
 semantics under pressure, portability, release trust, and incident review. The goal is to
 keep the middle of the course shaped by build questions instead of by module numbers.
@@ -67,6 +42,19 @@ Use this cluster when the main question is no longer only correctness.
 - Module 09 teaches how failures become inspectable instead of superstitious.
 
 Leave this cluster able to separate public trust from local build residue.
+
+## Questions that should guide the middle of the course
+
+At this stage, the useful questions change. Instead of asking "What is a target?" you
+start asking:
+
+- Why did this variable or include change behavior?
+- Which assumption is portable and which one is accidental?
+- Where does this generated file truly enter the graph?
+- Which file should own this target, macro, or release step?
+
+If the middle of the course starts feeling abstract, return to those questions. They keep
+the reading tied to real engineering judgment.
 
 ## When to leave this route
 
