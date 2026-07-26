@@ -92,22 +92,21 @@ That is the real lesson.
 ## Exercise 4: Propose one truth-preserving optimization
 
 A good answer might identify repeated parse-time discovery shell-outs and replace them with
-a stable manifest or script boundary.
+built-in discovery over declared roots.
 
 For example:
 
 ```make
-build/discovery.manifest: scripts/list_sources.py src/ | build/
-	@python3 scripts/list_sources.py src > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+APP_SRCS := $(sort $(wildcard src/app/*.c))
+LIB_SRCS := $(sort $(wildcard src/lib/*.c))
+SRCS := $(APP_SRCS) $(LIB_SRCS)
 ```
 
 This is strong because the optimization removes repeated work while preserving:
 
-- explicit inputs
-- a convergent boundary
-- inspectable build meaning
+- explicit discovery roots
+- observation of additions on the next Make invocation
+- inspectable resolved lists
 
 The post-change proof should usually include both a timing comparison and a truth check such
 as `make -q all` or a discovery audit.
@@ -129,6 +128,86 @@ For example:
 > clean-state behavior.
 
 That is a real operational note, not just a command list.
+
+## Exercise 6: Build a repeatable timing baseline
+
+A defensible baseline records commands and context:
+
+```sh
+for run in 1 2 3; do /usr/bin/time -p make -n all >/dev/null; done
+for run in 1 2 3; do make clean >/dev/null; /usr/bin/time -p make -j2 all >/dev/null; done
+make all >/dev/null
+for run in 1 2 3; do /usr/bin/time -p make all >/dev/null; done
+```
+
+The loop variable labels repetitions even if the shell does not print it. A strong
+submission records OS, Make version, job count, and relevant tool versions. Background
+load, filesystem cache state, thermal throttling, and network access can all add noise.
+Use a median or another stated representative value rather than selecting the fastest run.
+
+## Exercise 7: Explain an unexpected rebuild
+
+Start narrowly:
+
+```sh
+make --trace path/to/target
+stat path/to/target path/to/suspected/prerequisite
+```
+
+The answer should quote only the trace line that names the rebuild cause, then compare the
+relevant timestamps or generated content. Common repairs include restoring a missing
+edge, stopping a prerequisite from rewriting identical content, or changing an
+order-sensitive directory edge to an order-only prerequisite. If the prerequisite is
+genuinely newer, "the rebuild is correct" is a valid diagnosis.
+
+## Exercise 8: Audit parse-time shell work
+
+Find calls with:
+
+```sh
+rg -n '\$\(shell[[:space:]]' Makefile mk
+```
+
+Classify tool lookup, source discovery, version queries, and generated configuration
+separately. For known shallow roots, `$(sort $(wildcard ...))` can replace a `find`
+subprocess. A checked-in source manifest can be appropriate when repository policy
+updates and verifies it. An untriggered generated cache is not acceptable: it can miss a
+new source file and appear fast only because its truth went stale.
+
+## Exercise 9: Measure useful parallelism
+
+A useful comparison repeats the same clean route:
+
+```sh
+make clean && /usr/bin/time -p make -j1 all
+make clean && /usr/bin/time -p make -j2 all
+make clean && /usr/bin/time -p make -j4 all
+```
+
+Repeat each configuration and inspect the graph for independent prerequisites. If a long
+serial generator feeds every other target, increasing `-j` cannot parallelize that
+critical path. CPU count, memory, storage, network, compiler behavior, and neighboring
+workloads make the saturation point machine-specific.
+
+## Exercise 10: Respond to a complete build incident
+
+A strong evidence directory contains small, named artifacts:
+
+```text
+environment.txt
+timings.tsv
+dry-run.txt
+trace.log
+make-database.txt
+diagnosis.md
+```
+
+The responder records evidence before cleaning or editing, identifies whether cost or
+failure lives in parsing, graph decisions, recipes, environment, or diagnostics, and
+makes the smallest repair consistent with that classification. Verification repeats the
+original route and one adjacent invariant such as no-op convergence or parallel safety.
+The runbook captures the shortest reliable route, expected evidence range, and escalation
+condition.
 
 ## What mastery-level answers sound like
 

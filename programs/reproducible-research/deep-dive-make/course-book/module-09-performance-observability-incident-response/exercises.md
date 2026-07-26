@@ -98,9 +98,70 @@ What to hand in:
 - one escalation trigger
 - one thing the responder should avoid doing too early
 
+## Exercise 6: Build a repeatable timing baseline
+
+Measure dry-run, clean-build, and no-op-build cost at least three times each. Keep target,
+parallelism, environment, and machine conditions recorded.
+
+What to hand in:
+
+- the exact commands and conditions
+- all measurements plus a representative value
+- one source of noise and how you limited it
+
+## Exercise 7: Explain an unexpected rebuild
+
+Choose a target that rebuilds when you expect a no-op. Use trace output and timestamps to
+identify the prerequisite edge that caused the decision.
+
+What to hand in:
+
+- the target and expected behavior
+- the smallest useful trace excerpt
+- prerequisite timestamps or content evidence
+- the graph repair, or an explanation that the rebuild is correct
+
+## Exercise 8: Audit parse-time shell work
+
+Find every `$(shell ...)` in a Make build. Measure dry-run cost, classify each shell call,
+and replace one avoidable call without caching away real discovery.
+
+What to hand in:
+
+- the search result and baseline
+- the selected shell call and its semantic purpose
+- the replacement
+- post-change timing, discovery, and convergence evidence
+
+## Exercise 9: Measure useful parallelism
+
+Compare `-j1`, `-j2`, and a higher job count for one clean route. Inspect the graph before
+interpreting the timings.
+
+What to hand in:
+
+- repeated measurements
+- the independent work visible in the graph
+- the job count after which speedup becomes small or negative
+- one reason the result must not be generalized to every machine
+
+## Exercise 10: Respond to a complete build incident
+
+Investigate a slow, noisy, flaky, or unexpectedly rebuilding route without cleaning or
+editing first. Preserve commands, environment, timing, trace, resolved state, and the
+final classification.
+
+What to hand in:
+
+- the incident statement and reproduction route
+- a compact evidence directory
+- the diagnosis and smallest truth-preserving repair
+- before-and-after verification
+- a runbook entry for the next responder
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants the same habits:
+Across all ten answers, the module wants the same habits:
 
 - you name the cost or incident boundary being tested
 - you choose evidence before choosing edits

@@ -36,6 +36,36 @@ that feels familiar:
 
 This example starts from exactly that situation.
 
+## Observe parallelism in a controlled build
+
+Create this `Makefile`:
+
+```make
+.PHONY: all prepare-data prepare-model
+
+all: prepare-data prepare-model
+
+prepare-data:
+	@sleep 1
+	@echo data-ready
+
+prepare-model:
+	@sleep 1
+	@echo model-ready
+```
+
+Compare three runs of each route:
+
+```sh
+/usr/bin/time -p make -j1 all
+/usr/bin/time -p make -j2 all
+```
+
+Because both prerequisites are independent, the parallel route should approach one second
+while the serial route approaches two. This tiny experiment gives "parallel speedup" a
+visible meaning before a large repository introduces compiler caches, filesystem noise,
+or overloaded workers.
+
 ## The incident
 
 Assume you inherit a repository with these complaints:
@@ -70,11 +100,11 @@ And the team has fallen into these debugging habits:
 
 That is enough to start the refactor.
 
-## Step 1: split the cost question
+## Split the cost question
 
 The first repair is not to the Makefile. It is to the diagnosis.
 
-Run:
+Run each timing several times:
 
 ```sh
 /usr/bin/time -p make -n all >/dev/null
@@ -101,7 +131,7 @@ This is Core 1:
 
 - the complaint "slow build" has been split into real cost layers
 
-## Step 2: inspect the observability surface
+## Inspect the observability surface
 
 The huge trace count is a problem in its own right, but do not "fix" it by hiding
 everything.
@@ -126,7 +156,7 @@ This is Core 2:
 - evidence remains available
 - semantic outputs stay clean
 
-## Step 3: follow the incident ladder
+## Follow the incident ladder
 
 The next question is whether the slow behavior comes from the graph model or from the
 environment.
@@ -147,7 +177,7 @@ This keeps the team from jumping straight to edits such as:
 
 This is Core 3.
 
-## Step 4: identify a truth-preserving optimization
+## Identify a truth-preserving optimization
 
 The parse-time cost clue points to:
 
@@ -157,28 +187,31 @@ SRCS := $(shell find src -name '*.c' | sort)
 
 Maybe this is repeated across multiple files.
 
-A truth-preserving optimization is to move source listing into one stable script or manifest
-boundary instead of shelling out repeatedly during parse:
+A truth-preserving first move is to use Make's built-in discovery over declared roots
+instead of spawning repeated shells:
 
 ```make
-build/discovery.manifest: scripts/list_sources.py src/ | build/
-	@python3 scripts/list_sources.py src > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+APP_SRCS := $(sort $(wildcard src/app/*.c))
+LIB_SRCS := $(sort $(wildcard src/lib/*.c))
+SRCS := $(APP_SRCS) $(LIB_SRCS)
 ```
 
 Now the build can:
 
 - reduce repeated parse-time shell work
-- keep discovery explicit
-- preserve the truth boundary
+- keep discovery roots explicit
+- observe newly added files in those roots on the next Make invocation
+
+A generated manifest is appropriate only when its refresh trigger is truthful. A cache
+that Make does not know when to refresh is faster because it silently stopped discovering
+inputs; that is not an optimization.
 
 This is Core 4:
 
 - the tuning removes waste
 - it does not hide inputs or suppress necessary rebuilds
 
-## Step 5: write the runbook the team actually needed
+## Write the runbook the team actually needed
 
 At this point the team has a much better understanding, but the real operational win is to
 capture it.
@@ -201,18 +234,17 @@ This is Core 5:
 The repository is now closer to this operational model:
 
 ```make
-build/discovery.manifest: scripts/list_sources.py src/ | build/
-	@python3 scripts/list_sources.py src > $@.tmp
-	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
-	@rm -f $@.tmp
+APP_SRCS := $(sort $(wildcard src/app/*.c))
+LIB_SRCS := $(sort $(wildcard src/lib/*.c))
+SRCS := $(APP_SRCS) $(LIB_SRCS)
 
 .PHONY: trace-count
 trace-count:
-	@make --trace -n all 2>&1 | wc -l
+	@$(MAKE) --trace -n all 2>&1 | wc -l
 
 .PHONY: discovery-audit
-discovery-audit: build/discovery.manifest
-	@cat build/discovery.manifest
+discovery-audit:
+	@printf '%s\n' $(SRCS)
 ```
 
 And the team has a clearer incident sequence:

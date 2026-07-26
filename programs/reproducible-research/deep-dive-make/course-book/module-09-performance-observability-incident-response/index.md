@@ -36,6 +36,21 @@ loops:
 - responding to incidents with a repeatable ladder instead of guesswork
 - tuning costs without hiding correctness defects
 
+## Plan for the day
+
+| Time | Activity | Evidence you keep |
+| --- | --- | --- |
+| 45 minutes | Measure a two-target serial and parallel build | repeated timing results |
+| 75 minutes | Separate dry-run, recipe, and trace cost | a baseline table |
+| 60 minutes | Diagnose one unexpected rebuild | a short causality trace |
+| 60 minutes | Remove one measured source of waste | before-and-after truth checks |
+| 90 minutes | Investigate the worked incident | an evidence packet and decision |
+| 90 minutes | Complete the ten exercises | an operational runbook |
+
+Use at least three runs when comparing small timings, keep the machine conditions as
+similar as practical, and record the command with the number. One isolated timing is an
+anecdote, not a baseline.
+
 ## What this module is for
 
 By the end of Module 09, you should be able to explain five things clearly:
@@ -139,5 +154,6 @@ Do not move on until all of these are true:
 - you can follow a triage ladder without skipping to edits
 - you can justify one performance change as truth-preserving
 - you can hand another engineer a runbook they could actually use
+- you can complete all ten exercises and reproduce an incident diagnosis from saved evidence
 
 When those feel ordinary, Module 09 has done its job.
