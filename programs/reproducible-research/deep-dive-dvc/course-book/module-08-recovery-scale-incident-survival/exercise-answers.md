@@ -121,6 +121,36 @@ Strong incident note:
 
 The main lesson is that CI is not background. It is part of the reproducibility evidence.
 
+## Answer 6: Measure recovery objectives
+
+Objectives must name scope and measurement points. The drill starts without a warm cache,
+records bytes and elapsed time, verifies content, and reports whether the promised
+recovery window is realistic rather than declaring success from configuration alone.
+
+## Answer 7: Audit garbage-collection reachability
+
+The review inventories every history surface the team values and distinguishes local from
+remote cleanup. Preview evidence and backups come before deletion. Uncertainty about a
+valuable ref is a reason to stop, not to use a broader flag.
+
+## Answer 8: Simulate remote unavailability
+
+Cached work may continue locally, while clean recovery and some CI jobs fail. A mature
+policy names whether a replica, immutable release bundle, or restoration process provides
+continuity and how users learn that the primary remote is unavailable.
+
+## Answer 9: Verify a remote migration
+
+Configuration parity is not enough. Strong evidence recovers required revisions from the
+new remote into an empty cache, verifies object identities, and preserves the old remote
+until coverage and rollback have been reviewed.
+
+## Answer 10: Run an incident tabletop
+
+The exercise should expose decision ownership, communication paths, preservation rules,
+and scientific impact assessment. It succeeds by finding ambiguities safely, then turning
+them into runbook and policy repairs.
+
 ## Self-check
 
 If your answers consistently explain:

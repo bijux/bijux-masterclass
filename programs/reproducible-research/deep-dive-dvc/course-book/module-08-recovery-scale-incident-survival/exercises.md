@@ -89,6 +89,33 @@ Write an incident note that explains:
 - what should be checked before accepting or rejecting the new results
 - what documentation or policy should be updated
 
+## Exercise 6: Measure recovery objectives
+
+Choose one critical artifact family. Define its recovery point and recovery time
+objectives, then perform a timed clean-cache recovery and compare the result with those
+objectives.
+
+## Exercise 7: Audit garbage-collection reachability
+
+Before running garbage collection, enumerate branches, tags, experiment refs, and remote
+copies that protect valuable objects. Produce a review record showing what may be removed.
+
+## Exercise 8: Simulate remote unavailability
+
+Block access to the primary remote and attempt the documented workflow. Identify which
+activities continue, which stop, and what secondary recovery route the policy promises.
+
+## Exercise 9: Verify a remote migration
+
+Copy governed objects to a new remote, test recovery from an empty cache, compare object
+coverage, and define the evidence required before retiring the old remote.
+
+## Exercise 10: Run an incident tabletop
+
+Assign incident lead, storage operator, repository maintainer, and scientific reviewer.
+Walk through accidental deletion, partial remote recovery, and a disputed result without
+performing destructive actions.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep five ideas
