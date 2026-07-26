@@ -106,6 +106,39 @@ What the team may be confusing:
 
 The main lesson is that recovery is strong evidence, but still a bounded kind of evidence.
 
+## Answer 6: Inspect a pointer by hand
+
+The `.dvc` file is small Git-tracked metadata. Its hash identifies content stored under
+the cache layout, while the size supports integrity checks. The workspace file is a
+materialized copy or link. None of these locations alone should be confused with the
+whole recovery contract.
+
+## Answer 7: Prove checkout changes workspace state
+
+Git changes the pointer revision. `dvc checkout` then materializes the content named by
+that pointer from available cache state. The cache may retain both versions, while only
+one appears at the workspace path. This is why path equality is weaker than content
+identity.
+
+## Answer 8: Test a remote from an empty cache
+
+Strong evidence begins from a genuinely empty local cache, runs `dvc pull`, and compares
+the recovered checksum or DVC status with the source revision. A successful recovery
+proves more than a push command that happened to exit zero.
+
+## Answer 9: Diagnose a missing-object failure
+
+The pointer can still name a valid object even when no accessible storage currently
+contains it. The failure is availability, not necessarily metadata corruption. Repair
+means restoring the object from a durable copy or revising an invalid recovery claim.
+
+## Answer 10: Draw a state-authority diagram
+
+A sound diagram distinguishes `dvc add`, `push`, `pull`, and `checkout`. Git governs
+pointer history; the cache accelerates local materialization; the remote supports shared
+recovery; published bundles serve consumers. Authority must be stated explicitly rather
+than inferred from whichever copy is nearby.
+
 ## Self-check
 
 If your answers consistently explain:

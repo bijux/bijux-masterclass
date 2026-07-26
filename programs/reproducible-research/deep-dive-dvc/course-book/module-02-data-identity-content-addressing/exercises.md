@@ -89,6 +89,35 @@ Explain:
 - what it does not prove yet
 - which additional boundary the team may be confusing with recovery
 
+## Exercise 6: Inspect a pointer by hand
+
+Track a small file with DVC. Open the resulting `.dvc` file, locate its object identifier
+and size, then find the corresponding cache object. Explain the relationship without
+calling the pointer "the data."
+
+## Exercise 7: Prove checkout changes workspace state
+
+Create two Git revisions that point to different versions of one dataset. Switch between
+the revisions and use `dvc checkout`. Record what changes in Git, the workspace, and the
+cache at each step.
+
+## Exercise 8: Test a remote from an empty cache
+
+Push a tracked artifact, clone into a clean directory with an empty DVC cache, and recover
+it. Capture the commands and checksums that prove the remote held the required object.
+
+## Exercise 9: Diagnose a missing-object failure
+
+Remove or isolate one required cache object without changing the pointer. Run the
+appropriate status or pull command and explain why metadata can remain valid while
+content is unavailable.
+
+## Exercise 10: Draw a state-authority diagram
+
+Draw Git, workspace, cache, remote, and published bundle as separate nodes. Label the
+commands that move or materialize state and mark which node is authoritative for recovery
+under your chosen policy.
+
 ## Mastery check
 
 You have a strong grasp of this module if your answers consistently keep four ideas
