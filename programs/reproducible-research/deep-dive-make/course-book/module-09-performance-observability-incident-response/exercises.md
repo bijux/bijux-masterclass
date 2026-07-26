@@ -1,33 +1,16 @@
 # Exercises
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Performance Observability Incident Response"]
-  page["Exercises"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use these after reading the five core lessons and the worked example. The goal is not to
 produce more diagnostics for their own sake. The goal is to make your measurement,
 observability, and incident-response reasoning visible.
+
+## How to work this exercise set
+
+Treat these as operational investigations, not as benchmarking games:
+
+- Exercises 1-3: define the symptom and choose proportional evidence
+- Exercises 4-6: build real baselines and truth-preserving tuning habits
+- Exercises 7-9: explain rebuilds, shell cost, and parallelism with measured context
+- Exercise 10: preserve a complete incident record another maintainer could reuse
 
 Each exercise asks for three things:
 
@@ -41,6 +24,14 @@ Every timing answer must retain the semantic guardrail:
 | --- | --- | --- | --- | --- |
 
 If the last two columns are absent, you have measured speed but not a safe optimization.
+
+## Minimum evidence for every answer
+
+Try to include:
+
+- one repeated measurement or trace excerpt
+- one explicit statement of the layer being investigated
+- one reason the proposed response preserves truth instead of merely suppressing cost
 
 ## Exercise 1: Split one "slow build" complaint into layers
 
@@ -165,6 +156,15 @@ What to hand in:
 - the diagnosis and smallest truth-preserving repair
 - before-and-after verification
 - a runbook entry for the next responder
+
+## Before you read the answers
+
+Do not open `exercise-answers.md` until you can already point to:
+
+- one symptom rewritten as a measurable claim
+- one baseline with repeated samples
+- one incident you investigated without editing first
+- one optimization you rejected because it would have hidden truth
 
 ## Mastery standard for this exercise set
 

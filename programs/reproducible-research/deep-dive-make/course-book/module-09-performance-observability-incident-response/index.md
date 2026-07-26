@@ -1,30 +1,4 @@
 # Module 09: Performance, Observability, and Incident Response
-
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Make"]
-  section["Performance Observability Incident Response"]
-  page["Module 09: Performance, Observability, and Incident Response"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 By this point the build is correct, layered, and publishable. Module 09 is about the moment
 it becomes slow, noisy, or operationally brittle under real team pressure.
 
@@ -35,6 +9,12 @@ loops:
 - making build behavior observable without changing its meaning
 - responding to incidents with a repeatable ladder instead of guesswork
 - tuning costs without hiding correctness defects
+
+## Why this day matters
+
+Late-course build work often fails in one of two ways: people optimize too early, or they
+instrument everything and still cannot explain what happened. This module is about
+replacing both habits with a calm evidence loop.
 
 ## Plan for the day
 
@@ -61,6 +41,20 @@ By the end of Module 09, you should be able to explain five things clearly:
 - which performance changes preserve truth and which ones merely hide it
 - how to write a runbook another engineer can use under time pressure
 
+## The live demo for this module
+
+Use one slow route and one surprising rebuild as the anchors for the day:
+
+```mermaid
+flowchart LR
+  baseline["Measure dry-run, clean, and no-op routes"] --> isolate["Separate parse, recipe, and evidence cost"]
+  isolate --> incident["Choose one slow or noisy symptom"]
+  incident --> trace["Collect the smallest useful evidence"]
+  trace --> repair["Make one truth-preserving improvement"]
+```
+
+That sequence keeps performance work tied to explanation, not folklore.
+
 ## Turn “slow” into a testable statement
 
 Before profiling, rewrite the complaint with five facts:
@@ -86,6 +80,14 @@ flowchart LR
 A change aimed at the wrong box can make measurements look better while leaving the real
 cost untouched. Worse, deleting prerequisites or checks can make a build faster by making
 it less truthful. Keep convergence and artifact comparisons beside every timing result.
+
+## The question to keep asking
+
+Whenever someone says "the build is slow" or "the incident was noisy," ask:
+
+> Which layer is expensive, and what exact evidence would prove that before we edit anything?
+
+That question prevents a large amount of performative optimization.
 
 ## Study route
 
@@ -146,6 +148,16 @@ Good Module 09 answers usually mention one or more of these:
 - an incident ladder that narrows causes before edits begin
 - a tuning move that keeps all semantic inputs visible
 - a runbook that another engineer can follow without folklore
+
+## What a strong Module 09 day looks like
+
+By the end of the day, you should have:
+
+- collected repeated measurements instead of one anecdotal timing
+- separated at least two different cost layers
+- diagnosed one incident without cleaning or editing first
+- made one measured improvement that preserved convergence and artifact meaning
+- written one short runbook another engineer could follow under pressure
 
 ## Commands to keep close
 
