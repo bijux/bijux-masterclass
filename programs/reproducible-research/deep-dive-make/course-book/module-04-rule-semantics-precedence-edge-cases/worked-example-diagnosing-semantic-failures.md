@@ -38,6 +38,39 @@ An inherited Make build fails in a much messier way:
 This worked example shows a better response. We will take one small but realistic build,
 follow the evidence, and connect every repair to a lesson from the module.
 
+## Warm-up: observe expansion and origin
+
+Before the incident, create this Makefile:
+
+```make
+BASE = initial
+RECURSIVE = $(BASE)
+SIMPLE := $(BASE)
+BASE = changed
+DEFAULT ?= local
+
+.PHONY: show
+show:
+	@printf 'RECURSIVE=%s flavor=%s\n' "$(RECURSIVE)" "$(flavor RECURSIVE)"
+	@printf 'SIMPLE=%s flavor=%s\n' "$(SIMPLE)" "$(flavor SIMPLE)"
+	@printf 'DEFAULT=%s origin=%s\n' "$(DEFAULT)" "$(origin DEFAULT)"
+```
+
+Predict the output, then compare:
+
+```sh
+make show
+DEFAULT=command make show
+DEFAULT=environment make show
+```
+
+The command-line assignment wins over the makefile. The environment value does not
+replace a makefile assignment unless the makefile chooses `?=` or Make is invoked with
+`-e`. `RECURSIVE` expands after `BASE` changes; `SIMPLE` captured the earlier value.
+
+This small lab gives concrete meaning to the origin and flavor probes used in the larger
+incident.
+
 ## The incident
 
 Assume a repository with these facts:
@@ -351,3 +384,15 @@ Take one real build incident and rewrite it in the same order:
 5. state the final explanation in one paragraph
 
 If you can do that, Module 04 has started to change how you debug.
+
+## Keep the investigation bounded
+
+Do not attach the entire `make -p` output to an incident by default. Record:
+
+- the requested target
+- the first trace line that explains unexpected work
+- the relevant variable’s origin, flavor, raw value, and expanded value
+- the included file or selected rule that changed the graph
+- the smallest repair and its convergence check
+
+Expand the evidence only when those facts do not settle the question.

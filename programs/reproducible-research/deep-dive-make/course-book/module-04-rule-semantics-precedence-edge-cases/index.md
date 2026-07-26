@@ -50,6 +50,20 @@ By the end of Module 04, you should be able to explain five things with confiden
 - why included makefiles can trigger restart behavior and how to keep that safe
 - which rule features preserve correctness and which ones quietly damage it
 
+## Plan for the day
+
+| Block | Activity | Evidence you should produce |
+| --- | --- | --- |
+| Expansion | compare `=`, `:=`, `?=`, and `+=` in one file | printed raw, expanded, flavor, and origin values |
+| Precedence | invoke the same target with defaults, environment, and command line | a precedence table based on observations |
+| Includes | generate and include one stable Make fragment | restart count and a converged second run |
+| Rule choice | compare explicit, pattern, and grouped targets | one justified rule choice for each output shape |
+| Diagnosis | follow a compound failure from symptom to semantic cause | a bounded incident note |
+| Practice | complete all ten exercises | commands and repairs, not feature definitions alone |
+
+This module is dense. Run each small experiment before reading the compound worked
+example; otherwise several semantic rules arrive at once.
+
 ## Study route
 
 ```mermaid
@@ -143,5 +157,6 @@ Do not move on until all of these are true:
 - you can centralize one capability gate instead of repeating shell probes everywhere
 - you can explain when an included makefile causes Make to restart
 - you can repair one unsafe advanced-rule pattern without resorting to `.NOTPARALLEL`
+- you completed ten exercises and can prove variable origin without inspecting CI folklore
 
 When those feel ordinary, Module 04 has done its job.

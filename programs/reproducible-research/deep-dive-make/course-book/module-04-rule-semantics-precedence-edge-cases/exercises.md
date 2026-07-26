@@ -113,9 +113,89 @@ What to hand in:
 - a stamp-based repair
 - one sentence on the capability or portability tradeoff between them
 
+## Exercise 6: Compare assignment flavors
+
+Create variables with `=`, `:=`, `?=`, and `+=`. Change a referenced variable between
+assignments and print:
+
+```make
+$(origin NAME)
+$(flavor NAME)
+$(value NAME)
+$(NAME)
+```
+
+Predict every line before running Make.
+
+What to hand in:
+
+- the Makefile and prediction
+- the observed output
+- one practical use and one risk for recursive expansion
+
+## Exercise 7: Build a precedence matrix
+
+Define `MODE ?= release` and print its origin. Invoke the target with:
+
+1. no override
+2. `MODE=debug make show`
+3. `make MODE=debug show`
+4. `MODE=debug make -e show`
+5. `override MODE := hardened` in the Makefile
+
+What to hand in:
+
+- a table of value and origin for every invocation
+- a recommended project contract for configuring `MODE`
+- one reason to avoid routine use of `-e`
+
+## Exercise 8: Observe a generated include restart
+
+Generate `build/config.mk` from `config.txt`, include it, and print `$(MAKE_RESTARTS)`.
+Publish the include only when its content changes.
+
+Then deliberately add a timestamp so it changes every run and observe the behavior.
+
+What to hand in:
+
+- the stable and unstable generator rules
+- restart counts or trace evidence
+- the repair that restores convergence
+
+## Exercise 9: Remove pattern-rule ambiguity
+
+Create two pattern rules that could both produce `build/sample.o`. Use `make -d` or
+`make -p` to determine which rule Make selects.
+
+Replace the ambiguity with an explicit path boundary, a static pattern rule, or one
+unambiguous pattern.
+
+What to hand in:
+
+- the competing rules
+- the evidence showing rule selection
+- the repaired rule and why a future maintainer can predict it
+
+## Exercise 10: Diagnose a compound semantic incident
+
+Construct or select a build with at least three symptoms:
+
+- a surprising variable value
+- a generated include that changes the graph
+- a rule selected differently than expected
+
+Investigate without beginning with `clean`, `-B`, or `.NOTPARALLEL`.
+
+What to hand in:
+
+- a short symptom list
+- the evidence command chosen for each symptom
+- the semantic cause and repair for each
+- a final `make -q` or equivalent convergence result
+
 ## Mastery standard for this exercise set
 
-Across all five answers, the module wants the same habit:
+Across all ten answers, the module wants the same habit:
 
 - you name the semantic rule involved
 - you choose evidence before you choose a repair
