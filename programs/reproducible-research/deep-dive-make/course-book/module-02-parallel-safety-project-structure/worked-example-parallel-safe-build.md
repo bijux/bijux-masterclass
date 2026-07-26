@@ -161,7 +161,11 @@ Read the capstone in this order:
 
 That reading order helps you see structure before you see implementation detail.
 
-## Four experiments to run
+## Six experiments to run
+
+For every experiment, list the paths each runnable recipe may write. That list is more
+useful than a screenshot of interleaved output because it exposes collisions even when a
+particular run happens to finish successfully.
 
 ### Demonstration 1: Inspect the schedule
 
@@ -223,6 +227,31 @@ make --trace all
 
 Explain why that object and its downstream link rebuild while independent objects stay
 untouched.
+
+## Diagnose the broken repro without guessing
+
+When a repro fails intermittently, use this order:
+
+1. run `make -n` to identify recipes Make considers independent
+2. read those recipes and list every written path, including temporary files and logs
+3. run the smallest reproduction repeatedly under `-j8`
+4. inspect the shared path after each run
+5. redesign the graph so each worker owns one path and one target owns aggregation
+6. compare serial and parallel manifests after the repair
+
+Do not begin with `.NOTPARALLEL`, a global lock, or a chain of order-only prerequisites.
+Those can suppress overlap without describing the data relationship. The repaired graph
+should explain why work waits, not merely force it to wait.
+
+Use this short incident note:
+
+| Question | Evidence |
+| --- | --- |
+| Which targets were runnable together? | dry-run or trace |
+| Which path had multiple writers? | recipe inspection |
+| What failure did repeated parallel runs expose? | output transcript or manifest |
+| Which ownership change repaired it? | before-and-after graph |
+| Why is the result now equivalent under `-j1` and `-j8`? | artifact comparison |
 
 ## What this example should teach you
 

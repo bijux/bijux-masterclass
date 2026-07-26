@@ -42,6 +42,34 @@ By the end of Module 02, you should be able to explain three things in plain lan
 - what recipe and graph shapes keep parallel builds safe
 - how a larger repository can stay readable without splitting into hidden private DAGs
 
+## Separate overlap from interference
+
+Two recipes running at the same time are not automatically unsafe. The question is
+whether they read and write state that can interfere.
+
+```mermaid
+flowchart LR
+  all["all"] --> alpha["alpha"]
+  all --> beta["beta"]
+  alpha --> a["build/alpha.txt"]
+  beta --> b["build/beta.txt"]
+  alpha -.unsafe writer.-> shared["build/result.txt"]
+  beta -.unsafe writer.-> shared
+```
+
+The solid paths are safe when each target owns its output. The dotted paths are unsafe
+because two independently scheduled recipes can publish the same file.
+
+Before adding an ordering edge, ask:
+
+1. Are these targets truly dependent, or merely concurrent?
+2. Which paths does each recipe read, create, replace, or append?
+3. Can one target own the shared result and depend on separate worker outputs?
+
+Most repairs should change ownership or add a missing data edge. Adding an arbitrary
+order may make one run pass while leaving the graph unable to explain the real
+relationship.
+
 ## Plan for the day
 
 | Block | Activity | Evidence you should produce |
@@ -55,6 +83,9 @@ By the end of Module 02, you should be able to explain three things in plain lan
 
 Parallelism is observable even on a laptop. The exercises use short sleeps and small text
 files so you can see scheduling without compiling a large project.
+
+When terminal lines interleave, record that as evidence of overlap only. Prove a race
+with corrupted, missing, unstable, or prematurely consumed state.
 
 ## Study route
 

@@ -28,6 +28,14 @@ flowchart LR
 Use these after reading the five core lessons and the worked example. The goal is to make
 your reasoning visible, not to show off Make syntax.
 
+For each repair, submit both an ownership table and a graph. A useful ownership table is:
+
+| Target | Reads | Writes | May overlap with | Why safe or unsafe |
+| --- | --- | --- | --- | --- |
+
+If you cannot fill in the `Writes` column, you are not ready to add ordering. Remember
+that logs, temporary files, cache entries, and staging directories are outputs too.
+
 ## Exercise 1: Name the runnable targets
 
 Take the course `capstone/` and explain which object targets may run concurrently during
