@@ -50,6 +50,38 @@ By the end of Module 04, you should be able to explain five things with confiden
 - why included makefiles can trigger restart behavior and how to keep that safe
 - which rule features preserve correctness and which ones quietly damage it
 
+## Ask Make where a value came from
+
+Do not debug variable precedence by staring at assignments. Create this Makefile:
+
+```make
+MODE ?= local
+
+.PHONY: show
+show:
+	@printf 'MODE=%s origin=%s flavor=%s\n' \
+	  "$(MODE)" "$(origin MODE)" "$(flavor MODE)"
+```
+
+Predict and run:
+
+```sh
+make show
+MODE=environment make show
+make MODE=command show
+```
+
+The output teaches more than a precedence list:
+
+- `?=` accepts an environment value because the variable is already defined
+- a command-line value outranks both
+- `origin` tells you which boundary supplied the value
+- `flavor` tells you when the stored expression expands
+
+When a value surprises you later, reduce the question to this form before changing
+operators or adding `override`. First establish origin and flavor; then decide whether
+the current ownership contract is correct.
+
 ## Plan for the day
 
 | Block | Activity | Evidence you should produce |

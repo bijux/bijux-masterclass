@@ -71,6 +71,25 @@ replace a makefile assignment unless the makefile chooses `?=` or Make is invoke
 This small lab gives concrete meaning to the origin and flavor probes used in the larger
 incident.
 
+## Keep a semantic event log
+
+For the incident below, classify each observation before proposing a repair:
+
+| Observation | Read time | Expansion time | Rule selection | Recipe execution |
+| --- | ---: | ---: | ---: | ---: |
+| included file is missing | yes |  |  |  |
+| `MODE` has an unexpected origin |  | yes |  |  |
+| two output rules match one path |  |  | yes |  |
+| generator writes a partial file |  |  |  | yes |
+
+The columns are not independent implementation trivia. They tell you where to look next.
+A generated include loop is not repaired with shell quoting. A command-line override is
+not repaired by changing target timestamps. A multi-output ownership error is not
+explained by variable flavor.
+
+Add one row for every new symptom. If you cannot choose a column, write down the probe
+that would distinguish the possibilities.
+
 ## The incident
 
 Assume a repository with these facts:
@@ -396,3 +415,7 @@ Do not attach the entire `make -p` output to an incident by default. Record:
 - the smallest repair and its convergence check
 
 Expand the evidence only when those facts do not settle the question.
+
+At the end, repeat the warm-up commands and explain why each result follows from origin,
+flavor, and assignment ownership. The large incident is complete only when the small
+model still feels sufficient.

@@ -34,6 +34,10 @@ Each exercise asks for three things:
 - the evidence you would use to prove it
 - the repair or design decision you would make after reading that evidence
 
+Also label the semantic stage where the problem lives: read time, expansion, rule
+selection, or recipe execution. If more than one stage contributes, show the causal
+order rather than calling the whole build “complex.”
+
 ## Exercise 1: Choose the right CLI probe
 
 Suppose you say:
