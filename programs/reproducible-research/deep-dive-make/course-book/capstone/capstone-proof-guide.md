@@ -43,8 +43,9 @@ not substitute for release evidence.
 4. Inspect `artifacts/proof/reproducible-research/deep-dive-make/selftest/`.
 5. Inspect `artifacts/audit/reproducible-research/deep-dive-make/contract/`.
 6. Inspect `artifacts/audit/reproducible-research/deep-dive-make/incident/`.
-7. Inspect `artifacts/audit/reproducible-research/deep-dive-make/profile/`.
-8. If you still need failure-class study after the bounded proof route, step down into `programs/reproducible-research/deep-dive-make/capstone/` and run `gmake repro`.
+7. Inspect `artifacts/audit/reproducible-research/deep-dive-make/incremental-faults/`.
+8. Inspect `artifacts/audit/reproducible-research/deep-dive-make/profile/`.
+9. If you still need other failure-class study after the bounded proof route, step down into `programs/reproducible-research/deep-dive-make/capstone/` and run `gmake repro`.
 
 ## Questions this proof pass should answer
 

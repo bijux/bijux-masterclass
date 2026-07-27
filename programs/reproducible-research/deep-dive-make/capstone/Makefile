@@ -551,13 +551,14 @@ selftest-report:
 verify-report: selftest-report
 >     @echo "PASS: verify-report completed via $(SELFTEST_REPORT_DIR_ABS)"
 
-proof: walkthrough selftest-report contract-audit incident-audit profile-audit
+proof: walkthrough selftest-report contract-audit incident-audit incremental-fault-audit profile-audit
 >     @printf '%s\n' \
 >       'PASS: wrote learner-facing proof bundles:' \
 >       "  walkthrough: $(WALKTHROUGH_DIR)" \
 >       "  selftest report: $(SELFTEST_REPORT_DIR_ABS)" \
 >       "  contract audit: $(CONTRACT_AUDIT_DIR)" \
 >       "  incident audit: $(INCIDENT_AUDIT_DIR)" \
+>       "  incremental fault audit: $(INCREMENTAL_FAULT_AUDIT_DIR)" \
 >       "  profile audit: $(PROFILE_AUDIT_DIR)"
 
 # ---- quarantined rule-generation demo (optional) ----
@@ -656,7 +657,7 @@ trace-report:
 >       --output "$(TRACE_EVIDENCE_DIR)/manifest.json"
 
 # ---- hardened build verification ----
-hardened: selftest selftest-harness-tests discovery-audit attest test release-check
+hardened: selftest selftest-harness-tests incremental-fault-audit discovery-audit attest test release-check
 >     @$(MAKE) -q all || { echo "FAIL: non-convergent" >&2; exit 1; }
 >     @echo "PASS: hardened invariants"
 

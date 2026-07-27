@@ -87,8 +87,8 @@ question honestly.
 | `profile-audit` | the execution-profile review bundle | you are reviewing portability and precedence |
 | `selftest-report` | a complete passing or failing selftest evidence bundle | you need durable proof output |
 | `verify-report` | the same selftest bundle under shared catalog naming | you need the catalog label used elsewhere |
-| `proof` | the sanctioned multi-bundle review set | one question now spans multiple routes |
-| `hardened` | selftest, audits, attestation, and runtime checks | you want the strongest built-in validation body |
+| `proof` | the sanctioned multi-bundle review set, including paired missing-edge controls | one question now spans multiple routes |
+| `hardened` | selftest, fault discrimination, audits, attestation, and runtime checks | you want the strongest built-in validation body |
 | `confirm` | the same strongest route under shared naming | you are closing stewardship review |
 
 ---

@@ -99,8 +99,8 @@ bounded review route without turning the capstone into a browsing exercise.
 | `incremental-fault-audit` | missing semantic edges stay stale while declared controls refresh | the evidence route proves it can discriminate graph lies |
 | `perf` | governed scenarios bind provenance, a complete change-impact matrix, samples, and outputs | a local baseline is attributable and reviewable |
 | `performance-selftest` | context, rebuild, capture, and comparison dishonesty is rejected | performance claims are gated, not trusted |
-| `proof` | the sanctioned review bundle set exists and agrees with the contract | stewardship has a durable route |
-| `confirm` | the strongest built-in confirmation path still passes | final review is stronger than first-pass learning |
+| `proof` | the sanctioned review bundles include positive invariants and paired missing-edge controls | stewardship has a durable discriminating route |
+| `confirm` | the strongest built-in confirmation path, including the incremental fault audit, still passes | final review is stronger than first-pass learning |
 
 ## Repository shape
 
