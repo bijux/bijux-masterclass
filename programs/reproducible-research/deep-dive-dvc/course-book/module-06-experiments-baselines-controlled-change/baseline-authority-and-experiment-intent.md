@@ -114,6 +114,88 @@ flowchart LR
 The point is not to create paperwork. The point is to keep comparison from depending on
 who remembers the run.
 
+## Four states that are easy to call "the baseline"
+
+Teams often use *baseline* for several different things:
+
+| State | What it tells you | Why it may not be authoritative |
+| --- | --- | --- |
+| current workspace | what is on disk now | it may contain candidate or unrelated edits |
+| experiment parent | which Git commit the run started from | the commit may not be the approved comparison anchor |
+| latest successful run | what executed most recently | success does not establish review authority |
+| approved baseline | the state accepted for this comparison question | this is the anchor the candidate must preserve or explicitly replace |
+
+Those states can coincide, but do not assume they do.
+
+Imagine that `main` records threshold `0.65`. A learner changes the threshold to `0.50`,
+runs a candidate, and then edits the baseline note to say the baseline used `0.60`. The
+Git parent is unchanged and the candidate executes. The comparison anchor is still
+corrupted because its claim no longer matches the recorded baseline.
+
+That is the defect reproduced as `MUTATED_BASELINE_CONTRACT` in the capstone audit.
+
+## Build a baseline proof packet
+
+Before the candidate exists, capture enough state to answer four questions:
+
+1. **Identity:** which governed revision and baseline name authorize comparison?
+2. **Controls:** which parameters belong to that state?
+3. **Population:** which records or cohort define evaluation?
+4. **Meaning:** which metric schema and expected results make the anchor recognizable?
+
+The experiment specimen records those answers in:
+
+```text
+experiment-contract.json
+params.yaml
+data/evaluation.csv
+metrics/metrics.json
+```
+
+The generated audit preserves the resolved baseline in:
+
+```text
+workspace/controlled-threshold/workspace/evidence/baseline-params.json
+workspace/controlled-threshold/workspace/evidence/baseline-metrics.json
+```
+
+The first file shows declared controls. The second carries population identity, metric
+schema, and quantitative results. Neither is sufficient alone.
+
+Run:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+```
+
+Then compare the baseline evidence in `controlled-threshold` and
+`mutated-baseline-contract`. Both candidates run. Only one still has an honest anchor.
+
+## Intent constrains the allowed change set
+
+A useful intent is not merely a sentence attached after execution. It constrains what the
+candidate is allowed to change.
+
+The specimen says:
+
+```json
+{
+  "intent": "lower the escalation threshold to test recall gain against precision cost",
+  "allowed_changes": ["decision.threshold"],
+  "target_threshold": 0.5
+}
+```
+
+These fields answer different questions:
+
+- `intent` states the causal question
+- `allowed_changes` bounds attribution
+- `target_threshold` makes the planned intervention testable
+
+If `decision.review_capacity` also changes, the candidate has violated its own scope even
+when that second change is declared. Declaration makes a change visible; it does not make
+the change relevant to the stated question.
+
 ## Baseline authority can expire
 
 A baseline is not permanent just because it exists.
@@ -130,6 +212,35 @@ It may stop being a fair comparison anchor when:
 When that happens, do not hide the break inside an experiment. Name it as baseline
 boundary work. The team may need a new baseline before candidate comparisons are fair
 again.
+
+## Decide between a candidate and a new baseline
+
+Use this decision table before running:
+
+| Proposed change | Ordinary candidate? | Why |
+| --- | --- | --- |
+| lower one governed threshold on the same records | yes | the baseline question and metric meaning remain intact |
+| replace the evaluation cohort | no | population continuity breaks |
+| rename a metric without changing its definition | possibly, with schema review | consumers may still depend on the old contract |
+| redefine recall to exclude a class | no | the same metric name would carry different meaning |
+| correct mislabeled baseline records | no | prior results no longer describe a trustworthy anchor |
+| vary one model hyperparameter | yes, if all other comparison controls remain stable | attribution remains bounded |
+
+“No” does not mean the change is forbidden. It means the work must establish and approve
+a new baseline before ranking candidates against it.
+
+## Diagnose the baseline before reading the score
+
+When a candidate report arrives, use this order:
+
+1. identify the approved baseline
+2. verify its recorded controls and expected result
+3. verify its population and metric schema
+4. name the candidate intent and allowed changes
+5. only then inspect candidate movement
+
+This order is deliberately conservative. Reading a promising score first makes it easier
+to rationalize a broken comparison after the fact.
 
 ## A baseline is not a prison
 
@@ -153,5 +264,7 @@ You understand this core when you can explain:
 - what one candidate run intends to test
 - why baseline authority can expire
 - when a change should be treated as baseline boundary work rather than an ordinary experiment
+- why an unchanged Git parent does not prove that the baseline contract stayed honest
+- which four surfaces form a minimal baseline proof packet
 
 Controlled change starts with a baseline that means something.
