@@ -87,11 +87,13 @@ They protect decisions that must remain separate.
 | Term | Meaning in this module |
 | --- | --- |
 | artifact equality | Byte-for-byte equality. It is a useful proof when the contract requires reproducible bytes, but it may be too strict or too weak for some artifact meanings. |
+| change-impact matrix | A policy and executed report that pair each governed input class with its expected and observed rebuild set. A useful matrix covers distinct graph roles, such as source, header, generated producer, and generated consumer, rather than repeating one easy source-file case. |
 | experiment contract | The pre-edit record of measured cost, localized boundary, proposed change, invariant at risk, controlled comparison, semantic proof, and rejection condition. |
 | freshness contract | The declared conditions under which cached or generated state must refresh. Adding a cache creates this new correctness obligation. |
+| governed output universe | The complete output set classified by every row of a change-impact matrix. Requiring the same universe for every row makes omissions visible: each output must be classified as expected to rebuild or expected to remain unchanged. |
 | rejection condition | A result that causes a proposed optimization to be reverted or abandoned, such as stale discovery, failed convergence, changed artifact meaning, or a timing effect within noise. |
-| requested-work proof | Evidence that the same meaningful input change still triggers the necessary consumers after a tuning change. |
-| requested-work equivalence | Agreement between baseline and candidate on the declared input, expected rebuild set, observed rebuild set, and absence of missing or unexpected work. It complements final-output comparison because equal final bytes do not reveal overbroad or omitted incremental work. |
+| requested-work proof | Evidence that every declared input class triggers its necessary consumers and no collateral governed outputs. The proof includes matrix coverage, per-case classification, and causal trace for diagnosis. |
+| requested-work equivalence | Agreement between baseline and candidate on the complete input-case set and, for every case, the expected, observed, missing, and unexpected rebuild sets. It complements final-output comparison because equal final bytes do not reveal overbroad, omitted, or untested incremental work. |
 | semantic equivalence | Equality under the artifact's declared meaning rather than necessarily identical bytes. The comparison method must be defined before the experiment. |
 | truth-preserving optimization | A change that removes measured waste while preserving requested work, convergence, artifact meaning, evidence access, failure safety, and applicable pressure behavior. |
 
@@ -107,6 +109,7 @@ They protect decisions that must remain separate.
 | serial comparison and serial repair | `-j1` can localize a schedule-dependent defect without repairing its missing edge or shared writer. |
 | containment, mitigation, recovery, and repair | Each action makes a different promise about harm, service, verification, and root cause. |
 | artifact equality and semantic equivalence | Some contracts require identical bytes; others require a domain comparison. Neither should be assumed. |
+| matrix completeness and one passing case | One source mutation can pass while a header, generated producer, or independent generated consumer still has stale or collateral behavior. |
 | final-output equality and requested-work equivalence | Equal outputs can hide stale or collateral incremental behavior; a tuning claim needs both the output contract and selected-work contract. |
 | evidence volume and evidence usefulness | A short log can be opaque, while a larger attributed trace can be decisive. |
 | selftest proof and performance proof | Build invariants can pass without establishing that a route became faster. |
