@@ -56,28 +56,34 @@ Keep one collaboration packet as you go. By the end of the day it should contain
 - one merge-blocking review comment
 - one remote stewardship note
 - one recovery drill design
-- one no-oral-history handoff repair list
+- one seven-case handoff classification
+- one no-oral-history handoff decision record
 
-If those six artifacts are missing, you are probably still describing good team behavior
+If those seven artifacts are missing, you are probably still describing good team behavior
 instead of designing it.
 
 ## Recommended working layout
 
-If you want one lab tree that can support the whole day, use something like:
+Exercises 6-10 use the generated audit tree:
 
 ```text
-module07-lab/
-├── artifacts/
-├── notes/
-├── review/
-├── runbooks/
-└── workflows/
+artifacts/audit/reproducible-research/deep-dive-dvc/reviewer-handoff/
+├── REVIEWER_HANDOFF_AUDIT_GUIDE.md
+├── route.txt
+├── summary.tsv
+└── workspace/
+    └── <case>/
+        ├── author/
+        ├── reviewer/
+        └── evidence/
+            ├── finding.json
+            └── receipts.json
 ```
 
 Keep one contract table while you work:
 
-| Human expectation | Triggering state change | Verifying check | Failure owner | Why memory is too weak |
-| --- | --- | --- | --- | --- |
+| Case | Discovery | Pull | Status before repro | Repro | Result claim | Decision |
+| --- | --- | --- | --- | --- | --- | --- |
 
 Also keep one stewardship table:
 
@@ -200,78 +206,156 @@ sure your packet can already answer these questions clearly:
 If you cannot answer those four questions in plain language, return to Exercises 1-5 and
 make the packet more explicit before continuing.
 
-## Exercise 6: Review a data-changing pull request
+## Exercise 6: Predict the clean handoff outcomes
 
-Create a review checklist for a change to one tracked dataset and its pointer. Require
-evidence for:
+Before running the audit, inspect:
 
-- origin
-- remote availability
-- affected stages
-- metric change
-- rollback route
+```text
+capstone/repro/reviewer-handoff/
+capstone/scripts/audit_reviewer_handoffs.py
+```
 
-Study note:
-Data review gets stronger when reviewers stop treating pointer changes as self-explanatory.
+For each case, predict:
 
-## Exercise 7: Build a remote-presence CI check
+- whether the reviewer discovers the remote
+- whether pull succeeds
+- whether status is clean before reproduction
+- whether reproduction succeeds
+- whether the restored result matches its claim
+- `ACCEPT` or `BLOCK`
 
-Design a non-destructive CI step that verifies every required DVC object is available
-before merge. Explain:
+Then run:
 
-- credentials
-- least privilege
-- failure output
-- fork behavior
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+```
 
-Study note:
-Good CI output tells the team exactly which shared-state promise failed.
-
-## Exercise 8: Resolve a pointer merge conflict
-
-Describe how two branches can legitimately change the same tracked artifact. Resolve the
-conflict by choosing or regenerating content, not by manually combining hash lines.
+Compare your table with `summary.tsv` and each `finding.json`.
 
 What to hand in:
 
-- the conflict story
-- the resolution route
-- one sentence explaining why manual hash editing is unsafe
+- prediction table
+- corrected table
+- one explanation of why `PASS / BLOCK` is not contradictory
 
 Study note:
-This exercise matters because DVC pointers are references to governed content, not text
-fragments to splice.
+Prediction makes you reason from the handoff contracts instead of memorizing labels.
 
-## Exercise 9: Define ownership for shared artifacts
+## Exercise 7: Separate remote discovery from object availability
 
-Assign owners for:
+Compare:
 
-- pointer review
-- remote administration
-- retention
-- incident response
-- scientific acceptance
+```text
+workspace/missing-remote-object/evidence/receipts.json
+workspace/undiscoverable-remote/evidence/receipts.json
+```
 
-Explain why one person should not silently own every boundary.
+For each case:
 
-Study note:
-Ownership is useful only when it survives vacations, role changes, and incidents.
-
-## Exercise 10: Conduct a no-oral-history handoff
-
-Give a teammate only the repository and authorized remote access. Ask them to recover,
-reproduce, and explain one result. Turn every question they must ask into a documentation
-or automation repair.
+1. read `remote_list`
+2. read `pull`
+3. identify whether the remote route or the required bytes are missing
+4. assign the repair to an owner
+5. write an unblock condition
 
 What to hand in:
 
-- the teammate questions
-- the repair list
-- one sentence naming the highest-value missing contract you discovered
+- two short evidence records
+- two different review comments
+- one sentence explaining why both should not be reported as “remote failure”
 
 Study note:
-This final exercise matters because collaboration quality is proven by handoff, not by
-confidence in the original author.
+The same failed command can sit behind different contracts and different repairs.
+
+## Exercise 8: Distinguish incomplete source from stale execution
+
+Compare:
+
+```text
+workspace/untracked-stage-dependency/evidence/receipts.json
+workspace/stale-execution-record/evidence/receipts.json
+```
+
+Build this table:
+
+| Case | Pull | Pre-repro status | Repro | Missing or stale evidence | Repair |
+| --- | --- | --- | --- | --- | --- |
+
+Then answer:
+
+- why does one reproduction fail while the other succeeds?
+- why does successful reproduction not accept the stale handoff?
+- which files must the author add or regenerate?
+- which receipt must be captured before reproduction changes the workspace?
+
+What to hand in:
+
+- completed table
+- one paragraph separating recoverability from submitted-state coherence
+- one evidence-complete blocker for each case
+
+Study note:
+This exercise prevents “repro passed” from erasing the state that arrived for review.
+
+## Exercise 9: Review authority and result meaning
+
+Compare:
+
+```text
+workspace/mutating-review-route/reviewer/handoff-contract.json
+workspace/missing-result-contract/reviewer/handoff-contract.json
+```
+
+The first case executes correctly but asks a reviewer to run `dvc push`. The second pulls
+and reproduces but omits the expected result claim.
+
+Design:
+
+- a read-only pull-request route
+- a separate trusted publication route
+- a result contract for the incident summary
+- fork behavior when remote credentials are unavailable
+
+What to hand in:
+
+- authority table naming read and write operations
+- corrected review route
+- corrected result contract
+- one sentence explaining why executable output is not automatically reviewable
+
+Study note:
+Infrastructure success and result interpretation are different review authorities.
+
+## Exercise 10: Conduct a no-oral-history handoff review
+
+Use only the generated `complete-handoff/reviewer/` clone and its receipts. Do not inspect
+the author workspace until your decision is written.
+
+Produce a handoff record containing:
+
+1. bounded claim
+2. Git revision under review
+3. cache starting condition
+4. remote discovery evidence
+5. pull evidence
+6. pre-reproduction status evidence
+7. reproduction evidence
+8. result-to-claim comparison
+9. authority used
+10. `ACCEPT` or `BLOCK` with limits
+
+Afterward, inspect one blocked author workspace. Write down any fact that was visible only
+there and explain why it cannot be required for ordinary review.
+
+What to hand in:
+
+- complete decision record
+- list of author-only facts you deliberately excluded
+- one highest-value contract repair for a real project you know
+
+Study note:
+Collaboration quality is proven when the reviewer can make a bounded decision without
+asking the author to narrate the workspace.
 
 ## Mastery check
 
@@ -282,4 +366,5 @@ visible:
 - CI should verify shared state from less local context
 - merges should block when DVC evidence is incomplete
 - remotes are shared artifact infrastructure
-- recovery drills turn restoration claims into evidence
+- recovery drills preserve pre-repair observations
+- executable output still needs a result contract
