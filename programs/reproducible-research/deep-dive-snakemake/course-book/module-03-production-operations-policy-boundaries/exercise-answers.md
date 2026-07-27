@@ -285,6 +285,23 @@ A strong review also shows a stable order:
 
 ## What all ten answers should have in common
 
+```mermaid
+flowchart TD
+    E["generated evidence"] --> C{"contract preserved?"}
+    C -->|"no"| R["REJECT and name repair owner"]
+    C -->|"yes"| X{"scheduler contacted?"}
+    X -->|"no"| L["ACCEPT local translation only"]
+    X -->|"yes"| S["inspect job, worker, and output evidence"]
+```
+
+```mermaid
+flowchart LR
+    D["declaration"] --> T["translation"]
+    T --> J["scheduler acceptance"]
+    J --> W["worker execution"]
+    W --> P["verified publication"]
+```
+
 The best Module 03 answers usually:
 
 1. distinguish policy from semantics clearly

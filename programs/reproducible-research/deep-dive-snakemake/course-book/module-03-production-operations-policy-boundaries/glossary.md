@@ -118,6 +118,14 @@ The second sentence collapses local rendering, scheduler acceptance, worker
 execution, storage access, and output correctness into one unsupported claim.
 
 ```mermaid
+flowchart LR
+    C["job contract"] --> R["resource translation"]
+    R --> S["submission receipt"]
+    S --> B["bounded claim"]
+    B --> I["site integration"]
+```
+
+```mermaid
 flowchart TD
     R["recording adapter evidence"] --> T["translation claim"]
     J["scheduler job ID"] --> I["site integration claim"]

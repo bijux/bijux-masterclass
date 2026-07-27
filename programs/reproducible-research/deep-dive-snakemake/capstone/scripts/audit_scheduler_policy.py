@@ -126,8 +126,7 @@ def classify(
             {
                 "adapter_rejected": under["status"] == "rejected",
                 "nonzero_exit": under["return_code"] == 2,
-                "reason_names_underprovisioning": "under-provisions"
-                in under.get("reason", ""),
+                "reason_names_underprovisioning": "under-provisions" in under.get("reason", ""),
             },
         ),
         finding(
@@ -136,8 +135,7 @@ def classify(
             {
                 "adapter_rejected": semantic["status"] == "rejected",
                 "nonzero_exit": semantic["return_code"] == 2,
-                "reason_names_semantics": "semantics"
-                in semantic.get("reason", ""),
+                "reason_names_semantics": "semantics" in semantic.get("reason", ""),
             },
         ),
     ]

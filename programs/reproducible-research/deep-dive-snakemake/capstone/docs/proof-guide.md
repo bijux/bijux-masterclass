@@ -42,9 +42,11 @@ first.
 | module evidence rejects broad or incomplete contracts | `make module-interface-selftest` | seven acceptance, rejection, and isolation tests |
 | tuning removes attributable work without weakening the contract | `make performance-diagnostics-audit` | [Performance Diagnostics Audit Guide](performance-diagnostics-audit-guide.md), four isolated runs, report, and metrics |
 | performance evidence rejects guarantee loss and fake comparisons | `make performance-diagnostics-selftest` | seven acceptance, rejection, regression, and isolation tests |
+| scheduler translation preserves declared resources and semantics | `make scheduler-policy-audit` | dry-run, accepted receipt, three rejection receipts, and report |
+| scheduler-policy evidence responds to unsafe mutations | `make scheduler-policy-selftest` | seven mapping, rejection, and isolation tests |
 | the workflow stays deterministic across core counts | `make selftest` | `tests/selftest.sh`, published summaries under `publish/v1/` |
 | executed evidence can be reviewed in one place | `make tour` | `run.txt`, `summary.txt`, published artifacts, [TOUR.md](tour.md) |
-| one sanctioned multi-bundle proof route exists | `make proof` | `tour`, `verify-report`, profile, module-interface, context-invariance, and performance-diagnostics bundles |
+| one sanctioned multi-bundle proof route exists | `make proof` | `tour`, `verify-report`, profile, module-interface, context-invariance, performance-diagnostics, and scheduler-policy bundles |
 | the full repository contract still survives clean-room pressure | `make confirm` | `Makefile`, `tests/`, `publish/v1/`, profile surfaces |
 
 ## Route selection rules
@@ -56,6 +58,8 @@ first.
 - choose `module-interface-selftest` when the question is whether that gate rejects dishonesty
 - choose `performance-diagnostics-audit` for baseline, tuning, validation-loss, and regression questions
 - choose `performance-diagnostics-selftest` when the question is whether the performance gate rejects dishonest evidence
+- choose `scheduler-policy-audit` for declared-resource translation and semantic-profile boundary questions
+- choose `scheduler-policy-selftest` when the question is whether unsafe mappings are rejected causally
 - choose `selftest` for determinism questions
 - choose `tour` for executed evidence
 - choose `proof` only when one review question now spans several bundles

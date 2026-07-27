@@ -331,6 +331,15 @@ Do not call the day complete if your answers do any of these:
 
 ## Exit standard for the exercise day
 
+```mermaid
+flowchart LR
+    P["predict policy decision"] --> A["run audit"]
+    A --> R["read receipt and reason"]
+    R --> O["assign owner"]
+    O --> F["design repair"]
+    F --> H["state remaining site proof"]
+```
+
 Do not count the day complete unless you can do all of this without leaning on the answer
 page as a command script:
 

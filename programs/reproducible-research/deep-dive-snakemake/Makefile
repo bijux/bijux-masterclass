@@ -68,6 +68,12 @@ capstone-performance-diagnostics-audit: ## Classify honest tuning, semantic drif
 capstone-performance-diagnostics-selftest: ## Reject dishonest performance evidence
 	$(MAKE) -C capstone performance-diagnostics-selftest
 
+capstone-scheduler-policy-audit: ## Record and classify scheduler resource translation
+	$(MAKE) -C capstone scheduler-policy-audit
+
+capstone-scheduler-policy-selftest: ## Reject unsafe scheduler mapping evidence
+	$(MAKE) -C capstone scheduler-policy-selftest
+
 check: capstone-check ## Run capstone fast checks
 
 test: check ## Run the course's default verification target

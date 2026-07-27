@@ -55,6 +55,7 @@ to.
 | how do local, CI, and scheduler policy differ | [profile-audit-guide.md](profile-audit-guide.md) | [proof-guide.md](proof-guide.md) |
 | does a module expose config, paths, and policy at its caller boundary | [module-interface-audit-guide.md](module-interface-audit-guide.md) | `make module-interface-audit` |
 | did a performance change remove work without removing guarantees | [performance-diagnostics-audit-guide.md](performance-diagnostics-audit-guide.md) | `make performance-diagnostics-audit` |
+| does a scheduler profile preserve declared resources and workflow meaning | [scheduler-policy-audit-guide.md](scheduler-policy-audit-guide.md) | `make scheduler-policy-audit` |
 | what does this workflow produce and why does the domain matter | [domain-guide.md](domain-guide.md) | [walkthrough-guide.md](walkthrough-guide.md) |
 
 ## Public project-doc set
@@ -65,6 +66,7 @@ to.
 - [file-api.md](file-api.md) for the downstream-facing file contract
 - [module-interface-audit-guide.md](module-interface-audit-guide.md) for reusable rule bindings and hidden coupling
 - [performance-diagnostics-audit-guide.md](performance-diagnostics-audit-guide.md) for baseline, tuning, semantic-drift, and regression decisions
+- [scheduler-policy-audit-guide.md](scheduler-policy-audit-guide.md) for recorded scheduler requests, rejection cases, and site-proof limits
 - [profile-audit-guide.md](profile-audit-guide.md) for execution-policy review
 - [proof-guide.md](proof-guide.md) for claim-to-evidence routing
 - [publish-review-guide.md](publish-review-guide.md) for downstream trust review

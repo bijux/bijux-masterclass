@@ -130,6 +130,14 @@ capstone-performance-diagnostics-audit: ## Classify selected program performance
 capstone-performance-diagnostics-selftest: ## Reject dishonest selected program performance evidence
 	@$(RUN_PROGRAM) capstone-performance-diagnostics-selftest
 
+.PHONY: capstone-scheduler-policy-audit
+capstone-scheduler-policy-audit: ## Record selected program scheduler policy evidence
+	@$(RUN_PROGRAM) capstone-scheduler-policy-audit
+
+.PHONY: capstone-scheduler-policy-selftest
+capstone-scheduler-policy-selftest: ## Reject unsafe selected program scheduler mappings
+	@$(RUN_PROGRAM) capstone-scheduler-policy-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit
