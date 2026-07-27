@@ -44,6 +44,7 @@ question honestly.
 | do existing candidate bytes pass without a rebuild | `make verify-dist` | `make install-rehearsal` |
 | do malformed candidates and destinations fail correctly | `make release-selftest` | `make release-check` |
 | what do the governed build states cost here | `make perf` | inspect the performance evidence bundle |
+| does one source change select exactly the necessary work | `make performance-incremental` | inspect policy and incremental report |
 | did cost change under the same semantic contract | `make performance-compare` | inspect both bundles and the comparison report |
 | do performance evidence gates reject dishonest inputs | `make performance-selftest` | inspect the rejection tests |
 | do I need the proof saved as a review bundle | `make verify-report` | `make proof` |
@@ -71,6 +72,7 @@ question honestly.
 | `release-selftest` | ten acceptance and rejection tests | you need executable release guardrails |
 | `release-check` | complete local candidate production and acceptance | you need the full local release claim |
 | `perf` | repeated timings, convergence, trusted-output inventories, and context | you need a reviewable local baseline |
+| `performance-incremental` | missing and unexpected rebuild classifications | you need requested-work proof |
 | `performance-compare` | compatible timing deltas guarded by semantic equivalence | you have a prior evidence bundle |
 | `performance-selftest` | capture and comparison acceptance/rejection tests | you need to review the evidence gate |
 | `walkthrough` | the bounded first-pass bundle | you need an ordered entry route |

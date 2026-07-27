@@ -47,6 +47,7 @@ start narrower.
 | malformed release inputs fail at the expected boundary | `make release-selftest` | release tests and rejection output |
 | the full local release claim holds | `make release-check` | release acceptance record and `RELEASE_GUIDE.md` |
 | governed local build-cost evidence is reviewable | `make perf` | `PERFORMANCE_EVIDENCE_GUIDE.md`, `summary.tsv`, `evidence.json` |
+| a declared input selects the required rebuild scope | `make performance-incremental` | incremental policy and requested-work report |
 | two build-cost bundles are semantically comparable | `make performance-compare` | comparison report and both evidence bundles |
 | performance gates reject dishonest evidence | `make performance-selftest` | capture and comparison rejection tests |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
