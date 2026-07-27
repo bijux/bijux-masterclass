@@ -104,6 +104,71 @@ When divergence appears, ask:
 Those questions produce better engineering choices than reflexively pinning everything or
 blaming the user.
 
+## Do not call hidden drift a tolerance
+
+The runtime audit produces an exact, deterministic difference:
+
+```text
+dot runtime:   8.00
+comma runtime: 8,00
+```
+
+No randomness is involved. The hidden case stays at `8.00` after ordinary repro because
+DVC cannot see the changed process variable.
+
+This is **under-rebuild**, not conditional determinism. A tolerance would answer whether
+two freshly executed results are acceptably close. It cannot justify reusing a result
+produced under old runtime meaning.
+
+Use this order:
+
+1. prove the stage executed under each intended environment
+2. compare the resulting values
+3. apply a declared tolerance only if exact sameness is not required
+
+Skipping the first step turns stale output into apparently stable output.
+
+## Classify divergence with evidence
+
+| Observation | Classification | Required evidence |
+| --- | --- | --- |
+| identical outputs under matching fingerprints | repeatable in tested context | both result and fingerprint receipts |
+| different outputs under one isolated runtime change | deterministic environment influence | controlled contrast |
+| bounded differences across fully executed contexts | conditional determinism candidate | repeated runs and declared tolerance |
+| old output reused after hidden context change | stale semantic result | planner receipt plus current fingerprint |
+
+The final row belongs to contract repair, not statistical tolerance design.
+
+## Use force only as a diagnostic probe
+
+In the hidden case, forced repro changes output from `8.00` to `8,00`. That establishes
+that runtime state is causal.
+
+It does not establish a durable execution contract:
+
+- `dvc.yaml` remains unchanged
+- the next environment change remains invisible
+- the lock records what happened only after force
+
+Force is useful here because it answers “would current runtime state change the result?”
+It is not the answer to “will future stale decisions be correct?”
+
+## Write a conditional determinism contract
+
+When variability is real rather than stale reuse, record:
+
+| Contract element | Example |
+| --- | --- |
+| governed context | Python lock hash and container digest |
+| controlled runtime values | seed, thread count, locale |
+| repeated-run method | three clean executions per context |
+| comparison measure | absolute metric delta |
+| acceptance boundary | delta no greater than `0.002` |
+| escalation route | reject release and inspect runtime evidence |
+
+The word “conditional” should point to inspectable conditions, not provide cover for an
+unexplained difference.
+
 ## Why this matters for DVC specifically
 
 DVC helps keep data, stages, and recorded state explicit.
