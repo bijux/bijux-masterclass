@@ -24,6 +24,18 @@ The strongest Module 02 answers usually do four things:
 - they point to one evidence route
 - they describe the repair in terms of reviewable artifacts, not workflow folklore
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one source-of-truth note
+- one normalized registry or target list
+- one fanout check
+- one checkpoint-justification note
+- one rejection or validation record
+- one publication note for discovery artifacts
+
+If your answers rely only on what Snakemake happened to do, the reasoning is still too
+thin.
+
 ## Exercise 1: Compare two discovery surfaces
 
 A strong answer compares the source of truth directly.
@@ -57,6 +69,11 @@ Why this is strong:
 - it names the old weakness clearly
 - it adds one owned artifact instead of vague "better organization"
 - it explains why review got easier
+
+The missing but important sentence is usually this one:
+
+> Another reviewer can now inspect the declared discovered set directly instead of
+> reverse-engineering a transient directory scan.
 
 ## Exercise 3: Prevent one accidental fanout explosion
 
@@ -123,6 +140,11 @@ Static planning is sufficient because the manifest already contains every fact n
 name the targets. A checkpoint would not discover new information; it would only defer
 known information and make the graph harder to inspect.
 
+The key explanatory sentence is:
+
+> A checkpoint is wrong here because it hides a fact we already knew and could have
+> validated before execution began.
+
 ## Exercise 7: Justify one checkpoint and reject one fake one
 
 A strong answer contrasts the two designs directly.
@@ -179,6 +201,10 @@ Checkpoint directories and scheduler logs remain internal unless they are delibe
 part of the support contract. The accepted registry becomes public because it explains
 why the result set has exactly its observed membership.
 
+The strongest answers also say explicitly which discovery surfaces stay internal, such as
+checkpoint working directories or engine metadata, so the publish contract stays small
+and reviewable.
+
 ## What all ten answers should have in common
 
 The best Module 02 answers usually:
@@ -189,3 +215,10 @@ The best Module 02 answers usually:
 4. describe repairs as stronger contracts, not just shorter code
 
 If your answers do those four things, you are learning the module in the right direction.
+
+Weak answer pattern:
+
+- "Snakemake will figure out the dynamic part for us"
+
+That sentence skips the discovery artifact, the validation boundary, and the public
+review surface all at once. If your answers still sound like that, keep revising.

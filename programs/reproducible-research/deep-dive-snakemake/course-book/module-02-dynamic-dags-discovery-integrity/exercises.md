@@ -49,6 +49,33 @@ module02-lab/
 That structure makes it easier to compare static discovery, runtime discovery, and publish
 integrity without rebuilding the whole project for every prompt.
 
+Build one small discovery-integrity packet as you go:
+
+- one note naming the source of truth for each discovery design
+- one normalized target-list or registry artifact
+- one fanout check showing how the target set changed after a repair
+- one checkpoint-justification note that names the runtime fact being learned
+- one rejection or validation record for a bad candidate
+- one publish note distinguishing public discovery artifacts from internal engine state
+
+If those six artifacts are missing, the day usually turns into "dynamic Snakemake magic"
+instead of "reviewable discovery design."
+
+```mermaid
+flowchart LR
+  truth["name the discovery surface"]
+  normalize["normalize it into an owned artifact"]
+  fanout["test target-set integrity"]
+  checkpoint["justify runtime discovery honestly"]
+  publish["carry discovery truth into publication"]
+  review["separate public contract from internal state"]
+
+  truth --> normalize --> fanout --> checkpoint --> publish --> review
+```
+
+Use that route on purpose. It keeps the day centered on artifacts that carry truth rather
+than on checkpoint mystique.
+
 ## Exercise 1: Compare two discovery surfaces
 
 Model the same three-sample workflow in two ways:
@@ -157,6 +184,7 @@ What to hand in:
 - the deterministic target list
 - one deliberately invalid record and its early error
 - an explanation of why static planning is sufficient
+- one sentence explaining why a checkpoint here would hide already knowable facts
 
 Study note:
 This exercise should make you comfortable rejecting a checkpoint, not just implementing
@@ -192,6 +220,19 @@ What to hand in:
 - evidence from before and after checkpoint completion
 - an explanation of the runtime fact that could not be known during initial planning
 
+## Midday self-check
+
+Before you move into testing discovery changes and publishing the result, make sure your
+packet can already answer all of these:
+
+- which artifact is the actual source of truth for the discovered set
+- whether your target fanout comes from validated records instead of accidental cross-products
+- why a checkpoint is justified or unjustified in this exact case
+- which discovery artifacts a downstream reviewer will need to see later
+
+If you cannot answer those four questions cleanly, return to the earlier exercises and
+make the packet more explicit before moving on.
+
 Study note:
 If the workflow could have learned the same set from declared config before execution,
 this is the wrong place to use a checkpoint.
@@ -225,6 +266,16 @@ What to hand in:
 - a machine-readable inventory and checksum verification command
 - a short consumer procedure that does not depend on internal working paths
 - an explanation of which artifacts are public contracts and which remain internal state
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- describe discovery as if the engine "just knows" the sample set
+- use a checkpoint where the facts were already available in static validated data
+- accept fanout growth without tracing which records created it
+- publish a dynamic result without exposing the accepted and rejected discovery artifacts
+- blur checkpoint internals and public review surfaces into one undifferentiated bundle
 
 ## Exit standard for the exercise day
 
