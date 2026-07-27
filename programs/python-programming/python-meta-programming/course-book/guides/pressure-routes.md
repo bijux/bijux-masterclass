@@ -24,161 +24,162 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named engineering pressure,
-not for wandering the whole course-book. Read the second diagram as the route loop:
-choose the smallest honest route, study the linked mechanism pages, then leave with one
-concrete design or review decision.
+Use this page when you are entering the course from a real engineering pressure rather
+than from a full front-to-back study plan.
 
-Use this page when you are entering the course from a real code review, framework change,
-or debugging problem instead of from a full front-to-back reading plan.
+That pressure might be:
 
-## Lowest-power comparison rules
+- "I inherited decorator-heavy code and do not trust it."
+- "I cannot tell whether this validation belongs in a descriptor or somewhere simpler."
+- "Someone proposed a metaclass and I need to review the design honestly."
 
-Keep these in view while using the routes below:
+This page exists to stop that pressure from pushing you straight to the most advanced
+mechanism. It routes you through the smallest honest reading path first.
 
-| If the real problem is... | Prefer this first | Do not jump to... |
+## The rule that governs every route
+
+Always ask:
+
+> what is the lowest-power mechanism that could own this behavior honestly?
+
+If you cannot explain why a stronger mechanism is necessary, you are not ready to approve it.
+
+## Lowest-power comparison table
+
+| If the real problem is... | Try this first | Do not jump to... |
 | --- | --- | --- |
-| observing runtime structure safely | `inspect`, `type`, `vars`, `getattr_static` | decorators or descriptors |
-| changing one callable's behavior while preserving identity | a decorator with `functools.wraps` | descriptors or metaclasses |
-| changing one class after it already exists | a class decorator | a metaclass |
-| owning validation or computed behavior for one attribute | `property` or a descriptor | a class decorator or metaclass |
-| sharing field behavior across many attributes or classes | a descriptor with `__set_name__` | a metaclass |
-| enforcing a rule while the class body is being built | a narrow metaclass hook | global patching or import hooks |
+| observing runtime structure safely | `inspect`, `type`, `vars`, `getattr_static` | decorators, descriptors, or metaclasses |
+| changing one callable while keeping its identity visible | a transparent decorator with `functools.wraps` | descriptors or metaclasses |
+| changing one class after it already exists | a class decorator or explicit helper | a metaclass |
+| owning behavior for one attribute | `property` or a descriptor | a metaclass |
+| sharing one field contract across attributes or classes | a descriptor with `__set_name__` | a metaclass |
+| enforcing a rule during class creation | a narrow metaclass hook | global patching or import hooks |
 
-If you cannot explain why the higher-power option is necessary, stay on the lower rung.
+## Choose the route by question
 
-## Route by design question
-
-| If the question is... | Start with | Keep nearby | First capstone cross-check |
-| --- | --- | --- | --- |
-| What is Python actually doing at runtime here? | Modules 01 to 03 | [First-Contact Map](../module-00-orientation/first-contact-map.md) | manifest output and `framework.py` |
-| How can I inspect this safely without accidentally running business logic? | Module 02 | [Proof Ladder](proof-ladder.md) | `make manifest`, `make registry`, and `cli.py` |
-| Did this wrapper preserve the callable contract honestly? | Modules 03 to 05 | [Proof Matrix](proof-matrix.md) | `make action`, `make signatures`, and `actions.py` |
-| Should this behavior live in a wrapper, a property, or a descriptor? | Modules 06 to 08 | [Proof Matrix](proof-matrix.md) | `fields.py`, `make field`, and field tests |
-| Does this rule truly belong at class creation time? | Module 09 | [Mastery Map](../module-00-orientation/mastery-map.md) | `make registry`, `framework.py`, and registry tests |
-| Which runtime hooks are too dangerous to approve casually? | Module 10 | [Review Checklist](../reference/review-checklist.md) | `make verify-report` and the saved public evidence |
-| What would I reject as making the system more magical than necessary? | Module 10 | [Topic Boundaries](../reference/topic-boundaries.md) | capstone proof bundle and review worksheet |
-
-## Pressure to first proof surface
-
-| Pressure | First capstone surface | Escalate with |
+| If your real question is... | Start with | First capstone cross-check |
 | --- | --- | --- |
-| wrapper honesty | `make trace`, `capstone/src/incident_plugins/actions.py` | `capstone/tests/test_runtime.py` |
-| attribute validation and field ownership | `make field`, `capstone/src/incident_plugins/fields.py` | `capstone/tests/test_fields.py` |
-| metaclass justification | `make registry`, `capstone/src/incident_plugins/framework.py` | `capstone/tests/test_registry.py` |
-| inherited dynamic system | `make inspect`, then `manifest.json` and `registry.json` | `capstone/tests/` and `make verify-report` |
-| framework design under change | `make inspect` and [Capstone Guide](../capstone/index.md) | `make verify-report` and [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
+| What is Python actually doing at runtime here? | Modules 01 to 03 | manifest output and `framework.py` |
+| How can I inspect this safely without accidental execution? | Module 02 | `make manifest`, `make registry`, and `cli.py` |
+| Did this wrapper preserve the callable contract honestly? | Modules 03 to 05 | `make action`, `make signatures`, and `actions.py` |
+| Should this live in a wrapper, property, or descriptor? | Modules 06 to 08 | `fields.py`, `make field`, and field tests |
+| Does this really belong at class-definition time? | Module 09 | `make registry`, `framework.py`, and registry tests |
+| Which runtime powers are too dangerous to approve casually? | Module 10 | verification bundle and review checklist |
 
-## Route 1: Review a Wrapper Without Losing Provenance
+## Route 1: Review a wrapper without losing provenance
 
-Use this when the immediate pressure is decorator-heavy code that may be hiding the callable it wrapped.
+Use this route when the immediate pressure is decorator-heavy code.
 
-1. Read [Review Checklist](../reference/review-checklist.md).
-2. Read [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) for signatures, provenance, and evidence boundaries.
-3. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) for transparent wrapper mechanics.
-4. Read [Module 05](../module-05-decorator-design-policies-typing/index.md) for policy-heavy wrappers and where they stop being honest.
-5. Cross-check [Capstone Guide](../capstone/index.md) and `capstone/src/incident_plugins/actions.py`.
+Study order:
 
-Use this route when the core question sounds like:
+1. [Review Checklist](../reference/review-checklist.md)
+2. [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md)
+3. [Module 04](../module-04-function-wrappers-transparent-decorators/index.md)
+4. [Module 05](../module-05-decorator-design-policies-typing/index.md)
+5. `actions.py` plus the capstone action surfaces
 
-- Did this decorator preserve the original callable's signature and metadata?
-- Is this wrapper still a function transformation, or is it secretly a runtime policy layer?
-- Would a small explicit object be easier to review than another decorator?
+Use this route to answer:
 
-Smallest executable follow-up:
+- Did the decorator preserve signature and metadata?
+- Is the wrapper still a call-boundary change, or is it hiding policy?
+- Would an explicit object be easier to inspect than another decorator?
 
-- Run `make PROGRAM=python-programming/python-meta-programming capstone-trace`.
-- Read [Capstone Map](../capstone/capstone-map.md) and inspect the saved trace output before widening the review.
+Best first capstone move:
 
-## Route 2: Untangle Attribute Validation and Field Ownership
+- run `make PROGRAM=python-programming/python-meta-programming capstone-trace`
 
-Use this when the real confusion is around properties, descriptors, validation, or per-instance storage.
+## Route 2: Untangle attribute ownership and validation
 
-1. Read [Module 06](../module-06-class-customization-pre-metaclasses/index.md) for class decorators, properties, and lower-power alternatives.
-2. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) for descriptor lookup and precedence.
-3. Read [Module 08](../module-08-descriptor-systems-validation-framework-design/index.md) for framework-shaped field systems and their limits.
-4. Keep the lowest-power comparison rules on this page open while reading.
-5. Cross-check [Capstone Map](../capstone/capstone-map.md) and `capstone/src/incident_plugins/fields.py`.
+Use this route when the pressure is around properties, descriptors, or field systems.
 
-Use this route when the core question sounds like:
+Study order:
 
-- Does this invariant belong to attribute access, or should it stay explicit?
-- Why is one field shadowable while another always wins over instance state?
-- Is this descriptor still a field contract, or has it become a hidden framework?
+1. [Module 06](../module-06-class-customization-pre-metaclasses/index.md)
+2. [Module 07](../module-07-descriptors-lookup-attribute-control/index.md)
+3. [Module 08](../module-08-descriptor-systems-validation-framework-design/index.md)
+4. `fields.py` plus the field tests
 
-Smallest executable follow-up:
+Use this route to answer:
 
-- From `capstone/`, run `make field`.
-- Read [Capstone File Guide](../capstone/capstone-file-guide.md) so field ownership stays explicit while you inspect `fields.py`.
+- Does the invariant belong on attribute access?
+- Why does one field yield to instance state while another does not?
+- Is this still a field contract, or has it turned into hidden architecture?
 
-## Route 3: Decide Whether a Metaclass Is Actually Justified
+Best first capstone move:
 
-Use this when a design is proposing class-creation hooks, registries, or import-time behavior.
+- run `make PROGRAM=python-programming/python-meta-programming capstone-field`
 
-1. Read [Module 06](../module-06-class-customization-pre-metaclasses/index.md) to revisit lower-power class customization.
-2. Read [Module 09](../module-09-metaclass-design-class-creation/index.md) for class-creation timing and metaclass scope.
-3. Read [Module 10](../module-10-runtime-governance-mastery-review/index.md) for red lines and review policy.
-4. Keep [Review Checklist](../reference/review-checklist.md) plus the lowest-power comparison rules on this page open.
-5. Cross-check `capstone/src/incident_plugins/framework.py` and `capstone/tests/test_registry.py`.
+## Route 3: Decide whether a metaclass is actually justified
 
-Use this route when the core question sounds like:
+Use this route when the design proposal involves class creation, registries, or import-time control.
+
+Study order:
+
+1. [Module 06](../module-06-class-customization-pre-metaclasses/index.md)
+2. [Module 09](../module-09-metaclass-design-class-creation/index.md)
+3. [Module 10](../module-10-runtime-governance-mastery-review/index.md)
+4. `framework.py` plus `tests/test_registry.py`
+
+Use this route to answer:
 
 - What must happen before the class exists?
 - Could a class decorator or explicit registration function own this more honestly?
-- Is the metaclass deterministic, resettable in tests, and easy to inspect?
+- Is the metaclass deterministic, resettable, and inspectable?
 
-Smallest executable follow-up:
+Best first capstone move:
 
-- From `capstone/`, run `make registry`.
-- Read [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) before deciding the metaclass is justified.
+- run `make PROGRAM=python-programming/python-meta-programming capstone-registry`
 
-## Route 4: Inherit a Dynamic Codebase Without Trusting Its Magic
+## Route 4: Inherit a dynamic codebase without trusting its magic
 
-Use this when the code already exists and you need a reliable order for inspection.
+Use this route when the code already exists and you need a calm order for inspection.
 
-1. Read [Start Here](start-here.md) and [Course Guide](course-guide.md).
-2. Read [Module 00](../module-00-orientation/index.md) for the power ladder and study stance.
-3. Read [Module 02](../module-02-runtime-observation-inspection/index.md) and [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) before touching higher-power hooks.
-4. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) and [Module 09](../module-09-metaclass-design-class-creation/index.md) once the observation layer is stable.
-5. Finish with [Module 10](../module-10-runtime-governance-mastery-review/index.md) and [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md).
+Study order:
 
-Use this route when the core question sounds like:
+1. [Start Here](start-here.md)
+2. [Course Guide](course-guide.md)
+3. [Module 00](../module-00-orientation/index.md)
+4. [Module 02](../module-02-runtime-observation-inspection/index.md)
+5. [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md)
+6. only then move toward descriptors or metaclasses
 
-- Where does this system execute code during inspection?
-- Which dynamic behaviors happen at import time instead of call time?
-- Which parts of this design should stay, and which parts should be redesigned downward?
+Use this route to answer:
 
-Smallest executable follow-up:
+- Where does the system execute code during inspection?
+- Which behavior happens at import time rather than call time?
+- What should be kept, and what should be redesigned downward?
 
-- Run `make PROGRAM=python-programming/python-meta-programming inspect`.
-- Read [Capstone Walkthrough](../capstone/capstone-walkthrough.md) so the inspection bundle stays attached to one review route.
+Best first capstone move:
 
-## Route 5: Build a Small Framework Without Teaching the Wrong Lesson
+- run `make PROGRAM=python-programming/python-meta-programming inspect`
 
-Use this when you are authoring library code and need the design to stay inspectable for future maintainers.
+## Route 5: Build a framework without teaching the wrong lesson
 
-1. Read [Module 01](../module-01-runtime-objects-object-model/index.md) through [Module 03](../module-03-signatures-provenance-runtime-evidence/index.md) for the observation floor.
-2. Read [Module 04](../module-04-function-wrappers-transparent-decorators/index.md) through [Module 06](../module-06-class-customization-pre-metaclasses/index.md) for lower-power customization.
-3. Read [Module 07](../module-07-descriptors-lookup-attribute-control/index.md) through [Module 09](../module-09-metaclass-design-class-creation/index.md) only where the lower-power alternatives genuinely fail.
-4. Keep the lowest-power comparison rules on this page and [Review Checklist](../reference/review-checklist.md) open while designing.
-5. Cross-check [Capstone Guide](../capstone/index.md), [Capstone Map](../capstone/capstone-map.md), and the tests under `capstone/tests/`.
+Use this route when you are designing a reusable dynamic system and want maintainers to
+be able to inspect it later without pain.
 
-Use this route when the core question sounds like:
+Study order:
+
+1. Modules 01 to 03 for the observation floor
+2. Modules 04 to 06 for lower-power customization
+3. Modules 07 to 09 only where lower-power options fail honestly
+4. Module 10 before approving the overall design
+
+Use this route to answer:
 
 - Which mechanism owns this invariant with the smallest blast radius?
-- Will a maintainer be able to inspect this behavior without executing business code?
-- Does the design stay testable once multiple plugins or extension points exist?
+- Will another engineer be able to inspect this behavior without running business code?
+- Does the design remain testable once multiple extension points exist?
 
-Smallest executable follow-up:
+Best first capstone move:
 
-- Run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`.
-- Read [Capstone Extension Guide](../capstone/capstone-extension-guide.md) before deciding where a new framework change should land.
+- run `make PROGRAM=python-programming/python-meta-programming capstone-verify-report`
 
-## Success Signal
+## When a route is working
 
-You are using these routes well if you can say, after each route:
+The route is working if, by the end, you can say:
 
-- what runtime boundary was actually under pressure
-- which lower-power tool was rejected and why
-- which capstone file or proof surface confirms the decision
-- what design change you would still reject as too magical
+- what boundary was under pressure
+- which lower-power option you considered first
+- why you escalated or refused to escalate
+- which capstone surface or proof route settled the decision
