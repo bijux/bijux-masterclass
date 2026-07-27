@@ -113,22 +113,22 @@ Successful use of a private target does not turn it into a sound interface.
 
 ## Exercise 2: Split one Makefile into layers
 
-You inherit a single large Makefile that mixes shell policy, source discovery, artifact
-rules, and release logic.
-
-Sketch a layered `mk/*.mk` design that separates those responsibilities.
+Compare the two `include-ownership` specimens. They already have identical `mk/*.mk`
+layouts, yet only one keeps release policy inside the release branch. Explain why the
+file split fails to enforce the intended boundary, then apply the same analysis to one
+Makefile that mixes policy, discovery, artifact rules, and release logic.
 
 What to hand in:
 
-- the top-level include order
-- one sentence describing the job of each layer
-- one example of a mutation or override that the new structure should make easier to
-  review
-- one sentence explaining why include order matters in this design
+- the four artifact flag values from the paired specimens
+- the assignment and scope responsible for each pair of values
+- a proposed include order and responsibility table for your Makefile
+- one executable check showing ordinary policy is unchanged by a release-only decision
+- one sentence distinguishing include order from variable scope
 
 Study note:
-Layering is not just about more files. It is about making ownership visible and mutation
-paths legible.
+Identical filenames and include order can still enforce different contracts. Ownership is
+established by where a value propagates and by evidence from the affected targets.
 
 ## Exercise 3: Decide whether a macro is justified
 
@@ -151,22 +151,21 @@ inspection cost it introduces.
 
 ## Exercise 4: Prepare the repository for growth
 
-A second subsystem is about to be added under `src/lib/`, but the current build assumes a
-flat `src/*.c` layout and flat output names.
-
-Describe how you would redesign discovery and naming so the graph stays stable and
-ownership stays legible.
+Run both `output-ownership` specimens. Trace how two sources named `util.txt` become either
+one flat output or two namespaced outputs. Then extend the control with a third source root
+that uses the same basename.
 
 What to hand in:
 
-- the new discovery roots
-- the new output naming or namespacing pattern
-- one concrete collision or ambiguity the redesign prevents
-- one sentence explaining why flat naming would age badly here
+- the evaluated source and output lists for both original models
+- source count and unique-output count for each model
+- the contents and owner of every produced artifact
+- the third root's discovery and path-mapping rule
+- one assertion that fails whenever distinct sources map to the same output
 
 Study note:
-Module 07 is where you stop treating path design as a minor detail. Paths are part of the
-build architecture.
+Sorting can make a collision deterministic without preserving ownership. Count unique
+outputs and inspect artifact identity; do not infer safety from stable ordering.
 
 ## Exercise 5: Review a build architecture before it rots
 
@@ -239,19 +238,22 @@ an existing promise or deliberately design a new stable contract.
 
 ## Exercise 8: Make variable ownership inspectable
 
-Choose a variable that several include files currently mutate. Assign one layer as its
-owner and define where command-line overrides are allowed.
+Start from `include-ownership/global-mutation`. Explain why the ordinary artifact receives
+`-DRELEASE`, repair the release decision without changing the include filenames, and test
+the repair from clean state. Then choose one variable that several includes mutate in
+another repository and assign its ownership using the same method.
 
 What to hand in:
 
-- the old mutation sites
-- the new ownership rule
-- output from `$(origin ...)`, `$(flavor ...)`, or `make -p` that proves the behavior
-- one sentence explaining when `override` would be justified and when it would not
+- the old global mutation and repaired target-scoped assignment
+- ordinary and release artifact contents before and after repair
+- `$(origin ...)`, `$(flavor ...)`, or `gmake -p` evidence for your repository variable
+- the target branches allowed to specialize that variable
+- one case where command-line override is supported and one invariant that must reject it
 
 Study note:
-Variable ownership is architecture. If multiple layers casually mutate one value, the
-include tree stops being interpretable.
+Variable database output proves the evaluated value; target artifacts prove where that
+value propagated. Use both when scope is the contract under review.
 
 ## Exercise 9: Inspect a macro instead of trusting it
 
@@ -270,21 +272,23 @@ This is where you prove that abstraction is reviewable rather than merely compac
 
 ## Exercise 10: Refactor a growing build
 
-Take a Makefile that mixes at least three responsibilities. Define its public API, split
-ownership into include layers, namespace discovery for two source roots, and keep CI on
-public targets.
+Take a Makefile that exhibits or could exhibit all three audited risks: private automation
+calls, cross-layer policy mutation, and flat output mapping. Preserve baseline evidence,
+repair each boundary independently, and add rejection checks that make a dishonest repair
+fail.
 
 What to hand in:
 
-- before-and-after tree and include order
-- public target contracts
-- a source-to-object mapping for both roots
-- dry-run, no-op, and selftest evidence
-- a short architecture review naming one remaining risk
+- a before-and-after contract table with caller, policy, and output observations
+- help output and the actual automation command
+- ordinary and release artifact policy values
+- source-to-output mappings with equal source and unique-output counts
+- clean-run, no-op, and rejection-test evidence
+- a review note naming one remaining architecture risk and its future proof route
 
 Study note:
-The goal is not to create many files. The goal is to leave behind a build another
-maintainer can evolve without guessing who owns what.
+Do not accept a new tree as the result. Accept changed observations, preserved public
+meaning, and tests that fail when the claimed ownership boundaries are violated.
 
 ## Before you read the answers
 

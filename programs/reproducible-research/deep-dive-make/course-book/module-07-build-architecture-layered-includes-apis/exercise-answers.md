@@ -82,28 +82,29 @@ the caller's incomplete behavior.
 
 ## Exercise 2: Split one Makefile into layers
 
-A strong answer usually separates at least:
-
-- shared policy and tools
-- discovery and mapping
-- core graph targets
-- optional release or local overrides
-
-For example:
+Both specimens have this include order:
 
 ```make
-include mk/common.mk
-include mk/objects.mk
-include mk/targets.mk
--include mk/local.mk
+include mk/policy.mk
+include mk/release.mk
+include mk/artifacts.mk
 ```
 
-The important part is not the filenames themselves. The important part is that you can say
-what each layer owns and why that ownership makes later mutation easier to review.
+Their evidence differs:
 
-The include order matters because later layers often consume or refine facts established
-earlier. If policy, discovery, and artifact ownership are not ordered deliberately,
-mutation sites become harder to trace.
+| Model | Ordinary artifact | Release artifact |
+| --- | --- | --- |
+| global mutation | `flags=-O2 -DRELEASE` | `flags=-O2 -DRELEASE` |
+| target-scoped policy | `flags=-O2` | `flags=-O2 -DRELEASE` |
+
+The broken assignment, `CFLAGS += -DRELEASE`, changes the global value while Make parses
+the release include. The control, `release: CFLAGS += -DRELEASE`, specializes one target
+branch and its prerequisites.
+
+A proposed layer table should still name policy, discovery, and artifact ownership, but
+the executable check is decisive: from clean state, build the ordinary target and reject
+any release-only flag in its artifact. Include order determines evaluation order; variable
+scope determines which targets inherit a value.
 
 ## Exercise 3: Decide whether a macro is justified
 
@@ -123,25 +124,37 @@ to understand one ordinary target.
 
 ## Exercise 4: Prepare the repository for growth
 
-A strong answer redesigns both discovery and output naming.
+The flat model evaluates:
 
-For example:
-
-```make
-APP_SRCS := $(sort $(wildcard src/app/*.c))
-LIB_SRCS := $(sort $(wildcard src/lib/*.c))
-
-APP_OBJS := $(patsubst src/app/%.c,build/app/%.o,$(APP_SRCS))
-LIB_OBJS := $(patsubst src/lib/%.c,build/lib/%.o,$(LIB_SRCS))
+```text
+sources=src/cli/util.txt src/lib/util.txt
+outputs=build/util.txt
 ```
 
-This is strong because it prevents the future ambiguity that a flat `src/*.c` plus
-`build/%.o` model would create once more than one subsystem exists.
+`notdir` discards both source-owner directories, and `sort` removes the duplicate output
+string. The one artifact records `selected=src/cli/util.txt` and `owner=cli`.
 
-The key explanation is:
+The namespaced model evaluates:
 
-> Flat naming ages badly because new subsystems turn once-unique filenames into collisions
-> and make object ownership ambiguous.
+```text
+sources=src/cli/util.txt src/lib/util.txt
+outputs=build/cli/util.txt build/lib/util.txt
+```
+
+Its two artifacts record `owner=cli` and `owner=lib`. The essential mapping is:
+
+```make
+OUTPUTS := $(patsubst src/%,build/%,$(SOURCES))
+```
+
+Adding `src/plugin/util.txt` should add `build/plugin/util.txt` without changing either
+existing mapping. A robust pre-build check rejects the graph whenever:
+
+```text
+source count != unique output count
+```
+
+That assertion is appropriate when the contract promises one output per selected source.
 
 ## Exercise 5: Review a build architecture before it rots
 
@@ -228,27 +241,39 @@ The important explanation is:
 
 ## Exercise 8: Make variable ownership inspectable
 
-Suppose `mk/common.mk` owns defaults for `CFLAGS`:
+The inherited mutation is global:
 
 ```make
-CFLAGS ?= -O2
-override CPPFLAGS += -Iinclude
+CFLAGS += -DRELEASE
+```
 
-.PHONY: explain-flags
+It makes both artifacts contain `-O2 -DRELEASE`. The narrow repair is:
+
+```make
+release: CFLAGS += -DRELEASE
+```
+
+After a clean build, the ordinary artifact must contain only `-O2`, while the release
+artifact contains both flags. `gmake -p` can show the target-specific assignment, and the
+artifact pair proves its propagation.
+
+For a repository-owned variable, a useful diagnostic remains:
+
+```make
 explain-flags:
 	@printf 'CFLAGS origin=%s flavor=%s value=%s\n' \
 	  '$(origin CFLAGS)' '$(flavor CFLAGS)' '$(value CFLAGS)'
 ```
 
-This example distinguishes an overridable user policy from a required include path.
-Strong answers avoid casual `override`; they use it only for an invariant that
-command-line input must not erase. The inspection output should prove command-line and
-environment behavior.
+Use `?=` when command-line policy is intentionally supported. Use validation, rather than
+a casual `override`, when an input must satisfy a hard invariant. If overriding is truly
+required, document and test why command-line input may not erase that value.
 
 The key explanation is:
 
 > Variable ownership is architectural because it determines which layer is allowed to set
-> policy and which layers may only consume it.
+> policy, which target branches may specialize it, and which artifacts must prove that
+> scope.
 
 ## Exercise 9: Inspect a macro instead of trusting it
 
@@ -273,29 +298,25 @@ its place.
 
 ## Exercise 10: Refactor a growing build
 
-A strong result has a shallow, explainable entrypoint:
+A strong result starts with observations, not a tree:
 
-```make
-include mk/policy.mk
-include mk/discovery.mk
-include mk/artifacts.mk
--include mk/local.mk
-```
+| Boundary | Before | After |
+| --- | --- | --- |
+| caller | private target; verification absent | declared target; verification present |
+| policy | release flag in both artifacts | release flag only in release artifact |
+| outputs | two sources collapse to one path | each source has an owner-identifiable path |
 
-`policy.mk` owns tools and shell behavior, `discovery.mk` owns sorted rooted source lists
-and output mapping, and `artifacts.mk` owns product edges. Public targets remain in the
-top-level file or one clearly named interface layer.
+The public target must appear in help and match the command used by automation. The policy
+proof must compare ordinary and release artifact contents. The mapping proof must show
+equal source and unique-output counts, not merely two output directories.
 
-Evidence should show that:
-
-- `make -n all` reaches the intended graph
-- a second `make all` is a no-op
-- both source roots map to separate output namespaces
-- `selftest` verifies the interface and architecture invariants
-- CI invokes only declared public targets
+Rejection tests complete the result. Mutating the repaired caller back to the private
+target, removing target scope, or collapsing the namespace should make the audit fail.
+Then run from clean state and repeat once without changes to establish convergence.
 
 The remaining-risk note matters. Architecture review is not credible when it claims a
-growing build has no unresolved pressure.
+growing build has no unresolved pressure. A useful note names the next likely owner,
+consumer, and evidence route rather than saying only that the architecture may grow.
 
 ## What mastery-level answers sound like
 
