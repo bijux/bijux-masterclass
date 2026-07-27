@@ -18,33 +18,59 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  module["Choose the current module"] --> practice["Pick the right kind of practice"]
+  practice --> capstone["Inspect the matching capstone surface"]
+  capstone --> proof["Run the smallest matching proof step"]
+  proof --> reflection["Write the ownership lesson in your own words"]
 ```
 <!-- page-maps:end -->
 
-Use this page when you want to know what kind of local exercise, proof, or capstone
-follow-up best fits each stage of the OOP course.
+Use this page when you do not want more theory first. It tells you what kind of practice
+best fits each stage of the OOP course and how to connect that practice back to the
+capstone.
 
-## Module practice surfaces
+## Practice by module
 
-| Module | Primary practice surface | Main proof loop | Best capstone follow-up |
+| Module | Best practice shape | Best capstone follow-up | Best proof loop |
 | --- | --- | --- | --- |
-| 01 | value and entity design exercises | compare equality, identity, and representation decisions explicitly | inspect value objects and model boundaries |
-| 02 | role and layering refactors | name one responsibility per object and move orchestration outward | inspect architecture and file guides together |
-| 03 | validation and typestate labs | make legal transitions easier than illegal ones and prove the boundary | inspect lifecycle rules and review prompts |
-| 04 | aggregate and event exercises | identify the authoritative object before adding collaboration | inspect aggregate ownership and event flow |
-| 05 | failure and evolution exercises | compare design choices by which object absorbs change safely | inspect unit-of-work and extension seams |
-| 06 | persistence-boundary reviews | change storage concerns without weakening invariants | inspect repository and codec surfaces |
-| 07 | time and concurrency labs | keep scheduling, clocks, and queues outside the domain model | inspect runtime coordination and boundary ownership |
-| 08 | testing-depth reviews | choose the narrowest test that proves the current contract | inspect proof routes and saved bundles |
-| 09 | public API and extension reviews | name the supported extension seam before adding it | inspect public surfaces and extension guidance |
-| 10 | stewardship review | write one architecture judgment backed by one proof route | use the capstone as the final review specimen |
+| 01 | value versus entity comparison, equality design, and representation decisions | inspect `model.py`, `rules.txt`, and lifecycle tests | say what the type owns, then show which behavior would fail if that ownership drifted |
+| 02 | role placement drills: move behavior among values, entities, policies, services, and adapters until the boundary becomes least surprising | compare `application.py`, `model.py`, and the architecture guide | justify why the chosen role is better than the closest alternative |
+| 03 | lifecycle and validation labs that make illegal states or transitions harder to construct | inspect lifecycle tests and inspection bundle outputs | list legal transitions, blocked transitions, and the owner of the guard |
+| 04 | aggregate and collaboration exercises that force one clear authoritative owner | inspect projections, read models, and architecture surfaces | name the aggregate, then show which views are derived instead of authoritative |
+| 05 | failure and evolution reviews: retries, cleanup, rollback, and change-cost placement | inspect `runtime.py`, `repository.py`, and unit-of-work tests | explain which object absorbs failure pressure and why |
+| 06 | persistence-boundary reviews: repositories, codecs, schema pressure, and rehydration choices | inspect repository boundaries and verification bundle artifacts | separate domain meaning from storage shape explicitly |
+| 07 | runtime-boundary labs: clocks, queues, tasks, threads, and async coordination | inspect runtime tests and walkthrough artifacts | name where time enters and where ownership must stop moving |
+| 08 | proof-design exercises: pick the narrowest test or bundle that actually proves the claim | inspect tests, verification bundle, and proof routes | say why a lighter or heavier route would be wrong |
+| 09 | extension and public-surface reviews: decide what is allowed, internal, and governable | inspect application surface, extension guide, and proof routes | explain where a new public behavior may land without dissolving the model |
+| 10 | stewardship review: write one architecture judgment backed by one evidence route | inspect the full proof route and review worksheet | defend one keep/change decision with a named artifact |
 
-## Reusable proof loops
+## Reusable practice loops
 
-- ownership loop: name the authoritative object, the derived view, and the first test that should fail if that split drifts
-- lifecycle loop: state the legal transitions, the blocked transitions, and where those rules live
-- extension loop: explain where a new behavior belongs before you explain how to implement it
+| Loop | Use it when... | What to produce |
+| --- | --- | --- |
+| ownership loop | the hardest part is deciding who should carry the behavior | one sentence naming the owner, one sentence naming the nearest non-owner |
+| lifecycle loop | states and transitions are the problem | a table of legal and illegal transitions plus the enforcing boundary |
+| projection loop | you keep confusing authoritative and derived state | one list of truths, one list of views |
+| extension loop | a change could plausibly land in several places | one chosen boundary, one rejected boundary, one reason for each |
+| proof loop | you know the claim but not the evidence size | one first route, one first artifact, one escalation trigger |
+
+## Good practice habits
+
+- practice one boundary at a time
+- say the ownership rule aloud before changing code or diagrams
+- inspect one capstone surface during the exercise, not only after it
+- stop after one design question becomes materially clearer
+
+## Bad practice habits
+
+- doing all practice as open-ended opinion
+- skipping the capstone follow-up entirely
+- using the strongest proof route for every exercise
+- writing answers that never name the owner, the non-owner, or the first evidence surface
+
+## Exit check
+
+Leave this page only when you can say:
+
+> For this module, the best practice is `____`, the capstone follow-up is `____`,
+> and the first proof loop I should run is `____`.
