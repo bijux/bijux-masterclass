@@ -24,156 +24,148 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-## Why this strategy matters
+This page is about choosing the next improvement in the right order.
 
-Once a capstone proves its design, the next risk is changing it in the wrong order.
+That matters because a good capstone can still be weakened by a bad hardening sequence.
 
-Teams often rush into:
+Teams often rush toward:
 
-- speculative optimization
-- wider plugin machinery
-- bigger infrastructure layers
+- speculative performance work
+- broader extension mechanisms
+- more infrastructure layers
 
-before they fix the more urgent weaknesses around:
+before they reduce the risks that would actually confuse users or operators first.
 
-- duplicate side effects
-- missing operator signals
-- trust-boundary looseness
-- accidental public-surface drift
+This page keeps the next pass honest by forcing every change through one operational
+priority route.
 
-This page exists to keep the next change small, honest, and educationally defensible.
+## Keep one path on the table
 
-## Use one hardening route, not ten unrelated ideas
+Use this capstone workflow:
 
-Keep the same capstone path from the architecture review:
+1. a seat request enters
+2. `WorkshopEnrollment` decides the state transition
+3. persistence saves the new authoritative truth
+4. downstream publication or projection makes the result visible
+5. later consumers such as certificate issuance observe that result
 
-1. seat request enters the system
-2. `WorkshopEnrollment` decides confirm or waitlist
-3. repository persists the new truth
-4. projection and notification run downstream
-5. certificate issuance later consumes confirmed state
+Any hardening plan should say exactly which step it changes, which risk it reduces, and
+which semantic contract must remain fixed.
 
-Any hardening decision should explain which step it touches, what risk it reduces, and
-what contract must remain unchanged.
+If it cannot do that, it is too vague to trust.
 
-If it cannot do that, it is probably too vague or too broad.
+## Rank by operational damage, not by technical glamour
 
-## Step 1: Rank risks by operational damage first
+Start with the question:
 
-A useful hardening order does not start with "what would be impressive?"
+Which failure would create the most confusing or harmful visible outcome first?
 
-It starts with:
-
-- what would create the most confusing or damaging failure
-- what would be hardest to diagnose under pressure
-- what would silently weaken the model if left alone
-
-For this capstone, the first honest risks are usually:
+For this capstone, the first honest candidates are usually:
 
 - duplicate visible side effects under retries or repeated callbacks
-- weak or missing signals around persistence contention and downstream lag
-- public-surface drift caused by examples or deep-import shortcuts
+- weak signals around persistence conflict or downstream lag
 - trust-boundary mistakes in payload handling or logging
+- public-surface drift that teaches consumers the wrong import path
 
-These are better next targets than speculative performance tuning.
+These are higher-value targets than speculative tuning.
 
-## Step 2: Preserve strong boundaries while you harden weak ones
+## Preserve the strong boundaries while hardening the weak ones
 
-The hardening move is only good if it keeps the strong parts strong.
+The next change is only good if it keeps the strongest architectural truths intact.
 
-In this capstone, preserve:
+Preserve:
 
-- aggregate authority over seat truth
-- repository translation instead of row-shaped domain logic
-- narrow extension seams instead of internal intimacy
+- aggregate ownership of seat truth
+- repository responsibility for translation rather than meaning
+- narrow public and extension seams instead of deep private access
 
 That means:
 
 - do not fix retries by moving truth into downstream consumers
-- do not fix performance by letting caches decide authoritative writes
-- do not fix customization by opening deep private modules casually
+- do not fix latency by letting caches become authority
+- do not fix extension pressure by opening private modules casually
 
-Hardening should deepen the boundary story, not route around it.
+Hardening should deepen the ownership model, not route around it.
 
-## Step 3: Choose the narrowest change that reduces the real risk
+## Choose the narrowest improvement that reduces the real risk
 
-For each candidate improvement, ask three questions:
+For each candidate change, ask:
 
-1. What exact failure or confusion is being reduced?
-2. Which boundary owns the improvement?
-3. What is the smallest reviewable change that would help?
+1. what exact failure or confusion does this reduce?
+2. which boundary owns the response?
+3. what is the smallest reviewable change that would help?
 
 Examples:
 
-- add idempotency or durable dedupe around downstream side effects
-- add one latency and conflict signal before reworking throughput
-- tighten one callback normalization boundary before redesigning the whole integration
+- add durable duplicate-protection around downstream visible work
+- add one conflict and lag signal before redesigning throughput
+- tighten one payload normalization boundary before changing all integration code
 - replace one deep-import example before publishing broader extension support
 
-This is how you keep hardening work educational instead of sprawling.
+Small honest hardening beats a large, blurry "resilience initiative."
 
-## Step 4: Match proof to the change
+## Match proof to the hardening move
 
-Every hardening move should carry one proof route appropriate to its risk.
+Every hardening change needs one proof route sized to its risk.
 
 Examples:
 
 - duplicate-side-effect fix: interruption and replay workflow test
 - observability improvement: one exercised runbook path plus signal review
 - public-surface tightening: executable example and import-boundary check
-- trust-boundary change: malformed-input and redaction tests
+- trust-boundary hardening: malformed-input and redaction tests
 
-If the proof is absent, the hardening story is incomplete.
+If the proof is missing, the hardening story is incomplete.
+If the proof is vastly larger than the change, the scope is probably still wrong.
 
-If the proof is much larger than the change, the work may be poorly scoped.
+## A risk-ordered next-pass map
 
-## A risk-ordered improvement map for this capstone
+An honest next order for this capstone might be:
 
-An honest next-pass order might be:
-
-1. reduce duplicate visible work under retries and repeated callbacks
-2. improve signals around concurrency conflicts and downstream lag
+1. reduce duplicate visible work under retries
+2. improve signals around conflict, lag, and downstream failure
 3. tighten logging and payload trust boundaries
-4. reinforce the package-level facade and stop teaching deep-import shortcuts
-5. only then revisit performance optimizations that measurement actually justifies
+4. reinforce the supported facade and stop teaching deep-import shortcuts
+5. revisit performance only after measurement proves the pressure
 
-That order protects meaning first, operability second, and speculative tuning last.
+This order protects meaning first, operability second, and optimization last.
 
-## What not to do next
+## What should not happen next
 
-- do not add plugin machinery before the public facade and compatibility rules are clear
+- do not widen plugin machinery before the supported facade and compatibility rules are
+  clear
 - do not add broad caching before freshness and authority rules are explicit
-- do not add more runtime complexity before you can explain existing failure paths
-- do not widen the public surface just because one internal shortcut seems convenient
+- do not add more runtime layers before current failure paths are understandable
+- do not widen the public surface because one internal shortcut feels convenient
 
-These are common ways teams bury a good model under unnecessary complexity.
+These moves often make a design look more advanced while making it harder to trust.
 
-## Worked hardening note
+## Worked strategy note
 
-A short useful strategy note might read:
+An honest hardening note might read:
 
-> The next capstone pass should start by protecting downstream idempotency and clearer
-> operator signals around persistence and fan-out. Those changes reduce the highest
-> operational confusion without weakening aggregate ownership or repository translation.
-> Public-surface tightening should follow before any larger extension or plugin story is
-> widened. Performance work should wait until measurement proves the current bottleneck.
+> The next capstone pass should start by reducing duplicate visible work under retries
+> and by improving signals around persistence conflict and downstream lag. Those changes
+> lower the highest operational confusion without weakening aggregate authority or
+> repository translation. Public-surface tightening should follow before broader
+> extension work. Performance changes should wait for measurement.
 
-That note is better than a long wish list because it sets order and defends that order.
+That note is useful because it sets order and defends that order.
 
 ## Capstone connection
 
-Use the capstone directly and answer all three:
+Use this page to answer three things:
 
-- which one improvement should happen before speculative performance work
+- which one improvement should happen before bigger optimization or extension work
 - which boundary owns that improvement
-- what proof route would show the change helped without changing semantics
+- which proof route would show the change helped without changing semantics
 
-If you cannot answer those three, the next step is still too large or too vague.
+If you cannot answer all three, the next step is still too large.
 
 ## Exit check
 
 Leave this page only when you can do all of these:
 
 - explain why hardening order matters as much as hardening intent
-- identify one capstone improvement that should happen before bigger optimization or extension work
-- explain how to keep the next change small enough to verify honestly
+- identify one capstone improvement that should happen before speculative tuning
+- explain how to keep that improvement small enough to verify honestly
