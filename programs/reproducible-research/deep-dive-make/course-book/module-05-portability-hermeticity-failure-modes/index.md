@@ -18,17 +18,16 @@ facts mattered.
 
 | Time | Activity | Evidence you keep |
 | --- | --- | --- |
-| 45 minutes | Run a toolchain and environment audit | a `doctor` report from two environments |
+| 45 minutes | Run the environment contract audit | seven paired findings, traces, and workspaces |
 | 75 minutes | Read the portability and recursion lessons | a written support contract |
 | 60 minutes | Build a convergent environment manifest | two identical no-op runs |
 | 60 minutes | Separate Make overhead from recipe cost | timings and a trace-line count |
 | 90 minutes | Harden the inherited-build example | a repaired graph and boundary decision |
 | 90 minutes | Complete the ten exercises | commands, observations, and explanations |
 
-If you have only one hour, run the environment audit in the worked example, read the
-portability contract, and complete Exercises 1, 6, and 7. Return for recursion,
-measurement, and tool boundaries when you can test them rather than merely read about
-them.
+If you have only one hour, run `capstone-environment-contract-audit`, read its guide, and
+explain the three required-tool rows. Return for recursion, non-file state, measurement,
+and tool boundaries when you can test them rather than merely read about them.
 
 ## What this module is for
 
@@ -40,19 +39,34 @@ By the end of Module 05, you should be able to explain five things clearly:
 - how to measure Make overhead instead of guessing about performance
 - when a failure is a repairable Make problem and when it points to a tool boundary
 
-## The live demo for this module
+## The executable laboratory for this module
 
-Use one small `doctor` target and one convergent manifest as the anchors for the day:
+Use the environment contract audit as the anchor:
 
 ```mermaid
 flowchart LR
-  audit["Print tools, shell, locale, and Make version"] --> classify["Classify each fact"]
-  classify --> model["Record one semantic input in a manifest"]
-  model --> repeat["Run twice and expect no change"]
-  repeat --> change["Change one real input and expect a rebuild"]
+  audit["Run seven controlled cases"] --> compare["Compare each defect with its control"]
+  compare --> traces["Read traces for selection and failure placement"]
+  traces --> files["Read files, hashes, and residue for semantic consequence"]
+  files --> apply["Apply the contract to the inherited build"]
 ```
 
-That sequence turns "environment issues" into observable engineering facts.
+Run it from the repository root:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make \
+  capstone-environment-contract-audit
+```
+
+The three families answer different questions:
+
+| Family | Question |
+| --- | --- |
+| non-file state | when is an external value reevaluated, and when is changed content published? |
+| recursive boundary | can the parent plan enter the child graph, and what did the actual child inherit? |
+| required tool | does an unavailable capability stop before publication begins? |
+
+Do not collapse those questions into one generic "environment audit."
 
 ## Sort assumptions into three contracts
 
@@ -135,7 +149,7 @@ Carry this question through every page:
 Good Module 05 answers usually mention one or more of these:
 
 - an undeclared portability boundary
-- recursion that escaped the jobserver budget
+- recursion hidden from planning evidence or detached from the declared jobserver contract
 - a non-file input that was real but unmodeled
 - performance claims made without measurement
 - a failure mode that should have forced a tool-boundary decision earlier
@@ -155,6 +169,8 @@ By the end of the day, you should have:
 These commands form the evidence loop for Module 05:
 
 ```sh
+gmake -C programs/reproducible-research/deep-dive-make \
+  capstone-environment-contract-audit
 make -n all
 make --trace all
 make -p
@@ -170,8 +186,9 @@ with suspicion.
 By the end of this module, you should be able to:
 
 - publish a portability contract instead of relying on workstation folklore
-- keep recursive Make under the same parallel budget and make that behavior inspectable
+- distinguish declared recursive intent from jobserver flags that happened to survive
 - model non-file inputs as explicit build facts without contaminating artifacts
+- place required-tool rejection before every publication frontier
 - produce at least one meaningful performance measurement before proposing a performance fix
 - explain when Make should remain the orchestrator and when another tool should take over
 
@@ -180,8 +197,9 @@ By the end of this module, you should be able to:
 Do not move on until all of these are true:
 
 - you can name the required Make and shell features without hedging
-- you can explain how a recursive sub-make receives parallel budget
+- you can explain why dry-run visibility and actual jobserver inheritance are separate claims
 - you can model one non-file input using a convergent stamp or manifest
+- you can explain why a late missing-tool failure may leave a zero-byte file
 - you can produce one timing or trace-volume metric and explain what it means
 - you can classify one failure as a Make repair, a tool boundary, or a migration trigger
 - you can complete all ten exercises and defend each decision with observed evidence
