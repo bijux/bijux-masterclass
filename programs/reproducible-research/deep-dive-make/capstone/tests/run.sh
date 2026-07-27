@@ -5,6 +5,7 @@ MAKE_BIN="${MAKE:-make}"
 PYTHON_BIN="${PYTHON:-python3}"
 SELFTEST_REPORT_DIR="${SELFTEST_REPORT_DIR:-}"
 SELFTEST_WORK_DIR="${SELFTEST_WORK_DIR:-../../../../artifacts/proof/reproducible-research/deep-dive-make/selftest/workspace}"
+SELFTEST_FAULT="${SELFTEST_FAULT:-none}"
 
 CURRENT_CHECK="setup"
 FAILURE_REASON="command exited unexpectedly"
@@ -36,8 +37,9 @@ run_logged() {
   printf '\n' >> "$SELFTEST_COMMANDS"
   if "$@" > "${SELFTEST_LOG_DIR}/${log_name}.log" 2>&1; then
     return 0
+  else
+    command_status=$?
   fi
-  command_status=$?
   FAILURE_REASON="${log_name} command failed with exit ${command_status}"
   cat "${SELFTEST_LOG_DIR}/${log_name}.log" >&2
   return "$command_status"
@@ -97,6 +99,10 @@ write_inventory() {
 case "$SELFTEST_WORK_DIR" in
   ""|"/") fail "unsafe SELFTEST_WORK_DIR: ${SELFTEST_WORK_DIR}" ;;
 esac
+case "$SELFTEST_FAULT" in
+  none|parallel-artifact-drift) ;;
+  *) fail "unsupported SELFTEST_FAULT: ${SELFTEST_FAULT}" ;;
+esac
 rm -rf "$SELFTEST_WORK_DIR"
 mkdir -p "$SELFTEST_WORK_DIR"
 SELFTEST_WORK_DIR="$(cd "$SELFTEST_WORK_DIR" && pwd)"
@@ -119,6 +125,7 @@ TRACE_MAX="${TRACE_MAX:-500}"
 record settings.env "MAKE_BIN=${MAKE_BIN}
 PYTHON_BIN=${PYTHON_BIN}
 TRACE_MAX=${TRACE_MAX}
+SELFTEST_FAULT=${SELFTEST_FAULT}
 SELFTEST_WORK_DIR=${SELFTEST_WORK_DIR}"
 
 # 1) Convergence
@@ -148,14 +155,21 @@ if command -v timeout >/dev/null 2>&1; then
 else
   run_logged parallel-build "$MAKE_BIN" -j2 all
 fi
+if [ "$SELFTEST_FAULT" = "parallel-artifact-drift" ]; then
+  printf '\nselftest fault: parallel artifact drift\n' >> build/include/dynamic.h
+fi
 write_inventory parallel-inventory.json
 record serial-inventory.json "$(cat serial-inventory.json)"
 record parallel-inventory.json "$(cat parallel-inventory.json)"
-run_logged schedule-comparison "$PYTHON_BIN" scripts/compare_build_inventories.py \
+if run_logged schedule-comparison "$PYTHON_BIN" scripts/compare_build_inventories.py \
   --baseline serial-inventory.json \
   --candidate parallel-inventory.json \
-  --output schedule-comparison.json ||
+  --output schedule-comparison.json; then
+  :
+else
+  record schedule-comparison.json "$(cat schedule-comparison.json)"
   fail "serial/parallel artifact contract differs; inspect schedule-comparison.json"
+fi
 record schedule-comparison.json "$(cat schedule-comparison.json)"
 SERIAL_PARALLEL_EQUIVALENCE="PASS"
 pass "serial-parallel equivalence"

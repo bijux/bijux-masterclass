@@ -69,7 +69,7 @@ DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
-.PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
+.PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
         contract-audit inspect incident-audit clean submake-demo perf trace-count hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
@@ -157,6 +157,7 @@ help:
 >     '  release-selftest  prove candidate acceptance and rejection paths' \
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
+>     '  selftest-harness-tests prove selftest acceptance and rejection behavior' \
 >     '  selftest-report   write the selftest evidence bundle to artifacts/' \
 >     '  verify-report     alias for selftest-report with shared catalog naming' \
 >     '  proof             write the sanctioned learner-facing proof bundle set' \
@@ -471,6 +472,9 @@ selftest:
 >       SELFTEST_WORK_DIR="$(SELFTEST_WORK_DIR_ABS)" \
 >       $(TST_DIR)/run.sh
 
+selftest-harness-tests:
+>     $(PYTHON) -m unittest $(TST_DIR)/test_selftest_harness.py
+
 selftest-report:
 >     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
@@ -549,7 +553,7 @@ trace-count:
 >     @$(MAKE) --trace -n all 2>&1 | wc -l | awk '{print "trace-lines=" $$1}'
 
 # ---- hardened build verification ----
-hardened: selftest discovery-audit attest test release-check
+hardened: selftest selftest-harness-tests discovery-audit attest test release-check
 >     @$(MAKE) -q all || { echo "FAIL: non-convergent" >&2; exit 1; }
 >     @echo "PASS: hardened invariants"
 
