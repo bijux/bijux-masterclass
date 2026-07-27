@@ -138,6 +138,102 @@ That can still be valuable, but the conclusion must be honest:
 
 The parameter diff changes what the metric diff means.
 
+## Join the two diffs before writing the claim
+
+The metric-contract audit gives you two candidates with the same numeric movement:
+
+```text
+baseline F1  = 0.7368
+candidate F1 = 0.7826
+delta        = 0.0458
+```
+
+Open these directories:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/metric-contracts/workspace/
+├── comparable-candidate/evidence/
+└── control-drift/evidence/
+```
+
+Each contains both:
+
+- `dvc-metrics-diff.json`
+- `dvc-params-diff.json`
+
+The comparable candidate has an empty parameter diff:
+
+```json
+{}
+```
+
+The control-drift candidate reports:
+
+```json
+{
+  "params.yaml": {
+    "decision.threshold": {
+      "old": 0.65,
+      "new": 0.5,
+      "diff": -0.15
+    }
+  }
+}
+```
+
+The metric receipt is not wrong in either case. The parameter receipt changes the claim
+you may attach to it.
+
+| Evidence | Strongest supported interpretation |
+| --- | --- |
+| metric changed; semantic controls stable | same-control metric movement |
+| metric changed; threshold changed | combined behavior and threshold-policy movement |
+| metric changed; a relevant control is missing | comparison requires abstention or repair |
+
+For the control-drift case, write:
+
+> F1 increased by `0.0458` while the fixed-threshold policy changed from `0.65` to `0.50`.
+> This supports investigation of the new threshold policy, not a same-threshold model
+> improvement claim.
+
+Do not write:
+
+> F1 improved by `0.0458`.
+
+The shorter sentence hides the changed control and implies continuity that the evidence
+does not support.
+
+## Controls define the comparison question
+
+A parameter change does not make a run bad. It changes the question.
+
+Suppose the team wants to answer:
+
+> Did candidate predictions improve under the release threshold already in force?
+
+Then `decision.threshold` must stay fixed. The control-drift candidate cannot answer that
+question.
+
+Suppose instead the team wants to answer:
+
+> What precision-recall behavior results from lowering the operational threshold?
+
+Then changing `decision.threshold` is the point of the run. The candidate can enter that
+investigation, but it needs threshold-specific safeguards and must not be described as a
+same-control model comparison.
+
+```mermaid
+flowchart TD
+  question["name the review question"] --> controls["identify controls that must stay fixed"]
+  controls --> diffs["join metric and parameter diffs"]
+  diffs --> same["controls stable: answer original question"]
+  diffs --> changed["controls changed: answer a different question"]
+  diffs --> missing["controls missing: abstain"]
+```
+
+This is why parameter placement starts with review intent. A value belongs on the
+comparison surface when changing it changes which question the result can answer.
+
 ## Hidden controls are stale-result risk
 
 The most dangerous parameter is the influential value that DVC cannot see.
@@ -182,6 +278,9 @@ You understand this core when you can:
 - explain how `dvc params diff` changes metric interpretation
 - identify hidden controls that make comparisons weak
 - avoid turning `params.yaml` into a junk drawer of harmless constants
+
+Use the two evidence directories above to write one accepted same-control claim and one
+rejected overclaim. Name the exact parameter receipt that separates them.
 
 Parameter discipline is not bureaucracy. It is how future reviewers learn what changed
 beside the number.
