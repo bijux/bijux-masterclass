@@ -46,6 +46,7 @@ INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-mak
 INCREMENTAL_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incremental-faults
 SEMANTIC_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/semantic-faults
 ENVIRONMENT_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/environment-contracts
+ARCHITECTURE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/architecture-contracts
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 PERFORMANCE_DIR ?= $(ARTIFACTS_DIR)/performance/reproducible-research/deep-dive-make/current
 PERFORMANCE_POLICY := performance/scenarios.tsv
@@ -85,7 +86,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit environment-contract-selftest clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit environment-contract-selftest architecture-contract-audit architecture-contract-selftest clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -186,6 +187,8 @@ help:
 >     '  semantic-fault-selftest reject dishonest semantic-audit evidence' \
 >     '  environment-contract-audit prove non-file, recursion, and tool contracts' \
 >     '  environment-contract-selftest reject dishonest environment evidence' \
+>     '  architecture-contract-audit prove API, layer, and output ownership' \
+>     '  architecture-contract-selftest reject dishonest architecture evidence' \
 >     '  profile-audit     build the execution-profile review bundle' \
 >     '  confirm           alias for hardened with shared catalog naming' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
@@ -462,6 +465,32 @@ environment-contract-audit:
 
 environment-contract-selftest:
 >     $(PYTHON) -m unittest $(TST_DIR)/test_environment_contract_audit.py
+
+architecture-contract-audit:
+>     rm -rf "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)"
+>     mkdir -p "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)"
+>     cp -R "$(REP_DIR)/architecture-contracts" "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/specimens"
+>     $(PYTHON) scripts/audit_architecture_contracts.py \
+>       --specimens "$(REP_DIR)/architecture-contracts" \
+>       --workspace "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/workspace" \
+>       --output "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/report.json" \
+>       --make "$(MAKE)"
+>     printf '%s\n' \
+>       'Architecture contract audit route:' \
+>       '  1. Read summary.tsv across all six broken and control models.' \
+>       '  2. Read report.json for exact API, policy, and output observations.' \
+>       '  3. Read traces/ to connect each observation to Make execution.' \
+>       '  4. Compare specimens/ with workspace/ before proposing a refactor.' \
+>       '  5. Use the repro and proof guides to connect the models to production proof.' > "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/route.txt"
+>     cp "$(DOCS_DIR)/repro-guide.md" "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/REPRO_GUIDE.md"
+>     cp "$(DOCS_DIR)/proof-guide.md" "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     $(PYTHON) scripts/write_bundle_manifest.py \
+>       --bundle-dir "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)" \
+>       --output "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/manifest.json"
+>     @echo "PASS: wrote architecture contract audit to $(ARCHITECTURE_CONTRACT_AUDIT_DIR)"
+
+architecture-contract-selftest:
+>     $(PYTHON) -m unittest $(TST_DIR)/test_architecture_contract_audit.py
 
 profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
