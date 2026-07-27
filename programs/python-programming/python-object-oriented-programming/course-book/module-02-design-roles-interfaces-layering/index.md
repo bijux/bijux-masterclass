@@ -18,120 +18,133 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  owner["choose the least surprising owner"] --> shape["compare composition and inheritance"]
+  shape --> boundary["separate domain, application, and infrastructure"]
+  boundary --> assembly["move construction to the edge"]
+  assembly --> review["defend the collaboration map"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+Once object meaning is clear, the next problem is assignment of responsibility. This
+module moves from isolated objects to collaborating roles and asks one hard question over
+and over:
 
-Once the object model is clear, the next problem is assignment of responsibility.
-This module moves from isolated objects to collaborating roles.
+> Which role should own this behavior, and which nearby role should stay simpler because
+> of that choice?
 
-Keep one question in view while reading:
+Bad layering usually begins with a behavior that is correct in content but misplaced in
+ownership. This module exists to make that mistake visible early.
 
-> Which role should own this behavior, and which neighboring role should stay simpler because of that choice?
+## What this module must settle
 
-That question matters because bad layering usually starts with a correct behavior placed
-in the wrong object.
+By the end of the module, you should be able to do all of these with reasons:
 
-## Preflight
+- assign behavior to entities, values, policies, services, adapters, or factories
+- explain why composition is the default and why inheritance sometimes remains justified
+- decide when protocols, ABCs, or plain duck typing fit the actual collaboration pressure
+- draw a boundary between domain, application, infrastructure, and composition root
+- explain where object construction should happen so it does not leak across the system
 
-- You should already be able to describe object identity and value semantics from Module 01 without hesitation.
-- If composition, inheritance, or construction boundaries still blur together, keep the capstone package map open while reading.
-- Treat every layering example as an ownership decision, not a directory-layout exercise.
+If those choices still sound like taste, not judgment, stay here longer.
 
-## Learning outcomes
+## Session outcome
 
-- assign behavior to objects, policies, factories, and composition roots with explicit cohesion criteria
-- explain when composition clarifies design and when inheritance remains reviewable
-- evaluate wrapper types, protocols, and layered boundaries as correctness tools instead of style markers
-- identify assembly boundaries that keep construction logic from leaking across the codebase
+Treat Module 02 as one serious study day with four stages.
 
-## Why this module matters
+| Stage | Main pressure | What you should produce |
+| --- | --- | --- |
+| role selection | who should own the behavior | one sentence beginning with `The least surprising owner is...` |
+| shape selection | should this be composed, inherited, wrapped, or simplified | one short comparison note |
+| boundary design | where does each concern belong | one layer map |
+| assembly discipline | where should the graph be built | one composition-root sketch |
 
-Many codebases become difficult not because individual objects are broken, but because
-responsibilities are assigned arbitrarily. Work ends up split between "smart" entities,
-"utility" modules, accidental god services, and inheritance trees that encode history
-rather than design intent.
+The module is not complete if you only remember the terms. It is complete when you can
+defend one ownership map.
 
-This module gives you criteria for deciding where behavior should live and how objects
-should collaborate without turning the system into framework theater.
+## Recommended study route
 
-## Main questions
+Use this route unless you are returning to one narrow boundary question:
 
-- Which responsibilities belong inside an object and which should move out?
-- Why should composition be the default and inheritance the exception?
-- How do `super()`, mixins, and MRO affect whether inheritance is reviewable at all?
-- Where should object graphs be assembled so construction does not leak into the domain?
-- When do semantic wrapper types improve correctness?
-- How do duck typing, ABCs, and protocols fit different design pressures?
-- How do you layer a Python system without turning it into framework theater?
+1. [Responsibilities, Cohesion, and Object Smells](responsibilities-cohesion-and-object-smells.md)
+2. [Value Objects versus Entities](value-objects-versus-entities.md)
+3. [Service Objects versus Stateful Entities](services-versus-stateful-entities.md)
+4. [Composition over Inheritance as Default](composition-over-inheritance.md)
+5. [Inheritance and the Fragile Base Class Problem](inheritance-and-fragile-base-classes.md)
+6. [Cooperative Inheritance, MRO, and Mixins](cooperative-inheritance-mro-and-mixins.md)
+7. [Template Method and Small Hierarchies](template-method-and-small-hierarchies.md)
+8. [Factories, Dependency Injection, and Composition Roots](factories-dependency-injection-and-composition-roots.md)
+9. [Semantic Types over Raw Primitives](semantic-types-over-raw-primitives.md)
+10. [Duck Typing, ABCs, and Protocols](duck-typing-abcs-and-protocols.md)
+11. [Domain, Application, and Infrastructure Layers](domain-application-and-infrastructure-layers.md)
+12. [Refactor 1: Thin Layered Architecture](refactor-layered-design-with-small-hierarchies.md)
 
-## Reading path
+Do not start with layering before you can justify ownership. Folder names are not a
+substitute for role clarity.
 
-1. Start with responsibilities, cohesion, and object smells.
-2. Compare composition, inheritance, cooperative inheritance, factories, and semantic wrapper types before looking at layering.
-3. Read interfaces and protocols after the role boundaries are clear.
-4. Finish with the refactor chapter to see a thin layered design emerge from concrete pressure.
+## Lesson map by pressure
 
-## Lesson map
+| If your current question is... | Start here | Then do this |
+| --- | --- | --- |
+| who should own this decision | responsibilities, cohesion, and object smells | compare the chosen owner with the most tempting wrong one |
+| is this a value, entity, policy, service, or adapter | value objects versus entities; services versus stateful entities | write one role note before moving on |
+| should this reuse be composed or inherited | composition over inheritance | test whether a small hierarchy is still reviewable |
+| do I need a protocol, ABC, or nothing extra | duck typing, ABCs, and protocols | explain what collaboration pressure the interface is answering |
+| where should object assembly live | factories, dependency injection, and composition roots | draw the composition edge explicitly |
+| how should the system be layered | domain, application, and infrastructure layers | map one workflow across the layers |
 
-- [Responsibilities, Cohesion, and Object Smells](responsibilities-cohesion-and-object-smells.md)
-- [Value Objects versus Entities](value-objects-versus-entities.md)
-- [Service Objects versus Stateful Entities](services-versus-stateful-entities.md)
-- [Composition over Inheritance as Default](composition-over-inheritance.md)
-- [Inheritance and the Fragile Base Class Problem](inheritance-and-fragile-base-classes.md)
-- [Cooperative Inheritance, MRO, and Mixins](cooperative-inheritance-mro-and-mixins.md)
-- [Template Method and Small Hierarchies](template-method-and-small-hierarchies.md)
-- [Factories, Dependency Injection, and Composition Roots](factories-dependency-injection-and-composition-roots.md)
-- [Semantic Types over Raw Primitives](semantic-types-over-raw-primitives.md)
-- [Duck Typing, ABCs, and Protocols](duck-typing-abcs-and-protocols.md)
-- [Domain, Application, and Infrastructure Layers](domain-application-and-infrastructure-layers.md)
-- [Refactor 1: Thin Layered Architecture](refactor-layered-design-with-small-hierarchies.md)
-- [Glossary](glossary.md)
+## What a missed-class learner should do
 
-## Keep these support surfaces open
+If you are studying alone, use this rhythm:
 
-- `../guides/proof-matrix.md` when you want the role-assignment promise tied to a capstone proof route.
-- `../guides/pressure-routes.md` when the ownership question feels clearer than the chapter title.
-- `../reference/self-review-prompts.md` when you want to test whether you can justify one owner and reject a nearby wrong owner.
+1. read one lesson
+2. name the owner of the behavior under discussion
+3. name the closest tempting wrong owner
+4. explain what confusion that wrong owner would create
+5. move on only after the ownership difference is explicit
 
-## Common failure modes
+This replaces the classroom challenge question: "why not put it there instead?"
 
-- placing behavior wherever the current developer happens to be editing
-- reaching for inheritance to reuse code that should have been composed
-- using mixins or `super()` without being able to explain the full call chain
-- using raw strings and integers where domain meaning should be explicit
-- creating a service layer so broad that it becomes a second god object
-- letting object construction sprawl across the system instead of one visible assembly boundary
-- introducing layers by directory naming alone without real boundary discipline
+## Capstone transfer for this module
 
-## Exercises
+The capstone splits domain objects, evaluation policies, runtime orchestration,
+repositories, and adapters on purpose. This module gives the reasoning for that split.
 
-Use the full exercise day rather than treating these as quick prompts:
+Use the capstone to test yourself:
+
+- why should `MonitoringPolicy` not fetch metrics?
+- why should evaluation variability live in policy-like collaborators?
+- why should runtime coordinate without absorbing domain rules?
+- where should persistence mechanics stop and domain meaning continue?
+
+If you can answer those, Module 02 is landing.
+
+## Support surfaces
+
+Use the practice pages as the second half of the module:
 
 - [Exercises](exercises.md)
 - [Exercise Answers](exercise-answers.md)
 
-The exercise day turns the module into one complete role-assignment review route:
-ownership, cohesion, composition versus inheritance, layering, and composition-root
-discipline.
+Keep these nearby when useful:
 
-## Capstone connection
+- `../guides/proof-matrix.md`
+- `../guides/pressure-routes.md`
+- `../reference/self-review-prompts.md`
+- [Glossary](glossary.md)
 
-The capstone separates domain objects, evaluation policies, runtime orchestration,
-repositories, and adapters on purpose. This module gives the reasoning for that split:
-why `MonitoringPolicy` should not fetch metrics, why strategies should own evaluation
-variability, and why the runtime facade should coordinate without absorbing domain logic.
+## Common ways learners leave too early
+
+- placing behavior wherever the current edit happens to be
+- saying "use composition" without explaining the concrete coupling risk
+- using mixins or `super()` without being able to explain the call chain
+- introducing a service layer so broad that it becomes a second god object
+- drawing layers by folders while ownership is still blurry
 
 ## Closing criteria
 
-You should finish this module able to decompose object-heavy code into explicit
-roles with cleaner cohesion and more stable collaboration boundaries.
+You are ready to leave Module 02 only when you can do all of these in plain language:
 
-## Directory glossary
-
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+- choose the least surprising owner for one behavior and reject a nearby wrong owner
+- explain when composition is safer than inheritance in one concrete case
+- draw one role-and-layer map that another maintainer could review
+- state where object construction belongs and why it should not leak inward
