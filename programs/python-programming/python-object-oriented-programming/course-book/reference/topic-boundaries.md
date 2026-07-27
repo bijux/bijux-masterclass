@@ -27,9 +27,10 @@ flowchart LR
 
 Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
 
-Use this page when you need to decide whether a topic belongs inside the center of
-this course, on its edge, or outside it. That boundary matters because object-oriented
-Python becomes vague fast when every runtime feature is treated as equally central.
+Use this page when you need to decide whether a topic belongs in the center of this
+course, near its edge, or outside its teaching promise entirely. This boundary matters
+because OOP courses become muddy when every advanced Python topic is treated as equally
+central.
 
 ## What this course is centrally about
 
@@ -46,31 +47,44 @@ These topics are the spine of the course:
 If a question changes who owns behavior, how invariants survive, or how a boundary
 remains governable under change, it belongs in the center of this course.
 
-## Topics that are adjacent, not central
+## Three boundary bands
 
-These matter, but they are supporting material rather than the main design target:
+### Central topics
 
-- type-checker details beyond what is needed for protocols, contracts, and object design
+Keep the topic in this course when the question is fundamentally about:
+
+- meaning: identity, equality, aliasing, copying, representation, and lifecycle
+- ownership: which object, aggregate, service, repository, or adapter owns the rule
+- survivability: how the design stays honest under storage, time, failure, extension, or review pressure
+- proof: how to verify that the contract is still true
+
+These questions are the actual curriculum.
+
+### Adjacent topics
+
+Use adjacent material when the topic matters, but only because it changes object-design
+decisions:
+
+- type-checker details beyond what is needed for protocols, contracts, and API design
 - ORM or framework APIs beyond the design pressure they introduce
 - database indexing, SQL tuning, and deployment mechanics
-- low-level performance tuning after the ownership model is already correct
-- distributed systems patterns that go far beyond the in-process or single-service boundary
+- low-level performance tuning once the ownership model is already correct
+- distributed-systems patterns that go beyond the in-process or single-service boundary
 
-The course should mention these when they alter object design decisions, but it should
-not turn into a framework catalog or infrastructure manual.
+The course should mention these when they distort or sharpen object design. It should
+not turn into a framework manual, infrastructure catalog, or vendor tour.
 
-## Topics that are outside the course center
+### Outside topics
 
-These are not the main subject here:
+Move outside the course center when the question is mainly about:
 
 - beginner syntax for `class`, `self`, inheritance, or decorators
-- full meta-programming coverage of descriptors, `__init_subclass__`, or metaclasses
-- functional-programming-first design beyond the places where OOP and FP choices meet
+- broad meta-programming coverage of descriptors, `__init_subclass__`, or metaclasses
+- functional-programming-first design except where OOP and FP choices meet directly
 - database administration, deployment pipelines, or cloud operations
-- broad secure-coding coverage unrelated to object boundaries or serialization trust
+- broad secure-coding coverage unrelated to trust boundaries, public APIs, or serialization
 
-Those topics can be important, but they are not where this course should spend most
-of its depth budget.
+Those topics can be important. They are simply not the main teaching promise here.
 
 ## Common boundary confusions
 
@@ -82,12 +96,31 @@ of its depth budget.
 | “Concurrency is infrastructure, not OOP.” | Concurrency belongs here when it changes ownership, mutation, and lifecycle guarantees. |
 | “Security is separate from OOP.” | Security belongs here when trust boundaries, serialization, or public APIs change the object contract. |
 
-## How to use this boundary in practice
+## How to decide quickly
 
-- Stay in this course when the question is “who should own this rule?”
-- Stay in this course when the question is “what should remain authoritative under change?”
-- Use an adjacent source when the question is mostly framework commands or vendor specifics.
-- Leave the course center when the question is beginner syntax or deep meta-programming internals.
+Use this table when you are unsure whether to stay here or step sideways:
 
-The course becomes clearer when its topic boundary is explicit. That clarity is what
-lets the module sequence stay coherent instead of feeling like a bag of advanced Python topics.
+| If the real question is... | Stay here? | Why |
+| --- | --- | --- |
+| who owns this rule? | yes | ownership is the core currency of the course |
+| what state is authoritative? | yes | the course is built around preserving authority under change |
+| which framework flag enables this behavior? | usually no | that is tool usage unless it changes the design boundary |
+| how do I tune this database query? | usually no | useful, but not object-design central by itself |
+| should this object model survive serialization, retries, or concurrency? | yes | those pressures are central here because they reshape contracts |
+| how do I write a metaclass for clever API generation? | usually no | the course cares more about boundary clarity than meta-programming breadth |
+
+## A good scope test for any new page or question
+
+Before you spend serious study time here, ask:
+
+1. Does this topic change who owns behavior or invariants?
+2. Does it change what must remain authoritative over time?
+3. Does it change how the design is reviewed, extended, or proven?
+
+If the answer is no to all three, the topic is probably adjacent or outside.
+
+## Exit check
+
+Leave this page only when you can say:
+
+> This topic belongs `inside` / `adjacent to` / `outside` the course center because it does or does not change `____`.
