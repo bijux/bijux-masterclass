@@ -18,17 +18,48 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  promise["read the stage promise"] --> classify["classify real influence"]
+  classify --> predict["predict reruns from declarations"]
+  predict --> repair["repair hidden reads and mixed ownership"]
+  repair --> review["review the graph as a contract"]
 ```
 <!-- page-maps:end -->
 
 These answers are model explanations, not the only acceptable wording.
 
-What matters is whether the reasoning keeps the declared graph, real command behavior, and
-lock evidence connected.
+## How to use the answer page well
+
+Do not read the model answer first and then reduce the whole module to "put more things
+in `deps`."
+
+A better rhythm is:
+
+1. finish the exercise with your own contract packet
+2. state the stage promise and the real influences on it
+3. compare your reasoning with the model answer
+4. revise anywhere you blurred file reads, control values, or ownership boundaries
+
+What matters is whether the reasoning keeps declarations, real command behavior, and lock
+evidence connected.
+
+Strong Module 04 answers usually do five things:
+
+- they read a stage declaration as a promise
+- they place every influence in the right field for the right reason
+- they predict reruns from declared edges instead of intuition
+- they treat hidden reads as correctness defects
+- they improve graph shape when provenance clarity needs it
+
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one stage-contract explanation
+- one influence-classification table
+- one rerun prediction sheet
+- one repaired missing-dependency example
+- one stage-boundary refactor
+- one backward review of a real pipeline
+
+If your answers rely only on "DVC will figure it out," the reasoning is still too thin.
 
 ## Answer 1: Read a stage contract
 
@@ -43,17 +74,18 @@ The stage should become stale when:
 - the raw incidents file changes
 - the command text changes
 - the declared output is missing
-- lock evidence no longer matches the declared current state
+- the recorded state no longer matches the declared current state
 
 What still needs inspection:
 
-- whether the command reads any other files, such as reference tables or schemas
-- whether it uses control values that belong in `params.yaml`
-- whether it writes additional artifacts that should be declared
-- whether implementation files should be listed as dependencies in this course's chosen convention
+- whether the command reads additional files such as schemas or reference tables
+- whether it reads control values that belong in `params`
+- whether it writes side artifacts that should be declared or cleaned elsewhere
+- whether the repository convention also treats implementation files as explicit
+  dependencies
 
-The main lesson is that the YAML is a claim. Reviewers still need to verify that the claim
-matches the real read and write behavior.
+The biggest hidden-risk category is undeclared influence: the command may depend on more
+than the contract admits.
 
 ## Answer 2: Place each influence
 
@@ -70,13 +102,15 @@ outs:
   - reports/evaluation.json
 ```
 
-The model, prepared data, and policy CSV are file reads, so they belong in `deps`.
+Why:
 
-The threshold is a reviewed control value, so it belongs in `params`.
+- file reads belong in `deps`
+- reviewed control values belong in `params`
+- governed durable products belong in `outs`
 
-The temporary log should usually stay outside the output contract unless it is a reviewed
-artifact that downstream readers rely on. If it is only debugging residue, declaring it as
-an output makes the stage noisier without improving the provenance story.
+The temporary log usually stays outside the governed output contract if it is only
+operational residue. It can still matter for debugging or incident review without
+becoming a durable downstream artifact.
 
 ## Answer 3: Predict reruns
 
@@ -84,36 +118,38 @@ If the raw incidents file changes and `prepare` produces a new prepared output:
 
 - `prepare` should rerun because its declared input changed
 - `fit` should rerun because it depends on the prepared output
-- `evaluate` should rerun if it depends on either the prepared output or the model output
+- `evaluate` should rerun because it depends on prepared data and likely on the updated
+  model produced by `fit`
 
 If `fit.model_family` changes:
 
 - `fit` should rerun because its declared parameter changed
-- `evaluate` should rerun if the model output changes and evaluation depends on that model
-- `prepare` should not rerun because the change does not belong to preparation
+- `evaluate` should rerun if it consumes the model from `fit`
+- `prepare` should remain stable because none of its declared inputs or controls changed
 
 If `evaluate.threshold` changes:
 
 - `evaluate` should rerun
-- `prepare` and `fit` should not rerun unless their declared state also changed
+- `prepare` and `fit` should remain stable
 
 If an unrelated README changes:
 
-- no DVC stage should rerun unless the README is declared as a dependency somewhere
+- no stage should rerun unless the README was declared as a dependency, which would itself
+  need justification
 
-The main lesson is to predict from declared edges, not from a vague feeling that "the
-pipeline changed."
+The main lesson is that rerun prediction follows declared edges, not feelings about which
+part of the project changed.
 
 ## Answer 4: Diagnose stale output risk
 
 Strong review response:
 
 > The evaluation stage likely has a missing dependency. If the command reads
-> `data/reference/escalation_policy.csv`, that path should appear in the stage's `deps`.
-> This is more dangerous than an extra rerun because DVC can skip evaluation even after a
-> meaningful input changes, leaving a stale report that looks current. Add the policy CSV
-> to `deps`, rerun the stage, and confirm `dvc.lock` records the policy dependency and the
-> updated evaluation output evidence.
+> `data/reference/escalation_policy.csv`, that file belongs in the stage's `deps`. This is
+> more dangerous than an extra rerun because DVC can now skip evaluation after a
+> meaningful input change, leaving a stale report that appears current. Add the policy CSV
+> to `deps`, rerun the stage, and confirm `dvc.lock` now records the policy dependency and
+> the updated evaluation evidence.
 
 Concrete repair:
 
@@ -124,8 +160,10 @@ deps:
   - data/reference/escalation_policy.csv
 ```
 
-The exact list may include the evaluation implementation file too, depending on the
-course repository convention.
+What lock evidence should show:
+
+- the repaired dependency appears in the recorded stage state
+- the affected output identity is refreshed after rerun
 
 ## Answer 5: Refactor a mixed stage
 
@@ -152,47 +190,87 @@ stages:
       - reports/evaluation.json
 ```
 
-Why this is stronger when the model is a meaningful intermediate:
+Why this is often stronger:
 
 - a model control change reruns fitting and then evaluation
 - an evaluation threshold change reruns only evaluation
-- the model artifact has a clear owner
-- review can separate "why did the model change?" from "why did the report change?"
+- the model has clear ownership as an intermediate
+- review can separate "why did the model move?" from "why did the report move?"
 
-A defensible keep-together answer is possible only if the model has no independent review
-or reuse value and the combined command truly owns both outputs as one cohesive result.
-In that case, you should still explain why both outputs share the same inputs and
-controls.
+A defensible keep-together answer exists only if the model has no independent reuse or
+review value and the combined command truly owns one inseparable result boundary.
 
 ## Answer 6: Build a three-stage pipeline
 
-A strong pipeline exposes one artifact boundary per stage and reaches "data and pipelines
-are up to date" on the second run. The explanation follows edges from source data through
-the model to metrics rather than relying on declaration order.
+A strong pipeline exposes one meaningful artifact boundary per stage and reaches "data and
+pipelines are up to date" on the second run.
+
+Why the second run matters:
+
+- it shows the graph is not hiding undeclared change or unnecessary churn
+- it demonstrates that the stage contracts converge when no declared influence changed
+
+The explanation should follow edges from raw data through model output to evaluation
+rather than relying on declaration order alone.
 
 ## Answer 7: Omit one dependency on purpose
 
-The changed input does not invalidate the stage because DVC cannot track an edge that was
-never declared. The repair is to declare the actual read, rerun, and commit updated lock
-evidence. Forcing execution would hide rather than correct the contract defect.
+The stage can now appear current while being stale because DVC cannot react to an edge
+that was never declared. A successful command after a forced run would not repair the
+contract defect; it would only hide it temporarily.
+
+The real repair is:
+
+- declare the omitted dependency honestly
+- rerun the affected stage
+- confirm the recorded state and output evidence changed accordingly
+
+The main lesson is that hidden reads are provenance failures, not just incomplete YAML.
 
 ## Answer 8: Trace one parameter through the lockfile
 
-The lock diff should show the parameter value and new hashes for affected outputs. An
-unrelated stage should remain stable. If everything reruns, inspect whether a coarse file
-dependency or stage boundary is wider than the intended semantic change.
+The lock diff should show:
+
+- the changed parameter value
+- the stage invalidated by that parameter
+- new hashes or identities for outputs that legitimately changed
+- stability for unrelated stages
+
+If too much reruns, the stage boundary may be too coarse or a dependency may be declared
+more broadly than the semantic change requires.
 
 ## Answer 9: Repair shared-output ownership
 
-Two independent writers make freshness and cleanup ambiguous. Prefer disjoint directories
-or let each stage publish an intermediate artifact and give one aggregation stage sole
-ownership of the final directory.
+Two independent writers to one output directory make cleanup, freshness, and ownership
+ambiguous.
+
+Prefer one of these repairs:
+
+- give each producer its own exclusive output directory
+- let each stage publish an intermediate artifact and create one aggregation stage with
+  sole ownership of the final shared directory
+
+Why this matters:
+
+- DVC can reason more cleanly about what is stale, what should rerun, and what cleanup is
+  safe when ownership is exclusive
 
 ## Answer 10: Review a pipeline as a contract
 
-The review should compare declarations with observed behavior, including files opened,
-parameters read, outputs written, and partial products after failure. A graph is truthful
-only when those operational facts agree with `dvc.yaml` and `dvc.lock`.
+A strong review walks backward from trusted outputs and asks, for each stage:
+
+- what product this stage owns
+- what real inputs and controls influence that product
+- whether the declaration matches observed command behavior
+- what stale or partial residue could remain after failure
+- what recorded evidence supports the contract
+
+A good closing paragraph names both strengths and fragilities. For example:
+
+> The pipeline is strongest where each stage owns one clear artifact boundary and every
+> control is declared explicitly. It remains fragile where implementation reads are not
+> reviewed against `deps`, where multiple outputs hide mixed ownership, or where rerun
+> expectations depend on human memory rather than on the graph.
 
 ## Self-check
 
@@ -201,7 +279,7 @@ If your answers consistently explain:
 - what the stage declaration promises
 - where each real influence belongs
 - how rerun prediction follows declared state
-- why stale output risk should be repaired before convenience cleanup
+- why stale outputs should be repaired before convenience cleanup
 - how graph shape affects provenance clarity
 
 then you are using Module 04 correctly.
