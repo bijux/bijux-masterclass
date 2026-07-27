@@ -52,6 +52,7 @@ PERFORMANCE_EVIDENCE ?= $(PERFORMANCE_DIR)/evidence.json
 PERFORMANCE_COMPARISON ?= $(PERFORMANCE_DIR)/comparison.json
 PERFORMANCE_BASELINE ?=
 PERFORMANCE_SAMPLES ?= 5
+PERFORMANCE_RUNNER ?= local
 TRACE_EVIDENCE_DIR ?= $(ARTIFACTS_DIR)/observability/reproducible-research/deep-dive-make/trace
 TRACE_PLAN_MAX ?= 500
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-make
@@ -197,6 +198,7 @@ help:
 >     '  TRACE_PLAN_MAX=500 maximum clean-plan trace volume' \
 >     '  PERFORMANCE_SAMPLES=5 repeated samples per governed scenario' \
 >     '  PERFORMANCE_BASELINE=path evidence JSON required by performance-compare' \
+>     '  PERFORMANCE_RUNNER=local stable label for the execution environment' \
 >     '  SELFTEST_FAULT=none controlled harness-test seam; not for ordinary proof' \
 >     ''
 
@@ -576,7 +578,9 @@ performance-evidence:
 >       --policy "$(PERFORMANCE_POLICY)" \
 >       --output "$(abspath $(PERFORMANCE_EVIDENCE))" \
 >       --samples "$(PERFORMANCE_SAMPLES)" \
->       --make "$(MAKE)"
+>       --make "$(MAKE)" \
+>       --compiler "$(CC)" \
+>       --runner-label "$(PERFORMANCE_RUNNER)"
 >     $(MAKE) --no-print-directory performance-incremental
 >     $(PYTHON) scripts/write_bundle_manifest.py \
 >       --bundle-dir "$(PERFORMANCE_DIR)" \
