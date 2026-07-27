@@ -53,7 +53,8 @@ typecheck: install-dev ## Run mypy on Python helper scripts
 .PHONY: capstone capstone-selftest capstone-hardened capstone-tour capstone-walkthrough \
         capstone-contract-audit capstone-incident-audit capstone-verify-report \
         capstone-profile-audit capstone-discovery-audit capstone-portability-audit \
-        capstone-source-bundle capstone-release-check capstone-confirm capstone-clean demo inspect proof
+        capstone-semantic-fault-audit capstone-source-bundle capstone-release-check \
+        capstone-confirm capstone-clean demo inspect proof
 capstone: ## Build the capstone (writes ./all sentinel inside capstone)
 > $(MAKE) -C $(CAPSTONE_DIR) all
 
@@ -74,6 +75,9 @@ capstone-contract-audit: ## Build the capstone public-contract audit bundle
 
 capstone-incident-audit: ## Verify and preserve capstone concurrency incident signatures
 > $(MAKE) -C $(CAPSTONE_DIR) incident-audit
+
+capstone-semantic-fault-audit: ## Prove state, edge, and rule-selection failure models
+> $(MAKE) -C $(CAPSTONE_DIR) semantic-fault-audit
 
 capstone-verify-report: ## Build the capstone verification report bundle
 > $(MAKE) -C $(CAPSTONE_DIR) verify-report

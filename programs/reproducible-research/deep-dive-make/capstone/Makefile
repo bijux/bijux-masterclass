@@ -84,7 +84,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -182,6 +182,7 @@ help:
 >     '  incident-audit    verify concurrency failure signatures (INCIDENT_CASE=...)' \
 >     '  incremental-fault-audit prove stale missing-edge behavior and repaired rebuilds' \
 >     '  semantic-fault-audit prove state, edge, and rule-selection semantics' \
+>     '  semantic-fault-selftest reject dishonest semantic-audit evidence' \
 >     '  profile-audit     build the execution-profile review bundle' \
 >     '  confirm           alias for hardened with shared catalog naming' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
@@ -427,6 +428,9 @@ semantic-fault-audit:
 >       --bundle-dir "$(SEMANTIC_FAULT_AUDIT_DIR)" \
 >       --output "$(SEMANTIC_FAULT_AUDIT_DIR)/manifest.json"
 >     @echo "PASS: wrote semantic fault audit to $(SEMANTIC_FAULT_AUDIT_DIR)"
+
+semantic-fault-selftest:
+>     $(PYTHON) -m unittest $(TST_DIR)/test_semantic_fault_audit.py
 
 profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
@@ -688,7 +692,7 @@ trace-report:
 >       --output "$(TRACE_EVIDENCE_DIR)/manifest.json"
 
 # ---- hardened build verification ----
-hardened: selftest selftest-harness-tests incremental-fault-audit discovery-audit attest test release-check
+hardened: selftest selftest-harness-tests incremental-fault-audit semantic-fault-audit semantic-fault-selftest discovery-audit attest test release-check
 >     @$(MAKE) -q all || { echo "FAIL: non-convergent" >&2; exit 1; }
 >     @echo "PASS: hardened invariants"
 
