@@ -33,6 +33,12 @@ Use these answers as reasoning checkpoints, not as short model solutions to imit
 strong answer always leaves evidence for why the owner was chosen and what lower-power
 alternative was rejected first.
 
+Use this page actively:
+
+- compare your named invariant against the reference answer
+- compare your timing claim against the reference answer
+- check whether your answer named a lower-power owner before defending the metaclass
+
 ## How to review your own answers against this page
 
 For each exercise, check whether your answer includes:
@@ -67,6 +73,14 @@ Reasoning checkpoint:
 - if your answer does not say why repeated future subclass control would change the design,
   your comparison to metaclasses is still weak
 
+Weak answer to reject:
+
+- "this is dynamic enough that a metaclass would probably help later"
+
+Why it fails:
+
+later is not a present class-creation invariant or family-wide requirement.
+
 ## Answer 2: Trigger and explain one metaclass conflict
 
 Example answer:
@@ -91,6 +105,14 @@ Reasoning checkpoint:
 - a strong answer also says what simplification or joint ownership question must be asked
   before trying a technical repair
 
+Weak answer to reject:
+
+- "Python does not like the combination"
+
+Why it fails:
+
+it repeats the failure without naming the competing class-creation authorities.
+
 ## Answer 3: Split one metaclass across `__new__` and `__init__`
 
 Example answer:
@@ -107,6 +129,14 @@ Reasoning checkpoint:
 
 - your answer should make clear what namespace or finished-class evidence would be lost by
   moving the rule to the other hook
+
+Weak answer to reject:
+
+- "I put the important part in `__new__` and the rest in `__init__`"
+
+Why it fails:
+
+important and the rest do not identify structure versus bookkeeping.
 
 ## Answer 4: Use `__prepare__` for one declaration-time rule
 
@@ -129,6 +159,14 @@ Reasoning checkpoint:
 - if your answer cannot say exactly what later hooks would fail to recover, the
   `__prepare__` claim is not yet honest
 
+Weak answer to reject:
+
+- "the custom mapping gives more control over the class body"
+
+Why it fails:
+
+more control is not a vanished declaration-time fact.
+
 ## Answer 5: Reject one unnecessary metaclass
 
 Example answer:
@@ -150,6 +188,14 @@ Reasoning checkpoint:
 
 - the best answers name the convenience argument they are rejecting instead of only naming
   the replacement tool
+
+Weak answer to reject:
+
+- "a decorator is simpler"
+
+Why it fails:
+
+simpler is too vague unless the metaclass was rejected for a named non-class-creation problem.
 
 ## Answer 6: Review the plugin registry example honestly
 
@@ -177,6 +223,14 @@ Reasoning checkpoint:
 - your answer should also say what import-time cost is accepted and what broader framework
   responsibilities are still outside the example
 
+Weak answer to reject:
+
+- "registries are a natural fit for metaclasses"
+
+Why it fails:
+
+natural fit hides the actual invariant and the import-time mutation cost.
+
 ## Answer 7: Separate hierarchy-wide policy from post-creation bookkeeping
 
 Example answer:
@@ -202,6 +256,14 @@ Reasoning checkpoint:
 - a strong answer names where reset, ordering, or registry maintenance belongs once the
   invariant has been isolated
 
+Weak answer to reject:
+
+- "the metaclass does the family rule and the helper does the rest"
+
+Why it fails:
+
+the rest is too vague to review or maintain.
+
 ## Answer 8: Design one reset boundary for import-time class registration
 
 Example answer:
@@ -221,6 +283,14 @@ Reasoning checkpoint:
 
 - your answer should predict one concrete failure mode that appears when reset boundaries
   are missing
+
+Weak answer to reject:
+
+- "tests would get messy"
+
+Why it fails:
+
+messy does not predict duplicate registration, stale registry state, or order leakage.
 
 ## Answer 9: Compare honest metaclass claims with overstated claims
 
@@ -245,6 +315,14 @@ Reasoning checkpoint:
 - the honest version should be specific enough that another learner could review the scope
   without inferring extra framework power
 
+Weak answer to reject:
+
+- "the metaclass mostly manages plugin classes"
+
+Why it fails:
+
+mostly manages still smuggles in broader lifecycle and configuration scope.
+
 ## Answer 10: Produce a metaclass-boundary packet
 
 The packet is strong when another learner can answer:
@@ -258,6 +336,10 @@ Repair move if your packet is weak:
 
 - rewrite each line so it begins with the invariant, timing, or rejected owner rather than
   with the mechanism name
+
+Extra packet test:
+
+- could a missed-class learner explain why the next-lower owner failed without hearing your verbal explanation?
 
 ## What strong Module 09 answers have in common
 
@@ -274,6 +356,15 @@ Across the whole set, strong answers share the same habits:
 If an answer still sounds like "metaclasses are powerful so they fit here," revise it
 until you can name the exact class-creation invariant they own and why lower-power tools
 fail.
+
+## Cross-answer habits to inspect
+
+| Habit to inspect | Strong answer behavior |
+| --- | --- |
+| naming the invariant | always states the rule before naming the hook or mechanism |
+| naming timing | always says when the rule acts in the class lifecycle |
+| naming the rejected owner | always identifies the next-lower owner and why it loses something essential |
+| naming the cost | always surfaces one import-time, reset, or composition consequence |
 
 ## Exit check for the answer key
 
