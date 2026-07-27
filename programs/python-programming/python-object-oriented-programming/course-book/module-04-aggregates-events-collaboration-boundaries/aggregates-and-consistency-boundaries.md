@@ -1,5 +1,4 @@
-# Aggregates and Consistency Boundaries in a Python Service
-
+# Aggregates and Consistency Boundaries
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["Aggregates and Consistency Boundaries in a Python Service"]
+  page["Aggregates and Consistency Boundaries"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,92 +24,126 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Move from “a pile of objects” to a **coherent domain boundary**.
+Module 03 taught you to make one object honest about its own state. Module 04 raises a
+harder question:
 
-An *aggregate* is a cluster of objects treated as one unit for consistency. In Python services, aggregates keep invariants enforceable without spreading checks everywhere.
+- which objects must stay consistent together?
+- which changes can be allowed to drift and reconcile later?
 
-## Where This Fits
+Without a clear answer, designs become either too loose to trust or too tightly coupled to
+change.
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+## The core idea
 
-## 1. The Problem Aggregates Solve
+An aggregate is a small cluster of objects treated as one consistency boundary.
 
-As the system grows, invariants often span multiple objects:
+Inside that boundary:
 
-- rule IDs must be unique within a policy,
-- you must not have two active rules with the same `(metric, window)` pair,
-- retiring a rule should update indexes and projections consistently.
+- invariants should hold together
+- updates should be coordinated together
+- one authoritative entry point should guard change
 
-Without an aggregate boundary, you enforce these rules in scattered places:
-- orchestrator,
-- repository,
-- UI handler,
-- random helper functions.
+Outside that boundary:
 
-That is how invariants rot.
+- other objects may reference results
+- collaboration may happen later
+- strong synchronous consistency is no longer the default
 
-## 2. Define an Aggregate Root
+The main design question is not "which objects are related?" It is "which objects must be
+kept correct together, right now?"
 
-Pick one object as the **aggregate root**:
-- the only entry point for modifications,
-- the one that enforces cross-object invariants.
+## Why boundaries matter
 
-Example: `MonitoringPolicy` (or `RuleSet`) as root.
+If a boundary is too small:
 
-```python
-from dataclasses import dataclass, field
+- invariants leak across objects
+- callers must coordinate too much themselves
+- correctness depends on scattered update order
 
-@dataclass(slots=True)
-class MonitoringPolicy:
-    policy_id: str
-    active_rules: list[ActiveRule] = field(default_factory=list)
-    retired_rules: list[RetiredRule] = field(default_factory=list)
+If a boundary is too large:
 
-    def add_active_rule(self, rule: ActiveRule) -> None:
-        # enforce invariants here (see M04C32)
-        self.active_rules.append(rule)
+- one change drags many objects and dependencies with it
+- contention rises
+- reasoning and testing get heavier
 
-    def retire_rule(self, rule_id: str, reason: str) -> None:
-        ...
-```
+Good aggregate design is a balance between trust and agility.
 
-Teaching rule:
-> If you can mutate children without the root knowing, you don’t have an aggregate.
+## A practical ownership test
 
-## 3. Repository Boundaries
+Ask:
 
-Aggregates often map to repository operations:
+1. Which rules must hold immediately after a successful change?
+2. Which objects must participate for those rules to stay true?
+3. Is there one natural authority that should control those changes?
 
-- load aggregate by ID,
-- modify via root methods,
-- save aggregate atomically.
+Those answers usually point toward the aggregate boundary.
 
-In pure Python, “atomic” might mean “one write to storage” or “one transaction”.
+## What an aggregate is not
 
-This ties directly to Unit-of-Work (M05C42).
+An aggregate is not:
 
-## 4. What Aggregates Are Not
+- every object that happens to mention the same concept
+- the entire domain area for one noun
+- a packaging convenience
+- a way to avoid making boundary decisions
 
-Aggregates are not:
-- “all objects in the system”
-- “a deep tree of everything related”
-- “a replacement for modules”
+It is specifically an answer to the consistency question.
 
-Keep aggregates small. If you frequently need two aggregates at once to enforce invariants, you probably chose the wrong boundaries.
+## Common mistakes
 
-## Practical Guidelines
+- treating all related objects as one aggregate because they "belong together"
+- splitting objects that share real invariants just to keep classes small
+- allowing external code to mutate inner members directly
+- letting several services jointly act as the real aggregate authority
 
-- Choose aggregate roots around invariants that must be consistent together.
-- Enforce cross-object invariants only at the root (not scattered).
-- Keep aggregates small; avoid “one aggregate to rule them all”.
-- Access and mutation should flow through root methods.
+The last mistake is especially common: the model pretends to have an aggregate, but the
+real consistency boundary is actually spread across application code.
 
-## Exercises for Mastery
+## How learners should think about aggregate roots
 
-1. Identify one cross-object invariant in your project. Create an aggregate root that enforces it.
-2. Refactor a scattered invariant check (spread across functions) into a single root method + tests.
-3. Define repository operations for the aggregate (load/save) and write a simple fake repository for tests.
+An aggregate usually needs one clear authority surface.
+
+That entry point exists so that:
+
+- callers do not reach into internals casually
+- invariant enforcement stays central
+- the boundary is easy to review
+
+The root is not the "most important class." It is the class that owns safe entry into the
+consistency boundary.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| can you name the invariants that must hold together? | yes |
+| is there one clear authority for coordinated change? | yes |
+| are unrelated objects kept out of the boundary? | yes |
+| would splitting or enlarging the boundary clearly hurt correctness or agility? | yes |
+
+## Capstone connection
+
+In the capstone, use this lesson to decide:
+
+- which objects must change together
+- which invariants belong inside one authority surface
+- which collaborations can be deferred or separated
+
+If the capstone still updates several related objects from scattered places without a clear
+root, this lesson is the next repair.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain an aggregate as a consistency boundary, not a grouping trick
+- name one capstone boundary that should probably become an aggregate
+- explain why a too-large or too-small boundary both create design problems
