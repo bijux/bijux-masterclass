@@ -97,7 +97,7 @@ Discover the capstone surface:
 gmake -C "$CAPSTONE" help \
   > artifacts/module09-incident/help.txt
 gmake -C "$CAPSTONE" perf \
-  > artifacts/module09-incident/perf.txt 2>&1
+  > artifacts/module09-incident/perf-command.txt 2>&1
 ```
 
 The relevant target meanings are:
@@ -106,93 +106,93 @@ The relevant target meanings are:
 - `trace-count` reports a heuristic size for a non-executing trace
 - `selftest` checks convergence and serial/parallel equivalence
 - `incident-audit` executes one controlled failure specimen and saves a review bundle
-- `perf` prints measurement commands; it is not a benchmark
+- `perf` executes governed clean, no-op, and dry-run scenarios and writes review evidence
+- `performance-selftest` proves the evidence gates accept truth and reject controlled drift
 
 This reading step matters. Timing an undocumented helper would not establish the cost of
 the public build contract.
 
-## Establish a clean baseline
+## Read the experiment contract before the numbers
 
-Cleaning is appropriate here because the measurement question explicitly asks about a
-clean route. It would not be the first action on an unpreserved production incident.
+The command writes:
 
-Run five clean samples:
-
-```sh
-: > artifacts/module09-incident/clean-timings.txt
-for sample in 1 2 3 4 5; do
-  gmake -C "$CAPSTONE" clean >/dev/null
-  printf 'sample=%s\n' "$sample" \
-    >> artifacts/module09-incident/clean-timings.txt
-  /usr/bin/time -p gmake -C "$CAPSTONE" -j4 all >/dev/null \
-    2>> artifacts/module09-incident/clean-timings.txt
-done
+```text
+artifacts/performance/reproducible-research/deep-dive-make/current/
+├── PERFORMANCE_EVIDENCE_GUIDE.md
+├── evidence.json
+├── logs/
+├── manifest.json
+├── route.txt
+├── scenarios.tsv
+└── summary.tsv
 ```
 
-Do not copy this loop into a repository whose clean route is undocumented or destructive
-beyond generated outputs.
+Read `scenarios.tsv` first:
 
-Keep every sample. Summarize the median and range in `decision.md`; do not select the
-fastest run.
+```text
+# scenario	state	jobs	route
+clean-build	clean	4	all
+converged-noop	converged	1	all
+converged-dry-run	converged	1	dry-run-all
+```
 
-## Establish a real no-op baseline
+Now the words *clean*, *no-op*, and *dry-run* have executable meanings. The collector, not
+the learner's memory, establishes each precondition.
 
-The final clean sample leaves `all` built. Confirm that state:
+Cleaning is appropriate for `clean-build` because the experiment contract explicitly asks
+for a clean route. It would still be the wrong first action on an unpreserved production
+incident.
+
+## Inspect distributions and semantic proof
+
+Open `summary.tsv`. Your values will differ, but its shape is stable:
+
+```text
+scenario  state  jobs  samples  minimum  median  maximum  spread  convergence
+```
+
+For each scenario, check:
+
+- the sample count matches the policy you intended to run
+- median is reported with minimum, maximum, and spread
+- convergence is `PASS`
+- no sample has a nonzero exit status in `evidence.json`
+- the trusted-output inventory names all five declared outputs
+
+The clean route describes full production cost. The no-op route describes an already
+converged invocation. Dry-run localizes work before ordinary recipe execution but does not
+isolate parsing.
+
+If no compatible earlier bundle exists, write:
+
+> A governed local baseline now exists. No performance regression has been established.
+
+That is a completed finding, not a failure to diagnose.
+
+## Prove that the gate can reject dishonesty
+
+Run:
 
 ```sh
-if gmake -C "$CAPSTONE" -q all; then
-  printf '%s\n' 'precondition=converged' \
-    > artifacts/module09-incident/noop-precondition.txt
-else
-  status=$?
-  printf 'precondition=failed status=%s\n' "$status" \
-    > artifacts/module09-incident/noop-precondition.txt
-  exit "$status"
+gmake -C "$CAPSTONE" performance-selftest \
+  > artifacts/module09-incident/performance-selftest.txt 2>&1
+```
+
+The tests include controlled policy drift, sample-count drift, failed evidence, and changed
+trusted outputs. A useful comparison gate must reject all four.
+
+You can also observe the public missing-baseline boundary:
+
+```sh
+if gmake -C "$CAPSTONE" performance-compare \
+  > artifacts/module09-incident/missing-baseline.txt 2>&1; then
+  printf '%s\n' 'unexpected comparison success' >&2
+  exit 1
 fi
 ```
 
-Now collect five no-op samples:
-
-```sh
-: > artifacts/module09-incident/noop-timings.txt
-for sample in 1 2 3 4 5; do
-  printf 'sample=%s\n' "$sample" \
-    >> artifacts/module09-incident/noop-timings.txt
-  /usr/bin/time -p gmake -C "$CAPSTONE" all >/dev/null \
-    2>> artifacts/module09-incident/noop-timings.txt
-done
-```
-
-Interpretation:
-
-- clean timing describes full production cost
-- no-op timing describes an already converged invocation
-- neither number alone proves a regression
-- comparison with a previous controlled baseline is required before calling the build slow
-
-If no previous baseline exists, the honest outcome is "baseline established," not
-"regression confirmed."
-
-## Separate pre-recipe cost
-
-Collect dry-run samples from the same converged state:
-
-```sh
-: > artifacts/module09-incident/dry-run-timings.txt
-for sample in 1 2 3 4 5; do
-  printf 'sample=%s\n' "$sample" \
-    >> artifacts/module09-incident/dry-run-timings.txt
-  /usr/bin/time -p gmake -C "$CAPSTONE" -n all >/dev/null \
-    2>> artifacts/module09-incident/dry-run-timings.txt
-done
-```
-
-Compare the dry-run and no-op distributions. If both are similar, most no-op cost is
-before ordinary recipe execution. If no-op is materially slower, inspect what still runs
-despite the convergence expectation.
-
-Do not describe dry-run as pure parse timing. It includes evaluation and graph decisions,
-and GNU Make may execute recursive Make recipe lines under `-n`.
+Read the captured output. The failure is correct because a candidate timing cannot compare
+itself with an unstated past.
 
 ## Inspect the evidence guardrail
 
@@ -205,14 +205,8 @@ gmake -C "$CAPSTONE" --trace -n all \
   > artifacts/module09-incident/trace.txt 2>&1
 ```
 
-One observed run of the current capstone reports:
-
-```text
-trace-lines=48
-```
-
-Your count can differ as the capstone evolves. The number is a guardrail, not a universal
-target. Inspect the trace itself:
+Your count changes with build state and as the capstone evolves. Record the state alongside
+the count. The number is a guardrail, not a universal target. Inspect the trace itself:
 
 - can you find the `all` target quickly
 - are rule locations visible
@@ -221,6 +215,8 @@ target. Inspect the trace itself:
 
 If the trace is searchable and bounded, "noisy" has not been established. If it is hard to
 use, redesign the surface around a specific responder question rather than deleting it.
+Do not merge this conclusion with the timing result: trace usability and route cost are
+separate claims.
 
 ## Generate a controlled incident
 
@@ -368,8 +364,9 @@ The original complaint does not produce one verdict:
 A strong incident summary is:
 
 > We separated the broad complaint into cost, evidence, and pressure claims. The capstone
-> now has recorded clean, no-op, and dry-run baselines; its trace is evaluated by
-> searchability as well as line count. The executed repro exits successfully but reveals
+> now has a governed clean, no-op, and dry-run baseline whose scenarios, samples,
+> convergence, and trusted outputs are reviewable. Its trace is evaluated by searchability
+> as well as line count. The executed repro exits successfully but reveals
 > two undeclared writers to one shared file, so the defect is output ownership rather than
 > "too much parallelism." Serial execution is temporary mitigation; repair requires one
 > publication owner and schedule-equivalence proof.
@@ -378,7 +375,9 @@ A strong incident summary is:
 
 You have completed the example when you can point to:
 
-- five clean, no-op, and dry-run samples with their preconditions
+- governed clean, no-op, and dry-run samples with their scenario contract
+- convergence and trusted-output evidence beside every timing distribution
+- one performance-gate rejection you can explain
 - the trace count and one usability judgment
 - the incident bundle's command, output, status, and copied makefile
 - a classification that does not rely on exit status alone
