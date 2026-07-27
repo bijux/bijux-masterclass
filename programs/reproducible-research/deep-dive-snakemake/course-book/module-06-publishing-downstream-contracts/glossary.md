@@ -1,7 +1,8 @@
 # Glossary
 
-This glossary keeps the language of Module 06 stable. The goal is practical clarity:
-publish review gets much easier when the same terms keep the same meaning.
+Publishing is where a workflow stops being only your private execution system and starts
+becoming someone else's dependency. This glossary helps you describe that handoff with
+terms that protect downstream trust instead of blurring it.
 
 ## When to stop and check the glossary
 
@@ -44,6 +45,34 @@ If a publish review starts to feel vague, ask which term has become unclear:
 - is this artifact for machines, humans, integrity, or provenance?
 
 That question usually reveals the real problem quickly.
+
+## Confusion pairs worth fixing early
+
+These pairs matter because publish review weakens fast when one artifact is asked to play
+too many roles:
+
+- `internal state` versus `public contract`: internal state helps the workflow run or be
+  debugged; the public contract is what downstream users may safely depend on.
+- `compatible change` versus `contract change`: a compatible change stays inside the
+  current published promise; a contract change alters that promise and may require a new
+  versioned boundary.
+- `manifest` versus `file API`: a manifest inventories what exists in one bundle; a file
+  API explains what those artifacts mean and how stable they are.
+- `machine-readable artifact` versus `human-readable artifact`: one is meant for program
+  consumption; the other is meant to help a person interpret results.
+
+## Quick self-check
+
+Before you leave Module 06, make sure you can answer these in a full sentence:
+
+- If a downstream user depends on `publish/v1/summary.tsv`, what concept tells you that
+  path is part of a trusted outward-facing promise rather than an internal convenience?
+- If you add a new optional HTML report without changing existing published paths or field
+  meanings, what class of publish change are you probably making?
+- If a bundle contains checksums but no explanation of what each artifact means, which
+  review document is still missing?
+- If a publish tree mixes scratch leftovers with intended release artifacts, what kind of
+  trust problem has appeared?
 
 ## Terms you should be able to use by the end of the day
 

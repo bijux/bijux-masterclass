@@ -1,8 +1,8 @@
 # Glossary
 
-This glossary keeps the language of Module 07 stable. The goal is practical architecture
-clarity: when the same terms keep the same meaning, repository review gets faster and more
-honest.
+Module 07 asks you to read a Snakemake repository as an architecture, not only as a pile
+of working files. This glossary helps you describe where meaning lives, which paths are
+public, and when a repository is becoming too clever to review honestly.
 
 ## When to stop and check the glossary
 
@@ -46,6 +46,33 @@ If an architecture discussion starts to feel fuzzy, ask which term has become un
 - is this refactor fixing a real boundary, or only changing the tree shape?
 
 That question usually exposes the real architectural issue quickly.
+
+## Confusion pairs worth fixing early
+
+These pairs matter because architecture quality is mostly about naming the right boundary:
+
+- `entrypoint` versus `step-local implementation`: the entrypoint tells the top-level
+  workflow story; step-local implementation carries out one bounded piece of work.
+- `rule family` versus `workflow module`: a rule family groups related rules locally; a
+  workflow module implies a clearer reusable interface.
+- `workflow-facing path contract` versus `downstream-facing path contract`: one stabilizes
+  internal workflow coordination; the other stabilizes what outside consumers may trust.
+- `hidden coupling` versus `architecture drift`: hidden coupling is one concrete boundary
+  failure; architecture drift is the broader long-term weakening that follows from many
+  such failures.
+
+## Quick self-check
+
+Before you leave Module 07, make sure you can answer these in a full sentence:
+
+- If a reviewer must open four helper files before understanding what the workflow builds,
+  which architectural quality is missing from the repository?
+- If several rules share one concern but are not yet reused across repositories, which
+  boundary term fits better than "module"?
+- If a path must stay stable for downstream consumers but another path only coordinates
+  internal workflow steps, what distinction should you name explicitly?
+- If a repository still works but only maintainers with insider history can understand it,
+  which module term captures that failure mode?
 
 ## Terms you should be able to use by the end of the day
 
