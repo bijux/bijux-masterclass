@@ -1,53 +1,52 @@
 # Course Guide
 
-Use this page when you want the big picture without losing the learner-first route. Deep
-Dive Snakemake has several surfaces, but they are not equally useful at every stage.
+Use this page when you need the big picture without losing the learner-first sequence.
+Deep Dive Snakemake has several shelves and routes, but they do not serve the same job at
+the same time. This guide exists to help you choose the smallest useful surface and stop
+there.
 
-## How to use this page
+## The rule that keeps the course coherent
 
-Use this guide when you already know you need the big picture, not when you are still
-trying to learn a single concept for the first time.
+Keep this rule in view:
 
-Read it in this order:
+> Learn the workflow idea in a small setting first. Use the capstone to corroborate that
+> idea later in a larger repository.
 
-1. understand the four durable surfaces
-2. understand the recommended reading order
-3. choose the right surface for the pressure you actually have
-4. stop once the next page is obvious
+If you reverse that order, the course becomes harder than it needs to be.
 
-If you keep reading after the next page is obvious, you are probably replacing study with
-orientation.
+## What this guide is for
 
-The central rule is simple:
-
-> learn the workflow idea in a small setting first, then use the capstone to confirm it in a larger repository.
-
-## Start with the smallest surface that can answer the question
-
-This course has enough material that learners can mistake abundance for pedagogy.
-
-Do not ask, "what else is available?" first.
-
-Ask:
-
-- am I learning a concept
-- am I checking readiness
-- am I under pressure and choosing evidence
-- am I verifying the concept in a larger repository
-
-Those are different jobs. The guide exists to keep them separate.
+This guide is useful when you already know that you need orientation at course scale.
+It is not the best page for first contact. If Snakemake itself is still new, start with
+[Start Here](start-here.md) instead.
 
 ## The four durable surfaces
 
-Deep Dive Snakemake has four durable surfaces:
+Deep Dive Snakemake has four durable surfaces. Treat them as different tools, not as one
+large pile of pages.
 
-1. course home and orientation for entry and reading order
-2. modules for the teaching arc itself
-3. capstone pages for executable corroboration
-4. reference pages for durable review and repair maps
+### 1. Entry and orientation
 
-The teaching arc contains ten learning days and one hundred exercises. Modules are the
-course; guides and references help you navigate or diagnose them.
+Use these pages to start well, recover the reading order, and keep the first examples
+small.
+
+### 2. Modules
+
+Use the modules for the actual teaching arc. This is where the course concepts are built
+day by day.
+
+### 3. Capstone
+
+Use the capstone to see the same ideas survive a realistic repository shape and proof
+route.
+
+### 4. Reference
+
+Use the reference pages when you are reviewing, repairing, diagnosing, or checking
+readiness.
+
+The modules are the course. The other shelves help you enter, corroborate, or inspect
+them.
 
 ## The recommended reading order
 
@@ -57,91 +56,90 @@ flowchart LR
   orient --> early["Modules 01-03"]
   early --> middle["Modules 04-06"]
   middle --> late["Modules 07-10"]
-  late --> capstone["Capstone and review surfaces"]
+  late --> capstone["Capstone and reference review"]
 ```
 
-That order matters because later skills depend on earlier clarity:
+That order matters because later modules depend on earlier clarity:
 
-- dynamic workflows are weak without file-contract discipline
-- publish trust is weak without explicit internal boundaries
-- stewardship language is weak without working evidence
+- dynamic DAG work depends on truthful file contracts
+- publish review depends on explicit internal boundaries
+- architecture judgment depends on clearer ownership
+- incident and governance work depend on proportionate proof habits
 
-## Choose the right surface
+## Choose the right surface for the current job
 
-| If you need... | Start here | Do not start with |
+Ask what job you are doing before you choose the next page.
+
+| If your job is... | Start here | Do not start with |
 | --- | --- | --- |
-| first entry into the course | [Start Here](start-here.md) | the capstone repository |
-| the module sequence explained | [Module 00](../module-00-orientation/index.md) | incident or governance pages |
-| one support page for urgency | [Pressure Routes](pressure-routes.md) | random browsing through `guides/` |
-| workflow-versus-policy separation | [Topic Boundaries](../reference/topic-boundaries.md) | the strongest available command |
-| module-to-repository routing | [Capstone Map](../capstone/capstone-map.md) | raw repository files |
-| durable review maps | [Reference](../reference/index.md) | course-home prose |
+| first course entry | [Start Here](start-here.md) | the capstone repository |
+| rebuilding the whole course picture | [Module 00](../module-00-orientation/index.md) | late-module incident or governance pages |
+| finding the next page under pressure | [Pressure Routes](pressure-routes.md) | random browsing through `guides/` |
+| checking whether a claim needs more evidence | [Proof Ladder](proof-ladder.md) | the strongest available command |
+| translating module names into outcomes | [Module Promise Map](module-promise-map.md) | skim-reading every module index |
+| deciding whether you are ready to continue | [Module Checkpoints](module-checkpoints.md) | the next module by default |
+| entering the capstone honestly | [Capstone Map](../capstone/capstone-map.md) | raw repository files |
+| diagnosing a review or boundary problem | [Reference Shelf](../reference/index.md) | course-home prose |
 
-## The teaching arc
+## The teaching arc in plain language
 
-| Arc | Modules | What becomes legible |
+| Arc | Modules | What becomes possible |
 | --- | --- | --- |
-| file-contract foundations | Modules 01-02 | truthful file contracts, deterministic discovery, and explicit checkpoints |
-| policy and scaling boundaries | Modules 03-05 | profiles, scaling interfaces, helper-code boundaries, and honest software seams |
-| publish and architecture surfaces | Modules 06-08 | downstream contracts, repository file APIs, and operating-context boundaries |
-| incident and governance judgment | Modules 09-10 | observability, incident evidence, migration boundaries, and stewardship judgment |
+| workflow truth | Modules 01-02 | you can explain the DAG, discovery, and rerun behavior honestly |
+| production and boundary control | Modules 03-05 | you can separate policy from meaning and software from orchestration |
+| publication and repository design | Modules 06-08 | you can define what is public, what is internal, and what changes safely across contexts |
+| incident and stewardship judgment | Modules 09-10 | you can investigate surprises and plan change without losing trust |
 
-## What belongs in each surface
+## What each surface should and should not do
 
 | Surface | Use it for | Do not expect it to do |
 | --- | --- | --- |
-| orientation | getting ready, building study rhythm, seeing the whole arc | teaching advanced Snakemake features |
-| modules | learning one day-sized concept deeply | proving everything about the capstone |
-| capstone | seeing the idea survive a realistic repository | acting as first contact for a beginner |
-| reference | reviewing, repairing, and checking boundaries | replacing the lesson sequence |
+| orientation | getting started, pacing, and restoring sequence | teaching advanced judgment in full |
+| modules | learning one day-sized concept deeply | proving everything about the capstone at once |
+| capstone | repository-scale corroboration | acting as a beginner’s first exposure |
+| reference | diagnosis, repair, and readiness checks | replacing the lesson sequence |
 
-## Daily learning route
+## A strong daily route
 
-1. reproduce the smallest example and predict its behavior
-2. read the core lessons while keeping the running question visible
-3. work through the guided example without copying commands blindly
+For most modules, this is the right rhythm:
+
+1. reproduce the smallest example and make a prediction
+2. read the lesson while keeping one concrete question in mind
+3. work through the example without copying blindly
 4. complete Exercises 1-5 before opening the answer page
-5. complete Exercises 6-10 on a fresh or inherited workflow
+5. complete Exercises 6-10 with a little more pressure or transfer
 6. use [Module Checkpoints](module-checkpoints.md) to decide whether to continue
 
-If you cannot explain surprising output in terms of files, boundaries, and evidence,
-reduce the example before entering the capstone.
-
-## The support shelf by job
-
-- Read [Boundary Review Prompts](../reference/boundary-review-prompts.md) when repository splits or module boundaries feel fuzzy.
-- Read [Module Promise Map](module-promise-map.md) when module titles feel too compressed.
-- Read [Module Checkpoints](module-checkpoints.md) when you need a visible exit bar.
-- Read [Pressure Routes](pressure-routes.md) when the reading order is shaped by urgency.
-- Read [Proof Matrix](proof-matrix.md) when you already know the claim and need the evidence surface.
-- Read [Command Guide](../capstone/command-guide.md) when you know the route but not the command layer.
-- Read [Capstone Guide](../capstone/index.md) when you need the capstone contract before opening repository files.
+If your explanation is still weak, reduce the example before you widen into the capstone.
 
 ## Best defaults
 
-Use these as your stable defaults unless the current pressure gives you a stronger reason:
+Use these defaults unless a specific pressure gives you a better route:
 
 1. enter with [Start Here](start-here.md)
-2. anchor in [Module 00](../module-00-orientation/index.md)
+2. anchor with [Module 00](../module-00-orientation/index.md)
 3. read modules in order
-4. keep [Proof Ladder](proof-ladder.md) nearby
+4. keep [Learning Contract](learning-contract.md) and [Proof Ladder](proof-ladder.md)
+   nearby
 5. enter the capstone through [Capstone Map](../capstone/capstone-map.md)
 
-## A warning about skipping ahead
+## A warning about skipping
 
-The course is intentionally cumulative. If you jump to a later module because it sounds
-more advanced, you often borrow vocabulary without the model underneath it.
+Later modules may sound more advanced and more immediately relevant. That does not make
+them safer entry points.
 
-If a later module feels compelling, ask which earlier skill it depends on:
+If a later module is pulling you forward, ask which earlier skill it assumes:
 
-- executor policy depends on workflow semantics
-- publish review depends on explicit internal surfaces
-- incident response depends on stable proof routes
-- migration judgment depends on all of the above
+- publish review assumes you already understand internal workflow truth
+- operating-context review assumes you can separate policy from semantics
+- incident response assumes you know which evidence routes deserve trust
+- migration work assumes all of the above
+
+Skipping is only safe when the earlier skill is already genuinely stable.
 
 ## Good stopping point
 
-Stop when you can answer two questions clearly:
+Stop reading this guide when you can answer these two questions:
 
-- which surface should answer the next question
-- why the heavier surfaces would be premature right now
+1. Which surface should answer my next question?
+2. Why would a heavier surface be premature right now?
