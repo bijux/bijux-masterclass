@@ -1,86 +1,182 @@
 # Glossary
 
-Performance work goes bad when every delay is called "slow" and every surprise is called
-"flaky." This glossary gives Module 09 a tighter language so incident handling and tuning
-stay evidence-led instead of emotional.
+Use these terms to make performance and incident claims testable. If two
+reviewers use "faster," "same," or "flaky" differently, they can agree on output
+and still approve opposite changes.
 
-## How to use this glossary
+## Decision vocabulary
 
-Come back to this page whenever a discussion starts drifting into vague words such as
-"slow," "flaky," "noisy," or "optimization."
-
-The glossary is not here to make the writing sound formal. It is here to keep operational
-discussion precise enough that two maintainers can mean the same thing.
-
-## Terms
-
-| Term | Meaning in this module |
+| Term | Meaning in Module 09 |
 | --- | --- |
-| cost class | A named source of workflow time such as planning, scheduler overhead, storage drag, or tool runtime. |
-| planning cost | Time spent discovering inputs, expanding targets, resolving wildcards, and building the DAG before jobs really run. |
-| scheduler overhead | Time spent launching, tracking, and finalizing jobs rather than performing the scientific or analytic work itself. |
-| storage drag | Delay caused by staging, scratch promotion, shared filesystem latency, or slow visibility of files. |
-| tool runtime | The time spent inside the script, wrapper, or external tool that performs the real step-local work. |
-| evidence surface | A specific artifact or command output used to answer one review question, such as a log, benchmark, summary, or provenance file. |
-| rule-local evidence | Evidence tied to one rule or target, usually logs or benchmark files for a specific job family. |
-| workflow-state evidence | Evidence about the workflow as a whole, such as dry-run output, summaries, or rerun-cause listings. |
-| provenance | The configuration, profile, environment, and runtime identity that explain what produced a given published result. |
-| incident ladder | A fixed sequence for moving from symptom to evidence to classification before editing the workflow. |
-| incident class | The current boundary where the problem appears to live: workflow semantics, operating context, storage behavior, or tool behavior. |
-| noisy evidence | Evidence that exists but does not help answer the actual review question because it is too broad, too vague, or too verbose. |
-| semantic drift | A change that alters workflow meaning, file-contract truth, or published meaning while being framed as something smaller. |
-| honest tuning | A performance improvement that keeps workflow semantics, declared dependencies, and review evidence intact. |
-| runbook | A short operational route that tells maintainers what to run first, what to inspect next, and when to escalate. |
-| escalation trigger | A condition that says the issue has crossed a boundary and should move from local debugging into profile review, publish review, or design review. |
+| reference | The accepted comparison state from which contracts and cost are measured. It is not necessarily optimal. |
+| candidate | A proposed execution or design being compared with a reference. |
+| acceptance | A decision that the candidate preserves required contracts and demonstrates its narrow claimed improvement. |
+| rejection | A decision that a required contract fails or the represented claim is dishonest. |
+| regression | Added cost or lost operational quality relative to the relevant accepted reference, even if the candidate beats an older baseline. |
+| inconclusive | Evidence does not distinguish candidate from reference strongly enough for the proposed claim. |
+| baseline | A measured starting state. It becomes a useful reference only when scope, context, and contracts are declared. |
 
-## How to use these terms
+In the generated audit, `PASS` describes whether a teaching finding is correctly
+demonstrated. `ACCEPT` and `REJECT` describe what a reviewer should do with the
+represented candidate.
 
-If a performance or incident discussion starts getting vague, ask which term has become
-unclear:
+```mermaid
+flowchart LR
+    Reference[Reference] --> Candidate[Candidate]
+    Candidate --> Contract{Contracts preserved?}
+    Contract -- No --> Reject[Rejection]
+    Contract -- Yes --> Cost{Claimed cost movement proved?}
+    Cost -- Reduced --> Accept[Acceptance]
+    Cost -- Increased --> Regression[Regression]
+    Cost -- Unclear --> Inconclusive[Inconclusive]
+```
 
-- are we talking about planning cost or tool runtime?
-- do we need workflow-state evidence or rule-local evidence?
-- is this still honest tuning, or has it crossed into semantic drift?
-- is the next move a local repair or an escalation trigger?
+## Cost vocabulary
 
-Those questions usually expose the real disagreement quickly.
+| Term | Meaning in Module 09 |
+| --- | --- |
+| cost class | A named owner of time or resources: planning, dispatch, storage, tool, or evidence. |
+| planning cost | Work performed while loading configuration, discovering entities, expanding targets, and constructing the DAG. |
+| dispatch cost | Executor work around submission, queueing, launch, tracking, and completion rather than application computation. |
+| storage cost | Time or resource use caused by transfer, staging, visibility, caching, and promotion. |
+| tool cost | Work inside the script, wrapper, or external program owned by a rule job. |
+| evidence cost | Work required to validate, log, benchmark, hash, summarize, and preserve run identity. |
+| setup cycle | One payment of fixed application overhead before processing a chunk or unit of data. |
+| scan pass | One complete application traversal of the admitted records or data. |
+| deterministic work counter | A stable count tied to known work, used to explain what changed independently of host timing noise. |
+| timing observation | A measured duration for one declared boundary and execution context. |
+| attributable improvement | A reduction linked from source mechanism to removed work, evidence movement, and preserved contracts. |
 
-## Confusion pairs worth fixing early
+The specimen's deterministic cost units are local to its model. They are not a
+portable performance score.
 
-These pairs matter because they decide what you measure, what you tune, and when you stop
-calling something "just performance":
+## Evidence vocabulary
 
-- `planning cost` versus `tool runtime`: planning cost happens before jobs do useful work;
-  tool runtime is the time spent inside the command or script that performs the step.
-- `scheduler overhead` versus `storage drag`: scheduler overhead comes from job management;
-  storage drag comes from movement, promotion, or slow filesystem visibility.
-- `rule-local evidence` versus `workflow-state evidence`: one explains a bounded job family;
-  the other explains behavior of the workflow as a whole.
-- `honest tuning` versus `semantic drift`: honest tuning preserves meaning while improving
-  execution; semantic drift changes meaning while pretending to be a harmless performance
-  tweak.
+| Term | Meaning in Module 09 |
+| --- | --- |
+| evidence surface | An artifact or command output with a bounded review purpose. |
+| evidence boundary | What a surface can and cannot establish. |
+| evidence join | The identity relationship proving that configuration, plan, log, benchmark, metrics, and result belong to the same run. |
+| plan evidence | Dry-run, DAG, target, and summary information describing declared work. |
+| rule-local evidence | Logs, benchmarks, and metrics owned by a particular rule job or entity. |
+| workflow-state evidence | Information about target existence, freshness, and rebuild scope across the workflow. |
+| provenance | Recorded identity of material configuration, software, inputs, context, and invocation. |
+| artifact contract | Required paths, coverage, schema, values, or byte identity for an output boundary. |
+| evidence contract | Checks and records required to justify trust, such as validation, provenance, and manifest coverage. |
+| stale evidence | Evidence left from another execution that can be mistaken for the current run. |
+| benchmark distribution | Raw repeated observations plus their spread, context, and summary; not one selected fast run. |
 
-## Quick self-check
+```mermaid
+flowchart TD
+    Config[Configuration identity] --> Join[Evidence join]
+    Plan[Plan evidence] --> Join
+    Logs[Rule logs] --> Join
+    Bench[Benchmark observations] --> Join
+    Metrics[Work counters] --> Join
+    Result[Artifact contract] --> Join
+    Join --> Claim[Reviewable claim]
+```
 
-Before you leave Module 09, make sure you can answer these in a full sentence:
+## Incident vocabulary
 
-- If the DAG takes a long time to build before any real command starts, which cost class
-  are you naming?
-- If benchmark files show tools are fast but the run is still slow because thousands of
-  tiny jobs are launched, which performance surface deserves attention?
-- If one failed sample needs inspection, what narrower evidence type should you look at
-  before reading the whole run history?
-- If a proposed speedup drops checks, logs, or provenance needed for review, what kind of
-  tuning has it stopped being?
+| Term | Meaning in Module 09 |
+| --- | --- |
+| symptom | A bounded, observable departure from expected behavior without an assumed cause. |
+| scope | The targets, entities, run, time window, and operating context affected. |
+| containment | Action that protects trusted outputs and evidence while diagnosis continues. |
+| competing hypotheses | Plausible explanations that predict different evidence. |
+| discriminating check | The smallest observation that separates competing hypotheses. |
+| incident classification | The currently supported owner boundary: plan, policy, storage, tool, evidence, or publication. |
+| trust impact | The consequence for whether outputs may be promoted or consumed. |
+| recovery gate | Evidence required before declaring the incident resolved. |
+| escalation trigger | A condition requiring another owner, stronger authority, or broader evidence. |
+| incident packet | A bounded transfer artifact containing symptom, scope, impact, evidence, classification, actions, and uncertainty. |
 
-## Terms you should be able to use by the end of the day
+## Tuning vocabulary
 
-By the end of Module 09, you should be comfortable using these in a full sentence:
+| Term | Meaning in Module 09 |
+| --- | --- |
+| two-sided change contract | A tuning proposal that states both removed cost and preserved meaning. |
+| cost claim | The specific owned work or waiting expected to decrease. |
+| non-change claim | The plan, artifact, evidence, and failure behavior required to remain constant. |
+| rollback trigger | The first observed invariant failure that cancels or reverses a candidate. |
+| semantic drift | A change in workflow, artifact, validation, or trust meaning presented as operational tuning. |
+| validation bypass | A speed-shaped change that removes a required check while current valid data may still emit equal output. |
+| accepted predecessor | The current reference against which regression is judged, rather than an arbitrarily old slower state. |
 
-- planning cost
-- scheduler overhead
-- workflow-state evidence
-- incident ladder
-- incident class
-- honest tuning
-- escalation trigger
+## Runbook vocabulary
+
+| Term | Meaning in Module 09 |
+| --- | --- |
+| runbook | A bounded, rehearsed decision route with safety labels, evidence branches, owners, stop conditions, and recovery gates. |
+| safety label | Classification of a command as read-only, isolated execution, controlled mutation, or production mutation. |
+| stop condition | Evidence that ends local experimentation and requires rejection, rollback, or escalation. |
+| rehearsal | Execution of the runbook against accepted and adversarial cases without oral assistance. |
+| operational review | Judgment of reproducibility, safety, discrimination, ownership, closure, freshness, and proof scope. |
+
+## Confusion pairs
+
+### Baseline and accepted reference
+
+A baseline is a measured starting point. After an honest tuning is accepted, that
+tuning becomes the relevant predecessor for later regression review. The
+repeated-scan case is cheaper than the baseline but more expensive than the
+accepted tuning.
+
+### Equal output and equal guarantee
+
+Equal current bytes show one artifact relation. They do not prove that
+validation, dependencies, provenance, or malformed-input rejection stayed
+constant.
+
+### Deterministic work and elapsed time
+
+Work counters explain owned operations. Elapsed time records host-dependent
+observation. Neither replaces the other.
+
+### Evidence cost and removable waste
+
+Validation and provenance consume resources but may be required guarantees.
+Reduce duplicated collection rather than deleting the contract.
+
+### Audit success and candidate approval
+
+The audit succeeds when it correctly rejects the bypass and identifies the
+regression. Review the decision, not only `PASS`.
+
+### Containment and repair
+
+Holding publication protects consumers. It does not diagnose or correct the
+cause.
+
+## Use the vocabulary in a review
+
+A precise review might say:
+
+> The honest-tuning candidate preserves the artifact and evidence contracts,
+> removes four setup cycles, and records a benchmark observation. Accept the
+> narrow attributable improvement. The validation-bypass candidate has equal
+> output but fails the evidence contract, so reject it as semantic drift. The
+> repeated-scan candidate preserves contracts but adds eight cost units relative
+> to the accepted predecessor, so classify it as a regression.
+
+If your review uses "same" or "faster," attach the noun:
+
+- same output bytes;
+- same validation count;
+- faster observed rule execution;
+- lower deterministic setup work.
+
+## Completion check
+
+Explain these without looking back:
+
+- Why can a `PASS` finding have a `REJECT` decision?
+- Why is the honest tuning the reference for repeated scan?
+- Which field distinguishes validation bypass from honest chunking?
+- What does a benchmark observation not include by default?
+- What makes a runbook different from a command list?
+- When does a performance proposal become semantic design review?
+
+If your answer relies on "obviously," name the evidence field or contract that
+makes it true.
