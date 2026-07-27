@@ -24,241 +24,262 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this page as one full operational hardening workshop.
+Use this page as a full operational review workshop for the capstone.
 
-The goal is not to collect performance, observability, and security slogans.
-The goal is to leave with a packet another maintainer could use to review, operate, and
-recover the capstone honestly.
+The point is not to repeat phrases such as "add metrics" or "be secure by default." The
+point is to produce one packet that another maintainer could actually use to review,
+operate, and recover the system without guesswork.
 
-That packet should answer:
+By the end, your packet should make all of these clear:
 
-- what to measure before tuning
-- what optimization preserves meaning
-- what signals operators need first
-- what trust boundary carries the highest risk
-- what safe recovery step preserves the model
+- which workflow deserves measurement first
+- which optimization is acceptable and which one would weaken the model
+- which signals would help an operator diagnose pressure quickly
+- which trust boundary is most likely to leak or widen accidentally
+- which recovery step is safe and which shortcut would create new damage
 
-If the packet cannot survive those questions, the exercise day is not done.
+## Working capstone route
 
-## Running capstone path
-
-Keep one path visible throughout the workshop:
+Keep one route visible all day:
 
 1. an attendee requests a seat
 2. `WorkshopEnrollment` decides confirmed or waitlisted
-3. the repository saves authoritative state under contention risk
-4. projections, notifications, or artifacts make that truth visible downstream
+3. authoritative state is persisted under contention risk
+4. derived projections, notifications, or artifacts make that truth visible elsewhere
 5. later workflows such as certificate issuance consume the confirmed result
 
-This path is strong because it forces you to think about:
+This route is strong because it combines:
 
-- one semantic contract
-- one write boundary
-- one derived visibility path
-- one external or trust boundary
-- one recovery story under pressure
+- one semantic truth boundary
+- one write and contention boundary
+- one observability path
+- one serialization and trust boundary
+- one downstream recovery problem
 
-## What you are building by the end
+Do not switch scenarios between exercises. Reuse this path so the operational packet
+builds on itself.
+
+## What you are building
 
 Create one operational packet with these sections:
 
+- workflow pressure statement
 - measurement plan
-- semantics-safe optimization review
-- observability table
-- trust-boundary table
-- runbook or failure-drill note
-- final operational audit summary
+- performance tradeoff review
+- observability plan
+- trust-boundary and representation table
+- input-hardening note
+- runbook entry
+- failure-drill plan
+- closing operational audit
 
-Keep it small enough to review, but concrete enough to use.
+Each exercise contributes one section. Do not try to solve everything at once.
 
-## Tables to prepare first
+## Working tables to prepare first
 
-Start with these working tables.
+Start by drafting these three tables before Exercise 1.
 
-| Pressure or risk | Semantic contract that must hold | Boundary that should absorb the response | Evidence or artifact needed |
+| Pressure or failure | Semantic contract that must remain true | Boundary that should absorb the problem | Evidence or artifact needed |
 | --- | --- | --- | --- |
 
-| Signal or drill | What operator question it answers | What should stay out because it is noisy or sensitive | First action it supports |
+| Signal or drill | Operator question it answers | Detail that must stay out because it is noisy or sensitive | First action it supports |
 | --- | --- | --- | --- |
 
-| Trust boundary | Untrusted or sensitive asset | Protective rule | Damage if mishandled |
+| Representation or input boundary | Trusted consumer | What must be accepted or emitted | What must be rejected, redacted, or bounded |
 | --- | --- | --- | --- |
 
-## Exercise 1: Measure one suspected hot path
+You will keep filling these tables as you work. If you wait until the end, the packet
+usually becomes generic.
 
-Choose one plausible performance concern from the capstone path, such as:
+## Exercise 1: Name the workflow pressure honestly
 
-- enrollment confirmation bursts
-- projection rebuild after many events
-- bulk certificate rendering
+Choose one pressure point on the capstone route, such as:
+
+- registration bursts causing conflict spikes
+- projection rebuilds after many enrollment changes
+- certificate issuance stalls after authoritative persistence
 
 Write:
 
-- the metric, profile, or benchmark you would gather first
-- the workload shape the measurement must match
-- the intuition you refuse to trust without evidence
-- the boundary you expect to be hot, and why that is still only a hypothesis
+- who feels this pressure first
+- what "slow" or "broken" would look like from their point of view
+- which stage you suspect is responsible
+- one intuition you refuse to trust without evidence
 
-If the measurement story is weak, the optimization story is still premature.
+Finish with one sentence beginning:
 
-## Exercise 2: Review one optimization for semantic drift
+> We will not redesign this path until we can prove that...
 
-Pick one possible optimization:
+This keeps the rest of the exercises anchored to evidence rather than aesthetics.
 
-- caching read-heavy seat views
-- batching projection updates
-- lazy-loading template or storage metadata
+## Exercise 2: Design the first measurement plan
 
-For that choice, explain:
+For the same pressure point, specify:
 
-- what semantic contract must remain true
-- what kind of drift could happen silently
-- which proof or review route should reveal that drift first
-- which boundary should absorb the optimization rather than exporting the risk
+- the full workflow you will measure
+- the representative workload shape
+- the first coarse stage boundaries you will time
+- whether you need latency, conflict counts, allocation evidence, or all three
+- the semantic rule that must stay unchanged while measuring
 
-This exercise is about protecting meaning before chasing speed.
+Do not jump straight to a microbenchmark unless you can justify why the broader workflow
+question is already answered.
 
-## Exercise 3: Compare caching, batching, and lazy work
+## Exercise 3: Compare three performance moves
 
-Take one expensive path and compare these three options:
+Using the same pressure point, compare:
 
 - caching
 - batching
 - lazy work
 
-For each option, state:
+For each option, explain:
 
-- what it might improve
-- what freshness, ordering, or authority rule it pressures
-- what new operational confusion it might create
+- what cost it might reduce
+- what truth, freshness, timing, or authority rule it pressures
+- which operator confusion it might create
+- which boundary would own the new complexity
 
 End with:
 
-- one recommended option
-- one rejected option
-- one sentence explaining why the rejected option would weaken the model
+- one recommended move
+- one move to reject
+- one sentence explaining why the rejected move weakens the model more than it helps
 
-## Exercise 4: Design one observability addition
+## Exercise 4: Design one observability packet
 
-Choose one workflow segment and add a concrete signal plan.
+Choose the same workflow and define:
 
-Include:
-
-- one metric, trace, or counter
+- one metric
 - one structured log or event
-- one safe identifier to include
+- one trace or span path
+- one correlation identifier
 - one detail that must stay out because it is sensitive or noisy
-- the operator question this signal helps answer first
 
-Signals are useful only when they change diagnosis quality.
+For each signal, answer:
 
-## Exercise 5: Harden one input or default
+- what operator question does it answer?
+- what first action becomes easier because it exists?
 
-Choose one boundary such as:
+If two signals answer the same question with no added value, remove one.
 
-- callback payload intake
-- administrative reissue command
-- certificate filename or storage key generation
-- workflow configuration input
+## Exercise 5: Review one representation boundary
+
+Pick one place where data crosses outward, such as:
+
+- callback payload normalization
+- issuance artifact metadata
+- log events for certificate completion
+- notification payloads
 
 Write:
 
-- what trust boundary is crossed
-- what safe default or validation rule belongs there
-- what convenience shortcut should be rejected
-- what proof should fail first if the rule regresses
+- who consumes the representation
+- what fields are genuinely needed
+- what fields are over-broad, sensitive, or replayable
+- whether an explicit codec or narrower view object should replace a broader dump
+- what damage would happen if the current representation leaked
 
-This is where secure defaults become design work instead of cleanup.
+Be specific about the damage. Name the failure, not just "security risk."
 
-## Exercise 6: Review one serialization or redaction boundary
+## Exercise 6: Harden one input boundary
 
-Pick one path where data is logged, stored, serialized, or echoed back.
+Choose one input boundary, such as:
 
-Explain:
+- callback intake
+- administrative reissue command
+- sink or adapter configuration
 
-- what data is sensitive
-- what data is merely untrusted
-- what redaction or encoding rule should exist
-- what debugging shortcut would create real damage
+Write:
 
-Be concrete about the damage:
+- the normalized shape you actually want
+- which fields, sizes, or combinations should be rejected early
+- which omitted option should default to the safer behavior
+- which stage must reject the input before any durable or outward work begins
+- which proof should fail first if the rule regresses
 
-- searchable secrets
-- private storage keys in logs
-- unsafe payload replay
-- accidental data-export surfaces
+This is not only validation. It is a contract about what the system is willing to trust.
 
-## Exercise 7: Write one runbook entry
+## Exercise 7: Draft one step-shaped runbook entry
 
-Choose one likely failure mode:
+Pick one likely failure:
 
-- concurrency conflict spike
+- conflict spikes during burst enrollment
 - projection lag growth
 - duplicate callback delivery
-- artifact upload stall after authoritative persistence
+- artifact upload stalls after issuance truth is saved
 
-Write a short runbook entry with:
+Write a runbook entry with these headings:
 
-- first signal to inspect
-- first safe containment or diagnosis step
-- one artifact, dashboard, or trace to consult
-- one unsafe shortcut that must be avoided
-- one design assumption the runbook makes explicit
+- `symptom`
+- `first signal`
+- `first safe step`
+- `artifact to inspect`
+- `unsafe shortcut to avoid`
+- `design assumption made explicit`
 
-If the runbook would still require oral explanation, it is not done.
+If your runbook still sounds like "check the logs and investigate," tighten it until it
+guides a real first move.
 
 ## Exercise 8: Design one failure drill
 
-Choose one failure and write:
+Choose one failure mode and specify:
 
-- what you would simulate
+- what you will simulate
 - which boundary should fail loudly first
-- what evidence would prove the drill succeeded
+- what evidence will show the drill succeeded
 - what hidden weakness you expect the drill to expose
+- what signal gap would make the drill hard to interpret
 
-The drill should not just test code.
-It should test whether the system and the maintainers remain interpretable under stress.
+The goal is not only to test code. The goal is to test whether the system remains
+legible under stress.
 
-## Exercise 9: Perform one full operational audit
+## Exercise 9: Write the operational audit note
 
-Write a short audit note naming:
+Write one short audit note that names:
 
 - the semantic contract that must not move
-- the main performance or contention pressure
-- the most useful signal or drill
-- the highest-risk trust boundary
-- the safest first recovery action
-- one remaining operational weakness
+- the dominant pressure or failure risk
+- the most valuable signal or drill
+- the highest-risk trust or serialization boundary
+- the safest first recovery move
+- one remaining weakness you would still not trust in production
 
-Keep the note short enough to resemble a real review paragraph.
+Keep the note short enough to resemble a real architecture or readiness review comment.
 
-## Exercise 10: Assemble the operational packet
+## Exercise 10: Assemble the packet
 
 Before opening the answer page, assemble:
 
-- the three tables from the start
-- one measurement plan
-- one optimization review
-- one observability addition
-- one trust-boundary note
-- one runbook or drill entry
-- one audit summary
+- the three working tables
+- the workflow pressure statement
+- the measurement plan
+- the performance tradeoff comparison
+- the observability packet
+- the representation and hardening notes
+- the runbook entry
+- the failure-drill plan
+- the closing audit note
 
-Another maintainer should be able to answer all of these from the packet:
+Then test your packet against these questions:
 
-- what must be measured before tuning
-- what change improves speed without moving truth
-- what signal operators need first
-- what recovery step is safe under pressure
+- could another maintainer explain where pressure lives without reading code first?
+- would they know which optimization to reject because it weakens meaning?
+- could they diagnose the workflow from signals that already exist?
+- would they avoid leaking or replaying dangerous representations?
+- could they take a first recovery step without bypassing the truth boundary?
 
-## Done means the system can be operated honestly
+If the answer to any of these is "not yet," the packet is still too weak.
 
-You are done only when your packet survives these review questions:
+## Done means the packet is usable
 
-- "What evidence justifies this optimization?"
-- "What must never cross this boundary casually?"
-- "What should another maintainer inspect first tonight?"
-- "What recovery move would be fast but architecturally wrong?"
+You are done only when the packet is strong enough that a maintainer who missed class
+could use it as a first operational playbook.
 
-If those answers still sound generic, tighten the packet before you move to the answer
-page.
+That means it must be:
+
+- specific about the workflow
+- explicit about the truth boundary
+- concrete about signals and artifacts
+- honest about trust and failure risks
+- useful without oral explanation
