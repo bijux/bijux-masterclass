@@ -1,93 +1,117 @@
 # Topic Boundaries
 
-This page explains what the course is really trying to teach, what it treats as support,
-and what it deliberately keeps at the boundary. Use it when the course feels selective
-and you want that selectivity to be explicit instead of accidental.
+Use this page when you want to understand what Deep Dive Snakemake is promising to teach
+deeply, what it treats as support, and what it deliberately hands off to other courses or
+other tools. A good boundary page prevents two common failures:
 
-## Core topics this course must teach well
+- expecting this course to teach every adjacent topic equally
+- assuming a topic is unimportant simply because it is not the course center
 
-These are the non-negotiable topics. If these stay fuzzy, the course is not doing its
-job.
+This course is selective on purpose. The selectivity exists to protect learning quality.
 
-| Topic family | Why it is core | Primary modules | Typical proof |
+## The main promise of the course
+
+Deep Dive Snakemake is a course about trustworthy workflow engineering. Its central
+question is:
+
+> How do you make a Snakemake workflow legible, reviewable, and governable from first
+> run through long-term stewardship?
+
+Everything in the course is chosen because it helps answer that question.
+
+## Core topics the course must teach deeply
+
+If these topics stay fuzzy, the course has failed no matter how many commands ran
+successfully.
+
+| Core topic | Why it is core | Main modules | What successful learning looks like |
 | --- | --- | --- | --- |
-| file-contract truth | Snakemake only stays trustworthy when rule I/O is explicit | 01, 02 | dry-run review, stable targets, publish surfaces |
-| dynamic DAG discipline | checkpoints are where workflows often become magical and unsafe | 02 | discovery artifact review, checkpoint evidence |
-| policy versus semantics | profiles and executors should change context, not meaning | 03, 08 | profile audit, compare local and CI policy |
-| repository boundaries | larger workflows need legible file APIs and module ownership | 04, 07 | architecture route, repository layer review |
-| software and helper-code boundaries | wrappers, scripts, and envs must stay reviewable | 05 | environment and script boundary review |
-| publish and downstream contracts | downstream trust depends on a deliberate stable interface | 06 | publish review, manifest and report evidence |
-| incident response and stewardship judgment | a workflow must stay reviewable under pressure and change | 09, 10 | incident review, governance pass |
+| file-contract truth | Snakemake only stays honest when rule inputs, outputs, and targets mean what they claim | 01, 02 | you can read a target, predict the graph, and spot hidden assumptions |
+| dynamic DAG discipline | checkpoints are where workflows often drift from explicit contracts into runtime folklore | 02 | you can explain changing graphs as staged evidence, not magic |
+| policy versus semantics | profiles and operating contexts should change execution policy, not analytical meaning | 03, 08 | you can compare contexts without confusing cost with truth |
+| repository and ownership boundaries | larger workflows need smaller, durable responsibilities across modules and file APIs | 04, 07 | you can route a change to the right layer without guesswork |
+| helper-code and runtime boundaries | wrappers, scripts, packages, and execution surfaces must support the workflow contract instead of hiding it | 05, 08 | you can decide what belongs in workflow code and what belongs outside it |
+| publish and downstream contracts | results only become trustworthy when downstream users can inspect a stable public interface | 06 | you can define what is public, what is internal, and what evidence travels with the result |
+| incident response and stewardship | a workflow has to stay reviewable under pressure and over time, not only on a calm local run | 09, 10 | you can classify a failure, choose the right evidence, and govern the next change |
 
-## Supporting topics that matter, but serve the core
+## Supporting topics that strengthen the core
 
-These matter because they make the core topics legible and enforceable.
+These topics matter because they make the core judgments easier to teach, test, and
+review. They are important, but they are not the center of the course argument.
 
-| Topic family | How this course uses it | Where it appears |
+| Supporting topic | Why it matters here | Where it appears |
 | --- | --- | --- |
-| dry-runs and summaries | to explain planned work before execution | Modules 01, 03, 09 |
-| rule modularity | to keep larger repositories reviewable | Modules 04, 07 |
-| resource declarations | to make execution assumptions visible | Modules 03, 08 |
-| logs and benchmarks | to turn workflow incidents into inspectable evidence | Module 09 |
-| manifests and checksums | to make publication reviewable | Module 06 |
-| Docker and execution surfaces | to expose runtime boundaries honestly | Modules 05, 08 |
+| dry-runs, summaries, and DAG views | they make workflow intent visible before execution | Modules 01, 02, 03, 09 |
+| rule modularity | it helps keep larger repositories inspectable | Modules 04, 07 |
+| resource declarations | they expose operating assumptions and prevent invisible executor folklore | Modules 03, 08 |
+| manifests, checksums, and integrity reports | they turn publication into a reviewable contract | Module 06 |
+| benchmarks and incident evidence | they let maintainers reason from saved proof instead of memory | Module 09 |
+| containers and execution surfaces | they clarify runtime boundaries when environment drift matters | Modules 05, 08 |
 
-These are important, but they are always in service of a more trustworthy workflow.
+Study these topics as tools that strengthen a core judgment. Do not let them replace the
+core judgment.
 
 ## Deliberate outer boundaries
 
-These topics are real, but they are not treated as the main point of Deep Dive
-Snakemake.
+These topics are real and valuable, but they are not the main subject of this course.
 
-| Boundary topic | Why it is not the center of this course | What we do instead |
+| Boundary topic | Why it is outside the center | Honest handoff |
 | --- | --- | --- |
-| biological analysis depth | this course is about workflow engineering, not domain-science interpretation | keep biology minimal and use it as pressure, not as the main subject |
-| Python library design in the abstract | helper code matters only where it affects workflow truth | teach helper-code boundaries, not a general Python architecture course |
-| cluster administration | scheduler policy matters, but workflow semantics come first | teach profile and executor boundaries, not admin operations in the large |
-| container ecosystem debates | containers matter as execution boundaries, not as the full course topic | keep focus on reproducible runtime surfaces |
-| general data-versioning systems | Snakemake has limits and neighbors | Module 10 teaches tool boundaries instead of pretending Snakemake owns everything |
+| biological analysis depth | the course uses biology as pressure, not as the main teaching surface | learn domain interpretation in the relevant science course, not here |
+| general Python software architecture | helper code matters only where it affects workflow truth | use Module 05 to judge boundaries, then study broader Python design elsewhere |
+| cluster administration and scheduler operations | scheduler policy matters, but workflow semantics come first | use Modules 03 and 08 for workflow-facing policy; learn administration separately |
+| container ecosystem debates | containers matter as execution boundaries, not as an ideology course | use them to stabilize runtime surfaces when needed |
+| general data-versioning platforms | Snakemake has neighbors and limits | Module 10 teaches when to hand off to adjacent tools |
+| every Snakemake feature in equal depth | not every feature matters equally to correctness and stewardship | the course prioritizes the features that most affect reviewability |
 
-When you want more on one of these, the honest answer is not “the course covers
-everything.” The honest answer is “the course touches this where it affects workflow
-truth, then hands off.”
+An honest course does not pretend to be infinite. It teaches the most important ideas
+deeply and hands off the rest clearly.
 
-## Topics people often overweight
+## Topics learners often overweight
 
 These topics are easy to romanticize and easy to teach badly:
 
-- wrappers treated as a substitute for understanding rule contracts
-- checkpoints treated as cleverness instead of explicit staged discovery
-- executor flags treated as workflow semantics
+- wrappers treated as a substitute for understanding file contracts
+- checkpoints treated as sophistication rather than explicit staged discovery
+- executor flags treated as if they define analytical meaning
 - results directories treated as published interfaces
-- modularization treated as virtue even when the repository contract gets blurrier
+- modularization treated as virtue even when ownership gets blurrier
 
-The course mentions these only when they sharpen workflow judgment. It does not treat
-them as badges of Snakemake sophistication.
+The course does cover these, but only in ways that sharpen workflow judgment.
 
 ## Misreadings this page is meant to prevent
 
-Without an explicit boundary page, readers can leave with the wrong conclusions:
+### "The course forgot adjacent topics."
 
-- “The course forgot science-domain concerns.”
-  It did not forget them. It scoped them outside the central workflow argument.
-- “The course should teach every Snakemake feature equally.”
-  It should not. Some features matter far more to correctness than others.
-- “If the workflow runs once locally, the advanced topics are optional.”
-  They are not. Production truth appears later, under policy drift and review pressure.
-- “Snakemake should keep owning every orchestration concern forever.”
-  Module 10 exists precisely to prevent that mistake.
+It did not forget them. It scoped them deliberately. If a topic only matters because it
+supports workflow trust, the course covers that slice and stops there.
 
-## Use this page well
+### "If the workflow runs locally once, the advanced material is optional."
 
-Use this page well by turning it into a routing decision:
+It is not optional. Later modules exist because real workflow truth appears under scale,
+policy drift, publication pressure, incident response, and migration.
 
-- if the topic is core, go back to the owning module and learn it deeply
-- if the topic is supportive, study it as a way to strengthen a core judgment
-- if the topic is outside the course center, stop expecting the course to become a different course
+### "Advanced means more features."
 
-## Best companion pages
+Not here. Advanced means better judgment under change, pressure, and complexity.
 
-- [Glossary](glossary.md) to stabilize the shared vocabulary
-- [Module Dependency Map](module-dependency-map.md) to see the safe learning order
-- [Capstone Map](../capstone/capstone-map.md) to choose the smallest honest workflow proof route
-- [Completion Rubric](completion-rubric.md) to review whether the course is keeping its promises
+### "Snakemake should own every orchestration concern forever."
+
+Module 10 exists to prevent that mistake. Tool boundaries are part of stewardship.
+
+## How to use this page for study decisions
+
+When you are unsure where to spend effort, ask these questions:
+
+1. Is this topic core, supporting, or outside the course center?
+2. If it is core, which module owns it?
+3. If it is supporting, which core judgment does it strengthen?
+4. If it is outside the center, what is the honest handoff instead of stretching this
+   course into a different one?
+
+## Companion pages
+
+- [Module Dependency Map](module-dependency-map.md)
+- [Practice Map](practice-map.md)
+- [Completion Rubric](completion-rubric.md)
+- [Capstone Map](../capstone/capstone-map.md)
