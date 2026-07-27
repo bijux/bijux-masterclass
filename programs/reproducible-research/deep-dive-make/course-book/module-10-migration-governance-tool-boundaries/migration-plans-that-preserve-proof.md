@@ -1,6 +1,5 @@
 # Migration Plans That Preserve Proof
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,23 +17,24 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  contract["name the current contract"] --> evidence["preserve comparison evidence first"]
+  evidence --> move["move one boundary at a time"]
+  move --> compare["compare old and new behavior explicitly"]
+  compare --> retire["retire the old route only after trust is earned"]
 ```
 <!-- page-maps:end -->
 
 This page is about changing an existing build without stepping into the most common trap:
 rewriting faster than you can still prove what worked before and what works now.
 
-Migration is not a synonym for replacement. It is a controlled sequence of boundary moves.
+Migration is not a synonym for replacement. It is a controlled sequence of boundary
+moves.
 
 ## The migration mistake that wastes months
 
-Teams often discover real build pain and immediately jump to this conclusion:
+Teams often discover real build pain and jump straight to this conclusion:
 
-> the safest path is to replace everything at once.
+> The safest path is to replace everything at once.
 
 That is almost never the safest path.
 
@@ -52,26 +52,43 @@ That is not migration discipline. That is a loss of memory.
 
 When you plan a build migration, ask:
 
-> what is the smallest change that improves one boundary while preserving the evidence
+> What is the smallest change that improves one boundary while preserving the evidence
 > needed to trust the result?
 
 That question keeps the sequence honest.
 
-## Proof is part of the system, not an afterthought
+## Proof is part of the system, not a migration luxury
 
-In Module 10, "proof" means the concrete ways you verify the build still tells the truth.
+In Module 10, "proof" means the concrete ways you verify that the build still tells the
+truth.
 
 Typical proof surfaces include:
 
 - convergence checks
-- serial versus parallel comparison
+- serial-versus-parallel comparison
 - `make -n` sanity checks
-- `--trace` or similar explanation surfaces
+- `--trace` explanation surfaces
 - artifact manifests, checksums, or audit outputs
 - selftests around target meaning and output ownership
 
-If your migration deletes those and promises to rebuild them later, you are not preserving
-proof. You are borrowing confidence against future work.
+If your migration deletes those and promises to rebuild them later, you are not
+preserving proof. You are borrowing confidence against future work.
+
+## Start by naming the current contract
+
+Before planning a migration step, write down:
+
+- what the current route is supposed to produce
+- who consumes it
+- what evidence you have today that it still works
+
+A migration plan with no current contract usually drifts into aesthetics:
+
+- "clean this up"
+- "modernize the scripts"
+- "split this into layers"
+
+Those may become good moves later. They are not a plan yet.
 
 ## A stable migration order
 
@@ -99,7 +116,7 @@ Imagine a legacy build where `release` is unreliable. A reckless migration says:
 
 A safer migration begins differently:
 
-- define what `release` is supposed to mean
+- define what `release` is currently supposed to mean
 - preserve one way to inspect its current behavior
 - separate packaging proof from deployment side effects
 - add a comparison route for old and new outputs
@@ -127,68 +144,25 @@ Suppose a team wants to improve packaging and deployment. A disciplined migratio
 
 That is much safer than "replace release with a new pipeline."
 
-## A small example of good sequencing
+## Use one migration table per boundary move
 
-Start with this inherited target:
+For one step, fill in:
 
-```make
-.PHONY: release
+| Part | What to record |
+| --- | --- |
+| current contract | what the old route is supposed to produce or guarantee |
+| current evidence | how you inspect the old route today |
+| defect class | what is broken: truth, contract, parallel safety, environment, or boundary |
+| intended change | what one boundary move will happen next |
+| preserved proof | what command or artifact still lets you compare old and new |
+| retirement condition | what must be true before the old route can disappear |
 
-release:
-	@./scripts/build.sh
-	@./scripts/test.sh
-	@./scripts/package.sh
-	@./scripts/deploy.sh
-```
-
-This is not one problem. It is four concerns hidden behind one name.
-
-Bad migration:
-
-- replace the whole route with a workflow engine
-- keep the name `release`
-- update docs later
-
-Better migration:
-
-1. define `release-check` as validation only
-2. define `dist` as package publication only
-3. move deployment behind a separate explicit route
-4. compare old package outputs and new package outputs
-5. retire the old monolithic `release` target when the public contract is clear
-
-The better plan gives you observable seams. That is the real goal.
-
-## Hybrid boundaries are often the honest answer
-
-Many safe migrations are hybrids for a while.
-
-Examples:
-
-- Make still owns local build graph truth, but a script now owns manifest generation
-- Make still drives compile and test, but release metadata is produced by a dedicated tool
-- Make still orchestrates repository-local work, while deployment moves to a workflow
-  system with its own state model
-
-A hybrid is not a sign of weakness. It is often a sign the team is respecting boundaries
-instead of pretending one tool should do everything.
-
-The question is not whether the system becomes hybrid. The question is whether the handoff
-is explicit and testable.
-
-## Every migration step should answer three questions
-
-Before approving a migration step, write down:
-
-1. what exact behavior is changing
-2. what proof will show the change is safe
-3. what old route or contract remains in place until trust is earned
-
-If you cannot answer the third question, the step is probably too large.
+This format keeps migration plans from collapsing into vague verbs like "streamline" and
+"refactor."
 
 ## Keep comparison routes boring and specific
 
-One of the best migration habits is to add temporary comparison targets.
+One of the best migration habits is to add temporary or permanent comparison targets.
 
 For example:
 
@@ -209,12 +183,31 @@ compare-trace:
 	@$(MAKE) --trace -f Makefile.new all > build/new.trace
 ```
 
-These targets are not glamorous. They are extremely valuable because they stop migration
-discussions from turning into intuition contests.
+These routes are not glamorous. They are valuable because they stop migration
+discussions from becoming intuition contests.
+
+## Hybrid boundaries are often the honest answer
+
+Many safe migrations are hybrids for a while.
+
+Examples:
+
+- Make still owns local build graph truth, but a script now owns manifest generation
+- Make still drives compile and test, but release metadata is produced by a dedicated
+  tool
+- Make still orchestrates repository-local work, while deployment moves to a workflow
+  system with its own state model
+
+A hybrid is not a sign of weakness. It is often a sign the team is respecting
+boundaries instead of pretending one tool should own everything immediately.
+
+The question is not whether the system becomes hybrid. The question is whether the
+handoff is explicit and testable.
 
 ## Do not remove observability to make the migration look cleaner
 
-Teams sometimes hide useful evidence during migration because it feels temporary or messy:
+Teams sometimes hide useful evidence during migration because it feels temporary or
+messy:
 
 - trace targets disappear
 - dumps stop being generated
@@ -226,48 +219,33 @@ That is exactly backwards.
 Migration is when you need observability the most. Even temporary comparison routes are
 better than silent confidence.
 
-## A practical migration template
+## Review drill
 
-For one subsystem, write the plan in this shape:
+Before approving a migration step, answer these three questions in writing:
 
-| Part | What to record |
-| --- | --- |
-| current contract | what the old route is supposed to produce or guarantee |
-| current evidence | how you inspect the old route today |
-| defect class | what is broken: truth, contract, parallel safety, environment, or boundary |
-| intended change | what one boundary move will happen next |
-| preserved proof | what command or artifact still lets you compare old and new |
-| retirement condition | what must be true before the old route can disappear |
+1. what exact behavior is changing?
+2. what proof will show the change is safe?
+3. what old route or contract remains in place until trust is earned?
 
-This format prevents migration plans from becoming vague roadmaps full of verbs like
-"modernize" and "streamline."
+If you cannot answer the third question, the step is probably too large.
 
-## Failure signatures worth recognizing
+## Capstone connection
 
-### "We migrated it, but we can no longer explain the new output differences"
+Use the capstone or an inherited Make system to practice one real sequence:
 
-That usually means comparison routes were never built or were removed too early.
+- name the current contract of one painful target
+- keep one command or artifact that exposes current behavior
+- move one boundary only
+- compare old and new behavior explicitly
+- state the retirement condition before removing the old route
 
-### "We cleaned up the target names and broke CI in the process"
+That is the discipline the rest of Module 10 depends on.
 
-That means public contract changes were bundled together with internal refactors.
+## Exit check
 
-### "The new system is clearer, but now nobody can run the old diagnostics"
+Leave this lesson only when you can do all of these:
 
-That means proof was treated as optional scaffolding.
-
-### "We are half-migrated forever"
-
-That often means the handoff boundaries were never made explicit enough to retire old
-routes with confidence.
-
-## What this page wants you to say
-
-A strong migration sentence sounds like this:
-
-> We will preserve the current proof harness, narrow the public contract, move one boundary
-> at a time, and keep comparison routes until the new owner has earned trust.
-
-That is a much stronger plan than:
-
-> We are going to rewrite the build so it is nicer.
+- explain why migration is a sequence of boundary moves rather than a synonym for
+  replacement
+- identify one proof surface that must survive a first migration step
+- describe one retirement condition that must be true before an old route disappears
