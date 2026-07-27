@@ -167,6 +167,7 @@ comparison is evidence; serialization is not automatically a repair.
 A good repository often grows one or two focused diagnostic targets such as:
 
 - `trace-count`
+- `perf`
 - `discovery-audit`
 - `contract-audit`
 - `profile-audit`
@@ -199,6 +200,22 @@ Owner: build maintainers
 
 This is much easier to explain, test, and retire than a hundred one-off debug prints.
 
+The capstone's `perf` target is a different kind of bounded surface. It writes repeated
+timings, scenario policy, context, convergence proof, and trusted-output inventories to one
+review bundle. That route answers a cost question. `trace-count` answers only a volume
+question. Keeping both distinctions visible prevents one convenient integer from carrying
+claims it cannot support.
+
+Run the gate tests when reviewing the evidence route itself:
+
+```sh
+gmake performance-selftest
+```
+
+The controlled rejection cases matter as much as the passing capture. They demonstrate
+that failed commands, incompatible policies, unequal sample counts, and artifact drift
+cannot quietly produce an accepted comparison.
+
 ## Debug prints become dangerous when they leak into artifacts
 
 One easy way to make observability harmful is to let diagnostics become part of semantic
@@ -225,6 +242,8 @@ Here is a practical split:
 | what variable or rule is resolved | `make -np <target>` | command and focused excerpt |
 | which target emitted output under `-j` | `--output-sync=target` | target-attributed failure block |
 | how much trace does a route emit | `trace-count` or `wc -l` | count, route, and build revision |
+| what do declared build states cost | `perf` | policy, all samples, context, convergence, inventories |
+| did cost change under one semantic contract | `performance-compare` | both bundles and comparison report |
 | what discovery resolved | discovery audit or stable manifest | sorted resolved list |
 | what changed between serial and parallel output | artifact hashes or comparison selftest | both commands and comparison result |
 

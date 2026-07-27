@@ -157,59 +157,56 @@ Never run `clean` automatically during incident triage. Cleaning destroys timest
 partial outputs, and other state that may explain the event. Establish clean state only
 when the measurement question explicitly requires it.
 
-## A controlled measurement protocol
+## Run the capstone's controlled protocol
 
-Before collecting numbers, record:
-
-```text
-repository revision:
-local changes:
-requested target:
-build state:
-job count:
-Make version:
-relevant tool versions:
-machine or runner:
-notable background load:
-```
-
-Then collect repeated samples without changing those fields. A small shell loop is enough
-for a local comparison:
+The capstone turns the measurement rules into an executable contract. From `capstone/`,
+run:
 
 ```sh
-for sample in 1 2 3 4 5; do
-  /usr/bin/time -p make -n all >/dev/null
-done
+gmake perf
 ```
 
-Keep all samples. Report the median for a simple comparison, plus the minimum and maximum
-so readers can see whether the route was stable. Five samples do not make a benchmark
-scientific; they do make it harder to mistake one lucky run for the result.
+Do not read the median first. Open the bundle under
+`artifacts/performance/reproducible-research/deep-dive-make/current/` in this order:
+
+| Surface | Question |
+| --- | --- |
+| `scenarios.tsv` | which state, job count, and route did the repository declare? |
+| `summary.tsv` | what were min, median, max, spread, and convergence? |
+| `evidence.json` | were all samples retained, and which trusted outputs were observed? |
+| `logs/` | what command output and exit status belong to each sample? |
+| `manifest.json` | is the evidence packet complete? |
+
+The collector establishes clean or converged state before every sample. It requires at
+least three samples, uses five by default, and records every elapsed value. Five samples do
+not make a benchmark scientific; they make one lucky run less persuasive.
+
+After every scenario, the route proves `make -q all` and inventories the trusted outputs.
+That semantic evidence prevents a missing recipe or incomplete graph from masquerading as
+a speedup.
+
+The machine remains a confounder. Add any notable background load or runner condition to
+the review note before comparing results. The bundle records platform, Python, GNU Make,
+and the exact scenario-policy digest, but it cannot make two unlike machines equivalent.
 
 ## Pair measurements that answer different questions
 
-Start with a no-op route when you want to localize Make-side overhead:
+The governed scenarios pair three questions:
 
-```sh
-make all
-make -q all
-/usr/bin/time -p make -n all >/dev/null
-/usr/bin/time -p make all >/dev/null
-make --trace -n all > build/trace.log 2>&1
-wc -l build/trace.log
-```
+| Scenario | Question |
+| --- | --- |
+| `clean-build` | what does full production cost in documented clean state? |
+| `converged-noop` | what does an already up-to-date invocation cost? |
+| `converged-dry-run` | how much cost remains before ordinary recipe execution? |
 
-This gives you:
+Compare no-op and dry-run distributions to localize overhead. Compare clean and no-op to
+see how much cost appears only when production work is required. These are contrasts, not
+internal profilers.
 
-- a confirmed no-op precondition
-- a dry-run signal containing parse, evaluation, and freshness decisions
-- a real no-op signal containing the same work plus any recipes that still run
-- a rough size signal for one non-mutating trace
-
-`--trace -n` is the safe first probe because ordinary `make --trace all` may execute
-recipes and change the state you are trying to study. GNU Make can still execute recursive
-Make recipe lines under `-n`; inspect the preview and use a disposable copy if the route
-contains recursion or other unusual behavior.
+Trace answers a different question. Use `make --trace -n all` when you need causality or a
+rough evidence-volume signal, not as another timing sample. GNU Make can still execute
+recursive Make recipe lines under `-n`; inspect the preview and use a disposable copy if
+the route contains recursion or unusual include-remake behavior.
 
 That is not a full profiler. It is enough to stop guessing blindly.
 
@@ -293,6 +290,24 @@ should time or profile the tools on the critical route rather than rewrite Make 
 
 This is why measurement separation matters so much. It changes what a rational next move
 looks like.
+
+## Compare only compatible evidence
+
+Preserve the earlier bundle outside `current/`, collect the candidate bundle, then run:
+
+```sh
+gmake performance-compare \
+  PERFORMANCE_BASELINE=/path/to/baseline/evidence.json
+```
+
+The comparison rejects policy, sample-count, scenario, convergence, and trusted-output
+drift before reporting timing deltas. A rejected comparison is useful evidence: it says the
+two experiments do not answer the same question or do not preserve the same artifact
+contract.
+
+Even a passing comparison does not automatically mean “faster” or “slower” in an
+operationally important sense. Compare the median delta with both observed spread and a
+stated objective. If the baseline is missing, the honest result is “baseline established.”
 
 ## Interpret differences, not isolated numbers
 
