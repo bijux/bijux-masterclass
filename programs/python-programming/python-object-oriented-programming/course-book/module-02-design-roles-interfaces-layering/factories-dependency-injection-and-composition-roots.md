@@ -1,6 +1,5 @@
 # Factories, Dependency Injection, and Composition Roots
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,101 +24,138 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Well-layered systems still become clumsy if nobody decides where object construction
-belongs. Factories, dependency injection, and composition roots are the missing part of
-the story: they let you assemble collaborators deliberately without turning the domain
-model into a bag of configuration details.
+Many designs look clean until object construction starts spreading everywhere.
 
-## Why this topic matters
+Then the system begins to rot:
 
-Many Python systems start with clean domain objects and then decay because:
+- domain objects start reading configuration
+- application code chooses concrete adapters in random places
+- tests patch hidden globals instead of supplying collaborators directly
+- construction logic gets duplicated because nobody owns the assembly boundary
 
-- constructors start reading environment variables
-- domain classes decide which repository or adapter to instantiate
-- tests require patching hidden global state
-- configuration spreads through many modules instead of one assembly boundary
+This lesson is about giving construction a clear home.
 
-That is not just a style problem. It makes ownership harder to review.
-
-## Three different things that people blur together
+## Three concepts that should not be blurred
 
 ### Factory
 
-A factory creates a domain object or collaborator from a smaller, clearer input shape.
-Factories are useful when construction is non-trivial or when invariants need a named
-creation step.
+A factory is a named construction step.
+
+Use it when creation has enough logic that a raw constructor call hides important intent
+or invariants.
 
 ### Dependency injection
 
-Dependency injection means collaborators are supplied from outside instead of being
-created ad hoc inside the object that uses them. The key idea is not a framework. The
-key idea is that construction stays separate from behavior.
+Dependency injection means collaborators are provided from outside rather than created
+secretly inside the object that uses them.
+
+The point is not a framework. The point is explicit ownership.
 
 ### Composition root
 
-The composition root is the outer place where the application wires the object graph:
+The composition root is the outer place where the application decides:
 
-- choose implementations
-- read configuration
-- create adapters
-- assemble use cases and facades
+- which concrete implementations to use
+- how configuration is read
+- how the object graph is wired together
 
-The composition root is where “which concrete thing do we use?” belongs.
+This is where assembly belongs.
 
-## What should stay out of the domain
+## The basic ownership rule
 
-Domain objects should not:
+- domain objects should express behavior and invariants
+- factories may help create valid domain objects or useful collaborator bundles
+- application code should receive its collaborators rather than discovering them ad hoc
+- the composition root should assemble the whole outer graph
 
-- open network clients
-- read process environment directly
-- decide which repository implementation to use
-- parse configuration files
-- hide service location behind class methods
+If every layer tries to construct the next layer on demand, the design becomes hard to
+test and hard to reason about.
 
-If they do, the object stops being about domain behavior and becomes partly about boot
-logic and deployment shape.
+## What should stay out of inner code
 
-## A sane construction rule
+Inner code should usually not:
 
-Use this split:
+- read environment variables directly
+- import a concrete database client just to do its job
+- decide which adapter implementation the whole program should use
+- open files or sockets as a surprise side effect of ordinary construction
 
-- domain constructors and factories enforce domain invariants
-- application services accept already-built collaborators
-- the composition root chooses infrastructure implementations
+Those choices belong farther out.
 
-That keeps creation logic close to meaning, while keeping infrastructure choice at the
-edge of the system.
+## When a factory is useful
 
-## Service locator is not the same thing
+A factory often helps when:
 
-A hidden registry that objects reach into at runtime is not honest dependency injection.
-It hides the true constructor contract and makes tests and review harder because the real
-dependencies are no longer visible at the boundary.
+- a valid object needs several coordinated inputs
+- normalization or validation belongs in one named place
+- callers should not repeat a multi-step assembly ritual
 
-If an object needs a collaborator, let that requirement appear in the constructor or in a
-named factory. Hidden lookup makes the codebase feel smaller while actually making it
-harder to understand.
+Do not create factories just to hide a trivial constructor.
 
-## Review questions
+## Why dependency injection helps learners
 
-- Which objects are true domain objects, and which are assembly helpers?
-- Can I see required collaborators from the boundary of the class or use case?
-- Where is configuration interpreted and transformed into concrete implementations?
-- Is the composition root small enough that one maintainer can explain it clearly?
+Dependency injection improves teaching as well as design:
 
-## Practical guidelines
+- call sites show what an object needs
+- tests can provide narrow substitutes
+- the reader can see the collaboration graph instead of guessing it
 
-- Use named factories when object creation needs semantic meaning.
-- Inject collaborators instead of instantiating adapters deep inside domain code.
-- Keep configuration parsing and implementation choice at the outer edge.
-- Prefer one visible composition root per executable entrypoint.
+Hidden construction removes information right when a learner most needs it.
 
-## Exercises for mastery
+## What a composition root protects
 
-1. Identify one hidden service locator or import-time singleton and replace it with explicit injection.
-2. Move one concrete adapter choice out of domain code and into a composition root.
-3. Write one factory whose name explains a domain invariant better than raw constructor arguments do.
+The composition root protects the rest of the system from scattered assembly choices.
+
+It answers:
+
+- which repository implementation are we using today?
+- which notifier or gateway is wired for this run?
+- where does configuration become concrete runtime objects?
+
+That keeps the domain and application layers from becoming configuration cemeteries.
+
+## Common mistakes
+
+- creating a "factory" that is just a renamed constructor with no added clarity
+- using dependency injection language while still constructing hidden globals inside methods
+- letting several modules each become their own mini composition root
+- pushing assembly concerns inward until every class chooses its own infrastructure
+
+These mistakes are really ownership mistakes.
+
+## Review checklist
+
+| Question | Factory | Dependency injection | Composition root |
+| --- | --- | --- | --- |
+| solves named construction? | yes | sometimes | no |
+| makes collaborators explicit? | sometimes | yes | yes |
+| chooses concrete implementations for the app? | rarely | no | yes |
+| belongs near the program edge? | sometimes | often at boundaries | yes |
+
+## Capstone connection
+
+In the capstone, this lesson matters anywhere construction is becoming noisy:
+
+- repository wiring
+- gateway and notifier setup
+- command handler assembly
+- creation of valid domain objects from raw outer inputs
+
+If assembly logic is scattered across the codebase, the next cleanup move is to gather it
+into factories where needed and one clear composition root at the edge.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the difference between a factory and a composition root
+- explain why dependency injection does not require a framework
+- name one capstone construction path that should move outward toward the edge
