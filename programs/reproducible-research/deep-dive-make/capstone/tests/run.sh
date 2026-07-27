@@ -119,12 +119,11 @@ cd "$SELFTEST_WORK_DIR"
 # Set DEBUG=0 for selftest (no -g; faster .o hashing)
 export DEBUG=0
 
-# Heuristic guardrail: trace line count is a proxy for "too much work at parse/decision time".
-# Override in CI via TRACE_MAX=<n> or disable by setting TRACE_MAX=0.
-TRACE_MAX="${TRACE_MAX:-500}"
+# A clean planning trace must stay bounded and retain target/rule attribution.
+TRACE_PLAN_MAX="${TRACE_PLAN_MAX:-500}"
 record settings.env "MAKE_BIN=${MAKE_BIN}
 PYTHON_BIN=${PYTHON_BIN}
-TRACE_MAX=${TRACE_MAX}
+TRACE_PLAN_MAX=${TRACE_PLAN_MAX}
 SELFTEST_FAULT=${SELFTEST_FAULT}
 SELFTEST_WORK_DIR=${SELFTEST_WORK_DIR}"
 
@@ -174,17 +173,26 @@ record schedule-comparison.json "$(cat schedule-comparison.json)"
 SERIAL_PARALLEL_EQUIVALENCE="PASS"
 pass "serial-parallel equivalence"
 
-# Performance baseline guardrail (trace expansions <500)
+# Trace evidence from a declared clean planning state
 CURRENT_CHECK="trace_guardrail"
 step "trace guardrail"
+run_logged trace-clean "$MAKE_BIN" clean
 run_logged trace-plan "$MAKE_BIN" --trace -n all
-TRACE_LINES=$(wc -l < "${SELFTEST_LOG_DIR}/trace-plan.log")
-if [ "$TRACE_MAX" -ne 0 ] && [ "$TRACE_LINES" -gt "$TRACE_MAX" ]; then
-  fail "performance: trace lines exceed TRACE_MAX=$TRACE_MAX (got $TRACE_LINES). Use: make trace-count; and see: make perf. (TRACE_MAX is a guardrail; set TRACE_MAX=0 to disable.)"
+if run_logged trace-analysis "$PYTHON_BIN" scripts/analyze_trace_evidence.py \
+  --trace "${SELFTEST_LOG_DIR}/trace-plan.log" \
+  --output trace-evidence.json \
+  --route all \
+  --state clean-plan \
+  --focus all \
+  --maximum-lines "$TRACE_PLAN_MAX"; then
+  :
+else
+  record trace-evidence.json "$(cat trace-evidence.json)"
+  fail "trace evidence lost attribution, focus visibility, or bounded volume"
 fi
-record trace-count.txt "trace-lines=${TRACE_LINES}"
+record trace-evidence.json "$(cat trace-evidence.json)"
 TRACE_GUARDRAIL="PASS"
-pass "performance: trace within TRACE_MAX=$TRACE_MAX"
+pass "trace evidence is bounded and attributable"
 
 # 3) Negative test: hidden input must break convergence
 CURRENT_CHECK="hidden_input_detection"
