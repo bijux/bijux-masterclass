@@ -158,8 +158,7 @@ does not mean the generated outputs should be rolled back before evidence is rev
 Run and retain:
 
 ```sh
-gmake -C "$CAPSTONE" trace-count
-gmake -C "$CAPSTONE" --trace -n all
+gmake -C "$CAPSTONE" trace-report
 gmake -C "$CAPSTONE" -np all
 ```
 
@@ -168,10 +167,12 @@ that answers a question you state first.
 
 Evaluate the trace on:
 
+- declared build state and requested route
 - searchability
 - target and rule attribution
 - causal usefulness
 - semantic side effects
+- bounded volume
 
 What to hand in:
 
@@ -179,10 +180,12 @@ What to hand in:
 - one different question answered by focused database inspection
 - the smallest excerpts that support both answers
 - one conclusion neither surface can establish alone
-- a keep, narrow, or retire decision for `trace-count`
+- the `trace-evidence.json` checks and one supporting raw trace line
+- the failure you would expect if the focus target changed from `all` to an absent target
 
 Checkpoint:
-The exercise is incomplete if your only observability judgment is a line count.
+The exercise is incomplete if your judgment ignores state or collapses all checks into line
+count. Explain why a one-line converged trace cannot replace a larger clean-plan trace.
 
 ## Exercise 5: Generate and preserve a parallel incident
 
