@@ -26,48 +26,38 @@ flowchart LR
 <!-- page-maps:end -->
 
 The five core lessons in Module 05 are easiest to trust when they all appear in one build
-that is recognizably imperfect.
+that is recognizably imperfect. This walkthrough uses the course's executable specimens
+before applying the repairs to a larger sketch. You can follow it without inventing a
+private sample project.
 
-## Begin with a toolchain audit
+## Begin with paired evidence
 
-Before hardening a large build, make the hidden environment visible in a tiny one. Create
-this `Makefile` in an empty directory:
-
-```make
-SHELL := /bin/sh
-
-.PHONY: doctor
-doctor:
-	@printf 'make=%s\n' '$(MAKE_VERSION)'
-	@printf 'shell=%s\n' '$(SHELL)'
-	@printf 'makelevel=%s\n' '$(MAKELEVEL)'
-	@printf 'locale=%s\n' "$${LC_ALL:-not-set}"
-	@command -v python3 >/dev/null || { echo 'python3 is required' >&2; exit 1; }
-```
-
-Run it once with your ordinary environment and once with a deliberately fixed locale:
+From the repository root, run:
 
 ```sh
-make doctor
-LC_ALL=C make doctor
+gmake -C programs/reproducible-research/deep-dive-make \
+  capstone-environment-contract-audit
 ```
 
-This is not hermeticity by itself. It is the first useful habit: identify which facts
-exist before deciding which ones affect artifact meaning. `MAKE_VERSION`, the shell, tool
-availability, and locale are now observable rather than folklore.
+Open:
 
-Save both reports and compare them:
+```text
+artifacts/audit/reproducible-research/deep-dive-make/environment-contracts/
+```
 
-| Fact | Ordinary environment | Fixed-locale environment | Changes artifact meaning? |
+Start with `summary.tsv`, then use `report.json`, `traces/`, and `workspace/` to test each
+summary against the underlying evidence.
+
+The audit gives three broken/control pairs:
+
+| Contract family | Broken observation | Control observation |
 | --- | --- | --- | --- |
-| Make version |  |  |  |
-| shell |  |  |  |
-| locale |  |  |  |
-| `python3` path |  |  |  |
+| non-file state | `MODE=debug` request retains release artifact | changed mode publishes once, equal mode converges |
+| recursive boundary | parent dry run hides the child plan | parent dry run enters child plan without publishing |
+| required tool | missing command leaves an empty version file | gate rejects cleanly and accepts an available tool |
 
-The last column is the lesson. A different path to an equivalent tool may be diagnostic
-context, while a different tool version may be a semantic input. Decide from the
-artifact contract, not from the convenience of capturing a value.
+`PASS` means each specimen behaved as its model declared. It does not mean the broken
+models are acceptable.
 
 This example starts with a build that "mostly works":
 
@@ -84,7 +74,8 @@ That is exactly the kind of build many teams inherit.
 Assume you inherit a repository with these complaints:
 
 1. CI fails on a machine with an older Make
-2. local `make -j8` seems fine, but a recursive sub-build behaves almost serially
+2. the recursive sub-build is absent from top-level dry-run evidence, and nobody has
+   checked whether it shares the parallel contract
 3. the build records environment information, but `make -q all` still returns `1` after a
    successful run
 4. the team says the build is "slow," but nobody can say whether Make or the compiler is
@@ -126,27 +117,30 @@ mk/generated-env.mk:
 
 Every line here is plausible. That is what makes the example useful.
 
-## Establish evidence before changing the build
+## Establish the inherited build's own evidence
 
-The first repair is not in the Makefile. It is in the investigation style.
+The specimen proves the failure mechanisms. Now collect the inherited build's state.
 
 Run:
 
 ```sh
 make all
 make -q all; echo $?
-/usr/bin/time -p make -n all >/dev/null
+make -n all > build/dry-run.log
+make --trace all > build/trace.log
 /usr/bin/time -p make all >/dev/null
 ```
 
-This gives you four immediate facts:
+Record observations, not conclusions:
 
 - whether the build converges
-- whether decision cost is large
-- whether full-build cost is much larger than decision cost
-- whether the current complaint is reproducible in a small evidence loop
+- whether the top-level dry run enters the vendor graph
+- which targets Make says it selected
+- whether full execution is slow enough to measure by layer
 
-That already improves the quality of the conversation.
+Do not call the recursive boundary a jobserver leak merely because the build is slow.
+The child may expose little parallel work, and a GNU Make 4.4 FIFO may survive an
+undeclared process invocation. The dry-run gap is already a reproducible defect.
 
 ## Declare the portability contract
 
@@ -166,15 +160,25 @@ $(error GNU Make 4.3 or newer required; found $(MAKE_VERSION))
 endif
 
 PYTHON ?= python3
+
+.PHONY: contract-check
+contract-check:
+	@command -v "$(PYTHON)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing required tool %s\n' "$(PYTHON)" >&2; \
+	  exit 2; \
+	}
 ```
 
-Now the CI failure becomes a declared boundary rather than a random parser error.
+Make the gate a prerequisite of the public build before any artifact recipe can publish.
+Now the CI failure becomes a declared boundary rather than a random parser error or an
+empty probe file.
 
 This is the Core 1 lesson in action:
 
 - required tools and versions are stated explicitly
 - unsupported environments fail early
 - the build stops pretending that all Make implementations are equivalent
+- an available-tool control proves that the gate does not reject everything
 
 ## Repair the recursive boundary
 
@@ -185,7 +189,9 @@ thirdparty:
 	make -C vendor/lib all
 ```
 
-That is the classic jobserver leak.
+That is an undeclared process invocation. On some hosts it loses jobserver access; on GNU
+Make 4.4 with a FIFO it may happen to inherit the parent's flags. In either case, the
+parent's dry run does not enter the child graph.
 
 Repair it to:
 
@@ -196,21 +202,18 @@ thirdparty:
 	+$(MAKE) -C vendor/lib all
 ```
 
-Then decide whether recursion depth should be bounded:
-
-```make
-ifeq ($(MAKELEVEL),2)
-$(error recursive build depth exceeded)
-endif
-```
-
-This does not magically make recursion good. It makes the boundary honest and inspectable.
+Then run both `make -n thirdparty` and `make -j2 thirdparty`. The planning run should expose
+the child's recipes without creating outputs. The execution run should show a child
+`MAKELEVEL` exactly one greater than its parent and the inherited `MAKEFLAGS`. Bound depth
+only after accounting for every supported entry route; an absolute level copied from one
+wrapper is not a portable guard.
 
 This is Core 2:
 
-- `$(MAKE)` preserves recursive semantics
-- `+` keeps dry-run honest
-- `MAKELEVEL` stops accidental depth growth
+- `$(MAKE)` declares recursive semantics
+- `+` keeps the child plan visible under dry run
+- relative `MAKELEVEL` evidence distinguishes the boundary from an unexplained absolute
+  number
 
 ## Make environment evidence converge
 
@@ -234,7 +237,10 @@ manifest:
 ```make
 ENV_MANIFEST := build/env.manifest
 
-$(ENV_MANIFEST): | build/
+.PHONY: FORCE
+FORCE:
+
+$(ENV_MANIFEST): FORCE | build/
 	@printf 'MODE=%s\nCC=%s\nLC_ALL=%s\n' '$(MODE)' '$(CC)' '$(LC_ALL)' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
@@ -243,12 +249,18 @@ app: $(ENV_MANIFEST) api.h main.o
 	$(CC) $(CFLAGS) main.o -o $@
 ```
 
-Now the build records real facts without rewriting them unnecessarily.
+`FORCE` and `cmp` solve different problems:
+
+- `FORCE` reevaluates command-line and environment state on every invocation
+- `cmp` prevents equal content from replacing the manifest
+
+Without `FORCE`, a later `MODE=debug` request leaves the release manifest stale. Without
+`cmp`, every invocation republishes the manifest and rebuilds the application.
 
 This is Core 3:
 
 - environment facts become explicit
-- manifests converge
+- changed facts propagate and equal facts converge
 - attestation sits beside the artifact instead of poisoning it
 
 ## Identify whether Make is actually the performance problem
@@ -264,22 +276,12 @@ make --trace all > build/trace.log
 wc -l build/trace.log
 ```
 
-Imagine the results are:
+Interpret the measured ratio rather than borrowing example numbers. If full execution is
+far slower than dry-run decision work, recipe execution dominates this observation. If
+both are slow, inspect parse and graph-decision costs before blaming recipes.
 
-```text
-make -n all   -> 0.3s
-make all      -> 18.7s
-trace lines   -> 210
-```
-
-That tells a clearer story:
-
-- Make parse/decision overhead is modest
-- recipe execution dominates
-- trace volume is manageable
-
-So the next conversation should be about compiler or packaging cost, not a speculative Make
-rewrite.
+One timing run is not a benchmark. Repeat the same command, record the environment, and use
+the module's performance lesson before making a migration argument.
 
 This is Core 4:
 
@@ -381,29 +383,53 @@ MODE ?= release
 PYTHON ?= python3
 ENV_MANIFEST := build/env.manifest
 
-.PHONY: all thirdparty
+.PHONY: all contract-check FORCE thirdparty
+FORCE:
 
 all: thirdparty app package
 
-thirdparty:
+contract-check:
+	@command -v "$(PYTHON)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing required tool %s\n' "$(PYTHON)" >&2; \
+	  exit 2; \
+	}
+
+thirdparty: | contract-check
 	+$(MAKE) -C vendor/lib all
 
-$(ENV_MANIFEST): | build/
+$(ENV_MANIFEST): FORCE | build/
 	@printf 'MODE=%s\nCC=%s\nLC_ALL=%s\n' '$(MODE)' '$(CC)' '$(LC_ALL)' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
 
-api.h api.json &: gen_api.py schema.yml
+api.h api.json &: gen_api.py schema.yml | contract-check
 	python3 gen_api.py
 
-app: $(ENV_MANIFEST) api.h main.o
+app: $(ENV_MANIFEST) api.h main.o | contract-check
 	$(CC) $(CFLAGS) main.o -o $@
 
-package: app
+package: app | contract-check
 	tar -czf app.tar.gz app
 ```
 
-This version is not perfect because no real build ever is. But it is far more honest.
+This sketch still needs the repository's real compile edges and output ownership. It does
+establish the environment contracts that the inherited version hid.
+
+## Run the acceptance sequence
+
+Do not stop after reading the repaired sketch. Prove the three changed contracts:
+
+| Check | Required observation |
+| --- | --- |
+| `make MODE=release app` then `make MODE=debug app` | manifest and app change to debug |
+| repeat `make MODE=debug app` | manifest hash and mtime stay fixed; app does not rebuild |
+| `make -n thirdparty` | child plan is visible; child outputs are absent |
+| `make -j2 thirdparty` | child is one `MAKELEVEL` deeper and reports inherited flags |
+| `make PYTHON=bijux-missing-tool all` | deliberate contract message; no publication residue |
+| `make PYTHON=python3 all` | gate passes and the build can proceed |
+
+Keep the environment-contract bundle beside this project-specific evidence. The specimen
+explains the mechanism; the inherited build's logs prove that the repair applies here.
 
 ## What each core contributed
 
@@ -425,11 +451,11 @@ series of clarifications.
 A strong summary sounds like this:
 
 > The build was not mainly broken because "Make is flaky." It had an undeclared version
-> contract, a recursive boundary that leaked jobserver semantics, a non-convergent
-> environment record, and an unmeasured performance complaint. We tightened the contract,
-> modeled the environment honestly, repaired the recursive call, and used measurements to
-> separate Make overhead from recipe cost. Only after that did we ask whether any concern
-> belonged in another tool.
+> and tool contract, a recursive boundary hidden from dry-run evidence, a manifest that
+> never reevaluated changed non-file state, and an unmeasured performance complaint. We
+> added paired contract checks, declared the recursive call, separated manifest evaluation
+> from publication, and measured before discussing migration. Only after that did we ask
+> whether any concern belonged in another tool.
 
 That is the kind of explanation Module 05 is trying to build.
 
@@ -446,6 +472,6 @@ Take one real inherited build and rewrite its story in the same order:
 
 If you can do that, Module 05 has started to change how you harden builds.
 
-Ask another person to run only the doctor target and explain whether their environment
-is supported. If the report requires private knowledge to interpret, improve the
-contract or the message before adding more detection.
+Ask another learner to use only `summary.tsv`, one trace, and one workspace to explain a
+broken/control pair. If they must rely on your verbal explanation, improve the evidence
+route before adding more detection.
