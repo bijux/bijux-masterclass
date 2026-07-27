@@ -1,6 +1,5 @@
 # Capstone Architecture Review
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,56 +24,90 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this review matters
 
-Review the monitoring capstone as a whole system and evaluate whether its object model,
-boundaries, and operational surfaces still hold under advanced scrutiny.
+By Module 10, the capstone should be judged as a whole system, not just as a set of
+separately good lessons.
 
-## 1. Revisit the Original Promises
+The question is no longer:
 
-The capstone promised:
+- is each concept present somewhere?
 
-- explicit value and entity semantics
+It is:
+
+- does the full design still hold when performance, observability, trust boundaries, and
+  extension pressure are all considered together?
+
+That is the difference between passing a course and being able to review a real system.
+
+## Revisit the original structural promises
+
+Start by checking whether the capstone still keeps its earlier promises around:
+
+- value and entity semantics
 - aggregate-owned invariants
 - policy-based variation
-- downstream projections
-- explicit unit-of-work boundaries
+- repository and unit-of-work boundaries
+- public seams that do not leak private authority
 
-Review each promise against the code as it stands now.
+If one of those promises already drifted, later operational hardening may be working on
+top of a weakened model.
 
-## 2. Ask the Operational Questions Too
+## Add the operational questions directly
 
-Beyond model purity, check:
+Now review the same system through four operational lenses:
 
-- where performance would matter first
-- which events and commands deserve observability
-- where serialization crosses trust boundaries
-- how extension points would be governed
+- where would performance pressure arrive first?
+- which signals make the workflow explainable under failure?
+- where do trust boundaries begin and end?
+- which extension or compatibility seams carry the most governance cost?
 
-## 3. Find the Tension Points
+This keeps operational review tied to the object model instead of becoming a detached
+production checklist.
 
-Strong design review looks for pressure, not only beauty. Which boundary would bend
-first under more throughput, another storage backend, or a new plugin model?
+## Look for the first boundary that would bend
 
-## 4. Record the Review Outcome
+Strong review is not only about strengths. It is about pressure.
 
-An architecture review is useful only if it yields:
+Ask:
 
-- strengths worth preserving
-- risks worth addressing
-- explicit next improvements
+- which repository or adapter boundary would feel growth first?
+- which projection or reporting path would become hot under scale?
+- which public or plugin seam would become fragile under version drift?
+- which security or serialization boundary is still too generous?
 
-## Practical Guidelines
+The goal is to find the first honest tension points, not to admire the design in
+general terms.
 
-- Review the capstone against both design and operational criteria.
-- Tie concerns back to concrete boundaries and object roles.
-- Record strengths, risks, and improvement priorities explicitly.
-- Use the review to guide hardening work, not only to admire the model.
+## Turn the review into preserved strengths and next risks
 
-## Exercises for Mastery
+A useful architecture review should leave behind:
 
-1. Write a short architecture review for the capstone or your own system.
-2. Identify the boundary most likely to feel pressure first under growth.
-3. List two strengths you would preserve during future refactoring.
+- strengths worth protecting
+- risks worth addressing next
+- one or two priorities for the next hardening pass
+
+Without that, the review is only commentary. With it, the review becomes part of the
+system’s evolution path.
+
+## Capstone connection
+
+Use the capstone directly:
+
+- identify one boundary that is strongest and should be preserved
+- identify one boundary likely to feel operational pressure first
+- identify one improvement that would strengthen the system without corrupting the model
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain how to review the capstone as one system instead of many isolated topics
+- name one preserved strength and one likely pressure point
+- state one next hardening move that respects the existing ownership model
