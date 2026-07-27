@@ -124,9 +124,14 @@ built earlier in the course.
 
 ## Exercises
 
-- Pick one suspected hot path and explain what you would measure before changing the design.
-- Review one observability addition and state what behavior it should clarify without leaking sensitive or misleading data.
-- Describe one trust boundary in the capstone and explain which review artifact or runbook should accompany it.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete operational-review route:
+measurement discipline, semantics-safe hardening, observability design, trust-boundary
+defense, and runbook-backed production review.
 
 ## Capstone connection
 
