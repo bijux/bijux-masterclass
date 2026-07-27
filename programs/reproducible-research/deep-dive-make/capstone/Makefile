@@ -570,10 +570,11 @@ performance-evidence:
 >     printf '%s\n' \
 >       'Performance evidence route:' \
 >       '  1. Read PERFORMANCE_EVIDENCE_GUIDE.md for the question, limits, and comparison rules.' \
->       '  2. Read scenarios.tsv before interpreting any timing.' \
->       '  3. Read summary.tsv for the distribution and convergence result.' \
->       '  4. Read evidence.json and logs/ for raw samples, context, and trusted outputs.' \
->       '  5. Read manifest.json to review the complete bundle.' > "$(PERFORMANCE_DIR)/route.txt"
+>       '  2. Read scenarios.tsv and incremental-policy.tsv for the experiment contracts.' \
+>       '  3. Read incremental-work.json for observed, missing, and unexpected rebuilds.' \
+>       '  4. Read evidence.json for provenance, bound requested work, raw samples, and trusted outputs.' \
+>       '  5. Read summary.tsv and logs/ only after compatibility and semantics are established.' \
+>       '  6. Read manifest.json to review the complete bundle.' > "$(PERFORMANCE_DIR)/route.txt"
 >     $(MAKE) --no-print-directory performance-incremental
 >     $(PYTHON) scripts/collect_performance_evidence.py \
 >       --policy "$(PERFORMANCE_POLICY)" \
