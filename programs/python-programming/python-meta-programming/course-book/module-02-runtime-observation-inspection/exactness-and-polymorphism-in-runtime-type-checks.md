@@ -37,6 +37,13 @@ questions to ask:
 This page keeps those questions separate so review and tooling code do not overfit to the
 wrong kind of type check.
 
+For self-study learners, this lesson usually fixes a specific kind of vagueness:
+
+- "I wanted to be precise, so I used `type(...) is ...`"
+- "I wanted to accept subclasses, so I used `isinstance`"
+
+Those can both be right, but only after you name the review question precisely.
+
 ## The sentence to keep
 
 When choosing a type check, ask:
@@ -44,6 +51,11 @@ When choosing a type check, ask:
 > do I need exact identity here, or do I need a polymorphic relationship?
 
 That distinction is the difference between `type(obj) is T` and `isinstance(obj, T)`.
+
+The better habit is:
+
+> write the runtime truth you need in plain language first, then choose the narrowest
+> check that matches that truth.
 
 ## The three tools answer different questions
 
@@ -54,6 +66,14 @@ For Module 02, the basic roles are:
 - `issubclass(C, T)` asks whether a class stands in a subclass relationship to `T`
 
 Those are related tools, but they are not interchangeable.
+
+Use them through this matrix:
+
+| If your question is... | Tool | What the result means |
+| --- | --- | --- |
+| "What exact runtime class is this object?" | `type(obj)` | one concrete type identity |
+| "Can this object participate in a role or family?" | `isinstance(obj, T)` | object satisfies the accepted relationship |
+| "Does this class belong to a broader hierarchy?" | `issubclass(C, T)` | class satisfies the accepted relationship |
 
 ## `type(obj)` is exact
 
@@ -73,6 +93,9 @@ assert (type(True) is bool) is True
 
 This is the classic example because it shows why exact checks exist at all.
 
+It also shows why "precise" is not enough as a justification. Exactness is only correct
+when exact identity is the truth you actually need.
+
 ## `isinstance` is usually the better default
 
 Most of the time, polymorphism is the point.
@@ -85,6 +108,9 @@ That is why review guidance for Module 02 is simple:
 
 - default to `isinstance` when you are checking whether an object can play a role
 - use exact type checks only when subclass rejection is part of the requirement
+
+That second bullet matters. If you cannot explain why subclass rejection is necessary, the
+exact check is usually hiding an underspecified design.
 
 ## `issubclass` is about class relationships, not instances
 
@@ -124,6 +150,11 @@ issubclass(C, T)
 When review comments blur these together, they often end up enforcing stricter behavior
 than the design actually needs.
 
+One useful study question is:
+
+> if a future subclass behaved correctly for the same role, would this check accept it or
+> reject it for no good reason?
+
 ## ABCs make polymorphic checks broader on purpose
 
 Abstract base classes from `collections.abc` widen the meaning of `isinstance` and
@@ -147,6 +178,9 @@ This is disciplined duck typing:
 - the code still talks about a capability or category
 - it does not require exact nominal inheritance from one concrete class in your project
 
+That is often the reader-first way to teach classification: start from the role the
+object must play, not from the concrete type you happened to use while writing examples.
+
 ## Exact checks are sometimes necessary
 
 This module is not arguing that exact checks are bad. It is arguing that they should be
@@ -163,6 +197,10 @@ Weak reasons include:
 - habit
 - discomfort with inheritance or ABCs
 - wanting a simpler mental model at the expense of correct polymorphic behavior
+
+Add one more weak reason to your review vocabulary:
+
+- trying to make uncertain design intent look "strict" instead of naming the real acceptance rule
 
 ## Review questions become clearer with the right tool
 
@@ -193,6 +231,34 @@ def ensure_iterable(value):
 This is a good Module 02 example because it shows classification as a design question, not
 just a syntax question.
 
+## A repair table for common classification mistakes
+
+These are the mistakes this page is trying to remove from your reviews:
+
+| Weak move | Why it is weak | Better repair |
+| --- | --- | --- |
+| `type(obj) is list` when any iterable would work | exactness rejects legitimate participants | ask for `Iterable` plus any necessary exclusions |
+| `isinstance(obj, Base)` when a special concrete type needs unique semantics | role checks hide a concrete compatibility boundary | switch to exactness and document the reason |
+| `issubclass(type(obj), Base)` for ordinary instance checks | class-relationship syntax obscures a simpler question | use `isinstance(obj, Base)` unless you truly need class objects |
+| "precise" exact checks with no subclass policy | strictness is asserted, not justified | explain the subclass rejection rule first |
+
+## One realistic self-study lab
+
+Build a tiny hierarchy such as `Report`, `HtmlReport`, and `JsonReport`, then answer
+three questions separately:
+
+1. which check should accept any report-like object?
+2. which check should accept only one concrete serializer output?
+3. which check belongs on classes rather than instances?
+
+Write your answers in this form:
+
+- runtime question
+- chosen check
+- one sentence explaining why the other two checks would be weaker or less honest
+
+If you cannot write the third bullet, you probably still chose the tool by habit.
+
 ## Review rules for type checks
 
 When reviewing runtime classification logic, keep these questions close:
@@ -202,6 +268,11 @@ When reviewing runtime classification logic, keep these questions close:
 - would an ABC or capability-oriented `isinstance` check express the intent more honestly?
 - is `issubclass` being used only where the first input is actually a class object?
 - does the code explain why strings or bytes are special exclusions instead of treating them as an afterthought?
+
+One final pressure question:
+
+> If a review comment says "use `type(...) is ...` so the code is more precise," what
+> exact subclass behavior is it trying to reject?
 
 ## What to practice from this page
 
