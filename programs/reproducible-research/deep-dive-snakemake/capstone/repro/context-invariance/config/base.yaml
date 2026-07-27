@@ -1,0 +1,4 @@
+samples:
+  - alpha
+  - beta
+publish_root: publish/stable

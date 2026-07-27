@@ -1,0 +1,47 @@
+configfile: "config/base.yaml"
+
+SAMPLES = sorted(config["samples"])
+PUBLISH_ROOT = config["publish_root"]
+
+
+rule all:
+    input:
+        f"{PUBLISH_ROOT}/manifest.tsv"
+    default_target: True
+
+
+rule normalize:
+    input:
+        "data/{sample}.txt"
+    output:
+        "results/{sample}.txt"
+    threads: 2
+    resources:
+        mem_mb=512,
+        runtime=5,
+    shell:
+        """
+        mkdir -p "$(dirname {output})"
+        tr '[:lower:]' '[:upper:]' < {input} > {output}
+        """
+
+
+rule publish_manifest:
+    input:
+        expand("results/{sample}.txt", sample=SAMPLES)
+    output:
+        f"{PUBLISH_ROOT}/manifest.tsv"
+    resources:
+        mem_mb=128,
+        runtime=1,
+    run:
+        from pathlib import Path
+
+        manifest = Path(output[0])
+        manifest.parent.mkdir(parents=True, exist_ok=True)
+        rows = ["sample\tartifact"]
+        rows.extend(
+            f"{sample}\tresults/{sample}.txt"
+            for sample in SAMPLES
+        )
+        manifest.write_text("\n".join(rows) + "\n", encoding="utf-8")
