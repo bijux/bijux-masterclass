@@ -33,6 +33,14 @@ Treat each answer as a review calibration, not as a final script to copy. A stro
 names the owner, the rejected stronger mechanism, and the remaining boundary in plain
 language. A weak answer may sound tidy while still hiding where the real rule lives.
 
+Use this page actively:
+
+- compare your owner choice against the reference answer
+- compare your rejected stronger tool against the reference answer
+- compare your remaining gap or allowed mutation against the reference answer
+
+If you only compare final mechanism choices, you will miss the teaching point.
+
 ## Answer 1: Use one class decorator for an opt-in class rule
 
 Example answer:
@@ -49,6 +57,14 @@ Good conclusion:
 This does not need a metaclass because the rule does not depend on controlling namespace
 preparation or class creation itself. The decorator can apply the behavior after the class
 object already exists.
+
+Weak answer to reject:
+
+- "the decorator is more elegant than a metaclass"
+
+Why it fails:
+
+- elegance says nothing about timing or missing class-creation needs
 
 Reasoning checkpoint:
 
@@ -84,6 +100,14 @@ Good conclusion:
 The missing rule should live in an explicit validation boundary such as `__post_init__`, a
 property, or a descriptor, depending on how broad the rule becomes.
 
+Weak answer to reject:
+
+- "the annotation makes bad values unlikely enough"
+
+Why it fails:
+
+- probability is not an owner
+
 Reasoning checkpoint:
 
 - can you separate generated convenience from the missing invariant owner?
@@ -114,6 +138,14 @@ Good conclusion:
 A property is the clearest owner because the rule applies to one field and stays visible
 exactly where reads and writes cross the attribute boundary.
 
+Weak answer to reject:
+
+- "a property is fine because it is the simplest syntax"
+
+Why it fails:
+
+- friendly syntax does not prove the boundary is only one field wide
+
 Reasoning checkpoint:
 
 - can you name the one attribute boundary clearly?
@@ -135,6 +167,14 @@ Good conclusion:
 
 This is still not metaclass control because the descriptor governs how specific
 attributes behave on access and assignment, not how the class itself is created.
+
+Weak answer to reject:
+
+- "a descriptor is automatically better because it is reusable"
+
+Why it fails:
+
+- reuse only matters if repeated field policy is the actual pressure
 
 Reasoning checkpoint:
 
@@ -163,6 +203,14 @@ Good conclusion:
 Strong answers do not just pick a tool. They explain why a stronger tool would add power
 without adding clarity.
 
+Weak answer to reject:
+
+- "the higher-power tool would also work"
+
+Why it fails:
+
+- capability without need is exactly the escalation mistake this module is teaching against
+
 Reasoning checkpoint:
 
 - can you name the stronger rejected option directly?
@@ -187,6 +235,14 @@ That remaining mutability does not make the example dishonest as long as the dec
 defines frozen as a surface-level attribute rule rather than as universal deep
 immutability.
 
+Weak answer to reject:
+
+- "the class is frozen for everyday purposes"
+
+Why it fails:
+
+- vague usefulness language hides the actual allowed mutations
+
 Reasoning checkpoint:
 
 - can you name one mutation the decorator still allows?
@@ -208,6 +264,14 @@ Good conclusion:
 
 The owner should follow the repetition pattern. Repeated field policy belongs at the
 attribute boundary, not in copied class-local code or a broader class-wide mechanism.
+
+Weak answer to reject:
+
+- "centralizing the rule somewhere makes maintenance easier"
+
+Why it fails:
+
+- "somewhere" erases the actual debugging and ownership surface
 
 Reasoning checkpoint:
 
@@ -237,6 +301,14 @@ Good conclusion:
 A real metaclass need is still missing because nothing here depends on controlling how the
 class object is built. Post-construction customization is enough.
 
+Weak answer to reject:
+
+- "metaclasses would future-proof the design"
+
+Why it fails:
+
+- speculative future needs are not present-tense class-creation requirements
+
 Reasoning checkpoint:
 
 - can you describe the missing creation-time need precisely?
@@ -260,6 +332,14 @@ The second version is misleading because words such as "fully" and "immutable" i
 and universal guarantees the tool does not actually provide. Honest language keeps the
 attribute-surface boundary visible.
 
+Weak answer to reject:
+
+- "the stronger wording is acceptable if everyone understands the spirit"
+
+Why it fails:
+
+- review language has to survive readers who only have the words, not the original intent
+
 Reasoning checkpoint:
 
 - can you point to the inflated words in the bad claim?
@@ -278,6 +358,10 @@ Add one more packet test:
 
 - could a reviewer identify the owner boundary without seeing the implementation first?
 
+Use one more packet test:
+
+- could a missed-class learner explain why at least three stronger mechanisms were rejected without reopening the whole module?
+
 ## Repair moves for weak answer keys
 
 If your answer key still feels shallow, use these repair moves:
@@ -289,6 +373,16 @@ If your answer key still feels shallow, use these repair moves:
 | praising dataclasses without naming missing invariants | point to `__post_init__`, a property, or a descriptor |
 | using "advanced" as justification | name the concrete missing condition instead |
 | describing a descriptor as automatically better | explain the repetition pressure that made reuse necessary |
+
+## Cross-answer habits to inspect
+
+Before you leave the answer key, scan your own work for these:
+
+| If your packet keeps doing this... | Repair it by... |
+| --- | --- |
+| choosing the right mechanism but never naming the rejected stronger one | adding one explicit rejected escalation line per answer |
+| naming owners without naming proof | adding one observable check, failure mode, or allowed mutation |
+| describing boundaries vaguely | rewriting the rule as a sentence about one constructor, one attribute, one repeated field policy, or one class-creation need |
 
 ## What strong Module 06 answers have in common
 
