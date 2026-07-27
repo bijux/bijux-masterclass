@@ -1,186 +1,422 @@
 # Modules, Reuse, and Explicit Interfaces
 
-Once rule-family splits are working, the next scaling question appears:
+An include and a module both move rules out of the top-level `Snakefile`. That visual
+similarity causes a common design error: treating `module` as a more advanced spelling of
+`include`.
 
-> is this still one workflow graph with clearer organization, or is one part becoming a reusable workflow boundary of its own?
+They solve different problems.
 
-That is where modules enter.
+- An include gives one workflow graph clearer internal ownership.
+- A module gives a caller a reusable rule bundle with an explicit binding boundary.
 
-## How to read this page
+This lesson teaches that boundary through two workflows that plan and run successfully.
+Only one is suitable for reuse.
 
-Read this page with one boundary test in mind:
+## Start with the decision, not the directory
 
-> could another caller understand this interface without learning the private repository
-> story first?
+Before writing syntax, complete this sentence:
 
-If the answer is no, you probably do not have a real module yet. You only have moved code.
+> Another caller needs this rule bundle because ...
 
-## Why this lesson comes after includes
+If the answer is only "the main Snakefile is long," use an include. File length can reveal
+an ownership problem, but it does not create a reusable interface.
 
-Modules are easier to misuse than includes because they sound more advanced.
+Use this first decision table:
 
-Module 04 puts them second on purpose:
+| Situation | Better boundary | Reason |
+| --- | --- | --- |
+| several rules serve one repository-owned graph | `include:` | the split names internal ownership |
+| a rule template needs different caller-owned paths | `module` plus `use rule` | the caller must bind a reusable interface |
+| code is long but depends on many shared globals | include, then reduce coupling | moving it would hide rather than remove coupling |
+| an independently released workflow is consumed at a stable version | versioned module | reuse and compatibility are real concerns |
 
-- first clarify ownership inside one graph
-- then ask whether one boundary has become stable enough to reuse
-- only then promote that boundary into a module
+The choice is about ownership, not prestige.
 
-## A module is not just a smaller file
+```mermaid
+flowchart TD
+  candidate["candidate rule family"] --> reuse{"Does another caller need it?"}
+  reuse -- no --> include["keep one graph; use include"]
+  reuse -- yes --> contract{"Can the caller name inputs, outputs, policy, and software?"}
+  contract -- no --> repair["repair coupling before promotion"]
+  contract -- yes --> module["promote to module"]
+```
 
-A workflow module should exist for a stronger reason than convenience.
+## What `include:` actually promises
 
-It should answer a real boundary question:
+An include parses another file into the current workflow:
 
-- can this workflow bundle be named as one thing
-- does it have explicit inputs and outputs
-- can another reader understand the main graph without reading every implementation detail first
+```python
+include: "workflow/rules/publish.smk"
+```
 
-If those answers are weak, the repository probably needs clearer includes, not a module.
+The included rules share the current workflow's configuration, helpers, and naming
+context. That is reasonable when the file owns one concern inside one graph.
 
-## A strong beginner habit
+For example, the course capstone keeps publication rules in:
 
-Before promoting a module, write four short answers:
+```text
+workflow/rules/publish.smk
+```
 
-1. what does it consume
-2. what does it produce
-3. what assumptions belong to the interface
-4. what stays private implementation detail
+Those rules are not pretending to be reusable by an unrelated workflow. They participate
+in the capstone's one publish contract. The include makes ownership easier to inspect
+without inventing a caller interface.
 
-If any of those answers are fuzzy, keep the boundary as an include for now.
+Do not describe an include as "less modular." It may be the more honest boundary.
 
-## What a healthy module buys you
+## A module has two separate surfaces
 
-A healthy module can help when:
+Snakemake module use has two important surfaces:
 
-- a sub-workflow has a stable contract
-- the same bundle is reused in more than one context
-- the top-level workflow stays easier to read after the boundary is introduced
+1. the module declaration selects a Snakefile and the config it may see
+2. `use rule` imports a rule and binds it into the caller's graph
 
-This is why the capstone keeps reusable bundles under `workflow/modules/` for rule groups
-such as QC or screen logic.
+Here is the explicit specimen:
 
-The module is useful because it has a named interface, not because the word sounds
-architectural.
+```python
+configfile: "config.yaml"
 
-## The common beginner mistake
+module normalize:
+    snakefile: "module/Snakefile"
+    config: config["normalize"]
 
-People often promote a boundary to `workflow/modules/` because:
+use rule normalize from normalize as normalize_sample with:
+    input:
+        source="data/sample.txt"
+    output:
+        artifact="build/sample.txt"
+    params:
+        prefix=config["normalize"]["prefix"]
+```
 
-- the file is long
-- the folder looks cleaner
-- the repository wants to feel "more architectural"
+Read it from top to bottom:
 
-None of those is a sufficient interface reason.
+- `module normalize` names the imported workflow bundle.
+- `snakefile` locates the module implementation.
+- `config: config["normalize"]` passes one owned subtree, not all caller state.
+- `use rule normalize` selects one rule from the module.
+- `as normalize_sample` gives it a local graph name.
+- `with` binds caller-owned input, output, and policy.
 
-## What a module must make explicit
-
-When a boundary becomes a real module, the reader should be able to answer:
-
-- what does this module consume
-- what does it produce
-- which paths or parameters belong to its interface
-- what remains private implementation detail
-
-If the answers live only in the author's head, the module boundary is too weak.
-
-## A quick self-check before you keep reading
-
-Take one candidate boundary and ask:
-
-- do callers know the promised outputs
-- or do they still depend on hidden globals, path conventions, or shared helper trivia
-
-That contrast is the real module test.
-
-## One healthy mental model
+The module owns how normalization happens. The caller owns where it happens and which
+policy gives the artifact meaning.
 
 ```mermaid
 flowchart LR
-  main["top-level workflow"] --> iface["named module interface"]
-  iface --> module["workflow/modules/..."]
-  module --> outputs["declared outputs"]
+  caller_config["caller config subtree"] --> declaration["module declaration"]
+  declaration --> template["module rule template"]
+  caller_paths["caller paths and policy"] --> binding["use rule binding"]
+  template --> binding --> local_rule["normalize_sample"]
+  local_rule --> artifact["build/sample.txt"]
 ```
 
-This matters because the main graph should still be explainable:
+## Read the module implementation as a template
 
-- the top-level workflow names the boundary
-- the module owns its internal implementation
-- the interface is what another rule family is allowed to depend on
+The paired module file contains:
 
-That is a stronger contract than "the code happens to live elsewhere."
+```python
+rule normalize:
+    input:
+        source="unbound.txt"
+    output:
+        artifact="unbound.txt"
+    params:
+        prefix="UNBOUND"
+    shell:
+        """
+        mkdir -p "$(dirname {output.artifact})"
+        printf '%s\n' '{params.prefix}' > '{output.artifact}.candidate'
+        cat '{input.source}' >> '{output.artifact}.candidate'
+        mv '{output.artifact}.candidate' '{output.artifact}'
+        """
+```
 
-## A weak module smell
+The placeholder values make the rule's required shape visible. The caller replaces them.
+The shell body can change without changing the caller contract as long as it preserves:
 
-Weak module shape:
+- one source input
+- one published artifact
+- one caller-selected prefix
+- atomic publication through candidate and rename
 
-- the top-level workflow imports a module
-- the module reads hidden globals or path conventions from many places
-- the reader still needs to inspect private files before understanding the main graph
+That list is a usable interface statement. "The module normalizes data" is not.
 
-This does not create a reusable boundary. It only moves confusion.
+## Build an override matrix before promotion
 
-## A stronger module shape
+Write an override matrix for every imported rule:
 
-Stronger module shape:
+| Surface | Module default | Caller binding | Owner after import |
+| --- | --- | --- | --- |
+| input | `unbound.txt` | `data/sample.txt` | caller |
+| output | `unbound.txt` | `build/sample.txt` | caller |
+| parameter | `UNBOUND` | `config["normalize"]["prefix"]` | caller |
+| shell implementation | private command | unchanged | module |
+| publication method | candidate then rename | unchanged | module |
 
-- the top-level workflow names what the module is for
-- the interface paths or parameters are visible at the call site
-- the module produces a stable artifact family that other code can reason about
+This matrix prevents a misleading interface note that lists inputs and outputs but ignores
+policy or publication.
 
-That is the kind of boundary worth introducing.
+For a real scientific rule, add:
 
-## Modules and file APIs belong together
+- threads and abstract resources
+- environment or container ownership
+- log and benchmark paths
+- wildcard constraints
+- schema assumptions for public artifacts
 
-Once you have a true module boundary, file-interface thinking becomes important fast.
+Do not force every surface into the caller. The goal is deliberate ownership, not maximum
+override count.
 
-The reader should know:
+## Compare the hidden-coupling model
 
-- which module outputs are safe for the rest of the workflow to depend on
-- which outputs are internal staging or helper state
-- whether a change to those outputs is a local refactor or an interface break
+The counterexample looks reasonable:
 
-That is why this page leads directly into file APIs and schema validation.
+```python
+module normalize:
+    snakefile: "module/Snakefile"
+    config: config
 
-## What a good explanation sounds like
+use rule normalize from normalize as normalize_sample with:
+    input:
+        source="data/sample.txt"
+    output:
+        artifact="build/sample.txt"
+```
 
-Strong:
+The imported module privately reads:
 
-> This became a module because the interface is explicit enough that callers can name the
-> inputs, outputs, and assumptions without opening implementation files.
+```python
+params:
+    prefix=config["private"]["prefix"]
+```
 
-Weak:
+This workflow runs successfully. Its artifact begins with `inherited`. The caller cannot
+explain that value without opening private module code and searching every config access.
 
-> This became a module because it looked reusable.
+The defect is not "modules may never read config." The defect is that caller-visible
+artifact meaning depends on policy the interface does not name.
 
-## Common failure modes
+Broad config passing causes several review problems:
 
-| Failure mode | What it looks like | Better repair |
-| --- | --- | --- |
-| a module exists only because a file was long | the interface is vague and reuse is imaginary | keep the split at rule-family level instead |
-| hidden globals leak into module behavior | the call site does not explain the contract | make inputs and outputs explicit at the boundary |
-| the main graph becomes harder to read after modularization | readers open implementation files too early | simplify the top-level orchestration surface |
-| reusable outputs are undocumented | interface drift is hard to detect | pair modules with file-API thinking and validation |
-| modules become junk drawers | the boundary exists, but no one can name its job | narrow the module to one stable concern |
+- a new private read can change behavior without changing the call site
+- the module's real configuration contract is discovered by search, not declaration
+- callers cannot tell which config keys are compatibility-sensitive
+- tests may cover one caller while another supplies a different broad config shape
 
-## The explanation a reviewer trusts
+Narrow config is not a magic cure. A poorly named subtree can still hide too much. It is a
+boundary that makes review possible.
 
-Strong explanation:
+## Run the paired audit
 
-> this boundary became a real module because the QC bundle has a stable interface, the main
-> workflow can name its inputs and outputs clearly, and the top-level graph is easier to
-> explain after the module is introduced.
+From the course directory:
 
-Weak explanation:
+```bash
+make capstone-module-interface-audit
+```
 
-> we moved it into `workflow/modules/` because it looked more reusable there.
+Then read:
 
-The first explanation gives an interface reason. The second gives a folder preference.
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/module-interfaces/
+```
 
-## End-of-page checkpoint
+Use this order:
 
-Before leaving this page, you should be able to:
+1. `route.txt`
+2. `MODULE_INTERFACE_AUDIT_GUIDE.md`
+3. `summary.tsv`
+4. both caller `Snakefile` files
+5. both module `Snakefile` files
+6. list-rules and dry-run traces
+7. execution traces and artifact observations
 
-- explain one case where a rule family should remain an include rather than a module
-- name the minimum interface questions a module must answer
-- describe one sign that a module boundary is too vague to trust
-- explain why modules and file APIs naturally belong in the same discussion
+The expected findings are:
+
+```text
+EXPLICIT_MODULE_CONTRACT_PRESERVED
+HIDDEN_MODULE_COUPLING_REPRODUCED
+```
+
+Both rows say `PASS`. The second pass means the audit successfully observed the defect.
+
+## Why dry-run cannot settle the review
+
+Both specimens expose:
+
+```text
+all
+normalize_sample
+```
+
+Both dry-runs plan the same dependency shape. Both executions produce an artifact. Graph
+visibility proves that the imported rule participates in the intended plan. It does not
+prove that configuration ownership is explicit.
+
+```mermaid
+flowchart TD
+  same_graph["same visible DAG"] --> source_review["inspect declaration and use-rule binding"]
+  same_graph --> artifact_review["inspect artifact meaning"]
+  source_review --> ownership["identify policy owner"]
+  artifact_review --> ownership
+  ownership --> judgment["reuse judgment"]
+```
+
+A serious review combines:
+
+- source-level interface observations
+- rule listing
+- dry-run
+- executed artifact meaning
+- rejection tests
+
+## Inspect the capstone's real QC boundary
+
+The capstone uses a QC module in `workflow/rules/preprocess.smk`:
+
+```python
+module qc:
+    snakefile: "../modules/qc_module/Snakefile"
+    config: config
+
+use rule qc from qc as qc_raw with:
+    input:
+        fastq=lambda wc: get_raw_fastq(wc)
+    output:
+        json=f"{RESULTS}/{{sample}}/qc_raw.json",
+        tsv=f"{RESULTS}/{{sample}}/qc_raw.tsv",
+```
+
+This is more explicit than importing a rule unchanged: the caller binds data paths, output
+paths, logs, benchmarks, and resources. It is less narrow than the control specimen
+because the module receives the complete capstone config.
+
+Do not force a binary verdict. Record the remaining coupling:
+
+- the module reads `_env_python`
+- the module reads `benchmarks_dir`
+- it derives `PYTHONPATH` from `workflow.basedir`
+
+Then ask whether those values are implementation assumptions or caller-owned policy. A
+future refactor could pass a dedicated module config subtree, but only after deciding who
+should own those values. Replacing `config` mechanically would not be a reasoned repair.
+
+## Import only the public rules you need
+
+`use rule` also defines graph surface.
+
+Prefer:
+
+```python
+use rule qc from qc as qc_raw with:
+    ...
+```
+
+over importing a broad rule set merely because it is available. Each imported rule becomes
+part of the caller's review burden. A reusable module can contain private supporting rules,
+but the caller should import only the surface it intends to own locally.
+
+When importing several rules, document:
+
+- which imported rules are caller entrypoints
+- which outputs cross back into the caller graph
+- whether rule names are renamed to prevent collisions
+- which relationships must remain inside the module
+
+## Test that the audit can reject dishonesty
+
+Run:
+
+```bash
+make capstone-module-interface-selftest
+```
+
+The tests mutate disposable copies. They reject:
+
+- broad config in the explicit control
+- a missing caller policy binding
+- a changed caller output binding
+- exposed policy in the hidden-coupling model
+- removal of the hidden module's private policy read
+
+That last pair matters. A defect specimen that has been accidentally repaired should fail
+its promised finding rather than continue producing a ceremonial green row.
+
+## Decide what remains private
+
+An interface is useful partly because it says what callers must not rely on.
+
+Private module details may include:
+
+- command decomposition
+- candidate publication filenames
+- internal helper rules
+- log message wording
+- implementation-specific intermediate paths
+
+Caller-visible contracts usually include:
+
+- imported local rule names
+- caller-bound input and output shapes
+- parameters that affect artifact meaning
+- environment compatibility assumptions
+- public artifact schema or semantics
+
+If every implementation detail becomes public, the module cannot evolve. If nothing is
+public, callers cannot trust it.
+
+## Version remote modules deliberately
+
+Local modules teach the boundary without adding distribution concerns. Remote modules add
+another contract:
+
+- source identity
+- release or commit pin
+- compatibility policy
+- upgrade evidence
+
+Do not point a production workflow at a moving branch and call the result reusable. The
+caller needs an attributable module version and a review route for upgrades.
+
+This lesson's audit does not prove remote compatibility. It proves the local binding shape
+that versioned reuse would still need.
+
+## Review checklist
+
+Before approving a module boundary, answer:
+
+- Is there a real second caller or a credible independent reuse case?
+- Is the module config narrower than the caller's complete state?
+- Does each `use rule` binding name caller-owned paths?
+- Are policy values that affect artifact meaning visible at the call site?
+- Can module implementation change without surprising callers?
+- Are imported rule names and public outputs collision-safe?
+- Does dry-run preserve the intended graph?
+- Does execution preserve artifact meaning and atomic publication?
+- Do rejection tests fail when the contract becomes broad or incomplete?
+
+One unexplained answer is enough to postpone promotion.
+
+## Independent practice
+
+Extend the explicit specimen with a second imported rule named `normalize_control`.
+
+Give it:
+
+- `data/control.txt`
+- `build/control.txt`
+- a `control-reviewed` prefix
+
+Do not edit the module implementation. Capture the call sites, rule listing, dry-run, and
+both artifacts. If adding a second caller requires private module changes, write down which
+missing interface surface caused the failure.
+
+## Exit standard
+
+Do not leave this lesson until you can:
+
+- explain why an include can be stronger than a premature module
+- trace module declaration, rule import, and caller binding as separate surfaces
+- identify broad config and private policy reads in the hidden-coupling specimen
+- explain why two identical visible DAGs can have different interface quality
+- evaluate the capstone QC module without forcing a simplistic pass/fail verdict
+- run both the audit and its rejection tests
