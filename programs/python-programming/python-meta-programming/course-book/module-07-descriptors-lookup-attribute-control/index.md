@@ -29,9 +29,17 @@ runtime protocol. The goal is not to memorize descriptor trivia. The goal is to
 understand what actually happens when Python reads, writes, or deletes an attribute, and
 to decide when a descriptor is the honest owner of that behavior.
 
+This is also the point in the course where ordinary Python starts looking less magical if
+you review it carefully. Properties, bound methods, and reusable field objects all become
+clearer once the lookup engine stops feeling like folklore.
+
 This module now uses the same ten-file learning surface as the deep-dive series so the
 overview, five cores, worked example, practice set, answers, and glossary each have one
 clear job.
+
+The strongest habit to build here is disciplined explanation. Readers should be able to
+say why lookup resolved a certain way without resorting to phrases like "Python just knows"
+or "descriptor magic."
 
 ## What this module is for
 
@@ -43,12 +51,35 @@ By the end of Module 07, you should be able to explain five things clearly:
 - where reusable field descriptors should keep per-instance state
 - when a descriptor is the right owner instead of a property, wrapper, or wider class hook
 
+You should also be able to say what this module does not prove automatically:
+
+- that every attribute rule deserves descriptor reuse
+- that data-descriptor precedence is a design excuse for subtle APIs
+- that annotation-driven field systems are automatically safe because they are class-level
+- that lookup weirdness is acceptable just because the protocol can explain it afterward
+
 ## Keep these pages open
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md)
 - [Pressure Routes](../guides/pressure-routes.md)
 - [Topic Boundaries](../reference/topic-boundaries.md)
 - [Capstone Map](../capstone/capstone-map.md)
+
+## The review route through the module
+
+Read the module in this order if you are studying without an instructor present:
+
+| Read this page when you need to... | Review question to keep active |
+| --- | --- |
+| [Descriptor Protocol and `__set_name__`](descriptor-protocol-and-set-name.md) | which hooks actually participate in this attribute behavior? |
+| [Data and Non-Data Descriptor Precedence](data-and-non-data-descriptor-precedence.md) | what wins lookup first, and why? |
+| [Functions, Binding, and Method Descriptors](functions-binding-and-method-descriptors.md) | what exactly turns a class function into a bound method? |
+| [Reusable Field Descriptors and Storage](reusable-field-descriptors-and-storage.md) | where does per-instance state live, and what storage bugs are being avoided? |
+| [Descriptor Boundaries and Attribute Ownership](descriptor-boundaries-and-attribute-ownership.md) | does this rule truly belong to attribute access, or is a lower-power owner clearer? |
+| [Worked Example: Building a Unit-Aware Quantity Descriptor](worked-example-building-a-unit-aware-quantity-descriptor.md) | what field semantics are owned here, and what broader system claim is refused? |
+| [Exercises](exercises.md) | can I narrate lookup, storage, and ownership without mystical language? |
+| [Exercise Answers](exercise-answers.md) | is my reasoning explicit about precedence, state ownership, and rejected stronger tools? |
+| [Glossary](glossary.md) | am I using descriptor vocabulary consistently and precisely? |
 
 ## The ten files in this module
 
@@ -83,6 +114,10 @@ Carry this question through every page:
 
 > What belongs to attribute access itself, and what would become more confusing if I hid it behind a wrapper or wider class hook?
 
+Keep a second question beside it:
+
+> what lower-power owner or stronger owner am I refusing here, and what missing condition would have to appear before that choice changed?
+
 Strong Module 07 answers usually mention one or more of these:
 
 - the descriptor protocol on class attributes
@@ -90,6 +125,13 @@ Strong Module 07 answers usually mention one or more of these:
 - method binding as non-data descriptor behavior
 - per-instance storage that does not leak across objects
 - a lower-power decision that rejects unnecessary class-wide machinery
+
+Weak answers usually sound like one of these instead:
+
+- "Python automatically handles methods" without naming `function.__get__`
+- "the descriptor stores the value" without saying where
+- "properties and descriptors are basically the same" without naming reuse pressure
+- "the framework field is magic" without tracing the hooks or storage owner
 
 ## Learning outcomes
 
@@ -101,6 +143,29 @@ By the end of this module, you should be able to:
 - choose storage patterns for reusable descriptors that keep instance behavior independent
 - reject descriptor use when a simpler attribute boundary would be clearer
 
+## Mid-module warning signs
+
+Pause and repair your understanding if you catch yourself doing any of these:
+
+- describing descriptor behavior only as "magic" or "automatic"
+- forgetting whether the object is a data descriptor or non-data descriptor
+- storing field values on the shared descriptor object and calling it a shortcut
+- using a descriptor where one property on one class would already be clearer
+- appealing to precedence to defend a subtle API instead of simplifying the design
+
+## Evidence packet to build while you learn
+
+Leave yourself a review packet as you move through the module:
+
+- one minimal descriptor with the smallest useful hook set
+- one traced lookup comparison between a data descriptor and a non-data descriptor
+- one inspected bound method showing `__func__` and `__self__`
+- one reusable field descriptor with an explicit per-instance storage owner
+- one sentence rejecting a descriptor in favor of a lower-power owner
+
+If you can assemble those five artifacts, the module is becoming standalone instead of
+lecture-dependent.
+
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -109,6 +174,7 @@ Do not move on until all of these are true:
 - you can say why data descriptors beat instance dictionaries while non-data descriptors can be shadowed
 - you can trace ordinary method binding back to `function.__get__`
 - you can place one field invariant honestly on the descriptor side of the power ladder
+- you can name one rejected stronger mechanism and one rejected weaker mechanism for a descriptor design
 
 When those feel ordinary, Module 07 has done its job and Module 08 can extend the same
 ideas into larger descriptor systems.
