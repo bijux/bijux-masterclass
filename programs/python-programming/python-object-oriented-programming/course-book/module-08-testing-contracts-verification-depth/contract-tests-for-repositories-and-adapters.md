@@ -24,170 +24,192 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about one hard rule:
 
-## Why this lesson matters
+An interface does not prove replaceability.
 
-An interface is not proof of replaceability.
+Two repositories or adapters can expose the same methods and still disagree on the
+caller-facing truth in ways that make tests falsely reassuring.
 
-Students often build:
+Contract tests exist to stop that drift by writing the shared semantic promise once and
+running it against every implementation that claims the same boundary.
 
-- an in-memory repository for tests
-- a database repository for production
-- several adapters that all implement the same protocol
+## Keep one replaceability claim visible
 
-Then they assume the shared interface is enough to guarantee equivalent behavior.
+Use two capstone surfaces:
 
-It is not.
+- `WorkshopEnrollmentRepository`
+- one outward boundary such as certificate artifact storage or incident publishing
 
-Replaceability is a semantic claim. Contract tests exist to prove that each
-implementation honors the same promise under the same important conditions, especially
-the awkward ones.
+Ask the same question of both:
 
-## A contract test defines shared truth once
+What is the promise a caller depends on if this implementation is swapped?
 
-The purpose of a contract suite is not to test one implementation well. It is to define
-the truth that all implementations must satisfy.
+If that question cannot be answered in semantic language, the contract is still too
+close to storage or transport detail.
 
-For a repository, that truth may include:
+## Contract tests should be written in caller language
 
-- what "missing" means
-- how identity and version conflicts behave
-- whether round-tripping preserves domain meaning
-- when writes become visible
-- which errors belong to the contract versus the storage mechanism
+Start from what a caller relies on, not from how a backend happens to work.
 
-Once that truth is written down as tests, every implementation must answer to it.
+For `WorkshopEnrollmentRepository`, the contract might include:
 
-## Start from promises, not storage details
+- loading a missing record has one clear absence meaning
+- save then load preserves aggregate meaning, not only field presence
+- stale writes fail with one explicit conflict behavior
+- two implementations agree on version and lifecycle semantics
 
-Repository contract tests should be framed in terms a caller depends on, not in terms a
-backend happens to use.
+For an outward publishing boundary, the contract might include:
 
-For example, a good shared question is:
+- accepted normalized input shape
+- visible success or acknowledgement meaning
+- failure translation the workflow can reason about
 
-- does saving then loading preserve the aggregate meaning?
+These are caller questions.
+They are the right raw material for a shared suite.
 
-A weaker backend-specific question is:
+## A contract suite should expose dishonest substitutes quickly
 
-- did the SQL row include every current column?
+An in-memory implementation often drifts in ways that look harmless until real workflow
+pressure appears.
 
-The second question may still matter in backend-specific tests, but it is not the shared
-contract. Contract tests should stay at the semantic boundary the application relies on.
+Common problems:
 
-## Shared suites expose dishonest substitutes
+- it preserves object identity instead of reconstructing meaning
+- it ignores optimistic conflict rules
+- it accepts data a real transport or store would reject
+- it makes writes visible more generously than the durable path does
 
-In-memory substitutes often drift in ways that make tests falsely reassuring.
+Without a shared suite, those differences become "test convenience."
+With a shared suite, they become explicit incompatibilities that must be fixed or split.
 
-Common examples:
+## Build the contract around one repeatable packet
 
-- the in-memory repository never enforces optimistic conflicts
-- it preserves Python object identity instead of serializing and reconstructing meaning
-- it accepts invalid payload shapes a real transport would reject
-- it returns data too eagerly compared with the production boundary
+A useful contract packet for this module should answer five things:
 
-Without a shared contract suite, these differences become invisible until production or
-integration testing.
+1. what absence means
+2. what round-trip must preserve
+3. what conflict or duplication behavior must match
+4. what failure belongs to the public contract
+5. what backend detail stays outside the shared suite
 
-## Adapters need contract tests too
+That packet keeps the suite narrow enough to reuse and strong enough to matter.
 
-The same idea applies beyond repositories.
+## Example: repository contract for `WorkshopEnrollment`
 
-If several adapters claim to be equivalent incident sinks, metric sources, or storage
-surfaces, a contract might cover:
+An honest shared suite could require:
 
-- accepted input shape
-- failure translation
-- timeout semantics
-- duplicate handling
-- guaranteed outputs or acknowledgements
+1. saving a legal enrollment then loading it back preserves seat limit, attendee state,
+   and version meaning
+2. loading a missing enrollment produces the same absence behavior in every
+   implementation
+3. saving with an out-of-date version fails in the same semantic way
+4. repeated unchanged saves do not invent lifecycle drift or phantom state changes
 
-The transport may differ. The caller-facing promise should not drift silently.
+What this suite should not care about:
 
-## Honest differences must become explicit structure
+- table shape
+- ORM configuration
+- exact serialization format
+- index layout
 
-Contract testing often reveals that two implementations are not truly interchangeable.
+Those concerns still deserve tests, but they are backend-specific tests, not the shared
+contract.
 
-That is useful information.
+## Example: adapter contract for outward publication
 
-If one repository supports:
+Suppose two incident-sink implementations claim the same outward role.
 
-- optimistic concurrency
-- bulk loading
-- transactional save semantics
+The contract might require:
 
-and another does not, you have several honest options:
+- both accept the same normalized incident representation
+- both report success, retryable failure, or terminal failure through the same boundary
+  meaning
+- both handle duplicate publication or idempotency markers consistently enough for the
+  workflow to reason about them
+
+Again, the contract is not:
+
+- how the HTTP request is built
+- how the file is stored
+- which queue client is used
+
+The contract is what the host workflow may rely on when implementations are swapped.
+
+## Honest capability differences should change the design
+
+Shared suites are valuable because they reveal when one interface is lying.
+
+If one repository supports optimistic conflict checks and another does not, or one
+adapter can signal retryable failure while another only crashes generically, you have to
+decide honestly:
 
 - narrow the shared contract
 - split the interface
-- define capability-specific contracts
+- define a second capability-specific contract
 
-The wrong move is to keep one broad interface and quietly let implementations differ.
-
-## A worked example
-
-Suppose the capstone has both an in-memory incident repository and a durable repository.
-The shared contract might require:
-
-- loading a missing incident returns the same absence behavior in both implementations
-- saving then loading preserves incident state, version, and emitted-event handling rules
-- saving with an out-of-date version fails in the same semantic way
-- a second save of unchanged state does not invent extra lifecycle drift
-
-One backend may implement this with plain Python structures. Another may use a database
-transaction. The contract suite does not care how they do it. It cares that the caller's
-truth is preserved.
+The wrong move is to keep one broad interface and quietly accept semantic drift.
 
 ## What belongs outside the shared contract
 
-Not every backend-specific concern belongs in the shared suite.
+Keep these concerns in implementation-specific tests:
 
-Keep separate tests for:
-
-- exact SQL shape
-- driver-specific retry behavior
-- transport configuration
+- exact SQL or query shape
+- driver retry policy
 - storage-engine tuning
-- performance characteristics unique to one backend
+- serializer implementation details
+- performance behavior unique to one backend
 
-Those tests still matter. They are just not the cross-implementation contract.
+Those are real concerns. They just are not the cross-implementation promise.
 
-## Common mistakes
+## A good contract suite makes failures interpretable
 
-- copying similar tests across implementations instead of extracting one shared suite
-- keeping the contract too happy-path and ignoring conflicts, missing values, or failure translation
-- letting in-memory substitutes skip important semantic checks
-- hiding capability gaps instead of splitting contracts honestly
+When one shared suite fails, the question should be obvious:
+
+- this implementation does not actually preserve the caller's promised behavior
+
+That is much more useful than a pile of copied tests that happen to look similar but
+diverge over time.
+
+Contract suites help because they turn replaceability from assumption into evidence.
+
+## Common failure modes
+
+- copying nearly identical tests per implementation instead of extracting one shared
+  suite
+- keeping the contract too happy-path and ignoring absence, conflict, or failure
+  translation
+- letting in-memory substitutes skip semantic rules for convenience
+- hiding real capability gaps instead of splitting the contract honestly
 - writing backend-detail assertions and calling them contract tests
 
-## Review checklist
+## Contract review card
 
-| Question | Good sign |
+Use this short review card when extracting or reviewing a shared suite:
+
+| Question | What you want to see |
 | --- | --- |
-| is the shared suite written in caller-facing semantic language? | yes |
-| does every claimed substitute run the same suite? | yes |
-| are failure and conflict paths covered, not just round-trips? | yes |
-| are honest capability differences explicit in the design? | yes |
+| is the suite written in caller-facing semantic language? | yes |
+| do all claimed substitutes run the same suite? | yes |
+| are absence, conflict, and failure paths included? | yes |
+| are backend-only concerns kept out of the shared suite? | yes |
+| do capability gaps change the design instead of hiding inside the interface? | yes |
 
 ## Capstone connection
 
-Use the capstone boundaries to ask:
+Use this page to ask:
 
-- which repositories or adapters are currently assumed replaceable but not proven so?
-- where does the in-memory testing substitute behave more generously than the production path?
-- which shared boundary would benefit most from one extracted semantic suite?
+- which current in-memory or fake substitute is more generous than the real path
+- which repository or adapter boundary most needs one extracted semantic suite next
+- which interface is currently pretending to unify implementations that really need
+  separate capabilities
 
-This is often where testing stops being convenience scaffolding and becomes architecture
-evidence.
+That is where testing convenience becomes architecture evidence.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
 - explain why an interface alone does not prove replaceability
-- name one semantic rule that all repository implementations must share
-- identify one backend-specific concern that should stay outside the shared contract suite
+- name one semantic rule every implementation of a capstone boundary must share
+- identify one backend-specific concern that should stay outside the shared contract
