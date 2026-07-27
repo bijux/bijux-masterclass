@@ -24,15 +24,19 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these prompts after each module cluster to check whether the course ideas are becoming
-operational rather than merely familiar. A good self-review prompt should force you to explain,
-compare, and justify, not just remember names.
+Use these prompts when you need to test whether your understanding is usable without help.
+
+The goal is not memory theater. A good self-review prompt should force you to explain,
+compare, and justify. If you can only answer after rereading the lesson immediately, the
+knowledge is still fragile.
 
 ## How to use these prompts
 
-- Answer aloud or in writing without reopening the module first.
-- If you stall, name exactly what kind of gap you hit: mechanism, boundary, proof, or sequence.
+- Answer aloud or in writing before reopening the lesson.
+- If you stall, name the gap precisely: mechanism, boundary, proof, or sequence.
 - Return only to the smallest surface that closes that gap.
+
+The point is to find the weak seam, not to restart the whole course every time you hesitate.
 
 ## Modules 01 to 03
 
@@ -70,4 +74,4 @@ compare, and justify, not just remember names.
 
 ## Good stopping point
 
-Stop when you can answer at least one prompt from each stage without reopening the lesson immediately and can name the smallest surface you would revisit for the next gap.
+Leave this page when you can answer at least one prompt from each stage without immediate rereading and can name the smallest surface you would revisit for the next gap.
