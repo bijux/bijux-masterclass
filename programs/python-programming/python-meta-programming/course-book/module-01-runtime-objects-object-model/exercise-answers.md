@@ -207,6 +207,96 @@ The rewrite should report supported metadata first and use `inspect.getsource(fu
 as a best-effort convenience with a clear failure path. The tool should not claim that it
 can reconstruct the true source of any callable from code-object fields alone.
 
+## Answer 7: Separate function, method, and bound-method identities
+
+Example answer:
+
+```python
+class Reporter:
+    def emit(self, value):
+        return value.upper()
+
+
+inst = Reporter()
+bound = inst.emit
+func = Reporter.emit
+```
+
+Strong evidence:
+
+- `bound.__self__ is inst`
+- `bound.__func__ is func`
+- `func is Reporter.__dict__["emit"]`
+- `inst.__dict__` does not contain `"emit"`
+
+Good conclusion:
+
+The instance did not store a method object in advance. Instance lookup created a bound
+method on demand from the function stored on the class, attaching the instance only at
+access or call time.
+
+## Answer 8: Map one import-time object graph
+
+Example answer:
+
+```python
+# in module demo_mod.py
+def helper(x):
+    return x + 1
+
+
+class Worker:
+    def run(self, value):
+        return helper(value)
+```
+
+Strong evidence after import:
+
+- the module object exists in `sys.modules`
+- `demo_mod.Worker` is a class object bound in the module namespace
+- `demo_mod.helper` is a function object bound in the same module namespace
+- creating `demo_mod.Worker()` introduces an instance only after the import has already finished
+
+Good conclusion:
+
+Import time creates the module object and executes the definitions that bind classes and
+functions into that namespace. Instance objects are later runtime values, not part of the
+module's initial object graph.
+
+## Answer 9: Compare supported evidence with diagnostic evidence
+
+A strong answer might ask:
+
+- "Which module defined this function, and what stable relationship proves that?"
+
+Supported route:
+
+- `fn.__module__`
+- `fn.__globals__`
+- the defining module object from `sys.modules`
+
+Diagnostic or brittle route:
+
+- source-path assumptions from `fn.__code__.co_filename`
+- line-number guesses from `co_firstlineno`
+
+Good conclusion:
+
+Supported surfaces answer ownership and namespace questions directly. Diagnostic surfaces
+can help tooling, but they are weaker teaching defaults because they tempt readers to
+infer more than the runtime actually promises.
+
+## Answer 10: Produce a runtime evidence packet
+
+The packet is strong when another learner can answer:
+
+- which object is a function, class, module, instance, or bound method
+- which runtime moment created the relationship under discussion
+- which evidence is a supported surface and which is only diagnostic
+
+If readers still need phrases like "Python magic" to follow the packet, the object model
+is not explicit enough yet.
+
 ## What strong Module 01 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -215,6 +305,8 @@ Across the whole set, strong answers share the same habits:
 - they use evidence instead of folklore
 - they distinguish supported surfaces from implementation detail
 - they explain behavior in terms of import time, class-definition time, instance time, and call time when relevant
+- they keep bound methods separate from functions stored on classes
+- they leave behind a packet another learner can audit without guessing
 
 If your answer still depends on phrases like "Python just knows" or "class magic," revise
 it until you can point to the actual object and relationship doing the work.
