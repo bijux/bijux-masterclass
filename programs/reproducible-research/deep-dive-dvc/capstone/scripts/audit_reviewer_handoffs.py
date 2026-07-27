@@ -94,7 +94,7 @@ def configure_case_source(case: HandoffCase, author: Path) -> None:
         route.insert(1, "dvc push")
         write_json(contract_path, contract)
     elif case.name == "missing-result-contract":
-        contract.pop("claim")
+        contract.pop("claim", None)
         write_json(contract_path, contract)
     elif case.name == "untracked-stage-dependency":
         (author / ".gitignore").write_text(
