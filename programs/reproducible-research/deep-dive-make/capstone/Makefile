@@ -67,7 +67,7 @@ DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
-.PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
+.PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
         contract-audit inspect incident-audit clean submake-demo perf trace-count hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
@@ -152,6 +152,7 @@ help:
 >     '  install-rehearsal prove contained installation and rerun convergence' \
 >     '  accept-release    bind candidate and install evidence to one digest' \
 >     '  release-check     build, test, and verify one local candidate' \
+>     '  release-selftest  prove candidate acceptance and rejection paths' \
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
 >     '  selftest-report   write the selftest evidence bundle to artifacts/' \
@@ -410,6 +411,9 @@ release-check: test selftest dist
 >     @$(MAKE) --no-print-directory install-rehearsal
 >     @$(MAKE) --no-print-directory accept-release
 >     @echo "PASS: local release candidate accepted"
+
+release-selftest:
+>     $(PYTHON) -m unittest discover -s $(TST_DIR) -p 'test_release_candidate.py'
 
 repro:
 >     @printf '%s\n' \
