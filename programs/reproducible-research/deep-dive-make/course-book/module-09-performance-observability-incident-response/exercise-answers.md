@@ -248,86 +248,135 @@ answers “which producers would run and why from no outputs?” Their line coun
 comparable performance observations. The performance bundle answers cost and semantic
 preservation; the trace report answers planning causality and usability.
 
-## Exercise 5: Generate and preserve a parallel incident
+## Exercise 5: Verify three parallel incident signatures
 
-The current shared-log incident bundle records a command equivalent to:
+The complete audit should produce this result:
 
-```sh
-make -f repro/shared-log-interleaving.mk -j2 all
-```
+| Case | Expected exit | Observed semantic invariant | Finding |
+| --- | --- | --- | --- |
+| shared log interleaving | zero | the two starts precede the two ends | `SEMANTIC_CORRUPTION_REPRODUCED` |
+| directory creation race | nonzero | exactly one of `dir/file1` and `dir/file2` survives | `DIRECTORY_RACE_REPRODUCED` |
+| shared staging collision | nonzero | `y.out` exists while `x.out` and `shared.staging` do not | `STAGING_COLLISION_REPRODUCED` |
 
-An observed run can report:
+The exact ordering of the two start records can vary. The exact surviving directory file
+can also vary. Those are schedules, not contracts. The asserted invariants remain stable.
 
-```text
-exit_status=0
-```
+### Shared-log reasoning
 
-The copied Makefile shows:
-
-```make
-all: log1 log2
-
-log1:
-	printf 'A\n' >> shared.log
-
-log2:
-	printf 'B\n' >> shared.log
-```
-
-The two targets are `log1` and `log2`; both mutate `shared.log`.
-
-Model reasoning:
+The preserved `shared.log` contains all four expected records. A valid observation is:
 
 ```text
-Observed:
-Two independently schedulable targets append to one undeclared shared path, and the command
-can exit successfully.
-
-Inferred:
-Process success does not prove unique output ownership or deterministic publication.
-
-Still unknown:
-Which repaired ownership model best matches the intended log contract.
-
-Decision:
-Preserve the copied repro, command, output, status, and any shared-file content before
-cleanup. Classify ownership before proposing scheduler changes.
+alpha:start
+beta:start
+alpha:end
+beta:end
 ```
 
-Exit status proves only that the shell commands returned success in that run.
+Both logical records are split by another writer. Exit `0` proves that the append commands
+completed. It does not prove record atomicity, deterministic order, or unique ownership.
 
-## Exercise 6: Classify ownership and reject false repairs
+A wrong failure to reject would be:
 
-A completed explanation table might be:
+- the Makefile fails to parse
+- one writer never reaches the barrier
+- the command exits zero but records are contiguous by writer
+
+None demonstrates the promised semantic interleaving.
+
+### Directory-race reasoning
+
+Both recipes reach the barrier before attempting `mkdir dir`. One creates the directory
+and writes its file; the peer fails its independent `mkdir`.
+
+A nonzero command with no surviving file would be the wrong failure. The promised
+mechanism includes partial progress from one claimant. That is why
+`surviving-files.txt`, not only the run log, belongs in the packet.
+
+### Staging-collision reasoning
+
+Both targets use `shared.staging`. The `y` recipe moves the path first, and the delayed
+`x` recipe cannot publish. The evidence is:
+
+```json
+{
+  "files": {
+    "shared.staging": false,
+    "x.out": false,
+    "y.out": true
+  }
+}
+```
+
+A nonzero exit caused by a missing shell tool would not establish this state and must fail
+the audit.
+
+### Aggregate PASS
+
+The top-level result is `PASS` because every broken specimen reproduced its declared
+fault. The findings deliberately say `_REPRODUCED`; PASS is about evidence integrity, not
+specimen health.
+
+When `INCIDENT_CASE=shared-staging-collision` is selected, `report.json` should contain
+only that case. The bundle still includes guidance and the specimen catalog so the
+single-case packet remains interpretable.
+
+## Exercise 6: Route each incident to an ownership repair
+
+A completed explanation table is:
 
 | Explanation | Evidence expected if true | Evidence that weakens it |
 | --- | --- | --- |
-| missing ownership/publication model | multiple independent recipes write `shared.log`; no target owns it | one declared writer or isolated worker files plus one merge |
-| parallel scheduler defect | incorrect scheduling despite complete edges and unique writers | defect disappears after ownership repair without changing scheduler |
-| external filesystem failure | write errors or corruption outside the graph pattern | same logical defect is visible directly in the Makefile on ordinary storage |
+| shared publication ownership | multiple runnable recipes mutate or consume one publication path | private producer paths and one declared final owner |
+| repeated setup ownership | peer recipes perform the same directory setup action | one setup target orders all consumers |
+| parallel scheduler defect | invalid behavior remains with complete edges and unique paths | ownership repair removes the fault without changing Make |
+| external filesystem failure | unrelated paths fail under the same controlled route | failure follows the modeled conflict in an isolated local workspace |
 
-Classify this as graph truth plus publication ownership.
+The repair table should distinguish the cases:
+
+| Case | Boundary | Temporary mitigation | Durable repair | Adjacent proof |
+| --- | --- | --- | --- | --- |
+| shared log | publication ownership | serial execution | private worker logs plus one deterministic merge owner | stable merged content under repeated serial and parallel runs |
+| directory race | graph ownership | pre-create the directory outside the pressure route | one `dir/` target used as an order-only prerequisite | both files publish under pressure and the next run converges |
+| shared staging | publication ownership | serialize publishers | one private staging path per output, or private workers plus one merge | all outputs publish, failed staging is cleaned, hashes are schedule-independent |
 
 Proposal labels:
 
 | Proposal | Label | Reason |
 | --- | --- | --- |
-| force `-j1` | temporary mitigation | reduces schedule exposure but preserves multiple writers |
-| add more `echo` lines | rejected action | adds noise without repairing ownership |
-| one target owns the shared file | plausible repair | ownership becomes explicit |
-| private worker outputs plus declared merge | plausible repair | workers own isolated state; merge owns publication |
+| force `-j1` | mitigation | reduces schedule exposure while retaining dishonest ownership |
+| add more `echo` lines | rejected action | increases evidence volume without asserting the mechanism |
+| replace every `mkdir` with `mkdir -p` | incomplete repair | may suppress the symptom while leaving setup ownership duplicated |
+| one directory target plus order-only edges | repair | setup ownership and ordering become explicit |
+| one target owns the combined output | repair when combination is intended | publication has one graph owner |
+| private staging or worker paths | repair | independently runnable recipes no longer consume one mutable path |
 
-One repaired graph shape is:
+The directory graph should look like:
 
 ```mermaid
 flowchart LR
-  log1["log1 owns build/log1.txt"] --> merge["shared.log merge target"]
-  log2["log2 owns build/log2.txt"] --> merge
+  directory["dir/ owner"] -->|"order only"| file1["dir/file1"]
+  directory -->|"order only"| file2["dir/file2"]
 ```
 
-Closure proof should include repeated pressure runs, stable content under the intended
-ordering contract, unique writers, failure cleanup, and convergence. If line order matters,
-the merge recipe must define it.
+The shared-output graph should look like:
+
+```mermaid
+flowchart LR
+  alpha["alpha owns alpha.log"] --> merge["merge owns shared.log"]
+  beta["beta owns beta.log"] --> merge
+```
+
+Closure proof needs:
+
+1. the original pressure route from a controlled state
+2. semantic artifact assertions
+3. serial and parallel equivalence where promised
+4. unique writer review
+5. convergence after success
+6. cleanup after an injected publication failure
+
+One proof cannot be substituted for another. Convergence does not prove schedule
+equivalence, and a stable happy-path hash does not prove failed staging cleanup.
 
 ## Exercise 7: Write a falsifiable tuning proposal
 
