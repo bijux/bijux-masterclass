@@ -49,16 +49,19 @@ Use this capstone workflow:
 4. downstream publication or projection makes the result visible
 5. later consumers such as certificate issuance observe that result
 
-Any hardening plan should say exactly which step it changes, which risk it reduces, and
-which semantic contract must remain fixed.
+Any hardening plan should say exactly:
+
+- which step it changes
+- which risk it reduces
+- which semantic contract must remain fixed
 
 If it cannot do that, it is too vague to trust.
 
-## Rank by operational damage, not by technical glamour
+## Rank by operational damage, not technical glamour
 
-Start with the question:
+Start with this question:
 
-Which failure would create the most confusing or harmful visible outcome first?
+- which failure would create the most confusing or harmful visible outcome first?
 
 For this capstone, the first honest candidates are usually:
 
@@ -69,7 +72,7 @@ For this capstone, the first honest candidates are usually:
 
 These are higher-value targets than speculative tuning.
 
-## Preserve the strong boundaries while hardening the weak ones
+## Preserve strong boundaries while hardening weak ones
 
 The next change is only good if it keeps the strongest architectural truths intact.
 
@@ -102,7 +105,7 @@ Examples:
 - tighten one payload normalization boundary before changing all integration code
 - replace one deep-import example before publishing broader extension support
 
-Small honest hardening beats a large, blurry "resilience initiative."
+Small honest hardening beats a large blurry "resilience initiative."
 
 ## Match proof to the hardening move
 
@@ -139,6 +142,18 @@ This order protects meaning first, operability second, and optimization last.
 - do not widen the public surface because one internal shortcut feels convenient
 
 These moves often make a design look more advanced while making it harder to trust.
+
+## Build a hardening-order packet
+
+For the next pass, keep a short packet with:
+
+- strongest truth boundary to preserve
+- first visible failure to reduce
+- smallest honest change that could help
+- proof route for that change
+- one tempting improvement that should wait
+
+This packet prevents teams from confusing activity with progress.
 
 ## Worked strategy note
 
