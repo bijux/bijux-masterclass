@@ -113,6 +113,76 @@ Environment is easy to ignore because:
 
 That is why this module names the issue directly before later modules rely on it.
 
+## Prove that runtime is causal
+
+Run the isolated runtime audit:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone runtime-contract-audit
+```
+
+The specimen holds constant:
+
+- source bytes
+- rendering code
+- DVC command shape
+- Python interpreter
+- machine and platform
+
+It changes one runtime fact: whether reports use `dot` or `comma` formatting.
+
+Both paired stages execute the same logic. The declared stage reads
+`environment/runtime.env`; the hidden stage reads `REPORT_STYLE` from process state.
+
+```mermaid
+flowchart LR
+  data["same data"] --> declared["declared runtime"]
+  data --> hidden["hidden runtime"]
+  contract["runtime.env"] --> declared
+  process["process variable"] -. "real but undeclared" .-> hidden
+```
+
+This is stronger than comparing unrelated local and CI runs. It isolates one environment
+influence while holding plausible alternatives fixed.
+
+## Decide how an influence enters review
+
+For every runtime fact that can move a result, choose one route:
+
+| Route | Example | What makes it reviewable |
+| --- | --- | --- |
+| declared dependency | generated runtime contract file | DVC stale detection |
+| governed parameter | seed or thread count in `params.yaml` | recorded control value |
+| canonical executor policy | approved container digest in CI | external gate and receipt |
+| declared tolerance | bounded numerical delta | comparison policy and measured result |
+
+Leaving the fact only in process state is not a fifth strategy. It is an ungoverned
+influence unless another enforceable contract covers it.
+
+## Trace cause, planner, and result
+
+The audit saves three distinct evidence types:
+
+1. fingerprint JSON proves `REPORT_STYLE` changed
+2. DVC status and repro receipts prove what the planner detected
+3. result values prove whether output adopted current runtime meaning
+
+Do not substitute one layer for another. A fingerprint mismatch does not prove output
+changed. An empty DVC status does not prove the runtime stayed fixed. A changed output
+does not explain which input caused it.
+
+## Evidence checkpoint
+
+Explain these two rows:
+
+| Runtime change | DVC status | Ordinary result |
+| --- | --- | --- |
+| declared file changes to `comma` | stage is stale | rebuild produces `8,00` |
+| hidden variable changes to `comma` | empty | stage skips and retains `8.00` |
+
+If the second row feels impossible, the environment is still being treated as background
+rather than input.
+
 ## What this page is not claiming
 
 This page is not claiming that every tiny environment detail must be pinned perfectly for
