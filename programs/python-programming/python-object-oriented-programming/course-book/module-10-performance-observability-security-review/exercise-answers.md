@@ -24,267 +24,284 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these answers as model operational reasoning, not as slogans to repeat.
+Use these answers as model operational reasoning, not as text to copy blindly.
 
-The point is to show how a strong maintainer turns one capstone path into:
+The strong move in this module is not "having the right opinion." It is building an
+operational packet that another maintainer could actually use when pressure, delay, or
+duplication appears in the capstone.
 
-- a measurement plan
-- a semantics-safe optimization decision
-- a signal plan
-- a trust-boundary rule
-- a recovery note
+These answers stay with one route:
 
-If your own packet was longer than these answers, that is expected. The harder work was
-building the packet. This page compresses the reasoning behind it.
-
-## Running capstone path
-
-These answers use the same path as the exercise page:
-
-1. a seat request enters
+1. an attendee requests a seat
 2. `WorkshopEnrollment` decides confirmed or waitlisted
-3. the repository saves authoritative state
-4. downstream projection, notification, or artifact work makes the result visible
-5. later workflows such as certificate issuance depend on that confirmed state
+3. authoritative state is persisted
+4. projections, notifications, or artifacts make that truth visible elsewhere
+5. later workflows such as certificate issuance consume the confirmed result
 
-Everything below is judged by one question:
+Everything below is judged by one standard:
 
-Does the operational change preserve semantic truth while making the system easier to
-measure, diagnose, and recover?
+> Does the operational change preserve semantic truth while making the system easier to
+> measure, diagnose, protect, and recover?
 
-## Answer 1: Measure one suspected hot path first
+## Answer 1: Name the workflow pressure honestly
 
-Suppose the team suspects registration spikes make seat confirmation slow.
+A strong pressure statement might be:
 
-A strong measurement plan would say:
+> Under burst registration, operators feel slowness when confirmed-seat outcomes become
+> visible later than expected. We suspect the persistence-and-downstream path, but we
+> will not redesign this workflow until we can prove whether the pressure comes from
+> repository conflict handling, repeated projection work, or delayed artifact-side
+> publication.
 
-- measure end-to-end confirmation latency
-- separate aggregate decision time from repository save time and downstream fan-out time
-- record optimistic concurrency conflict frequency
-- use a workload shape that resembles burst registration rather than a synthetic single
-  request loop
+Why this is strong:
 
-What intuition to reject without evidence:
+- it names who feels the problem
+- it names what failure looks like
+- it names a suspected stage without pretending certainty
+- it rejects intuition as enough evidence
 
-- "the aggregate must be slow because it does the important business logic"
+Weak version:
 
-That guess may be wrong.
-The expensive part may be repository conflict handling or derived downstream work.
+> Enrollment feels slow, so the aggregate probably needs optimization.
 
-## Answer 2: Review one optimization for semantic drift
+That is too vague and too eager to target the wrong boundary.
 
-Possible optimization:
+## Answer 2: Design the first measurement plan
 
-- cache seat-availability reads for busy course pages
+A strong first measurement plan could say:
 
-Semantic contract that must not move:
+- measure full confirmation workflow latency from accepted request to visible confirmed
+  outcome
+- use burst registration workloads, not a single-request loop
+- separate stage timing for:
+  - aggregate decision
+  - repository save
+  - conflict retry handling
+  - downstream projection or notification publication
+- record optimistic concurrency conflict counts
+- keep one semantic rule visible: confirmed-seat truth must still come from
+  authoritative aggregate state
 
-- confirmation decisions still use authoritative aggregate state
+Why this is stronger than a microbenchmark:
 
-Possible drift:
+- it starts at the user-visible workflow
+- it can distinguish domain cost from persistence and downstream cost
+- it protects the truth boundary during investigation
 
-- stale cached counts get reused in write decisions
-- operators begin trusting an eventually consistent read as if it were authoritative
+## Answer 3: Compare three performance moves
 
-Boundary that should absorb the optimization:
-
-- a read-model or projection boundary, not the aggregate or write path itself
-
-Proof route that should fail first:
-
-- workflow or integration proof showing writes still consult authoritative state
-- observability review showing stale reads are labeled or tolerated correctly
-
-Faster but semantically wrong is still wrong.
-
-## Answer 3: Compare caching, batching, and lazy work
-
-Take projection updates after enrollment events.
+Suppose the measured pressure concentrates after persistence when many derived views need
+updating.
 
 Caching:
 
-- helps repeated reads
-- risks stale operator dashboards
-- is dangerous if confused with authority
+- might reduce repeated read work
+- pressures freshness and operator trust in seat visibility
+- creates confusion if stale derived views look authoritative
+- would need one explicit owner for invalidation
 
 Batching:
 
-- reduces write amplification and downstream pressure
-- risks short lag before visibility updates
-- is acceptable only if that lag is understood and observable
+- might reduce repeated downstream publication or adapter crossings
+- pressures visibility timing and partial-failure handling
+- creates confusion only if lag is hidden
+- should be owned by the boundary that already groups downstream work
 
 Lazy work:
 
-- defers cost
-- can move latency into surprising later paths
-- makes timing harder to reason about unless clearly bounded
+- might defer expensive rendering until a report is requested
+- pressures when cost and failure are paid
+- creates confusion if cheap-looking access suddenly triggers remote or artifact work
+- should be owned only by a clearly documented presentation boundary
 
-Best choice here:
+Recommended move:
 
-- batching projection updates if short lag is acceptable and measurable
+- batch downstream projection or notification work if short lag is acceptable and
+  observable
 
-Rejected option:
+Rejected move:
 
-- caching authoritative seat availability for the write path
+- cache authoritative seat availability for write decisions
 
 Why reject it:
 
-- it pressures the truth boundary and invites semantic drift under contention
+- it blurs the truth boundary and turns freshness drift into a correctness risk
 
-## Answer 4: One observability addition
+## Answer 4: Design one observability packet
 
-Useful signal set:
+A strong observability packet for the confirmation route could include:
 
 - metric: `enrollment_confirmation_latency_ms`
-- counter: `enrollment_concurrency_conflicts_total`
-- structured failure log keyed by workshop id and boundary name
-- optional trace segment for repository save and downstream publication
+- counter: `enrollment_conflict_retries_total`
+- trace: one span path from request acceptance through persistence to visible
+  confirmation publication
+- correlation identifier: `enrollment_id`
+- detail kept out: raw attendee payload and artifact storage keys
 
-Safe identifier:
+Operator questions answered:
 
-- workshop id or issuance id
+- latency metric: "Is confirmed visibility slower than expected?"
+- conflict counter: "Are retries or contention spikes the main pressure?"
+- trace path: "Which boundary is stretching the workflow right now?"
+- correlation id: "Which signals belong to this one logical confirmation?"
 
-Detail to keep out:
+Why this packet is strong:
 
-- full attendee payload
-- sensitive storage keys
-- raw callback bodies
+- each signal has a distinct job
+- the packet avoids noisy or sensitive data
+- the signals map directly to the workflow boundaries
 
-Operator question this helps answer:
+## Answer 5: Review one representation boundary
 
-- "Is the slowdown happening in domain work, repository conflict handling, or downstream
-  fan-out?"
+Choose certificate issuance completion logging.
 
-Signals matter because they shorten diagnosis, not because they increase output volume.
+Strong review:
 
-## Answer 5: Harden one input or default
+- consumer: operators and support tooling
+- truly needed fields:
+  - issuance id
+  - workshop id
+  - bounded outcome category
+  - timing or retry class
+- over-broad or risky fields:
+  - full storage keys
+  - rendered artifact locations
+  - raw notification payloads
+- better representation:
+  - a narrow completion event or explicit codec rather than dumping internal object state
+- damage if leaked:
+  - private storage paths become searchable
+  - debugging logs turn into accidental export surfaces
+  - replayable details survive longer than intended
 
-Choose the external callback or administrative reissue boundary.
+The key lesson is that useful logs are still public-enough artifacts. They must be
+governed like other outward representations.
 
-Good hardening rule:
+## Answer 6: Harden one input boundary
 
-- accept only the normalized fields required to match the callback or command to a known
-  workflow
+Choose callback intake.
 
-Safe default:
+A strong hardening note would say:
 
-- reject unknown states or unsupported payload shapes unless explicitly mapped
+- accepted normalized shape:
+  - external workflow id
+  - supported status enum
+  - bounded timestamp or sequence marker if required
+- reject early:
+  - unknown states
+  - oversized identifiers
+  - extra mode combinations that the workflow does not support
+  - payloads that imply authority broader than the callback should carry
+- safer default:
+  - omitted optional behavior leaves the workflow inactive or narrow rather than
+    permissive
+- rejection must happen:
+  - before durable writes, side-effect activation, or sink publication
+- first proof to fail:
+  - boundary tests around malformed, oversized, and ambiguous callback payloads
 
-Convenience shortcut to reject:
+This answer is strong because it narrows trust before the domain or runtime has to guess.
 
-- passing the whole remote payload through to the aggregate because "we may want it
-  later"
-
-Proof that should fail first:
-
-- boundary tests with malformed and extra-field inputs
-- review note proving only normalized information crosses the trust boundary
-
-Secure defaults belong at the crossing point, not in scattered cleanup code later.
-
-## Answer 6: Review one serialization or redaction boundary
-
-Choose certificate issuance logging.
-
-Sensitive or risky data:
-
-- storage keys that reveal personal information
-- full certificate file paths
-- raw notification payloads
-
-Rule:
-
-- log stable issuance ids, boundary outcomes, and bounded error categories
-- do not log raw artifact locations or rendered content
-
-Damage if convenience wins:
-
-- logs become searchable data leaks
-- debugging tools become accidental export surfaces
-- operators start depending on unsafe details for recovery
-
-Operational readability must never require private data leakage.
-
-## Answer 7: One runbook entry
+## Answer 7: Draft one step-shaped runbook entry
 
 Failure mode:
 
-- authoritative issuance state is persisted, but artifact upload latency spikes and
-  visible completion stalls
+- artifact upload stalls after issuance truth was already persisted
 
-A useful runbook entry would say:
+Strong runbook entry:
 
-- first signal: rising issuance latency plus storage timeout or error counts
-- first safe step: confirm authoritative issuance state before attempting rerun
-- artifact to inspect: issuance trace, audit row, or progress marker keyed by issuance id
-- unsafe shortcut to avoid: rerun the whole workflow blindly and risk duplicate visible
-  completion
-- design assumption made explicit: authoritative issuance truth is separate from outward
-  artifact publication
+- `symptom`
+  - issuance appears durable, but visible completion or download readiness is delayed
+- `first signal`
+  - rising issuance latency plus artifact upload timeout or failure counts
+- `first safe step`
+  - confirm authoritative issuance state before attempting any rerun
+- `artifact to inspect`
+  - issuance trace or durable progress marker keyed by issuance id
+- `unsafe shortcut to avoid`
+  - rerunning the whole issuance workflow blindly and risking duplicate visible work
+- `design assumption made explicit`
+  - authoritative issuance truth is separate from artifact publication
 
-That is what makes a runbook architectural rather than decorative.
+This runbook is useful because it guides the first move while respecting the model.
 
-## Answer 8: One failure drill
+## Answer 8: Design one failure drill
 
 Scenario:
 
-- duplicate callback or retry trigger arrives for the same logical workflow
+- deliver the same callback twice under realistic delay
 
-Boundary that should fail loudly first:
+Strong drill design:
 
-- the workflow boundary that maps the trigger to durable progress and visible work
+- simulation:
+  - same logical callback arrives twice with small timing separation
+- boundary that should fail loudly first:
+  - the workflow or progress boundary that decides whether the trigger has already been
+    consumed
+- evidence of success:
+  - authoritative state remains singular
+  - visible downstream work does not duplicate
+  - signals explain why the second trigger was absorbed or rejected
+- hidden weakness expected:
+  - retry safety may be incomplete once work has passed into a notification or artifact
+    step
+- signal gap that would hurt interpretation:
+  - no stable identifier tying the first and second trigger to the same logical workflow
 
-Evidence the drill succeeded:
+This is a good drill because it tests semantics, visibility, and diagnosis together.
 
-- one logical action remains authoritative
-- visible downstream work does not duplicate
-- signals explain why the second trigger was absorbed or rejected
-
-Weakness the drill is likely to expose:
-
-- hidden coupling between retries and visible side effects
-
-That is exactly the kind of weakness drills are meant to reveal before production does.
-
-## Answer 9: Full operational audit
+## Answer 9: Write the operational audit note
 
 A strong short audit note might read:
 
-> The semantic contract that must not move is that `WorkshopEnrollment` owns seat truth
-> and later workflows consume confirmed state rather than derived guesses. The main
-> pressure sits in the persistence-and-downstream path under bursts, contention, and
-> retries. The most useful operator signals are confirmation latency, conflict counts,
-> and visible outcome traces for certificate or notification work. The highest-risk trust
-> boundary is external callback or artifact-logging behavior. The safest first recovery
-> action is to confirm durable progress before any rerun. The main remaining weakness is
-> duplicate visible work under interruption or repeated triggers.
+> The semantic contract that must not move is that `WorkshopEnrollment` remains the
+> authority for seat truth and later workflows consume confirmed state rather than
+> guesses. The main pressure sits in the persistence-and-downstream visibility path under
+> burst registration and retries. The most valuable operator evidence is confirmation
+> latency, conflict counts, and a trace keyed by `enrollment_id`. The highest-risk trust
+> boundary is outward logging or artifact metadata that exposes more than operators need.
+> The safest first recovery move is to confirm durable progress before any rerun. The
+> remaining weakness is duplicate visible work after retries or partial downstream
+> failure.
 
-This note is useful because it ties meaning, measurement, trust, and recovery into one
-story.
+Why this works:
 
-## Answer 10: Operational packet summary
+- it names the truth boundary
+- it identifies pressure and signal value clearly
+- it points to a concrete trust risk
+- it recommends a safe first move
+- it admits one unresolved weakness
 
-A strong closing packet includes:
+## Answer 10: Assemble the packet
 
-- one measurement table for the confirmation and issuance path
-- one signal table tying metrics and drills to operator questions
-- one trust-boundary table for callbacks, logs, and stored artifacts
-- one runbook or drill entry for duplicate triggers or stalled artifact publication
-- one audit summary naming the remaining operational weakness
+A strong final packet would include:
+
+- the three working tables
+- one pressure statement tied to burst confirmation workflows
+- one workflow-first measurement plan
+- one tradeoff decision that favors batching downstream work over caching authority
+- one observability packet built around latency, conflicts, traces, and stable ids
+- one representation note narrowing issuance or log output
+- one callback-hardening note
+- one runbook entry for stalled downstream completion
+- one failure drill for duplicate triggers
+- one closing audit note
 
 Another maintainer should be able to answer all of these from the packet:
 
-- what must be measured before tuning
-- what optimization is safe only in derived or read paths
-- what trust boundary carries the highest risk
-- what first response remains safe on Monday, July 27, 2026 if the workflow misbehaves
+- where the system is under pressure
+- what optimization should be rejected because it weakens truth
+- how to diagnose the workflow quickly
+- which outward representation must stay narrow
+- what first recovery action is safe
 
 ## Self-check
 
-You are using Module 10 well when another maintainer can answer these from your packet
-without extra oral context:
+You are using Module 10 well when your packet lets a missed-class learner explain all of
+these without oral help:
 
-- what evidence justifies one optimization
-- what must never cross a boundary casually
-- what signal an operator should inspect first
-- what fast recovery move would be architecturally wrong
+- why measurement must come before redesign
+- why signals should follow workflow boundaries
+- why serialization and logging are trust-boundary decisions
+- why runbooks and drills reveal architectural assumptions rather than merely document
+  operations
