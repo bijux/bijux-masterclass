@@ -78,6 +78,21 @@ flowchart LR
 Use that route deliberately. It keeps the growth story readable instead of rewarding the
 largest diff.
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable packet instead of ten disconnected refactor fragments:
+
+- one ownership map for the current workflow
+- one before-and-after entrypoint comparison
+- one include-versus-module decision with a real interface note
+- one public file-contract excerpt plus one clearly internal path family
+- one gate table matching checks to structural claims
+- one rejected-abstraction note explaining what you deliberately did not split
+
+If you cannot point to those artifacts, the exercise day is still too dependent on tacit
+classroom guidance.
+
 ## Exercise 1: Name the current ownership problem
 
 Take a working workflow with at least six rules and no existing structure plan. Classify
@@ -170,6 +185,19 @@ already answer all of these:
 
 If you cannot answer those four questions cleanly, return to the earlier exercises and
 make the packet more explicit before moving on.
+
+## When you get stuck, diagnose the missing boundary first
+
+Use this table before you start splitting more files:
+
+| If you are stuck on... | Check whether you are missing... | Typical repair |
+| --- | --- | --- |
+| Exercise 1 or 2 | one ownership sentence per rule family | rewrite the ownership map before moving code |
+| Exercise 3 or 6 | one explanation of what the entrypoint still teaches | compare the before-and-after entrypoint directly |
+| Exercise 4 or 7 | one real interface note or contract boundary | name inputs, outputs, assumptions, or schema first |
+| Exercise 8, 9, or 10 | one gate tied to one structural claim | choose the claim first, then the proof surface |
+
+Most weak Module 04 answers are not short on files. They are short on named boundaries.
 
 ## Exercise 6: Review one abstraction you should reject
 

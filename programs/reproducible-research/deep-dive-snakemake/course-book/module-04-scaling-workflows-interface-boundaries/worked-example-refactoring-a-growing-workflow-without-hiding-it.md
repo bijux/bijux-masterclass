@@ -20,6 +20,20 @@ For each repair step:
 If you skip the ownership question, the example turns into folder choreography instead of
 workflow design.
 
+## If you are learning this without the live class
+
+Use the example in five passes instead of trying to absorb the whole refactor in one read:
+
+1. name the current owned concerns before you move any files
+2. stop after the include split and check whether the entrypoint still tells the story
+3. decide include versus module only after you can name the interface in plain language
+4. write the public contract before you tighten any gate
+5. finish by matching each structural claim to one review surface
+
+If you cannot explain the entrypoint after pass 2, do not promote anything to a module
+yet. Most Module 04 confusion starts when learners chase abstraction before they have
+named ownership.
+
 ## The one-day teaching goal
 
 By the end of this example, a learner should be able to refactor a growing workflow so
@@ -50,6 +64,9 @@ Keep a small scaling packet as you go:
 - one short public file contract excerpt
 - one gate table that ties each check to a structural claim
 
+That packet is not overhead. It is the thing that turns "I moved files around" into
+"another maintainer can review why this split improved trust."
+
 ## What to keep beside you while you work
 
 Keep these four surfaces visible while you move through the example:
@@ -61,6 +78,19 @@ Keep these four surfaces visible while you move through the example:
 
 Those four views are enough to explain whether the repository became clearer or only more
 abstract.
+
+## The evidence packet you should keep visible
+
+By the end of the example, keep one small packet that contains:
+
+- one ownership map for the current rule families
+- one before-and-after entrypoint view
+- one include-versus-module decision with named inputs, outputs, and assumptions
+- one public-contract note that separates stable paths from rebuildable ones
+- one gate table showing which check protects which structural promise
+
+If one of those pieces is missing, the repository may look more modular, but the learner
+still cannot defend the refactor.
 
 ## The starting situation
 
@@ -81,6 +111,19 @@ The maintainers currently live with:
 
 That is a good Module 04 starting point because the workflow is not broken. It is merely
 becoming exhausting to explain.
+
+## What goes wrong when a learner trusts the starting situation
+
+Use this card before you repair anything:
+
+| If you notice... | The repository is hiding... | Smallest review surface |
+| --- | --- | --- |
+| every new rule is added near unrelated logic | owned concerns have not been named | one ownership map and current rule list |
+| a proposed module still depends on globals or hidden helpers | the interface is not real yet | one explicit interface note naming inputs, outputs, and assumptions |
+| paths look tidy but consumers still do not know what is stable | the public contract is undocumented | one short file-contract note |
+| CI runs, but nobody can say what structural claim it defends | gates are generic ceremony | one gate table that ties checks to claims |
+
+If you can name the hidden defect first, the structural repair stops feeling cosmetic.
 
 ```mermaid
 flowchart LR
@@ -175,6 +218,19 @@ workflow story.
 That is the immediate test after every split: the rule list, the graph, and the dry-run
 should still let a new learner explain the workflow in the same order as before.
 
+## The entrypoint audit before you celebrate
+
+Before you call the include split healthy, make sure you can answer all four of these:
+
+| Question | Healthy answer |
+| --- | --- |
+| What stayed visible? | configuration start, major concerns, and final promised contract |
+| What moved safely? | one coherent rule family with named ownership |
+| What would count as too much indirection? | an entrypoint that no longer teaches the workflow order quickly |
+| What evidence proves the split stayed honest? | before-and-after rule list, graph, and dry-run for the same contract |
+
+If any row stays vague, keep repairing. The split may still be hiding too much.
+
 ## A short checkpoint before you continue
 
 Pause here and say one sentence like this:
@@ -268,6 +324,19 @@ Tie each gate to the claim it protects:
 | contract or schema validation | public outputs still match the published promise |
 | `snakemake --lint` or focused structure checks | the refactor did not introduce hidden design debt |
 
+## The gate audit before you move on
+
+Do not just list more checks. Test whether each one answers a named structural question:
+
+| Claim | Smallest honest review surface |
+| --- | --- |
+| the graph still tells the same workflow story | rule list or rulegraph comparison |
+| the final target plan did not drift | `snakemake -n` |
+| public outputs still match the repository promise | contract or schema validation |
+| the split did not add hidden design debt | `snakemake --lint` or one focused structure check |
+
+If you add a gate before you can fill this table, the gate is probably noise.
+
 ## What a strong summary sounds like
 
 Strong:
@@ -305,6 +374,17 @@ By the end of the refactor, the workflow can be described cleanly:
 
 That is what it means to refactor a growing workflow without hiding it.
 
+```mermaid
+flowchart LR
+  ownership["named ownership"] --> entry["visible entrypoint"]
+  entry --> interface["real interface decision"]
+  interface --> contract["public contract"]
+  contract --> gate["gate tied to claim"]
+```
+
+Read that diagram literally. If one step is missing, the repository may still run, but
+the scaling story is not yet teachable.
+
 ## Review questions for the repaired design
 
 When you inspect a repository shaped like this, ask:
@@ -316,6 +396,19 @@ When you inspect a repository shaped like this, ask:
 5. how will the next growth change land without making the graph harder to teach
 
 If those answers are visible, the module’s scaling story has landed.
+
+## If the module still feels abstract
+
+Do this recovery loop in order:
+
+1. print the current owned concerns in one short table
+2. point to the top-level entrypoint and say what story it still teaches
+3. name one candidate interface and list the assumptions it would need to expose
+4. mark one public path family and one internal path family
+5. choose one gate and say which structural claim it would be the first to catch
+
+Most Module 04 confusion is not about syntax. It is about losing track of which boundary
+owns which future change.
 
 Before leaving the module, make sure you can say all five of these out loud:
 
