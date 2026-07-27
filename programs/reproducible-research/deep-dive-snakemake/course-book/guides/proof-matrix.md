@@ -4,6 +4,20 @@ Use this page when you care about a claim but want the fastest honest evidence r
 good proof route is not the longest one. It is the one that answers the claim directly,
 with the smallest amount of extra machinery.
 
+## How to use this page
+
+Use this matrix after you know the claim but before you choose a command.
+
+Read it in this order:
+
+1. find the claim family
+2. start with the listed first command
+3. inspect the listed file surfaces
+4. stop unless the claim is still genuinely underdetermined
+
+If the claim already sounds stronger than the route you want, keep [Proof Ladder](proof-ladder.md)
+open beside this page.
+
 ## How to use the matrix
 
 Read each row from left to right:
@@ -15,6 +29,22 @@ Read each row from left to right:
 
 If you already know you need a stronger route, keep [Proof Ladder](proof-ladder.md)
 open beside this page.
+
+## Start by phrasing the claim as something that could be false
+
+Weak proof questions sound like this:
+
+- what should I run
+- what is the best proof route
+- what command is safest
+
+Stronger proof questions sound like this:
+
+- the capstone has a bounded first-pass route
+- profiles change policy without changing workflow meaning
+- the publish bundle can defend itself after execution
+
+Once the claim can be false, the matrix becomes much easier to use honestly.
 
 ## Workflow understanding claims
 
@@ -52,6 +82,16 @@ open beside this page.
 | what exactly is public for downstream trust | `capstone-verify-artifacts` | [`capstone-review-worksheet.md`](../capstone/capstone-review-worksheet.md) |
 | which surface explains dynamic discovery honestly | `capstone-tour` | `capstone/workflow/rules/preprocess.smk` |
 | what would I inspect before migration | `capstone-confirm` | `course-book/capstone/index.md` |
+
+## One honest matrix decision
+
+Suppose your question is:
+
+> which surface explains dynamic discovery honestly?
+
+The matrix should send you to `capstone-tour` plus the discovery artifacts, not to a full
+stewardship route. That is the whole discipline this page teaches: route the claim to the
+smallest surfaces that actually own it.
 
 ## Best companion pages
 

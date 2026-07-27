@@ -4,6 +4,19 @@ Use this page when you know the question but not the right amount of evidence. T
 failure in this course is not laziness. It is overshooting the claim, running the heaviest
 route available, and then losing the original question inside a much larger output bundle.
 
+## How to use this page
+
+Use the ladder only after you can state the claim in one sentence.
+
+Read it in this order:
+
+1. name the claim
+2. choose the smallest level that could falsify it
+3. run or inspect that route
+4. stop unless the smaller route leaves a real gap
+
+This page is designed to prevent performative thoroughness.
+
 ## Rule for using the ladder
 
 Start at the smallest route that could honestly falsify your claim. Move down only when
@@ -14,6 +27,21 @@ That means:
 - first contact should not start with `proof` or `capstone-confirm`
 - a publish-boundary question does not need a full stewardship pass
 - a profile question should start with profile evidence, not a generic run log
+
+## Start by treating "more proof" as a cost, not automatically as a virtue
+
+Beginners often assume the strongest route is the most honest route.
+
+That is wrong when the claim is narrow.
+
+A heavier route costs:
+
+- more time
+- more output to interpret
+- more chances to forget the original question
+
+The honest route is the one proportionate to the claim, not the one that feels most
+serious.
 
 ## The route shape
 
@@ -80,6 +108,18 @@ If you are using the ladder badly, it usually looks like one of these:
 - treating a stronger route as automatically more honest than a narrower one
 
 The stronger route is only better when it answers a different question.
+
+## One honest ladder decision
+
+Suppose your claim is:
+
+> I need to know whether the publish bundle still defends itself after execution.
+
+The honest first route is `capstone-verify-report` or `capstone-verify-artifacts`,
+depending on whether you need saved review evidence or immediate artifact validation.
+
+Jumping straight to `capstone-confirm` may feel safer, but it answers a broader question
+than the one you asked.
 
 ## Best companion pages
 

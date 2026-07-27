@@ -4,6 +4,20 @@ Use this page when you cannot study the whole course in order because urgency is
 what you can realistically read. The goal is not to excuse shallow understanding. The
 goal is to keep the route honest under pressure.
 
+## How to use this page
+
+Use this page only after you can state the pressure in one sentence.
+
+Read it in this order:
+
+1. name the pressure plainly
+2. choose one bounded route from the table
+3. use only the first proof surface that matches that route
+4. stop as soon as the owning workflow boundary is visible
+
+If you keep widening the route because the situation feels stressful, this page is being
+used against its purpose.
+
 ## The rule under pressure
 
 Under pressure, do four things in order:
@@ -14,6 +28,22 @@ Under pressure, do four things in order:
 4. stop as soon as the owning workflow boundary becomes visible
 
 If you keep widening the reading surface, pressure usually gets worse rather than better.
+
+## Start by naming the pressure without drama
+
+Pressure routes work badly when the problem is framed theatrically:
+
+- everything is broken
+- the repository is a mess
+- I need the strongest route immediately
+
+A better opening sounds like:
+
+- I missed class and need an honest first entry tonight
+- CI and local behavior differ and I need the owning boundary first
+- I need to explain publish trust without reading the whole course again
+
+Once the pressure is named that precisely, the first route becomes much easier to choose.
 
 ## Choose the route that matches the pressure
 
@@ -48,6 +78,18 @@ giving you a first stable foothold.
 - do not escalate to the strongest proof route because the situation feels urgent
 - do not read governance pages before the current workflow boundary is named
 - do not open every support page when one route already matches the pressure
+
+## The beginner mistake to catch early
+
+The most common beginner mistake under pressure is assuming urgency justifies a broader
+surface.
+
+Most of the time urgency demands the opposite:
+
+- fewer pages
+- one bounded module route
+- one proof surface
+- one explicit stopping point
 
 ## Good companion pages
 

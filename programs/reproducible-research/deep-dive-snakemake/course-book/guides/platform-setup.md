@@ -4,6 +4,20 @@ Use this page before your first local run or when setup failures are blurring th
 The goal is simple: get to one truthful workflow proof route without treating toolchain
 problems as Snakemake concepts.
 
+## How to use this page
+
+Use this page only for setup and environment honesty.
+
+Read it in this order:
+
+1. choose the safest first route
+2. identify the command surface you are actually on
+3. verify the toolchain in the listed order
+4. stop when setup is no longer the thing that is failing
+
+Once the toolchain is honest, go back to the module or proof route. Do not keep treating
+workflow questions as setup questions.
+
 ## The safest first route
 
 If the machine is fresh, use the repository-managed toolchain instead of trusting a
@@ -31,6 +45,19 @@ make bootstrap-confirm
 
 That target creates the supported toolchain and then runs the strongest confirmation path
 without depending on a preinstalled global `snakemake`.
+
+## Start by deciding whether the problem is setup or workflow truth
+
+Beginners often lose time because every early failure feels like a Snakemake lesson.
+
+This page is here to prevent that confusion.
+
+Ask:
+
+- does the failure happen before a supported toolchain exists
+- or does it happen after setup succeeded and the workflow is now making a real claim
+
+That distinction changes what you should inspect next.
 
 ## What you actually need
 
@@ -102,3 +129,16 @@ Stop when you can do two things:
 
 1. name which command surface you are on
 2. run one honest proof route without wondering whether the toolchain itself is lying
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is continuing to widen setup work after the course
+already reached a truthful workflow failure.
+
+Once `bootstrap` works and a proof route fails honestly, the next move is usually:
+
+- inspect the failing rule
+- inspect the config or profile surface
+- inspect the saved evidence route
+
+It is usually not "reinstall everything again."

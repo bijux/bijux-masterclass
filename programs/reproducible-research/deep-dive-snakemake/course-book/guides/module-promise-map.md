@@ -4,6 +4,20 @@ Use this page when a module title sounds right but still too compressed. A stron
 title should tell you what kind of judgment you will leave with, not just which topic
 bucket the chapter belongs to.
 
+## How to use this page
+
+Use this map before you start a module or when a module feels broader than its title.
+
+Read it in this order:
+
+1. identify the module you are entering
+2. read the promise as a change in judgment, not just as a topic label
+3. check the boundary the module is really about
+4. note the first corroboration route, but do not jump there until the lesson itself is clear
+
+This page exists to keep module names from becoming vague headings that learners have to
+interpret alone.
+
 ## How to read this map
 
 Each row answers four practical questions:
@@ -14,6 +28,23 @@ Each row answers four practical questions:
 4. what capstone route first corroborates the lesson
 
 If a module drifts away from that contract, the drift should be visible here.
+
+## Start by asking what the module should change in your head
+
+Beginners often read a module title as if it only announces subject matter:
+
+- this module is about dynamic DAGs
+- this one is about publishing
+- this one is about governance
+
+That is too flat.
+
+The better question is:
+
+> what judgment should I be able to make after this module that I could not make before?
+
+That is why every row in this map names a promise, a boundary, and a leave-able-to-do
+outcome.
 
 ## Module contracts
 
@@ -41,6 +72,18 @@ This map exists to prevent four common course failures:
 
 If you notice one of those failures while reading, come back here and name the missing
 piece directly.
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is mistaking recognition of a module topic for command of
+the module promise.
+
+For example:
+
+- knowing that Module 06 is about publishing is not the same as being able to define the downstream contract
+- knowing that Module 08 is about contexts is not the same as being able to separate policy drift from semantic drift
+
+This page is here to keep that difference visible.
 
 ## Best companion pages
 
