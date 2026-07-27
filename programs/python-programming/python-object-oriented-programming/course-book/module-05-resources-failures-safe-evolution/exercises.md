@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,226 +24,204 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to make survivability reviewable.
+Use these exercises as one full lab on survivable design. The goal is not to repeat
+phrases such as "use context managers" or "log errors carefully." The goal is to prove
+that a learner studying alone can inspect one real workflow and explain who owns cleanup,
+who may retry, what callers are promised after failure, and how the system can evolve
+without publishing its internals by accident.
 
-The day is not about memorizing `with` blocks, exception taxonomies, or retry slogans.
-It is about proving that object-oriented design still has clear owners when the system
-opens files, commits work, propagates failures, exposes public modules, and evolves under
-existing callers.
+## Running lab scenario
 
-## How to work through this set
+Use one workflow for the whole day:
 
-Treat the ten exercises as one full lab day on resource ownership, failure boundaries,
-and safe extension.
+`CertificateIssuanceService`
 
-Before each answer:
+The workflow:
 
-1. name the behavior under review
-2. name the owner of cleanup, retry, and compatibility cost
-3. state what callers are allowed to assume afterward
+- loads a certificate template from disk
+- fills it with attendee data
+- writes a PDF to object storage
+- records issuance in a repository
+- sends a confirmation email
+- may be retried by a job runner if the process dies halfway through
 
-Do the exercises in order. The day is one progression:
+Pressure points:
 
-- Exercises 1-3 make resource ownership and cleanup explicit
-- Exercises 4-6 separate domain errors, retry policy, and propagation discipline
-- Exercises 7-8 review public surface and smell pressure
-- Exercises 9-10 test safe evolution under extension and compatibility pressure
+- file handles and temporary files must be cleaned up
+- the repository write and storage upload must tell a coherent story
+- sending the email twice may be harmful or merely noisy depending on the design
+- public callers should not need to know about temp files, storage clients, or retry
+  loops
 
-Keep one survivability packet as you go. By the end of the day it should contain:
+If you prefer your own scenario, keep the same pressure: at least one finite resource,
+one persisted change, one external side effect, and one evolution question.
+
+## What to keep open while you work
+
+Build one survivability packet as you go. By the end it should contain:
 
 - one resource-ownership table
 - one failure-boundary note
 - one retry and idempotency review
-- one propagation and logging decision
-- one public-surface boundary note
-- one compatibility-safe extension review
+- one logging and propagation decision
+- one public-surface note
+- one safe-extension recommendation
 
-If those six artifacts are missing, you are probably still discussing style instead of
-design ownership.
+Useful tables:
 
-## Recommended working layout
+| Operation | Resource owner | Cleanup owner | Caller-visible contract after failure |
+| --- | --- | --- | --- |
 
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module05-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
-
-Keep one ownership table while you work:
-
-| Operation or surface | Resource owner | Failure owner | Retry owner | Compatibility promise |
+| Failure case | Domain or boundary fault | Retry safe | Required cleanup | Log here or propagate |
 | --- | --- | --- | --- | --- |
-
-Keep one error table:
-
-| Failure case | Domain meaning or boundary fault | Caller-visible contract | Cleanup required | Retry safe |
-| --- | --- | --- | --- | --- |
-
-```mermaid
-flowchart LR
-  resource["find the resource or side effect"]
-  owner["assign explicit owner"]
-  boundary["separate domain and boundary failure"]
-  retry["test idempotency before retry"]
-  surface["review logs and public modules"]
-  extend["add behavior without breaking old assumptions"]
-
-  resource --> owner --> boundary --> retry --> surface --> extend
-```
-
-Use that route on purpose. It keeps the day centered on ownership and safe evolution
-instead of on exception folklore.
 
 ## Exercise 1: Name the resource owner
 
-Take one capstone operation that touches a runtime, repository, file, or connection and
-explain:
+For the certificate workflow, decide:
 
-- which object or boundary owns acquiring the resource
-- which object or boundary owns releasing it
-- which caller must stay free of cleanup trivia
-- what leak or confusion appears if ownership is split
+- who opens the template file
+- who owns the temporary output file
+- who closes or deletes each resource
+- what callers are deliberately spared from knowing
 
-Study note:
-If no one clearly owns release, then every caller becomes responsible by accident.
+Then name one leak or double-cleanup bug that appears if ownership is split.
 
 ## Exercise 2: Review one context-manager boundary
 
-Pick one place where a context manager could appear and explain:
+Choose one resource lifetime and explain:
 
-- what lifetime it should govern
-- what state must exist before entering
-- what must be true after exit, even on failure
-- why putting the context manager deeper or higher would make review harder
+- where the `with` boundary should live
+- what must be true before entering
+- what cleanup must happen on both success and failure
+- why moving the boundary higher or lower would weaken reviewability
 
-Study note:
-Context managers are boundary tools. Their real value is lifetime clarity.
+This exercise is about lifetime clarity, not syntax preference.
 
-## Exercise 3: Map one unit-of-work failure path
+## Exercise 3: Map one unit-of-work boundary
 
-Choose one workflow with more than one change and list:
+Decide which steps belong in the same coherent unit:
 
-- which steps belong to the same unit of work
+- storing the issuance record
+- recording the generated object key
+- marking the certificate as available
+
+For that unit, explain:
+
 - where commit or rollback authority lives
 - what partial state must never escape
-- one proof surface that should fail if the boundary is wrong
-
-Study note:
-A unit of work is a promise about coherent failure, not just a coding pattern.
+- what operator-visible evidence should exist if the unit fails mid-path
 
 ## Exercise 4: Separate domain errors from boundary failures
 
-Take one failure path and explain:
+Distinguish:
 
-- which failure is part of the domain meaning
-- which failure is only transport, storage, or runtime trouble
-- what callers should be told in each case
-- what becomes misleading if both are flattened into one generic exception
+- certificate already issued for this attendee
+- template file missing
+- object storage timeout
+- SMTP service unavailable
 
-Study note:
-Not every exception deserves equal semantic weight.
+For each one, say:
 
-## Exercise 5: Justify one retry policy honestly
+- whether it is domain meaning or boundary trouble
+- what callers should be told
+- whether retry is reasonable
 
-Pick one operation and explain:
+If everything turns into one generic exception, the design is too blurry.
+
+## Exercise 5: Justify one retry policy
+
+Pick one restart point, such as "job reruns after upload succeeded but before email sent."
+
+Explain:
 
 - whether retry is safe
-- what makes it idempotent or unsafe
-- which side effect would duplicate if the retry story is wrong
-- where retry policy should live so the domain meaning stays stable
+- what must be idempotent
+- what duplicate side effect must be prevented or tolerated
+- where the retry policy should live
 
-Study note:
-Retry is a contract decision, not a reflex.
+The main goal is to replace retry folklore with a contract.
 
 ## Exercise 6: Review logging and propagation together
 
-Choose one error path and explain:
+Choose one failure path and decide:
 
-- what should be logged
-- what should be propagated unchanged
-- what should be translated into a clearer contract
-- what noise appears if every layer logs the same failure independently
+- what operators genuinely need logged
+- what information callers genuinely need propagated
+- which layer should translate raw infrastructure errors into clearer contracts
+- what duplicated noise appears if every layer logs the same fault
 
-Study note:
-Logs are evidence for operators, not a substitute for error design.
+This exercise is about audience, not verbosity.
 
-## Midday self-check
+## Exercise 7: Draw the public surface
 
-Before moving into public surface and evolution pressure, make sure your packet already
-answers these questions clearly:
+Explain which API you want downstream callers to depend on.
 
-- who owns one resource lifetime
-- what makes one retry safe or unsafe
-- where commit or rollback authority lives
-- how one domain error differs from one boundary failure
+For example:
 
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the packet more explicit before continuing.
+- `issue_certificate(attendee_id)`
 
-## Exercise 7: Draw a real public-surface boundary
+Then explain which details stay internal:
 
-Take one module cluster and explain:
+- temp-file implementation
+- storage client choice
+- raw email transport
+- retry loop mechanics
 
-- which modules belong to the supported public contract
-- which modules must stay internal
-- what import habit would blur the boundary
-- one maintenance cost of accidentally publishing internals
+Name one breaking-change risk if callers start depending on the internal pieces anyway.
 
-Study note:
-Every import path teaches callers what they are allowed to depend on.
+## Exercise 8: Diagnose one failure-shaped smell
 
-## Exercise 8: Diagnose one design smell under failure pressure
+Find one design smell in the workflow, such as:
 
-Review one design and explain:
+- cleanup scattered across several call sites
+- retry logic copied into callers
+- public methods returning transport-specific errors
+- generic helper modules owning too much failure policy
 
-- which smell appears when cleanup, retries, or translation are scattered
-- why the smell survives even if tests are green today
-- what boundary repair would make ownership clearer
-- what proof would show the repair actually helped
+Explain:
 
-Study note:
-Failure pressure reveals smells that happy-path examples hide.
+- why the smell survives even if happy-path tests pass
+- what structural repair would narrow ownership
 
-## Exercise 9: Extend behavior without bypassing invariants
+## Exercise 9: Extend behavior without bypassing the contract
 
-Take one proposed feature addition and explain:
+Add one new requirement:
 
-- where the new behavior should be attached
-- which existing invariant must remain central
-- what tempting shortcut would bypass the current contract
-- how you would prove old behavior still holds after the extension
+- also upload a PNG preview
+- also notify an internal audit queue
+- also support bulk issuance
 
-Study note:
-Safe extension preserves an old promise before it adds a new one.
+Explain:
 
-## Exercise 10: Produce a survivability decision packet
+- where the new behavior should attach
+- which old promise must remain intact
+- what tempting shortcut would bypass current cleanup or retry rules
+- what proof should show the extension did not weaken the old design
 
-Assemble:
+## Exercise 10: Produce the survivability packet
 
-- one resource-ownership table
-- one error table
+Finish the lab by assembling:
+
+- one resource table
+- one failure table
 - one retry decision note
-- one public-surface review paragraph
-- one compatibility-safe extension recommendation
+- one public-surface review
+- one extension recommendation
 
-The packet is strong when another maintainer can answer:
+The packet is done only when another maintainer can answer:
 
 - who owns cleanup
-- who owns retries
-- what contract callers may trust
-- which surface is public
-- how the next feature can land without weakening old behavior
+- who may retry and under what conditions
+- what callers are promised after failure
+- which surfaces are stable to depend on
 
-## Done means more than finishing the page
+## Done means the workflow can survive pressure
 
-You are done with the exercise day when your packet can survive three kinds of review:
+You are done with the exercise day when your packet can survive these review questions:
 
-- a code review asking who owns cleanup and retries
-- an incident review asking where failure should have been visible first
-- a maintenance review asking how to extend behavior without publishing internals
+- "Who cleans up if the job fails after writing the temp file?"
+- "Can this path be retried without duplicating visible side effects?"
+- "What can a caller rely on without learning storage or email internals?"
 
-If the packet cannot survive those reviews, keep tightening the ownership language.
+If those answers are still fuzzy, keep tightening the packet before you open the answer
+page.
