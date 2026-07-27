@@ -1,5 +1,4 @@
-# Refactor 3: Monolithic Logic → Aggregates + Events + Strategies + Debuggable Graph
-
+# Refactor Toward Aggregates, Events, and Policy Objects
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["Refactor 3: Monolithic Logic → Aggregates + Events + Strategies + Debuggable Graph"]
+  page["Refactor Toward Aggregates, Events, and Policy Objects"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,106 +24,206 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Goal
+## Why this lesson matters
 
-Restructure the monitoring system so it is:
+By the end of this module, you have several tools:
 
-- **aggregate-centered** (consistency enforced in one place),
-- **event-capable** (decoupled reactions),
-- **strategy-driven** (easy to add rule kinds),
-- and **debuggable** (inspectable object graph and projections).
+- aggregates
+- cross-object invariants
+- policy or strategy objects
+- domain events
+- projections and debug views
+- adapters at the edge
 
-This refactor turns a “working blob” into a maintainable service shape.
+Students often understand each tool in isolation and still struggle when a real codebase
+contains all of them at once. This lesson is the integration lesson. Its job is to show
+how these ideas combine into one readable refactor path.
 
-## Where This Fits
+## The starting shape
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+The weak starting design usually looks familiar:
 
-## 1. Starting Smells
+- one service method loads everything
+- conditionals for every rule type pile up in one place
+- cross-object invariants are checked inconsistently
+- side effects happen in the same method that mutates core state
+- reporting needs push extra query and display logic back into the write model
 
-You are likely starting with one or more of:
-- orchestrator owns everything and enforces every invariant,
-- rule evaluation logic is a large conditional ladder,
-- side effects are mixed with domain mutations,
-- debugging requires stepping through a long loop.
+This design may work for a while, but it is hard to extend honestly. Every new feature
+adds another branch, another exception path, and another invisible dependency.
 
-We are going to separate responsibilities without losing correctness.
+## The target shape
 
-## 2. Target Architecture Snapshot
+The stronger design aims for a simpler set of responsibilities:
 
-Target structure:
+- an aggregate owns authoritative changes and invariants
+- policy or strategy objects hold decision variation
+- domain events announce completed business facts
+- projections and debug views serve reading and inspection
+- adapters isolate outer systems from inner reasoning
 
-- `domain/`:
-  - `types.py` (semantic values)
-  - `rules.py` (typestate)
-  - `policy.py` (aggregate root)
-  - `events.py` (domain events)
+This is not about adding patterns for style points. It is about reducing mixed
+responsibility so students can predict where a change belongs.
 
-- `application/`:
-  - `services.py` (orchestrators)
-  - `translate.py` (DTO → domain)
-  - `ports.py` (interfaces)
+## A practical refactor route
 
-- `infrastructure/`:
-  - adapters (metric fetcher, storage)
-  - event bus wiring
-  - projections/read models
+Do not try to jump from the weak shape to the final shape in one rewrite. Move in a
+sequence that keeps the system understandable.
 
-Plus tests for invariants, transitions, and wiring.
+### 1. Find the real consistency boundary
 
-## 3. Refactor Steps
+Start by asking:
 
-### Step 1 — Introduce an aggregate root
-- Create `MonitoringPolicy` that owns active/retired rules.
-- Move cross-object invariant checks into root methods.
+- what facts must change together?
+- which objects participate in the same decision?
+- where does a broken invariant cause real damage?
 
-### Step 2 — Introduce strategies for evaluation
-- Define `RuleStrategy` protocol.
-- Implement at least one strategy (threshold).
-- Update orchestrator to call strategy, not `if/elif`.
+That gives you the aggregate boundary.
 
-### Step 3 — Emit domain events from aggregate operations
-- On activate/retire, return events (`RuleActivated`, `RuleRetired`).
+If you skip this step, later event and policy work will float without an authority model.
 
-### Step 4 — Add an in-process event bus and one projection
-- Implement a tiny bus (M04C35).
-- Add a projection updated on events.
+### 2. Move cross-object rules into the aggregate
 
-### Step 5 — Add debug views
-- `policy.debug_view()` and/or a projection debug snapshot.
+Once the boundary is clear, collect rules such as:
 
-Refactor in thin slices and keep tests green.
+- no duplicate active rule for the same scope
+- no retirement of a rule that is already retired
+- no activation when a policy is closed
 
-## 4. Tests That Prove the Refactor Is Correct
+Put those checks where authoritative mutation happens.
 
-- Aggregate invariant tests (duplicates, illegal retire, etc.).
-- Strategy tests (pure evaluation behavior).
-- Event emission tests (events only on success).
-- Bus/projection tests (handler wiring, deterministic updates).
-- End-to-end: orchestrator cycle produces expected alerts and debug view is coherent.
+At this step, your code should become stricter before it becomes more abstract.
 
-The key: tests should validate *contracts*, not internal implementation details.
+### 3. Separate decision variation from authority
 
-## 5. “Done” Definition
+Not every decision belongs as a long `if` ladder inside the aggregate.
 
-You are done when:
+If the system supports multiple evaluation styles, escalation rules, or threshold
+policies, move the variation into policy or strategy objects while keeping authority in
+the aggregate.
 
-- invariants are enforced in one aggregate root,
-- adding a new rule type requires adding a strategy (not editing a ladder),
-- reactions to state changes are handled via events/handlers,
-- you can generate a debug view without stepping through the whole loop.
+That gives you a useful division:
 
-## Practical Guidelines
+- the aggregate decides what changes are allowed
+- policy objects help determine which option applies
 
-- Refactor by introducing new abstractions (aggregate/strategy/event) while keeping behavior unchanged.
-- Keep the domain pure; wire infrastructure at the composition root.
-- Use events to decouple side effects and projections from core mutations.
-- Invest in debug views early; they pay back immediately in maintainability.
+### 4. Emit events after successful authority changes
 
-## Exercises for Mastery
+Once the authoritative mutation is owned clearly, emit domain events for the completed
+business facts:
 
-1. Implement the aggregate root and move at least two invariants into it with tests.
-2. Extract one rule evaluation path into a strategy and delete an `if/elif` branch from the orchestrator.
-3. Add a projection updated from events and assert it in an integration test.
+- rule activated
+- rule retired
+- threshold policy changed
+
+These events should describe what happened, not request side effects directly.
+
+This step matters because it separates:
+
+- deciding and committing the business fact
+- reacting elsewhere to the business fact
+
+### 5. Move secondary reactions behind event handlers
+
+After events exist, move secondary work out of the authority method:
+
+- send notifications
+- refresh summaries
+- update audit or trace views
+- trigger external delivery flows
+
+This does not make side effects disappear. It makes their relationship to core
+authority visible and reviewable.
+
+### 6. Build projections and debug views for reading
+
+Once you have events and authoritative write models, stop overloading the aggregate with
+every read concern.
+
+Build derived views for:
+
+- dashboards
+- operator summaries
+- trace or audit inspection
+- reviewer-friendly debug snapshots
+
+The projection is not a second authority. It is a readable picture of authoritative
+state and changes.
+
+### 7. Push infrastructure details back to the edge
+
+At this stage, remaining mess usually comes from infrastructure leakage:
+
+- repositories returning raw storage shapes
+- SDK exceptions escaping inward
+- transport objects appearing in application code
+
+That is the moment to add or tighten ports and adapters.
+
+The result should be a codebase where inner reasoning is legible without reading the
+database driver or network client first.
+
+## How to know the refactor is actually better
+
+A refactor is not successful because it mentions several good patterns. It is successful
+when future changes become easier to place correctly.
+
+Good signs include:
+
+- a new business rule has one obvious aggregate home
+- a new policy variation can be added without rewriting old authority code
+- a new notification path does not require editing the mutation logic itself
+- a new read surface can be derived without polluting the write model
+- a new infrastructure implementation can be swapped at the edge
+
+If those things are still hard, the design is still mixing responsibilities somewhere.
+
+## Common mistakes
+
+- introducing events before authority is clear
+- moving every decision into strategy objects and leaving the aggregate hollow
+- letting projections become operational sources of truth
+- creating handlers that quietly re-enforce invariants already owned elsewhere
+- keeping framework and storage details in application orchestration after the refactor
+
+These mistakes produce the appearance of structure without the benefit of structure.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is there a clear aggregate owning authoritative mutation? | yes |
+| are cross-object invariants enforced at that authority boundary? | yes |
+| are policy or strategy objects used for variation rather than authority replacement? | yes |
+| do events describe completed business facts? | yes |
+| are projections and debug views clearly derived? | yes |
+| are infrastructure details pushed behind adapters? | yes |
+
+## Capstone connection
+
+Use this page as the review route for the capstone.
+
+If the capstone feels tangled, inspect it in this order:
+
+1. locate the real consistency boundary
+2. move invariants there
+3. separate decision variation from authority
+4. emit facts as events
+5. derive read and debug views
+6. clean the edge with adapters
+
+That sequence is more reliable than chasing symptoms in random order.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the role of aggregates, policies, events, projections, and adapters in one story
+- describe a safe order for refactoring a tangled service toward this shape
+- identify the next capstone boundary weakness using that order instead of guesswork
