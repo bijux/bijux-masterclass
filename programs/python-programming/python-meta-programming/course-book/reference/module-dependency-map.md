@@ -25,9 +25,21 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this page when you remember a metaprogramming mechanism but not where it sits in the
-course's escalation order. The goal is to keep higher-power tools attached to the lower-power
-tools they are supposed to replace only when necessary.
+Use this page when you remember a mechanism but no longer remember why the course placed it
+where it did.
+
+The point is not just sequencing. The point is dependency discipline. Later modules should
+feel like consequences of earlier ones, not like disconnected advanced topics.
+
+## How to use this map
+
+Use it in one of three moments:
+
+- before a module, to see what it depends on
+- after a break, to find the last stable concept you still own
+- during confusion, to locate the earlier boundary that a later mechanism is leaning on
+
+If a late module feels magical, this page should help you find the missed floor beneath it.
 
 ## Main sequence
 
@@ -66,11 +78,43 @@ graph TD
 | 09 | 06-08 | metaclasses belong late because class-creation invariants are the strongest escalation |
 | 10 | all earlier modules | governance review requires the whole power ladder in view |
 
-## Fastest safe paths
+## Read the sequence as three dependency chains
+
+### Observation chain
+
+Modules 01 to 03 establish:
+
+- what exists at runtime
+- how to inspect it safely
+- how runtime evidence becomes strong enough for review
+
+Without that chain, wrappers and descriptors stop being inspectable and start feeling magical.
+
+### Control chain
+
+Modules 04 to 09 establish:
+
+- what belongs at call boundaries
+- what belongs at attribute boundaries
+- what belongs at class-creation boundaries
+
+Without that chain, stronger hooks begin solving problems that lower-power tools could have owned more honestly.
+
+### Governance chain
+
+Module 10 establishes:
+
+- when the mechanism is still defensible
+- when the blast radius is too high
+- what proof and rollback expectations now apply
+
+Without that chain, the course teaches power without teaching restraint.
+
+## Safe routes through the sequence
 
 - new to metaprogramming: read Modules 01 through 10 in order
-- working maintainer: start with Modules 03, 04, 07, and 09, then backfill when the lower-power alternative is unclear
-- runtime steward: start with Modules 05, 08, 09, and 10, then revisit earlier modules when transparency or blast radius questions appear
+- working maintainer: start with Modules 03, 04, 07, and 09, then backfill the lower-power dependencies when they are unclear
+- runtime steward: start with Modules 05, 08, 09, and 10, then revisit earlier modules when transparency or blast-radius questions appear
 
 ## If you are lost in the sequence
 
