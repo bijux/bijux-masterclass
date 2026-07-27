@@ -112,6 +112,14 @@ capstone-metric-contract-audit: ## Audit metric semantic comparability
 capstone-metric-contract-selftest: ## Enforce metric semantic comparability evidence
 	@$(RUN_CAPSTONE) metric-contract-selftest
 
+.PHONY: capstone-reviewer-handoff-audit
+capstone-reviewer-handoff-audit: ## Audit clean reviewer handoff evidence
+	@$(RUN_CAPSTONE) reviewer-handoff-audit
+
+.PHONY: capstone-reviewer-handoff-selftest
+capstone-reviewer-handoff-selftest: ## Enforce clean reviewer handoff evidence
+	@$(RUN_CAPSTONE) reviewer-handoff-selftest
+
 .PHONY: capstone-source-bundle
 capstone-source-bundle: ## Build the capstone tracked-source release bundle
 	@$(RUN_CAPSTONE) source-bundle

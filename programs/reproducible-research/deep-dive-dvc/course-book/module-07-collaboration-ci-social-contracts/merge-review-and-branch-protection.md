@@ -65,7 +65,7 @@ what a clean reviewer can recover and inspect.
 Run the handoff audit, then read `summary.tsv`:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
 Use this decision matrix:

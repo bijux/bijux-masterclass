@@ -91,7 +91,7 @@ The first checkpoint judges the handoff. The second judges recoverability.
 Run the controlled audit:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
 The stale-execution case demonstrates why both checkpoints matter:

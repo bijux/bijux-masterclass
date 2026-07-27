@@ -132,8 +132,8 @@ By the end of this module, you should be able to explain:
 These commands form the evidence loop for Module 07:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-selftest
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-selftest
 dvc remote list
 dvc pull
 dvc status --json
@@ -161,7 +161,7 @@ Best corroboration surfaces for this module:
 Useful proof route:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
 The point is not to prove that one author can run the project locally. It is to prove that

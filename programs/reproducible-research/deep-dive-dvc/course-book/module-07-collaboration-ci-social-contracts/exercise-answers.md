@@ -97,7 +97,7 @@ dvc repro
 If the repository has a governed wrapper, that may be the stronger surface:
 
 ```bash
-make -C capstone confirm
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
 What this proves:
@@ -158,8 +158,8 @@ Reasonable drill:
 ```bash
 git clone <repo-url>
 dvc pull
-make -C capstone confirm
-make -C capstone recovery-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review
 ```
 
 Starting condition:

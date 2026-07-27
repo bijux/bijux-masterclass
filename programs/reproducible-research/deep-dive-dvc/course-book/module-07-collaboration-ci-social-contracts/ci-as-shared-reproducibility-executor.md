@@ -56,8 +56,9 @@ dvc status --json
 dvc repro
 ```
 
-The capstone may wrap these ideas behind `make -C capstone confirm` so you have one
-course-level command to inspect.
+The course exposes these ideas through
+`make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit`, which
+is narrower than full capstone confirmation and preserves each intermediate receipt.
 
 ## Order the route by claim
 
@@ -84,7 +85,7 @@ when a local rebuild is possible.
 Run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
 Compare these findings:

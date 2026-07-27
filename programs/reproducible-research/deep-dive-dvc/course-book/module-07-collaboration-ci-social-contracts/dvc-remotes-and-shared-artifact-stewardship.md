@@ -61,7 +61,7 @@ Two handoffs can both fail `dvc pull` for different reasons:
 Run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
 Compare:

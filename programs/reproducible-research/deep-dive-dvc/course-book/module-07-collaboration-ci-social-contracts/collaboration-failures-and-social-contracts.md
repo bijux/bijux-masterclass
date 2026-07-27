@@ -115,7 +115,7 @@ repairing a stale submitted state. None of those outcomes are equivalent.
 Run the controlled audit from the repository root:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
 Open:

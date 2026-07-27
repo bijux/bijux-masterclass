@@ -227,7 +227,7 @@ For each case, predict:
 Then run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit
 ```
 
 Compare your table with `summary.tsv` and each `finding.json`.

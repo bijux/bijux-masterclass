@@ -53,10 +53,11 @@ source-only guide, or generated review bundle into the exported surface.
 6. [Data Identity Audit Guide](data-identity-audit-guide.md)
 7. [Runtime Contract Audit Guide](runtime-contract-audit-guide.md)
 8. [Metric Contract Audit Guide](metric-contract-audit-guide.md)
-9. [Experiment Guide](experiment-guide.md)
-10. [Review Route Guide](review-route-guide.md)
-11. [Release Review Guide](release-review-guide.md)
-12. [Recovery Guide](recovery-guide.md) when the question turns to restore and durability
+9. [Reviewer Handoff Audit Guide](reviewer-handoff-audit-guide.md)
+10. [Experiment Guide](experiment-guide.md)
+11. [Review Route Guide](review-route-guide.md)
+12. [Release Review Guide](release-review-guide.md)
+13. [Recovery Guide](recovery-guide.md) when the question turns to restore and durability
 
 ## Exported docs
 
@@ -68,6 +69,7 @@ source-only guide, or generated review bundle into the exported surface.
 - [Publish Contract](publish-contract.md)
 - [Recovery Guide](recovery-guide.md)
 - [Release Review Guide](release-review-guide.md)
+- [Reviewer Handoff Audit Guide](reviewer-handoff-audit-guide.md)
 - [Review Route Guide](review-route-guide.md)
 - [Runtime Contract Audit Guide](runtime-contract-audit-guide.md)
 - [Stage Contract Audit Guide](stage-contract-audit-guide.md)
