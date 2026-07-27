@@ -6,19 +6,32 @@ as a one-off exception.
 Many of the same failures return again and again. Module 10 calls those what they are:
 recurring anti-patterns.
 
+## If you are learning this without the live class
+
+Read this lesson in five passes:
+
+1. name the anti-pattern family
+2. describe the current repository symptom
+3. identify the technical repair
+4. identify the review habit that must change
+5. write one recovery note that would stop the pattern from quietly returning
+
+This is how one repair becomes stewardship instead of temporary relief.
+
 ## How to use this page
 
 Read this page when you feel tempted to describe a recurring workflow problem as bad luck
 or as a one-time awkward pull request.
 
-Work through it in this order:
+Keep one small recovery packet beside you as you read:
 
-1. name the anti-pattern family
-2. describe the current repository symptom
-3. identify the technical repair
-4. identify the review habit that must change to stop recurrence
+- one anti-pattern family name
+- one current symptom
+- one technical repair
+- one proof route that shows the repair worked
+- one review habit or rule that would stop recurrence
 
-This is how one repair becomes stewardship instead of temporary relief.
+If your packet stops after the technical repair, the recovery is still incomplete.
 
 ## Why anti-pattern language matters
 
@@ -56,6 +69,20 @@ this kind of failure likely in the first place?
 | evidence suppression | logs, benchmarks, or verification routes disappear when the team feels pressure | the workflow gets quieter and less trustworthy at the same time |
 
 These are worth memorizing because they recur across repositories.
+
+## An anti-pattern card you should be able to fill before proposing a fix
+
+Use a table like this:
+
+| Part | What to record |
+| --- | --- |
+| family | which anti-pattern is repeating |
+| symptom | what the repository is doing today |
+| trust damage | what review or migration question became harder to answer |
+| technical repair | what changes in code, config, or contract |
+| habit repair | what review rule or habit prevents recurrence |
+
+If you cannot fill the trust-damage row, you are still reacting to irritation instead of a pattern.
 
 ## Hidden inputs
 
@@ -144,6 +171,19 @@ Recovery:
 
 Quieter is not the same thing as clearer.
 
+## What goes wrong when learners repair only the latest symptom
+
+Use this card before you call the problem solved:
+
+| If you did only this... | The habit probably still alive is... | Missing recovery |
+| --- | --- | --- |
+| declared one missing input | hidden-input behavior elsewhere | one review rule for declared dependencies |
+| fixed one profile leak | semantic settings still socially acceptable in profiles | one policy-boundary rule |
+| moved one consumer off `results/` | contract drift elsewhere | one public-contract inventory and enforcement route |
+| restored one benchmark or verification file | evidence still treated as optional clutter | one rule that keeps the proof route non-optional |
+
+If the missing recovery is social or review-oriented, that is not a sign of weakness. It means you have reached the real problem.
+
 ## A small example
 
 Imagine a repository where:
@@ -207,6 +247,18 @@ For example:
 - restoring one benchmark file while still treating evidence as optional clutter
 
 A strong recovery asks, "what rule or review habit will stop this from happening again?"
+
+## A five-line recovery note you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which anti-pattern family is repeating
+2. what repository symptom exposes it
+3. what trust question became harder to answer because of it
+4. what technical repair is needed now
+5. what review rule or habit would stop the pattern from returning
+
+If you cannot do that, the recovery is still too local and too forgetful.
 
 ## Keep this standard
 

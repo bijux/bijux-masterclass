@@ -5,20 +5,33 @@ Good governance is not bureaucracy layered on top of a workflow.
 Good governance is the small set of review rules that stop a repository from drifting into
 private knowledge and accidental contracts.
 
+## If you are learning this without the live class
+
+Read this lesson in five passes:
+
+1. identify what governance must protect
+2. decide which review rules are worth enforcing every time
+3. test whether each rule would reject a realistic bad change
+4. remove any rule that sounds wise but cannot be enforced
+5. leave behind one short checklist another maintainer could really use
+
+The target is not governance theater. The target is review discipline that survives busy
+weeks and staff turnover.
+
 ## How to use this page
 
 Read this lesson with one real workflow team in mind, even if you have to invent the team
 for practice.
 
-Work through it in this order:
+Keep one small governance packet beside you as you read:
 
-1. identify what governance must protect
-2. decide which review rules are worth enforcing every time
-3. test whether each rule would reject a realistic bad change
-4. keep only the rules that are short, sharp, and durable
+- one list of the repository surfaces governance must protect
+- one short ruleset
+- one example bad change for each rule
+- one note on how each rule would be enforced
+- one note on what review habit the rule is trying to preserve
 
-The target is not governance theater. The target is review discipline that survives busy
-weeks and staff turnover.
+If that packet cannot fit on one page, the governance is probably too vague or too heavy.
 
 ## What governance should protect
 
@@ -56,6 +69,19 @@ flowchart TD
 
 This is enough for most workflow teams. Governance only becomes heavy when the repository
 itself is already unclear.
+
+## A governance card you should be able to fill before writing any rules
+
+Use a table like this:
+
+| Surface to protect | What keeps drifting | What rule could stop it |
+| --- | --- | --- |
+| public contract | undocumented published files or unstable consumer paths | require file-API and verification updates |
+| policy boundary | profiles carrying semantic settings | forbid semantic keys in operating policy surfaces |
+| proof route | verification, audits, or comparison commands decaying under pressure | require one surviving proof route for significant changes |
+| ownership boundary | helpers or packages becoming harder to inspect | require visible ownership and inspection consequences in review |
+
+If one row feels hard to phrase, that is usually the place where the team still relies on oral memory.
 
 ## Rule 1: Every public file needs a contract story
 
@@ -125,6 +151,19 @@ Good governance asks earlier:
 - whether a path change is compatible, repair-only, or version-worthy
 
 This is why publish review belongs inside governance, not only release engineering.
+
+## What goes wrong when learners write "good-sounding" governance
+
+Use this card before you keep a rule:
+
+| If the rule sounds like... | The real problem is... | Stronger rewrite |
+| --- | --- | --- |
+| "keep the workflow understandable" | sentiment with no review consequence | require visible ownership and proof routes for major helper moves |
+| "avoid messy profiles" | aesthetic language instead of a boundary | profiles may not change semantic workflow behavior |
+| "document important changes" | unbounded obligation | every published file must appear in the file API and verification route |
+| "keep verification healthy" | unclear enforcement | significant changes must preserve one explicit proof route |
+
+If you cannot say what change the rule would reject, it is not a governance rule yet.
 
 ## A small example
 
@@ -205,6 +244,18 @@ Good governance language names a boundary and a review consequence. For example:
 - every published file must appear in the file API and verification route
 - profiles may change execution policy but not sample selection or analytical thresholds
 - major helper moves must preserve a visible proof or inspection route
+
+## A five-line governance note you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which repository surfaces governance must protect
+2. which short rule protects each one
+3. what realistic bad change each rule would reject
+4. how a maintainer would know the rule was violated
+5. why the rules are short enough to survive real review pressure
+
+If you cannot write those five lines, the governance is still too abstract.
 
 ## Keep this standard
 
