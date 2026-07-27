@@ -38,12 +38,32 @@ The remaining question is the one that matters in real reviews:
 
 when is a metaclass truly justified?
 
+This is where many otherwise good modules go soft. A reader can follow the mechanics and
+still leave thinking "metaclasses are for clever automation." This page has to leave a
+stricter result: metaclasses are for narrow class-creation ownership problems that weaker
+tools cannot carry honestly.
+
 ## The sentence to keep
 
 Use a metaclass only when the invariant belongs to class creation itself or must apply
 automatically across a class hierarchy in a way lower-power tools cannot own honestly.
 
 That is the boundary the module keeps visible.
+
+If the sentence could be rewritten without the phrases "class creation itself" or "across a
+class hierarchy," the metaclass claim is probably overstated.
+
+## Evidence route for class-creation ownership reviews
+
+Use this route whenever a design proposes a metaclass:
+
+| Review step | What to inspect | What strong evidence looks like |
+| --- | --- | --- |
+| Name the invariant | What must always be true? | A precise class-creation or hierarchy-wide rule |
+| Name the timing | When must the rule act? | Before class creation finishes, during declaration, or automatically at subclass creation |
+| Reject the lower-power owner | What fails if you use explicit code, a descriptor, or a decorator? | The lost behavior is concrete, not hand-wavy |
+| Audit the blast radius | What import-time, inheritance, or test costs appear? | Side effects and reset needs are named directly |
+| Reject overclaim | What is the metaclass intentionally not owning? | Scope stays narrow and reviewable |
 
 ## Why this boundary matters so much
 
@@ -76,6 +96,15 @@ plain explicit code
 
 This is not a sophistication ladder. It is a cost ladder.
 
+## The ownership ladder in review form
+
+| Tool | Honest owner when | Typical reason to stop there |
+| --- | --- | --- |
+| Plain explicit code | One class or one call site needs the behavior | Clear, local, and reversible |
+| Descriptor or property | One attribute policy needs enforcement | Attribute ownership is the real boundary |
+| Class decorator | Post-creation transformation is enough | The class can be modified after construction |
+| Metaclass | Class-creation timing or automatic hierarchy-wide policy is essential | Lower-power tools lose the needed timing or scope |
+
 ## Strong metaclass cases
 
 Metaclasses become more reasonable when the requirement is genuinely about:
@@ -86,6 +115,12 @@ Metaclasses become more reasonable when the requirement is genuinely about:
 - hierarchy-wide registration or structure that must happen as classes come into existence
 
 Those are all stronger signals than "make this happen automatically."
+
+Strong metaclass defenses usually include at least one of these sentences:
+
+- "the rule must fire whenever subclasses are defined"
+- "the class body itself carries information that must be interpreted at creation time"
+- "the family needs one automatic class-creation owner rather than repeated opt-in calls"
 
 ## Weak metaclass cases
 
@@ -102,6 +137,15 @@ Those are better served by lower-power tools because they stay:
 - easier to test
 - easier to combine
 
+Weak metaclass defenses often sound like this:
+
+- "it saves boilerplate"
+- "it keeps the API magical"
+- "it runs automatically"
+- "it centralizes everything"
+
+Those phrases describe convenience, not ownership.
+
 ## Why registration alone is not always enough
 
 Automatic registration is the classic metaclass temptation.
@@ -117,6 +161,16 @@ But registration alone is not magic justification.
 If an explicit decorator or registry call would still be clearer and sufficiently honest,
 the metaclass may still be overreach.
 
+## A boundary table for common proposals
+
+| Proposal | Honest owner | Why |
+| --- | --- | --- |
+| Require subclasses to implement a method at creation time | Metaclass or ABC tooling, depending on strictness needed | The family rule applies when classes are defined |
+| Register occasional classes in a plugin list | Explicit helper or decorator | Opt-in post-creation registration is enough |
+| Validate one field on instance assignment | Descriptor or property | The boundary is attribute control, not class creation |
+| Capture duplicate class-body declarations | Metaclass with `__prepare__` | The fact exists during assignment, not after |
+| Add one helper method to a single class | Plain explicit code or decorator | No hierarchy-wide owner is needed |
+
 ## Why import-time effects must be named
 
 A metaclass always carries timing consequences.
@@ -130,6 +184,17 @@ That means a serious review should ask:
 
 If those answers are vague, the metaclass is not ready, no matter how elegant the hook
 code looks.
+
+## Import-time blast radius checklist
+
+Before accepting a metaclass, answer these directly:
+
+- what global state changes while importing the module?
+- what test helper resets or isolates those changes?
+- what happens if modules are imported in a different order?
+- what happens if subclasses are defined in plugin packages or reload paths later?
+
+If those answers are postponed, the design is not honest yet.
 
 ## Metaclass conflicts are a design warning, not just a type error
 
@@ -166,6 +231,15 @@ The most common metaclass design failures are:
 
 Those are not edge cases. They are the normal risks of the tool.
 
+## Strong refusal language
+
+A reviewer should be able to reject a weak metaclass with sentences such as:
+
+- "this is post-creation transformation, so a class decorator is the clearer owner"
+- "this is registry convenience, not a class-creation invariant"
+- "the import-time side effects are larger than the value of the automation"
+- "the hierarchy rule is real, but the bookkeeping can be separated from the metaclass"
+
 ## Review rules for metaclass boundaries
 
 When reviewing a metaclass proposal, keep these questions close:
@@ -176,6 +250,10 @@ When reviewing a metaclass proposal, keep these questions close:
 - how will this behave under testing, reload, and multiple inheritance?
 - is the design naming the real class-creation invariant, or just reaching for the most powerful tool?
 
+Add one more final question:
+
+- what exact sentence explains why the next-lower tool loses something essential?
+
 ## What to practice from this page
 
 Try these before moving on:
@@ -183,6 +261,15 @@ Try these before moving on:
 1. Take one metaclass proposal and rewrite it downward as a decorator or explicit helper to see what is actually lost.
 2. Write one short review note rejecting a metaclass because the transformation is still post-creation.
 3. Defend one metaclass use only in terms of class-creation ownership, not power or convenience.
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of the following:
+
+- defend one metaclass without using the words "automatic," "powerful," or "convenient"
+- reject one weak metaclass by naming the clearer lower-power owner
+- state one import-time cost introduced by a justified metaclass
+- separate the class-creation invariant from surrounding bookkeeping or framework ambitions
 
 If those feel ordinary, the worked example can now show one honest metaclass case:
 deterministic plugin registration across a class family.
