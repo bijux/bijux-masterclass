@@ -50,6 +50,12 @@ Keep one more sentence beside it:
 
 > a metaclass conflict is Python refusing to guess between competing class-creation authorities.
 
+For self-study, turn that sentence into a review test:
+
+- can I name the explicit metaclass request, if any?
+- can I name the metaclass arriving through each base?
+- can I say what import-time or subclass-wide behavior each authority wants to own?
+
 ## Timing comes first
 
 Before talking about conflict rules, keep the timing clear:
@@ -216,6 +222,15 @@ Reject these descriptions when they appear in review:
 | "the subclass just inherits the behavior" | "the subclass inherits the same class-creation authority and therefore the same blast radius" |
 | "it is only a type-system issue" | "it is a class-creation ownership issue with inheritance consequences" |
 
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "Python got confused by two metaclasses" | confusion hides the real ownership collision |
+| "the metaclass only matters at definition time" | definition time is exactly where import-time cost and hierarchy policy begin |
+| "a joint metaclass can merge them later" | later is not proof that the authorities actually compose |
+| "the subclass just inherits the setup" | setup language hides repeated class-creation control and blast radius |
+
 ## Import-time effects are part of the design
 
 Because resolution happens at definition time, every metaclass decision also carries an
@@ -236,6 +251,14 @@ Use this import-time checklist before approving a metaclass:
 - say whether class definition order changes the outcome
 - say how tests or reloads avoid accumulating stale effects
 
+Keep one import-time note beside every metaclass example:
+
+| Definition-time event | Why it matters |
+| --- | --- |
+| registry mutation | test reset and import ordering become part of design review |
+| validation failure | import can now fail before any instance exists |
+| expensive work during class definition | module load cost stops being incidental |
+
 ## What this core is really trying to teach
 
 The point is not merely to memorize conflict errors.
@@ -247,6 +270,11 @@ The point is to understand that metaclasses are:
 - hierarchy-shaping
 
 Those three facts are enough to explain most of their risk surface.
+
+Before you leave this page, write one sentence beginning:
+
+- "the effective metaclass here is..."
+- "the first import-time cost I must account for is..."
 
 ## Failure modes for resolution and conflict design
 
