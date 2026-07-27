@@ -27,145 +27,169 @@ flowchart LR
 Operational readiness means another maintainer can recognize, contain, and recover from
 the first bad night without violating the design to do it.
 
-That is much stricter than "the code looks clean."
+That standard is much stricter than:
 
-This page teaches runbooks and drills as design artifacts:
+- the code looks clean
+- the tests pass
+- somebody on the team knows what usually goes wrong
 
-- they expose what the system assumes
-- they reveal where observability is missing
-- they show whether recovery guidance still respects authority boundaries
+This page treats runbooks and drills as architecture artifacts because they expose all of
+these:
 
-If the runbook says "patch the data directly and hope," the architecture was not really
-ready.
+- which failures the system expects
+- which signals are good enough to support first action
+- which recovery moves preserve authority boundaries
+- which hidden assumptions still exist only in maintainers' heads
 
-## Keep one failure path visible
+If the only real recovery plan is "ask the person who built it," the system is not ready.
 
-Use one capstone path while reading:
+## Keep one failure route visible
+
+Use one capstone route:
 
 1. seat confirmation succeeds
-2. the repository saves authoritative truth
+2. authoritative state is persisted
 3. downstream projection, notification, or artifact work begins
 4. something fails, slows, duplicates, or backs up
 
-The runbook question is:
+Now ask:
 
-How does another maintainer diagnose and respond without moving truth to the wrong
-place?
+- how should another maintainer diagnose and respond without moving truth to the wrong
+  place?
 
-## What a useful runbook actually contains
+That question is what distinguishes operational architecture from generic troubleshooting
+advice.
 
-A runbook is not a prose reminder to "check the logs."
+## A useful runbook is step-shaped
 
-A useful runbook should name:
+A weak runbook says:
+
+- check the logs
+- retry the job
+- investigate the queue
+
+A strong runbook names:
 
 - the workflow or boundary in trouble
-- the first signal or symptom to inspect
+- the first signal to inspect
 - the first safe containment or diagnosis step
-- the design assumption made visible by that step
-- the escalation or recovery path that does not bypass model authority
+- one artifact or dashboard to consult
+- one unsafe shortcut to avoid
+- the design assumption that makes the step safe
 
-If those pieces are missing, the runbook is decorative.
+That shape matters because operational work happens under time pressure. If the document
+does not tell another maintainer what first move is safe, it is decorative.
 
 ## Runbooks should follow the boundary map
 
-Good runbooks align with the system's boundaries.
+Good runbooks match the architecture.
 
-For the capstone, that means a runbook should distinguish:
+In the capstone, that means distinguishing:
 
-- aggregate truth versus derived visibility
-- repository conflict versus downstream lag
-- durable progress versus visible publication
-- public-seam trouble versus private-implementation trouble
+- aggregate truth from derived visibility
+- repository conflicts from downstream lag
+- durable progress from visible publication
+- public seam trouble from private implementation trouble
 
-This prevents a common failure:
+This prevents a common operational mistake:
 
 - treating every symptom as if it were a data-fix problem
 
-Boundary-aware runbooks lead operators toward safe first actions.
+Boundary-aware runbooks help maintainers choose containment that preserves the truth
+model instead of bypassing it.
 
-## Failure drills reveal hidden assumptions
+## Recovery must preserve authority
 
-A drill is valuable when it makes one operational assumption explicit.
+Weak runbooks often recommend the very shortcuts the design was supposed to make
+unnecessary.
 
-Examples:
-
-- duplicate callback delivery arrives
-- projection consumer stops advancing
-- repository conflict rate spikes during registration bursts
-- certificate artifact upload fails after authoritative state was already persisted
-
-A drill should answer:
-
-- what do we simulate?
-- which boundary should fail loudly first?
-- what evidence proves the drill worked?
-- what hidden weakness do we expect to expose?
-
-If the drill cannot answer those questions, it is still a scenario idea, not a learning
-exercise.
-
-## Recovery must respect the model
-
-Weak runbooks often recommend bypassing the very boundaries the design depends on.
-
-Bad examples:
+Unsafe examples:
 
 - mutate internal rows directly
-- skip aggregate validation "just for recovery"
 - replay downstream work without checking durable progress
-- expose private runtime controls to public operators out of convenience
+- bypass aggregate validation "just for recovery"
+- widen operator controls so they can trigger private runtime behavior ad hoc
 
-These steps may feel fast, but they create corruption debt.
+These moves may feel fast, but they create corruption debt.
 
-A strong runbook preserves:
+Strong recovery preserves:
 
 - aggregate authority
 - repository conflict semantics
 - durable progress markers
 - public/private boundary discipline
 
-Recovery is not real if it requires abandoning the design.
+The recovery is only real if it keeps the system honest while stabilizing it.
 
-## A concrete capstone runbook shape
+## Failure drills reveal assumptions you forgot to write down
+
+A drill is valuable when it makes one hidden operational assumption explicit.
+
+Examples:
+
+- duplicate callback delivery arrives
+- projection consumer stops advancing
+- conflict rates spike during registration bursts
+- certificate artifact upload fails after authoritative state was already persisted
+
+A useful drill answers:
+
+- what exactly are we simulating?
+- which boundary should fail loudly first?
+- what evidence proves the drill succeeded?
+- what hidden weakness do we expect to expose?
+
+If the drill cannot answer those questions, it is still only a scenario idea.
+
+## Worked capstone runbook
 
 Take this failure:
 
-- certificate issuance persistence succeeded, but artifact upload latency spiked and
-  outward completion evidence stalled
+- issuance persistence succeeded, but artifact upload latency spiked and visible
+  completion stalled
 
-A useful runbook entry would name:
+A strong runbook entry would include:
 
-- first signal: rising issuance latency plus upload error or timeout counts
-- first safe step: confirm authoritative issuance state before triggering any rerun
-- key artifact: issuance trace, audit row, or durable progress marker keyed by issuance
-  id
-- design assumption: persistence of issuance truth is separate from downstream artifact
-  publication
-- unsafe shortcut to avoid: rerunning the whole workflow blindly and risking duplicate
-  visible work
+- workflow:
+  - certificate issuance publication after authoritative issuance state exists
+- first signal:
+  - rising issuance latency plus upload timeout or failure counts
+- first safe step:
+  - confirm authoritative issuance state and durable progress before any rerun
+- artifact to inspect:
+  - issuance trace or progress marker keyed by `issuance_id`
+- unsafe shortcut:
+  - rerun the whole workflow blindly and risk duplicate visible completion
+- design assumption:
+  - issuance truth is separate from downstream artifact publication
 
-This is what it means for a runbook to teach architecture under pressure.
+This runbook is strong because it names a safe first move and the architecture reason
+behind it.
 
-## A good failure drill for the capstone
+## Worked capstone drill
 
 Take this drill:
 
-- deliver the same callback or retry trigger twice
+- deliver the same callback or retry trigger twice under realistic delay
 
 The drill should observe:
 
-- which boundary rejects or absorbs the duplicate first
+- whether authoritative state stays singular
 - whether visible downstream work duplicates
-- whether operator signals make the reason legible
-- whether the recovery step preserves durable truth
+- whether signals explain why the duplicate was absorbed or rejected
+- whether the first recovery step preserves durable truth
 
-The drill is successful when it exposes both design strength and remaining weakness.
+Why this drill matters:
 
-If everything "passes" but nobody can explain why, the drill taught too little.
+- duplicate triggers often expose hidden coupling between retries and visible effects
+- they test observability, not only correctness
+- they reveal whether durable progress is actually being used during recovery
 
-## Build a small operational packet
+If the system "passes" but nobody can explain why, the drill still taught too little.
 
-For each predicted failure mode, keep a packet with:
+## Build an operational packet
+
+For each predicted failure mode, keep a short packet with:
 
 - failure name
 - first signal
@@ -174,32 +198,44 @@ For each predicted failure mode, keep a packet with:
 - one artifact or dashboard to inspect
 - one escalation trigger
 
-This packet can be short. It just has to be real enough that another maintainer could
-use it on Monday, July 27, 2026 without oral backchannel context.
+This packet does not need to be long. It needs to be usable by a missed-class learner or
+maintainer without oral backchannel support.
 
 ## Common failure modes
 
-- writing runbooks as abstract reminders instead of step-shaped guides
-- giving unsafe shortcuts that bypass aggregate or repository authority
-- running drills without deciding what evidence would count as success
+- writing runbooks as reminders instead of step-shaped guides
+- recommending shortcuts that bypass aggregate or repository authority
+- running drills without deciding what evidence counts as success
 - assuming logs exist without specifying which signal matters first
-- treating downstream duplicate work as harmless because the domain model stayed pure
+- treating duplicate visible work as harmless because the domain model itself stayed pure
+
+## Readiness review card
+
+Use this card for each failure story:
+
+| Question | What a strong answer sounds like |
+| --- | --- |
+| what failure are we naming? | "artifact publication stalls after authoritative issuance persistence" |
+| what is the first signal? | "issuance latency and upload timeout counts" |
+| what is the first safe step? | "confirm durable progress before any rerun" |
+| what shortcut is forbidden? | "blind full-workflow replay" |
+| what assumption does the runbook expose? | "truth persistence and visible publication are separate boundaries" |
 
 ## Capstone connection
 
-Use this page to answer all of these:
+Use this page to decide:
 
 - which capstone failure mode deserves the first real runbook
-- which signal would let another maintainer recognize it quickly
-- which recovery move would be unsafe because it bypasses too much model authority
-- which drill would most likely expose a hidden retry or duplication weakness
+- which signal would let another maintainer recognize it fastest
+- which recovery move would be unsafe because it bypasses too much authority
+- which drill is most likely to expose hidden retry or duplication weakness
 
-That is the operational-readiness test the module is trying to teach.
+That is how operational readiness becomes part of the design rather than an afterthought.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain what makes a runbook step-shaped and safe rather than decorative
+- explain what makes a runbook step-shaped and safe instead of decorative
 - identify one capstone failure mode worth drilling first
-- explain how recovery can stay fast without violating design boundaries
+- explain how recovery can stay fast without violating the truth boundary
