@@ -1,6 +1,5 @@
 # Worked Example: Investigating a Slow and Noisy Build
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,296 +17,365 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["rewrite the complaint"] --> baseline["establish a controlled baseline"]
+  baseline --> guardrail["interpret the evidence guardrail"]
+  guardrail --> incident["open one executed incident"]
+  incident --> classify["classify ownership"]
+  classify --> runbook["write a reusable response"]
 ```
 <!-- page-maps:end -->
 
-The five core lessons in Module 09 make the most sense when they appear in one incident
-that feels familiar:
+This worked example uses the course capstone. It does not ask you to imagine a repository
+or accept invented timings. You will:
 
-- the build still works
-- but it suddenly feels slower
-- the trace output is painful to use
-- and the team is not sure whether the problem is in Make, the tools, or the observability
-  surface itself
+1. turn "slow and noisy" into separate claims
+2. establish clean and no-op evidence on the reference build
+3. inspect its bounded trace guardrail
+4. generate an executed parallel incident bundle
+5. distinguish successful exit status from truthful output ownership
+6. write the first runbook branch
 
-This example starts from exactly that situation.
+Run the commands from the repository root. They use `gmake` because macOS commonly reserves
+`make` for an older GNU Make. On Linux, use `make` only after `make --version` confirms GNU
+Make 4.3 or newer.
 
-## Observe parallelism in a controlled build
-
-Create this `Makefile`:
-
-```make
-.PHONY: all prepare-data prepare-model
-
-all: prepare-data prepare-model
-
-prepare-data:
-	@sleep 1
-	@echo data-ready
-
-prepare-model:
-	@sleep 1
-	@echo model-ready
-```
-
-Compare three runs of each route:
+Set a shell variable only to keep the commands readable:
 
 ```sh
-/usr/bin/time -p make -j1 all
-/usr/bin/time -p make -j2 all
+CAPSTONE=programs/reproducible-research/deep-dive-make/capstone
 ```
 
-Because both prerequisites are independent, the parallel route should approach one second
-while the serial route approaches two. This tiny experiment gives "parallel speedup" a
-visible meaning before a large repository introduces compiler caches, filesystem noise,
-or overloaded workers.
+The variable is local convenience, not part of the build contract.
 
-Record all six measurements instead of keeping only the fastest:
+## The report
 
-| Mode | Run 1 | Run 2 | Run 3 | Median | Interpretation |
-| --- | ---: | ---: | ---: | ---: | --- |
-| `-j1` |  |  |  |  |  |
-| `-j2` |  |  |  |  |  |
+Assume a teammate files this message:
 
-Now add a no-op file target and time that separately. The phony sleep targets always run,
-so they teach scheduling but not incremental build cost. Naming that limitation is part
-of sound measurement.
+> The capstone build is slow, the trace is noisy, and parallel execution looks suspicious.
+> Can we reduce the diagnostics and force serial mode?
 
-## The incident
+There are at least three claims hidden inside it:
 
-Assume you inherit a repository with these complaints:
+| Complaint | Measurable claim | First evidence |
+| --- | --- | --- |
+| slow | one named route and state exceeds a stated baseline | repeated clean, no-op, or dry-run samples |
+| noisy | one evidence surface is too large or hard to interpret | trace count plus usability inspection |
+| suspicious under parallelism | a pressure route changes output or correctness | governed serial/parallel comparison or incident repro |
 
-1. a normal `make all` route now feels slow compared with last month
-2. `make --trace all` produces far more output than the team can comfortably inspect
-3. one maintainer says the problem is parse-time shelling out
-4. another says the compiler got slower
-5. a third person wants to "optimize" by suppressing rebuilds and removing diagnostics
+The proposed changes do not follow yet. Removing diagnostics could hide causality. Forcing
+serial mode could hide an ownership defect. First, classify each claim.
 
-That is a realistic operational moment. The goal is to sort it out without guessing.
+## Preserve the starting context
 
-## The starting habits
-
-The repository currently has patterns like:
-
-```make
-SRCS := $(shell find src -name '*.c' | sort)
-TOOLS := $(shell command -v python3)
-
-.PHONY: trace-count
-trace-count:
-	@make --trace all 2>&1 | wc -l
-```
-
-And the team has fallen into these debugging habits:
-
-- rerun the build several times
-- sometimes clean first
-- sometimes add prints
-- sometimes force `-j1`
-
-That is enough to start the refactor.
-
-## Split the cost question
-
-The first repair is not to the Makefile. It is to the diagnosis.
-
-Run each timing several times:
+Create the incident packet:
 
 ```sh
-/usr/bin/time -p make -n all >/dev/null
-/usr/bin/time -p make all >/dev/null
-make --trace all > build/trace.log
-wc -l build/trace.log
+mkdir -p artifacts/module09-incident
+git rev-parse HEAD > artifacts/module09-incident/revision.txt
+git status --short > artifacts/module09-incident/worktree.txt
+gmake --version > artifacts/module09-incident/make-version.txt
 ```
 
-Suppose the results are:
+Write `artifacts/module09-incident/incident.md` in this shape:
 
 ```text
-make -n all   -> 2.6s
-make all      -> 3.1s
-trace lines   -> 4200
+Route under review: capstone `all`
+Build states: clean and no-op
+Parallel concern: controlled shared-output repro
+Observed claim: not yet established
+Expected contract: `all` converges; selftest proves serial/parallel equivalence
+Proposed shortcuts to evaluate: remove diagnostics; force serial execution
 ```
 
-That immediately suggests:
+Notice the phrase "not yet established." A ticket is not a baseline.
 
-- parse/evaluation cost is a large part of the problem
-- recipe cost exists but does not dominate
-- evidence-surface cost is high too
+## Read the public route before measuring it
 
-This is Core 1:
+Discover the capstone surface:
 
-- the complaint "slow build" has been split into real cost layers
+```sh
+gmake -C "$CAPSTONE" help \
+  > artifacts/module09-incident/help.txt
+gmake -C "$CAPSTONE" perf \
+  > artifacts/module09-incident/perf.txt 2>&1
+```
 
-## Inspect the observability surface
+The relevant target meanings are:
 
-The huge trace count is a problem in its own right, but do not "fix" it by hiding
-everything.
+- `all` builds the application, dynamic binaries, and a convergence sentinel
+- `trace-count` reports a heuristic size for a non-executing trace
+- `selftest` checks convergence and serial/parallel equivalence
+- `incident-audit` executes one controlled failure specimen and saves a review bundle
+- `perf` prints measurement commands; it is not a benchmark
 
-Instead ask:
+This reading step matters. Timing an undocumented helper would not establish the cost of
+the public build contract.
 
-- which output is high-value evidence
-- which output is routine noise
-- whether a named diagnostic route would be better than letting every route spill verbose data
+## Establish a clean baseline
 
-Maybe the repository currently has scattered debug `echo`s inside several recipes. The
-repair could be:
+Cleaning is appropriate here because the measurement question explicitly asks about a
+clean route. It would not be the first action on an unpreserved production incident.
 
-- remove the always-on prints
-- keep `--trace` for causality
-- keep a bounded `trace-count` target
-- add one discovery audit target for resolved source lists
+Run five clean samples:
 
-This is Core 2:
+```sh
+: > artifacts/module09-incident/clean-timings.txt
+for sample in 1 2 3 4 5; do
+  gmake -C "$CAPSTONE" clean >/dev/null
+  printf 'sample=%s\n' "$sample" \
+    >> artifacts/module09-incident/clean-timings.txt
+  /usr/bin/time -p gmake -C "$CAPSTONE" -j4 all >/dev/null \
+    2>> artifacts/module09-incident/clean-timings.txt
+done
+```
 
-- observability becomes intentional
-- evidence remains available
-- semantic outputs stay clean
+Do not copy this loop into a repository whose clean route is undocumented or destructive
+beyond generated outputs.
 
-## Follow the incident ladder
+Keep every sample. Summarize the median and range in `decision.md`; do not select the
+fastest run.
 
-The next question is whether the slow behavior comes from the graph model or from the
-environment.
+## Establish a real no-op baseline
 
-A calm triage ladder now looks like:
+The final clean sample leaves `all` built. Confirm that state:
 
-1. confirm the symptom with timings
-2. preview with `make -n all`
-3. explain one route with `make --trace all`
-4. inspect the evaluated world with `make -p > build/make.dump`
-5. classify the likely boundary
+```sh
+if gmake -C "$CAPSTONE" -q all; then
+  printf '%s\n' 'precondition=converged' \
+    > artifacts/module09-incident/noop-precondition.txt
+else
+  status=$?
+  printf 'precondition=failed status=%s\n' "$status" \
+    > artifacts/module09-incident/noop-precondition.txt
+  exit "$status"
+fi
+```
 
-This keeps the team from jumping straight to edits such as:
+Now collect five no-op samples:
 
-- removing prerequisites
-- disabling diagnostics
-- forcing serial mode
+```sh
+: > artifacts/module09-incident/noop-timings.txt
+for sample in 1 2 3 4 5; do
+  printf 'sample=%s\n' "$sample" \
+    >> artifacts/module09-incident/noop-timings.txt
+  /usr/bin/time -p gmake -C "$CAPSTONE" all >/dev/null \
+    2>> artifacts/module09-incident/noop-timings.txt
+done
+```
 
-This is Core 3.
+Interpretation:
 
-## Identify a truth-preserving optimization
+- clean timing describes full production cost
+- no-op timing describes an already converged invocation
+- neither number alone proves a regression
+- comparison with a previous controlled baseline is required before calling the build slow
 
-The parse-time cost clue points to:
+If no previous baseline exists, the honest outcome is "baseline established," not
+"regression confirmed."
+
+## Separate pre-recipe cost
+
+Collect dry-run samples from the same converged state:
+
+```sh
+: > artifacts/module09-incident/dry-run-timings.txt
+for sample in 1 2 3 4 5; do
+  printf 'sample=%s\n' "$sample" \
+    >> artifacts/module09-incident/dry-run-timings.txt
+  /usr/bin/time -p gmake -C "$CAPSTONE" -n all >/dev/null \
+    2>> artifacts/module09-incident/dry-run-timings.txt
+done
+```
+
+Compare the dry-run and no-op distributions. If both are similar, most no-op cost is
+before ordinary recipe execution. If no-op is materially slower, inspect what still runs
+despite the convergence expectation.
+
+Do not describe dry-run as pure parse timing. It includes evaluation and graph decisions,
+and GNU Make may execute recursive Make recipe lines under `-n`.
+
+## Inspect the evidence guardrail
+
+Run:
+
+```sh
+gmake -C "$CAPSTONE" trace-count \
+  > artifacts/module09-incident/trace-count.txt
+gmake -C "$CAPSTONE" --trace -n all \
+  > artifacts/module09-incident/trace.txt 2>&1
+```
+
+One observed run of the current capstone reports:
+
+```text
+trace-lines=48
+```
+
+Your count can differ as the capstone evolves. The number is a guardrail, not a universal
+target. Inspect the trace itself:
+
+- can you find the `all` target quickly
+- are rule locations visible
+- can you identify why work would or would not run
+- does the trace avoid changing semantic outputs
+
+If the trace is searchable and bounded, "noisy" has not been established. If it is hard to
+use, redesign the surface around a specific responder question rather than deleting it.
+
+## Generate a controlled incident
+
+The capstone includes a repro where two targets append to one shared file. Generate its
+incident bundle:
+
+```sh
+gmake -C "$CAPSTONE" incident-audit \
+  REPRO_CASE=repro/shared-log-interleaving.mk
+```
+
+The bundle appears under:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/incident/
+```
+
+Read these files in order:
+
+1. `command.txt`
+2. `run.txt`
+3. `exit-status.txt`
+4. `shared-log-interleaving.mk`
+5. `INCIDENT_REVIEW_GUIDE.md`
+
+An observed bundle contains:
+
+```text
+printf 'A\n' >> shared.log
+printf 'B\n' >> shared.log
+```
+
+and:
+
+```text
+exit_status=0
+```
+
+That is the important surprise. The route can exit successfully while the graph still
+models shared mutable output dishonestly.
+
+## Classify from ownership, not from exit status
+
+The copied repro contains:
 
 ```make
-SRCS := $(shell find src -name '*.c' | sort)
+all: log1 log2
+
+log1:
+	printf 'A\n' >> shared.log
+
+log2:
+	printf 'B\n' >> shared.log
 ```
 
-Maybe this is repeated across multiple files.
+Ask the ownership question:
 
-A truth-preserving first move is to use Make's built-in discovery over declared roots
-instead of spawning repeated shells:
+> Which target owns `shared.log`?
 
-```make
-APP_SRCS := $(sort $(wildcard src/app/*.c))
-LIB_SRCS := $(sort $(wildcard src/lib/*.c))
-SRCS := $(APP_SRCS) $(LIB_SRCS)
+The honest answer is "neither owns it uniquely." Two independent targets mutate the same
+path, and `shared.log` is not even a declared target. Parallel scheduling exposes the
+problem, but parallelism did not create it.
+
+Classify the incident:
+
+| Field | Decision |
+| --- | --- |
+| boundary | graph truth and publication ownership |
+| immediate risk | nondeterministic shared output |
+| misleading signal | exit status `0` |
+| mitigation | serial mode may reduce exposure but does not repair ownership |
+| repair direction | one target owns the file, or each worker owns separate output followed by a declared merge |
+| proof after repair | repeated pressure runs, stable content, one writer, and convergence |
+
+Now the suggestion to force serial mode can be rejected as a completed fix. It changes the
+scheduler while leaving two undeclared writers.
+
+## Connect the repro back to the real build
+
+Do not "repair" the controlled repro and stop. It is a teaching specimen. Use the real
+capstone proof route:
+
+```sh
+gmake -C "$CAPSTONE" selftest-report
 ```
 
-Now the build can:
+Read:
 
-- reduce repeated parse-time shell work
-- keep discovery roots explicit
-- observe newly added files in those roots on the next Make invocation
-
-A generated manifest is appropriate only when its refresh trigger is truthful. A cache
-that Make does not know when to refresh is faster because it silently stopped discovering
-inputs; that is not an optimization.
-
-This is Core 4:
-
-- the tuning removes waste
-- it does not hide inputs or suppress necessary rebuilds
-
-## Write the runbook the team actually needed
-
-At this point the team has a much better understanding, but the real operational win is to
-capture it.
-
-A useful runbook note might now say:
-
-1. measure `make -n all` and `make all`
-2. capture `--trace` into `build/trace.log`
-3. compare trace line count against the expected band
-4. if parse cost dominates, inspect discovery and repeated shell work
-5. do not disable diagnostics or drop inputs as a first performance response
-
-This is Core 5:
-
-- the knowledge leaves the maintainer's head
-- the next responder inherits a stable first move
-
-## The repaired sketch
-
-The repository is now closer to this operational model:
-
-```make
-APP_SRCS := $(sort $(wildcard src/app/*.c))
-LIB_SRCS := $(sort $(wildcard src/lib/*.c))
-SRCS := $(APP_SRCS) $(LIB_SRCS)
-
-.PHONY: trace-count
-trace-count:
-	@$(MAKE) --trace -n all 2>&1 | wc -l
-
-.PHONY: discovery-audit
-discovery-audit:
-	@printf '%s\n' $(SRCS)
+```text
+artifacts/proof/reproducible-research/deep-dive-make/selftest/
+├── summary.txt
+├── settings.env
+├── serial.sum
+├── parallel.sum
+└── hidden-input.txt
 ```
 
-And the team has a clearer incident sequence:
+The serial and parallel inventories show how a real build proves schedule equivalence.
+The repro demonstrates the failure class; the selftest bundle demonstrates the production
+proof shape.
 
-- measure
-- trace
-- inspect
-- classify
-- then change
+## Write the runbook branch
 
-That is a much healthier system than one where everyone reaches for a different trick.
+Add this to `artifacts/module09-incident/runbook.md`:
 
-## What each core contributed
+```text
+Entry: a route differs under parallel execution or mutates one shared output.
 
-```mermaid
-flowchart TD
-  symptom["Slow and noisy build complaint"] --> measure["Core 1: separate cost layers"]
-  measure --> observe["Core 2: keep evidence useful"]
-  observe --> triage["Core 3: fixed incident ladder"]
-  triage --> tune["Core 4: remove waste without lying"]
-  tune --> runbook["Core 5: transfer the response path"]
-  runbook --> result["Operationally understandable build"]
+Preserve:
+- command, revision, Make version, job count, output, and artifact state
+- do not clean before capture
+
+Classify:
+- search for every writer of the suspect path
+- use target-attributed output and non-executing trace
+
+If multiple targets write one path:
+- stop publication of that output
+- treat serial mode only as labeled mitigation
+- repair to one owner or isolated worker outputs plus one merge target
+
+Close when:
+- repeated pressure runs pass
+- serial and parallel artifact comparisons satisfy the contract
+- the route converges
 ```
 
-This is why the module is organized as five cores and then one worked example. The example
-is where the operational advice becomes a reusable incident story.
+This branch can be used by someone who did not attend the class.
 
-## What you should say at the end
+## The final decision
 
-A strong summary sounds like this:
+The original complaint does not produce one verdict:
 
-> The build felt slow, but measurement showed the main cost was parse and evaluation rather
-> than recipe execution. The observability surface was also too noisy to use well. We
-> replaced repeated parse-time shell work with a truthful manifest boundary, kept a bounded
-> set of diagnostic routes, and wrote a runbook that teaches the next responder how to
-> measure, trace, inspect, and classify before editing the build.
+- "slow" requires comparison with a controlled historical baseline; this exercise
+  establishes the missing baseline
+- "noisy" must be evaluated by trace usability and responder value, not dislike of output
+- the parallel concern is real in the controlled repro, but serial mode is only mitigation
+- removing diagnostics would weaken the evidence needed to classify the ownership defect
 
-That is much stronger than "we optimized the Makefiles."
+A strong incident summary is:
 
-## What to practice after this example
+> We separated the broad complaint into cost, evidence, and pressure claims. The capstone
+> now has recorded clean, no-op, and dry-run baselines; its trace is evaluated by
+> searchability as well as line count. The executed repro exits successfully but reveals
+> two undeclared writers to one shared file, so the defect is output ownership rather than
+> "too much parallelism." Serial execution is temporary mitigation; repair requires one
+> publication owner and schedule-equivalence proof.
 
-Take one real build complaint and retell it in the same order:
+## Exit check
 
-1. split the cost or symptom into layers
-2. inspect the current evidence surface
-3. follow a fixed triage ladder
-4. identify one truth-preserving optimization
-5. capture the response path in a short runbook
+You have completed the example when you can point to:
 
-If you can do that cleanly, Module 09 has started to change how you respond under build
-pressure.
-
-Before merging an optimization, ask a reviewer to reproduce the baseline and the
-after-state from your saved commands. A percentage without reproducible inputs, machine
-context, and truth checks is not durable performance evidence.
+- five clean, no-op, and dry-run samples with their preconditions
+- the trace count and one usability judgment
+- the incident bundle's command, output, status, and copied makefile
+- a classification that does not rely on exit status alone
+- the selftest report that represents the repaired proof shape
+- a runbook branch another learner could follow without you
