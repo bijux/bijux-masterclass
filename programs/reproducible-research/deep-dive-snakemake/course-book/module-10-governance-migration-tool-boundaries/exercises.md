@@ -54,6 +54,33 @@ module10-lab/
 That layout makes it easier to separate current-truth evidence, characterization checks,
 governance automation, and tool-handoff design without mixing their proof routes.
 
+Build one small stewardship packet as you go:
+
+- one current-truth review note describing what the repository already promises today
+- one migration sequence showing which proof must survive each step
+- one short governance rule set tied to explicit repository surfaces
+- one characterization packet for a relied-on awkward behavior
+- one policy-check failure with a repair-oriented message
+- one tool-handoff note showing where workflow truth stays independently verifiable
+
+If those six artifacts are missing, the day usually turns into "modernize the workflow"
+instead of "preserve trust while changing ownership."
+
+```mermaid
+flowchart LR
+  truth["describe current truth honestly"]
+  sequence["move one boundary at a time"]
+  rules["write governance that survives review"]
+  characterize["freeze relied-on behavior precisely"]
+  enforce["automate one durable rule"]
+  handoff["keep workflow truth verifiable through handoff"]
+
+  truth --> sequence --> rules --> characterize --> enforce --> handoff
+```
+
+Use that route on purpose. It keeps the day focused on stewardship rather than redesign
+theater.
+
 ## Exercise 1: Review the current repository honestly
 
 Choose a workflow repository with a mix of trusted outputs and awkward drift.
@@ -80,6 +107,7 @@ What to hand in:
 - which boundary moves first
 - what proof must survive each step
 - which change should wait until later and why
+- one sentence explaining why doing all three together would damage the comparison route
 
 Study note:
 If two changes both alter public meaning or proof at the same time, the sequence is
@@ -148,6 +176,19 @@ Study note:
 The inventory is not busywork. It is the map that stops migration from erasing relied-on
 behavior by accident.
 
+## Midday self-check
+
+Before you move into characterization, automation, and tool handoff, make sure your
+packet can already answer all of these:
+
+- what the repository is already promising today, even if the shape is awkward
+- which proof route must survive the next boundary move
+- which governance rule protects a recurring source of drift
+- which relied-on behavior must be characterized without freezing every incidental detail
+
+If you cannot answer those four questions cleanly, return to the earlier exercises and
+make the stewardship packet more explicit before moving on.
+
 ## Exercise 7: Write characterization checks
 
 Choose one awkward but relied-upon behavior and encode focused checks for target
@@ -192,6 +233,7 @@ What to hand in:
 - the focused implementation
 - passing and failing fixtures
 - a failure message that tells a maintainer how to repair the boundary
+- one sentence explaining why this rule belongs in governance rather than only in review culture
 
 Study note:
 The failure message is part of the teaching surface. A check that only says "policy
@@ -212,6 +254,16 @@ What to hand in:
 Study note:
 If the bundle can only be trusted through the external service and not on its own, the
 handoff is not yet honest.
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- describe the future state without first describing the current trust surface
+- migrate more than one proof-sensitive boundary at once
+- write governance rules too vague to map to one repository decision
+- freeze every incidental byte or freeze nothing at all in characterization
+- design a tool handoff that makes the publish bundle trustworthy only through the service
 
 ## Exit standard for the exercise day
 

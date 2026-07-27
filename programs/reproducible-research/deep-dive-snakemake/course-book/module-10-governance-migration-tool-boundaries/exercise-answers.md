@@ -17,6 +17,18 @@ Use the answer key for three checks:
 Different wording can still be strong if the reasoning stays specific, evidence-first,
 and stewardship-focused.
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one current-truth note
+- one migration sequence
+- one short governance ruleset
+- one characterization packet
+- one governance check with a failing fixture
+- one tool-handoff ownership note
+
+If your answers rely only on the attractiveness of the proposed future state, the
+stewardship reasoning is still too thin.
+
 ## Exercise 1: Review the current repository honestly
 
 Strong top risks:
@@ -70,6 +82,11 @@ Why:
 Weak sequences try to modernize everything at once and then lose the comparison route that
 would have made the migration trustworthy.
 
+The missing but important sentence is usually this one:
+
+> If I move all three boundaries together, I lose the ability to tell which change broke
+> trust or which proof route stopped holding.
+
 ## Exercise 3: Write governance rules
 
 A strong set of rules could be:
@@ -85,6 +102,9 @@ Why these work:
 
 Weak rules read like essays, mention five boundaries at once, and cannot be mapped to one
 clear review decision.
+
+The strongest answers also say why the rules are short enough to survive real review:
+each one protects one recurring failure pattern and can be checked in a bounded way.
 
 ## Exercise 4: Name the anti-pattern
 
@@ -158,6 +178,11 @@ Why this is strong:
 - it shows where documentation already disagrees with behavior
 - it orders the risks by trust damage instead of annoyance
 
+The key explanatory sentence is:
+
+> The inventory is not a redesign wishlist; it is the evidence map that stops migration
+> from erasing behavior consumers already rely on.
+
 ## Exercise 7: Write characterization checks
 
 Characterization checks encode relied-upon behavior without declaring every incidental
@@ -215,6 +240,11 @@ repairable.
 Weak checks fail loudly but teach nothing. Strong checks tell the maintainer which
 boundary was crossed and what repair would restore trust.
 
+The strongest answers also say explicitly why the rule belongs in governance:
+
+> This is not only a reviewer preference; it is a durable repository promise that the team
+> keeps violating unless the boundary is taught and enforced automatically.
+
 ## Exercise 10: Design and review a tool handoff
 
 The external service authenticates and authorizes requests, creates an idempotent run
@@ -239,6 +269,13 @@ Why this is strong:
 
 - it turns ownership into inspectable contracts
 - it keeps the publish bundle verifiable without requiring trust in the service itself
+
+Weak answer pattern:
+
+- "the platform will handle it, so the workflow does not need to explain as much anymore"
+
+That sentence gives up exactly the independent verification boundary the module is trying
+to protect. If your answers still sound like that, keep revising.
 
 ## Self-check
 
