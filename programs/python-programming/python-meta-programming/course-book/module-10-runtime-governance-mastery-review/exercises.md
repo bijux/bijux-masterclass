@@ -64,6 +64,12 @@ Across the set, your answers should name:
 - what observation, reset, or disable surface keeps the design reviewable
 - what sentence would overstate the mechanism if left unchecked
 
+Use one more discipline across the whole set:
+
+- every answer should name one explicit boundary
+- every approval should name one observation or reset surface
+- every rejection should name the next-lower owner that stays honest
+
 ## Exercise 1: Reject one unsafe dynamic execution idea
 
 Take one proposed `eval`, `exec`, or code-generation design.
@@ -74,6 +80,9 @@ What to hand in:
 - whether the input is trusted, partially trusted, or untrusted
 - the lower-power or isolated replacement you chose
 - one sentence naming the exact false safety claim you are rejecting
+
+Verification hint:
+write the strongest claim the current process can honestly make before you mention any restriction trick.
 
 ## Exercise 2: Compare one ABC and one protocol honestly
 
@@ -86,6 +95,9 @@ What to hand in:
 - one sentence explaining why your chosen surface is the clearest owner
 - one sentence naming which behavioral guarantee still requires tests outside the interface surface
 
+Verification hint:
+write one line that begins "this surface proves..." and one that begins "this surface still cannot prove..."
+
 ## Exercise 3: Add a reversal path to one dynamic mechanism
 
 Take one registry, wrapper, or patching design and make it operationally reversible.
@@ -97,6 +109,9 @@ What to hand in:
 - one explanation of how the runtime fact remains observable after the change
 - one sentence explaining why the patch or registry blast radius is now acceptable
 
+Verification hint:
+if you cannot point to the exact reset or rollback call, the design is still under-specified.
+
 ## Exercise 4: Review one import hook or AST transform proposal
 
 Choose one proposal that changes import behavior or rewrites code.
@@ -107,6 +122,9 @@ What to hand in:
 - one lower-power alternative you considered first
 - one explanation of the cleanup, ordering, or location-preservation risk
 - one sentence explaining what "no-hook mode" should mean for this design
+
+Verification hint:
+state what still works when the hook is disabled before defending any global mechanism.
 
 ## Exercise 5: Defend or reject one escalation
 
@@ -120,6 +138,9 @@ What to hand in:
 - one note on observability, reversibility, or performance evidence
 - one approval sentence or rejection sentence you would be willing to leave in a real review
 
+Verification hint:
+if your decision cannot be restated as a real review note, it is still too abstract.
+
 ## Exercise 6: Review the capstone runtime as Module 10 evidence
 
 Use the worked example and the capstone proof route as a case study.
@@ -130,6 +151,9 @@ What to hand in:
 - one mechanism the capstone uses responsibly
 - one higher-power change you would reject as making the runtime less reviewable
 - one sentence explaining why inspect-first behavior matters in this runtime
+
+Verification hint:
+name one observational command and one refused stronger power before you praise the design.
 
 ## Midday self-check
 
@@ -160,6 +184,9 @@ What to hand in:
 - one explanation of what incident or debugging question that audit trail would answer
 - one sentence explaining how the audit trail stays separate from the business behavior itself
 
+Verification hint:
+write the exact post-incident question the audit trail should answer.
+
 ## Exercise 8: Write one explicit rejection rule
 
 Choose one high-power runtime idea and define a concrete review rule for when it should be
@@ -172,6 +199,9 @@ What to hand in:
 - one explanation of which missing evidence or ownership signal triggers the rejection
 - one sentence naming the smaller design that should be used instead when the rule fires
 
+Verification hint:
+if the smaller design is not named concretely, the rejection rule is still weak.
+
 ## Exercise 9: Compare honest runtime claims with overstated claims
 
 Choose one governance-sensitive runtime design and write both an honest description and an
@@ -183,6 +213,9 @@ What to hand in:
 - the overstated description
 - one explanation of which words make the overstated version misleading
 - one sentence rewriting the honest version so a teammate could review the scope without guessing
+
+Verification hint:
+underline the words that overclaim safety, automation, or lifecycle power.
 
 ## Exercise 10: Produce a runtime-governance packet
 
@@ -199,6 +232,10 @@ The packet is strong when another learner can use it to answer:
 - what evidence keeps it reviewable
 - when the design should be accepted, constrained, or rejected
 - what lower-power owner was rejected and why
+
+Packet quality bar:
+
+- another learner should be able to name the boundary, the reset or audit surface, and the rejection trigger without asking you follow-up questions
 
 ## Mastery standard for this exercise set
 
