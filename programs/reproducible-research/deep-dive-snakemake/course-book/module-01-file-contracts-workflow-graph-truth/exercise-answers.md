@@ -23,6 +23,17 @@ stay stable is the shape of the explanation:
 - use one piece of workflow evidence
 - explain the repair in terms of truth, ownership, or publication
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one prediction note
+- one DAG or rulegraph snapshot
+- one convergence check
+- one wildcard-ownership note
+- one publication-safety note
+- one meaning-versus-policy review note
+
+If your answers contain only commands and outcomes, the reasoning is still too thin.
+
 ## Exercise 1: Explain why one rule does not run
 
 A strong answer sounds like this:
@@ -58,6 +69,11 @@ Why this is strong:
 
 - it uses the dry-run as evidence instead of treating convergence as a feeling
 - it explains why no additional work is justified
+
+The missing but important sentence is usually this one:
+
+> The second dry-run is quiet because the declared inputs, outputs, and tracked rule
+> meaning are the same facts the successful run already satisfied.
 
 ## Exercise 3: Trigger one selective rebuild
 
@@ -134,6 +150,11 @@ Why this is strong:
 - it explains publication trust, not just shell mechanics
 - it leaves behind evidence for the next investigation
 
+The key explanatory sentence is:
+
+> The final path becomes trustworthy only after the temporary output is fully written and
+> atomically promoted into its declared location.
+
 ## Exercise 7: Separate workflow meaning from execution policy
 
 A strong answer shows one value on each side of the boundary.
@@ -192,6 +213,11 @@ Verification should show:
 The final review should classify sample membership and transformation parameters as
 workflow meaning, while cores and shell-printing behavior remain execution policy.
 
+The strongest answers also say explicitly why that split matters:
+
+> A reviewer can decide whether a change alters intended outputs or only operating context
+> without reverse-engineering the whole workflow.
+
 ## What all ten answers should have in common
 
 The best Module 01 answers usually do five things:
@@ -204,3 +230,10 @@ The best Module 01 answers usually do five things:
 5. they treat final outputs as published artifacts that must be trustworthy
 
 If your answers do those five things, you are learning the module in the right direction.
+
+Weak answer pattern:
+
+- "I ran the commands, the files appeared, so the workflow is probably fine"
+
+That sentence skips convergence, ownership, and publication trust all at once. If your
+answers still sound like that, keep revising.

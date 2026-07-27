@@ -46,6 +46,33 @@ module01-lab/
 
 That layout makes it easier to compare exercises instead of starting from zero every time.
 
+Build one small file-contract review packet as you go:
+
+- one prediction note before each dry-run
+- one tiny DAG or rulegraph artifact showing who owns which output
+- one convergence check after a successful run
+- one wildcard-ownership note showing how a path family became clearer
+- one publication-safety note showing where partial outputs stopped being trustworthy
+- one short review note distinguishing workflow meaning from execution policy
+
+If those six artifacts are missing, the day usually turns into "Snakemake did something"
+instead of "the workflow truth became explainable."
+
+```mermaid
+flowchart LR
+  predict["predict from the target first"]
+  plan["inspect the planned graph"]
+  converge["prove convergence honestly"]
+  own["repair file ownership"]
+  publish["protect final outputs"]
+  review["separate meaning from policy"]
+
+  predict --> plan --> converge --> own --> publish --> review
+```
+
+Use that route on purpose. It keeps the day grounded in targets, files, and ownership
+instead of command superstition.
+
 ## Exercise 1: Explain why one rule does not run
 
 Write a tiny Snakefile with three rules:
@@ -74,6 +101,7 @@ What to hand in:
 - the first successful run
 - the second dry-run that shows no work
 - one sentence explaining why the workflow settled down
+- one sentence explaining what specific tracked facts did not change between the two runs
 
 Study note:
 If your dry-run still plans work, do not move on until you can name the specific rerun
@@ -146,6 +174,7 @@ What to hand in:
 - the repaired atomic-publication shape
 - the log path or evidence route you would keep for diagnosis
 - one sentence explaining why the repaired version is safer for downstream rules
+- one sentence saying exactly when the final path becomes trustworthy to consume
 
 Study note:
 If a downstream rule could accidentally consume the broken file, the repair is not strong
@@ -217,6 +246,29 @@ What to hand in:
 - a DAG or rule graph written under `artifacts/`
 - one injected failure and evidence that no partial summary remained
 - a short review of which settings are workflow meaning and which are execution policy
+
+## Midday self-check
+
+Before you move into the final tiny project, make sure your packet can already answer all
+of these:
+
+- which target you asked for and why one rule did or did not belong in the plan
+- which rerun cause you actually observed instead of guessed
+- which file family has one clear owner after your wildcard repair
+- which final path is trustworthy and which temporary state is not
+
+If you cannot answer those four questions cleanly, return to the earlier exercises and
+make the packet more explicit before moving on.
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- explain behavior as "Snakemake was weird" instead of from target and file ownership
+- call a workflow converged without a confirming dry-run
+- repair wildcard ambiguity with a verbal excuse instead of a clearer path contract
+- trust a final output even though the rule can leave poison state behind
+- mix workflow meaning and execution policy because both happened to be configurable
 
 ## Exit standard for the exercise day
 
