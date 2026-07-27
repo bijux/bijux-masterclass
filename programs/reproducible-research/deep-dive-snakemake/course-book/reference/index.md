@@ -1,77 +1,108 @@
 # Reference
 
-This shelf is for durable Snakemake vocabulary, boundary questions, review prompts, and
-completion standards.
+Use the reference shelf when the lesson itself is already recognizable and you need a
+durable review surface. This shelf is not the course’s first teaching layer. It is the
+layer you reach for when you want sharper vocabulary, sharper prompts, clearer routing,
+or a more honest readiness bar.
 
-Use it when the workflow concept is already recognizable and you need a stable review
-surface for contracts, dynamic discovery, operating policy, publish trust, or stewardship
-decisions.
+The reference shelf exists to make judgment clearer, not to replace the module sequence.
 
-## How to use this shelf
+## When this shelf is the right tool
 
-Use the reference shelf after the lesson itself is already legible.
-
-That means:
+Use the reference shelf when all three of these are true:
 
 - you are not learning the concept for the first time
-- you can already name the boundary or claim under review
-- you need sharper language, sharper prompts, or a clearer readiness bar
+- you can already name the boundary, claim, or failure class under review
+- you need sharper language, sharper prompts, or a better next move
 
-If you cannot do those three things yet, go back to the module or guide. Reference pages
-should sharpen understanding, not replace it.
+If one of those is false, go back to the module, guide, or capstone route first.
 
-## What this shelf is for
+## The easiest way to misuse this shelf
 
-Use the reference shelf to:
+The easiest misuse is opening the reference shelf because the course feels large and the
+current module feels hard.
 
-- stabilize vocabulary after the module lesson is already clear
-- turn a fuzzy workflow concern into a sharper review question
-- decide which proof route or practice move comes next
-- check whether a claimed understanding is recognition or real command of the idea
+That usually turns into browsing rather than progress.
 
-If you are still learning the concept for the first time, go back to the module. The
-reference shelf should sharpen understanding, not replace it.
-
-## Start with one exact review question
-
-The easiest way to misuse the reference shelf is to open it because the course feels large
-and the module feels hard.
-
-That usually leads to browsing rather than progress.
-
-A better move is to ask one exact question:
+A better move is to arrive with one narrow question such as:
 
 - what does this term mean in this course
 - what review prompt should I use for this claim
 - what proof or practice move comes next
 - what counts as genuinely complete here
+- what failure class am I actually looking at
 
 Once the question is that narrow, the shelf becomes useful.
 
-## Choose the right reference route
+## How to use this shelf well
 
-| If your question is... | Best page |
-| --- | --- |
-| What does this term mean in this course? | [Glossary](glossary.md) |
-| Where does this idea sit in the course sequence? | [Module Dependency Map](module-dependency-map.md) |
-| What should I practice or prove next? | [Practice Map](practice-map.md) |
-| How should I review this workflow claim? | [Review Checklist](review-checklist.md) |
-| Which sharper boundary question should I ask? | [Boundary Review Prompts](boundary-review-prompts.md) |
-| How can I turn this idea into active recall? | [Self-Review Prompts](self-review-prompts.md) |
-| What workflow failure shape am I seeing? | [Anti-Pattern Atlas](anti-pattern-atlas.md) |
-| What counts as genuinely complete understanding? | [Completion Rubric](completion-rubric.md) |
-| Does this question belong in the course center or at its edge? | [Topic Boundaries](topic-boundaries.md) |
+Work in this order:
 
-## How to use the shelf well
+1. write the boundary, claim, or failure in one sentence
+2. choose the narrowest reference page that owns that question
+3. turn what you learn into one explicit review judgment, practice move, or route choice
+4. return to the module or capstone only after the question is smaller and clearer
 
-Use this order:
+The shelf is doing its job when it sharpens action, not when it expands the reading list.
 
-1. name the boundary or concept you are stuck on
-2. choose the narrowest page that answers that question
-3. turn the answer into one explicit trust judgment or practice move
-4. go back to the module or capstone only if the question is now narrower and clearer
+## Choose the right route
 
-That keeps the reference layer useful instead of letting it become endless browsing.
+| If your question is... | Best page | What that page should help you do |
+| --- | --- | --- |
+| What does this term mean in this course? | [Glossary](glossary.md) | stabilize vocabulary so you stop guessing what the course means |
+| Where does this idea sit in the learning order? | [Module Dependency Map](module-dependency-map.md) | decide whether to go forward, backward, or into the capstone |
+| What should I practice or prove next? | [Practice Map](practice-map.md) | choose the next exercise or evidence move deliberately |
+| How should I review this workflow claim? | [Review Checklist](review-checklist.md) | turn a vague review into a keep, change, or reject judgment |
+| Which sharper boundary question should I ask? | [Boundary Review Prompts](boundary-review-prompts.md) | narrow a blurry design or review concern |
+| How can I test whether I actually understand this? | [Self-Review Prompts](self-review-prompts.md) | force recall, prediction, and plain-language explanation |
+| What workflow failure shape am I seeing? | [Anti-Pattern Atlas](anti-pattern-atlas.md) | name the failure class before you start repairing it |
+| What counts as genuinely complete here? | [Completion Rubric](completion-rubric.md) | separate command from recognition |
+| Does this topic belong in the course center or at its edge? | [Topic Boundaries](topic-boundaries.md) | stop stretching the course into a different course |
+
+## The shelf by job
+
+Sometimes the clearest route is by job rather than by page title.
+
+### Vocabulary stabilization
+
+Use when the course terms themselves are slipping:
+
+- [Glossary](glossary.md)
+- [Topic Boundaries](topic-boundaries.md)
+
+### Study routing and practice
+
+Use when the concept is partly clear but the next move is not:
+
+- [Module Dependency Map](module-dependency-map.md)
+- [Practice Map](practice-map.md)
+- [Self-Review Prompts](self-review-prompts.md)
+
+### Review and repair
+
+Use when the question is about trust, ownership, drift, or failure:
+
+- [Review Checklist](review-checklist.md)
+- [Boundary Review Prompts](boundary-review-prompts.md)
+- [Anti-Pattern Atlas](anti-pattern-atlas.md)
+
+### Completion and readiness
+
+Use when the question is whether you are actually finished with something:
+
+- [Completion Rubric](completion-rubric.md)
+
+## What this shelf should produce
+
+After a good pass through the reference shelf, you should come away with one of these:
+
+- one clearer review judgment
+- one clearer practice move
+- one clearer proof route
+- one named failure class
+- one honest decision to return to an earlier module
+
+If you come away only with more pages to open, the shelf was used too broadly.
 
 ## Shelf set
 
@@ -85,8 +116,10 @@ That keeps the reference layer useful instead of letting it become endless brows
 - [Completion Rubric](completion-rubric.md)
 - [Topic Boundaries](topic-boundaries.md)
 
-## Stop here when
+## Good stopping point
 
-- you know which workflow boundary owns the current question
-- you can turn the answer into one explicit trust judgment
-- you know whether the next move is back to a module, into the capstone, or into practice
+Leave the reference shelf when you can answer all three:
+
+1. Which page owned my question?
+2. What judgment or next move did it clarify?
+3. Do I now need a module, a capstone route, or a practice pass?
