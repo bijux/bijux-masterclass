@@ -66,6 +66,8 @@ Best evidence:
 - `capstone/mk/stamps.mk`
 - `capstone/tests/run.sh`
 - `artifacts/proof/reproducible-research/deep-dive-make/selftest/summary.txt`
+- `artifacts/proof/reproducible-research/deep-dive-make/selftest/schedule-comparison.json`
+- `artifacts/proof/reproducible-research/deep-dive-make/selftest/logs/`
 
 ## Parallel safety
 

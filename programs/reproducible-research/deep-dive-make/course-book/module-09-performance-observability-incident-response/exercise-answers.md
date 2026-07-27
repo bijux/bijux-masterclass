@@ -306,14 +306,19 @@ Map the selftest bundle:
 
 | Claim | Evidence file |
 | --- | --- |
-| top-level test verdict | `summary.txt` |
+| result, stopping boundary, and checks not reached | `summary.txt` |
 | runtime boundary and guardrails | `settings.env` |
-| serial artifact inventory | `serial.sum` |
-| parallel artifact inventory | `parallel.sum` |
+| exact commands and captured output | `commands.txt` and `logs/` |
+| semantic schedule-equivalence decision | `schedule-comparison.json` |
+| serial artifact contract | `serial-inventory.json` |
+| parallel artifact contract | `parallel-inventory.json` |
 | dishonest hidden input is detected | `hidden-input.txt` |
+| sandbox at the stopping boundary | `workspace/` |
 
-The serial and parallel inventories should satisfy the capstone's schedule-equivalence
-contract. The summary should report convergence and the negative hidden-input check.
+The semantic comparison should report no missing, unexpected, or changed artifacts for
+a passing run. The summary should report convergence and the negative hidden-input check.
+On failure, `FAIL` names the broken claim; `NOT_RUN` means the harness stopped before
+collecting that proof.
 
 Important limitation:
 
@@ -413,8 +418,9 @@ Serial execution may be used only as a labeled temporary route for an equivalent
 incident. It is not the repair.
 
 Verification:
-Capstone selftest report covers convergence, serial/parallel inventories, and hidden-input
-detection. It does not prove a speedup.
+Capstone selftest report covers convergence, semantic serial/parallel comparison,
+hidden-input detection, command logs, and preserved stopping state. It does not prove a
+speedup.
 
 Unresolved question:
 Which production output, if any, currently has more than one writer or lacks an honest

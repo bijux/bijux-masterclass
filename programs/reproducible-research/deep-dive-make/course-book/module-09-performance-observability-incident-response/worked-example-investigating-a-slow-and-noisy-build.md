@@ -313,14 +313,19 @@ Read:
 artifacts/proof/reproducible-research/deep-dive-make/selftest/
 ├── summary.txt
 ├── settings.env
-├── serial.sum
-├── parallel.sum
-└── hidden-input.txt
+├── commands.txt
+├── schedule-comparison.json
+├── serial-inventory.json
+├── parallel-inventory.json
+├── hidden-input.txt
+├── logs/
+└── workspace/
 ```
 
-The serial and parallel inventories show how a real build proves schedule equivalence.
-The repro demonstrates the failure class; the selftest bundle demonstrates the production
-proof shape.
+The comparison classifies missing, unexpected, and changed artifacts before the two
+inventories provide path-level detail. The command logs and preserved workspace keep a
+failed stopping boundary reviewable. The repro demonstrates the failure class; the
+selftest bundle demonstrates the production proof shape.
 
 ## Write the runbook branch
 

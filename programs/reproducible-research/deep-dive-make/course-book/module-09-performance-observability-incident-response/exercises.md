@@ -281,6 +281,7 @@ Inspect the generated selftest bundle. Map its files to these claims:
 - serial/parallel artifact equivalence
 - hidden-input detection
 - runtime and guardrail settings
+- command-level evidence and preserved failure state
 
 Write `verification.md` explaining which proof dimension each file covers and which
 performance claim the bundle does not cover.
@@ -290,6 +291,7 @@ What to hand in:
 - a claim-to-file table
 - the serial/parallel comparison result
 - the convergence result
+- how `FAIL` differs from `NOT_RUN` in the summary
 - one limitation of the selftest as performance evidence
 - one additional proof your tuning proposal would require
 
