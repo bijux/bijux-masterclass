@@ -21,9 +21,14 @@ def specimen_copy(tmp_path: Path) -> Path:
 
 def snakemake_binary() -> str:
     discovered = shutil.which("snakemake")
-    if discovered is None:
-        raise RuntimeError("snakemake must be on PATH for the context-invariance tests")
-    return discovered
+    if discovered is not None:
+        return discovered
+    environment_binary = Path(sys.executable).with_name("snakemake")
+    if environment_binary.is_file():
+        return str(environment_binary)
+    raise RuntimeError(
+        "snakemake must be on PATH or installed beside the active Python interpreter"
+    )
 
 
 def run_audit(
