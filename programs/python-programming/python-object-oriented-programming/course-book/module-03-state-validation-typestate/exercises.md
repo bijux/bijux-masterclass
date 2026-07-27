@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,238 +24,195 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice state-contract judgment, not only Python validation
-features.
+Use these exercises as one full lab on state discipline. The goal is not to repeat
+phrases such as "invalid states should be unrepresentable." The goal is to prove that a
+learner studying alone can take one messy object and turn it into a design with legal
+states, explicit transitions, and reviewable boundaries.
 
-The goal of the day is to make legal and illegal state explicit. By the end, validation,
-nullability, partial objects, and lifecycle transitions should read like enforceable
-contracts rather than like comments the caller is expected to remember.
+## Running lab scenario
 
-## How to work through this set
+Use one object all day so the reasoning compounds instead of resetting every exercise.
+If you do not already have a capstone candidate, use this scenario:
 
-Treat the ten exercises as one full lab day on state and lifecycle discipline.
+`ReportDraft`
 
-Before each answer:
+- `author_id` must always exist
+- `title` may start blank but cannot be blank once the draft is submitted
+- `sections` may be empty while drafting but not when ready for review
+- `submitted_at` exists only after submission
+- `approved_at` exists only after approval
+- approved reports cannot be edited
+- rejected reports may return to draft with a reason
 
-1. name the object state that must be protected
-2. name the boundary that should reject invalid state
-3. say what API or test would prove illegal operations are harder to express
+You may replace the scenario with your own object, but keep the same kind of lifecycle
+pressure: drafting, readiness, submission, review, and retirement.
 
-Do the exercises in order. The day is one progression:
+## What to keep open while you work
 
-- Exercises 1-3 define legal state and validation boundaries
-- Exercises 4-5 review properties, dataclasses, and null semantics
-- Exercises 6-8 model transitions and typestate pressure
-- Exercises 9-10 package the full lifecycle review into one coherent contract
+Maintain one state packet as you go. By the end it should contain:
 
-Keep one state packet as you go. By the end of the day it should contain:
+- one legal-state table
+- one illegal-state list
+- one validation-boundary note
+- one nullability repair
+- one transition map
+- one API review showing how callers are guided toward legal use
 
-- one legal-versus-illegal state table
-- one validation-boundary decision
-- one null-semantics repair
-- one property or dataclass review
-- one lifecycle transition map
-- one typestate-style API judgment
+Use these tables directly instead of keeping the reasoning in your head:
 
-If those six artifacts are missing, you are probably still tolerating invalid state
-instead of governing it.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module03-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
-
-Keep one lifecycle table while you work:
-
-| Object | Legal states | Illegal states to block | Transition method or boundary | Proof test |
+| State | Fields that must exist | Fields that must not exist | Allowed operations | Illegal operations |
 | --- | --- | --- | --- | --- |
 
-Also keep one nullability table:
-
-| Current representation | What `None` means now | Why that is ambiguous or safe | Sharper alternative |
+| Ambiguous value today | Meanings currently overloaded | Chosen replacement | Why the replacement is clearer |
 | --- | --- | --- | --- |
 
-```mermaid
-flowchart LR
-  classify["state the legal states"]
-  reject["reject illegal construction"]
-  expose["review properties and representation"]
-  narrow["replace ambiguous nulls"]
-  transition["govern lifecycle transitions"]
-  prove["prove the API resists illegal use"]
+## Exercise 1: Name the legal states
 
-  classify --> reject --> expose --> narrow --> transition --> prove
-```
+Using the running scenario, define the smallest honest set of states.
 
-Use that route on purpose. It keeps the day centered on state contracts instead of on
-syntax features.
+Produce:
 
-## Exercise 1: Define the legal states
+- a legal-state table
+- one sentence per state explaining what becomes true there
+- one sentence naming the most dangerous illegal state
 
-Pick one object lifecycle from the capstone or a small lab example and list:
+Do not start with field flags. Start with business meaning.
 
-- the legal states
-- the illegal states
-- the operations allowed in each legal state
+## Exercise 2: Name illegal combinations explicitly
 
-Explain which state confusion would be most dangerous in production.
+List at least five illegal combinations, such as:
 
-Study note:
-State modeling becomes much easier once illegal states are named explicitly instead of
-hand-waved as rare.
+- submitted with no sections
+- approved with no submission time
+- approved and still editable
 
-## Exercise 2: Choose the validation boundary
+For each one, say:
 
-Take one invariant and decide whether it should be enforced in:
+- why the combination is semantically impossible
+- where you want the system to reject it
 
-- the constructor
-- a property setter
-- a separate validation boundary
-- a lifecycle transition method
+This is the exercise where most weak models stop hand-waving.
 
-Explain:
+## Exercise 3: Choose the construction boundary
 
-- why that boundary is the least surprising place
-- what a weaker placement would miss
-- one test that proves the invariant is guarded there
+Decide what must be true at construction time and what may wait for a later transition.
 
-Study note:
-Good validation lives where the contract becomes true, not merely where the bug was first
-noticed.
+Write:
 
-## Exercise 3: Repair an ambiguous `None`
+- one constructor contract
+- one factory or builder alternative if the constructor would become dishonest
+- one test that should fail if construction accepts too little or too much
 
-Find one place where `None` could mean several different things, such as:
+If you need a partially usable object, explain why that is a real state rather than a
+shortcut for unfinished design.
 
-- unknown
-- not loaded yet
-- absent by design
-- invalid partial state
+## Exercise 4: Repair one overloaded `None`
 
-Redesign it with a sharper representation and explain which bug surface disappears.
+Find one field whose absence is currently doing too many jobs.
 
-Study note:
-`None` is not evil, but overloaded `None` meanings are.
+For example:
 
-## Exercise 4: Review a property honestly
+- `submitted_at is None` might mean draft, rejected, or invalid reset
+- `reviewer_id is None` might mean unassigned, not yet loadedd, or no review needed
 
-Choose one property or computed attribute and explain whether it:
+Replace the ambiguity with one of these:
 
-- clarifies the public state contract
-- hides expensive or stateful work
-- should stay a method instead
+- a clearer state split
+- a dedicated value object
+- a sum of explicit fields with sharper meaning
 
-Then state what a reviewer should infer when they see attribute syntax in that class.
+Show the before-and-after representation.
 
-Study note:
-This matters because innocent-looking attribute access can hide surprising work or policy.
+## Exercise 5: Review a property as a contract surface
 
-## Exercise 5: Review a dataclass contract
-
-Pick one dataclass-shaped object and explain:
-
-- whether mutability is safe
-- whether default values are honest
-- whether equality and hashing behavior help or hurt the design
-- which `dataclass` convenience could become brittle here
-
-Study note:
-`dataclass` is useful only when its defaults match the real contract.
-
-## Midday self-check
-
-Before you move into lifecycle transitions and typestate-style APIs, make sure your
-packet can already answer these questions clearly:
-
-- which states are legal and illegal
-- where validation belongs and why
-- when a property clarifies state versus hides work
-- why a `None` meaning is either precise or dangerously overloaded
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Model lifecycle transitions
-
-Choose one object that changes over time and draw:
-
-- the legal transitions
-- the illegal transitions
-- the method boundary that should enforce each transition
-
-Then explain one place where caller discipline alone would be too weak.
-
-Study note:
-Lifecycle APIs matter because "should never happen" is not an enforcement mechanism.
-
-## Exercise 7: Compare partial objects and explicit builders
-
-Take one construction flow that currently produces a partially usable object. Compare it
-with:
-
-- a builder or factory
-- a stricter constructor
-- a typestate-like split between draft and ready forms
-
-Explain which design best reduces invalid intermediate states.
-
-Study note:
-Partial objects are often tolerated long after the team has forgotten why they exist.
-
-## Exercise 8: Design a typestate-inspired API
-
-Choose one workflow and redesign the API so illegal operations are harder to express after
-state transitions.
+Pick one attribute-like behavior from the running scenario, such as `is_editable`,
+`ready_for_review`, or `approval_status`.
 
 Explain:
 
-- what operations disappear in each state
-- what becomes easier to review
-- what remains a runtime check rather than a type-level guarantee
+- whether it should remain a property
+- whether it hides surprising work
+- what a caller should infer when reading `object.attr`
 
-Study note:
-Python cannot forbid every illegal state statically, but it can still shape safer APIs.
+If the surface should stay a method, say why attribute syntax would mislead readers.
 
-## Exercise 9: Review boundary validation libraries carefully
+## Exercise 6: Review a dataclass honestly
 
-Take one boundary where a validation library could help and explain:
+Pretend the running scenario is implemented with `@dataclass`.
 
-- what the library should validate
-- what must stay as domain logic instead
-- what false confidence appears if the team lets the library replace domain design
+Decide:
 
-Study note:
-Libraries can guard edges, but they do not absolve the model of its own contract.
+- whether mutability is still honest
+- whether default values reflect reality or only convenience
+- whether equality should compare content or identity
+- whether `frozen`, `slots`, or post-init validation help or distort the design
 
-## Exercise 10: Produce a full state review
+End with one recommendation: keep the dataclass, narrow it, or replace it.
 
-Take one meaningful object and write a short review that names:
+## Exercise 7: Draw the lifecycle transitions
+
+Create a transition map with:
+
+- allowed moves
+- forbidden moves
+- the method or boundary that should enforce each move
+
+Minimum transitions to evaluate:
+
+- `draft -> submitted`
+- `submitted -> approved`
+- `submitted -> rejected`
+- `rejected -> draft`
+
+Add one transition you refuse to support and explain why.
+
+## Exercise 8: Narrow the API with typestate pressure
+
+Redesign the public API so illegal operations become harder to express.
+
+Examples:
+
+- editing methods available only on draft or rejected states
+- approval method available only on submitted state
+- derived read-only view for approved reports
+
+You do not need a fancy static type trick. A runtime-enforced state split is enough if it
+removes misleading operations from the obvious path.
+
+## Exercise 9: Place validation libraries at the boundary
+
+Assume external input for the scenario arrives as JSON or a form payload.
+
+Decide:
+
+- what a boundary validator should parse or normalize
+- what must remain domain validation inside the object model
+- what false confidence appears if library validation is treated as full correctness
+
+Write one short edge-to-domain flow from raw payload to valid object.
+
+## Exercise 10: Produce the full state packet
+
+Finish the lab by writing a short review note that includes:
 
 - legal states
-- validation boundary
-- null semantics
-- transition rules
-- one risk still present
-- one reason the design is trustworthy
+- illegal combinations
+- constructor boundary
+- nullability repair
+- transition map
+- one remaining risk
+- one reason the model is now safer to maintain
 
-Study note:
-This final exercise matters because the module’s real exit skill is state review, not
-feature recall.
+If another learner cannot tell when the object is legal and who enforces transitions, the
+packet is not finished yet.
 
-## Mastery check
+## Done means reviewable, not merely answered
 
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
+You are done with the exercise day when your packet can survive three review questions:
 
-- illegal states should be named and resisted explicitly
-- validation belongs at the boundary where the contract becomes true
-- properties and dataclasses are design tools, not harmless defaults
-- nullability needs one meaning per case
-- lifecycle APIs should make invalid operations harder to express
+- "What are the legal states and why?"
+- "Where does invalid state get rejected first?"
+- "Which operations disappear once the object changes state?"
+
+If those answers are still fuzzy, keep tightening the packet before you open the answer
+page.
