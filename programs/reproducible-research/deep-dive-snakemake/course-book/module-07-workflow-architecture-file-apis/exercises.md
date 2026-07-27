@@ -18,6 +18,15 @@ For each exercise, keep three things together:
 If your answer cannot explain what a new reviewer should understand sooner than before,
 the exercise is not complete yet.
 
+Before each answer:
+
+1. start from the entrypoint or public artifact instead of from the deepest helper
+2. name the ownership boundary before you suggest a new file split
+3. keep one command, diagram, or repository note that proves the boundary really exists
+
+If you skip that order, the day turns into folder rearrangement instead of architecture
+review.
+
 Do them in order. The set is one day-long progression:
 
 - Exercises 1-3 establish reading order and repository responsibilities.
@@ -41,6 +50,24 @@ Build one small architecture packet as you go:
 - one artifact-trace diagram
 - one file-API note
 - one focused architecture check with a failing example
+
+If you prefer a concrete tree for the audit packet, keep it inside something like:
+
+```text
+module07-lab/
+├── maps/
+├── ownership/
+├── file-api/
+├── checks/
+└── artifacts/
+    ├── reading-order/
+    ├── traces/
+    ├── drift/
+    └── reviews/
+```
+
+That structure helps separate repository reading order, ownership claims, public path
+contracts, and automated drift checks without mixing them into one vague review note.
 
 ## Exercise 1: Read the repository in the right order
 
