@@ -1,10 +1,11 @@
 # Mid-Course Map
 
 Use this page when Modules 01 to 03 feel stable and you need a deliberate bridge into
-scaling, software boundaries, publish trust, and operating-context review. The goal is to
-keep the middle of the course shaped by workflow questions instead of by repository sprawl.
+scaling, software boundaries, publish trust, and operating-context review. The middle of
+the course is where many learners start confusing workflow meaning, repository
+structure, and execution context. This map exists to keep those pressures separate.
 
-## Mid-course route
+## The middle-course progression
 
 ```mermaid
 flowchart LR
@@ -14,40 +15,45 @@ flowchart LR
   m7 --> m8["Module 08<br/>operating contexts"]
 ```
 
+## What changes in the middle of the course
+
+Earlier modules ask, "What is this workflow claiming to do?"
+
+Middle modules ask harder follow-up questions:
+
+- Where should the next change belong?
+- Which repository splits clarify ownership?
+- Which outputs are public versus internal?
+- Which differences across contexts are policy-only?
+
+This is where the course stops being only about workflow behavior and starts being about
+workflow design under growth.
+
 ## Use this map for these pressures
 
-| If the pressure is... | Start with | Keep nearby | Capstone cross-check |
+| If the pressure is... | Start with | Keep nearby | First capstone cross-check |
 | --- | --- | --- | --- |
 | where a structural workflow change belongs | Module 04 | [Boundary Review Prompts](../reference/boundary-review-prompts.md) | [Capstone File Guide](../capstone/capstone-file-guide.md) |
 | where workflow orchestration ends and helper software begins | Module 05 | [Review Checklist](../reference/review-checklist.md) | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
 | what downstream users are actually allowed to trust | Modules 06 to 07 | [Proof Matrix](../guides/proof-matrix.md) | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
 | which differences across local, CI, and scheduler contexts are policy-only | Module 08 | [Topic Boundaries](../reference/topic-boundaries.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
 
-## Read this map as a bridge
-
-The middle of the course is where many readers start confusing three different things:
-
-- workflow meaning
-- repository structure
-- execution context
-
-This map exists so those pressures stay separate while the course gets more realistic.
-
-## Module clusters
+## Read this middle stretch as three clusters
 
 ### Modules 04 to 05: scaling and software seams
 
 Use this cluster when the workflow already feels real, but the repository is starting to
-split across files, helper code, and validation surfaces.
+split across files, helper code, validation surfaces, and software boundaries.
 
-- Module 04 teaches scaling, interfaces, and reviewable repository structure.
+- Module 04 teaches scaling, interfaces, and ownership-preserving splits.
 - Module 05 teaches the boundary between Snakemake logic and the software it drives.
 
 Leave this cluster able to explain where a change belongs before you edit it.
 
 ### Modules 06 to 07: publish trust and architecture
 
-Use this cluster when the workflow is becoming a downstream-facing system.
+Use this cluster when the workflow is becoming a downstream-facing system rather than a
+local internal build script.
 
 - Module 06 teaches versioned publish contracts and downstream trust.
 - Module 07 teaches workflow architecture and stable file APIs.
@@ -63,36 +69,42 @@ Use this step when the main pressure is execution context rather than workflow m
 Leave this step able to explain what changed across contexts and why the workflow promise
 did or did not change.
 
-## Questions this map should answer
+## Questions this map should help you answer
 
-When the course reaches its middle, the common failure is not lack of syntax. It is lack
-of ownership clarity. Use this page to answer questions like:
+If the course middle is going well, you should be able to form questions like these:
 
 - Is this change about the workflow graph or about helper software?
 - Is this value part of output meaning or only execution policy?
 - Is this path internal working state or a surface someone else can trust?
 - Would another repository file clarify ownership or merely hide it?
 
-If you cannot phrase the question in one of those forms yet, go back to the smaller
-module example before opening more repository surfaces.
+If you cannot yet phrase the problem that way, go back to the smaller module example
+before widening into a larger repository surface.
 
-## Mid-course mistakes to avoid
+## Middle-course mistakes to avoid
 
-- splitting files because the repository feels crowded rather than because ownership is clear
-- treating publish directories as a convenient output pile instead of a contract
+- splitting files because the repository feels crowded rather than because ownership is
+  clearer
+- treating publish directories as a convenience pile instead of as a contract
 - using profiles to hide analytical differences
-- reading architecture before the current workflow claim is legible
+- reading architecture material before the current workflow claim is legible
+- treating context review as if it were only an infrastructure concern
 
 ## When to leave this route
 
-Move to [mastery-map.md](mastery-map.md) once the question becomes stewardship,
-migration, or whether Snakemake should keep owning the concern at all.
+Move to [Mastery Map](mastery-map.md) when the question changes from design and trust
+surfaces to stewardship pressure:
 
-## Good next move after this map
+- a workflow incident needs evidence before edits
+- migration or governance is now the main concern
+- the right answer may be handing a concern off rather than keeping it inside Snakemake
+
+## Best next move after this page
 
 Open exactly one of these before resuming:
 
 - [Module Checkpoints](../guides/module-checkpoints.md) if you need the exit bar
-- [Pressure Routes](../guides/pressure-routes.md) if urgency is shaping the reading order
+- [Pressure Routes](../guides/pressure-routes.md) if urgency is reshaping the reading
+  order
 - [Capstone Map](../capstone/capstone-map.md) if the module is clear but the repository
-  surface is not
+  route is not
