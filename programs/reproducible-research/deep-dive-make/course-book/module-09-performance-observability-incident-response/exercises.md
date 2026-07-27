@@ -129,7 +129,22 @@ Another learner should know whether your result can reasonably be compared with 
 ## Exercise 3: Establish controlled cost baselines
 
 Use the governed route from Exercise 2. Read `route.txt`, `scenarios.tsv`,
-`incremental-policy.tsv`, and the context in `evidence.json` before `summary.tsv`.
+`incremental-policy.tsv`, `incremental-summary.tsv`, and the context in `evidence.json`
+before the timing `summary.tsv`.
+
+Before opening `incremental-policy.tsv`, complete this prediction table:
+
+| Input | Must rebuild | Two representative outputs that must remain |
+| --- | --- | --- |
+| `src/util.c` |  |  |
+| `include/util.h` |  |  |
+| `include/sub.h` |  |  |
+| `scripts/gen_dynamic_h.py` |  |  |
+| `src/dynamic/dyn1.c` |  |  |
+
+Derive each answer by following dependency paths. Then compare your table with the policy
+and observed summary. Confirm that every policy row classifies the same governed output
+set.
 
 For each scenario, trace one row in the summary back to:
 
@@ -146,8 +161,10 @@ What to hand in:
 - the governed scenario table
 - one raw-sample-to-summary audit
 - the convergence and trusted-output result for each scenario
-- the declared incremental input and your predicted rebuild set before reading the report
-- the observed missing and unexpected rebuild sets
+- your completed five-input prediction table
+- the governed-output-set comparison for two different input rows
+- the observed missing and unexpected rebuild sets for every case
+- one header-case trace and one generated-producer trace tied to their owning rules
 - proof that the incremental result is bound inside `evidence.json`
 - one leading and one competing explanation for the observed differences
 - one sentence stating whether a performance regression was proven
@@ -158,8 +175,9 @@ Without a controlled historical baseline, the correct conclusion is usually "cur
 baseline established," not "regression confirmed." A summary without its semantic evidence
 does not complete the exercise.
 
-Explain why restoring `src/util.c` after the mutation is necessary, and why restoring it
-does not mean the generated outputs should be rolled back before evidence is reviewed.
+Explain why restoring each input after its mutation is necessary, why the runner reconverges
+before each case, and why restoring an input does not mean generated outputs should be
+rolled back before evidence is reviewed.
 
 ## Exercise 4: Choose observability by question
 
@@ -280,11 +298,12 @@ Before choosing a tuning candidate, classify these bundle pairs:
 | A | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | clean revision `b`, runner `lab`, compiler `cc 1`, expected work observed |
 | B | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | dirty revision `b`, runner `lab`, compiler `cc 1`, expected work observed |
 | C | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | clean revision `b`, runner `lab`, compiler `cc 2`, expected work observed |
-| D | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | clean revision `b`, runner `lab`, compiler `cc 1`, one extra object rebuilt |
+| D | clean revision `a`, runner `lab`, compiler `cc 1`, five input cases present | clean revision `b`, runner `lab`, compiler `cc 1`, the `include/sub.h` case is absent |
+| E | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | clean revision `b`, runner `lab`, compiler `cc 1`, the `src/dynamic/dyn1.c` case rebuilds `app` |
 
 For each pair, predict `compare` or `reject`, name the field that decides it, and state what
-work would make a rejected pair reviewable. Pair D may represent an intentional graph
-repair; explain why that still blocks the original timing comparison.
+work would make a rejected pair reviewable. Pair E may represent an intentional graph
+change; explain why that still blocks the original timing comparison.
 
 Choose one real cost candidate from the capstone or explicitly reject tuning because the
 measurements do not justify it.
@@ -311,7 +330,7 @@ decision.
 What to hand in:
 
 - the performance-selftest result and two rejection explanations
-- the four-pair compatibility table
+- the five-pair compatibility table
 - the complete experiment contract or justified rejection
 - one unsafe optimization you rejected
 - one sentence explaining what new freshness contract a cache would introduce
