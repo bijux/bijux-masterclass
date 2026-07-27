@@ -24,160 +24,186 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
-
-## Why this lesson matters
+This lesson is about a simple but costly truth:
 
 For many users, the documentation is the API.
 
-They learn what is supported by reading:
+They learn what is supported from:
 
-- quickstart examples
-- package guides
-- sample commands
-- reference sections
+- the first quickstart they copy
+- the first import path they see
+- the first configuration error they encounter
+- the first migration example they trust
 
-If those surfaces show deep imports, outdated argument shapes, or impossible workflows,
-the system has already published the wrong contract even if the code itself has a
-cleaner intended public surface.
+If those surfaces teach the wrong path, the wrong path is effectively public whether
+the maintainers intended it or not.
 
-## Examples teach what you really support
+## Keep one public story visible
 
-Consumers often copy the first working-looking example they see.
+Use the capstone package:
 
-That means examples should demonstrate:
+`service_monitoring`
 
-- the sanctioned entrypoint
-- the intended data flow
-- the supported failure or configuration pattern
+Assume the supported story is:
 
-They should not quietly depend on:
+- import the package facade
+- configure one supported sink seam if needed
+- run the workflow
+- handle the documented success or failure surface
 
-- internal modules
-- temporary helper functions
-- setup shortcuts that bypass public contracts
+Now ask:
 
-Otherwise the docs create accidental API promises the maintainers never meant to keep.
+Would a new learner who reads the docs today be taught exactly that story, or would they
+still learn internal shortcuts?
 
-## Documentation has distinct roles
+That is the real test of this lesson.
 
-Not every page should do the same job.
+## Examples are support promises in executable clothing
 
-Keep these roles separate when possible:
+Examples do more than explain syntax.
+They silently answer:
 
-- **tutorials** teach first use and narrative flow
-- **how-to guides** solve a focused task
-- **reference docs** define stable inputs, outputs, and guarantees
-- **explanation pages** discuss tradeoffs and design choices
+- which import path is sanctioned
+- which arguments matter
+- which failures a caller should expect
+- which extension seam is actually intended
 
-When all four are mixed together, readers often leave with fuzzy expectations about what
-is merely illustrative and what is contractually supported.
+That means a deep internal import in a quickstart is not a harmless shortcut.
+It is a public promise with no governance around it.
 
-## Public examples should be reviewable like code
+## Different docs have different jobs
 
-If an example shows the supported path, then reviewing that example is part of reviewing
-the public API.
+Keep the roles clear:
 
-Useful review questions include:
+- tutorials teach first use and narrative flow
+- how-to guides solve one focused task
+- reference pages define stable inputs, outputs, and guarantees
+- explanation pages teach tradeoffs and reasoning
 
-- does this example use only public entry surfaces?
-- does it model a real supported workflow?
-- does it hide important failure handling or migration constraints?
-- if a user copied this today, would they be learning the right dependency path?
+When those roles blur, readers cannot tell:
 
-This turns examples into governance artifacts, not decorative prose.
+- what is the supported contract
+- what is merely one illustrative narrative
+- what is safe to depend on long-term
 
-## Executable examples catch documentation drift
+Public-doc discipline starts with role discipline.
 
-When practical, important examples should be exercised through:
+## The first copied example matters most
 
-- doctest-style execution
-- smoke tests around sample commands
+If a learner copies one example and it uses:
+
+- runtime internals
+- repository constructors
+- private adapter helpers
+
+then the documentation has already widened the public surface.
+
+That is why the highest-value examples should use:
+
+- the supported facade
+- the supported extension seam
+- realistic failure handling
+- realistic configuration shape
+
+Examples are part of the governance layer, not garnish.
+
+## Executable examples are proof, not polish
+
+Important public examples should fail when the supported surface drifts.
+
+That may mean:
+
+- a smoke-tested quickstart
 - checked snippets
-- integration paths that mirror the documented surface
+- a sample command path exercised in CI
+- a compatibility packet that mirrors the docs
 
-The goal is not to execute every paragraph. The goal is to make the highest-value public
-examples fail when the supported surface drifts.
+The goal is not to execute every paragraph.
+The goal is to keep the most important public stories from fossilizing.
 
-Without that, documentation often becomes a fossil record of earlier APIs.
+If the example is valuable enough to teach the API, it is valuable enough to protect.
 
-## Failure cases belong in public documentation too
+## Failure-path docs belong in the public contract
 
-Weak API docs often show only the happy path.
+Weak API documentation teaches only the success story.
 
-But public contracts also include:
+A stronger public story also documents:
 
-- what errors callers should expect
-- what unsupported inputs look like
-- what migration path replaces a deprecated surface
-- what extension limitations users must respect
+- what configuration errors look like
+- what unsupported inputs are rejected early
+- what deprecation or migration path users should follow
+- what extension limits the host enforces
 
-Teaching only the success story leaves consumers unprepared for the real boundary
-behavior they must handle.
+Otherwise the docs teach the system only in its easiest mood and leave users to discover
+the real boundary behavior by failure.
 
-## A worked example
+## A worked capstone doc set
 
-Suppose the capstone wants to publish one supported monitoring workflow.
+An honest public document set for this package could include:
 
-An honest documentation set might include:
+- one quickstart using only `service_monitoring` facade imports
+- one short extension example showing `IncidentSink` in the supported role
+- one reference page defining stable inputs, outcomes, and failure meanings
+- one migration note when public names or shapes change
+- one executable route that keeps the main quickstart honest
 
-- a quickstart that uses only the public facade
-- a reference page that defines the command or service inputs and outputs
-- one executable example that proves the documented path still works
-- one failure-path example that shows how configuration or plugin registration errors are surfaced
+What it should not include:
 
-What it should not do is:
+- deep runtime imports because they are shorter
+- examples that bypass supported construction
+- stale code blocks teaching a deprecated path as though it were current on July 27,
+  2026
 
-- teach users to import deep runtime modules because that is shorter to type
-- hide required setup behind internal fixtures
-- treat old deprecated behavior as still normal in examples
+## Docs and compatibility must move together
 
-## Docs should move with compatibility policy
+When a public surface changes, update all of these together:
 
-When the public surface changes, the docs need the same governance attention as the
-code:
+- reference page
+- quickstart
+- executable examples
+- migration guidance
+- compatibility or review route
 
-- deprecations should update migration guidance
-- removals should delete or replace obsolete examples
-- new public seams should come with accurate reference and tutorial coverage
+If the code changes first and the docs catch up later, users receive conflicting
+promises in the meantime.
 
-If code and docs evolve on different timelines, users receive conflicting promises.
+That is a governance failure, not only a documentation failure.
 
-## Common mistakes
+## Common failure modes
 
-- showing deep internal imports in public-facing examples
-- mixing tutorial narrative and reference guarantees into one unclear page
-- leaving critical examples unexecuted so they drift silently
-- documenting only success flows and ignoring real error behavior
-- treating docs changes as less important than public API changes
+- showing deep internal imports in public examples
+- mixing tutorial narrative and stable contract language in one unclear page
+- leaving the highest-value examples unexecuted so they drift silently
+- documenting only success paths and ignoring real boundary failures
+- treating docs changes as lower priority than public API changes
 
-## Review checklist
+## Documentation review card
 
-| Question | Good sign |
+Use this short card when reviewing public docs:
+
+| Question | What you want to see |
 | --- | --- |
 | do examples demonstrate only supported public paths? | yes |
 | are tutorial, reference, and explanation roles distinguishable? | yes |
 | do important examples have executable backstops? | yes |
-| do docs explain failure and migration behavior where it matters? | yes |
+| do docs explain failure and migration behavior where users will need it? | yes |
 
 ## Capstone connection
 
-Use the capstone docs to ask:
+Use this page to ask:
 
-- which current example still teaches a deep import or internal shortcut?
-- which supported workflow deserves an executable example first?
-- where does the current documentation fail to explain a public error or migration path the user will actually meet?
+- which current example still teaches a private import or internal shortcut
+- which supported workflow should get an executable example first
+- where the current docs fail to explain a real configuration, failure, or migration path
 
-This is how documentation becomes part of API governance rather than a trailing summary.
+That is how documentation becomes part of API governance instead of trailing summary
+text.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain why examples publish API promises whether maintainers intended that or not
+- explain why examples publish API promises whether maintainers intend that or not
 - identify one capstone example that should be executable
-- identify one place where public docs need a failure-path explanation, not just a happy-path snippet
+- identify one place where public docs need a failure-path or migration explanation, not
+  just a happy-path snippet
