@@ -1,6 +1,5 @@
 # Threads, Locks, and Owned Mutation
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,52 +24,114 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Protect mutable state by giving it a clear owner instead of assuming incidental thread
-safety will hold under load.
+Shared mutable state is one of the fastest ways to make a clean object model dishonest.
 
-## 1. Shared Mutation Is a Design Choice
+The issue is not that threads exist. The issue is that multiple actors may try to mutate
+the same state without one owned policy for:
 
-When multiple threads can mutate the same object, you need a policy:
+- who may mutate
+- when mutation is serialized
+- which invariants must hold across a whole update
 
-- one owner thread
-- internal locking
-- immutable snapshots with replacement
+If that policy is missing, "thread safe" becomes a hopeful adjective rather than a real
+contract.
 
-The correct answer depends on workload, but “probably fine” is not a policy.
+## Shared mutation is a design choice
 
-## 2. Locks Protect Invariants, Not Just Lines of Code
+Students should not assume that shared mutable access is the normal starting point.
 
-If an invariant spans several fields, the lock boundary must cover the full update.
-Per-attribute locking often gives a false sense of safety.
+A mutable object under concurrent use needs one clear policy, such as:
 
-## 3. Prefer Ownership Transfer When Possible
+- one owner thread mutates it
+- callers hand work to a queue instead of touching it directly
+- internal locking protects whole invariant-preserving operations
+- immutable snapshots are replaced rather than edited in place
 
-Queues, message passing, or immutable copies often produce simpler designs than sharing
-one mutable aggregate across threads.
+The important lesson is that concurrency safety starts with choosing a state ownership
+model, not with sprinkling locks afterward.
 
-## 4. Document Thread Expectations
+## Locks protect meaning, not assignments
+
+Weak locking often protects one line at a time:
+
+- assign field A
+- release lock
+- assign field B later
+
+That can still violate an invariant if the real meaning spans both fields together.
+
+Lock boundaries should usually wrap the full operation that preserves the invariant, not
+only isolated assignments.
+
+That is why concurrency belongs in an object-design course: the object's meaning tells
+you where the safe mutation boundary is.
+
+## Ownership transfer is often simpler than sharing
+
+The cleanest concurrency design is frequently:
+
+- one owner mutates
+- everyone else submits requests or receives snapshots
+
+Queues, worker ownership, and immutable replacement often create simpler reasoning than
+letting many threads mutate one object directly.
+
+Students should learn that "use a lock" is not always the best first answer. Sometimes
+the better answer is "stop sharing the mutation surface."
+
+## Thread semantics are part of the contract
 
 Callers need to know whether an object is:
 
 - single-threaded only
-- internally synchronized
-- safe only for concurrent reads
+- safe for concurrent reads only
+- internally synchronized for certain operations
+- safe only when used through a coordinator
 
-Thread semantics are part of the public contract.
+If this is undocumented or implicit, users of the object may accidentally violate the
+design and think the bug is random.
 
-## Practical Guidelines
+## Common mistakes
 
-- Choose an explicit state-ownership policy for mutable objects.
-- Lock around invariant-preserving operations, not isolated assignments.
-- Prefer ownership transfer or immutable snapshots over shared mutation when practical.
-- Document thread-safety guarantees and limits.
+- assuming the GIL is the same thing as design-level thread safety
+- locking individual fields instead of invariant-preserving operations
+- letting multiple threads mutate one aggregate because it was convenient
+- documenting nothing and expecting callers to guess the thread contract
+- using locks when ownership transfer would have produced a clearer model
 
-## Exercises for Mastery
+These mistakes all blur who truly owns state mutation.
 
-1. Classify one mutable object in your system by its thread-safety contract.
-2. Replace one shared mutable structure with queue-based ownership transfer.
-3. Write a test or review note for an invariant that requires a wider lock boundary.
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is there a clear ownership policy for mutable state? | yes |
+| do lock boundaries protect whole invariant-preserving updates? | yes |
+| could ownership transfer simplify the design more than extra locking? | yes |
+| is the thread-safety contract visible to callers? | yes |
+
+## Capstone connection
+
+Use the capstone runtime to ask:
+
+- which mutable state should have one owner?
+- where would a queue or worker boundary be clearer than a shared lock?
+- which invariants would fail if updates were interleaved halfway through?
+
+Those are the real design questions before adding more concurrency primitives.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why owned mutation is often more important than incidental thread safety
+- identify one place where a lock must protect a full invariant, not only one assignment
+- point to one capstone state surface that should probably be owned by one coordinator rather than many threads
