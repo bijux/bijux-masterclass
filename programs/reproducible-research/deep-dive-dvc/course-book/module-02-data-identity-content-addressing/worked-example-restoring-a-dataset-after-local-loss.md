@@ -37,7 +37,7 @@ That helps the module show the important boundaries without burying them in plat
 From the repository root:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone data-identity-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
 ```
 
 Before reading `summary.tsv`, predict the outcomes:

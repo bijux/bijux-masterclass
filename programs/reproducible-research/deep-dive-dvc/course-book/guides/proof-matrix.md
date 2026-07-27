@@ -38,6 +38,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | Claim | Command | File surfaces |
 | --- | --- | --- |
 | data identity is not only a path name | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `capstone/data/raw/service_incidents.csv`, `capstone/dvc.lock`, `capstone/.dvc-remote/` |
+| identity survives relocation but recoverability depends on accessible storage | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit` | `capstone/repro/data-identity/`, generated `.dvc` pointers, cache objects, state-move receipts, and pointer-only failure evidence |
 | the pipeline declaration and the recorded run are different evidence types | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `capstone/dvc.yaml`, `capstone/dvc.lock` |
 | the pipeline declares the real change surface | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-repro` | `capstone/dvc.yaml`, `capstone/dvc.lock`, `capstone/state/` |
 | stage declarations expose real file, parameter, and output boundaries | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit` | `capstone/repro/stage-contracts/`, `capstone/scripts/audit_stage_contracts.py`, generated status receipts and result values |

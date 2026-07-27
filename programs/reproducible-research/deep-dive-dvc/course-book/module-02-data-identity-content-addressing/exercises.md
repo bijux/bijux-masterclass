@@ -223,7 +223,7 @@ For each prediction, name the minimum evidence that would make it defensible.
 Then run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone data-identity-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
 ```
 
 What to hand in:

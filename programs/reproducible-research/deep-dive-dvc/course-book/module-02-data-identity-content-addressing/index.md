@@ -41,8 +41,9 @@ This module is where you stop saying "the file is over there" and start saying "
 system is claiming these exact bytes."
 
 The capstone corroboration surface for this module is the set of files and review routes
-that separate state layers and recovery: `dvc.lock`, `publish/v1/`, `make state-summary`,
-`make recovery-review`, `capstone/docs/stage-contract-guide.md`, and `capstone/docs/recovery-guide.md`.
+that separate identity from availability: `capstone/repro/data-identity/`,
+`capstone/docs/data-identity-audit-guide.md`, generated pointer and cache evidence, and the
+`capstone-data-identity-audit` route.
 
 ## Why this module exists
 
@@ -91,7 +92,7 @@ If the problem is already partly clear, use this shortcut:
 | [DVC Add, Push, Pull, and Checkout as State Moves](dvc-add-push-pull-and-checkout-as-state-moves.md) | teaches the main DVC commands as movements between state layers |
 | [Failure Modes, Recovery, and Trust](failure-modes-recovery-and-trust.md) | teaches how identity and recovery failures should be interpreted |
 | [Worked Example: Restoring a Dataset after Local Loss](worked-example-restoring-a-dataset-after-local-loss.md) | walks through one realistic recovery-oriented identity story |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten cumulative mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -110,13 +111,12 @@ By the end of this module, you should be able to explain:
 These commands form the evidence loop for Module 02:
 
 ```bash
-make -C capstone state-summary
-make -C capstone manifest-summary
-make -C capstone recovery-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-selftest
 ```
 
-The point is not to memorize commands. It is to tie each state layer to a concrete file or
-bundle so you stop treating the repository as one undifferentiated blob.
+The audit changes paths, bytes, workspace projections, cache availability, and remote
+availability independently. The self-test protects the meaning of those contrasts.
 
 ## Capstone route
 
@@ -124,20 +124,16 @@ Use the capstone only after the state layers are already legible in your head.
 
 Best corroboration surfaces for this module:
 
-- `capstone/dvc.lock`
-- `capstone/publish/v1/manifest.json`
-- `capstone/docs/stage-contract-guide.md`
+- `capstone/repro/data-identity/`
+- `capstone/docs/data-identity-audit-guide.md`
 - `capstone/docs/recovery-guide.md`
-- `capstone/docs/publish-contract.md`
-- `capstone/Makefile`
+- generated `summary.tsv`, pointers, cache objects, and receipts
 
 Useful proof route:
 
 ```bash
-make -C capstone state-summary
-make -C capstone manifest-summary
-make -C capstone recovery-review
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit
 ```
 
-The point of that route is not to admire the capstone. It is to practice naming which
-layer is authoritative for which fact before trusting what you see.
+The point is to name which surface identifies expected bytes, which layer supplies them,
+and which evidence bounds the recovery claim before trusting a visible file.

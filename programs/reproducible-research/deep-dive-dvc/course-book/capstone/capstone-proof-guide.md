@@ -34,6 +34,7 @@ repository confirmation.
 | If you need to prove... | Start here | Escalate only if needed |
 | --- | --- | --- |
 | current repository state still matches the declared contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify-report` |
+| pointers identify bytes and storage layers can recover them after loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-selftest` |
 | stage declarations detect every real file, parameter, and output boundary | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-selftest` |
 | a changed run is still comparable to the baseline | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | recovery survives local loss because remote-backed state still exists | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |

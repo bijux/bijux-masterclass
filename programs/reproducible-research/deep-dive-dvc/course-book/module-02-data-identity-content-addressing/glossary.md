@@ -37,7 +37,9 @@ distinct, DVC stops feeling mystical and starts feeling inspectable.
 | locator | A path or name that tells you where something is expected to be found, without being a durable identity by itself. |
 | data identity | The claim that the system is talking about the same exact content rather than only the same path or filename. |
 | content addressing | Identifying tracked data by its content rather than by its location. |
+| content availability | The condition where at least one accessible storage layer can supply the bytes named by recorded identity. |
 | pointer file | A small DVC-tracked file such as a `.dvc` file that records a reference to tracked content identity. |
+| pointer-only state | A failure state where metadata still names content but neither workspace, cache, nor remote can supply its bytes. |
 | local cache | DVC's local content store that makes recorded identity operationally restorable on the machine. |
 | remote durability | Off-machine storage that makes tracked content recoverable after local loss. |
 | workspace projection | The current visible file in the working tree that reflects tracked content but is not the full identity story by itself. |
@@ -45,6 +47,8 @@ distinct, DVC stops feeling mystical and starts feeling inspectable.
 | published release state | The smaller downstream-facing release boundary, such as `publish/v1/`, that is meant for review and trust by others. |
 | state move | A command effect that changes which layer holds tracked content, such as push to remote or checkout to workspace. |
 | recovery route | The commands and evidence that prove tracked content can be restored after loss. |
+| state-move receipt | Saved command output paired with before-and-after layer evidence to show what content moved or materialized. |
+| negative recovery control | A deliberately unavailable case that proves metadata or path presence alone cannot restore content. |
 | authority layer | The layer that is authoritative for a specific question, such as workspace visibility, recorded execution, remote durability, or downstream trust. |
 
 ## How to use these terms

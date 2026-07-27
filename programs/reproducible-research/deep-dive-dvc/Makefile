@@ -88,6 +88,14 @@ capstone-stage-contract-audit: ## Audit declared and hidden stage influences
 capstone-stage-contract-selftest: ## Reject dishonest stage contract evidence
 	@$(RUN_CAPSTONE) stage-contract-selftest
 
+.PHONY: capstone-data-identity-audit
+capstone-data-identity-audit: ## Audit pointer, cache, workspace, and remote identity
+	@$(RUN_CAPSTONE) data-identity-audit
+
+.PHONY: capstone-data-identity-selftest
+capstone-data-identity-selftest: ## Enforce data identity and recovery evidence
+	@$(RUN_CAPSTONE) data-identity-selftest
+
 .PHONY: capstone-source-bundle
 capstone-source-bundle: ## Build the capstone tracked-source release bundle
 	@$(RUN_CAPSTONE) source-bundle

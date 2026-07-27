@@ -46,6 +46,7 @@ directory. The layers exist so you do not have to guess where a command belongs.
 | --- | --- | --- |
 | first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
 | current-state verification | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-tour` |
+| pointer, cache, workspace, and remote identity | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit` | inspecting only the final workspace file |
 | stage input, parameter, and output truth | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit` | forcing every stage to rerun |
 | experiment comparison | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
 | release-boundary review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | random `make PROGRAM=reproducible-research/deep-dive-dvc ...` exploration |
@@ -57,6 +58,7 @@ Use root-level commands when you want one entrypoint that works across programs.
 
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-data-identity-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review`
@@ -69,6 +71,8 @@ surface.
 
 - `make capstone-walkthrough`
 - `make capstone-verify`
+- `make capstone-data-identity-audit`
+- `make capstone-data-identity-selftest`
 - `make capstone-stage-contract-audit`
 - `make capstone-stage-contract-selftest`
 - `make capstone-experiment-review`
@@ -81,6 +85,8 @@ Use `capstone/` when you want the raw reference repository.
 
 - `make walkthrough`
 - `make verify`
+- `make data-identity-audit`
+- `make data-identity-selftest`
 - `make stage-contract-audit`
 - `make stage-contract-selftest`
 - `make experiment-review`
