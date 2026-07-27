@@ -111,9 +111,14 @@ should collaborate without turning the system into framework theater.
 
 ## Exercises
 
-- Take one behavior from the capstone and justify why it belongs in a domain object, a policy object, or the runtime facade.
-- Review one inheritance example and explain whether it is semantic extension, reuse pressure, or avoidable coupling.
-- Sketch a composition root for one workflow and explain why the rest of the system should not assemble that graph itself.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete role-assignment review route:
+ownership, cohesion, composition versus inheritance, layering, and composition-root
+discipline.
 
 ## Capstone connection
 
