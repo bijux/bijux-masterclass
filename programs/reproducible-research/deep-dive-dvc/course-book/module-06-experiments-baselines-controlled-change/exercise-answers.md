@@ -63,185 +63,201 @@ The strongest self-study packets also leave behind six concrete artifacts:
 If your answers rely only on "this candidate scored highest," the reasoning is still too
 thin.
 
-## Answer 1: Name the baseline
+## Answer 1: Predict the decision gates
 
-Strong baseline description:
+Model table:
 
-> The baseline uses `evaluate.threshold: 0.65` and reports F1 `0.81`, precision `0.78`,
-> and recall `0.84`. Candidate experiments should compare against the same declared
-> parameter surface, metric definition, evaluation population, and governed Git state
-> unless a baseline boundary change is explicitly reviewed.
+| Case | DVC runs? | Comparable? | Promotable now? | Decision |
+| --- | --- | --- | --- | --- |
+| controlled threshold | yes | yes | no decision yet | `KEEP_FOR_PROMOTION_REVIEW` |
+| mixed control change | yes | no | no | `BLOCK_COMPARISON` |
+| mutated baseline contract | yes | no | no | `BLOCK_COMPARISON` |
+| population drift | yes | no | no | `BLOCK_COMPARISON` |
+| metric schema drift | yes | no | no | `BLOCK_COMPARISON` |
+| missing candidate intent | yes | no | no | `BLOCK_COMPARISON` |
+| unsafe promotion request | yes | yes | no | `BLOCK_PROMOTION` |
 
-Evidence to inspect:
+The important correction for many learners is the first column: all seven candidates can
+execute. The defects are in interpretation or authority, not command completion.
 
-- `params.yaml`
-- `metrics/metrics.json`
-- `dvc.lock`
-- published baseline files such as `publish/v1/params.yaml` and `publish/v1/metrics.json`
-- any release or prediction review guide that explains the metric meaning
+`PASS` in the generated summary means each defect was classified as expected. It does not
+mean the blocked candidate passed review.
 
-What would make the baseline no longer clean:
+## Answer 2: Prove the baseline anchor
 
-- uncommitted semantic changes
-- changed data or evaluation population without baseline review
-- metric schema changes that silently alter meaning
+The controlled proof table should contain:
 
-Baseline must be evidence, not memory, because later reviewers need to reconstruct the
-comparison from files rather than from what the original runner remembers.
+| Required fact | Contract claim | Recorded evidence | Match? |
+| --- | --- | --- | --- |
+| threshold | `0.65` | baseline params `0.65` | yes |
+| population ID | `incident-review-v1` | baseline metric population ID | yes |
+| metric schema | `classification-v1` | baseline metric schema | yes |
+| expected metrics | F1 `0.75`, precision `1.0`, recall `0.6` | baseline metrics | yes |
 
-## Answer 2: Scope a candidate
+The mutated case differs only in its current contract threshold claim of `0.60`. The
+recorded baseline still says `0.65`, so `baseline_matches_recorded_contract` fails.
 
-This should usually be separate candidate runs.
+The unchanged Git commit proves that experiment ancestry did not move. It cannot prove
+that an uncommitted contract claim remained honest.
 
-Reasoning:
+A durable repair is to restore the approved contract from governed history. If `0.60`
+really should become authoritative, create and review a new baseline instead of rewriting
+what the old run meant.
 
-- lowering `evaluate.threshold` tests a policy tradeoff
-- switching `fit.model_family` tests a model choice
-- removing weekends changes the evaluation population and may require boundary review
+## Answer 3: Audit the changed paths
 
-What the team loses by combining them too early:
+Model classification:
 
-- clean attribution of which change caused the metric movement
-- a stable interpretation of baseline continuity
-- the ability to promote only one justified change
+| Case | Changed path | Role | Treatment |
+| --- | --- | --- | --- |
+| controlled | `decision.threshold` | planned intervention | continue |
+| mixed | `decision.threshold` | planned intervention | keep in threshold candidate |
+| mixed | `decision.review_capacity` | unrelated policy control | split into another candidate |
+| schema drift | `decision.threshold` | planned intervention | candidate change |
+| schema drift | `evaluation.metric_schema` | comparison control | establish a new baseline |
 
-A defensible combined run exists only if the team explicitly proposes a full policy shift,
-not a clean single-factor comparison.
+The exact allowed set is `["decision.threshold"]`.
 
-## Answer 3: Interpret a candidate table
+“Declared” means a system can observe a value. “Allowed” means the value belongs to the
+predeclared causal question. An extra declared change can still make attribution invalid.
 
-Strong review note:
+## Answer 4: Bound the DVC receipts
 
-> The candidate lowers `evaluate.threshold` from `0.65` to `0.50`. F1 rises from `0.81`
-> to `0.84`, and recall rises from `0.84` to `0.95`. Precision falls from `0.78` to
-> `0.75`. This candidate is promising if the release objective prioritizes reducing missed
-> escalations enough to justify more false positives. It is unattractive if precision
-> stability or operator workload is the stronger business constraint.
+Model receipt table:
 
-The main lesson is to name the tradeoff rather than celebrating the higher F1 alone.
+| Receipt | What it proves | What it cannot prove |
+| --- | --- | --- |
+| candidate run | DVC executed the candidate from available state | stable baseline, population, schema, or policy value |
+| experiment show | DVC recorded and can display experiment revisions and selected values | every row is eligible for one ranking |
+| experiment diff | DVC can expose selected revision differences | every difference belongs to candidate intent |
 
-## Answer 4: Identify what DVC experiments do not prove
+Both controlled and population-drift candidates can have zero return codes. Only the
+population records establish whether the evaluated incident identities are unchanged.
 
-Strong response:
+The precise surrounding claim is:
 
-> DVC experiments help record candidate runs, parameter differences, metrics, and
-> comparison evidence without immediately rewriting main Git history. They do not prove
-> that the candidate is semantically comparable, environmentally stable, aligned with the
-> release objective, or safe to promote. Those questions still require review of baseline,
-> control changes, metric meaning, and release policy.
+> The baseline and candidate contain the same evaluation record IDs under the same
+> population contract.
 
-Example of a well-recorded but non-promotable candidate:
+## Answer 5: Interpret the controlled tradeoff
 
-- a candidate with better recall that changed the evaluation population or metric schema
-  at the same time, making the comparison non-comparable
+Calculations:
 
-## Answer 5: Decide promotion or discard
+```text
+recall delta:    1.0000 - 0.6000 = +0.4000
+precision delta: 0.8333 - 1.0000 = -0.1667
+F1 delta:        0.9091 - 0.7500 = +0.1591
+additional true escalations:  2
+additional false escalations: 1
+```
 
-Before applying the candidate, inspect:
+The candidate exceeds the required recall gain of `0.15` and remains above minimum
+precision `0.60`.
 
-- parameter diff
-- metric diff
-- baseline identity
-- evaluation population evidence
+Recall-oriented note:
+
+> Keep the candidate for promotion review because it recovers two previously missed
+> positive incidents while adding one false escalation, and it remains above the precision
+> safeguard.
+
+Zero-false-positive note:
+
+> Reject promotion under this policy because precision falls below `1.00` and one negative
+> incident is escalated, despite the recall gain.
+
+The strongest audit decision is `KEEP_FOR_PROMOTION_REVIEW`. The audit can verify the
+stated safeguards; it cannot supply organizational authority.
+
+## Answer 6: Diagnose continuity failures
+
+Model table:
+
+| Case | Friendly name | Deeper identity evidence | Change | Why ranking blocks |
+| --- | --- | --- | --- | --- |
+| population drift | `incident-review-v1` remains | record count and ID digest | ninth incident added | cohort differs |
+| metric schema drift | familiar metric keys remain | `metric_schema` | `classification-v1` to `classification-v2` | meaning differs |
+
+A stable label is only a claim. The record digest and schema identifier are evidence that
+the underlying comparison contract stayed continuous.
+
+Population drift needs an approved new cohort identity and baseline result. Schema drift
+needs a defined schema migration, interpretation guide, and new baseline metrics.
+
+## Answer 7: Design bounded repairs
+
+Model repair map:
+
+| Failure | Repair | New evidence |
+| --- | --- | --- |
+| mixed controls | split threshold and capacity questions | separate intents and changed-path sets |
+| mutated baseline contract | restore the approved contract | contract matching recorded baseline |
+| population drift | establish a new population baseline | approved record identity and baseline metrics |
+| metric schema drift | establish a new metric baseline | schema definition and recomputed anchor |
+| missing intent | write intent before rerun | intent, allowed paths, target intervention |
+
+Rerunning only proves the modified state can execute again. It does not restore the old
+population, metric meaning, or experiment question.
+
+## Answer 8: Separate comparison from promotion
+
+Both controlled and unsafe-promotion cases pass:
+
+- baseline contract match
+- candidate intent
+- allowed changed paths
+- intended threshold
+- population continuity
 - metric schema continuity
-- whether unrelated workspace changes exist
+- reproduction
+- tradeoff safeguards
+- unchanged baseline Git commit
 
-After applying the candidate, check:
+Only `promotion_decision_is_recorded` fails in the unsafe request.
 
-- `git diff`
-- `git status`
-- expected updates to `params.yaml`, metrics, lockfiles, or published artifacts
-- no unrelated semantic drift
-- any capstone-specific review path outputs
+Model decision record:
 
-Strong promotion note should include:
+```text
+candidate: threshold 0.50 experiment
+baseline: approved-incident-triage
+decision: approve for governed adoption
+owner: incident policy maintainer
+observed tradeoff: recall +0.40; precision -0.1667
+comparison evidence: controlled-threshold finding and metric records
+reason: recall gain exceeds policy target and precision remains above safeguard
+resulting commit or rejection: record after clean apply and verification
+```
 
-- baseline and candidate identities
-- threshold changed from `0.65` to `0.50`
-- recall improved while precision decreased
-- the release objective prioritizes missed-escalation reduction
-- comparison surfaces remained stable, if verified
-- exact Git state preserved by the promotion commit
+`promotion-request.json` is insufficient because it contains desire without owner,
+reasoning, evidence, or resulting state.
 
-One reason to reject promotion even if recall improved:
+## Answer 9: Plan a safe apply
 
-- the precision loss violates a release safeguard or the comparison packet cannot prove
-  stable metric meaning and population continuity
+Model route:
 
-## Answer 6: Queue a controlled parameter sweep
+1. Before apply, capture `git status --short`, `git diff`, `dvc status`, and candidate
+   diff. Stop if unrelated changes exist.
+2. Apply the candidate, then repeat Git and DVC observations. Stop if changed paths exceed
+   the approved candidate.
+3. Reproduce and run verification. Stop if outputs, safeguards, or continuity evidence
+   differ from review.
+4. Commit only the verified state and attach the commit to the decision record.
 
-A good sweep has:
+The new baseline record needs its governed commit, threshold, population identity and
+digest, metric schema, expected metrics, and decision authority.
 
-- a stated hypothesis
-- bounded parameter values that matter scientifically
-- a table shape with one candidate per row and stable metric columns
+## Answer 10: Retain evidence by decision value
 
-The sweep should be narrow enough that each candidate still teaches something. Wider
-search becomes noise when values are arbitrary or when the team cannot explain why those
-settings belong in the hypothesis space.
+One defensible policy:
 
-## Answer 7: Reproduce one experiment outside the queue
+| Cases | Retention | Minimum evidence | Cleanup trigger |
+| --- | --- | --- | --- |
+| controlled, unsafe promotion | active until decision closes | baseline, candidate, receipts, decision | promotion or rejection recorded |
+| mixed, population, schema, mutated baseline | regression specimens | finding, minimal reproducer, enforcement test | replaced by stronger equivalent coverage |
+| missing intent | decision summary or regression specimen | failed check and repair rule | policy is enforced elsewhere |
 
-The reconstructed run should identify:
-
-- the exact code state
-- the tracked data identity
-- parameter values
-- environment identity
-
-Then it should compare the reproduced metrics with the experiment record.
-
-A mismatch that forces deeper audit is:
-
-- different metrics or artifacts despite matching declared code, data, parameters, and
-  environment, because that suggests either missing evidence or an undeclared influence
-
-## Answer 8: Detect a contaminated baseline
-
-Uncommitted semantic changes blur whether the result belongs to the named baseline or to
-an unrecorded intermediate state. Strong evidence names the dirty paths and shows that the
-candidate is no longer a clean comparison against the last committed baseline.
-
-The repair is not to rename the candidate after the fact. The repair is to:
-
-- commit the intended baseline first, or
-- discard the contaminated run, or
-- isolate unrelated work before rerunning
-
-The main lesson is that provenance breaks at the baseline boundary before it breaks in the
-experiment table.
-
-## Answer 9: Write a promotion review
-
-The note must make the decision reconstructable months later. A strong note names:
-
-- baseline identity
-- candidate identity
-- exact changed controls
-- observed tradeoffs
-- known limitations or open risks
-- the Git revision and promoted files that preserve the chosen state
-
-Rejection is appropriate when:
-
-- the gain violates safeguards
-- the candidate changes too many semantic surfaces at once
-- evidence is incomplete
-- the candidate cannot be reproduced independently
-
-## Answer 10: Manage experiment retention
-
-Strong retention policy:
-
-- disposable: keep only short-lived learning notes; cleanup is allowed quickly
-- reproducible: retain semantic inputs, metric outputs, and enough metadata to rerun
-- decision-relevant: also retain comparison rationale and baseline linkage
-- release-relevant: retain durable artifacts, provenance, and recovery evidence
-
-Why this matters:
-
-- not every experiment deserves long-term weight, but important decisions become
-  unreviewable if the key evidence is cleaned away too early
+Another policy may retain every case as executable course proof. The invariant is that
+promotion lineage and regression enforcement must survive cleanup; bulky exploratory
+outputs need not.
 
 ## Self-check
 
@@ -252,5 +268,7 @@ If your answers consistently explain:
 - what DVC experiment evidence can and cannot prove
 - which tradeoffs matter for selection
 - why promotion needs applying, inspecting, and committing a defensible state
+- where comparison stops before ranking
+- why promotion authority is separate from valid candidate evidence
 
 then you are using Module 06 correctly.
