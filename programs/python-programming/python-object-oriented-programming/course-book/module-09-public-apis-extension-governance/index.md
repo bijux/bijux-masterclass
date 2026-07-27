@@ -1,6 +1,5 @@
 # Module 09: Public APIs, Extension Seams, and Governance
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,57 +24,92 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+This module is about deciding what other people may safely depend on.
 
-Long-lived Python systems need more than internal cleanliness. They need clear public
-entrypoints, stable extension seams, and governance around what may change without
-breaking consumers. This module treats extensibility as a disciplined contract.
+That sounds administrative until you name the real risk:
 
-Keep one question in view while reading:
+> A codebase becomes harder to evolve the moment consumers learn to rely on the wrong
+> layer.
 
-> What is the narrowest surface that can be made public without letting consumers or plugins reach past the intended ownership boundary?
+Module 09 teaches how to stop that from happening before "helpful reuse" turns into an
+accidental permanent contract.
 
-That question is what keeps extensibility from turning into unmanaged surface area.
+## The public-surface question for this module
+
+Keep one capstone pressure route visible while you read:
+
+1. an external caller wants to create or review workshop enrollment outcomes
+2. another team wants to add a custom incident sink or notification integration
+3. documentation examples begin teaching import paths to those consumers
+
+The core question is:
+
+Which surface should become public, which seam should become replaceable, and which
+internal module must stay free to move?
+
+If you cannot answer that, you do not yet have API governance. You only have imports.
+
+## What this module is really trying to prevent
+
+Late in a course, students often assume public API work means adding flexibility.
+
+More often it means refusing the wrong flexibility:
+
+- refusing deep-import convenience
+- refusing to publish helper modules as though they were stable
+- refusing to call an ungoverned callback hook a plugin architecture
+- refusing to promise compatibility without executable proof
+
+Governance begins with narrowing, not widening.
+
+## Running capstone seam
+
+Use `service_monitoring.application` as the main review target.
+
+Ask of that surface:
+
+- what should a consumer start from?
+- what should an extension author receive as a capability seam?
+- what should remain private even if Python technically allows import?
+
+If you keep that one surface in view, the rest of the module stops sounding abstract.
 
 ## Preflight
 
-- You should already be able to explain ownership boundaries before deciding what may become public or extensible.
-- If facades, plugins, and compatibility guarantees still blur together, keep the capstone package boundary visible while reading.
-- Treat every extension point as a governance cost, not as free optionality.
+Before going further, you should already be able to:
 
-## Learning outcomes
+- explain which objects own domain truth
+- distinguish internal coordination from a public contract
+- describe one workflow without relying on file-layout accidents
 
-- define the narrowest public surface that preserves object ownership and consumer clarity
-- distinguish facades, capability-based seams, plugins, and internal modules by governance cost
-- design deprecation, compatibility, and executable documentation policies that keep examples honest
-- review extension mechanisms without letting consumers mutate internals directly
+If those are still fuzzy, Module 09 will feel like vocabulary instead of design.
 
-## Why this module matters
+## What you should be able to do by the end
 
-Without API discipline, object-oriented systems decay in familiar ways:
+By the end of this module, you should be able to:
 
-- internal modules become accidental public dependencies
-- plugins reach past extension points into private state
-- examples and docs drift away from executable reality
-- deprecations are announced but not enforced
+- define a narrow public facade without leaking internal layout
+- choose a capability seam without accidentally inventing a full plugin ecosystem
+- govern deprecation and compatibility with executable evidence
+- review examples and docs as part of the public contract rather than as optional prose
+- keep extension enthusiasm from weakening ownership boundaries
 
-This module teaches how to create room for customization without turning the codebase
-into an ungoverned surface area.
+## Read this module as one governance review day
 
-## Main questions
+Use the pages in this order:
 
-- What should count as the public API of a Python program or library?
-- How do capability protocols and facades create safer extension points?
-- When is plugin support worth the extra governance cost?
-- How should versioning, deprecation, and compatibility suites be handled?
-- Which review and architectural controls keep extension seams honest?
+1. public facades and entrypoints
+2. capability seams
+3. plugin registration and sandboxing
+4. deprecation and executable documentation
+5. import-boundary review
+6. compatibility suites
+7. architectural decision records and change control
+8. the refactor page
+9. the exercises and answer packet
 
-## Reading path
-
-1. Start with facades, public surface area, and capability-based extension points.
-2. Then study plugin design, deprecation policy, and executable documentation.
-3. Finish with import discipline, review governance, and compatibility suites.
-4. Use the refactor chapter to expose a clean capstone API without leaking internals.
+That order matters because you should not debate plugins or versioning before the
+public surface itself is clear.
 
 ## Lesson map
 
@@ -93,64 +127,56 @@ into an ungoverned surface area.
 
 ## Keep these support surfaces open
 
-- `../guides/proof-matrix.md` when you want the public-surface promise tied to evidence.
-- `../guides/pressure-routes.md` when the real problem is seam ownership rather than public API vocabulary.
-- `../reference/self-review-prompts.md` when you want to test whether a seam deserves publication or should stay private.
+- `../guides/proof-matrix.md` when you want a public promise tied to executable proof
+- `../guides/pressure-routes.md` when a proposed extension seam feels larger than the
+  actual customization need
+- `../reference/self-review-prompts.md` when you need a short governance question
+  before widening a supported surface
 
-## Public surface review route
+## One study route through the capstone
 
-1. Read `src/service_monitoring/application.py`.
-2. Compare it with [Capstone File Guide](../capstone/capstone-file-guide.md) and [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md).
-3. Use [Command Guide](../capstone/command-guide.md) and the saved review routes to decide which promises are public enough to defend.
+Take this route if the module starts feeling too broad:
 
-This route keeps one governance question visible: a public surface is not simply the code
-other people can import. It is the narrow surface you are prepared to document, version,
-review, and prove repeatedly.
+1. open the current facade or application entry surface
+2. mark what a consumer would reasonably expect to stay stable
+3. mark what an extension author would need to customize safely
+4. mark what only exists because of current internal layout
+5. compare those decisions with the lesson pages and exercise packet
 
-## Questions to settle before calling a seam public
+That route forces you to separate support promises from implementation reachability.
 
-- Would a consumer need this seam because of the domain contract, or only because the current file layout is convenient?
-- Which extension belongs at the facade or capability boundary instead of deep internal imports?
-- Which proof or walkthrough route would show another reviewer that this surface is intentionally supported?
+## Questions to keep explicit
+
+- Which import path is merely possible, and which one are we actually prepared to
+  document, version, and review?
+- Which customization request needs one narrow capability seam rather than a full plugin
+  host?
+- Which compatibility claim would fail immediately if we had to prove it this week?
+- Which example is teaching consumers the wrong dependency path?
 
 ## Common failure modes
 
-- importing deep internal modules because they happen to be convenient today
-- publishing extension hooks before lifecycle and ownership rules are clear
-- letting examples rot because nobody treats them as executable promises
-- claiming backward compatibility while removing behavior informally
-- allowing plugins to mutate domain internals directly
-
-## Exercises
-
-Use the full exercise day rather than treating these as quick prompts:
-
-- [Exercises](exercises.md)
-- [Exercise Answers](exercise-answers.md)
-
-The exercise day turns the module into one complete governance review route:
-public-surface selection, extension-seam discipline, deprecation and compatibility
-rules, executable documentation, and import-boundary enforcement.
-
-## Capstone connection
-
-The monitoring capstone can remain a closed study system or evolve into a reusable
-package surface. This module shows how to add a facade, documented extension points,
-and governance around plugins and integrations without weakening aggregate boundaries.
+- calling a reachable module "public" because people already import it
+- publishing extension hooks before authority boundaries are stable
+- discussing deprecation without a migration route or executable examples
+- claiming plugin support when the real need is one replaceable adapter
+- promising compatibility without a suite that would catch drift first
 
 ## Honest completion signal
 
-You are ready to move on when you can choose one capstone seam and explain:
+You are ready to move on when you can take one capstone seam and explain:
 
-- whether it should stay private or become public
-- which governance rule makes that choice durable
-- which evidence route would fail first if consumers started depending on the wrong layer
+- whether it should stay private, become public, or become replaceable
+- which governance cost comes with that choice
+- which proof route should fail first if another team starts depending on the wrong
+  layer
 
 ## Closing criteria
 
-You should finish this module able to define and defend a public object-oriented Python
-surface that supports customization, versioned change, and reviewable extension rules.
+You should finish this module able to publish the narrowest honest surface for an
+object-oriented Python system and to defend that surface against accidental widening.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Glossary](glossary.md) when you want the module's governance language kept stable
+while you move between the lessons, refactor page, exercises, and capstone review.
