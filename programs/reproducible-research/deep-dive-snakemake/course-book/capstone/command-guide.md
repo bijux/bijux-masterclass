@@ -78,7 +78,7 @@ are often better for learning and review.
 | first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
 | one executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
 | publish-boundary verification | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
-| execution-policy comparison | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | random `make PROGRAM=...` exploration |
+| execution-policy invariance | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-context-invariance-audit` | comparing profile YAML without plans or artifacts |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
 
 ## One honest command decision
@@ -100,7 +100,8 @@ job you just named.
 | You need a bounded first read. | `capstone-walkthrough` | it keeps repository orientation smaller than execution proof |
 | You want one executed workflow story. | `capstone-tour` | it gives real evidence without jumping to the strongest route |
 | You care about downstream trust. | `capstone-verify-report` | publish review is narrower than whole-repository confirmation |
-| You suspect local and CI are diverging. | `capstone-profile-audit` | context drift should start at the policy surface |
+| You suspect local and CI are diverging semantically. | `capstone-context-invariance-audit` | the paired specimen proves both preservation and rejection |
+| You need the capstone's real profile files packaged together. | `capstone-profile-audit` | profile inventory is narrower than semantic equivalence proof |
 
 ## Repository-root commands
 
@@ -121,6 +122,8 @@ surface.
 - `make capstone-tour`
 - `make proof`
 - `make capstone-profile-audit`
+- `make capstone-context-invariance-audit`
+- `make capstone-context-invariance-selftest`
 - `make capstone-confirm`
 
 ## Capstone-directory commands
@@ -132,6 +135,8 @@ Use `capstone/` when you want the raw reference workflow.
 - `make tour`
 - `make verify-report`
 - `make profile-audit`
+- `make context-invariance-audit`
+- `make context-invariance-selftest`
 - `make confirm`
 
 ## Good stopping point

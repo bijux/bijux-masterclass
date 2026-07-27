@@ -67,7 +67,7 @@ flowchart TD
 | 2 | how does the repository behave through one executed story | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | one real run with saved evidence |
 | 3 | does the workflow still execute and defend ordinary repository health | `make PROGRAM=reproducible-research/deep-dive-snakemake test` | normal health questions rather than publish or stewardship review |
 | 4 | do I need saved publish-contract evidence I can inspect later | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | downstream trust and durable review bundles |
-| 5 | do I need to compare local, CI, and scheduler policy surfaces | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | context drift and policy-boundary questions |
+| 5 | do I need to prove local, CI, and scheduler policy preserves meaning | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-context-invariance-audit` | context drift and policy-boundary questions |
 | 6 | do I need the sanctioned maintainer-grade review route | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | repeatable stewardship review |
 | 7 | do I need the strongest clean-room confirmation pass | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | major-change confirmation or strongest final check |
 
@@ -91,7 +91,7 @@ flowchart TD
 | I need one executed workflow story with saved evidence. | `capstone-tour` |
 | I need to know whether the repository still works normally. | `test` |
 | I need durable publish-contract evidence, not terminal scrollback. | `capstone-verify-report` |
-| I need to review execution-policy differences across contexts. | `capstone-profile-audit` |
+| I need to review execution-policy invariance across contexts. | `capstone-context-invariance-audit` |
 | I need the full review route another maintainer could repeat. | `proof` |
 | I need the strongest confirmation before a major change. | `capstone-confirm` |
 
@@ -101,7 +101,7 @@ flowchart TD
 | --- | --- | --- |
 | I think publish output is too large. | `capstone-verify-report` | a clean-room confirmation adds weight, not clarity, to a publish-boundary question |
 | I do not understand what the capstone even builds. | `capstone-walkthrough` | `test` and `proof` assume more orientation than you currently have |
-| CI and local runs disagree. | `capstone-profile-audit` | a generic tour may hide the policy difference you actually need |
+| CI and local runs disagree semantically. | `capstone-context-invariance-audit` | a generic tour may hide the policy difference you actually need |
 | I need to know whether discovery is still explicit. | `capstone-tour` | `capstone-confirm` answers a broader stewardship question than the discovery claim |
 
 ## Bad escalation habits

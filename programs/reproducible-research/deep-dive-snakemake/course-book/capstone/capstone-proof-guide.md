@@ -64,7 +64,8 @@ flowchart TD
 | repository shape without execution | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `capstone-tour` |
 | executed workflow behavior | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `proof` |
 | publish-boundary trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `capstone-confirm` |
-| execution-policy differences | [Capstone Architecture Guide](capstone-architecture-guide.md) or `capstone-profile-audit` | `proof` |
+| execution-policy invariance | `capstone-context-invariance-audit` | `capstone-context-invariance-selftest` |
+| real profile inventory | [Capstone Architecture Guide](capstone-architecture-guide.md) or `capstone-profile-audit` | `capstone-context-invariance-audit` |
 | steward-level confidence | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `capstone-confirm` |
 
 ## Good proof habits
@@ -81,7 +82,7 @@ flowchart TD
 | I need to see whether discovery is explicit. | `capstone-tour` | `capstone-confirm` adds stewardship weight before the discovery question is settled |
 | I need to review what downstream users may trust. | `capstone-verify-report` | a broader proof pass is worse than a publish-specific route for contract questions |
 | I need a maintainer-grade review route. | `proof` | `capstone-walkthrough` is too light once the question is explicitly stewardship-level |
-| I need to compare local and CI policy safely. | `capstone-profile-audit` | a generic execution tour may hide the specific policy boundary at issue |
+| I need to prove local and CI retain one workflow meaning. | `capstone-context-invariance-audit` | a profile inventory alone cannot reject semantic drift |
 
 ## One honest proof decision
 
