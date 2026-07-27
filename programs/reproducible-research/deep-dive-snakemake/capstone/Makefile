@@ -24,6 +24,7 @@ WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-
 TOUR_DIR      ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-snakemake
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-snakemake/verify
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/profile
+MODULE_INTERFACE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/module-interfaces
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -39,6 +40,7 @@ WALKTHROUGH_DIR_ABS := $(abspath $(WALKTHROUGH_DIR))
 TOUR_DIR_ABS      := $(abspath $(TOUR_DIR))
 MANIFEST_ABS      := $(abspath $(MANIFEST))
 PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
+MODULE_INTERFACE_AUDIT_DIR_ABS := $(abspath $(MODULE_INTERFACE_AUDIT_DIR))
 TOOLS_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake/capstone
 TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
@@ -60,7 +62,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	wf-lint wf-dryrun wf-run dag rulegraph \
 	validate-config verify-artifacts walkthrough tour \
 	publish-summary profile-summary config-summary results-summary evidence-summary \
-	verify-report profile-audit \
+	verify-report profile-audit module-interface-audit module-interface-selftest \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
 
@@ -243,6 +245,33 @@ profile-summary: profile-audit ## Write a compact comparison of local, CI, and S
 		--out "$(PROFILE_AUDIT_DIR)/profile-summary.json"
 	@echo "✔ wrote profile summary to $(PROFILE_AUDIT_DIR)/profile-summary.json"
 
+module-interface-audit: ## Compare explicit and hidden module interface contracts
+	rm -rf "$(MODULE_INTERFACE_AUDIT_DIR_ABS)"
+	mkdir -p "$(MODULE_INTERFACE_AUDIT_DIR_ABS)"
+	cp -R repro/module-interfaces "$(MODULE_INTERFACE_AUDIT_DIR_ABS)/specimens"
+	$(PYTHON) scripts/audit_module_interfaces.py \
+		--specimens repro/module-interfaces \
+		--workspace "$(MODULE_INTERFACE_AUDIT_DIR_ABS)/workspace" \
+		--output "$(MODULE_INTERFACE_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)"
+	cp docs/module-interface-audit-guide.md "$(MODULE_INTERFACE_AUDIT_DIR_ABS)/MODULE_INTERFACE_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(MODULE_INTERFACE_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Module interface audit route:' \
+		'  1. Read MODULE_INTERFACE_AUDIT_GUIDE.md for PASS semantics.' \
+		'  2. Read summary.tsv and quote each finding with its result.' \
+		'  3. Compare caller and module Snakefiles under specimens/.' \
+		'  4. Compare list-rules, dry-run, and execution traces.' \
+		'  5. Inspect artifact meaning and candidate residue in report.json.' \
+		'  6. Use PROOF_GUIDE.md only if the review claim expands.' > "$(MODULE_INTERFACE_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(MODULE_INTERFACE_AUDIT_DIR_ABS)" \
+		--output "$(MODULE_INTERFACE_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote module interface audit to $(MODULE_INTERFACE_AUDIT_DIR_ABS)"
+
+module-interface-selftest: ## Reject dishonest module interface evidence
+	$(PYTEST) -q tests/test_module_interface_audit.py
+
 config-summary: verify ## Write a compact summary of the materialized workflow configuration
 	@mkdir -p "$(VERIFY_REPORT_DIR)"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
@@ -278,11 +307,11 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
-confirm: clean purge-dsstore ci verify ## Clean-room confirmation (strict)
+confirm: clean purge-dsstore ci module-interface-audit module-interface-selftest verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
-proof: tour verify-report profile-audit ## Run the sanctioned learner-facing proof route
+proof: tour verify-report profile-audit module-interface-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p \
