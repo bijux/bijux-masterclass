@@ -44,6 +44,12 @@ That is the minimum professional bar.
 If a team cannot describe the rollback path in one paragraph, the dynamic behavior is
 already too magical.
 
+For self-study, turn that sentence into a runtime audit:
+
+- what exact behavior changed?
+- what surface tells me it changed?
+- what one step restores baseline state if I need to back out now?
+
 ## Evidence route for observability and reversibility reviews
 
 Use this route for wrappers, registries, patches, and tracing layers:
@@ -195,6 +201,17 @@ The point is not that every patch is forbidden. The point is that blast radius m
 | shared library or standard-library symbol | high review bar because unrelated callers may change too |
 | builtins or process-wide default behavior | usually reject outside exceptional tooling or emergency control cases |
 
+## Rollback worksheet
+
+Use this worksheet before you approve a wrapper, patch, or registry change:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what symbol or state changed? | one named callable, attribute, registry, or module surface |
+| how is the change observed? | metadata, trace output, manifest, log line, or explicit inspection API |
+| how is it reversed? | context exit, reset hook, disable flag, or restore function |
+| what scope pays the cost? | one function, one module, one process, or one hot path |
+
 ## Context-managed patches are the minimum acceptable pattern
 
 ```python
@@ -258,6 +275,20 @@ print(timeit.timeit("wrapped(1)", globals=globals(), number=200000))
 
 The result does not need to be dramatic to matter. What matters is that the design states
 whether the path is hot and what overhead was observed.
+
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "the wrapper is transparent enough" | enough does not name preserved evidence or hidden cost |
+| "the patch is temporary" | temporary does not define a rollback path |
+| "the registry is tiny" | tiny global state still needs reset and inspection surfaces |
+| "performance should be fine" | should is not measurement or a named cold-path claim |
+
+Before you leave this page, write one sentence beginning:
+
+- "the observation surface here is..."
+- "the rollback surface here is..."
 
 ## Failure modes to name explicitly
 
