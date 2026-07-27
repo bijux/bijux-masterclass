@@ -1,6 +1,5 @@
 # ORMs, Identity Maps, and Session Boundaries
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,88 +24,170 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-ORMs are useful tools, but they become dangerous when their session model silently takes
-over object identity, loading rules, and transaction boundaries. This page explains how
-identity maps and sessions interact with domain design so persistence does not quietly
-become the real architecture of the system.
+ORMs are useful, but they teach dangerous habits when students mistake framework session
+behavior for domain truth.
 
-## Why this topic matters
+An ORM may provide:
 
-Many object-oriented Python systems degrade here:
+- identity tracking
+- lazy loading
+- change detection
+- session-scoped caching
 
-- the ORM model becomes the domain model
-- identity is controlled by the session instead of the aggregate boundary
-- lazy loading hides I/O behind ordinary-looking attribute access
-- writes happen because objects were touched, not because a use case decided to commit
+Those can be helpful implementation tools. They should not silently redefine:
 
-If the course does not address this directly, it leaves one of the biggest real-world
-corruption paths under-taught.
+- what object identity means in the domain
+- when state is authoritative
+- which boundaries own lifetime and mutation
 
-## Identity map: useful and dangerous
+This lesson exists to keep framework behavior from becoming accidental business meaning.
 
-An identity map ensures that one session returns the same in-memory object for the same
-stored identity. That can reduce duplication and support change tracking.
+## What an identity map does
 
-But it also creates design pressure:
+An identity map is a session-level mechanism that ensures one in-memory representation is
+used for one persisted identity within that session.
 
-- equality and identity can look “correct” only inside one session
-- hidden mutation can become coupled to session lifetime
-- tests may pass only because session behavior masks poor aggregate boundaries
+That can help with:
 
-The identity map is a persistence convenience, not the definition of domain identity.
+- avoiding duplicate loads of the same row
+- tracking changes coherently inside one persistence boundary
 
-## Session boundary
+But it is still a persistence mechanism, not a universal statement about object
+identity.
 
-A session answers questions like:
+Students need to understand that "the ORM returned the same Python object" is not the
+same claim as "the domain defines identity this way."
 
-- how long does loaded state stay attached?
-- when do writes become durable?
-- who is allowed to lazy-load related state?
+## Session lifetime is a boundary, not a convenience detail
 
-If those rules are unclear, repository and unit-of-work contracts become performative.
+A session often owns:
 
-## Lazy loading is not free
+- database conversation state
+- loaded entity tracking
+- pending writes
+- lazy-loading context
 
-Lazy loading can be useful, but it changes the object contract:
+That means session lifetime changes what code can do safely.
 
-- attribute access may perform I/O
-- iteration over relationships may depend on open session state
-- detached objects may fail in surprising places
+If the session is too broad:
 
-That does not mean lazy loading is always wrong. It means it must remain visible at the
-boundary and never be mistaken for ordinary in-memory behavior.
+- hidden coupling grows
+- stale state lives longer
+- accidental write boundaries blur
 
-## A sane boundary rule
+If the session is too implicit:
 
-Use this split:
+- callers may not know when objects are still attached
+- lazy loads may appear far from the original boundary
+- mutation may occur outside the intended unit of work
 
-- repositories and mappers manage session and record translation
-- aggregates remain domain objects with explicit invariants
-- unit of work defines commit scope
-- query models handle read-heavy or projection-heavy paths
+That is why session boundaries must stay explicit in teaching material.
 
-That way the ORM stays an implementation tool instead of becoming the dominant model.
+## ORM identity is not domain identity
 
-## What to review in ORM-heavy code
+A domain may define identity through:
 
-- Can you tell where the session begins and ends?
-- Are aggregates still authoritative, or are ORM entities carrying accidental domain logic?
-- Does any innocent-looking property access trigger hidden I/O?
-- Are detached, stale, or conflicting writes handled explicitly?
+- a stable rule identifier
+- a policy identifier
+- a semantic aggregate boundary
 
-## Practical guidelines
+An ORM may define session attachment through internal object identity and tracking rules.
 
-- Keep session lifetime short and explicit.
-- Treat identity-map behavior as a persistence concern, not a domain guarantee.
-- Avoid lazy-loading surprises on hot paths or public APIs.
-- Prefer explicit mapping or repository seams when the ORM model wants to leak inward.
+Those are different layers of meaning.
 
-## Exercises for mastery
+Confusing them leads to design mistakes such as:
 
-1. Review one ORM-backed design and mark where session lifetime is visible versus hidden.
-2. Identify one place where lazy loading changes the apparent object contract.
-3. Rewrite one persistence boundary so the repository returns an aggregate or explicit read model instead of raw ORM entities.
+- assuming attached objects are authoritative outside the session
+- treating ORM attachment as if it were the domain's lifecycle rule
+- letting session presence determine how the domain API is used
+
+## Lazy loading changes apparent behavior
+
+Lazy loading is one of the biggest sources of hidden persistence behavior.
+
+From the caller's point of view, it may look like an ordinary attribute access. In
+reality it may:
+
+- trigger I/O
+- fail because the session is closed
+- return different behavior depending on attachment state
+
+That hidden cost and hidden failure path can make a supposedly pure domain interaction
+depend on persistence timing.
+
+Students should learn to treat lazy loading as a boundary decision, not as harmless
+magic.
+
+## Keep persistence mechanics from leaking inward
+
+A strong design tries to prevent the domain model from depending directly on:
+
+- session attachment state
+- lazy-loaded incidental relationships
+- ORM-specific mutation semantics
+- implicit flush timing
+
+The repository or mapping boundary should absorb as much of that persistence machinery as
+possible before domain code sees the object again.
+
+## Session boundaries should align with work boundaries
+
+A useful default is to align session lifetime with the same kind of boundary that owns
+the unit of work:
+
+- start a bounded persistence conversation
+- load and modify authoritative aggregates
+- commit or rollback deliberately
+- end the session
+
+This keeps persistence lifetime, change lifetime, and failure lifetime closer together.
+
+The exact tooling can differ, but the principle is what students need to keep.
+
+## Common mistakes
+
+- treating ORM-managed instances as if they were safe to use anywhere
+- letting lazy loading hide I/O in domain behavior
+- holding sessions open too broadly because it seemed convenient
+- equating session identity with domain identity
+- letting implicit flush or attachment rules decide business-facing behavior
+
+These mistakes make persistence mechanics look like object semantics.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is session lifetime explicit and bounded? | yes |
+| is ORM identity kept distinct from domain identity? | yes |
+| are lazy-loading costs and failure modes kept visible? | yes |
+| does the design stop persistence mechanics from redefining domain behavior? | yes |
+
+## Capstone connection
+
+The capstone's in-memory model does not use a full ORM, which is a teaching advantage.
+
+Use that simplicity to ask:
+
+- if an ORM were introduced, which boundaries should still remain explicit?
+- where would identity tracking help, and where would it distort the design?
+- which behaviors must stay pure domain decisions instead of becoming session side effects?
+
+Those questions make the future persistence upgrade safer before the framework is even
+added.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain what an identity map solves without confusing it with domain identity
+- describe why session lifetime is part of the design contract
+- identify one way lazy loading can distort the apparent object model if left unchecked
