@@ -38,6 +38,8 @@ first.
 | checkpoint discovery is explicit rather than magical | `make walkthrough` | [Walkthrough Guide](walkthrough-guide.md), `Snakefile`, `discovered_samples.json` after execution |
 | the published boundary is stable and reviewable | `make verify-report` | [File API](file-api.md), `verify.json`, `manifest.json`, `provenance.json` |
 | profile differences stay operational instead of semantic | `make profile-audit` | `profiles/*/config.yaml`, dry-run comparisons, [Profile Audit Guide](profile-audit-guide.md) |
+| module callers own config scope, paths, and artifact policy | `make module-interface-audit` | [Module Interface Audit Guide](module-interface-audit-guide.md), paired callers, report, and traces |
+| module evidence rejects broad or incomplete contracts | `make module-interface-selftest` | seven acceptance, rejection, and isolation tests |
 | the workflow stays deterministic across core counts | `make selftest` | `tests/selftest.sh`, published summaries under `publish/v1/` |
 | executed evidence can be reviewed in one place | `make tour` | `run.txt`, `summary.txt`, published artifacts, [TOUR.md](tour.md) |
 | one sanctioned multi-bundle proof route exists | `make proof` | `tour`, `verify-report`, and `profile-audit` bundles |
@@ -48,6 +50,8 @@ first.
 - choose `walkthrough` for first contact
 - choose `verify-report` for publish-boundary trust
 - choose `profile-audit` for policy and executor questions
+- choose `module-interface-audit` for `module` and `use rule` ownership questions
+- choose `module-interface-selftest` when the question is whether that gate rejects dishonesty
 - choose `selftest` for determinism questions
 - choose `tour` for executed evidence
 - choose `proof` only when one review question now spans several bundles
