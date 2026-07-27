@@ -113,17 +113,19 @@ Do not retain a raw environment dump without reviewing it for secrets.
 
 ## Exercise 3: Establish controlled cost baselines
 
-The answer key cannot supply your values. It can show a defensible summary:
+The answer key cannot supply your values. It can show how to audit the bundle before
+interpreting them.
 
-| Route | State | Job count | Samples | Median | Range |
-| --- | --- | ---: | ---: | ---: | ---: |
-| `all` | clean | 4 | 5 | your value | min-max |
-| `all` | confirmed no-op | inherited/default | 5 | your value | min-max |
-| `-n all` | confirmed converged | inherited/default | 5 | your value | min-max |
+| Scenario | Policy evidence | Raw evidence | Semantic evidence |
+| --- | --- | --- | --- |
+| `clean-build` | `clean`, `-j4`, `all` | five elapsed samples and command log | convergence plus trusted-output inventory |
+| `converged-noop` | `converged`, `-j1`, `all` | five elapsed samples and command log | convergence plus trusted-output inventory |
+| `converged-dry-run` | `converged`, `-j1`, `dry-run-all` | five elapsed samples and command log | convergence plus trusted-output inventory |
 
-Keep the raw `real`, `user`, and `sys` lines. State which value you compare; wall-clock
-`real` is normally the first local feedback metric, while user and system time can help
-explain CPU or kernel work.
+The exact sample count comes from `evidence.json`; five is the default, not a fact to copy
+without checking. Recalculate one median from the raw elapsed values and confirm it matches
+`summary.tsv`. Then verify that every exit status is zero, convergence is `PASS`, and the
+inventory names the expected outputs.
 
 Example reasoning:
 
@@ -138,7 +140,8 @@ recipe execution.
 
 Still unknown:
 Which clean-build recipe lies on the critical path and whether current values regress from
-an earlier controlled baseline.
+an earlier compatible baseline. Background load and cache state also remain imperfectly
+controlled.
 
 Decision:
 Record the current baseline. Do not claim a regression. Profile a recipe only if an
@@ -146,7 +149,10 @@ operational objective makes clean-build cost worth reducing.
 ```
 
 A weak answer subtracts one dry-run value from one clean value and calls the result recipe
-time. The states and samples are not precise internal instrumentation.
+
+Another weak answer submits only `summary.tsv`. Without policy, raw samples, command logs,
+convergence, and output inventories, a reviewer cannot tell whether the route asked the
+same question or became faster by doing less necessary work.
 
 ## Exercise 4: Choose observability by question
 
@@ -183,6 +189,9 @@ A defensible `trace-count` decision is "keep as a heuristic guardrail" when:
 - selftest uses the threshold as a review signal rather than universal performance truth
 
 Line count alone cannot show whether evidence is understandable.
+
+It also cannot replace `perf`. The performance bundle answers cost and semantic-preservation
+questions. `trace-count` answers only how many lines one trace emitted from one state.
 
 ## Exercise 5: Generate and preserve a parallel incident
 
@@ -267,6 +276,18 @@ the merge recipe must define it.
 
 ## Exercise 7: Write a falsifiable tuning proposal
 
+`performance-selftest` should pass thirteen tests in the current capstone. The number is
+less important than the behavior covered. Two essential rejection explanations are:
+
+- policy drift is rejected because two scenario names can hide different state, route, or
+  scheduling questions
+- trusted-output drift is rejected because reduced work is not a valid speedup when artifact
+  meaning changed
+
+Other valid cases include failed capture, too few samples, different sample counts, and a
+failed candidate bundle. A learner should be able to explain the dishonest claim each gate
+prevents.
+
 The best answer may reject change:
 
 ```text
@@ -288,7 +309,8 @@ If your measurements reveal a real candidate, the proposal must include:
 
 | Proof obligation | Example |
 | --- | --- |
-| cost | same state and five before/after samples |
+| cost | compatible governed bundles with every raw sample retained |
+| experiment identity | matching policy digest, sample count, state, route, and job count |
 | critical path | graph shows the changed work delays requested completion |
 | requested work | change a declared input and inspect selected work |
 | convergence | successful run followed by successful `make -q` |
@@ -299,6 +321,11 @@ If your measurements reveal a real candidate, the proposal must include:
 An unsafe optimization is removing a prerequisite to suppress rebuilds. A cache introduces
 a new question: which declared inputs refresh the cached value, including additions,
 removals, policy changes, and producer changes?
+
+A passing `performance-compare` report establishes comparability, semantic equivalence for
+the inventoried outputs, and timing deltas. It does not establish materiality. The decision
+still needs the observed spread, a local operational objective, and any change-specific
+requested-work proof outside the generic bundle.
 
 ## Exercise 8: Audit the capstone proof route
 
