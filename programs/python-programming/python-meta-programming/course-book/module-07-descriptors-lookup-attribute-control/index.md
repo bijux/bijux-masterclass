@@ -58,6 +58,18 @@ You should also be able to say what this module does not prove automatically:
 - that annotation-driven field systems are automatically safe because they are class-level
 - that lookup weirdness is acceptable just because the protocol can explain it afterward
 
+## Weak answers to reject early
+
+Do not let the module collapse into any of these:
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "Python just knows to call the descriptor." | the protocol and lookup order disappeared from the explanation |
+| "the descriptor stores the value for the field." | storage ownership stays vague, which is where shared-state bugs begin |
+| "properties and descriptors are basically the same thing." | one-attribute boundaries and real reuse pressure are being blurred together |
+| "precedence explains it, so the design is fine." | mechanical lookup is not a defense for a subtle or hostile API |
+| "a reusable field is automatically worth a descriptor." | reuse has to be real enough to justify the stronger owner |
+
 ## Keep these pages open
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md)
@@ -80,6 +92,18 @@ Read the module in this order if you are studying without an instructor present:
 | [Exercises](exercises.md) | can I narrate lookup, storage, and ownership without mystical language? |
 | [Exercise Answers](exercise-answers.md) | is my reasoning explicit about precedence, state ownership, and rejected stronger tools? |
 | [Glossary](glossary.md) | am I using descriptor vocabulary consistently and precisely? |
+
+## Session route for independent learners
+
+Use this route if you are studying without live demos or instructor walkthroughs:
+
+| Session block | What to produce before moving on |
+| --- | --- |
+| protocol hooks plus precedence | one lookup trace that names the winning step mechanically |
+| method binding plus reusable field storage | one note separating binding behavior from storage ownership |
+| ownership boundaries | one ladder judgment rejecting both a weaker and a stronger owner |
+| worked example | one proof note naming the canonical storage surface and one refused broader claim |
+| exercises plus answers | one descriptor-boundary packet another learner could inspect without reopening the full module |
 
 ## The ten files in this module
 
@@ -133,6 +157,18 @@ Weak answers usually sound like one of these instead:
 - "properties and descriptors are basically the same" without naming reuse pressure
 - "the framework field is magic" without tracing the hooks or storage owner
 
+## Evidence packet to build while you learn
+
+Keep one packet beside the module as you work:
+
+| Surface | What to record |
+| --- | --- |
+| protocol note | one minimal descriptor and the smallest honest hook set |
+| precedence note | one traced comparison between data-descriptor and non-data-descriptor lookup |
+| binding note | one inspected bound method with `__func__` and `__self__` |
+| storage note | one explicit per-instance storage owner and one rejected broken storage pattern |
+| ownership note | one sentence rejecting a descriptor in favor of a lower-power owner |
+
 ## Learning outcomes
 
 By the end of this module, you should be able to:
@@ -152,6 +188,17 @@ Pause and repair your understanding if you catch yourself doing any of these:
 - storing field values on the shared descriptor object and calling it a shortcut
 - using a descriptor where one property on one class would already be clearer
 - appealing to precedence to defend a subtle API instead of simplifying the design
+
+## Review packet standard
+
+By the end of the module, your notes should let another learner answer all of these
+without guessing:
+
+- what exact attribute boundary is being owned
+- which lookup step or hook decides the outcome
+- where per-instance state actually lives
+- which lower-power owner was rejected and why
+- which stronger mechanism was also rejected because the need did not justify it
 
 ## Evidence packet to build while you learn
 
