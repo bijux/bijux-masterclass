@@ -1,0 +1,14 @@
+stages:
+  summarize_incidents:
+    cmd: >-
+      python3 scripts/summarize_incidents.py
+      --input data/incidents.csv
+      --policy policy/severity-policy.json
+      --output reports/summary.json
+    deps:
+      - data/incidents.csv
+      - policy/severity-policy.json
+      - scripts/summarize_incidents.py
+    outs:
+      - reports/summary.json:
+          cache: false

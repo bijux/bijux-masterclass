@@ -1,0 +1,18 @@
+{
+  "claim": {
+    "record_count": 4,
+    "severity_total": 11,
+    "weekend_handoffs": 2
+  },
+  "evidence": {
+    "declared_pipeline": "dvc.yaml",
+    "generated_result": "reports/summary.json",
+    "tracked_data_pointer": "data/incidents.csv.dvc"
+  },
+  "review_route": [
+    "dvc pull",
+    "dvc status",
+    "dvc repro"
+  ],
+  "verification_mode": "read_only"
+}
