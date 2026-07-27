@@ -115,6 +115,104 @@ Content addressing helps collaboration because:
 
 This is one of the biggest reasons DVC is more than "Git for big files."
 
+## Put the claim under pressure
+
+Run the course's isolated identity audit from the repository root:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone data-identity-audit
+```
+
+Open `summary.tsv`, then compare these generated cases:
+
+- `workspace/same-content/`
+- `workspace/changed-content/`
+
+The first case adds identical bytes at two paths:
+
+```text
+data/observations.csv
+archive/renamed.csv
+```
+
+The paths differ, but the `md5` fields in both `.dvc` pointers match. That is positive
+evidence for content identity surviving relocation.
+
+The second case appends one row to `data/observations.csv` and runs `dvc add` again. The
+workspace path remains stable, but the pointer's `md5` changes. That is negative evidence
+against path-based identity.
+
+Read the cases as one causal contrast:
+
+| What changed? | What stayed fixed? | Identity result |
+| --- | --- | --- |
+| path | bytes | same content ID |
+| bytes | path | new content ID |
+
+Either row alone is suggestive. Together they rule out the path as the cause of identity.
+
+## Follow a pointer to bytes
+
+In `workspace/pointer-cache/`, open `data/observations.csv.dvc`. Its output record contains
+three fields that answer different questions:
+
+| Field | Question answered |
+| --- | --- |
+| `path` | where should the workspace project the content? |
+| `md5` | which managed content does the pointer name? |
+| `size` | how many bytes should that content contain? |
+
+The audit follows the `md5` into:
+
+```text
+.dvc/cache/files/md5/<first-two-characters>/<remaining-characters>
+```
+
+It then compares the cache object's bytes with the workspace file using SHA-256. This
+second digest is not a replacement for DVC's identifier. It is an independent audit
+check that the two inspected files contain equal bytes.
+
+The resulting evidence chain is:
+
+```mermaid
+flowchart LR
+  pointer["pointer: ID + size + path"] --> object["cache object named by ID"]
+  object --> digest["independent byte comparison"]
+  digest --> workspace["workspace projection matches"]
+```
+
+A pointer alone establishes only the first edge. Recovery requires accessible content at
+the second edge.
+
+## Separate identity from availability
+
+The audit's `POINTER_ONLY_IS_NOT_RECOVERABLE` row deliberately preserves the `.dvc`
+pointer while deleting both workspace and cache content. `dvc checkout` fails.
+
+This is not contradictory:
+
+- the pointer can still name the intended identity
+- the content can still be unavailable from every configured storage layer
+
+Use precise language:
+
+> The identity reference remains intact, but the named bytes are unavailable.
+
+Do not call the pointer corrupt merely because checkout fails. Do not call the data
+recoverable merely because the pointer parses.
+
+## Evidence checkpoint
+
+Before moving on, answer from generated files rather than memory:
+
+1. Which two pointer files prove that different paths can share one identity?
+2. Which before-and-after pointer IDs prove that one path can name different content?
+3. Which cache path is derived from the pointer's content ID?
+4. Which receipt proves that metadata without accessible content cannot rebuild the
+   workspace?
+
+If you cannot identify all four surfaces, rerun the audit and follow `route.txt`.
+
 ## What this page is not claiming
 
 This page is not claiming that content identity tells you whether the data is good,
