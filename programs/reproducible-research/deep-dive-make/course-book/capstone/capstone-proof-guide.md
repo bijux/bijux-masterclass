@@ -31,6 +31,10 @@ inspect the evidence in order, then leave with one explicit judgment about trust
 Use this guide after Module 03, or later when you need a steward-level review route
 before incident, profile, or migration questions.
 
+After Module 08, use the release acceptance route below for claims about candidate
+identity, package policy, or contained installation. The general `proof` bundle does
+not substitute for release evidence.
+
 ## Bounded proof pass
 
 1. Run `make PROGRAM=reproducible-research/deep-dive-make proof`.
@@ -49,6 +53,33 @@ before incident, profile, or migration questions.
 - where hidden inputs and generated boundaries are made visible
 - which saved bundle would matter most to another maintainer
 - which repro teaches a real failure class instead of a toy surprise
+
+## Release acceptance proof
+
+Run:
+
+```sh
+make PROGRAM=reproducible-research/deep-dive-make capstone-release-check
+```
+
+Then inspect these records in order:
+
+```text
+artifacts/release/reproducible-research/deep-dive-make/evidence/
+├── candidate-acceptance.json
+├── install-acceptance.json
+└── release-acceptance.json
+```
+
+The first report proves policy over existing candidate bytes. The second proves a
+contained install mapping and repeated-application convergence. The third refuses to
+compose the first two unless they identify the same candidate digest.
+
+Do not infer remote publication from these records. The final report explicitly records
+that publication was not attempted.
+
+Read [Capstone Release Acceptance](capstone-release-acceptance.md) for the complete
+learner route, including the consumer-only verification experiment and rejection tests.
 
 ## Failure-study route
 
@@ -77,3 +108,5 @@ commands.
 - Read [Proof Matrix](../guides/proof-matrix.md) when the open question is claim-to-evidence routing.
 - Read [Capstone Review Worksheet](capstone-review-worksheet.md) when the open question is
   failure-class study or steward judgment.
+- Read [Capstone Release Acceptance](capstone-release-acceptance.md) when the open question
+  is one candidate's package, identity, or install contract.

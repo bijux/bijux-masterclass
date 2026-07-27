@@ -98,6 +98,10 @@ capstone-release-audit: ## Build the selected program's capstone release audit b
 capstone-release-review: ## Build the selected program's capstone release review bundle
 	@$(RUN_PROGRAM) capstone-release-review
 
+.PHONY: capstone-release-check
+capstone-release-check: ## Build and accept the selected program's local release candidate
+	@$(RUN_PROGRAM) capstone-release-check
+
 .PHONY: capstone-recovery-audit
 capstone-recovery-audit: ## Build the selected program's capstone recovery audit bundle
 	@$(RUN_PROGRAM) capstone-recovery-audit

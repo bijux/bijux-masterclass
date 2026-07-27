@@ -46,6 +46,7 @@ Return to the module first if:
 | what this repository promises | [Capstone Guide](index.md) | [Capstone Walkthrough](capstone-walkthrough.md) |
 | which repository surface matches the current module | the table below | [Command Guide](command-guide.md) |
 | which command should prove the current claim | [Command Guide](command-guide.md) | [Capstone Proof Guide](capstone-proof-guide.md) |
+| whether one release candidate passed local acceptance | [Capstone Release Acceptance](capstone-release-acceptance.md) | [repository-local Release Acceptance Guide](../capstone-docs/release-guide.md) |
 | which files own the behavior | [Capstone File Guide](capstone-file-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | whether the whole repository holds together as a specimen | [Capstone Review Worksheet](capstone-review-worksheet.md) | [Capstone Extension Guide](capstone-extension-guide.md) |
 
@@ -55,7 +56,7 @@ Return to the module first if:
 | --- | --- | --- |
 | Modules 01-02 | truthful edges, atomic publication, and one parallel race you can explain | [Capstone Walkthrough](capstone-walkthrough.md) |
 | Modules 03-05 | selftests, public targets, portability boundaries, and one negative proof | [Command Guide](command-guide.md) then [Capstone Proof Guide](capstone-proof-guide.md) |
-| Modules 06-08 | generator boundaries, layered `mk/` design, and release surfaces | [Capstone File Guide](capstone-file-guide.md) |
+| Modules 06-08 | generator boundaries, layered `mk/` design, and release contracts | [Capstone File Guide](capstone-file-guide.md), then [Capstone Release Acceptance](capstone-release-acceptance.md) |
 | Modules 09-10 | incident judgment, stewardship review, and migration boundaries | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
 ## Module-to-capstone map
@@ -69,7 +70,7 @@ Return to the module first if:
 | 05 Hardening | where portability and hidden-input boundaries live | `mk/contract.mk`, `mk/stamps.mk` | `make contract-audit` |
 | 06 Generated Files | how generation enters the graph honestly | `scripts/`, `mk/stamps.mk` | `make proof` |
 | 07 Build Architecture | how layered includes become a public build surface | `mk/*.mk`, [Capstone File Guide](capstone-file-guide.md) | `make inspect` |
-| 08 Release Engineering | how release artifacts stay reviewable | `scripts/mkdist.py`, `build/attest.txt` | `make proof` |
+| 08 Release Engineering | how one candidate moves through production, verification, and contained installation | `release/*.tsv`, release scripts and tests, [Capstone Release Acceptance](capstone-release-acceptance.md) | `make capstone-release-check` |
 | 09 Incident Response | how failures become inspectable instead of superstitious | `repro/`, [Capstone Proof Guide](capstone-proof-guide.md) | `make incident-audit` |
 | 10 Governance | whether another maintainer could extend or migrate the build safely | `mk/`, `tests/`, `repro/` | `make confirm` |
 

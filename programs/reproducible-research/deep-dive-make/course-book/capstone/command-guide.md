@@ -47,6 +47,7 @@ directory. The layers exist so you do not have to guess where a command belongs.
 | first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` |
 | public-contract review | `make PROGRAM=reproducible-research/deep-dive-make inspect` | `make PROGRAM=reproducible-research/deep-dive-make proof` |
 | build-system proof | `make PROGRAM=reproducible-research/deep-dive-make test` | `make PROGRAM=reproducible-research/deep-dive-make capstone-discovery-audit` |
+| local release acceptance after Module 08 | `make PROGRAM=reproducible-research/deep-dive-make capstone-release-check` | manually chaining scripts without their Make target contracts |
 | steward-level review | `make PROGRAM=reproducible-research/deep-dive-make proof` | ad hoc jumps into `capstone-contract-audit`, `capstone-profile-audit`, or `capstone-confirm` before you know which stronger route you need |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` |
 
@@ -58,6 +59,7 @@ Use root-level commands when you want one entrypoint that works across programs.
 - `make PROGRAM=reproducible-research/deep-dive-make inspect`
 - `make PROGRAM=reproducible-research/deep-dive-make test`
 - `make PROGRAM=reproducible-research/deep-dive-make proof`
+- `make PROGRAM=reproducible-research/deep-dive-make capstone-release-check`
 - `make PROGRAM=reproducible-research/deep-dive-make capstone-confirm`
 
 ## Program directory
@@ -65,11 +67,12 @@ Use root-level commands when you want one entrypoint that works across programs.
 Use `programs/reproducible-research/deep-dive-make/` when you want the course-local
 surface.
 
-- `make capstone-walkthrough`
-- `make inspect`
-- `make test`
-- `make proof`
-- `make capstone-confirm`
+- `gmake capstone-walkthrough`
+- `gmake inspect`
+- `gmake test`
+- `gmake proof`
+- `gmake capstone-release-check`
+- `gmake capstone-confirm`
 
 ## Capstone directory
 
@@ -80,7 +83,15 @@ Use `capstone/` when you want the raw reference build. On macOS, use `gmake`.
 - `gmake selftest`
 - `gmake verify-report`
 - `gmake proof`
+- `gmake dist`
+- `gmake verify-dist`
+- `gmake release-selftest`
+- `gmake release-check`
 - `gmake confirm`
+
+Use the narrow release targets while investigating one boundary. Use `release-check`
+only when you need the complete local acceptance claim. See
+[Capstone Release Acceptance](capstone-release-acceptance.md) for the evidence route.
 
 ## Good stopping point
 
