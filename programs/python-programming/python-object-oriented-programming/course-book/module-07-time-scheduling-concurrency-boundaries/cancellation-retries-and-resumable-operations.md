@@ -17,18 +17,18 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  interrupt["name where interruption can land"] --> durable["decide what progress is already durable"]
+  durable --> retry["decide whether retry is safe"]
+  retry --> checkpoint["state what makes work honestly resumable"]
+  checkpoint --> prove["test duplicate-effect risk directly"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+Read the first diagram as a placement map: this lesson turns runtime interruption into a
+design problem rather than an implementation footnote. Read the second diagram as the
+lesson route: identify where interruption can land, decide what progress is already
+durable, choose whether retry is safe, then name the checkpoint story that would make
+resumption honest.
 
 ## Why this lesson matters
 
@@ -39,56 +39,108 @@ Then the system must answer:
 
 - what already happened?
 - what can be retried safely?
-- where does work resume?
+- where would work resume from?
 
-If those answers are unclear, cancellation and retry pressure produce duplicate effects,
-partial state, and ambiguous recovery.
+If those answers are unclear, cancellation and retry pressure produces duplicate side
+effects, partial state, and ambiguous recovery.
 
-## Cancellation is a boundary event
+## Start with the interruption point
 
-Cancellation usually arrives from the runtime:
+Ask this directly:
+
+> If work stops at this exact line, what has definitely happened already?
+
+That question is more useful than asking whether the operation is "safe."
+
+It forces the design to separate:
+
+- attempted work
+- durable progress
+- visible side effects
+
+Without that separation, retries are usually guesses disguised as recovery.
+
+## Cancellation is usually a runtime event first
+
+Cancellation often arrives because:
 
 - a caller gave up
 - a deadline expired
-- a supervisor is shutting down work
+- a supervisor is shutting work down
 
-That means cancellation is often first a coordination concern, not a domain rule.
+That means cancellation is usually first a coordination concern, not a domain rule.
 
-The domain may need to reflect:
+The domain may later need to reflect:
 
-- that work was interrupted
-- that a lease expired
-- that a transition can no longer continue
+- interrupted work
+- expired leases
+- invalidated transitions
 
-But the arrival of cancellation itself is usually owned at the runtime boundary.
+But the arrival of cancellation itself is typically owned at the runtime boundary.
 
-## Retry safety still matters here
+## Retry safety depends on what already escaped
 
-After cancellation or failure, the next question is often "can we run this again?"
+After cancellation or failure, the next question is usually:
+
+- can this run again safely?
 
 That answer depends on:
 
-- whether side effects already escaped
-- whether progress was durable
-- whether the operation is idempotent or resumable
+- whether outward effects already escaped
+- whether progress was recorded durably
+- whether the operation is idempotent
+- whether later execution can detect that some prior step already happened
 
 Students should not treat retries after cancellation as automatically safer than retries
-after ordinary failure. The same duplicate-work risks still exist.
+after ordinary failure. The same duplicate-effect risks still exist.
 
 ## Resumable work needs a checkpoint story
 
-A resumable operation usually needs a clear answer to:
+A resumable operation needs a clear answer to:
 
 - where can we restart from?
 - what progress is already durable?
 - what must not run twice?
 
-Without that, "resume" often means "rerun from the beginning and hope it is fine."
+Without that, "resume" often means:
 
-That may be acceptable for some work, but it should be a conscious policy rather than an
-accident.
+- rerun from the beginning
+- hope the earlier attempt did not already escape
 
-## Keep interruption semantics out of unrelated objects
+That may be acceptable for some operations, but only as a deliberate policy.
+
+## Worked contrast: retriable versus honestly resumable
+
+These are not the same thing:
+
+| Claim | What it really means |
+| --- | --- |
+| retriable | rerunning the operation will not create unacceptable duplicate effects |
+| resumable | the system knows which durable checkpoint to continue from rather than blindly restarting |
+
+Many designs claim resumption when they only have retry with hope.
+
+That difference matters because a real checkpoint story is usually more expensive and
+therefore should only be promised when the workflow truly needs it.
+
+## Use one checkpoint table
+
+For a risky workflow, write this down:
+
+| Step | If interruption lands here, what is durable? | Is retry safe? | What duplicate effect must be prevented? |
+| --- | --- | --- | --- |
+
+For `EnrollmentReminderCoordinator`, one row might be:
+
+- payload built but no durable sent marker written yet
+- nothing authoritative recorded
+- retry may be safe only if no outward send escaped
+- duplicate reminder send must not occur
+
+This table is one of the most useful review tools in the whole module because it makes
+interruption semantics concrete.
+
+## Keep interruption mechanics out of unrelated objects
 
 One common mistake is to let deep domain objects learn too much about:
 
@@ -101,6 +153,30 @@ That usually widens runtime coordination concerns farther inward than necessary.
 A stronger design lets the runtime boundary own interruption control while the core model
 exposes the facts needed to recover honestly.
 
+## Test duplicate-effect risk directly
+
+A weak test proves only that an exception or cancellation was observed.
+
+A stronger proof route asks:
+
+- if cancellation lands after outward send but before durable progress marker, what
+  happens on retry?
+- if retry occurs after partial durable state, what is skipped or resumed?
+- what evidence proves the second run did not duplicate visible work?
+
+Those are the questions the runtime boundary must survive in the real system.
+
+## Review drill
+
+For any interruptible operation, ask:
+
+1. where can interruption land?
+2. what is already durable at each point?
+3. what makes retry safe or unsafe?
+4. what checkpoint would be required before calling the work resumable?
+
+If those answers are vague, recovery semantics are still too hopeful.
+
 ## Common mistakes
 
 - assuming cancellation means no effect occurred
@@ -109,24 +185,16 @@ exposes the facts needed to recover honestly.
 - pushing cancellation primitives through every layer
 - mixing retry policy with domain meaning
 
-These mistakes make interruption pressure contagious instead of owned.
-
-## Review checklist
-
-| Question | Good sign |
-| --- | --- |
-| is cancellation first handled at the runtime boundary? | yes |
-| can the system say what progress is already durable? | yes |
-| is retry or resume safety explicit instead of assumed? | yes |
-| are interruption mechanics kept from infecting unrelated objects? | yes |
+All of these mistakes make interruption pressure contagious instead of owned.
 
 ## Capstone connection
 
 Use the capstone runtime to ask:
 
-- if polling or worker execution is cancelled, what has definitely happened already?
+- if worker execution is cancelled, what has definitely happened already?
 - which actions are safe to retry?
-- what state would need to exist before work could honestly resume instead of rerun blindly?
+- what durable state would need to exist before work could honestly resume instead of
+  rerun blindly?
 
 Those questions make interruption design concrete.
 
@@ -136,4 +204,5 @@ Leave this lesson only when you can do all of these:
 
 - explain why cancellation does not automatically imply zero effect
 - identify one condition that makes an interrupted operation safe or unsafe to retry
-- point to one capstone path that would need a real checkpoint before it could be called resumable
+- point to one workflow that would need a real checkpoint before it could honestly be
+  called resumable
