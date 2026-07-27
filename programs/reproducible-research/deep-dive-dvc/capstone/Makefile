@@ -20,6 +20,7 @@ VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
 STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
+DATA_IDENTITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/data-identity
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-dvc
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-dvc-capstone-source.tar.gz
 
@@ -316,6 +317,37 @@ stage-contract-audit: install ## Audit declared and hidden stage influences
 .PHONY: stage-contract-selftest
 stage-contract-selftest: install ## Reject dishonest stage contract evidence
 	@$(PYTEST) tests/test_stage_contract_audit.py
+
+.PHONY: data-identity-audit
+data-identity-audit: install ## Audit pointer, cache, workspace, and remote identity boundaries
+	@rm -rf $(DATA_IDENTITY_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_data_identity.py \
+		--specimen repro/data-identity \
+		--workspace $(DATA_IDENTITY_AUDIT_DIR)/workspace \
+		--output $(DATA_IDENTITY_AUDIT_DIR)/report.json \
+		--python $(VENV_PY)
+	@mkdir -p $(DATA_IDENTITY_AUDIT_DIR)/scripts $(DATA_IDENTITY_AUDIT_DIR)/tests
+	@cp docs/data-identity-audit-guide.md $(DATA_IDENTITY_AUDIT_DIR)/DATA_IDENTITY_AUDIT_GUIDE.md
+	@cp scripts/audit_data_identity.py $(DATA_IDENTITY_AUDIT_DIR)/scripts/audit_data_identity.py
+	@cp tests/test_data_identity_audit.py $(DATA_IDENTITY_AUDIT_DIR)/tests/test_data_identity_audit.py
+	@printf '%s\n' \
+		'Data identity audit route:' \
+		'  1. Read DATA_IDENTITY_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and separate accepted behavior from the rejected pointer-only recovery claim.' \
+		'  3. Inspect workspace/pointer-cache/data/observations.csv.dvc and its named cache object.' \
+		'  4. Compare pointer IDs under workspace/same-content and workspace/changed-content.' \
+		'  5. Read cache-recovery-checkout.stdout.txt before inspecting the restored workspace file.' \
+		'  6. Read remote-recovery-push.stdout.txt and remote-recovery-pull.stdout.txt as state-move receipts.' \
+		'  7. Read pointer-only-checkout.stderr.txt as expected negative evidence.' \
+		'  8. Read the audit script and tests when reviewing enforcement.' > $(DATA_IDENTITY_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(DATA_IDENTITY_AUDIT_DIR) \
+		--output $(DATA_IDENTITY_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote data identity audit to $(DATA_IDENTITY_AUDIT_DIR)"
+
+.PHONY: data-identity-selftest
+data-identity-selftest: install ## Enforce data identity and recovery evidence
+	@$(PYTEST) tests/test_data_identity_audit.py
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
