@@ -1,27 +1,35 @@
 # Capstone Proof Guide
 
 Use this page when a module makes a Snakemake design claim and you want the shortest
-honest route to the capstone evidence that supports it.
+honest route to the capstone evidence that supports it. This guide is not for first
+contact. It is for corroboration once the module idea already makes sense locally.
 
-## How to use this page
+## The question this page answers
 
-Use this guide after you can state the design claim plainly.
+This guide answers:
 
-Read it in this order:
+> Which capstone proof route is proportionate to this design claim?
 
-1. name the claim
+If the claim is still vague, sharpen the claim first. If the concept is still new, go
+back to the module or walkthrough before using this page.
+
+## How to use this guide
+
+Work in this order:
+
+1. name the design claim in plain language
 2. choose the narrowest route in the table
-3. inspect the evidence bundle it was meant to produce
+3. inspect the evidence bundle that route was meant to produce
 4. escalate only if the unanswered part of the claim is real
 
-This page is here to keep capstone proof proportional to the design question.
+This page exists to keep capstone proof proportional to the design question.
 
 ## Enter this guide at the right time
 
 Use this guide once the module idea is already legible in its local exercise.
 
 Before that point, prefer [Capstone Walkthrough](capstone-walkthrough.md) so the
-repository stays smaller than the concept you are learning.
+repository stays smaller than the concept you are trying to learn.
 
 ## Start by treating route strength as a design choice
 
@@ -31,19 +39,21 @@ It is better only when the claim itself is stronger.
 
 For example:
 
-- repository shape claims usually do not need a full stewardship route
+- repository-shape claims usually do not need a full stewardship route
 - publish-boundary claims should start with publish-facing evidence
 - execution-policy claims should start with policy-aware surfaces
 
-## Proof route shape
+The route should match the claim, not your discomfort.
+
+## The proof route shape
 
 ```mermaid
 flowchart TD
-  claim["Name one design claim"] --> route["Choose the narrowest route"]
-  route --> inspect["Inspect the evidence surface"]
-  inspect --> enough{"Did it settle the claim?"}
-  enough -- yes --> stop["Stop and explain why"]
-  enough -- no --> stronger["Escalate one route stronger"]
+  claim["name one design claim"] --> route["choose the narrowest route"]
+  route --> inspect["inspect the evidence surface"]
+  inspect --> enough{"did it settle the claim?"}
+  enough -- yes --> stop["stop and explain why"]
+  enough -- no --> stronger["escalate one route stronger"]
   stronger --> inspect
 ```
 
@@ -54,14 +64,24 @@ flowchart TD
 | repository shape without execution | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `capstone-tour` |
 | executed workflow behavior | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `proof` |
 | publish-boundary trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `capstone-confirm` |
-| execution-policy differences | [Capstone Architecture Guide](capstone-architecture-guide.md) | `proof` |
+| execution-policy differences | [Capstone Architecture Guide](capstone-architecture-guide.md) or `capstone-profile-audit` | `proof` |
 | steward-level confidence | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `capstone-confirm` |
 
 ## Good proof habits
 
 - Start with the claim, not with the heaviest available command.
-- Check the evidence bundle the command was meant to produce.
-- Escalate only when the unanswered part of the claim is real, not when uncertainty feels uncomfortable.
+- Inspect the evidence bundle the command was meant to produce.
+- Escalate only when the unanswered part of the claim is real.
+- Stop once the claim is settled instead of continuing out of habit.
+
+## Worked examples
+
+| Claim | Good first route | Why not stronger first |
+| --- | --- | --- |
+| I need to see whether discovery is explicit. | `capstone-tour` | `capstone-confirm` adds stewardship weight before the discovery question is settled |
+| I need to review what downstream users may trust. | `capstone-verify-report` | a broader proof pass is worse than a publish-specific route for contract questions |
+| I need a maintainer-grade review route. | `proof` | `capstone-walkthrough` is too light once the question is explicitly stewardship-level |
+| I need to compare local and CI policy safely. | `capstone-profile-audit` | a generic execution tour may hide the specific policy boundary at issue |
 
 ## One honest proof decision
 
@@ -70,23 +90,16 @@ Suppose the claim is:
 > I need to know whether this capstone still makes dynamic discovery explicit.
 
 The honest route is `capstone-tour`, because the claim is about executed discovery
-evidence rather than final stewardship confirmation. Jumping straight to `capstone-confirm`
-would answer a broader question than the one you asked.
+evidence rather than final stewardship confirmation. Jumping straight to
+`capstone-confirm` would answer a broader question than the one you asked.
 
-## Worked examples
-
-| Claim | Good first route | Why not stronger first |
-| --- | --- | --- |
-| "I need to see whether discovery is explicit." | `capstone-tour` | `capstone-confirm` adds weight before the discovery artifact question is even settled |
-| "I need to review what downstream users may trust." | `capstone-verify-report` | a broader proof pass is worse than a publish-specific route for contract questions |
-| "I need a maintainer-grade review route." | `proof` | `capstone-walkthrough` is too light once the question is explicitly stewardship-level |
-
-## Bounded proof pass
+## A bounded proof pass
 
 1. Read [Capstone Guide](index.md).
 2. Use [Proof Matrix](../guides/proof-matrix.md) to choose the narrowest command.
-3. Run that command from the capstone or course root.
-4. Record what the evidence proves before opening a stronger route.
+3. Run that command from the capstone, program, or repository root.
+4. Inspect the evidence bundle it created.
+5. Record what the route proved before opening a stronger one.
 
 ## Good stopping point
 
@@ -97,3 +110,10 @@ Stop when you can say:
 - why a broader route would be unnecessary unless the claim changed
 
 If you cannot say those three things, repeat the bounded route before escalating.
+
+## Companion pages
+
+- [Proof Ladder](../guides/proof-ladder.md)
+- [Proof Matrix](../guides/proof-matrix.md)
+- [Command Guide](command-guide.md)
+- [Capstone Review Worksheet](capstone-review-worksheet.md)
