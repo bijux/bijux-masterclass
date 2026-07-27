@@ -28,6 +28,7 @@ MODULE_INTERFACE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-
 CONTEXT_INVARIANCE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/context-invariance
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/performance-diagnostics
 SCHEDULER_POLICY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/scheduler-policy
+FILE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/file-contracts
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -47,6 +48,7 @@ MODULE_INTERFACE_AUDIT_DIR_ABS := $(abspath $(MODULE_INTERFACE_AUDIT_DIR))
 CONTEXT_INVARIANCE_AUDIT_DIR_ABS := $(abspath $(CONTEXT_INVARIANCE_AUDIT_DIR))
 PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS := $(abspath $(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR))
 SCHEDULER_POLICY_AUDIT_DIR_ABS := $(abspath $(SCHEDULER_POLICY_AUDIT_DIR))
+FILE_CONTRACT_AUDIT_DIR_ABS := $(abspath $(FILE_CONTRACT_AUDIT_DIR))
 TOOLS_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake/capstone
 TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
@@ -72,6 +74,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	context-invariance-audit context-invariance-selftest \
 	performance-diagnostics-audit performance-diagnostics-selftest \
 	scheduler-policy-audit scheduler-policy-selftest \
+	file-contract-audit file-contract-selftest \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
 
@@ -363,6 +366,36 @@ scheduler-policy-audit: ## Record and classify scheduler resource translation
 scheduler-policy-selftest: ## Reject unsafe scheduler mapping evidence
 	$(PYTEST) -q tests/test_scheduler_policy_audit.py
 
+file-contract-audit: ## Classify convergence, hidden inputs, and publication safety
+	rm -rf "$(FILE_CONTRACT_AUDIT_DIR_ABS)"
+	mkdir -p "$(FILE_CONTRACT_AUDIT_DIR_ABS)"
+	cp -R repro/file-contracts "$(FILE_CONTRACT_AUDIT_DIR_ABS)/specimen"
+	$(PYTHON) scripts/audit_file_contracts.py \
+		--specimen repro/file-contracts \
+		--workspace "$(FILE_CONTRACT_AUDIT_DIR_ABS)/workspace" \
+		--output "$(FILE_CONTRACT_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)" \
+		--python "$(PYTHON)" \
+		--poison-writer scripts/poison.py \
+		--atomic-writer scripts/atomic_writer.py
+	cp docs/file-contract-audit-guide.md "$(FILE_CONTRACT_AUDIT_DIR_ABS)/FILE_CONTRACT_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(FILE_CONTRACT_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'File contract audit route:' \
+		'  1. Read FILE_CONTRACT_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and separate accepted behavior from rejected examples.' \
+		'  3. Compare the declared and hidden rule contracts in specimen/Snakefile.' \
+		'  4. Inspect the four dry-run receipts under evidence/.' \
+		'  5. Compare in-place-failure with atomic-failure filesystem evidence.' \
+		'  6. Use report.json to connect each decision to explicit checks.' > "$(FILE_CONTRACT_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(FILE_CONTRACT_AUDIT_DIR_ABS)" \
+		--output "$(FILE_CONTRACT_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote file contract audit to $(FILE_CONTRACT_AUDIT_DIR_ABS)"
+
+file-contract-selftest: ## Reject dishonest convergence and publication evidence
+	$(PYTEST) -q tests/test_file_contract_audit.py
+
 config-summary: verify ## Write a compact summary of the materialized workflow configuration
 	@mkdir -p "$(VERIFY_REPORT_DIR)"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
@@ -398,11 +431,11 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
-confirm: clean purge-dsstore ci module-interface-audit module-interface-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
+confirm: clean purge-dsstore ci file-contract-audit file-contract-selftest module-interface-audit module-interface-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest scheduler-policy-audit scheduler-policy-selftest verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
-proof: tour verify-report profile-audit module-interface-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
+proof: tour verify-report file-contract-audit profile-audit module-interface-audit context-invariance-audit performance-diagnostics-audit scheduler-policy-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p \

@@ -52,6 +52,7 @@ to.
 | which outputs are safe for downstream trust | [file-api.md](file-api.md) | [publish-review-guide.md](publish-review-guide.md) |
 | what claim does a bundle or route actually prove | [proof-guide.md](proof-guide.md) | [tour.md](tour.md) |
 | which repository layer owns this change | [architecture.md](architecture.md) | [extension-guide.md](extension-guide.md) |
+| do declared inputs trigger reruns and failed writers preserve trusted finals | [file-contract-audit-guide.md](file-contract-audit-guide.md) | `make file-contract-audit` |
 | how do local, CI, and scheduler policy differ | [profile-audit-guide.md](profile-audit-guide.md) | [proof-guide.md](proof-guide.md) |
 | does a module expose config, paths, and policy at its caller boundary | [module-interface-audit-guide.md](module-interface-audit-guide.md) | `make module-interface-audit` |
 | did a performance change remove work without removing guarantees | [performance-diagnostics-audit-guide.md](performance-diagnostics-audit-guide.md) | `make performance-diagnostics-audit` |
@@ -64,6 +65,7 @@ to.
 - [domain-guide.md](domain-guide.md) for the capstone’s domain story and output meaning
 - [extension-guide.md](extension-guide.md) for safe repository evolution
 - [file-api.md](file-api.md) for the downstream-facing file contract
+- [file-contract-audit-guide.md](file-contract-audit-guide.md) for convergence, hidden-input, and publication evidence
 - [module-interface-audit-guide.md](module-interface-audit-guide.md) for reusable rule bindings and hidden coupling
 - [performance-diagnostics-audit-guide.md](performance-diagnostics-audit-guide.md) for baseline, tuning, semantic-drift, and regression decisions
 - [scheduler-policy-audit-guide.md](scheduler-policy-audit-guide.md) for recorded scheduler requests, rejection cases, and site-proof limits
