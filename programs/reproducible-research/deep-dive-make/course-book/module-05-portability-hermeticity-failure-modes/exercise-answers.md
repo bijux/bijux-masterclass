@@ -81,13 +81,18 @@ That is a wish, not a maintainable support contract.
 
 ## Exercise 2: Repair a recursive boundary
 
-The core explanation is:
+The strongest prediction separates planning from execution:
 
-> Plain `make` inside a recipe does not communicate recursive intent the same way
-> `$(MAKE)` does, so the sub-build can lose jobserver semantics and behave misleadingly
-> under dry runs.
+- `make -n vendor` prints the literal command but does not ask the child Make to reveal
+  its plan
+- the actual child may or may not inherit usable jobserver state, depending on the Make
+  version and invocation environment
 
-A strong repair looks like:
+On GNU Make 4.4 with a FIFO jobserver, the literal child may report `-j2` and a jobserver
+FIFO in `MAKEFLAGS`. Record that result rather than hiding it. It is an observation about
+the current transport, not a portable declaration.
+
+The durable repair is:
 
 ```make
 .PHONY: vendor
@@ -96,16 +101,14 @@ vendor:
 	+$(MAKE) -C vendor/lib all
 ```
 
-And a depth guard might look like:
+After the repair, `make -n vendor` should enter the child graph and print its recipe
+without creating the child output. In an actual run, the child should be exactly one
+`MAKELEVEL` deeper than its parent.
 
-```make
-ifeq ($(MAKELEVEL),2)
-$(error recursive build depth exceeded)
-endif
-```
+A good explanation does not say "`+` preserves the jobserver." It says:
 
-The key idea is not the exact number in the guard. The key idea is that recursion is a
-declared boundary with a budget and a depth, not just a habit.
+> `$(MAKE)` declares recursive intent; `+` makes that boundary visible when ordinary
+> recipes are suppressed; the actual child flags show what this run inherited.
 
 ## Exercise 3: Model one non-file input honestly
 
@@ -265,31 +268,45 @@ The important explanation is:
 
 ## Exercise 8: Preserve the parallel budget across recursion
 
-The parent should use Make's recursive invocation:
+The expected summary rows are:
 
-```make
-.PHONY: nested
-nested:
-	+$(MAKE) -C nested all
+| Model | Finding |
+| --- | --- |
+| literal recursion | `LITERAL_RECURSION_HIDES_CHILD_PLAN` |
+| declared recursion | `DECLARED_RECURSION_EXPOSES_CHILD_PLAN` |
+
+The declared dry-run trace includes:
+
+```text
+child-plan: publish child.out
 ```
 
-The nested build can make the evidence visible:
+The literal dry-run trace does not. Neither dry-run workspace should contain
+`child/child.out`; seeing the plan is not the same as performing it.
 
-```make
-.PHONY: all
-all:
-	@printf 'level=%s flags=%s\n' '$(MAKELEVEL)' '$(MAKEFLAGS)'
+In actual runs, inspect the recorded `MAKEFLAGS` literally. A GNU Make 4.4 FIFO system may
+show `-j2` in both models. The conclusion is not "both are equally correct." The
+conclusion is:
+
+- literal recursion happened to inherit the current transport
+- declared recursion preserves planning visibility and communicates intent
+- another supported Make version may expose jobserver state differently
+
+The direct capstone route and the program wrapper add different outer Make levels. A
+portable assertion is:
+
+```text
+child MAKELEVEL = audit process MAKELEVEL + 1
 ```
 
-Under `make -j2 nested`, the child should report a larger `MAKELEVEL` and inherited
-parallel flags. `$(MAKE)` tells GNU Make that the command is recursive; the leading `+`
-permits the recursive line to run under modes such as `-n`, where the child must
-interpret the dry run itself.
+It is not:
 
-The missing but important sentence is:
+```text
+child MAKELEVEL = 1
+```
 
-> Dry-run behavior matters because recursive boundaries should preserve the execution
-> contract even when no real recipes are being performed.
+Aggregate `PASS` confirms that the broken model hid the plan and the control exposed it.
+The finding name, not the aggregate status alone, tells you which behavior is acceptable.
 
 ## Exercise 9: Prove an environment manifest converges
 

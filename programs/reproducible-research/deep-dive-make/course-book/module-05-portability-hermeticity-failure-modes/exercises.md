@@ -112,19 +112,28 @@ vendor:
 	make -C vendor/lib all
 ```
 
-Explain why this is unsafe or misleading under `-j` and `-n`, then redesign it so the
-recursive boundary is explicit and jobserver-aware.
+Do not begin by claiming that this invocation always loses the jobserver. Predict two
+separate behaviors:
+
+1. whether `make -n vendor` enters the child graph
+2. whether a child on your current host inherits parallel flags under `make -j2 vendor`
+
+Run both commands, save their output, then redesign the recipe as `+$(MAKE)`. Repeat the
+observations. Explain which result is a declared recursive contract and which result may
+depend on GNU Make's jobserver transport.
 
 What to hand in:
 
-- the bug explanation in plain language
-- the repaired recursive invocation
-- one line showing how you would bound or inspect recursion depth
-- one sentence explaining what information the child build should inherit
+- predictions written before execution
+- literal and declared dry-run logs
+- actual child `MAKELEVEL` and `MAKEFLAGS` for both forms
+- the repaired recipe
+- one paragraph separating observed inheritance from portable recursive intent
 
 Study note:
-Recursion is a declared boundary with a depth, a budget, and a contract. It is not just a
-habit of calling another Makefile.
+A literal GNU Make 4.4 process may inherit a FIFO jobserver on your host. That does not
+make it equivalent to `+$(MAKE)`: the parent's planning route still needs to enter the
+child graph.
 
 ## Exercise 3: Model one non-file input honestly
 
@@ -258,19 +267,30 @@ part of the supported contract.
 
 ## Exercise 8: Preserve the parallel budget across recursion
 
-Create a top-level build and a nested build that each print `MAKELEVEL` and `MAKEFLAGS`.
-Run the top level with `-j2`, then compare plain `make -C nested` with `+$(MAKE) -C nested`.
+Run the capstone environment contract audit:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  environment-contract-audit
+```
+
+Use the recursive-boundary rows as a specimen review. Read both dry-run traces, both
+actual-run traces, and the child outputs. Then run the program-level wrapper and explain
+why its absolute `MAKELEVEL` can differ while the parent-child relationship remains
+valid.
 
 What to hand in:
 
-- both recursive recipes
-- the observed `MAKELEVEL` and `MAKEFLAGS`
-- a short explanation of which invocation preserves Make's recursive contract
-- one sentence explaining why dry-run behavior matters here too
+- the two recursive findings from `summary.tsv`
+- the exact line that appears only in the declared dry-run trace
+- proof that neither dry-run route created `child.out`
+- the actual `MAKEFLAGS` observations without claiming they are universal
+- a relative `MAKELEVEL` assertion that works through both entry routes
+- one sentence explaining why aggregate `PASS` does not endorse literal recursion
 
 Study note:
-This exercise is about more than style. The recursive spelling determines whether the
-child build receives the parent build's declared execution contract.
+Dry-run visibility and actual jobserver inheritance answer different questions. A
+reviewable recursive boundary needs evidence for both.
 
 ## Exercise 9: Prove an environment manifest converges
 
