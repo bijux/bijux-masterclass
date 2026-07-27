@@ -1,30 +1,5 @@
 # Module Checkpoints
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Guides"]
-  page["Module Checkpoints"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when you are about to move on and want an honest readiness bar. Reading a
 module once is not the same thing as being ready for the next one. These checkpoints are
 meant to tell you whether the next module will build on stable understanding or on vague
@@ -52,7 +27,7 @@ whole module.
 | [Module 05](../module-05-software-boundaries-reproducible-rules/index.md) | where workflow orchestration ends and helper software begins | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | you still treat scripts, packages, and environments as invisible implementation detail |
 | [Module 06](../module-06-publishing-downstream-contracts/index.md) | what is public in `publish/v1/` and why it is smaller than the internal run state | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | you are still treating `results/` as the downstream contract |
 | [Module 07](../module-07-workflow-architecture-file-apis/index.md) | which file owns workflow entry, rule families, file APIs, and helper code boundaries | [Capstone File Guide](../capstone/capstone-file-guide.md) | you can name folders but not explain their responsibilities |
-| [Module 08](../module-08-operating-contexts-execution-policy/index.md) | which differences across local, CI, and SLURM are policy and which would be semantic drift | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | you are treating context drift as harmless because the workflow still runs |
+| [Module 08](../module-08-operating-contexts-execution-policy/index.md) | which differences across local, CI, and Slurm are policy and which would be semantic drift | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | you are treating context drift as harmless because the workflow still runs |
 | [Module 09](../module-09-performance-observability-incident-response/index.md) | which evidence surface you would inspect before editing a slow or flaky workflow | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) or `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | your first move is to change retries, threads, or grouping |
 | [Module 10](../module-10-governance-migration-tool-boundaries/index.md) | how to improve or migrate the repository without losing proof and public trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | your migration plan is mostly taste, not preserved evidence |
 

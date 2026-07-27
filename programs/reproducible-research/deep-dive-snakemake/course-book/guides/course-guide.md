@@ -1,10 +1,13 @@
 # Course Guide
-Use this page when you want the big picture without losing the learner-first route. Deep
-Dive Snakemake has several surfaces, but they are not equally useful at every stage. The
-central rule is simple:
 
-> Learn the workflow idea in a small setting first, then use the capstone to confirm it
-> in a larger repository.
+Use this page when you want the big picture without losing the learner-first route. Deep
+Dive Snakemake has several surfaces, but they are not equally useful at every stage.
+
+The central rule is simple:
+
+> learn the workflow idea in a small setting first, then use the capstone to confirm it in a larger repository.
+
+## The four durable surfaces
 
 Deep Dive Snakemake has four durable surfaces:
 
@@ -68,7 +71,7 @@ That order matters because later skills depend on earlier clarity:
 2. read the core lessons while keeping the running question visible
 3. work through the guided example without copying commands blindly
 4. complete Exercises 1-5 before opening the answer page
-5. complete the applied Exercises 6-10 on a fresh or inherited workflow
+5. complete Exercises 6-10 on a fresh or inherited workflow
 6. use [Module Checkpoints](module-checkpoints.md) to decide whether to continue
 
 If you cannot explain surprising output in terms of files, boundaries, and evidence,

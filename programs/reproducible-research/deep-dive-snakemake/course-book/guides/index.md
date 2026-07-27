@@ -1,7 +1,20 @@
 # Guides
+
 Use this shelf when you need route choice, proof sizing, or capstone entry help rather
 than another lesson page. The guides should send you back to learning quickly, not trap
 you in course-admin prose.
+
+## What this shelf is for
+
+Use the guides shelf when you need help with one of these learner questions:
+
+- where should I start
+- which module or support page matches the pressure I have
+- what proof route is proportionate here
+- am I actually ready to move on
+
+If you need the concept itself, go back to the module. These pages are for navigation,
+not for replacing the lesson.
 
 ## Start with the guide that matches your situation
 
@@ -25,19 +38,6 @@ flowchart TD
 | workflow split decisions | [Topic Boundaries](../reference/topic-boundaries.md) | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
 | capstone entry | [Capstone Guide](../capstone/index.md) | [Capstone Map](../capstone/capstone-map.md) |
 
-## A simple rule for using this shelf
-
-Open one guide because you have one real question:
-
-- How should I start?
-- Which module fits the failure I have?
-- What proof is proportionate here?
-- Am I actually ready to continue?
-
-If a guide does not help you answer one of those questions, leave it and return to the
-module or exercise surface. The course is about understanding workflows, not about
-learning the support shelf.
-
 ## Use the shelf by job
 
 | Job | Best page |
@@ -56,7 +56,7 @@ learning the support shelf.
 
 | If you need... | Best page |
 | --- | --- |
-| the capstone's role in the course | [Capstone](../capstone/index.md) |
+| the capstone’s role in the course | [Capstone](../capstone/index.md) |
 | the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
 | a bounded first pass through the repository | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
 | file responsibilities inside the repository | [Capstone File Guide](../capstone/capstone-file-guide.md) |
