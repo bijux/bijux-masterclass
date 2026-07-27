@@ -132,6 +132,113 @@ This pattern matters because it converges:
 
 That is a much healthier design than hiding the compiler identity entirely.
 
+## Compare clock-derived state with declared state
+
+A no-op rebuild is not enough to prove a stamp is reproducible. Once a stamp exists in a
+workspace, Make may correctly reuse it even if the first build created it from hidden
+entropy. A stronger test starts two clean workspaces from the same declared inputs and
+compares the resulting artifacts.
+
+The capstone semantic audit performs that test. Run:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  semantic-fault-audit
+```
+
+Then inspect the clock-state rows in:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/semantic-faults/report.json
+```
+
+Both models begin with the same tracked input:
+
+```text
+mode.txt -> analysis
+```
+
+The broken model invents state at build time:
+
+```make
+artifact.txt: mode.txt state.stamp
+	printf 'mode=%s\nstate=%s\n' \
+	  "$$(cat mode.txt)" "$$(cat state.stamp)" > $@
+
+state.stamp:
+	$(PYTHON) -c 'import time; print(time.time_ns())' > $@
+```
+
+The wall clock is now part of artifact meaning even though no graph edge names or
+controls it:
+
+```mermaid
+flowchart LR
+  inputs["identical tracked inputs"]
+  first["clean workspace A"]
+  second["clean workspace B"]
+  clockA["clock reading A"]
+  clockB["clock reading B"]
+  artifactA["artifact hash A"]
+  artifactB["artifact hash B"]
+
+  inputs --> first --> artifactA
+  inputs --> second --> artifactB
+  clockA -.hidden input.-> artifactA
+  clockB -.hidden input.-> artifactB
+  artifactA -.not equal.-> artifactB
+```
+
+The control derives the stamp from declared state:
+
+```make
+artifact.txt: mode.txt state.stamp
+	printf 'mode=%s\nstate=%s\n' \
+	  "$$(cat mode.txt)" "$$(cat state.stamp)" > $@
+
+state.stamp: mode.txt
+	cp mode.txt $@
+```
+
+Predict the observations before reading the report:
+
+| Model | Tracked inputs equal? | State source | Artifact hashes |
+| --- | --- | --- | --- |
+| clock-derived | yes | independent wall-clock readings | different |
+| declared-state | yes | `mode.txt` | equal |
+
+The important report fields are `first_artifact`, `second_artifact`, `first_sha256`,
+`second_sha256`, and `hashes_equal`. The expected findings are:
+
+```text
+CLOCK_STATE_DRIFT_REPRODUCED
+DECLARED_STATE_STABLE
+```
+
+The first finding is a successful reproduction of a defect, not approval of the model.
+The second establishes a controlled contrast: identical declared state produces
+identical semantic output.
+
+### State identity must survive a clean-room question
+
+For any proposed stamp, ask:
+
+> Could another clean workspace derive the same file from the same declared inputs?
+
+If the answer depends on when the build ran, who ran it, or which random value happened
+to be chosen, the stamp is recording an event rather than representing semantic state.
+
+That distinction leads to three different destinations:
+
+| Fact | Appropriate destination | Why |
+| --- | --- | --- |
+| `MODE=analysis` changes artifact behavior | artifact-driving state file | it changes meaning and can converge |
+| build start time is useful to operators | log or sidecar run record | it describes the event, not the artifact state |
+| release timestamp is required by the product contract | declared, normalized input | it affects meaning and must be governed |
+
+Clocks are not forbidden. Undeclared clocks are incompatible with a claim that equal
+inputs produce equal artifacts.
+
 ## Why timestamps are often the wrong attestation
 
 Beginners often try to "prove" rigor by writing timestamps into manifests or stamps:
@@ -281,5 +388,7 @@ Before leaving this lesson, make sure you can explain:
 - why hermeticity is about declared external facts, not isolation fantasy
 - when to pin an input and when to attest it
 - why timestamps are usually poor build facts
+- why two clean workspaces are a stronger stamp test than one no-op rebuild
+- how artifact hashes reveal a hidden clock-derived input
 - why stamps and manifests can improve graph truth
 - why provenance should often live beside the artifact rather than inside it
