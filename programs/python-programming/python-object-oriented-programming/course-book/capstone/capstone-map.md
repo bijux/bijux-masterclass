@@ -18,69 +18,76 @@ graph LR
 
 ```mermaid
 flowchart LR
-  module["Start from the module pressure"] --> surface["Choose the matching capstone surface"]
-  surface --> file["Open one file or saved bundle first"]
-  file --> guide["Use one guide only when the pressure stays fuzzy"]
-  guide --> proof["Finish with the smallest honest proof route"]
+  pressure["Start from the module pressure"] --> surface["Choose one capstone surface"]
+  surface --> artifact["Open one file or one bundle first"]
+  artifact --> owner["State the owner before browsing further"]
+  owner --> proof["Use the smallest honest proof route"]
 ```
 <!-- page-maps:end -->
 
-Use this page when you know which module you are in but do not yet know which capstone
-surface should carry the same pressure. The goal is not to browse every guide. The goal
-is to move from chapter pressure to one concrete file, one concrete bundle, and one
-concrete proof route.
+Use this page when you know the current module pressure but do not yet know which
+capstone surface should carry it. This page is not trying to summarize the whole
+capstone. It is trying to answer one practical question:
 
-## The capstone has four kinds of surfaces
+> For this exact learning pressure, where should I enter the capstone first?
 
-| Surface type | What it gives you | Best pages |
+## The capstone offers four kinds of help
+
+| Surface type | What it gives you | Best page |
 | --- | --- | --- |
-| scenario surfaces | the human story of policy creation, activation, evaluation, and incidents | [Capstone Walkthrough](capstone-walkthrough.md) |
-| code-reading surfaces | a disciplined path through the package without flattening the design | [Capstone File Guide](capstone-file-guide.md) |
+| story surfaces | the human scenario before file-reading begins | [Capstone Walkthrough](capstone-walkthrough.md) |
+| code-reading surfaces | a disciplined file route that preserves boundaries | [Capstone File Guide](capstone-file-guide.md) |
 | boundary-review surfaces | a way to name the authoritative owner of each responsibility | [Capstone Architecture Guide](capstone-architecture-guide.md) and [Capstone Review Worksheet](capstone-review-worksheet.md) |
-| proof surfaces | commands and saved bundles that confirm the design claim | [Command Guide](command-guide.md) and [Capstone Proof Guide](capstone-proof-guide.md) |
+| proof surfaces | executable routes and saved bundles that confirm the claim | [Command Guide](command-guide.md) and [Capstone Proof Guide](capstone-proof-guide.md) |
+
+Choose the surface type that matches the question. Do not open all four by habit.
 
 ## Module-to-capstone bridge
 
-| Module pressure | Open this first | Use this page next | Best proof route |
+| Module pressure | Open this first | Then use this page | Best first proof route |
 | --- | --- | --- | --- |
-| Module 01: identity, equality, representation, and semantics | `capstone/src/service_monitoring/model.py` | [Capstone File Guide](capstone-file-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming inspect` |
-| Module 02: role design, layering, and ownership | `capstone/src/service_monitoring/application.py` and `model.py` | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough` |
-| Module 03: state transitions, validation, and legal operations | `model.py` plus lifecycle tests | [Capstone Review Worksheet](capstone-review-worksheet.md) | `make PROGRAM=python-programming/python-object-oriented-programming inspect` |
-| Module 04: aggregates, events, and derived views | `model.py`, `projections.py`, and `read_models.py` | [Capstone Architecture Guide](capstone-architecture-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` |
-| Module 05: failure handling, rollback, and change pressure | `runtime.py` and `repository.py` | [Capstone Walkthrough](capstone-walkthrough.md) and [Capstone Review Worksheet](capstone-review-worksheet.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` |
-| Module 06: persistence, serialization, and repository contracts | `repository.py` and unit-of-work tests | [Capstone File Guide](capstone-file-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` |
-| Module 07: runtime boundaries, time, and coordination | `runtime.py`, `tests/test_runtime.py`, and walkthrough bundles | [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-verify-report` |
-| Module 08: tests, confidence, and proof depth | `capstone/tests/` and `pytest.txt` in the verification bundle | [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming capstone-confirm` |
-| Module 09: public routes, extension seams, and compatibility | `application.py`, public tests, and extension notes | [Capstone Extension Guide](capstone-extension-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming proof` |
-| Module 10: stewardship, hardening, and final review | saved bundles, review worksheet, and architecture surfaces | [Capstone Review Worksheet](capstone-review-worksheet.md) and [Capstone Proof Guide](capstone-proof-guide.md) | `make PROGRAM=python-programming/python-object-oriented-programming proof` |
+| Module 1: semantics, identity, representation | `capstone/src/service_monitoring/model.py` | [Capstone File Guide](capstone-file-guide.md) | `inspect` |
+| Module 2: role design, layering, ownership | `application.py` and `model.py` | [Capstone Architecture Guide](capstone-architecture-guide.md) | `capstone-walkthrough` |
+| Module 3: state transitions and validation | `model.py` plus lifecycle tests or `rules.txt` | [Capstone Review Worksheet](capstone-review-worksheet.md) | `inspect` |
+| Module 4: aggregates, events, derived views | `model.py`, `projections.py`, `read_models.py` | [Capstone Architecture Guide](capstone-architecture-guide.md) | `capstone-verify-report` |
+| Module 5: failure handling, rollback, change pressure | `runtime.py`, `repository.py`, walkthrough or review outputs | [Capstone Review Worksheet](capstone-review-worksheet.md) | `capstone-verify-report` |
+| Module 6: persistence, serialization, repository contracts | `repository.py` and unit-of-work tests | [Capstone File Guide](capstone-file-guide.md) | `capstone-verify-report` |
+| Module 7: time, runtime boundaries, coordination | `runtime.py`, runtime tests, saved bundles | [Capstone Proof Guide](capstone-proof-guide.md) | `capstone-verify-report` |
+| Module 8: tests, confidence, proof depth | verification bundle plus targeted tests | [Capstone Proof Guide](capstone-proof-guide.md) | `capstone-confirm` |
+| Module 9: public routes, extension seams, compatibility | `application.py`, public tests, extension notes | [Capstone Extension Guide](capstone-extension-guide.md) | `proof` |
+| Module 10: stewardship, hardening, final review | review worksheet, saved bundles, architecture surfaces | [Capstone Review Worksheet](capstone-review-worksheet.md) | `proof` |
 
-## If you only need one next move
+## Fast route chooser
 
 | If you are stuck on... | Do this next |
 | --- | --- |
 | "I understand the module, but not the system story." | read [Capstone Walkthrough](capstone-walkthrough.md), then run the walkthrough route |
-| "I understand the story, but I do not know which file owns it." | open [Capstone File Guide](capstone-file-guide.md) |
+| "I understand the story, but not which file owns it." | open [Capstone File Guide](capstone-file-guide.md) |
 | "I know the file, but I cannot defend the boundary." | open [Capstone Architecture Guide](capstone-architecture-guide.md) |
 | "I think I understand it, but I do not know how to prove it." | open [Command Guide](command-guide.md), then [Capstone Proof Guide](capstone-proof-guide.md) |
 | "I want to change the design, but I do not trust my placement choice." | open [Capstone Extension Guide](capstone-extension-guide.md) |
 
-## What not to do
-
-- do not start with the strongest proof route when you still cannot name the owner
-- do not start in `runtime.py` if the current module pressure is still semantic
-- do not read projections first if the current question is about authoritative state
-- do not treat the capstone as one monolith when the module is only stressing one boundary
-
-## A practical route for missed-class learners
+## A safe route for missed-class learners
 
 1. Name the current module pressure in plain words.
-2. Use the module bridge table above.
+2. Use the bridge table above.
 3. Open one file or one saved bundle first.
 4. Explain who owns the behavior before opening a second page.
 5. Use one proof route only after the ownership answer is visible.
 
+This route matters because missed-class learners are the ones most likely to browse the
+capstone as a monolith instead of entering from a real question.
+
+## What not to do
+
+- do not start with the strongest proof route when you still cannot name the owner
+- do not start in `runtime.py` if the real pressure is still semantic or lifecycle-driven
+- do not read projections first if the question is about authoritative state
+- do not treat the capstone as one flat system when the module is stressing one boundary
+
 ## Exit check
 
-Leave this map only when you can complete this sentence:
+Leave this map only when you can say:
 
-> For this module, I should start with ____, then check ____, and prove it with ____.
+> For this module pressure, I should start with `____`, check `____`, and prove it with
+> `____`.
