@@ -65,6 +65,7 @@ corroborate a concept, not replace first contact with it.
 | --- | --- | --- |
 | the first bounded pass | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` | `make walkthrough` |
 | current-state verification | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `make verify` |
+| experiment comparison and promotion gates | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit` | `make experiment-comparability-audit` |
 | independent reviewer handoff | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit` | `make reviewer-handoff-audit` |
 | recovery or release review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-review` or `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | `make recovery-review` or `make release-review` |
 

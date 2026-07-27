@@ -118,7 +118,7 @@ Fill it from the case names alone. For every “no,” name the claim you expect
 Then run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
 ```
 
 Compare your predictions with `summary.tsv`. Do not change a prediction silently; annotate

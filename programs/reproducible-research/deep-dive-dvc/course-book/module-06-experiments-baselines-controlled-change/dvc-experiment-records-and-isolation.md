@@ -227,7 +227,7 @@ The tool preserves evidence. It does not replace judgment.
 From the repository root:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
 ```
 
 Choose `controlled-threshold` and `population-drift`.

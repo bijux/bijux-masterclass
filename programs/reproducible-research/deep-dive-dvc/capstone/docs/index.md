@@ -53,17 +53,19 @@ source-only guide, or generated review bundle into the exported surface.
 6. [Data Identity Audit Guide](data-identity-audit-guide.md)
 7. [Runtime Contract Audit Guide](runtime-contract-audit-guide.md)
 8. [Metric Contract Audit Guide](metric-contract-audit-guide.md)
-9. [Reviewer Handoff Audit Guide](reviewer-handoff-audit-guide.md)
-10. [Experiment Guide](experiment-guide.md)
-11. [Review Route Guide](review-route-guide.md)
-12. [Release Review Guide](release-review-guide.md)
-13. [Recovery Guide](recovery-guide.md) when the question turns to restore and durability
+9. [Experiment Comparability Audit Guide](experiment-comparability-audit-guide.md)
+10. [Reviewer Handoff Audit Guide](reviewer-handoff-audit-guide.md)
+11. [Experiment Guide](experiment-guide.md)
+12. [Review Route Guide](review-route-guide.md)
+13. [Release Review Guide](release-review-guide.md)
+14. [Recovery Guide](recovery-guide.md) when the question turns to restore and durability
 
 ## Exported docs
 
 - [Capstone Architecture](architecture.md)
 - [Data Identity Audit Guide](data-identity-audit-guide.md)
 - [Domain Guide](domain-guide.md)
+- [Experiment Comparability Audit Guide](experiment-comparability-audit-guide.md)
 - [Experiment Guide](experiment-guide.md)
 - [Metric Contract Audit Guide](metric-contract-audit-guide.md)
 - [Publish Contract](publish-contract.md)

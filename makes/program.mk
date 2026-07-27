@@ -178,6 +178,14 @@ capstone-metric-contract-audit: ## Classify selected program metric comparison e
 capstone-metric-contract-selftest: ## Enforce selected program metric comparison evidence
 	@$(RUN_PROGRAM) capstone-metric-contract-selftest
 
+.PHONY: capstone-experiment-comparability-audit
+capstone-experiment-comparability-audit: ## Classify selected program experiment comparison evidence
+	@$(RUN_PROGRAM) capstone-experiment-comparability-audit
+
+.PHONY: capstone-experiment-comparability-selftest
+capstone-experiment-comparability-selftest: ## Enforce selected program experiment decision evidence
+	@$(RUN_PROGRAM) capstone-experiment-comparability-selftest
+
 .PHONY: capstone-reviewer-handoff-audit
 capstone-reviewer-handoff-audit: ## Classify selected program reviewer handoff evidence
 	@$(RUN_PROGRAM) capstone-reviewer-handoff-audit

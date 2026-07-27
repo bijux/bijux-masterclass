@@ -77,7 +77,7 @@ one.
 Run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
 ```
 
 The controlled case compares:

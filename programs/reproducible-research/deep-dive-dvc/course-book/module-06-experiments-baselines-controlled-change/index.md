@@ -140,8 +140,8 @@ By the end of this module, you should be able to explain:
 These commands form the evidence loop for Module 06:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
-make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-selftest
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-selftest
 dvc exp run
 dvc exp show
 dvc exp diff
@@ -170,7 +170,7 @@ Best corroboration surfaces for this module:
 Useful proof route:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
 ```
 
 The route returns `KEEP_FOR_PROMOTION_REVIEW`, `BLOCK_COMPARISON`, or

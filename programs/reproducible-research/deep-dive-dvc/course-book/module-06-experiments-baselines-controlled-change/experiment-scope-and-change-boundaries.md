@@ -283,7 +283,7 @@ not a reason for inclusion.
 Run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
 ```
 
 Compare `CONTROLLED_THRESHOLD` with `MIXED_CONTROL_CHANGE` in `summary.tsv`, then open

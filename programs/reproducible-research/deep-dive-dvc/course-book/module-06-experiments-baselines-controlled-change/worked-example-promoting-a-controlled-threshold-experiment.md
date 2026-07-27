@@ -39,7 +39,7 @@ The goal is to locate the exact gate where each path stops.
 From the repository root:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit
 ```
 
 The command creates isolated Git and DVC repositories and executes a real `dvc exp run`

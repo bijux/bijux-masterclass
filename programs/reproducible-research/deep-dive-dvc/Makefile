@@ -112,6 +112,14 @@ capstone-metric-contract-audit: ## Audit metric semantic comparability
 capstone-metric-contract-selftest: ## Enforce metric semantic comparability evidence
 	@$(RUN_CAPSTONE) metric-contract-selftest
 
+.PHONY: capstone-experiment-comparability-audit
+capstone-experiment-comparability-audit: ## Audit experiment comparison and promotion boundaries
+	@$(RUN_CAPSTONE) experiment-comparability-audit
+
+.PHONY: capstone-experiment-comparability-selftest
+capstone-experiment-comparability-selftest: ## Enforce experiment comparison and promotion evidence
+	@$(RUN_CAPSTONE) experiment-comparability-selftest
+
 .PHONY: capstone-reviewer-handoff-audit
 capstone-reviewer-handoff-audit: ## Audit clean reviewer handoff evidence
 	@$(RUN_CAPSTONE) reviewer-handoff-audit

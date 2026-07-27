@@ -57,7 +57,7 @@ Use it when you care about a concept but want the fastest evidence route.
 | Claim | Command | File surfaces |
 | --- | --- | --- |
 | the repository can rebuild its promoted contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-verify` | `capstone/publish/v1/manifest.json`, `capstone/src/incident_escalation_capstone/verify.py` |
-| experiments can vary parameters without mutating the baseline contract | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | `capstone/params.yaml`, `capstone/dvc.lock` |
+| experiments preserve baseline, intent, allowed controls, population, metric meaning, and promotion authority as separate boundaries | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit` | `capstone/repro/experiment-comparability/`, generated baseline and candidate records, DVC receipts, findings, and `summary.tsv` |
 | another person can run the same proof targets through the public interface | `make PROGRAM=reproducible-research/deep-dive-dvc program-help` | `Makefile`, `programs/reproducible-research/deep-dive-dvc/Makefile`, `capstone/Makefile` |
 | remote-backed recovery still works after local loss | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-recovery-drill` | `capstone/.dvc-remote/`, `capstone/publish/v1/` |
 | the full repository can defend itself under review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `course-book/capstone/index.md`, `capstone/dvc.yaml`, `capstone/dvc.lock`, `course-book/capstone/capstone-review-worksheet.md` |

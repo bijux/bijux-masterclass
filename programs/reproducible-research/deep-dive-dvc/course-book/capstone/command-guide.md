@@ -51,7 +51,7 @@ directory. The layers exist so you do not have to guess where a command belongs.
 | declared and hidden runtime influence | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit` | treating an empty status report as complete runtime proof |
 | metric semantic comparability | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit` | reading a numeric delta without its population, controls, schema, and unit |
 | clean reviewer handoff | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit` | using the author's cache or oral context as review evidence |
-| experiment comparison | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` |
+| experiment comparison and promotion gates | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit` | ranking successful runs before continuity checks |
 | release-boundary review | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review` | random `make PROGRAM=reproducible-research/deep-dive-dvc ...` exploration |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-dvc capstone-walkthrough` |
 
@@ -65,6 +65,7 @@ Use root-level commands when you want one entrypoint that works across programs.
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-metric-contract-audit`
+- `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-comparability-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-reviewer-handoff-audit`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-experiment-review`
 - `make PROGRAM=reproducible-research/deep-dive-dvc capstone-release-review`
@@ -85,6 +86,8 @@ surface.
 - `make capstone-runtime-contract-selftest`
 - `make capstone-metric-contract-audit`
 - `make capstone-metric-contract-selftest`
+- `make capstone-experiment-comparability-audit`
+- `make capstone-experiment-comparability-selftest`
 - `make capstone-reviewer-handoff-audit`
 - `make capstone-reviewer-handoff-selftest`
 - `make capstone-experiment-review`
@@ -105,6 +108,8 @@ Use `capstone/` when you want the raw reference repository.
 - `make runtime-contract-selftest`
 - `make metric-contract-audit`
 - `make metric-contract-selftest`
+- `make experiment-comparability-audit`
+- `make experiment-comparability-selftest`
 - `make reviewer-handoff-audit`
 - `make reviewer-handoff-selftest`
 - `make experiment-review`
