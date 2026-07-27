@@ -1,104 +1,126 @@
 # Module 07: Build Architecture, Layered Includes, and Build APIs
-Once a Make build starts working, teams usually try to reuse it, extend it, and share it.
-That is where many repositories become hard to explain:
+Architecture defects are often successful builds. A private helper creates the main
+artifact but omits verification. A release include changes ordinary compilation. Two
+sources collapse into one output, and Make faithfully builds the one target it was given.
 
-- the main `Makefile` turns into a catalog of private helper targets
-- `mk/*.mk` files mutate each other in surprising ways
-- macros compress duplication while also hiding the graph
-- CI, release scripts, and humans all start depending on different unofficial entrypoints
+Module 07 teaches you to review those failures as ownership contracts:
 
-Module 07 is about scaling a Make build without turning it into a private language.
+- external callers depend on declared targets
+- policy values propagate only through their owned target branches
+- output paths preserve source ownership as the repository grows
+- macros remain inside boundaries that can be inspected and tested
 
-## Why this day matters
+The standard is not “the Makefiles are organized.” It is:
 
-Architecture drift is slow and expensive. A build can keep working while becoming harder
-to review, harder to extend, and easier to misuse. This module is where the course shifts
-from correctness of one graph edge to clarity of the whole owned surface.
+> A maintainer can name each owner, follow each consumer, and inspect evidence that the
+> boundary holds.
 
-## Plan for the day
+## Begin with the executable audit
 
-| Time | Activity | Evidence you keep |
+From the repository root:
+
+```sh
+cd programs/reproducible-research/deep-dive-make/capstone
+gmake architecture-contract-audit
+```
+
+The bundle is written under the repository’s `artifacts/` directory:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/architecture-contracts/
+```
+
+Read it in this order:
+
+1. `route.txt`
+2. `ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md`
+3. `summary.tsv`
+4. one case in `report.json`
+5. that case’s trace
+6. its specimen and generated workspace
+
+The audit contains six cases:
+
+| Boundary | Defect model | Control model |
 | --- | --- | --- |
-| 45 minutes | Publish a five-target build API | readable `make help` output |
-| 75 minutes | Split policy, discovery, and graph ownership | an include-boundary diagram |
-| 60 minutes | Compare explicit rules with one macro | expanded rules from `make -p` |
-| 60 minutes | Add a second source namespace | collision-free object paths |
-| 90 minutes | Refactor the tangled worked example | before-and-after public surfaces |
-| 90 minutes | Complete the ten exercises | an architecture review packet |
+| build API | private caller bypasses verification | declared caller receives full evidence |
+| include ownership | release include mutates global flags | release target scopes its policy |
+| output ownership | two sources collapse to one path | source namespaces survive in outputs |
 
-Architecture work is successful when another person can predict where a change belongs.
-Keep that test in view throughout the day: if a split creates more files but not clearer
-ownership, it has not helped.
-
-## What this module is for
-
-By the end of Module 07, you should be able to explain five things clearly:
-
-- which targets are part of the public build API and which ones are implementation details
-- how to split `mk/*.mk` files by responsibility instead of habit
-- how to reuse rule shapes with macros without making the graph unreadable
-- how naming and discovery rules keep a growing repository coherent
-- how to review a build architecture before it rots into folklore
-
-## The live demo for this module
-
-Use one public target trace and one layered include split as the anchors for the day:
+An aggregate `PASS` includes three deliberately reproduced defects. Always quote the
+finding and observation, not only the result column.
 
 ```mermaid
 flowchart LR
-  request["Run one public target"] --> trace["Trace request to owning files"]
-  trace --> split["Separate policy, graph, and optional surfaces"]
-  split --> inspect["Inspect expanded rules and help output"]
-  inspect --> review["Review whether a new engineer could follow it"]
+  claim["ownership claim"]
+  defect["successful defect"]
+  control["enforced control"]
+  trace["trace"]
+  artifact["artifact evidence"]
+  judgment["review judgment"]
+
+  claim --> defect
+  claim --> control
+  defect --> trace
+  control --> trace
+  trace --> artifact --> judgment
 ```
 
-That sequence keeps architecture tied to user-facing behavior instead of style alone.
+## One serious-session route
 
-## Follow one request through the architecture
+Allow about six hours if you are studying independently.
 
-Choose one public target, such as `test`, and trace it through the repository:
+| Time | Work | Evidence to keep |
+| --- | --- | --- |
+| 35 minutes | run the audit and interpret all six rows | annotated `summary.tsv` |
+| 50 minutes | trace private and declared callers | help, caller, and artifact comparison |
+| 60 minutes | compare global and target-scoped policy | four flag artifact values |
+| 55 minutes | derive both source-to-output mappings | source/output counts and owner files |
+| 45 minutes | inspect one bounded macro | expanded rules and keep/remove decision |
+| 65 minutes | execute the tangled-layout refactor | before/after contract table |
+| 70 minutes | complete the ten exercises | review packet with evidence paths |
+| 25 minutes | run self-tests and write the review | rejection results and remaining risk |
 
-```mermaid
-flowchart LR
-  user["make test"] --> public["public target contract"]
-  public --> graph["prerequisite graph"]
-  graph --> policy["tool and flag policy"]
-  graph --> rules["artifact-producing rules"]
-  rules --> evidence["test result and build evidence"]
-```
+If you have only one hour, run the audit, read `summary.tsv`, and follow one family from
+specimen to trace to artifact. Do not skim every page and omit the evidence.
 
-For every transition, name the file that owns it. If two include files both appear to own
-compiler policy, or CI bypasses the public target and invokes an internal helper, mark
-that as architecture debt.
-
-Do this trace before moving files. Architecture is not the number of `mk/*.mk` files. It
-is whether responsibility and the path from request to evidence remain legible.
-
-## The question to keep asking
-
-Whenever you consider a refactor, ask:
-
-> Does this change make ownership more obvious to someone who did not design the system?
-
-If the answer is no, the refactor may be busywork instead of architecture.
-
-## Study route
+## Follow three contracts through the build
 
 ```mermaid
 flowchart TD
-  start["Overview"] --> core1["Public Targets and Build API Design"]
-  core1 --> core2["Layered Includes and Responsibility Boundaries"]
-  core2 --> core3["Macros, call, and Reuse Without Opaqueness"]
-  core3 --> core4["Discovery, Namespacing, and Repository Growth"]
-  core4 --> core5["Architecture Review and Maintenance Discipline"]
-  core5 --> example["Worked Example: Refactoring a Tangled Build Layout"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
+  caller["external caller"] --> public["declared target"]
+  public --> graph["owned graph"]
+  base["base policy"] --> graph
+  release["release specialization"] --> release_branch["release branch"]
+  sources["rooted sources"] --> map["namespace-preserving map"]
+  map --> graph
+  graph --> evidence["verification and owned artifacts"]
 ```
 
-Read the module in that order the first time. Later, go directly to the page that matches
-the architecture or reuse problem you are facing.
+For every arrow, name:
+
+1. the file or target that owns the decision
+2. the consumer that relies on it
+3. the evidence that would change if the boundary leaked
+
+Do this before moving files. A new include layout is not evidence that ownership improved.
+
+## Study route
+
+Read the pages in this order on the first pass:
+
+1. [Public Targets and Build API Design](public-targets-and-build-api-design.md)
+2. [Layered Includes and Responsibility Boundaries](layered-includes-and-responsibility-boundaries.md)
+3. [Discovery, Namespacing, and Repository Growth](discovery-namespacing-and-repository-growth.md)
+4. [Macros, call, and Reuse Without Opaqueness](macros-call-and-reuse-without-opaqueness.md)
+5. [Architecture Review and Maintenance Discipline](architecture-review-and-maintenance-discipline.md)
+6. [Worked Example: Refactoring a Tangled Build Layout](worked-example-refactoring-a-tangled-build-layout.md)
+7. [Exercises](exercises.md)
+8. [Exercise Answers](exercise-answers.md)
+9. [Glossary](glossary.md)
+
+The first three pages share the audit bundle. The macro lesson asks whether abstraction
+preserves those observable contracts. The review lesson and worked example combine them.
 
 ## The ten files in this module
 
@@ -127,64 +149,41 @@ the architecture or reuse problem you are facing.
 | compare your reasoning against a reference | [Exercise Answers](exercise-answers.md) |
 | stabilize the module vocabulary | [Glossary](glossary.md) |
 
-## The running question
-
-Carry this question through every page:
-
-> if a new engineer opens this build next year, can they tell which targets are public,
-> which files own policy, and how the graph is assembled without reading tribal knowledge?
-
-Good Module 07 answers usually mention one or more of these:
-
-- a stable public target surface
-- include layers with one clear responsibility each
-- reuse patterns that still leave the expanded graph inspectable
-- deterministic naming and discovery rules
-- architecture review questions that catch hidden assumptions early
-
-## What a strong Module 07 day looks like
-
-By the end of the day, you should have:
-
-- defined a small public target surface
-- traced one request from entrypoint to owned rules
-- separated at least two responsibilities into distinct include layers
-- inspected one macro expansion instead of trusting it
-- named one architectural risk before it becomes a build bug
-
 ## Commands to keep close
 
-These commands form the evidence loop for Module 07:
+Run these from `capstone/` unless a lesson says otherwise:
 
 ```sh
-make help
-make --trace all
-make -p
-make -n all
+gmake architecture-contract-audit
+gmake architecture-contract-selftest
+gmake --trace verify
+gmake -pRrq -f Makefile
+gmake -n all
 ```
 
-You are not trying to make the build look tidy. You are trying to make its structure
-legible under inspection.
+`architecture-contract-selftest` matters because it mutates disposable controls and
+requires the audit to reject dishonest evidence.
 
 ## Learning outcomes
 
 By the end of this module, you should be able to:
 
-- publish a small, stable build API for humans and CI
-- structure `mk/*.mk` files so policy, graph shape, and optional surfaces stay separate
-- use macros where they enforce invariants rather than hiding behavior
-- grow repository naming and discovery rules without introducing collisions or drift
-- review a build architecture for clarity, override safety, and long-term maintainability
+- distinguish a reachable target from a declared public promise
+- prove that external callers receive every artifact promised by their target
+- explain how include parsing and target-specific variables produce different policy scope
+- detect output collisions by mapping cardinality and artifact owner identity
+- keep macros only when their expanded rules preserve an inspectable invariant
+- write an architecture review that cites findings, traces, artifacts, and remaining risk
 
 ## Exit standard
 
 Do not move on until all of these are true:
 
-- you can name the public targets without hesitation
-- you can explain why each include layer exists
-- you can defend one macro as clarity-enhancing rather than graph-obscuring
-- you can show how naming and discovery stay stable as the tree grows
-- you can review one build layout and point to at least one architectural risk before it becomes a bug
-- you can complete all ten exercises and explain the resulting build without private context
-
-When those feel ordinary, Module 07 has done its job.
+- you can explain why `PRIVATE_TARGET_DEPENDENCE_REPRODUCED` is a defect despite exit zero
+- you can identify the artifact proving `CROSS_LAYER_POLICY_LEAK_REPRODUCED`
+- you can derive where the flat mapping loses one source owner
+- you can show equal source and unique-output counts in the namespaced control
+- you can defend one macro decision with expanded-rule evidence
+- you have completed all ten exercises without relying on an instructor
+- `gmake architecture-contract-selftest` passes
+- your review names at least one unresolved risk and the evidence route that would detect it
