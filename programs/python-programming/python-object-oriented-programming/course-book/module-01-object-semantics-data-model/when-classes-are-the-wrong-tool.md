@@ -1,5 +1,4 @@
-# When OOP Is the Wrong Tool in Python
-
+# When a Class Is the Wrong Tool
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Object Semantics Data Model"]
-  page["When OOP Is the Wrong Tool in Python"]
+  page["When a Class Is the Wrong Tool"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,103 +24,140 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Introduction
+## Why this lesson matters
 
-This core interrogates the boundaries of object-oriented programming in Python, identifying domains where functional constructs, modules, or data-pipe paradigms surpass classes in clarity and efficiency. Extending the value/entity lens from M01C01 and protocol adoption from M01C08, we catalog scenarios—pure data transformations, small scripts, one-off tools—where OOP introduces unnecessary abstraction overhead, and prescribe recognition of anti-OOP smells to favor procedural or composable alternatives. Disciplined restraint prevents over-engineering, preserving Python's multiparadigm strengths for pragmatic design.
+One of the most expensive beginner-to-intermediate habits in Python is adding classes
+before proving that class form protects any real meaning.
 
-The layered structure persists: language-level semantics outline guarantees, CPython notes detail optimizations, design semantics guide modeling choices, and practical guidelines furnish prescriptive rules. This framework yields a portable model for paradigm selection, resilient across implementations.
+This page exists to make restraint teachable. The course is about object-oriented
+design, but good object-oriented design includes knowing when not to build another
+object boundary.
 
-Cross-references link to prerequisites: protocol bloat in M01C08; composition preference in M02C12. Proficiency here cultivates discernment, deploying OOP judiciously to avoid ceremonial complexity.
+## The core question
 
-## 1. Language-Level Model
+Before adding a class, ask:
 
-Python is multiparadigm: classes, functions, and modules are all first-class citizens. There is no requirement to use classes—idiomatic Python code can be purely functional, module-oriented, object-oriented, or a mix, and the language does not privilege one style at the semantic level.
+> What meaning, invariant, lifecycle, or collaboration does this class protect that a
+> plain value, function, or module-level surface would not?
 
-### Facts You Can Rely On
+If you cannot answer that clearly, you probably do not want the class yet.
 
-- Functions are first-class objects: you can pass them around, store them, and compose them.
-- Modules are just namespaces with functions and data; no inheritance, no ceremony.
-- Generators and comprehensions let you express “data-pipe” style flows without building classes.
-- There is no class mandate: if you don’t need identity or collaboration, plain functions and data structures are enough.
+## Good reasons to keep a class
 
-Example (portable, contrasting styles):
+Keep a class when at least one of these is true:
+
+- the object has a meaningful lifecycle
+- the object owns invariants that must be preserved over time
+- the object collaborates with other objects through a stable role
+- the object needs a clear long-lived identity
+- the class is the simplest place to keep mutation safe and local
+
+Those are durable reasons. "It might be cleaner later" is not.
+
+## Good reasons to stay simpler
+
+Prefer plain functions, values, or a small dataclass when:
+
+- the work is a straightforward transformation
+- there is no meaningful identity
+- the object would mostly forward to one other structure
+- the state has no real invariant beyond "these fields exist"
+- the class would mainly group helper functions that never use `self`
+
+In these cases, class form usually adds ceremony faster than it adds clarity.
+
+## Common bad class shapes
+
+| Shape | Why it is weak |
+| --- | --- |
+| utility class full of `@staticmethod` helpers | the module is the real namespace |
+| one-shot runner class used only in `main()` | functions would express the flow more directly |
+| thin wrapper around one dict or list | representation changed, meaning did not |
+| fake hierarchy with no real polymorphic call site | inheritance cost exists without design payoff |
+| config class that only stores fields and nothing else | often a plain value or dataclass is enough |
+
+## A practical comparison
+
+### Class form that is probably unnecessary
 
 ```python
-# OOP: Class for metric aggregation (stateful collaboration)
-class MetricAggregator:
-    def __init__(self):
-        self.metrics = []
-
-    def add(self, m):
-        self.metrics.append(m)
-
-    def average(self):
-        return sum(m.value for m in self.metrics) / len(self.metrics) if self.metrics else 0
-
-# Functional: Pure transform (no state)
-from statistics import fmean
-
-def aggregate_metrics(metrics):
-    values = [m.value for m in metrics]  # Materialise on purpose for reuse
-    return fmean(values) if values else 0.0
-
-# Usage: Equivalent for linear flow
-metrics = list(original_metrics)  # Reusable sequence
-agg = MetricAggregator()
-for m in metrics:
-    agg.add(m)
-print(agg.average())  # OOP
-
-print(aggregate_metrics(metrics))  # Functional
+class MetricFormatter:
+    def format(self, metric):
+        return f"{metric.name}:{metric.value}"
 ```
 
-OOP shines for stateful collaboration; procedural for transforms.
+If there is no stored state, no lifecycle, and no collaboration role, this is usually
+just a function in disguise.
 
-## 2. Implementation Notes (CPython, non-normative)
+### Simpler form
 
-CPython does not “prefer” OOP or non-OOP code: functions, methods, and module-level code all compile to bytecode and run through the same interpreter loop. The dominant practical difference is that creating lots of tiny heap-allocated objects (including instances) has overhead; plain functions operating on built-in types (lists, dicts, tuples) are often cheaper and simpler when you don’t need identity or rich behaviour, so a pointless layer of classes/instances does show up in allocations and GC pressure.
+```python
+def format_metric(metric):
+    return f"{metric.name}:{metric.value}"
+```
 
-## 3. Design Semantics
+The simpler version says exactly what is happening and carries less conceptual cost.
 
-Non-OOP excels in stateless, one-pass data transforms versus collaborative entities (M01C01). Smells: classes for stateless ops (e.g., `Parser` wrapping functions); hierarchies for one-offs (inheritance bloat).
+## A better class candidate
 
-- **Pure data pipelines** (ETL, analysis): prefer plain functions that take data in, return data out. Classes usually add no value unless you need to maintain cross-call state or hide invariants.
-- **Small scripts / CLIs / one-offs**: keep everything at module level—parse args, call a couple of functions, exit. Introducing classes here is usually ceremony.
-- **Typical “OOP where it hurts” smells**:
-  - **Stateless utility classes**: a class with only `@staticmethod` or functions that never touch `self`—should usually be a module.
-  - **One-shot script classes**: `class ScriptRunner: ...` used only once under `if __name__ == "__main__":`—replace with functions.
-  - **Anemic wrappers around a single dict/list** with no invariants—you only made lookups more verbose.
-  - **Tiny fake hierarchies** where each subclass has one method and there is no real polymorphic call site—a `dict` from “kind” to function is often better.
-  - **Config classes** that are just attribute bags where a dict or dataclass suffices—no invariants or behavior added.
+```python
+class Alert:
+    def __init__(self, alert_id, threshold):
+        self.alert_id = alert_id
+        self.threshold = threshold
+        self.active = False
 
-In contrast, a long-lived `Alert` that changes state over time, holds an ID, and collaborates with `Rule` and `NotificationChannel`—with operations that must preserve invariants across those collaborators—is a good candidate for a class: there is identity, lifecycle, and collaboration.
+    def activate(self):
+        self.active = True
+```
 
-**Decision Test**: If you cannot describe a meaningful identity or lifecycle for something, and there is no ongoing collaboration between multiple instances, you almost certainly do not want a class at all—you want plain functions and data structures.
+Here class form may be justified because:
 
-Interaction with Protocols: Functional traits (e.g., `map`) compose without classes; smells emerge when protocols bloat stateless code (M01C08).
+- the object has identity
+- the object has lifecycle
+- mutation must stay controlled
 
-## 4. Practical Guidelines
+That is the kind of reasoning this course wants you to practice.
 
-- **Favor Functions/Modules**: Use for transforms (e.g., `def alert_filter(rules, metrics): return [r for r in rules if r.eval(metrics)]`); classes only for mutation and collaboration / invariant-keeping.
-- **Pipe Discipline**: Leverage generators and comprehensions for data flow; don’t wrap a simple sequence of transforms in a class when a few functions and `for`-loops are enough.
-- **Smell Recognition**: Refactor classes to functions when:
-  - the class has no meaningful instance state, or
-  - its methods never touch `self`, or
-  - it is just a thin wrapper around another object without adding invariants or behaviour.
-  Also audit for "anemic" classes (data-only) that could just be a dataclass or a plain dict.
-- **Hybrid Balance**: Modules orchestrate OOP (e.g., `from .alert import Alert; def main(): ...`); let `main()` be a function, not a method on a `Runner` class.
-- **Testing Simplicity**: Unit-test functions directly; mocks unnecessary without state.
+## Review checklist before adding a class
 
-**Impacts on Design and Pragmatism**:
-- **Design**: Procedural reduces ceremony; smells signal refactor to multiparadigm.
-- **Pragmatism**: Scripts/tools ship faster; over-OOP delays iteration.
+1. What state does the class own?
+2. Which invariants does it protect?
+3. What lifecycle or collaboration would be harder to express without it?
+4. If the class disappeared, what simpler form would replace it?
+5. Would that simpler form actually be clearer?
 
-## Exercises for Mastery
+If question 5 keeps producing "yes," the class is probably premature.
 
-1. Refactor a `DataTransformer` class to functional pipe; test equivalence and measure instantiation overhead.
-2. Identify smells in a hypothetical `ScriptProcessor` class (one-off tool); rewrite as module with functions and comprehensions.
-3. Hybrid: Orchestrate OOP `Alert` via functional `main()` in a monitoring script; assert no unnecessary classes.
+## Practical rules for this course
 
-This core tempers OOP zeal for multiparadigm mastery. Next, M01C10 refactors a script to object model.
+- Do not add a class just to look object-oriented.
+- Modules and functions are first-class design tools in Python.
+- Prefer small value objects for real meaning and functions for direct transformations.
+- Add classes when they reduce ambiguity, not when they merely repackage it.
+
+## Capstone connection
+
+This lesson matters because the capstone should not become a showroom of unnecessary
+objects. Its classes should exist for reasons you can defend:
+
+- value objects where meaning lives in content
+- workflow objects where identity and lifecycle matter
+- explicit boundaries where collaboration needs a durable owner
+
+If a class cannot be defended that way, the simpler surface is usually the better
+teaching choice.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- reject one unnecessary class and name the simpler replacement
+- defend one class because it protects a real lifecycle, invariant, or collaboration role
+- explain why Python being object-capable does not mean class form is always the right default
