@@ -1,30 +1,5 @@
 # Environments, Containers, and Runtime Contracts
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Software Boundaries Reproducible Rules"]
-  page["Environments, Containers, and Runtime Contracts"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Software boundaries are not only about where code lives.
 
 They are also about where code runs.
@@ -43,6 +18,15 @@ It says:
 
 That is a much better mental model than "dependency helper."
 
+## How to use this page
+
+Keep one concrete question in front of you while you read:
+
+> if this rule reruns on another machine, what software boundary must remain stable for the output to mean the same thing?
+
+This page is not trying to make you memorize Conda versus containers. It is trying to
+teach you how to name the runtime boundary you are actually relying on.
+
 ## A rule is not reproducible if its runtime is vague
 
 Two rules can have identical inputs, outputs, and shell commands and still behave
@@ -56,7 +40,7 @@ differently if:
 This is why software boundaries belong in the course. Reproducibility is not only about
 declaring files. It is also about declaring the runtime that gives those files meaning.
 
-## Three common runtime surfaces
+## Runtime surfaces answer different questions
 
 In the capstone, you can already see three distinct runtime surfaces:
 
@@ -80,6 +64,22 @@ This comparison matters because people often try to make one of these
 surfaces solve every problem.
 
 That usually creates confusion.
+
+## Start with the narrowest honest contract
+
+The safest beginner habit is:
+
+1. identify the exact step whose behavior depends on software assumptions
+2. place the runtime declaration as close to that step as practical
+3. widen the boundary only when the problem is genuinely broader
+
+That order keeps runtime decisions reviewable.
+
+If you start with one giant environment for everything, you make future reasoning harder:
+
+- unrelated changes land together
+- rebuild responsibility becomes ambiguous
+- no one can say which rule really needs which dependency
 
 ## The contract should sit close to the step it protects
 
@@ -110,6 +110,23 @@ That makes review easier:
 - the environment does not pretend to describe the whole repository
 - the script can rely on declared software instead of ambient luck
 
+## A simple ladder for runtime choice
+
+Use this ladder in order:
+
+```mermaid
+flowchart TD
+  authoring["repository authoring baseline"] --> step["rule-scoped execution contract"]
+  step --> machine["machine-level portability contract"]
+```
+
+- use the repository environment when people need a stable place to edit, lint, and test
+- use a rule-scoped environment when one workflow step needs a declared software toolchain
+- use a container when host-level differences threaten the meaning of the run
+
+The ladder matters because learners often reach for the strongest tool first. Good
+engineering usually starts with the narrowest honest boundary.
+
 ## Containers solve a different class of uncertainty
 
 A container earns its keep when system-level assumptions matter:
@@ -134,6 +151,21 @@ flowchart TD
 
 The point of this diagram is not to glorify containers. It is to show that both
 environments and containers shape behavior.
+
+## One concrete review scenario
+
+Suppose a provenance rule imports a Python library that formats JSON records in a
+specific way.
+
+- if the concern is that the step needs that Python library and version, a rule-scoped
+  environment is the first honest boundary
+- if contributors also need the same tooling to run local checks, the repository
+  environment may mirror some authoring needs
+- if the output also depends on system binaries or OS behavior that varies across machines,
+  the container boundary becomes relevant
+
+This example shows why "put it in the environment" is too vague. The real question is
+which boundary the evidence must defend.
 
 ## A weak pattern
 
@@ -175,6 +207,17 @@ the right boundary.
 If the answer is "contributors need a stable place to edit, lint, and test the repo,"
 that is a repository environment concern.
 
+## The beginner mistake to catch early
+
+A common novice move is to treat a repository-level environment as proof that workflow
+execution is reproducible.
+
+It is not.
+
+A contributor setup file may help people work on the repository without saying enough
+about the software assumptions of a specific workflow step. Reproducibility gets stronger
+only when the runtime boundary is explicit at the level where behavior can change.
+
 ## Common failure modes
 
 | Failure mode | Why it hurts | Better repair |
@@ -184,6 +227,22 @@ that is a repository environment concern.
 | container used with no reason | review becomes heavier without better guarantees | use containers for real machine-boundary problems |
 | environment files copied without explanation | readers memorize files instead of intent | explain which step or boundary the file protects |
 | repository environment treated as workflow proof | runtime drift remains hidden at rule level | keep rule execution contracts explicit where needed |
+
+## What good evidence looks like
+
+When you defend a runtime choice in review, try to include all three pieces:
+
+- the step whose meaning depends on the runtime
+- the scope of the declaration you chose
+- the reason a narrower or broader boundary would be worse
+
+Example:
+
+> This rule uses `workflow/envs/python.yaml` because the step relies on a specific Python
+> toolchain, but the rest of the repository does not. We are not moving this into a
+> container because the current uncertainty is library-level rather than machine-level.
+
+That explanation teaches design judgment, not only configuration history.
 
 ## The explanation a reviewer trusts
 
@@ -207,3 +266,6 @@ Before leaving this page, you should be able to:
 - distinguish rule-scoped environments from repository environments
 - explain when a container solves a stronger problem than an environment file
 - describe why the runtime contract should stay close to the rule it protects
+
+If you still describe containers as "the serious option" and environments as "the simple
+option," pause and reframe. The right choice is about scope of uncertainty, not prestige.

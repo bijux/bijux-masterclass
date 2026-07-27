@@ -1,30 +1,5 @@
 # Failure Modes at the Software Boundary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Software Boundaries Reproducible Rules"]
-  page["Failure Modes at the Software Boundary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The easiest way to understand software boundaries is to study how they fail.
 
 Most repositories do not become confusing because someone explicitly decides to hide
@@ -36,6 +11,14 @@ meaning. They become confusing because small shortcuts accumulate:
 - a package helper quietly changes output meaning
 
 This page turns those patterns into things you can recognize early.
+
+## How to use this page
+
+Do not read this page only after something breaks.
+
+Read it as an audit sheet while you inspect a workflow change, a capstone step, or your
+own repository. Each failure mode below should help you ask a sharper question before the
+mistake becomes normal.
 
 ## Failure mode 1: the rule contract is smaller than the real behavior
 
@@ -53,6 +36,12 @@ Better repair:
 
 - keep meaningful file dependencies declared in the rule
 - treat helper code as implementation, not as a place to invent hidden inputs
+
+Fast way to detect it:
+
+- read the rule and write down the files you think matter
+- read the script and look for extra config files, templates, lookup tables, or ambient paths
+- if the second list is larger than the first in a meaningful way, the boundary is lying
 
 ## Failure mode 2: giant helper code with no ownership signal
 
@@ -72,6 +61,12 @@ Better repair:
 - split step-local scripts from reusable package code
 - give modules names that describe domain intent rather than generic utility status
 
+Fast way to detect it:
+
+- ask which rule owns the helper
+- ask whether the same code is reused elsewhere
+- if the answer to both questions is vague, the file is already too generic
+
 ## Failure mode 3: environment declarations drift away from the steps they protect
 
 This happens when a repository has runtime files, but nobody can explain their scope.
@@ -86,6 +81,11 @@ Better repair:
 
 - keep runtime contracts near the rules they protect when possible
 - document whether a file serves authoring, execution, or portability
+
+Fast way to detect it:
+
+- open one environment file and name the exact step or boundary it protects
+- if you can only say "the workflow uses this," the scope is already too blurry
 
 ## Failure mode 4: wrappers are adopted as black boxes
 
@@ -102,6 +102,12 @@ Better repair:
 - treat wrapper adoption as a review decision
 - document why the wrapper improves clarity rather than obscures it
 
+Fast way to detect it:
+
+- ask what command really runs
+- ask what tool version or runtime contract it assumes
+- if the team treats both answers as wrapper internals that no one needs to know, review confidence is already dropping
+
 ## Failure mode 5: provenance is weaker than publication claims
 
 This happens when published results look polished but the software story is thin.
@@ -116,6 +122,12 @@ Better repair:
 
 - emit provenance next to outputs that will travel outside the repo
 - keep rebuild evidence strong enough for a reviewer to defend the result
+
+Fast way to detect it:
+
+- choose one published artifact
+- ask which repository revision, runtime context, and helper-code revision produced it
+- if those answers depend on memory, the publication boundary is weak
 
 ## One diagnostic map
 
@@ -132,7 +144,7 @@ This is useful because the visible symptom is often just "the workflow feels bri
 
 The real causes are usually more specific.
 
-## A review checklist that actually helps
+## A three-minute audit that actually helps
 
 When reviewing a workflow change, ask:
 
@@ -143,6 +155,10 @@ When reviewing a workflow change, ask:
 5. Will a future reviewer be able to defend the resulting artifact?
 
 These questions are not bureaucracy. They are shortcuts to better judgment.
+
+If you can answer all five quickly, the boundary is probably healthy.
+
+If even one answer becomes hand-wavy, stop there first.
 
 ## Common anti-explanations
 
@@ -170,6 +186,19 @@ Why it fails:
 
 - without clear provenance and ownership, "later" becomes guesswork
 
+## The beginner mistake to catch early
+
+Beginners often treat boundary failures as style issues:
+
+- a rule is "a bit messy"
+- a helper file is "not ideally organized"
+- an environment is "slightly broad"
+
+That framing is too weak.
+
+These are trust failures before they are style failures. They change whether another
+person can review the execution story honestly.
+
 ## The explanation a reviewer trusts
 
 Strong explanation:
@@ -188,3 +217,6 @@ Before leaving this page, you should be able to:
 - explain why hidden inputs are more dangerous than untidy code style
 - describe how wrappers and environments can reduce or increase clarity
 - explain why strong provenance is part of error prevention, not only documentation
+
+If you now see failure modes earlier in your own repositories than you did before, this
+page is doing the right kind of work.
