@@ -18,20 +18,24 @@ graph LR
 ```mermaid
 flowchart LR
   authority["name the authoritative boundary"] --> invariant["centralize cross-object invariants"]
-  invariant --> event["separate authoritative state from events and projections"]
-  event --> collaborate["keep collaboration explicit without tangling"]
-  collaborate --> review["justify the whole boundary under extension pressure"]
+  invariant --> event["separate truth from events and projections"]
+  event --> seams["place policies and adapters without stealing authority"]
+  seams --> review["defend the whole collaboration path"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises as one full lab on aggregate authority. The goal is not to name a
-pattern and move on. The goal is to prove that a learner studying alone can look at a
-multi-object workflow and say exactly which boundary owns truth, which collaborators are
-derived, and which seams exist only for policy or integration.
+Use these exercises as one full lab day on aggregate authority. The goal is not to name
+patterns and move on. The goal is to prove that you can inspect one multi-object workflow
+and say:
 
-## Running lab scenario
+- which boundary owns truth
+- which collaborators are derived or subordinate
+- which seams exist for policy, projection, or integration only
 
-Use one scenario throughout the day so the authority decisions compound:
+## Running lab rule
+
+Use one scarce-resource workflow for the whole day so the authority decisions compound.
+If you do not already have one, use this scenario:
 
 `WorkshopEnrollment`
 
@@ -45,13 +49,12 @@ The system has:
 
 Rules:
 
-- no more than the seat limit may be confirmed
+- confirmed attendees must never exceed available seats
 - waitlisted attendees are not confirmed participants
 - roster projections may lag but must never invent authority
-- payment callbacks may inform enrollment, but they do not decide seat ownership by
-  themselves
+- payment callbacks may inform enrollment, but they do not decide seat ownership by themselves
 
-If you prefer your own scenario, keep the same pressure: one scarce resource, multiple
+If you use your own scenario, keep the same pressure: one scarce resource, multiple
 objects, external callbacks, and derived read models.
 
 ## What to keep open while you work
@@ -80,10 +83,11 @@ For `WorkshopEnrollment`, decide:
 - what aggregate or boundary owns seat allocation
 - what nearby object is tempting but should not own it
 - what contradiction appears if authority is split
+- what proof route would show the difference first
 
-End with one sentence that starts:
+End with one sentence beginning:
 
-> "The authoritative owner of seat assignment is ..."
+> The authoritative owner of seat assignment is...
 
 ## Exercise 2: Map the main cross-object invariant
 
@@ -112,8 +116,9 @@ For each design, answer:
 - what becomes easier to audit
 - what becomes blurrier
 - where hidden coupling will probably appear first
+- what maintenance change would expose the weakness fastest
 
-Do not answer with style preferences. Answer with reviewability and invariant control.
+Answer with reviewability and invariant control, not with pattern loyalty.
 
 ## Exercise 4: Review one domain event honestly
 
@@ -127,9 +132,8 @@ Explain:
 
 - what authoritative state change happened first
 - what consumers may infer from the event
-- what consumers must not change directly because of the event
-
-If the event feels like the place where truth is decided, redesign the authority path.
+- what consumers must never change directly because of the event
+- what would go wrong if the event existed before truth changed
 
 ## Exercise 5: Distinguish projection from truth
 
@@ -137,11 +141,10 @@ Take one read model, such as a roster summary or waitlist dashboard, and explain
 
 - what source-of-truth boundary it depends on
 - what lag or simplification is acceptable
-- why it must never become the write path for enrollment decisions
+- why it must never become the write path
 - one operator convenience it still provides
 
-This exercise is about resisting the very common "the dashboard knows the real answer"
-trap.
+This exercise is about resisting the "the dashboard knows the real answer" trap.
 
 ## Exercise 6: Place policy objects carefully
 
@@ -173,8 +176,7 @@ Name:
 - who calls whom directly
 - what should stay indirect
 - one coupling smell that would show the surface is tangling
-
-The goal is explicit cooperation without letting every object know every other object.
+- one refactor that would make the authority path clearer
 
 ## Exercise 8: Place one adapter boundary
 
@@ -202,6 +204,7 @@ For each step, name:
 - where authority exists
 - where derivation begins
 - where failure should be visible first
+- which step a new maintainer is most likely to misunderstand
 
 ## Exercise 10: Produce the authority packet
 
@@ -217,14 +220,14 @@ The packet is done only when another learner can answer:
 - who owns the scarce resource
 - which events are downstream facts
 - which components are helpers rather than truth owners
+- where the next extension should land without weakening the aggregate
 
 ## Done means the boundary is unmistakable
 
-You are done with the exercise day when your packet can survive three review questions:
+You are done with the exercise day when your packet can survive these review questions:
 
-- "Who can reject the over-capacity enrollment?"
-- "Which event happened only after truth was already decided?"
-- "What collaborator helps without owning authority?"
+- who can reject the over-capacity enrollment?
+- which event happened only after truth was already decided?
+- what collaborator helps without owning authority?
 
-If those answers are still fuzzy, keep tightening the packet before you open the answer
-page.
+If those answers are still fuzzy, keep tightening the packet before you open the answer page.
