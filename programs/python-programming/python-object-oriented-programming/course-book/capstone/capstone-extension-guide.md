@@ -18,60 +18,87 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  change["Name the change precisely"] --> owner["Find the owning boundary"]
+  owner --> proof["Name the first test or bundle that should fail"]
+  proof --> route["Choose the smallest review route after the edit"]
+  route --> commit["Commit only when placement and proof both stay honest"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for change pressure, not for
-wandering the whole course-book. Read the second diagram as the guide loop: name the
-change, place it at the smallest honest boundary, then prove it with the narrowest route
-that still deserves trust.
+Use this page before editing the capstone. The central extension question is not "where
+can I make this work?" It is "where does this change belong if I still want the design
+to be readable next year?"
 
-Use this page before changing the capstone. The goal is not to freeze the repository.
-The goal is to keep new work readable, bounded, and provable two years from now.
+## The first placement rule
 
-## Put the change in the right place
+If you cannot name the owning boundary before you touch a file, you are not ready to
+edit the capstone yet.
 
-| If you are changing... | Start in... | Why |
+## Where common changes belong
+
+| Change type | Owning file or boundary | Why it belongs there |
 | --- | --- | --- |
-| lifecycle rules, invariant checks, or incident decisions | `src/service_monitoring/model.py` | the aggregate should stay authoritative for domain truth |
-| variation in evaluation behavior | `src/service_monitoring/policies.py` | strategy differences belong outside condition ladders in the aggregate |
-| application-level commands and use-case orchestration | `src/service_monitoring/application.py` | application flow should coordinate the domain rather than redefine it |
-| repository or persistence mechanics | `src/service_monitoring/repository.py` | storage concerns should adapt to the model instead of deforming it |
-| external delivery, clocks, or message sinks | `src/service_monitoring/runtime.py` or adapter modules | effectful boundaries should stay outside the model |
-| projection or read-model changes | projection modules and downstream tests | derived views should remain downstream of domain events |
+| new lifecycle restriction | `model.py` | lifecycle truth belongs to the aggregate |
+| new evaluation mode | `policies.py` | evaluation variation should stay replaceable instead of widening the aggregate |
+| new public command or scenario step | `application.py`, `demo.py`, or `cli.py` | the learner-facing surface should stay explicit |
+| new source, sink, or orchestration path | `runtime.py` | integration flow belongs outside domain truth |
+| new repository or rollback behavior | `repository.py` | persistence should adapt to the domain rather than redefine it |
+| new derived view | `read_models.py` or `projections.py` | derived state must stay downstream of domain events |
+| new proof or learner route | saved bundle route plus matching guide | review surfaces are part of the teaching contract |
 
-## Safe extensions
+## Extension questions that prevent drift
 
-- adding a new policy object without weakening aggregate invariants
-- adding a new sink or adapter without moving delivery logic into the domain
-- clarifying a command or public route so the capstone is easier to review
-- strengthening tests or saved proof bundles after a behavioral change
+- Does this change alter what is true, or only how truth is evaluated?
+- Does this change alter orchestration, or only how the story is presented?
+- Does this change require a new derived view, or is it trying to move authority into one?
+- Which test or saved bundle would expose a wrong placement choice first?
 
-## Risky extensions
+## High-risk extension smells
 
-- moving infrastructure concerns into the aggregate
-- adding procedural branching where a policy or value object should absorb variation
-- letting projections or repositories become authoritative
-- changing public behavior without updating the named proof route that justifies it
+- a "small" feature requires simultaneous edits in aggregate, runtime, and projection code
+- a new rule mode feels easier to implement in the runtime than in `policies.py`
+- a persistence change is easier to explain in storage terms than in domain terms
+- a new public route requires reaching into internals because the application surface is no longer enough
+- the change passes tests, but the correct owning file now feels arguable
 
-## Minimum proof after a change
+## Update obligations by surface
 
-1. Run `make PROGRAM=python-programming/python-object-oriented-programming inspect`.
-2. Run `make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough`.
-3. Run `make PROGRAM=python-programming/python-object-oriented-programming verify-report`.
-4. Run `make PROGRAM=python-programming/python-object-oriented-programming proof` for
-   larger ownership or extension changes.
+| If you change... | Recheck at minimum |
+| --- | --- |
+| `model.py` | lifecycle tests, walkthrough expectations, and the proof guide |
+| `policies.py` | policy evaluation tests and `rate_of_change.txt` or equivalent variants |
+| `runtime.py` | runtime tests, walkthrough bundle, and rollback behavior |
+| `repository.py` | unit-of-work tests and verification bundle |
+| `read_models.py` or `projections.py` | history, snapshot, and retirement outputs |
+| `application.py`, `demo.py`, or `cli.py` | walkthrough bundle and learner-facing command routes |
 
-If the new behavior becomes harder to place, explain, or prove after those routes, the
-change likely weakened the capstone even if the code still runs.
+## Minimum honest proof after an extension
 
-## Review questions before you commit
+1. Run the nearest test surface.
+2. Run the smallest bundle route that a learner would use to inspect the changed behavior.
+3. Escalate to `capstone-confirm` if the boundary itself changed.
+4. Escalate to `proof` if the published teaching route changed.
 
-- Which object or boundary owns the new behavior now?
-- Which test or saved bundle would fail first if that ownership were wrong?
-- Which future maintainer question became easier to answer?
-- Would the filename, guide name, and commit message still make sense later?
+## Extension route by question
+
+| If you are asking... | Start here |
+| --- | --- |
+| "where should a new rule mode go?" | `policies.py` and policy evaluation tests |
+| "where should a new invariant go?" | `model.py` and lifecycle tests |
+| "where should a new integration go?" | `runtime.py` and runtime tests |
+| "where should a new review surface go?" | `command-guide.md`, `capstone-proof-guide.md`, and bundle outputs |
+| "where should a new read concern go?" | `read_models.py`, `projections.py`, and snapshot outputs |
+
+## Before-you-commit checklist
+
+- I can name the owning boundary in one sentence.
+- I can name the first proof surface that should fail if placement is wrong.
+- I can explain why a neighboring boundary should *not* own this change.
+- I can point to the smallest route another reviewer should use after my edit.
+
+## Exit check
+
+Leave this page only when you can say:
+
+> This change belongs in `____`, not `____`, because `____` owns the behavior and
+> `____` would catch the wrong placement first.
