@@ -1,32 +1,13 @@
 # Atomic Publication, Logs, and Failure Evidence
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Atomic Publication, Logs, and Failure Evidence"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This page explains how a workflow earns trust after something goes wrong: final outputs are
 published safely, and failures leave behind evidence instead of confusion.
+
+## How to read this page
+
+Read this page with failure in mind, not success. The question is not "does the rule
+usually work?" The question is "what happens to trust when the rule does not finish
+cleanly?"
 
 ## The sentence to keep
 
@@ -62,6 +43,11 @@ The problem appears when something goes wrong:
 - the final path already exists and now contains truncated or misleading data
 
 At that point the file exists, but the contract is broken.
+
+## Why this belongs in Module 01
+
+Publication discipline is not a late-course luxury. It starts as soon as a workflow
+claims that an output file means something trustworthy.
 
 ## A published file should be complete or absent
 
@@ -168,6 +154,13 @@ Now you have both:
 
 That is a much more teachable workflow.
 
+## A strong beginner habit
+
+For every output you care about, ask two questions:
+
+- how does this file become visible only when it is complete
+- where would I look first if the job failed
+
 ## Benchmarks are evidence, not decoration
 
 Benchmarks are often introduced later as performance tooling, but even in Module 01 they
@@ -198,6 +191,12 @@ Use them to represent reality more honestly:
 - `shadow` when a tool makes a mess and needs isolated working space
 
 These features should clarify the workflow contract, not paper over a confusing one.
+
+## Common bad repair
+
+The bad repair is to hide a messy rule behind more features without fixing the output
+contract itself. If the final path can still become visible too early, the workflow is
+still lying.
 
 ## A small failure scenario
 

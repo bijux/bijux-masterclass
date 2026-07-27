@@ -1,32 +1,16 @@
 # File Contracts, Targets, and Job Planning
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["File Contracts, Targets, and Job Planning"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This page explains the first mental shift you need in Snakemake: a rule is not just
 an execution step. It is a promise about files.
+
+## How to read this page
+
+Read this page with one concrete question in mind:
+
+- which files does the workflow owe me
+
+If you find yourself focusing first on shell commands, step back. Module 01 is trying to
+teach how Snakemake reasons, not how a shell pipeline happens to be written.
 
 ## The sentence to keep
 
@@ -56,6 +40,18 @@ If you keep that one idea clear, many beginner confusions disappear:
 - "why is this rule absent from the DAG?"
 
 The answer is usually in the file contract, not in the shell body.
+
+## Common beginner mistake
+
+The usual beginner mistake is to explain a rule like this:
+
+> first this command runs, then that command runs, then the workflow is done
+
+That explanation sounds procedural, but it misses the thing Snakemake actually uses:
+
+- declared inputs
+- declared outputs
+- requested targets
 
 ## Targets are how intent enters the workflow
 
@@ -108,6 +104,14 @@ It asks:
 - which upstream files are therefore required
 
 That is why file naming and output precision matter so much.
+
+## A good study pause
+
+Before reading further, stop and answer this in plain language:
+
+- if I request one file, how does Snakemake decide which rule owns it
+
+If you cannot answer that yet, reread this section before moving deeper into the examples.
 
 ## A tiny truthful workflow
 
@@ -248,6 +252,15 @@ This is one of the most important habits in the whole course:
 
 - stop explaining workflows in terms of vague step order
 - start explaining workflows in terms of file edges
+
+## The design pressure underneath this lesson
+
+This lesson is not only about understanding one small workflow. It is also building a
+review habit that matters later:
+
+- when a rule is absent, check whether a target actually requires it
+- when execution order feels surprising, inspect the file edges
+- when a workflow feels magical, ask which file contract is missing or too vague
 
 ## The role of `rule all`
 
