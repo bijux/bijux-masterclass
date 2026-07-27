@@ -52,9 +52,14 @@ pipeline reruns, skips, records evidence, or becomes deceptive.
 | DVC graph | The directed execution structure created from stage declarations and artifact edges. |
 | DAG | A directed acyclic graph; in this module, the shape DVC uses to understand stage order and dependency flow. |
 | staleness | The condition where current declared state no longer matches recorded lock evidence, so rerun is needed. |
+| semantic freshness | The condition where an output's meaning agrees with the current real inputs and controls, not merely with the state DVC can see. |
+| status receipt | Saved `dvc status` evidence showing which declared changes DVC considered stale at a specific point in an audit. |
 | false rerun | A visible inefficiency where a stage reruns even though the meaningful result would not have changed. |
 | stale output | A correctness risk where a result should change but DVC has no declared reason to rerun the producing stage. |
 | hidden influence | Any real input, control, environment fact, or artifact dependency that affects a result without being declared or otherwise reviewed. |
+| undeclared sidecar | A meaningful file written beside a declared output but omitted from `outs`, leaving DVC unable to detect or restore its loss. |
+| causal contrast | A paired case that changes one declaration boundary while holding the command behavior constant, making the declaration's effect reviewable. |
+| contract mutation | A deliberate change to an input, parameter, or output used to test whether the stage declaration reacts truthfully. |
 | lock evidence | The recorded dependency hashes, parameter values, command text, and output identities in `dvc.lock`. |
 | producer | The stage that owns and declares an output artifact. |
 | consumer | A stage that reads another stage's output as a dependency. |

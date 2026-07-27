@@ -80,6 +80,14 @@ capstone-recovery-review: ## Build the capstone remote recovery review bundle
 capstone-experiment-review: ## Build the capstone experiment comparison bundle
 	@$(RUN_CAPSTONE) experiment-review
 
+.PHONY: capstone-stage-contract-audit
+capstone-stage-contract-audit: ## Audit declared and hidden stage influences
+	@$(RUN_CAPSTONE) stage-contract-audit
+
+.PHONY: capstone-stage-contract-selftest
+capstone-stage-contract-selftest: ## Reject dishonest stage contract evidence
+	@$(RUN_CAPSTONE) stage-contract-selftest
+
 .PHONY: capstone-source-bundle
 capstone-source-bundle: ## Build the capstone tracked-source release bundle
 	@$(RUN_CAPSTONE) source-bundle

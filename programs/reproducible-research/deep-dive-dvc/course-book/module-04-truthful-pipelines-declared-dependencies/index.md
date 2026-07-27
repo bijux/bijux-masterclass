@@ -46,8 +46,9 @@ that a reviewer can inspect, challenge, and reproduce.
 
 The capstone corroboration surface for this module is the set of files that show declared
 execution truth: `capstone/dvc.yaml`, `capstone/dvc.lock`, `capstone/params.yaml`,
-`capstone/docs/stage-contract-guide.md`, `capstone/docs/experiment-guide.md`, and
-the `make -C capstone verify` route.
+`capstone/repro/stage-contracts/`, `capstone/docs/stage-contract-guide.md`,
+`capstone/docs/stage-contract-audit-guide.md`, and the `capstone-stage-contract-audit`
+route.
 
 ## Why this module exists
 
@@ -107,7 +108,7 @@ If the problem is already partly clear, use this shortcut:
 | [False Reruns and Stale Outputs](false-reruns-and-stale-outputs.md) | teaches how to distinguish wasteful reruns from dangerous stale results |
 | [Safe Pipeline Refactoring and Shared Outputs](safe-pipeline-refactoring-and-shared-outputs.md) | teaches graph change, shared intermediates, and multi-output care |
 | [Worked Example: Repairing a Deceptive Pipeline](worked-example-repairing-a-deceptive-pipeline.md) | walks through one realistic pipeline review and repair |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten cumulative mastery exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -127,17 +128,18 @@ By the end of this module, you should be able to explain:
 These commands form the evidence loop for Module 04:
 
 ```bash
-make -C capstone verify
-make -C capstone walkthrough
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-selftest
 dvc dag
 dvc status
 dvc repro
 ```
 
-Use `make -C capstone verify` and `make -C capstone walkthrough` from the capstone root
-when you want the course-provided review route. Use `dvc dag`, `dvc status`, and
-`dvc repro` inside a DVC workspace when you want to inspect the declared graph and rerun
-decision directly.
+Use `capstone-stage-contract-audit` for the course-provided mutation route. It contrasts
+declared and hidden file reads, parameter lookups, and output ownership in isolated DVC
+workspaces. Use the self-test when changing that evidence route. Use `dvc dag`,
+`dvc status`, and `dvc repro` inside a DVC workspace when you want to inspect one
+declared graph and rerun decision directly.
 
 ## Capstone route
 
@@ -148,17 +150,19 @@ Best corroboration surfaces for this module:
 - `capstone/dvc.yaml`
 - `capstone/dvc.lock`
 - `capstone/params.yaml`
+- `capstone/repro/stage-contracts/`
 - `capstone/docs/stage-contract-guide.md`
+- `capstone/docs/stage-contract-audit-guide.md`
 - `capstone/docs/experiment-guide.md`
 - `capstone/docs/publish-contract.md`
 
 Useful proof route:
 
 ```bash
-make -C capstone walkthrough
-make -C capstone verify
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
 ```
 
-The point of that route is not to trust the graph because it exists. It is to practice
-asking whether each declared edge matches the real read, write, and control behavior of
-the pipeline.
+The route changes one real influence at a time, saves DVC's status decision, and then
+checks the resulting semantic value or missing artifact. The point is not to trust the
+graph because it exists. It is to prove whether each declared edge matches the real read,
+write, and control behavior of the command.

@@ -146,6 +146,14 @@ capstone-file-contract-audit: ## Classify selected program file contract evidenc
 capstone-file-contract-selftest: ## Reject dishonest selected program file contract evidence
 	@$(RUN_PROGRAM) capstone-file-contract-selftest
 
+.PHONY: capstone-stage-contract-audit
+capstone-stage-contract-audit: ## Classify selected program stage contract evidence
+	@$(RUN_PROGRAM) capstone-stage-contract-audit
+
+.PHONY: capstone-stage-contract-selftest
+capstone-stage-contract-selftest: ## Reject dishonest selected program stage contract evidence
+	@$(RUN_PROGRAM) capstone-stage-contract-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit

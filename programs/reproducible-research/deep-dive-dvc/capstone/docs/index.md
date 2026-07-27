@@ -49,10 +49,11 @@ source-only guide, or generated review bundle into the exported surface.
 2. [Capstone Architecture](architecture.md)
 3. [Publish Contract](publish-contract.md)
 4. [Stage Contract Guide](stage-contract-guide.md)
-5. [Experiment Guide](experiment-guide.md)
-6. [Review Route Guide](review-route-guide.md)
-7. [Release Review Guide](release-review-guide.md)
-8. [Recovery Guide](recovery-guide.md) when the question turns to restore and durability
+5. [Stage Contract Audit Guide](stage-contract-audit-guide.md)
+6. [Experiment Guide](experiment-guide.md)
+7. [Review Route Guide](review-route-guide.md)
+8. [Release Review Guide](release-review-guide.md)
+9. [Recovery Guide](recovery-guide.md) when the question turns to restore and durability
 
 ## Exported docs
 
@@ -63,5 +64,6 @@ source-only guide, or generated review bundle into the exported surface.
 - [Recovery Guide](recovery-guide.md)
 - [Release Review Guide](release-review-guide.md)
 - [Review Route Guide](review-route-guide.md)
+- [Stage Contract Audit Guide](stage-contract-audit-guide.md)
 - [Stage Contract Guide](stage-contract-guide.md)
 - [Tour](tour.md)
