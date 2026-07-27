@@ -163,33 +163,60 @@ The key reasoning is:
 
 Temporary debris may remain for diagnosis; it is not trusted output.
 
-## Exercise 5: Diagnose one generator failure mode
+## Exercise 5: Discriminate producer and consumer edge failures
 
-A strong answer names one failure class and keeps the first evidence command simple.
+The complete observation table is:
 
-For example:
+| Specimen | Model | Changed outputs | Final binary text | Finding |
+| --- | --- | --- | --- | --- |
+| authored header | missing edge | none | `before` | `FAULT_REPRODUCED` |
+| authored header | declared edge | `app` | `after` | `REPAIR_VERIFIED` |
+| generated producer | missing edge | none | `before` | `FAULT_REPRODUCED` |
+| generated producer | declared edge | `generated.h`, `app` | `after` | `REPAIR_VERIFIED` |
 
-- failure class:
-  - duplicate execution under `-j`
-- first evidence:
-  - `make -j2 --trace all`
-- likely repair:
-  - grouped targets or a stamp representing one generation event
+Each row has `result=PASS` because the audit observed the contract declared for that
+controlled model. For a missing-edge row, the contract is to reproduce stale behavior.
+`FAULT_REPRODUCED` is therefore the deciding field: the harness worked, but the graph it
+executed is intentionally dishonest.
 
-Or:
+In the authored-header model, the missing declaration is:
 
-- failure class:
-  - unstable manifest
-- first evidence:
-  - `make all && make -q all; echo $?`
-- likely repair:
-  - replace timestamp noise with a convergent manifest that records semantic facts
+```make
+app: config.h
+```
 
-The strongest answers avoid random shell edits and stay anchored to graph or publication
-truth.
+The complete rule also retains `main.c`, because source and header both define the binary:
 
-The first probe is strong when it reveals the broken truth without destroying the state
-you needed to inspect.
+```make
+app: main.c config.h
+```
+
+The missing-edge trace says there is nothing to do because `config.h` is absent from
+Make's reachable prerequisite graph. That trace becomes evidence of a defect only when it
+is bound to the changed header and the binary that still prints `before`. Without those
+observations, “nothing to do” could simply mean a converged truthful build.
+
+The generated-producer repair restores a different path:
+
+```text
+scripts/render_header.py -> generated.h -> app
+```
+
+Both governed outputs change because the script first changes the published header's
+meaning, then the binary changes because it consumes that header. Adding the script
+directly to `app` would be wrong: it might trigger recompilation while leaving
+`generated.h` stale, and it would couple the consumer to producer internals.
+
+Production repairs preserve those ownership boundaries:
+
+- for authored or discovered headers, compile with dependency-generation flags and include
+  the resulting dependency files so each object names the headers it consumed
+- for generated files, declare scripts, schemas, templates, and modeled non-file facts on
+  the generated-output rule
+- keep consumers dependent on published generated outputs
+
+A strong submission uses the paired declared-edge case as a control. It does not infer the
+repair merely from seeing stale output.
 
 ## Exercise 6: Build your first generated target
 
@@ -282,27 +309,55 @@ The important explanation is:
 > Set-level publication is stronger than file-level replacement because consumers either
 > observe one complete generation or another, never an in-between mix.
 
-## Exercise 10: Repair a complete generator pipeline
+## Exercise 10: Repair and prove a complete generator pipeline
 
-A mastery submission proves behavior rather than presenting syntax alone. Its transcript
-should establish:
+A mastery submission proves behavior rather than presenting syntax alone. Its eight-row
+observation table should establish:
 
-- initial generation runs once
-- an immediate rebuild is a no-op
-- a semantic source edit runs generation once
-- `make -j2` does not duplicate the producer
-- deleting one grouped output reruns the producer once
-- an injected failure returns nonzero and preserves trusted output checksums
+| Probe | Expected producer behavior | Expected published or consumer behavior |
+| --- | --- | --- |
+| clean build | generator runs once | both outputs publish; consumer builds |
+| immediate rerun | generator does not run | no governed output changes |
+| schema or source edit | generator runs once | coupled outputs publish; affected consumer rebuilds |
+| generator script edit | generator runs once | coupled outputs publish; affected consumer rebuilds |
+| controlled published-header edit | generator does not run | consumer rebuilds because it names the header |
+| parallel clean build | one logical generation event | complete output set and consumer succeed |
+| delete one coupled output | generator runs once | the coupled set is recovered consistently |
+| injected generation or validation failure | attempted producer returns nonzero | trusted output hashes remain unchanged |
 
-The graph should show source and generator inputs entering one generation event,
-validation before publication, and consumers depending on published files.
+The generator-script row proves the producer-input edge. The controlled header row proves
+the consumer edge independently. If the header probe reruns the generator, inspect whether
+the probe accidentally made a producer prerequisite newer or whether the graph contains an
+overbroad edge. If the generator row rebuilds the binary but not the published header, the
+consumer has been coupled directly to producer internals and the generated boundary is
+still stale.
 
-The final paragraph must state whether publication is:
+The graph should show:
 
-- failure-safe for ordinary command errors
-- atomic for concurrent readers
+```text
+schema -------\
+generator -----+-> generation -> validation -> coupled publication
+mode manifest -/                                |
+                                                  +-> consumer
+```
 
-Those are different guarantees, and the strongest answers name the difference explicitly.
+The manifest is justified when it carries a semantic fact such as `MODE` that changes the
+generated set and cannot be represented by an ordinary source file. A clock-only manifest
+or one that merely substitutes for direct schema and script edges is decorative.
+
+After the controlled header probe, restore the generated state before interpreting later
+rows. The direct edit is a diagnostic test of consumption, not a supported authoring
+workflow.
+
+The final paragraph must distinguish two guarantees:
+
+- staging and validation before final renames can preserve old trusted outputs after an
+  ordinary command failure
+- two separate final renames do not make a multi-file set atomic for concurrent readers
+
+If readers require set-level atomicity, publish an immutable generation and atomically
+switch one pointer to it. The pointer, not each file rename, becomes the publication
+boundary.
 
 ## What mastery-level answers sound like
 
