@@ -1,16 +1,14 @@
 # Capstone Walkthrough
 
-This page gives the capstone a teaching route, not just a repository map.
+Use this page when you need one bounded workflow story from file contract to repository
+proof. This page gives the capstone a teaching route, not just a repository map.
 
-Use it when you need one bounded workflow story from file contract to repository proof.
 Choose one walkthrough depth, follow only the matching surfaces, and stop when one honest
 workflow story is visible.
 
 ## How to use this walkthrough
 
-Use this page when you want a capstone story, not when you want the strongest proof.
-
-Read it in this order:
+Work in this order:
 
 1. choose the depth that matches your question
 2. follow the route exactly once without widening it
@@ -20,9 +18,9 @@ Read it in this order:
 That discipline matters because the capstone can quickly become too large for the concept
 you are trying to test.
 
-## What this walkthrough must help you do
+## What this walkthrough should help you do
 
-By the end of a good capstone walkthrough, you should be able to:
+By the end of a good walkthrough, you should be able to:
 
 - explain what the repository claims before you run anything heavy
 - choose between a bounded first pass and a deeper executed pass
@@ -40,25 +38,29 @@ They answer different kinds of questions:
 - executed pass: how does one workflow story become saved evidence
 - stewardship pass: what ownership or drift judgment would a maintainer make
 
-Choosing the wrong depth usually makes the repository feel noisy rather than enlightening.
+Choosing the wrong depth usually makes the repository feel noisy rather than
+enlightening.
 
-## First pass versus deeper pass
+## The 30-minute first pass
 
-- First pass: use the bounded route when you need one clear workflow story from file contract to planned proof.
-- Deeper pass: use the longer routes only when the question changes from entry to policy, publish, execution, or stewardship review.
+Use this pass when the question is still about entry and basic workflow shape.
 
-## 30-minute first pass
-
-1. Read [Capstone Guide](index.md).
-2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`.
-3. Read the copied `Snakefile`, rule files, `list-rules.txt`, and `dryrun.txt` in that order.
-4. Read [Capstone File Guide](capstone-file-guide.md).
-5. Use [Capstone Review Worksheet](capstone-review-worksheet.md) to record what is visible before execution.
+1. read [Capstone Guide](index.md)
+2. run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough`
+3. read the copied `Snakefile`, rule files, `list-rules.txt`, and `dryrun.txt` in that
+   order
+4. read [Capstone File Guide](capstone-file-guide.md)
+5. use [Capstone Review Worksheet](capstone-review-worksheet.md) to record what is
+   visible before execution
 
 Goal:
-leave with a clear picture of what the workflow claims to build, where dynamic discovery
-is declared, which files are public contracts, and which question would justify a deeper
-route.
+
+leave with a clear picture of:
+
+- what the workflow claims to build
+- where dynamic discovery is declared
+- which files are public contracts
+- which question would justify a deeper route
 
 ## One honest walkthrough decision
 
@@ -74,25 +76,41 @@ would be much broader.
 
 Use this only after the first pass is already clear.
 
-1. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour`.
-2. Read the executed proof bundle.
-3. Compare the publish artifacts against `FILE_API.md`.
-4. Follow one rule family back into `workflow/rules/`.
+1. run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour`
+2. read the executed proof bundle
+3. compare the publish artifacts against `FILE_API.md`
+4. follow one rule family back into `workflow/rules/`
 
 Goal:
+
 see how the planned workflow becomes executed evidence without losing contract clarity.
 
 ## Stewardship pass
 
 Use this only after the workflow and publish surfaces are already legible.
 
-1. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit`.
-2. Read the publish-review and profile-audit surfaces together.
-3. Record one current-truth statement and one drift risk in the review worksheet.
+1. run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit`
+2. read the publish-review and profile-audit surfaces together
+3. record one current-truth statement and one drift risk in the review worksheet
 
 Goal:
-connect the repository to Modules 08-10 without turning every walkthrough into a
+
+connect the repository to Modules 08 through 10 without turning every walkthrough into a
 governance meeting.
+
+## Good walkthrough habits
+
+- keep one question in view the whole time
+- prefer the smallest route that still answers it
+- read the evidence bundle in the order the route intended
+- stop once one honest workflow story is visible
+
+## Bad walkthrough habits
+
+- widening into a second route before the first one is explained
+- reading random directories during the first pass
+- treating the walkthrough as a substitute for the module
+- escalating to stewardship review just because the repository feels impressive
 
 ## Good stopping point
 
