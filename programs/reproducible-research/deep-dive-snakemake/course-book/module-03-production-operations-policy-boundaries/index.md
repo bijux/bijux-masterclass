@@ -152,6 +152,38 @@ They answer different questions:
 - how the repository packages profile differences for review
 - whether the strongest built-in confirmation path still passes
 
+For the scheduler-policy lab, use:
+
+```console
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-scheduler-policy-audit
+make PROGRAM=reproducible-research/deep-dive-snakemake capstone-scheduler-policy-selftest
+```
+
+The first command records resource translation without contacting a scheduler.
+The second mutates the policy cases to prove that each decision responds to its
+intended cause.
+
+```mermaid
+flowchart LR
+    O["module orientation"] --> L["policy lessons"]
+    L --> A["scheduler-policy audit"]
+    A --> W["worked investigation"]
+    W --> E["cumulative exercises"]
+    E --> R["production review"]
+```
+
+Read the audit guide before treating the receipt as production evidence. This
+module distinguishes three claims:
+
+| Claim | This module's evidence |
+| --- | --- |
+| rule resources are declared | Snakemake dry-run |
+| profile translation is safe | recorded scheduler receipt and audit |
+| real scheduler execution succeeds | not proven locally; requires site integration |
+
+That final limitation is part of the lesson. Independent learners should
+practice stating where evidence ends.
+
 ## Exit standard
 
 Do not move on until all of these are true:
