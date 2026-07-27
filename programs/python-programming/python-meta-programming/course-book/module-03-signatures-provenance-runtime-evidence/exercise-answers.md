@@ -189,6 +189,86 @@ Good repair if the helper is weaker:
 If the helper currently uses `getattr` over arbitrary names, replace that with direct
 storage reads and deliberate slot handling so representation stays observational.
 
+## Answer 7: Compare signature evidence with annotation evidence
+
+Example answer:
+
+```python
+import inspect
+
+
+def publish(report: str, /, *, retries: int = 0) -> bool:
+    return True
+
+
+sig = inspect.signature(publish)
+annotations = publish.__annotations__
+```
+
+Strong evidence:
+
+- `sig` proves `report` is positional-only and `retries` is keyword-only
+- `annotations` say something about intended value categories
+- annotations do not prove call-shape rules such as positional-only or keyword-only constraints
+
+Good conclusion:
+
+Annotations support review, but signature evidence is stronger for runtime contract shape
+because Python enforces the binding rules directly through the call protocol.
+
+## Answer 8: Build one provenance-and-contract manifest
+
+Example answer:
+
+Suppose the manifest for a helper includes:
+
+- `inspect.signature(helper)` for call shape
+- `helper.__module__` and `inspect.getmodule(helper)` for ownership
+- `inspect.getsource(helper)` marked as best-effort only
+
+Strong assessment:
+
+- the signature is strong contract evidence
+- module ownership is usually strong enough for review and tracing
+- source recovery is a convenience surface that can fail in interactive, generated, or transformed contexts
+
+Good conclusion:
+
+A reviewer should trust the contract and ownership story first, then treat source recovery
+as helpful context rather than as the main proof.
+
+## Answer 9: Separate production evidence from debugging evidence
+
+A strong answer might ask:
+
+- "Can this helper be called with these arguments in production, and where did it come from?"
+
+Production-grade evidence:
+
+- `inspect.signature(helper)`
+- `sig.bind(...)`
+- module identity through `helper.__module__` and `sys.modules`
+
+Debugging-only evidence:
+
+- stack inspection through `inspect.currentframe()`
+- line-number guesses from `helper.__code__.co_firstlineno`
+
+Good conclusion:
+
+Production evidence answers the durable runtime contract and ownership questions.
+Debugging evidence helps explain a moment in execution but should not be promoted into the
+main correctness claim.
+
+## Answer 10: Produce a runtime evidence packet
+
+The packet is strong when another learner can answer:
+
+- what claim is being made about the callable or helper
+- which surface proves call shape directly
+- which provenance details are strong enough for review and which are only convenience
+- where the packet drops into diagnostics instead of durable contract evidence
+
 ## What strong Module 03 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -197,6 +277,8 @@ Across the whole set, strong answers share the same habits:
 - they separate strong callable evidence from best-effort provenance
 - they distinguish dynamic value inspection from static structure
 - they keep frame inspection in the diagnostics bucket
+- they keep signature evidence separate from annotation support
+- they leave behind a packet another learner can audit without guessing
 
 If an answer still sounds like "inspect told me so," revise it until you can say what
 kind of evidence `inspect` actually gave you.

@@ -34,6 +34,20 @@ Each exercise asks for three things:
 - the evidence surface you chose
 - the reason that surface is strong enough, best-effort, or diagnostic-only
 
+Treat the ten exercises as one full lab day on runtime evidence.
+
+Do them in order:
+
+- Exercises 1-3 establish callable contracts, binding, and provenance limits
+- Exercises 4-6 separate dynamic structure, frame diagnostics, and helper review
+- Exercises 7-8 extend that discipline into annotation evidence and reviewable manifests
+- Exercises 9-10 package the whole module into a capstone-ready evidence packet
+
+Keep one runtime-evidence table while you work:
+
+| Runtime claim | Evidence surface | Strong, best-effort, or diagnostic-only | Boundary or design judgment that follows |
+| --- | --- | --- | --- |
+
 ## Exercise 1: Describe one callable contract precisely
 
 Choose one callable with a non-trivial signature.
@@ -94,6 +108,67 @@ What to hand in:
 - which surface it uses for values
 - one repair that makes the helper safer or more honest
 
+## Midday self-check
+
+Before moving into the final four exercises, make sure you can already answer these
+questions clearly:
+
+- which runtime questions `inspect.signature()` answers strongly and which ones it does not
+- why `bind()` is stronger than hand-matched arguments when you want callability evidence
+- where provenance helpers help and where they remain best-effort only
+- why frame inspection and structure inspection belong in different evidence buckets
+
+If you cannot answer those four questions in plain language, return to Exercises 1-6 and
+make the claim, evidence surface, and evidence strength more explicit before continuing.
+
+## Exercise 7: Compare signature evidence with annotation evidence
+
+Choose one callable whose annotations help but do not fully define its runtime contract.
+
+What to hand in:
+
+- the signature evidence and the annotation evidence side by side
+- one example of a rule the signature proves that annotations alone do not
+- one sentence explaining why annotations support review without replacing call-shape evidence
+
+## Exercise 8: Build one provenance-and-contract manifest
+
+Take one callable, class, or helper and write a short evidence manifest another learner
+could review without rerunning your whole notebook.
+
+What to hand in:
+
+- the object under review
+- the contract evidence, provenance evidence, and any diagnostic-only evidence you included
+- one note explaining what a reviewer should trust strongly and what they should treat as convenience only
+
+## Exercise 9: Separate production evidence from debugging evidence
+
+Choose one realistic runtime question and answer it twice: once with production-grade
+evidence and once with debugging-only evidence.
+
+What to hand in:
+
+- the runtime question
+- the production-grade evidence path
+- the debugging-only evidence path
+- one explanation of why mixing those two paths would weaken the review
+
+## Exercise 10: Produce a runtime evidence packet
+
+Assemble:
+
+- one runtime-evidence table
+- one bound-call example using `bind()` or `bind_partial()`
+- one provenance example with an honest limitation statement
+- one helper review rule that separates strong, best-effort, and diagnostic-only evidence
+
+The packet is strong when another learner can use it to answer:
+
+- what runtime claim is being made
+- which surface supports that claim most directly
+- where the packet crosses from strong evidence into convenience or diagnostics
+
 ## Mastery standard for this exercise set
 
 Across all six answers, the module wants the same habits:
@@ -102,6 +177,11 @@ Across all six answers, the module wants the same habits:
 - you distinguish strong contract evidence from best-effort provenance
 - you keep dynamic execution, static structure, and diagnostic stack inspection separate
 - you use `inspect` to clarify behavior rather than to make vague claims sound technical
+
+Across all ten answers, add two more habits:
+
+- you keep signature evidence separate from annotation or provenance support
+- you leave behind a runtime evidence packet another learner could audit without guessing
 
 If an answer still says only "I inspected it," keep going.
 
