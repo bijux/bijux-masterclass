@@ -165,7 +165,7 @@ Examples:
 
 - replacing scattered debug prints with one bounded diagnostic target
 - moving unstable verbose output out of the default route
-- creating a named `trace-count` or audit surface instead of flooding every run
+- creating a named `trace-report` with state and attribution instead of flooding every run
 
 This is a legitimate optimization because it reduces the cost of using the build, not only
 the wall-clock time of running it.

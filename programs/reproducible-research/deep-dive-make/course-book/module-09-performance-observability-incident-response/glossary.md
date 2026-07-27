@@ -61,7 +61,7 @@ They protect decisions that must remain separate.
 | focused excerpt | The smallest retained part of a large dump or trace that changed a decision, stored with the command needed to reproduce it. |
 | observability target | A named, non-semantic route that answers one recurring question and has an expected output shape, side-effect contract, and owner. |
 | output attribution | The ability to associate a log line or result with the target or recipe that produced it. GNU Make output synchronization can improve attribution without repairing graph defects. |
-| trace-count | A heuristic count of non-executing trace lines. It can guard against abrupt volume growth but cannot judge causality, searchability, or correctness alone. |
+| trace report | State-labeled planning evidence containing the focus target, planned targets, rule locations, bounded-volume check, and raw trace. Volume is one usability dimension, not the whole result. |
 
 ## Incident response
 
