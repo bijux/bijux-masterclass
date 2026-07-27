@@ -205,86 +205,135 @@ make sure your packet can already answer these questions cleanly:
 If you cannot answer those four questions in plain language, return to Exercises 1-5 and
 make the packet more explicit before continuing.
 
-## Exercise 6: Inspect a pointer by hand
+## Exercise 6: Predict the identity audit
 
-Track a small file with DVC. Open the resulting `.dvc` file, locate its object identifier
-and size, then find the corresponding cache object. Explain the relationship without
-calling the pointer "the data."
+Before running any command, inspect `capstone/repro/data-identity/README.md` and predict
+the result of all seven findings:
 
-What to hand in:
+- pointer names cached content
+- same bytes share identity
+- changed bytes change identity
+- cache restores workspace
+- remote restores after cache loss
+- remote recovery preserves identity
+- pointer only is not recoverable
 
-- the pointer fields you inspected
-- the matching cache-object location
-- one sentence explaining the relationship
-- one sentence explaining what would still be missing if only the pointer survived
+For each prediction, name the minimum evidence that would make it defensible.
 
-Study note:
-This is the exercise where content addressing should stop feeling abstract.
+Then run:
 
-## Exercise 7: Prove checkout changes workspace state
-
-Create two Git revisions that point to different versions of one dataset. Switch between
-the revisions and use `dvc checkout`. Record what changes in Git, the workspace, and the
-cache at each step.
-
-What to hand in:
-
-- the two revisions and their pointer difference
-- what changed in the workspace
-- what remained in cache
-- one sentence explaining why workspace state and cache state are not interchangeable
-
-Study note:
-This is a good exercise for seeing why path equality is weaker than content identity.
-
-## Exercise 8: Test a remote from an empty cache
-
-Push a tracked artifact, clone into a clean directory with an empty DVC cache, and recover
-it. Capture the commands and checksums that prove the remote held the required object.
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone data-identity-audit
+```
 
 What to hand in:
 
-- the empty-cache recovery route
-- the commands you used
-- the checksum or equivalent identity evidence
-- one sentence explaining what this proves about the remote and what it does not prove
+- a prediction table written before execution
+- the generated `summary.tsv`
+- corrections for every wrong prediction
+- one sentence explaining why `PASS / REJECT` is expected for the pointer-only row
 
 Study note:
-The key lesson is that a successful push is weaker than a successful clean recovery.
+Prediction exposes whether you understand the layer model before command output supplies
+the answer.
 
-## Exercise 9: Diagnose a missing-object failure
+## Exercise 7: Disprove path-based identity
 
-Remove or isolate one required cache object without changing the pointer. Run the
-appropriate status or pull command and explain why metadata can remain valid while content
-is unavailable.
+Use only the `same-content` and `changed-content` workspaces.
+
+Build a causal contrast with these columns:
+
+| Case | Path changed? | Bytes changed? | Pointer ID changed? | Conclusion |
+| --- | --- | --- | --- | --- |
+
+Quote the actual paths and pointer IDs. Do not replace them with “same” or “different.”
 
 What to hand in:
 
-- the simulated failure setup
-- the command and observed failure
-- the explanation of how metadata can stay valid
-- one sentence explaining which recovery claim has now failed
+- both pointer files from the same-content case
+- before and after content IDs from the changed-content case
+- the completed contrast table
+- a two-sentence argument showing why neither path change nor path stability defines
+  identity
 
 Study note:
-This is the exercise where availability and identity finally separate cleanly in most
-students' heads.
+The two cases belong together. Each controls the variable changed by the other.
 
-## Exercise 10: Draw a state-authority diagram
+## Exercise 8: Trace cache and remote recovery
 
-Draw Git, workspace, cache, remote, and published bundle as separate nodes. Label the
-commands that move or materialize state and mark which node is authoritative for recovery
-under your chosen policy.
+Compare `cache-recovery` with `remote-recovery`. For each case, identify:
+
+1. which local layer was deleted
+2. which storage layer supplied the bytes
+3. which command receipt records the move
+4. which digest check validates the result
+5. whether the local cache exists afterward
 
 What to hand in:
 
-- the full diagram
-- one sentence per node explaining its authority
-- one sentence explaining where downstream trust begins
-- one sentence explaining which node many teams overtrust
+- a layer-by-layer timeline for both cases
+- the relevant checkout, push, and pull receipts
+- the restored content ID and SHA-256
+- one sentence stating what cache-only recovery cannot prove about the remote
+- one sentence stating why remote recovery after cache deletion is stronger than push
+  success
 
 Study note:
-The best diagrams answer concrete trust questions instead of merely showing arrows between
-tools.
+Do not infer the source of recovered bytes from the final workspace alone.
+
+## Exercise 9: Diagnose pointer-only failure
+
+Open:
+
+```text
+workspace/pointer-only/data/observations.csv.dvc
+evidence/pointer-only-checkout.stderr.txt
+report.json
+```
+
+Classify the incident as projection failure, availability failure, identity disagreement,
+or a combination. Defend the classification from the saved surfaces.
+
+What to hand in:
+
+- the content ID that remains recorded
+- the checkout return code and essential stderr meaning
+- cache and workspace existence checks
+- the failure classification
+- one repair that would preserve identity
+- one tempting action that would conceal the missing-object problem
+
+Study note:
+A valid pointer can outlive every accessible copy of the bytes it names.
+
+## Exercise 10: Defend a bounded recovery claim
+
+Prepare a six-item reviewer packet from the generated bundle. It must include:
+
+- summary
+- original pointer
+- state-move receipts
+- restored cache evidence
+- restored workspace digest
+- pointer-only negative control
+
+Draw a diagram that distinguishes identity authority from content availability. Then write
+a review conclusion using this structure:
+
+> After loss of ___, storage layer ___ supplied content ID ___. Evidence ___ confirms the
+> restored bytes. Counterexample ___ rules out ___. This proves ___. It does not prove
+> ___.
+
+What to hand in:
+
+- the six-item packet inventory
+- the authority-and-availability diagram
+- the completed bounded conclusion
+- one follow-up proof required before downstream publication
+
+Study note:
+The final exercise is not a command recital. It is a review argument another maintainer
+can verify without oral context.
 
 ## Mastery check
 
