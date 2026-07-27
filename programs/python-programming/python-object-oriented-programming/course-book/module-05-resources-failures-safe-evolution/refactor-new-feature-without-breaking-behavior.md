@@ -17,41 +17,70 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  promise["name the old promise first"] --> boundary["place the new feature at the right boundary"]
+  boundary --> proof["prove the old path still works"]
+  proof --> extend["add the new path without weakening cleanup or retry rules"]
+  extend --> remove["remove old duplication only after both contracts are visible"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This refactor matters because real maintenance work is rarely "start fresh." It is
+usually:
 
-## Why this lesson matters
+> Add a new capability without betraying the promises that older callers, operators, and
+> data already depend on.
 
-This is the page where Module 05 becomes practical.
+Module 05 becomes practical only when a learner can do that under pressure from:
 
-The course has already taught:
-
-- ownership boundaries
-- cleanup discipline
-- failure contracts
+- cleanup obligations
+- partial failure
 - retry safety
-- public versus internal surfaces
-- compatibility-aware evolution
+- public-surface stability
+- compatibility with already-running paths
 
-The real test is whether you can now add something new without silently damaging what
-already works.
+## The weak starting shape
 
-That is the standard self-learners need most. Real maintenance work is rarely "start
-fresh." It is usually "extend the system without betraying its existing promises."
+A weak feature addition often begins like this:
 
-## Start by naming the promise you must keep
+- a new requirement arrives
+- someone edits the nearest conditional ladder
+- cleanup and retry rules are copied awkwardly
+- public and internal boundaries blur
+- old behavior is assumed to still work because the tests stayed green enough
 
-Before writing the new feature, list what must remain stable.
+This is how "small internal changes" quietly become compatibility and operability problems.
+
+## The stronger target shape
+
+The target is not "never change anything." The target is change with visible promises:
+
+- the old contract is named before the refactor starts
+- the new capability is attached at the correct boundary
+- cleanup and retry ownership remain explicit
+- the public surface does not widen by accident
+- old and new behavior are both proven before dead code is removed
+
+The final question is simple:
+
+> Could another maintainer explain what promise was preserved and how the new feature was added without guessing?
+
+## Use this refactor order
+
+Follow this order on purpose:
+
+1. name the old promise that must survive
+2. identify the real boundary where the new feature belongs
+3. add proof for the preserved behavior
+4. introduce the new capability alongside the old path
+5. keep cleanup, failure, and retry rules visible while the feature grows
+6. remove old duplication only after both contracts are clear
+
+This order matters because eager cleanup often hides whether the change was an extension
+or an accidental rewrite.
+
+## Step 1: name the promise before touching the code
+
+Before writing the feature, list what must remain stable.
 
 That usually includes:
 
@@ -60,111 +89,102 @@ That usually includes:
 - stored data or configuration formats
 - operational guarantees such as cleanup and retry discipline
 
-If you skip this step, the refactor becomes guesswork. You may improve one surface while
-breaking another because the preserved contract was never named.
+If this step is skipped, the refactor becomes guesswork. One surface improves while
+another quietly breaks.
 
-## Choose one feature and locate its real boundary
+## Step 2: find the real boundary for the new capability
 
 A safe feature addition starts by asking:
 
 - is this a new policy variation?
 - a new boundary field?
 - a new persistence concern?
-- a new outward behavior?
+- a new outward side effect?
 
-The answer tells you where the feature belongs.
+Examples:
 
-For example:
+- a new evaluation mode belongs in policy or strategy
+- a new config field belongs at the translation boundary first
+- a new output path belongs behind an adapter or publication boundary
 
-- a new rule evaluation mode may belong in a strategy or policy object
-- a new config field may belong at the translation boundary first
-- a new output path may belong behind an adapter or publication boundary
+This keeps the feature from being bolted into the most convenient file.
 
-This keeps the new feature from being bolted into the most convenient file.
-
-## Add capability before deleting old structure
+## Step 3: prove the old path before extending it
 
 One reliable sequence is:
 
 1. identify the stable behavior that must remain
-2. add tests or proofs for that behavior
-3. introduce the new capability alongside the old path
-4. route new behavior through the right boundary
+2. add tests or proof for that behavior
+3. introduce the new capability beside the old path
+4. route the new behavior through the correct boundary
 5. remove old duplication only after the preserved behavior is still proven
 
-This sequence matters because eager deletion often hides whether the feature addition was
-an extension or an accidental rewrite.
+This matters because eager deletion often hides whether the feature addition preserved the
+important contract or merely replaced it with something new.
 
-## Keep compatibility visible while you extend
+## Step 4: keep cleanup, failure, and retry discipline visible
 
-As you add the new feature, keep checking:
+As the feature grows, keep checking:
+
+- who cleans up new resources?
+- what partial state must never escape?
+- what side effect can duplicate under retry?
+- what caller-visible failure meaning must stay stable?
+
+If the new feature forces you to weaken one of those to "just get it working," the
+structure is still too weak.
+
+## Step 5: keep compatibility visible while you extend
+
+As you add the feature, keep asking:
 
 - does old input still load?
 - do existing imports still work?
 - does previous behavior still pass the same proof route?
 - did any internal refactor accidentally become a public break?
 
-The point is to evolve with awareness, not to hope the test suite happened to cover the
-right surface.
+The point is to evolve with awareness, not to hope the current tests happened to cover
+the right surface.
 
-## Use the module tools together
+## A worked change route
 
-This final page is not about one pattern. It is about combining the module's ideas:
+Imagine a stable issuance workflow and a new requirement:
 
-- resource owners still need deterministic cleanup
-- unit-of-work boundaries still decide what becomes authoritative
-- failures still need named recovery meaning
-- retries still need explicit safety
-- public modules still need surface discipline
-- compatibility contracts still need evidence
+- also generate a PNG preview
 
-If the new feature forces you to violate one of those to "just get it working," the
-structure is still too weak.
+A safer Module 05 refactor route is:
 
-## A practical change route
+1. state the old promise: issuing the certificate remains authoritative and cleanup-safe
+2. prove the existing certificate path still works
+3. attach preview generation inside the same workflow boundary that already owns temp artifacts
+4. reuse the existing cleanup owner instead of inventing a second one
+5. decide whether preview upload is part of the authoritative unit or a downstream side effect
+6. prove retries do not duplicate visible success in a harmful way
 
-Use this route when the system feels risky to change:
+The result should be "new capability, same promises," not "new capability, hidden new risks."
 
-1. state the old promise
-2. identify the new capability
-3. choose the correct boundary for the new behavior
-4. add proof for the preserved behavior
-5. extend through the boundary rather than bypassing it
-6. remove the obsolete path only after the old and new contracts are both clear
+## How to review the result
 
-That route is intentionally boring. Boring is good when compatibility pressure is real.
+After refactoring, ask:
 
-## Common mistakes
+- is the preserved contract named before the change?
+- does the new feature enter through the right boundary?
+- are cleanup and retry rules still visible?
+- is the public surface still stable?
+- was old structure removed only after preserved behavior was proven?
 
-- starting with internal rearrangement before naming the behavior that must survive
-- stuffing a new feature into an old conditional ladder because it seemed faster
-- changing public surfaces while claiming the refactor was internal
-- weakening failure, cleanup, or retry discipline to make the feature fit
-- deleting old code before proving the replacement preserves the important promise
+If those answers are vague, the refactor is not finished.
 
-These mistakes create exactly the kind of regressions this module is supposed to prevent.
+## Capstone transfer
 
-## Review checklist
-
-| Question | Good sign |
-| --- | --- |
-| is the preserved contract named before the refactor starts? | yes |
-| does the new feature enter through the right boundary? | yes |
-| are compatibility and operational guarantees still visible during the change? | yes |
-| is old structure removed only after preserved behavior is proven? | yes |
-
-## Capstone connection
-
-Use the capstone as the pressure test for this full module.
-
-Pick one plausible feature extension and walk it through these questions:
+Use the capstone immediately:
 
 - what old promise must remain true?
 - where does the new behavior belong?
-- which proof route demonstrates you preserved the old behavior?
-- what cleanup, failure, retry, or compatibility rule could this extension accidentally weaken?
+- which proof route demonstrates the old behavior still survives?
+- what cleanup, failure, retry, or compatibility rule could the extension accidentally weaken?
 
-If you can answer those clearly, Module 05 has become actionable rather than decorative.
+This page should make the capstone easier to extend safely, not just easier to discuss.
 
 ## Exit check
 
