@@ -43,6 +43,7 @@ SELFTEST_WORK_DIR ?= $(SELFTEST_REPORT_DIR)/workspace
 SELFTEST_FAULT ?= none
 CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
 INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
+INCREMENTAL_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incremental-faults
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 PERFORMANCE_DIR ?= $(ARTIFACTS_DIR)/performance/reproducible-research/deep-dive-make/current
 PERFORMANCE_POLICY := performance/scenarios.tsv
@@ -82,7 +83,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit incremental-fault-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -178,6 +179,7 @@ help:
 >     '  contract-audit    build the public-contract review bundle' \
 >     '  inspect           alias for contract-audit with learner review naming' \
 >     '  incident-audit    build an executed failure review bundle (REPRO_CASE=...)' \
+>     '  incremental-fault-audit prove stale missing-edge behavior and repaired rebuilds' \
 >     '  profile-audit     build the execution-profile review bundle' \
 >     '  confirm           alias for hardened with shared catalog naming' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
@@ -368,6 +370,30 @@ incident-audit:
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(INCIDENT_AUDIT_DIR)" --output "$(INCIDENT_AUDIT_DIR)/manifest.json"
 >     @echo "PASS: wrote incident audit to $(INCIDENT_AUDIT_DIR)"
 
+incremental-fault-audit:
+>     rm -rf "$(INCREMENTAL_FAULT_AUDIT_DIR)"
+>     mkdir -p "$(INCREMENTAL_FAULT_AUDIT_DIR)"
+>     cp -R "$(REP_DIR)/incremental-edges" "$(INCREMENTAL_FAULT_AUDIT_DIR)/specimens"
+>     cp "$(DOCS_DIR)/repro-guide.md" "$(INCREMENTAL_FAULT_AUDIT_DIR)/REPRO_GUIDE.md"
+>     $(PYTHON) scripts/audit_incremental_faults.py \
+>       --specimens "$(REP_DIR)/incremental-edges" \
+>       --workspace "$(abspath $(INCREMENTAL_FAULT_AUDIT_DIR))/workspace" \
+>       --output "$(abspath $(INCREMENTAL_FAULT_AUDIT_DIR))/report.json" \
+>       --make "$(MAKE)" \
+>       --compiler "$(CC)" \
+>       --python "$(PYTHON)"
+>     printf '%s\n' \
+>       'Incremental fault audit route:' \
+>       '  1. Read summary.tsv across both specimens and both edge models.' \
+>       '  2. Read report.json for expected and observed outputs.' \
+>       '  3. Read traces/ to contrast no selected work with causal rebuild paths.' \
+>       '  4. Compare specimens/ with the mutated workspace/ copies.' \
+>       '  5. Read REPRO_GUIDE.md to connect the fault to graph repair.' > "$(INCREMENTAL_FAULT_AUDIT_DIR)/route.txt"
+>     $(PYTHON) scripts/write_bundle_manifest.py \
+>       --bundle-dir "$(INCREMENTAL_FAULT_AUDIT_DIR)" \
+>       --output "$(INCREMENTAL_FAULT_AUDIT_DIR)/manifest.json"
+>     @echo "PASS: wrote incremental fault audit to $(INCREMENTAL_FAULT_AUDIT_DIR)"
+
 profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
 >     mkdir -p "$(PROFILE_AUDIT_DIR)/mk"
@@ -457,6 +483,7 @@ repro:
 >     '  make -f repro/directory-creation-race.mk -j2 all       directory creation race' \
 >     '  make -f repro/order-only-dependency-misuse.mk all      order-only prerequisite misuse' \
 >     '  make -f repro/pattern-rule-ambiguity.mk all             ambiguous pattern rule selection' \
+>     '  make incremental-fault-audit                             missing-edge versus declared-edge proof' \
 >     '' \
 >     'Suggested first route:' \
 >     '  1. repro/shared-log-interleaving.mk' \
