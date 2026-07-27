@@ -38,6 +38,11 @@ If two reviewers use the same word but mean different owner stories, stop and re
 here. This module gets weak quickly when terms like "frozen," "validation," "generated,"
 or "advanced" stay vague.
 
+Use the glossary for two specific repair jobs:
+
+- when a mechanism word starts sounding stronger than the code actually is
+- when two tools are being compared without naming timing, boundary, or reuse pressure
+
 ## Terms in this directory
 
 | Term | Meaning in this directory |
@@ -63,6 +68,19 @@ or "advanced" stay vague.
 | `__post_init__` | The dataclass hook that runs after generated initialization, often used for explicit validation or normalization. |
 | `__setattr__` | The attribute-assignment hook that can intercept writes and enforce post-initialization rules. |
 
+## Vocabulary tests that keep the module honest
+
+Use these small tests when a term feels slippery:
+
+| If the term is... | Ask this question |
+| --- | --- |
+| class decorator | did the class already exist before this mechanism ran? |
+| dataclass generation | which generated methods can I point to directly? |
+| property | what one attribute boundary does it own? |
+| descriptor-backed validation | what repeated field rule or supported hint subset justifies reuse? |
+| surface immutability | which mutation still remains allowed? |
+| metaclass escalation | what class-creation-time requirement exists right now? |
+
 ## Confusing pairs to keep separate
 
 These pairs sound close but should not collapse into each other:
@@ -76,6 +94,18 @@ These pairs sound close but should not collapse into each other:
 | post-construction transformation | class creation control | the decorator acts on a finished class object |
 | advanced tool | justified tool | stronger mechanisms need missing conditions, not prestige |
 
+## Words that should trigger caution
+
+These words often hide owner mistakes unless they are followed by specifics:
+
+| Word | What must follow it |
+| --- | --- |
+| automatic | the exact owner and timing that make the behavior happen |
+| immutable | the blocked mutation surface and any remaining allowed mutation |
+| validates | the concrete runtime hook or boundary doing the rejection |
+| reusable | the repeated pressure that makes reuse the honest owner |
+| advanced | the missing lower-power option and why it fails |
+
 ## Repair prompts for blurred language
 
 When a term starts sounding too broad, use one of these prompts:
@@ -88,6 +118,17 @@ When a term starts sounding too broad, use one of these prompts:
 | "this needs a metaclass" | what class-creation-time requirement exists right now? |
 | "it is just a property" | what one attribute boundary is it actually owning? |
 
+## A compact translation table
+
+Use this when language starts drifting upward:
+
+| Vague sentence | Better sentence |
+| --- | --- |
+| "the dataclass handles it" | "the dataclass generates the boilerplate, and `__post_init__` or another boundary still owns the rule" |
+| "the object is frozen" | "top-level rebinding and deletion are blocked after initialization, but nested mutability may remain" |
+| "the descriptor enforces types" | "the descriptor enforces a named supported hint subset at assignment time" |
+| "this probably needs a metaclass" | "this would need a metaclass only if class-creation timing becomes part of the requirement" |
+
 ## Exit check for module vocabulary
 
 Before leaving Module 06, make sure you can use these terms in plain language:
@@ -98,6 +139,11 @@ Before leaving Module 06, make sure you can use these terms in plain language:
 - post-construction transformation
 - surface immutability
 - honest class claim
+
+Add these two before you leave the module:
+
+- shallow runtime contract
+- lower-power ladder
 
 ## Keep the module connected
 
