@@ -37,6 +37,11 @@ Instead, separate these questions:
 This page focuses on the first two. That separation prevents a large share of
 introspection mistakes before `getattr` even enters the picture.
 
+For many beginners, this is the first place Python introspection becomes slippery. The
+object seems to "have" a method, property, slot, or inherited name, so it is tempting to
+assume all of those live in one simple bucket. They do not. This page exists to break
+that false picture early.
+
 ## The sentence to keep
 
 When you inspect an object, ask:
@@ -45,6 +50,10 @@ When you inspect an object, ask:
 
 If you do not separate those questions, you will eventually mistake one for the other and
 reach for a riskier tool than you needed.
+
+Keep one repair sentence in front of you while you read:
+
+> A visible name is a candidate for lookup, not proof of local storage.
 
 ## The four surfaces that matter first
 
@@ -56,6 +65,15 @@ Module 02 starts with four basic surfaces:
 - `__slots__` for classes that replace dictionary-backed instance storage with a fixed layout
 
 These are related, but they are not interchangeable.
+
+Use them as a review ladder:
+
+| If your question is... | First tool | Why this is the honest first move |
+| --- | --- | --- |
+| "What names might matter here?" | `dir(obj)` | discovery is enough; you are not claiming storage or value resolution |
+| "What is physically stored on this object?" | `vars(obj)` | it asks the storage question directly and fails honestly when no dictionary exists |
+| "Does this class use slot-backed storage?" | class definition or slot descriptors | storage model matters before you guess about dictionaries |
+| "What value would normal lookup produce?" | not this page yet | value resolution is a different question and belongs to later steps |
 
 ## `dir(obj)` discovers names, not truth
 
@@ -75,6 +93,10 @@ Two review points matter:
 
 CPython often sorts the result, but that is a debugging convenience rather than a promise
 the module should teach as truth.
+
+This matters because beginners often read `dir(obj)` as if it were a compact object
+inventory. It is not. It is closer to "here are names the runtime thinks may be relevant
+for lookup or tooling."
 
 ## `vars(obj)` and `obj.__dict__` read stored state when it exists
 
@@ -96,6 +118,9 @@ That matters because `vars(obj)` answers a much narrower and more honest questio
 It does not tell you everything lookup could resolve. It tells you what storage is
 present.
 
+That narrower question is a strength, not a limitation. Review work gets safer the moment
+you stop asking one oversized question like "what does this object have?"
+
 ## `__slots__` changes the storage model
 
 When a class declares `__slots__`, instance storage may move out of a per-instance
@@ -110,6 +135,9 @@ That means:
 This is one reason Module 02 keeps names and storage separate. Slots make the difference
 visible immediately.
 
+They also expose a frequent tooling bug: helpers written against ordinary instance
+dictionaries quietly become wrong the moment a class chooses a tighter storage model.
+
 ## One picture of discovery versus storage versus resolution
 
 ```mermaid
@@ -121,6 +149,14 @@ graph TD
 ```
 
 Caption: discovery is not storage, and storage is not normal attribute resolution.
+
+One good study habit is to say out loud which arrow you are on before you run a tool:
+
+- discovery
+- storage
+- resolution
+
+That tiny pause prevents many false "inspection" claims.
 
 ## Example: discoverable names can exceed stored state
 
@@ -144,6 +180,9 @@ The method is discoverable because the class provides it, but it is not physical
 in the instance dictionary.
 
 That difference is ordinary and important.
+
+It also explains why many first debug helpers overreport object "fields." They mix class
+provided names with local state and present the whole set as if it were one storage view.
 
 ## Example: slotted instances are visible without being dict-backed
 
@@ -172,6 +211,10 @@ assert missing_dict is True
 
 This is a good reminder that visibility and storage are different questions.
 
+A learner who misses this point often says something like "the object has `x`, so `vars`
+should show it." Slot-backed classes are the quickest counterexample to that mistaken
+expectation.
+
 ## `dir()` is not fully passive
 
 Even the safer-looking discovery tool has a boundary:
@@ -188,6 +231,12 @@ dir(Noisy())
 
 That is why Module 02 treats `dir()` as lower risk than value resolution, not as
 zero-risk. A custom `__dir__` method can still execute code.
+
+So the safety claim for `dir()` must stay precise:
+
+- usually safer than dynamic value reads
+- still not a formal no-execution guarantee
+- useful for discovery, not for proving storage or runtime semantics
 
 ## Prefer `vars(obj)` over probing for `__dict__` with `hasattr`
 
@@ -230,6 +279,30 @@ That view is often a `mappingproxy` on CPython:
 This is another reason to keep the storage question narrow. "Stored state" has slightly
 different shapes across instances, modules, and classes.
 
+## A deliberate inspection route for beginners
+
+When you meet an unfamiliar object, use this order before you touch `getattr`:
+
+1. ask whether you need candidate names, local storage, or resolved values
+2. run `dir(obj)` only if candidate names are enough for the next decision
+3. run `vars(obj)` if your question is about dictionary-backed state
+4. inspect the class for `__slots__` or class-provided attributes when `vars(obj)` is not enough
+5. postpone value resolution until you can explain why discovery and storage did not answer the question
+
+This route is intentionally conservative. It makes you earn the move into dynamic
+behavior instead of drifting there by habit.
+
+## Misreadings to catch during review
+
+These are the most common wrong inferences from this page:
+
+| Wrong inference | Why it is wrong | Better statement |
+| --- | --- | --- |
+| "`dir(obj)` shows everything the object stores." | `dir` merges candidate names from several places and may include inherited or synthetic names. | "`dir(obj)` shows names that may matter for lookup." |
+| "`vars(obj)` failed, so the object has no meaningful state." | slot-backed or builtin storage can exist without an instance dictionary. | "`vars(obj)` failed, so this object is not exposing dictionary-backed state." |
+| "If a method appears in `dir(obj)`, it must be stored on the instance." | class-provided names are discoverable without local storage. | "The method is visible through the class lookup story, not local instance storage." |
+| "Using `hasattr(obj, \"__dict__\")` is a harmless way to check storage." | `hasattr` already participates in attribute access. | "Ask the storage question directly with `vars(obj)` or inspect the class model." |
+
 ## Review rules for this boundary
 
 When reviewing runtime observation code, keep these questions close:
@@ -247,6 +320,7 @@ Try these before moving on:
 1. Write `state_view(obj)` that returns `set(dir(obj))` plus `vars(obj)` when available.
 2. Run it on a normal instance, a slotted instance, and a builtin such as `list()`.
 3. Explain one attribute that appears in `dir(obj)` but not in stored state.
+4. Write one sentence explaining why a missing `__dict__` does not prove missing state.
 
 If those feel ordinary, you are ready for the next boundary: dynamic attribute access is
 powerful, but it is not passive inspection.
