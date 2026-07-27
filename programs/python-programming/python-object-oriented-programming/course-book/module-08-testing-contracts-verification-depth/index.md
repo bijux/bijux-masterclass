@@ -122,9 +122,14 @@ test count.
 
 ## Exercises
 
-- Take one ownership boundary and name the first test that should fail if that boundary stops being true.
-- Compare a mock-heavy test with a fake or contract test and explain which one would better expose interface drift.
-- Review one fixture or snapshot and explain whether it clarifies the invariant or hides the setup needed to understand it.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete verification review route:
+first-failing-suite selection, lifecycle proof, contract testing, honest fixtures and
+doubles, and right-sized confidence ladders.
 
 ## Capstone connection
 
