@@ -200,11 +200,13 @@ context correctly. The report records:
 
 This is much easier to explain, test, and retire than a hundred one-off debug prints.
 
-The capstone's `perf` target is a different kind of bounded surface. It writes repeated
-timings, scenario policy, context, convergence proof, and trusted-output inventories to one
-review bundle. That route answers a cost question. `trace-report` answers a planning
-causality and usability question. Keeping both distinctions visible prevents one convenient
-integer from carrying claims it cannot support.
+The capstone's `perf` target is a different kind of bounded surface. It binds repository
+provenance, runner and tool identities, scenario policy, requested-work proof, repeated
+timings, convergence, and trusted-output inventories into one review bundle. That route
+answers a cost question without separating the number from the work it represents.
+`trace-report` answers a planning causality and usability question. Keeping both
+distinctions visible prevents one convenient integer from carrying claims it cannot
+support.
 
 A converged trace may contain only “all is up to date.” A clean-plan trace contains every
 planned producer. Comparing those line counts without the state label is invalid. Fewer
@@ -218,8 +220,9 @@ gmake performance-selftest
 ```
 
 The controlled rejection cases matter as much as the passing capture. They demonstrate
-that failed commands, incompatible policies, unequal sample counts, and artifact drift
-cannot quietly produce an accepted comparison.
+that dirty provenance, changed tools or runner, failed commands, incompatible policies,
+unequal sample counts, requested-work drift, and artifact drift cannot quietly produce an
+accepted comparison.
 
 ## Debug prints become dangerous when they leak into artifacts
 
@@ -247,8 +250,8 @@ Here is a practical split:
 | what variable or rule is resolved | `make -np <target>` | command and focused excerpt |
 | which target emitted output under `-j` | `--output-sync=target` | target-attributed failure block |
 | is a clean plan bounded and attributable | `trace-report` | state, focus, checks, planned targets, raw trace |
-| what do declared build states cost | `perf` | policy, all samples, context, convergence, inventories |
-| did cost change under one semantic contract | `performance-compare` | both bundles and comparison report |
+| what do declared build states cost | `perf` | provenance, policy, requested work, all samples, convergence, inventories |
+| did cost change under compatible context and equivalent work | `performance-compare` | both bundles and comparison report |
 | what discovery resolved | discovery audit or stable manifest | sorted resolved list |
 | what changed between serial and parallel output | artifact hashes or comparison selftest | both commands and comparison result |
 
