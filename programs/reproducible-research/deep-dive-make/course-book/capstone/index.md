@@ -69,6 +69,7 @@ one build question at a time, not become a full repository tour by default.
 | --- | --- | --- |
 | the first bounded pass | `make PROGRAM=reproducible-research/deep-dive-make capstone-walkthrough` | `gmake walkthrough` |
 | public-contract review | `make PROGRAM=reproducible-research/deep-dive-make inspect` | `gmake inspect` |
+| paired missing-edge and recovery study | enter `capstone/` for the bounded specimen workspace | `gmake incremental-fault-audit` |
 | the steward-level proof route | `make PROGRAM=reproducible-research/deep-dive-make proof` | `gmake proof` |
 | one local release acceptance | `make PROGRAM=reproducible-research/deep-dive-make capstone-release-check` | `gmake release-check` |
 

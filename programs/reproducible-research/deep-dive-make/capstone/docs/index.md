@@ -37,6 +37,7 @@ Use this page as the stable entry route for the Make capstone docs.
 | how one release candidate is accepted locally | `RELEASE_GUIDE.md` | `TARGET_GUIDE.md` and `make release-check` |
 | how to establish or compare local build-cost evidence | `PERFORMANCE_EVIDENCE_GUIDE.md` | `make perf` and `make performance-compare` |
 | which failure class the capstone teaches | `REPRO_GUIDE.md` | `INCIDENT_REVIEW_GUIDE.md` and `make incident-audit` |
+| why missing edges can produce successful stale builds | `INCREMENTAL_FAULT_AUDIT_GUIDE.md` | `make incremental-fault-audit` |
 | how the system is layered | `ARCHITECTURE.md` | `PROFILE_AUDIT_GUIDE.md` and `make proof` |
 
 ## Stable local doc surface
@@ -44,6 +45,7 @@ Use this page as the stable entry route for the Make capstone docs.
 - [Architecture Guide](architecture.md)
 - [Contract Audit Guide](contract-audit-guide.md)
 - [Incident Review Guide](incident-review-guide.md)
+- [Incremental Fault Audit Guide](incremental-fault-audit-guide.md)
 - [Performance Evidence Guide](performance-evidence-guide.md)
 - [Profile Audit Guide](profile-audit-guide.md)
 - [Proof Guide](proof-guide.md)

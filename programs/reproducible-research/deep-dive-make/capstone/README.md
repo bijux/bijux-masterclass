@@ -57,6 +57,7 @@ first-contact playground for Make syntax.
 | does one candidate satisfy the local release contract | `make release-check` | `make confirm` |
 | what do the governed build routes cost here | `make perf` | preserve the bundle before comparing another revision |
 | do source, header, generator, and generated-consumer changes select only required work | `make performance-incremental` | read the complete summary, then inspect any failing case trace |
+| how can a successful Make run leave authored or generated consumers stale | `make incremental-fault-audit` | compare missing-edge and declared-edge traces |
 | did cost change under compatible context and equivalent work | `make performance-compare` | inspect context, requested work, trusted outputs, then deltas |
 | which failure class does this repro teach | `make incident-audit` | `make proof` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
@@ -95,6 +96,7 @@ bounded review route without turning the capstone into a browsing exercise.
 | `verify-report` | passing or failing selftest evidence is completed as a review bundle | proof can be inspected without rerunning |
 | `release-check` | one candidate passes archive and contained-install acceptance | release claims bind to exact bytes |
 | `performance-incremental` | every governed input class is classified against the same output universe | incremental proof covers more than one convenient mutation |
+| `incremental-fault-audit` | missing semantic edges stay stale while declared controls refresh | the evidence route proves it can discriminate graph lies |
 | `perf` | governed scenarios bind provenance, a complete change-impact matrix, samples, and outputs | a local baseline is attributable and reviewable |
 | `performance-selftest` | context, rebuild, capture, and comparison dishonesty is rejected | performance claims are gated, not trusted |
 | `proof` | the sanctioned review bundle set exists and agrees with the contract | stewardship has a durable route |
@@ -137,6 +139,7 @@ All capstone documentation lives under `docs/`:
 - [PROOF_GUIDE.md](docs/proof-guide.md)
 - [RELEASE_GUIDE.md](docs/release-guide.md)
 - [REPRO_GUIDE.md](docs/repro-guide.md)
+- [INCREMENTAL_FAULT_AUDIT_GUIDE.md](docs/incremental-fault-audit-guide.md)
 - [SELFTEST_GUIDE.md](docs/selftest-guide.md)
 - [TARGET_GUIDE.md](docs/target-guide.md)
 - [WALKTHROUGH_GUIDE.md](docs/walkthrough-guide.md)

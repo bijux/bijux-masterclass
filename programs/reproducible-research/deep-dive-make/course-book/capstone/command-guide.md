@@ -81,6 +81,7 @@ Use `capstone/` when you want the raw reference build. On macOS, use `gmake`.
 - `gmake walkthrough`
 - `gmake inspect`
 - `gmake selftest`
+- `gmake incremental-fault-audit`
 - `gmake verify-report`
 - `gmake proof`
 - `gmake dist`

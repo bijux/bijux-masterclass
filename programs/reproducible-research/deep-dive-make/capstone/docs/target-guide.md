@@ -45,6 +45,7 @@ question honestly.
 | do malformed candidates and destinations fail correctly | `make release-selftest` | `make release-check` |
 | what do the governed build states cost in this attributable context | `make perf` | inspect provenance and requested work before timings |
 | do all governed input classes select exactly the necessary work | `make performance-incremental` | inspect the policy, complete summary, and any failing case trace |
+| why can a successful incremental run leave stale behavior | `make incremental-fault-audit` | compare paired findings, traces, edge models, and mutated workspaces |
 | did cost change under compatible context and equivalent work | `make performance-compare` | inspect both bundles and the comparison report |
 | do performance evidence gates reject dishonest inputs | `make performance-selftest` | inspect the rejection tests |
 | is the clean planning trace bounded and attributable | `make trace-report` | inspect trace evidence and raw trace |
@@ -74,6 +75,7 @@ question honestly.
 | `release-check` | complete local candidate production and acceptance | you need the full local release claim |
 | `perf` | provenance, complete requested-work matrix, repeated timings, convergence, and inventories | you need an attributable local baseline |
 | `performance-incremental` | per-input missing and unexpected rebuild classifications across one output universe | you need requested-work proof |
+| `incremental-fault-audit` | stale missing-edge models and refreshed declared-edge controls | you need to study how incremental graph lies manifest |
 | `performance-compare` | timing deltas guarded by context and semantic equivalence | you have a compatible prior evidence bundle |
 | `performance-selftest` | context, rebuild, capture, and comparison gate tests | you need to review the evidence gate |
 | `trace-report` | clean-plan trace, semantic checks, and bundle manifest | you need causality evidence without execution |
