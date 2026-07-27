@@ -9,6 +9,17 @@ This page protects the first-contact experience from two common mistakes:
 - opening too many course surfaces before one small workflow is clear
 - treating the capstone as a substitute for beginner understanding
 
+## If you are learning this without the live class
+
+Read this page in four passes:
+
+1. decide whether this is still your first-contact session
+2. complete one bounded first-session route
+3. write one plain-language explanation before opening the next module
+4. decide whether Module 01 should happen now or after another small repetition
+
+If you skip step 3, the course can feel productive while your explanation stays weak.
+
 ## The first-session route
 
 ```mermaid
@@ -18,6 +29,19 @@ flowchart TD
   dryrun --> reflect["write one plain-language explanation"]
   reflect --> decide["decide whether Module 01 should happen now"]
 ```
+
+## The first packet you should keep beside you
+
+Keep one tiny first-session packet:
+
+- one requested target
+- one dry-run capture
+- one first real build
+- one explanation of why the second run stayed quiet
+- one note on what changing one input proved
+
+If your first packet needs many files or many commands to feel persuasive, the surface is
+already too wide.
 
 ## Work this route in order
 
@@ -43,6 +67,21 @@ The first session is trying to give you one durable model:
 
 If that model is stable, later modules have something solid to build on. If it is weak,
 later pages become vocabulary without structure.
+
+## A first-session card you should be able to fill quickly
+
+Use a table like this before you continue:
+
+| Question | Short honest answer |
+| --- | --- |
+| what did I request | one file the workflow owes me |
+| what could produce it | one rule with a visible file contract |
+| what did the dry-run reveal | what work Snakemake planned before execution |
+| what did the first build prove | the graph can create the requested artifact |
+| what did the second run prove | the workflow can converge rather than repeat work |
+| what did the changed input prove | file dependencies, not vibes, drive rebuilds |
+
+If any row still sounds memorized instead of understood, the first session is not done.
 
 ## What you should know before Module 01
 
@@ -77,6 +116,19 @@ This rhythm matters more than speed.
 - changing multiple workflow facts at once and guessing which one mattered
 - mistaking a successful run for a clear explanation
 
+## What goes wrong when the first session widens too early
+
+Use this card when you feel pulled forward:
+
+| If you are tempted to... | The hidden problem is probably... | Smaller move instead |
+| --- | --- | --- |
+| open the capstone now | local graph truth is still fuzzy | rerun the tiny workflow and explain the plan again |
+| browse many maps and guides at once | orientation anxiety is replacing first understanding | stay with Module 00, First-Contact Map, and one dry-run |
+| read answer pages before predicting behavior | recognition is replacing explanation | make one prediction and test it first |
+| change many workflow facts at once | the cause of the behavior will blur | change one file contract at a time |
+
+If the smaller move feels repetitive, that usually means it is still doing real teaching work.
+
 ## If the first workflow fails
 
 | Symptom | Inspect first |
@@ -107,6 +159,18 @@ the main question has shifted from "how does Snakemake decide?" to one of these:
 - where should helper logic live
 - what is public downstream
 - what is policy rather than workflow meaning
+
+## A five-line first-session note you should be able to write from memory
+
+If this page has done its job, you should be able to write:
+
+1. what target you requested
+2. what rule could build it
+3. what the dry-run told you
+4. why the second run stayed quiet
+5. why the capstone is still too large for first contact
+
+If you cannot do that yet, stay here a little longer.
 
 ## Good stopping point
 

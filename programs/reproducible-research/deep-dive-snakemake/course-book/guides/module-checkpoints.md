@@ -5,6 +5,17 @@ module once is not the same as being ready for the next one. These checkpoints e
 tell you whether the next module will build on stable understanding or on vague
 recognition.
 
+## If you are learning this without the live class
+
+Use this page in four passes:
+
+1. answer the checkpoint from memory before reopening the module
+2. run or inspect one proportionate proof route
+3. explain the result in your own words
+4. stop immediately if the explanation still sounds memorized, vague, or borrowed from the course text
+
+If you skip step 1, checkpoints turn into rereading with extra ceremony.
+
 ## What readiness means in this course
 
 Readiness is stricter than familiarity.
@@ -18,6 +29,17 @@ You are ready when you can:
 
 If one of those is missing, the next module will often feel harder for the wrong reason.
 
+## The readiness packet you should keep for each module
+
+For each module, keep one tiny packet:
+
+- one boundary statement
+- one proof route
+- one interpretation in your own words
+- one known misunderstanding that would send you back
+
+If your packet cannot fit on a few lines, you probably still understand the surface less clearly than you think.
+
 ## How to use this page honestly
 
 For each module:
@@ -29,6 +51,19 @@ For each module:
 
 If you need to reread, reread the narrowest lesson that matches the gap instead of the
 whole module.
+
+## A checkpoint card you should be able to fill quickly
+
+Use a table like this after each module:
+
+| Part | Short honest answer |
+| --- | --- |
+| boundary | what this module taught me to separate or protect |
+| proof route | the smallest route that tests that boundary |
+| interpretation | what the route means when it passes or fails |
+| go-back trigger | what confusion would send me back one lesson |
+
+If one cell stays blank, that module is not ready to support the next one.
 
 ## Checkpoints by module
 
@@ -56,6 +91,19 @@ Do not call a module done just because:
 
 Those usually mean you have seen the surface, not learned the boundary.
 
+## What goes wrong when a learner treats familiarity as readiness
+
+Use this card before you move on:
+
+| If you are saying... | The likely hidden problem is... | Better honesty test |
+| --- | --- | --- |
+| "that module looked familiar" | recognition without explanation | answer the checkpoint from memory |
+| "the strongest route passed" | maximal evidence is masking weak interpretation | pick one proportionate proof route and explain it |
+| "I can follow the capstone" | repository navigation is replacing boundary understanding | state the module boundary in plain language |
+| "I think I get it" | no go-back trigger has been named | write the misunderstanding that would send you back |
+
+If the better honesty test feels narrower than your current proof, that is a feature, not a limitation.
+
 ## What honest use looks like
 
 Suppose you think you are done with Module 06 because the publish lesson felt familiar.
@@ -68,6 +116,18 @@ Strong checkpoint use would be:
 4. stop if your answer collapses back into "that is just where the files ended up"
 
 That is the level of honesty these checkpoints are trying to force.
+
+## A five-line readiness note you should be able to write from memory
+
+If this page has done its job, you should be able to write after any module:
+
+1. what boundary the module taught you to see
+2. which proof route checks that boundary
+3. what the proof means when it succeeds
+4. what misunderstanding would send you back
+5. why the next module would be premature if those stay vague
+
+If you cannot do that, the module is not finished enough to support the next one.
 
 ## Companion pages
 
