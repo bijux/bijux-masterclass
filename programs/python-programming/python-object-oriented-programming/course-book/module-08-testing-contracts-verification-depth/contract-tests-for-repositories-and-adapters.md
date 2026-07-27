@@ -1,6 +1,5 @@
 # Contract Tests for Repositories and Adapters
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,47 +24,170 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Prove that interchangeable infrastructure implementations honor the same semantic
-contract instead of only passing their own hand-picked test cases.
+An interface is not proof of replaceability.
 
-## 1. A Contract Test Defines Shared Truth
+Students often build:
 
-If both an in-memory repository and a database repository claim to implement the same
-interface, they should satisfy the same behavior:
+- an in-memory repository for tests
+- a database repository for production
+- several adapters that all implement the same protocol
 
-- load missing object behavior
+Then they assume the shared interface is enough to guarantee equivalent behavior.
+
+It is not.
+
+Replaceability is a semantic claim. Contract tests exist to prove that each
+implementation honors the same promise under the same important conditions, especially
+the awkward ones.
+
+## A contract test defines shared truth once
+
+The purpose of a contract suite is not to test one implementation well. It is to define
+the truth that all implementations must satisfy.
+
+For a repository, that truth may include:
+
+- what "missing" means
+- how identity and version conflicts behave
+- whether round-tripping preserves domain meaning
+- when writes become visible
+- which errors belong to the contract versus the storage mechanism
+
+Once that truth is written down as tests, every implementation must answer to it.
+
+## Start from promises, not storage details
+
+Repository contract tests should be framed in terms a caller depends on, not in terms a
+backend happens to use.
+
+For example, a good shared question is:
+
+- does saving then loading preserve the aggregate meaning?
+
+A weaker backend-specific question is:
+
+- did the SQL row include every current column?
+
+The second question may still matter in backend-specific tests, but it is not the shared
+contract. Contract tests should stay at the semantic boundary the application relies on.
+
+## Shared suites expose dishonest substitutes
+
+In-memory substitutes often drift in ways that make tests falsely reassuring.
+
+Common examples:
+
+- the in-memory repository never enforces optimistic conflicts
+- it preserves Python object identity instead of serializing and reconstructing meaning
+- it accepts invalid payload shapes a real transport would reject
+- it returns data too eagerly compared with the production boundary
+
+Without a shared contract suite, these differences become invisible until production or
+integration testing.
+
+## Adapters need contract tests too
+
+The same idea applies beyond repositories.
+
+If several adapters claim to be equivalent incident sinks, metric sources, or storage
+surfaces, a contract might cover:
+
+- accepted input shape
+- failure translation
+- timeout semantics
 - duplicate handling
-- optimistic conflict detection
-- round-trip fidelity
+- guaranteed outputs or acknowledgements
 
-## 2. Adapters Need Contract Tests Too
+The transport may differ. The caller-facing promise should not drift silently.
 
-Metric sources, incident sinks, and file stores often differ in transport details but
-share expectations around errors, timeouts, and accepted payload shapes.
+## Honest differences must become explicit structure
 
-## 3. Write the Shared Suite Once
+Contract testing often reveals that two implementations are not truly interchangeable.
 
-Design tests around the promise, then run them against multiple implementations. This
-prevents backend drift from hiding behind copy-pasted test files.
+That is useful information.
 
-## 4. Keep Honest Differences Explicit
+If one repository supports:
 
-If one adapter supports batching and another does not, either widen the contract
-deliberately or split the interfaces. Do not pretend all implementations are equal.
+- optimistic concurrency
+- bulk loading
+- transactional save semantics
 
-## Practical Guidelines
+and another does not, you have several honest options:
 
-- Write one shared suite per honest contract.
-- Run it against every implementation that claims compatibility.
-- Include failure-path behavior, not only successful round-trips.
-- Split contracts when capabilities differ materially.
+- narrow the shared contract
+- split the interface
+- define capability-specific contracts
 
-## Exercises for Mastery
+The wrong move is to keep one broad interface and quietly let implementations differ.
 
-1. Extract one shared repository or adapter suite from duplicated tests.
-2. Add one failure-path assertion to that shared suite.
-3. Identify one interface that should be split because implementations do not truly match.
+## A worked example
+
+Suppose the capstone has both an in-memory incident repository and a durable repository.
+The shared contract might require:
+
+- loading a missing incident returns the same absence behavior in both implementations
+- saving then loading preserves incident state, version, and emitted-event handling rules
+- saving with an out-of-date version fails in the same semantic way
+- a second save of unchanged state does not invent extra lifecycle drift
+
+One backend may implement this with plain Python structures. Another may use a database
+transaction. The contract suite does not care how they do it. It cares that the caller's
+truth is preserved.
+
+## What belongs outside the shared contract
+
+Not every backend-specific concern belongs in the shared suite.
+
+Keep separate tests for:
+
+- exact SQL shape
+- driver-specific retry behavior
+- transport configuration
+- storage-engine tuning
+- performance characteristics unique to one backend
+
+Those tests still matter. They are just not the cross-implementation contract.
+
+## Common mistakes
+
+- copying similar tests across implementations instead of extracting one shared suite
+- keeping the contract too happy-path and ignoring conflicts, missing values, or failure translation
+- letting in-memory substitutes skip important semantic checks
+- hiding capability gaps instead of splitting contracts honestly
+- writing backend-detail assertions and calling them contract tests
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is the shared suite written in caller-facing semantic language? | yes |
+| does every claimed substitute run the same suite? | yes |
+| are failure and conflict paths covered, not just round-trips? | yes |
+| are honest capability differences explicit in the design? | yes |
+
+## Capstone connection
+
+Use the capstone boundaries to ask:
+
+- which repositories or adapters are currently assumed replaceable but not proven so?
+- where does the in-memory testing substitute behave more generously than the production path?
+- which shared boundary would benefit most from one extracted semantic suite?
+
+This is often where testing stops being convenience scaffolding and becomes architecture
+evidence.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why an interface alone does not prove replaceability
+- name one semantic rule that all repository implementations must share
+- identify one backend-specific concern that should stay outside the shared contract suite
