@@ -26,6 +26,7 @@ VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-snak
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/profile
 MODULE_INTERFACE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/module-interfaces
 CONTEXT_INVARIANCE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/context-invariance
+PERFORMANCE_DIAGNOSTICS_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-snakemake/performance-diagnostics
 
 # ---- workflow outputs ----
 PUBLISH_DIR ?= publish/v1
@@ -43,6 +44,7 @@ MANIFEST_ABS      := $(abspath $(MANIFEST))
 PUBLISH_DIR_ABS   := $(abspath $(PUBLISH_DIR))
 MODULE_INTERFACE_AUDIT_DIR_ABS := $(abspath $(MODULE_INTERFACE_AUDIT_DIR))
 CONTEXT_INVARIANCE_AUDIT_DIR_ABS := $(abspath $(CONTEXT_INVARIANCE_AUDIT_DIR))
+PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS := $(abspath $(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR))
 TOOLS_VENV_DIR ?= $(ARTIFACTS_DIR)/venv/reproducible-research/deep-dive-snakemake/capstone
 TOOLS_VENV_DIR_ABS := $(abspath $(TOOLS_VENV_DIR))
 TOOLS_BIN := $(TOOLS_VENV_DIR_ABS)/bin
@@ -66,6 +68,7 @@ RUFF ?= $(if $(wildcard $(TOOLS_BIN)/ruff),$(TOOLS_BIN)/ruff,ruff)
 	publish-summary profile-summary config-summary results-summary evidence-summary \
 	verify-report profile-audit module-interface-audit module-interface-selftest \
 	context-invariance-audit context-invariance-selftest \
+	performance-diagnostics-audit performance-diagnostics-selftest \
 	check ci validate verify confirm selftest proof \
 	docker-build docker-run
 
@@ -302,6 +305,33 @@ context-invariance-audit: ## Compare policy-preserving contexts with semantic le
 context-invariance-selftest: ## Reject dishonest context invariance evidence
 	$(PYTEST) -q tests/test_context_invariance_audit.py
 
+performance-diagnostics-audit: ## Classify honest tuning, semantic drift, and regression evidence
+	rm -rf "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)"
+	mkdir -p "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)"
+	cp -R repro/performance-diagnostics "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)/specimen"
+	$(PYTHON) scripts/audit_performance_diagnostics.py \
+		--specimen repro/performance-diagnostics \
+		--workspace "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)/workspace" \
+		--output "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)/report.json" \
+		--snakemake "$(SNAKEMAKE)"
+	cp docs/performance-diagnostics-audit-guide.md "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)/PERFORMANCE_DIAGNOSTICS_AUDIT_GUIDE.md"
+	cp docs/proof-guide.md "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)/PROOF_GUIDE.md"
+	@printf '%s\n' \
+		'Performance diagnostics audit route:' \
+		'  1. Read PERFORMANCE_DIAGNOSTICS_AUDIT_GUIDE.md for decision semantics.' \
+		'  2. Read summary.tsv and distinguish PASS from the review decision.' \
+		'  3. Compare the four configuration files under specimen/config/.' \
+		'  4. Compare metrics before benchmark observations in report.json.' \
+		'  5. Inspect copied result, evidence, and benchmark files under workspace/runs/.' \
+		'  6. Use PROOF_GUIDE.md only if the claim expands beyond performance diagnosis.' > "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)/route.txt"
+	@$(PYTHON) scripts/write_bundle_manifest.py \
+		--bundle-dir "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)" \
+		--output "$(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)/bundle-manifest.json"
+	@echo "✔ wrote performance diagnostics audit to $(PERFORMANCE_DIAGNOSTICS_AUDIT_DIR_ABS)"
+
+performance-diagnostics-selftest: ## Reject dishonest performance evidence
+	$(PYTEST) -q tests/test_performance_diagnostics_audit.py
+
 config-summary: verify ## Write a compact summary of the materialized workflow configuration
 	@mkdir -p "$(VERIFY_REPORT_DIR)"
 	@command -v $(PYTHON) >/dev/null || { echo "✘ python missing"; exit 1; }
@@ -337,11 +367,11 @@ ci: fmt-check lint test wf-lint wf-dryrun validate-config ## Strict gate (includ
 
 validate: check ## Alias
 verify: wf-run verify-artifacts ## Execute workflow then verify outputs
-confirm: clean purge-dsstore ci module-interface-audit module-interface-selftest context-invariance-audit context-invariance-selftest verify ## Clean-room confirmation (strict)
+confirm: clean purge-dsstore ci module-interface-audit module-interface-selftest context-invariance-audit context-invariance-selftest performance-diagnostics-audit performance-diagnostics-selftest verify ## Clean-room confirmation (strict)
 selftest: ## Prove deterministic publish behavior across core counts
 	@PYTHON_BIN="$(PYTHON)" /bin/bash tests/selftest.sh
 
-proof: tour verify-report profile-audit module-interface-audit context-invariance-audit ## Run the sanctioned learner-facing proof route
+proof: tour verify-report profile-audit module-interface-audit context-invariance-audit performance-diagnostics-audit ## Run the sanctioned learner-facing proof route
 
 walkthrough: clean validate-config wf-lint ## Build a light learner-facing bundle without executing the workflow
 	@mkdir -p \

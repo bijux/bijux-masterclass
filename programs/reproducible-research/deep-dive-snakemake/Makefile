@@ -62,6 +62,12 @@ capstone-context-invariance-audit: ## Compare policy-preserving contexts with se
 capstone-context-invariance-selftest: ## Reject dishonest context invariance evidence
 	$(MAKE) -C capstone context-invariance-selftest
 
+capstone-performance-diagnostics-audit: ## Classify honest tuning, semantic drift, and regression evidence
+	$(MAKE) -C capstone performance-diagnostics-audit
+
+capstone-performance-diagnostics-selftest: ## Reject dishonest performance evidence
+	$(MAKE) -C capstone performance-diagnostics-selftest
+
 check: capstone-check ## Run capstone fast checks
 
 test: check ## Run the course's default verification target
