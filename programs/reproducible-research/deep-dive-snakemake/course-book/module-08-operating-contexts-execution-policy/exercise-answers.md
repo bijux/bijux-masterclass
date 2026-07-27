@@ -36,6 +36,9 @@ Latency waits and shell-command visibility change how the workflow is run and ob
 A different publish directory changes a trusted contract path and therefore changes more
 than policy.
 
+Weak answers classify keys by habit instead of by whether they change trusted outputs,
+paths, or semantic meaning.
+
 ## Exercise 2: Review retries honestly
 
 Why this may be weak:
@@ -55,6 +58,9 @@ What evidence to request:
 
 The main lesson is that retries are not a substitute for diagnosis.
 
+Weak answers jump from "the run failed" to "increase retries" without naming the failure
+class first.
+
 ## Exercise 3: Diagnose a storage-boundary problem
 
 What trust problem this creates:
@@ -72,6 +78,9 @@ What needs clarification:
 - the boundary between scratch or staging locations and trusted output locations
 - the visibility and promotion model for outputs
 
+Weak answers trust the first visible bytes even when the contract says trust begins only
+after promotion onto a declared output path.
+
 ## Exercise 4: Compare three contexts
 
 A strong argument would say:
@@ -84,6 +93,9 @@ Why:
 
 - successful execution is not enough evidence against semantic drift
 - comparison makes hidden context-specific behavior much easier to spot
+
+Weak answers compare only whether the run eventually passed and therefore miss planning or
+contract drift.
 
 ## Exercise 5: Escalate a semantic profile leak
 
@@ -101,6 +113,9 @@ What should happen before approval:
 - review the effect on contracts and outputs
 - compare contexts again after the change is made honest
 
+Weak answers call this "just a profile preference" even after the setting changes sample
+membership, paths, or published meaning.
+
 ## Exercise 6: Build a governed policy matrix
 
 Every key belongs to one named policy class. Cores and concurrency are capacity;
@@ -110,12 +125,29 @@ Sample sets, algorithm parameters, and publish paths are semantic leaks. Repeate
 may remain explicit when readability matters, but their ownership and consistency should
 be auditable.
 
+Example matrix headings:
+
+- key
+- local value
+- CI value
+- scheduler value
+- policy class
+- justified difference or semantic leak
+
+Why this is strong:
+
+- it turns profile review into an auditable inventory
+- it makes semantic leaks stand out instead of hiding inside raw YAML
+
 ## Exercise 7: Map resources to two executors
 
 The rule declares portable needs with documented units. Local policy caps concurrency and
 respects available memory; scheduler policy translates the same values into submission
 resources. Queue names and submission syntax never enter the rule. Output paths and
 algorithm parameters remain identical when mappings change.
+
+Weak answers move executor-specific syntax into the rule and then claim the workflow is
+still portable.
 
 ## Exercise 8: Verify scratch promotion
 
@@ -125,6 +157,20 @@ publishes the final path. Interruption leaves no final output and retains enough
 staged evidence for diagnosis. Reviewers never inspect scratch as a substitute for the
 declared contract.
 
+Example lifecycle checkpoints:
+
+- scratch allocation
+- step-local write
+- validation before promotion
+- temporary destination at the trusted boundary
+- atomic final publication
+- cleanup or retained failure evidence
+
+Why this is strong:
+
+- it makes the trust boundary observable
+- it prevents reviewers from confusing temporary execution state with final outputs
+
 ## Exercise 9: Write an operating-context drift gate
 
 The gate allowlists context-owned differences and compares semantic invariants. It fails
@@ -133,6 +179,8 @@ with the profile, key or target, expected value, and observed value. A changed
 differ under documented policy. This targeted gate complements execution tests rather
 than replacing them.
 
+Weak gates compare everything blindly or ignore semantic dry-run differences completely.
+
 ## Exercise 10: Review a policy change like a maintainer
 
 A strong review orders findings by semantic risk: changed trusted path, leaked semantic
@@ -140,6 +188,9 @@ config, unclassified retry increase, or unexplained storage assumption. One acce
 policy difference should stay clearly inside observability, capacity, or executor mapping.
 Each decision should name the narrowest verification route that supports it, such as a
 dry-run comparison, governed key audit, or storage-lifecycle check.
+
+Weak reviews say only "profiles differ by environment" and never decide which difference
+is acceptable and which is a leak.
 
 ## Self-check
 

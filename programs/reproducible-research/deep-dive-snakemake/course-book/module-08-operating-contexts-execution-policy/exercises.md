@@ -18,6 +18,16 @@ For each exercise, keep three things together:
 If your answer cannot say what stayed semantically invariant and what changed only in
 operations, the exercise is not finished yet.
 
+Before each answer:
+
+1. name the semantic invariant before you evaluate any profile difference
+2. classify the setting or incident before you propose retries, latency changes, or new
+   executor policy
+3. keep the exact comparison route, log, or storage note that justified the decision
+
+If you skip that order, the day turns into flag tuning instead of operating-context
+review.
+
 Do them in order. The set is one day-long progression:
 
 - Exercises 1-3 establish profile and semantic boundaries.
@@ -41,6 +51,24 @@ Build one small policy-review packet as you go:
 - one failure-class note
 - one storage lifecycle diagram
 - one focused drift gate with a deliberate failing example
+
+If you prefer a concrete audit tree, keep it inside something like:
+
+```text
+module08-lab/
+├── profiles/
+├── comparisons/
+├── storage/
+├── drift/
+└── artifacts/
+    ├── dry-runs/
+    ├── policy-matrix/
+    ├── failures/
+    └── reviews/
+```
+
+That structure helps separate context comparisons, storage-boundary evidence, and drift
+checks instead of collapsing them into one loose profile note.
 
 ## Exercise 1: Decide whether a profile change is safe
 
