@@ -1,0 +1,25 @@
+stages:
+  declared_runtime:
+    cmd: >-
+      python scripts/render_runtime.py
+      --source data/source.txt
+      --contract environment/runtime.env
+      --output results/declared.txt
+    deps:
+      - data/source.txt
+      - environment/runtime.env
+      - scripts/render_runtime.py
+    outs:
+      - results/declared.txt
+
+  hidden_runtime:
+    cmd: >-
+      python scripts/render_runtime.py
+      --source data/source.txt
+      --environment-variable REPORT_STYLE
+      --output results/hidden.txt
+    deps:
+      - data/source.txt
+      - scripts/render_runtime.py
+    outs:
+      - results/hidden.txt
