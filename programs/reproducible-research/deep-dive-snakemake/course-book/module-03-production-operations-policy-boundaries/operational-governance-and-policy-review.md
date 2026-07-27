@@ -146,6 +146,118 @@ Weak:
 
 This is the kind of table that helps a real maintainer review calmly.
 
+## Review a scheduler-policy change in four passes
+
+Use the generated scheduler-policy bundle rather than reading every file at
+once.
+
+```mermaid
+flowchart LR
+    Q["1. state claim"] --> C["2. inspect contract"]
+    C --> E["3. inspect evidence"]
+    E --> D["4. record decision"]
+    D -->|"unclear"| Q
+```
+
+### State the claim
+
+Use a sentence narrow enough to disprove:
+
+> The accepted profile preserves four threads, 8,000 MB, and 30 minutes while
+> changing no semantic field.
+
+“The Slurm profile works” is not reviewable here. The local audit never contacts
+Slurm.
+
+### Inspect the owned contract
+
+Read `job-contract.json` before any generated output. Separate:
+
+- required execution resources;
+- workflow-semantic fields;
+- output identity.
+
+If the proposed change alters `minimum_score`, route it to semantic review. If
+it alters how `mem_mb` becomes a scheduler flag, keep it in operational review.
+
+### Inspect discriminating evidence
+
+Read `summary.tsv`, then the relevant checks in `report.json`. A trustworthy
+audit includes both:
+
+- one accepted translation;
+- rejected counterexamples that would expose missing memory, under-provisioning,
+  and semantic leakage.
+
+Happy-path output alone cannot show that the boundary is enforced.
+
+### Record a decision with a limit
+
+Use a decision record like:
+
+```text
+Decision: ACCEPT local resource translation
+Evidence: SCHEDULER_MAPPING_RECORDED = PASS
+Limit: no scheduler was contacted
+Next proof: site integration with job ID and worker output verification
+```
+
+The limit is not a disclaimer to hide at the bottom. It tells the next operator
+which proof remains missing.
+
+## Assign evidence to owners
+
+```mermaid
+flowchart TD
+    R["rule author"] --> A["declared threads, memory, runtime"]
+    P["profile maintainer"] --> B["scheduler argument mapping"]
+    O["site operator"] --> C["account, partition, mounts, execution"]
+    V["result reviewer"] --> D["output meaning and verification"]
+    A --> G["production acceptance"]
+    B --> G
+    C --> G
+    D --> G
+```
+
+No single owner can prove the entire production story:
+
+| Owner | Can approve | Cannot approve alone |
+| --- | --- | --- |
+| rule author | resource declaration and semantic contract | site queue behavior |
+| profile maintainer | deterministic resource translation | output correctness |
+| site operator | scheduler and storage integration | analytical threshold |
+| result reviewer | content and publish contract | executor configuration |
+
+This ownership split prevents “operations” from becoming a catch-all review
+label.
+
+## Use stop conditions during review
+
+Stop approval when:
+
+- a profile changes sample identity, threshold, or output meaning;
+- the request asks for fewer resources than the rule declares;
+- a required resource disappears during translation;
+- the receipt does not reveal whether execution occurred;
+- site-specific claims have no job ID or worker evidence;
+- a retry policy has no eligible failure class or attempt bound.
+
+Stopping is not the same as rejecting the entire design. It identifies the
+smallest missing proof or misplaced responsibility.
+
+## Rehearse governance failure
+
+Run:
+
+```console
+gmake scheduler-policy-selftest
+```
+
+The tests remove each intended cause. For example, restoring memory to the
+`missing-memory` profile must make the rejection finding fail. That behavior
+shows that the audit is checking a causal boundary rather than merely finding a
+file with “rejected” in its name.
+
 ## Why command folklore is a governance smell
 
 If the real production story lives in Slack messages, wiki fragments, or one maintainer's

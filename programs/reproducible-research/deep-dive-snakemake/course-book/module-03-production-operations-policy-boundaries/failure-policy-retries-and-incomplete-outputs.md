@@ -187,6 +187,111 @@ That can hide the exact distinction this page is trying to teach:
 
 This is the kind of operational table a human team can actually use.
 
+## Add scheduler rejection to the failure model
+
+A job can fail before any workflow command runs. The scheduler may reject a
+request because an account is invalid, a partition does not exist, or a required
+resource is absent. Retrying the same request does not make that contract valid.
+
+```mermaid
+flowchart TD
+    F["run did not complete"] --> S{"scheduler accepted job?"}
+    S -->|"no"| R["repair submission policy"]
+    S -->|"yes"| C{"command started?"}
+    C -->|"no"| I["inspect worker launch and environment"]
+    C -->|"yes"| E{"transient execution failure?"}
+    E -->|"yes"| T["bounded retry with preserved logs"]
+    E -->|"no"| M["repair semantics, code, or data"]
+```
+
+This adds an important boundary to the retry question:
+
+> What changed between the failed attempt and the next attempt?
+
+If the answer is "nothing," a retry is justified only when the source is known
+to be transient. Queue delay is transient. A missing memory declaration is not.
+A worker losing a network connection may be transient. An invalid threshold is
+not.
+
+## Rehearse four failure classes
+
+Use the scheduler-policy audit:
+
+```console
+cd programs/reproducible-research/deep-dive-snakemake/capstone
+gmake scheduler-policy-audit
+```
+
+Classify the generated cases before reading their decisions:
+
+| Case | Failure boundary | Retry unchanged? | Repair |
+| --- | --- | --- | --- |
+| accepted mapping | none in local translation | not applicable | site integration next |
+| missing memory | submission contract | no | declare and map memory |
+| under-provisioned memory | policy translation | no | preserve the rule declaration |
+| semantic leak | workflow meaning | no | move threshold to semantic config |
+
+All three rejected cases are deterministic. Running the adapter ten times would
+produce ten equivalent rejections. The correct response is to repair ownership,
+not to increase attempts.
+
+## Separate incomplete output from scheduler state
+
+An accepted scheduler job may still die while writing an output. You then have
+two different records:
+
+- scheduler state says whether and where execution occurred;
+- filesystem state says whether a declared output exists and is complete.
+
+Neither record substitutes for the other.
+
+```mermaid
+sequenceDiagram
+    participant W as Workflow
+    participant S as Scheduler
+    participant J as Worker job
+    participant O as Output store
+    W->>S: submit recorded resource request
+    S-->>W: job identifier
+    S->>J: start allocation
+    J->>O: write through temporary path
+    alt command and validation succeed
+        J->>O: publish declared output
+        J-->>S: exit 0
+    else command or validation fails
+        J-->>S: nonzero exit
+        O-->>W: no published final output
+    end
+```
+
+The safe recovery story is:
+
+1. preserve the scheduler job ID and worker log;
+2. keep temporary artifacts outside the final output path;
+3. determine whether the failure is transient or deterministic;
+4. repair the cause when deterministic;
+5. rerun through the declared Snakemake target;
+6. verify output content, not merely file existence.
+
+This is why `rerun-incomplete` is useful but insufficient. It can authorize
+rerunning an incomplete target. It cannot decide whether the cause was safe to
+repeat.
+
+## Write a retry budget that can be reviewed
+
+| Field | Example | Review purpose |
+| --- | --- | --- |
+| eligible failure | transient object-store timeout | prevents semantic retries |
+| maximum attempts | two retries | bounds wasted work |
+| backoff | 30 seconds, then 120 seconds | avoids repeated pressure |
+| preserved evidence | attempt log and scheduler job ID | supports diagnosis |
+| stop condition | same exit code twice | forces investigation |
+| output handling | publish only after validation | prevents partial success |
+
+A profile may select a bounded retry mechanism. The repository still needs a
+durable explanation of these conditions. `retries: 3` alone hides the most
+important reasoning.
+
 ## What "keep evidence" should mean
 
 Keeping evidence does not mean keeping every broken file forever.

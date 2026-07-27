@@ -148,6 +148,102 @@ Healthy staging design usually has these properties:
 
 This keeps the workflow semantics stable even while the operating context changes.
 
+## Extend the scheduler receipt with a storage question
+
+The scheduler-policy specimen records CPU, memory, and runtime. That is enough to
+review resource translation, but not enough to execute a real job. A reviewer
+must ask one more question:
+
+> From the allocated worker, how does each declared path become reachable?
+
+Complete this table for a deployment:
+
+| Path role | Example | Worker access | Publication rule |
+| --- | --- | --- | --- |
+| immutable input | `data/records.tsv` | shared read-only mount | never modified |
+| scratch work | node-local allocation | worker-local | removed after success |
+| declared result | `results/summary.tsv` | shared project storage | atomic rename |
+| audit evidence | artifact bundle | CI or reviewer storage | immutable per run |
+
+Do not write “shared filesystem” in the worker-access column. Name the mount,
+object-store transfer, or staging command that makes the path reachable. Vague
+storage nouns hide the exact boundary that fails during deployment.
+
+## Trace a staged scheduler job
+
+```mermaid
+sequenceDiagram
+    participant O as Orchestrator
+    participant S as Scheduler
+    participant W as Worker scratch
+    participant P as Project storage
+    O->>S: submit resources and path policy
+    S->>W: allocate worker
+    P->>W: stage declared inputs
+    W->>W: compute and validate temporary result
+    W->>P: atomically publish declared output
+    P-->>O: output visible at contract path
+```
+
+Each arrow needs evidence:
+
+- submission receipt for orchestrator to scheduler;
+- scheduler job ID for allocation;
+- transfer log or mount record for input availability;
+- command log and validation result for computation;
+- checksum or manifest for publication;
+- Snakemake completion state for the final contract path.
+
+If a deployment cannot produce one of those records, say which claim remains
+untested. Do not replace the missing evidence with “works on our cluster.”
+
+## Decide where a failure belongs
+
+Consider four incidents:
+
+1. The scheduler rejects `--mem=8000M`.
+2. The worker cannot see `data/records.tsv`.
+3. The command succeeds but the final rename is delayed.
+4. The published result contains the wrong records.
+
+They belong to different owners:
+
+| Incident | Primary boundary | First evidence |
+| --- | --- | --- |
+| request rejected | scheduler policy | submission stderr |
+| input invisible | staging or mount policy | worker path probe |
+| rename delayed | shared-storage consistency | publication log and latency |
+| wrong records | workflow semantics | result content and threshold |
+
+Only the third case may justify increasing `latency-wait`, and only after showing
+that the writer completed and visibility lagged. Increasing latency for the
+other cases merely delays a useful failure.
+
+## Preserve one final-path invariant
+
+Across local, CI, and scheduler contexts:
+
+```text
+results/summary.tsv
+```
+
+must remain the declared output. Scratch locations may differ. Transfer tools
+may differ. The path that downstream rules trust must not silently change.
+
+That invariant lets the DAG preserve meaning while profiles vary execution:
+
+```mermaid
+flowchart TD
+    L["local temporary directory"] --> F["results/summary.tsv"]
+    C["CI workspace"] --> F
+    S["scheduler scratch"] --> F
+    F --> V["content verification"]
+    V --> D["downstream dependency"]
+```
+
+The arrows are context-specific policy. The final node is the workflow
+contract.
+
 ## What a good explanation sounds like
 
 Strong:
