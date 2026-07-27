@@ -1,30 +1,5 @@
 # Proof Routes, Selftests, and Clean-Room Confirmation
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Proof Routes, Selftests, and Clean-Room Confirmation"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Production confidence should not come from one feeling:
 
 > it worked on my machine once.
@@ -36,6 +11,27 @@ Module 03 replaces that feeling with proof routes. The idea is simple:
 - let the repository explain why each route exists
 
 That is how operational trust becomes teachable.
+
+## How to read this page
+
+Read this page with one question in front of you:
+
+> what exact claim am I trying to prove right now?
+
+If you can answer that question, choosing the right proof route becomes much easier. If
+you cannot, the strongest command will still feel like a ritual.
+
+## Why this lesson matters now
+
+By Module 03, the repository already has profiles, failure policy, and staging behavior.
+That means it now has multiple kinds of claims to prove:
+
+- planning claims
+- policy-difference claims
+- executed-contract claims
+- stewardship claims
+
+This page teaches how not to blur them together.
 
 ## Not every question needs the strongest proof
 
@@ -50,6 +46,17 @@ That wastes time and teaches the wrong lesson. The real skill is proportion:
 - clean-room confirmation for stewardship questions
 
 This module is about learning that ladder, not only memorizing the top rung.
+
+## A strong beginner habit
+
+State the review question before you choose the command.
+
+For example:
+
+- "I want to know whether local and CI plan the same target graph."
+- "I want to know whether the repository still proves itself from fresh state."
+
+That small habit prevents over-testing and under-explaining at the same time.
 
 ## A practical proof ladder for Module 03
 
@@ -107,6 +114,20 @@ make confirm
 
 This is not the first proof route. It is the strongest one.
 
+## The contrast that matters
+
+The important contrast is not:
+
+- lightweight command
+- heavyweight command
+
+The important contrast is:
+
+- bounded claim
+- broader claim
+
+Heavier proof is useful only when the claim actually expands.
+
 ## Why selftests matter
 
 A selftest is the repository testing its own workflow contract, not only the scientific or
@@ -120,6 +141,16 @@ Good selftests usually check things like:
 - basic contract alignment of published artifacts
 
 That makes selftest a workflow-level proof surface.
+
+## A quick self-check before you keep reading
+
+Think about one question from earlier in the module:
+
+- does a profile diff need `make confirm`
+- does clean-room repository stewardship need only dry-run
+
+Both answers should be no. If they feel interchangeable, the proof ladder is still too
+blurry.
 
 ## The capstone selftest teaches the right habit
 
@@ -145,6 +176,16 @@ The direction here is important:
 
 - move upward only when the claim changes
 - do not use the strongest route as a substitute for understanding the smaller one
+
+## The common bad repair
+
+A common bad repair is to run the largest confirmation target whenever review feels
+uncertain, then treat that as understanding.
+
+That wastes time and still leaves the real question unanswered:
+
+- what did this command actually prove
+- what did it not prove
 
 ## Common proof-route mistakes
 

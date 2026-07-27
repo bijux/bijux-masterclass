@@ -1,35 +1,34 @@
 # Profiles, Defaults, and Workflow Meaning
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Profiles, Defaults, and Workflow Meaning"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Module 03 begins with the boundary that most production confusion grows out of:
 
 > a profile may change how the workflow runs, but it must not change what the workflow means.
 
 If that sentence is fuzzy, every later operational decision becomes harder to review.
+
+## How to read this page
+
+Read this page with one review question in front of you:
+
+> if this setting changed tomorrow, would a downstream reader say the workflow means
+> something different?
+
+If the answer is yes, the setting does not belong in a profile. That one question will
+save a lot of confusion later in the course.
+
+## Why this lesson comes first
+
+Production policy gets messy fast if the first boundary is weak.
+
+Once profiles start carrying semantic choices, every later operational discussion becomes
+harder:
+
+- CI and local runs appear to differ only in context while actually building different
+  things
+- profile review looks harmless even when it should trigger semantic review
+- maintainers stop knowing which file owns workflow meaning
+
+That is why Module 03 begins here.
 
 ## Profiles are for operating context
 
@@ -51,6 +50,15 @@ The workflow meaning should still come from:
 
 That is the boundary this page is defending.
 
+## A strong beginner habit
+
+When you add a profile setting, write one short sentence that starts with:
+
+> This changes how the workflow runs by...
+
+If you cannot finish that sentence without talking about target membership, publish
+contracts, or analytical meaning, the setting belongs somewhere else.
+
 ## Why this split matters in practice
 
 When profiles and workflow meaning blur together, several bad things happen at once:
@@ -61,6 +69,15 @@ When profiles and workflow meaning blur together, several bad things happen at o
 - later maintainers cannot tell whether a diff needs scientific review or only runtime review
 
 Strong production workflows make that distinction reviewable before the incident happens.
+
+## A quick self-check before you keep reading
+
+Take one setting you have seen in another workflow and ask:
+
+- does this affect scheduler patience, log visibility, or resource policy
+- or does it affect sample identity, output meaning, or publish versioning
+
+That distinction is the whole page in miniature.
 
 ## A healthy profile example
 
@@ -119,6 +136,13 @@ Healthy defaults should be:
 - stable across contexts unless deliberately overridden
 - harmless when the operating profile changes
 
+## The common beginner mistake
+
+People sometimes agree that semantic settings should stay out of profiles, then quietly
+reintroduce the same leak through environment variables or hidden local defaults.
+
+That is not cleaner. It is just harder to review.
+
 ## One useful review table
 
 | Question | If yes, it belongs closer to... |
@@ -145,6 +169,17 @@ That design teaches an important lesson:
 - the repository is allowed to represent that difference openly
 
 Profiles are not a hack here. They are the formal place where context variation lives.
+
+## What a good explanation sounds like
+
+Strong:
+
+> Local, CI, and SLURM may disagree about patience and visibility, but they should not
+> disagree about what the workflow is supposed to build.
+
+Weak:
+
+> The profile is where we keep the stuff we did not want to hardcode.
 
 ## A good audit question
 

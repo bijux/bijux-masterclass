@@ -1,36 +1,32 @@
 # Staging, Shared Filesystems, and Data Locality
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Production Operations Policy Boundaries"]
-  page["Staging, Shared Filesystems, and Data Locality"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Many production failures are blamed on "the cluster" or "Snakemake being weird" when the
 real issue is simpler:
 
 > the repository never stated what it assumes about where files live and when they become visible.
 
 This page is about making those assumptions explicit.
+
+## How to read this page
+
+Read this page with one boundary question in mind:
+
+> which paths are temporary operating context, and which paths are the stable contract the
+> workflow is promising to produce?
+
+If you keep that question visible, staging and filesystem behavior stop sounding mystical
+and start sounding reviewable.
+
+## Why this lesson belongs in Module 03
+
+By Module 03, the workflow already has meaningful outputs and publish surfaces. That is
+exactly why locality matters now.
+
+If the repository does not separate temporary placement from final trust surfaces:
+
+- incidents get explained as cluster folklore
+- scratch paths start acting like accidental contracts
+- local and CI differences feel haunted rather than owned
 
 ## Data locality is an operational boundary
 
@@ -44,6 +40,17 @@ The workflow meaning may be unchanged while the operating context changes:
 Those contexts can differ safely, but only if the repository treats them as policy
 surfaces instead of invisible background facts.
 
+## A strong beginner habit
+
+When a run behaves differently across environments, ask about path roles before you ask
+about Snakemake.
+
+For example:
+
+- where is the job reading from
+- where is it writing temporary work
+- when is it publishing to the declared final output
+
 ## The two questions to ask first
 
 When an output "goes missing" or appears late, ask:
@@ -52,6 +59,14 @@ When an output "goes missing" or appears late, ask:
 2. when should another process be allowed to trust that write
 
 Those questions are often more useful than staring at one failed command.
+
+## The common beginner mistake
+
+People often collapse these questions into one vague thought:
+
+> the file should be there somewhere.
+
+That is exactly the mindset this page is trying to replace.
 
 ## Shared filesystems add timing pressure
 
@@ -66,6 +81,16 @@ This is where settings such as latency handling belong:
 - they help the workflow remain honest under normal infrastructure lag
 
 That is a legitimate profile concern.
+
+## A quick self-check before you keep reading
+
+Imagine a shared filesystem where a finished output appears a little later to another
+process.
+
+Did the workflow meaning change?
+
+No. The storage visibility policy changed. That is why latency handling belongs on the
+operational side of the boundary.
 
 ## Scratch and staging are not semantic detours
 
@@ -122,6 +147,17 @@ Healthy staging design usually has these properties:
 - profiles or operating docs explain the context difference
 
 This keeps the workflow semantics stable even while the operating context changes.
+
+## What a good explanation sounds like
+
+Strong:
+
+> The workflow may use scratch differently by context, but it still publishes into the same
+> declared final paths, so the trust surface does not drift.
+
+Weak:
+
+> On the cluster, the file story is just different.
 
 ## What should stay out of workflow meaning
 
