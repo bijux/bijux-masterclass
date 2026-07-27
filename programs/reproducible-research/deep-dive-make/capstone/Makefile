@@ -477,11 +477,12 @@ architecture-contract-audit:
 >       --make "$(MAKE)"
 >     printf '%s\n' \
 >       'Architecture contract audit route:' \
->       '  1. Read summary.tsv across all six broken and control models.' \
->       '  2. Read report.json for exact API, policy, and output observations.' \
->       '  3. Read traces/ to connect each observation to Make execution.' \
->       '  4. Compare specimens/ with workspace/ before proposing a refactor.' \
->       '  5. Use the repro and proof guides to connect the models to production proof.' > "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/route.txt"
+>       '  1. Read ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md for PASS semantics.' \
+>       '  2. Read summary.tsv across all six broken and control models.' \
+>       '  3. Read report.json for exact API, policy, and output observations.' \
+>       '  4. Read traces/ to connect each observation to Make execution.' \
+>       '  5. Compare specimens/ with workspace/ before proposing a refactor.' > "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/route.txt"
+>     cp "$(DOCS_DIR)/architecture-contract-audit-guide.md" "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md"
 >     cp "$(DOCS_DIR)/repro-guide.md" "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/REPRO_GUIDE.md"
 >     cp "$(DOCS_DIR)/proof-guide.md" "$(ARCHITECTURE_CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
 >     $(PYTHON) scripts/write_bundle_manifest.py \
