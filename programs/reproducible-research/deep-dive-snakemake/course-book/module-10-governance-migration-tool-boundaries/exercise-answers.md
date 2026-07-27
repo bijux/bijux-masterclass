@@ -8,16 +8,17 @@ What matters is whether the reasoning protects trust while change is being plann
 
 Read this file only after attempting the exercises yourself.
 
-Use the answer key for three checks:
+Use the answer key for four checks:
 
 1. did you name the right boundary
 2. did you preserve the right proof route
 3. did you explain trust preservation instead of only architectural taste
+4. did you leave behind artifacts another maintainer could review without oral context
 
 Different wording can still be strong if the reasoning stays specific, evidence-first,
 and stewardship-focused.
 
-The strongest self-study packets also leave behind six concrete artifacts:
+The strongest self-study packets leave behind six concrete artifacts:
 
 - one current-truth note
 - one migration sequence
@@ -35,8 +36,8 @@ Strong top risks:
 
 - contract drift, because downstream notebooks still read `results/`
 - policy leakage, because one profile changes sample filtering
-- invisible complexity, because discovery logic lives in helper code reviewers cannot
-  explain quickly
+- invisible complexity, because report or discovery logic lives in helper code reviewers
+  cannot explain quickly
 
 Which risk to address first:
 
@@ -50,6 +51,16 @@ Evidence route to inspect first:
 
 - the file API and publish verification route, such as `make verify-report`
 
+One awkward behavior to describe honestly:
+
+- downstream consumers rely on an internal `results/` path that was never declared as a
+  public contract
+
+Why the first review note is not yet a migration plan:
+
+- it names what is already trusted and where the repository is lying, but it does not yet
+  decide what should move first or what proof must survive the move
+
 The main lesson is to review the current trust boundary before touching implementation.
 
 Weak answers start by describing the desired future state and never make current truth
@@ -59,16 +70,25 @@ explicit enough to defend or preserve.
 
 A safer order would be:
 
-1. change report generation ownership first, while keeping the same published outputs
-2. compare proof routes and outputs to make sure the migration is behavior-preserving
-3. review and then change sample discovery with explicit dry-run comparison
-4. leave platform submission until the workflow contract and proof route are stable
+1. repair publish contract drift while keeping the same published outputs
+2. compare proof routes and consumer expectations to make sure the repair is
+   behavior-preserving
+3. move semantic settings out of profiles and verify that context comparison still tells
+   the truth
+4. move report implementation ownership only after those truth repairs stay stable
+5. leave platform submission or service handoff until the workflow contract and proof
+   route are stable
+
+Which boundary moves first:
+
+- the publish contract boundary
 
 What proof must survive:
 
 - publish verification
-- dry-run meaning
-- any comparison route between old and new output surfaces
+- consumer comparison against the publish bundle
+- dry-run and profile comparison once semantic settings move
+- any before-and-after comparison route between old and new owners
 
 Which change should wait:
 
@@ -79,40 +99,54 @@ Why:
 - it changes the ownership boundary most broadly and should not be mixed with unresolved
   workflow-truth changes
 
-Weak sequences try to modernize everything at once and then lose the comparison route that
-would have made the migration trustworthy.
+Why doing all three together would damage the comparison route:
 
-The missing but important sentence is usually this one:
+- if contract repair, policy repair, and service handoff happen in one motion, the team
+  can no longer tell which boundary broke trust or which proof route stopped holding
 
-> If I move all three boundaries together, I lose the ability to tell which change broke
-> trust or which proof route stopped holding.
+Weak sequences try to modernize everything at once and then lose the comparison route
+that would have made the migration trustworthy.
 
-## Exercise 3: Write governance rules
+## Exercise 3: Write governance rules the team can keep using
 
 A strong set of rules could be:
 
 1. every new published file must update the file API and verification route
 2. profiles may change operating policy but not workflow meaning
-3. helper boundaries must stay reviewable, with ownership and proof surfaces kept visible
+3. migrations must preserve a reviewable comparison route until the new boundary earns trust
 
-Why these work:
+Repository surfaces protected:
 
-- they are short enough to enforce
-- they each protect a recurring source of drift
+- publish contract and file API
+- profile boundary
+- migration and ownership boundary
+
+Example changes each rule would reject:
+
+- adding `publish/v1/summary.tsv` without file-API coverage
+- moving a sample-selection threshold into `profiles/slurm/config.yaml`
+- deleting the old verification path before the new owner has a trustworthy comparison
+  route
+
+Why the wording is short enough to survive real review:
+
+- each rule protects one recurring failure pattern and can be checked in a bounded way
+
+How a maintainer would know the rule was violated:
+
+- a missing file-API entry, a semantic key inside a profile, or a migration plan without a
+  surviving proof route is visible in one review surface instead of hidden inside a policy essay
 
 Weak rules read like essays, mention five boundaries at once, and cannot be mapped to one
 clear review decision.
 
-The strongest answers also say why the rules are short enough to survive real review:
-each one protects one recurring failure pattern and can be checked in a bounded way.
-
-## Exercise 4: Name the anti-pattern
+## Exercise 4: Name the anti-pattern family
 
 Anti-pattern families:
 
 - removing benchmark files: evidence suppression
 - adding a new published TSV without verification updates: contract drift
-- moving analytical thresholds into `profiles/slurm/config.yaml`: policy leaks
+- moving analytical thresholds into `profiles/slurm/config.yaml`: policy leakage
 
 Most dangerous change:
 
@@ -128,17 +162,42 @@ Recovery step to require first:
 - move the semantic setting back into visible workflow or config boundaries, then audit the
   profile again
 
-Weak answers call every problem "technical debt" and therefore hide which proof route must
-be restored first.
+Proof route to consult first:
+
+- profile audit plus dry-run comparison across contexts
+
+Why calling everything "technical debt" is too weak:
+
+- it hides which trust boundary was damaged and therefore hides which proof route must be
+  restored before any approval is honest
+
+Weak answers flatten distinct failures into one generic complaint and therefore lose the
+right repair order.
 
 ## Exercise 5: Decide the tool boundary
 
 A strong recommendation would say:
 
-- Snakemake should keep owning reproducible workflow orchestration and trusted publish bundles
-- another system should own user-triggered requests, access control, and tenancy-aware scheduling
-- the split should be made reviewable through explicit submission metadata, profile review,
+- Snakemake should keep owning sample discovery, declared targets, reproducible file
+  execution, and the trusted publish bundle
+- another system should own user-triggered requests, access control, tenancy-aware
+  scheduling, and service-facing status behavior
+- the split should be made reviewable through explicit request metadata, ownership notes,
   and published output verification
+
+Handoff artifact or schema:
+
+- one request schema carrying requester identity, workflow revision, semantic config,
+  requested targets, and idempotency key
+
+One ownership line to refuse to blur:
+
+- the external service must not silently redefine scientific targets or publish semantics
+
+How workflow truth stays independently verifiable after the handoff:
+
+- the publish bundle, manifest, and verification route can still be checked from the
+  repository artifacts even if the service UI is unavailable
 
 Why this is strong:
 
@@ -152,18 +211,10 @@ platform behavior begins.
 ## Exercise 6: Build a current-truth inventory
 
 A strong inventory separates declared contract from observed dependence. It links each
-target to owners, consumers, semantic config, execution policy, software, and proof.
-Undocumented reads from `results/` and semantic profile keys rank above cosmetic
-structure. Preserve current public schema, representative semantics, and consumer routes
-before changing implementation, even when the current shape is inconvenient.
+target to owners, consumers, semantic config, execution policy, software boundaries, and
+proof routes.
 
-What a strong answer makes visible:
-
-- what is already trusted
-- what is only convenient internally
-- what mismatch creates the largest migration risk
-
-Example inventory headings:
+Typical headings:
 
 - declared targets and normal completion surface
 - actual downstream consumers and their paths
@@ -172,26 +223,60 @@ Example inventory headings:
 - publish contracts and file-API coverage
 - existing proof routes and missing proof routes
 
-Why this is strong:
+High-risk mismatches:
 
-- it gives migration work a factual starting point
-- it shows where documentation already disagrees with behavior
-- it orders the risks by trust damage instead of annoyance
+- notebooks consume `results/` while docs imply they consume `publish/`
+- semantic thresholds appear inside profiles instead of visible config
+- a published file exists with no file-API entry or verification coverage
 
-The key explanatory sentence is:
+Facts to preserve before migration:
 
-> The inventory is not a redesign wishlist; it is the evidence map that stops migration
-> from erasing behavior consumers already rely on.
+- public publish schema
+- representative semantics of trusted outputs
+- current consumer routes until a versioned replacement exists
+- one proof route that can compare old and new ownership honestly
+
+Why the inventory is evidence rather than busywork:
+
+- it is the map that stops migration from erasing relied-on behavior by accident
+
+What a strong answer makes visible:
+
+- what is already trusted
+- what is only convenient internally
+- what mismatch creates the largest migration risk
+
+If the inventory reads like a redesign wishlist, it is already too late in the process.
 
 ## Exercise 7: Write characterization checks
 
-Characterization checks encode relied-upon behavior without declaring every incidental
-byte permanent. Assert expected target membership, required schema, identifiers, units,
-ordering only when contractual, and representative calculations. A candidate that drops
-a required field fails. Temporary paths, log wording, and internal rule names remain free
-to change unless they are documented public promises.
+Characterization checks should encode relied-on behavior without declaring every
+incidental byte permanent.
 
-The main lesson is that characterization protects relied-upon behavior without freezing
+Strong checks would assert:
+
+- expected target membership
+- required schema fields and identifiers
+- units and representative semantics
+- ordering only when ordering is part of the documented contract
+
+A good failing candidate:
+
+- one candidate output drops a required field or changes the meaning of a published value
+
+What the checks intentionally do not freeze:
+
+- temporary paths
+- log wording
+- internal rule names
+- harmless ordering differences when ordering is not contractual
+
+Why byte-for-byte comparison may be too strong or too weak:
+
+- it is too strong when timestamps or harmless formatting change, and too weak when a file
+  can stay byte-stable while public meaning drifts somewhere else that consumers rely on
+
+The main lesson is that characterization protects relied-on behavior without freezing
 every accidental implementation detail.
 
 Weak answers either freeze every byte blindly or say "we should stay flexible" without
@@ -200,13 +285,6 @@ protecting the behavior consumers actually depend on.
 ## Exercise 8: Migrate one ownership boundary
 
 Move only one owner at a time and run both implementations against fixed fixtures.
-Byte equality is suitable for strictly deterministic contract files; schema plus semantic
-comparison is better when timestamps or harmless ordering differ. Keep current proof
-green, add focused evidence for the new owner, and revert if public meaning, failure
-visibility, or rebuild behavior cannot be explained.
-
-A strong answer also states when the old path can be retired and when rollback is still
-the honest option.
 
 Example answer shape:
 
@@ -217,8 +295,15 @@ Example answer shape:
 - comparison:
   - schema and representative semantic comparison for the public report, byte comparison
     only where determinism is contractual
+- proof before and after:
+  - current publish verification plus one focused comparison packet
 - rollback:
   - revert if public meaning, failure visibility, or consumer expectations no longer match
+
+Why unchanged public meaning matters more than nicer internal structure:
+
+- the migration is only honest if trust survives the move; cleaner internals do not justify
+  surprising consumers or deleting the proof route
 
 Why this is strong:
 
@@ -226,13 +311,28 @@ Why this is strong:
 - it chooses comparison strength by contract, not habit
 - it preserves a real escape route
 
-## Exercise 9: Enforce a governance rule
+Weak answers celebrate new structure before they say what would trigger rollback.
+
+## Exercise 9: Enforce one governance rule
 
 The automated check should express one durable boundary and report the exact violating
-file or key. For example, compare publish outputs with file-API entries and fail when one
-is absent. A failing fixture proves enforcement. The message should direct maintainers to
-document, verify, version, or remove the public artifact rather than merely saying policy
-failed.
+file, key, or contract.
+
+Strong example:
+
+- policy statement:
+  - every published file must have file-API coverage and a verification route
+- focused implementation:
+  - compare publish outputs against file-API declarations and fail when one is absent
+- passing and failing fixtures:
+  - one fixture with matching publish entries and one with an undocumented public file
+- failure message:
+  - tell the maintainer to document, verify, version, or remove the public artifact
+
+Why this belongs in governance rather than only in review culture:
+
+- the team keeps violating a durable repository promise, so the boundary must be taught
+  and enforced automatically instead of depending on reviewer memory
 
 The main lesson is that governance becomes durable only when it becomes reviewable and
 repairable.
@@ -240,30 +340,53 @@ repairable.
 Weak checks fail loudly but teach nothing. Strong checks tell the maintainer which
 boundary was crossed and what repair would restore trust.
 
-The strongest answers also say explicitly why the rule belongs in governance:
-
-> This is not only a reviewer preference; it is a durable repository promise that the team
-> keeps violating unless the boundary is taught and enforced automatically.
-
 ## Exercise 10: Design and review a tool handoff
 
-The external service authenticates and authorizes requests, creates an idempotent run
-identity, submits bounded workflow inputs, exposes status and cancellation, and never
-redefines scientific targets. Snakemake owns declared file execution and the verifiable
-publish bundle. The handoff records request identity, workflow revision, semantic config,
-operating context, and result manifest so failures and retries cannot create ambiguous
-ownership.
+The external service should:
 
-The main lesson is that a tool handoff is only trustworthy when responsibility and
-verification remain separable instead of being absorbed into one vague platform story.
+- authenticate and authorize requests
+- create an idempotent run identity
+- submit bounded workflow inputs
+- expose status and cancellation
+- return results without redefining scientific targets
 
-Example handoff properties:
+Snakemake should keep owning:
 
-- request schema carries semantic config, workflow revision, and requester identity
+- declared file execution
+- trusted publish artifacts
+- workflow-level provenance
+- the verification route for the publish bundle
+
+Strong request, status, and result properties:
+
+- request schema carries semantic config, workflow revision, requester identity, requested
+  targets, and idempotency key
 - status schema distinguishes queued, running, failed, cancelled, and published states
 - result schema returns the publish manifest, provenance, and verification route
 - cancellation policy states whether cancellation is best-effort, immediate, or only
   future-facing
+
+Ownership and failure table should make visible:
+
+- who owns request validation
+- who owns execution truth
+- who owns cancellation semantics
+- who owns result publication
+- which failures belong to the service versus the workflow
+
+Provenance strategy:
+
+- every run records workflow revision, semantic config, operating context, request
+  identity, and result manifest so retries and failures cannot create ambiguous ownership
+
+End-to-end proof:
+
+- the returned publish bundle can still be verified from repository artifacts even if the
+  external service disappears or its UI becomes unavailable
+
+What would make the handoff dishonest:
+
+- a design where the bundle is only trustworthy through the service and not on its own
 
 Why this is strong:
 
@@ -275,7 +398,7 @@ Weak answer pattern:
 - "the platform will handle it, so the workflow does not need to explain as much anymore"
 
 That sentence gives up exactly the independent verification boundary the module is trying
-to protect. If your answers still sound like that, keep revising.
+to protect.
 
 ## Self-check
 
@@ -285,5 +408,6 @@ If your answers consistently explain:
 - what proof must survive the next change
 - which governance rule blocks recurring drift
 - what ownership line makes the system easier to trust
+- which artifacts let another maintainer review your reasoning independently
 
 then you are using Module 10 correctly.
