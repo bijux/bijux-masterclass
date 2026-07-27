@@ -1,30 +1,5 @@
 # Capstone Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Capstone"]
-  page["Capstone Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when the Snakemake capstone routes start sounding interchangeable. The
 goal is to keep workflow meaning, operating policy, and publish trust separate.
 
@@ -38,3 +13,12 @@ goal is to keep workflow meaning, operating policy, and publish trust separate.
 | publish boundary | the downstream-facing output surface another person is allowed to trust |
 | saved evidence bundle | an exported artifact set that lets a reviewer inspect the workflow later |
 | stewardship review | the stronger route used when a maintainer must judge the whole repository, not only one run |
+
+## Use this page well
+
+This glossary is most useful when:
+
+- two proof routes sound similar but answer different questions
+- policy language starts getting confused with workflow meaning
+- publish review language starts drifting into general execution language
+- you need to restate a capstone term in plainer words before continuing

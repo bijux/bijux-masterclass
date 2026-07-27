@@ -1,32 +1,18 @@
 # Capstone File Guide
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Capstone"]
-  page["Capstone File Guide"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when you know the repository is the right surface but do not yet know which
-file owns the answer. The goal is to shorten the path from question to owning file.
+file owns the answer. The goal is to shorten the path from question to owning file so
+that repository reading becomes deliberate instead of exploratory wandering.
+
+## File-reading route
+
+```mermaid
+flowchart TD
+  question["Name one repository question"] --> first["Open one owning file"]
+  first --> second["Open one supporting file only if needed"]
+  second --> note["Write the boundary in plain language"]
+  note --> stop["Stop before the repository becomes larger than the question"]
+```
 
 ## Start with the file that owns the question
 
@@ -41,6 +27,12 @@ file owns the answer. The goal is to shorten the path from question to owning fi
 | what reader-facing proof routes exist | `capstone/Makefile` | [Command Guide](command-guide.md) |
 | where helper logic lives outside the rule files | `capstone/workflow/scripts/provenance.py` or `capstone/src/capstone/` | `capstone/environment.yaml` or `capstone/workflow/envs/` |
 | how the repository is defended | `capstone/tests/` | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+
+## Read the table well
+
+- The first file should answer the ownership question.
+- The second file should clarify the contract, not widen the whole repository.
+- If two files still do not settle the question, switch to [Capstone Review Worksheet](capstone-review-worksheet.md) or [Capstone Architecture Guide](capstone-architecture-guide.md) instead of opening directories at random.
 
 ## Directory responsibilities
 
@@ -85,8 +77,6 @@ Avoid these:
 If you are still navigating by directory names alone, the repository has not become
 legible yet.
 
----
-
 ## Architecture review route
 
 Use this section when the question is not only "which file owns this?" but "does the
@@ -96,7 +86,7 @@ right places?"
 Recommended route:
 
 1. Read [Capstone Guide](index.md).
-2. Compare this page with [Architecture Guide](../capstone/docs/architecture.md).
+2. Compare this page with [Capstone Architecture Guide](capstone-architecture-guide.md).
 3. Inspect the matching capstone files in the order named above.
 4. Use [Proof Matrix](../guides/proof-matrix.md) to pick the strongest command for the boundary you are reviewing.
 

@@ -1,33 +1,20 @@
 # Capstone Architecture Guide
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Capstone"]
-  page["Capstone Architecture Guide"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when the question is about workflow ownership rather than about a single
 run command. The Snakemake capstone stays reviewable only if workflow meaning, discovery
 evidence, operating policy, publish trust, and implementation code remain separate.
+
+## Architecture reading route
+
+```mermaid
+flowchart TD
+  question["Name the ownership question"] --> contract["Check the workflow contract"]
+  contract --> layer["Inspect the owning layer"]
+  layer --> drift{"Policy, publish, or code drift?"}
+  drift -- no --> stop["Stop with one architecture judgment"]
+  drift -- yes --> compare["Compare the neighboring boundary"]
+  compare --> stop
+```
 
 ## Boundary map
 
@@ -47,6 +34,15 @@ evidence, operating policy, publish trust, and implementation code remain separa
 3. Read published discovery evidence before making claims about dynamic behavior.
 4. Read profiles only when the question is about operating context or policy drift.
 
+## What a strong architecture judgment sounds like
+
+A strong architecture judgment usually sounds like one of these:
+
+- this behavior belongs in a rule file because it changes workflow meaning
+- this behavior belongs in profile policy because it changes execution context only
+- this behavior belongs in helper code because the rule contract stays visible without it
+- this behavior does not belong in the publish surface because downstream trust would become blurry
+
 ## What this guide should prevent
 
 - confusing executor policy with workflow semantics
@@ -62,3 +58,8 @@ Use this route when the question is specifically about local, CI, and scheduler 
 2. Name which differences are operating policy and which would count as semantic drift.
 3. Cross-check `capstone/Snakefile` and `capstone/workflow/contracts/FILE_API.md` before
    concluding that workflow meaning changed.
+
+## Good stopping point
+
+Stop when you can name the owning layer, the neighboring boundary it must not swallow,
+and one concrete reason that split keeps the repository reviewable.

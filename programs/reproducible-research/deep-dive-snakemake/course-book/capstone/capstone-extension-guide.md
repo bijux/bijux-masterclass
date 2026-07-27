@@ -1,76 +1,51 @@
 # Capstone Extension Guide
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Capstone"]
-  page["Capstone Extension Guide"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
 Use this guide when changing the Snakemake capstone after the course is already in use.
-
 The goal is not to forbid growth. The goal is to keep new work from weakening the rule
 contracts, policy boundaries, publish surface, and review evidence the course depends on.
 
----
+## Extension route
 
-## Boundaries That Must Stay Legible
+```mermaid
+flowchart TD
+  change["Name the intended change"] --> owner["Choose the owning boundary"]
+  owner --> risk["Classify the risk"]
+  risk --> proof["Run the minimum proof set"]
+  proof --> decision["Keep, revise, or reject the change"]
+```
+
+## Boundaries that must stay legible
 
 These boundaries should remain explicit:
 
-* rule contracts versus helper implementation code
-* dynamic discovery versus hidden side effects
-* operating policy versus workflow meaning
-* internal execution state versus `publish/v1/`
+- rule contracts versus helper implementation code
+- dynamic discovery versus hidden side effects
+- operating policy versus workflow meaning
+- internal execution state versus `publish/v1/`
 
----
-
-## Safe Kinds Of Change
+## Usually safe kinds of change
 
 These changes are usually safe when reviewed carefully:
 
-* adding a new internal rule with explicit inputs, outputs, and logs
-* enriching the publish bundle without breaking existing promoted files
-* extending profiles while keeping their meaning operational rather than semantic
-* strengthening walkthrough, tour, or verification evidence
+- adding a new internal rule with explicit inputs, outputs, and logs
+- enriching the publish bundle without breaking existing promoted files
+- extending profiles while keeping their meaning operational rather than semantic
+- strengthening walkthrough, tour, or verification evidence
 
----
-
-## Risky Kinds Of Change
+## Changes that need stronger review
 
 These changes need stronger review:
 
-* changing the meaning of an existing published artifact
-* adding a checkpoint that hides moving targets instead of recording them
-* moving analytical meaning into profile or executor-specific settings
-* adding repository structure that buries the visible rule graph under indirection
+- changing the meaning of an existing published artifact
+- adding a checkpoint that hides moving targets instead of recording them
+- moving analytical meaning into profile or executor-specific settings
+- adding repository structure that buries the visible rule graph under indirection
 
-The best companion for this page is [Capstone File Guide](capstone-file-guide.md). Use it when you want
-the capstone reading order to answer where the next change belongs.
+Use [Capstone File Guide](capstone-file-guide.md) when the main question is where a
+change belongs. Use [Capstone Review Worksheet](capstone-review-worksheet.md) when the
+question is whether the current repository can still defend the change honestly.
 
----
-
-## Minimum Proof After A Change
+## Minimum proof after a change
 
 After any meaningful capstone change, rerun:
 
@@ -82,13 +57,18 @@ After any meaningful capstone change, rerun:
 If any of those results become harder to explain, the repository likely got worse even if
 it still runs.
 
----
+## Good extension questions
 
-## Best Companion Pages
+Ask these before accepting the change:
 
-Use these pages with this guide:
+- which boundary now owns the new behavior
+- which existing proof route would fail if the change were dishonest
+- whether the publish surface became wider, blurrier, or semantically different
+- whether another maintainer could review the change without oral history
 
-* [`architecture.md`](../capstone/docs/architecture.md)
-* [`capstone-file-guide.md`](capstone-file-guide.md)
-* [`capstone-review-worksheet.md`](capstone-review-worksheet.md)
-* [`proof-matrix.md`](../guides/proof-matrix.md)
+## Best companion pages
+
+- [Capstone Architecture Guide](capstone-architecture-guide.md)
+- [Capstone File Guide](capstone-file-guide.md)
+- [Capstone Review Worksheet](capstone-review-worksheet.md)
+- [Proof Matrix](../guides/proof-matrix.md)
