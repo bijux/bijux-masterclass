@@ -1,6 +1,5 @@
 # Transactional Boundaries and Outbox Thinking
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,57 +24,156 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Keep persistence and event publication coherent when saved objects must also trigger
-downstream messages or integrations.
+Persistence gets dangerous when the system saves state and emits outward effects under
+different ideas of "done."
 
-## 1. Save and Publish Is a Boundary Pair
+For example:
 
-If you save an aggregate and then publish a message in a separate step, failures create
-drift:
+- the aggregate save succeeds
+- the event publication fails
 
-- data saved, message lost
-- message published, data not saved
+or:
 
-That is not just infrastructure trouble. It changes system meaning.
+- the event is published
+- the aggregate save never becomes durable
 
-## 2. The Outbox Idea
+In both cases, the system told two different stories about reality. This lesson exists
+to teach how to keep those stories aligned.
 
-An outbox persists domain changes and publishable messages inside the same commit
-boundary, then ships the messages later.
+## A transactional boundary is a truth boundary
 
-You do not need a full distributed architecture to learn from this pattern. The core
-point is simpler: publication intent should be stored with persistence intent.
+Students often hear "transaction" and think only of databases. The more useful teaching
+idea is:
 
-## 3. Keep Domain Events Distinct from Integration Messages
+a transactional boundary says what changes become authoritative together.
 
-Domain events describe what happened inside the model.
-Integration messages describe what another boundary needs to know.
+That can include:
 
-Sometimes they align closely. Sometimes they do not. Avoid assuming they are identical.
+- aggregate state
+- version tokens
+- queued domain events
+- outbox records for later publication
 
-## 4. Start Small in Python Services
+The key question is not whether a specific SQL transaction exists. The key question is
+which effects count as committed together and which must wait.
 
-Even in a small service, you can model:
+## Why direct publish-after-mutate is risky
 
-- pending publications on the unit of work
-- durable storage of those publications
-- a publisher that drains them after commit
+A weak design often does this:
 
-This is enough to teach consistency without hiding it behind framework machinery.
+1. mutate the aggregate
+2. publish a message immediately
+3. save the aggregate
 
-## Practical Guidelines
+That order is dangerous because the published fact may escape before the authoritative
+state is durable.
 
-- Treat save-plus-publish as one design problem.
-- Persist publication intent with state changes when downstream delivery matters.
-- Distinguish internal domain events from external integration messages.
-- Keep publication draining and retry policy outside the domain model.
+If the save then fails, the outside world learned something the system itself cannot yet
+stand behind.
 
-## Exercises for Mastery
+This is not a small race condition. It is a truth mismatch.
 
-1. Sketch an outbox record for one domain event in your system.
-2. Identify one case where a domain event should map to a different external message.
-3. Add a test for “saved but not yet published” behavior in a unit-of-work style flow.
+## What outbox thinking protects
+
+Outbox thinking is a way to keep outward publication tied to durable persistence.
+
+The simplified idea is:
+
+1. save authoritative state
+2. save the outgoing message record as part of the same durable boundary
+3. publish from that recorded outbox afterward
+
+This reduces the chance that:
+
+- a fact is published without durable state
+- durable state exists with no traceable publication intent
+
+It does not remove every delivery problem, but it makes the persistence story much more
+honest.
+
+## The outbox is not the business fact
+
+One subtle teaching point matters here:
+
+- the domain event or business fact belongs to the domain story
+- the outbox record belongs to the persistence and delivery coordination story
+
+Do not confuse the two.
+
+The outbox is a delivery mechanism that helps keep truth aligned. It is not the domain
+itself.
+
+## Boundary ownership still matters
+
+Transactional coordination usually belongs with:
+
+- the unit of work
+- the persistence boundary
+- or the application workflow that owns the commit path
+
+It should not be improvised inside arbitrary entities or deep helpers.
+
+The more scattered this coordination becomes, the harder it is to answer:
+
+- what was definitely persisted?
+- what was definitely scheduled for outward delivery?
+- what still needs retry or repair?
+
+## Failure after durability is still a real problem
+
+Even with outbox thinking, publication can still fail later.
+
+The difference is that after the durable boundary completes, the system can now say
+something clearer:
+
+- the authoritative state exists
+- the intent to publish was preserved
+- delivery now needs retry or repair, not truth reconstruction
+
+That is a much safer failure story than losing track of whether the fact was ever
+durable at all.
+
+## Common mistakes
+
+- publishing directly from aggregate or service code before durability is established
+- treating "database committed" and "external world notified" as automatically the same moment
+- scattering outbox handling so ownership becomes unclear
+- assuming outbox thinking removes the need for retry or repair policy
+- confusing transport coordination records with domain facts themselves
+
+These mistakes all weaken the boundary between authoritative truth and escaped effects.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is there a clear answer to what becomes durable together? | yes |
+| are outward effects prevented from escaping before durable state exists? | yes |
+| is publication intent preserved if later delivery fails? | yes |
+| is delivery coordination owned by the right persistence or workflow boundary? | yes |
+
+## Capstone connection
+
+Use the capstone's unit-of-work and publication path to ask:
+
+- when does the rule change become authoritative?
+- when would a notification or downstream publication be allowed to leave?
+- if delivery failed after save, what evidence would remain for retry?
+
+Those questions turn outbox thinking into a concrete review route rather than a slogan.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why durable state and outward publication must not drift apart silently
+- describe what outbox thinking preserves even when later delivery fails
+- identify one capstone path where publication should wait until the persistence boundary completes
