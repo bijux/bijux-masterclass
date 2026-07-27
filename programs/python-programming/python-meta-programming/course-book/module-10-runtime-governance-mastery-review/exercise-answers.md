@@ -33,6 +33,12 @@ Treat these answers as reasoning checkpoints, not as one-line solutions. The str
 answers always show where the claim stops, what lower-power owner was considered first, and
 what observation or reset surface keeps the design governable.
 
+Use this page actively:
+
+- compare your named boundary against the reference answer
+- compare your lower-power alternative against the reference answer
+- check whether your answer names one observation, reset, or refusal surface explicitly
+
 ## How to review your own answers against this page
 
 For each exercise, check whether your answer includes:
@@ -62,6 +68,14 @@ Reasoning checkpoint:
 
 - if your answer does not name the false safety claim directly, the rejection is still too soft
 
+Weak answer to reject:
+
+- "we can probably lock the globals down enough"
+
+Why it fails:
+
+probably and enough both avoid the real in-process trust boundary.
+
 ## Answer 2: Compare one ABC and one protocol honestly
 
 Example answer:
@@ -79,6 +93,14 @@ Reasoning checkpoint:
 
 - your answer should still name one behavioral guarantee that lives outside the interface declaration
 
+Weak answer to reject:
+
+- "the protocol makes the resource contract clear"
+
+Why it fails:
+
+resource safety and cleanup behavior are larger than structural shape.
+
 ## Answer 3: Add a reversal path to one dynamic mechanism
 
 Example answer:
@@ -94,6 +116,14 @@ Reversibility is part of the mechanism's design, not an optional improvement for
 Reasoning checkpoint:
 
 - the best answers also say why the patch or registry blast radius is now acceptable
+
+Weak answer to reject:
+
+- "we added cleanup, so it is fine now"
+
+Why it fails:
+
+cleanup alone does not name the observation surface or the remaining blast radius.
 
 ## Answer 4: Review one import hook or AST transform proposal
 
@@ -112,6 +142,14 @@ Reasoning checkpoint:
 
 - a strong answer also explains what "no-hook mode" means and why the system should remain understandable there
 
+Weak answer to reject:
+
+- "the hook is okay because tooling can remove it later"
+
+Why it fails:
+
+later is not a present explanation of no-hook behavior or cleanup.
+
 ## Answer 5: Defend or reject one escalation
 
 Example answer:
@@ -129,6 +167,14 @@ Reasoning checkpoint:
 
 - if your answer cannot be restated as a real approval or rejection note, the decision is still too vague
 
+Weak answer to reject:
+
+- "this feels like the right level of power"
+
+Why it fails:
+
+feels right is taste, not ownership or evidence.
+
 ## Answer 6: Review the capstone runtime as Module 10 evidence
 
 Example answer:
@@ -145,6 +191,14 @@ power it does not need.
 Reasoning checkpoint:
 
 - your answer should also explain why observational commands deserve to come before invocation surfaces
+
+Weak answer to reject:
+
+- "the capstone is trustworthy because the CLI exists"
+
+Why it fails:
+
+the CLI matters only when observational commands stay side-effect free and reset surfaces remain public.
 
 ## Answer 7: Design one audit trail for a dynamic mechanism
 
@@ -166,6 +220,14 @@ Reasoning checkpoint:
 
 - the audit surface should stay separate from business behavior instead of silently triggering it
 
+Weak answer to reject:
+
+- "the logs will tell us enough"
+
+Why it fails:
+
+enough does not name the exact incident question the audit trail must answer.
+
 ## Answer 8: Write one explicit rejection rule
 
 Example answer:
@@ -186,6 +248,14 @@ general dislike of powerful mechanisms.
 Reasoning checkpoint:
 
 - strong answers also name the smaller design that should replace the rejected one
+
+Weak answer to reject:
+
+- "we should reject this unless there is more evidence"
+
+Why it fails:
+
+more evidence is incomplete unless the next-lower owner is also named.
 
 ## Answer 9: Compare honest runtime claims with overstated claims
 
@@ -209,6 +279,14 @@ Reasoning checkpoint:
 
 - the honest version should be specific enough that another engineer could review scope without guessing
 
+Weak answer to reject:
+
+- "the runtime mostly keeps things under control"
+
+Why it fails:
+
+mostly and under control overclaim broad lifecycle and safety guarantees.
+
 ## Answer 10: Produce a runtime-governance packet
 
 The packet is strong when another learner can answer:
@@ -221,6 +299,10 @@ The packet is strong when another learner can answer:
 Repair move if your packet is weak:
 
 - rewrite each item so it begins with the boundary, lower-power comparison, or review surface instead of with the mechanism name
+
+Extra packet test:
+
+- could a missed-class learner explain where the claim stops without hearing your verbal caveats?
 
 ## What strong Module 10 answers have in common
 
@@ -236,6 +318,15 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds impressed by the mechanism itself, revise it until the judgment
 sounds operational instead.
+
+## Cross-answer habits to inspect
+
+| Habit to inspect | Strong answer behavior |
+| --- | --- |
+| naming the boundary | always states where the claim stops before praising the mechanism |
+| naming the smaller owner | always identifies the lower-power alternative considered first |
+| naming control surfaces | always points to one reset, disable, observation, or audit path |
+| naming the overclaim | always rejects one sentence that would mislead a reviewer |
 
 ## Exit check for the answer key
 
