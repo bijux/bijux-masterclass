@@ -200,77 +200,183 @@ Why this is often stronger:
 A defensible keep-together answer exists only if the model has no independent reuse or
 review value and the combined command truly owns one inseparable result boundary.
 
-## Answer 6: Build a three-stage pipeline
+## Answer 6: Predict the stage-contract audit
 
-A strong pipeline exposes one meaningful artifact boundary per stage and reaches "data and
-pipelines are up to date" on the second run.
+A complete prediction table is:
 
-Why the second run matters:
+| Finding | Result | Decision | Reason |
+| --- | --- | --- | --- |
+| `BASELINE_CONVERGES` | `PASS` | `ACCEPT` | all stages build, then skip on the settled run |
+| `DECLARED_INPUT_CHANGE_IS_STALE` | `PASS` | `ACCEPT` | the changed policy path is in `deps` |
+| `DECLARED_INPUT_REBUILDS_CURRENT_VALUE` | `PASS` | `ACCEPT` | the rebuilt output moves from `10` to `20` |
+| `HIDDEN_INPUT_CHANGE_IS_INVISIBLE` | `PASS` | `REJECT` | the command reads the path but the stage omits it |
+| `DECLARED_PARAM_CHANGE_IS_STALE` | `PASS` | `ACCEPT` | `settings.multiplier` is listed under `params` |
+| `DECLARED_PARAM_REBUILDS_CURRENT_VALUE` | `PASS` | `ACCEPT` | the output moves from multiplier `2` to `3` |
+| `HIDDEN_PARAM_CHANGE_IS_INVISIBLE` | `PASS` | `REJECT` | the key exists in the file but not in the stage contract |
+| `UNDECLARED_OUTPUT_LOSS_IS_INVISIBLE` | `PASS` | `REJECT` | the deleted receipt is outside `outs` |
 
-- it shows the graph is not hiding undeclared change or unnecessary churn
-- it demonstrates that the stage contracts converge when no declared influence changed
+`PASS / REJECT` means the checker successfully reproduced the defect. Calling those rows
+acceptable because they pass would reverse the purpose of the audit.
 
-The explanation should follow edges from raw data through model output to evaluation
-rather than relying on declaration order alone.
+Why convergence cannot settle contract truth:
 
-## Answer 7: Omit one dependency on purpose
+- DVC sees no declared change between baseline runs;
+- hidden influences also do not change between those runs;
+- undeclared products exist because the command just wrote them;
+- therefore every stage can settle even when the graph is incomplete.
 
-The stage can now appear current while being stale because DVC cannot react to an edge
-that was never declared. A successful command after a forced run would not repair the
-contract defect; it would only hide it temporarily.
+Convergence proves stability under unchanged declared state. It does not prove declaration
+completeness.
 
-The real repair is:
+## Answer 7: Prove file under-rebuild
 
-- declare the omitted dependency honestly
-- rerun the affected stage
-- confirm the recorded state and output evidence changed accordingly
+A strong six-sentence proof is:
 
-The main lesson is that hidden reads are provenance failures, not just incomplete YAML.
+> The audit changes `policy/threshold.txt` from `10` to `20`.
+> `input-change-status.stdout.txt` marks `declared_input` stale and does not name
+> `hidden_input`. Reproducing the declared stage writes `threshold=20`. The hidden output
+> remains at `threshold=10`. The decisive contract difference is that only
+> `declared_input` lists the policy path in `deps`. The hidden artifact is semantically
+> stale because its stored threshold disagrees with the current policy while DVC reports
+> no declared reason to rebuild it.
 
-## Answer 8: Trace one parameter through the lockfile
+The durable repair is:
 
-The lock diff should show:
+```yaml
+hidden_input:
+  deps:
+    - data/source.txt
+    - policy/threshold.txt
+    - scripts/render.py
+```
 
-- the changed parameter value
-- the stage invalidated by that parameter
-- new hashes or identities for outputs that legitimately changed
-- stability for unrelated stages
+After the repair, repeat the original mutation. Expected evidence:
 
-If too much reruns, the stage boundary may be too coarse or a dependency may be declared
-more broadly than the semantic change requires.
+```json
+{
+  "hidden_input": [
+    {
+      "changed deps": {
+        "policy/threshold.txt": "modified"
+      }
+    }
+  ]
+}
+```
 
-## Answer 9: Repair shared-output ownership
+The rebuilt hidden output must contain `threshold=20`.
 
-Two independent writers to one output directory make cleanup, freshness, and ownership
-ambiguous.
+Why force is insufficient: it refreshes one artifact without changing what DVC can detect
+next time. Why deletion is insufficient: missing declared output triggers execution for a
+different reason.
 
-Prefer one of these repairs:
+## Answer 8: Prove parameter under-rebuild
 
-- give each producer its own exclusive output directory
-- let each stage publish an intermediate artifact and create one aggregation stage with
-  sole ownership of the final shared directory
+The declared case records:
 
-Why this matters:
+```text
+before: multiplier=2 score=16
+after:  multiplier=3 score=24
+```
 
-- DVC can reason more cleanly about what is stale, what should rerun, and what cleanup is
-  safe when ownership is exclusive
+The hidden case remains:
 
-## Answer 10: Review a pipeline as a contract
+```text
+multiplier=2 score=16
+```
 
-A strong review walks backward from trusted outputs and asks, for each stage:
+The score matters because it proves the obsolete control affected result meaning. A
+timestamp or unchanged hash could show stability without explaining semantic impact.
 
-- what product this stage owns
-- what real inputs and controls influence that product
-- whether the declaration matches observed command behavior
-- what stale or partial residue could remain after failure
-- what recorded evidence supports the contract
+Answers to the review questions:
 
-A good closing paragraph names both strengths and fragilities. For example:
+1. `params.yaml` is a storage surface. A stage depends only on parameter keys declared
+   under its own `params` contract.
+2. `score=16` was computed from the old multiplier, while the current control implies
+   `24`; the mismatch is direct stale-result evidence.
+3. Input-only and sidecar stages should remain stable because they do not declare or use
+   `settings.multiplier`.
+4. Treating the whole parameter file as a broad file dependency can rerun stages for
+   unrelated key changes and hides which control influenced which result.
 
-> The pipeline is strongest where each stage owns one clear artifact boundary and every
-> control is declared explicitly. It remains fragile where implementation reads are not
-> reviewed against `deps`, where multiple outputs hide mixed ownership, or where rerun
-> expectations depend on human memory rather than on the graph.
+The repair is:
+
+```yaml
+params:
+  - settings.multiplier
+```
+
+The repaired proof needs both a status entry and an output containing
+`multiplier=3` and `score=24`. Status alone shows detection; the output shows adoption.
+
+## Answer 9: Decide whether the receipt is output or scratch
+
+### Governed receipt
+
+If the receipt is required for promotion review, the truthful declaration is:
+
+```yaml
+outs:
+  - results/declared-main.txt
+  - results/undeclared-receipt.txt
+```
+
+After a baseline run, deleting the receipt should make `undeclared_sidecar` stale.
+Reproduction should restore `records=2`.
+
+### Disposable scratch
+
+If the file is only diagnostic residue:
+
+- write it under a named scratch or operational-log boundary;
+- remove it at the end of successful execution or document retention;
+- keep every downstream stage from reading it;
+- exclude it from release and review claims.
+
+A completed decision table is:
+
+| Question | Governed receipt | Scratch |
+| --- | --- | --- |
+| absence changes trust | yes | no |
+| belongs in `outs` | yes | no |
+| consumer may depend on it | only through a declared edge | no |
+| restoration required | yes | no |
+
+The `.txt` extension says nothing about ownership. The consequence of absence decides.
+
+## Answer 10: Design an adversarial contract review
+
+Consider `test_declared_file_influence_must_be_a_dependency`.
+
+- It attacks the claim that the policy file is a declared influence.
+- The unmutated audit passes because changing the policy marks `declared_input` stale.
+- Removing the policy path makes `declared_stage_is_stale` false.
+- Baseline convergence cannot catch this defect because the policy does not change during
+  baseline.
+- The semantic-value check is also necessary because a stage could run yet ignore the
+  new policy.
+
+A suitable new mutation for the main capstone would target the publish stage:
+
+| Part | Proposed evidence |
+| --- | --- |
+| declaration mutation | remove `metrics/metrics.json` from publish `deps` |
+| retained behavior | `publish.py` still reads metrics |
+| applied mutation | change one governed metric in a disposable workspace |
+| planner receipt | capture `dvc status --json` |
+| semantic inspection | compare published metrics and manifest hash |
+| expected decision | reject if publish looks current with old promoted metrics |
+
+The test should not merely corrupt the metric until parsing crashes. It should preserve a
+valid changed metric so the only issue under review is the missing stage edge.
+
+A bounded conclusion:
+
+> The five-stage specimen proves that DVC 3.67.1 responds to declared file, parameter,
+> and output boundaries and remains blind to paired omitted boundaries. The mutation tests
+> prove the checker rejects weakened contrasts. This does not establish that the main
+> capstone or another repository has no hidden reads or writes; each command must be
+> reviewed against its own declarations and pressure-tested with meaningful mutations.
 
 ## Self-check
 
@@ -281,5 +387,7 @@ If your answers consistently explain:
 - how rerun prediction follows declared state
 - why stale outputs should be repaired before convenience cleanup
 - how graph shape affects provenance clarity
+- why planner evidence and semantic values answer different questions
+- how repeating the original mutation distinguishes a repair from a one-time refresh
 
 then you are using Module 04 correctly.
