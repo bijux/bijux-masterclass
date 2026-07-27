@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,227 +24,197 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to make persistence translation explicit instead of letting storage
-quietly become the model.
+Use these exercises as one full lab on meaning-preserving persistence. The goal is not
+to list storage patterns. The goal is to prove that a learner studying alone can follow
+one aggregate from domain state to stored shape, through schema change, and back into the
+model without letting the database quietly redefine what the object means.
 
-The day is not about listing database patterns. It is about proving that repositories,
-codecs, session state, snapshots, and migrations preserve domain meaning rather than
-flattening it.
+## Running lab scenario
 
-## How to work through this set
+Continue the `WorkshopEnrollment` scenario from Module 04.
 
-Treat the ten exercises as one full lab day on persistence boundaries and schema
-evolution.
+Persist:
 
-Before each answer:
+- workshop identifier
+- seat limit
+- confirmed attendee ids
+- waitlist order
+- version number for optimistic concurrency
+- optional event records for audit or rebuild
 
-1. name the domain concept under review
-2. name the storage representation or boundary around it
-3. state what must remain true when old data and new code meet
+The persistence challenge is:
 
-Do the exercises in order. The day is one progression:
+- the stored shape may need indexes or separate tables the domain does not care about
+- older records may exist from earlier schema versions
+- concurrent writes may race
+- projections or outbound publication may follow a successful write
 
-- Exercises 1-3 define repository contract, rehydration, and mapping discipline
-- Exercises 4-6 separate codecs, session concerns, and persistence strategies
-- Exercises 7-8 review schema evolution, conflict detection, and publication boundaries
-- Exercises 9-10 test migration and backend change without domain corruption
+If you choose your own scenario, keep the same pressure: one aggregate with real
+invariants, a stored representation, versioned history, and at least one change path that
+could race.
 
-Keep one translation packet as you go. By the end of the day it should contain:
+## What to keep open while you work
+
+Build one translation packet as you go. By the end it should contain:
 
 - one repository-contract note
 - one domain-to-storage mapping table
-- one codec boundary review
-- one compatibility and upcast plan
+- one codec-boundary review
+- one compatibility plan
 - one conflict and transaction note
-- one migration-safe persistence recommendation
+- one migration recommendation
 
-If those six artifacts are missing, you are probably still naming tools instead of
-governing meaning.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module06-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
-
-Keep one mapping table while you work:
+Useful tables:
 
 | Domain concept | Repository contract surface | Storage representation | What must never leak inward |
 | --- | --- | --- | --- |
 
-Keep one compatibility table:
-
-| Stored shape or event | Current reader expectation | Compatibility risk | Upgrade or fallback plan |
+| Stored shape or event | Current code expects | Risk if loaded naively | Upgrade or fallback plan |
 | --- | --- | --- | --- |
-
-```mermaid
-flowchart LR
-  meaning["name the domain meaning"]
-  contract["draw the repository contract"]
-  shape["define the storage shape"]
-  change["plan schema change before it lands"]
-  publish["review conflict and transaction semantics"]
-  migrate["migrate without bypassing constructors"]
-
-  meaning --> contract --> shape --> change --> publish --> migrate
-```
-
-Use that route on purpose. It keeps the day centered on meaning-preserving translation
-instead of storage convenience.
 
 ## Exercise 1: Define one repository contract
 
-Take one aggregate or domain object and explain:
+For `WorkshopEnrollment`, decide what the repository should promise.
 
-- what repository operations callers actually need
-- what the repository may translate internally
-- what the repository must never expose from storage shape
-- what confusion appears if the contract is too wide
+At minimum answer:
 
-Study note:
-Repository contracts should preserve domain language, not mirror a database API.
+- what callers need to load
+- what callers need to save
+- what callers must never know about tables, joins, rows, or transport details
 
-## Exercise 2: Rehydrate one aggregate honestly
+Write one small repository API that speaks domain language rather than storage language.
 
-Choose one persisted object and explain:
+## Exercise 2: Rehydrate the aggregate honestly
 
-- which constructor or rehydration path should recreate it
-- which invariants must still hold on load
-- what partial or malformed data must be rejected
-- what bug appears if repository code bypasses the real boundary
+Explain:
 
-Study note:
-Loading old state does not justify skipping domain discipline.
+- what constructor or rehydration path rebuilds `WorkshopEnrollment`
+- which invariants must still hold when loading old data
+- which malformed rows or payloads must be rejected instead of silently tolerated
+- what bug appears if repository code bypasses the real object boundary
 
-## Exercise 3: Separate domain fields from storage convenience
+This is where many designs quietly start trusting storage more than the model.
 
-Map one aggregate into storage and list:
+## Exercise 3: Separate domain meaning from storage convenience
 
-- which fields carry domain meaning
-- which fields exist only for indexing, joining, or operational convenience
-- which storage field should never become part of the domain API
-- how you would keep that distinction visible in code
+Map the aggregate into stored shape and mark:
 
-Study note:
-Storage convenience is not an invitation to widen the model.
+- which fields belong to domain meaning
+- which fields exist only for storage convenience, indexing, or query support
+- which stored values must not become public API assumptions
 
-## Exercise 4: Draw a real codec boundary
+End with one sentence explaining how you will keep that distinction visible in code.
 
-Take one serialized shape and explain:
+## Exercise 4: Draw one codec boundary
 
-- where encoding and decoding belong
-- what the codec may translate
-- what the domain object must stay ignorant of
-- what becomes fragile if JSON, ORM, or wire format details leak inward
+Choose one serialization path, such as:
 
-Study note:
-Codecs protect meaning by making translation deliberate.
+- aggregate to database row set
+- aggregate to JSON snapshot
+- event record to domain event object
+
+Then explain:
+
+- where the translation code lives
+- what the codec is allowed to know
+- what the domain object must remain ignorant of
+- what becomes brittle if the codec leaks inward
 
 ## Exercise 5: Review session and identity-map pressure
 
-Pick one persistence stack and explain:
+Assume the persistence stack may cache objects or lazily load related state.
 
-- what session state or identity caching might change for callers
-- what object identity guarantees remain acceptable
-- what lazy-loading surprise would weaken the domain contract
-- where the boundary should make that behavior explicit
+Explain:
 
-Study note:
-Convenience caches are dangerous when they silently redefine object behavior.
+- what identity guarantees callers may assume
+- what lazy-loading behavior would be misleading
+- where the boundary should make such behavior explicit
+- what test or review artifact would catch accidental contract drift
+
+This is the exercise that protects the object model from storage convenience.
 
 ## Exercise 6: Compare snapshot and event storage choices
 
-Choose one persistence strategy and explain:
+Decide whether the aggregate should store:
 
-- when snapshots are enough
-- when event history matters
-- what rebuild cost or audit requirement drives the choice
-- what compatibility problem appears if the strategy changes later
+- current-state snapshots only
+- event history plus rebuild
+- or a hybrid
 
-Study note:
-Storage strategy is a contract with future readers and migrations.
+Explain:
 
-## Midday self-check
-
-Before moving into schema change and migration pressure, make sure your packet already
-answers these questions clearly:
-
-- what one repository contract promises callers
-- which data is domain meaning and which is storage convenience
-- where one codec boundary stops
-- how one loaded object still preserves invariants
-
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the packet more explicit before continuing.
+- what audit or rebuild need justifies the choice
+- what compatibility burden the choice creates
+- what future migration problem it makes easier or harder
 
 ## Exercise 7: Plan one schema evolution path
 
-Take one persisted shape that must change and explain:
+Assume an older schema stored:
 
-- what changed in the model
-- which old representations must still load
-- whether an upcaster, migration, or fallback reader is appropriate
-- what evidence would show the compatibility plan is working
+- `confirmed_count`
+- `confirmed_attendees_csv`
 
-Study note:
-Schema evolution is where past readers meet present code.
+and the new schema stores:
+
+- normalized attendee entries
+- explicit waitlist order
+- version number
+
+Explain:
+
+- how old data remains readable
+- whether you would use migration, upcasting, fallback decoding, or a mix
+- what proof should fail first if compatibility breaks
 
 ## Exercise 8: Review conflict and transaction boundaries
 
-Choose one write path and explain:
+Take one race:
+
+- two administrators confirm two different waitlisted attendees at the same time
+
+Explain:
 
 - what counts as a conflicting write
-- where optimistic concurrency or another guard belongs
-- what should happen if persistence succeeds but publication does not
-- what promise the transaction boundary makes to callers
+- where optimistic concurrency belongs
+- what callers should be told after conflict
+- what coherent boundary promise exists if persistence succeeds but publication lags
 
-Study note:
-Persistence is not finished when bytes are written; it is finished when the whole
-boundary outcome is coherent.
+## Exercise 9: Migrate without domain corruption
 
-## Exercise 9: Migrate stored data without domain corruption
+Write one migration plan that explains:
 
-Take one migration and explain:
-
-- which old data shapes need repair
-- how the migration avoids inventing invalid domain objects
-- what tests or proof surface should fail first if the migration is wrong
+- how old records are identified
+- how invalid intermediate states are avoided
+- what tests or rehearsal data should prove the migration
 - what rollback or replay plan makes the change safer
 
-Study note:
-Migrations are object-model changes with history attached.
+The migration is weak if it requires bypassing domain constructors "just this once."
 
-## Exercise 10: Produce a persistence translation packet
+## Exercise 10: Produce the translation packet
 
-Assemble:
+Finish the lab by assembling:
 
-- one repository-contract note
+- one repository contract
 - one mapping table
-- one codec-boundary review
+- one codec review
 - one compatibility plan
-- one conflict and transaction paragraph
+- one conflict note
 - one migration recommendation
 
-The packet is strong when another maintainer can answer:
+The packet is done only when another maintainer can answer:
 
 - what the repository promises
 - what the storage shape is allowed to do
-- how old data stays readable
+- how old data remains readable
 - where conflicts are detected
-- how the system can change backends or schemas without flattening the model
 
-## Done means more than finishing the page
+## Done means the stored shape serves the model
 
-You are done with the exercise day when your packet can survive three kinds of review:
+You are done with the exercise day when your packet can survive these review questions:
 
-- a design review asking whether storage details leaked into the model
-- a compatibility review asking how old data survives new code
-- an incident review asking where conflict or publication boundaries should have failed
+- "What would break if the database shape changed tomorrow?"
+- "How do old records become valid domain objects again?"
+- "Where does write conflict become an explicit contract instead of a silent overwrite?"
 
-If the packet cannot survive those reviews, keep tightening the translation language.
+If those answers are still fuzzy, keep tightening the packet before you open the answer
+page.
