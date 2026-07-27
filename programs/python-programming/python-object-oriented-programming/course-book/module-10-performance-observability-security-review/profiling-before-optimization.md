@@ -24,154 +24,262 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+Read the first diagram as context: profiling belongs at the end of the course because
+it depends on everything you learned earlier about boundaries, object lifetimes, and
+semantic contracts. Read the second diagram as a discipline: start from a performance
+question, gather evidence, translate the evidence into a design diagnosis, and only then
+consider a change.
 
 ## Why this lesson matters
 
-Optimization discussions become much clearer once the team can point to a profile instead
-of an opinion.
+Teams often say they want to "make it faster" when what they really need is a better
+description of where time is going.
 
-Without profiling, people often argue from:
+Without profiling, performance work is usually driven by:
 
-- coding style
-- personal intuition
-- past experience with unrelated systems
-- fear that abstraction must be expensive
+- code that looks busy
+- a dislike of abstraction
+- memories from a different system
+- fear that object orientation must be inefficient
 
-Profiling matters because it converts those guesses into evidence about where time,
-allocations, or blocking are actually concentrated in this system on this workload.
+Those instincts can occasionally point in the right direction, but they are not strong
+enough for review.
 
-## A profile is useful only when tied to a real question
+Profiling matters because it answers a harder and more useful question:
 
-Before profiling, name the concern:
+- where is the system actually spending time under a real workload, and what architectural
+  explanation makes that cost understandable?
 
-- is latency too high?
-- is CPU time concentrated in one path?
-- is serialization dominating response time?
-- are retries or repeated loads inflating one workflow?
+The last clause matters. Profiling is not about collecting heatmaps for their own sake.
+It is about turning measurement into a design decision.
 
-Without a question, profile output turns into a wall of numbers that invites random
-tuning instead of design judgment.
+## Start with a named performance question
 
-## Read profiler output in architectural terms
+A useful profile begins with a question that a learner can state clearly.
 
-A profile is not most useful when it says:
+Good questions sound like this:
 
-- line 87 is hot
+- why does the incident review report feel slow for large filters?
+- is report generation CPU-bound or repository-bound?
+- is serialization dominating API response time?
+- are repeated permission-filtering passes inflating export latency?
 
-It is most useful when it helps answer:
+Weak questions sound like this:
 
-- is the pressure in domain logic, boundary I/O, or representation churn?
-- are we paying for repeated repository crossings?
-- is one projection or report path building too many transient shapes?
-- is one cache miss path dominating user-visible latency?
+- what is slow?
+- can we optimize this code?
+- what does the profiler say?
 
-This is the move from raw profiling data to design evidence.
+The difference is important. A named question tells you:
+
+- what workflow to run
+- which tool class is relevant
+- what "better" would mean
+- which parts of the output deserve attention
+
+Without that question, profiling becomes wandering through numbers until something looks
+suspicious enough to justify a change you already wanted to make.
+
+## Keep one workflow under inspection
+
+Just as with allocation analysis, profiling should stay attached to a user-visible path.
+
+For the capstone, one strong candidate is:
+
+- operator requests an incident review report
+- incidents are loaded and normalized
+- policy filtering is applied
+- rows are projected
+- the result is serialized for display or export
+
+That workflow gives you a stable frame for every later decision:
+
+- where the clock starts
+- where the clock ends
+- what repetitions matter
+- what behavior must remain correct
+
+If you profile helpers without this frame, you may collect precise data about a problem
+the user never feels.
+
+## Translate profile output into architecture
+
+Raw profiler output is not the end of the job.
+
+Suppose a report shows heavy time inside one formatting function. You still need to ask:
+
+- is formatting itself expensive?
+- or is formatting expensive because the system keeps rebuilding the same projection?
+- or is formatting merely where repeated boundary crossings become visible?
+
+This is the habit the course wants you to build:
+
+- never stop at "function X is hot"
+- continue until you can explain why the workflow keeps returning to that work
+
+Architecture-level interpretations are far more useful than line-level fascination.
 
 ## Different tools answer different questions
 
-No single profile tells the whole story.
+Profiling is not one tool. It is a family of evidence routes.
 
-You may need:
+Use this decision table:
 
-- CPU profiling for execution hotspots
-- allocation profiling for object churn
-- tracing or timing spans for cross-boundary workflow time
-- focused micro-measurement only after the wider workflow pressure is known
+| Question | Better evidence route | Typical diagnosis target |
+| --- | --- | --- |
+| where is CPU time concentrated? | CPU profiler | repeated computation, projection, formatting |
+| where is object churn concentrated? | allocation or memory profiler | transient object floods, repeated conversions |
+| where is end-to-end latency spent? | tracing, spans, timed workflow stages | repository trips, serialization boundaries, retries |
+| is one local implementation choice faster than another? | focused benchmark after broader diagnosis | narrow substitution inside a proven hotspot |
 
-The lesson is not to memorize tools. It is to match the profiling route to the
-performance question.
+The lesson is not "memorize all tools." The lesson is "match the tool to the question."
 
-## Optimize the boundary that actually hurts
+## Profile before you redesign
 
-Students often jump from one hot function to one micro-optimization.
+Object-oriented code often invites premature structural edits:
 
-But many real wins come from changing a wider boundary:
+- flatten the domain object
+- remove wrappers
+- inline policies
+- skip projections
+- merge layers
 
-- fewer repository round-trips
-- less repeated serialization
-- narrower projection work
-- clearer cache placement
+Those changes can make the code less understandable long before they make it faster.
 
-If the architecture is causing repeated cost, a clever local loop is often the wrong
-target.
+A profile protects you from that drift because it forces you to say:
 
-## Re-measure after each meaningful change
+- what is slow
+- where the time accumulates
+- how much that path matters
+- whether the proposed redesign targets the actual cause
 
-A performance claim is incomplete without:
+If the profile does not support the redesign, the redesign is still speculation.
 
-- before evidence
-- after evidence
-- the semantic contract that stayed intact
+## A worked capstone route
 
-This matters because some optimizations add complexity without real gain, while others
-seem small but materially change the workflow. Re-measurement is what distinguishes the
-two.
+Assume operators report that the incident review report is slow on large datasets.
 
-## A worked example
+Use this profiling route:
 
-Suppose the capstone shows slow operator-facing review output.
+1. Run the full report workflow under representative volume.
+2. Capture coarse stage timing:
+   - repository loading
+   - normalization
+   - policy filtering
+   - row projection
+   - serialization
+3. Identify the dominant stage.
+4. Use a more focused profiler inside that stage.
+5. Translate the hotspot into an architectural explanation.
+6. Propose one smallest credible redesign.
+7. Re-run the same workload and compare before and after.
 
-A useful profiling route could be:
+Here are three possible outcomes:
 
-1. run the full review workflow under representative data
-2. identify whether time is dominated by repository access, projection, serialization, or formatting
-3. if projection dominates, inspect where transient objects or repeated work accumulate
-4. change one boundary or one object-creation pattern
-5. re-run the same workflow to compare before and after
+| Profile result | Architectural interpretation | Better next move |
+| --- | --- | --- |
+| repository stage dominates | boundary I/O is the bottleneck | reduce round-trips or reshape retrieval |
+| row projection dominates | repeated in-memory transformation is the bottleneck | inspect duplicate projections or expensive derived fields |
+| serialization dominates | output boundary is the bottleneck | reduce repeated payload construction or redundant encoding |
 
-This is much stronger than arguing that "the reporting code looks inefficient."
+This table shows why "line 87 is hot" is not enough. You need a system explanation.
 
-## Preserve meaning while tuning
+## Preserve contracts while optimizing
 
-Just like measurement, profiling should keep one design question visible:
+Every proposed improvement should carry one explicit reminder:
 
-- what must not change while we make this faster?
+- what truth must stay unchanged?
 
-Examples:
+Examples in the capstone:
 
-- ordering must remain stable
-- freshness rules must remain honest
-- aggregate authority must stay where it belongs
-- error behavior must not become vague or hidden
+- incidents must remain ordered deterministically
+- permission-filtered fields must stay filtered
+- aggregate invariants must not be bypassed
+- freshness and staleness rules must remain visible
 
-If the optimization changes those truths, the result may be faster and still worse.
+This keeps you from accepting fake wins such as:
 
-## Common mistakes
+- caching stale views without stating freshness tradeoffs
+- moving policy checks later to reduce apparent cost
+- bypassing domain objects entirely just because projection is hot
 
-- profiling after deciding the answer in advance
-- reading line-level heat without translating it into architectural causes
-- using a microbenchmark to justify a workflow-wide conclusion
-- optimizing one local hotspot while the real cost sits at a boundary
-- failing to re-measure after adding complexity
+A fast system that silently changes meaning is not an optimization. It is a regression.
 
-## Review checklist
+## Re-measure every meaningful change
 
-| Question | Good sign |
+Once you change the design, rerun the same question under the same workload.
+
+Your evidence packet should include:
+
+- the original performance question
+- the workload definition
+- before numbers
+- the diagnosis
+- the change
+- after numbers
+- the behavior that remained unchanged
+
+This is essential because some optimizations:
+
+- add complexity with no meaningful gain
+- shift cost elsewhere
+- improve only trivial datasets
+- appear helpful in a microbenchmark but not in the real workflow
+
+Re-measurement is what separates an engineering improvement from a story.
+
+## Common failure modes
+
+- profiling without a named question
+- choosing a tool before understanding the workflow
+- treating a line-level hotspot as a complete diagnosis
+- optimizing a helper while the real cost lives in a boundary
+- comparing results from different input sizes and calling it improvement
+- skipping semantic regression checks because the code is now faster
+
+## Build a profiling evidence packet
+
+When you review a performance change, expect a packet that includes:
+
+- the workflow being profiled
+- who feels the slowness
+- the exact question being answered
+- the measurement route used
+- the architectural interpretation of the hotspot
+- the proposed change and its scope
+- before and after evidence
+- the invariants that were preserved
+
+If any of those pieces are missing, the claim is still weak.
+
+## Profiling review card
+
+| Review question | What a strong answer sounds like |
 | --- | --- |
-| does the profile answer a named performance question? | yes |
-| has the hotspot been translated into an architectural explanation? | yes |
-| is the proposed optimization targeting the real source of pressure? | yes |
-| is there before-and-after evidence under the same workload? | yes |
+| what question did the profile answer? | "why report generation latency spikes for large filtered incident sets" |
+| what workflow was measured? | "full incident review report generation" |
+| what was the hotspot category? | "row projection dominates CPU time" |
+| what is the architectural diagnosis? | "the same derived report row is built twice for adjacent outputs" |
+| what stayed unchanged? | "ordering, filtering, and domain invariants" |
 
 ## Capstone connection
 
-Use the capstone to ask:
+Apply this lesson by choosing one capstone workflow and writing down:
 
-- which workflow should be profiled first because users or operators would feel its slowness directly?
-- where does the profile point to one boundary-level redesign instead of one local trick?
-- what semantic guarantee has to remain explicit while the change is evaluated?
+- the performance question
+- the stage boundaries you will measure
+- the tool family you need first
+- the semantic guarantees that cannot move
+- the kind of redesign the profile might justify
 
-This is where performance work becomes reviewable instead of speculative.
+That short plan is often more valuable than opening a profiler immediately, because it
+prevents random tuning.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain why a profile must answer a specific question instead of merely produce data
-- identify one capstone workflow that deserves profiling next
-- state one example of turning raw profiler output into an architectural diagnosis
+- state a profiling question in user-facing workflow terms
+- explain the difference between a hotspot report and an architectural diagnosis
+- describe one capstone optimization path that would require before-and-after evidence
+  before review
