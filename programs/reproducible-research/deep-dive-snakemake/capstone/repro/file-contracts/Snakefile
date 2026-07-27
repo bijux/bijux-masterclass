@@ -1,0 +1,41 @@
+import sys
+
+
+PYTHON = sys.executable
+
+
+rule declared_report:
+    input:
+        source="data/source.txt",
+        policy="policy/threshold.txt",
+    output:
+        "results/declared-report.txt",
+    log:
+        "logs/declared-report.log",
+    shell:
+        """
+        {PYTHON:q} scripts/render_report.py \
+          --source {input.source:q} \
+          --policy {input.policy:q} \
+          --output {output:q} \
+          > {log:q} 2>&1
+        """
+
+
+rule hidden_report:
+    input:
+        source="data/source.txt",
+    output:
+        "results/hidden-report.txt",
+    params:
+        policy="policy/threshold.txt",
+    log:
+        "logs/hidden-report.log",
+    shell:
+        """
+        {PYTHON:q} scripts/render_report.py \
+          --source {input.source:q} \
+          --policy {params.policy:q} \
+          --output {output:q} \
+          > {log:q} 2>&1
+        """
