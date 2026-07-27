@@ -24,156 +24,160 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-## Why this lesson matters
+This lesson exists because extension review often fails in a predictable way:
 
-Extension review often fails in a predictable way: everyone notices a different risk, so
-no one knows whether the seam was actually reviewed well.
+- one reviewer checks type shape
+- another checks version drift
+- another worries about startup failure
+- nobody can tell whether the seam was actually reviewed well
 
-One reviewer looks for:
+Without a stable checklist, extension safety depends too much on memory and personality.
 
-- type shape
+The point of this page is not to replace judgment.
+It is to make the same hard questions appear every time a seam changes.
 
-Another looks for:
+## Keep one seam visible
 
-- version drift
+Use one concrete seam while reading:
 
-Another worries about:
+`IncidentSink`
 
-- startup failure or blocking behavior
+That seam is narrow enough to be teachable and risky enough to make the checklist real.
 
-Without a stable checklist, those risks appear randomly. That makes extension safety
-depend too much on reviewer memory instead of on repeatable governance.
+If your checklist cannot help you review a seam this small, it will not save you on a
+larger one.
 
-## Use one real seam while reading
+## What a useful checklist must cover
 
-Keep one concrete seam in view:
-
-- the `IncidentSink` capability from the capstone governance exercises
-
-This keeps the checklist grounded. You are not building a checklist for all future
-software. You are building one for a seam that could become public in this course
-material today.
-
-## A checklist is a consistency tool, not a substitute for judgment
-
-The checklist does not answer the design for you.
-
-It does something more practical:
-
-- it forces the same hard questions to appear every time a public or plugin-facing seam
-  changes
-
-That is what makes review reliable across different maintainers and across time.
-
-## Review more than the protocol shape
-
-A narrow-looking seam can still be dangerous.
-
-The checklist must cover more than:
+A weak checklist reviews only the signature:
 
 - names
 - methods
 - argument types
 
-It must also cover:
+That is not enough.
 
-- ownership boundaries
-- failure semantics
-- startup and registration behavior
-- blocking or async expectations
-- compatibility burden
-- documentation and proof routes
+An extension checklist must also cover:
 
-Those often become public obligations even when the signature looks clean.
+- whether the seam should be public at all
+- what authority boundaries it preserves
+- what registration or construction checks exist
+- what runtime failure behavior is expected
+- what compatibility promise is created
+- what examples, docs, and proof routes defend the story
 
-## A six-question checklist that is small enough to use
+Those are the real support obligations created by a seam.
 
-For the `IncidentSink` seam, a practical checklist is:
+## A seven-question checklist that is small enough to use
 
-1. Should this seam be public at all, or should the use case stay inside the facade?
-2. Does the seam expose capability only, not aggregate, repository, or runtime intimacy?
-3. What happens if registration data is malformed, missing, or incompatible?
-4. What happens if the sink fails, blocks too long, or returns unsupported data at runtime?
-5. What deprecation or compatibility promise is created by publishing this seam?
-6. Which docs, examples, import rules, and tests prove the supported behavior?
+For `IncidentSink`, a strong short checklist is:
 
-That checklist is short enough to use and strong enough to catch most of the real risk.
+1. Is this seam public because of a real supported use case, or only because the host
+   layout makes it easy to expose?
+2. Does the seam grant capability only, rather than aggregate, repository, or runtime
+   intimacy?
+3. What explicit registration or construction checks reject malformed or incompatible
+   implementations?
+4. What happens if the sink is missing, slow, blocking, or raises at runtime?
+5. What compatibility or deprecation promise is created by publishing this seam?
+6. Which docs, examples, and import rules teach the supported usage path?
+7. Which executable proof or review route would fail first if the seam drifted?
 
-## What good answers look like
+That checklist is short enough for repeated use and broad enough to catch the real
+governance risks.
 
-Good review answers point to evidence:
+## What strong answers look like
 
-- one compatibility suite
-- one executable quickstart or sink example
-- one import-boundary rule
+Good answers point to evidence, not just reassurance.
+
+Examples:
+
+- one compatibility suite for sink behavior
+- one executable or smoke-tested facade example
+- one import-discipline review rule
 - one registration-validation path
-- one change-control or governance note
+- one governance note recording why the seam is public
 
-If the seam cannot answer the checklist with evidence, the governance story is still too
-weak to trust.
+If a seam cannot answer the checklist with evidence, the support story is still thin.
 
 ## Failure review belongs inside the checklist
 
-Many extension reviews stay trapped in the happy path. That is a mistake.
+Do not leave operational risk outside the review.
 
 For the capstone seam, ask:
 
-- what if the sink is missing at startup?
-- what if configuration is present but malformed?
-- what if the sink raises during publishing?
-- what if the sink blocks longer than the host expects?
-- what if the sink returns data the host cannot safely use?
+- what happens if configuration is present but malformed?
+- what happens if a sink blocks longer than the host expects?
+- what happens if a sink raises after partial publication work?
+- what happens if a sink returns data the host should not trust?
+- what happens if the seam is still documented but no longer truly supported?
 
-If these answers are still hand-wavy, the seam is not operationally ready even if the
-protocol looks elegant.
+These are extension-safety questions, not later operations work.
 
-## A worked review pass
+## Build one reusable review packet
 
-Suppose the capstone now exposes a public sink protocol.
+A good checklist becomes stronger when paired with a tiny reusable packet:
 
-A useful review pass might conclude:
+- seam description
+- supported use case
+- authority boundary note
+- failure-behavior note
+- compatibility promise
+- proof route
 
-- yes, the seam is justified because alternate sinks are a real supported need
-- no, plugins may not reach into repositories or runtime worker state
-- registration must validate plugin shape and configuration before the system starts work
-- runtime sink failures must not corrupt aggregate truth
-- quickstart and compatibility tests must demonstrate the supported sink path
+That packet makes the checklist reusable across maintainers and review cycles.
 
-That is a real governance decision, not a vague statement that the design "looks clean."
+## Worked review pass
 
-## Common mistakes
+A short review of `IncidentSink` might conclude:
 
-- making the checklist so long nobody uses it
-- reviewing only type shape and ignoring failure behavior
-- asking questions with no linked evidence route
-- treating private-state access as acceptable because the extension is "trusted"
-- forgetting that examples and docs teach consumers what the seam means
+- the seam is justified because alternate sinks are a real supported need
+- the seam must receive already-shaped incident data and nothing with private authority
+- registration must reject malformed configuration before the workflow starts
+- runtime sink failure must not corrupt aggregate truth or duplicate visible work
+- facade examples and compatibility proof must teach the supported path consistently
 
-## Review checklist
+That is a real governance result, not just a statement that the interface "looks clean."
 
-| Question | Good sign |
+## Common failure modes
+
+- making the checklist so long that nobody reuses it
+- reviewing only type shape and missing ownership or failure behavior
+- asking questions with no evidence route attached
+- calling private-state access acceptable because the extension is "trusted"
+- forgetting that examples and docs define how consumers will actually use the seam
+
+## Review card
+
+Use this compact review card during real changes:
+
+| Question | What you want to see |
 | --- | --- |
-| does the checklist ask whether the seam should be public at all? | yes |
-| does it cover ownership and failure, not only type shape? | yes |
-| is it short enough for repeated real use? | yes |
-| can each question point to docs, tests, or policy evidence? | yes |
+| should this seam be public at all? | one concrete supported use case |
+| does it preserve authority boundaries? | capability without private-state intimacy |
+| what rejects bad implementations early? | explicit registration or construction checks |
+| what happens under runtime trouble? | failure behavior that preserves host truth |
+| what support promise is created? | named compatibility and deprecation rule |
+| what teaches the supported path? | facade docs and examples, not deep imports |
+| what proof keeps it honest? | one executable or reviewable route |
 
 ## Capstone connection
 
-Use this page against the capstone now.
+Use this page against the capstone immediately.
 
 Ask:
 
-- which current or proposed extension seam needs a checklist immediately
+- which seam needs this checklist first
 - which risk question is currently living only in reviewer memory
 - which proof route is still missing for the seam to pass review honestly
 
-This is how governance becomes repeatable instead of personality-driven.
+That is how governance becomes repeatable instead of personality-driven.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain why extension review must ask repeated questions beyond type review
-- draft a short six-question checklist for one concrete capstone seam
-- identify one failure-mode question that current capstone review would likely miss
+- explain why extension review must ask repeatable questions beyond protocol shape
+- draft a short checklist for one concrete capstone seam
+- identify one missing failure-mode question and one missing proof route in the current
+  capstone review story
