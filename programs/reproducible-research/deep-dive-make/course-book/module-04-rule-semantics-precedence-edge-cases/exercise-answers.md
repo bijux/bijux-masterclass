@@ -27,25 +27,60 @@ flowchart LR
 
 Use this after you have written your own answers. The point is comparison, not copying.
 
-Strong answers in Module 04 do not merely name a feature. They explain:
+## How to use the answer page well
 
-- what semantic rule is in play
-- what evidence would expose it
-- why the repair is more honest than the broken version
+Do not read a model answer first and then retrofit your investigation to match it.
+
+A better rhythm is:
+
+1. finish the exercise with your own stage map, probes, and notes
+2. write one plain-language explanation of the semantic rule involved
+3. compare that explanation with the model answer
+4. revise where the model answer exposes missing stage boundaries, weak evidence, or a
+   noisier repair than necessary
+
+Strong answers in Module 04 do not merely name a feature. They usually do four things:
+
+- they identify the semantic rule in play
+- they choose the least disruptive evidence first
+- they explain the repair as a clearer truth contract
+- they verify convergence after the repair
+
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one stage map
+- one variable-origin probe
+- one convergent include generator
+- one honest multi-output repair
+- one precedence matrix
+- one bounded compound incident report
+
+If your answers rely only on "Make can be tricky," the reasoning is still too weak.
 
 ## Exercise 1: Choose the right CLI probe
 
-The strongest answer starts with `make --trace app` because the immediate question is "why
-did this run?" `--trace` is the cleanest first route to the causal edge or rule location.
+The strongest answer starts with `make --trace app` because the immediate question is
+"why did this run?" `--trace` is the cleanest first route to the causal edge or rule
+location.
 
-A strong second command is `make -p` or `make -q app`, depending on what you are
-trying to settle next:
+A strong second command is `make -p` or `make -q app`, depending on what you are trying
+to settle next:
 
-- `-p` if the dispute is about the evaluated rule or variable world
-- `-q` if the dispute is whether the build has actually converged
+- `-p`:
+  - use it when the dispute is about the evaluated rule or variable world
+- `-q`:
+  - use it when the dispute is whether the requested graph has actually converged
 
-The important reasoning is that `clean`, `-B`, and `-j1` all change conditions more
-aggressively. They may still be useful later, but they are weaker as first evidence.
+The important explanation is:
+
+> `clean`, `-B`, and `-j1` all change conditions more aggressively, so they are weaker as
+> first evidence when the goal is diagnosis rather than forced progress.
+
+Weak answer pattern:
+
+- "Run `clean` first so everything is fresh"
+
+That may help later, but it destroys the evidence you were trying to inspect.
 
 ## Exercise 2: Prove where a variable value came from
 
@@ -61,22 +96,33 @@ show-cflags:
 
 That answer is strong because it separates:
 
-- origin: who won
-- flavor: how the value is stored
-- raw text: what expression was assigned
-- expanded text: what the recipe eventually sees
+- origin:
+  - who won
+- flavor:
+  - how the value is stored
+- raw text:
+  - what expression was assigned
+- expanded text:
+  - what recipes actually see
 
-A good repair usually simplifies one of two things:
+A strong repair usually simplifies one of two things:
 
-- precedence, by removing accidental environment wins such as `-e`
-- expansion timing, by replacing recursive assignment with `:=` when laziness is not needed
+- precedence:
+  - reduce accidental environment wins such as routine `-e`
+- expansion timing:
+  - use `:=` when delayed expansion is not part of the contract
+
+The key explanatory sentence is:
+
+> Until origin, flavor, raw text, and expanded text are separated, two different problems
+> can look like the same strange flag value.
 
 ## Exercise 3: Repair a generated-include loop
 
 The essential explanation is:
 
-> Make includes the generated file as part of evaluation. If the rule rewrites that file
-> on every run, Make keeps seeing a changed build definition and never settles on a stable
+> Make includes the generated file during evaluation. If the rule rewrites that file on
+> every run, Make keeps seeing a changed build definition and never settles on a stable
 > evaluated state.
 
 A strong repair writes deterministic content from a real input and publishes atomically.
@@ -89,8 +135,16 @@ mk/generated-config.mk: config/mode.env
 	@mv $@.tmp $@
 ```
 
-Atomic publication matters because included files participate in evaluation. A partially
-written file is not just a broken artifact. It is a broken build definition.
+The strongest answers also say what proves convergence:
+
+> Repeated invocations stop changing the include content and `MAKE_RESTARTS` no longer
+> grows after the stable update.
+
+Weak answer pattern:
+
+- "Regenerate the include less often"
+
+That does not address why the build definition itself never settles.
 
 ## Exercise 4: Replace a platform branch with a capability gate
 
@@ -105,17 +159,20 @@ HAVE_GNU_TAR := $(if $(shell tar --version 2>/dev/null | grep -q 'GNU tar' && pr
 ifeq ($(HAVE_GNU_TAR),yes)
   ARCHIVE := tar
 else
-$(error need GNU tar-compatible archive behavior)
+  $(error need GNU tar-compatible archive behavior)
 endif
 ```
 
-The exact capability can vary. The important move is architectural:
+The exact capability can vary. The important architectural move is:
 
 - compute the capability once
 - give it a stable name
 - make later branches depend on that name
 
-That is easier to audit because the reason for the branch is explicit and inspectable.
+The key explanatory sentence is:
+
+> The platform guess assumed the operating-system label was the real requirement, when
+> the real requirement was a specific tool behavior.
 
 ## Exercise 5: Repair a multi-output generator honestly
 
@@ -143,13 +200,13 @@ $(API_STAMP): gen_api.py schema.yml | build/
 api.h api.json: $(API_STAMP)
 ```
 
-Choose this when you need a fallback that is easier to support across broader Make
-versions or when the stamp makes the publication event clearer to the team.
+Choose this when you need a broader compatibility story or when the team finds the stamp
+clearer to audit.
 
-The tradeoff is simple:
+The real publication event both repairs are modeling is:
 
-- grouped targets are semantically cleaner when available
-- stamps are a durable fallback when grouped targets are not part of the contract
+> one generator run publishes a coordinated set of artifacts, not two independent output
+> stories.
 
 ## Exercise 6: Compare assignment flavors
 
@@ -167,15 +224,25 @@ LIST += beta
 
 The key observations are:
 
-- `RECURSIVE` is recursively expanded and yields `second`.
-- `SIMPLE` was expanded at assignment time and yields `first`.
-- `OPTIONAL` is assigned only when it was not defined earlier.
-- `LIST += beta` appends according to the variable’s existing flavor.
-- `$(value RECURSIVE)` shows the stored text `$(BASE)` rather than expanding it.
+- `RECURSIVE`:
+  - recursively expanded and yields `second`
+- `SIMPLE`:
+  - expanded at assignment time and yields `first`
+- `OPTIONAL`:
+  - assigned only when it was not defined earlier
+- `LIST += beta`:
+  - appends according to the variable’s existing flavor
+- `$(value RECURSIVE)`:
+  - shows the stored text `$(BASE)` rather than expanding it
+
+The important explanation is:
+
+> Raw text and expanded text are both worth printing because they answer different
+> debugging questions: what was stored, and what the build eventually used.
 
 Recursive expansion is useful when a value intentionally depends on later configuration.
-It is risky for graph-shaping discovery because repeated or delayed expansion can make
-timing harder to reason about.
+It is risky for graph-shaping discovery because delayed meaning can make timing harder to
+reason about.
 
 ## Exercise 7: Build a precedence matrix
 
@@ -189,9 +256,16 @@ Expected results for a Makefile containing only `MODE ?= release`:
 | `MODE=debug make -e show` | `debug` | `environment override` |
 | Makefile uses `override MODE := hardened` | `hardened` | `override` |
 
-A clear project contract is: provide a documented default, allow intentional command-line
-overrides, and do not use `-e` in routine CI. Environment precedence is too broad because
-every exported name becomes a possible configuration channel.
+A clear project contract is:
+
+- provide a documented default
+- allow intentional command-line overrides
+- avoid routine `-e` in CI or daily use
+
+The key explanatory sentence is:
+
+> "Works on my shell" is weak evidence because shell-exported variables create a hidden
+> configuration channel unless the precedence contract is explicit.
 
 ## Exercise 8: Observe a generated include restart
 
@@ -217,11 +291,16 @@ Make may restart after first creating or semantically changing the include. Once
 content stabilizes, repeated invocations converge. Adding the current time guarantees
 different content and creates needless remake/restart behavior.
 
+The important explanation is:
+
+> Content-stable publication preserves semantic convergence; timestamp-only rewriting does
+> not, because the evaluated build definition keeps changing.
+
 ## Exercise 9: Remove pattern-rule ambiguity
 
-The exact selected rule depends on the stems, prerequisites, and implicit-rule search.
-That is why the answer must include evidence rather than a guess. A repair can separate
-the namespaces:
+The exact selected rule depends on stems, prerequisites, and implicit-rule search. That is
+why the answer must include evidence rather than a guess. A strong repair separates the
+namespaces:
 
 ```make
 build/generated/%.o: generated/%.c
@@ -234,9 +313,12 @@ build/source/%.o: src/%.c
 The output path now communicates which source domain owns the rule. An explicit rule is
 even better when only one exceptional file exists.
 
+The semantic stage that matters most is rule selection, because that is where ambiguity
+becomes a real build decision rather than a vague maintenance concern.
+
 ## Exercise 10: Diagnose a compound semantic incident
 
-A strong report uses one evidence route per claim:
+A strong report uses one evidence route per symptom:
 
 | Symptom | Evidence | Typical repair |
 | --- | --- | --- |
@@ -247,12 +329,18 @@ A strong report uses one evidence route per claim:
 The final convergence query matters because three locally plausible repairs can still
 interact. The build is not repaired until the requested graph reaches a stable state.
 
+The missing but important sentence is:
+
+> Naming the semantic stage first reduced the debugging scope by turning one big "Make
+> problem" into three smaller, testable questions.
+
 ## What mastery-level answers sound like
 
 A mastery-level answer set in this module does three things well:
 
-- it names semantic rules precisely instead of speaking in vague "Make is weird" language
+- it names semantic rules precisely instead of saying "Make is weird"
 - it picks evidence before it picks a repair
 - it explains the repair as a better truth contract, not just a different syntax choice
 
-That is the standard this module is trying to build.
+If your answers do those three things consistently, you are learning Module 04 in the
+right direction.
