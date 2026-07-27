@@ -68,6 +68,89 @@ Read that sequence as a review loop:
 The commands are not magic. They are a disciplined way to preserve enough context for a
 decision.
 
+## Read each command as a narrow receipt
+
+The three commands answer different mechanical questions:
+
+| Command | Strongest supported claim | Claim it does not support |
+| --- | --- | --- |
+| `dvc exp run` | DVC executed a candidate from available repository and workspace state | the candidate is comparable or useful |
+| `dvc exp show` | DVC can enumerate recorded experiment revisions and selected values | every displayed row shares one valid comparison contract |
+| `dvc exp diff` | DVC can describe selected differences between revisions | the differences are allowed by the experiment intent |
+
+This matters because polished command output is persuasive. A row in `dvc exp show` looks
+rankable even when its population or metric definition changed.
+
+The audit stores the raw receipts under:
+
+```text
+workspace/<case>/workspace/evidence/receipts.json
+```
+
+Find these keys:
+
+```text
+candidate_run
+experiment_show
+experiment_diff
+```
+
+In `POPULATION_DRIFT`, all three commands can succeed. The comparison still blocks because
+the candidate population digest differs from the baseline.
+
+## Know which state DVC is recording
+
+An experiment can combine:
+
+- the Git commit used as its parent
+- committed pipeline declarations
+- uncommitted workspace changes included in the run
+- parameter overrides
+- generated outputs and metrics
+- DVC's experiment revision
+
+Those layers are useful, but they create a common misunderstanding:
+
+> The experiment has the same Git parent, therefore it has the same baseline.
+
+The parent identifies ancestry. It does not prove that the uncommitted population, metric
+schema, or experiment contract remained stable.
+
+The audit checks `baseline_git_commit_is_unchanged` separately from:
+
+- `baseline_matches_recorded_contract`
+- `evaluation_population_is_stable`
+- `metric_schema_is_stable`
+
+That separation shows why one green ancestry check cannot substitute for semantic
+continuity.
+
+## Inspect before and after records together
+
+An opaque experiment identifier is useful for addressing a run, but it is not enough for
+review. Preserve or resolve these surfaces:
+
+```text
+baseline Git commit
+baseline params
+baseline metrics and population identity
+candidate params
+candidate metrics and population identity
+experiment command receipts
+candidate intent and allowed changes
+```
+
+Then ask:
+
+1. Did the candidate run?
+2. Did the intended control change?
+3. Did any additional control change?
+4. Did the population remain identical?
+5. Did metric meaning remain identical?
+6. Does the observed tradeoff meet the review policy?
+
+The first question is mechanical. The remaining questions make the record interpretable.
+
 ## Isolation from Git history
 
 DVC experiments can keep exploratory runs separate from main Git history.
@@ -95,6 +178,32 @@ flowchart LR
 The separation gives exploration room without letting every trial rewrite the baseline
 story.
 
+## Isolation protects history, not the candidate
+
+DVC experiment isolation reduces premature Git commits. It does not create a sandbox in
+which every input is scientifically independent.
+
+For example:
+
+```text
+baseline commit
+  |
+  +-- controlled threshold candidate
+  +-- population-drift candidate
+  +-- metric-schema candidate
+```
+
+All three may remain outside normal Git history. Only the first is an ordinary comparison.
+The other two need boundary work before ranking.
+
+Isolation therefore answers:
+
+> Has this exploratory result been promoted into governed Git history?
+
+It does not answer:
+
+> Does this exploratory result deserve to be compared with the approved baseline?
+
 ## What isolation does not solve
 
 DVC experiment isolation does not automatically solve:
@@ -112,6 +221,28 @@ For example, if a candidate changes the evaluation population without saying so,
 record the run cleanly. The comparison can still be misleading.
 
 The tool preserves evidence. It does not replace judgment.
+
+## Run the audit as a command-reading lab
+
+From the repository root:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+```
+
+Choose `controlled-threshold` and `population-drift`.
+
+For each case:
+
+1. read `candidate_run` in `receipts.json`
+2. confirm the return code is zero
+3. compare `experiment_show` and `experiment_diff`
+4. inspect `finding.json`
+5. explain why equal command success leads to different comparison decisions
+
+If your explanation stops at “the data changed,” make it more precise. Name the failed
+claim: the candidate no longer measures the same population, so metric movement cannot be
+attributed only to the threshold intervention.
 
 ## Naming and notes matter
 
@@ -147,6 +278,17 @@ Experiments can touch the workspace. Learners should keep the workspace understa
 This discipline prevents the common failure where a candidate result quietly becomes the
 new local truth without a promotion decision.
 
+Before and after any `dvc exp apply`, capture:
+
+```bash
+git status --short
+git diff -- params.yaml dvc.yaml
+dvc status
+```
+
+The first two expose workspace and declaration changes. The third exposes DVC pipeline
+state. None records a promotion decision by itself.
+
 ## Review checkpoint
 
 You understand this core when you can explain:
@@ -156,6 +298,8 @@ You understand this core when you can explain:
 - what `dvc exp show` and `dvc exp diff` help review
 - which validity questions DVC does not answer by itself
 - why clear candidate intent matters beside command output
+- why a shared Git parent is weaker than a verified baseline contract
+- how a successful experiment receipt differs from comparison evidence
 
 DVC experiments are an evidence surface for exploration. They are not a substitute for a
 clear experiment question.
