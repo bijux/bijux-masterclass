@@ -1,5 +1,4 @@
-# Cross-Object Invariants and Aggregate-Level Validation
-
+# Cross-Object Invariants
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["Cross-Object Invariants and Aggregate-Level Validation"]
+  page["Cross-Object Invariants"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,90 +24,117 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Implement invariants that involve *relationships between objects*.
+Many important rules do not live inside one object.
 
-In Module 3 we made single-object invariants unrepresentable. Now we enforce **multi-object** invariants at the aggregate boundary.
+Examples:
 
-## Where This Fits
+- one line item may not exceed the order allowance
+- one booking may not overlap another controlled booking
+- one policy decision may depend on several child records together
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+Those are cross-object invariants. If you ignore them, the model looks tidy while the real
+correctness rules are still leaking into services and scripts.
 
-## 1. Examples of Cross-Object Invariants
+## What a cross-object invariant is
 
-In a monitoring policy:
+A cross-object invariant is a rule that depends on more than one object or member inside
+one boundary.
 
-- No two active rules may share the same `rule_id`.
-- No two active rules may target the same `(metric, threshold, window)` if your business rules require uniqueness.
-- A rule cannot be both active and retired.
-- Retiring a rule must remove it from the active collection.
+It is not enough to validate each piece independently. The relationship between them is
+the rule.
 
-These invariants involve *multiple* objects and collections.
+That is why aggregate design matters here: someone must own the combined check.
 
-## 2. Enforce Invariants in Root Methods, Not Callers
+## Why scattered checking fails
 
-Instead of “callers check then call add”, the root should own the check:
+If several callers each perform part of the rule, you get:
 
-```python
-class DuplicateRuleId(Exception): ...
+- duplicated checks
+- inconsistent update order
+- gaps where one path forgets the full rule
+- tests that prove only fragments instead of the whole invariant
 
-def add_active_rule(self, rule: ActiveRule) -> None:
-    if any(r.rule_id == rule.rule_id for r in self.active_rules):
-        raise DuplicateRuleId(rule.rule_id)
-    self.active_rules.append(rule)
-```
+Cross-object rules should not depend on lucky calling discipline.
 
-This prevents “forgot to check” bugs and makes the invariant testable in one place.
+## Where the rule should live
 
-## 3. Maintain Indexes for Performance (But Keep Them Correct)
+The rule should live with the authority that can see and protect the whole consistency
+boundary.
 
-For large aggregates, `any(...)` becomes slow. Use indexes, but update them *together* with the collections:
+That usually means:
 
-```python
-from dataclasses import dataclass, field
+- the aggregate root or another clear boundary authority
+- not an unrelated outer utility
+- not every caller separately
 
-@dataclass(slots=True)
-class MonitoringPolicy:
-    active_rules: list[ActiveRule] = field(default_factory=list)
-    _active_by_id: dict[str, ActiveRule] = field(default_factory=dict, init=False, repr=False)
+The question is not only "who can check this?" but "who should be the one trusted to
+enforce it every time?"
 
-    def add_active_rule(self, rule: ActiveRule) -> None:
-        if rule.rule_id in self._active_by_id:
-            raise DuplicateRuleId(rule.rule_id)
-        self.active_rules.append(rule)
-        self._active_by_id[rule.rule_id] = rule
-```
+## A practical test
 
-Now you must ensure:
-- every mutation keeps both structures in sync.
-- tests cover sync behavior (this is a high-value invariant test).
+Ask:
 
-## 4. Aggregate Validation: Construction vs Mutation
+1. Does this rule depend on relationships between several members?
+2. Must it hold immediately after a successful change?
+3. Is there one authority surface that can see the whole picture?
 
-You can enforce invariants:
-- **at construction** (when loading from storage),
-- and **on mutation** (when applying commands).
+If yes, the invariant belongs inside that boundary and should be enforced there.
 
-Loading from storage is a boundary concern:
-- read raw data,
-- reconstruct aggregate,
-- validate it once,
-- reject corrupted persisted state early.
+## Common mistakes
 
-This is the “fail fast on bad history” principle.
+- validating each child object while never validating the collection rule
+- putting the rule in application code that is easy to bypass
+- splitting one real invariant across several methods with no single authority
+- pretending eventual cleanup is fine when the rule actually must hold immediately
 
-## Practical Guidelines
+The last mistake is especially dangerous: some relationships can drift and reconcile
+later, but cross-object invariants that define correctness usually cannot.
 
-- Put cross-object invariants in aggregate root methods, not scattered across callers.
-- Use explicit domain exceptions for invariant violations (they become part of the contract).
-- If you add indexes for performance, treat index consistency as an invariant with tests.
-- Validate aggregates on load from storage; don’t silently accept corrupted history.
+## What to document clearly
 
-## Exercises for Mastery
+For every cross-object invariant, a learner should be able to answer:
 
-1. Add a uniqueness invariant to your aggregate and test it.
-2. Add a dict index to speed lookups. Write a test that proves the index stays in sync after add/retire operations.
-3. Simulate loading a corrupted aggregate from storage and ensure validation fails loudly.
+- what is the rule?
+- which boundary owns it?
+- when is it checked?
+- what changes are rejected if it would break?
+
+If those answers are fuzzy, the invariant is probably not yet modeled strongly enough.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is the relationship rule named explicitly? | yes |
+| is there one authority that protects it? | yes |
+| is the rule enforced as part of ordinary change, not as cleanup? | yes |
+| can callers avoid re-implementing the same check? | yes |
+
+## Capstone connection
+
+In the capstone, this lesson matters anywhere one decision depends on several related
+members together:
+
+- quota and allocation rules
+- overlap rules
+- total or uniqueness rules
+- boundary-wide approval constraints
+
+If the capstone still relies on callers to remember these rules manually, the aggregate is
+not yet doing enough.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- define a cross-object invariant in plain language
+- name the capstone boundary that should own one such rule
+- explain why per-object validation alone is not enough
