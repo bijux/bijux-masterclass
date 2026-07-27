@@ -219,94 +219,101 @@ packet can already answer these questions clearly:
 If you cannot answer those four questions in plain language, return to Exercises 1-5 and
 make the packet more explicit before continuing.
 
-## Exercise 6: Capture an environment fingerprint
+## Exercise 6: Predict the runtime audit
 
-Run one pipeline stage and record:
+Inspect `capstone/repro/runtime-contracts/dvc.yaml` without running the audit. Predict:
 
-- interpreter version
-- operating system
-- dependency lock digest
-- relevant tool versions
-- container image digest if used
-- any environment variables or runtime flags that plausibly affect result meaning
+- which stage becomes stale when `runtime.env` changes
+- what status reports when only `REPORT_STYLE` changes
+- which result ordinary repro leaves behind
+- what force changes
+- which durable declaration remains unrepaired
 
-Identify which values can change result meaning and which are only useful context.
+Then run:
 
-What to hand in:
-
-- the completed environment fingerprint table
-- one sentence naming the smallest fingerprint that would still be reviewable
-
-Study note:
-The job is not to record every possible fact. The job is to record the facts that explain
-or constrain the result claim.
-
-## Exercise 7: Break an environment deliberately
-
-Change one dependency version while keeping code, data, and parameters fixed. Compare the
-output and logs, then decide whether the difference is deterministic, tolerated, or a
-release blocker.
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone runtime-contract-audit
+```
 
 What to hand in:
 
-- the exact environment change
-- the observed result difference
-- the judgment you made
-- the evidence that supports that judgment
+- prediction table
+- generated `summary.tsv`
+- corrections with evidence paths
+- explanation of all three `PASS / REJECT` findings
 
-Study note:
-Deliberate breakage is one of the fastest ways to stop treating environment governance as
-theoretical.
+## Exercise 7: Join fingerprints to planner evidence
 
-## Exercise 8: Compare lockfile and container guarantees
-
-Write a table showing what a language lockfile and a container digest each constrain.
-Include:
-
-- operating-system libraries
-- hardware
-- environment variables
-- network access
-- entry commands
-- package resolution
-
-Then write one paragraph explaining why teams that say "we have containers, so we no
-longer need a dependency contract" are still missing something.
-
-Study note:
-This is where many students first see that package identity and runtime packaging are
-related but not identical controls.
-
-## Exercise 9: Design an environment drift gate
-
-Specify a CI check that detects accidental environment drift before accepting a result.
-Name its:
-
-- inputs
-- evidence artifact
-- failure message
-- approval path for intentional upgrades
-- reviewer expectation after a failed gate
-
-Study note:
-The most useful gates fail with enough detail that the team can respond without guessing.
-
-## Exercise 10: Reproduce across two contexts
-
-Run a small stage locally and in a second context such as CI, a container, or another
-machine. Compare content digests and runtime evidence, and explain any difference without
-assuming byte identity is always required.
+Compare the two fingerprint JSON files, then join each runtime change to its status receipt
+and semantic result.
 
 What to hand in:
 
-- the two context fingerprints
-- the output comparison
-- the result contract you used
-- one conclusion about whether your current environment strategy is strong enough
+- fields held constant
+- field deliberately changed
+- declared and hidden status results
+- result before and after ordinary repro
+- explanation of why fingerprint mismatch alone cannot make DVC stale
+
+## Exercise 8: Distinguish stale reuse from tolerance
+
+Classify each observation:
+
+1. hidden output remains `8.00` after ordinary repro under comma context
+2. forced hidden output becomes `8,00`
+3. declared output rebuilds to `8,00`
+4. two freshly executed numerical results differ within a declared bound
+
+Choose from under-rebuild, deterministic runtime influence, truthful rebuild, or
+conditional determinism.
+
+What to hand in:
+
+- classification table
+- evidence needed for each classification
+- explanation of why tolerance cannot approve observation 1
+
+## Exercise 9: Audit force as a diagnostic
+
+Use `report.json` to compare:
+
+- hidden result before force
+- hidden result after force
+- `dvc.yaml` hash before and after
+- `dvc.lock` hash before and after
+
+What to hand in:
+
+- four-surface comparison
+- causal conclusion
+- explanation of what the lock recorded
+- one durable repair
+- one sentence rejecting force as recurring policy
+
+## Exercise 10: Design the runtime review contract
+
+Prepare a reviewer packet containing:
+
+- paired stage declarations
+- baseline and drift fingerprints
+- status and ordinary repro receipts
+- semantic outputs
+- force evidence
+- declaration and lock hashes
+
+Then choose one governance route for a real runtime fact: declared file, governed
+parameter, or external executor gate.
+
+What to hand in:
+
+- packet inventory
+- chosen governance route and rationale
+- failure message for undeclared drift
+- bounded review conclusion
+- one separate tolerance question that should be asked only after fresh execution
 
 Study note:
-This final exercise matters because the whole module is about governed comparison across
-contexts, not only neat local runs on one machine.
+The final product is an enforceable evidence contract, not a list of environment facts.
 
 ## Mastery check
 
