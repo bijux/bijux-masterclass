@@ -24,156 +24,195 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about keeping a test suite explainable.
 
-## Why this lesson matters
+Confidence does not come from "having many tests."
+It comes from knowing:
 
-Students often talk about "the test suite" as though it were one thing.
+- which claim belongs to which proof layer
+- which layer should fail first
+- what extra risk a more expensive layer adds
 
-In practice, confidence comes from several layers that answer different questions at
-different costs.
+That structure is the confidence ladder.
+Without it, teams usually either over-trust narrow proof or over-pay for broad proof.
 
-When those layers are not deliberate, teams usually end up with one of two bad shapes:
+## Keep two claims on the table
 
-- everything is pushed into the fastest layer, leaving boundary risk under-proved
-- everything important is pushed into slow integration tests, leaving feedback expensive and vague
+Use these capstone claims:
 
-A confidence ladder exists to keep the proof route explainable.
+- `WorkshopEnrollment` must preserve seat truth under real lifecycle histories
+- `CertificateIssuanceService` must not create duplicate visible work under retry
 
-## A ladder is not about prestige, it is about proof cost
+These two claims are useful because they force different first-failing layers.
 
-Higher-level tests are not automatically better. They are just more expensive and often
-prove different things.
+If the same proof answer appears for both, the ladder is probably being applied by habit
+rather than by risk.
 
-A healthy ladder usually asks:
+## A confidence ladder is a costed proof map
 
-- what is the cheapest layer that can honestly prove this claim?
-- what risk remains that only a broader layer can catch?
+The ladder is not about prestige.
+It is about cost and honesty.
 
-This keeps the suite from becoming either underpowered or needlessly heavy.
+For each important claim, ask:
 
-## Different layers should answer different questions
+1. what is the cheapest proof that can really catch the defect?
+2. what risk remains after that proof passes?
+3. what broader proof earns its cost by catching that remaining risk?
 
-For an object-oriented Python system, a simple ladder might include:
+That is what keeps the suite from turning into either:
 
-- behavior-first tests for local domain rules
+- a pile of fast tests that cannot see workflow truth
+- a pile of slow tests that hide where the truth actually lives
+
+## Example ladder for this course
+
+The course has been building these layers on purpose:
+
+- behavior-first tests for local semantic rules
 - stateful tests for lifecycle histories
-- contract tests for replaceable repositories and adapters
-- integration tests for multi-layer workflows
-- approval or end-to-end checks for public-facing outputs
+- contract suites for replaceable boundaries
+- integration suites for composed workflow risk
+- approval or outward-representation checks for stable visible contracts
 
-The important part is not the names. It is that each layer owns a distinct proof
-question.
+The names matter less than the proof ownership:
 
-## Integration tests should target boundary composition risk
+- local rule
+- history
+- substitute compatibility
+- workflow composition
+- public representation
 
-Integration tests earn their cost when the risk lives between layers.
+If two layers are proving the same thing with no new signal, the ladder is wasting time.
 
-Good candidates include:
+## Integration suites should earn their cost
 
-- repository plus aggregate round-trip behavior
-- application service plus unit-of-work coordination
-- adapter plus domain object translation
-- runtime flow that involves retries, publication, and persistence together
+An integration suite is justified when the bug lives between boundaries.
 
-These tests are strongest when unit tests cannot honestly prove the same claim because
-the bug appears only in composition.
+Good candidates:
 
-## A ladder should make failure interpretation easier
+- load, mutate, save, and publish through real workflow boundaries
+- retry behavior that depends on durable progress
+- domain object plus repository plus side-effect boundary working together
+- translation drift between application and adapter layers
 
-One underrated benefit of layered suites is diagnostic clarity.
+Bad candidates:
 
-If you know:
+- local semantic rules the aggregate can already prove directly
+- tiny helper-call choreography
+- copied lower-layer proof with no extra composition risk
 
-- unit tests defend local semantics
-- contract tests defend substitute compatibility
-- integration tests defend composed workflows
+Integration tests are strongest when they prove something lower layers cannot honestly
+see.
 
-then a failure already tells you something about where the promise broke.
+## First-failing layers for the running claims
 
-Without that structure, every failure demands a full investigation from scratch.
+For the seat-limit claim:
 
-## Do not let the slowest layer carry the whole burden
+- first failing layers are behavior-first and stateful proofs
 
-When a team trusts only the top of the ladder, two problems follow:
+Why:
+
+- aggregate truth and lifecycle are the core risk
+- integration proof can add repository or conflict pressure later, but not first
+
+For the retry-no-duplication claim:
+
+- first failing layer is a workflow-level integration test with meaningful durable and
+  side-effect boundaries
+
+Why:
+
+- the risk lives in composition across retry, persistence, and visible work
+- narrow local tests can miss the exact failure that users would actually see
+
+This contrast is the module's point: different claims deserve different first failures.
+
+## A ladder should make failure interpretation faster
+
+When the ladder is healthy, a failing test already narrows the investigation:
+
+- a local behavior failure suggests semantic drift inside one object
+- a contract failure suggests substitute incompatibility
+- an integration failure suggests composition or workflow drift
+
+That is operationally valuable.
+Without the ladder, every failure sends maintainers searching everywhere.
+
+## Do not let the slowest layer carry the whole suite
+
+When a team trusts only the top of the ladder:
 
 - feedback slows down
-- the reason a workflow failed becomes harder to isolate
+- diagnosis becomes vague
+- lower-layer ownership becomes blurry
 
-High-level suites should confirm broad promises, not compensate for missing precise
-lower-level proof.
+The opposite mistake also matters:
 
-The opposite problem also exists: too many narrow tests can still leave workflow risk
-uncovered. The ladder matters because both extremes are weak.
+- if everything stays at the fastest layer, composed workflow risk stays under-proved
 
-## A worked example
+The ladder matters because both extremes are weak.
 
-Suppose the capstone includes:
+## Build one confidence packet per major workflow
 
-- domain rules for incident transitions
-- repository-backed persistence
-- event publication
-- a public command or runtime workflow
+For one important workflow, keep a short packet that answers:
 
-An honest confidence ladder might look like:
+- first failing proof
+- next broader proof
+- heaviest proof reserved for operational pressure
+- what each added layer catches that the previous one could miss
 
-1. behavior-first tests prove local incident rules
-2. stateful tests prove lifecycle histories
-3. repository contract tests prove substitute compatibility
-4. one integration suite proves that a command loads, mutates, saves, and publishes through real boundaries
-5. one approval or CLI-level suite proves the user-facing representation stays stable
+This packet makes the ladder teachable to another maintainer instead of living only in
+your head.
 
-Now each major risk has a first-failing layer.
+## Worked capstone ladder
 
-That is far more useful than one giant suite that tries to prove everything at once.
+A strong capstone ladder might look like this:
 
-## Keep the ladder explainable to humans
+1. behavior-first tests prove `WorkshopEnrollment` local rules
+2. stateful tests prove confirm, release, and follow-on histories
+3. repository contract suites prove substitute compatibility
+4. one workflow integration suite proves load, mutate, save, and visible publish without
+   duplicate work under retry
+5. one approval or outward-representation check protects the stable user-facing result
 
-If a new contributor cannot answer:
+Now each major regression has a likely first-failing layer.
 
-- what does this suite prove?
-- why does it exist at this layer?
-- what kind of regression should fail here first?
+That is much stronger than one giant suite that tries to prove everything at once.
 
-then the ladder is probably not clean enough yet.
+## Common failure modes
 
-A test architecture is part of the system design. It should be readable as such.
-
-## Common mistakes
-
-- treating all tests as one undifferentiated pile
-- pushing workflow risk down into unit tests that cannot see it honestly
-- pushing local semantic checks up into expensive integration suites
-- duplicating the same proof across many layers with little extra signal
+- treating the whole test suite as one undifferentiated pile
+- forcing workflow risk into narrow unit tests that cannot see it honestly
+- pushing local semantic proof up into slow integration suites
+- duplicating the same proof at several layers without extra signal
 - building a ladder nobody can explain in plain language
 
-## Review checklist
+## Confidence review card
 
-| Question | Good sign |
+Use this short card when reviewing a test architecture change:
+
+| Question | What you want to see |
 | --- | --- |
-| does each test layer own a distinct proof question? | yes |
-| is each claim proved at the cheapest honest layer first? | yes |
-| do integration tests focus on composition risk rather than local rules? | yes |
-| can a reviewer explain what should fail first for each major regression? | yes |
+| does each layer own a distinct proof question? | yes |
+| is each claim proved first at the cheapest honest layer? | yes |
+| do integration tests target composition risk instead of local rules? | yes |
+| can another maintainer explain what each layer would fail first? | yes |
 
 ## Capstone connection
 
-Use the capstone suite to ask:
+Use this page to ask:
 
-- which current integration tests are proving true cross-layer risk?
-- which ones are carrying checks that belong in cheaper lower layers?
-- where is one critical workflow still under-proved because no higher-level suite composes the real boundaries?
+- which current integration test is proving real cross-boundary risk
+- which test is carrying a claim that belongs in a cheaper lower layer
+- which workflow is still under-proved because no composed suite yet covers the real
+  boundaries
 
-This is how a test collection becomes a confidence architecture.
+That is how a test collection becomes a confidence architecture.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain what a confidence ladder is and why it is not just a test pyramid slogan
+- explain what a confidence ladder is in terms of proof cost and failure ownership
 - identify one capstone claim that belongs in an integration suite
-- identify one capstone test that should move to a cheaper layer or be deleted
+- identify one capstone test that should move downward, narrow, or disappear
