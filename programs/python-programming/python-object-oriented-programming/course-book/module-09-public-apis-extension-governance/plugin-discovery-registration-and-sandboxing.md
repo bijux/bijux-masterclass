@@ -24,164 +24,172 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about one hard truth:
 
-## Why this lesson matters
+Publishing a plugin seam is not the same as publishing a capability protocol.
 
-Plugin support is one of the easiest ways to make a system feel advanced while quietly
-raising its governance cost.
+The moment outside code may be discovered and activated, you now own:
 
-The moment you allow outside code to participate, you inherit questions about:
+- how candidates become visible
+- how they prove compatibility
+- how they are named and configured
+- how failures are isolated or disabled
+- how much trust the host is really extending
 
-- discovery
-- registration
-- capability validation
-- compatibility
-- failure isolation
-- trust and security
+That is governance work, not just interface design.
 
-If those questions are not answered, the "plugin system" is usually just dynamic import
-with extra optimism.
+## Start with the seam, not the plugin story
 
-## Do not add plugins before naming the real customization need
+Use one capstone extension need:
 
-Many systems do not need plugins at all.
+`IncidentSink` lets the system publish an operational event to a downstream sink.
 
-Sometimes they only need:
+Before inventing plugins, ask:
 
-- one replaceable adapter
-- one configuration-driven strategy choice
-- one documented capability protocol
+- do we only need one replaceable adapter?
+- do we need several trusted implementations selected by configuration?
+- do we need third parties to add new implementations without changing host code?
 
-That is much cheaper to govern than a general plugin model.
+Only the third case really pushes you into a plugin host.
 
-Add plugins only when the customization pressure is real enough to justify the ongoing
-cost of operating an extension ecosystem.
+If the pressure is smaller than that, stop early and keep the seam cheaper.
 
-## Discovery should be deliberate, not magical
+## Discovery decides who may even apply
 
-A plugin host needs a clear answer to:
+Discovery is the rule that says which code counts as a candidate.
 
-- how does code become eligible for loading?
-
-Common options include:
+Good discovery rules are:
 
 - explicit configuration
 - a trusted package namespace
 - declared entry points
 
-The best choice is usually the simplest one that matches deployment reality.
+Weak discovery rules sound flexible but age badly:
 
-Unbounded module scanning often looks flexible but creates unclear loading rules and weak
-reviewability.
+- "scan installed modules and see what looks right"
+- "import every package under this prefix"
+- "accept anything with a method called `publish`"
 
-## Registration is where the host proves the seam is real
+If discovery is vague, governance has already slipped.
 
-Discovery only finds candidates. Registration decides whether they are acceptable.
+## Registration is the real contract gate
 
-A useful registration step should validate:
+Discovery only finds candidates.
+Registration decides whether one of them is actually allowed to participate.
 
-- required capability support
+For an `IncidentSink` plugin, registration should validate at least:
+
 - stable plugin identity
-- compatibility version or contract declaration
+- supported contract or protocol version
 - required configuration shape
-- duplicate-name or duplicate-role conflicts
+- declared capabilities or limits
+- duplicate role or duplicate name conflicts
 
-If registration is too permissive, the system learns incompatibility only after the
-plugin is already entangled with live behavior.
+The host should reject a bad plugin before live traffic depends on it.
 
-## Lifecycle matters as much as interface shape
+## Activation must include lifecycle ownership
 
-Plugins often need rules for:
+A plugin host is incomplete if it knows how to call a plugin but not how to own it over
+time.
 
-- startup
-- shutdown
-- error handling
-- retry or disable behavior
-- configuration reload
+Ask:
 
-The extension point is incomplete if the host knows how to call a plugin but not how to
-own it over time.
+- when is the plugin started?
+- what happens if startup fails?
+- can the host disable it cleanly?
+- what signal shows a plugin is degraded?
+- what retry or backoff policy belongs to the host rather than the plugin?
 
-This is especially important in long-running systems where plugin failures can leave
-partial state, hanging resources, or confusing runtime drift.
+These questions are not operational extras. They are part of the seam.
 
-## Sandboxing is rarely solved by an interface alone
+## Sandboxing is not solved by a protocol
 
-One of the most common misunderstandings is:
+One of the most expensive mistakes in extension design is treating interface shape as
+security.
 
-- "we defined a plugin protocol, so plugins are sandboxed"
-
-They are not.
-
-In-process plugins still share:
+An in-process plugin still shares:
 
 - memory
+- process lifetime
 - crash surface
 - dependency space
-- trust assumptions
+- secrets reachable through the host
 
-If the plugin is not trusted, real isolation usually requires a stronger boundary such
-as a process, service, or other operating-system-level containment strategy.
+That means a Python protocol can constrain cooperative code. It cannot turn untrusted
+code into safe code.
 
-A Python interface can constrain how cooperative code is called. It cannot make hostile
-or broken code safe by itself.
+If the plugin is not trusted, you need a stronger boundary than a method call:
 
-## A worked example
+- a subprocess
+- a service boundary
+- another operating-system-level containment strategy
 
-Suppose the capstone wants to let outside developers provide alternate incident sinks.
+Anything weaker should be described honestly as cooperation, not sandboxing.
 
-An honest plugin design might require:
+## A concrete host design for the capstone
 
-- a narrow sink capability protocol
-- explicit registration through configuration or entry points
-- validation of supported protocol version
-- unique plugin name and configuration schema
-- a host-owned policy for sink startup failure and disablement
+An honest capstone host might work like this:
 
-What it should not assume is:
+1. the facade loads configured sink plugin identifiers
+2. discovery resolves those identifiers through one explicit registry
+3. registration checks protocol version, plugin name, and configuration schema
+4. activation creates a host-owned wrapper with logging, failure policy, and disablement
+5. runtime publication sends one narrow incident payload through the seam
 
-- importing the module is enough
-- any object with the right method name is safe to load
-- in-process loading counts as sandboxing
+That design keeps authority in the host:
 
-This keeps plugin support tied to host governance rather than import luck.
+- the host owns discovery rules
+- the host owns failure policy
+- the plugin owns only its sink behavior
 
-## Common mistakes
+This is the right direction because extension does not get to steal governance.
 
-- introducing plugins when a simpler replaceable seam would do
-- discovering code through unclear or overly broad scanning rules
-- registering plugins without validating capability, identity, and compatibility
-- ignoring lifecycle management after successful load
-- calling in-process trust "sandboxing" without a real isolation boundary
+## When not to build a plugin system
+
+Do not build plugins when the real need is:
+
+- one built-in strategy switch
+- one replaceable repository or sink adapter
+- one configuration-selected implementation owned by the same team
+
+In those cases, a capability seam plus clear construction rules is usually enough.
+
+Plugins become honest only when outside addition pressure is real and ongoing.
 
 ## Review checklist
 
-| Question | Good sign |
-| --- | --- |
-| is plugin support justified by a real customization need? | yes |
-| are discovery and registration rules explicit and reviewable? | yes |
-| are capability, identity, and compatibility checked before activation? | yes |
-| is trust separated from interface shape when discussing sandboxing? | yes |
+Use these questions before blessing a new plugin story:
+
+- Is there a real third-party extension need, or only a replaceable adapter need?
+- Can discovery be explained in one sentence without hand-waving?
+- What exactly does registration reject before activation?
+- Who owns retry, disablement, and degraded-mode policy?
+- Is the code trusted enough for in-process loading, or do we need a stronger boundary?
+
+If those answers are weak, the plugin system is still mostly aspiration.
+
+## Common failure modes
+
+- inventing plugins to avoid making one narrow seam explicit
+- accepting vague discovery because explicit registration feels inconvenient
+- validating method names but not semantic compatibility
+- calling in-process cooperation "sandboxing"
+- letting plugins mutate host internals because the public facade is too thin
 
 ## Capstone connection
 
-Use the capstone to ask:
+Use this lesson to review the incident sink seam and answer:
 
-- which customization requests truly need a plugin model instead of one replaceable capability?
-- where should registration reject incompatible or duplicate extensions before runtime work begins?
-- which proposed plugins would be trusted in-process, and which would require a stronger boundary to be safe?
+- should it stay a capability seam or become a real plugin host?
+- which registration checks would reject a bad sink before runtime work begins?
+- which proposed sink would be too risky to trust in-process?
 
-This is where extension enthusiasm meets operational honesty.
+That review turns extension excitement into a governed architectural choice.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain why plugin support carries governance cost beyond interface design
-- name one explicit registration check a capstone plugin system would need
-- explain why in-process loading is not real sandboxing
+- explain the difference between a replaceable capability seam and a true plugin system
+- name the registration checks your capstone host would need before activation
+- explain why in-process loading is not sandboxing for untrusted code
