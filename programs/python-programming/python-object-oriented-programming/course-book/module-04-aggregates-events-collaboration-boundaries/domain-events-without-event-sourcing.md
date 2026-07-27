@@ -1,5 +1,4 @@
-# Domain Events for Decoupling (Without Full Event Sourcing)
-
+# Domain Events without Event Sourcing
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["Domain Events for Decoupling (Without Full Event Sourcing)"]
+  page["Domain Events without Event Sourcing"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,86 +24,105 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Use **domain events** to decouple parts of your system without adopting full event sourcing.
+Domain events are useful long before a system commits to full event sourcing.
 
-A domain event is a record of “something that happened” in the domain, emitted by aggregates when state changes.
+They help answer:
 
-## Where This Fits
+- what meaningful thing just happened inside the domain?
+- which later reactions should know about it?
+- how can we decouple those reactions from the aggregate’s core decision?
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+Without events, later work often gets shoved directly into aggregates or orchestration
+code until the model becomes tangled.
 
-## 1. Event vs Command (Do Not Confuse Them)
+## What a domain event is
 
-- A **command** is a request: “Activate this rule.”
-- An **event** is a fact: “RuleActivated happened.”
+A domain event is a record that a meaningful domain fact occurred.
 
-Commands can fail.
-Events should represent completed changes.
+It is not:
 
-Pedagogy rule: name events in the past tense (`RuleActivated`, `RuleRetired`).
+- every method call
+- every technical log message
+- a replacement for aggregate authority
 
-## 2. When to Emit Events
+It is a named fact that other parts of the system may care about after the aggregate has
+made its own decision.
 
-Emit events when other parts of the system need to react:
+## Why you do not need event sourcing to use them
 
-- update a projection/read model (M04C36),
-- write an audit log,
-- notify external systems,
-- trigger a recalculation.
+Event sourcing is one architectural choice for persisting state through events.
 
-Do **not** emit events for everything. If no one cares, don’t create noise.
+Domain events are a smaller idea:
 
-## 3. Events from Aggregate Methods
+- the aggregate decides something
+- the system records or emits that fact
+- later reactions can respond without being hard-wired into the aggregate
 
-Have aggregate methods return events (or store them internally) when changes succeed:
+You can use that pattern while still storing ordinary current state.
 
-```python
-from dataclasses import dataclass
+## What problem they solve
 
-@dataclass(frozen=True)
-class RuleActivated:
-    rule_id: str
-    metric: str
+Domain events help when:
 
-def activate_rule(self, draft: DraftRule, rule_id: str):
-    active = draft.activate(rule_id)
-    self.add_active_rule(active)
-    return active, [RuleActivated(rule_id=active.rule_id, metric=active.metric.value)]
-```
+- several later reactions should happen after one core decision
+- you want the aggregate to stay focused on its own invariants
+- side work should not clutter the authority surface
 
-The key is: events are produced *as part of a successful mutation*, not as a side effect elsewhere.
+They are a decoupling tool, not a fashionable requirement.
 
-## 4. Not Event Sourcing: Current State Still Lives in Objects
+## Common mistakes
 
-We are *not* saying:
-- “store only events and rebuild state from them”.
+- emitting events for trivial internal noise
+- treating events as permission to weaken aggregate authority
+- hiding important synchronous invariants in asynchronous event handlers
+- using "event" language when the real design still depends on direct tangled calls
 
-We are saying:
-- “use events as notifications / integration points”.
+Events should follow a meaningful domain fact, not replace one.
 
-State still lives in aggregates and repositories store the current state (plus maybe an event outbox).
+## A practical test
 
-## 5. The Outbox Idea (Preview)
+Ask:
 
-If you need to reliably publish events alongside saving state, you’ll want an outbox pattern:
-- save state + pending events together,
-- publish events after commit.
+1. Did something meaningful happen that other parts may care about?
+2. Should those reactions remain outside the aggregate’s core invariant logic?
+3. Would direct calling make the aggregate or application flow too tangled?
 
-This connects directly to Unit-of-Work (M05C42).
+If yes, a domain event may be the right boundary tool.
 
-## Practical Guidelines
+## Review checklist
 
-- Use domain events to decouple reactions from core state changes.
-- Keep events as facts (past tense), not commands.
-- Emit events from within aggregate operations after successful mutation.
-- Avoid full event sourcing unless you truly need it; events can exist without it.
+| Question | Good sign |
+| --- | --- |
+| is the event a meaningful domain fact? | yes |
+| does aggregate authority stay inside the aggregate? | yes |
+| are later reactions allowed to remain decoupled? | yes |
+| are you avoiding event noise and fake sophistication? | yes |
 
-## Exercises for Mastery
+## Capstone connection
 
-1. Add a `RuleRetired` event emitted by your aggregate when a rule is retired.
-2. Implement a simple event list returned from one operation and test that events are emitted only on success.
-3. Identify one existing coupling (module A calls module B directly after a change). Replace it with an event + handler.
+In the capstone, domain events matter where one accepted decision should inform later
+work:
+
+- notifications
+- projections
+- audits
+- downstream workflows
+
+If those reactions are still hard-coded directly into aggregate logic, this lesson points to
+the next cleanup.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain a domain event as a meaningful fact, not a technical detail
+- explain why event sourcing is not required to benefit from domain events
+- name one capstone decision that could publish a useful event
