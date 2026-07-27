@@ -35,6 +35,10 @@ This page uses small real decorators to answer that question. The common pattern
 - delegate to the original function
 - preserve return values and exception behavior unless the wrapper explicitly says otherwise
 
+That last clause is where most weak explanations fail. A wrapper is not thin because the
+source file is short. It is thin because the added behavior stays narrow enough that a
+reviewer can still describe the unchanged parts of the callable honestly.
+
 ## The sentence to keep
 
 When reviewing a thin wrapper, ask:
@@ -43,6 +47,10 @@ When reviewing a thin wrapper, ask:
 > remain unchanged?
 
 If that answer stays short and explicit, the wrapper is often still thin.
+
+If the explanation starts expanding into retry rules, cached state, throttling, fallback
+paths, or failure rewriting, the wrapper is already drifting into the next page's
+territory even if the implementation still looks compact.
 
 ## Thin wrappers change behavior without owning policy-heavy state
 
@@ -54,6 +62,15 @@ A thin wrapper may:
 
 What keeps it thin is not zero behavior change. It is that the wrapper's concern stays
 narrow and does not quietly take ownership of larger runtime policy.
+
+Use this quick classification table while reading or designing wrappers:
+
+| Behavior added | Usually still thin? | Why |
+| --- | --- | --- |
+| timing one call | often yes | it observes one call without owning future behavior |
+| logging one call | often yes | it records, but does not usually redirect or repeat work |
+| deprecation warning | often yes | it signals lifecycle state while leaving the underlying call intact |
+| retry, cache, or fallback | usually no | it decides behavior beyond simple observation |
 
 ## A timing wrapper is a good first example
 
@@ -87,6 +104,12 @@ It still:
 
 That is a good example of thin behavior with a clear cost model.
 
+The phrase "clear cost model" matters here. A learner should be able to say:
+
+- one extra wrapper call exists
+- one timer is started and stopped
+- the original result and failure path still remain intact
+
 ## A deprecation wrapper is another thin pattern
 
 ```python
@@ -115,6 +138,9 @@ This wrapper changes the call boundary too, but in a still-reviewable way:
 That is thin enough when the warning behavior is explicit and the wrapper does not start
 rewriting semantics underneath the caller.
 
+That makes deprecation wrappers a good teaching example: they visibly change the call
+boundary, but the change is still reviewable in one sentence.
+
 ## Call-time behavior should be easy to name
 
 Thin wrappers are easier to trust when the call-time effect can be summarized in one
@@ -126,6 +152,16 @@ sentence:
 
 The moment the explanation becomes much longer, the design may already be moving beyond a
 thin wrapper and toward policy.
+
+## Thin-wrapper proof routes
+
+If a wrapper claims to stay thin, try to prove it with these questions:
+
+| Proof question | What a strong answer sounds like |
+| --- | --- |
+| what behavior was added? | one narrow sentence such as "measure duration" or "emit a warning" |
+| what still stays unchanged? | return values, exception behavior, and call ownership still belong to the wrapped function |
+| what would make this no longer thin? | state across calls, altered failure policy, retries, caching, throttling, or hidden fallback behavior |
 
 ## `try/finally` often matters for transparency
 
@@ -148,6 +184,10 @@ behavior less honest or less useful.
 That is a good example of quality in wrapper design: small details change whether the
 wrapper tells the truth about what it does.
 
+For self-study, this is one of the cleanest examples of "small control-flow choice,
+material teaching consequence." If the timing wrapper says it measures calls but quietly
+stops measuring failed calls, its explanation is already weaker than its surface suggests.
+
 ## Exception transparency is part of being thin
 
 Thin wrappers should usually preserve the original exception model:
@@ -158,6 +198,11 @@ Thin wrappers should usually preserve the original exception model:
 
 This keeps the wrapped callable legible to both callers and reviewers.
 
+That is the boundary to name explicitly:
+
+- observing failure can stay thin
+- changing failure outcomes is already policy
+
 ## Thin does not mean free
 
 Even narrow wrappers still add:
@@ -166,6 +211,9 @@ Even narrow wrappers still add:
 - stack frames
 - trace and debugging complexity
 - potential tooling impact if metadata preservation is sloppy
+
+That list matters because "thin" is not a synonym for "free" or "harmless." It only
+means the change is still narrow enough to inspect directly.
 
 The point of calling them thin is not to pretend they are free. It is to say the added
 behavior is still narrow, inspectable, and reviewable.
@@ -179,6 +227,16 @@ This matters for the course's power ladder:
 
 That boundary is the reason the next page exists.
 
+## Thin-wrapper warning signs
+
+Slow down if a supposed thin wrapper starts to do any of these:
+
+- catches and suppresses exceptions
+- remembers results or counters across calls
+- changes whether the wrapped callable runs at all
+- rewrites arguments or return values in a way the caller cannot easily predict
+- combines multiple concerns instead of one narrow responsibility
+
 ## Review rules for thin practical wrappers
 
 When reviewing thin wrappers, keep these questions close:
@@ -188,6 +246,15 @@ When reviewing thin wrappers, keep these questions close:
 - is `try/finally` used when post-call behavior should still happen on failure?
 - is the wrapper doing narrow observation or signaling, rather than taking ownership of larger policy?
 - does the wrapper already feel like a small framework disguised as a decorator?
+
+## Exit check for this page
+
+Before leaving this page, make sure you can do all of these:
+
+- defend a thin-wrapper claim with concrete evidence rather than code length
+- explain why `finally` matters for timing or cleanup honesty
+- distinguish observing a failure from owning failure policy
+- point to the first feature that would move a thin wrapper into policy territory
 
 ## What to practice from this page
 
