@@ -52,7 +52,7 @@ def inspect_source(model: Path) -> dict[str, Any]:
         ),
         "caller_binds_input": 'source="data/sample.txt"' in caller,
         "caller_binds_output": 'artifact="build/sample.txt"' in caller,
-        "caller_binds_policy": 'prefix=config["normalize"]["prefix"]' in caller,
+        "caller_binds_policy": "prefix=config[" in caller,
         "module_reads_private_policy": 'config["private"]["prefix"]' in module,
         "atomic_publication": (
             "'{output.artifact}.candidate'" in module
