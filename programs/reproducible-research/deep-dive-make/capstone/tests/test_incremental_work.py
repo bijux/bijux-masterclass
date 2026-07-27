@@ -17,10 +17,20 @@ class IncrementalWorkTests(unittest.TestCase):
         make = shutil.which("gmake") or shutil.which("make")
         assert make
         return subprocess.run(
-            [sys.executable, str(SCRIPT), "--policy", str(policy), "--output", str(output), "--make", make],
+            [
+                sys.executable,
+                str(SCRIPT),
+                "--policy",
+                str(policy),
+                "--output",
+                str(output),
+                "--make",
+                make,
+            ],
             cwd=CAPSTONE,
             text=True,
             capture_output=True,
+            check=False,
         )
 
     def test_captures_expected_scope_and_restores_source(self) -> None:
@@ -28,7 +38,9 @@ class IncrementalWorkTests(unittest.TestCase):
         before = source.stat().st_mtime_ns
         with TemporaryDirectory() as directory:
             output = Path(directory) / "evidence.json"
-            result = self.run_case(CAPSTONE / "performance" / "incremental-policy.tsv", output)
+            result = self.run_case(
+                CAPSTONE / "performance" / "incremental-policy.tsv", output
+            )
             report = json.loads(output.read_text())
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(report["result"], "PASS")

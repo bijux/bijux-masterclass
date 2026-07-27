@@ -31,7 +31,9 @@ def main() -> int:
     root = Path(__file__).resolve().parents[1]
     case = read_incremental_policy(arguments.policy)[0]
     all_outputs = case.must_rebuild + case.must_remain
-    subprocess.run([arguments.make, "--no-print-directory", "all"], cwd=root, check=True)
+    subprocess.run(
+        [arguments.make, "--no-print-directory", "all"], cwd=root, check=True
+    )
     before = snapshot(root, all_outputs)
     source = root / case.input_path
     original = source.stat()
@@ -43,6 +45,7 @@ def main() -> int:
             cwd=root,
             text=True,
             capture_output=True,
+            check=False,
         )
     finally:
         os.utime(source, ns=(original.st_atime_ns, original.st_mtime_ns))
@@ -57,7 +60,9 @@ def main() -> int:
         "observed_rebuild": rebuilt,
         "missing_rebuild": missing,
         "unexpected_rebuild": unexpected,
-        "result": "PASS" if run.returncode == 0 and not missing and not unexpected else "FAIL",
+        "result": "PASS"
+        if run.returncode == 0 and not missing and not unexpected
+        else "FAIL",
         "trace": run.stdout + run.stderr,
     }
     arguments.output.parent.mkdir(parents=True, exist_ok=True)

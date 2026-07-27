@@ -35,7 +35,9 @@ def read_incremental_policy(path: Path) -> list[IncrementalCase]:
         if input_path in inputs:
             raise ValueError(f"line {line}: duplicate input: {input_path}")
         if set(rebuild) & set(remain):
-            raise ValueError(f"line {line}: output cannot be both rebuilt and unchanged")
+            raise ValueError(
+                f"line {line}: output cannot be both rebuilt and unchanged"
+            )
         inputs.add(input_path)
         cases.append(IncrementalCase(input_path, rebuild, remain))
     if not cases:
