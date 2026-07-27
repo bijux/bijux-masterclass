@@ -55,10 +55,10 @@ Build one small scaling review packet as you go:
 
 - one ownership map that groups every current rule family
 - one before-and-after entrypoint view
-- one include-versus-module decision note for a real candidate boundary
+- one executable caller/module pair with an override matrix
 - one short public file contract excerpt
 - one gate table that ties each check to a structural claim
-- one rejected abstraction note explaining what you did not split and why
+- one rejected hidden-coupling mutation with its preserved failure evidence
 
 If those six artifacts are missing, the day usually turns into folder movement instead of
 reviewable repository design.
@@ -78,6 +78,20 @@ flowchart LR
 Use that route deliberately. It keeps the growth story readable instead of rewarding the
 largest diff.
 
+For the module exercises, use this evidence loop:
+
+```mermaid
+flowchart LR
+  caller["caller binding"] --> plan["rule list and dry-run"]
+  plan --> artifact["executed artifact"]
+  artifact --> mutation["dishonest interface mutation"]
+  mutation --> rejection["preserved gate failure"]
+  rejection --> decision["reuse decision"]
+```
+
+The loop prevents a successful dry-run from becoming the only evidence for interface
+quality.
+
 ## What a strong day packet looks like
 
 By the time you finish all ten exercises, your work should leave behind one small,
@@ -85,10 +99,10 @@ reviewable packet instead of ten disconnected refactor fragments:
 
 - one ownership map for the current workflow
 - one before-and-after entrypoint comparison
-- one include-versus-module decision with a real interface note
+- one executable module with two caller bindings and an override matrix
 - one public file-contract excerpt plus one clearly internal path family
 - one gate table matching checks to structural claims
-- one rejected-abstraction note explaining what you deliberately did not split
+- one hidden-coupling rejection with source, plan, artifact, and mutation evidence
 
 If you cannot point to those artifacts, the exercise day is still too dependent on tacit
 classroom guidance.
@@ -143,19 +157,29 @@ learn from it quickly.
 
 ## Exercise 4: Decide whether a boundary is a module
 
-Choose one candidate sub-workflow and decide whether it should stay an include or become
-a real module boundary.
+Start from the capstone's `explicit-contract` module-interface specimen. Add a second
+caller named `normalize_control` with:
+
+- input `data/control.txt`
+- output `build/control.txt`
+- prefix `control-reviewed`
+
+Do not edit the module implementation. Run the module interface audit route from a
+disposable copy or reproduce its evidence commands directly.
 
 What to hand in:
 
-- the candidate boundary
-- named inputs, outputs, parameters, and assumptions
-- your decision and why
-- one missing interface detail that would block promotion to a module
-- one explicit sentence saying what would remain an include if the interface is not ready
+- both `use rule` bindings
+- an override matrix for input, output, parameter, implementation, and publication
+- rule-list and dry-run evidence showing both imported local rules
+- both artifacts and the caller-selected prefixes they record
+- one mutation that removes the control caller's policy or output binding
+- the preserved rejection result
+- your include-versus-module decision and one limit the evidence does not settle
 
 Study note:
-Promote a module only when the interface is real enough to explain without hand-waving.
+If the second caller requires private module edits, identify the missing interface surface
+instead of forcing the promotion.
 
 ## Exercise 5: Write a public file contract
 
@@ -201,25 +225,28 @@ Most weak Module 04 answers are not short on files. They are short on named boun
 
 ## Exercise 6: Review one abstraction you should reject
 
-Find a structural change that would make the repository look more abstract but would not
-actually improve understanding.
+Run:
 
-Examples might include:
+```bash
+make capstone-module-interface-audit
+```
 
-- a module with no stable interface
-- helper files split by size instead of ownership
-- a catch-all `utils.smk` file
+Review the `hidden-coupling` specimen as if it were proposed in a pull request. It runs
+successfully, lists the expected rules, and publishes an artifact. Decide whether that is
+enough to accept it.
 
 What to hand in:
 
-- the rejected abstraction
-- why it is tempting
-- why it would weaken ownership or review
-- the smaller change you chose instead
+- the `HIDDEN_MODULE_COUPLING_REPRODUCED` summary row
+- the broad module config observation
+- the absent caller policy binding
+- the private module config read
+- the artifact line selected by hidden policy
+- a repair that narrows config and moves policy ownership to the caller
+- one reason the rule list and dry-run could not diagnose the defect alone
 
 Study note:
-Abstraction is not automatically progress. The right test is whether another human can
-explain the repository more easily afterward.
+Do not report only that the row passed. Explain what defect the passing finding reproduced.
 
 ## Exercise 7: Break and defend a schema boundary
 
@@ -262,13 +289,15 @@ What to hand in:
 
 - findings ordered by trust impact
 - one graph comparison
+- the module-interface summary and relevant source observations
+- one controlled module-interface rejection result
 - one contract validation result
 - any boundary that should be simplified, postponed, or removed
 - one gate you would add only after explaining exactly which structural claim it defends
 
 Study note:
-This is a review exercise first. Treat structural changes as trust changes, not as style
-preferences.
+Separate acceptance evidence from rejection evidence. A green audit without a mutation
+route does not prove the gate can discriminate.
 
 ## Exercise 10: Rehearse the next month of growth
 
@@ -293,6 +322,7 @@ Do not call the day complete if your answers do any of these:
 
 - split files without naming owned concerns first
 - promote a module because the file was long, not because the interface is real
+- approve a module from rule listing and dry-run without inspecting config or caller policy
 - describe public outputs without naming any internal state that must stay private
 - add gates without saying which structural promise they defend
 - praise "modularity" without showing where next month’s growth should land
@@ -303,7 +333,8 @@ Do not count the day complete unless you can do all of this without leaning on t
 page as a restructuring script:
 
 - explain one split in terms of named ownership
-- reject one abstraction that only adds indirection
+- prove one module with two caller bindings without editing private implementation
+- reject one hidden-coupling abstraction using source, runtime, and mutation evidence
 - defend one public file contract and one internal path family clearly
 - choose one gate that protects one specific structural claim
 - predict where the next month of growth should land
