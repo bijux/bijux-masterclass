@@ -241,6 +241,51 @@ After a tuning change, the same policy must pass before and after. If the intend
 contract changes, review and change the policy explicitly rather than weakening the
 collector until the edit passes.
 
+`make perf` runs this proof before timing and binds its semantic fields into
+`evidence.json`. `performance-compare` then requires baseline and candidate to agree on:
+
+- incremental policy digest
+- declared input
+- expected rebuild set
+- observed rebuild set
+- empty missing and unexpected sets
+
+This closes a common review loophole. A candidate cannot point to a passing incremental
+report from another run while presenting unrelated timing evidence.
+
+If a tuning edit intentionally changes requested work, do not add an exception to the
+comparison. Review the graph decision first:
+
+1. explain why the old expected set is no longer the product contract
+2. update the incremental policy to the reviewed contract
+3. collect baseline and candidate under that one policy if the old revision can satisfy it
+4. if it cannot, report two different work contracts rather than one speedup percentage
+
+The last outcome may still support an engineering decision. It does not support the claim
+that equivalent work became faster.
+
+## Keep source change separate from environment change
+
+A candidate experiment is meant to vary the source revision. The capstone comparator
+therefore allows different clean revisions and records both. It rejects changes to the
+compiler, GNU Make, Python, platform, runner label, scenario policy, and sample count.
+
+That distinction supports attribution:
+
+```text
+source revision differs + context matches + work matches
+    -> timing delta may be interpreted
+
+source revision differs + compiler differs
+    -> source and toolchain effects are confounded
+
+source revision differs + worktree is dirty
+    -> the reported revision does not identify measured source
+```
+
+Do not solve either rejected case by editing evidence. Recollect under one named
+environment from clean revisions.
+
 ## Common anti-pattern: tuning by hiding prerequisites
 
 One of the most dangerous fake optimizations is simply hiding an input so fewer rebuilds
