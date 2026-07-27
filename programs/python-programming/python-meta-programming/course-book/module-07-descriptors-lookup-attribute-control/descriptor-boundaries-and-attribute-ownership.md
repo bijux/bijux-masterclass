@@ -27,6 +27,10 @@ flowchart LR
 
 This final core is the design page for the module.
 
+This page is the module's main stewardship page. The point is not to reward descriptor
+cleverness. The point is to identify when attribute access is the real owner of a rule and
+when descriptor power would simply make a smaller design harder to read.
+
 By now the mechanics are visible. The remaining question is the one that matters in real
 reviews:
 
@@ -39,6 +43,10 @@ field-level behavior across multiple instances or classes; stay with lower-power
 when the rule is narrower or more explicit there.
 
 That is the boundary Module 07 keeps visible.
+
+Keep one more sentence beside it:
+
+> if the rule stops sounding like "behavior of this attribute," a descriptor is probably no longer the honest owner.
 
 ## The lower-power ladder
 
@@ -53,6 +61,16 @@ plain attribute or method
 
 This is not a prestige ladder. It is an ownership ladder.
 
+## How to read the ladder honestly
+
+Move upward only when the lower-power owner leaves a concrete gap:
+
+| Move from... | Move to... | Only when... |
+| --- | --- | --- |
+| plain attribute or method | property | one named attribute needs a visible read/write boundary |
+| property | reusable descriptor | the same field rule repeats across attributes or classes |
+| descriptor | wider class hooks or metaclasses | attribute-level ownership is no longer enough for the requirement |
+
 ## Properties are still descriptors, but they solve a narrower problem
 
 A property is often the better choice when:
@@ -64,6 +82,9 @@ A property is often the better choice when:
 That means Module 07 is not replacing properties. It is showing when a more reusable
 descriptor becomes the clearer owner.
 
+Properties are therefore the first honest alternative to test. If one property on one
+class tells the full story, descriptor reuse may already be overkill.
+
 ## Reusable descriptors earn their complexity through repetition
 
 A dedicated descriptor starts making sense when:
@@ -74,6 +95,8 @@ A dedicated descriptor starts making sense when:
 
 If those conditions are missing, a property may still be the simpler and more honest
 design.
+
+Reuse pressure is the justification, not the fact that descriptors are more general.
 
 ## Descriptors versus `__setattr__`
 
@@ -88,6 +111,10 @@ That centralizes logic for every attribute in one place, which often makes the d
 
 Descriptors keep ownership local to each attribute boundary. That locality is one of their
 biggest strengths.
+
+It is also their biggest review advantage. A learner can point to one field declaration
+and one descriptor class and say what rule lives there, instead of tracing a giant
+`__setattr__` branch for every attribute in the object.
 
 ## Descriptors versus wrappers
 
@@ -110,6 +137,9 @@ If the behavior is about:
 
 then a wrapper is probably the clearer owner.
 
+That boundary matters because "intercepting something" is not specific enough. The real
+question is whether the interception belongs to attribute access or call entry.
+
 ## Descriptors versus metaclasses
 
 Descriptors do not control class creation.
@@ -123,6 +153,18 @@ That means you should resist metaclass escalation when the real problem is still
 - reusable attribute semantics
 
 Those are strong descriptor cases, not class-creation cases.
+
+## A decision table for likely owners
+
+Use this table when the right owner feels uncertain:
+
+| If the requirement mainly... | Likely strongest owner |
+| --- | --- |
+| changes one local attribute rule in one class | property |
+| repeats one field rule across many attributes or classes | reusable descriptor |
+| coordinates many attributes together | wider explicit validator or object-level owner |
+| changes call behavior rather than field behavior | wrapper |
+| depends on class creation timing or namespace preparation | metaclass or broader class-creation tool |
 
 ## A useful negative test
 
@@ -143,6 +185,10 @@ If the explanation immediately turns into:
 
 then the ownership may already be elsewhere.
 
+That test is useful precisely because it forces plainer language. If you cannot describe
+the rule as behavior of a specific attribute, the descriptor explanation is probably being
+stretched too far.
+
 ## Why the module centers the attribute engine
 
 The old synthesis idea from the monolithic page is still important:
@@ -159,6 +205,28 @@ That matters because once the engine is visible:
 
 The point is not to make descriptors feel more advanced. The point is to make them more
 reviewable.
+
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "a descriptor is cleaner here" | "a descriptor is cleaner only if attribute-level reuse is the real need" |
+| "we should centralize this in `__setattr__`" | "centralization is only better if per-attribute ownership would become less clear" |
+| "this belongs in a wrapper too" | "wrappers and descriptors own different boundaries" |
+| "a metaclass is the more advanced option" | "a metaclass is justified only when class creation timing matters" |
+
+## Failure modes for ownership decisions
+
+These are the mistakes this page is trying to prevent:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| choosing a descriptor for a one-off local rule | abstraction cost exceeds clarity gain | keep a property or plain method |
+| using `__setattr__` for many unrelated field rules | ownership becomes centralized and harder to inspect | split the rules into properties or descriptors |
+| using a wrapper for field semantics | call-boundary tools blur attribute ownership | move the rule back to the attribute surface |
+| escalating to metaclasses for field-level reuse | class-creation power exceeds the need | stay at descriptor level unless creation timing truly matters |
 
 ## What strong Module 07 decisions sound like
 
@@ -180,6 +248,16 @@ When reviewing a descriptor-heavy design, keep these questions close:
 - would a property be clearer because the rule is local to one attribute?
 - is `__setattr__` being used where descriptors would keep ownership narrower?
 - is someone proposing a metaclass for a field-level problem?
+- can another reviewer name the rejected lower-power and rejected higher-power alternatives?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- place one requirement honestly on the property/descriptor/wider-owner ladder
+- explain one real reuse pressure that justifies a descriptor
+- explain one case where a property remains the better owner
+- name one missing condition that would justify escalating beyond a descriptor
 
 ## What to practice from this page
 
