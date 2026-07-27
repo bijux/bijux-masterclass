@@ -17,162 +17,222 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  meaning["name the domain meaning"] --> shape["inspect the storage shape"]
+  shape --> translate["decide what must be translated"]
+  translate --> leak["reject storage details that must not leak inward"]
+  leak --> prove["choose proof that the mapping still preserves meaning"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+Read the first diagram as a placement map: this page sits near the center of Module 06
+because it explains how storage can differ from the model without redefining it. Read
+the second diagram as the lesson route: start from domain meaning, inspect the stored
+shape, decide what translation is required, then prove that the mapping preserved the
+important invariants.
 
 ## Why this lesson matters
 
-Persistence pressure often teaches the wrong lesson: because storage wants rows, maps,
-and primitive columns, students start believing the domain should look like rows, maps,
-and primitive columns too.
+Persistence pressure often teaches the wrong lesson. Because storage wants rows,
+primitive columns, nullable fields, and denormalized records, learners start believing
+the domain should want those same things.
 
 That is backwards.
 
-The storage model exists to serve persistence concerns such as:
+The storage model exists to serve:
 
 - indexing
-- null handling
+- query shape
 - denormalization
-- query efficiency
-- external format constraints
+- migration convenience
+- transport or file-format constraints
 
-The domain object exists to preserve meaning, invariants, and behavior. Mapping is what
-lets those two shapes differ without dissolving into each other.
+The domain object exists to serve:
+
+- meaning
+- invariants
+- behavior
+- ownership boundaries
+
+Mapping is the boundary that lets both shapes do their jobs without collapsing into each
+other.
+
+## Start with the aggregate, not the row
+
+When a mapping design feels confusing, ask this first:
+
+> What state and rules does the aggregate actually need in order to stay honest?
+
+For `WorkshopEnrollment`, that includes:
+
+- workshop identifier
+- seat limit
+- confirmed attendees
+- waitlist order
+- version used to detect stale writes
+
+Only after that should you ask how the stored representation wants to arrange those
+facts.
+
+If you begin with the row shape instead, the mapping layer quickly becomes a one-way
+flattening step instead of a translation boundary.
 
 ## Domain shape and storage shape have different jobs
 
 A domain object may use:
 
-- semantic value types
-- invariants across fields
+- value objects
+- invariants across several fields
 - explicit ownership boundaries
-- behavior attached to state
+- methods that attach behavior to state
 
-A storage shape may use:
+A storage representation may use:
 
+- surrogate keys
+- flattened primitives
 - nullable columns
-- flattened or duplicated fields
-- surrogate identifiers
-- representations optimized for retrieval rather than domain clarity
+- denormalized lists or join rows
+- helper fields for indexing or migration
 
-These are both valid, but they are valid for different reasons. Trouble begins when the
-storage reason is allowed to redefine the domain reason.
+These are both valid. They are valid for different reasons.
+
+The design mistake is not "having two shapes." The design mistake is forgetting which
+shape exists for which reason.
 
 ## Mapping is translation, not copying
 
-When you map between domain and storage, you are not simply transferring fields. You are
-translating between two contracts.
+When you map between the domain and storage, you are not merely transferring fields.
+You are translating between two contracts.
 
-That translation can include:
+That translation may include:
 
-- collapsing semantic types into primitives for persistence
-- re-expanding primitives into semantic types on load
-- handling storage-only fields such as version counters or timestamps
-- rejecting or normalizing representations that the domain should not see directly
+- collapsing semantic types into primitive storage values
+- rebuilding semantic types on load
+- handling storage-only fields such as `updated_at` or revision counters
+- rejecting shapes that the domain must not see directly
+- normalizing multiple stored fragments into one aggregate state surface
 
-If the mapping layer is missing or too implicit, that translation still happens, but it
-happens everywhere and without reviewable ownership.
+If the mapping layer is weak or missing, the translation still happens. It simply
+happens everywhere, with unclear ownership, and with much less reviewability.
 
-## Semantic types should survive in the domain
+## Worked comparison: one aggregate, two shapes
 
-One common failure mode is widening every meaningful value to a string or integer
-because the database stores strings or integers.
+For `WorkshopEnrollment`, a useful comparison might look like this:
+
+| Concern | Domain shape | Storage shape |
+| --- | --- | --- |
+| workshop id | value with domain meaning | string or UUID column |
+| confirmed attendees | set or owned collection with invariant rules | join rows or normalized attendee table |
+| waitlist order | ordered collection with promotion meaning | ordered rows or stored sequence value |
+| version | persistence boundary signal | integer revision column |
+| last updated timestamp | often absent from domain | operational storage field |
+
+This table matters because it shows that one stored shape may contain fields the domain
+should never treat as central meaning, while one domain rule may span several stored
+rows.
+
+## Semantic types should disappear and then reappear
+
+One of the most common mistakes is widening every meaningful value to a primitive because
+the database stores primitives.
 
 For example:
 
-- a `RuleId` may persist as text
-- a `MetricName` may persist as text
-- a `Severity` may persist as text or small integer
+- `WorkshopId` becomes plain text everywhere
+- `SeatLimit` becomes "just an int"
+- waitlist position becomes an accidental array offset
 
-That does not mean the whole application should start treating them as interchangeable
-primitives.
+That may simplify the mapper in the short term, but it impoverishes the model.
 
-The mapping boundary is exactly where you convert between:
+The healthier rule is:
 
-- storage-friendly representation
-- domain-meaningful type
+- persistence may flatten rich meaning at the boundary
+- the domain should regain that meaning as soon as the boundary is crossed
 
-Once that boundary is crossed, the domain should recover its richer vocabulary.
+If primitives leak all the way inward, the mapping layer stopped protecting the language
+of the model.
 
-## Nullability belongs to the edge unless the domain truly owns it
+## Nullability belongs at the edge unless the domain owns the absence
 
-Storage models often allow null because:
+Storage often allows `NULL` because:
 
-- old rows may be incomplete
-- a migration is in progress
-- a query shape is broader than the domain type
+- an old record predates a new field
+- a migration is incomplete
+- a query or export shape is broader than the real domain type
 
-That does not automatically mean the domain object should accept missing data in the same
-places.
+That does not automatically mean the domain should accept absence in the same places.
 
-If the domain truly requires a value, the mapping layer should enforce that rather than
-teaching the rest of the system to normalize around accidental `None` values.
+Ask two separate questions:
 
-## Prefer explicit mapping over hidden magic
+1. can storage contain a missing value?
+2. can the present-tense domain meaningfully accept a missing value?
 
-Heavy ORM reflection and automatic field mirroring can feel efficient, but they often
-hide the most important questions:
-
-- where did a field change meaning?
-- where was nullability introduced or removed?
-- where was a semantic type widened or narrowed?
-
-Explicit mapping code makes those decisions visible.
-
-That visibility matters more in teaching material than cleverness does, because the goal
-is to help the reader reason about boundary meaning, not just reduce lines of code.
+If the answer to the second question is no, the mapper should reject or translate
+deliberately instead of teaching the whole system to normalize around `None`.
 
 ## Storage-only fields should stay storage-only
 
-Some persisted data belongs to the persistence story rather than the domain story:
+Some stored fields belong to the persistence story, not the business story:
 
-- row version tokens
+- revision counters
 - migration markers
-- index helpers
-- session or ORM tracking metadata
+- projection helpers
+- ORM tracking metadata
+- indexing convenience fields
 
-Do not let these become accidental domain fields just because they exist in storage.
+The mapper may need to know about them. The aggregate usually should not.
 
-The mapping layer should know about them when necessary without teaching the whole model
-to depend on them as if they were business meaning.
+One good review question is:
+
+> If this field vanished from the business problem tomorrow, would the domain become
+> harder to explain?
+
+If the answer is no, the field is probably a storage concern and should stay near the
+edge.
+
+## Prefer explicit mapping over hidden magic when meaning changes
+
+Automatic ORM mirroring feels convenient when the shapes happen to align. But the most
+important mapping moments are exactly the ones where alignment breaks:
+
+- a semantic type must be rebuilt
+- several rows become one aggregate
+- nullability tightens
+- a historical shape needs translation
+
+Those are not the moments to hide the design inside reflection or magic defaults.
+
+Explicit mapping code is valuable here because it makes boundary meaning reviewable.
+
+## Review drill
+
+For any mapper, ask these four questions:
+
+1. which fields are domain meaning?
+2. which fields exist only for storage convenience?
+3. where does a primitive become a semantic type again?
+4. what malformed stored shape must be rejected rather than normalized?
+
+If those answers are fuzzy, the mapping layer is still too implicit.
 
 ## Common mistakes
 
-- returning storage rows directly to the application layer
+- returning storage rows directly to application code
 - widening domain value types into primitives across the whole system
 - treating nullable storage fields as if they define the domain contract
-- relying on hidden ORM magic where meaning changes are no longer reviewable
-- copying storage-only metadata into domain objects unnecessarily
+- relying on hidden reflection where meaning changes are no longer reviewable
+- copying storage-only metadata into aggregates without a real business reason
 
-These mistakes all weaken the same thing: the separation between storage convenience and
-domain meaning.
-
-## Review checklist
-
-| Question | Good sign |
-| --- | --- |
-| is there a clear translation boundary between domain and storage shapes? | yes |
-| do semantic types reappear after crossing that boundary? | yes |
-| is storage nullability prevented from silently redefining the domain? | yes |
-| are storage-only concerns kept from polluting the core model? | yes |
+All of these mistakes weaken the same boundary: storage convenience starts dictating the
+language of the model.
 
 ## Capstone connection
 
-Use the capstone repository and record-like shapes to ask:
+Use the capstone repository path to ask:
 
 - which fields are pure domain meaning?
-- which fields are storage convenience or coordination detail?
-- where would a schema change be absorbed if the domain meaning stayed the same?
+- which stored helpers are there only for persistence or coordination?
+- where would a schema change be absorbed if domain meaning stayed the same?
+- which semantic type should reappear immediately after load?
 
 Those questions turn mapping from boilerplate into one of the most important teaching
 surfaces in the module.
@@ -182,5 +242,5 @@ surfaces in the module.
 Leave this lesson only when you can do all of these:
 
 - explain why domain and storage shapes should often differ
-- identify one semantic type that should reappear after persistence translation
-- describe one place where storage nullability must not silently become domain meaning
+- identify one semantic type that should disappear at the edge and reappear after load
+- describe one place where storage nullability must not silently redefine the domain
