@@ -24,232 +24,267 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These are model answers for the capstone hardening lab from the exercise page. They use
-the course-wide path built across earlier modules:
+Use these answers as model operational reasoning, not as slogans to repeat.
 
-- `WorkshopEnrollment` owns seat truth
-- the repository boundary persists it
-- projections and notifications run downstream
-- `CertificateIssuanceService` later consumes confirmed state
+The point is to show how a strong maintainer turns one capstone path into:
 
-The point of the answers is to show what a final operational packet looks like when
-performance, trust, and recovery pressure are treated as design questions rather than as
-detached checklists.
+- a measurement plan
+- a semantics-safe optimization decision
+- a signal plan
+- a trust-boundary rule
+- a recovery note
 
-## Answer 1: Measure one hot path first
+If your own packet was longer than these answers, that is expected. The harder work was
+building the packet. This page compresses the reasoning behind it.
 
-Suppose the team suspects seat-confirmation requests are slow during registration spikes.
+## Running capstone path
 
-A strong measurement plan says:
+These answers use the same path as the exercise page:
+
+1. a seat request enters
+2. `WorkshopEnrollment` decides confirmed or waitlisted
+3. the repository saves authoritative state
+4. downstream projection, notification, or artifact work makes the result visible
+5. later workflows such as certificate issuance depend on that confirmed state
+
+Everything below is judged by one question:
+
+Does the operational change preserve semantic truth while making the system easier to
+measure, diagnose, and recover?
+
+## Answer 1: Measure one suspected hot path first
+
+Suppose the team suspects registration spikes make seat confirmation slow.
+
+A strong measurement plan would say:
 
 - measure end-to-end confirmation latency
-- break the trace into aggregate decision time, repository save time, and downstream
-  projection/notification time
-- capture contention frequency from optimistic concurrency failures
+- separate aggregate decision time from repository save time and downstream fan-out time
+- record optimistic concurrency conflict frequency
+- use a workload shape that resembles burst registration rather than a synthetic single
+  request loop
 
 What intuition to reject without evidence:
 
-- "the aggregate logic must be the bottleneck because it feels busy"
+- "the aggregate must be slow because it does the important business logic"
 
-The aggregate may be cheap while storage or projection lag is expensive. The profiler or
-trace should decide, not aesthetics.
+That guess may be wrong.
+The expensive part may be repository conflict handling or derived downstream work.
 
-## Answer 2: Review optimization for semantic drift
+## Answer 2: Review one optimization for semantic drift
 
 Possible optimization:
 
-- cache "remaining seat count" for read-heavy screens
+- cache seat-availability reads for busy course pages
 
-Semantic contract that must remain true:
+Semantic contract that must not move:
 
-- seat-confirmation decisions still use authoritative aggregate state
+- confirmation decisions still use authoritative aggregate state
 
-Drift risk:
+Possible drift:
 
-- stale cached counts may leak into write decisions or operator trust
+- stale cached counts get reused in write decisions
+- operators begin trusting an eventually consistent read as if it were authoritative
 
-Boundary that should absorb it:
+Boundary that should absorb the optimization:
 
-- read-model or projection boundary, not the aggregate itself
+- a read-model or projection boundary, not the aggregate or write path itself
 
-Proof route:
+Proof route that should fail first:
 
-- tests that writes still consult authoritative state
-- trace or audit output proving the cache only serves reads
+- workflow or integration proof showing writes still consult authoritative state
+- observability review showing stale reads are labeled or tolerated correctly
+
+Faster but semantically wrong is still wrong.
 
 ## Answer 3: Compare caching, batching, and lazy work
 
-For projection updates after enrollment events:
+Take projection updates after enrollment events.
 
-- caching helps repeated reads but risks stale dashboards
-- batching lowers write pressure but risks delayed operator visibility
-- lazy work defers cost but may move latency into surprising later paths
+Caching:
+
+- helps repeated reads
+- risks stale operator dashboards
+- is dangerous if confused with authority
+
+Batching:
+
+- reduces write amplification and downstream pressure
+- risks short lag before visibility updates
+- is acceptable only if that lag is understood and observable
+
+Lazy work:
+
+- defers cost
+- can move latency into surprising later paths
+- makes timing harder to reason about unless clearly bounded
 
 Best choice here:
 
-- batching projection updates if the system can tolerate short lag
+- batching projection updates if short lag is acceptable and measurable
 
 Rejected option:
 
-- caching authoritative seat availability for writes
+- caching authoritative seat availability for the write path
 
 Why reject it:
 
-- it pressures the truth boundary and risks semantic drift under concurrency
+- it pressures the truth boundary and invites semantic drift under contention
 
-## Answer 4: Observability addition
+## Answer 4: One observability addition
 
 Useful signal set:
 
 - metric: `enrollment_confirmation_latency_ms`
 - counter: `enrollment_concurrency_conflicts_total`
-- structured log on failure with workshop id, attendee id, and boundary name
+- structured failure log keyed by workshop id and boundary name
+- optional trace segment for repository save and downstream publication
 
-Safe identifier to include:
+Safe identifier:
 
-- workshop id
+- workshop id or issuance id
 
-Detail to exclude:
+Detail to keep out:
 
-- full attendee payload or private payment metadata
+- full attendee payload
+- sensitive storage keys
+- raw callback bodies
 
-Operator question supported:
+Operator question this helps answer:
 
-- "Are slow confirmations coming from domain work, persistence contention, or downstream
+- "Is the slowdown happening in domain work, repository conflict handling, or downstream
   fan-out?"
 
-That is observability serving diagnosis, not just verbosity.
+Signals matter because they shorten diagnosis, not because they increase output volume.
 
 ## Answer 5: Harden one input or default
 
-Choose the payment callback boundary.
+Choose the external callback or administrative reissue boundary.
 
-Hardening rule:
+Good hardening rule:
 
-- accept only the small normalized fields required to associate a payment confirmation
-  with an enrollment request
+- accept only the normalized fields required to match the callback or command to a known
+  workflow
 
 Safe default:
 
-- reject unknown callback states unless explicitly mapped
+- reject unknown states or unsupported payload shapes unless explicitly mapped
 
-Unsafe convenience to reject:
+Convenience shortcut to reject:
 
-- passing the whole remote payload through to the aggregate because "we might need it
+- passing the whole remote payload through to the aggregate because "we may want it
   later"
 
 Proof that should fail first:
 
-- boundary tests feeding malformed or extra fields
-- review artifact showing only normalized data crosses into the domain
+- boundary tests with malformed and extra-field inputs
+- review note proving only normalized information crosses the trust boundary
 
-## Answer 6: Review one serialization or secret boundary
+Secure defaults belong at the crossing point, not in scattered cleanup code later.
+
+## Answer 6: Review one serialization or redaction boundary
 
 Choose certificate issuance logging.
 
 Sensitive or risky data:
 
-- storage keys containing personal information
+- storage keys that reveal personal information
 - full certificate file paths
 - raw notification payloads
 
 Rule:
 
-- log stable issuance ids and boundary outcome, not the full artifact location or
-  rendered content
+- log stable issuance ids, boundary outcomes, and bounded error categories
+- do not log raw artifact locations or rendered content
 
-Damage if debugging convenience wins:
+Damage if convenience wins:
 
-- sensitive storage details become searchable in logs
-- operators and developers begin using logs as an accidental data export surface
+- logs become searchable data leaks
+- debugging tools become accidental export surfaces
+- operators start depending on unsafe details for recovery
 
-## Answer 7: Runbook entry
+Operational readability must never require private data leakage.
+
+## Answer 7: One runbook entry
 
 Failure mode:
 
-- certificate generation succeeds in persistence but upload latency spikes and delivery
-  stalls
+- authoritative issuance state is persisted, but artifact upload latency spikes and
+  visible completion stalls
 
-First signal:
+A useful runbook entry would say:
 
-- rising certificate issuance latency and object-storage error rate
+- first signal: rising issuance latency plus storage timeout or error counts
+- first safe step: confirm authoritative issuance state before attempting rerun
+- artifact to inspect: issuance trace, audit row, or progress marker keyed by issuance id
+- unsafe shortcut to avoid: rerun the whole workflow blindly and risk duplicate visible
+  completion
+- design assumption made explicit: authoritative issuance truth is separate from outward
+  artifact publication
 
-First safe step:
+That is what makes a runbook architectural rather than decorative.
 
-- verify whether authoritative issuance records committed before attempting reruns
-
-Useful artifact:
-
-- issuance workflow trace or run-specific audit row keyed by issuance id
-
-Design assumption made visible:
-
-- persistence of issuance truth is separate from downstream artifact delivery
-
-That assumption must be explicit, or operators will guess wrong under pressure.
-
-## Answer 8: Failure drill
+## Answer 8: One failure drill
 
 Scenario:
 
-- duplicate payment callbacks arrive for the same attendee
+- duplicate callback or retry trigger arrives for the same logical workflow
 
 Boundary that should fail loudly first:
 
-- the workflow boundary that maps callback to enrollment confirmation path
+- the workflow boundary that maps the trigger to durable progress and visible work
 
-Evidence the drill worked:
+Evidence the drill succeeded:
 
-- one confirmation succeeds
-- duplicates are rejected or ignored idempotently
-- projections and notifications do not duplicate visible outcomes
+- one logical action remains authoritative
+- visible downstream work does not duplicate
+- signals explain why the second trigger was absorbed or rejected
 
-Weakness expected to surface:
+Weakness the drill is likely to expose:
 
-- hidden coupling between callback handling and downstream side effects
+- hidden coupling between retries and visible side effects
 
-That is exactly why the drill is worth running before production teaches the lesson more
-expensively.
+That is exactly the kind of weakness drills are meant to reveal before production does.
 
 ## Answer 9: Full operational audit
 
-A strong audit paragraph might read:
+A strong short audit note might read:
 
-> The core semantic contract is that seat truth lives in `WorkshopEnrollment` and later
-> certificate issuance depends on confirmed state only. The main performance pressure is
-> the persistence and downstream fan-out path under bursts, not the aggregate alone.
-> Operators need confirmation latency, conflict counts, and issuance outcome signals.
-> The most important trust boundary is external callback and artifact-logging behavior.
-> Recovery depends on a runbook that distinguishes authoritative writes from downstream
-> publication or upload delays. The main remaining weakness is duplicate side-effect risk
-> under retries and callback duplication.
+> The semantic contract that must not move is that `WorkshopEnrollment` owns seat truth
+> and later workflows consume confirmed state rather than derived guesses. The main
+> pressure sits in the persistence-and-downstream path under bursts, contention, and
+> retries. The most useful operator signals are confirmation latency, conflict counts,
+> and visible outcome traces for certificate or notification work. The highest-risk trust
+> boundary is external callback or artifact-logging behavior. The safest first recovery
+> action is to confirm durable progress before any rerun. The main remaining weakness is
+> duplicate visible work under interruption or repeated triggers.
 
-That is stronger than a checklist because it preserves one coherent story about meaning,
-measurement, and recovery.
+This note is useful because it ties meaning, measurement, trust, and recovery into one
+story.
 
-## Answer 10: Final hardening packet
+## Answer 10: Operational packet summary
 
 A strong closing packet includes:
 
 - one measurement table for the confirmation and issuance path
-- one trust-boundary table for callbacks, artifact logs, and notifications
-- one observability note tying signals to operator questions
-- one runbook or drill entry for duplicate callbacks or delayed artifact upload
+- one signal table tying metrics and drills to operator questions
+- one trust-boundary table for callbacks, logs, and stored artifacts
+- one runbook or drill entry for duplicate triggers or stalled artifact publication
 - one audit summary naming the remaining operational weakness
 
-If another maintainer can answer all of these, the packet is doing real work:
+Another maintainer should be able to answer all of these from the packet:
 
 - what must be measured before tuning
-- what optimization is safe only in read or derived paths
-- what boundary carries the highest trust risk
-- how a bad night in production should be diagnosed first
+- what optimization is safe only in derived or read paths
+- what trust boundary carries the highest risk
+- what first response remains safe on Monday, July 27, 2026 if the workflow misbehaves
 
 ## Self-check
 
-You are using Module 10 correctly when another maintainer can answer these from your
-packet without asking for oral background:
+You are using Module 10 well when another maintainer can answer these from your packet
+without extra oral context:
 
 - what evidence justifies one optimization
-- what must never cross a trust boundary casually
-- what signal operators should inspect first
-- what remaining risk still needs explicit stewardship
+- what must never cross a boundary casually
+- what signal an operator should inspect first
+- what fast recovery move would be architecturally wrong
