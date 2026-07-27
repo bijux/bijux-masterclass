@@ -1,6 +1,5 @@
 # Cancellation, Retries, and Resumable Operations
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,55 +24,116 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Design operations so cancellation and retry behavior are explicit instead of becoming
-accidental duplicate work.
+Cancellation and retries look like runtime details until they interrupt work halfway
+through.
 
-## 1. Cancellation Is Part of the Contract
+Then the system must answer:
 
-If an operation can be cancelled halfway through, callers need to know whether it:
+- what already happened?
+- what can be retried safely?
+- where does work resume?
 
-- left no durable effects
-- partially completed
-- can be resumed safely
+If those answers are unclear, cancellation and retry pressure produce duplicate effects,
+partial state, and ambiguous recovery.
 
-That is business-significant behavior.
+## Cancellation is a boundary event
 
-## 2. Retries Require Idempotent Boundaries
+Cancellation usually arrives from the runtime:
 
-Retrying a metric fetch may be safe.
-Retrying "publish incident" may duplicate external alerts unless deduplicated.
+- a caller gave up
+- a deadline expired
+- a supervisor is shutting down work
 
-The boundary determines whether retry is safe.
+That means cancellation is often first a coordination concern, not a domain rule.
 
-## 3. Resumable Work Needs State Markers
+The domain may need to reflect:
 
-Long-running operations often need explicit markers such as:
+- that work was interrupted
+- that a lease expired
+- that a transition can no longer continue
 
-- pending
-- in progress
-- published
+But the arrival of cancellation itself is usually owned at the runtime boundary.
 
-Those states make restart and recovery possible without guesswork.
+## Retry safety still matters here
 
-## 4. Separate Recovery Policy from Core Domain Behavior
+After cancellation or failure, the next question is often "can we run this again?"
 
-Aggregates should preserve invariants.
-Application and runtime layers should decide cancellation handling, retry schedule, and
-resume strategy.
+That answer depends on:
 
-## Practical Guidelines
+- whether side effects already escaped
+- whether progress was durable
+- whether the operation is idempotent or resumable
 
-- Document post-cancellation state for important operations.
-- Retry only across boundaries that are idempotent or deduplicated.
-- Add explicit progress markers for resumable workflows.
-- Keep recovery orchestration outside core domain entities.
+Students should not treat retries after cancellation as automatically safer than retries
+after ordinary failure. The same duplicate-work risks still exist.
 
-## Exercises for Mastery
+## Resumable work needs a checkpoint story
 
-1. Choose one operation and describe its cancellation outcome precisely.
-2. Add a deduplication or idempotence key to one retried workflow.
-3. Model one long-running workflow with explicit progress states.
+A resumable operation usually needs a clear answer to:
+
+- where can we restart from?
+- what progress is already durable?
+- what must not run twice?
+
+Without that, "resume" often means "rerun from the beginning and hope it is fine."
+
+That may be acceptable for some work, but it should be a conscious policy rather than an
+accident.
+
+## Keep interruption semantics out of unrelated objects
+
+One common mistake is to let deep domain objects learn too much about:
+
+- cancellation tokens
+- retry counters
+- scheduler-specific interruption details
+
+That usually widens runtime coordination concerns farther inward than necessary.
+
+A stronger design lets the runtime boundary own interruption control while the core model
+exposes the facts needed to recover honestly.
+
+## Common mistakes
+
+- assuming cancellation means no effect occurred
+- retrying interrupted work without checking duplicate-effect risk
+- pretending work is resumable with no durable checkpoint boundary
+- pushing cancellation primitives through every layer
+- mixing retry policy with domain meaning
+
+These mistakes make interruption pressure contagious instead of owned.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is cancellation first handled at the runtime boundary? | yes |
+| can the system say what progress is already durable? | yes |
+| is retry or resume safety explicit instead of assumed? | yes |
+| are interruption mechanics kept from infecting unrelated objects? | yes |
+
+## Capstone connection
+
+Use the capstone runtime to ask:
+
+- if polling or worker execution is cancelled, what has definitely happened already?
+- which actions are safe to retry?
+- what state would need to exist before work could honestly resume instead of rerun blindly?
+
+Those questions make interruption design concrete.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why cancellation does not automatically imply zero effect
+- identify one condition that makes an interrupted operation safe or unsafe to retry
+- point to one capstone path that would need a real checkpoint before it could be called resumable
