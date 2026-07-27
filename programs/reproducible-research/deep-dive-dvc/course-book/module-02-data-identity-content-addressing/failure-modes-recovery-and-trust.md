@@ -65,6 +65,83 @@ This keeps the diagnosis grounded.
 
 These are not random operational annoyances. They are boundary clues.
 
+## Diagnose with a layer ledger
+
+Before repairing anything, record what survived:
+
+| Surface | Present? | Evidence | What it permits you to claim |
+| --- | --- | --- | --- |
+| pointer | yes or no | parsed content ID, size, path | expected identity is recorded |
+| workspace | yes or no | file and digest | bytes are visible locally |
+| cache object | yes or no | object path and digest | local restoration is possible |
+| configured remote | yes or no | remote config | a recovery source is named |
+| remote object | unknown until tested | empty-cache pull | off-machine restoration works |
+
+Configuration is not availability evidence. A remote name in `.dvc/config` tells you where
+DVC will look, not whether the required object is there.
+
+## Interpret the pointer-only case
+
+The identity audit deliberately creates this state:
+
+```text
+pointer:   present
+workspace: absent
+cache:     absent
+remote:    absent
+```
+
+The pointer still contains a valid content ID. `dvc checkout` fails and leaves the
+workspace absent.
+
+Classify the incident precisely:
+
+- identity metadata is available
+- content bytes are unavailable
+- local recovery is impossible from the inspected layers
+- the audit itself is working because it preserves the failure receipt
+
+Do not “repair” the demonstration by regenerating arbitrary bytes at the same path. New
+bytes would produce a new identity and conceal the unavailable object.
+
+## Distinguish three failure classes
+
+| Failure class | Typical evidence | Correct next question |
+| --- | --- | --- |
+| projection failure | pointer and cache exist, workspace absent or drifted | can checkout reconstruct the workspace? |
+| availability failure | pointer exists, cache and remote cannot supply object | where is a verified copy of this content ID? |
+| identity disagreement | workspace digest does not match pointer identity | which bytes are authoritative, and why? |
+
+These classes need different responses. Running pull for an identity disagreement may
+overwrite local evidence. Running add for an availability failure records whatever bytes
+happen to be nearby as a new identity.
+
+## Build a bounded recovery argument
+
+Use four linked claims:
+
+1. **Recorded identity:** the pointer names content ID `X`.
+2. **Tested loss:** the workspace and local cache copies were removed.
+3. **Recovery source:** pull retrieved `X` from the configured remote.
+4. **Verified result:** the restored workspace and cache bytes match the original digest.
+
+The audit's `REMOTE_RESTORES_AFTER_CACHE_LOSS` and
+`REMOTE_RECOVERY_PRESERVES_IDENTITY` rows cover the last two claims. The push receipt
+alone covers neither.
+
+## Preserve negative evidence
+
+Expected failures should remain reviewable. For the pointer-only case, keep:
+
+- command and working directory
+- nonzero return code
+- stderr
+- pointer content ID
+- assertions that workspace and cache stayed absent
+
+Without that packet, “checkout failed” cannot distinguish a missing object from a malformed
+command, permission error, or broken DVC installation.
+
 ## A small recovery picture
 
 ```mermaid
