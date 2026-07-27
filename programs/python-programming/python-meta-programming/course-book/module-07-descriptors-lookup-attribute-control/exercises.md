@@ -59,6 +59,17 @@ Keep one second table beside it:
 | Exercise | Evidence the reviewer can inspect | Storage owner | Lower-power alternative considered | Stronger power rejected |
 | --- | --- | --- | --- | --- |
 
+## Evidence discipline for the whole exercise set
+
+Do not hand in answers that stop at "the descriptor handles it" or "Python binds it."
+
+Across the set, your packet should name:
+
+- the winning hook or lookup step
+- the exact storage owner, if any value is retained
+- one lower-power owner you considered first
+- one stronger mechanism you rejected because the need did not justify it
+
 ## Exercise 1: Build one minimal descriptor on purpose
 
 Write a descriptor that implements one narrow behavior using the smallest useful set of
@@ -71,6 +82,10 @@ What to hand in:
 - one sentence explaining what class access returns
 - one sentence naming the first extra hook you would add only if the boundary actually needed it
 
+Verification hint:
+
+- confirm whether the object is still a descriptor if you remove every hook except the one you claim is sufficient
+
 ## Exercise 2: Show precedence with two concrete cases
 
 Build or inspect one data descriptor and one non-data descriptor.
@@ -81,6 +96,10 @@ What to hand in:
 - one case where `obj.__dict__` shadows the descriptor
 - one explanation of why the results differ
 - one sentence naming the exact evidence that proves which side won in each case
+
+Verification hint:
+
+- inspect the exact public name in both the class and the instance dictionary before narrating the winner
 
 ## Exercise 3: Explain ordinary method binding
 
@@ -94,6 +113,10 @@ What to hand in:
 - one explanation using `__func__` and `__self__`
 - one sentence naming why the result counts as descriptor behavior rather than special method syntax
 
+Verification hint:
+
+- show both the unbound class attribute and the bound instance result side by side
+
 ## Exercise 4: Build one reusable validating field
 
 Implement one field descriptor such as `NonEmptyString`, `PositiveInt`, or `Choices`.
@@ -104,6 +127,10 @@ What to hand in:
 - how `__set_name__` helps the implementation
 - where per-instance state is stored
 - one sentence explaining what bug would appear if the stored value lived on the descriptor object instead
+
+Verification hint:
+
+- use two instances so you can prove the chosen storage does or does not leak across objects
 
 ## Exercise 5: Reject one bad storage design
 
@@ -116,6 +143,10 @@ What to hand in:
 - one concrete example of state leaking across instances
 - one safer replacement using either `obj.__dict__` or weak-reference storage
 - one sentence naming why `id(obj)` storage is still a weak repair
+
+Verification hint:
+
+- show the cross-instance leak explicitly instead of only describing it in abstract terms
 
 ## Exercise 6: Place one field rule on the ownership ladder
 
@@ -132,6 +163,10 @@ What to hand in:
 - the owner you chose
 - one sentence rejecting at least one stronger option as unnecessary
 - one sentence rejecting at least one lower-power option as too weak
+
+Verification hint:
+
+- rewrite the same requirement one level lower and one level higher before defending your choice
 
 ## Midday self-check
 
@@ -162,6 +197,10 @@ What to hand in:
 - one explanation of which object wins the lookup and why
 - one sentence naming the exact public attribute name the lookup is resolving
 
+Verification hint:
+
+- narrate the resolution in numbered steps so another learner can audit the order
+
 ## Exercise 8: Replace one unnecessary descriptor with a lower-power owner
 
 Choose one rule that someone might implement with a descriptor even though a simpler owner
@@ -174,6 +213,10 @@ What to hand in:
 - one explanation of what the descriptor would add without adding clarity
 - one sentence naming the reuse pressure that would need to appear before a descriptor became justified
 
+Verification hint:
+
+- name the exact repetition that is still missing today
+
 ## Exercise 9: Compare honest descriptor claims with overstated claims
 
 Choose one descriptor design and write both an honest description and an overstated
@@ -185,6 +228,10 @@ What to hand in:
 - the overstated description
 - one explanation of which words make the overstated version misleading
 - one replacement sentence that stays useful without inflating the guarantee
+
+Verification hint:
+
+- quote the inflated words directly before replacing them
 
 ## Exercise 10: Produce a descriptor-boundary packet
 
@@ -203,6 +250,15 @@ The packet is strong when another learner can use it to answer:
 
 Make the packet easy to scan. Another learner should be able to inspect it without having
 to rediscover the lookup story from code alone.
+
+## Packet quality checks
+
+Before you accept your packet, make sure it does all of these:
+
+- records at least three lookup winners explicitly
+- records at least three storage-owner decisions explicitly
+- rejects at least three descriptor escalations or stronger mechanisms explicitly
+- leaves another learner enough evidence to disagree with you for concrete reasons
 
 ## Repair prompts for weak exercise drafts
 
