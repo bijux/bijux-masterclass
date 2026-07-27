@@ -44,6 +44,12 @@ SELFTEST_FAULT ?= none
 CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
 INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
+PERFORMANCE_DIR ?= $(ARTIFACTS_DIR)/performance/reproducible-research/deep-dive-make/current
+PERFORMANCE_POLICY := performance/scenarios.tsv
+PERFORMANCE_EVIDENCE ?= $(PERFORMANCE_DIR)/evidence.json
+PERFORMANCE_COMPARISON ?= $(PERFORMANCE_DIR)/comparison.json
+PERFORMANCE_BASELINE ?=
+PERFORMANCE_SAMPLES ?= 5
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-make
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-make-capstone-source.tar.gz
 RELEASE_DIR ?= $(ARTIFACTS_DIR)/release/reproducible-research/deep-dive-make
@@ -71,7 +77,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit clean submake-demo perf trace-count hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit clean submake-demo perf performance-evidence performance-compare performance-selftest trace-count hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -172,7 +178,10 @@ help:
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
 >     '  repro             show how to run the race repro pack' \
 >     '  attest            write build/attest.txt (not a dependency of all)' \
->     '  perf              show measurement commands (trace-count + time)' \
+>     '  perf              write governed performance evidence under artifacts/' \
+>     '  performance-evidence write the same governed evidence bundle' \
+>     '  performance-compare compare current evidence with PERFORMANCE_BASELINE' \
+>     '  performance-selftest prove capture and comparison rejection behavior' \
 >     '  trace-count       count trace lines (heuristic)' \
 >     '  portability-audit probe tool/feature availability' \
 >     '  eval-demo         optional quarantined eval demo (USE_EVAL=yes)' \
@@ -181,6 +190,8 @@ help:
 >     '  DEBUG=1           enable debug symbols (-g)' \
 >     '  J=4               parallelism used by some commands' \
 >     '  TRACE_MAX=500     selftest trace-line heuristic threshold' \
+>     '  PERFORMANCE_SAMPLES=5 repeated samples per governed scenario' \
+>     '  PERFORMANCE_BASELINE=path evidence JSON required by performance-compare' \
 >     '  SELFTEST_FAULT=none controlled harness-test seam; not for ordinary proof' \
 >     ''
 
@@ -539,11 +550,38 @@ portability-audit:
 >     @command -v $(CC) >/dev/null 2>&1 && printf 'CC: %s\n' "$$($(CC) --version 2>/dev/null | head -1)" || printf 'CC: missing\n'
 >     @command -v $(PYTHON) >/dev/null 2>&1 && printf 'PYTHON: %s\n' "$$($(PYTHON) --version 2>/dev/null)" || printf 'PYTHON: missing\n'
 
-# ---- measurement hooks (configurable guardrails in selftest; no hard perf gates here) ----
-perf:
->     @echo "perf: quick, portable metrics (not a profiler):" >&2
->     @echo "  $(MAKE) trace-count" >&2
->     @echo "  (/usr/bin/time -p $(MAKE) -n all >/dev/null) 2>&1" >&2
+# ---- governed performance evidence (no universal timing gates) ----
+perf: performance-evidence
+>     @printf 'PASS: performance evidence is reviewable at %s\n' "$(abspath $(PERFORMANCE_DIR))"
+
+performance-evidence:
+>     rm -rf "$(PERFORMANCE_DIR)"
+>     mkdir -p "$(PERFORMANCE_DIR)"
+>     cp "$(PERFORMANCE_POLICY)" "$(PERFORMANCE_DIR)/scenarios.tsv"
+>     $(PYTHON) scripts/collect_performance_evidence.py \
+>       --policy "$(PERFORMANCE_POLICY)" \
+>       --output "$(abspath $(PERFORMANCE_EVIDENCE))" \
+>       --samples "$(PERFORMANCE_SAMPLES)" \
+>       --make "$(MAKE)"
+>     $(PYTHON) scripts/write_bundle_manifest.py \
+>       --bundle-dir "$(PERFORMANCE_DIR)" \
+>       --output "$(PERFORMANCE_DIR)/manifest.json"
+
+performance-compare:
+>     test -n "$(PERFORMANCE_BASELINE)" || { \
+>       printf '%s\n' 'FAIL: PERFORMANCE_BASELINE must name a prior evidence.json' >&2; \
+>       exit 2; \
+>     }
+>     $(PYTHON) scripts/compare_performance_evidence.py \
+>       --baseline "$(PERFORMANCE_BASELINE)" \
+>       --candidate "$(abspath $(PERFORMANCE_EVIDENCE))" \
+>       --output "$(abspath $(PERFORMANCE_COMPARISON))"
+>     $(PYTHON) scripts/write_bundle_manifest.py \
+>       --bundle-dir "$(PERFORMANCE_DIR)" \
+>       --output "$(PERFORMANCE_DIR)/manifest.json"
+
+performance-selftest:
+>     $(PYTHON) -m unittest discover -s $(TST_DIR) -p 'test_performance_*.py'
 
 trace-count:
 >     @$(MAKE) --trace -n all 2>&1 | wc -l | awk '{print "trace-lines=" $$1}'
