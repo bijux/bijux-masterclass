@@ -26,19 +26,21 @@ flowchart LR
 
 This lesson is about one governance promise:
 
-If another maintainer or consumer starts here, what exact surface are we prepared to
-support over time?
+- if another maintainer or consumer starts here, what exact surface are we prepared to
+  support over time?
 
-In Python, reachability is cheap.
-Support is expensive.
+In Python, reachability is cheap. Support is expensive.
 
-That is why a facade and a deliberate entrypoint matter. They let the package say:
+That is why a facade matters. It lets the package say:
 
 - start here
 - depend on this
-- leave the rest free to move
+- ignore the rest unless you are changing the internals
 
-## Keep one package visible
+Without that sentence, a package teaches its directory layout instead of its supported
+workflow.
+
+## Keep one package and one task visible
 
 Use the capstone package:
 
@@ -48,50 +50,56 @@ Assume a newcomer wants to do one normal thing:
 
 - run the supported monitoring workflow and inspect the stable result
 
-The lesson question is:
-
-What is the narrowest public surface that lets them do that without teaching runtime,
-repository, or adapter internals as the public story?
-
-## Public surface is a support burden, not an export convenience
-
-A surface becomes public when maintainers are willing to:
-
-- document it
-- keep examples aligned with it
-- review compatibility around it
-- deprecate it honestly
-- prove it through executable or reviewable routes
-
-That means the real question is not:
+The lesson question is not:
 
 - what can be imported today?
 
 It is:
 
-- what are we willing to explain, defend, and keep coherent next month or next year?
+- what is the narrowest surface that lets a learner do that job without learning runtime,
+  repository, or adapter internals?
 
-This is why a small public surface is not minimalism for its own sake. It is stewardship.
+That is the real facade problem.
 
-## A facade should speak in user tasks, not file layout
+## Public surface is a support burden
 
-A strong facade is shaped by what users need to do.
+A surface is public only if the maintainers are willing to:
 
-For this capstone, that might mean:
+- document it
+- keep examples aligned with it
+- review compatibility around it
+- deprecate it honestly
+- defend it with executable or reviewable proof
+
+This is why a public API is not the same as an importable path.
+
+An importable path may simply exist.
+A public path creates an obligation.
+
+When you think this way, a smaller surface stops looking restrictive and starts looking
+responsible.
+
+## A strong facade speaks in user tasks, not in file layout
+
+A good facade is shaped by what users need to do.
+
+For this capstone, that likely means:
 
 - one package-level workflow entrypoint
-- one stable result shape
+- one stable outcome shape
 - one documented extension seam type
 
 It should not mean:
 
 - exporting every useful-looking internal class
-- forcing users to understand package layering before they can start
-- treating the current directory structure as the API design
+- making callers understand internal layering before they can start
+- turning the current folder structure into the API design
 
-The consumer story should survive even if the internals are reorganized.
+The consumer story should remain coherent even if the internals are reorganized.
 
-## One start point is a teaching decision
+## The first copied import path is the real teaching surface
+
+The highest-value beginner example matters disproportionately.
 
 If the first example a learner copies imports:
 
@@ -101,29 +109,33 @@ If the first example a learner copies imports:
 
 then those internals have already become the accidental API.
 
-That is why entrypoints are not only code organization.
-They are also teaching surfaces.
+That is why entrypoints are not only packaging decisions. They are teaching decisions.
 
-The first copied import path should reinforce the intended contract, not the current
-layout accident.
+The first public example should reinforce:
 
-## Facades are valuable because they protect refactor freedom
+- where supported use begins
+- what deeper layers can be ignored
+- which path maintainers are prepared to defend later
 
-When consumers depend on a narrow facade:
+## Facades protect refactor freedom
+
+When consumers depend on one narrow facade:
 
 - constructors can change internally
-- file layout can move
-- policies can be recomposed
-- helpers can disappear
+- helper modules can move
+- policy composition can be reshaped
+- orchestration details can disappear
 
-without every internal shift becoming a public event.
+without each internal change becoming visible breakage.
 
-When consumers depend on deep imports, each of those changes risks becoming visible
-breakage.
+When consumers depend on deep imports, every one of those changes becomes risky.
 
-This is why facades are part of governance, not just packaging style.
+This is the practical reason facades matter so much in long-lived Python packages:
 
-## A worked capstone surface
+- they preserve the right to improve internals without constantly renegotiating the
+  public contract.
+
+## Worked capstone surface
 
 A strong public shape for this package might look like:
 
@@ -131,76 +143,84 @@ A strong public shape for this package might look like:
 from service_monitoring import run_monitoring, IncidentSink
 ```
 
-What that teaches:
+What this teaches:
 
-- `run_monitoring` is the supported consumer path
+- `run_monitoring` is the supported consumer entrypoint
 - `IncidentSink` is the narrow extension seam
-- deeper layers are intentionally not the first story
+- deeper layers are intentionally not part of the first public story
 
 What it avoids teaching:
 
-- repository implementations as public dependency points
+- repository implementations as public dependencies
 - runtime coordinators as extension entrypoints
-- file layout as architectural knowledge every caller must learn
+- internal layout as knowledge every caller must master
 
-The exact names may vary. The design discipline should not.
+The exact names can vary. The public-shape discipline should not.
 
-## Not every useful internal object deserves a public route
+## Not every useful internal object deserves public status
 
-Keep a module private when it mainly exists for:
+Keep a surface private when it mainly exists for:
 
 - internal composition
 - translation between boundaries
-- helper logic
 - runtime orchestration
+- helper logic
 - replaceable implementation structure
 
-If a real consumer use case still needs one of those surfaces, the answer is usually:
+If a real consumer use case still needs one of those objects, the usual answer is:
 
 - add a better supported facade
 
 not:
 
-- make the deep internal import public by default
+- bless the deep internal import because it is convenient today
 
-## A good facade comes with two companion rules
+This protects the package from publishing incidental structure as durable promise.
 
-Once you pick a public entrypoint, add two companion rules immediately:
+## Build a public-surface packet
 
-1. examples and docs must teach that path first
-2. deep internal imports should be treated as unsupported unless explicitly promoted
+For each package, keep a short packet with:
 
-Without those rules, the package will slowly publish more than intended even if the code
-shape itself looks clean.
+- supported user task
+- supported import path
+- stable result or command surface
+- documented extension seam, if any
+- important private zones that must stay outside the promise
+- one example that teaches the supported start point
+
+This packet gives another maintainer something concrete to defend during review. It also
+reveals when the package is teaching more than it intends to support.
 
 ## Common failure modes
 
 - treating every importable path as public because Python allows it
-- exporting internal classes because they are convenient today
-- designing the facade around file layout instead of a user task
-- widening the public surface before compatibility and docs work exists
+- exporting internal classes because they are convenient in the current version
+- shaping the facade around the file tree instead of the user task
+- widening the public surface before compatibility and documentation work exist
 - calling a re-export list a facade without defining the supported use story
 
 ## Facade review card
 
-Use this short card when reviewing a public-surface change:
+Use this card when reviewing a public-surface change:
 
-| Question | What you want to see |
+| Question | What a strong answer sounds like |
 | --- | --- |
-| can the main supported work happen through one narrow entrypoint? | yes |
-| are deep imports unnecessary for normal supported use? | yes |
-| does the surface teach a workflow rather than a directory layout? | yes |
-| would internal restructuring stay mostly invisible to consumers? | yes |
+| what normal supported task does the facade serve? | "run monitoring and inspect stable outcomes" |
+| can that task be completed without deep imports? | "yes, through one package-level entrypoint" |
+| what stays private and movable? | "runtime orchestration, repository wiring, adapter helpers" |
+| what example teaches the supported start point? | "the quickstart imports only `run_monitoring` and `IncidentSink`" |
+| what refactor freedom does this preserve? | "internal layers can move without changing the public story" |
 
 ## Capstone connection
 
-Use this page to ask:
+Use this page to answer all of these:
 
 - which import path should become the only beginner-facing start point
 - which deep path should remain private even if it is currently convenient
 - what stable result or command surface would let consumers ignore internal layering
+- which current example would accidentally publish the wrong layer
 
-That is the first real governance choice in the module.
+That is the first real governance decision in the module.
 
 ## Exit check
 
