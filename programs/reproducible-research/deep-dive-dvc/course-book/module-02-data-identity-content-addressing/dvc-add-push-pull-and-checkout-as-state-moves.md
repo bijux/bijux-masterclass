@@ -132,6 +132,95 @@ It is:
 
 This three-layer explanation is much healthier than magical thinking.
 
+## Prove the move, not the verb
+
+A command receipt establishes that a process ran. It does not, by itself, establish the
+state transition you intended.
+
+For each command, pair the receipt with before-and-after evidence:
+
+| Command | Before state | Receipt | After state |
+| --- | --- | --- | --- |
+| `dvc add` | workspace file, no pointer | add stdout and stderr | pointer and matching cache object |
+| `dvc push` | cache object, empty remote | push stdout and stderr | remote can later supply the object |
+| `dvc pull` | pointer, empty local cache | pull stdout and stderr | cache object and matching workspace bytes |
+| `dvc checkout` | pointer and cache, missing workspace | checkout stdout and stderr | matching workspace projection |
+
+The strongest proof for `push` is deliberately delayed: delete the local content and
+recover it. A successful push is a promise from one operation. A successful empty-cache
+pull demonstrates that the promise can be consumed.
+
+## Walk the audit receipts
+
+The generated audit keeps command output under `evidence/`.
+
+### Add creates two inspectable surfaces
+
+Open:
+
+```text
+pointer-cache-add.stdout.txt
+workspace/pointer-cache/data/observations.csv.dvc
+workspace/pointer-cache/.dvc/cache/files/md5/...
+```
+
+The command receipt, pointer, and cache object together show the workspace-to-recorded-
+identity move. No single surface proves all three parts.
+
+### Checkout tests local materialization
+
+The audit deletes `workspace/cache-recovery/data/observations.csv` but keeps the cache.
+Then it runs checkout.
+
+Accept the local recovery claim only when:
+
+- `cache-recovery-checkout.stderr.txt` contains no failure
+- the workspace file exists again
+- its SHA-256 matches the immutable specimen
+- its pointer content ID did not change
+
+This case says nothing about remote durability because no remote is needed.
+
+### Pull tests remote durability
+
+The remote case first pushes, then deletes both:
+
+```text
+data/observations.csv
+.dvc/cache/
+```
+
+The subsequent pull cannot succeed by borrowing the old local object. The report checks
+that the workspace returns, the cache object is repopulated, and the restored bytes match
+the source.
+
+This is the causal reason the route is stronger than simply running `dvc push`.
+
+### Failed checkout bounds the model
+
+The pointer-only case performs the same local deletion without a remote. Checkout fails.
+That result establishes the boundary:
+
+```text
+pointer + cache -> workspace restoration
+pointer alone   -> identity reference without restoration
+```
+
+If your command model predicts that both rows should succeed, it is still collapsing
+metadata and content storage.
+
+## Choose the narrowest honest command
+
+| Current condition | Intended result | Command to consider first |
+| --- | --- | --- |
+| bytes exist only as an untracked workspace file | record identity locally | `dvc add` |
+| tracked cache object exists but must survive machine loss | add remote durability | `dvc push` |
+| pointer exists and remote is authoritative, but local bytes are absent | recover local content | `dvc pull` |
+| pointer and cache are present, but workspace projection is absent or wrong | align workspace | `dvc checkout` |
+
+Do not run a broader command because the narrower state question is unclear. Name the
+missing layer first.
+
 ## Common confusions
 
 ### "I pushed, so the workspace is fixed"
