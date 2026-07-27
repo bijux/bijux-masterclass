@@ -46,7 +46,7 @@ class IncrementalWorkTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(report["result"], "PASS")
         self.assertEqual(report["schema"], "deep-dive-make-incremental-work-v2")
-        self.assertEqual(len(report["cases"]), 3)
+        self.assertEqual(len(report["cases"]), 5)
         self.assertEqual(
             report["policy_sha256"], hashlib.sha256(POLICY.read_bytes()).hexdigest()
         )
@@ -54,6 +54,8 @@ class IncrementalWorkTests(unittest.TestCase):
         self.assertIn("src/util.c\tPASS", summary)
         self.assertIn("include/util.h\tPASS", summary)
         self.assertIn("include/sub.h\tPASS", summary)
+        self.assertIn("scripts/gen_dynamic_h.py\tPASS", summary)
+        self.assertIn("src/dynamic/dyn1.c\tPASS", summary)
         self.assertEqual(source.stat().st_mtime_ns, before)
 
     def test_rejects_missing_requested_work(self) -> None:
