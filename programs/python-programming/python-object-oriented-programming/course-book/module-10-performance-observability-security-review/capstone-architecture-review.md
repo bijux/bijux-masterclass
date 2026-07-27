@@ -24,90 +24,161 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
-
 ## Why this review matters
 
-By Module 10, the capstone should be judged as a whole system, not just as a set of
-separately good lessons.
+By Module 10, the capstone should no longer be read as a pile of separate good ideas.
 
-The question is no longer:
+It should be reviewed as one working system with:
 
-- is each concept present somewhere?
+- ownership boundaries
+- persistence boundaries
+- public seams
+- runtime pressure
+- operational failure modes
 
-It is:
+That is the difference between "I read the lessons" and "I can review a real design."
 
-- does the full design still hold when performance, observability, trust boundaries, and
-  extension pressure are all considered together?
+## Use one concrete review route
 
-That is the difference between passing a course and being able to review a real system.
+Review this capstone path all the way through:
 
-## Revisit the original structural promises
+1. attendee requests a workshop seat
+2. `WorkshopEnrollment` decides confirm or waitlist
+3. repository persists the result under version control
+4. projection and notification run downstream
+5. later, `CertificateIssuanceService` consumes confirmed state
 
-Start by checking whether the capstone still keeps its earlier promises around:
+This path is useful because it crosses nearly every major boundary the course has taught.
 
-- value and entity semantics
-- aggregate-owned invariants
-- policy-based variation
-- repository and unit-of-work boundaries
-- public seams that do not leak private authority
+If the architecture is strong, this path should still make sense when you ask:
 
-If one of those promises already drifted, later operational hardening may be working on
-top of a weakened model.
+- who owns truth
+- who owns time and retries
+- who owns translation
+- who owns the public promise
 
-## Add the operational questions directly
+## Step 1: Restate the structural promises
 
-Now review the same system through four operational lenses:
+Before you look at performance or operations, restate what the design is already
+claiming.
 
-- where would performance pressure arrive first?
-- which signals make the workflow explainable under failure?
-- where do trust boundaries begin and end?
-- which extension or compatibility seams carry the most governance cost?
+In this capstone, the claims are roughly:
 
-This keeps operational review tied to the object model instead of becoming a detached
-production checklist.
+- aggregates own core invariants
+- policy variation does not steal authority
+- repositories translate without redefining domain meaning
+- public surfaces stay narrower than internal layout
+- downstream projections and notifications are not sources of truth
 
-## Look for the first boundary that would bend
+If these promises are already drifting, operational hardening will only polish a weaker
+system.
 
-Strong review is not only about strengths. It is about pressure.
+## Step 2: Identify the strongest preserved boundaries
+
+Look for the parts of the system you most want to preserve.
+
+For this capstone, the strongest boundaries are often:
+
+- aggregate ownership of seat truth
+- repository contract instead of row-shaped public logic
+- narrow extension seams rather than deep-import intimacy
+
+Name them explicitly.
+
+A real architecture review should leave behind at least one sentence that says:
+
+> "This boundary is strong and should not be weakened by later optimization or extension work."
+
+## Step 3: Find the first place pressure will arrive
+
+Do not ask "what might break eventually?"
 
 Ask:
 
-- which repository or adapter boundary would feel growth first?
-- which projection or reporting path would become hot under scale?
-- which public or plugin seam would become fragile under version drift?
-- which security or serialization boundary is still too generous?
+- where would scale or contention show up first?
+- where would stale data or duplicate work first become visible?
+- where would a new consumer first try to lean on the wrong layer?
 
-The goal is to find the first honest tension points, not to admire the design in
-general terms.
+Typical honest answers in this capstone are:
 
-## Turn the review into preserved strengths and next risks
+- repository save and concurrency path under bursts
+- projection lag or duplicate downstream work
+- public seam drift if examples keep teaching deep imports
+- artifact generation or notification boundaries under retry pressure
 
-A useful architecture review should leave behind:
+You are looking for the first bending boundary, not the farthest hypothetical risk.
 
-- strengths worth protecting
-- risks worth addressing next
-- one or two priorities for the next hardening pass
+## Step 4: Add four operational lenses directly to the same path
 
-Without that, the review is only commentary. With it, the review becomes part of the
-system’s evolution path.
+Use the same end-to-end workflow and ask four different questions:
+
+### Performance
+
+- what step is most likely to get slower first?
+- what measurement would prove it?
+
+### Observability
+
+- what signals would help an operator explain the failure path quickly?
+
+### Trust boundary
+
+- what data or external input could corrupt the path if treated casually?
+
+### Governance
+
+- what seam could quietly widen into an accidental public contract?
+
+This keeps the review grounded in the architecture instead of turning into a detached
+checklist.
+
+## Step 5: Separate preserved strengths from next risks
+
+A useful architecture review ends with two lists:
+
+### Strengths to preserve
+
+- aggregate-owned seat truth
+- replaceable repositories defended by contract language
+- extension seams that do not reach into private authority
+
+### Risks to address next
+
+- duplicate downstream side effects under retries
+- projection lag or stale operational visibility
+- public-surface drift through deep-import examples
+- boundary-specific trust or logging leaks
+
+Without this split, the review is commentary. With it, the review becomes actionable.
+
+## Worked capstone review note
+
+A short honest review might read:
+
+> The capstone remains strongest where authority stays close to domain state: workshop
+> enrollment still owns seat truth, and repositories still translate rather than define
+> meaning. The first likely pressure point is the persistence-and-downstream fan-out path,
+> where contention, retries, and projection lag can produce confusing operator signals or
+> duplicate visible work. The next hardening pass should preserve aggregate ownership
+> while tightening runtime idempotency and public-surface discipline.
+
+That note is useful because it preserves one strength and names one next pressure point.
 
 ## Capstone connection
 
-Use the capstone directly:
+Use the capstone directly and answer all three:
 
-- identify one boundary that is strongest and should be preserved
-- identify one boundary likely to feel operational pressure first
-- identify one improvement that would strengthen the system without corrupting the model
+- which boundary is strongest and worth protecting on purpose
+- which boundary would feel scale or operational pressure first
+- which improvement would strengthen the system without corrupting the ownership model
+
+If you cannot answer those three from one path through the system, the architecture story
+is still too scattered.
 
 ## Exit check
 
-Leave this lesson only when you can do all of these:
+Leave this page only when you can do all of these:
 
-- explain how to review the capstone as one system instead of many isolated topics
-- name one preserved strength and one likely pressure point
-- state one next hardening move that respects the existing ownership model
+- review the capstone as one system instead of many isolated modules
+- name one preserved architectural strength and one likely pressure point
+- state one next hardening move that strengthens the system without weakening ownership
