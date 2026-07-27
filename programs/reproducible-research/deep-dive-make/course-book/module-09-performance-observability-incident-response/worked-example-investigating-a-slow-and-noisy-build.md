@@ -59,7 +59,7 @@ There are at least three claims hidden inside it:
 | Complaint | Measurable claim | First evidence |
 | --- | --- | --- |
 | slow | one named route and state exceeds a stated baseline | repeated clean, no-op, or dry-run samples |
-| noisy | one evidence surface is too large or hard to interpret | trace count plus usability inspection |
+| noisy | one evidence surface is too large or hard to interpret | state-aware trace volume plus usability inspection |
 | suspicious under parallelism | a pressure route changes output or correctness | governed serial/parallel comparison or incident repro |
 
 The proposed changes do not follow yet. Removing diagnostics could hide causality. Forcing
@@ -96,7 +96,7 @@ Discover the capstone surface:
 ```sh
 gmake -C "$CAPSTONE" help \
   > artifacts/module09-incident/help.txt
-gmake -C "$CAPSTONE" perf \
+gmake -C "$CAPSTONE" perf PERFORMANCE_RUNNER=local-course-machine \
   > artifacts/module09-incident/perf-command.txt 2>&1
 ```
 
@@ -120,6 +120,8 @@ The command writes:
 artifacts/performance/reproducible-research/deep-dive-make/current/
 ├── PERFORMANCE_EVIDENCE_GUIDE.md
 ├── evidence.json
+├── incremental-policy.tsv
+├── incremental-work.json
 ├── logs/
 ├── manifest.json
 ├── route.txt
@@ -143,7 +145,40 @@ Cleaning is appropriate for `clean-build` because the experiment contract explic
 for a clean route. It would still be the wrong first action on an unpreserved production
 incident.
 
-## Inspect distributions and semantic proof
+## Decide whether the evidence is attributable
+
+Open `evidence.json` before `summary.tsv`. Find:
+
+```json
+{
+  "context": {
+    "compiler": {"command": "cc", "executable": "...", "version": "..."},
+    "make": {"command": "gmake", "executable": "...", "version": "..."},
+    "platform": "...",
+    "python": "...",
+    "repository": {
+      "revision": "...",
+      "status": "clean",
+      "status_sha256": "..."
+    },
+    "runner": "local-course-machine"
+  }
+}
+```
+
+The exact values depend on your environment. The reasoning does not:
+
+1. `revision` identifies the source graph that was measured.
+2. `status=clean` says the revision is enough to reconstruct that source.
+3. resolved tool identities expose a compiler or GNU Make change.
+4. the runner label says which stable environment the operator intended to use.
+
+If the status is `dirty`, keep the bundle as an observation but do not promote it to a
+comparison baseline. Commit the intended source state or restore unrelated edits, confirm
+the worktree is clean, and recollect. Do not erase `"dirty"` from the JSON; that would
+change the report rather than repair its provenance.
+
+## Inspect distributions after provenance
 
 Open `summary.tsv`. Your values will differ, but its shape is stable:
 
@@ -158,6 +193,7 @@ For each scenario, check:
 - convergence is `PASS`
 - no sample has a nonzero exit status in `evidence.json`
 - the trusted-output inventory names all five declared outputs
+- `incremental_work.result` is `PASS` inside the same evidence document
 
 The clean route describes full production cost. The no-op route describes an already
 converged invocation. Dry-run localizes work before ordinary recipe execution but does not
@@ -197,8 +233,14 @@ gmake -C "$CAPSTONE" performance-selftest \
   > artifacts/module09-incident/performance-selftest.txt 2>&1
 ```
 
-The tests include controlled policy drift, sample-count drift, failed evidence, and changed
-trusted outputs. A useful comparison gate must reject all four.
+The route checks four boundaries:
+
+- execution context distinguishes clean, dirty, and unavailable provenance
+- incremental policy rejects missing requested work
+- capture rejects too few samples, failed routes, and failed incremental evidence
+- comparison rejects context, policy, sample-count, artifact, and requested-work drift
+
+A useful gate needs rejection paths at every boundary, not one passing demonstration.
 
 You can also observe the public missing-baseline boundary:
 
@@ -213,6 +255,46 @@ fi
 Read the captured output. The failure is correct because a candidate timing cannot compare
 itself with an unstated past.
 
+## Rehearse a compatible comparison without inventing a regression
+
+Preserve the first bundle, collect again under the same contract, and compare:
+
+```sh
+mkdir -p \
+  artifacts/performance/reproducible-research/deep-dive-make/accepted-baseline
+cp -R \
+  artifacts/performance/reproducible-research/deep-dive-make/current/. \
+  artifacts/performance/reproducible-research/deep-dive-make/accepted-baseline/
+
+gmake -C "$CAPSTONE" perf PERFORMANCE_RUNNER=local-course-machine
+
+gmake -C "$CAPSTONE" performance-compare \
+  PERFORMANCE_BASELINE=../../../../artifacts/performance/reproducible-research/deep-dive-make/accepted-baseline/evidence.json
+```
+
+Read `current/comparison.json` in this order:
+
+1. `execution_context` names both revisions and the matching tools and runner.
+2. `incremental_work` names the input and matching expected and observed rebuild sets.
+3. `semantic_equivalence` must be `PASS`.
+4. scenario deltas come last.
+
+Because both bundles measure the same revision, this rehearsal tests repeatability and the
+comparison route. It does not prove a source-code improvement. A real candidate comparison
+should name different clean revisions while keeping the other compatibility fields equal.
+
+Suppose a later candidate is faster but comparison fails. Classify the failure before
+looking at the delta:
+
+| Failure | Decision |
+| --- | --- |
+| `compiler mismatch` | recollect both revisions with one compiler, or report a cross-toolchain observation |
+| `candidate worktree is not clean` | establish an attributable candidate revision, then recollect |
+| `observed_rebuild mismatch` | inspect the graph change; do not claim equivalent work |
+| `trusted-output inventory mismatch` | treat this as a semantic change, not a speedup |
+
+Do not weaken the comparator merely because the candidate number looks favorable.
+
 ## Inspect the trace evidence
 
 Run:
@@ -226,7 +308,7 @@ Read `trace-evidence.json` before `trace.log`. Confirm the report says `state=cl
 
 - whether `all` appears among planned targets
 - whether rule locations identify the owning Makefiles
-- whether the line count is below the declared boundary
+- whether the plan-line count is below the declared boundary
 - whether the raw trace explains why representative targets would run
 
 The target establishes clean state, so do not compare its count with a trace captured after
@@ -381,8 +463,9 @@ A strong incident summary is:
 
 > We separated the broad complaint into cost, evidence, and pressure claims. The capstone
 > now has a governed clean, no-op, and dry-run baseline whose scenarios, samples,
-> convergence, and trusted outputs are reviewable. Its trace is evaluated by searchability
-> as well as line count. The executed repro exits successfully but reveals
+> provenance, requested work, convergence, and trusted outputs are reviewable. Its trace is
+> evaluated by state, attribution, searchability, and bounded plan volume. The executed
+> repro exits successfully but reveals
 > two undeclared writers to one shared file, so the defect is output ownership rather than
 > "too much parallelism." Serial execution is temporary mitigation; repair requires one
 > publication owner and schedule-equivalence proof.
@@ -392,9 +475,10 @@ A strong incident summary is:
 You have completed the example when you can point to:
 
 - governed clean, no-op, and dry-run samples with their scenario contract
+- revision, worktree, runner, and tool identities beside every timing distribution
 - convergence and trusted-output evidence beside every timing distribution
 - the declared and observed incremental rebuild scope
-- one performance-gate rejection you can explain
+- one context rejection and one requested-work rejection you can explain
 - the trace state, focus target, semantic checks, and one raw causal line
 - the incident bundle's command, output, status, and copied makefile
 - a classification that does not rely on exit status alone
