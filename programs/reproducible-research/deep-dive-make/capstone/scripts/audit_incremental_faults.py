@@ -182,6 +182,33 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def write_summary(cases: list[dict[str, object]], output: Path) -> None:
+    header = (
+        "specimen\tmodel\tfinding\tsemantic_input\tinitial_output\tactual_output"
+        "\tchanged_outputs\tresult\ttrace"
+    )
+    lines = [header]
+    for case in cases:
+        changed = case["changed_outputs"]
+        assert isinstance(changed, list)
+        lines.append(
+            "\t".join(
+                (
+                    str(case["specimen"]),
+                    str(case["model"]),
+                    str(case["finding"]),
+                    str(case["semantic_input"]),
+                    str(case["initial_output"]),
+                    str(case["actual_output"]),
+                    ",".join(str(path) for path in changed) or "-",
+                    str(case["result"]),
+                    str(case["trace"]),
+                )
+            )
+        )
+    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     arguments = parse_args()
     if arguments.workspace.exists():
@@ -225,6 +252,7 @@ def main() -> int:
         json.dumps(report, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    write_summary(cases, arguments.output.with_name("summary.tsv"))
     if report["result"] != "PASS":
         print("FAIL: incremental fault audit did not match expectations", file=sys.stderr)
         return 1
