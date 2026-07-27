@@ -17,124 +17,204 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  input["separate raw input from domain state"] --> validity["make objects begin life honest"]
+  validity --> absence["repair nulls and partial objects"]
+  absence --> lifecycle["name the lifecycle and transitions"]
+  lifecycle --> API["narrow the API around legal operations"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This refactor matters because Module 03 can still collapse into feature trivia if the
+learner leaves with only isolated ideas:
 
-## Why this refactor matters
+- use `@dataclass`
+- add `__post_init__`
+- avoid too many `Optional`s
+- maybe use properties
 
-Module 03 is not really about isolated Python features. It is about turning state-handling
-code into a model that is harder to misuse and easier to trust.
+The real goal is stronger state honesty. This page exists to turn the module into one
+repeatable repair route for weak state models.
 
-This refactor page exists to combine the module’s main moves:
-
-- boundary validation
-- honest dataclass use
-- construction-time invariants
-- explicit absence handling
-- lifecycle-aware modeling
-- typestate-aware APIs
-- careful attribute surfaces
-
-If those ideas stay separate, the learner leaves with trivia. If they come together, the
-learner leaves with a design method.
-
-## The starting design smell
+## The weak starting shape
 
 A weak pre-refactor design usually looks like this:
 
 - raw input becomes domain state too early
 - objects are created before they are really valid
-- `Optional` spreads because lifecycle is blurry
+- `None` spreads because lifecycle is blurry
 - dataclasses are used for convenience without semantic review
-- all methods stay callable regardless of state
+- every method stays callable regardless of state
 
-That design may run, but it makes trust and review difficult.
+The code may run, but another maintainer cannot tell when the object is legal or which
+operations should disappear after a transition.
 
-## The target shape
+## The stronger target shape
 
-After a good Module 03 refactor, the design should feel like this:
+The target is not "more defensive code." The target is a model that tells the truth:
 
 - boundary input is validated before core object creation
-- dataclasses are used where they clarify the model
-- invariants are checked when objects come into existence
+- objects begin life in an honest state
 - absence is modeled deliberately instead of by habit
 - lifecycle stages are named and enforced
-- the API surface tells a stronger truth about legal operations
+- dataclasses are used only where their generated behavior matches the contract
+- the API surface changes with the lifecycle instead of pretending every method always applies
 
-The target is not maximum abstraction. The target is stronger state honesty.
+## Use this refactor order
 
-## A practical refactor order
-
-Use this order when repairing a weak design:
+Follow this order on purpose:
 
 1. separate boundary parsing from domain construction
 2. identify the real invariants of each core object
 3. remove fake optionality from required fields
 4. distinguish true absence from earlier lifecycle state
-5. model the lifecycle explicitly
-6. tighten the public API around valid state transitions
-7. only then add or keep supporting machinery that genuinely helps
+5. name the lifecycle explicitly
+6. tighten the API around legal transitions
+7. only then keep or add supporting machinery that genuinely helps
 
 This order matters because later improvements depend on earlier clarity.
 
-## How to tell whether the refactor worked
+## Step 1: stop importing uncertainty into the model
 
-Ask whether the design is now better at answering:
+Start by separating:
+
+- raw payloads
+- parsing and normalization
+- domain construction
+
+A common smell is a domain object that accepts:
+
+- strings that still need parsing
+- timestamps that might be absent for several different reasons
+- caller guesses about state
+
+That uncertainty belongs at the boundary first. The domain model should receive sharper
+inputs than the transport surface does.
+
+## Step 2: make the constructor honest
+
+Ask:
+
+- what must be true the moment this object exists?
+- which fields are truly required?
+- which current constructor arguments are placeholders for a later transition?
+
+Good result:
+
+- the constructor creates a small honest state
+- later transitions are named methods instead of optional fields passed "just in case"
+
+This is often the point where the design first becomes easier to trust.
+
+## Step 3: repair overloaded absence
+
+One nullable field often hides several meanings:
+
+- not submitted yet
+- not loaded yet
+- rejected and reopened
+- broken imported state
+
+A stronger refactor splits those meanings by:
+
+- a state value
+- clearer timestamps
+- a dedicated value object
+- smaller explicit transitions
+
+The goal is not fewer `None`s for style reasons. The goal is fewer lies about meaning.
+
+## Step 4: review the dataclass honestly
+
+Once state is sharper, decide whether `@dataclass` still helps.
+
+Ask:
+
+- does generated equality match the contract?
+- are defaults honest or only convenient?
+- is mutability still safe?
+- do `frozen`, `slots`, or post-init checks clarify or distort the design?
+
+The answer may be:
+
+- keep the dataclass
+- narrow the dataclass
+- replace it with a more explicit class
+
+There is no prize for keeping `@dataclass` if it weakens the model.
+
+## Step 5: name the lifecycle and transitions
+
+The refactor should leave behind a lifecycle table.
+
+| State | What is true | Allowed operations | Illegal operations |
+| --- | --- | --- | --- |
+
+If you cannot fill that table, the lifecycle is still too blurry.
+
+Once the states are named, decide:
+
+- which transitions are allowed
+- which transitions are forbidden
+- which boundary enforces each move
+
+This is where the object stops being a bag of fields and becomes a stateful contract.
+
+## Step 6: narrow the public API
+
+A stronger state model should make misuse less natural.
+
+Questions to ask:
+
+- which methods should exist only in draft-like states?
+- which methods belong only after submission or activation?
+- which surfaces should become read-only after approval, retirement, or finalization?
+
+Even without static type tricks, runtime state splits and smaller method sets can make
+illegal operations feel obviously wrong.
+
+## A worked refactor route
+
+Imagine a `ReportDraft`-like design with:
+
+- `title: str | None`
+- `submitted_at: datetime | None`
+- `approved_at: datetime | None`
+- `status: str`
+- methods callable in every state
+
+A safer Module 03 refactor route is:
+
+1. keep raw request parsing outside the domain object
+2. make the constructor create only honest drafts
+3. replace one overloaded nullable field with explicit state and timestamps
+4. move submission, approval, rejection, and reopening into named transition methods
+5. narrow the API so edit methods disappear from final states
+6. review whether the dataclass still helps after the lifecycle is explicit
+
+The result is not merely "cleaner code." It is a clearer answer to when the object is legal.
+
+## How to review the result
+
+After refactoring, ask:
 
 - can this object exist in this shape?
-- what state is it in?
-- which operations are legal now?
+- what state is it in right now?
+- where is invalid input rejected first?
 - is this field absent by meaning or by design weakness?
-- where is input uncertainty resolved?
+- which operations are no longer legal after the transition?
 
-If those answers are still fuzzy, more feature use will not save the design.
+If those answers are still fuzzy, the refactor is not finished.
 
-## What not to preserve
+## Capstone transfer
 
-Do not preserve weak patterns because they already exist.
+Use the capstone immediately:
 
-Refactoring this module may require:
+- where do policy and rule objects begin life valid?
+- which transitions are legal for registration, activation, retirement, or incident state?
+- where is absence meaningful instead of accidental?
+- which APIs should narrow after lifecycle changes?
 
-- removing casual optionals
-- replacing partial objects with clearer states
-- simplifying dataclass usage
-- moving validation earlier
-- making some operations impossible instead of merely discouraged
-
-The module’s standard is not "works somehow." It is "teaches correct state ownership."
-
-## Review checklist
-
-| Question | Better answer after refactor |
-| --- | --- |
-| is raw input kept separate from core state long enough? | yes |
-| do objects begin life valid? | yes |
-| is absence modeled intentionally? | yes |
-| are lifecycle stages explicit and enforceable? | yes |
-| does the public API reflect legal state? | yes |
-
-## Capstone connection
-
-This page is the direct bridge from Module 03 into the capstone.
-
-Use it when the capstone still has:
-
-- half-ready objects
-- fields that are optional for no honest reason
-- lifecycle labels that do not affect the API
-- dataclass convenience hiding weak state boundaries
-
-If those problems remain, the module has not yet been absorbed deeply enough.
+This page should make the capstone easier to audit, not just easier to describe.
 
 ## Exit check
 
@@ -142,4 +222,4 @@ Leave this lesson only when you can do all of these:
 
 - describe the target Module 03 design shape in your own words
 - explain an order for refactoring a weak state model into a stronger one
-- identify one capstone area that still needs this state-modeling refactor
+- identify one capstone area that would become clearer if you applied this route
