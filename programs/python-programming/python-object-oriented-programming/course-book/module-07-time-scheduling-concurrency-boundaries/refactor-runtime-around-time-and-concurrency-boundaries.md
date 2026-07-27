@@ -17,82 +17,85 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  truth["name preserved truths"] --> clock["move clocks to the edge"]
+  clock --> owner["choose one owner for mutable work"]
+  owner --> bridge["narrow sync-async boundaries"]
+  bridge --> retry["make retry and cancellation honest"]
 ```
 <!-- page-maps:end -->
 
+Read the first diagram as a placement map: this page is the practical synthesis of
+Module 07. Read the second diagram as the refactor route: name what must survive, move
+clock access outward, choose one owner for mutable work, narrow the async boundary, then
+prove that retry and cancellation semantics are now clearer.
+
 ## Why this refactor matters
 
-Students often add runtime realism by scattering:
+Runtime refactors often go wrong in the same way persistence refactors do:
 
-- `datetime.now()`
-- retry loops
-- thread coordination
-- async wrappers
-- shared caches
+- one operational need appears
+- machinery is added quickly
+- every layer learns just enough about time, queues, retries, or async behavior to
+  become harder to review
 
-through code that previously had a clear ownership model.
+The code looks more realistic but less truthful.
 
-That makes the runtime feel more advanced while making the design harder to review.
-
-This refactor page shows how to move time and concurrency pressure outward without
-rewriting the domain by accident.
+This page teaches the safer route: add runtime power while making ownership easier to
+see.
 
 ## Running refactor target
 
-Use one concrete target:
+Use one target throughout:
 
 - `EnrollmentReminderCoordinator`
 
-Early messy version:
+Messy starting point:
 
-- domain objects know about current time
-- several workers mutate reminder state
-- retries and queue policy are mixed into delivery logic
-- async boundaries widen every call path
+- domain objects read the current time directly
+- several workers mutate reminder status casually
+- retry logic is mixed into delivery code
+- async behavior spreads across interfaces that do not need it
 
 Refactor goal:
 
-- one boundary owns clocks
-- one boundary owns scheduling
+- one boundary owns clock access
+- one boundary owns scheduling and stale-work decisions
 - one boundary owns reminder mutation
-- sync and async styles meet only where they truly must
+- one bridge connects sync callers to async execution
+- one explicit rule explains retry and cancellation safety
 
-## Step 1: restate what must stay true
+## Step 1: Name the truths that must survive
 
-Before moving code, write down the truths you refuse to lose:
+Before moving code, list the truths you refuse to lose:
 
-- reminders should not be sent twice
-- a late reminder should not pretend it met the original deadline
-- domain objects should still describe business meaning, not polling cadence
-- retries should not create duplicate visible side effects
+- reminders must not be sent twice
+- stale reminders must not pretend they met the original deadline
+- domain objects should describe business meaning, not polling cadence
+- cancellation and retry must not create invisible duplicate side effects
 
-If the refactor weakens any of these truths, it is not a runtime cleanup. It is a
-semantic regression.
+If the refactor weakens any of those truths, it is not cleanup. It is a semantic
+regression with nicer tooling around it.
 
-## Step 2: pull clock access to the edge
+## Step 2: Move clock access to the runtime edge
 
 Look for:
 
-- `datetime.now()` inside domain objects
-- expiration logic tied directly to wall-clock lookup
+- `datetime.now()` inside domain or workflow objects
+- timeout logic tied directly to wall-clock access
 - tests that sleep instead of controlling time
 
 Refactor toward:
 
-- runtime-owned clock input
+- runtime-owned clock injection
 - explicit timestamps passed into decision points
-- monotonic time for waiting and timeout budgets
+- monotonic time for waits and retry budgets
 
-The separation is:
+The separation to protect is:
 
-- runtime asks what time it is
-- model decides what that time means
+- runtime boundary asks what time it is
+- model or workflow logic decides what that time means
 
-## Step 3: move cadence into one coordinator
+## Step 3: Pull cadence and stale-work policy into one coordinator
 
 Scheduling questions belong together:
 
@@ -101,29 +104,31 @@ Scheduling questions belong together:
 - when work becomes stale
 - how many attempts are allowed
 
-Those rules should live in a coordinator or scheduler boundary, not inside aggregates or
-delivery objects.
+Those rules should live in one coordinator, scheduler, or runtime policy boundary, not
+in aggregates and not scattered through worker code.
 
-If a domain object still "knows" how often to wake up, the boundary is not clean yet.
+If a domain object still "knows" how often to wake up or when to retry, the boundary is
+still too wide.
 
-## Step 4: replace casual sharing with owned handoff
+## Step 4: Replace casual sharing with owned handoff
 
-When several workers currently touch the same reminder state, ask:
+When several workers touch the same reminder state, ask the harder but usually better
+question:
 
-- can one queue or worker own each reminder key instead?
+- can one queue or worker own one reminder key at a time instead?
 
-Better path:
+Stronger path:
 
-- enqueue work item
-- hand ownership to one worker
-- persist or acknowledge state transition at one boundary
+1. enqueue work item
+2. hand ownership to one worker
+3. persist or acknowledge state transition through one boundary
 
-Locking may still exist, but it should protect an already clear owner rather than rescue
-unclear ownership.
+Locks may still exist, but they should protect already-clear ownership, not rescue a
+model that never decided who was allowed to mutate state.
 
-## Step 5: narrow the async boundary
+## Step 5: Narrow the sync/async boundary
 
-Do not widen every layer just because the delivery adapter is asynchronous.
+Do not widen every layer just because the sender or queue adapter is asynchronous.
 
 Keep:
 
@@ -131,57 +136,67 @@ Keep:
 - pure calculations synchronous
 - async behavior at the runtime or I/O edge
 
-The bridge should sit where coordination with the outside world begins, not where
-business meaning is decided.
+One good review question is:
 
-## Step 6: make interruption rules explicit
+> If the delivery adapter became synchronous tomorrow, which layers should remain
+> unchanged?
 
-Once workers, queues, and async tasks exist, the runtime must answer:
+The more layers that would need rewriting, the more async style has leaked too far
+inward.
+
+## Step 6: Make interruption rules explicit
+
+Once queues, workers, and async tasks exist, the runtime must answer:
 
 - what progress is durable before cancellation?
 - what work is safe to retry?
 - what stale work must now be dropped?
-- what state proves a reminder was already sent?
+- what state proves a reminder already escaped?
 
-If those answers are missing, the runtime may be concurrent but it is not trustworthy.
+If those answers are missing, the runtime may be concurrent but it is not honest.
 
-## Worked refactor route
+## Worked before-and-after comparison
 
-For the reminder workflow, an ordered route could be:
+| Surface | Before | After |
+| --- | --- | --- |
+| clock access | scattered through workflow code | runtime-owned and injected |
+| scheduling | mixed into workers and model-adjacent code | one coordinator boundary |
+| shared mutation | several workers touch the same state | owned queue or worker handoff |
+| async spread | many layers widened unnecessarily | one explicit bridge |
+| retry safety | assumed from intention | tied to durable progress marker |
 
-1. extract current-time lookup into the coordinator
-2. compute reminder deadlines once at the scheduling boundary
-3. move repeated scans into one scheduler or poller object
-4. route reminder work through one owned queue
-5. keep reminder-state transitions behind one persistence or workflow boundary
-6. isolate async delivery behind one adapter-facing bridge
-7. document cancellation and retry semantics in tests and runtime notes
+This table is useful in review because it forces the team to prove that the runtime
+became easier to reason about, not merely more featureful.
 
-That order matters because it reduces ambiguity before adding more runtime machinery.
+## Common false progress
 
-## What not to do first
+These moves look advanced while preserving the real confusion:
 
-- do not add locks everywhere before deciding ownership
-- do not make the whole model async because one boundary is async
-- do not call work resumable without a checkpoint or durable progress marker
-- do not keep retry policy inside the same object that decides domain meaning
+- adding locks everywhere before deciding ownership
+- making the whole model async because one adapter is async
+- calling work resumable without a durable checkpoint or dedupe marker
+- putting retry loops inside the same object that decides business meaning
 
-Those moves add machinery faster than they add clarity.
+All of these add machinery faster than they add clarity.
 
 ## Capstone connection
 
-Use this page to inspect one runtime path in the capstone and answer:
+Use the capstone to practice the route:
 
-- where should time lookup move outward first?
-- where should reminder or incident mutation gain one clear owner?
-- where should async stay at the edge instead of widening the whole stack?
+1. name one runtime truth to preserve
+2. move time lookup outward first
+3. decide where one owner should replace shared mutation
+4. keep async behavior at the edge unless the core truly needs it
+5. state which proof should fail first if retry semantics are unsafe
 
-If you can answer those three, the runtime refactor has become reviewable.
+That sequence turns runtime refactoring into one reviewable architectural move instead of
+many isolated code changes.
 
 ## Exit check
 
 Leave this page only when you can do all of these:
 
-- describe one ordered path for separating time, scheduling, ownership, and async concerns
+- describe an ordered route for separating time, scheduling, ownership, and async
+  concerns
 - explain why adding locks or async keywords first is often the wrong first move
-- name one capstone runtime path that should move outward without changing domain meaning
+- name the proof surfaces that must exist before calling a runtime refactor safe
