@@ -218,26 +218,71 @@ That abandons ownership rather than clarifying it.
 
 ## Exercise 6: Build a toolchain doctor
 
-A useful answer reports facts and fails only for declared requirements:
+A useful answer separates diagnostics from enforcement:
 
 ```make
 SHELL := /bin/sh
+REQUIRED_TOOL ?= python3
+RESULT := build/result.txt
 
-.PHONY: doctor
+.PHONY: all contract-check doctor
+all: $(RESULT)
+
 doctor:
 	@printf 'make=%s\nshell=%s\nmakelevel=%s\n' \
 	  '$(MAKE_VERSION)' '$(SHELL)' '$(MAKELEVEL)'
 	@printf 'locale=%s\n' "$${LC_ALL:-not-set}"
-	@command -v "$(CC)" || { echo 'C compiler is required' >&2; exit 1; }
-	@command -v python3 || { echo 'python3 is required' >&2; exit 1; }
+	@printf 'compiler=%s\n' "$$(command -v "$(CC)" 2>/dev/null || printf missing)"
+	@printf 'python=%s\n' "$$(command -v python3 2>/dev/null || printf missing)"
+
+contract-check:
+	@command -v "$(REQUIRED_TOOL)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing required tool %s\n' "$(REQUIRED_TOOL)" >&2; \
+	  exit 2; \
+	}
+
+$(RESULT): | contract-check build/
+	$(REQUIRED_TOOL) --version > build/tool-version.txt
+	printf 'result=complete\n' > $@
+
+build/:
+	mkdir -p $@
 ```
 
-This is strong because it distinguishes:
+The important edge is:
 
-- advisory facts:
-  - useful for diagnosis but not fatal
-- required capabilities:
-  - must fail before an obscure downstream recipe breaks
+```make
+$(RESULT): | contract-check
+```
+
+This requires the gate to finish before the result recipe starts without making the
+phony gate force result publication on every invocation.
+
+Do not write:
+
+```make
+all: contract-check $(RESULT)
+```
+
+Under `-j`, sibling prerequisites may run concurrently. Their left-to-right order is not
+an execution sequence.
+
+The audit supplies the expected failure evidence:
+
+| Case | Finding | Publication state |
+| --- | --- | --- |
+| late check | `LATE_TOOL_FAILURE_LEFT_RESIDUE` | empty version file remains |
+| missing gate | `REQUIRED_TOOL_REJECTED_EARLY` | no version or result file |
+| available gate | `REQUIRED_TOOL_ACCEPTED` | both files exist |
+
+This design distinguishes:
+
+- advisory facts, which `doctor` reports for diagnosis
+- required presence, which `contract-check` enforces before publication
+- version compatibility, which needs its own accepted-version policy and boundary tests
+
+The available case matters because a gate that rejects every tool would otherwise look
+correct in the missing-tool test.
 
 ## Exercise 7: Remove a hidden shell dependency
 

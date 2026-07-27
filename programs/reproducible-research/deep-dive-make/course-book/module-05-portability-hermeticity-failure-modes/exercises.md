@@ -226,19 +226,27 @@ make the packet more explicit before continuing.
 ## Exercise 6: Build a toolchain doctor
 
 Write a phony `doctor` target that reports the GNU Make version, shell, compiler path,
-Python path, locale, and recursion depth. Required tools must make the target fail with a
-useful message when absent.
+Python path, locale, and recursion depth. Keep that diagnostic report separate from a
+`contract-check` target that rejects missing required tools before any artifact recipe
+starts.
+
+First inspect the required-tool rows from `environment-contract-audit`. Explain why the
+late-check model leaves a zero-byte version file. Then build one artifact target that has
+the gate as an order-only prerequisite. Test under `-j2` with an unavailable tool and an
+available tool.
 
 What to hand in:
 
-- the target
-- output from one successful run
-- the failure message for one deliberately unavailable tool
-- one sentence explaining which reported facts are advisory and which are fatal
+- the `doctor`, `contract-check`, and artifact rules
+- output from one diagnostic run
+- a missing-tool run with the deliberate message and proof that no artifact files exist
+- an available-tool run that publishes the expected files
+- one explanation of why `all: contract-check artifact` does not impose order under `-j`
+- one sentence separating tool presence from tool-version compatibility
 
 Study note:
-Good doctor targets do two jobs: they reveal context and they stop the build before vague
-downstream failures.
+A doctor reveals context. A gate enforces a requirement. Keeping those responsibilities
+separate makes failure placement and advisory output easier to review.
 
 ## Exercise 7: Remove a hidden shell dependency
 

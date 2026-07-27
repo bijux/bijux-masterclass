@@ -225,12 +225,24 @@ contract-check:
 	}
 
 .PHONY: all
-all: contract-check $(RESULT)
+all: $(RESULT)
+
+$(RESULT): | contract-check
 ```
 
 This gate has a deliberately narrow responsibility: reject an unavailable executable
 before any artifact recipe begins. Compatibility is a separate question; finding
 `python3` does not prove that every Python version is supported.
+
+The order-only edge is important. This shape would not establish ordering:
+
+```make
+all: contract-check $(RESULT)
+```
+
+Normal prerequisites of the same target may run concurrently under `-j`. Listing the gate
+first is not a sequencing promise. Attach the gate to every target that can begin
+publication, or attach it to a file node shared by those targets.
 
 ## Prove both rejection and acceptance
 
