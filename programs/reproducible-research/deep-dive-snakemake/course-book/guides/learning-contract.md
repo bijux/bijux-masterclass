@@ -4,6 +4,19 @@ built for passive reading. It is built for readers who can explain one workflow
 boundary, name the failure it prevents, and point to the command or artifact that proves
 the claim.
 
+## How to use this page
+
+Return to this page when your study habits start getting blurry.
+
+That usually means one of these is happening:
+
+- you are reading more pages but understanding less
+- you are choosing proof routes that are too big for the claim
+- you are browsing the capstone instead of learning from the module
+- you are recognizing terms without being able to defend them
+
+This page is a reset, not an introduction.
+
 ## The short version
 
 The course asks you to do three honest things:
@@ -14,6 +27,16 @@ The course asks you to do three honest things:
 
 If you skip prediction, you lose the chance to test your model. If you skip observation,
 you fall back to guessing. If you skip explanation, commands become rituals.
+
+## Start by checking whether your study loop is still honest
+
+Before opening more material, ask:
+
+1. did I make a prediction
+2. did I inspect the smallest surface that could falsify it
+3. can I explain the result without copying the page wording
+
+If any answer is no, the right next step is usually smaller, not broader.
 
 ## What the program is asking from you
 
@@ -105,3 +128,16 @@ Stop and reset if any of these are true:
 
 Those are not minor study gaps. They usually mean the previous page needs a slower,
 smaller pass.
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is believing that confusion can be solved by widening the
+surface:
+
+- more support pages
+- stronger proof routes
+- earlier capstone entry
+- later modules that sound more advanced
+
+Most of the time the fix is the opposite: shrink the question until one boundary and one
+proof route become defensible.

@@ -16,6 +16,19 @@ For each module:
 If you need to reread, reread the narrowest lesson that matches the gap instead of the
 whole module.
 
+## What readiness means here
+
+Readiness in this course is not the same thing as familiarity.
+
+You are ready when you can:
+
+- explain the boundary in plain language
+- run or inspect one proportionate proof route
+- interpret the result without borrowing the page’s wording
+- say what misunderstanding would send you back
+
+That standard is intentionally stricter than "I remember seeing this before."
+
 ## Readiness table
 
 | Module | You are ready to move on when you can explain... | Quick proof or inspection route | Go back when... |
@@ -41,6 +54,19 @@ Do not call a module done just because:
 - you can follow the capstone without naming why the evidence matters
 
 Those usually mean you have seen the surface, not learned the boundary.
+
+## One honest use of this page
+
+Suppose you think you are done with Module 06 because the publish section felt familiar.
+
+A strong checkpoint use is:
+
+1. ask yourself what is public in `publish/v1/`
+2. run the listed verification route
+3. explain why `results/` is still smaller or larger than the trust surface
+4. stop if your answer collapses back into "that is just where the files end up"
+
+That is the level of honesty these checkpoints are trying to force.
 
 ## Best companion pages
 

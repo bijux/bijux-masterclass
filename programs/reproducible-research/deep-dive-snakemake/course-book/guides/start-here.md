@@ -6,6 +6,20 @@ one hundred exercises. No previous Snakemake experience is required.
 Start with one small workflow, not with the capstone. Your first job is to see Snakemake
 plan and execute one honest file contract.
 
+## How to use this page
+
+Use this page when you need the smallest honest way into the course.
+
+Read it in this order:
+
+1. decide whether you are truly at first contact
+2. follow the first-hour route exactly once
+3. stop before you widen the surface
+4. move into Module 00 and Module 01 while the first local workflow is still clear in your head
+
+This page is intentionally narrow. If it starts turning into a study dashboard, you have
+already opened too much.
+
 ## Your first hour
 
 If you only have one hour today, use it like this:
@@ -18,6 +32,15 @@ If you only have one hour today, use it like this:
 
 That is enough for a real start. You do not need checkpoints, clusters, or the capstone
 yet.
+
+## One honest beginner route
+
+If the course still feels abstract, use this sentence to steady yourself:
+
+> Today I only need to understand why one target ran, why the second run did not, and why
+> editing one input changed the plan.
+
+That is not a low bar. That is the core model the rest of the course will keep expanding.
 
 ## Use this page when
 
@@ -37,6 +60,16 @@ yet.
 - Do not treat dry-run output as optional.
 - Do not rush into profiles or executors before one local rule is clear.
 - Do not read answer pages before you already have your own failed prediction.
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is assuming the larger repository or more advanced topic
+will make the concept clearer.
+
+It usually does the opposite.
+
+If the first workflow is still fuzzy, more files, more profiles, and more capstone detail
+will only give you more places to hide uncertainty.
 
 ## Best first pass
 

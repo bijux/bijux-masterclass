@@ -3,9 +3,39 @@
 Use this page when you want the big picture without losing the learner-first route. Deep
 Dive Snakemake has several surfaces, but they are not equally useful at every stage.
 
+## How to use this page
+
+Use this guide when you already know you need the big picture, not when you are still
+trying to learn a single concept for the first time.
+
+Read it in this order:
+
+1. understand the four durable surfaces
+2. understand the recommended reading order
+3. choose the right surface for the pressure you actually have
+4. stop once the next page is obvious
+
+If you keep reading after the next page is obvious, you are probably replacing study with
+orientation.
+
 The central rule is simple:
 
 > learn the workflow idea in a small setting first, then use the capstone to confirm it in a larger repository.
+
+## Start with the smallest surface that can answer the question
+
+This course has enough material that learners can mistake abundance for pedagogy.
+
+Do not ask, "what else is available?" first.
+
+Ask:
+
+- am I learning a concept
+- am I checking readiness
+- am I under pressure and choosing evidence
+- am I verifying the concept in a larger repository
+
+Those are different jobs. The guide exists to keep them separate.
 
 ## The four durable surfaces
 

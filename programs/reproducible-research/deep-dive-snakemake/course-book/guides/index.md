@@ -4,6 +4,20 @@ Use this shelf when you need route choice, proof sizing, or capstone entry help 
 than another lesson page. The guides should send you back to learning quickly, not trap
 you in course-admin prose.
 
+## How to use this shelf
+
+Open the guides only after you can already name the kind of help you need.
+
+Use them for one of four jobs:
+
+1. choose an entry route
+2. choose a support route under pressure
+3. decide whether your current proof is too heavy or too light
+4. decide whether you are actually ready to move on
+
+If you cannot name the job yet, go back to the module. The module should teach the idea;
+the guide should only help you move through it more deliberately.
+
 ## What this shelf is for
 
 Use the guides shelf when you need help with one of these learner questions:
@@ -15,6 +29,22 @@ Use the guides shelf when you need help with one of these learner questions:
 
 If you need the concept itself, go back to the module. These pages are for navigation,
 not for replacing the lesson.
+
+## Start with one learner question, not with the whole shelf
+
+The easiest way to waste time here is to open several guide pages because they all look
+responsible.
+
+That usually means you are avoiding the narrower question that actually matters.
+
+A better habit is to say:
+
+- I am new and need the safest entry route
+- I am under pressure and need the smallest honest proof
+- I think I am ready to move on and want an exit bar
+- I know the claim and need the support page that owns it
+
+Once the question sounds that specific, the shelf becomes useful instead of sprawling.
 
 ## Start with the guide that matches your situation
 
