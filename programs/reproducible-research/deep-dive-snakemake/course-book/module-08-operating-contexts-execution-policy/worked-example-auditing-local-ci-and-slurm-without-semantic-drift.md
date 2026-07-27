@@ -7,6 +7,21 @@ This file ties the whole module together around one realistic problem:
 The question is not "do these profiles all run?" The question is whether they preserve one
 semantic workflow while changing context honestly.
 
+## If you are learning this without the live class
+
+Use the example in five passes instead of trying to absorb the whole context audit in one
+read:
+
+1. read the profile files directly and classify what each key is allowed to own
+2. stop after the first normalized dry-run comparison and ask whether the same workflow still exists
+3. write the failure class before you discuss retries or latency changes
+4. draw the storage and promotion route before you treat any bytes as trusted
+5. finish by injecting one leak and proving the audit can catch it
+
+If you cannot explain the semantic invariants after pass 2, do not keep tuning profile
+details yet. Most Module 08 confusion starts when learners chase flags before they have
+named what must stay invariant.
+
 ## How to use this worked example
 
 Work through this page with the five core lessons nearby.
@@ -48,6 +63,9 @@ Keep one small audit packet beside you while you read:
 - one storage lifecycle diagram
 - one drift finding with its exact proof route
 
+That packet is not overhead. It is the thing that turns "the profiles seem fine" into
+"another maintainer can review why the contexts preserve one semantic workflow."
+
 ## The starting situation
 
 Assume you inherit a workflow with three operating contexts:
@@ -67,6 +85,19 @@ Before you read any deeper, write down the invariants the repository is claiming
 
 If those invariants are not explicit, every later profile comparison will feel more
 confusing than it needs to.
+
+## What goes wrong when a learner trusts the starting situation
+
+Use this card before you repair anything:
+
+| If you notice... | The repository is hiding... | Smallest review surface |
+| --- | --- | --- |
+| profiles differ but nobody can say which settings are harmless | the policy boundary is still undefined | one classified profile matrix |
+| local, CI, and Slurm all "work" but no one compared their plans | semantic invariance is being assumed, not proved | one normalized dry-run comparison |
+| retries were raised after frustration instead of diagnosis | failure policy is folklore instead of reviewable policy | one failure-class note |
+| scratch bytes are treated as done because they exist | the trust boundary is still implicit | one storage lifecycle diagram |
+
+If you can name the hidden defect first, the context audit stops feeling like YAML comparison.
 
 ## What the learner should notice first
 
@@ -127,6 +158,19 @@ and declared inputs and outputs. Those are the semantic facts the audit exists t
 That is why dry-run comparison is stronger than "the profiles look similar." It tests the
 workflow story the profiles actually produce.
 
+## The context-invariance audit before you celebrate
+
+Before you call the comparison healthy, make sure you can answer all four of these:
+
+| Question | Healthy answer |
+| --- | --- |
+| What stayed invariant? | targets, trusted paths, and semantic workflow meaning |
+| What changed safely? | executor mapping, observability, latency patience, or other operating-policy details |
+| What would count as a leak? | profile changes that alter publish paths, sample scope, or other semantic surfaces |
+| What evidence proves the difference is policy only? | one normalized dry-run comparison for the same target across contexts |
+
+If any row stays vague, keep repairing. The profiles may differ legitimately, but the audit is still too weak.
+
 ## A short checkpoint before you continue
 
 Pause here and ask:
@@ -183,6 +227,18 @@ flowchart LR
 This diagram matters because it shows exactly where bytes exist before trust begins and
 where promotion turns temporary work into contract work.
 
+## The storage-boundary audit before you move on
+
+Do not just say "scratch is temporary." Test whether you can name the trust transition:
+
+| Surface | Smallest honest claim |
+| --- | --- |
+| scratch or executor-local write | bytes exist, but they are not yet trusted outputs |
+| validation and staging | the repository is still deciding whether promotion is justified |
+| publish or final trusted path | downstream trust begins here, not earlier |
+
+If you cannot fill this table, the repository is still too vulnerable to accidental trust leaks.
+
 ## What the learner should notice now
 
 At this point the review is doing more than comparing profiles.
@@ -226,6 +282,17 @@ By the end of the audit, the repository can be described cleanly:
 
 That is what it means to audit local, CI, and Slurm without semantic drift.
 
+```mermaid
+flowchart LR
+  profiles["policy-only profiles"] --> plans["semantic plan comparison"]
+  plans --> failure["failure-model review"]
+  failure --> storage["trusted promotion boundary"]
+  storage --> drift["leak detection and drift audit"]
+```
+
+Read that diagram literally. If one step is missing, the repository may still run in
+three places, but the context story is not yet teachable.
+
 ## Review questions for the repaired design
 
 When you inspect a repository shaped like this, ask:
@@ -237,6 +304,19 @@ When you inspect a repository shaped like this, ask:
 5. which audit surface would fail first if a profile started changing semantics
 
 If those answers are visible, the module's context story has landed.
+
+## If the module still feels abstract
+
+Do this recovery loop in order:
+
+1. point to one semantic invariant that all three contexts must preserve
+2. compare the same target in local, CI, and Slurm without normalizing away the real semantics
+3. name one retry or latency change and tie it to one failure class
+4. mark the exact point where scratch stops and trusted output begins
+5. inject one profile leak and say which audit surface should fail first
+
+Most Module 08 confusion is not about schedulers themselves. It is about losing track of
+which boundary proves policy stayed separate from workflow meaning.
 
 If you want one final classroom-style check, explain the repository in four sentences:
 

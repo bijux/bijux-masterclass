@@ -70,6 +70,21 @@ module08-lab/
 That structure helps separate context comparisons, storage-boundary evidence, and drift
 checks instead of collapsing them into one loose profile note.
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable packet instead of ten disconnected profile tweaks:
+
+- one classified profile matrix
+- one normalized dry-run comparison across contexts
+- one failure-class note tied to retries or latency
+- one storage lifecycle diagram
+- one focused drift gate with a failing example
+- one maintainer-style review note ordered by semantic risk
+
+If you cannot point to those artifacts, the exercise day is still too dependent on tacit
+classroom guidance.
+
 ## Exercise 1: Decide whether a profile change is safe
 
 Review a small set of proposed profile edits and decide which are operating policy and
@@ -205,6 +220,19 @@ What to hand in:
 
 Study note:
 A good gate tells the maintainer exactly which invariant leaked and where.
+
+## When you get stuck, diagnose the missing boundary first
+
+Use this table before you start changing more profile keys:
+
+| If you are stuck on... | Check whether you are missing... | Typical repair |
+| --- | --- | --- |
+| Exercise 1 or 4 | one explicit semantic invariant | write what must stay the same before comparing contexts |
+| Exercise 2 or 5 | one named failure class or semantic leak | classify the incident before changing retries or policy |
+| Exercise 3 or 8 | one exact trust boundary in storage | draw scratch, staging, and promotion before judging outputs |
+| Exercise 6, 9, or 10 | one governed policy matrix or drift claim | define which differences are allowed before writing the audit |
+
+Most weak Module 08 answers are not short on flags. They are short on named invariants.
 
 ## Exercise 10: Review a policy change like a maintainer
 
