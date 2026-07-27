@@ -43,6 +43,11 @@ This page should be read as a review packet, not as a victory lap for the capsto
 lesson is not that the runtime is magical. The lesson is that it stays defensible because
 its powers are narrow, inspectable, and paired with refusal surfaces.
 
+If you are studying alone, keep one more rule beside the capstone:
+
+- every time the runtime feels elegant, stop and name the exact public surface that keeps it reviewable
+- then name one stronger power it deliberately refused instead of taking the elegant route further
+
 ## The review question
 
 The question here is not "does the capstone use metaprogramming?"
@@ -67,6 +72,18 @@ Use this route before approving the capstone design:
 | Name refused powers | Which stronger mechanisms were left out? | Import hooks, dynamic execution, and side-effecting inspection are explicitly rejected |
 | Check reversibility | How does shared runtime state return to baseline? | Registry reset and test-visible control surfaces exist |
 | Check operational evidence | What traces, manifests, and tests prove the runtime remains reviewable? | Public proof surfaces and trace outputs stay inspectable |
+
+## Worked-example reading order
+
+Do not read the capstone as one continuous success story. Use this order instead:
+
+1. inspect observational commands before operational ones
+2. identify the chosen mechanisms and the refused stronger ones
+3. trace the registry reset surface
+4. inspect wrapper metadata and trace surfaces
+5. only then decide whether the runtime stays inside the module's governance rules
+
+That order keeps runtime evidence ahead of runtime admiration.
 
 ## Step 1: start with observational surfaces, not invocation
 
@@ -151,6 +168,10 @@ After reading the public surfaces, a reviewer should be able to answer:
 - how can registry state be reset during tests?
 
 If those questions become hard, the design is drifting out of Module 10 territory.
+
+Add one more approval question:
+
+- what stronger power was explicitly refused, and where is that refusal visible in the runtime surface?
 
 ## Step 4: check the reversibility story
 
@@ -244,6 +265,15 @@ Watch for these design moves:
 | plugin discovery shifts to import hooks | startup semantics become less explicit and harder to reason about |
 | manifest rendering gains hidden plugin behavior | review surfaces stop being trustworthy evidence |
 
+## Weak readings to reject early
+
+| Weak reading | Why it fails |
+| --- | --- |
+| "the capstone works because the runtime is smart" | smart does not name observation, reset, or refusal surfaces |
+| "the CLI already proves the runtime is safe" | observational commands are evidence, not universal safety |
+| "the registry is fine because tests can reset it" | reset is only one governance surface, not the whole trust story |
+| "plugin discovery could become automatic later" | later import-hook escalation is not justified by the current runtime |
+
 ## Step 7: name the strongest rejections
 
 The capstone becomes a stronger review example because it visibly refuses several higher
@@ -302,6 +332,12 @@ The boundary is:
 - the strongest designs are usually the ones that refuse extra power they could technically take
 
 That is why this example belongs at the end of the course.
+
+Before leaving the page, write one sentence in each of these forms:
+
+- "the observational surface that earns trust here is..."
+- "the stronger mechanism correctly refused here is..."
+- "the first change I would reject is..."
 
 ## Exit check for this page
 
