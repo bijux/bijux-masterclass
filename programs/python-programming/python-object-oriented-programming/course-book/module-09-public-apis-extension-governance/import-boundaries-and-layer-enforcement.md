@@ -19,142 +19,174 @@ graph LR
 flowchart LR
   orient["Orient on the page map"] --> read["Read the main claim and examples"]
   read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
+  inspect --> verify["Run or review the path"]
   verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about keeping the codebase honest about which layers are allowed to know
+about which other layers.
 
-## Why this lesson matters
+Python makes importing easy.
+Architecture does not.
 
-Python makes importing easy. Architecture does not.
-
-Without explicit import discipline, systems drift toward:
+Without import discipline, systems drift toward:
 
 - domain code importing infrastructure details
 - plugins importing private host modules
-- application entrypoints bypassing published facades
-- deep helpers becoming accidental dependencies
+- application entrypoints bypassing supported facades
+- deep helpers becoming accidental public dependencies
 
-This is one of the fastest ways to undermine a public API design. Even if the docs say
-one surface is public, uncontrolled imports teach the codebase to depend on something
-else.
+That is one of the fastest ways to undermine everything else in this module.
 
-## Layer rules need named boundaries
+## Keep one layering story visible
 
-A useful architecture rule sounds like:
+Use the capstone package:
+
+`service_monitoring`
+
+Assume the intended story is:
+
+- consumers start from the supported facade
+- extension authors depend on published capability seams
+- runtime, repository, and adapter internals stay private
+
+Now ask:
+
+Which imports reinforce that story, and which imports quietly teach a different one?
+
+That is the real import-boundary question.
+
+## Layer rules need to be stated plainly
+
+A useful rule sounds like:
 
 - domain does not import infrastructure
-- plugins depend on public capabilities, not aggregate internals
-- application services use published seams instead of private adapters
+- plugins depend on public capabilities, not private host internals
+- application services use supported seams instead of deep adapter modules
 
 That is much stronger than:
 
-- try not to create tight coupling
+- try to avoid tight coupling
 
-If a rule cannot be stated clearly, it is hard to review, hard to teach, and almost
+If the rule cannot be said clearly, it is hard to review, hard to teach, and nearly
 impossible to enforce consistently.
 
-## Package structure should support the rules
+## Package structure should help the rules
 
-Good boundaries are easier to maintain when the package layout helps people do the right
-thing by default.
+A good package tree does not solve architecture by itself, but it can make the intended
+imports feel natural.
 
-Examples:
+Helpful structure often includes:
 
-- keeping public facades in obvious package locations
-- grouping internal modules behind stable higher-level entry surfaces
-- separating plugin-facing protocols from host implementation details
+- obvious facade modules for public entry
+- protocol or capability modules separated from host implementation details
+- runtime and adapter internals grouped behind higher-level seams
 
-Structure alone will not solve everything, but a flat or ambiguous tree makes the wrong
-imports feel normal.
+An ambiguous or flat tree makes the wrong imports feel normal even when the written
+policy says otherwise.
 
-## Deep imports are often architecture signals
+## Deep imports are architecture signals
 
-Not every deep import is wrong, but each one is worth asking about.
+Not every deep import is automatically wrong.
+Each one is still worth asking about.
 
-A deep import may mean:
+A deep import may signal:
 
 - the public facade is missing a supported use case
-- the code is bypassing an intended boundary
-- one layer knows too much about another
-- an internal utility is becoming an accidental contract
+- one layer is bypassing an intended boundary
+- a helper is becoming an accidental contract
+- an extension seam is too weak, so callers are reaching inward instead
 
 This is why deep-import review matters even when the code still works.
 
-## Tooling should reinforce review, not replace it
+## Tooling should reinforce the rule, not invent it
 
-Named rules become much more durable when they are supported by:
+Once the layer rules are clear, strengthen them with:
 
 - import-linting tools
 - layer-specific checks
 - package-level conventions
-- tests or build checks that reject forbidden edges
+- CI or test rules that reject forbidden edges
 
-Tooling cannot invent good boundaries, but it can stop the same violations from being
-rediscovered in every review.
+Tooling cannot design good boundaries for you.
+It can stop the same mistakes from being rediscovered in every review.
 
-## Exceptions should be rare and recorded
+That is still valuable because reviewers should not have to catch identical violations
+manually forever.
 
-Some systems do need carefully scoped exceptions.
+## Exceptions should be rare, named, and recorded
+
+Some systems do need narrowly scoped exceptions.
 
 When that happens:
 
 - name the exception
 - explain why the normal rule is insufficient
-- keep the scope narrow
-- record the intended future state if the exception is temporary
+- keep the scope explicit and small
+- record the intended future state if it is temporary
 
-Unrecorded exceptions are how architecture rules become folklore instead of policy.
+Unrecorded exceptions are how layer rules become folklore instead of policy.
 
-## A worked example
+## Worked capstone example
 
-Suppose the capstone wants plugins to publish incidents through a stable sink protocol.
+Suppose the capstone publishes one `IncidentSink` capability.
 
-A healthy import pattern might be:
+Healthy import pattern:
 
 - plugin code imports the public sink capability
-- the host composition root wires the concrete implementation
-- aggregate internals stay invisible to plugin modules
+- the composition root wires the concrete implementation
+- aggregate and repository internals stay invisible to plugin modules
 
-A weak pattern would let plugin code import:
+Weak import pattern:
 
-- internal aggregate modules
-- repository implementations
-- runtime schedulers
+- plugin code imports aggregate modules directly
+- plugin code depends on repository implementations
+- plugin code reaches into runtime schedulers or adapter helpers
 
-At that point the plugin is no longer extending the public seam. It is depending on
-private host structure, which means the import graph has already broken the governance
-story.
+At that point the plugin is no longer extending the public seam.
+It is depending on private host structure, which means the import graph has already
+broken the governance story.
 
-## Boundary enforcement protects refactoring freedom
+## Boundary enforcement preserves refactor freedom
 
-Import boundaries are not busywork. They preserve the ability to:
+Import discipline is not busywork.
+It preserves the ability to:
 
 - reorganize internal packages
 - replace implementation details
-- evolve facades without supporting every historic import path
+- evolve facades without supporting every historic deep path
 - keep extension points small and reviewable
 
-If every layer can import every other layer, the package loses that freedom even before
-any external user complains.
+If every layer can import every other layer, the package loses that freedom before any
+external user even complains.
 
-## Common mistakes
+## Build an import-boundary packet
+
+For each important boundary, keep a short packet with:
+
+- rule statement
+- allowed import direction
+- forbidden import direction
+- known exception, if any
+- tool or review route that reinforces the rule
+
+That packet gives maintainers something concrete to review on Monday, July 27, 2026 and
+after, instead of relying on oral memory.
+
+## Common failure modes
 
 - leaving layer rules implicit and hoping reviewers remember them
 - accepting deep imports because they are convenient in the current file layout
-- treating tool-based enforcement as optional even after the rules are known
+- treating automated enforcement as optional after the rules are already known
 - letting plugins or consumers import private internals directly
-- allowing undocumented exceptions to accumulate until the rule no longer means anything
+- allowing undocumented exceptions to accumulate until the rule no longer means much
 
-## Review checklist
+## Import review card
 
-| Question | Good sign |
+Use this short card when reviewing one boundary:
+
+| Question | What you want to see |
 | --- | --- |
 | are layer and public/private import rules stated explicitly? | yes |
 | does the package layout support the intended boundaries? | yes |
@@ -163,18 +195,20 @@ any external user complains.
 
 ## Capstone connection
 
-Use the capstone package to ask:
+Use this page to ask:
 
-- which current deep imports are signs that the published facade is too weak or the layering is leaking?
-- where should plugin-facing code depend on a public protocol instead of a private module?
-- which import rule deserves tooling support first because reviewers should not have to catch it manually every time?
+- which current deep imports show that the published facade is still too weak
+- where plugin-facing code should depend on a public protocol instead of a private module
+- which import rule deserves tooling support first because reviewers should not have to
+  catch it manually every time
 
-This is where public API governance reaches into day-to-day package structure.
+That is where public API governance reaches into day-to-day package structure.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- state one import rule for the capstone in clear enforceable language
+- state one capstone import rule in clear enforceable language
 - identify one deep import that would count as a boundary violation
-- explain why boundary tooling reinforces architecture instead of replacing architectural judgment
+- explain why tooling reinforces architecture instead of replacing architectural
+  judgment
