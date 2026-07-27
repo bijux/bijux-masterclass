@@ -24,54 +24,95 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this checklist when reviewing decorators, descriptors, metaclasses, dynamic execution,
-or plugin registration code. The goal is not to punish dynamic design. The goal is to
-force it to justify itself with clear ownership, visible evidence, and a believable rollback story.
+Use this checklist when a dynamic design technically works but still needs an approval decision.
 
-## Mechanism choice
+This page is not here to punish decorators, descriptors, or metaclasses. It is here to
+make them earn trust. Good dynamic code should survive questions about ownership,
+observability, rollback, and proof. If it cannot survive those questions, it is not ready.
+
+## How to use this checklist
+
+1. Name the mechanism under review.
+2. Name the invariant it claims to own.
+3. Walk the sections below in order.
+4. Finish with one explicit decision: keep, tighten, move downward, or reject.
+
+Do not skip to style arguments first. Start with necessity and evidence.
+
+## 1. Mechanism choice
+
+Ask:
 
 - What lower-power tool was considered first?
 - Which invariant actually requires this mechanism?
-- Is the behavior local enough to explain without a live walkthrough?
+- Could the behavior still be explained clearly to a reviewer without a live walkthrough?
 
-## Escalation rule
+If you cannot answer those questions, the design is not justified yet.
 
-- Could plain code, inspection, or an explicit class solve this before decorators or descriptors?
-- If a descriptor or metaclass is involved, what exact invariant could not be owned at a lower rung?
+## 2. Escalation
+
+Ask:
+
+- Could plain code, explicit objects, or a class decorator solve this before descriptors or metaclasses?
+- If a descriptor or metaclass is involved, what exact invariant failed to fit at the lower rung?
 - Is the stronger tool more invasive than the value it adds?
 
-## Observability
+Advanced tools do not get credit just for existing.
 
-- Does signature, docstring, name, and traceback visibility survive wrapping?
+## 3. Observability
+
+Ask:
+
+- Do signature, name, docstring, and traceback evidence survive wrapping?
 - Can a reviewer inspect the runtime shape without executing business actions?
-- Are import-time side effects explicit and deterministic?
+- Are import-time or class-definition-time side effects explicit and deterministic?
 
-## Testability
+If observability falls apart, the design is already too expensive.
 
-- Is the registry, cache, or global hook resettable in tests?
+## 4. Testability
+
+Ask:
+
+- Is any registry, cache, or global hook resettable in tests?
 - Are failure cases tested, not only happy paths?
-- Can the proof route demonstrate the claim from the public surface?
+- Can the proof route demonstrate the claim from the public surface instead of private folklore?
 
-## Security and governance
+Passing tests are not enough if the tests still hide the real mechanism cost.
+
+## 5. Security and governance
+
+Ask:
 
 - Is dynamic execution excluded from untrusted input paths?
-- Are plugin names, field contracts, and public hooks stable and documented?
-- Is there a kill switch or rollback path if the mechanism causes trouble in production?
+- Are public hooks, names, and contracts stable enough to document?
+- Is there a believable rollback or disable path if the mechanism causes trouble later?
+
+The more global the mechanism, the stronger this section becomes.
 
 ## Rejection signals
 
-Reject or rewrite if:
+Move toward rejection or redesign if:
 
-- the mechanism is chosen because it feels advanced
-- the design hides work at import time without explicit contracts
-- the code becomes harder to debug than an ordinary explicit alternative
+- the mechanism was chosen mainly because it felt advanced
+- import-time work is hidden behind vague contracts
+- the code is harder to debug than an explicit alternative would be
 - the proof route depends more on trust in the author than on inspectable evidence
+- the design only sounds good while the author is narrating it
+
+## Decision table
+
+| Decision | When it fits |
+| --- | --- |
+| keep as is | the mechanism is necessary, observable, and proportionately proven |
+| keep with tighter proof | the design may be acceptable, but its current evidence is too weak |
+| move to a lower-power boundary | the invariant is real, but the current owner is too strong |
+| reject outright | the mechanism is unjustified, unreviewable, or governance-hostile |
 
 ## Good stopping point
 
-Stop when you can turn the checklist into one explicit call:
+Leave this page when you can say:
 
-- keep as is
-- keep with tighter proof
-- move to a lower-power boundary
-- reject outright
+- what the mechanism owns
+- why that owner is justified or not
+- what proof route supports the decision
+- which decision you would record in a review
