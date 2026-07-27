@@ -32,12 +32,20 @@ Once descriptor systems start carrying several concerns at once, teams hit a des
 
 This core focuses on the second option.
 
+This page matters because composition can sound cleaner than subclass explosion while
+quietly making field behavior harder to inspect. A learner studying alone needs a way to
+prove which layer owns what and when the wrapper stack has become too opaque to justify.
+
 ## The sentence to keep
 
 Descriptor composition wraps one field descriptor in another so new behavior can be added
 through delegation instead of by multiplying subclasses for every field variant.
 
 That is useful, but only if the layers stay inspectable.
+
+Keep one more sentence beside it:
+
+> every wrapper layer must earn its existence by adding one clear concern without hiding the inner owner.
 
 ## Why composition shows up here
 
@@ -53,6 +61,16 @@ If every combination becomes its own subclass, the design quickly turns into a c
 that is harder to review than the field logic itself.
 
 Composition is the usual escape hatch.
+
+Use this table before trusting a composed field design:
+
+| Pressure | Review question |
+| --- | --- |
+| inner ownership | what field behavior would still exist if every wrapper disappeared? |
+| added concern | what one extra responsibility does this layer add? |
+| forwarding | which protocol methods must be delegated to keep the field honest? |
+| stack depth | how many layers must a reader traverse to explain one write? |
+| escalation | at what point is a wider framework abstraction clearer than more wrappers? |
 
 ## A delegation base
 
@@ -80,6 +98,10 @@ This is the useful center of the pattern:
 
 That keeps layering explicit.
 
+That is the rule to defend through the rest of the page:
+
+remove the wrapper and the inner field should still have a recognizable contract.
+
 ## A validated wrapper
 
 ```python
@@ -101,6 +123,18 @@ This shape works because the wrapper does one narrow thing:
 
 That is much easier to reason about than a whole new subclass hierarchy for every rule.
 
+## Evidence route for wrapper reviews
+
+Use this route whenever a composed field sounds elegant but feels hard to trust:
+
+| Evidence step | What it proves |
+| --- | --- |
+| identify the innermost field | tells you the underlying attribute contract |
+| list one responsibility per wrapper | tells you whether each layer has a narrow reason to exist |
+| trace `__set_name__`, `__get__`, and `__set__` | tells you whether protocol forwarding is complete and coherent |
+| trace one assignment end to end | shows where transformation, validation, and storage actually happen |
+| remove one layer mentally | shows whether the wrapper adds value or only ceremony |
+
 ## What good composition looks like
 
 Good wrapper-field composition usually has these traits:
@@ -112,6 +146,14 @@ Good wrapper-field composition usually has these traits:
 
 That last point matters more than people think.
 
+Keep a layer ledger while you review:
+
+| Layer | Owned concern | Protocol methods it must forward or override | Why it is still worth having |
+| --- | --- | --- | --- |
+| inner field | base attribute contract | its own full descriptor protocol | it defines the durable field semantics |
+| wrapper 1 | one added concern | the methods required for that concern plus correct delegation | it adds one clear behavior without hiding the base field |
+| wrapper 2 and beyond | another single concern each | same rule | only justified if the stack still stays readable |
+
 ## What bad composition looks like
 
 Composition becomes harder to trust when:
@@ -122,6 +164,17 @@ Composition becomes harder to trust when:
 - the stack grows deep enough that field behavior becomes an archaeological dig
 
 At that point, “composable” is no longer the same as “clear.”
+
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "wrappers keep everything modular" | "wrappers keep things modular only while each layer stays shallow and inspectable" |
+| "the stack is flexible" | "the stack is flexible, but each layer increases review cost" |
+| "delegation handles the rest" | "delegation must be traced method by method, especially for `__set_name__`" |
+| "we can always add one more layer later" | "another layer is acceptable only if ownership stays legible" |
 
 ## Why `__set_name__` deserves special care
 
@@ -135,6 +188,13 @@ Problems include:
 
 Because `__set_name__` often initializes storage keys and public names, this is not a
 small detail. It is part of whether the wrapped field works at all.
+
+Use this proof route whenever name binding bugs are plausible:
+
+- find where the public and private names are created
+- confirm whether wrapper state shadows the inner field or reuses it
+- confirm whether forwarding happens once and only once
+- test one class definition path, not only instance reads and writes
 
 ## Composition is not a license for endless stacks
 
@@ -153,6 +213,11 @@ If a field design now wants:
 
 all as separate wrapper layers, the design may already be asking for a stronger framework
 abstraction than “one wrapped descriptor.”
+
+That is the escalation boundary to keep visible:
+
+composition is for additive field concerns, not for hiding architecture behind an
+infinite decorator stack.
 
 ## Why this is better than subclass explosion
 
@@ -173,6 +238,18 @@ and so on.
 
 The goal is not sophistication. The goal is keeping ownership legible.
 
+## Failure modes for wrapper fields
+
+These are the mistakes this page is trying to prevent:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| wrapper adds more than one real concern | the layer stops being easy to justify | split the concerns or move to a wider abstraction |
+| inner field ownership becomes hard to state | readers cannot tell what the base contract is anymore | simplify the stack and restate the innermost field contract |
+| `__set_name__` forwarding is missing or duplicated | names, storage slots, or validators can drift | trace name initialization explicitly and forward once |
+| multiple wrappers mutate values in surprising sequence | write behavior becomes guesswork | document and simplify the transformation order |
+| stack depth exceeds quick human inspection | review cost becomes higher than subclass sprawl ever saved | replace the stack with a clearer framework-level owner |
+
 ## Review rules for wrapper fields
 
 When reviewing descriptor composition, keep these questions close:
@@ -182,6 +259,17 @@ When reviewing descriptor composition, keep these questions close:
 - is `__set_name__` delegated correctly and only once?
 - how many layers do you need to traverse to understand one attribute write?
 - has the stack grown large enough that a different framework abstraction would be clearer?
+- can you name the exact layer you would remove first if the stack had to get simpler?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- state the base contract of the inner field in one sentence
+- name one added concern for one wrapper and nothing more
+- explain how `__set_name__` reaches the inner field
+- trace one write path through the stack without guessing
+- say when you would stop adding wrappers and escalate to a broader design
 
 ## What to practice from this page
 
