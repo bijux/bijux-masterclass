@@ -58,6 +58,18 @@ You should also be able to say what this module does not prove automatically:
 - that type annotations become runtime behavior without a real owner
 - that a reusable descriptor automatically justifies itself
 
+## Weak answers to reject early
+
+Do not let the module collapse into any of these:
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "`@dataclass` already enforces the rule." | generated methods are not the same as owned validation or policy |
+| "A property is simpler, so it must be correct." | friendly syntax does not prove the rule belongs to one attribute boundary |
+| "A descriptor is better because it is more advanced." | reuse is only honest when repeated field pressure is real |
+| "A metaclass could handle it." | possibility is not justification; class-creation-time need must be named |
+| "Frozen means immutable." | blocked rebinding is weaker than deep control over nested mutable state |
+
 ## Keep these pages open
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md)
@@ -80,6 +92,18 @@ Read the module in this order if you are learning without an instructor present:
 | [Exercises](exercises.md) | can I justify the lower-power owner in plain language? |
 | [Exercise Answers](exercise-answers.md) | is my reasoning honest about missing guarantees and rejected stronger tools? |
 | [Glossary](glossary.md) | am I using ownership words consistently? |
+
+## Session route for independent learners
+
+Use this route if you are studying without class discussion or live demos:
+
+| Session block | What to produce before moving on |
+| --- | --- |
+| class decorators plus dataclass generation | one note separating post-construction transformation from generated convenience |
+| properties plus hint-backed descriptors | one note naming a single-attribute owner and one repeated-field owner |
+| class-customization boundaries | one lower-power ladder judgment with a rejected stronger tool |
+| worked example | one proof note defining frozen narrowly and naming an allowed mutation |
+| exercises plus answers | one review packet another learner could inspect without your code open |
 
 ## The ten files in this module
 
@@ -133,6 +157,18 @@ Weak answers usually sound like one of these instead:
 - "a metaclass could do it" without naming a class-creation-time need
 - "`@frozen` makes the object immutable" without naming the surface limit
 
+## Evidence packet to build while you learn
+
+Keep one packet beside the module as you work:
+
+| Surface | What to record |
+| --- | --- |
+| class decorator note | one explicit post-construction effect and one missing creation-time need |
+| dataclass note | one generated method set and one still-missing invariant owner |
+| property note | one named attribute boundary and the backing-storage story behind it |
+| descriptor note | one supported hint or repeated-field rule plus one refused broader claim |
+| frozen note | one blocked mutation, one allowed mutation, and one rejected stronger promise |
+
 ## Learning outcomes
 
 By the end of this module, you should be able to:
@@ -152,7 +188,18 @@ Pause and repair your understanding if you catch yourself doing any of these:
 - using annotations as if they enforce behavior by themselves
 - proposing a metaclass without naming a requirement that truly depends on class creation timing
 
-## Evidence packet to build while you learn
+## Review packet standard
+
+By the end of the module, your notes should let another learner answer all of these
+without guessing:
+
+- what class rule is being enforced
+- which owner carries that rule directly
+- which stronger mechanism was considered and rejected
+- which boundary, gap, or allowed mutation still remains visible
+- what first condition would justify escalating to a stronger tool later
+
+## Artifacts to collect page by page
 
 Leave yourself a review packet as you move through the module:
 
