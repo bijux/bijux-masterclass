@@ -26,6 +26,7 @@ The strongest self-study packets also leave behind six concrete artifacts:
 - one consumer test transcript
 - one compatibility note
 - one downstream-review note
+- one note naming when reviewed discovery evidence belongs in the public contract
 
 If your answers rely only on the fact that files now sit under `publish/`, the reasoning
 is still too thin.
@@ -69,6 +70,10 @@ surfaces internal. Each included file should have a one-sentence role explanatio
 "machine-facing summary," "human-facing report," or "integrity inventory." The quality
 signal is not how many files move; it is whether a downstream user can rely on the public
 bundle without learning the internal workflow tree.
+
+The strongest answers also say explicitly whether accepted and rejected discovery records
+belong in the bundle. If downstream users need to defend why the result set has exactly
+its observed membership, those records should be public rather than left implicit.
 
 The missing but important sentence is usually this one:
 
@@ -115,6 +120,11 @@ The key explanatory sentence is:
 > The manifest proves that the inventoried bytes are the same bundle; it does not prove
 > that the bundle is scientifically correct or semantically compatible with every consumer.
 
+An equally important companion sentence is:
+
+> The manifest can show which files belong in the bundle, but it cannot by itself explain
+> why one candidate was accepted and another was rejected from the public result set.
+
 ## Exercise 5: Add provenance without confusing its role
 
 A strong provenance file records the producing repository revision, workflow identity,
@@ -154,6 +164,11 @@ The deliberate boundary sentence is:
 
 > Reading `results/` would weaken the contract because it asks the consumer to depend on
 > producer-only workflow layout that the public bundle was meant to hide.
+
+The authority sentence should also be clear:
+
+> The consumer treats the documented machine-facing summary as authoritative and uses the
+> report only for human interpretation.
 
 ## Exercise 7: Corrupt the bundle and detect it
 
