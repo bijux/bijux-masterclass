@@ -40,6 +40,11 @@ to stop answers from sounding correct while staying ownership-vague. If a term c
 you identify an owner, a source of truth, a refusal boundary, or an escalation rule, you
 are probably using it too loosely.
 
+Use the glossary in both directions:
+
+- when you read a page, use it to decode what the design is actually claiming
+- when you write a review note, use it to catch words that sound informed but hide the real owner
+
 ## Terms in this directory
 
 | Term | Meaning in this directory |
@@ -68,6 +73,19 @@ are probably using it too loosely.
 | Write-through behavior | The strategy of persisting a new field value to the backend immediately when assignment occurs, while also updating local cached state. |
 | `Annotated[...]` metadata | Extra runtime metadata attached to a type annotation and often used here for validator-style field behavior. |
 
+## Terms that must trigger a proof step
+
+In this module, these words should never remain slogans.
+
+| If you use this term | You must also prove... |
+| --- | --- |
+| source of truth | which slot, store, or service wins when local and cached state disagree |
+| invalidation owner | what exact actor or code path clears stale state |
+| field wrapper | what one added concern the wrapper owns beyond the inner field |
+| refusal surface | which input, hint form, or broader responsibility is intentionally unsupported |
+| stronger owner | which wider coordination pressure forced escalation beyond one field |
+| honest field claim | which promise the descriptor can make now, and which larger promise it still refuses |
+
 ## Confusing pairs to keep separate
 
 | Pair | Distinction to keep |
@@ -77,6 +95,16 @@ are probably using it too loosely.
 | composition vs subclass multiplication | composition layers narrow concerns; subclass multiplication bakes combinations into a growing class tree |
 | hint support vs runtime typing comprehensiveness | a supported subset is honest; a vague claim of "runtime typing" is not |
 | field ownership vs framework ownership | one field can own attribute semantics; cross-record or lifecycle coordination needs broader architecture |
+
+## Translation table for sloppy wording
+
+| Sloppy wording | Stronger wording for this module |
+| --- | --- |
+| "the field stores it in the backend" | "the field writes one serialized value to a named backend slot and may cache a local copy" |
+| "the cache stays fresh" | "the cache stays trustworthy only until its invalidation owner says otherwise" |
+| "the wrappers add flexibility" | "each wrapper adds one named concern around an inner field contract" |
+| "the annotations define the model" | "the field reads a named subset of hints and validator metadata at runtime" |
+| "the descriptor is basically the framework" | "the descriptor is one field-level mechanism inside a wider model or persistence architecture" |
 
 ## Review prompts for vocabulary
 
@@ -88,6 +116,18 @@ If a term appears in your notes, pressure-test it with one of these prompts:
 - what stronger owner would be needed if the blast radius grew?
 
 If the term does not help answer one of those questions, tighten the wording.
+
+## Fast vocabulary drills
+
+Use these when the module starts sounding familiar but still feels fuzzy:
+
+| Prompt | Short answer shape to expect |
+| --- | --- |
+| what is the source of truth here? | one exact slot, store, or authority |
+| what can go stale here? | one cache or mirrored state plus its invalidation owner |
+| what does this wrapper add? | one extra concern, not a vague improvement |
+| what does the field refuse to support? | one named unsupported hint, behavior, or architectural duty |
+| when does this stop being one field? | one concrete escalation trigger and broader owner |
 
 ## Keep the module connected
 
