@@ -242,38 +242,154 @@ If that sentence is hard to defend, the split may already be hiding too much.
 
 ## Promote only a real reusable boundary
 
-Now inspect one candidate concern more closely.
+Now inspect two candidate concerns instead of promoting the most impressive-looking one.
 
-Suppose the repository has a QC bundle used by two entrypoints. That *might* deserve
-`workflow/modules/`, but only if the interface is explicit:
-
-- named inputs
-- named outputs
-- parameters that callers can understand
-- software and config assumptions
-
-If the candidate still reaches into top-level globals, undeclared path conventions, or
-shared hidden helpers, it is not ready.
-
-That is the key distinction:
-
-- includes group one graph by ownership
-- modules expose a reusable boundary with an interface
-
-Do not promote a module just because a file is long.
-
-Make the decision explicit for at least one candidate:
-
-| Candidate | Include? | Module? | Why |
+| Candidate | Evidence of reuse | Interface state | Decision |
 | --- | --- | --- | --- |
-| local preprocessing cluster | yes | no | it clarifies one graph but is not designed for reuse elsewhere |
-| shared QC bundle used by multiple entrypoints | maybe | yes, if interface is explicit | reuse is real only when callers can name inputs, outputs, and assumptions |
+| publication rules | used only by this workflow's final contract | depends on local manifest and publish helpers | keep as an include |
+| QC transformation | needed for raw and trimmed inputs with the same implementation | caller can bind paths, logs, benchmarks, resources, and policy | promote to a module |
+
+The publication file is long enough to split, but it remains part of one graph. The QC
+transformation has two real callers and one stable implementation. That is an interface
+reason.
+
+### Write the implementation template
+
+The module owns transformation mechanics:
+
+```python
+rule qc:
+    input:
+        fastq="unbound.fastq.gz"
+    output:
+        json="unbound.json",
+        tsv="unbound.tsv",
+    params:
+        quality_floor="UNBOUND"
+    shell:
+        """
+        qc-tool \
+          --input '{input.fastq}' \
+          --json '{output.json}' \
+          --tsv '{output.tsv}' \
+          --quality-floor '{params.quality_floor}'
+        """
+```
+
+The placeholders make required surfaces visible. They are not the caller's paths.
+
+### Pass only the owned configuration
+
+Declare the module with one subtree:
+
+```python
+module qc:
+    snakefile: "../modules/qc/Snakefile"
+    config: config["qc"]
+```
+
+Do not use `config: config` merely because it avoids deciding which values the module may
+read. Broad config makes every private read a possible interface dependency.
+
+### Bind each caller explicitly
+
+The raw caller owns its local graph identity:
+
+```python
+use rule qc from qc as qc_raw with:
+    input:
+        fastq=lambda wc: get_raw_fastq(wc)
+    output:
+        json=f"{RESULTS}/{{sample}}/qc_raw.json",
+        tsv=f"{RESULTS}/{{sample}}/qc_raw.tsv",
+    params:
+        quality_floor=config["qc"]["quality_floor"]
+    log:
+        f"{LOGS}/{{sample}}/qc_raw.log"
+    benchmark:
+        f"{BENCH}/qc_raw_{{sample}}.txt"
+```
+
+The trimmed caller imports the same module rule under another local name:
+
+```python
+use rule qc from qc as qc_trimmed with:
+    input:
+        fastq=f"{RESULTS}/{{sample}}/trimmed.fastq.gz"
+    output:
+        json=f"{RESULTS}/{{sample}}/qc_trimmed.json",
+        tsv=f"{RESULTS}/{{sample}}/qc_trimmed.tsv",
+    params:
+        quality_floor=config["qc"]["quality_floor"]
+```
+
+The module did not change when the second caller appeared. That is concrete evidence that
+the boundary is reusable.
+
+### Record the override matrix
+
+| Surface | Module owns | Caller owns |
+| --- | --- | --- |
+| input/output shape | required names and types | repository paths and wildcards |
+| policy | interpretation of `quality_floor` | selected value |
+| implementation | QC command and publication method | none |
+| graph identity | reusable rule name | local imported rule name |
+| logs and benchmarks | whether evidence is required | local evidence paths |
+| resources | algorithm's abstract needs | local values or functions |
+
+This matrix is the module contract for the refactor. Without it, the code move is ahead of
+the reasoning.
+
+### Compare the tempting hidden repair
+
+A smaller diff would pass the entire config:
+
+```python
+module qc:
+    snakefile: "../modules/qc/Snakefile"
+    config: config
+```
+
+and let module code select:
+
+```python
+params:
+    quality_floor=config["private"]["quality_floor"]
+```
+
+Both callers could still run. Neither call site would explain why artifact meaning changes
+when `private.quality_floor` changes.
+
+Reject this version even if its current bytes match the explicit version. The refactor is
+supposed to reduce the amount of private history a caller must know.
+
+### Prove the distinction with the paired audit
+
+Run:
+
+```bash
+make capstone-module-interface-audit
+make capstone-module-interface-selftest
+```
+
+The executable specimens use a smaller normalization rule, but preserve the same boundary:
+
+- the control passes a narrow config subtree and binds policy at the call site
+- the counterexample passes broad config and reads private policy inside the module
+- both list the same rules
+- both dry-run successfully
+- both publish an artifact
+- rejection tests fail when the control broadens or the counterexample stops reproducing
+  hidden coupling
+
+Keep the two `summary.tsv` findings, source observations, dry-run traces, artifact lines,
+and rejection results in the refactor packet.
 
 ## What the learner should notice now
 
-The hard part of modularity is not moving code. The hard part is deciding whether another
-caller could understand and trust the interface without knowing the private repository
-story.
+The hard part of modularity is not moving code. It is assigning ownership so a second
+caller can bind the rule without editing private implementation or learning hidden config
+history.
 
 ## Write the public contract before the gate
 
@@ -306,10 +422,12 @@ After the split, different questions need different proof routes:
 - does the public file contract still verify
 - did the plan for the final target remain stable
 
-That usually leads to a gate set like this:
+That leads to a gate set with separate responsibilities:
 
 - `snakemake --list-rules` or rulegraph review for architecture visibility
 - `snakemake -n` for target planning
+- `capstone-module-interface-audit` for config and caller ownership
+- `capstone-module-interface-selftest` for gate discrimination
 - targeted schema or file-contract validation for public paths
 - `snakemake --lint` for design smells that the split exposed
 
@@ -321,6 +439,8 @@ Tie each gate to the claim it protects:
 | --- | --- |
 | `snakemake --list-rules` or rulegraph review | the architecture is still legible after the split |
 | `snakemake -n` | the final target plan has not changed accidentally |
+| module interface audit | explicit and hidden models exhibit their promised ownership |
+| module interface selftest | broad config and missing bindings are rejected |
 | contract or schema validation | public outputs still match the published promise |
 | `snakemake --lint` or focused structure checks | the refactor did not introduce hidden design debt |
 
@@ -332,10 +452,29 @@ Do not just list more checks. Test whether each one answers a named structural q
 | --- | --- |
 | the graph still tells the same workflow story | rule list or rulegraph comparison |
 | the final target plan did not drift | `snakemake -n` |
+| callers still own imported paths and policy | module interface audit |
+| the interface gate can detect dishonest controls | module interface selftest |
 | public outputs still match the repository promise | contract or schema validation |
 | the split did not add hidden design debt | `snakemake --lint` or one focused structure check |
 
 If you add a gate before you can fill this table, the gate is probably noise.
+
+## Write the refactor acceptance record
+
+Do not close with "the workflow is more modular." Record:
+
+| Claim | Observation | Decision | Remaining limit |
+| --- | --- | --- | --- |
+| includes own coherent local concerns | entrypoint and rule-family map | accepted | future growth may change ownership |
+| QC is a reusable boundary | two caller bindings and override matrix | accepted | remote version compatibility not tested |
+| module config is bounded | source observation in audit report | accepted | capstone's current QC module still has broader legacy config |
+| interface gate discriminates | seven mutation tests | accepted | scientific QC correctness is outside this gate |
+| public outputs remain compatible | schema and publish verification | accepted | downstream migration not rehearsed |
+
+This record separates the instructional control from the current capstone limitation. Do
+not claim the existing capstone QC module is already as narrow as the teaching specimen:
+it still receives the complete config and should be reviewed before any mechanical
+rewrite.
 
 ## What a strong summary sounds like
 
