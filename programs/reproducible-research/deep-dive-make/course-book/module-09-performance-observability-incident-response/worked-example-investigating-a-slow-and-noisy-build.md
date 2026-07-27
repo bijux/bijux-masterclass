@@ -169,6 +169,25 @@ If no compatible earlier bundle exists, write:
 
 That is a completed finding, not a failure to diagnose.
 
+## Check necessary incremental work
+
+Open `incremental-policy.tsv`, then `incremental-work.json`. Confirm:
+
+```text
+input=src/util.c
+missing_rebuild=[]
+unexpected_rebuild=[]
+result=PASS
+```
+
+The report should show `build/util.o`, `app`, and `all` as rebuilt, while unrelated objects
+and dynamic outputs remain untouched. This evidence answers a question the timing
+distribution cannot: did the build stay selective without becoming stale?
+
+If `build/util.o` is missing, stop the performance claim because the graph lost a required
+edge. If `build/bin/dyn1` appears unexpectedly, investigate why unrelated work was selected
+before claiming an incremental improvement.
+
 ## Prove that the gate can reject dishonesty
 
 Run:
@@ -377,6 +396,7 @@ You have completed the example when you can point to:
 
 - governed clean, no-op, and dry-run samples with their scenario contract
 - convergence and trusted-output evidence beside every timing distribution
+- the declared and observed incremental rebuild scope
 - one performance-gate rejection you can explain
 - the trace count and one usability judgment
 - the incident bundle's command, output, status, and copied makefile
