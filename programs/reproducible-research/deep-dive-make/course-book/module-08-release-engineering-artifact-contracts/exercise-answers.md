@@ -27,11 +27,36 @@ flowchart LR
 
 Use this after you have written your own answers. The point is comparison, not copying.
 
-Strong Module 08 answers do not just name files or commands. They explain:
+## How to use the answer page well
 
-- what release promise is being made
-- what evidence would prove that promise
-- why the chosen boundary makes publication safer and easier to trust
+Do not read a model answer first and then retrofit your release rehearsal to match it.
+
+A better rhythm is:
+
+1. finish the exercise with your own contract, listings, and sidecars
+2. write one plain-language explanation of the release promise
+3. compare that explanation with the model answer
+4. revise where the model answer exposes a weak bundle boundary, unstable identity choice,
+   or missing verification step
+
+Strong Module 08 answers do not just name files or commands. They usually do four things:
+
+- they explain what release promise is being made
+- they point to the evidence that proves that promise
+- they separate artifact identity from adjacent evidence
+- they explain why the chosen boundary makes publication safer and easier to trust
+
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one narrow `dist` contract
+- one bundle tree
+- one identity or evidence separation decision
+- one safe install route
+- one repeatability proof
+- one full release rehearsal
+
+If your answers rely only on "release engineering is important," the reasoning is still
+too weak.
 
 ## Exercise 1: Write a clear `dist` contract
 
@@ -46,7 +71,10 @@ The strongest answers also say what `dist` does not promise. For example:
 - it does not deploy
 - it does not silently run unrelated cleanup
 
-That negative clarity matters because narrow targets are easier to trust.
+The key explanation is:
+
+> Narrow targets are easier to trust because the caller can tell what boundary they cross
+> and which side effects they intentionally exclude.
 
 ## Exercise 2: Design a publishable bundle tree
 
@@ -69,19 +97,25 @@ The answer is strongest when it also names something that should stay outside, s
 The key idea is that package layout is a contract, not a side effect of copying files from
 whatever directory already exists.
 
+The publication step becomes trustworthy only after the staged tree is complete and the
+archive or bundle pointer is finalized.
+
 ## Exercise 3: Separate identity from evidence
 
 A strong answer says something like:
 
-- artifact identity: `app.tar.gz` plus its checksum or bundle manifest
-- adjacent evidence: `app.attest.txt` with compiler or host details
+- artifact identity:
+  - `app.tar.gz` plus its checksum or bundle manifest
+- adjacent evidence:
+  - `app.attest.txt` with compiler or host details
 
 The reasoning should sound like:
 
-> if unstable host or timestamp details are packaged into the archive itself, then the
+> If unstable host or timestamp details are packaged into the archive itself, then the
 > artifact identity changes even when the release content did not.
 
-That is the central release-engineering lesson of this module.
+The first thing a consumer needs to verify is the artifact itself. Supporting evidence can
+come after the artifact boundary has been established.
 
 ## Exercise 4: Make `install` safe to rerun
 
@@ -95,7 +129,7 @@ INSTALL_ROOT := $(DESTDIR)$(PREFIX)
 
 The answer is stronger if it states one idempotence expectation clearly, such as:
 
-> running `make install DESTDIR=/tmp/release-check` twice should produce the same intended
+> Running `make install DESTDIR=/tmp/release-check` twice should produce the same intended
 > file tree under that root.
 
 And it should include an inspection command like:
@@ -104,7 +138,10 @@ And it should include an inspection command like:
 find /tmp/release-check -type f | sort
 ```
 
-That turns install from a blind side effect into something reviewable.
+The key explanation is:
+
+> Nothing should ever write outside the declared destination root during a testable
+> installation rehearsal.
 
 ## Exercise 5: Diagnose one release failure
 
@@ -118,12 +155,12 @@ Then it chooses an evidence command that matches that boundary.
 
 For example:
 
-- wrong bundle contents
-  first evidence: `tar -tzf dist/app.tar.gz`
-- checksum mismatch
-  first evidence: inspect the bundle inputs and the checksum target relationship
-- unsafe install behavior
-  first evidence: rerun install under a temporary destination root and compare the tree
+- wrong bundle contents:
+  - first evidence: `tar -tzf dist/app.tar.gz`
+- checksum mismatch:
+  - first evidence: inspect the bundle inputs and the checksum target relationship
+- unsafe install behavior:
+  - first evidence: rerun install under a temporary destination root and compare the tree
 
 The strongest answers do not jump straight to "rerun `dist`." They first decide what
 boundary likely lied.
@@ -145,6 +182,11 @@ dist/app.tar.gz: app LICENSE | dist/
 `dist/` remains outside because the archive root is `dist/stage`, not a directory shared
 with sidecars and old outputs.
 
+The key explanation is:
+
+> The archive root matters because it determines whether unrelated nearby files can cross
+> the package boundary accidentally.
+
 ## Exercise 7: Reproduce an archive byte for byte
 
 With GNU tar and gzip explicitly required, a defensible rule normalizes common sources of
@@ -165,9 +207,12 @@ dist/app.tar.gz: app LICENSE | dist/
 ```
 
 The submission should state GNU tar and gzip versions because those flags are not a
-universal `tar` contract. Two clean builds should have identical checksums. Repeating the
-experiment without normalized timestamps or `gzip -n` demonstrates why stable content
-alone does not guarantee stable archive bytes.
+universal `tar` contract. Two clean builds should have identical checksums.
+
+The key explanation is:
+
+> Stable content alone is not enough because metadata, ordering, and compressor headers can
+> still change archive bytes.
 
 ## Exercise 8: Verify checksum evidence
 
@@ -180,10 +225,15 @@ printf x >> dist/app.tar.gz
 sha256sum --check dist/app.tar.gz.sha256
 ```
 
-The first verification exits `0`; the altered archive verification exits nonzero. On
-another platform, declare and use its equivalent tool consistently. A checksum proves
-byte identity against the sidecar. It does not prove that the archive contains the right
-files, so the package listing and manifest remain necessary.
+The first verification exits `0`; the altered archive verification exits nonzero.
+
+The important explanation is:
+
+> A checksum proves byte identity against the sidecar. It does not prove that the archive
+> contains the right files, so the package listing and manifest remain necessary.
+
+What the checksum cannot tell you is whether you packaged the right contract in the first
+place.
 
 ## Exercise 9: Prove installation stays inside its destination
 
@@ -202,24 +252,30 @@ install: app LICENSE
 
 Run it twice under a repository-owned test root and compare sorted paths plus checksums.
 An audit such as `rg -n '(/usr|/opt|/bin)/' Makefile mk` should reveal undeclared absolute
-destinations. The answer must also state whether installation overwrites declared files
-and whether uninstall is supported; silence is not a safe policy.
+destinations.
+
+The answer must also state whether installation overwrites declared files and whether
+uninstall is supported; silence is not a safe policy.
 
 ## Exercise 10: Rehearse a complete release
 
 A complete answer separates composition from side effects:
 
-- `dist` creates the declared archive and checksum
-- `release-check` depends on tests, selftests, archive inspection, and checksum verification
-- `install` writes only below `DESTDIR`
-- deployment, credentials, approval, and remote publication remain outside the local
-  artifact graph unless their ownership is explicitly designed
+- `dist`:
+  - creates the declared archive and checksum
+- `release-check`:
+  - depends on tests, selftests, archive inspection, and checksum verification
+- `install`:
+  - writes only below `DESTDIR`
+- deployment, credentials, approval, and remote publication:
+  - remain outside the local artifact graph unless their ownership is explicitly designed
 
 The successful transcript should include archive listing, checksum verification, and two
 identical clean-build checksums. A packaging failure must prevent the final archive from
-being replaced. A verification failure must return nonzero before publication. Strong
-answers identify which boundary stopped each failure instead of reporting only that the
-command failed.
+being replaced. A verification failure must return nonzero before publication.
+
+Strong answers identify which boundary stopped each failure instead of reporting only that
+the command failed.
 
 ## What mastery-level answers sound like
 
