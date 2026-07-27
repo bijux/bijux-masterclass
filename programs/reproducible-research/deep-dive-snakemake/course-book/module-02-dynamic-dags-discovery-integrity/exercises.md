@@ -4,6 +4,19 @@ Use these after reading the five core lessons and the worked example. The goal i
 your discovery reasoning visible through runnable artifacts, not through checkpoint
 folklore.
 
+## How to work through this set
+
+Treat the ten exercises as one long lab on discovery honesty.
+
+Before each answer:
+
+1. name the discovery surface you are trusting
+2. predict which artifact will carry the truth forward
+3. run the smallest command that proves the design really behaves that way
+
+If you skip the artifact question, the day turns into syntax practice and misses the real
+lesson.
+
 Do them in order. The set is one day-long progression:
 
 - Exercises 1-3 establish the discovery ladder.
@@ -16,6 +29,25 @@ For every answer, keep three things:
 - the workflow files or command sequence you actually used
 - the artifact that proves what the workflow discovered
 - one short sentence explaining why the design is honest
+
+## Recommended working layout
+
+If you want one project that can support the whole day, build the exercises in a tiny lab
+tree like this:
+
+```text
+module02-lab/
+├── Snakefile
+├── config/
+├── data/
+├── results/
+├── publish/
+├── logs/
+└── artifacts/
+```
+
+That structure makes it easier to compare static discovery, runtime discovery, and publish
+integrity without rebuilding the whole project for every prompt.
 
 ## Exercise 1: Compare two discovery surfaces
 
@@ -31,6 +63,10 @@ What to hand in:
 - one command that proves they generate the same target list
 - one sentence naming the declared source of truth in each design
 
+Study note:
+Do not answer this as a style preference question. The point is to make the source of
+truth explicit in both designs.
+
 ## Exercise 2: Turn ambient discovery into a declared contract
 
 Start from a tiny workflow that scans `data/raw/` directly at parse time and relies on
@@ -44,6 +80,10 @@ What to hand in:
 - the repaired discovery rule or helper
 - the normalized sample list it produces
 - one sentence explaining why another reviewer could trust the new design more
+
+Study note:
+If the repaired version still requires another person to rescan the raw directory to know
+what happened, the contract is still weak.
 
 ## Exercise 3: Prevent one accidental fanout explosion
 
@@ -59,6 +99,9 @@ What to hand in:
 - the unintended targets it creates
 - the repaired target-list design
 - one command, such as `snakemake -n`, that would make the difference obvious
+
+Study note:
+Wrong fanout is usually a domain-modeling defect before it is a Snakemake defect.
 
 ## Exercise 4: Design the integrity trail for a dynamic run
 
@@ -77,6 +120,10 @@ What to hand in:
 - one manifest or inventory artifact path
 - one short explanation of what each artifact proves
 
+Study note:
+Treat this as a trust design exercise. A directory tree without explained artifact roles
+is not enough.
+
 ## Exercise 5: Improve performance without weakening truth
 
 Start from a workflow shape that is operationally clumsy, for example:
@@ -94,6 +141,10 @@ What to hand in:
 - one sentence explaining why the repair lowers overhead
 - one sentence explaining why workflow truth stayed intact
 
+Study note:
+If the repair works by hiding files a reviewer actually needs, it is not a legitimate
+performance improvement.
+
 ## Exercise 6: Build a validated candidate registry
 
 Create a tabular manifest with at least three sample identifiers and source paths. Load it
@@ -106,6 +157,10 @@ What to hand in:
 - the deterministic target list
 - one deliberately invalid record and its early error
 - an explanation of why static planning is sufficient
+
+Study note:
+This exercise should make you comfortable rejecting a checkpoint, not just implementing
+one.
 
 ## Exercise 7: Justify one checkpoint and reject one fake one
 
@@ -121,6 +176,10 @@ What to hand in:
 - the cleaner alternative for the unjustified checkpoint
 - one sentence explaining the difference between the two cases
 
+Study note:
+The important contrast is not "advanced" versus "simple." It is "runtime fact" versus
+"already knowable fact."
+
 ## Exercise 8: Implement a justified checkpoint
 
 Start from a declared candidate set, then make a validation checkpoint publish a registry
@@ -132,6 +191,10 @@ What to hand in:
 - the input function that reads it through `checkpoints.<name>.get()`
 - evidence from before and after checkpoint completion
 - an explanation of the runtime fact that could not be known during initial planning
+
+Study note:
+If the workflow could have learned the same set from declared config before execution,
+this is the wrong place to use a checkpoint.
 
 ## Exercise 9: Test discovery integrity under change
 
@@ -146,6 +209,10 @@ What to hand in:
 - dry-run evidence for affected downstream jobs
 - the rejection evidence retained for the corrupt candidate
 
+Study note:
+This is where discovery becomes operationally real. The workflow must show what changed,
+not just quietly produce a new set of files.
+
 ## Exercise 10: Publish a reviewable dynamic result
 
 Publish a versioned bundle for the checkpoint workflow. Include the accepted registry,
@@ -158,6 +225,17 @@ What to hand in:
 - a machine-readable inventory and checksum verification command
 - a short consumer procedure that does not depend on internal working paths
 - an explanation of which artifacts are public contracts and which remain internal state
+
+## Exit standard for the exercise day
+
+Do not count the day complete unless you can do all of this without leaning on the answer
+page as a set of instructions:
+
+- explain why one discovery surface is trustworthy
+- reject one unnecessary checkpoint with confidence
+- defend one justified checkpoint by naming the runtime fact it reveals
+- show one registry, one provenance artifact, and one manifest that make the run reviewable
+- distinguish public contract files from internal workflow state
 
 ## Mastery standard for this exercise set
 

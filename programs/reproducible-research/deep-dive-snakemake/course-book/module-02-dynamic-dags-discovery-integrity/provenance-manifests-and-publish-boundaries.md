@@ -1,30 +1,5 @@
 # Provenance, Manifests, and Publish Boundaries
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Provenance, Manifests, and Publish Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Discovery is only half the problem.
 
 Once the workflow has learned a changing set of samples, another question appears:
@@ -32,6 +7,27 @@ Once the workflow has learned a changing set of samples, another question appear
 > where does that fact live after the run, and which later consumer is allowed to trust it?
 
 This page answers that question.
+
+## How to read this page
+
+Read this page with one pressure in mind:
+
+> after a dynamic run finishes, which files are allowed to explain the run to someone who
+> did not watch it happen?
+
+If you keep that question visible, provenance and manifests stop sounding like bureaucracy
+and start sounding like the final part of discovery honesty.
+
+## Why this lesson belongs in Module 02
+
+Dynamic DAGs create a special review burden. The run is no longer just "here are the
+results." It is also "here is why these exact units became results at all."
+
+That is why this lesson belongs in the same day as discovery and checkpoints:
+
+- discovery decides what the workflow found
+- checkpoints may change which jobs exist
+- provenance and manifests preserve those facts at the public boundary
 
 ## Internal execution state is not automatically a public contract
 
@@ -94,6 +90,18 @@ Typical examples:
 
 The names can vary. The separation of roles should not.
 
+## A quick self-check before you keep reading
+
+Imagine a reviewer opens only `publish/v1/`.
+
+Could they answer all of these without rummaging through internal execution state?
+
+- what the workflow discovered
+- what configuration and run identity produced the bundle
+- which files are officially part of the contract
+
+If not, the publish boundary is probably still underspecified.
+
 ## Why the discovered set deserves special treatment
 
 The discovered sample set is not just one more intermediate file.
@@ -127,6 +135,16 @@ This design does something subtle but important:
 - dynamic discovery remains visible inside the run
 - the same discovery fact is preserved at the public boundary
 - manifest and provenance make the publish surface reviewable as a set
+
+## A strong beginner habit
+
+Do not wait until the end of a project to think about provenance and manifests.
+
+If the workflow is already dynamic in Module 02, start teaching the habit here:
+
+- discovery should be durable
+- public outputs should be enumerated
+- run identity should be explained while the workflow is still small enough to inspect
 
 ## What belongs in a discovery artifact
 
@@ -166,6 +184,18 @@ Typical examples:
 This page is not asking for maximal metadata. It is asking for enough evidence to explain
 what run produced the published boundary.
 
+## The common beginner mistake
+
+A common mistake is to think a timestamp alone counts as provenance.
+
+It does not.
+
+A timestamp may tell you *when* something happened, but not:
+
+- which semantic configuration was resolved
+- which workflow revision produced the output
+- which operating context mattered for interpretation
+
 ## Why manifests matter
 
 A manifest gives the publish boundary a durable inventory.
@@ -180,6 +210,17 @@ Without a manifest, a publish directory is often just a bag of files someone hop
 complete.
 
 With a manifest, the boundary becomes reviewable as a declared set.
+
+## What a good Module 02 explanation sounds like
+
+Strong:
+
+> The run writes one discovery registry, one provenance record, and one manifest so the
+> publish bundle explains both its membership and its origin.
+
+Weak:
+
+> We kept some extra JSON files for debugging.
 
 ## One useful publication pattern
 

@@ -7,6 +7,31 @@ This file pulls the whole module together around one realistic question:
 The example stays small on purpose. The point is to make the design visible and to show
 why a checkpoint is usually the fourth move, not the first.
 
+## How to use this worked example
+
+Treat this page as a lab bench, not as a story you only read once.
+
+For each repair step:
+
+1. name the discovery fact you are trying to make visible
+2. predict which file or boundary should preserve that fact
+3. run the smallest command that proves the workflow now behaves that way
+
+If you skip the artifact question, the example becomes a checkpoint demo instead of a
+lesson about reviewable workflow truth.
+
+## The one-day teaching goal
+
+By the end of this example, a learner should be able to rebuild a tiny dynamic workflow
+and explain:
+
+- why ambient directory scans are weak sources of truth
+- why a declared candidate set usually comes before a checkpoint
+- why a checkpoint must publish one durable registry
+- why discovery must remain legible at the publish boundary
+
+That is the educational point. The checkpoint keyword is not the point.
+
 ## The lab route
 
 Work through the example in this order:
@@ -16,6 +41,17 @@ Work through the example in this order:
 3. narrow the output family before you add more dynamism
 4. introduce a checkpoint only when runtime validation really changes the usable set
 5. carry the accepted set into the publish boundary
+
+## What to keep beside you while you work
+
+Keep these four surfaces visible while you move through the example:
+
+- the current `Snakefile`
+- the discovered or accepted registry on disk
+- `snakemake -n`
+- the eventual publish tree
+
+Those four views are enough to explain whether the design is honest.
 
 ## The scenario
 
@@ -95,6 +131,17 @@ target set harder to reason about.
 
 That pause matters. More dynamic is not automatically more advanced.
 
+## Why this pause matters educationally
+
+This is the moment many learners miss. They jump to checkpoints because checkpoints look
+like the "real" advanced feature.
+
+Module 02 needs the opposite instinct:
+
+- first ask whether the target set is already knowable
+- then ask whether one declared artifact could make it reviewable
+- only then ask whether runtime execution truly reveals a new fact
+
 ## Narrow the artifact family
 
 The original output shape was:
@@ -171,6 +218,19 @@ a domain validator and record rejection reasons as well as accepted samples.
 The important part is not the keyword `checkpoint`. The important part is that the
 discovered set is written once and reused.
 
+## A short checkpoint before you continue
+
+Pause here and say the justification in one sentence.
+
+Strong sentence:
+
+> The checkpoint is justified because validation execution determines which declared
+> candidates are usable.
+
+Weak sentence:
+
+> We used a checkpoint because the workflow is dynamic.
+
 ## What to check before moving on
 
 After the checkpoint version works, confirm all of these:
@@ -207,6 +267,19 @@ publish/v1/
 
 This is Core 4: discovery should remain legible when the workflow crosses into public
 contract space.
+
+## What the learner should notice now
+
+The final bundle is not just "results plus metadata."
+
+It is the place where a future reviewer answers:
+
+- why these exact sample outputs exist
+- which candidates were rejected
+- what semantic configuration and discovery route produced the final set
+
+If the publish boundary cannot answer those questions, the workflow is still hiding part
+of its dynamic behavior.
 
 ## Avoid accidental operational drag
 

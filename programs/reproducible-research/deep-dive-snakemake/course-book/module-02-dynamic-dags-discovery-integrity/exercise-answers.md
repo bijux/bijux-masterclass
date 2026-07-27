@@ -1,32 +1,21 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page after you have written your own answers. The point is comparison, not
 copying.
+
+## How to use the answer page well
+
+Do not read a model answer first and then reshape your exercise to match it.
+
+A better rhythm is:
+
+1. finish the exercise with your own files and commands
+2. write one plain-language explanation of the design
+3. compare that explanation with the model answer
+4. revise where the model answer exposes a missing boundary or proof route
+
+The goal is not identical wording. The goal is reviewable reasoning about dynamic
+workflow behavior.
 
 The strongest Module 02 answers usually do four things:
 
@@ -35,15 +24,33 @@ The strongest Module 02 answers usually do four things:
 - they point to one evidence route
 - they describe the repair in terms of reviewable artifacts, not workflow folklore
 
-## Exercise 1: Turn ambient discovery into a declared contract
+## Exercise 1: Compare two discovery surfaces
+
+A strong answer compares the source of truth directly.
+
+Example:
+
+> In the sample-sheet version, `config/samples.tsv` is the declared source of truth, so
+> version control records every membership change explicitly. In the directory-scan version,
+> `data/raw/*.fastq.gz` is the source of truth, so the workflow must sort and normalize the
+> scan result to make it trustworthy. A dry-run shows that both designs produce the same
+> target list, but they differ in how that list is governed.
+
+Why this is strong:
+
+- it makes both discovery surfaces explicit
+- it compares governance, not just convenience
+- it keeps the target list as the shared proof route
+
+## Exercise 2: Turn ambient discovery into a declared contract
 
 A strong answer sounds like this:
 
-> the weak version scanned `data/raw/` at parse time and immediately expanded targets from
-> that list, so the workflow had no durable record of what it discovered. The repair gives
-> discovery one owned output such as `results/discovered_samples.json`, and downstream rules
-> fan out from that artifact. Another reviewer can now inspect the exact discovered set
-> instead of trusting a transient directory scan.
+> The weak version scanned `data/raw/` at parse time and expanded targets immediately, so
+> the workflow had no durable record of what it discovered. The repair gives discovery one
+> owned output such as `results/discovered_samples.json`, and downstream rules fan out from
+> that artifact. Another reviewer can now inspect the exact discovered set instead of
+> trusting a transient directory scan.
 
 Why this is strong:
 
@@ -51,7 +58,7 @@ Why this is strong:
 - it adds one owned artifact instead of vague "better organization"
 - it explains why review got easier
 
-## Exercise 2: Prevent one accidental fanout explosion
+## Exercise 3: Prevent one accidental fanout explosion
 
 A strong answer makes the multiplication visible.
 
@@ -60,7 +67,8 @@ Example answer shape:
 - buggy design:
   - `expand("results/{sample}/{panel}/report.json", sample=SAMPLES, panel=PANELS)`
 - unintended effect:
-  - every sample is paired with every panel, even when the data model is one panel per sample
+  - every sample is paired with every panel, even when the data model is one panel per
+    sample
 - repair:
   - build targets from validated records such as `{"sample": "sampleA", "panel": "dna"}`
 - evidence:
@@ -70,26 +78,6 @@ Why this is strong:
 
 - it explains the wrong relationship, not just the wrong count
 - it keeps one data source of truth for paired values
-
-## Exercise 3: Justify one checkpoint and reject one fake one
-
-A strong answer contrasts the two designs directly.
-
-Example:
-
-- justified checkpoint:
-  - the workflow cannot know which samples exist until it inspects `data/raw/`
-  - the checkpoint writes `results/discovery/samples.json`
-  - downstream targets read that file
-- unjustified checkpoint:
-  - the sample list already lives in config
-  - using a checkpoint would only hide a target list that was already known
-  - the cleaner alternative is to expand directly from validated config data
-
-Why this is strong:
-
-- it shows that checkpoints are for genuine new facts
-- it rejects the temptation to use checkpoints as a dramatic wrapper for weak modeling
 
 ## Exercise 4: Design the integrity trail for a dynamic run
 
@@ -112,7 +100,7 @@ The strongest answers also mention a published copy of the discovery artifact, s
 
 A strong answer sounds like this:
 
-> the original workflow created one environment file per nearly identical Python rule and
+> The original workflow created one environment file per nearly identical Python rule and
 > one trivial job per tiny fragment, so setup overhead dominated useful work. The repair
 > reuses one shared Python environment for the related rules and batches work at the sample
 > boundary. This lowers environment solve and launch cost without hiding required artifacts
@@ -135,21 +123,26 @@ Static planning is sufficient because the manifest already contains every fact n
 name the targets. A checkpoint would not discover new information; it would only defer
 known information and make the graph harder to inspect.
 
-## Exercise 7: Preserve paired relationships
+## Exercise 7: Justify one checkpoint and reject one fake one
 
-The source of truth should be records such as:
+A strong answer contrasts the two designs directly.
 
-```python
-RECORDS = [
-    {"sample": "A", "panel": "dna"},
-    {"sample": "B", "panel": "rna"},
-    {"sample": "C", "panel": "dna"},
-]
-```
+Example:
 
-Build paths from each record, not from an independent cross-product of all samples and all
-panels. Validate that each sample appears once and every panel belongs to the supported
-domain. The corrected dry-run should show three jobs rather than six.
+- justified checkpoint:
+  - the workflow cannot know which declared candidates are usable until a validator reads
+    their contents
+  - the checkpoint writes `results/discovery/accepted_samples.json`
+  - downstream targets read that registry
+- unjustified checkpoint:
+  - the sample list already lives in config or a validated manifest
+  - using a checkpoint would only hide a target list that was already known
+  - the cleaner alternative is to expand directly from validated static data
+
+Why this is strong:
+
+- it shows that checkpoints are for genuine runtime facts
+- it rejects the temptation to use checkpoints as a dramatic wrapper for weak modeling
 
 ## Exercise 8: Implement a justified checkpoint
 

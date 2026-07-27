@@ -1,35 +1,19 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this glossary to keep the language of Module 02 stable while you move between the
 core lessons, worked example, exercises, and capstone evidence.
 
 The goal is not extra jargon. The goal is to make sure dynamic behavior is described with
 clear nouns instead of mystical shortcuts.
+
+## When to stop and check the glossary
+
+Pause and check a term when:
+
+- your explanation depends on "Snakemake discovers it somehow"
+- you are calling a directory scan, a registry, and a checkpoint the same thing
+- you can tell a publish tree feels incomplete but cannot yet name the missing artifact
+- you are treating job expansion and domain modeling as if they were the same problem
 
 ## Terms in this module
 
@@ -62,3 +46,18 @@ When you explain a Module 02 situation, aim to say things like:
 - "the workflow is slow because scheduler cost dominates useful work"
 
 Those sentences are much more useful than saying only "Snakemake gets weird with dynamic workflows."
+
+## Terms you should be able to use by the end of the day
+
+If Module 02 is landing properly, these terms should feel ordinary by the end:
+
+- discovery surface
+- discovered set
+- registry
+- fanout
+- publish boundary
+- provenance
+- scheduler cost
+
+If those still feel decorative rather than useful, revisit the worked example and the
+first eight exercises before moving on.
