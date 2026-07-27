@@ -141,7 +141,7 @@ inventory names the expected outputs.
 
 Before interpreting the median, confirm the repository revision and status, tool identities,
 runner label, scenario-policy digest, and incremental-policy digest. The standalone
-`incremental-work.json` contains the raw trace; the `incremental_work` object in
+`incremental-work.json` contains per-case traces; the `incremental_work` object in
 `evidence.json` carries the semantic fields used by comparison. Matching values prove that
 the timing document is bound to the requested-work result.
 
@@ -172,17 +172,35 @@ Another weak answer submits only `summary.tsv`. Without policy, raw samples, com
 convergence, and output inventories, a reviewer cannot tell whether the route asked the
 same question or became faster by doing less necessary work.
 
-The incremental prediction should be:
+The change-impact prediction should be:
 
-| Classification | Outputs | Reason |
+| Input | Must rebuild | Why |
 | --- | --- | --- |
-| must rebuild | `build/util.o`, `app`, `all` | the source owns one object, the app links it, and the sentinel follows the app |
-| must remain | other objects, dynamic binaries, generated header | no dependency path starts at `src/util.c` |
+| `src/util.c` | `build/util.o`, `app`, `all` | direct compile, then link, then sentinel |
+| `include/util.h` | `build/main.o`, `build/util.o`, `app`, `all` | both depfiles name the header; both objects feed the link |
+| `include/sub.h` | `build/main.o`, `build/sub/sub.o`, `app`, `all` | main and sub depfiles name the header |
+| `scripts/gen_dynamic_h.py` | generated header, `dyn1`, `dyn2`, `all` | producer input republishes the header consumed by both dynamic binaries |
+| `src/dynamic/dyn1.c` | `build/bin/dyn1`, `all` | direct dynamic compile and aggregate sentinel only |
 
-An empty `missing_rebuild` and `unexpected_rebuild` pair proves the observed scope matches
-that contract. Restoring the source timestamp prevents the experiment from leaving a
-tracked input artificially newer. Generated outputs remain as evidence of the executed
-route and should be cleaned only after their report has been reviewed.
+Representative non-work is equally important:
+
+- ordinary source and header cases leave the dynamic pipeline unchanged
+- generated-pipeline cases leave `app` and ordinary objects unchanged
+- the `dyn1` source case leaves `dyn2` and the generated header unchanged
+
+Each row's rebuild and remain sets should union to the same eight governed outputs:
+three ordinary objects, `app`, two dynamic binaries, the generated header, and `all`.
+Different unions mean one case has an observation blind spot.
+
+Empty `missing_rebuild` and `unexpected_rebuild` sets prove each observed scope matches its
+contract. For a header case, the useful trace should name the affected objects and their
+included depfiles. For the producer case, it should show the script-to-header rule followed
+by both header consumers.
+
+Restoring every input timestamp prevents the experiment from leaving tracked inputs
+artificially newer. Reconverging before each case gives every input an independent starting
+state. Generated outputs remain as evidence of executed routes and should be cleaned only
+after the report has been reviewed.
 
 ## Exercise 4: Choose observability by question
 
@@ -334,11 +352,13 @@ The compatibility table is:
 | A | compare | clean revisions may differ; context and semantics match | interpret deltas against spread and objective |
 | B | reject | candidate repository status is dirty | establish a clean candidate revision and recollect |
 | C | reject | compiler identity differs | recollect both with one compiler, or report separate environment observations |
-| D | reject | observed rebuild set differs | review the graph change and update policy only if the new scope is intended, then recollect both sides |
+| D | reject | incremental input set differs | restore the omitted `include/sub.h` case; fewer observed inputs are not equivalent evidence |
+| E | reject | `src/dynamic/dyn1.c` observed rebuild set differs | explain the path to `app`; narrow a false edge or revise policy only after contract review |
 
-Pair D may be a correct graph repair. It still blocks the old comparison because one route
-performed different work. Correctness of the change and comparability of the timings are
-separate decisions.
+Pair E may reflect a deliberate graph change. It still blocks the old comparison because
+one route performed different work. Correctness of the change and comparability of the
+timings are separate decisions. Pair D is not a graph change at all; it is incomplete
+evidence coverage.
 
 The best answer may reject change:
 
