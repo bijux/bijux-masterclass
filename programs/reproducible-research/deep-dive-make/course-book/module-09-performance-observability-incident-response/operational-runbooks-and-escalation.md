@@ -136,6 +136,69 @@ If one writer is present, continue to the prerequisite-completion branch.
 The command, expected observation, and branch form one unit. Removing any one of them
 forces the responder to improvise.
 
+## Branch on trusted state before exit status
+
+Runbooks often begin with:
+
+```text
+If the command failed, follow the failure branch.
+If it passed, close the incident.
+```
+
+That split is too weak for build systems. A command can succeed while leaving stale,
+interleaved, incomplete, or wrongly owned artifacts. A command can also fail after one
+producer has already published trusted state.
+
+Use a two-axis entry table:
+
+| Process result | Trusted artifact satisfies its contract? | Runbook action |
+| --- | --- | --- |
+| zero | yes | continue to convergence and adjacent invariants |
+| zero | no | contain publication; classify semantic corruption |
+| nonzero | yes | preserve artifact and classify recipe or evidence failure |
+| nonzero | no | contain publication; inspect partial state before cleanup |
+
+The second and fourth rows are easy to mishandle. The capstone incident matrix makes both
+visible:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone incident-audit
+```
+
+- the shared-log case exits zero but fails its record-order contract
+- the directory case exits nonzero after one claimant publishes
+- the staging case exits nonzero after one output consumes the shared staging path
+
+An executable runbook should therefore name the artifact assertion beside the command:
+
+```text
+Run: `gmake incident-audit INCIDENT_CASE=shared-log-interleaving`
+Expected process result: audit exits zero after verifying the controlled fault
+Expected finding: `SEMANTIC_CORRUPTION_REPRODUCED`
+Required evidence: both writer starts precede both writer ends in preserved `shared.log`
+Reject: zero exit with contiguous records, absent records, or an unrelated parse failure
+Next branch: publication ownership
+```
+
+Notice the two levels of status. The inner specimen exits zero because its append commands
+succeed. The outer audit exits zero only because it verified the promised corruption.
+Without named findings and artifact assertions, responders can confuse those meanings.
+
+For a successful-but-stale production build, use the same structure:
+
+```text
+Observed process: zero
+Observed artifact: still contains the pre-change value
+Expected artifact: reflects the changed semantic input
+Classification: graph truth, likely missing producer or consumer edge
+Containment: stop publication; preserve inputs, outputs, timestamps, and trace
+Repair proof: rerun from the same mutation, observe the causal trace, refreshed artifact,
+and convergence
+```
+
+Do not run `clean` before preserving this state. A clean rebuild may produce the correct
+artifact while erasing the missing-edge evidence.
+
 ## Convergence belongs near the top of recovery checks
 
 One of the most useful operational checks is still:
