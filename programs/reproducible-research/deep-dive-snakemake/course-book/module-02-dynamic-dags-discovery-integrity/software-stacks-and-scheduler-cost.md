@@ -1,30 +1,5 @@
 # Software Stacks and Scheduler Cost
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Dynamic Dags Discovery Integrity"]
-  page["Software Stacks and Scheduler Cost"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Dynamic workflows do not fail only because their DAG is wrong. They also fail because the
 workflow is technically honest but operationally clumsy.
 
@@ -35,6 +10,28 @@ Module 02 cares about two forms of operational drag:
 
 Both problems feel like performance problems. Both are really design problems first.
 
+## How to read this page
+
+Read this page with one question in mind:
+
+> which costs are unavoidable analysis costs, and which ones did the workflow design create
+> for itself?
+
+That distinction matters because a lot of bad "optimization" is really just avoidance of
+honest workflow structure.
+
+## Why this lesson belongs in Module 02
+
+Dynamic workflows often make performance pain visible earlier than static ones.
+
+Once discovery fans out into many units, poor operational boundaries become obvious:
+
+- environments are solved repeatedly for no good reason
+- tiny jobs spend more time starting than doing useful work
+- policy tuning gets blamed for problems caused by weak workflow shape
+
+That is why this lesson belongs in the same day as discovery and fanout control.
+
 ## The sentence to keep
 
 When a workflow feels slow, ask:
@@ -42,6 +39,18 @@ When a workflow feels slow, ask:
 > is the work itself expensive, or did I design too many setup costs around it?
 
 That question prevents a lot of cargo-cult optimization.
+
+## A quick self-check before you keep reading
+
+Think about one slow workflow you have seen.
+
+Was it slow because:
+
+- the underlying computation was genuinely heavy
+- or because the workflow created too many environment solves, launches, and bookkeeping
+  steps around modest work
+
+This page is mostly about the second case.
 
 ## Reproducible software is part of workflow meaning
 
@@ -83,6 +92,17 @@ It becomes a problem when the environment split is accidental:
 The better question is not "can every rule have its own env?" The better question is:
 
 > which environment boundaries represent real software differences?
+
+## The beginner trap here
+
+Beginners often assume "one rule, one environment file" is automatically cleaner.
+
+That only helps when the rules really need different software stacks. Otherwise it creates
+noise:
+
+- more files to review
+- more redundant solves
+- more places for drift to start
 
 ## A healthier environment shape
 
@@ -126,6 +146,17 @@ The course does not need you to memorize every deployment flag here. It does nee
 understand that software reproducibility is an explicit workflow surface, not background
 luck.
 
+## What a good explanation sounds like
+
+Strong:
+
+> These three rules share one Python toolchain, so they reuse one environment file because
+> the software boundary is the same.
+
+Weak:
+
+> Each rule has its own env because that felt organized.
+
 ## Tiny jobs can make a correct DAG feel broken
 
 Now look at the job graph itself.
@@ -166,6 +197,14 @@ Good answers often look like:
 - one summary job over a validated sample registry instead of many tiny join jobs
 - one reused environment per tool family instead of one environment per wrapper script
 
+## A strong beginner habit
+
+Before splitting work further, ask whether the split creates a unit another person would
+actually want to inspect, retry, or reason about.
+
+If the answer is no, the split may be scheduler noise rather than meaningful workflow
+structure.
+
 ## A smell table
 
 | Smell | What you notice | Better repair |
@@ -193,6 +232,16 @@ Strong performance repair:
 - reduce unnecessary intermediate artifacts without hiding required ones
 
 The difference is whether the repair keeps the workflow legible.
+
+## A good study pause
+
+Pause here and say one sentence like this:
+
+> We reduced launch overhead by changing job granularity and environment reuse, not by
+> hiding artifacts the workflow still needs to explain itself.
+
+If that sentence does not fit the repair, the optimization may be weakening the course’s
+main teaching goal.
 
 ## The explanation a reviewer trusts
 

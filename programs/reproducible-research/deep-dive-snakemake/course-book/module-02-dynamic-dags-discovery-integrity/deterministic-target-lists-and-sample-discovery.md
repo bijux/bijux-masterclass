@@ -7,6 +7,29 @@ Dynamic workflows begin with a simple promise:
 That promise sounds obvious. Many real workflows still break it by discovering work in
 ways that are unstable, implicit, or impossible to review later.
 
+## How to read this page
+
+Read this page with one question in front of you:
+
+> what exact surface decides which units this workflow is allowed to build?
+
+If you can answer that question clearly, most of Module 02 becomes easier. If you cannot,
+dynamic behavior will keep feeling magical no matter how much syntax you memorize.
+
+## Why this lesson comes first
+
+This lesson comes before checkpoints for a reason.
+
+Most bad dynamic workflows are not failing because they lack advanced features. They are
+failing because nobody made discovery honest at the beginning:
+
+- the source of truth is vague
+- normalization happens in multiple places
+- later rules cannot explain where the target list came from
+
+Module 02 starts here because a weak discovery surface poisons everything that comes after
+it.
+
 ## Discovery is not permission to be vague
 
 People often say "Snakemake discovers samples for me" when they really mean one of
@@ -35,6 +58,17 @@ Use these options in order:
 
 The rest of this page teaches the first three. The checkpoint case belongs later because
 it should be earned, not assumed.
+
+## A strong beginner habit
+
+Before you write fanout logic, write one plain-language sentence describing discovery.
+
+For example:
+
+> This workflow discovers samples from `data/raw/*.fastq.gz`, normalizes each filename once,
+> sorts the list, and writes the discovered set to a registry before downstream fanout.
+
+If you cannot write a sentence like that, the workflow is not ready for more dynamism.
 
 ## The stable model
 
@@ -84,6 +118,18 @@ This is the strongest version:
 - later review can inspect the exact set that drove the DAG
 
 That is the design the rest of this module is trying to earn.
+
+## The mistake to avoid here
+
+Do not confuse "filesystem is the source of truth" with "whatever the directory happens to
+contain right now is automatically a good contract."
+
+Even when the directory is the right source, the workflow still owes the reader:
+
+- a declared scan boundary
+- stable ordering
+- one normalization rule
+- early validation
 
 ## A bad first draft
 
@@ -145,6 +191,17 @@ rule all:
 
 This still uses discovery, but it stops pretending the filesystem is self-explanatory.
 
+## Why this pattern is better for teaching
+
+It turns discovery into an argument another person can inspect:
+
+- the directory is named
+- the matching rule is visible
+- the ordering rule is visible
+- the validation rules are visible
+
+That is enough structure for a missed class session to remain recoverable.
+
 ## When discovery must become an artifact
 
 Once discovery drives a dynamic DAG or a publish boundary, a Python list at parse time is
@@ -162,6 +219,17 @@ The filename is less important than the contract:
 - it is the owned output of discovery
 - it is durable enough to reread later
 - downstream rules fan out from it
+
+## A good study pause
+
+Pause here and ask which later surfaces would need the discovered set.
+
+Good answers in Module 02 usually include one or more of these:
+
+- downstream target expansion
+- checkpoint reevaluation
+- publish-boundary review
+- provenance or inventory explanation
 
 ## A simple discovered-set artifact
 
@@ -200,6 +268,17 @@ After implementing any discovery route, stop and verify four things:
 - invalid names fail early instead of drifting downstream
 - duplicate logical identities are rejected
 - later rules consume the normalized list instead of rescanning
+
+## What a good explanation sounds like
+
+Strong:
+
+> Discovery starts from one declared surface, becomes one normalized list, and is reused by
+> later rules without fresh guesses.
+
+Weak:
+
+> Snakemake scans the files and figures it out.
 
 ## What makes discovery deterministic
 

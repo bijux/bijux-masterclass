@@ -8,6 +8,27 @@ This module takes the opposite approach:
 
 If it hides the real target story, it is a bad checkpoint even if the code runs.
 
+## How to study this page
+
+Read this page with one boundary in mind:
+
+> what exact runtime fact becomes knowable only after this step executes?
+
+If you cannot name that fact, you are probably looking at a modeling problem rather than a
+checkpoint problem.
+
+## Why this lesson is usually mishandled
+
+Checkpoints look advanced, so they attract too much attention too early.
+
+That causes two teaching failures:
+
+- learners wrap already-knowable target lists in checkpoints and call it sophistication
+- learners memorize the API before they understand what new fact the workflow is trying to
+  discover
+
+This page is trying to reverse that order.
+
 ## Ask these questions before you write one line
 
 Before you write a checkpoint, answer these in plain language:
@@ -18,6 +39,12 @@ Before you write a checkpoint, answer these in plain language:
 4. Why is a config file or deterministic scan not enough here?
 
 If you cannot answer all four, stop. The design is probably not ready for a checkpoint.
+
+## A strong beginner habit
+
+Write the four answers in prose before you write the checkpoint code.
+
+That sounds slower, but it usually saves time because it exposes fake checkpoints early.
 
 ## What a checkpoint actually does
 
@@ -44,6 +71,18 @@ Good examples:
 - enumerating outputs from a tool whose count depends on validated input content
 
 In all three cases, the checkpoint exists because the workflow learns a real new fact.
+
+## The contrast that matters
+
+The real contrast is not:
+
+- simple workflow
+- advanced workflow
+
+The real contrast is:
+
+- already knowable target set
+- genuinely runtime-discovered target set
 
 ## When a checkpoint is a smell
 
@@ -75,6 +114,17 @@ Treat a checkpoint as a two-part promise:
 - second promise: later jobs will read that written fact instead of rediscovering it
 
 That is a much safer mental model than “Snakemake reruns the DAG somehow.”
+
+## What a learner should notice in the code
+
+The important line in a healthy checkpoint design is rarely the `checkpoint` keyword
+itself.
+
+The important lines are usually:
+
+- the output that records the discovery result
+- the downstream function that rereads that exact output
+- the absence of a second hidden scan somewhere else
 
 ## A good shape
 
@@ -137,6 +187,17 @@ Two parts matter here:
 
 That is the core Module 02 pattern.
 
+## The common bad repair
+
+A common bad repair looks like this:
+
+- add a checkpoint
+- then let downstream helper code rescan `data/raw/`
+- leave the checkpoint registry unused or decorative
+
+That is worse than no checkpoint at all because it creates the appearance of explicit
+discovery without actually making the DAG reviewable.
+
 ## What the checkpoint must never hide
 
 A checkpoint must never be used to smuggle in these facts:
@@ -191,6 +252,16 @@ When you review a checkpoint, ask:
 - would the same declared inputs produce the same answer again
 
 If those questions are easy to answer, the checkpoint is probably healthy.
+
+## A short checkpoint before moving on
+
+Pause here and say one sentence like this:
+
+> The checkpoint exists because validation execution decides which declared candidates are
+> usable, and it records that answer in one registry that downstream rules reuse.
+
+If that sentence feels hard to produce, revisit the discovery ladder before using more
+checkpoint code.
 
 ## The explanation a reviewer trusts
 
