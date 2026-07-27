@@ -18,66 +18,73 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  pressure["Name the study pressure"] --> route["Choose one guide route"]
+  route --> module["Open one module or support page"]
+  module --> capstone["Cross-check against one capstone surface"]
+  capstone --> proof["Stop after one honest proof step"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
+Use this shelf when you do not need another lesson yet. These pages exist to help you
+choose the next lesson, choose the right amount of proof, and return to the capstone
+without wandering.
 
-Use this section when you need route guidance rather than one module chapter. These
-pages keep the reading order, practice rhythm, and capstone bridge explicit so the
-module tree can stay focused on long-lived content.
+The strongest use of this shelf is narrow: arrive with one concrete problem, choose one
+route, and leave as soon as the next module or capstone surface is clear.
 
-## Choose one lane
+## Pick the guide that matches the job
 
-| If your pressure is... | Best page | Then go to... |
+| If you need to... | Start here | Then go to... |
 | --- | --- | --- |
-| I need the shortest honest entry route. | [Start Here](start-here.md) | [Course Guide](course-guide.md) |
-| I need the module arc and proof bar kept explicit. | [Course Guide](course-guide.md) | [Learning Contract](learning-contract.md) |
-| I know the design pressure faster than the module name. | [Pressure Routes](pressure-routes.md) | [Proof Matrix](proof-matrix.md) |
-| I need to know what each module is supposed to change. | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
-| I need the route from promise to evidence. | [Proof Matrix](proof-matrix.md) | [Proof Ladder](proof-ladder.md) |
-| The capstone still feels unfamiliar. | [Start Here](start-here.md) | [Capstone](../capstone/index.md) |
-| I am resuming after a break. | [Mid-Course Map](../module-00-orientation/mid-course-map.md) | [Proof Ladder](proof-ladder.md) |
+| enter the course honestly for the first time | [Start Here](start-here.md) | [Course Guide](course-guide.md) |
+| remember what each module is supposed to change | [Module Promise Map](module-promise-map.md) | [Module Checkpoints](module-checkpoints.md) |
+| enter from a real design pressure instead of from the table of contents | [Pressure Routes](pressure-routes.md) | [Proof Matrix](proof-matrix.md) |
+| decide how much evidence you need before moving on | [Proof Ladder](proof-ladder.md) | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
+| connect one course claim to one executable surface | [Proof Matrix](proof-matrix.md) | [Capstone Map](../capstone/capstone-map.md) |
+| resume after a break without rereading everything | [Course Guide](course-guide.md) | [Course Map](../module-00-orientation/course-map.md) |
+| verify local setup before using published routes | [Platform Setup](platform-setup.md) | the smallest matching capstone command |
 
-## Use the shelf by job
+## Use the shelf by learner state
 
-| Job | Best page |
+| Learner state | Best first page | Why |
+| --- | --- | --- |
+| absolute beginner to OOP design pressure | [Course Guide](course-guide.md) | it explains the full arc without assuming you already know which module name matters |
+| knows the symptom but not the module | [Pressure Routes](pressure-routes.md) | it routes from real design trouble to the smallest honest entry point |
+| knows the module but not the promise | [Module Promise Map](module-promise-map.md) | it tells you what the module should settle and what it still does not settle |
+| thinks a module is "done" but is unsure | [Module Checkpoints](module-checkpoints.md) | it gives a real exit bar instead of a vague feeling |
+| knows the claim but not the proof route | [Proof Matrix](proof-matrix.md) | it maps a design claim to the smallest route and first surface |
+| keeps over-escalating to heavy proof | [Proof Ladder](proof-ladder.md) | it right-sizes evidence before you waste time |
+
+## Good companion pages outside this shelf
+
+| Need | Best page |
 | --- | --- |
-| understand the module arc and support-page roles | [Course Guide](course-guide.md) |
-| see the sequence justified | [Module Dependency Map](../reference/module-dependency-map.md) |
-| rehearse the module-to-proof loop | [Practice Map](../reference/practice-map.md) |
-| hold the stable review bar steady | [Review Checklist](../reference/review-checklist.md) |
-| sharpen a keep, change, or reject decision | [Boundary Review Prompts](../reference/boundary-review-prompts.md) |
-| check your own understanding before escalating | [Self-Review Prompts](../reference/self-review-prompts.md) |
-| route a claim to executable evidence | [Proof Matrix](proof-matrix.md) |
-| choose the smallest honest proof route | [Proof Ladder](proof-ladder.md) |
-| confirm the local environment before public commands | [Platform Setup](platform-setup.md) |
+| course-stage orientation | [Course Map](../module-00-orientation/course-map.md) |
+| module dependency justification | [Module Dependency Map](../reference/module-dependency-map.md) |
+| practice rhythm by module | [Practice Map](../reference/practice-map.md) |
+| design review pressure | [Review Checklist](../reference/review-checklist.md) |
+| capstone entry point | [Capstone](../capstone/index.md) |
+| capstone file route | [Capstone File Guide](../capstone/capstone-file-guide.md) |
+| capstone architecture review | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
 
-## Cross into the capstone deliberately
+## Common misuse of the guide shelf
 
-| If you need... | Best page |
-| --- | --- |
-| the capstone's role in the course | [Capstone](../capstone/index.md) |
-| the module-to-repository route | [Capstone Map](../capstone/capstone-map.md) |
-| a bounded first pass through the repository | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) |
-| the capstone reading path by file | [Capstone File Guide](../capstone/capstone-file-guide.md) |
-| boundary ownership inside the system | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) |
-| verification depth and saved proof | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) |
-| a bounded review pass | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
-| safe extension | [Capstone Extension Guide](../capstone/capstone-extension-guide.md) |
+- reading every guide before opening one real module
+- opening proof pages before the claim is clear
+- using the capstone as a shortcut around weak semantics
+- browsing the shelf for comfort instead of choosing one next move
 
-## Keep The Layout Stable
+## A strong guide-shelf rhythm
 
-- `index.md` stays the course home
-- `guides/` stays the reading route and proof shelf
-- `capstone/` stays the capstone-specific reading, proof, and review shelf
-- `reference/` stays the durable review shelf
-- `module-00-orientation/` plus Modules `01` to `10` stay the course arc
+1. Name the current pressure.
+2. Choose one guide page only.
+3. Open one module or capstone page from that guide.
+4. Use one proof step if needed.
+5. Leave the shelf and continue the course.
 
-## Directory glossary
+## Exit check
 
-Use [Glossary](../reference/glossary.md) when you want the recurring language in this shelf kept stable while you move between study routes, proof routes, and support pages.
+Leave this page only when you can say:
+
+> My pressure is `____`, the best guide for it is `____`, and the next actual teaching
+> surface I should open is `____`.
