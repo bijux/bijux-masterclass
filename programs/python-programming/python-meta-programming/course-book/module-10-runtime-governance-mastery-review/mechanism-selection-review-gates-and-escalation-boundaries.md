@@ -45,6 +45,12 @@ That sentence is the review gate for the whole course.
 If the escalation story cannot say what the lower-power owner failed to own, the gate has
 not been passed.
 
+For self-study, turn that sentence into a selection test:
+
+- what is the narrowest plausible owner here?
+- what exact timing, scope, or process-wide need makes that owner insufficient?
+- what new operational cost appears when the mechanism escalates?
+
 ## Evidence route for escalation decisions
 
 Use this route whenever two or more mechanisms could solve the same problem:
@@ -166,6 +172,15 @@ Before approving a higher-power design, reviewers should be able to point to all
 - the test surface for failure cases
 - the performance story if the mechanism sits on a hot path
 
+Keep one escalation worksheet beside every high-power proposal:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what lower-power owner was checked first? | explicit code, wrapper, descriptor, decorator, or another named smaller owner |
+| what did it lose? | one concrete timing, scope, or ownership fact |
+| what new cost appears after escalation? | import-time mutation, hot-path overhead, reset burden, or hidden semantics |
+| what sentence approves or rejects the change? | one operational note another reviewer could repeat |
+
 If any one of those is missing, the escalation case is not finished.
 
 ## Approval note template
@@ -192,6 +207,15 @@ The course is doing its job when the review answer is often "do less."
 
 That is not conservatism for its own sake. It is refusal to pay runtime cost without a
 clear owner.
+
+## Weak escalation language to reject early
+
+| Weak line | Why it fails |
+| --- | --- |
+| "this keeps things cleaner" | cleaner does not name what the smaller owner lost |
+| "the runtime can manage it for us" | manage is not a timing or scope argument |
+| "we may need the power later" | later is not a present escalation reason |
+| "it centralizes the design" | centralization alone says nothing about blast radius or reversibility |
 
 ## Approval language should stay operational
 
@@ -255,6 +279,11 @@ The boundary is:
 - higher-power tools need stronger ownership arguments
 - rejecting escalation is often the most professional decision
 - review gates should talk about timing, scope, evidence, and reversibility
+
+Before you leave this page, write one sentence beginning:
+
+- "the smallest honest owner here is..."
+- "escalation is earned only because..."
 
 That is how the earlier modules become long-term engineering judgment.
 
