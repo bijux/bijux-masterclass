@@ -50,6 +50,10 @@ Keep two questions active while reading:
 1. what exact attribute behavior does this descriptor own?
 2. what broader unit-system claim must it refuse?
 
+Keep a third question beside them:
+
+3. what first requirement would make this field descriptor too weak to stay the honest owner?
+
 ## The incident
 
 Assume a team wants length-like fields that can accept:
@@ -70,6 +74,10 @@ units framework.
 That sentence is the real incident. The syntax and demo behavior can look impressive
 quickly, so the important work is keeping the field owner narrow enough that learners do
 not mistake a bounded descriptor for a full domain model.
+
+That is why this page stays useful even if you never build a units helper. It teaches how
+to review a persuasive field abstraction without letting the claim grow faster than the
+evidence.
 
 ## The first design rule: keep the scope bounded
 
@@ -157,6 +165,16 @@ Use this read/write split to keep the contract honest:
 | write `obj.length = "2 km"` | parse supported input and normalize to canonical metres |
 | read `obj.length` | return a shaped helper object with a chosen display unit |
 | store internal value | keep one canonical float in metres under a derived storage name |
+
+## A proof route for the field contract
+
+Use this route when you test or explain the example:
+
+1. assign one plain number and show canonical metres storage
+2. assign one supported string and show conversion into the same canonical surface
+3. read the field and show the shaped helper object
+4. convert through the helper and show that presentation changed while canonical storage did not
+5. name one broader unit-system behavior that still remains deliberately unsupported
 
 ## A bounded implementation
 
@@ -266,6 +284,9 @@ Use the code block as evidence, not as marketing:
 | the design is a full units framework | no | parsing, dimensions, and algebra stay deliberately narrow |
 | the descriptor preserves every input detail exactly | no | canonical storage intentionally discards some input-surface details |
 
+Read that table as a review contract, not as decoration. If a future version wants to
+promise more, both the descriptor surface and the evidence burden have to grow.
+
 ## Why this is useful for review
 
 This example keeps the important choices visible:
@@ -276,6 +297,17 @@ This example keeps the important choices visible:
 - the read surface is richer than the stored representation
 
 That makes the example reviewable instead of magical.
+
+## A review card for adapting the example
+
+If you change this descriptor, answer these before you trust the new version:
+
+| Adaptation question | Why it matters |
+| --- | --- |
+| does the canonical storage surface stay singular? | split storage rules make reasoning harder immediately |
+| does the helper object still stay smaller than a full units system? | a convenience layer can quietly widen the claim |
+| are new operations still field-level semantics rather than domain-wide algebra? | broader math pressure may require a bigger owner |
+| does the field still belong to attribute access instead of object-wide coordination? | wider coordination means descriptor ownership is weakening |
 
 ## Failure surfaces a reviewer should inspect
 
@@ -308,6 +340,12 @@ Use this limitations table when a review starts inflating the design:
 | dimension compatibility across unrelated quantities | wants a stronger domain model than one attribute owner |
 | round-tripping the exact original input string | not necessary for the canonical storage lesson |
 
+Add one more honest refusal:
+
+| Missing behavior | Why refusing it is honest here |
+| --- | --- |
+| domain-wide unit registries or localization policy | bigger than one descriptor boundary and no longer a single-field lesson |
+
 ## Why this belongs to a descriptor
 
 The field behavior here belongs to attribute access itself:
@@ -335,6 +373,10 @@ If you adapt this example, leave behind a packet another reviewer can inspect qu
 - one example of behavior returned on read
 - one explicit limitation the descriptor refuses
 - one sentence explaining why the design still belongs to attribute access rather than a wider units system
+
+Add one more packet note:
+
+- one change you would reject because it widens the field claim faster than the proof route can justify
 
 ## What this example makes clear about Module 07
 
