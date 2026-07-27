@@ -1,5 +1,4 @@
-# Dataclasses, the Good: Concise Value and Entity Definitions
-
+# Dataclasses for Values and Entities
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Dataclasses, the Good: Concise Value and Entity Definitions"]
+  page["Dataclasses for Values and Entities"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,131 +24,121 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Use `dataclasses` to define domain objects that are:
+Dataclasses are often taught as a shortcut for "less boilerplate," but that framing is too
+shallow for design work.
 
-- easy to read,
-- hard to misuse,
-- and honest about equality/identity.
+The real question is:
 
-This core focuses on the *good path*: clear value objects and small entities with explicit invariants.
+- when does a dataclass clarify a value object?
+- when does it still work for an entity?
+- when does it start lying about identity, mutability, or invariants?
 
-## Where This Fits
+This lesson is about using dataclasses honestly, not automatically.
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+## Where dataclasses help most
 
-## 1. Dataclasses Are Syntax for an Explicit Contract
+Dataclasses are strongest when the object:
 
-A dataclass can generate:
+- has a clear data shape
+- benefits from readable field declarations
+- needs predictable construction
+- should have straightforward representation support
 
-- `__init__` (construction),
-- `__repr__` (debuggability),
-- `__eq__` (equality semantics),
-- and optionally ordering / hashing.
+That makes them especially good for many value objects and some carefully designed
+entities.
 
-Treat these as **public contracts**, not convenience.
+## Value objects are often the best fit
 
-Two key questions you must answer up front:
+Dataclasses pair naturally with value objects because value objects usually want:
 
-1. Is this a **value** (equality by content) or an **entity** (identity matters)?
-2. Is this object **immutable** (preferred) or mutable (needs stronger discipline)?
+- explicit fields
+- content-based comparison
+- easy readability
+- controlled immutability
 
-## 2. Value Objects: Frozen Dataclasses + Semantic Types
+When the object is defined mainly by its content, a dataclass can express that directly.
 
-In the monitoring domain, `MetricName` and `Threshold` should be *values*.
+## Entities need more care
 
-```python
-from dataclasses import dataclass
+Entities have a different pressure:
 
-@dataclass(frozen=True, slots=True)
-class MetricName:
-    value: str
+- identity matters
+- lifecycle usually matters
+- mutation rules may matter
+- equality may not be simple field equality
 
-    def __post_init__(self):
-        if not self.value or " " in self.value:
-            raise ValueError("MetricName must be non-empty and contain no spaces")
-```
+That does not forbid dataclasses. It just means you must be deliberate about what the
+generated behavior implies.
 
-Why this is good:
-- `frozen=True` makes it immutable (safer to share, safe as dict keys).
-- `slots=True` reduces accidental attribute creation and saves memory.
-- Validation in `__post_init__` makes invalid states impossible.
+## The mistake to avoid
 
-**Equality**: values compare by fields, which is what you want.
+The most common dataclass mistake is forgetting that generated defaults are part of the
+design.
 
-```python
-assert MetricName("cpu") == MetricName("cpu")
-```
+If you accept every generated behavior without thinking, you may accidentally get:
 
-## 3. Entities: Dataclasses With Explicit Identity
+- equality that compares the wrong fields
+- representation that leaks too much
+- mutability where you wanted stronger control
+- construction that permits half-formed objects
 
-Entities should not “accidentally” compare equal just because fields match.
+The problem is not the feature. The problem is unreviewed defaults.
 
-If a `Rule` has a stable identifier, make identity explicit and consider turning off generated equality.
+## A practical decision test
 
-```python
-from dataclasses import dataclass
-from uuid import UUID
+Ask:
 
-@dataclass(slots=True, eq=False)
-class Rule:
-    rule_id: UUID
-    metric: MetricName
-    threshold: float
+1. Is this object mainly a declared data shape with clear invariants?
+2. Should equality follow content or identity?
+3. Do generated constructor and representation behavior help or mislead here?
+4. Will the class still need custom lifecycle rules that outweigh the convenience?
 
-    def same_identity_as(self, other: "Rule") -> bool:
-        return self.rule_id == other.rule_id
-```
+If the dataclass defaults align with the object’s meaning, use them.
 
-This avoids subtle bugs in sets/dicts and makes “what does equality mean?” unambiguous.
+If they fight the meaning, do not force the fit.
 
-If you *do* want `Rule` equality by ID, implement `__eq__` and `__hash__` explicitly, and keep it stable.
+## When not to reach for a dataclass
 
-## 4. Defaults Done Right: `default_factory` and Explicit Optionality
+A dataclass is a weaker fit when:
 
-Never use mutable defaults.
+- the object’s behavior is much more important than its declared field shape
+- construction is complex and multi-step
+- lifecycle transitions dominate the design
+- the generated defaults would immediately need heavy correction
 
-Bad:
-```python
-@dataclass
-class Group:
-    rules: list[Rule] = []  # shared across instances (bug)
-```
+In those cases, a hand-written class may be more honest and easier to teach.
 
-Good:
-```python
-from dataclasses import field
+## Review checklist
 
-@dataclass
-class Group:
-    rules: list[Rule] = field(default_factory=list)
-```
+| Question | Value object fit | Entity fit |
+| --- | --- | --- |
+| explicit field declaration helps? | usually yes | often yes |
+| content equality is appropriate? | often yes | often no |
+| generated constructor is mostly useful? | often yes | depends |
+| lifecycle complexity is low? | often yes | sometimes no |
 
-Optionality: be deliberate. If “missing” is a real state, model it (M03C27). If it’s only a parsing concern, keep it at the boundary (M03C26).
+## Capstone connection
 
-## 5. Dataclasses as a Teaching Tool
+In the capstone, use this lesson when deciding which concepts should become:
 
-A dataclass is readable because it makes the *shape* of the object visible:
+- compact value types with clear fields
+- entities that still need more deliberate identity and lifecycle handling
 
-- fields are listed in one place,
-- default values are visible,
-- invariants can be local to `__post_init__`.
+If a class is verbose only because it is spelling out a simple data shape, a dataclass may
+help. If the class is hard because the domain is hard, a dataclass alone will not rescue it.
 
-This is excellent for education and code review: the contract is literally at the top of the file.
+## Exit check
 
-## Practical Guidelines
+Leave this lesson only when you can do all of these:
 
-- Use `frozen=True` for value objects unless you have a strong reason not to.
-- For entities, decide equality explicitly (`eq=False` is often safer than the default).
-- Use `slots=True` when objects are numerous or you want to prevent accidental attributes.
-- Use `field(default_factory=...)` for any mutable default.
-- Prefer semantic wrappers (`MetricName`, `Window`, `Threshold`) over raw `str`/`float` when misuse is plausible.
-
-## Exercises for Mastery
-
-1. Convert two primitive fields in your domain (e.g., `metric: str`, `threshold: float`) into semantic value objects with validation.
-2. Create an entity dataclass with `eq=False`. Write a unit test showing why generated equality would be dangerous.
-3. Add `slots=True` to a frequently-instantiated dataclass and confirm accidental attributes now raise `AttributeError`.
+- name one capstone type that is a strong dataclass candidate
+- name one capstone type that needs more care because identity or lifecycle dominates
+- explain why "less boilerplate" is not enough reason by itself to choose a dataclass
