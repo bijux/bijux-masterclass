@@ -24,68 +24,87 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for
-wandering the whole course-book. Read the second diagram as the guide loop: arrive with
-a concrete question, use only the matching sections, then leave with one smaller and
-more honest next move.
+Use this page when you want the course compressed into one honest table:
 
-Use this page when the table of contents feels dense and you want the exact promise of
-each module in one place. A serious metaprogramming course should make clear what each
-module settles, what it still leaves open, and which part of the capstone proves the claim.
+- what each module is supposed to give you
+- what it deliberately does not settle yet
+- where the capstone makes that promise visible
+- why the next module depends on it
+
+That matters because metaprogramming courses often blur module boundaries. Learners then
+expect later powers too early, or assume they understand a concept because they saw a
+preview of it. This map keeps the promises sharp.
 
 ## The ten-module promise spine
 
-| Module | Main promise | Not promised yet | Capstone surface to inspect | Prepares you for |
+| Module | What this module should leave you able to do | What it does not settle yet | Best first capstone surface | Why the next module depends on it |
 | --- | --- | --- | --- | --- |
-| 01 Runtime Object Model | you can explain what Python functions, classes, modules, and instances are as runtime objects | safe inspection and evidence gathering | module and callable structure visible through `src/incident_plugins/` and manifest output | safe observation |
-| 02 Safe Runtime Observation | you can inspect names, storage, types, and callability without pretending all inspection is passive | signature-driven evidence and provenance | manifest and registry outputs before reading implementation details | structured introspection |
-| 03 Signatures and Provenance | you can turn runtime observation into reliable callable and source evidence | behavior-changing wrappers and policy-heavy decoration | action signatures and exported runtime facts | wrapper discipline |
-| 04 Transparent Decorators | you can explain what a wrapper changes at definition time and at call time without losing callable identity | policy-heavy decorators and typing-aware wrapper design | action decorators in `actions.py` plus runtime tests | decorator policy design |
-| 05 Decorator Policies and Typing | you can judge where decorator-carried policy stays honest and where it should become an explicit object or service | class-level customization and attribute ownership | wrapper tests, manifest behavior, and action metadata | class customization before metaclasses |
-| 06 Class Customization Before Metaclasses | you can compare class decorators, properties, and explicit helpers before escalating to stronger hooks | descriptor lookup precedence and reusable field systems | constructor shape and class-level customization around plugins | descriptor mechanics |
-| 07 Descriptors and Lookup | you can explain attribute lookup, descriptor precedence, and per-instance storage without folklore | framework-shaped descriptor systems and wider validation architecture | `fields.py` and tests that prove storage and coercion behavior | descriptor systems |
-| 08 Descriptor Systems and Validation | you can judge when a descriptor is still one field contract and when it has become a framework boundary | class-creation control and metaclass scope | field schema export and validation surfaces inside the plugin runtime | metaclass justification |
-| 09 Metaclass Design and Class Creation | you can explain what must happen during class creation and reject metaclasses that merely hide lower-power options | governance, red lines, and organization-level runtime policy | `framework.py`, registry tests, and constructor generation | runtime governance |
-| 10 Runtime Governance and Mastery Review | you can review metaprogramming with explicit red lines around debuggability, global hooks, and dynamic execution | no later module; this is the integrated review pass | manifest export, deterministic registration, and the full proof route | long-term stewardship |
+| 01 Runtime Objects and the Object Model | explain functions, classes, modules, and instances as runtime objects rather than as syntax labels | safe observation strategy and evidence rules | manifest output plus the basic source layout | you cannot inspect safely until you know what kind of object you are looking at |
+| 02 Runtime Observation and Inspection | inspect names, storage, callability, and types without assuming observation is always passive | provenance and callable evidence strong enough for review | manifest and registry outputs before opening implementation details | later wrapper and descriptor work depends on safe inspection habits |
+| 03 Signatures, Provenance, and Evidence | use signatures and provenance surfaces to make stronger runtime claims | behavior-changing wrappers and policy design | action signatures, CLI outputs, and source evidence surfaces | wrappers become dangerous if callable identity is still blurry |
+| 04 Transparent Decorators | explain what a wrapper changes at definition time and at call time while preserving public callable shape | policy-heavy decorators and when wrapping stops being honest | `actions.py`, trace output, and runtime tests | policy design only matters after transparency is understood |
+| 05 Decorator Policies, Typing, and Review Cost | judge when wrapper-carried policy is acceptable and when it should become explicit structure | class-level customization and attribute ownership | action metadata, wrapper tests, and manifest behavior | class customization should only come after wrapper limits are visible |
+| 06 Class Customization Before Metaclasses | compare class decorators, helpers, and properties before escalating to stronger hooks | descriptor precedence, reusable field systems, and class-creation control | constructor shape and class-level customization surfaces | descriptors and metaclasses need a real lower-power comparison point |
+| 07 Descriptors, Lookup, and Attribute Control | explain descriptor precedence, binding, and per-instance storage without folklore | framework-scale descriptor systems and broader validation architecture | `fields.py` and field tests | you need clear lookup mechanics before judging larger field frameworks |
+| 08 Descriptor Systems, Validation, and Framework Shape | judge when a descriptor is still one field contract and when it has become architecture | class-creation control and metaclass scope | field schema export, coercion surfaces, and field tests | metaclasses should feel like escalation from real descriptor limits |
+| 09 Metaclass Design and Class Creation | explain what truly belongs at class-definition time and reject metaclasses that only hide lower-power options | governance rules for dynamic power across a whole system | `framework.py`, registry output, and registry tests | governance only makes sense after the highest mechanism is understood precisely |
+| 10 Runtime Governance and Mastery Review | review dynamic designs for observability, debuggability, red lines, and restraint | no later module; this is the integrated judgment pass | manifest, registry, trace, verification bundle, and review worksheet | this is the stewardship layer that converts mechanism knowledge into durable judgment |
 
-## The three arcs inside the course
+## Read the promises as a dependency chain
 
-### Observation arc
+The modules are not just adjacent topics. They depend on one another.
 
-Modules 01 to 03 answer:
+### Modules 01 to 03: observation chain
+
+These modules teach:
 
 - what exists at runtime
-- how to inspect it safely
-- which observations are strong enough to support tooling and review
+- how to inspect it without accidental execution
+- how to turn runtime facts into usable evidence
 
-If these are weak, later modules feel magical instead of mechanical.
+If this chain is weak, later mechanisms feel mystical.
 
-### Control arc
+### Modules 04 to 09: control chain
 
-Modules 04 to 09 answer:
+These modules teach:
 
-- what behavior belongs to call boundaries
-- what behavior belongs to attribute access
-- what behavior truly belongs to class creation
+- how to change call behavior
+- how to place policy and validation
+- how to own attribute behavior
+- how to justify class-creation control
 
-If these are weak, higher-power mechanisms start solving the wrong problems.
+If this chain is weak, stronger hooks begin solving the wrong problems.
 
-### Governance arc
+### Module 10: governance chain
 
-Module 10 answers:
+This module asks:
 
-- which runtime powers are still defensible
-- which ones should trigger immediate review skepticism
-- what makes a dynamic design maintainable rather than merely impressive
+- which powers are still defensible
+- which ones should trigger skepticism immediately
+- what makes a meta-heavy design teachable, reviewable, and maintainable
 
-If this is weak, the rest of the course can still teach mechanisms while failing to teach judgment.
+Without this chain, the course can still teach mechanism names while failing to teach judgment.
 
-## How to use this map well
+## How to use the promise map
 
-- Read the module promise before reading the module overview.
-- Use "not promised yet" to avoid expecting later modules too early.
-- Use "capstone surface to inspect" to keep the module promise tied to one executable place in the repository.
-- Use "prepares you for" to understand why the reading order matters.
+### Before a module
 
-The promise map keeps the course from reading like a heap of advanced runtime tricks. It
-makes the book read like one argument about evidence, ownership, and restraint.
+Read the promise and the "not settled yet" column. That stops you from expecting too much
+too early.
+
+### After a module
+
+Use the capstone surface column to make the promise concrete.
+
+### When resuming after a break
+
+Find the last promise you can still explain in plain language. Resume there, not at the
+latest topic you remember seeing.
+
+## Good stopping point
+
+You can leave this page when you can answer:
+
+- what the current module is supposed to settle
+- what it deliberately leaves for later
+- which capstone surface should make its promise visible
