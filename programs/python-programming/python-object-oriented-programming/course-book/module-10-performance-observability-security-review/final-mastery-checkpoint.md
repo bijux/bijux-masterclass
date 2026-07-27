@@ -26,26 +26,25 @@ flowchart LR
 
 This checkpoint asks whether the course has changed how you review a system.
 
-You do not finish by remembering the module titles.
-You finish when one meaningful change can be traced across the whole model without
-losing semantic discipline.
+You do not finish by remembering the module titles. You finish when one meaningful
+change can be traced across the whole model without losing semantic discipline.
 
 That is the course outcome this page is testing.
 
 ## The final review prompt
 
-Choose one capstone change.
+Choose one real capstone change.
 
-Use a real one, such as:
+Use one such as:
 
-- increasing seat allocation throughput under contention
-- tightening duplicate-protection for downstream certificate or notification work
+- increasing seat-allocation throughput under contention
+- tightening duplicate protection for downstream certificate or notification work
 - publishing a narrower supported facade for consumers and integrations
 - adding a replaceable sink seam with compatibility rules
 
-Then ask this first:
+Then ask this question first:
 
-What must stay true before I talk about what will change?
+- what must stay true before I talk about what will change?
 
 If you can answer that clearly, the course has likely moved from pattern vocabulary to
 architectural judgment.
@@ -86,9 +85,9 @@ Ask:
 
 - does this belong in the domain object, repository, facade, workflow coordinator, or
   external adapter?
-- would moving the change elsewhere weaken ownership just to make implementation easier?
+- would moving it elsewhere weaken ownership just to make implementation easier?
 
-This step prevents convenience from rewriting architecture silently.
+This step prevents convenience from silently rewriting architecture.
 
 ## Check 3: persistence and schema implications
 
@@ -99,12 +98,12 @@ Decide whether the change affects:
 - stored event or projection shape
 - migration and rollback expectations
 
-If persistence implications are ignored, many "safe" changes become unsafe under real
-load.
+If persistence implications are ignored, many apparently safe changes become unsafe under
+real load.
 
 ## Check 4: runtime and retry behavior
 
-Ask what the system now does under interruption, delay, or repeat attempts.
+Ask what the system now does under interruption, delay, or repeated attempts.
 
 Examples:
 
@@ -120,7 +119,7 @@ Choose which proof should fail first if the change is wrong.
 
 Examples:
 
-- behavior-first test for a local semantic rule
+- behavior-first proof for a local semantic rule
 - lifecycle proof for history-sensitive state
 - contract suite for substitute repositories or integrations
 - workflow test for retry and side-effect composition
@@ -139,7 +138,8 @@ Check:
 - whether a compatibility promise widened or narrowed
 - whether deprecation language and migration guidance must update
 
-This step keeps release safety inside the design review instead of after it.
+This step keeps release safety inside the design review instead of treating it as
+aftercare.
 
 ## Check 7: observability, trust-boundary, and runbook consequences
 
@@ -168,6 +168,19 @@ It sounds like:
 
 That is the voice of whole-system review.
 
+## Build a mastery note
+
+To finish the course, write one short note with:
+
+- the contract that must stay true
+- the owning boundary
+- the first-failing proof route
+- the public-compatibility consequence
+- the operational artifact still required before release
+
+If you can write that note cleanly, the course has become a durable review method rather
+than a stack of concepts.
+
 ## Common signs mastery is still incomplete
 
 - naming patterns without naming the contract they protect
@@ -179,17 +192,17 @@ That is the voice of whole-system review.
 
 These are the habits the course was designed to correct.
 
-## Your final exercise on this page
+## Capstone connection
 
-Pick one real capstone change and write a short review note with:
+Use this page to pick one real capstone change and answer all of these:
 
-- the contract that must stay true
-- the owning boundary
-- the first-failing proof route
-- the public-compatibility consequence
-- the operational artifact still required before release
+- what must remain true before the change begins?
+- which boundary owns the change?
+- which proof route should fail first if the design is wrong?
+- what public promise or migration note changes?
+- what operational artifact is still needed before release?
 
-If you can write that note cleanly, the course has become a durable review method.
+That is the final whole-system checkpoint.
 
 ## Exit check
 
