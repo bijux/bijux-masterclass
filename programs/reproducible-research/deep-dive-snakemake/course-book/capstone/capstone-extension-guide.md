@@ -4,6 +4,20 @@ Use this guide when changing the Snakemake capstone after the course is already 
 The goal is not to forbid growth. The goal is to keep new work from weakening the rule
 contracts, policy boundaries, publish surface, and review evidence the course depends on.
 
+## How to use this guide
+
+Use this page after you can already state the intended change in one sentence.
+
+Read it in this order:
+
+1. name the change
+2. choose the owning boundary
+3. classify the risk
+4. run the minimum proof set
+5. decide whether to keep, revise, or reject the change
+
+This guide is here to keep extension work from quietly becoming contract drift.
+
 ## Extension route
 
 ```mermaid
@@ -13,6 +27,19 @@ flowchart TD
   risk --> proof["Run the minimum proof set"]
   proof --> decision["Keep, revise, or reject the change"]
 ```
+
+## Start by deciding whether the change is really local
+
+Beginners often describe a capstone change as if it only affects one file.
+
+That is frequently false for workflow repositories.
+
+The better question is:
+
+> which boundary is actually moving: rule contract, discovery behavior, policy surface,
+> publish contract, or review evidence?
+
+Once that is named, the proof burden becomes much clearer.
 
 ## Boundaries that must stay legible
 
@@ -44,6 +71,21 @@ These changes need stronger review:
 Use [Capstone File Guide](capstone-file-guide.md) when the main question is where a
 change belongs. Use [Capstone Review Worksheet](capstone-review-worksheet.md) when the
 question is whether the current repository can still defend the change honestly.
+
+## One honest extension judgment
+
+Suppose a change adds a new published TSV and also moves one analytical threshold into a
+profile.
+
+That is not one simple extension.
+
+It moves two sensitive boundaries:
+
+1. the publish contract
+2. the policy-versus-semantics split
+
+This guide should make that visible early enough that the change gets stronger review
+instead of being waved through as routine growth.
 
 ## Minimum proof after a change
 

@@ -14,6 +14,20 @@ Work top to bottom. For each section:
 
 If you cannot name the evidence, the judgment is still too soft.
 
+## Start with one review question, not with the whole worksheet
+
+This worksheet works best when you already know what kind of review you are trying to do:
+
+- contract review
+- workflow-truth review
+- policy review
+- publish review
+- architecture review
+- incident review
+
+If you start at the top and try to answer every section every time, the review gets broad
+before it gets sharp.
+
 ## Review route
 
 ```mermaid
@@ -124,6 +138,21 @@ The worksheet is doing its job when you can end with one of these:
 - trust as-is because the repository contract and evidence are explicit
 - trust with one named follow-up boundary because the risk is real but contained
 - do not trust yet because one specific proof or ownership question is unresolved
+
+## One honest review pass
+
+Suppose your real question is:
+
+> could another maintainer explain what is public here without asking the original author?
+
+The honest worksheet route is:
+
+1. repository contract
+2. publish boundary
+3. strong review outcomes
+
+You do not need to turn that into a full incident or stewardship review unless the
+evidence exposes a broader problem.
 
 ## Incident review
 

@@ -4,6 +4,21 @@ Use this page when the question is about workflow ownership rather than about a 
 run command. The Snakemake capstone stays reviewable only if workflow meaning, discovery
 evidence, operating policy, publish trust, and implementation code remain separate.
 
+## How to use this page
+
+Use this guide only after the repository is already legible enough that you can name the
+ownership question in one sentence.
+
+Read it in this order:
+
+1. name the ownership question
+2. inspect the workflow contract first
+3. inspect the owning layer
+4. compare the neighboring boundary only if drift is plausible
+
+This page is here to turn "the repository feels complicated" into one explicit
+architecture judgment.
+
 ## Architecture reading route
 
 ```mermaid
@@ -15,6 +30,20 @@ flowchart TD
   drift -- yes --> compare["Compare the neighboring boundary"]
   compare --> stop
 ```
+
+## Start by separating ownership from convenience
+
+Beginners often judge architecture by how tidy the tree looks.
+
+That is not enough.
+
+The better question is:
+
+> which layer should own this behavior so that workflow meaning, policy, publish trust,
+> and helper logic stay reviewable?
+
+That is why this guide starts with contract and boundary ownership instead of with folder
+cleanliness.
 
 ## Boundary map
 
@@ -42,6 +71,20 @@ A strong architecture judgment usually sounds like one of these:
 - this behavior belongs in profile policy because it changes execution context only
 - this behavior belongs in helper code because the rule contract stays visible without it
 - this behavior does not belong in the publish surface because downstream trust would become blurry
+
+## One honest architecture judgment
+
+Suppose a learner asks:
+
+> should this new behavior live in a profile, a rule file, or helper code?
+
+The honest route is:
+
+1. check whether the behavior changes workflow meaning
+2. if yes, keep it out of profiles
+3. then decide whether the visible rule contract stays clear enough for rule-local logic or whether helper code owns the detail better
+
+That is the kind of architecture judgment this guide is meant to support.
 
 ## What this guide should prevent
 

@@ -3,12 +3,37 @@
 Use this page when a module makes a Snakemake design claim and you want the shortest
 honest route to the capstone evidence that supports it.
 
+## How to use this page
+
+Use this guide after you can state the design claim plainly.
+
+Read it in this order:
+
+1. name the claim
+2. choose the narrowest route in the table
+3. inspect the evidence bundle it was meant to produce
+4. escalate only if the unanswered part of the claim is real
+
+This page is here to keep capstone proof proportional to the design question.
+
 ## Enter this guide at the right time
 
 Use this guide once the module idea is already legible in its local exercise.
 
 Before that point, prefer [Capstone Walkthrough](capstone-walkthrough.md) so the
 repository stays smaller than the concept you are learning.
+
+## Start by treating route strength as a design choice
+
+Stronger proof is not always better proof.
+
+It is better only when the claim itself is stronger.
+
+For example:
+
+- repository shape claims usually do not need a full stewardship route
+- publish-boundary claims should start with publish-facing evidence
+- execution-policy claims should start with policy-aware surfaces
 
 ## Proof route shape
 
@@ -37,6 +62,16 @@ flowchart TD
 - Start with the claim, not with the heaviest available command.
 - Check the evidence bundle the command was meant to produce.
 - Escalate only when the unanswered part of the claim is real, not when uncertainty feels uncomfortable.
+
+## One honest proof decision
+
+Suppose the claim is:
+
+> I need to know whether this capstone still makes dynamic discovery explicit.
+
+The honest route is `capstone-tour`, because the claim is about executed discovery
+evidence rather than final stewardship confirmation. Jumping straight to `capstone-confirm`
+would answer a broader question than the one you asked.
 
 ## Worked examples
 

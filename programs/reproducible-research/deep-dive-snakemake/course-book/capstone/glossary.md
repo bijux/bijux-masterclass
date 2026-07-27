@@ -3,6 +3,18 @@
 Use this page when the Snakemake capstone routes start sounding interchangeable. The
 goal is to keep workflow meaning, operating policy, and publish trust separate.
 
+## How to use this glossary
+
+Open this page when two capstone terms sound close enough that your route choice is
+getting blurry.
+
+This glossary is most useful when:
+
+- two proof routes sound similar but answer different questions
+- policy language starts getting confused with workflow meaning
+- publish review language starts drifting into general execution language
+- you need to restate a capstone term in plainer words before continuing
+
 | Term | Meaning here |
 | --- | --- |
 | walkthrough | the bounded first pass through the workflow repository before stronger executed proof |
@@ -13,12 +25,3 @@ goal is to keep workflow meaning, operating policy, and publish trust separate.
 | publish boundary | the downstream-facing output surface another person is allowed to trust |
 | saved evidence bundle | an exported artifact set that lets a reviewer inspect the workflow later |
 | stewardship review | the stronger route used when a maintainer must judge the whole repository, not only one run |
-
-## Use this page well
-
-This glossary is most useful when:
-
-- two proof routes sound similar but answer different questions
-- policy language starts getting confused with workflow meaning
-- publish review language starts drifting into general execution language
-- you need to restate a capstone term in plainer words before continuing
