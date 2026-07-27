@@ -40,6 +40,9 @@ Evidence route to inspect first:
 
 The main lesson is to review the current trust boundary before touching implementation.
 
+Weak answers start by describing the desired future state and never make current truth
+explicit enough to defend or preserve.
+
 ## Exercise 2: Sequence a migration
 
 A safer order would be:
@@ -64,6 +67,9 @@ Why:
 - it changes the ownership boundary most broadly and should not be mixed with unresolved
   workflow-truth changes
 
+Weak sequences try to modernize everything at once and then lose the comparison route that
+would have made the migration trustworthy.
+
 ## Exercise 3: Write governance rules
 
 A strong set of rules could be:
@@ -76,6 +82,9 @@ Why these work:
 
 - they are short enough to enforce
 - they each protect a recurring source of drift
+
+Weak rules read like essays, mention five boundaries at once, and cannot be mapped to one
+clear review decision.
 
 ## Exercise 4: Name the anti-pattern
 
@@ -99,6 +108,9 @@ Recovery step to require first:
 - move the semantic setting back into visible workflow or config boundaries, then audit the
   profile again
 
+Weak answers call every problem "technical debt" and therefore hide which proof route must
+be restored first.
+
 ## Exercise 5: Decide the tool boundary
 
 A strong recommendation would say:
@@ -114,6 +126,9 @@ Why this is strong:
 - it hands platform-native concerns to the system built to own them
 - it names the handoff evidence rather than only naming the destination tool
 
+Weak answers blur responsibility until nobody can say where workflow truth ends and
+platform behavior begins.
+
 ## Exercise 6: Build a current-truth inventory
 
 A strong inventory separates declared contract from observed dependence. It links each
@@ -128,6 +143,21 @@ What a strong answer makes visible:
 - what is only convenient internally
 - what mismatch creates the largest migration risk
 
+Example inventory headings:
+
+- declared targets and normal completion surface
+- actual downstream consumers and their paths
+- semantic configuration versus profile policy
+- software and runtime boundaries
+- publish contracts and file-API coverage
+- existing proof routes and missing proof routes
+
+Why this is strong:
+
+- it gives migration work a factual starting point
+- it shows where documentation already disagrees with behavior
+- it orders the risks by trust damage instead of annoyance
+
 ## Exercise 7: Write characterization checks
 
 Characterization checks encode relied-upon behavior without declaring every incidental
@@ -138,6 +168,9 @@ to change unless they are documented public promises.
 
 The main lesson is that characterization protects relied-upon behavior without freezing
 every accidental implementation detail.
+
+Weak answers either freeze every byte blindly or say "we should stay flexible" without
+protecting the behavior consumers actually depend on.
 
 ## Exercise 8: Migrate one ownership boundary
 
@@ -150,6 +183,24 @@ visibility, or rebuild behavior cannot be explained.
 A strong answer also states when the old path can be retired and when rollback is still
 the honest option.
 
+Example answer shape:
+
+- old owner:
+  - report assembly hidden in one helper script with weak review visibility
+- candidate owner:
+  - explicit report boundary near the publish contract
+- comparison:
+  - schema and representative semantic comparison for the public report, byte comparison
+    only where determinism is contractual
+- rollback:
+  - revert if public meaning, failure visibility, or consumer expectations no longer match
+
+Why this is strong:
+
+- it moves one concern at a time
+- it chooses comparison strength by contract, not habit
+- it preserves a real escape route
+
 ## Exercise 9: Enforce a governance rule
 
 The automated check should express one durable boundary and report the exact violating
@@ -160,6 +211,9 @@ failed.
 
 The main lesson is that governance becomes durable only when it becomes reviewable and
 repairable.
+
+Weak checks fail loudly but teach nothing. Strong checks tell the maintainer which
+boundary was crossed and what repair would restore trust.
 
 ## Exercise 10: Design and review a tool handoff
 
@@ -172,6 +226,19 @@ ownership.
 
 The main lesson is that a tool handoff is only trustworthy when responsibility and
 verification remain separable instead of being absorbed into one vague platform story.
+
+Example handoff properties:
+
+- request schema carries semantic config, workflow revision, and requester identity
+- status schema distinguishes queued, running, failed, cancelled, and published states
+- result schema returns the publish manifest, provenance, and verification route
+- cancellation policy states whether cancellation is best-effort, immediate, or only
+  future-facing
+
+Why this is strong:
+
+- it turns ownership into inspectable contracts
+- it keeps the publish bundle verifiable without requiring trust in the service itself
 
 ## Self-check
 
