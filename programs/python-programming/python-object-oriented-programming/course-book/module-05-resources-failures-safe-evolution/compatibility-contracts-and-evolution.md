@@ -1,5 +1,4 @@
-# Evolution Basics and Compatibility Contracts
-
+# Compatibility Contracts and Evolution
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Resources Failures Safe Evolution"]
-  page["Evolution Basics and Compatibility Contracts"]
+  page["Compatibility Contracts and Evolution"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,70 +24,142 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Make changes without breaking users, stored data, or callers.
+Every useful system evolves. The dangerous question is whether it evolves honestly.
 
-Evolution is not “we changed the code”; it is “we changed the contract”.
-This core teaches compatibility thinking for:
-- public Python APIs,
-- serialized data formats,
-- and domain behavior.
+Compatibility pressure appears when other code, stored data, or published behavior
+already depends on what exists today. At that point, change is no longer only a local
+editing problem. It is a contract problem.
 
-## 1. Identify What Must Stay Compatible
+This lesson teaches students to ask not just "can I improve this?" but also "who is
+already depending on it, and what exactly did I promise them?"
 
-Compatibility targets:
+## A compatibility contract is narrower than the whole codebase
 
-- **public API** (what callers import/use) — protected by facades (M05C46)
-- **serialized data** (stored rules/policies) — must be readable over time
-- **observable behavior** (alerts emitted, logs, error types)
+Not every line of code is a compatibility promise.
 
-If you don’t name the contracts, you can’t preserve them.
+Usually the contract lives in specific surfaces:
 
-## 2. Backward vs Forward Compatibility
+- public imports
+- serialized formats
+- command or request shapes
+- persistent data expectations
+- observable behavior relied on by callers or tests
 
-- Backward compatible: new code can read old data / old callers still work.
-- Forward compatible: old code can tolerate new data (harder).
+If you cannot name the contract surface, you cannot evolve it responsibly.
 
-A practical approach:
-- **tolerant reader**: accept extra fields, defaults for missing
-- **strict writer**: write the newest correct format
+## Compatibility is about expectations, not nostalgia
 
-This keeps systems upgradeable without chaos.
+You do not preserve old behavior because old behavior is sacred. You preserve it because
+someone may rely on it.
 
-## 3. Schema Versioning and Migrations
+That reliance may come from:
 
-For stored data:
-- include a `schema_version`,
-- write migration functions `v1 -> v2`,
-- test migrations.
+- downstream code importing a stable facade
+- existing stored data being read by new code
+- users expecting a command to keep accepting the same input
+- tests capturing promised behavior
 
-Keep migrations explicit and deterministic.
+The teaching shift is important: compatibility is not resistance to improvement. It is
+respect for already-supported expectations.
 
-Do not hide migrations inside random constructors — they become untestable and surprising.
+## There are different kinds of compatible change
 
-## 4. Behavioral Compatibility and Tests
+Some changes extend a contract safely:
 
-Behavior changes are the most dangerous.
+- adding an optional field
+- adding a new supported strategy without changing old ones
+- exposing a new stable entrypoint while preserving the old one
 
-Use:
-- golden tests (expected outputs for known inputs),
-- integration tests around orchestrator cycles,
-- property tests for invariants.
+Other changes are riskier:
 
-When adding features, preserve old behavior unless you intentionally version-break it (M05C50).
+- removing or renaming a public surface
+- changing the meaning of an existing field
+- changing behavior that callers may have normalized around
 
-## Practical Guidelines
+Students need this vocabulary so "compatible" stops meaning only "the tests still ran."
 
-- Name your compatibility contracts: public API, serialized formats, observable behavior.
-- Use a tolerant reader + strict writer strategy for data evolution.
-- Include schema version markers and write explicit migrations with tests.
-- Protect your public surface with facades; avoid deep imports by callers.
+## Evolution starts with naming the supported surface
 
-## Exercises for Mastery
+Before changing anything, answer:
 
-1. Add a `schema_version` to a stored representation and write a migration for a small change (rename a field).
-2. Write a golden test for one important behavior and keep it passing while refactoring.
-3. Identify one accidental public API surface (deep import). Hide it behind a facade and document the contract.
+- which exact surface is public?
+- which callers or data shapes depend on it?
+- what behavior is intentionally stable?
+- what may change freely because it is internal?
+
+Once that is clear, the change can be designed instead of improvised.
+
+This is why the public-versus-internal lesson comes before this one.
+
+## Use translation and migration instead of denial
+
+When the old and new shapes differ, the honest options are usually:
+
+- preserve the old shape
+- translate the old shape into the new meaning
+- version the contract and migrate deliberately
+- deprecate with a visible removal plan
+
+The weak option is pretending the change is internal when it is not.
+
+That weak option creates surprise breakage and forces callers to discover the contract
+change by accident.
+
+## Tests should guard the promise
+
+Compatibility work needs evidence.
+
+Good evidence can include:
+
+- tests that import through the public surface
+- stored-shape tests that prove old data still loads
+- approval or golden tests that capture stable behavior
+- migration tests when versioned representations change
+
+The point is not just "more tests." The point is tests that correspond to the contract
+you claim to preserve.
+
+## Common mistakes
+
+- changing a public name because an internal rename felt cleaner
+- editing serialized meaning without a translation plan
+- treating compatibility as a persistence-only issue
+- assuming a passing unit suite proves public stability
+- failing to distinguish extension from silent behavioral breakage
+
+These mistakes usually come from not naming the supported promise before changing it.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| can you point to the supported surface being preserved? | yes |
+| do you know which changes are extensions and which are contract breaks? | yes |
+| is there a migration, translation, or deprecation story where needed? | yes |
+| do tests correspond to the actual compatibility promise? | yes |
+
+## Capstone connection
+
+Use the capstone to ask:
+
+- which import paths or data shapes would an external caller rely on?
+- what would break if you renamed or removed them today?
+- if you add a new feature, which old behavior must still load and behave the same way?
+
+That exercise is the bridge between this lesson and the final refactor page.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why compatibility starts with naming the supported surface
+- distinguish a safe extension from a contract break
+- identify one capstone surface that would require translation, migration, or deprecation discipline if changed
