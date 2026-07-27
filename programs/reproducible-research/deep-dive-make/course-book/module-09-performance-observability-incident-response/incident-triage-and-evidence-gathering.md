@@ -163,6 +163,78 @@ reruns:
 Choose counts appropriate to the failure rate and run cost. Record every attempt,
 including passes. "Failed once" has a different meaning from "failed 17 of 20 times."
 
+## Give the reproducer an acceptance contract
+
+A small reproducer is useful only when it distinguishes the promised defect from unrelated
+failure. This command is not yet an incident contract:
+
+```sh
+make -f repro.mk -j8 all
+```
+
+It may fail because an input is absent, a tool is unavailable, or a typo prevents parsing.
+None of those outcomes proves a scheduling defect.
+
+Before execution, write:
+
+| Contract field | Question |
+| --- | --- |
+| starting state | which inputs and outputs must exist before the run? |
+| pressure | which job count, repetition, or ordering condition exposes the defect? |
+| process result | is zero, nonzero, or either acceptable? |
+| semantic signature | which artifact state proves the promised mechanism occurred? |
+| wrong-failure rejection | which result must make the reproducer fail its own audit? |
+| preserved evidence | which logs, outputs, and workspace state support later review? |
+
+The process result and semantic signature are separate. Consider three concurrency cases:
+
+| Case | Process contract | Semantic contract |
+| --- | --- | --- |
+| two successful writers corrupt one logical record | exit `0` | both writers start before either completes |
+| two recipes claim one directory setup action | nonzero | one claimant publishes and one cannot start |
+| two outputs use one staging path | nonzero | one output survives after consuming the shared path |
+
+The first case is an incident precisely because the process succeeds while the artifact
+contract fails. The latter two need more than a nonzero status: the surviving filesystem
+state must identify the intended collision.
+
+Run the capstone matrix:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone incident-audit
+```
+
+Then inspect:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/incident/
+├── summary.tsv
+├── report.json
+├── runs/
+├── evidence/
+├── workspace/
+└── specimens/
+```
+
+The target returns `0` only when each deliberately broken specimen exhibits its declared
+fault signature. Its aggregate `PASS` means "fault reproduced as promised," not "specimen
+healthy."
+
+This is a reusable incident-testing pattern:
+
+```mermaid
+flowchart LR
+  hypothesis["named failure mechanism"] --> process["expected process result"]
+  hypothesis --> semantics["expected artifact state"]
+  process --> assert["case-specific assertions"]
+  semantics --> assert
+  assert -->|"match"| finding["fault reproduced"]
+  assert -->|"mismatch"| reject["reproducer rejected"]
+```
+
+Do not weaken the assertions just to make an intermittent reproducer green. Stabilize the
+pressure condition, narrow the claim, or record that the defect has not been reproduced.
+
 ## Make explanations compete
 
 Do not investigate only the first story someone proposed. For a parallel-only partial
