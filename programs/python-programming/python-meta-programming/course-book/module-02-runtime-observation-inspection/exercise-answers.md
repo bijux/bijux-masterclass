@@ -198,6 +198,90 @@ Good repair:
 That repair matches the module's main discipline: the tool should stay observational by
 default and cross into execution only on purpose.
 
+## Answer 7: Compare inheritance-aware and exact inspection
+
+Example answer:
+
+```python
+class Animal:
+    pass
+
+
+class Dog(Animal):
+    pass
+
+
+pet = Dog()
+```
+
+Strong evidence:
+
+- `isinstance(pet, Animal)` is `True`
+- `type(pet) is Animal` is `False`
+- `type(pet) is Dog` is `True`
+
+Good conclusion:
+
+Inheritance-aware checks answer capability or role questions. Exact-type checks answer
+identity questions. The right choice depends on what truth the review actually needs.
+
+## Answer 8: Inspect one fallback hook without tripping it first
+
+Example answer:
+
+```python
+import inspect
+
+
+class LazyBag:
+    def __getattr__(self, name):
+        print(f"building {name}")
+        return name.upper()
+
+
+obj = LazyBag()
+```
+
+Strong evidence:
+
+- `inspect.getattr_static(obj, "__getattr__")` exposes the fallback method without triggering it
+- `getattr(obj, "token")` prints `building token`
+- the dynamic route produces a value only by executing fallback behavior
+
+Good conclusion:
+
+Tooling should inspect the attachment story first and cross into fallback execution only
+when the user explicitly wants runtime behavior rather than structure.
+
+## Answer 9: Build a least-risk inspection workflow
+
+A strong answer might use this debugging question:
+
+- "Why does this object appear to have a `value` attribute?"
+
+Strong least-risk order:
+
+1. inspect `type(obj)` and the class MRO
+2. inspect `vars(obj)` or `obj.__dict__` if available
+3. inspect `inspect.getattr_static(obj, "value")`
+4. only then use `getattr(obj, "value")` if you actually want runtime semantics
+
+Good conclusion:
+
+The order matters because it keeps structure, storage, and behavior separate. Jumping
+straight to `getattr` would answer a different question and might execute code too early.
+
+## Answer 10: Produce an inspection decision packet
+
+The packet is strong when another learner can answer:
+
+- what runtime question is being asked
+- which observation tool answers it with the least unnecessary behavior
+- where the workflow intentionally crosses into dynamic execution
+
+If readers still cannot tell whether a step was discovery, storage inspection, or
+behavioral resolution, the packet is not explicit enough yet.
+
 ## What strong Module 02 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -206,6 +290,8 @@ Across the whole set, strong answers share the same habits:
 - they separate discovery, storage inspection, classification, and value resolution
 - they treat dynamic attribute access as execution-capable behavior
 - they use static lookup when tooling needs attachment truth more than runtime behavior
+- they separate inheritance-aware questions from exact-identity questions
+- they leave behind a least-risk workflow another learner can reuse without guessing
 
 If an answer still depends on "I just checked the attribute," revise it until you can say
 what kind of observation or execution actually happened.
