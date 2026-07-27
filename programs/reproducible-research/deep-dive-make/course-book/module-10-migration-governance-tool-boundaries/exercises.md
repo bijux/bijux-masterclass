@@ -1,314 +1,323 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is to make
-your review, migration, and governance judgment visible, not to produce generic build
-advice.
+Use this set after the five core lessons and the worked example. Treat it as one full
+stewardship session, not as ten disconnected prompts.
 
-## How to work through this set
+The module is not asking you to sound authoritative about build systems. It is asking you
+to review a real build, move one boundary safely, preserve proof, and leave behind rules
+another maintainer could apply.
 
-Treat the ten exercises as one full lab day on stewardship.
+## How to use the set
 
-Before each answer:
+Complete the exercises in order. Each one should feed the next.
 
-1. describe current behavior before proposing a redesign
-2. name the proof surface that must survive the change
-3. state who will own the boundary after the change and how that ownership will be checked
+By the end, you should have a single stewardship packet containing:
 
-If you skip the proof-preservation question, migration advice turns into cleanup rhetoric.
-This module is about changing boundaries without losing trust.
-
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 review the current build, sequence a safe migration, and define
-  enforceable governance
-- Exercises 4-6 classify antipatterns, tool boundaries, and ownership inventory
-- Exercises 7-9 preserve proof during change and compare Make with neighboring tools
-- Exercise 10 turns all of that into one complete stewardship portfolio
-
-For every migration proposal, include a proof bridge:
-
-| Boundary moved | Before evidence | After evidence | Rollback point | New owner |
-| --- | --- | --- | --- | --- |
-
-Do not accept "tests pass" unless the named tests protect the contract being moved.
-
-Keep one stewardship packet as you go. By the end of the day it should contain:
-
-- one evidence-grounded first-pass review
-- one narrow migration step with a retained proof route
-- one enforceable governance note
+- one first-pass review
 - one ownership inventory
-- one comparison with a neighboring tool
-- one bounded repair plus maintainer handoff
+- one proof bridge for a migration
+- one enforceable governance note
+- one tool-boundary argument
+- one bounded repair with a handoff note
 
-If those six artifacts are missing, you are probably giving opinions about the build
+If those six artifacts do not exist, you are probably writing opinions about the build
 instead of stewarding it.
 
-## Recommended working layout
+## One packet, not ten isolated answers
 
-If you want one lab tree that can support the whole day, use something like:
+Keep one running packet while you work. A simple structure is enough:
 
 ```text
-module10-lab/
-├── Makefile
-├── mk/
-├── ci/
-├── dist/
-├── notes/
-├── audits/
-└── artifacts/
+module10-packet/
+├── review.md
+├── ownership-table.md
+├── migration-plan.md
+├── governance-note.md
+├── boundary-decision.md
+└── evidence/
 ```
 
-Keep one review table while you work:
+Keep two live tables open as you go.
+
+### Review table
 
 | Surface | Current behavior | Evidence | Risk class | Suggested owner |
 | --- | --- | --- | --- | --- |
 
-Also keep one governance table:
+### Proof bridge table
 
-| Rule | Enforced by review, automation, or both | Who may change it |
-| --- | --- | --- |
+| Boundary moved | Before evidence | After evidence | Rollback point | New owner |
+| --- | --- | --- | --- | --- |
 
-That second table matters because governance text without an enforcement path is only
-aspirational.
+Those tables stop the exercise day from drifting into vague cleanup language.
+
+## The progression for the day
 
 ```mermaid
 flowchart LR
-  observe["observe current behavior"]
-  classify["classify the risk or boundary"]
-  preserve["preserve proof during change"]
-  govern["write enforceable rules"]
-  compare["compare tool ownership honestly"]
-  handoff["leave a maintainer-ready portfolio"]
+  review["review the inherited build"]
+  classify["classify risk and ownership drift"]
+  preserve["preserve proof for one change"]
+  govern["write rules that can be enforced"]
+  boundary["decide what Make should still own"]
+  handoff["leave a maintainer-ready packet"]
 
-  observe --> classify --> preserve --> govern --> compare --> handoff
+  review --> classify --> preserve --> govern --> boundary --> handoff
 ```
 
-Use that route on purpose. It keeps the day centered on stewardship and accountability
-instead of on unbounded refactoring.
+Do not skip ahead. The later exercises are weak if the earlier review work is thin.
 
 ## Exercise 1: Write a first-pass build review
 
-Choose one inherited Make-based repository. Write a short review that covers:
+Choose one inherited Make-based repository and write a short review.
+
+Your review must cover:
 
 - public target meanings
 - trusted outputs and their writers
-- hidden inputs or stateful behavior
-- one pressure finding from dry-run, trace, or serial/parallel comparison
+- hidden inputs, hidden state, or host assumptions
+- one pressure finding from dry-run, trace, or serial-versus-parallel comparison
 - the top three risk classes you found
 
 What to hand in:
 
 - one page or less
 - at least one concrete command you ran or would run
-- the three risk classes in clear language such as graph truth, contract drift, or
-  boundary risk
+- three named risk classes such as graph-truth risk, contract drift, or boundary risk
 - one sentence explaining why review comes before redesign
 
-Study note:
-The point is not to solve everything. The point is to make the current system legible
-enough that change can be prioritized honestly.
+Quality bar:
 
-## Exercise 2: Sequence a safe migration
+- describe what the build currently does before saying what it should do
+- classify the findings in durable language rather than saying only "messy"
 
-Pick one painful part of the build, such as release packaging, generated metadata, or
-test orchestration. Design a migration plan that changes that part without deleting the
-old proof surface too early.
+## Exercise 2: Inventory ownership instead of listing targets
+
+List every public target, its promised outputs or side effects, and the rule or external
+system that owns them.
+
+Include:
+
+- outputs with zero obvious writers
+- outputs with multiple writers
+- side effects that are trusted even though they are not file outputs
+
+What to hand in:
+
+- the ownership table
+- the commands used to find callers and writers
+- one unowned surface and one multi-writer surface
+- one sentence explaining why ownership inventory is stronger than a plain target list
+
+Quality bar:
+
+- target names alone are not enough
+- consumers rely on outputs and side effects, so your table should too
+
+## Exercise 3: Preserve proof before changing anything
+
+Design three characterization or comparison routes for the current build:
+
+- one for current package or output layout
+- one for no-op or convergence behavior
+- one for serial-versus-parallel agreement
+
+What to hand in:
+
+- the three checks
+- what each check is trying to prove
+- one observed defect that should be documented rather than preserved as contract
+- one sentence explaining how the checks support rollback
+
+Quality bar:
+
+- characterization is not the same as approval
+- keep proof that helps future comparison, not noise that nobody will reuse
+
+## Exercise 4: Choose the first safe migration move
+
+Pick one painful build surface, such as packaging, generated metadata, test orchestration,
+or publication. Choose the first change you would actually make.
 
 What to hand in:
 
 - the current contract in one sentence
-- the smallest boundary move you would make first
-- one proof surface you would preserve during the migration
-- one retirement condition that must be true before the old route disappears
+- the first boundary move
+- the proof route that must survive that move
+- the rollback point
+- the retirement condition for the old route
 
-Study note:
-The first migration step should be small enough that rollback is real rather than
-theoretical.
+Quality bar:
 
-## Exercise 3: Write a governance note that could actually be enforced
+- the first move must be small enough to review honestly
+- "replace the whole system" is not a first move
 
-Draft a short governance note for the repository. It should define:
+## Exercise 5: Write a governance note that another maintainer could enforce
+
+Draft a short governance note for the repository.
+
+It must define:
 
 - which targets are public
 - what review bar applies to public-target changes
 - one rule for new include files or macros
 - one rule protecting proof surfaces
+- who can approve exceptions
 
 What to hand in:
 
 - a note of six to ten lines
-- wording another maintainer could apply during review
-- one sentence explaining which kind of drift the note is meant to prevent
-- one sentence naming who should approve exceptions
+- one sentence naming the drift pattern it is meant to prevent
+- one sentence naming how it would be enforced in review or automation
 
-Study note:
-Governance becomes useful only when another maintainer can act on it consistently during
-real review.
+Quality bar:
 
-## Exercise 4: Diagnose one recurring antipattern
+- avoid "keep things simple" language
+- write rules another maintainer could really apply
 
-Pick one of these recurring smells:
+## Exercise 6: Diagnose one recurring antipattern
 
-- ritual target ordering instead of real edges
+Choose one of these recurring smells:
+
+- ritual ordering instead of real edges
 - multi-writer outputs
 - opaque orchestration through wrappers
 - meaningless stamps or manifests
 - a release target that does too much
-
-Explain how you would recognize it in a real repository and what the first honest recovery
-move would be.
+- truth-erasing optimization
 
 What to hand in:
 
 - the antipattern name
-- two signals that would confirm it
-- the smallest repair you would try first
-- one sentence on why that repair restores truth or ownership clarity
+- two signals that confirm it
+- the smallest honest repair
+- one sentence explaining how that repair restores truth or ownership clarity
 
-Study note:
-The first repair should improve understanding before it maximizes ambition.
+Quality bar:
 
-## Exercise 5: Make the tool-boundary argument
+- the first repair should make the system more legible before it makes it more ambitious
+
+## Exercise 7: Make the tool-boundary argument
 
 Choose one concern from a real build:
 
 - compilation
 - code generation
 - packaging
+- signing
 - deployment
-- release metadata
 - remote publication
 
-Argue whether Make should remain the owner, hand it off, or share it through a hybrid
-boundary.
+Argue whether Make should:
+
+- remain the owner
+- hand ownership off
+- share ownership through an explicit hybrid boundary
 
 What to hand in:
 
 - the concern you chose
 - a one-paragraph argument
-- the handoff artifact or interface if another tool becomes involved
-- one sentence on what evidence would prove the boundary is working
+- the handoff object or interface if another tool is involved
+- one proof route on each side of the boundary
 
-Study note:
-This is not a novelty contest. The right answer depends on fit, ownership, and proof.
+Quality bar:
 
-## Midday self-check
-
-Before you move into ownership inventory, characterization checks, and automated
-governance, make sure your packet can already answer these questions cleanly:
-
-- which risk classes are most important in the current build and why
-- which proof surface must survive the first migration step
-- which governance rule would actually prevent one observed drift pattern
-- which concern Make should keep and which one it should not own alone
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Inventory target and output ownership
-
-List every public target, its promised outputs or side effects, and the rule or external
-system that owns them. Identify outputs with zero or multiple writers.
-
-What to hand in:
-
-- the inventory table
-- the commands used to find callers and writers
-- one ownership gap and one multi-writer risk
-- one sentence explaining why ownership inventory is more useful than a plain target list
-
-Study note:
-Public target names matter, but trusted outputs and side effects are what consumers
-actually rely on.
-
-## Exercise 7: Write characterization checks
-
-Before changing an inherited build, create durable checks for current package layout,
-no-op convergence, and serial-versus-parallel agreement.
-
-What to hand in:
-
-- the three checks
-- their initial results
-- an explanation of which behavior is contractual and which observed defect should not be
-  preserved
-- one sentence explaining how these checks support rollback
-
-Study note:
-Characterization is not the same as approval. Some current behavior must be documented as
-defect rather than preserved as contract.
+- justify the answer from truth location and modeling fit
+- do not argue from novelty alone
 
 ## Exercise 8: Turn governance prose into verification
 
-Choose two governance rules, such as "CI calls only public targets" or "each trusted
-output has one writer," and design automated checks for them.
+Take two governance rules and design automated checks for them.
+
+Good examples:
+
+- CI may call only public targets
+- each trusted output has one writer
+- proof routes cannot be removed without replacement
 
 What to hand in:
 
-- the enforceable rule text
+- the rule text
 - the check command or test
-- one passing and one deliberately failing example
+- one passing example
+- one deliberately failing example
 - the review owner for changing the rule
 
-Study note:
-Automation enforces the rule; governance defines who may legitimately change it.
+Quality bar:
+
+- automation enforces the rule
+- governance defines who may legitimately change the rule
 
 ## Exercise 9: Compare Make with a neighboring tool
 
 Choose one real concern and compare Make with a workflow engine, package manager, CI
-service, or deployment system. Evaluate file-graph fit, remote state, retries,
-observability, and handoff artifacts.
+service, release tool, or deployment system.
+
+Evaluate:
+
+- file-graph fit
+- remote state
+- retries or scheduling
+- observability
+- handoff artifacts
 
 What to hand in:
 
 - a comparison table
 - the ownership decision
 - the exact interface between tools
-- independent verification on both sides of the boundary
+- one independent verification route for each side
 
-Study note:
-Hybrid boundaries are strongest when both sides can verify the handoff independently.
+Quality bar:
 
-## Exercise 10: Produce a stewardship portfolio
+- hybrid boundaries are strongest when both sides can verify the handoff independently
 
-Review one real Make-based repository from entrypoint to release boundary. Make one
-bounded repair or boundary change while preserving proof and documenting ownership.
+## Exercise 10: Produce a stewardship handoff packet
+
+Return to the same repository and turn the day into one maintainable packet.
+
+Your handoff must include:
+
+- current contract and risk review
+- ownership inventory
+- proof-preserving migration step
+- before-and-after evidence
+- governance note
+- boundary decision
+- remaining risks and next likely repair
 
 What to hand in:
 
-- current-contract and risk review
-- durable characterization checks
-- the bounded change and its commit rationale
-- before-and-after evidence
-- governance rules and tool-boundary decision
-- a maintainer handoff that states remaining risks honestly
+- the packet itself
+- one bounded repair or one detailed repair proposal
+- a maintainer note that says what still remains risky
 
-Study note:
-The advanced skill is not maximizing diff size. It is preserving trust while improving
-ownership.
+Quality bar:
 
-## Before you read the answers
+- the advanced skill here is not larger diffs
+- the advanced skill is preserving trust while improving ownership
 
-Do not open `exercise-answers.md` until you can already point to:
+## Mid-session self-check
 
-- one review finding grounded in evidence rather than taste
-- one migration step small enough to verify honestly
-- one governance rule you could enforce in review
-- one boundary decision argued from responsibility instead of novelty
-- one proof bridge that would survive rollback
+Before reading the answers, stop and confirm you can answer these plainly:
 
-If you do not yet have those five things, the answer page will sound stronger than it can
-teach.
+- which risk classes matter most in this build and why
+- which proof route must survive the first migration move
+- which governance rule would actually prevent one observed drift pattern
+- which concern Make should keep and which one it should stop owning
+- what handoff object and evidence define the tool boundary
 
-## Mastery standard for this exercise set
+If any answer is still vague, strengthen the packet before moving on.
 
-Across all ten answers, the module wants the same habits:
+## Mastery standard for the set
 
-- you review behavior before proposing rewrites
-- you preserve proof while changing boundaries
-- you write governance in enforceable language
-- you name antipatterns in terms of truth loss or ownership drift
-- you justify tool boundaries by modeling fit, not by novelty
+Across all ten exercises, the module wants the same habits:
 
-If an answer says only "this build should be cleaned up," keep going.
+- review behavior before prescribing redesign
+- preserve proof while changing boundaries
+- write governance in enforceable language
+- classify antipatterns as truth loss or ownership drift
+- justify tool boundaries by modeling fit rather than novelty
+
+If your answers say only "the build should be cleaned up," keep working.
