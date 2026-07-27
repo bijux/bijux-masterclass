@@ -98,6 +98,89 @@ the population change invalidates the conclusion.
 
 That judgment belongs to you and the review contract.
 
+## Build the complete claim from evidence
+
+Run the capstone audit:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone metric-contract-audit
+```
+
+Open:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/metric-contracts/
+└── workspace/
+    └── comparable-candidate/
+        └── evidence/
+            ├── baseline-metrics.json
+            ├── candidate-metrics.json
+            ├── dvc-metrics-diff.json
+            └── comparison.json
+```
+
+The DVC receipt reports:
+
+```text
+0.7368 -> 0.7826
+delta = 0.0458
+```
+
+That arithmetic becomes a comparison only after you join it to the contract fields:
+
+| Claim part | Evidence in both records | Why it matters |
+| --- | --- | --- |
+| measurement | `binary_f1_positive_class` | establishes what was calculated |
+| scale | `fraction` | makes subtraction meaningful |
+| aggregation | `global` | keeps the reduction rule stable |
+| population | same SHA-256 identity and `120` rows | establishes who was measured |
+| control | decision threshold `0.65` | fixes the classification policy |
+| schema | version `1` | establishes the document contract |
+
+Now the strongest supported sentence is:
+
+> On the same identified 120-row evaluation population, under schema version `1` and the
+> same `0.65` decision threshold, global positive-class binary F1 increased from `0.7368`
+> to `0.7826` on a fraction scale.
+
+Notice what the sentence does **not** claim:
+
+- that the candidate should be released
+- that the population represents future production traffic
+- that fairness, calibration, latency, or cost stayed acceptable
+- that F1 is sufficient for the real decision
+
+Those are separate claims with separate evidence.
+
+## See why the number cannot repair the claim
+
+Compare the accepted candidate with these generated cases:
+
+| Case | DVC reports a delta? | Same metric claim? | Decision |
+| --- | --- | --- | --- |
+| `comparable-candidate` | yes, `0.0458` | yes | accept the bounded comparison |
+| `population-drift` | yes, `0.0458` | no, population identity changed | reject |
+| `control-drift` | yes, `0.0458` | no, threshold changed | reject |
+| `unit-drift` | yes, `77.5241` | no, fraction became percent | reject |
+
+The first three candidate values are numerically identical. Their review decisions differ
+because metric meaning is not stored in the scalar alone.
+
+The unit case is more revealing. A familiar key and a very large positive delta can still
+be useless. Subtracting `0.7368` from `78.26` is valid arithmetic and invalid
+interpretation because the values use different scales.
+
+```mermaid
+flowchart LR
+  scalar["numeric delta"] --> mechanics["DVC reports movement"]
+  mechanics --> join["join semantic evidence"]
+  join --> same["same claim: compare"]
+  join --> changed["changed or missing claim: reject or abstain"]
+```
+
+The semantic join is not ceremony around the metric. It is the operation that determines
+whether the arithmetic answers the review question.
+
 ## Metric names are not enough
 
 A metric name can be useful, but it is not a full definition.
@@ -166,6 +249,10 @@ You understand this core when you can take one metric and explain:
 - which parameters or thresholds affect it
 - what conclusion it can and cannot support
 - what evidence a reviewer should inspect beside the metric file
+
+Use `workspace/comparable-candidate/evidence/` to write the complete bounded claim without
+copying the sentence above. Then switch only the evidence directory to `population-drift`
+and explain exactly which clause becomes unsupported.
 
 The goal is not to distrust every number. It is to make each important number earn the
 interpretation attached to it.
