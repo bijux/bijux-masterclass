@@ -48,6 +48,12 @@ That sentence is the whole page in miniature.
 If the surrounding review language is larger than those five words, the contract claim is
 probably already drifting.
 
+For self-study, turn that sentence into a contract-sizing test:
+
+- is the claim nominal, structural, shallow runtime, or truly behavioral?
+- what behavior still lives outside this interface surface?
+- what test or documentation evidence must still carry that behavior?
+
 ## Evidence route for interface-contract reviews
 
 Use this route before accepting an interface surface:
@@ -193,6 +199,11 @@ Strong uses usually look like:
 - maybe one callable check
 - `NotImplemented` for everything else
 
+Before you leave this page, write one sentence beginning:
+
+- "this interface surface proves..."
+- "this interface surface still cannot prove..."
+
 Weak uses try to smuggle business meaning into a structural shortcut.
 
 ## `__subclasshook__` refusal rules
@@ -231,6 +242,17 @@ mechanism actually proves.
 | `@runtime_checkable` protocol | shallow runtime shape filtering is available | `isinstance` now proves the object is a good resource or adapter |
 | `__subclasshook__` | a tiny structural concession can be encoded in one ABC | business semantics can be inferred from a few attributes |
 
+## Interface-claim worksheet
+
+Use this worksheet before you approve any runtime interface story:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what kind of contract is this? | nominal, structural, shallow runtime, or behavioral |
+| what does the surface prove directly? | missing method rejection, static compatibility, or tiny attribute presence check |
+| what does it not prove? | cleanup, performance, resource safety, or domain semantics |
+| what other evidence is still required? | tests, docs, invariants, or incident checks |
+
 ## When to pick each tool
 
 Use an ABC when:
@@ -259,6 +281,15 @@ None of them replaces:
 - performance evidence
 - documentation of side effects
 - review judgment about ownership and abstraction cost
+
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "the ABC proves the implementation is correct" | method presence is not semantic correctness |
+| "the protocol tells us the object is safe to use" | structure is smaller than resource or behavioral safety |
+| "runtime_checkable gives us a real runtime contract" | the runtime check is intentionally shallow |
+| "the subclass hook is enough for our domain rule" | domain rules usually exceed tiny structural shortcuts |
 
 That matters in Module 10 because interface syntax can make a design look more disciplined
 than it really is.
