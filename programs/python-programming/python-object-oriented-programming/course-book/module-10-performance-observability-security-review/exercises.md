@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,228 +24,219 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to turn production hardening into a final design audit rather than a
-disconnected checklist.
+Use these exercises as one full capstone hardening lab. The goal is not to collect
+performance, security, and observability slogans. The goal is to prove that a learner
+studying alone can take a real workflow, measure the right pressure, harden the right
+boundary, and leave behind an operational packet another maintainer can actually use.
 
-The day is not about collecting optimization or security slogans. It is about deciding
-what to measure, what to log, what must stay secret, what trust boundary needs stronger
-defense, and how to harden the system without corrupting the ownership model built across
-the course.
+## Running lab scenario
 
-## How to work through this set
+Use the course capstone path built across earlier modules:
 
-Treat the ten exercises as one full lab day on operational review and hardening.
+- `WorkshopEnrollment` decides seat ownership
+- the aggregate is persisted through a repository boundary
+- projections and notifications run downstream
+- `CertificateIssuanceService` may later issue completion certificates
 
-Before each answer:
+Focus one audit path:
 
-1. name the operational pressure under review
-2. name the semantic contract that must not change
-3. state which boundary should absorb the hardening move
+1. attendee requests a seat
+2. aggregate confirms or waitlists
+3. repository saves with optimistic concurrency
+4. event updates projection and notification
+5. later, certificate issuance reads the confirmed state and writes an artifact
 
-Do the exercises in order. The day is one progression:
+This path is good for the final module because it includes:
 
-- Exercises 1-3 review measurement, profiling, and performance changes
-- Exercises 4-6 design observability, trust-boundary, and secure-default discipline
-- Exercises 7-8 assemble runbooks and failure drills
-- Exercises 9-10 perform a final full-system audit and hardening recommendation
+- one semantic contract
+- one write path
+- one read model
+- one external boundary
+- one later workflow under operational pressure
 
-Keep one operational-review packet as you go. By the end of the day it should contain:
+## What to keep open while you work
+
+Build one hardening packet as you go. By the end it should contain:
 
 - one measurement plan
-- one semantics-safe optimization note
-- one observability review
-- one trust-boundary hardening note
-- one runbook or drill recommendation
-- one full-system audit summary
+- one semantics-safe optimization review
+- one observability table
+- one trust-boundary note
+- one runbook or drill entry
+- one final operational audit summary
 
-If those six artifacts are missing, you are probably still discussing operations in the
-abstract instead of reviewing the actual design.
+Useful tables:
 
-## Recommended working layout
+| Pressure or risk | Semantic contract that must hold | Boundary that should absorb the change | Evidence needed |
+| --- | --- | --- | --- |
 
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module10-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
-
-Keep one operational table while you work:
-
-| Pressure or risk | Semantic contract that must hold | Boundary that should absorb the change | Evidence or signal needed | Failure if handled carelessly |
-| --- | --- | --- | --- | --- |
-
-Keep one security table:
-
-| Trust boundary | Sensitive asset or assumption | Protective rule | Review artifact or runbook | What must never be exposed |
-| --- | --- | --- | --- | --- |
-
-```mermaid
-flowchart LR
-  pressure["name the operational pressure"]
-  preserve["protect the semantic contract"]
-  boundary["place the hardening at the right boundary"]
-  signal["choose proof and observability"]
-  drill["prepare recovery or runbook"]
-  review["complete the final audit"]
-
-  pressure --> preserve --> boundary --> signal --> drill --> review
-```
-
-Use that route on purpose. It keeps the day centered on semantics-preserving hardening
-instead of on isolated operational tasks.
+| Trust boundary | Sensitive or untrusted asset | Protective rule | What must never leak or execute |
+| --- | --- | --- | --- |
 
 ## Exercise 1: Measure one suspected hot path
 
-Take one performance concern and explain:
+Choose one performance concern from the scenario, such as:
 
-- what you would measure before changing design
-- what metric or trace would make the pressure real
-- what object or workflow is actually suspected
-- what mistaken optimization story you would refuse without evidence
+- large waitlist promotion path
+- projection rebuild on many events
+- certificate rendering for bulk attendees
 
-Study note:
-Performance work starts with observed cost, not with intuition.
+Explain:
+
+- what metric, profile, or benchmark you would gather first
+- what intuition you refuse to trust without evidence
+- what workload shape the measurement must match
+
+If the measurement story is weak, the optimization story is not ready.
 
 ## Exercise 2: Review one optimization for semantic drift
 
-Choose one possible optimization and explain:
+Pick one possible optimization, such as:
 
-- what semantic contract must remain unchanged
-- what freshness, ordering, or authority rule could drift
-- what test or benchmark should catch the drift first
-- why the optimization belongs at that boundary instead of deeper in the model
+- caching confirmed-seat reads
+- batching projection updates
+- lazy loading certificate template data
 
-Study note:
-The hardest optimization bugs are the ones that stay fast while becoming wrong.
+For that change, explain:
+
+- what semantic contract must remain true
+- what could drift silently
+- what test or review artifact should catch drift first
+- what boundary should absorb the optimization
+
+Faster but semantically wrong is still wrong.
 
 ## Exercise 3: Compare caching, batching, and lazy work
 
-Take one expensive path and explain:
+Take one expensive path and compare three options:
 
-- whether caching, batching, or lazy evaluation is the cleaner move
-- what correctness or freshness rule each option risks
-- what ownership boundary each option touches
-- what operational evidence would justify the choice
+- caching
+- batching
+- lazy evaluation
 
-Study note:
-These tools trade different semantic costs, even when they all reduce load.
+For each, state:
+
+- what it buys
+- what freshness or ordering rule it risks
+- what ownership boundary it pressures
+
+End with one recommendation and one rejected option.
 
 ## Exercise 4: Design one observability addition
 
-Choose one workflow and explain:
+Choose one workflow segment and add a concrete signal plan.
 
-- what log, metric, or trace would clarify it
-- what behavior the signal should reveal
-- what sensitive or misleading detail must stay out
-- what operator decision the signal should support
+Include:
 
-Study note:
-Good signals make behavior more understandable; they do not merely add volume.
+- one metric or trace
+- one structured log or event
+- one identifier safe to include
+- one detail that must stay out because it is noisy or sensitive
+
+Then name the operator question this signal helps answer.
 
 ## Exercise 5: Harden one input or default
 
-Take one input path or configuration default and explain:
+Take one boundary such as:
 
-- what trust boundary it crosses
-- what validation or default rule should harden it
-- what unsafe convenience should be rejected
-- what proof route should fail first if the boundary weakens
+- enrollment command input
+- payment callback payload
+- certificate filename or storage key
+- administrative reissue command
 
-Study note:
-Secure defaults are part of API design, not a later bolt-on.
+Explain:
+
+- what trust boundary is crossed
+- what safe default or validation rule belongs there
+- what convenience shortcut should be rejected
+- what proof should fail first if the boundary regresses
 
 ## Exercise 6: Review one serialization or secret boundary
 
-Choose one payload or secret-bearing path and explain:
+Pick one path where data leaves the process or lands in logs.
 
-- what must be treated as untrusted
-- what may be logged, persisted, or forwarded
-- what redaction, encoding, or handling rule should exist
-- what damage appears if debugging convenience overrides the rule
+Examples:
 
-Study note:
-Serialization and secret handling are trust decisions before they are transport details.
+- event payload
+- projection debug view
+- certificate storage metadata
+- notification logs
 
-## Midday self-check
+Explain:
 
-Before moving into runbooks and final audit work, make sure your packet already answers
-these questions clearly:
+- what data is sensitive
+- what data is merely untrusted
+- what redaction or encoding rule should exist
+- what damage appears if debugging convenience wins
 
-- what one hot path needs measured first
-- what one optimization could change semantically if handled badly
-- what one signal would clarify behavior without leaking too much
-- what one trust boundary needs stronger defaults or handling rules
+## Exercise 7: Write one runbook entry
 
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the packet more explicit before continuing.
+Choose one likely failure mode:
 
-## Exercise 7: Write one runbook or failure drill entry
+- projection lag grows
+- optimistic concurrency conflicts spike
+- certificate generation fails after repository success
+- storage upload latency spikes
 
-Take one anticipated failure mode and explain:
+Write a short runbook entry with:
 
-- what operators need to observe first
-- what immediate containment or diagnosis step matters
-- what command, artifact, or review route they should follow
-- what design assumption the runbook makes explicit
-
-Study note:
-Runbooks turn design knowledge into survivable operational behavior.
+- first signal to inspect
+- first safe containment or diagnosis step
+- one command, artifact, or dashboard to consult
+- one design assumption the runbook makes visible
 
 ## Exercise 8: Rehearse one failure drill
 
-Choose one failure scenario and explain:
+Design one drill for a known risk, such as:
 
-- what drill would rehearse it
-- what boundary should fail loudly first
-- what signal proves the drill is working
-- what weakness the drill would expose in the current design
+- duplicate callback delivery
+- projection consumer outage
+- template file removal on a live system
 
-Study note:
-Failure drills are useful because they reveal what your calm design language forgot.
+State:
 
-## Exercise 9: Perform one full-system operational audit
+- what you would simulate
+- which boundary should fail loudly first
+- what evidence proves the drill worked
+- what weakness you expect the drill to expose
 
-Take one capstone path and write a short review that names:
+## Exercise 9: Perform one full operational audit
+
+Write a short review of the capstone path that names:
 
 - the semantic contract
-- the performance pressure
-- the observability signals
-- the trust boundary
+- the main performance pressure
+- the core observability signal
+- the most important trust boundary
 - the recovery artifact
-- one place the system is still underprepared
+- one remaining operational weakness
 
-Study note:
-This review should sound like a production design audit, not like unrelated bullet points.
+This should read like a production design audit, not a list of disconnected concerns.
 
-## Exercise 10: Produce a final hardening packet
+## Exercise 10: Produce the final hardening packet
 
-Assemble:
+Finish the lab by assembling:
 
-- one operational table
-- one security table
-- one observability review paragraph
-- one runbook or drill recommendation
-- one full-system audit note
+- one measurement table
+- one trust-boundary table
+- one observability note
+- one runbook or drill entry
+- one final audit summary
 
-The packet is strong when another maintainer can answer:
+The packet is done only when another maintainer can answer:
 
-- what should be measured before tuning
-- which hardening move preserves semantics
-- what signals operators actually need
-- what trust boundary has the highest risk
-- what artifact should guide recovery when the system misbehaves
+- what must be measured before tuning
+- what hardening move preserves semantics
+- what signals operators need first
+- what trust boundary carries the highest risk
 
-## Done means more than finishing the page
+## Done means the system can be operated honestly
 
-You are done with the exercise day when your packet can survive three kinds of review:
+You are done with the exercise day when your packet can survive these review questions:
 
-- a performance review asking whether the evidence justifies the change
-- a security review asking whether trust boundaries and secrets are actually protected
-- an operational review asking whether the system can be observed and recovered without
-  losing the design model
+- "What evidence justifies this optimization?"
+- "What must never leak across this boundary?"
+- "How would another maintainer diagnose the first bad failure tonight?"
 
-If the packet cannot survive those reviews, keep tightening the hardening language.
+If those answers are still fuzzy, keep tightening the packet before you open the answer
+page.
