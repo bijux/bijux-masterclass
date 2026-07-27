@@ -647,7 +647,7 @@ selftest-report:
 verify-report: selftest-report
 >     @echo "PASS: verify-report completed via $(SELFTEST_REPORT_DIR_ABS)"
 
-proof: walkthrough selftest-report contract-audit incident-audit incremental-fault-audit semantic-fault-audit environment-contract-audit profile-audit
+proof: walkthrough selftest-report contract-audit incident-audit incremental-fault-audit semantic-fault-audit environment-contract-audit architecture-contract-audit profile-audit
 >     @printf '%s\n' \
 >       'PASS: wrote learner-facing proof bundles:' \
 >       "  walkthrough: $(WALKTHROUGH_DIR)" \
@@ -657,6 +657,7 @@ proof: walkthrough selftest-report contract-audit incident-audit incremental-fau
 >       "  incremental fault audit: $(INCREMENTAL_FAULT_AUDIT_DIR)" \
 >       "  semantic fault audit: $(SEMANTIC_FAULT_AUDIT_DIR)" \
 >       "  environment contract audit: $(ENVIRONMENT_CONTRACT_AUDIT_DIR)" \
+>       "  architecture contract audit: $(ARCHITECTURE_CONTRACT_AUDIT_DIR)" \
 >       "  profile audit: $(PROFILE_AUDIT_DIR)"
 
 # ---- quarantined rule-generation demo (optional) ----
@@ -755,7 +756,7 @@ trace-report:
 >       --output "$(TRACE_EVIDENCE_DIR)/manifest.json"
 
 # ---- hardened build verification ----
-hardened: selftest selftest-harness-tests incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit environment-contract-selftest discovery-audit attest test release-check
+hardened: selftest selftest-harness-tests incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit environment-contract-selftest architecture-contract-audit architecture-contract-selftest discovery-audit attest test release-check
 >     @$(MAKE) -q all || { echo "FAIL: non-convergent" >&2; exit 1; }
 >     @echo "PASS: hardened invariants"
 
