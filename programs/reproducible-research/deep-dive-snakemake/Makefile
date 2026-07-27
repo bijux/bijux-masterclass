@@ -74,6 +74,12 @@ capstone-scheduler-policy-audit: ## Record and classify scheduler resource trans
 capstone-scheduler-policy-selftest: ## Reject unsafe scheduler mapping evidence
 	$(MAKE) -C capstone scheduler-policy-selftest
 
+capstone-file-contract-audit: ## Classify convergence, hidden inputs, and publication safety
+	$(MAKE) -C capstone file-contract-audit
+
+capstone-file-contract-selftest: ## Reject dishonest file contract evidence
+	$(MAKE) -C capstone file-contract-selftest
+
 check: capstone-check ## Run capstone fast checks
 
 test: check ## Run the course's default verification target

@@ -138,6 +138,14 @@ capstone-scheduler-policy-audit: ## Record selected program scheduler policy evi
 capstone-scheduler-policy-selftest: ## Reject unsafe selected program scheduler mappings
 	@$(RUN_PROGRAM) capstone-scheduler-policy-selftest
 
+.PHONY: capstone-file-contract-audit
+capstone-file-contract-audit: ## Classify selected program file contract evidence
+	@$(RUN_PROGRAM) capstone-file-contract-audit
+
+.PHONY: capstone-file-contract-selftest
+capstone-file-contract-selftest: ## Reject dishonest selected program file contract evidence
+	@$(RUN_PROGRAM) capstone-file-contract-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit

@@ -64,6 +64,7 @@ flowchart TD
 | repository shape without execution | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `capstone-tour` |
 | executed workflow behavior | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `proof` |
 | publish-boundary trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `capstone-confirm` |
+| file-contract freshness and publication safety | `capstone-file-contract-audit` | `capstone-file-contract-selftest` |
 | execution-policy invariance | `capstone-context-invariance-audit` | `capstone-context-invariance-selftest` |
 | scheduler-policy translation | `capstone-scheduler-policy-audit` | `capstone-scheduler-policy-selftest` |
 | performance-claim integrity | `capstone-performance-diagnostics-audit` | `capstone-performance-diagnostics-selftest` |
@@ -84,6 +85,7 @@ flowchart TD
 | I need to see whether discovery is explicit. | `capstone-tour` | `capstone-confirm` adds stewardship weight before the discovery question is settled |
 | I need to review what downstream users may trust. | `capstone-verify-report` | a broader proof pass is worse than a publish-specific route for contract questions |
 | I need a maintainer-grade review route. | `proof` | `capstone-walkthrough` is too light once the question is explicitly stewardship-level |
+| I need to prove a policy change rebuilds the right target and a failed replacement preserves the prior final. | `capstone-file-contract-audit` | rule syntax alone cannot expose a missed trigger or show the post-failure bytes |
 | I need to prove local and CI retain one workflow meaning. | `capstone-context-invariance-audit` | a profile inventory alone cannot reject semantic drift |
 | I need to prove scheduler arguments preserve rule resources. | `capstone-scheduler-policy-audit` | a command example cannot expose missing resources, under-provisioning, or semantic leaks |
 | I need to prove a speedup did not remove validation or hide repeated work. | `capstone-performance-diagnostics-audit` | one timing comparison cannot distinguish acceptance, rejection, and regression |
