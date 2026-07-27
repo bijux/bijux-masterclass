@@ -50,6 +50,10 @@ Keep two questions active while reading:
 1. what exact mutability surface does this decorator own?
 2. what stronger immutability claim must it refuse?
 
+Keep a third question beside them:
+
+3. what first requirement would make this decorator too weak to stay the honest owner?
+
 ## The incident
 
 Assume a team wants a small `@frozen` decorator for configuration-style classes.
@@ -67,6 +71,10 @@ universal immutability.
 That sentence is the real incident. The syntax is easy. The hard part is keeping the
 class-level claim narrow enough that readers do not confuse "blocks rebinding" with
 "makes the object universally immutable."
+
+That is why this page remains useful even if you never ship a decorator like this. It
+teaches how to review seductive class claims without letting convenience language outrun
+the actual boundary.
 
 ## The first design rule: define frozen at the surface
 
@@ -135,6 +143,16 @@ Use this state-transition table when reviewing the example:
 | after `_frozen_ready` becomes true | normal rebinding and deletion are rejected |
 | inside nested mutable objects already stored on the instance | mutation may still occur unless another owner blocks it |
 
+## A proof route for the boundary flip
+
+Use this route when you test or explain the implementation:
+
+1. show one assignment during initialization that succeeds
+2. show one reassignment after initialization that fails
+3. show one deletion after initialization that fails
+4. show one nested mutable object that still changes successfully
+5. explain why step 4 is part of the intended boundary rather than a bug
+
 ## Step 3: keep the interception rules narrow
 
 The `__setattr__` override should reject only the post-initialization mutation boundary.
@@ -199,6 +217,10 @@ Use the code block as evidence, not as marketing:
 | it prevents every low-level escape hatch | no | the example is not trying to secure the entire object model |
 | it requires a metaclass | no | the rule is installed after class creation and does not depend on namespace control |
 
+Read that table as a review contract, not as decoration. If a future version of the
+decorator wants to promise more, both the implementation and the proof burden have to
+grow.
+
 ## Why this version shows the right boundary
 
 This decorator is useful because it keeps every important choice visible:
@@ -210,6 +232,17 @@ This decorator is useful because it keeps every important choice visible:
 
 That is the kind of post-construction customization Module 06 is aiming for.
 
+## A review card for adapting the example
+
+If you change this decorator, answer these before you trust the new version:
+
+| Adaptation question | Why it matters |
+| --- | --- |
+| does the meaning of "frozen" stay surface-level or expand? | the review claim changes immediately if the meaning widens |
+| is the initialization window still explicit? | hidden state transitions weaken reviewability |
+| do subclass overrides preserve or bypass the boundary? | inheritance is the first place the policy often drifts |
+| does any new helper now own deeper mutability or validation policy? | the decorator may no longer be the only meaningful owner |
+
 ## Failure surfaces a reviewer should inspect
 
 Even this bounded design has pressure points:
@@ -220,6 +253,7 @@ Even this bounded design has pressure points:
 | nested mutable objects | readers may overclaim deep immutability if this stays implicit |
 | inheritance and subclass overrides | later classes may weaken or bypass the surface rule |
 | low-level attribute bypasses | the pattern is educational surface control, not a security mechanism |
+| inflated naming in docs or comments | truthful code can still become dishonest through language |
 
 ## Where the boundary shows up immediately
 
@@ -246,6 +280,17 @@ That is not a bug in the example. That is the exact boundary.
 This example therefore teaches a precise language habit: say "surface immutability" when
 you mean blocked rebinding, and reserve broader language for broader owners.
 
+## Subclass pressure to keep visible
+
+Subclassing is the first place this design often gets weakened or overclaimed:
+
+- a subclass may add helper methods that mutate nested state indirectly
+- a subclass may override `__setattr__` or `__delattr__` and erase the boundary
+- a subclass may change initialization order and make `_frozen_ready` harder to reason about
+
+That does not make the example bad. It means the example is honest about staying a minimal
+class-level tool rather than pretending to be a full immutability framework.
+
 ## Why this does not need a metaclass
 
 Nothing here depends on class-creation-time namespace control.
@@ -268,6 +313,10 @@ If you adapt this example, leave behind a packet another reviewer can inspect qu
 - one example of mutation that is still allowed
 - one sentence explaining why a metaclass is unnecessary here
 - one sentence naming the first condition that would justify a stronger owner
+
+Add one more packet note:
+
+- one concrete adaptation you would reject because it widens the claim faster than the evidence
 
 ## Questions to ask during review
 
