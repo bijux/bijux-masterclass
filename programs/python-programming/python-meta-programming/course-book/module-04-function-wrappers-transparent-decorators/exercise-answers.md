@@ -199,6 +199,75 @@ Good conclusion:
 Once a decorator starts caching or retrying, it has moved beyond a thin wrapper and should
 be reviewed as a small policy system rather than as harmless sugar.
 
+## Answer 7: Compare two wrapper compositions honestly
+
+Example answer:
+
+Suppose one function is wrapped in these two orders:
+
+- `timed = timer(retry(work))`
+- `retried = retry(timer(work))`
+
+Strong evidence:
+
+- the first order times the whole retrying policy
+- the second order times each individual attempt
+- the logs, exception flow, and measured numbers can differ even when the same two decorators are present
+
+Good conclusion:
+
+Decorator order is a behavior decision. The stack is part of the program design, not
+just a surface-level formatting choice.
+
+## Answer 8: Add one explicit operational control
+
+Example answer:
+
+Suppose a cache decorator stores results in `wrapper._cache` and exposes:
+
+- `wrapper.cache_clear()`
+- `wrapper.cache_snapshot()`
+
+Strong assessment:
+
+- the wrapper owns cross-call state
+- explicit controls let operators and reviewers inspect or reset that state intentionally
+- a hidden cache is weaker because it changes behavior without a clear stewardship surface
+
+Good conclusion:
+
+Once a decorator owns state, it should also expose a deliberate control or observation
+surface so maintenance does not depend on private knowledge.
+
+## Answer 9: Separate thin instrumentation from policy ownership
+
+A strong answer might review a timing decorator and a retry decorator side by side.
+
+Thin instrumentation evidence:
+
+- the timing wrapper adds reporting but preserves results and exception flow
+- it does not own state across calls
+
+Policy-ownership evidence:
+
+- the retry wrapper decides whether to repeat calls after failure
+- it may change latency, logs, failure surfaces, and external side effects
+
+Good conclusion:
+
+The rewrite rule is simple: if the decorator decides behavior across attempts or across
+calls, teach and document it as policy. If it only observes one call without reshaping
+control flow, it is much closer to a thin wrapper.
+
+## Answer 10: Produce a wrapper-governance packet
+
+The packet is strong when another learner can answer:
+
+- what rebinding happened at definition time
+- what changed at call time
+- whether metadata preservation supports the transparency claim
+- which operational controls make stateful wrapper behavior reviewable
+
 ## What strong Module 04 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -207,6 +276,8 @@ Across the whole set, strong answers share the same habits:
 - they distinguish thin wrappers from stateful policy
 - they preserve callable identity when transparency is claimed
 - they name limits instead of hiding them behind decorator syntax
+- they treat decorator order as an explicit design choice
+- they leave behind a packet another learner can review without guessing
 
 If an answer still sounds like "decorators just add behavior," revise it until you can say
 what changed, when it changed, and what still remains visible to tools and reviewers.
