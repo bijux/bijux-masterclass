@@ -79,6 +79,7 @@ are often better for learning and review.
 | one executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
 | publish-boundary verification | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
 | execution-policy invariance | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-context-invariance-audit` | comparing profile YAML without plans or artifacts |
+| performance-claim integrity | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-performance-diagnostics-audit` | comparing one timing pair without semantic gates |
 | strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
 
 ## One honest command decision
@@ -101,6 +102,7 @@ job you just named.
 | You want one executed workflow story. | `capstone-tour` | it gives real evidence without jumping to the strongest route |
 | You care about downstream trust. | `capstone-verify-report` | publish review is narrower than whole-repository confirmation |
 | You suspect local and CI are diverging semantically. | `capstone-context-invariance-audit` | the paired specimen proves both preservation and rejection |
+| You need to distinguish honest tuning from lost validation or repeated work. | `capstone-performance-diagnostics-audit` | four isolated runs produce reference, acceptance, rejection, and regression evidence |
 | You need the capstone's real profile files packaged together. | `capstone-profile-audit` | profile inventory is narrower than semantic equivalence proof |
 
 ## Repository-root commands
@@ -124,6 +126,8 @@ surface.
 - `make capstone-profile-audit`
 - `make capstone-context-invariance-audit`
 - `make capstone-context-invariance-selftest`
+- `make capstone-performance-diagnostics-audit`
+- `make capstone-performance-diagnostics-selftest`
 - `make capstone-confirm`
 
 ## Capstone-directory commands
@@ -137,6 +141,8 @@ Use `capstone/` when you want the raw reference workflow.
 - `make profile-audit`
 - `make context-invariance-audit`
 - `make context-invariance-selftest`
+- `make performance-diagnostics-audit`
+- `make performance-diagnostics-selftest`
 - `make confirm`
 
 ## Good stopping point

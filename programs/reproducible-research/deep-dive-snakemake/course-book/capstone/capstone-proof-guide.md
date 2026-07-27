@@ -65,6 +65,7 @@ flowchart TD
 | executed workflow behavior | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `proof` |
 | publish-boundary trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `capstone-confirm` |
 | execution-policy invariance | `capstone-context-invariance-audit` | `capstone-context-invariance-selftest` |
+| performance-claim integrity | `capstone-performance-diagnostics-audit` | `capstone-performance-diagnostics-selftest` |
 | real profile inventory | [Capstone Architecture Guide](capstone-architecture-guide.md) or `capstone-profile-audit` | `capstone-context-invariance-audit` |
 | steward-level confidence | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `capstone-confirm` |
 
@@ -83,6 +84,7 @@ flowchart TD
 | I need to review what downstream users may trust. | `capstone-verify-report` | a broader proof pass is worse than a publish-specific route for contract questions |
 | I need a maintainer-grade review route. | `proof` | `capstone-walkthrough` is too light once the question is explicitly stewardship-level |
 | I need to prove local and CI retain one workflow meaning. | `capstone-context-invariance-audit` | a profile inventory alone cannot reject semantic drift |
+| I need to prove a speedup did not remove validation or hide repeated work. | `capstone-performance-diagnostics-audit` | one timing comparison cannot distinguish acceptance, rejection, and regression |
 
 ## One honest proof decision
 

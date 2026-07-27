@@ -67,7 +67,7 @@ flowchart TD
 | 2 | how does the repository behave through one executed story | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | one real run with saved evidence |
 | 3 | does the workflow still execute and defend ordinary repository health | `make PROGRAM=reproducible-research/deep-dive-snakemake test` | normal health questions rather than publish or stewardship review |
 | 4 | do I need saved publish-contract evidence I can inspect later | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | downstream trust and durable review bundles |
-| 5 | do I need to prove local, CI, and scheduler policy preserves meaning | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-context-invariance-audit` | context drift and policy-boundary questions |
+| 5 | do I need focused proof of context or performance claim integrity | `capstone-context-invariance-audit` or `capstone-performance-diagnostics-audit` from the program Makefile | semantic context drift or dishonest tuning questions |
 | 6 | do I need the sanctioned maintainer-grade review route | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | repeatable stewardship review |
 | 7 | do I need the strongest clean-room confirmation pass | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | major-change confirmation or strongest final check |
 
@@ -79,7 +79,7 @@ flowchart TD
 | one executed story of the workflow | Level 2 | one tour usually makes the system concrete without widening into stewardship |
 | normal repository health | Level 3 | ordinary health questions deserve ordinary health routes |
 | downstream trust | Level 4 | publish evidence is stronger than raw terminal scrollback |
-| policy drift across environments | Level 5 | context comparison needs profile-aware evidence |
+| policy drift or performance-claim integrity | Level 5 | focused audits compare semantic and evidence invariants |
 | maintainer-grade review | Level 6 | this is the repeatable stewardship surface |
 | major change confirmation | Level 7 | the claim itself is already explicitly strong |
 
@@ -92,6 +92,7 @@ flowchart TD
 | I need to know whether the repository still works normally. | `test` |
 | I need durable publish-contract evidence, not terminal scrollback. | `capstone-verify-report` |
 | I need to review execution-policy invariance across contexts. | `capstone-context-invariance-audit` |
+| I need to distinguish honest tuning, lost validation, and repeated work. | `capstone-performance-diagnostics-audit` |
 | I need the full review route another maintainer could repeat. | `proof` |
 | I need the strongest confirmation before a major change. | `capstone-confirm` |
 
@@ -102,6 +103,7 @@ flowchart TD
 | I think publish output is too large. | `capstone-verify-report` | a clean-room confirmation adds weight, not clarity, to a publish-boundary question |
 | I do not understand what the capstone even builds. | `capstone-walkthrough` | `test` and `proof` assume more orientation than you currently have |
 | CI and local runs disagree semantically. | `capstone-context-invariance-audit` | a generic tour may hide the policy difference you actually need |
+| A faster candidate may have removed required work. | `capstone-performance-diagnostics-audit` | timing alone cannot prove artifact and evidence contracts survived |
 | I need to know whether discovery is still explicit. | `capstone-tour` | `capstone-confirm` answers a broader stewardship question than the discovery claim |
 
 ## Bad escalation habits

@@ -93,6 +93,7 @@ By the time you use the capstone well, it should help you:
 | one executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make tour` |
 | publish-trust review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make verify-report` |
 | operating-context invariance | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-context-invariance-audit` | `make context-invariance-audit` |
+| performance-claim integrity | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-performance-diagnostics-audit` | `make performance-diagnostics-audit` |
 | real capstone profile inventory | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | `make profile-audit` |
 
 ## One honest first capstone decision

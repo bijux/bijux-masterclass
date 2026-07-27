@@ -79,7 +79,7 @@ The route should stay smaller than the concept you are checking.
 | 06 Publish Contracts | what downstream consumers may trust and how that bundle is defended | `publish/v1/`, `workflow/rules/summarize_report.smk`, `workflow/rules/publish.smk`, `workflow/contracts/FILE_API.md`, `scripts/verify_publish.py` | `make verify-report` |
 | 07 Workflow Architecture | how repository layers, helper code, and file APIs are split deliberately | `Snakefile`, `workflow/rules/`, `workflow/modules/`, `workflow/contracts/FILE_API.md`, `workflow/CONTRACT.md`, `src/capstone/` | `make proof` |
 | 08 Operating Contexts | how local, CI, and scheduler policy differ without semantic drift | `repro/context-invariance/`, `scripts/audit_context_invariance.py`, `tests/test_context_invariance_audit.py` | `make context-invariance-audit` |
-| 09 Incident Response | how logs, benchmarks, and workflow-tour evidence support diagnosis | `logs/`, `benchmarks/`, incident bundle surfaces | `make proof` |
+| 09 Incident Response | how performance claims preserve artifacts and evidence while removing attributable work | `repro/performance-diagnostics/`, `scripts/audit_performance_diagnostics.py`, `tests/test_performance_diagnostics_audit.py` | `make performance-diagnostics-audit` |
 | 10 Governance | whether another maintainer could review or migrate the workflow safely | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make confirm` |
 
 ## One honest route choice

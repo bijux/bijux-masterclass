@@ -57,9 +57,10 @@ Once the claim can be false, the matrix becomes much easier to use well.
 | Claim | Best first command | File surfaces to inspect | Why this is enough first |
 | --- | --- | --- | --- |
 | profiles change execution policy without changing workflow meaning | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-context-invariance-audit` | `capstone/repro/context-invariance/`, `capstone/scripts/audit_context_invariance.py`, generated plans and artifacts | the paired audit proves preservation and reproduces path and sample leaks |
+| performance tuning removes attributable work without removing guarantees | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-performance-diagnostics-audit` | `capstone/repro/performance-diagnostics/`, `capstone/scripts/audit_performance_diagnostics.py`, generated metrics, benchmarks, and results | four isolated runs distinguish reference, acceptance, semantic rejection, and regression |
 | the workflow validates configuration before execution | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-validate-config` | `capstone/config/config.yaml`, `capstone/config/schema.yaml` | validation claims should start at the schema and config surface, not a later run |
 | the workflow can explain its plan before a run | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `artifacts/walkthrough/reproducible-research/deep-dive-snakemake/dryrun.txt`, `capstone/workflow/rules/` | dry-run evidence is the honest first surface for plan questions |
-| workflow incidents can be reviewed with narrower evidence than a full rewrite | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-selftest` or `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `capstone/tests/selftest.sh`, `capstone/logs/`, `artifacts/tour/reproducible-research/deep-dive-snakemake/` | incident review should begin with the narrowest reproducible surface |
+| performance incidents can be reviewed with discriminating evidence | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-performance-diagnostics-audit` | generated plans, metrics, benchmark rows, result hashes, and adversarial tests | incident review separates lost guarantees from added work before proposing tuning |
 
 ## Publish and stewardship claims
 
