@@ -1,40 +1,10 @@
 # Completion Rubric
 
+Deep Dive Snakemake should end with more than syntax familiarity. Use this rubric to
+judge whether you can reason about workflow truth, dynamic behavior, policy boundaries,
+and publish contracts without hand-waving.
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Completion Rubric"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-Deep Dive Snakemake should finish with more than syntax familiarity.
-
-Use this rubric to judge whether you can reason about workflow truth, dynamic
-behavior, policy boundaries, and publish contracts without hand-waving.
-
----
-
-## Completion Standard
+## Completion standard
 
 You should be able to do all of the following:
 
@@ -45,9 +15,7 @@ You should be able to do all of the following:
 - explain which artifacts another reviewer should inspect before approving change
 - complete all one hundred exercises and retain the requested evidence
 
----
-
-## Course Outcomes
+## Course outcomes
 
 | Area | Completion signal |
 | --- | --- |
@@ -67,9 +35,18 @@ Reading every page does not satisfy the course contract. A complete portfolio in
 - corrections recorded after comparing your work with the model answers
 - one final stewardship review that connects Modules 01-10
 
----
+## Completion versus recognition
 
-## Capstone Evidence
+You are not done if you can only:
+
+- recognize the term after seeing it
+- rerun the same commands mechanically
+- quote the answer page without naming the evidence
+- pass through the capstone without explaining why a route was proportionate
+
+Completion means you can transfer the idea to a fresh workflow question.
+
+## Minimum capstone evidence
 
 Use these proof routes as the minimum capstone evidence:
 
@@ -80,16 +57,22 @@ Use these proof routes as the minimum capstone evidence:
 
 You are not done if you ran them mechanically but cannot explain what each one proved.
 
----
-
-## Reviewer Questions
+## Reviewer questions
 
 A reviewer should be able to ask:
 
-* what this workflow claims to build
-* what dynamic discovery is allowed to do here
-* what is public for downstream trust
-* what changed when moving between local and CI policy
-* what would you inspect first before migration
+- what this workflow claims to build
+- what dynamic discovery is allowed to do here
+- what is public for downstream trust
+- what changed when moving between local and CI policy
+- what would you inspect first before migration
 
 If those answers stay vague, you are not done yet.
+
+## Best use of this page
+
+Use this rubric at three moments:
+
+1. after a module when you think you are ready to move on
+2. after a capstone route when you want to know what it actually proved
+3. at the end of the course when you want to separate real command from surface familiarity

@@ -1,38 +1,8 @@
 # Practice Map
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Practice Map"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-This page collects the main practice surfaces for the whole course in one place.
-
-Use it when you want to know what to build, what to run, and what the run is supposed to
-prove before you enter the capstone.
-
----
+This page collects the main practice surfaces for the whole course in one place. Use it
+when you want to know what to build, what to run, and what the run is supposed to prove
+before you widen into the capstone.
 
 ## Hundred-exercise route
 
@@ -49,9 +19,18 @@ prove before you enter the capstone.
 | 09 | cost class, evidence choice, triage, tuning, runbook | baseline, evidence packet, controlled tuning, context regression, runbook rehearsal | repeated measurements |
 | 10 | current truth, migration order, governance, anti-patterns, handoff | inventory, characterize, migrate owner, enforce policy, design tool handoff | equivalence and stewardship record |
 
----
+## How to use the route
 
-## Three Reusable Proof Loops
+Read each row as a study contract:
+
+- Exercises 1-5 should make the local idea legible.
+- Exercises 6-10 should make the idea transferable.
+- The evidence column tells you what to keep so the work remains reviewable later.
+
+If you are finishing exercises without retaining the named evidence, you are completing
+activity, not building a reusable learning record.
+
+## Reusable proof loops
 
 ### Contract loop
 
@@ -92,9 +71,7 @@ snakemake -n
 snakemake --summary
 ```
 
----
-
-## Best Study Habit
+## Best study habit
 
 For each module:
 
@@ -105,3 +82,11 @@ For each module:
 5. enter the capstone only after the local result is legible
 
 That order keeps the course centered on comprehension instead of repository tourism.
+
+## Good stopping point
+
+Stop when you can name:
+
+1. what you built
+2. what evidence you retained
+3. what the next exercise is supposed to teach that the current one did not

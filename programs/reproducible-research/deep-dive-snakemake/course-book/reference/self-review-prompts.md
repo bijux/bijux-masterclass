@@ -1,32 +1,19 @@
 # Self-Review Prompts
 
+Use this page when you want short prompts that force recall, prediction, and judgment
+instead of passive recognition. A useful prompt should make you prove that you understand
+the workflow boundary without borrowing the page's wording.
 
-<!-- page-maps:start -->
-## Page Maps
+## How to use these prompts
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Self-Review Prompts"]
-  capstone["Capstone evidence"]
+Pick three prompts only:
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+1. answer them without opening another page
+2. check your answer against a command, file, or saved artifact
+3. rewrite the answer in plainer language if it still sounds memorized
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use this page when you want short prompts that turn Snakemake concepts into active
-workflow judgment instead of passive familiarity.
+If you can answer every prompt only in course vocabulary, not in your own words, the idea
+is not stable yet.
 
 ## Workflow truth
 
@@ -51,3 +38,12 @@ workflow judgment instead of passive familiarity.
 - Should this behavior live in `Snakefile`, rules, modules, scripts, package code, or profiles?
 - Would moving it make the workflow easier to review or only more indirect?
 - Which layer would you inspect first before approving a boundary-heavy change?
+
+## Good signs
+
+These prompts are working when they make you do one of the following:
+
+- predict a rerun before you execute it
+- name the exact artifact that settles a discovery or publish question
+- explain why a profile change is safe or unsafe
+- choose a smaller proof route than the one you first wanted

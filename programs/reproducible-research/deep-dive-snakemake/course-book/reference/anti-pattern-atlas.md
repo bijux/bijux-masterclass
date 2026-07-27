@@ -1,34 +1,8 @@
 # Anti-Pattern Atlas
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Anti-Pattern Atlas"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when you recognize the smell before you remember the module. A useful
 atlas turns "this workflow feels wrong" into a smaller statement about hidden logic,
 checkpoint abuse, profile drift, weak publish contracts, or ownership collapse.
-
----
 
 ## Symptom-led lookup
 
@@ -41,7 +15,14 @@ checkpoint abuse, profile drift, weak publish contracts, or ownership collapse.
 | the repository is modular, but no one knows where a change belongs | ownership boundaries are blurry | which layer should own workflow meaning, helper code, or policy | `make tour` |
 | logs are everywhere, but incident review is still vague | evidence lacks a review route | which smaller bundle or guide should answer the current question first | `make proof` |
 
----
+## Read the lookup table well
+
+The first route is not the full solution. It is the first honest surface that should make
+the failure smaller and more nameable.
+
+- If the symptom is about reviewability, start with the route that exposes structure.
+- If the symptom is about trust, start with the route that exposes published evidence.
+- If the symptom is about drift, start with the route that isolates policy or ownership.
 
 ## Recurring failure classes
 
@@ -54,8 +35,6 @@ checkpoint abuse, profile drift, weak publish contracts, or ownership collapse.
 | publish directories treated as informal output piles | downstream trust becomes accidental | module 06, `FILE_API.md`, `PUBLISH_REVIEW_GUIDE.md` |
 | governance questions left until after drift is visible | stewardship turns reactive and expensive | module 10, `EXTENSION_GUIDE.md` |
 
----
-
 ## Repair order
 
 When you identify a likely anti-pattern:
@@ -65,10 +44,15 @@ When you identify a likely anti-pattern:
 3. choose the smallest capstone route that demonstrates the same defect or claim
 4. repair the contract before polishing the implementation
 
----
+## Common mistakes after identification
+
+- fixing the symptom in shell code before clarifying the workflow contract
+- escalating straight to the strongest proof route before naming the failure class
+- calling a policy leak a performance problem
+- treating downstream trust as equivalent to "the files exist"
 
 ## Companion pages
 
-- [`review-checklist.md`](review-checklist.md)
-- [`boundary-review-prompts.md`](boundary-review-prompts.md)
-- [`module-dependency-map.md`](module-dependency-map.md)
+- [Review Checklist](review-checklist.md)
+- [Boundary Review Prompts](boundary-review-prompts.md)
+- [Module Dependency Map](module-dependency-map.md)
