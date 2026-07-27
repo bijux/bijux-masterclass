@@ -46,9 +46,9 @@ start narrower.
 | install remains contained and converges on rerun | `make install-rehearsal` | install policy, install acceptance report |
 | malformed release inputs fail at the expected boundary | `make release-selftest` | release tests and rejection output |
 | the full local release claim holds | `make release-check` | release acceptance record and `RELEASE_GUIDE.md` |
-| governed local build-cost evidence is attributable and reviewable | `make perf` | `PERFORMANCE_EVIDENCE_GUIDE.md`, `evidence.json`, incremental report, then `summary.tsv` |
-| a declared input selects the required rebuild scope | `make performance-incremental` | incremental policy and requested-work report |
-| two build-cost bundles have compatible context and equivalent work | `make performance-compare` | execution context, incremental work, inventories, then scenario deltas |
+| governed local build-cost evidence is attributable and reviewable | `make perf` | `PERFORMANCE_EVIDENCE_GUIDE.md`, impact summary, `evidence.json`, then timing summary |
+| every declared input class selects its required rebuild scope | `make performance-incremental` | policy, `incremental-summary.tsv`, then the relevant case in `incremental-work.json` |
+| two build-cost bundles have compatible context and equivalent work | `make performance-compare` | execution context, complete case sets, inventories, then scenario deltas |
 | performance gates reject dishonest evidence | `make performance-selftest` | context, incremental, capture, and comparison rejection tests |
 | clean planning evidence retains causal attribution | `make trace-report` | trace report, raw trace, and manifest |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
