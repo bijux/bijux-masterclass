@@ -27,6 +27,21 @@ record() {
   printf '%s\n' "$2" > "${SELFTEST_REPORT_DIR}/$1"
 }
 
+run_logged() {
+  log_name=$1
+  shift
+  printf '%s:' "$log_name" >> "$SELFTEST_COMMANDS"
+  printf ' %s' "$@" >> "$SELFTEST_COMMANDS"
+  printf '\n' >> "$SELFTEST_COMMANDS"
+  if "$@" > "${SELFTEST_LOG_DIR}/${log_name}.log" 2>&1; then
+    return 0
+  fi
+  command_status=$?
+  FAILURE_REASON="${log_name} command failed with exit ${command_status}"
+  cat "${SELFTEST_LOG_DIR}/${log_name}.log" >&2
+  return "$command_status"
+}
+
 finish() {
   status=$?
   trap - EXIT INT TERM
@@ -80,6 +95,11 @@ esac
 rm -rf "$SELFTEST_WORK_DIR"
 mkdir -p "$SELFTEST_WORK_DIR"
 SELFTEST_WORK_DIR="$(cd "$SELFTEST_WORK_DIR" && pwd)"
+SELFTEST_LOG_DIR="${SELFTEST_REPORT_DIR:-${SELFTEST_WORK_DIR}/evidence}/logs"
+SELFTEST_COMMANDS="${SELFTEST_REPORT_DIR:-${SELFTEST_WORK_DIR}/evidence}/commands.txt"
+rm -rf "$SELFTEST_LOG_DIR"
+mkdir -p "$SELFTEST_LOG_DIR"
+: > "$SELFTEST_COMMANDS"
 
 # Copy repo excluding build outputs and VCS data
 tar cf - --exclude=./build --exclude=./.git . | (cd "$SELFTEST_WORK_DIR" && tar xf -)
@@ -98,9 +118,10 @@ SELFTEST_WORK_DIR=${SELFTEST_WORK_DIR}"
 # 1) Convergence
 CURRENT_CHECK="convergence"
 step "convergence"
-"$MAKE_BIN" clean >/dev/null
-"$MAKE_BIN" -j1 all >/dev/null
-"$MAKE_BIN" -q all || fail "convergence: repo not up-to-date after build (exit $(($?)))"
+run_logged convergence-clean "$MAKE_BIN" clean
+run_logged convergence-build "$MAKE_BIN" -j1 all
+run_logged convergence-query "$MAKE_BIN" -q all ||
+  fail "convergence: repo not up-to-date after build"
 record convergence.txt "PASS"
 CONVERGENCE="PASS"
 pass "convergence"
@@ -108,8 +129,8 @@ pass "convergence"
 # 2) Serial vs parallel equivalence
 CURRENT_CHECK="serial_parallel_equivalence"
 step "serial-parallel equivalence"
-"$MAKE_BIN" clean >/dev/null
-"$MAKE_BIN" -j1 all >/dev/null
+run_logged serial-clean "$MAKE_BIN" clean
+run_logged serial-build "$MAKE_BIN" -j1 all
 echo "selftest: INFO: computing serial artifact hash"
 # Hash all artifacts (intermediates + executables for full equivalence)
 echo "selftest: INFO: listing serial artifacts"
@@ -125,13 +146,14 @@ LC_ALL=C sort serial_hash.tmp > serial.sum
 rm -f serial_hash.tmp
 echo "selftest: INFO: serial hash complete"
 
-"$MAKE_BIN" clean >/dev/null
+run_logged parallel-clean "$MAKE_BIN" clean
 echo "selftest: INFO: running bounded parallel build"
 # Bounded parallelism + timeout to expose concurrency defects safely
 if command -v timeout >/dev/null 2>&1; then
-  timeout 30 "$MAKE_BIN" -j2 all >/dev/null || fail "parallel build timeout (consider reducing -j)"
+  run_logged parallel-build timeout 30 "$MAKE_BIN" -j2 all ||
+    fail "parallel build timeout or failure (consider reducing -j)"
 else
-  "$MAKE_BIN" -j2 all >/dev/null  # Fallback; monitor manually
+  run_logged parallel-build "$MAKE_BIN" -j2 all
 fi
 echo "selftest: INFO: computing parallel artifact hash"
 # Mirror serial hashing for symmetry
@@ -155,7 +177,8 @@ pass "serial-parallel equivalence"
 # Performance baseline guardrail (trace expansions <500)
 CURRENT_CHECK="trace_guardrail"
 step "trace guardrail"
-TRACE_LINES=$("$MAKE_BIN" --trace -n all 2>&1 | wc -l)
+run_logged trace-plan "$MAKE_BIN" --trace -n all
+TRACE_LINES=$(wc -l < "${SELFTEST_LOG_DIR}/trace-plan.log")
 if [ "$TRACE_MAX" -ne 0 ] && [ "$TRACE_LINES" -gt "$TRACE_MAX" ]; then
   fail "performance: trace lines exceed TRACE_MAX=$TRACE_MAX (got $TRACE_LINES). Use: make trace-count; and see: make perf. (TRACE_MAX is a guardrail; set TRACE_MAX=0 to disable.)"
 fi
@@ -170,10 +193,13 @@ test -f config.mk || : > config.mk
 cp config.mk config.mk.bak
 printf '%s\n' '' 'CPPFLAGS += -DHIDDEN_TS=$(shell date +%s)' >> config.mk
 
-"$MAKE_BIN" clean >/dev/null
-"$MAKE_BIN" -j1 all >/dev/null
+run_logged hidden-input-clean "$MAKE_BIN" clean
+run_logged hidden-input-build "$MAKE_BIN" -j1 all
 sleep 1
-if "$MAKE_BIN" -q all; then
+printf '%s:' "hidden-input-query" >> "$SELFTEST_COMMANDS"
+printf ' %s' "$MAKE_BIN" -q all >> "$SELFTEST_COMMANDS"
+printf '\n' >> "$SELFTEST_COMMANDS"
+if "$MAKE_BIN" -q all > "${SELFTEST_LOG_DIR}/hidden-input-query.log" 2>&1; then
   fail "negative: converged despite hidden input"
 fi
 record hidden-input.txt "PASS"
@@ -185,7 +211,7 @@ mv config.mk.bak config.mk
 # 4) Optional eval demo must remain executable without controlling the core build
 CURRENT_CHECK="quarantined_eval_demo"
 step "quarantined eval demo"
-"$MAKE_BIN" USE_EVAL=yes eval-demo >/dev/null
+run_logged eval-demo "$MAKE_BIN" USE_EVAL=yes eval-demo
 test -s build/include/multi.h || fail "eval demo did not publish multi.h"
 test -s build/include/multi.c || fail "eval demo did not publish multi.c"
 record eval-demo.txt "PASS"
