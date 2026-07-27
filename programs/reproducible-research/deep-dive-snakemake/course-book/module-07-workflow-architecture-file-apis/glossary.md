@@ -1,33 +1,21 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Workflow Architecture File Apis"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This glossary keeps the language of Module 07 stable. The goal is practical architecture
 clarity: when the same terms keep the same meaning, repository review gets faster and more
 honest.
+
+## When to stop and check the glossary
+
+Use this page when an architecture discussion starts to blur these boundaries:
+
+- entrypoint versus implementation
+- rule family versus reusable module
+- workflow-facing path versus downstream-facing path
+- helper convenience versus hidden coupling
+- refactor trigger versus style preference
+
+If the discussion feels vague, one of those terms is probably doing too many jobs at
+once.
 
 ## Terms
 
@@ -58,3 +46,15 @@ If an architecture discussion starts to feel fuzzy, ask which term has become un
 - is this refactor fixing a real boundary, or only changing the tree shape?
 
 That question usually exposes the real architectural issue quickly.
+
+## Terms you should be able to use by the end of the day
+
+By the end of Module 07, you should be comfortable using these in a full sentence:
+
+- visible assembly
+- rule family
+- file API
+- hidden coupling
+- architecture drift
+- refactor trigger
+- private framework

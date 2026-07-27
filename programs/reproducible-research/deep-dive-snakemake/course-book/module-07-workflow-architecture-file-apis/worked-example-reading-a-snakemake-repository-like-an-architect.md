@@ -7,6 +7,30 @@ This file ties the whole module together around one realistic problem:
 The question is not "how do we inspect every file?" The question is how to read the
 repository in an order that reveals ownership, path contracts, and drift risk quickly.
 
+## How to use this worked example
+
+Work through this page with the five core lessons nearby.
+
+Do not treat it as a summary you skim after the module. Treat it as a guided architecture
+walkthrough:
+
+- where to start reading
+- what to postpone
+- how to trace one public artifact
+- how to decide whether drift is real or only a vague discomfort
+
+## The one-day teaching goal
+
+By the end of this example, you should be able to explain one Snakemake repository
+without falling back on phrases like "the important parts are spread around."
+
+You should be able to say:
+
+- which surface a new maintainer reads first
+- which rule family or layer owns which concern
+- where path promises become explicit
+- which structural problem deserves refactoring now
+
 ## The lab route
 
 Work through the example in this order:
@@ -27,6 +51,14 @@ Assume you inherit the capstone and need to answer three questions quickly:
 
 If you cannot answer those questions in a stable order, the repository architecture is
 already too opaque.
+
+## What the learner should notice first
+
+The repository may still run perfectly.
+
+The problem is that maintainers are depending on oral guidance instead of structure. That
+is exactly the kind of architecture weakness that becomes expensive later even when the
+workflow still executes correctly today.
 
 ## Start at the entrypoint
 
@@ -57,18 +89,37 @@ That sequence teaches repository architecture and workflow meaning at the same t
 you jump into helper code first, you lose the visible graph and start from implementation
 detail instead of ownership.
 
+## A short checkpoint before you continue
+
+Pause here and ask:
+
+- could a new maintainer explain the workflow shape without opening package code yet?
+- do the rule-family names already signal concern boundaries?
+- is the top-level assembly revealing more than it hides?
+
+If the answer to any of these is no, the architectural story is already weaker than it
+should be.
+
 ## Separate local assembly from reusable workflow modules
 
 Now inspect `workflow/modules/` only after rule-family ownership is already visible.
 
 That distinction matters:
 
-- rule families group one repository’s visible graph
+- rule families group one repository's visible graph
 - workflow modules expose reusable workflow bundles with their own boundary
 
 Seeing both in the same pass helps a reviewer ask a better question: is this file here
 because the repository needs local readability, or because the workflow boundary is
 genuinely reusable?
+
+## Why this reading order matters educationally
+
+This is the moment where repository inspection stops being a scavenger hunt.
+
+The learner is no longer just finding files. They are using sequence to decide which
+surfaces deserve trust first and which should be read only after the workflow story is
+already visible.
 
 ## Confirm the file API explicitly
 
@@ -106,6 +157,15 @@ flowchart LR
 Not every artifact passes through every layer. That is useful information. A missing layer
 is not a defect. An unexplained jump across layers often is.
 
+## What the learner should notice now
+
+The artifact trace is doing two jobs at once:
+
+- it shows which surface owns each step
+- it exposes where the visible repository story breaks and hidden assumptions begin
+
+That is why this kind of trace is more educational than a generic folder tour.
+
 ## Catch architecture drift before it hardens
 
 Now compare the documented repository shape with the actual one.
@@ -117,8 +177,8 @@ Typical drift signals include:
 - public paths being used without contract updates
 - modules or directories whose names no longer reveal ownership
 
-At this stage, the review should not ask only “does it run?” It should ask “does the
-repository still teach its own shape?”
+At this stage, the review should not ask only "does it run?" It should ask "does the
+repository still teach its own shape?"
 
 ## The repaired architecture story
 
@@ -142,4 +202,4 @@ When you inspect a repository shaped like this, ask:
 4. which helper or package boundary is supporting the workflow and which one is swallowing it
 5. which drift signal would justify the next structural refactor
 
-If those answers are visible, the module’s architecture story has landed.
+If those answers are visible, the module's architecture story has landed.

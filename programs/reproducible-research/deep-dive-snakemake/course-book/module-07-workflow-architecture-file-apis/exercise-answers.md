@@ -1,36 +1,34 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Workflow Architecture File Apis"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning makes repository ownership and review surfaces
 clearer.
 
-## Exercise 1: Read the repository entrypoint
+## How to use the answer page well
+
+Do not read a model answer before you have drawn the repository map or review note
+yourself.
+
+A stronger rhythm is:
+
+1. inspect the repository and write your own ownership explanation
+2. state one boundary you believe the repository is telling well or badly
+3. compare that explanation with the model answer
+4. revise where the model answer reveals a hidden dependency, weak file split, or unclear
+   contract surface you missed
+
+The target is not identical wording. The target is clearer architectural judgment.
+
+## Exercise 1: Read the repository in the right order
+
+A strong answer starts at the top-level `Snakefile`, identifies the visible assembly and
+targets, then moves into named rule families before scripts or package code. A postponed
+surface might be a generic helper or deep package module, because it only becomes useful
+after the workflow shape is already visible. The key success signal is that the first
+surface answers "how is this workflow assembled?" quickly.
+
+## Exercise 2: Repair a weak entrypoint
 
 What belongs in the entrypoint:
 
@@ -41,7 +39,9 @@ What belongs in the entrypoint:
 
 What should probably move elsewhere:
 
-- the 150-line `run:` block
+- a large inline `run:` block
+- step-local logic that belongs in scripts
+- reusable logic that belongs in packages
 
 Why this is an architecture issue:
 
@@ -49,7 +49,20 @@ The entrypoint should announce the workflow shape. Once it starts hiding large
 implementation logic, the repository entry surface becomes less useful for review and
 onboarding.
 
-## Exercise 2: Judge a rule split
+## Exercise 3: Write a repository responsibility table
+
+A strong table gives each layer one durable job and one clear prohibition. For example:
+
+- the entrypoint owns visible assembly, not hidden implementation
+- rule-family files own coherent workflow concerns, not generic overflow
+- scripts own step-local implementation, not undeclared repository scans
+- packages own reusable logic, not hidden workflow state
+- file APIs own path promises, not producer-only internal details
+
+The least disruptive correction is usually the one that restores the lying boundary
+directly instead of inventing a new abstraction.
+
+## Exercise 4: Review a weak structural split
 
 Why the split is weak:
 
@@ -58,8 +71,8 @@ Why the split is weak:
 
 What kind of boundary would be stronger:
 
-- rule families grouped by coherent workflow concern, such as preprocessing, summarization,
-  publishing, or another clearly named domain
+- rule families grouped by coherent workflow concern, such as preprocessing,
+  summarization, publishing, or another clearly named domain
 
 What a reviewer should infer from names:
 
@@ -69,12 +82,20 @@ What a reviewer should infer from names:
 
 The key problem is not the number of files. It is the lack of an ownership signal.
 
-## Exercise 3: Review a file-API gap
+## Exercise 5: Trace one public artifact end to end
+
+A strong trace begins with the documented public path and finds the publication rule, its
+declared source result, any step-local script, reusable package call, semantic
+configuration, and final target. It marks absent layers honestly rather than inventing
+them. An undeclared style file or directory scan is a finding because the visible chain
+does not explain the produced bytes.
+
+## Exercise 6: Repair a file-API gap
 
 What architecture problem this creates:
 
 - path promises are real, but they are undocumented
-- downstream and workflow-facing boundaries blur together
+- workflow-facing and downstream-facing boundaries blur together
 
 Risks:
 
@@ -89,12 +110,12 @@ What to add first:
 
 The goal is to make path promises reviewable instead of implied.
 
-## Exercise 4: Diagnose hidden coupling
+## Exercise 7: Diagnose hidden coupling
 
 A strong review comment would say:
 
 > This is not only a local code-quality problem. The helper changes repository behavior
-> through undeclared files, unvalidated config, and import-time side effects, which means
+> through undeclared files, unvalidated config, or import-time side effects, which means
 > the visible rule and config surfaces no longer tell the full truth. That weakens the
 > architecture because reviewers must inspect hidden layers to understand workflow meaning.
 
@@ -103,49 +124,6 @@ Why:
 - architecture depends on visible boundaries staying trustworthy
 - hidden dependencies move meaning away from the declared repository surfaces
 
-## Exercise 5: Decide whether to refactor
-
-Architecture signals:
-
-- onboarding questions keep repeating
-- ownership boundaries are no longer obvious
-- path contracts and code-placement rules are not visible enough
-
-What boundary to inspect first:
-
-- the entrypoint and the contract docs
-
-Why:
-
-- if reviewers cannot find the assembly point or the path promises, the rest of the
-  architecture will feel arbitrary too
-
-What kind of refactor is justified:
-
-- clarify the top-level assembly
-- rename or regroup rule families around ownership
-- strengthen file-API or contract docs
-- make the split between `workflow/scripts/` and `src/` easier to explain
-
-The refactor should improve reviewability, not only folder appearance.
-
-## Exercise 6: Trace one public artifact
-
-A strong trace begins with the documented public path and finds the publication rule,
-its declared source result, any step-local script, reusable package call, semantic
-configuration, and final target. It marks absent layers honestly rather than inventing
-them. An undeclared style file or directory scan is a finding because the visible chain
-does not explain the produced bytes.
-
-## Exercise 7: Write a repository responsibility table
-
-The entrypoint owns visible assembly; includes own coherent rule families; modules own
-reusable workflow interfaces; scripts adapt declared Snakemake values to step-local
-implementation; packages own independently testable logic; profiles own execution
-policy; schemas validate contract data; publish docs define consumer promises. Moving a
-hidden scan out of a package and declaring its path in the rule is a more direct repair
-than creating another abstraction.
-
 ## Exercise 8: Detect architecture drift automatically
 
 A useful check encodes one narrow repository claim and names the violating path. For
@@ -153,7 +131,7 @@ example, enumerate publish outputs, compare them with `FILE_API.md`, and fail on
 or stale entries. The failing fixture demonstrates that the check protects an actual
 boundary. A generic "architecture invalid" message is too vague to guide repair.
 
-## Exercise 9: Compare two possible refactors
+## Exercise 9: Compare two refactor designs
 
 The ownership-based split is usually safer first because it improves navigation without
 creating a new interface. A module or package becomes worthwhile when reuse, independent
@@ -161,7 +139,7 @@ testing, or a stable caller contract already exists. Choose the simplest structu
 makes current ownership truthful, and record measurable triggers rather than promising a
 future abstraction by instinct.
 
-## Exercise 10: Conduct an architecture review
+## Exercise 10: Conduct a bounded architecture review
 
 Begin with the entrypoint and documented file API, compare the actual rule graph, then
 inspect scripts and packages only where the trace leads. Findings about undeclared inputs,
