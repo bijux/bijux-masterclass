@@ -16,6 +16,19 @@ Use it in this order:
 If you cannot answer a section without opening five other pages, the real gap is usually
 upstream in the module understanding or proof route.
 
+## Start with the claim, not with the whole checklist
+
+This page is strongest when you already know what claim is under review.
+
+Examples:
+
+- this workflow change preserves publish trust
+- this profile edit is policy-only
+- this helper move clarifies ownership instead of hiding logic
+
+If you start with the whole checklist and no claim, the review will spread out and lose
+force.
+
 ## Workflow truth
 
 - Which file contracts are authoritative for this question?
@@ -55,3 +68,18 @@ The checklist is working when you can end the review with one of these:
 - reject the current claim because the workflow cannot yet prove it honestly
 
 If the result is only "this feels messy," the review still needs sharper evidence.
+
+## One honest use of this checklist
+
+Suppose a pull request moves a report helper into package code and also changes a profile.
+
+A strong checklist use does not say, "this looks more sophisticated now."
+
+It asks:
+
+1. does the helper move preserve the public contract and proof route
+2. is the profile change really policy-only
+3. which layer should own each edit
+4. what exact keep, change, or reject judgment follows
+
+That is the level of precision the checklist is for.

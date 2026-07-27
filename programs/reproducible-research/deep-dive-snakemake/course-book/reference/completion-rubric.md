@@ -4,6 +4,20 @@ Deep Dive Snakemake should end with more than syntax familiarity. Use this rubri
 judge whether you can reason about workflow truth, dynamic behavior, policy boundaries,
 and publish contracts without hand-waving.
 
+## How to use this rubric
+
+Use this page when you think you are done, not when you are still trying to learn the
+concept for the first time.
+
+Read it in this order:
+
+1. test the completion standard
+2. inspect the outcome area that still feels weak
+3. compare your exercise and capstone evidence against the stated bar
+4. decide whether you have completion or only recognition
+
+This page is supposed to slow down premature confidence.
+
 ## Completion standard
 
 You should be able to do all of the following:
@@ -14,6 +28,19 @@ You should be able to do all of the following:
 - identify which outputs are internal versus safe for downstream trust
 - explain which artifacts another reviewer should inspect before approving change
 - complete all one hundred exercises and retain the requested evidence
+
+## Start by separating completion from recognition
+
+Many learners stop when they can follow commands or recognize the words on the page.
+
+This rubric uses a higher bar:
+
+- can you explain the boundary
+- can you choose the right proof route
+- can you transfer the idea to a new workflow question
+- can you say what another reviewer should inspect first
+
+If not, the idea is still forming.
 
 ## Course outcomes
 
@@ -45,6 +72,16 @@ You are not done if you can only:
 - pass through the capstone without explaining why a route was proportionate
 
 Completion means you can transfer the idea to a fresh workflow question.
+
+## One honest end-of-course check
+
+Ask yourself this question:
+
+> If I inherit a new Snakemake repository tomorrow, which four surfaces would I inspect
+> first, and why?
+
+If you cannot answer that without borrowing stock phrases from the course, the completion
+bar is not met yet.
 
 ## Minimum capstone evidence
 

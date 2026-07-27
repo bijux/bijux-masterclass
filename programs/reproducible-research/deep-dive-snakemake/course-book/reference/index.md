@@ -7,6 +7,19 @@ Use it when the workflow concept is already recognizable and you need a stable r
 surface for contracts, dynamic discovery, operating policy, publish trust, or stewardship
 decisions.
 
+## How to use this shelf
+
+Use the reference shelf after the lesson itself is already legible.
+
+That means:
+
+- you are not learning the concept for the first time
+- you can already name the boundary or claim under review
+- you need sharper language, sharper prompts, or a clearer readiness bar
+
+If you cannot do those three things yet, go back to the module or guide. Reference pages
+should sharpen understanding, not replace it.
+
 ## What this shelf is for
 
 Use the reference shelf to:
@@ -18,6 +31,22 @@ Use the reference shelf to:
 
 If you are still learning the concept for the first time, go back to the module. The
 reference shelf should sharpen understanding, not replace it.
+
+## Start with one exact review question
+
+The easiest way to misuse the reference shelf is to open it because the course feels large
+and the module feels hard.
+
+That usually leads to browsing rather than progress.
+
+A better move is to ask one exact question:
+
+- what does this term mean in this course
+- what review prompt should I use for this claim
+- what proof or practice move comes next
+- what counts as genuinely complete here
+
+Once the question is that narrow, the shelf becomes useful.
 
 ## Choose the right reference route
 

@@ -11,6 +11,18 @@ Open it when a term matters for a decision: where a change belongs, which surfac
 authoritative, or which proof route should answer the question. Do not read it as a list
 to memorize.
 
+## Why this glossary exists
+
+This page is deliberately smaller than the course-wide technical vocabulary.
+
+It exists to stabilize the support shelf itself:
+
+- which review page to open
+- what kind of judgment that page supports
+- why one support route is better than another for the current question
+
+That keeps support-page language from becoming vague administrative prose.
+
 ## Terms in this directory
 
 | Term | Meaning in Deep Dive Snakemake |
@@ -23,9 +35,4 @@ to memorize.
 
 ## What this glossary is not
 
-This page is not the place to define every Snakemake term in the course. It is here to
-stabilize the support shelf itself:
-
-- which review page to open
-- what kind of judgment that page helps you make
-- why one support route is better than another for the current question
+This page is not the place to define every Snakemake term in the course.
