@@ -1,43 +1,93 @@
 # Exercises
+
 Use these after reading the five core lessons and the worked example. The goal is not to
-recite vocabulary. The goal is to show that you can turn a fuzzy build complaint into a
-declared contract, a measured observation, or a justified boundary decision.
+recite vocabulary. The goal is to turn fuzzy portability and hermeticity complaints into
+declared contracts, measured observations, and justified tool boundaries.
 
-## How to work this exercise set
+## How to work through this set
 
-Work through these as if you are hardening a real inherited repository:
+Treat the ten exercises as one full lab day on hardening an inherited build.
 
-- Exercises 1-3: declare assumptions and model semantic inputs
-- Exercises 4-6: inspect measurement, ownership, and failure messages
-- Exercises 7-9: repair shell and recursion boundaries
-- Exercise 10: combine the whole hardening workflow in one audit
+Before each answer:
 
-Each exercise asks for three things:
+1. name the assumption or boundary you are testing
+2. decide whether the assumption is required, optional, or diagnostic only
+3. keep the smallest proof or failure message that would let another maintainer verify the
+   conclusion
 
-- the build fact you need to establish
-- the evidence or command that would establish it
-- the repair or design decision that follows from that evidence
+If you skip that classification step, everything starts to sound like "environment issues"
+instead of specific, fixable build contracts.
 
-Keep an assumption ledger while you work:
+Do the exercises in order. The day is one progression:
+
+- Exercises 1-3 declare capabilities, recursive boundaries, and semantic inputs honestly
+- Exercises 4-6 measure layers, choose tool ownership, and build a diagnostic doctor
+- Exercises 7-8 harden shell and recursive invocation contracts
+- Exercises 9-10 turn those ideas into convergent manifests and a full inherited-build
+  audit
+
+Keep one hardening packet as you go. By the end of the day it should contain:
+
+- one portability contract
+- one recursion rule you can justify under `-j`, `-n`, and nested invocation
+- one convergent representation of a non-file semantic input
+- one performance baseline that separates Make overhead from recipe cost
+- one `doctor` target with both reporting and fail-fast behavior
+- one before-and-after audit of an inherited build across two environments
+
+If those six artifacts are missing, you are probably accumulating opinions instead of
+hardening the build.
+
+## Recommended working layout
+
+If you want one lab tree that can support the whole day, use something like:
+
+```text
+module05-lab/
+├── Makefile
+├── build/
+├── ci/
+├── nested/
+├── notes/
+├── tools/
+└── artifacts/
+```
+
+Keep one assumption ledger while you work:
 
 | Assumption | Required capability | Semantic input | Diagnostic only | Proof or failure message |
 | --- | ---: | ---: | ---: | --- |
 
-Every row must choose one ownership category. “Environment issue” is not a category.
+Every row must choose one ownership category. "Environment issue" is not a category.
 
-## Minimum evidence for every answer
+Also keep one boundary table:
 
-Try to include:
+| Concern | Keep in Make | Hand off to another tool | Why |
+| --- | ---: | ---: | --- |
 
-- one explicit contract statement
-- one observed command or report
-- one reason the chosen fix converges instead of creating more drift
+That second table matters because "use another tool" is not a complete answer unless you
+can explain which proof route survives the handoff.
+
+```mermaid
+flowchart LR
+  declare["declare the contract"]
+  probe["probe the environment or boundary"]
+  measure["measure before redesigning"]
+  model["model semantic inputs honestly"]
+  decide["decide what Make should own"]
+  verify["verify convergence and failure behavior"]
+
+  declare --> probe --> measure --> model --> decide --> verify
+```
+
+Use that route on purpose. It keeps the day centered on declared support and ownership
+instead of on ad hoc machine-specific fixes.
 
 ## Exercise 1: Write a portability contract
 
-You inherit a Make build that uses grouped targets, `python3`, and POSIX shell syntax, but
-none of those assumptions are declared. CI sometimes runs an older Make and fails with
-unclear syntax errors.
+You inherit a Make build that uses grouped targets, `python3`, and POSIX shell syntax,
+but none of those assumptions are declared. CI sometimes runs an older Make and fails
+with unclear syntax errors.
 
 Write a small portability contract section for the build and explain what should fail fast
 versus what may use a fallback.
@@ -47,6 +97,11 @@ What to hand in:
 - the minimum Make and shell contract
 - the required tool list
 - one optional feature and its safe fallback
+- one sentence explaining what the first failure message should optimize for
+
+Study note:
+The point is not "support as many environments as possible." The point is to make
+supported environments explicit and unsupported ones fail honestly.
 
 ## Exercise 2: Repair a recursive boundary
 
@@ -65,6 +120,11 @@ What to hand in:
 - the bug explanation in plain language
 - the repaired recursive invocation
 - one line showing how you would bound or inspect recursion depth
+- one sentence explaining what information the child build should inherit
+
+Study note:
+Recursion is a declared boundary with a depth, a budget, and a contract. It is not just a
+habit of calling another Makefile.
 
 ## Exercise 3: Model one non-file input honestly
 
@@ -78,13 +138,18 @@ What to hand in:
 - the non-file input you chose
 - the file that will represent it
 - one sentence explaining why the file converges instead of changing every run
+- one sentence naming which downstream target should depend on that representation
+
+Study note:
+If the modeled file changes every run, it is not a trustworthy representation. It is just
+a moving timestamp with a nicer name.
 
 ## Exercise 4: Separate performance layers
 
 A teammate says, "Make is slow, so we should rewrite the build logic." You are not yet
 allowed to change the build. You are only allowed to measure.
 
-Describe the smallest measurement loop you would run to distinguish parse/decision cost
+Describe the smallest measurement loop you would run to distinguish parse or decision cost
 from recipe cost and trace volume.
 
 What to hand in:
@@ -92,6 +157,11 @@ What to hand in:
 - the commands you would run
 - the specific numbers you would compare
 - one sentence on how different results would change the diagnosis
+- one sentence explaining why "felt slow" is not enough
+
+Study note:
+This exercise exists to stop premature rewrites. Measure first, then decide where the
+cost actually lives.
 
 ## Exercise 5: Decide whether Make should still own the problem
 
@@ -110,6 +180,24 @@ What to hand in:
 - the concern Make should definitely keep
 - the concern that most strongly argues for another tool
 - one sentence explaining how you would preserve the proof route after the handoff
+- one sentence explaining why handing off everything would also be a mistake
+
+Study note:
+This is an ownership exercise, not an ideology exercise. Another tool is not a magic
+answer unless boundaries and proofs remain clear.
+
+## Midday self-check
+
+Before you move into doctor targets, shell portability, and recursive budget behavior,
+make sure your packet can already answer these questions cleanly:
+
+- which capabilities are truly required for the build contract
+- which recursive boundary facts the parent and child must share
+- which semantic input you modeled as a convergent file and why
+- which concern clearly belongs outside Make without destroying the proof route
+
+If you cannot answer those four questions in plain language, return to Exercises 1-5 and
+make the packet more explicit before continuing.
 
 ## Exercise 6: Build a toolchain doctor
 
@@ -122,6 +210,11 @@ What to hand in:
 - the target
 - output from one successful run
 - the failure message for one deliberately unavailable tool
+- one sentence explaining which reported facts are advisory and which are fatal
+
+Study note:
+Good doctor targets do two jobs: they reveal context and they stop the build before vague
+downstream failures.
 
 ## Exercise 7: Remove a hidden shell dependency
 
@@ -142,18 +235,27 @@ What to hand in:
 - the portable recipe
 - the command used to test it
 - one other shell feature you would audit before claiming portability
+- one sentence explaining when declaring Bash would be the more honest choice
+
+Study note:
+Portability does not mean never using Bash. It means declaring Bash when Bash is really
+part of the supported contract.
 
 ## Exercise 8: Preserve the parallel budget across recursion
 
-Create a top-level build and a nested build that each print `MAKELEVEL` and
-`MAKEFLAGS`. Run the top level with `-j2`, then compare plain `make -C nested` with
-`+$(MAKE) -C nested`.
+Create a top-level build and a nested build that each print `MAKELEVEL` and `MAKEFLAGS`.
+Run the top level with `-j2`, then compare plain `make -C nested` with `+$(MAKE) -C nested`.
 
 What to hand in:
 
 - both recursive recipes
 - the observed `MAKELEVEL` and `MAKEFLAGS`
 - a short explanation of which invocation preserves Make's recursive contract
+- one sentence explaining why dry-run behavior matters here too
+
+Study note:
+This exercise is about more than style. The recursive spelling determines whether the
+child build receives the parent build's declared execution contract.
 
 ## Exercise 9: Prove an environment manifest converges
 
@@ -165,6 +267,11 @@ What to hand in:
 - the manifest rule
 - file timestamps or checksums from all three runs
 - an explanation of why the second run is a no-op and the third is not
+- one sentence explaining why locale belongs in the manifest only when it affects meaning
+
+Study note:
+Do not stuff every environment fact into a manifest automatically. Model only the facts
+that actually change build meaning.
 
 ## Exercise 10: Harden an inherited build
 
@@ -178,6 +285,12 @@ What to hand in:
 - evidence from both environments
 - one measurement that separates Make overhead from recipe cost
 - a decision about which concerns remain in Make and which belong elsewhere
+- one sentence naming the weakest boundary you fixed first and why
+
+Study note:
+The goal is not to rewrite the build into purity. The goal is to make the support
+contract, ownership, and failure behavior clear enough that another maintainer can keep it
+healthy.
 
 ## Before you read the answers
 
@@ -187,6 +300,10 @@ Do not open `exercise-answers.md` until you can already point to:
 - one modeled semantic input
 - one recursive invocation you can justify
 - one concern that clearly belongs outside Make
+- one convergent doctor or manifest behavior you can explain
+
+If you do not yet have those five things, the answer page will sound sharper than it can
+teach.
 
 ## Mastery standard for this exercise set
 

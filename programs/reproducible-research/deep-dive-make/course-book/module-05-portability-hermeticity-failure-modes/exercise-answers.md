@@ -27,11 +27,35 @@ flowchart LR
 
 Use this after you have written your own answers. The point is comparison, not copying.
 
-Strong Module 05 answers do not simply list tools or flags. They explain:
+## How to use the answer page well
 
-- what assumption is being made
-- how the build would prove that assumption
-- why the repair or boundary decision is honest
+Do not read a model answer first and then retrofit your hardening packet to match it.
+
+A better rhythm is:
+
+1. finish the exercise with your own contract, probes, and notes
+2. write one plain-language explanation of the boundary or assumption
+3. compare that explanation with the model answer
+4. revise where the model answer exposes a missing contract, weak measurement, or blurry
+   ownership decision
+
+Strong Module 05 answers do not simply list tools or flags. They usually do four things:
+
+- they name the assumption directly
+- they show how the build would prove that assumption
+- they explain why the repair converges
+- they make tool ownership explicit
+
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one portability contract
+- one recursive-boundary repair
+- one convergent semantic-input representation
+- one performance baseline
+- one doctor target
+- one inherited-build audit
+
+If your answers rely only on "hardening is important," the reasoning is still too thin.
 
 ## Exercise 1: Write a portability contract
 
@@ -40,19 +64,28 @@ A strong answer makes the contract concrete, for example:
 - GNU Make 4.3 or newer required
 - POSIX `/bin/sh` syntax only
 - `python3` required
-- grouped targets optional only if a stamp-based fallback preserves the same generation semantics
+- grouped targets optional only if a stamp-based fallback preserves the same generation
+  semantics
 
-The important move is separating required from optional. A weak answer says "support as
-many environments as possible." A strong answer says exactly which ones are supported and
-how unsupported ones fail.
+The important explanation is:
+
+> The contract should separate required capabilities from optional ones and make
+> unsupported environments fail with the first useful message instead of with a later
+> syntax surprise.
+
+Weak answer pattern:
+
+- "Support as many environments as possible"
+
+That is a wish, not a maintainable support contract.
 
 ## Exercise 2: Repair a recursive boundary
 
 The core explanation is:
 
-> plain `make` inside a recipe does not communicate recursive intent the same way `$(MAKE)`
-> does, so the sub-build can lose jobserver semantics and behave misleadingly under dry
-> runs.
+> Plain `make` inside a recipe does not communicate recursive intent the same way
+> `$(MAKE)` does, so the sub-build can lose jobserver semantics and behave misleadingly
+> under dry runs.
 
 A strong repair looks like:
 
@@ -96,6 +129,11 @@ This is strong because:
 - the file changes only when the fact changes
 - downstream targets now have an honest edge to that fact
 
+The missing but important sentence is:
+
+> A convergent representation is useful only when repeated runs with unchanged meaning do
+> not keep rewriting it.
+
 ## Exercise 4: Separate performance layers
 
 A good minimal loop is:
@@ -109,12 +147,17 @@ wc -l build/trace.log
 
 The answer is strong if it explains what the comparison means:
 
-- expensive `make -n` suggests parse or decision overhead
-- expensive full build with cheap `make -n` suggests recipe cost dominates
-- very high trace volume suggests the evidence surface itself may be operationally costly
+- expensive `make -n`:
+  - suggests parse or decision overhead
+- expensive full build with cheap `make -n`:
+  - suggests recipe cost dominates
+- very high trace volume:
+  - suggests the evidence surface itself may be operationally costly
 
-You do not need a fancy profiler first. You need a baseline that separates the
-layers honestly.
+The key explanation is:
+
+> "Felt slow" is not enough because it does not tell you whether the cost lives in Make's
+> decisions, in the recipes, or in the observation method itself.
 
 ## Exercise 5: Decide whether Make should still own the problem
 
@@ -129,12 +172,16 @@ And it usually identifies one richer workflow concern as a boundary, such as:
 - dependency version solving
 - long-running promotion and approval orchestration
 
-The best answers also say how proof survives the handoff. For example:
+The strongest answers also preserve the proof route:
 
-> Make remains the top-level verification and artifact assembly route, while the external
+> Make may remain the top-level verification and artifact assembly route while an external
 > tool owns dependency resolution or workflow state.
 
-That is much stronger than saying only "use another tool."
+Weak answer pattern:
+
+- "Use another tool for everything complicated"
+
+That abandons ownership rather than clarifying it.
 
 ## Exercise 6: Build a toolchain doctor
 
@@ -152,9 +199,12 @@ doctor:
 	@command -v python3 || { echo 'python3 is required' >&2; exit 1; }
 ```
 
-The answer should distinguish reporting from validation. An unset locale may be worth
-reporting without being fatal; a missing required generator must fail before the build
-reaches an obscure recipe error.
+This is strong because it distinguishes:
+
+- advisory facts:
+  - useful for diagnosis but not fatal
+- required capabilities:
+  - must fail before an obscure downstream recipe breaks
 
 ## Exercise 7: Remove a hidden shell dependency
 
@@ -176,9 +226,12 @@ touch data.csv && make report
 ```
 
 Other common audit points include arrays, brace expansion, `source`, process
-substitution, and `set -o pipefail`. If a Bash feature is genuinely needed, declare
-`SHELL := /bin/bash` and make Bash part of the portability contract instead of depending
-on a developer's interactive shell.
+substitution, and `set -o pipefail`.
+
+The important explanation is:
+
+> If Bash is genuinely required, declaring `SHELL := /bin/bash` is more honest than
+> depending on a developer's interactive-shell preference.
 
 ## Exercise 8: Preserve the parallel budget across recursion
 
@@ -200,8 +253,13 @@ all:
 
 Under `make -j2 nested`, the child should report a larger `MAKELEVEL` and inherited
 parallel flags. `$(MAKE)` tells GNU Make that the command is recursive; the leading `+`
-also permits the recursive line to run under modes such as `-n`, where the child must
+permits the recursive line to run under modes such as `-n`, where the child must
 interpret the dry run itself.
+
+The missing but important sentence is:
+
+> Dry-run behavior matters because recursive boundaries should preserve the execution
+> contract even when no real recipes are being performed.
 
 ## Exercise 9: Prove an environment manifest converges
 
@@ -223,8 +281,12 @@ $(ENV_MANIFEST): | build/
 
 The first run creates the manifest. The second produces identical candidate content, so
 `cmp` prevents a timestamp change. `make MODE=debug` changes semantic content and
-therefore replaces the file. A strong submission records checksums or modification times
-instead of merely asserting that this happened.
+therefore replaces the file.
+
+The key explanation is:
+
+> Locale belongs in the manifest only when it changes build meaning; otherwise it is
+> diagnostic noise rather than a semantic input.
 
 ## Exercise 10: Harden an inherited build
 
@@ -241,6 +303,9 @@ contain:
 The two environments do not need to be two physical machines. A container, CI runner, or
 deliberately changed `PATH`, `LC_ALL`, and `MODE` can expose assumptions. What matters is
 that the comparison is controlled and the conclusion follows from observed differences.
+
+The weakest boundary is often the first one to fix because it tends to make every later
+diagnosis noisier.
 
 ## What mastery-level answers sound like
 
