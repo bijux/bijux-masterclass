@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,176 +24,222 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are model answers for the `CertificateIssuanceService` scenario from the exercise
+page. They are meant to show how to turn resource ownership and failure reasoning into a
+packet that another maintainer can review without guessing who owns cleanup or retries.
 
-## How to use the answer page well
+## Running scenario recap
 
-Do not read the model answers first and then reduce Module 05 to "use context managers,
-log carefully, and avoid broad exceptions."
+`CertificateIssuanceService`:
 
-A better rhythm is:
+- reads a template from disk
+- fills certificate data
+- writes a PDF to object storage
+- records issuance in a repository
+- sends a confirmation email
+- may be retried by a job runner
 
-1. finish the exercise with your own survivability packet
-2. name the owner of cleanup, failure visibility, retry, and compatibility cost
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still leaves ownership scattered or callers guessing
+The design question is not "can this work?" The design question is "who owns each
+resource, what happens after partial failure, and what can callers safely assume?"
 
-What matters is whether the reasoning makes operational cost attach to a clear design
-owner.
+## Answer 1: Resource owner
 
-Strong Module 05 answers usually do five things:
+A clean ownership split looks like this:
 
-- they assign one explicit owner to every meaningful resource lifetime
-- they separate domain meaning from runtime or infrastructure trouble
-- they justify retry with idempotency rather than habit
-- they treat logs and public modules as contracts, not decoration
-- they extend behavior without bypassing invariants or publishing internals
+| Resource | Owner | Why |
+| --- | --- | --- |
+| template file handle | template-loading boundary | it opens and closes the file in one place |
+| temporary rendered PDF | issuance workflow boundary | it creates and deletes the temp artifact |
+| object storage client session | storage adapter | transport client lifetime should not leak to callers |
+| database transaction or unit of work | repository or application boundary | commit and rollback authority must stay explicit |
 
-The strongest self-study packets also leave behind six concrete artifacts:
+Callers should not need to know:
 
-- one resource-ownership table
-- one failure-boundary note
-- one retry review
-- one propagation and logging decision
-- one public-surface boundary note
-- one compatibility-safe extension review
+- where temp files live
+- how storage sessions are cleaned up
+- whether the email adapter reuses connections
 
-If your answers rely mostly on "handle errors better," the reasoning is still too vague.
+The bug when ownership is split is usually either leaked resources or duplicate cleanup
+that fails in confusing ways.
 
-## Answer 1: Name the resource owner
+## Answer 2: Context-manager boundary
 
-A strong answer identifies:
+A good `with` boundary surrounds the lifetime of the temporary rendered PDF:
 
-- the resource being acquired
-- the boundary that acquires and releases it
-- the caller that should stay free of cleanup obligations
+- create temp file
+- write rendered bytes
+- upload from the temp path or stream
+- always delete temp file on exit
 
-What goes wrong when ownership is split:
+Why not higher?
 
-- resources leak, cleanup is duplicated, and callers become responsible for details they
-  cannot verify consistently
+- callers would now own cleanup knowledge they should never need
 
-## Answer 2: Review one context-manager boundary
+Why not lower?
 
-The important pieces are:
+- cleanup would scatter across success and failure branches
 
-- which lifetime the context manager governs
-- what setup must already be valid before entry
-- what cleanup must happen on both success and failure
-- why the chosen boundary is the most reviewable place for that lifetime
+The point is visible lifetime, not just fewer lines.
 
-The main lesson is that context managers should make lifetime visible, not merely concise.
+## Answer 3: Unit-of-work boundary
 
-## Answer 3: Map one unit-of-work failure path
+One coherent unit of work might include:
 
-A strong answer names:
+- persist "certificate issued" record
+- persist storage object key
+- persist external issuance identifier if one exists
 
-- the set of changes that must succeed or fail together
-- the owner of commit and rollback authority
-- the partial state that must never escape
-- the proof surface that should fail if the boundary is incoherent
+That unit should either:
 
-The key review question is:
+- succeed together
+- or fail together with no visible "issued" record
 
-- who is allowed to say "nothing happened" after an interrupted workflow
+The email send should usually happen after the authoritative persistence step, because a
+notification can be retried more safely than a corrupted issuance record can be repaired.
 
-## Answer 4: Separate domain errors from boundary failures
+Operator evidence on failure should say:
 
-A strong answer distinguishes:
+- whether persistence committed
+- whether upload succeeded
+- whether email was attempted
 
-- failures that change the domain meaning callers must handle
-- failures caused by storage, transport, runtime, or environment trouble
+Without that evidence, recovery is guesswork.
 
-Flattening them together is harmful because:
+## Answer 4: Domain errors versus boundary failures
 
-- callers lose recovery guidance, operators lose signal, and review cannot tell which
-  faults belong to the model versus the boundary
+Example split:
 
-## Answer 5: Justify one retry policy honestly
+- "certificate already issued" is a domain error
+- "template file missing" is a boundary failure
+- "object storage timeout" is a boundary failure
+- "SMTP unavailable" is a boundary failure
 
-A strong answer explains:
+Caller meaning:
 
-- whether the operation is idempotent
-- which side effect repeats if retry is unsafe
-- where retry policy belongs so domain meaning does not drift
+- domain error tells the caller their request contradicts current truth
+- boundary failure tells the caller the request may be valid but the environment failed
 
-Retry is strongest when:
+Flattening them together harms both recovery and review:
 
-- the boundary can prove repeated execution preserves the same contract
+- callers cannot tell whether to retry
+- operators cannot tell whether the model or the environment is broken
 
-Retry is weakest when:
+## Answer 5: Retry policy
 
-- the system duplicates publication, writes, or externally visible actions
+Suppose the workflow crashes after the issuance record is stored but before the email is
+sent.
 
-## Answer 6: Review logging and propagation together
+Safe retry requires:
 
-Good answers usually show:
+- issuance record creation to be idempotent by a stable issuance key
+- upload path to tolerate same-key replacement or detect existing object safely
+- email send to be deduplicated or intentionally tolerant of repeat sends
 
-- one layer logging the evidence operators truly need
-- upstream layers propagating or translating errors intentionally
-- no duplicated noise across every layer
+Retry policy belongs near the workflow boundary, not inside callers, because callers
+should not need to reconstruct partial failure semantics themselves.
 
-The main lesson is:
+## Answer 6: Logging and propagation
 
-- a log line should support diagnosis, while the propagated error should support the caller
+Good logging split:
 
-## Answer 7: Draw a real public-surface boundary
+- storage adapter logs transport details only where those details are actionable
+- workflow boundary logs one high-level failure summary with issuance identifiers
+- propagated exception is translated into a caller-meaningful boundary failure
 
-A strong answer names:
+Bad pattern:
 
-- which modules are stable import contracts
-- which modules remain internal implementation detail
-- what accidental import pattern would publish internals
+- file loader logs
+- storage adapter logs
+- workflow logs
+- caller logs again
 
-The maintenance cost of leaking internals is:
+That produces four noisy records for one fault and still leaves the caller unclear on
+what happened.
 
-- future refactors become breaking changes because callers now depend on hidden structure
+## Answer 7: Public surface
 
-## Answer 8: Diagnose one design smell under failure pressure
+Stable public surface:
 
-A strong answer identifies a smell such as:
+- `issue_certificate(attendee_id)`
+- maybe `reissue_certificate(attendee_id)` if the business supports it
 
-- scattered cleanup
-- generic exception flattening
-- retry logic copied across callers
-- translation concerns leaking into the model
+Internal details:
 
-The repair is strong when:
+- temp-file handling
+- storage bucket naming
+- raw SMTP client behavior
+- retry loop implementation
 
-- ownership becomes narrower, proof gets clearer, and fewer layers must remember the same
-  rule
+If callers start depending on internal adapters directly, future changes such as moving
+from temp-file rendering to in-memory streaming become breaking changes for no good
+reason.
 
-## Answer 9: Extend behavior without bypassing invariants
+## Answer 8: Failure-shaped smell
 
-The important pieces are:
+A common smell is copied retry logic:
 
-- where the new behavior attaches
-- which existing invariant remains central
-- which shortcut would bypass the old contract
-- what proof surface demonstrates that the extension preserved prior behavior
+- workflow retries upload one way
+- caller retries email another way
+- scheduled job retries the whole thing a third way
 
-The main lesson is that evolution should deepen the boundary, not route around it.
+Why it survives green tests:
 
-## Answer 10: Produce a survivability decision packet
+- happy-path tests do not expose contradictory retry ownership
 
-The packet is strong when another maintainer can answer:
+Repair:
 
-- who owns each resource lifetime
-- who may retry and under what condition
-- what callers are promised after failure
-- which modules are safe to depend on
-- how new behavior can land without weakening the old promise
+- move retry rules to the workflow boundary
+- give adapters simpler contracts
+- document which side effects are idempotent and which are not
 
-If different readers infer different owners, the packet is still too ambiguous.
+That narrows responsibility and makes review possible.
+
+## Answer 9: Safe extension
+
+Add requirement:
+
+- also generate a PNG preview for the certificate
+
+Safe extension path:
+
+- attach preview generation inside the issuance workflow boundary
+- reuse the same cleanup owner for temp artifacts
+- keep issuance record semantics unchanged
+
+Unsafe shortcut:
+
+- let a caller generate preview separately and hope it remembers the same cleanup,
+  logging, and retry rules
+
+The proof should show that:
+
+- old issuance behavior still works
+- cleanup still happens once
+- retries do not duplicate externally visible success
+
+## Answer 10: Survivability packet
+
+A strong final packet says something like:
+
+> `CertificateIssuanceService` owns the workflow contract. File and temp-artifact
+> lifetimes are hidden behind explicit cleanup boundaries. Persistence of the issuance
+> record is authoritative; email delivery is downstream and retryable. Domain errors are
+> separated from transport failures. The main remaining risk is duplicate outward
+> notification, so retry policy and idempotency keys must be reviewed together.
+
+That note is useful because it tells the next maintainer:
+
+- who owns cleanup
+- where truth is committed
+- what can be retried
+- what still deserves pressure testing
 
 ## Self-check
 
-If your answers consistently explain:
+You are using Module 05 correctly when another maintainer can answer all of these from
+your packet:
 
-- who owns cleanup for one meaningful path
-- where domain errors stop and boundary failures begin
-- why one retry is safe or unsafe
-- how logging and propagation serve different audiences
-- how public surface and safe extension fit the same contract story
-
-then you are using Module 05 correctly.
+- who cleans up temp artifacts
+- whether a rerun can duplicate visible work
+- which failures mean "bad request" versus "bad environment"
+- which API callers can depend on without learning storage or email internals
