@@ -29,6 +29,9 @@ Use this page after attempting the exercises yourself. The point is not to match
 example literally. The point is to compare your reasoning against answers that keep
 descriptor-system power, cache policy, backend ownership, and framework boundaries honest.
 
+This page matters because answer keys can accidentally train imitation instead of review.
+Use the answers here as reasoning checkpoints, not as short phrases to copy.
+
 ## Answer 1: Design one cached field honestly
 
 Example answer:
@@ -43,6 +46,16 @@ Good conclusion:
 
 The cache design is not complete until the invalidation story is explicit. “It caches the
 value” is not enough by itself.
+
+Reasoning checkpoint:
+
+- can you point to the dependency that makes the cache stale?
+- can you say who clears it without using vague words such as "somewhere" or "later"?
+
+Repair move if your answer is weak:
+
+- add the exact cache slot
+- add the exact invalidation trigger
 
 ## Answer 2: Review one external-storage field
 
@@ -62,6 +75,15 @@ Good conclusion:
 Attribute access now hides storage I/O and serialization work, so the design needs clear
 documentation or observability rather than pretending the field is purely local.
 
+Reasoning checkpoint:
+
+- did you name the authoritative backend slot?
+- did you identify one cost hidden by attribute syntax?
+
+Repair move if your answer is weak:
+
+- rewrite the answer until a reviewer can tell where truth lives and why the access is not purely local
+
 ## Answer 3: Compose one wrapper field
 
 Example answer:
@@ -73,6 +95,15 @@ Good conclusion:
 
 Composition works well when each layer owns one extra concern and forwarding of
 `__set_name__`, `__get__`, and `__set__` stays consistent.
+
+Reasoning checkpoint:
+
+- can you state the inner field contract in one sentence?
+- can you justify the wrapper without saying only "for flexibility"?
+
+Repair move if your answer is weak:
+
+- remove one wrapper mentally and restate what behavior actually changes
 
 ## Answer 4: Validate one narrow hint subset
 
@@ -92,6 +123,15 @@ Good conclusion:
 
 This is an honest hint-driven field because it names its supported surface clearly and
 does not claim to understand every typing construct.
+
+Reasoning checkpoint:
+
+- did you name one supported hint surface and one refused one?
+- did you describe one coercion path instead of saying "it validates types"?
+
+Repair move if your answer is weak:
+
+- add one concrete refused hint form and one concrete coercion boundary
 
 ## Answer 5: Reject one descriptor that became architecture
 
@@ -115,6 +155,15 @@ Good conclusion:
 Once multiple records or lifecycle phases must be coordinated, the descriptor is no longer
 the whole owner. The design has crossed into framework architecture.
 
+Reasoning checkpoint:
+
+- did you name the extra responsibility precisely?
+- did you choose a stronger owner that can actually see that wider lifecycle?
+
+Repair move if your answer is weak:
+
+- replace generic words such as "system" or "framework stuff" with one concrete owner like session, repository, or unit of work
+
 ## Answer 6: Review the educational mini relational model
 
 Example answer:
@@ -136,6 +185,15 @@ The mini relational model is educational because it exposes the mechanism clearl
 omits the infrastructure a real ORM would need, such as transactions, identity maps, and
 query planning.
 
+Reasoning checkpoint:
+
+- did you identify one field-level win and one framework-level omission?
+- did you explicitly refuse at least one production claim?
+
+Repair move if your answer is weak:
+
+- add one sentence beginning with "this example does not prove..."
+
 ## Answer 7: Make one backend access path observable
 
 Example answer:
@@ -152,6 +210,15 @@ Good conclusion:
 
 Backend-backed attribute access is harder to reason about when the I/O stays invisible.
 An observation surface makes the hidden cost and lifecycle easier to teach and review.
+
+Reasoning checkpoint:
+
+- did you pick one observation surface that someone can actually inspect?
+- did you connect it to one hidden cost or failure path?
+
+Repair move if your answer is weak:
+
+- add one counter, log, or helper that would make the access path visible
 
 ## Answer 8: Separate one field concern from one framework concern
 
@@ -173,6 +240,15 @@ Good conclusion:
 The split makes review easier because field semantics stay local while coordination logic
 moves to an owner that can see the wider model lifecycle.
 
+Reasoning checkpoint:
+
+- did you separate field semantics from coordination rather than only renaming them?
+- did you reject one stronger owner as unnecessary at the current scale?
+
+Repair move if your answer is weak:
+
+- redraw the boundary as "stays in field" versus "moves out" and justify each line
+
 ## Answer 9: Compare honest field claims with overstated framework claims
 
 Example answer:
@@ -191,6 +267,15 @@ The second version is misleading because words such as "whole model" and
 "automatically" imply broader orchestration than one field-level owner can honestly
 guarantee.
 
+Reasoning checkpoint:
+
+- can you identify the exact words that overstate power?
+- can you rewrite them into one bounded field claim?
+
+Repair move if your answer is weak:
+
+- highlight the exaggerated words, then replace them with the smallest honest promise
+
 ## Answer 10: Produce a descriptor-system packet
 
 The packet is strong when another learner can answer:
@@ -199,6 +284,12 @@ The packet is strong when another learner can answer:
 - where the real source of truth lives
 - how invalidation or observation works
 - when broader framework coordination should move out of the descriptor
+
+Add these final checks to your own packet:
+
+- one refused weaker owner
+- one refused stronger owner
+- one remaining uncertainty you would audit next
 
 ## What strong Module 08 answers have in common
 
@@ -215,6 +306,15 @@ Across the whole set, strong answers share the same habits:
 If an answer still sounds like "framework behavior can live in the descriptor somehow,"
 revise it until you can say exactly what the descriptor owns and what should move out of
 it.
+
+## Exit check for this answer key
+
+Before leaving Module 08, make sure you can:
+
+- trace one answer back to concrete code or storage evidence
+- rewrite one weak answer into a stronger one
+- identify one refused claim in the worked example
+- name one precise escalation boundary from field logic to framework ownership
 
 ## Continue through Module 08
 
