@@ -26,9 +26,9 @@ flowchart LR
 
 This lesson is about one hard truth:
 
-Publishing a plugin seam is not the same as publishing a capability protocol.
+- publishing a plugin seam is not the same as publishing a capability protocol
 
-The moment outside code may be discovered and activated, you now own:
+The moment outside code may be discovered and activated, the host now owns:
 
 - how candidates become visible
 - how they prove compatibility
@@ -48,9 +48,9 @@ Before inventing plugins, ask:
 
 - do we only need one replaceable adapter?
 - do we need several trusted implementations selected by configuration?
-- do we need third parties to add new implementations without changing host code?
+- do we need third parties to add new implementations without host-code changes?
 
-Only the third case really pushes you into a plugin host.
+Only the third case truly pushes you into a plugin host.
 
 If the pressure is smaller than that, stop early and keep the seam cheaper.
 
@@ -67,15 +67,16 @@ Good discovery rules are:
 Weak discovery rules sound flexible but age badly:
 
 - "scan installed modules and see what looks right"
-- "import every package under this prefix"
+- "import everything under this prefix"
 - "accept anything with a method called `publish`"
 
-If discovery is vague, governance has already slipped.
+If discovery is vague, governance has already slipped. The host cannot defend what it
+does not define clearly.
 
 ## Registration is the real contract gate
 
-Discovery only finds candidates.
-Registration decides whether one of them is actually allowed to participate.
+Discovery only finds candidates. Registration decides whether a candidate is allowed to
+participate.
 
 For an `IncidentSink` plugin, registration should validate at least:
 
@@ -83,7 +84,7 @@ For an `IncidentSink` plugin, registration should validate at least:
 - supported contract or protocol version
 - required configuration shape
 - declared capabilities or limits
-- duplicate role or duplicate name conflicts
+- duplicate-role or duplicate-name conflicts
 
 The host should reject a bad plugin before live traffic depends on it.
 
@@ -100,7 +101,7 @@ Ask:
 - what signal shows a plugin is degraded?
 - what retry or backoff policy belongs to the host rather than the plugin?
 
-These questions are not operational extras. They are part of the seam.
+These are not operational extras. They are part of the seam.
 
 ## Sandboxing is not solved by a protocol
 
@@ -115,8 +116,8 @@ An in-process plugin still shares:
 - dependency space
 - secrets reachable through the host
 
-That means a Python protocol can constrain cooperative code. It cannot turn untrusted
-code into safe code.
+A Python protocol can constrain cooperative code. It cannot turn untrusted code into
+safe code.
 
 If the plugin is not trusted, you need a stronger boundary than a method call:
 
@@ -126,11 +127,11 @@ If the plugin is not trusted, you need a stronger boundary than a method call:
 
 Anything weaker should be described honestly as cooperation, not sandboxing.
 
-## A concrete host design for the capstone
+## Worked capstone host design
 
 An honest capstone host might work like this:
 
-1. the facade loads configured sink plugin identifiers
+1. the facade loads configured sink identifiers
 2. discovery resolves those identifiers through one explicit registry
 3. registration checks protocol version, plugin name, and configuration schema
 4. activation creates a host-owned wrapper with logging, failure policy, and disablement
@@ -140,7 +141,8 @@ That design keeps authority in the host:
 
 - the host owns discovery rules
 - the host owns failure policy
-- the plugin owns only its sink behavior
+- the host owns disablement
+- the plugin owns only its bounded sink behavior
 
 This is the right direction because extension does not get to steal governance.
 
@@ -154,37 +156,52 @@ Do not build plugins when the real need is:
 
 In those cases, a capability seam plus clear construction rules is usually enough.
 
-Plugins become honest only when outside addition pressure is real and ongoing.
+Plugins become honest only when outsider addition pressure is real and ongoing.
 
-## Review checklist
+## Build a plugin-host packet
 
-Use these questions before blessing a new plugin story:
+If you really need a plugin host, keep a short packet with:
 
-- Is there a real third-party extension need, or only a replaceable adapter need?
-- Can discovery be explained in one sentence without hand-waving?
-- What exactly does registration reject before activation?
-- Who owns retry, disablement, and degraded-mode policy?
-- Is the code trusted enough for in-process loading, or do we need a stronger boundary?
+- discovery rule
+- registration checks
+- activation lifecycle
+- disablement and degraded-mode policy
+- trust level of loaded code
+- proof route for registration and runtime behavior
 
-If those answers are weak, the plugin system is still mostly aspiration.
+This packet lets another maintainer review the host as a trust boundary, not as a
+fashionable extensibility feature.
 
 ## Common failure modes
 
-- inventing plugins to avoid making one narrow seam explicit
+- inventing plugins to avoid naming one narrow seam explicitly
 - accepting vague discovery because explicit registration feels inconvenient
 - validating method names but not semantic compatibility
 - calling in-process cooperation "sandboxing"
 - letting plugins mutate host internals because the public facade is too thin
 
+## Plugin-host review card
+
+Use this card before blessing a new plugin story:
+
+| Question | What a strong answer sounds like |
+| --- | --- |
+| do we need a real plugin host at all? | "yes, because outsider implementations must be added over time" or a clear no |
+| how are candidates discovered? | "through one explicit registry or configured entrypoint" |
+| what does registration reject? | "bad version, bad schema, duplicate identity, unsupported capability" |
+| who owns runtime failure and disablement? | "the host, not the plugin" |
+| is the code trusted enough for in-process loading? | "yes, and we say so honestly" or "no, stronger isolation needed" |
+
 ## Capstone connection
 
-Use this lesson to review the incident sink seam and answer:
+Use this page to review the incident sink seam and answer:
 
 - should it stay a capability seam or become a real plugin host?
 - which registration checks would reject a bad sink before runtime work begins?
 - which proposed sink would be too risky to trust in-process?
+- what host-owned failure policy would still preserve workflow truth?
 
-That review turns extension excitement into a governed architectural choice.
+That review turns extension enthusiasm into a governed architectural choice.
 
 ## Exit check
 
