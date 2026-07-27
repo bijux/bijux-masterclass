@@ -124,6 +124,135 @@ Example of a breaking change:
 This may be a better evaluation design, but it is not the same metric contract. It should
 not be interpreted as a simple improvement over fixed-threshold F1.
 
+## Audit schema evolution with paired documents
+
+The generated audit separates four changes that are easy to blur:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/metric-contracts/workspace/
+├── additive-metric/evidence/
+├── unit-drift/evidence/
+├── schema-version-drift/evidence/
+└── missing-population-identity/evidence/
+```
+
+For each case, compare `baseline-metrics.json` with `candidate-metrics.json` before reading
+`comparison.json`.
+
+### Additive evolution
+
+The additive candidate keeps the primary metric:
+
+```text
+positive_class_f1_at_fixed_threshold
+```
+
+with the same:
+
+- definition
+- unit
+- aggregation
+- population identity
+- threshold
+- schema version
+
+It adds:
+
+```text
+false_positive_rate_at_fixed_threshold
+```
+
+The generated comparison records:
+
+```json
+{
+  "added": ["false_positive_rate_at_fixed_threshold"],
+  "removed": []
+}
+```
+
+The prior F1 series remains comparable. The new false-positive-rate series starts at this
+record; it does not gain imaginary history.
+
+### Unit drift behind a stable key
+
+The unit-drift candidate keeps the primary key and changes:
+
+```text
+fraction -> percent
+```
+
+That is a breaking semantic change even though:
+
+- the JSON path is stable
+- the metric definition text is stable
+- the population is stable
+- DVC can subtract the numbers
+
+The generated DVC delta is `77.5241`. A parser sees valid numbers under one path. A
+reviewer sees incompatible scales.
+
+### Version drift
+
+The schema-version candidate changes:
+
+```text
+1 -> 2
+```
+
+while preserving the other fields. The audit rejects the direct comparison because the
+new version announces an unproven compatibility boundary.
+
+A version number is a warning and routing mechanism, not proof by itself:
+
+- equal versions do not guarantee equal meaning if authors silently changed definitions
+- different versions do not prove values are incomparable if a reviewed compatibility
+  mapping exists
+
+In this specimen no mapping exists, so the safe decision is rejection.
+
+### Missing evidence
+
+The missing-population candidate still contains:
+
+```json
+{
+  "rows": 120
+}
+```
+
+It omits population identity. This is not a harmless optional-field change. The reviewer
+can no longer establish that the same records were measured.
+
+The correct response is not to assume continuity from equal counts. It is to abstain until
+identity evidence is restored.
+
+## Classify changes by preserved claims
+
+Use this decision table instead of classifying by JSON syntax alone:
+
+| Change | Existing primary claim preserved? | Direct historical comparison |
+| --- | --- | --- |
+| add a new metric; preserve old contract | yes | allowed for existing metric |
+| rename or remove primary metric | no | blocked unless mapped |
+| change fraction to percent | no | blocked until normalized under an explicit contract |
+| change schema version without mapping | unproven | blocked |
+| omit population identity | unproven | abstain |
+| reorder deterministic JSON keys | yes | allowed; review noise only |
+
+```mermaid
+flowchart TD
+  change["metric document changes"] --> old["can the old claim still be reconstructed?"]
+  old -->|yes| existing["compare preserved metrics"]
+  old -->|no| breakage["establish a new baseline"]
+  old -->|evidence missing| abstain["abstain and repair evidence"]
+  existing --> added["start separate history for added metrics"]
+```
+
+The question is not whether the file changed. Metric files should change when results do.
+The question is whether a reviewer can reconstruct the same measurement contract on both
+sides.
+
 ## Metric files should be boring to parse
 
 Metric files are not a place for surprise.
@@ -171,6 +300,10 @@ You understand this core when you can inspect a metric file and answer:
 - whether a file change is additive or meaning-changing
 - whether old and new values are safe to compare
 - which documentation or review surface explains the metric contract
+
+Create a four-row classification from the generated cases above. For each row, name one
+field that is stable, one field that changes or disappears, and the resulting review
+decision.
 
 The goal is a metric file that ages well. Two years later, the team should still know what
 the number meant.
