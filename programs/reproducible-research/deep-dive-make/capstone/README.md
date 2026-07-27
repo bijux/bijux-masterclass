@@ -60,6 +60,7 @@ first-contact playground for Make syntax.
 | how can a successful Make run leave authored or generated consumers stale | `make incremental-fault-audit` | compare missing-edge and declared-edge traces |
 | can clock state, false ordering, or overlapping rules change successful output meaning | `make semantic-fault-audit` | compare all seven broken and control rows |
 | can non-file state, recursion, or required tools violate the environment contract | `make environment-contract-audit` | compare each defect with its declared control |
+| can private callers, policy scope, or flat paths violate architecture ownership | `make architecture-contract-audit` | compare all six defect and control rows |
 | did cost change under compatible context and equivalent work | `make performance-compare` | inspect context, requested work, trusted outputs, then deltas |
 | do controlled concurrency faults match their promised signatures | `make incident-audit` | inspect semantic evidence before `make proof` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
@@ -101,6 +102,8 @@ bounded review route without turning the capstone into a browsing exercise.
 | `incremental-fault-audit` | missing semantic edges stay stale while declared controls refresh | the evidence route proves it can discriminate graph lies |
 | `semantic-fault-audit` | clock, order-only, and pattern-selection models match paired contracts | successful execution is not mistaken for honest semantics |
 | `environment-contract-audit` | stale state, hidden recursion, and late tool checks match their paired controls | external facts have explicit evaluation and failure boundaries |
+| `architecture-contract-audit` | public caller, include-policy, and output-ownership models match paired contracts | successful builds do not conceal ownership drift |
+| `architecture-contract-selftest` | altered architecture controls are rejected | the architecture audit is discriminating, not ceremonial |
 | `perf` | governed scenarios bind provenance, a complete change-impact matrix, samples, and outputs | a local baseline is attributable and reviewable |
 | `performance-selftest` | context, rebuild, capture, and comparison dishonesty is rejected | performance claims are gated, not trusted |
 | `proof` | the sanctioned review bundles include positive invariants and paired missing-edge controls | stewardship has a durable discriminating route |
@@ -135,6 +138,7 @@ Use these areas deliberately:
 All capstone documentation lives under `docs/`:
 
 - [ARCHITECTURE.md](docs/architecture.md)
+- [ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md](docs/architecture-contract-audit-guide.md)
 - [CONTRACT_AUDIT_GUIDE.md](docs/contract-audit-guide.md)
 - [INCIDENT_REVIEW_GUIDE.md](docs/incident-review-guide.md)
 - [INDEX.md](docs/index.md)

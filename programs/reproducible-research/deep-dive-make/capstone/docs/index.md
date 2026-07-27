@@ -40,11 +40,13 @@ Use this page as the stable entry route for the Make capstone docs.
 | why missing edges can produce successful stale builds | `INCREMENTAL_FAULT_AUDIT_GUIDE.md` | `make incremental-fault-audit` |
 | how hidden state, false order-only edges, and overlapping rules change meaning | `SEMANTIC_FAULT_AUDIT_GUIDE.md` | `make semantic-fault-audit` |
 | how non-file state, recursion, and required tools cross the build boundary | `ENVIRONMENT_CONTRACT_AUDIT_GUIDE.md` | `make environment-contract-audit` |
+| how callers, include policy, and output paths preserve architecture ownership | `ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md` | `make architecture-contract-audit` |
 | how the system is layered | `ARCHITECTURE.md` | `PROFILE_AUDIT_GUIDE.md` and `make proof` |
 
 ## Stable local doc surface
 
 - [Architecture Guide](architecture.md)
+- [Architecture Contract Audit Guide](architecture-contract-audit-guide.md)
 - [Contract Audit Guide](contract-audit-guide.md)
 - [Incident Review Guide](incident-review-guide.md)
 - [Incremental Fault Audit Guide](incremental-fault-audit-guide.md)
