@@ -123,9 +123,14 @@ review, and prove repeatedly.
 
 ## Exercises
 
-- Name one surface that should become public and one surface that should stay private, then justify both in terms of ownership.
-- Review one extension seam and explain which governance rule makes it safe enough to publish.
-- Compare a facade-based extension point with direct internal imports and explain which consumer behavior each one encourages.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete governance review route:
+public-surface selection, extension-seam discipline, deprecation and compatibility
+rules, executable documentation, and import-boundary enforcement.
 
 ## Capstone connection
 
