@@ -26,8 +26,18 @@ flowchart LR
 <!-- page-maps:end -->
 
 Use this guide when the capstone technically makes sense but you still need to know why
-each mechanism owns the behavior it owns. The goal is to keep the capstone small, honest,
-and reviewable instead of letting it drift into "the framework can do anything."
+each mechanism owns the behavior it owns. The capstone is small on purpose. If the
+boundaries become vague, the metaprogramming story stops teaching and starts hand-waving.
+
+## The main boundary question
+
+Before proposing or reviewing any change, ask:
+
+> Is this really a field rule, a wrapper rule, a class-definition rule, a concrete plugin
+> behavior, or a public command/reporting rule?
+
+That question is more important than whether the change "works," because a working change
+in the wrong layer teaches the wrong lesson.
 
 ## Callable boundary
 
@@ -44,6 +54,12 @@ This boundary does not own:
 - field validation
 - class registration
 - manifest assembly
+
+Review questions:
+
+- Does the wrapper still behave like the original callable from the outside?
+- Is the added runtime state visible enough to inspect later?
+- Did wrapper policy stay separate from per-instance field semantics?
 
 Reject or redesign when:
 
@@ -67,6 +83,12 @@ This boundary does not own:
 - action invocation behavior
 - broad orchestration policy
 
+Review questions:
+
+- Is the rule really about attribute ownership or configuration shape?
+- Is per-instance storage still isolated between instances?
+- Is metadata exported clearly enough that the field remains observable?
+
 Reject or redesign when:
 
 - a descriptor starts owning behavior that is not really about attribute access
@@ -89,11 +111,45 @@ This boundary does not own:
 - descriptor coercion details
 - invocation history recording
 
+Review questions:
+
+- Is the change genuinely about class-definition-time work?
+- Could a class decorator or explicit helper own the rule more honestly?
+- Does the resulting public surface stay reviewable after class creation finishes?
+
 Reject or redesign when:
 
 - the metaclass exists only because it feels powerful
 - a class decorator or explicit registration step could own the same rule more honestly
-- class-definition work becomes surprising, heavy, or untestable
+- class-definition work becomes surprising, heavy, or hard to test
+
+## Concrete plugin boundary
+
+**Owner:** `plugins.py`
+
+This boundary owns:
+
+- realistic adapter behavior
+- concrete payload shaping
+- ordinary runtime code that keeps the framework honest
+
+This boundary does not own:
+
+- framework-wide policy
+- registration rules
+- hidden inspection behavior
+
+Review questions:
+
+- Is this behavior specific to one plugin, or are we about to promote it too early?
+- Does the plugin still look like ordinary application code?
+- Would moving this into the framework make the abstraction less honest?
+
+Reject or redesign when:
+
+- a plugin-specific concern becomes framework policy without repeated need
+- concrete behavior disappears into generic hooks too early
+- reviewers cannot tell what one adapter actually does
 
 ## Governance boundary
 
@@ -111,6 +167,12 @@ This boundary does not own:
 - unreviewable import-time tricks
 - dynamic execution hidden from ordinary inspection routes
 
+Review questions:
+
+- Can another reviewer observe the behavior without folklore?
+- Does the CLI report the runtime, or is it secretly replacing it?
+- Does the proof route still match the design claim it is supposed to defend?
+
 Reject or redesign when:
 
 - the runtime becomes easier to use than to observe
@@ -126,6 +188,9 @@ Reject or redesign when:
 5. A constructor signature is generated from the collected fields.
 6. Concrete plugins receive their group and public plugin name.
 7. Concrete plugins are registered in the deterministic runtime registry.
+
+This sequence matters because beginners often confuse "defined on the class" with
+"decided at runtime." The capstone separates those moments on purpose.
 
 ## Choose the lowest-power honest mechanism
 
@@ -145,9 +210,11 @@ Reject or redesign when:
 - pair plugin changes with `make plugin`, `make demo`, and runtime tests
 - pair CLI changes with `tests/test_cli.py` and the closest saved bundle route
 
-## Best companion guides
+## Good stopping point
 
-- `ARCHITECTURE.md`
-- `PACKAGE_GUIDE.md`
-- `EXTENSION_GUIDE.md`
-- `TEST_GUIDE.md`
+Stop when you can name:
+
+- which mechanism should own the next change
+- which weaker mechanism would be insufficient
+- which stronger mechanism would be unnecessary
+- which proof route should defend the choice
