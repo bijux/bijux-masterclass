@@ -32,6 +32,43 @@ flowchart TD
 If a split does not improve ownership, it is noise. If a module does not expose an
 interface, it is camouflage. If a gate does not defend a named boundary, it is ceremony.
 
+## Begin with the paired module audit
+
+From the course directory:
+
+```bash
+make capstone-module-interface-audit
+```
+
+The bundle is written under:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/module-interfaces/
+```
+
+Read:
+
+1. `route.txt`
+2. `MODULE_INTERFACE_AUDIT_GUIDE.md`
+3. `summary.tsv`
+4. both caller `Snakefile` files
+5. both private module `Snakefile` files
+6. paired rule-list and dry-run traces
+7. artifact observations in `report.json`
+
+The two workflows expose the same rules, plan successfully, and publish an artifact. The
+control binds input, output, and policy while passing a narrow config subtree. The
+counterexample passes broad config and privately selects policy the caller never names.
+
+Both findings pass:
+
+```text
+EXPLICIT_MODULE_CONTRACT_PRESERVED
+HIDDEN_MODULE_COUPLING_REPRODUCED
+```
+
+Always read the finding with the result. The hidden-coupling pass reproduces a defect.
+
 ## The running lab for the whole day
 
 Use one repository story all day instead of several unrelated refactors:
@@ -50,9 +87,10 @@ Every page should help you answer one concrete review question about that reposi
 | --- | --- | --- |
 | ownership baseline | map the current rule graph and who owns each concern | ownership table and rule list |
 | include split | move one coherent concern into `workflow/rules/` | short entrypoint plus before/after graph |
-| interface decision | decide whether one boundary stays an include or becomes a module | interface decision record |
+| interface baseline | compare explicit and hidden module specimens | source, plan, and artifact observations |
+| interface decision | add a second caller without editing module internals | bindings and override matrix |
 | file contract | document public paths and internal paths separately | file contract note plus schema |
-| review gates | choose the smallest honest proof route for the new structure | gate table and validation output |
+| review gates | mutate the interface and require rejection | gate table and preserved failure |
 | independent practice | complete all ten exercises | refactored repository and review packet |
 
 The day is successful when the workflow is easier to explain after the split than before
@@ -78,6 +116,7 @@ Read the module in that order the first time.
 The route matters:
 
 - start with ownership before you talk about modules
+- compare successful explicit and hidden module models before promoting a boundary
 - document the public contract before you design the gate
 - review resource boundaries after the structural split is already clear
 
@@ -141,6 +180,8 @@ snakemake --list-rules
 snakemake --rulegraph mermaid-js > rulegraph.mmd
 snakemake -n
 snakemake --lint
+make capstone-module-interface-audit
+make capstone-module-interface-selftest
 make capstone-tour
 ```
 
@@ -150,6 +191,8 @@ They answer different questions:
 - whether the structural split changed the graph you intended to preserve
 - whether the planning surface still matches the contract
 - whether obvious design smells are already exposed
+- whether module callers expose config, paths, and artifact policy
+- whether the interface gate rejects dishonest evidence
 - how the capstone expresses boundaries through a complete walkthrough
 
 ## Exit standard
@@ -157,10 +200,14 @@ They answer different questions:
 Do not move on until all of these are true:
 
 - you can explain one split that belongs in `workflow/rules/` and one that deserves `workflow/modules/`
+- you can trace module declaration, imported rule, caller bindings, and private implementation separately
+- you can explain why identical rule lists and dry-runs do not prove identical interface ownership
 - you can name one public path family and one internal path family without hesitation
 - you can describe one schema or validation check that protects a real interface
 - you can say which gate should fail first if the structural refactor quietly breaks trust
 - you can explain one resource declaration as a portable workflow claim rather than scheduler folklore
+- you have added a second caller without editing module internals
+- the module interface audit and its rejection tests pass
 - you have completed all ten exercises and preserved behavior through at least one structural split
 
 When those become ordinary, Module 04 has done its job.
