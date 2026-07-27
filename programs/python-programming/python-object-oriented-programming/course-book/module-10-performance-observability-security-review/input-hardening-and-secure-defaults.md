@@ -24,20 +24,22 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is about making boundary behavior predictable before expensive or dangerous
-work begins.
+This lesson is about deciding what the system is willing to trust before expensive or
+dangerous work begins.
 
-Weak input boundaries create long-lived problems:
+Weak boundaries create long-lived problems:
 
 - ambiguous modes
 - oversized payloads
 - unsupported combinations that fail late
 - permissive defaults that become public debt
 
-Hardening matters because boundary ambiguity is both a correctness problem and a
-security problem.
+Hardening matters because unclear input is not only a correctness problem. It is also an
+operations problem and often a security problem. Every boundary that guesses what the
+caller meant increases the work required from the domain model and the maintainers who
+must diagnose it later.
 
-## Keep one boundary path visible
+## Keep one boundary route visible
 
 Use one capstone route:
 
@@ -45,98 +47,124 @@ Use one capstone route:
 2. the host decides whether it is valid enough to normalize
 3. the workflow begins durable or side-effecting work
 
-The design question is:
+Now hold one question in view:
 
-What should be rejected early so that the domain and runtime never have to guess what
-the caller meant?
+- what should be rejected here so the rest of the system never has to guess?
 
-That is the core of input hardening.
+That question is the center of input hardening.
 
-## Secure defaults are future governance decisions
+## Secure defaults are governance decisions
 
-If an option is omitted, the default behavior should usually favor:
+When a caller omits a choice, the default behavior should usually favor:
 
 - less privilege
 - narrower exposure
-- clearer rejection
 - smaller blast radius
+- clearer rejection over silent widening
 
-Permissive defaults often feel convenient in the first version and then become very
-expensive to change later because callers come to depend on them.
+Why?
 
-That is why secure defaults belong in the first design discussion, not only in a later
-security pass.
+Because permissive defaults are easy to add and expensive to retract. The first version
+may treat them as convenience. Later versions inherit them as a public contract.
 
-## Validate before writes, network calls, or activation
+That is why secure defaults belong in the first design discussion, not in a late
+"security pass."
 
-Boundary checks should usually happen before:
+## Reject before durable or outward work begins
+
+Boundary checks are strongest when they happen before:
 
 - authoritative writes
 - network calls
-- plugin activation
+- sink or plugin activation
 - expensive background work
 - artifact generation
 
-Early rejection is valuable because it:
+Early rejection helps because it:
 
 - avoids partial side effects
 - shortens diagnosis
-- keeps bad state farther from the domain model
+- keeps unclear state away from the domain model
+- reduces recovery work if the input was wrong all along
 
-Late rejection often means the wrong boundary has already been given too much trust.
+Late rejection often means the wrong boundary was trusted too far.
 
-## Bounds are part of the public contract
+## Bounds are part of the contract
 
-Hardening is not only about field presence.
-It also includes:
+Hardening is not only about field presence. It also includes:
 
 - size limits
-- count limits
-- allowed mode combinations
-- timeout ceilings
-- bounded retry or batching parameters
+- list or batch count limits
+- supported mode combinations
+- retry ceilings
+- timeout and window bounds
 
-These are not arbitrary restrictions.
-They define the safe operational envelope another maintainer can reason about.
+These are not arbitrary restrictions. They define the safe operational envelope a
+maintainer can reason about.
 
-If the envelope stays implicit, the system remains easy to misuse.
+If the envelope is implicit, two bad things happen:
+
+- callers discover behavior by accident
+- maintainers debug failures with no clear rule to point to
+
+Clear bounds make both security and operations easier.
 
 ## Strong validation supports the object model
 
-Secure parsing and domain integrity reinforce each other.
+This course is about object systems, so the hardening lesson must connect back to the
+model.
 
-Clear semantic types, strict enums, and explicit transitions reduce:
+Clear semantic types, strict enums, and explicit state transitions reduce:
 
 - accidental invalid states
-- surprising coercions
+- coercions that hide caller mistakes
 - exploit-friendly ambiguity
-- caller confusion about what the system actually accepts
+- pressure to scatter cleanup logic across the runtime
 
-This is why hardening belongs in an OOP course: it protects the same ownership and
-truth boundaries the object model depends on.
+The point is not only to reject bad payloads. The point is to protect the truth boundary
+that the object model depends on.
 
-## A worked capstone boundary
+## Worked capstone boundary review
 
 Suppose the capstone accepts:
 
-- a callback payload
-- an administrative reissue command
-- configuration for an outward sink
+- callback payloads
+- administrative certificate reissue commands
+- configuration for outward sinks or artifact behavior
 
-An honest hardening review might require:
+A strong hardening review might require:
 
-- rejecting unknown states before they reach domain commands
-- bounding identifier lengths and list sizes
-- refusing unsupported mode combinations up front
-- defaulting to disabled or narrow behavior when configuration is omitted
+- reject unknown callback states before they reach a domain command
+- bound identifier length, list size, or batch width before any durable work
+- refuse unsupported mode combinations up front
+- default omitted configuration to disabled or narrow behavior
+- reject malformed sink configuration before the workflow tries to activate it
 
 What it should not do:
 
-- let optional fields silently widen authority
-- pass remote payloads through "for later convenience"
-- activate sinks or side effects before validating configuration shape
+- accept extra fields "for future convenience"
+- widen authority silently when optional values are present
+- let outward work begin and fail only after partial side effects
 
-That is the difference between a soft boundary and a governed one.
+This is the difference between a boundary that governs input and one that merely
+transports it.
+
+## Design safer defaults intentionally
+
+For each omitted option, ask:
+
+- if the caller forgets this field, what behavior is safest?
+- if the caller does not understand the option, what choice narrows harm?
+- if a future maintainer reads a failure report, would the default be obvious?
+
+Examples of stronger defaults:
+
+- disabled rather than implicitly active external behavior
+- narrow supported mode rather than permissive mixed mode
+- bounded retry count rather than open-ended retries
+- explicit rejection rather than best-effort coercion
+
+Defaults are part of the user story. Treat them as public language, not background code.
 
 ## Build a boundary-hardening packet
 
@@ -144,46 +172,50 @@ For each important input boundary, keep a short packet with:
 
 - boundary name
 - accepted normalized shape
-- rejected combinations or size limits
-- secure default when the caller omits a choice
+- rejected combinations or bounds
+- safer default when a caller omits a choice
+- earliest boundary that must reject invalid input
 - first proof that should fail if the rule regresses
 
-This packet makes hardening rules reviewable instead of tribal knowledge.
+This packet makes hardening reviewable. It also prevents validation from dissolving into
+ad hoc checks spread across the system.
 
 ## Common failure modes
 
 - using permissive defaults that later become hard-to-remove public behavior
-- validating after durable or outward work has already started
-- accepting oversized or ambiguous inputs because "we can ignore extra fields"
+- validating after durable or outward work has already begun
+- accepting oversized or ambiguous input because "we can ignore extra fields"
 - leaving mode combinations implicit until runtime paths collide
-- treating hardening as separate from domain integrity
+- treating hardening as separate from domain integrity instead of part of it
 
 ## Hardening review card
 
-Use this short card when reviewing an input boundary:
+Use this card at every boundary:
 
-| Question | What you want to see |
+| Question | What a strong answer sounds like |
 | --- | --- |
-| is invalid or ambiguous input rejected before expensive work begins? | yes |
-| do omitted options fail toward safer behavior? | yes |
-| are bounds and combinations explicit rather than guessed? | yes |
-| does the rule strengthen both security and domain clarity? | yes |
+| what shape do we actually accept? | "a normalized callback command with strict status enum and bounded identifiers" |
+| what is rejected early? | "unknown states, oversized batches, unsupported mode combinations" |
+| what is the safer default? | "sink behavior remains disabled unless explicitly configured" |
+| where must rejection happen? | "before durable writes or side-effect activation" |
+| what proof keeps this honest? | "boundary tests around malformed, oversized, and omitted-option cases" |
 
 ## Capstone connection
 
-Use this page to ask:
+Use this page to decide:
 
 - which capstone boundary is still too permissive by default
-- where invalid mode combinations should be rejected before runtime work begins
-- which size or count limit would make one external boundary safer and easier to reason
-  about
+- where invalid combinations should be rejected before runtime work begins
+- which size or count bound would make the system easier to reason about
+- which default today feels convenient but would become dangerous as a public contract
 
-That is where input hardening becomes part of architectural clarity.
+That is where input hardening becomes architectural clarity instead of a final cleanup
+step.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
 - explain one way a permissive default becomes long-term public debt
-- identify one capstone boundary that needs earlier rejection or stricter bounds
-- explain why input hardening improves both security and domain integrity
+- identify one capstone boundary that needs earlier rejection or stronger bounds
+- explain why input hardening protects both security and domain integrity
