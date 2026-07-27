@@ -29,9 +29,17 @@ The aim is not to collect class tricks. The aim is to learn how much can still s
 explicit, local, and reversible after a class already exists, before the course escalates
 into descriptor-heavy or metaclass-controlled designs.
 
+This is the point in the course where "I know the syntax" stops being enough. A reader
+who studies alone needs to learn how to review class-level power, not just how to produce
+it. Module 06 is therefore a review module as much as a feature module.
+
 This module now uses the same ten-file learning surface as the deep-dive series so the
 overview, five cores, worked example, practice set, answers, and glossary each have one
 clear job.
+
+The strongest habit to build here is restraint. Many class requirements sound sophisticated
+enough to deserve descriptors or metaclasses long before they actually do. This module is
+meant to slow that reflex down.
 
 ## What this module is for
 
@@ -43,12 +51,35 @@ By the end of Module 06, you should be able to explain five things clearly:
 - how shallow type-hint validation can live at the attribute boundary
 - when class customization should stop before descriptors or metaclasses take over
 
+You should also be able to say what this module does not prove automatically:
+
+- that generated code is the same as enforced policy
+- that a frozen surface is the same as deep immutability
+- that type annotations become runtime behavior without a real owner
+- that a reusable descriptor automatically justifies itself
+
 ## Keep these pages open
 
 - [Mid-Course Map](../module-00-orientation/mid-course-map.md)
 - [Pressure Routes](../guides/pressure-routes.md)
 - [Module Checkpoints](../guides/module-checkpoints.md)
 - [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md)
+
+## The review route through the module
+
+Read the module in this order if you are learning without an instructor present:
+
+| Read this page when you need to... | Review question to keep active |
+| --- | --- |
+| [Class Decorators and Post-Construction Transformation](class-decorators-and-post-construction-transformation.md) | what can still be changed honestly after the class already exists? |
+| [Dataclass Generation Boundaries](dataclass-generation-boundaries.md) | what did the tool generate, and what owner is still missing? |
+| [Properties and Attribute-Boundary Control](properties-and-attribute-boundary-control.md) | does this rule really belong to one attribute boundary? |
+| [Type Hints and Descriptor-Backed Validation](type-hints-and-descriptor-backed-validation.md) | where does enforcement actually happen, and what hint surface is refused? |
+| [Class Customization Boundaries](class-customization-boundaries.md) | what is the smallest honest owner for this invariant? |
+| [Worked Example: Building a Minimal `@frozen` Class Decorator](worked-example-building-a-minimal-frozen-class-decorator.md) | what does frozen mean here, and what stronger claim must stay rejected? |
+| [Exercises](exercises.md) | can I justify the lower-power owner in plain language? |
+| [Exercise Answers](exercise-answers.md) | is my reasoning honest about missing guarantees and rejected stronger tools? |
+| [Glossary](glossary.md) | am I using ownership words consistently? |
 
 ## The ten files in this module
 
@@ -83,6 +114,10 @@ Carry this question through every page:
 
 > What can still be owned honestly after class creation, without taking control of class creation itself?
 
+Keep a second question beside it:
+
+> what stronger mechanism am I refusing, and what missing need would have to appear before that stronger mechanism became justified?
+
 Strong Module 06 answers usually mention one or more of these:
 
 - post-construction class decorators
@@ -90,6 +125,13 @@ Strong Module 06 answers usually mention one or more of these:
 - property-based control at one attribute boundary
 - shallow runtime hint enforcement through descriptors
 - a lower-power decision that rejects metaclass escalation
+
+Weak answers usually sound like one of these instead:
+
+- "`@dataclass` handles the rule for us"
+- "a property is simpler" without naming the attribute boundary
+- "a metaclass could do it" without naming a class-creation-time need
+- "`@frozen` makes the object immutable" without naming the surface limit
 
 ## Learning outcomes
 
@@ -100,6 +142,29 @@ By the end of this module, you should be able to:
 - explain why some invariants belong on the attribute boundary rather than inside global `__setattr__` hacks
 - reject metaclass escalation when post-construction tools are still enough
 
+## Mid-module warning signs
+
+Pause and repair your understanding if you catch yourself doing any of these:
+
+- calling generated convenience the same thing as enforced policy
+- describing a class decorator as if it participated in class creation
+- treating properties as if they were only friendly syntax and not descriptor-driven lookup
+- using annotations as if they enforce behavior by themselves
+- proposing a metaclass without naming a requirement that truly depends on class creation timing
+
+## Evidence packet to build while you learn
+
+Leave yourself a review packet as you move through the module:
+
+- one class decorator example that is clearly post-construction
+- one dataclass example with a named missing invariant owner
+- one property example that owns exactly one attribute boundary
+- one descriptor example with a named supported hint subset
+- one explicit sentence rejecting metaclass escalation for a concrete case
+
+If you can assemble those five artifacts, the module is becoming standalone instead of
+lecture-dependent.
+
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -108,6 +173,7 @@ Do not move on until all of these are true:
 - you can say what dataclasses generate and what they still leave to you
 - you can distinguish property-driven attribute control from broader descriptor or metaclass ownership
 - you can place one class customization requirement honestly on the lower-power side of the ladder
+- you can name one rejected stronger mechanism and the missing condition that would be required to justify it
 
 When those feel ordinary, Module 06 has done its job and the descriptor modules can start
 from a much cleaner ownership model.
