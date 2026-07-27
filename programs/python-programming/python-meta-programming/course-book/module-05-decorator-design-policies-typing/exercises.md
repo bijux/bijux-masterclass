@@ -37,6 +37,10 @@ Each exercise asks for three things:
 
 Treat the ten exercises as one full lab day on decorator policy and typing boundaries.
 
+This is not a "write ten decorators" worksheet. It is a review lab. A weak answer can
+still compile and still fail the learning goal if it hides ownership, skips refusal
+boundaries, or overstates runtime guarantees.
+
 Do them in order:
 
 - Exercises 1-3 establish factory capture, resilience policy, and narrow runtime validation
@@ -49,6 +53,11 @@ Keep one policy-boundary table while you work:
 | Policy or contract | Wrapper or owner | What it really controls | What it refuses to claim | Review judgment |
 | --- | --- | --- | --- | --- |
 
+Keep one second table beside it:
+
+| Exercise | Operator or reviewer evidence | What could still go wrong | Repair move |
+| --- | --- | --- | --- |
+
 ## Exercise 1: Build one decorator factory with real configuration
 
 Write a parameterized decorator and apply it twice with different configuration.
@@ -58,6 +67,7 @@ What to hand in:
 - the factory implementation
 - two differently configured uses
 - one explanation of what was captured at definition time and what runs on each call
+- one sentence naming the first sign that the factory has started hiding too much policy
 
 ## Exercise 2: Review one resilience wrapper
 
@@ -68,6 +78,7 @@ What to hand in:
 - the rule it enforces at the call boundary
 - one concrete control-flow or failure behavior it changes
 - one sentence explaining why this is policy rather than a thin transformation
+- one sentence naming the exact stopping rule a reviewer should check
 
 ## Exercise 3: Validate one narrow hint subset
 
@@ -78,6 +89,7 @@ What to hand in:
 - the supported hint subset
 - one call that passes and one that fails
 - one example of a hint surface you explicitly refuse to support
+- one sentence explaining what claim would become dishonest if you silently skipped that unsupported hint
 
 ## Exercise 4: Inspect cache policy instead of only cache speed
 
@@ -88,6 +100,7 @@ What to hand in:
 - the key or typed-mode behavior you are relying on
 - one inspection or reset hook such as `cache_info()` or `cache_clear()`
 - one explanation of why cache policy is more than "just performance"
+- one sentence naming which calls count as the same cached request
 
 ## Exercise 5: Reject one decorator that grew too large
 
@@ -98,6 +111,7 @@ What to hand in:
 - the overloaded decorator idea
 - the explicit object, service, or later-course mechanism you would move it to
 - one explanation of why that new owner is easier to review
+- one sentence naming what hidden state or coordination made the old decorator untrustworthy
 
 ## Exercise 6: Review a partial validator honestly
 
@@ -108,6 +122,7 @@ What to hand in:
 - the exact claim the validator is allowed to make
 - one unsupported typing feature it must reject or ignore
 - one explanation of why warning mode is not the same as safety
+- one sentence naming the first threshold where this should stop being a decorator and become a validation component
 
 ## Midday self-check
 
@@ -123,6 +138,10 @@ If you cannot answer those four questions in plain language, return to Exercises
 make the policy owner, runtime boundary, and unsupported claim more explicit before
 continuing.
 
+If your answers still rely on phrases like "the decorator just handles it" or "it keeps
+things simple," revise them before moving on. Those sentences hide the owner story this
+module is trying to force into the open.
+
 ## Exercise 7: Separate local convenience from durable policy
 
 Choose one decorator idea that feels convenient in a single file but risky as a long-term
@@ -133,6 +152,7 @@ What to hand in:
 - the convenient decorator idea
 - the exact policy it would silently own over time
 - one explanation of why an explicit owner would teach the boundary more honestly
+- one sentence naming who would have to debug the policy six months later
 
 ## Exercise 8: Design one explicit policy owner
 
@@ -143,6 +163,7 @@ What to hand in:
 - the original decorator shape
 - the new owner you would introduce
 - one review advantage and one learning advantage the explicit owner creates
+- one sentence naming which responsibilities stay at the call boundary and which move away from it
 
 ## Exercise 9: Compare safe claims with overstated claims
 
@@ -154,6 +175,7 @@ What to hand in:
 - the honest description
 - the overstated description
 - one explanation of which words make the second version misleading
+- one replacement sentence that preserves usefulness without inflating the guarantee
 
 ## Exercise 10: Produce a decorator-governance packet
 
@@ -170,6 +192,21 @@ The packet is strong when another learner can use it to answer:
 - what typing or runtime claim it can support honestly
 - when the wrapper boundary should be replaced by a clearer owner
 
+Make the packet easy to scan. Another learner should be able to review it without knowing
+your original implementation details.
+
+## Repair prompts for weak exercise drafts
+
+Use these prompts when an answer feels vague, compact, or suspiciously confident:
+
+| If your answer says... | Ask yourself instead... |
+| --- | --- |
+| "the decorator adds safety" | what exact unsafe behavior can still happen afterward? |
+| "the wrapper improves performance" | what cache key, eviction rule, or reset route makes that statement meaningful? |
+| "the validator checks types" | which hints, and which hints are refused? |
+| "this is still simple" | simple for whom: caller, reviewer, or operator? |
+| "an object would be overkill" | what owner story is currently being hidden to avoid naming it? |
+
 ## Mastery standard for this exercise set
 
 Across all six answers, the module wants the same habits:
@@ -185,6 +222,16 @@ Across all ten answers, add two more habits:
 - you leave behind a decorator-governance packet another learner could review without guessing
 
 If an answer still sounds like "the decorator just handles it," keep going.
+
+## Exit check for the exercise set
+
+Before you leave Module 05 practice, make sure your packet lets another learner answer
+all of these:
+
+- which wrappers in your set stayed narrow enough to remain decorators
+- which ones wanted an explicit owner instead
+- which runtime or typing claims you refused deliberately
+- which control, inspection, or reset surfaces reviewers should inspect first
 
 ## Continue through Module 05
 
