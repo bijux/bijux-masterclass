@@ -55,9 +55,11 @@ Keep one contract packet as you go. By the end of the day it should contain:
 - one rerun prediction sheet with reasons
 - one repaired missing-dependency example
 - one stage-boundary refactor with justification
-- one full pipeline review from target outputs backward
+- one audit worksheet joining DVC status to semantic values
+- one repaired output-ownership decision
+- one adversarial test design
 
-If those six artifacts are missing, you are probably still memorizing YAML fields instead
+If those eight artifacts are missing, you are probably still memorizing YAML fields instead
 of learning how provenance contracts stay truthful.
 
 ## Recommended working layout
@@ -229,79 +231,145 @@ sure your packet can already answer these questions clearly:
 If you cannot answer those four questions in plain language, return to Exercises 1-5 and
 make the packet more explicit before continuing.
 
-## Exercise 6: Build a three-stage pipeline
+## Exercise 6: Predict the stage-contract audit
 
-Create prepare, train, and evaluate stages with explicit dependencies, parameters, and
-outputs. Run twice and use DVC evidence to show that the second run converges.
+Open `capstone/repro/stage-contracts/dvc.yaml`, but do not run the audit yet.
 
-What to hand in:
+For each stage, record:
 
-- the three stage declarations
-- the first-run evidence
-- the second-run convergence evidence
-- one sentence explaining why the second run staying still is meaningful
+- every path or parameter the command really reads;
+- every file the command writes;
+- which of those influences and products are declared;
+- what should happen after the relevant value changes or output disappears.
 
-Study note:
-A converged second run is one of the simplest demonstrations that the declared graph is
-not thrashing needlessly.
+Then predict all eight decisions in `summary.tsv`:
 
-## Exercise 7: Omit one dependency on purpose
+| Finding | Expected result | Expected decision | Why |
+| --- | --- | --- | --- |
 
-Remove a real dependency from one stage, change that input, and observe the plan. Explain:
+Run:
 
-- why the stage can now look current while being stale
-- why a successful command cannot compensate for a lying graph
-- how you repaired the declaration
-- what evidence changed after the repair
+```bash
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-stage-contract-audit
+```
 
-Study note:
-This is the exercise that teaches why hidden reads are more serious than untidy YAML.
+Compare your predictions with the generated summary. For every mismatch, write whether
+you misunderstood command behavior, DVC declaration semantics, or `PASS / REJECT`.
 
-## Exercise 8: Trace one parameter through the lockfile
+**Acceptance check:** your worksheet must explain why all five stages can converge at
+baseline while three contract defects remain.
 
-Change one tracked parameter and inspect the resulting `dvc.lock` changes. Identify:
+## Exercise 7: Prove file under-rebuild
 
-- the stage invalidated
-- the output identities replaced
-- any stage that correctly remained unchanged
-- one sign that your stage boundary may be too coarse if too much reruns
+Use only these evidence surfaces:
 
-Study note:
-The lockfile is where parameter influence stops being theory and becomes recorded state.
+- `evidence/input-change-status.stdout.txt`;
+- `workspace/input-change/policy/threshold.txt`;
+- `workspace/input-change/results/declared-input.txt`;
+- `workspace/input-change/results/hidden-input.txt`;
+- the two input-stage declarations.
 
-## Exercise 9: Repair shared-output ownership
+Write a six-sentence proof:
 
-Construct two stages that write into the same output directory. Redesign them so each
-producer has exclusive ownership or a single aggregation stage publishes the shared
-artifact.
+1. state the mutation;
+2. state which stage DVC marked stale;
+3. state the declared output value after rebuild;
+4. state the hidden output value;
+5. identify the single declaration difference;
+6. classify the hidden result.
 
-What to hand in:
+Then repair `hidden_input` in a disposable copy of the specimen by adding the policy path
+to `deps`. Repeat the mutation and show that the stage now appears in status and adopts
+`threshold=20`.
 
-- the ambiguous original shape
-- the repaired ownership shape
-- one sentence explaining why ownership ambiguity harms cleanup and freshness reasoning
+**Acceptance check:** forcing the stage or deleting its output does not count as a repair.
 
-Study note:
-Shared-output ownership often looks convenient until teams need trustworthy reruns and
-cleanup behavior.
+## Exercise 8: Prove parameter under-rebuild
 
-## Exercise 10: Review a pipeline as a contract
+Repeat the same reasoning for `settings.multiplier`.
 
-Review a real `dvc.yaml` from target outputs backward. For every stage, record:
+Your evidence packet must include:
 
-- its purpose
-- its inputs
-- its controls
-- its outputs
-- its failure residue
-- the evidence that its declared graph matches actual reads and writes
+- the baseline value `2`;
+- the changed value `3`;
+- the JSON status receipt;
+- `multiplier` and `score` from both output files;
+- the relevant `params` declaration;
+- the lockfile entry for the declared stage.
 
-End with one paragraph explaining where the pipeline is strongest and where its contract
-is still fragile.
+Answer these questions:
 
-Study note:
-This final exercise matters because real review starts from the output a consumer trusts
-and walks backward through the contract that produced it.
+1. Why does placing a key in `params.yaml` not make every stage depend on it?
+2. Why is `score=16` stronger stale-output evidence than an unchanged timestamp?
+3. What should remain stable when only this key changes?
+4. How would a broad `params.yaml` file dependency weaken review precision?
+
+Repair the hidden parameter case by declaring only `settings.multiplier`, then repeat the
+mutation.
+
+**Acceptance check:** show both planner evidence and the rebuilt semantic value.
+
+## Exercise 9: Decide whether the receipt is output or scratch
+
+Inspect the `undeclared_sidecar` stage and the output-loss workspace.
+
+Create two defensible designs:
+
+### Governed receipt
+
+Assume `undeclared-receipt.txt` records a row count required before promotion.
+
+- add it to `outs`;
+- delete it after a baseline run;
+- record the status response;
+- reproduce the stage;
+- prove the receipt returns.
+
+### Disposable scratch
+
+Assume the receipt is diagnostic residue.
+
+- choose an internal scratch location;
+- explain its cleanup policy;
+- show that no stage or review contract consumes it;
+- explain why its loss should not make the pipeline stale.
+
+End with a decision table:
+
+| Question | Governed receipt | Scratch |
+| --- | --- | --- |
+| absence changes trust | | |
+| belongs in `outs` | | |
+| consumer may depend on it | | |
+| restoration required | | |
+
+**Acceptance check:** do not decide from the `.txt` extension or the word “receipt.”
+
+## Exercise 10: Design an adversarial contract review
+
+Read `capstone/tests/test_stage_contract_audit.py`. Choose one existing mutation and
+explain:
+
+- which truthful claim it attacks;
+- why the unmutated audit passes;
+- which exact check becomes false;
+- why another nearby finding is not enough to catch the defect.
+
+Then design one additional mutation for a real stage in the capstone. Your proposal must
+name:
+
+- the declaration field to remove or broaden;
+- the command behavior that still depends on it;
+- the mutation to apply;
+- the DVC receipt to capture;
+- the artifact value or absence to inspect;
+- the expected accepted or rejected decision.
+
+Finish with a bounded review paragraph that states what the specimen proves and what
+still requires repository-specific inspection.
+
+**Acceptance check:** the proposed test must fail when the evidence contract is dishonest,
+not merely when a command crashes.
 
 ## Mastery check
 
@@ -313,3 +381,5 @@ visible:
 - `dvc repro` only reacts to declared influence
 - stale outputs are a correctness risk, while false reruns are usually visible waste
 - graph refactoring is valuable when it preserves or improves the provenance story
+- planner receipts and semantic artifact values must be read together
+- a repair is demonstrated only when the original mutation becomes visible for the right reason
