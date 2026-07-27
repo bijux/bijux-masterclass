@@ -1,5 +1,4 @@
-# Python Data Model as Design Surface – Iteration, Containers, Context, Numeric
-
+# Python Protocols as a Design Surface
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Object Semantics Data Model"]
-  page["Python Data Model as Design Surface – Iteration, Containers, Context, Numeric"]
+  page["Python Protocols as a Design Surface"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,102 +24,126 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Introduction
+## Why this lesson matters
 
-This core surveys the Python data model as a deliberate design interface, focusing on intentional implementation of dunder methods for iteration (`__iter__`), container traits (`__len__`, `__getitem__`, `__contains__`), context management (`__enter__`, `__exit__`), and numeric operations (`__add__` et al.). Extending encapsulation from M01C04 and equality protocols from M01C05, we delineate when to render types "container-like" for ecosystem interoperability versus maintaining opacity to preserve domain semantics. Selective adoption enhances usability without bloating interfaces, aligning objects with expectations while guarding invariants.
+Python lets your objects participate in familiar protocols:
 
-The layered structure persists: language-level semantics outline guarantees, CPython notes detail optimizations, design semantics guide modeling choices, and practical guidelines furnish prescriptive rules. This framework yields a portable model for protocol extension, resilient across implementations.
+- iteration
+- containment
+- indexing
+- truthiness
+- context management
+- numeric operators
 
-Cross-references link to prerequisites: attribute interception in M01C02; value/entity opacity in M01C01. Proficiency here enables objects that integrate gracefully, choosing protocols that amplify intent without overexposure.
+That power is useful, but it is also a place where many objects become too clever. This
+lesson is not mainly about memorizing dunder names. It is about deciding when a protocol
+makes the object easier to understand and when it only makes the API more magical.
 
-## 1. Language-Level Model
+## The key question
 
-Python's data model exposes protocols as optional hooks for operator and builtin overloads, enabling polymorphic behavior without inheritance. Implementation is explicit: undefined methods raise `TypeError` when invoked.
+Before implementing a protocol, ask:
 
-### Iteration Protocol
+> If another engineer used this object through that protocol, would the meaning feel
+> natural or misleading?
 
-**Guarantees**:
-- `__iter__(self)` returns an iterator (object with `__next__`); invoked by `for obj in iterable` or `iter(obj)`.
-- `__next__(self)` yields next item or raises `StopIteration`.
-- Fallback: If `__iter__` missing, `iter(obj)` attempts the old sequence protocol: repeated `__getitem__(i)` from 0 until `IndexError`.
+That question is the real design surface.
 
-### Container Protocols: Sequence and Mapping Traits
+## Good protocol adoption
 
-**Guarantees**:
-- `__len__(self)` returns non-negative integer for `len(obj)`.
-- `__getitem__(self, key)` supports indexing/sllicing for `obj[key]`; raises `IndexError`/`KeyError`.
-- `__contains__(self, item)` returns boolean for `item in obj`; falls back to `__iter__` + `__next__` for iterables.
-- Sequence-like: `__getitem__` with integer keys in a contiguous range starting at 0;
-   optional `__setitem__`, `__delitem__`, `__reversed__`.   
-- Mapping-like: `__getitem__` with arbitrary keys; optional `__setitem__`, `__delitem__`.
-- Implementing sequence/mapping traits does not give you element-wise `==` automatically:
-   if you want list-/dict-like equality semantics for your own type, you must define `__eq__`.
+A protocol is a good fit when it matches the object's real meaning.
 
-### Context Management Protocol
+Examples:
 
-**Guarantees**:
-- `__enter__(self)` returns resource (often `self`) for `with obj as alias:`.
-- `__exit__(self, exc_type, exc_val, exc_tb)` handles cleanup; returns `True` to suppress exceptions.
-- Supports nesting; invoked explicitly via `with`.
+- iterable history or window objects can support `for item in window`
+- bounded collections can support `len(window)`
+- resource owners can support `with resource:`
+- value-like numeric quantities can support arithmetic when the result is meaningful
 
-### Numeric Protocols
+In those cases, the protocol reduces friction without hiding the truth.
 
-**Guarantees**:
-- Binary operators (`+`, `*`) invoke `__add__` etc.; unary (`-`) via `__neg__`.
-- Return `NotImplemented` for delegation: Left operand first, then reflected (e.g., `b.__radd__(a)`). No algebraic assumptions enforced.
-- Optional: `__bool__` for truthiness (`if obj:`; defaults to `bool(len(obj))` if `__len__` defined); `__index__` for integer coercion (e.g., slices).
+## Misleading protocol adoption
 
-These protocols integrate with builtins/operators; omission raises `TypeError`.
+A protocol is a bad fit when it makes the object look simpler, cheaper, or safer than it
+really is.
 
-## 2. Implementation Notes (CPython, non-normative)
+Examples:
 
-CPython dispatches protocols via C slots (e.g., `tp_iter`, `mp_length`).
+- making a remote or streaming boundary look like an ordinary in-memory container
+- giving a rich workflow object a fake ordering only because sorting is convenient
+- using truthiness to hide a nuanced lifecycle question
+- adding iterable behavior when callers should really make an explicit method choice
 
-- **Iteration**: `__iter__` yields `PyObject*`; fallback sequence uses incremental `__getitem__` until `IndexError`.
-- **Containers**: `__getitem__` via `sq_item`/`mp_subscript`; `__contains__` iterates if no direct slot.
-- **Context**: `with` uses `PyContextManager`; `__exit__` receives tuple `(exc_type, exc_val, exc_tb)`.
-- **Numeric/Truthiness**: Operator slots dispatch; `__bool__` prefers explicit, else `__len__`; `__index__` coerces to `PyLong`.
-- **Performance Nuances**: O(1) dispatch; `__getitem__` enables fast slicing; `__bool__` short-circuits.
+The lesson is simple: fluency is not automatically clarity.
 
-These optimize ecosystem hooks but expose no privacy—protocols probe state.
+## Protocols worth understanding in Module 01
 
-## 3. Design Semantics
+### Iteration and containment
 
-Protocols extend the value/entity lens (M01C01): value-like objects adopt container/numeric traits for interoperability (e.g., iterable tuples); entity-like ones remain opaque to encapsulate lifecycle (e.g., no `__len__` for sessions). Intentional choice avoids "protocol bloat," where over-implementation dilutes focus.
+Use these when the object is genuinely collection-like.
 
-- **Iteration/Container Choice**: Implement `__iter__` + `__getitem__` for sequence-like values (e.g., bounded history); use mapping traits (`__getitem__` with keys) for dict-like. If reusable, `__iter__` returns fresh iterator—returning `self` defines an iterator, not a collection. Omit if iteration ambiguous/expensive—prefer explicit methods (e.g., `.pages()`).
-- **When Not to Implement**: `__len__` if unbounded/meaningless (e.g., streams); `__bool__` if truthiness ambiguous (`__len__` default misleads for connections); `__index__` only for numeric coercion.
-- **Context for Resources**: Use for RAII entities (e.g., `__enter__` acquires lock); abstain for stateless—`with` implies ownership. Anti-pattern: cosmetic `with` without cleanup.
-- **Numeric Restraint**: Implement only well-defined ops (e.g., `__add__` for vectors); explicit with reflection for asymmetry. No avoidance for non-commutative—commit to semantics.
+If iteration would leak internal traversal rules or make a boundary look cheaper than it
+is, prefer an explicit method such as `.items()` or `.events()`.
 
-**Do/Don't Examples** (Monitoring Domain):
-- Do: `MetricWindow` as sequence (`__getitem__(i)` for timestamp access, `__iter__` yields metrics)—fluent for `for m in window:`.
-- Don't: `DBSession` as iterable (`__iter__` over queries)—hides I/O; use `.query()` instead.
-- Do: `ThresholdRule` numeric (`__lt__(other)` for comparison)—domain-natural.
-- Don't: `Alert` with `__bool__` defaulting to `__len__(violations)`—empty alerts aren't "false."
+### `len()` and truthiness
 
-**Choosing Protocols**: Query: Does fluency aid (container-like) or mislead (opaque)? For `MetricSeries`: sequence by time? Mapping by label? Explicit `.values()`?
+These are convenient only when size or emptiness is part of the honest meaning.
 
-Interaction with Equality: Container `__eq__` explicit; iterable equality element-wise if implemented.
+If the object represents a session, a live connection, or a workflow, `bool(obj)` may
+say less than you think.
 
-## 4. Practical Guidelines
+### Indexing
 
-- **Intentional Adoption**: Implement only needed (e.g., `__iter__` + `__getitem__` for sequences); test (e.g., `list(obj)`, `obj[key]`).
-- **Container Discipline**: `__len__` + `__getitem__` for O(1); `__contains__` fast. `__reversed__` for bidirectional.
-- **Context Safety**: `__exit__` all paths (`KeyboardInterrupt`); return `False` unless suppressing. Nesting-safe.
-- **Truthiness/Numeric Hygiene**: `__bool__` explicit over `__len__`; `__index__` for slice/range. Reflect numeric; document precedence.
-- **Opacity Principle**: Omit if misleading (e.g., no `__iter__` for remote streams); explicit methods over protocols.
+Indexing fits when the object really behaves like a stable sequence or mapping. It is a
+bad fit when the object only exposes one arbitrary view over richer behavior.
 
-**Impacts on Design and Interoperability**:
-- **Design**: Selective enhances fluency; over-adoption invites misuse (e.g., `len(session)` implies fixed).
-- **Interoperability**: Traits integrate; opacity preserves abstraction.
+### Context management
 
-## Exercises for Mastery
+`with` fits best when the object owns setup and cleanup. It should signal real resource
+discipline, not cosmetic style.
 
-1. Implement `__iter__` + `__getitem__` for `MetricWindow` (bounded sequence); test `list(window)` and slicing.
-2. Add mapping traits to `LabelSet` (`__getitem__` by key, `__contains__`); verify `labelset['cpu']` and `'cpu' in labelset`.
-3. Design `DBSession` context manager (`__enter__`/`__exit__` acquire/release); override `__bool__` for "active".
+### Numeric operators
 
-This core leverages the data model for elegant extension. Next, M01C09 critiques OOP applicability.
+Arithmetic should exist only when the domain meaning stays obvious under those
+operations. If the result type or semantic rule is ambiguous, explicit methods are
+usually clearer.
+
+## Review checklist for protocol decisions
+
+| Question | Good sign | Warning sign |
+| --- | --- | --- |
+| Does this protocol match the object's meaning? | yes, and a reader would expect it | it is mainly added for convenience |
+| Does the protocol hide cost or side effects? | no, behavior is unsurprising | access looks cheap but triggers heavy work |
+| Would an explicit method be clearer? | no, the protocol is the natural surface | yes, but protocol syntax looks nicer |
+| Is the object now pretending to be a collection or number? | only when that is truly what it is | yes, without matching semantics |
+
+## Practical rules for this course
+
+- Implement protocols that make the object easier to reason about, not only easier to type.
+- Prefer explicit methods when the operation is expensive, stateful, or ambiguous.
+- Do not overload truthiness, ordering, or arithmetic unless the meaning is stable and reviewable.
+- Treat context management as resource ownership, not as decoration.
+
+## Capstone connection
+
+This lesson matters whenever the capstone needs to decide:
+
+- whether a surface should behave like a collection
+- whether a rule or value should support comparison or arithmetic
+- whether a runtime or resource boundary should support `with`
+
+If protocol adoption would blur the domain meaning, the better design is usually the
+explicit one.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- name one object that should adopt a Python protocol and explain why
+- reject one protocol addition because it would make the object more magical than honest
+- explain when an explicit method is clearer than protocol fluency
