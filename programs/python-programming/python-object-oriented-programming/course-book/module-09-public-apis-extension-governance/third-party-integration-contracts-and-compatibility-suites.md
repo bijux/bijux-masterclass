@@ -24,147 +24,158 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about proving a public promise from the outside.
 
-## Why this lesson matters
+Compatibility suites matter because third-party consumers do not care that your code
+still "basically works." They care that the supported contract they built against still
+behaves as promised.
 
-External integrations drift even when your own code does not.
+That means compatibility is broader than import success, type shape, or one happy-path
+request.
 
-Consumers, providers, and plugin ecosystems change on their own timelines. That means a
-public contract can break because:
+## Use one supported seam
 
-- you changed behavior
-- they changed expectations
-- both sides kept the same names but changed semantics
+Keep one capstone seam in view:
 
-Compatibility suites exist to make that drift visible before users discover it in
-production.
+the public workflow that lets a configured `IncidentSink` receive a published incident
+through the supported facade.
 
-## An integration contract is broader than one happy-path test
+If that seam is truly public, a compatibility suite must prove more than:
 
-Students often confuse a third-party contract with:
+- the plugin imports
+- registration succeeds once
+- one publish call returns without crashing
 
-- one request that succeeds
-- one CLI example that still runs
-- one plugin that still loads
+Those checks are too weak to defend a real integration promise.
 
-That is too thin.
+## What a third party actually depends on
 
-A real external contract may include:
+An outside consumer or plugin author may be depending on all of these:
 
-- accepted shapes and required fields
-- failure semantics
-- timeout behavior
-- ordering guarantees
-- version markers and deprecation windows
-- required public examples or workflow sequences
+- how registration metadata is shaped
+- what version markers mean
+- what payload fields are present and stable
+- how duplicate publication or retry is handled
+- what failure shape is documented
+- what deprecation window still permits older usage
 
-If those are part of the supported promise, the compatibility suite should know about
-them.
+If any of those are part of the support story, the compatibility suite must know it.
 
-## Compatibility suites should mirror how outsiders really use the seam
+## Compatibility suites should mirror real usage
 
-The best suite is not necessarily the most technical one. It is the one that reflects
-the supported external usage pattern.
+The best compatibility suite is not the most technically impressive one.
 
-For example:
+It is the one that mirrors the supported external path.
 
-- if users mostly integrate through one documented facade workflow, keep that workflow in the suite
-- if plugins depend on registration metadata and lifecycle callbacks, the suite should cover those entry conditions
-- if external callers rely on stable output ordering, assert that explicitly
+For the capstone sink seam, that likely means:
 
-This keeps compatibility testing tied to real consumption rather than to internal
-component boundaries alone.
+1. register a sink through the supported public route
+2. publish one representative incident
+3. observe the documented payload shape
+4. observe the documented failure or rejection path
+5. verify any supported legacy registration shape still behaves inside its deprecation
+   window
 
-## Version claims need executable proof
+This is what outsiders will experience.
+That is what the suite should protect.
 
-If you say a surface is compatible across versions, that claim should be backed by tests
-that detect when:
+## Happy-path proof is not enough
 
-- a required field disappeared
-- a warning became a hard error too early
-- a public result shape changed
-- one workflow now times out or orders results differently
+A third party learns as much from stable failure behavior as from success behavior.
 
-Version labels without compatibility evidence are weak governance.
+For example, the suite may need to prove:
 
-## Non-happy paths matter here
+- incompatible version declarations are rejected clearly
+- malformed metadata fails registration with the documented shape
+- duplicate or repeated workflow publication follows the supported idempotency story
+- deprecated metadata still warns before removal while remaining functional inside the
+  promised window
 
-External consumers learn a lot from failure behavior.
+If those failure paths are part of the public promise, they are compatibility work, not
+optional extras.
 
-A compatibility suite may need to confirm:
+## Version labels need executable meaning
 
-- malformed input is rejected in a stable way
-- unsupported plugin metadata fails registration clearly
-- deprecated usage still warns before removal while still functioning inside the supported window
-- transport or runtime failures surface through the documented contract rather than through leaked internals
+Saying "this public seam is stable across versions" is not useful unless the suite would
+fail when behavior drifts.
 
-Those are compatibility questions too, not just robustness extras.
+A real compatibility suite should expose changes such as:
 
-## A worked example
+- a required field disappearing
+- output ordering changing in a supported artifact
+- a warning becoming an error too early
+- a retry path now duplicating visible effects
 
-Suppose the capstone publishes one supported integration seam for custom incident sinks.
+Without executable proof, compatibility language is only optimism.
 
-An honest compatibility suite might cover:
+## One capstone compatibility packet
 
-- registration with valid metadata
-- rejection of incompatible version declarations
-- one representative publish workflow through the public facade
-- one documented failure path for sink rejection or runtime error
-- one deprecation path if an older registration shape remains temporarily supported
+An honest compatibility packet for the sink seam could include:
 
-That suite proves much more than "the plugin imported successfully."
+- a valid registration case with current metadata
+- a rejected registration case with an incompatible contract version
+- one representative incident publication through the facade
+- one stable failure path for sink rejection or runtime refusal
+- one legacy registration case if an older shape is still intentionally supported
 
-## Compatibility suites should evolve when the promise evolves
+This packet is already enough to catch many false compatibility claims.
 
-A suite can become misleading if the public contract changed but the tests still protect
-the old story.
+## Keep documentation and examples inside the contract
 
-Whenever the supported external promise changes, review:
+If the public seam is documented with examples, those examples belong inside the
+compatibility story.
 
-- examples
-- compatibility cases
-- deprecation coverage
-- public docs
+Why?
 
-This keeps the compatibility layer aligned with what you actually claim to support as of
-July 27, 2026, not what the system supported months earlier.
+Because outside consumers often learn the contract from examples before they read any
+formal prose.
 
-## Common mistakes
+If an example teaches:
+
+- the wrong import path
+- an outdated registration shape
+- an old payload field
+
+then the code and documentation are jointly drifting.
+
+Executable examples are part of the suite's evidence, not a separate documentation chore.
+
+## Review questions for a compatibility claim
+
+Before calling a seam compatible, ask:
+
+- Which exact external workflow are we promising to preserve?
+- Which visible failure modes are part of that promise?
+- Which fields, ordering rules, or metadata shapes must remain stable?
+- Which older usage remains supported as of July 27, 2026, and how is that support
+  proven?
+- Which public example would fail first if the contract drifted?
+
+These questions keep compatibility tied to a concrete promise instead of a vague label.
+
+## Common failure modes
 
 - calling one passing integration test a compatibility strategy
-- covering success only while ignoring stable failure behavior
-- testing internal mechanics instead of real external usage paths
-- claiming version compatibility without tests for behavioral drift
-- leaving the suite frozen around an outdated public promise
-
-## Review checklist
-
-| Question | Good sign |
-| --- | --- |
-| does the suite reflect real supported external usage? | yes |
-| are failure and deprecation paths covered where they are part of the contract? | yes |
-| do version-compatibility claims have executable proof? | yes |
-| would public behavioral drift fail the suite before release? | yes |
+- proving imports and registration but not visible behavior
+- covering success only while ignoring documented failure behavior
+- claiming version support without a suite that would catch behavioral drift
+- letting examples teach an obsolete contract while the tests still pass
 
 ## Capstone connection
 
-Use the capstone to ask:
+Use this page to review the sink seam and decide:
 
-- which seam is most likely to be consumed by third parties or long-lived callers?
-- which currently supported workflow deserves a compatibility suite before the next public expansion?
-- where would a behavior drift slip through today because the suite proves only imports or happy paths?
+- which current workflow is public enough to deserve a compatibility packet
+- which failure path must be stabilized before calling the seam supported
+- which legacy behavior should stay supported and which should be removed from the
+  promise
 
-This is where extension governance becomes release safety.
+That is where API governance becomes release safety.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain why compatibility suites must cover more than happy-path success
-- identify one capstone seam that deserves explicit external-compatibility coverage
-- identify one behavioral contract that could drift without a signature change
+- explain why compatibility suites must cover real external workflows, not only imports
+- identify one capstone seam that deserves explicit compatibility proof
+- name one behavioral drift that could break consumers without changing a signature
