@@ -1,6 +1,5 @@
 # Module 07: Time, Scheduling, and Concurrency Boundaries
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,58 +24,78 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+This module is where object design meets runtime pressure. The earlier modules taught you
+how to place truth, transitions, persistence, and public seams. This module asks a new
+question:
 
-Object models that look clean in single-threaded examples often break when time,
-parallel work, or async coordination enters the picture. This module teaches how to
-model clocks, deadlines, concurrency, and async boundaries without turning design
-semantics into scheduler folklore.
+> When time, retries, queues, threads, or async work appear, which boundary should own
+> that pressure and which parts of the model should remain ignorant of it?
 
-Keep one question in view while reading:
+If you cannot answer that question, runtime complexity spreads everywhere.
 
-> Which object owns time, cancellation, or concurrency pressure, and which objects should remain ignorant of that pressure?
+## What this module is really about
 
-That question is what keeps runtime concerns explicit instead of contagious.
+This module is not a tour of concurrency tools.
+
+It is about keeping these distinctions sharp:
+
+- calendar time versus elapsed time
+- timeout versus deadline versus expiration
+- shared mutation versus owned handoff
+- sync core logic versus async edge coordination
+- retry versus resume
+
+Those distinctions are what keep runtime work from quietly rewriting the design.
+
+## Running capstone path
+
+Keep one path visible while you study:
+
+1. a monitoring workflow decides whether a new incident state is valid
+2. runtime coordination decides when work is attempted
+3. workers or queues carry the work
+4. retries or cancellation may interrupt the path
+5. observers still need the domain meaning to remain clear
+
+Every lesson in this module should make that path easier to reason about.
 
 ## Preflight
 
-- You should already be able to separate aggregate ownership from runtime orchestration after the earlier modules.
-- If clocks, queues, retries, and async APIs still feel like one generic runtime concern, slow down and separate them by ownership.
-- Keep asking whether time and concurrency pressure belongs inside an object or at the boundary coordinating it.
+Before going further, you should already be able to do all of these:
 
-## Learning outcomes
+- explain which boundary owns a domain invariant
+- distinguish authoritative state from derived or downstream work
+- explain why retries and side effects are not "just implementation details"
 
-- model clocks, deadlines, cancellation, and concurrency pressure as explicit contracts
-- choose between locks, queues, ownership transfer, and async boundaries with design-level reasoning
-- distinguish monotonic time from wall-clock time where correctness depends on the difference
-- review sync/async bridges without letting scheduler concerns infect the whole model
+If those still blur together, reread the ownership and persistence modules first.
 
-## Why this module matters
+## What you should be able to do by the end
 
-Time and concurrency amplify design mistakes:
+By the end of this module, you should be able to:
 
-- hidden calls to `datetime.now()` make behavior untestable
-- shared mutable state turns local changes into races
-- async wrappers widen interfaces without clear ownership
-- retries and cancellation duplicate side effects unless boundaries are explicit
+- choose the right clock for a rule and place it at the right boundary
+- decide whether a concurrency problem is best solved by ownership transfer, a queue, a
+  lock, or less shared mutation
+- keep async style at the edges unless the core genuinely needs it
+- explain where cancellation is safe and where retry becomes dangerous
+- review a runtime change without letting scheduler concerns infect the whole model
 
-This module treats temporal and concurrent behavior as part of object design, not as
-plumbing to bolt on later.
+## Read this module as one lab day
 
-## Main questions
+Use the lesson pages in this order:
 
-- Which clock should an object depend on, and why?
-- How should deadlines, expiration, and timeouts be represented?
-- When do locks belong inside an object, and when are queues or ownership transfer cleaner?
-- How do sync and async APIs meet without infecting the whole design?
-- How do you design for cancellation and retries without duplicating work?
+1. clocks, timezones, and monotonic time
+2. deadlines, timeouts, and expiration policies
+3. schedulers and coordination objects
+4. threads, locks, queues, and backpressure
+5. caches under time and concurrency pressure
+6. sync/async bridges and concurrency-aware APIs
+7. cancellation, retries, and resumable work
+8. the refactor page
+9. the exercises and answer packet
 
-## Reading path
-
-1. Start with clocks, deadlines, and schedulers.
-2. Move into threads, queues, and caches once time semantics are clear.
-3. Then study async bridges, cancellation, and API design as one boundary cluster.
-4. Finish with the refactor chapter to see the runtime gain temporal discipline without losing readability.
+If you jump straight to async or locks before time ownership is clear, the later pages
+will feel more technical and less educational than they should.
 
 ## Lesson map
 
@@ -90,69 +109,60 @@ plumbing to bolt on later.
 - [Designing Thread-Aware and Async-Aware APIs](designing-thread-aware-and-async-aware-apis.md)
 - [Cancellation, Retries, and Resumable Operations](cancellation-retries-and-resumable-operations.md)
 - [Refactor: Runtime around Time and Concurrency Boundaries](refactor-runtime-around-time-and-concurrency-boundaries.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Glossary](glossary.md)
 
 ## Keep these support surfaces open
 
-- `../guides/proof-matrix.md` when you want the time and concurrency promise tied to a proof route.
-- `../guides/pressure-routes.md` when runtime pressure is competing with earlier ownership questions.
-- `../reference/self-review-prompts.md` when you want to test whether clocks, cancellation, and retries still sound like boundary decisions.
+- `../guides/proof-matrix.md` when you want one runtime claim tied to one proof route
+- `../guides/pressure-routes.md` when runtime concerns start competing with earlier
+  ownership decisions
+- `../reference/self-review-prompts.md` when you want to test whether time and
+  concurrency still sound like boundary choices rather than ambient conditions
 
-## Review route for time pressure
+## Study route through the capstone
 
-1. Read `src/service_monitoring/runtime.py`.
-2. Compare it with [Capstone Walkthrough](../capstone/capstone-walkthrough.md) and [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md).
-3. Use the runtime tests after you can already say which object should remain ignorant of time, retries, or async concerns.
+If the module still feels abstract, take this route:
 
-This route keeps a common mistake visible: once time pressure appears, teams often let
-every object learn about clocks, cancellation, or scheduling, even when only the runtime
-boundary should absorb that complexity.
+1. inspect the runtime or coordination layer in the capstone
+2. ask which parts truly need clocks, queues, retries, or async work
+3. ask which domain objects should remain plain synchronous logic
+4. ask what a worker cancellation would leave behind
+5. compare that answer with the exercises and refactor page
+
+That route turns the module into a concrete runtime review instead of a library survey.
 
 ## Questions to keep explicit
 
-- Which clock or timeout belongs to the runtime boundary rather than the aggregate?
-- Which operation becomes dangerous if retries or cancellation are hidden inside the model?
-- Which async bridge should stay at the edge instead of widening every public method?
+- Which boundary should own "what time is it now?"
+- Which mutation path is dangerous enough that shared state should be replaced by owned
+  handoff?
+- Where does synchronous domain logic stop and async coordination begin?
+- What retry path would duplicate visible work if you got cancellation wrong?
 
 ## Common failure modes
 
 - using wall-clock time where monotonic time is required
-- sharing mutable objects across threads without a clear owner
-- wrapping synchronous code in async entrypoints without documenting blocking behavior
-- treating cancellation as an exception detail instead of a state transition concern
-- memoizing mutable or time-sensitive results without invalidation rules
-
-## Exercises
-
-Use the full exercise day rather than treating these as quick prompts:
-
-- [Exercises](exercises.md)
-- [Exercise Answers](exercise-answers.md)
-
-The exercise day turns the module into one complete runtime-boundary review route:
-clock choice, deadline ownership, concurrency control, sync-async bridging, and
-cancellation-safe retries.
-
-## Capstone connection
-
-The monitoring capstone already evaluates live samples and emits incidents. This module
-shows how that runtime could grow scheduled polling, worker queues, time-based rules,
-and async adapters while preserving aggregate ownership and explicit boundaries.
+- teaching domain objects about timers, polling cadence, or retry delay
+- widening every API to async because one adapter is async
+- using shared caches without explicit freshness or ownership rules
+- calling work "resumable" without a durable checkpoint story
 
 ## Honest completion signal
 
-You are ready to move on when you can point to one proposed concurrency or timing change
-and explain:
+You are ready to move on when you can take one capstone runtime change and explain:
 
-- which boundary should absorb it
+- which boundary should absorb the new time or concurrency pressure
 - which objects should stay unaware of it
-- which proof surface should fail first if the pressure leaks inward
+- what proof or drill should fail first if that pressure leaks inward
 
 ## Closing criteria
 
-You should finish this module able to design Python object systems that remain clear,
-testable, and safe when clocks, worker concurrency, and async integration pressure are real.
+You should finish this module able to keep Python object systems readable and testable
+even when clocks, worker concurrency, retries, and async integration are real.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Glossary](glossary.md) when you want the recurring runtime language kept stable
+while you move between lessons, labs, and capstone review.
