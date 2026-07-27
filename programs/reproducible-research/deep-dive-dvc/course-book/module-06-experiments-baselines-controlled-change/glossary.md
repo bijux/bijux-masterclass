@@ -48,15 +48,22 @@ the baseline evidence story.
 | baseline boundary work | A change that redefines what the baseline means and should be reviewed before ordinary candidate comparison. |
 | candidate | A provisional run being compared against a baseline or other candidates. |
 | candidate intent | The short explanation of what a candidate is trying to learn or prove. |
+| allowed change set | The exact declared controls that may change while preserving the candidate's stated question. |
 | controlled change | A declared change with a reviewable purpose and evidence trail. |
 | experiment scope | The set of changes included in one candidate run and the review question they answer. |
 | experiment record | The DVC-preserved evidence for a candidate run, including parameter and metric differences. |
 | experiment isolation | Keeping candidate runs separate from main Git history until a promotion decision is made. |
 | comparison anchor | The baseline or prior state used as the reference for judging a candidate. |
+| comparison control | A population, schema, runtime, or other semantic surface that must remain stable for the intended comparison. |
+| comparison gate | The review boundary that rejects ranking when baseline, intent, change scope, population, schema, or execution evidence is invalid. |
 | selection | The review decision to keep, discard, or promote a candidate based on evidence and intent. |
 | metric tradeoff | A result where one metric improves while another worsens, requiring review judgment. |
 | promotion | The deliberate decision to make a candidate part of the main state story. |
+| promotion request | A proposal to adopt a candidate; it does not itself contain review authority. |
+| promotion decision | A durable owner-backed record that accepts or rejects governed adoption using named evidence. |
 | apply | Bringing a candidate's state into the workspace for inspection before any promotion commit. |
+| blocked comparison | A candidate outcome that must stay outside metric ranking because the comparison contract failed. |
+| blocked promotion | A comparable candidate that cannot enter governed history because decision or post-apply evidence is missing. |
 | discard | Removing a candidate from active consideration because it is not useful, valid, comparable, or worth keeping. |
 | workspace discipline | Keeping local files understandable while reviewing, applying, or discarding candidates. |
 | lineage | The evidence trail that explains where a result came from and how it relates to the baseline. |
@@ -71,8 +78,10 @@ Use these questions when the module feels abstract:
 - What baseline is this candidate comparing against?
 - What is the candidate trying to learn?
 - Which declared control changed?
+- Do the actual changed paths exactly match the allowed change set?
 - Did the metric definition and population stay comparable?
 - What tradeoff did the candidate create?
 - Does the candidate deserve promotion, discard, or more bounded review?
 - What changed after applying the candidate to the workspace?
+- Which evidence authorizes promotion rather than merely requesting it?
 - What should the promotion note say two years from now?

@@ -47,11 +47,11 @@ The central question is:
 If the answer is still "I tried a few things locally," the workflow has left the course's
 evidence model.
 
-The capstone corroboration surface for this module is the set of files and commands that
-make experiment review visible: `capstone/params.yaml`, `capstone/metrics/metrics.json`,
-`capstone/publish/v1/params.yaml`, `capstone/docs/experiment-guide.md`,
-`capstone/docs/release-review-guide.md`, `capstone/docs/publish-contract.md`, and
-the `make -C capstone experiment-review` route.
+The primary corroboration surface is the executable experiment-comparability audit. It
+creates seven isolated Git and DVC repositories, runs real candidates, and preserves
+baseline records, candidate records, DVC command receipts, changed paths, and decisions.
+Use the broader capstone experiment and release surfaces only after the focused audit is
+clear.
 
 ## Why this module exists
 
@@ -87,6 +87,18 @@ flowchart LR
 
 Read the module in that order the first time.
 
+For a missed class or independent study session:
+
+1. read Core 1 and Core 2 before running anything
+2. predict the seven audit decisions in Exercise 1
+3. run the focused audit
+4. read Core 3 and inspect command receipts
+5. read Core 4 and the worked example
+6. finish Exercises 2-8 before reading their answers
+7. read Core 5, then complete the apply and retention exercises
+
+This order delays metric ranking until you have established baseline and scope discipline.
+
 If the problem is already partly clear, use this shortcut:
 
 - open Core 1 when the main confusion is "what is the baseline protecting?"
@@ -106,7 +118,7 @@ If the problem is already partly clear, use this shortcut:
 | [Comparing Experiments and Selecting Candidates](comparing-experiments-and-selecting-candidates.md) | teaches candidate comparison without metric cherry-picking |
 | [Promotion, Cleanup, and History Integrity](promotion-cleanup-and-history-integrity.md) | teaches deliberate promotion, discard, and baseline protection |
 | [Worked Example: Promoting a Controlled Threshold Experiment](worked-example-promoting-a-controlled-threshold-experiment.md) | walks through one realistic experiment review |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | provides ten cumulative evidence-based exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -120,22 +132,25 @@ By the end of this module, you should be able to explain:
 - how to compare candidate runs without ignoring metric meaning
 - why promotion requires evidence, not only a better number
 - how cleanup protects you from stale local folklore
+- why successful execution, valid comparison, and authorized promotion are separate gates
+- how to repair comparison defects without rewriting failed evidence
 
 ## Commands to keep close
 
 These commands form the evidence loop for Module 06:
 
 ```bash
-make -C capstone experiment-review
-make -C capstone prediction-review
+make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
+make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-selftest
 dvc exp run
 dvc exp show
 dvc exp diff
 dvc exp apply
 ```
 
-Use the `make` routes for the course-provided capstone review. Use the `dvc exp` commands
-inside a DVC workspace when you want to inspect candidate runs directly.
+Use the focused audit before direct experiment commands. It gives each command receipt a
+bounded interpretation and supplies negative cases that an ordinary successful run does
+not reveal.
 
 ## Capstone route
 
@@ -147,17 +162,17 @@ Best corroboration surfaces for this module:
 - `capstone/metrics/metrics.json`
 - `capstone/publish/v1/params.yaml`
 - `capstone/publish/v1/metrics.json`
+- `capstone/repro/experiment-comparability/`
+- `capstone/docs/experiment-comparability-audit-guide.md`
 - `capstone/docs/experiment-guide.md`
-- `capstone/docs/release-review-guide.md`
 - `capstone/docs/release-review-guide.md`
 
 Useful proof route:
 
 ```bash
-make -C capstone experiment-review
-make -C capstone release-audit
+make -C programs/reproducible-research/deep-dive-dvc/capstone experiment-comparability-audit
 ```
 
-The point of that route is not to celebrate variation. It is to ask whether a candidate
-run changed a declared control, stayed comparable to the baseline, and deserves any
-promotion discussion at all.
+The route returns `KEEP_FOR_PROMOTION_REVIEW`, `BLOCK_COMPARISON`, or
+`BLOCK_PROMOTION`. Those outcomes prevent a successful run from silently becoming a
+ranked candidate or governed baseline.
