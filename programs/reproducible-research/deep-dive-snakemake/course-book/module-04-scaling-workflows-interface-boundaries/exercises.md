@@ -51,6 +51,33 @@ module04-lab/
 That layout makes it easier to compare ownership, interfaces, public contracts, and gates
 without rebuilding the example from scratch for every prompt.
 
+Build one small scaling review packet as you go:
+
+- one ownership map that groups every current rule family
+- one before-and-after entrypoint view
+- one include-versus-module decision note for a real candidate boundary
+- one short public file contract excerpt
+- one gate table that ties each check to a structural claim
+- one rejected abstraction note explaining what you did not split and why
+
+If those six artifacts are missing, the day usually turns into folder movement instead of
+reviewable repository design.
+
+```mermaid
+flowchart LR
+  ownership["name owned concerns"]
+  split["split one family honestly"]
+  visibility["prove the graph stayed visible"]
+  interface["promote only a real interface"]
+  contract["document the public contract"]
+  gates["tie gates to claims"]
+
+  ownership --> split --> visibility --> interface --> contract --> gates
+```
+
+Use that route deliberately. It keeps the growth story readable instead of rewarding the
+largest diff.
+
 ## Exercise 1: Name the current ownership problem
 
 Take a working workflow with at least six rules and no existing structure plan. Classify
@@ -78,6 +105,7 @@ What to hand in:
 - the top-level `Snakefile`
 - before and after `--list-rules` output
 - one split you deliberately did not make yet and why
+- one sentence explaining what the entrypoint still teaches after the split
 
 Study note:
 If the entrypoint becomes harder to explain after the split, the split is not healthy yet.
@@ -109,6 +137,7 @@ What to hand in:
 - named inputs, outputs, parameters, and assumptions
 - your decision and why
 - one missing interface detail that would block promotion to a module
+- one explicit sentence saying what would remain an include if the interface is not ready
 
 Study note:
 Promote a module only when the interface is real enough to explain without hand-waving.
@@ -128,6 +157,19 @@ What to hand in:
 Study note:
 This is where many scaling refactors fail. Paths look tidy, but nobody can say which ones
 are safe for consumers.
+
+## Midday self-check
+
+Before you move into schema defense and full structural review, make sure your packet can
+already answer all of these:
+
+- which owned concerns exist even before you split files
+- whether the entrypoint still explains the workflow quickly
+- whether your candidate boundary has a real interface or only feels reusable
+- which paths are public contracts and which remain rebuildable internal state
+
+If you cannot answer those four questions cleanly, return to the earlier exercises and
+make the packet more explicit before moving on.
 
 ## Exercise 6: Review one abstraction you should reject
 
@@ -162,6 +204,7 @@ What to hand in:
 - the schema or validation rule
 - valid and invalid examples
 - an explanation of why the failure protects a public boundary rather than an internal preference
+- one note describing what kind of downstream consumer would break if the invalid change passed
 
 Study note:
 This exercise should make interface drift feel concrete rather than theoretical.
@@ -177,6 +220,7 @@ What to hand in:
 - two policy mappings such as local and cluster-oriented contexts
 - paired dry-runs or review evidence
 - the invariant that makes the workflow executor-independent
+- one place where scheduler folklore was deliberately kept out of the rule surface
 
 Study note:
 If the rule contains scheduler folklore, the scaling cleanup has introduced a new problem.
@@ -192,6 +236,7 @@ What to hand in:
 - one graph comparison
 - one contract validation result
 - any boundary that should be simplified, postponed, or removed
+- one gate you would add only after explaining exactly which structural claim it defends
 
 Study note:
 This is a review exercise first. Treat structural changes as trust changes, not as style
@@ -209,6 +254,20 @@ What to hand in:
 - the boundary that absorbs it
 - the proof route you would rerun afterward
 - one sign that your current structure would need another redesign
+
+Study note:
+This is a future-maintainership exercise, not a praise-the-current-structure exercise. If
+every new concern would reopen the whole tree, the current design is not ready yet.
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- split files without naming owned concerns first
+- promote a module because the file was long, not because the interface is real
+- describe public outputs without naming any internal state that must stay private
+- add gates without saying which structural promise they defend
+- praise "modularity" without showing where next month’s growth should land
 
 ## Exit standard for the exercise day
 

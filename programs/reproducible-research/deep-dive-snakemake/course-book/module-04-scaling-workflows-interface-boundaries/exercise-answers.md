@@ -23,6 +23,18 @@ The strongest Module 04 answers usually do four things:
 - they choose one proportionate review surface
 - they describe the repair in terms of repository clarity, not architecture fashion
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one ownership map
+- one before-and-after entrypoint view
+- one include-versus-module decision note
+- one public file contract excerpt
+- one gate table tied to claims
+- one rejected abstraction note
+
+If your answer page comparisons rely only on folder names and intuition, the structural
+reasoning is still too implicit.
+
 ## Exercise 1: Name the current ownership problem
 
 A strong answer starts by mapping the existing concerns before changing any files.
@@ -54,6 +66,11 @@ Why this is strong:
 
 - it names one real concern
 - it distinguishes an include-level split from a module-level split
+
+The missing but important sentence is usually this one:
+
+> After the split, the top-level `Snakefile` still explains configuration, major rule
+> families, and the final contract without sending the reader on a scavenger hunt.
 
 ## Exercise 3: Prove the graph stayed visible
 
@@ -95,6 +112,12 @@ Why this is strong:
 - it makes interface clarity the criterion
 - it avoids promoting a split just because the folder looks cleaner
 
+A useful contrast sentence is:
+
+> If the call site still depends on hidden globals, undeclared path conventions, or
+> private helper behavior, the boundary is not a module yet even if the directory name
+> says `modules/`.
+
 ## Exercise 5: Write a public file contract
 
 A strong answer sounds like this:
@@ -133,12 +156,20 @@ values. Renaming a required field fails the targeted contract check even when th
 valid JSON or TSV. That failure is correct: parseability is weaker than compatibility,
 and a consumer-visible field change requires deliberate versioning or migration.
 
+The strongest answers also name the broken consumer clearly: for example, a downstream
+report generator, dashboard loader, or bundle validator that trusts the documented field
+names and would silently misread or reject the changed surface.
+
 ## Exercise 8: Keep resources portable while scaling
 
 Rules declare abstract needs such as threads, memory, and runtime. A local profile maps
 them to bounded workstation execution; a cluster profile maps the same needs to scheduler
 resources. Neither rule contains a queue name or submission command. The invariant is that
 resource policy can change without changing target paths, algorithms, or output semantics.
+
+Good answers also point to one place where scheduler folklore was kept out on purpose,
+such as refusing to hardcode queue names, partition names, or submission flags inside the
+rule body.
 
 ## Exercise 9: Review a full structural pull request
 
@@ -148,6 +179,15 @@ the rule graph and validates public fixtures. Redundant wrappers or modules with
 globals should be removed. Future gates should separately defend syntax/lint, planned
 graph shape, and the public file contract rather than rerunning unrelated heavy suites.
 
+A compact claim table often helps:
+
+| Gate | Claim defended |
+| --- | --- |
+| `snakemake --list-rules` or rulegraph review | the workflow remains legible after the split |
+| `snakemake -n` | the top-level target story did not drift accidentally |
+| schema or contract validation | public consumers still receive the promised shape |
+| focused lint or structure check | the refactor did not add hidden architectural debt |
+
 ## Exercise 10: Rehearse the next month of growth
 
 A strong answer predicts future landing places from the current structure rather than
@@ -155,6 +195,10 @@ inventing a new structure on the spot. If a new assay, report, or publish artifa
 has an obvious owning boundary, the current design is working. If every imagined change
 requires reopening the whole directory strategy, the repository is not scaled yet even if
 the current diff looks neat.
+
+The healthiest answers sound calm here. They can say where the next concern lands, what
+gate reruns, and what sign would trigger another redesign without pretending the current
+tree is timeless.
 
 ## What all ten answers should have in common
 
@@ -164,5 +208,12 @@ The best Module 04 answers usually:
 2. promote boundaries into modules only when the interface is explicit
 3. distinguish internal workflow state from public file contracts
 4. choose proof routes that defend the actual scaling boundary under review
+
+Weak answer pattern:
+
+- "the repository is more modular now, so the structure must be better"
+
+That sentence skips ownership, interface, public contract, and proof surfaces all at
+once. If your answers still sound like that, keep revising.
 
 If your answers do those four things, the module is landing in the right direction.
