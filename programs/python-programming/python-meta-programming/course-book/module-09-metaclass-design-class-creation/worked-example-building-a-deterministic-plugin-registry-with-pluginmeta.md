@@ -43,6 +43,11 @@ This page should be read as a review packet, not as a recipe to copy into every 
 system. The teaching goal is to show one bounded case where the metaclass still has an
 honest owner.
 
+If you are studying alone, keep one more rule beside the code:
+
+- every time the registry example feels convenient, stop and name the exact invariant that convenience is hiding
+- then decide whether that invariant is still class-creation-sized or already broader framework policy
+
 ## The incident
 
 Assume a team wants a plugin family where:
@@ -66,6 +71,19 @@ Work through the example in this order:
 | Audit import-time cost | What global state changes during import? | Registry mutation, ordering, and reset needs are stated plainly |
 | Inspect reset discipline | How do tests recover determinism? | A clear reset surface exists and is part of the design |
 | Reject overclaim | What is intentionally outside this example? | Discovery, lifecycle, and configuration are excluded explicitly |
+
+## Worked-example reading order
+
+Do not read the implementation top to bottom only once. Use this order instead:
+
+1. identify the class-creation invariant the metaclass is supposed to own
+2. trace how abstract opt-out prevents base classes from registering
+3. trace one concrete subclass registration into the grouped registry
+4. inspect duplicate rejection and deterministic ordering
+5. inspect reset support only after the invariant and import-time mutation are clear
+
+That order keeps the class-creation rule visible before the registry convenience starts to
+look like a whole plugin framework.
 
 ## The first design rule: justify the metaclass narrowly
 
@@ -214,6 +232,10 @@ Notice what the metaclass is not doing:
 - no runtime lifecycle hooks
 - no dependency graph management
 
+Keep one more refusal line active:
+
+- no package discovery or loading orchestration during import
+
 That restraint is part of why the example remains teachable.
 
 ## Why this is useful for review
@@ -237,6 +259,17 @@ After reading the implementation, a strong learner should be able to say:
 - "the metaclass is justified because every concrete subclass must register automatically"
 - "reset helpers are necessary because import-time state is mutated"
 - "this still is not a full plugin framework"
+
+## Weak readings to reject early
+
+These are the fast wrong turns a missed-class learner is likely to take:
+
+| Weak reading | Why it fails |
+| --- | --- |
+| "the metaclass solves plugin systems cleanly" | the example only handles registration, uniqueness, ordering, and reset |
+| "the registry is now automatic so the hard part is done" | automatic registration does not solve discovery, lifecycle, or configuration |
+| "tests can just clear it somehow" | somehow hides the operational surface needed for determinism |
+| "duplicate rejection proves framework maturity" | one invariant does not prove broader plugin architecture |
 
 ## Why import-time effects still matter here
 
@@ -288,6 +321,12 @@ This worked example ties the module together:
 
 That is the durable takeaway. The point is not to make registries feel magical. The point
 is to show one case where class-creation-time control is genuinely the honest owner.
+
+Before leaving the page, write one sentence in each of these forms:
+
+- "the metaclass invariant here is..."
+- "the import-time cost here is..."
+- "the broader plugin concern still missing is..."
 
 ## Exit check for this page
 
