@@ -44,8 +44,15 @@ INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-mak
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-make
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-make-capstone-source.tar.gz
+RELEASE_DIR ?= $(ARTIFACTS_DIR)/release/reproducible-research/deep-dive-make
+RELEASE_CANDIDATE ?= $(RELEASE_DIR)/candidate/deep-dive-make-capstone.tar.gz
+RELEASE_CHECKSUM ?= $(RELEASE_CANDIDATE).sha256
+RELEASE_REPORT ?= $(RELEASE_DIR)/evidence/candidate-acceptance.json
 RELEASE_POLICY := release/package-policy.tsv
 RELEASE_INPUTS = app $(DYN_BINS) $(DYN_HDR)
+RELEASE_CANDIDATE_ABS := $(abspath $(RELEASE_CANDIDATE))
+RELEASE_CHECKSUM_ABS := $(abspath $(RELEASE_CHECKSUM))
+RELEASE_REPORT_ABS := $(abspath $(RELEASE_REPORT))
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
 REPRO_CASE ?= $(REP_DIR)/directory-creation-race.mk
 
@@ -53,7 +60,7 @@ DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
-.PHONY: dyn lint test dist repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
+.PHONY: dyn lint test dist verify-dist release-check repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
         contract-audit inspect incident-audit clean submake-demo perf trace-count hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
@@ -133,6 +140,9 @@ help:
 >     '  show-e            rerun show with environment override enabled' \
 >     '  source-baseline-check fail if local build state would contaminate a source bundle' \
 >     '  source-bundle     write a tracked-source archive for learner or review distribution' \
+>     '  dist              write candidate and checksum under artifacts/' \
+>     '  verify-dist       verify existing candidate bytes without rebuilding' \
+>     '  release-check     build, test, and verify one local candidate' \
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
 >     '  selftest-report   write the selftest evidence bundle to artifacts/' \
@@ -353,13 +363,27 @@ test: app dyn
 >     $(call assert_stdout_eq,$(BLD_DIR)/bin/dyn1,Hello from generated header)
 >     $(call assert_stdout_eq,$(BLD_DIR)/bin/dyn2,42)
 
-dist: dist.tar.gz dist.tar.gz.sha256
+dist: $(RELEASE_CANDIDATE) $(RELEASE_CHECKSUM)
+>     @printf 'PASS: wrote release candidate %s\n' "$(RELEASE_CANDIDATE_ABS)"
 
-dist.tar.gz: $(RELEASE_INPUTS) $(RELEASE_POLICY) scripts/mkdist.py scripts/release_policy.py
->     $(PYTHON) scripts/mkdist.py --policy "$(RELEASE_POLICY)" --output "$@"
+$(RELEASE_CANDIDATE): $(RELEASE_INPUTS) $(RELEASE_POLICY) scripts/mkdist.py scripts/release_policy.py
+>     $(PYTHON) scripts/mkdist.py --policy "$(RELEASE_POLICY)" --output "$(RELEASE_CANDIDATE_ABS)"
 
-dist.tar.gz.sha256: dist.tar.gz scripts/write_release_checksum.py
->     $(PYTHON) scripts/write_release_checksum.py --candidate "$<" --output "$@"
+$(RELEASE_CHECKSUM): $(RELEASE_CANDIDATE) scripts/write_release_checksum.py
+>     $(PYTHON) scripts/write_release_checksum.py \
+>       --candidate "$(RELEASE_CANDIDATE_ABS)" \
+>       --output "$(RELEASE_CHECKSUM_ABS)"
+
+verify-dist:
+>     $(PYTHON) scripts/verify_release_candidate.py \
+>       --candidate "$(RELEASE_CANDIDATE_ABS)" \
+>       --checksum "$(RELEASE_CHECKSUM_ABS)" \
+>       --policy "$(RELEASE_POLICY)" \
+>       --report "$(RELEASE_REPORT_ABS)"
+
+release-check: test selftest dist
+>     @$(MAKE) --no-print-directory verify-dist
+>     @echo "PASS: local release candidate accepted"
 
 repro:
 >     @printf '%s\n' \
@@ -486,7 +510,7 @@ confirm: hardened
 # ---- source baseline ----
 source-baseline-check:
 >     @paths=''; \
->     for path in build stamps app all dist.tar.gz dist.tar.gz.sha256; do \
+>     for path in build stamps app all; do \
 >         if [ -e "$$path" ]; then \
 >             paths="$$paths./$$path\n"; \
 >         fi; \
@@ -521,7 +545,7 @@ show-origins:
 >     @echo "CFLAGS origin=$(origin CFLAGS) flavor=$(flavor CFLAGS)"
 
 clean:
->     rm -rf $(BLD_DIR) stamps app all dist.tar.gz dist.tar.gz.sha256
+>     rm -rf $(BLD_DIR) stamps app all
 >     find . -type f \( -name '*.tmp.*' -o -name '*.tmp' -o -name '*.d.tmp' -o -name '*.tmp.d' \) -delete 2>/dev/null || true
 
 FORCE:

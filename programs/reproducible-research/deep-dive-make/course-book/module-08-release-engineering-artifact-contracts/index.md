@@ -236,7 +236,7 @@ These commands form the evidence loop for Module 08:
 
 ```sh
 gmake -C programs/reproducible-research/deep-dive-make/capstone dist
-tar -tzf programs/reproducible-research/deep-dive-make/capstone/dist.tar.gz
+tar -tzf artifacts/release/reproducible-research/deep-dive-make/candidate/deep-dive-make-capstone.tar.gz
 gmake -C programs/reproducible-research/deep-dive-make/capstone -q dist
 gmake -C programs/reproducible-research/deep-dive-make/capstone --trace -n dist
 ```

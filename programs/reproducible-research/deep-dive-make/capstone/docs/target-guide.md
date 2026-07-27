@@ -104,7 +104,8 @@ They do different jobs:
 What must stay out of the source bundle:
 
 - `build/` and `stamps/` because they are derived state, not source inputs
-- `app`, `all`, and `dist.tar.gz` because they are generated deliverables
+- `app` and `all` because they are generated deliverables
+- release candidates and evidence under the repository `artifacts/` tree
 - temporary files such as `*.tmp`, `*.tmp.*`, and `*.d.tmp` because they are local residue
 
 What belongs in the source bundle:

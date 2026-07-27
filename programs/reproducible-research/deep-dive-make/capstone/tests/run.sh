@@ -29,7 +29,7 @@ mkdir -p "$tmp"
 trap 'rm -rf "$tmp"' EXIT INT TERM
 
 # Copy repo excluding build outputs and VCS data
-tar cf - --exclude=./build --exclude=./.git --exclude=./dist.tar.gz . | (cd "$tmp" && tar xf -)
+tar cf - --exclude=./build --exclude=./.git . | (cd "$tmp" && tar xf -)
 cd "$tmp"
 
 # Set DEBUG=0 for selftest (no -g; faster .o hashing)
