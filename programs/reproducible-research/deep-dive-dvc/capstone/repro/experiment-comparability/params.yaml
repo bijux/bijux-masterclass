@@ -1,0 +1,9 @@
+{
+  "decision": {
+    "threshold": 0.65
+  },
+  "evaluation": {
+    "metric_schema": "classification-v1",
+    "population_id": "incident-review-v1"
+  }
+}
