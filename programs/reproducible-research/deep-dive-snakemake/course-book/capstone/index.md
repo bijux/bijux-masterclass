@@ -2,18 +2,35 @@
 
 This capstone is the executable reference workflow for Deep Dive Snakemake. It keeps rule
 contracts, dynamic discovery, operating policy, publish trust, and later stewardship
-questions visible in one place so the workflow can be reviewed as a real repository
+questions visible in one repository so the workflow can be reviewed as a real system
 rather than as terminal folklore.
 
 Use this guide once the local module idea is already clear. The capstone should
 corroborate one workflow claim at a time, not become the first explanation of Snakemake.
 
+## What this capstone is for
+
+The capstone is not:
+
+- a beginner tutorial
+- a substitute for the modules
+- a reason to browse the whole repository
+- proof that gets better simply because it is larger
+
+The capstone is for one narrower job:
+
+> taking a module idea that is already legible in a small setting and seeing whether it
+> stays honest inside a realistic repository
+
+That distinction matters because learners often mistake:
+
+- more files for deeper education
+- more commands for stronger proof
+- a larger repository for a better explanation
+
 ## How to use this guide
 
-Read this page before you enter the capstone, not after you are already wandering around
-the repository.
-
-Use it in this order:
+Work in this order:
 
 1. decide whether the module idea is already clear locally
 2. choose the smallest capstone route that matches that idea
@@ -23,34 +40,9 @@ Use it in this order:
 If the capstone starts feeling larger than the concept, the route is too broad or the
 module idea is not clear enough yet.
 
-## What this capstone must do for the learner
-
-By the time you use the capstone well, it should help you do five things:
-
-- enter a real workflow repository without losing the module idea you are testing
-- choose the smallest honest proof route for the current question
-- compare public contracts against internal workflow state
-- inspect operating, publish, and stewardship boundaries in one executable system
-- leave the repository with one clearer review judgment, not with more browsing
-
-## Start by deciding whether you need corroboration or first explanation
-
-The capstone is not where a beginner should first meet checkpoints, profiles, publish
-contracts, or stewardship review.
-
-It is where a smaller module idea must survive contact with a real repository.
-
-That difference matters because learners often mistake:
-
-- more files for deeper education
-- more commands for better proof
-- a larger repository for a stronger explanation
-
-This guide is here to stop that mistake early.
-
 ## The capstone ladder
 
-Keep this order in front of you when you use the repository:
+Keep this sequence in front of you:
 
 ```mermaid
 flowchart TD
@@ -63,6 +55,16 @@ If the capstone becomes your first exposure to a concept, the repository will fe
 than the lesson. If the route is stronger than the question, you waste time and blur the
 boundary you meant to inspect.
 
+## What this capstone should help you do
+
+By the time you use the capstone well, it should help you:
+
+- enter a real workflow repository without losing the module idea you are testing
+- choose the smallest honest proof route for the current claim
+- compare public contracts against internal workflow state
+- inspect operating, publish, and stewardship boundaries in one executable system
+- leave the repository with one clearer review judgment rather than with more browsing
+
 ## Choose the right capstone route
 
 | If your question is... | Best page |
@@ -70,7 +72,7 @@ boundary you meant to inspect.
 | Which capstone surface matches the current module? | [Capstone Map](capstone-map.md) |
 | Which files and commands matter first? | [Command Guide](command-guide.md) and [Capstone File Guide](capstone-file-guide.md) |
 | Where do workflow, policy, publish, and stewardship ownership live? | [Capstone Architecture Guide](capstone-architecture-guide.md) |
-| Which proof route is honest for this claim? | [Capstone Proof Guide](capstone-proof-guide.md) |
+| Which proof route is proportionate to this claim? | [Capstone Proof Guide](capstone-proof-guide.md) |
 | How should I review the repository as a maintainer? | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 | Where should a new change land? | [Capstone Extension Guide](capstone-extension-guide.md) |
 
@@ -88,7 +90,7 @@ boundary you meant to inspect.
 | If you need... | From the repository root | From the capstone directory |
 | --- | --- | --- |
 | the first bounded pass | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make walkthrough` |
-| executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make tour` |
+| one executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make tour` |
 | publish-trust review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make verify-report` |
 | operating-context review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | `make profile-audit` |
 
@@ -99,14 +101,14 @@ Suppose you have just finished Module 06 and your real question is:
 > what is actually safe for downstream users to trust?
 
 The honest capstone move is not to run the strongest stewardship route. It is to enter
-through the publish-facing routes:
+through the publish-facing surfaces:
 
 1. [Capstone Review Worksheet](capstone-review-worksheet.md)
 2. [Capstone File Guide](capstone-file-guide.md)
 3. `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`
 
-That keeps the route proportionate to the claim instead of turning a publish question into
-a whole-repository audit.
+That keeps the route proportionate to the claim instead of turning a publish question
+into a whole-repository audit.
 
 ## Guide set
 
@@ -126,10 +128,12 @@ a whole-repository audit.
 - Where does discovery become a durable artifact instead of runtime folklore?
 - Which settings belong to operating policy rather than workflow meaning?
 - Which saved evidence bundle would matter most to another maintainer?
-- Which ownership boundary would move next if the repository had to change?
+- Which ownership boundary should move next if the repository had to change?
 
-## Stop here when
+## Good stopping point
 
-- you know which module boundary you are testing
-- you know the smallest capstone route that answers honestly
-- you can leave with one concrete review judgment instead of more unfocused browsing
+Leave the capstone when you can answer all three:
+
+- which module boundary you were testing
+- which route gave the smallest honest answer
+- what concrete review judgment you can now make

@@ -4,17 +4,24 @@ Use this page when the main problem is command choice rather than concept choice
 Dive Snakemake has three command layers so readers can stay at the smallest durable
 surface instead of guessing where a target belongs.
 
-Deep Dive Snakemake has three command layers: repository root, program directory, and
-capstone directory. The layers exist so you do not have to guess where a command
-belongs.
+The three layers are teaching boundaries, not just convenience aliases.
+
+## The three command layers
+
+Deep Dive Snakemake exposes commands from:
+
+- the repository root
+- the program directory
+- the capstone directory
+
+Those layers exist so you do not have to guess where a command belongs and so you do not
+drop into the raw repository before you actually need to.
 
 ## How to use this page
 
-Use this guide only after you know what job you are trying to do.
+Work in this order:
 
-Read it in this order:
-
-1. name the job
+1. name the job you are trying to do
 2. choose the smallest command layer that still answers it
 3. run one command
 4. inspect the matching evidence before escalating
@@ -26,26 +33,24 @@ you down.
 
 ```mermaid
 flowchart TD
-  need["Name the job"] --> layer["Pick the smallest command layer"]
-  layer --> command["Run one command"]
-  command --> evidence["Inspect the matching evidence"]
-  evidence --> escalate{"Need stronger proof?"}
-  escalate -- no --> stop["Stop"]
-  escalate -- yes --> stronger["Escalate one step"]
+  need["name the job"] --> layer["pick the smallest command layer"]
+  layer --> command["run one command"]
+  command --> evidence["inspect the matching evidence"]
+  evidence --> escalate{"need stronger proof?"}
+  escalate -- no --> stop["stop"]
+  escalate -- yes --> stronger["escalate one step"]
   stronger --> command
 ```
 
 ## Start by treating command layers as teaching boundaries
 
-The three command layers are not just convenience aliases.
-
-They exist so learners can stay on the smallest honest surface:
+The layers exist so learners can stay on the smallest honest surface:
 
 - repository root when you need stable cross-program entry
 - program directory when you need one-course focus
 - capstone directory when you are already reading the workflow as a raw repository
 
-Dropping to the capstone too early often makes the learning route larger than necessary.
+Dropping to the capstone too early often makes the route larger than necessary.
 
 ## Choose the command layer
 
@@ -53,7 +58,7 @@ Dropping to the capstone too early often makes the learning route larger than ne
 | --- | --- | --- |
 | one stable entrypoint from the repository root | repository root | consistent commands across all programs |
 | course-local commands while staying inside the program | `programs/reproducible-research/deep-dive-snakemake/` | a smaller surface than the repo root |
-| the raw executable workflow repository | `capstone/` | direct access to the workflow itself |
+| the raw executable workflow repository | `capstone/` | direct access when you already need repository-level reading |
 
 ## A simple rule
 
@@ -63,8 +68,18 @@ Prefer the highest layer that still answers the current question honestly:
 - use the program directory when you want one-course focus
 - use the capstone directory when you are already reading the workflow as a repository
 
-Do not drop to the raw capstone just because it feels more "real." Smaller command
-surfaces are often better for learning and review.
+Do not drop to the raw capstone just because it feels more real. Smaller command surfaces
+are often better for learning and review.
+
+## Start by job, not by directory
+
+| If the job is... | Honest first command | Do not start with |
+| --- | --- | --- |
+| first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
+| one executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
+| publish-boundary verification | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
+| execution-policy comparison | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | random `make PROGRAM=...` exploration |
+| strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
 
 ## One honest command decision
 
@@ -78,16 +93,6 @@ your context.
 It is not `proof`, because that command answers a broader stewardship question than the
 job you just named.
 
-## Start by job, not by directory
-
-| If the job is... | Start here | Do not start with |
-| --- | --- | --- |
-| first-pass capstone reading | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
-| executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` |
-| publish-boundary verification | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` |
-| execution-policy comparison | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | random `make PROGRAM=reproducible-research/deep-dive-snakemake ...` exploration |
-| strongest final confirmation | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm` | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-walkthrough` |
-
 ## Common good choices
 
 | Situation | Good first command | Why |
@@ -97,7 +102,7 @@ job you just named.
 | You care about downstream trust. | `capstone-verify-report` | publish review is narrower than whole-repository confirmation |
 | You suspect local and CI are diverging. | `capstone-profile-audit` | context drift should start at the policy surface |
 
-## Repository root
+## Repository-root commands
 
 Use root-level commands when you want one entrypoint that works across programs.
 
@@ -107,7 +112,7 @@ Use root-level commands when you want one entrypoint that works across programs.
 - `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`
 - `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-confirm`
 
-## Program directory
+## Program-directory commands
 
 Use `programs/reproducible-research/deep-dive-snakemake/` when you want the course-local
 surface.
@@ -118,7 +123,7 @@ surface.
 - `make capstone-profile-audit`
 - `make capstone-confirm`
 
-## Capstone directory
+## Capstone-directory commands
 
 Use `capstone/` when you want the raw reference workflow.
 
@@ -131,6 +136,8 @@ Use `capstone/` when you want the raw reference workflow.
 
 ## Good stopping point
 
-Stop when you can explain why the chosen command layer is proportionate to the current
-question. If the layer still feels too large, step down one layer before opening more
-targets.
+Stop when you can explain:
+
+- why the chosen layer was proportionate to the current job
+- what evidence the command was supposed to produce
+- why a lower layer or stronger command would be unnecessary right now

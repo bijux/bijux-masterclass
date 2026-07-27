@@ -4,18 +4,18 @@ Use this page when the module idea is already clear and you want to see it survi
 real repository shape. The capstone is not a beginner tutorial. It is the place where a
 small concept has to remain honest inside a larger workflow system.
 
-## How to use this page
+This page is for route selection, not for browsing permission.
 
-Use this map when you know the module question but not yet the right capstone route.
+## How to use this map
 
-Read it in this order:
+Work in this order:
 
 1. state the module question in one sentence
 2. choose the smallest route family that owns it
 3. inspect one repository surface and one command only
 4. stop when the claim is settled
 
-This page is a routing aid, not permission to browse the whole capstone.
+If the route cannot stay that small, the concept or question still needs sharpening.
 
 ## Enter the capstone at the right time
 
@@ -24,31 +24,20 @@ Enter only when the module idea is already legible in the local exercise.
 Return to the module first if:
 
 - you cannot yet explain the concept on a smaller workflow
-- you do not know which command should prove the behavior
+- you do not know which command would count as proof
 - the repository feels larger than the concept you are studying
 
-## Start by keeping the repository smaller than the lesson
+The capstone is supposed to make a clear concept more realistic, not make a vague concept
+more confusing.
 
-The capstone helps only when the repository stays smaller than the question.
-
-That means:
-
-- one module question
-- one route family
-- one main repository surface
-- one first command
-
-If you cannot keep the route that small, step back to the module or guide before you
-continue.
-
-## Start with the smallest useful route
+## The route shape
 
 ```mermaid
 flowchart TD
-  question["Name one module question"] --> route["Choose one capstone route"]
-  route --> surface["Inspect one repository surface"]
-  surface --> proof["Run one proof command"]
-  proof --> stop["Stop when the claim is settled"]
+  question["name one module question"] --> route["choose one capstone route"]
+  route --> surface["inspect one repository surface"]
+  surface --> proof["run one proof command"]
+  proof --> stop["stop when the claim is settled"]
 ```
 
 ## Choose the route by question
@@ -58,7 +47,7 @@ flowchart TD
 | what this repository promises | [Capstone Guide](index.md) | [Capstone Walkthrough](capstone-walkthrough.md) |
 | which repository surface matches the current module | the table below | [Capstone File Guide](capstone-file-guide.md) |
 | which command should prove the current claim | [Command Guide](command-guide.md) | [Capstone Proof Guide](capstone-proof-guide.md) |
-| what is safe for downstream trust | [Capstone Review Worksheet](capstone-review-worksheet.md) | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` |
+| what is safe for downstream trust | [Capstone Review Worksheet](capstone-review-worksheet.md) | `capstone-verify-report` |
 | what differs across execution contexts | [Capstone Architecture Guide](capstone-architecture-guide.md) | [Capstone Review Worksheet](capstone-review-worksheet.md) |
 
 ## Read the route table correctly
@@ -68,6 +57,30 @@ The route should stay smaller than the concept you are checking.
 - Start with a page when you still need orientation.
 - Start with a command when the question is already concrete.
 - Escalate only when the current route leaves part of the claim genuinely unanswered.
+
+## Choose the route by module arc
+
+| Module arc | What should already be clear locally | First capstone route |
+| --- | --- | --- |
+| Modules 01-02 | truthful file contracts, deterministic discovery, and explicit checkpoints | [Capstone Walkthrough](capstone-walkthrough.md) |
+| Modules 03-04 | policy surfaces, execution boundaries, and repository interfaces | [Command Guide](command-guide.md) |
+| Modules 05-08 | software boundaries, publish contracts, and operating contexts | [Capstone Proof Guide](capstone-proof-guide.md) |
+| Modules 09-10 | incident evidence, migration boundaries, and stewardship judgment | [Capstone Review Worksheet](capstone-review-worksheet.md) |
+
+## Module-to-capstone map
+
+| Module | Main question | Capstone surface | First command |
+| --- | --- | --- | --- |
+| 01 File Contracts | what makes the workflow file-driven instead of script-shaped | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make walkthrough` |
+| 02 Dynamic DAGs | where discovery becomes explicit instead of magical | checkpoint rule files, discovery artifacts, `publish/v1/discovered_samples.json` | `make verify` |
+| 03 Production Operations | what counts as workflow semantics versus operating policy | `profiles/`, `Makefile`, `tests/selftest.sh` | `make profile-audit` |
+| 04 Scaling Boundaries | how repository structure stays legible as the workflow grows | `workflow/rules/`, `workflow/modules/`, `FILE_API.md`, `TOUR.md` | `make tour` |
+| 05 Software Boundaries | where rule ownership ends and software, runtime, and provenance surfaces begin | `workflow/scripts/provenance.py`, `workflow/envs/python.yaml`, `src/capstone/`, `environment.yaml`, `Dockerfile` | `make proof` |
+| 06 Publish Contracts | what downstream consumers may trust and how that bundle is defended | `publish/v1/`, `workflow/rules/summarize_report.smk`, `workflow/rules/publish.smk`, `workflow/contracts/FILE_API.md`, `scripts/verify_publish.py` | `make verify-report` |
+| 07 Workflow Architecture | how repository layers, helper code, and file APIs are split deliberately | `Snakefile`, `workflow/rules/`, `workflow/modules/`, `workflow/contracts/FILE_API.md`, `workflow/CONTRACT.md`, `src/capstone/` | `make proof` |
+| 08 Operating Contexts | how local, CI, and scheduler policy differ without semantic drift | `profiles/local/`, `profiles/ci/`, `profiles/slurm/`, `Makefile`, `scripts/profile_summary.py` | `make profile-audit` |
+| 09 Incident Response | how logs, benchmarks, and workflow-tour evidence support diagnosis | `logs/`, `benchmarks/`, incident bundle surfaces | `make proof` |
+| 10 Governance | whether another maintainer could review or migrate the workflow safely | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make confirm` |
 
 ## One honest route choice
 
@@ -84,32 +97,8 @@ The honest capstone move is:
 It is not to start with governance review or the strongest confirmation command. The
 question is about discovery evidence, so the route should stay discovery-sized.
 
-## Choose the route by module arc
-
-| Module arc | What should already be clear locally | First capstone route |
-| --- | --- | --- |
-| Modules 01-02 | truthful file contracts, deterministic discovery, and explicit checkpoints | [Capstone Walkthrough](capstone-walkthrough.md) |
-| Modules 03-04 | policy surfaces, execution boundaries, and repository interfaces | [Command Guide](command-guide.md) |
-| Modules 05-08 | software boundaries, publish contracts, and operating contexts | [Capstone Proof Guide](capstone-proof-guide.md) |
-| Modules 09-10 | incident evidence, migration boundaries, and stewardship judgment | [Capstone Review Worksheet](capstone-review-worksheet.md) |
-
-## Module-to-capstone map
-
-| Module | Main question | Capstone surface | First command |
-| --- | --- | --- | --- |
-| 01 File Contracts | what makes the workflow file-driven instead of script-shaped | `Snakefile`, `workflow/rules/common.smk`, `publish/v1/` | `make walkthrough` |
-| 02 Dynamic DAGs | where discovery becomes explicit instead of magical | checkpoint rule files, discovered-set artifacts, `publish/v1/discovered_samples.json` | `make verify` |
-| 03 Production Operations | what counts as workflow semantics versus operating policy | `profiles/`, `Makefile`, `tests/selftest.sh` | `make profile-audit` |
-| 04 Scaling Boundaries | how repository structure stays legible as the workflow grows | `workflow/rules/`, `workflow/modules/`, `FILE_API.md`, `TOUR.md` | `make tour` |
-| 05 Software Boundaries | where rule ownership ends and software, runtime, and provenance surfaces begin | `workflow/scripts/provenance.py`, `workflow/envs/python.yaml`, `src/capstone/`, `environment.yaml`, `Dockerfile` | `make proof` |
-| 06 Publish Contracts | what downstream consumers may trust from the workflow and how that bundle is defended | `publish/v1/`, `workflow/rules/summarize_report.smk`, `workflow/rules/publish.smk`, `workflow/contracts/FILE_API.md`, `scripts/verify_publish.py` | `make verify-report` |
-| 07 Workflow Architecture | how repository layers, helper code, and file APIs are split deliberately | `Snakefile`, `workflow/rules/`, `workflow/modules/`, `workflow/contracts/FILE_API.md`, `workflow/CONTRACT.md`, `src/capstone/` | `make proof` |
-| 08 Operating Contexts | how local, CI, and scheduler policy differ without semantic drift and how those differences are audited | `profiles/local/`, `profiles/ci/`, `profiles/slurm/`, `Makefile`, `scripts/profile_summary.py`, `capstone/docs/profile-audit-guide.md` | `make profile-audit` |
-| 09 Incident Response | how logs, benchmarks, and workflow-tour evidence support diagnosis | `logs/`, `benchmarks/`, incident bundle surfaces | `make proof` |
-| 10 Governance | whether another maintainer could review or migrate the workflow safely | `Snakefile`, `FILE_API.md`, `profiles/`, `tests/`, `Makefile` | `make confirm` |
-
 ## Good stopping point
 
-Stop when you can name one capstone surface, one command, and one reason they are
-enough for the current module or question. If you still feel pulled toward the whole
-repository, step back to the smaller route.
+Stop when you can name one capstone surface, one command, and one reason they are enough
+for the current module or question. If you still feel pulled toward the whole repository,
+step back to the smaller route.
