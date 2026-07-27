@@ -17,6 +17,15 @@ For each exercise, keep three things side by side:
 If your answer cannot point to a specific public artifact and a specific downstream use,
 the exercise is not finished yet.
 
+Before each answer:
+
+1. classify the artifact role before you decide where the file should live
+2. name the consumer who benefits from the boundary you are defending
+3. keep the exact verification command or transcript that proves the bundle still works
+
+If you skip that sequence, the day turns into folder rearrangement instead of contract
+design.
+
 Do them in order. The set is one day-long progression:
 
 - Exercises 1-3 separate internal outputs from public promises.
@@ -39,6 +48,27 @@ Build one small review packet as you go:
 - a manifest and verification transcript
 - one consumer test transcript
 - one compatibility note for a simulated change
+
+If you prefer a concrete tree, keep the day inside something like:
+
+```text
+module06-lab/
+├── Snakefile
+├── results/
+├── publish/
+│   ├── v1/
+│   └── v2/
+├── consumers/
+├── artifacts/
+│   ├── manifests/
+│   ├── verification/
+│   ├── compatibility/
+│   └── reviews/
+└── logs/
+```
+
+That makes it easier to prove which files are public, which checks belong to integrity,
+and which notes belong to compatibility review.
 
 ## Exercise 1: Classify the current outputs
 
