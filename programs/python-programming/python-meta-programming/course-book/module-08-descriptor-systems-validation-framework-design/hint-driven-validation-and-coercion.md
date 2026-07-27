@@ -48,6 +48,13 @@ Keep one more sentence beside it:
 
 > a field is honest when its refusal surface is as clearly taught as its success path.
 
+For self-study, keep a refusal ledger while you read:
+
+- one hint form the field supports confidently
+- one hint form it refuses immediately
+- one coercion it allows
+- one coercion it refuses because guessing would be misleading
+
 ## What this pattern is trying to do
 
 Hint-aware field descriptors usually want to do some mix of these:
@@ -70,6 +77,17 @@ Use this table before trusting a hint-aware field:
 | coercion | what conversions are attempted, and in what order? |
 | metadata | what `Annotated[...]` items are recognized as meaningful? |
 | refusal | what unsupported hint forms fail immediately instead of being guessed through? |
+
+## Supported-versus-refused hint card
+
+Use a card like this for every hint-aware field you review:
+
+| Surface | Supported now | Refused now | Why the refusal is honest |
+| --- | --- | --- | --- |
+| scalar runtime classes | yes | no | ordinary `isinstance`-style checks stay reviewable |
+| `Union` and `Optional` | selected support | no deeper typing algebra | keeps branching logic explicit |
+| `Annotated[...]` validators | callable metadata only | richer schema metadata | the field only understands validator-like metadata here |
+| parameterized generics | no | yes | element-wise validation is not actually proved |
 
 ## A narrow runtime checker
 
@@ -207,6 +225,10 @@ That is why this module treats coercion conservatively:
 
 If the descriptor silently guesses too much, it becomes harder to trust.
 
+Ask one more question on every coercion path:
+
+> if the conversion fails, does the resulting error tell the learner what narrow rule was attempted?
+
 Use this coercion table when "helpful conversion" starts to sound magical:
 
 | Coercion case | Honest review stance |
@@ -234,6 +256,9 @@ Keep a refusal ledger while you work:
 - intentionally unsupported now
 - wider owner required before support could become honest
 
+If you cannot keep those three columns separate, the field is already sounding more
+capable than its code proves.
+
 ## Why this is framework-adjacent
 
 Once a field descriptor reads type hints, applies metadata validators, and coerces values,
@@ -255,6 +280,15 @@ Reject these descriptions when they appear in review:
 | "Annotated validators make it schema-aware" | "Annotated validators add selected runtime metadata hooks" |
 | "coercion makes input flexible" | "coercion accepts a narrow set of explicit conversions" |
 | "unsupported hints will probably still work" | "unsupported hints must fail clearly or stay out of scope" |
+
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "it understands type hints" | type hints are too broad a category to audit |
+| "Annotated makes it schema-aware" | schema-aware overstates what validator metadata alone proves |
+| "the field will try its best to coerce" | best effort usually means hidden guessing |
+| "generic containers can come later" | later is not a present contract |
 
 ## Failure modes for hint-driven fields
 
