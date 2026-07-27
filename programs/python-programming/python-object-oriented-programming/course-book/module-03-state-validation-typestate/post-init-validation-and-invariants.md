@@ -1,5 +1,4 @@
-# Post-Init Validation and “Invalid States Unrepresentable”
-
+# Post-Init Validation and Invariants
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Post-Init Validation and “Invalid States Unrepresentable”"]
+  page["Post-Init Validation and Invariants"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,120 +24,119 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Turn “validation” from an afterthought into a **construction-time guarantee**.
+Validation becomes much easier to reason about when objects do not begin life in an
+invalid state.
 
-The core idea: if an object exists, it should already satisfy its invariants. That makes the rest of your code simpler, safer, and more teachable.
+If construction permits broken objects, every later method must become suspicious:
 
-## Where This Fits
+- "did anyone create this correctly?"
+- "should I re-check this field here?"
+- "can I trust this combination of values?"
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+That uncertainty spreads everywhere. Construction-time invariant checking prevents that
+drift.
 
-## 1. Invariants: The Small List of Truths Your Code Can Depend On
+## What an invariant is
 
-An **invariant** is a condition that must always hold for an object.
+An invariant is a condition that should always hold for a valid instance.
 
-Examples in our domain:
-- `Threshold` must be finite and within an allowed range.
-- A `Window` must be positive.
-- An `ActiveRule` must have an activation timestamp.
-- A `RetiredRule` must not be evaluated.
+Examples:
 
-If invariants are not enforced at construction, every method must defensively re-check them, and your code becomes a minefield.
+- a threshold stays within an allowed range
+- a start time does not come after an end time
+- an object marked active must already have required fields populated
 
-## 2. `__post_init__` as the Invariant Gate
+If an invariant can be broken silently, the rest of the design becomes harder to trust.
 
-For dataclasses, `__post_init__` is the natural place to enforce invariants:
+## Why post-init validation matters
 
-```python
-from dataclasses import dataclass
-import math
+Post-init validation is the point where you take raw constructor inputs and confirm that
+the instance is legitimate as a whole.
 
-@dataclass(frozen=True, slots=True)
-class Threshold:
-    value: float
+It is useful because some rules depend on combinations of fields, not only one field at a
+time.
 
-    def __post_init__(self):
-        if not math.isfinite(self.value):
-            raise ValueError("Threshold must be finite")
-        if self.value < 0:
-            raise ValueError("Threshold must be non-negative")
-```
+Single-field checks are not enough when meaning depends on the full object shape.
 
-This yields a powerful design guarantee:
-> “If you have a `Threshold`, it’s valid.”
+## The design principle
 
-The rest of the system can rely on that without re-validating.
+Prefer this rule:
 
-## 3. “Invalid States Unrepresentable” in Practice
+If an object exists, it should already satisfy its core invariants.
 
-You rarely get perfect unrepresentability in Python, but you can get close by:
+That does not mean every future state is guaranteed forever. It means the object should
+not start life broken and hope later code will fix it.
 
-- using semantic types instead of primitives,
-- separating typestates into distinct types (Draft/Active/Retired),
-- limiting mutation to small, explicit methods.
+## What this changes in the rest of the code
 
-Example: `ActiveRule` and `DraftRule` are different types:
+When construction enforces invariants:
 
-```python
-@dataclass(frozen=True, slots=True)
-class DraftRule:
-    metric: MetricName
-    threshold: Threshold
+- downstream methods can be simpler
+- tests can assume a valid starting point
+- invalid combinations fail early and locally
+- readers do not need to mentally track "maybe broken" objects everywhere
 
-@dataclass(frozen=True, slots=True)
-class ActiveRule:
-    rule_id: str
-    metric: MetricName
-    threshold: Threshold
-    activated_at: float
-```
+This is a teaching win as well as a design win.
 
-Now the impossible is literally unconstructable:
-- you cannot forget `activated_at` for an active rule,
-- because there is no “maybe” field.
+## Common mistakes
 
-## 4. Validation Boundaries: Domain vs Input
+- validating only at a far-away service boundary and never in the object itself
+- checking fields one by one but missing invalid combinations
+- allowing placeholder instances that are supposed to become valid later
+- catching invariant errors too late, after the object has already spread
 
-Not all validation belongs in the domain object.
+The worst version is the half-formed object that floats through several layers before
+someone notices it should never have existed.
 
-- **Domain invariants**: belong in `__post_init__` (always required).
-- **Input validation**: belongs at the boundary (M03C26) — type coercion, missing fields, user-friendly error messages.
+## When not everything belongs in post-init
 
-Example:
-- Domain `Window(seconds: int)` requires `seconds > 0`.
-- Boundary code may also accept `"5m"` and convert it to `300` — that is not domain logic; it’s parsing logic.
+Not every rule belongs in construction.
 
-## 5. Testing Invariants: Small, Precise Tests
+Construction-time validation is best for:
 
-Write tests that prove invariants are enforced.
+- identity and field-shape assumptions
+- required relationships between fields
+- "this object is nonsense if this is false" rules
 
-Pattern:
-- one test per invariant, with a failing case and a passing case.
+Lifecycle-specific rules may belong on transition methods instead.
 
-```python
-import pytest
+The point is not "all validation in one place." The point is "each rule at the earliest
+honest point."
 
-def test_threshold_rejects_nan():
-    with pytest.raises(ValueError):
-        Threshold(float("nan"))
+## Review checklist
 
-def test_threshold_accepts_positive():
-    assert Threshold(3.5).value == 3.5
-```
+| Question | Good sign |
+| --- | --- |
+| does the object reject broken field combinations at construction? | yes |
+| can downstream code mostly assume a valid starting instance? | yes |
+| are lifecycle rules separated from initial invariants when needed? | yes |
+| are half-formed placeholder instances avoided? | yes |
 
-## Practical Guidelines
+## Capstone connection
 
-- Enforce invariants at construction time; avoid “validate later” designs.
-- Separate domain invariants from boundary parsing/coercion (M03C26).
-- Prefer distinct types for distinct states over `Optional[...]` fields.
-- Write invariant tests as tiny unit tests; they are high leverage and low maintenance.
+In the capstone, this lesson matters anywhere an object can be created from several
+related inputs:
 
-## Exercises for Mastery
+- configs
+- policies
+- scheduled actions
+- domain commands that become durable objects
 
-1. Identify 3 invariants in your domain and implement them in `__post_init__` on semantic types.
-2. Replace one `Optional[...]` “maybe field” with a distinct typestate dataclass.
-3. Add unit tests that confirm invalid inputs fail fast at construction.
+If the capstone still creates objects first and asks whether they are valid later, this
+lesson should be applied next.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain one invariant that should be enforced at construction time
+- explain why broken instances make downstream code noisier
+- distinguish between initial invariants and later lifecycle transition rules
