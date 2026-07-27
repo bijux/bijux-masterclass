@@ -1,6 +1,5 @@
 # Behavior-First Tests for Domain Objects
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,53 +24,159 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Test what an object promises to do, not how its current implementation happens to do it.
+The easiest test to write is often the wrong one.
 
-## 1. Start from the Contract
+When a domain object is hard to verify, students often drift toward:
 
-A good domain-object test answers questions like:
+- patching collaborators
+- asserting internal method calls
+- checking helper-level implementation details
 
-- what state transitions are legal
-- which invariants are preserved
-- what outputs or events result from a command
+Those tests may pass, but they do not prove the object's real promise. Behavior-first
+tests reverse that habit. They begin with the visible contract of the object and treat
+implementation detail as replaceable unless the public behavior exposes it.
 
-It should not start from "which private helper gets called?"
+## Start from the object's promise
 
-## 2. Favor Public Methods and Observable Outcomes
+A domain-object test should usually answer one of these questions:
 
-Public behavior can include:
+- what change in meaning should this command cause?
+- what invariant must still hold after the change?
+- what error should stop an invalid transition?
+- what event, result, or durable fact should a caller observe?
+
+If a test cannot answer one of those questions, it may be proving something too small
+to justify its existence.
+
+## Observable behavior is broader than return values
+
+Students sometimes hear "test behavior, not implementation" and reduce that advice to
+"only assert return values."
+
+That is too narrow.
+
+Observable behavior for domain objects can include:
 
 - returned values
-- state changes
+- changed state
 - emitted domain events
-- raised domain errors
+- recorded decisions
+- raised domain-specific errors
 
-Those are stable review surfaces. Internal call graphs are not.
+The important distinction is not "value versus state." The distinction is "external
+contract versus internal accident."
 
-## 3. Keep Tests Close to Domain Language
+## Domain language makes tests readable
 
-If the domain talks about activating rules and emitting incidents, tests should use
-that vocabulary. Tests become easier to review when they reinforce the model instead
-of narrating implementation trivia.
+A good behavior-first test often reads like a short design review.
 
-## 4. Small Objects Still Deserve Meaningful Tests
+Compare these styles:
 
-Value objects and simple policies may need only a few precise tests, but those tests
-should still defend equality, validation, and edge behavior explicitly.
+- `test_calls_update_counter_after_activate`
+- `test_activation_marks_rule_active_and_records_activation_event`
 
-## Practical Guidelines
+The second name does more than sound nicer. It tells a reviewer:
 
-- Test public behavior and outcomes before internal call structure.
-- Name tests in domain language.
-- Assert on state, returned values, events, and domain errors.
-- Keep object tests small, focused, and semantically meaningful.
+- which domain operation happened
+- which outcome matters
+- which meaning the test is defending
 
-## Exercises for Mastery
+That makes the test suite part of the model's explanation, not just its tooling.
 
-1. Rewrite one interaction-heavy test so it asserts on behavior instead of implementation detail.
-2. Add a domain-language test name for one aggregate transition.
-3. Review one value object and identify the minimum set of contract tests it needs.
+## One behavior per test does not mean one assertion
+
+Students also over-correct in the other direction. They split one meaningful behavior
+into many tiny tests just to keep assertion counts low.
+
+That usually harms readability.
+
+If one command has one coherent promise, it may be correct for a test to verify several
+connected consequences together:
+
+- the object changes state
+- one event is emitted
+- one invalid future path is now blocked
+
+Those are not three unrelated assertions. They are one behavior claim seen from three
+angles.
+
+## A worked example
+
+Suppose an incident aggregate exposes `acknowledge(actor, at)` and promises:
+
+- only open incidents may be acknowledged
+- acknowledgement records who acted and when
+- an `IncidentAcknowledged` event is emitted once
+
+A weak test might patch the event collector and assert that one internal helper was
+called.
+
+A stronger test would:
+
+1. construct an open incident
+2. call `acknowledge`
+3. assert the incident is now acknowledged
+4. assert the actor and timestamp were captured correctly
+5. assert exactly one domain event with the right meaning was emitted
+
+That test proves the contract a caller relies on. It does not care whether the aggregate
+uses one helper, three helpers, or no helpers next month.
+
+## Value objects deserve exact tests, not many tests
+
+Some students neglect value objects because they seem simple.
+
+In practice, value objects often carry precise semantic rules around:
+
+- validation
+- normalization
+- equality
+- ordering
+- serialization round-trips
+
+They may not need many tests, but the tests they do need should be very sharp. A small
+semantic type with weak tests can still destabilize a large system.
+
+## Common mistakes
+
+- asserting internal call order instead of externally visible meaning
+- naming tests after helpers rather than domain behavior
+- patching too early because setup feels awkward
+- splitting one coherent behavior across many tiny unreadable tests
+- treating value objects as too simple to deserve contract-level verification
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| does the test name describe domain behavior instead of implementation trivia? | yes |
+| would the test still make sense after an internal refactor? | yes |
+| does the test assert visible outcomes a caller actually depends on? | yes |
+| is the object's promise clearer after reading the test? | yes |
+
+## Capstone connection
+
+Use the capstone aggregates and policies to ask:
+
+- which tests already defend visible behavior well?
+- which tests mostly pin helpers, mocks, or incidental call structure?
+- where would a reviewer learn more from state, event, and error assertions than from interaction assertions?
+
+This is how the test suite becomes evidence for the design instead of proof that the
+current file layout exists.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain what makes a test behavior-first instead of implementation-first
+- identify one case where several assertions still belong to one coherent behavior test
+- rewrite one capstone test name so it states the domain promise being defended
