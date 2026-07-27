@@ -24,9 +24,9 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this guide is for a named pressure, not for wandering the whole course-book. Read the second diagram as the guide loop: arrive with a concrete question, use only the matching sections, then leave with one smaller and more honest next move.
-
-Use this worksheet while reviewing or extending the capstone.
+Use this worksheet while reviewing or extending the capstone. The goal is to turn a vague
+reaction such as "this seems clever" or "this feels wrong" into one explicit claim, one
+owner, one proof route, and one judgment.
 
 ## Bounded review pass
 
