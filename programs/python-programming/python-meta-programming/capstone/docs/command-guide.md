@@ -25,21 +25,47 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this guide when you are already inside `capstone/` and need the smallest honest local
-command. The goal is not command memorization. The goal is keeping proof proportional to
-the question you are trying to answer.
+Use this guide when you are already inside the capstone and need the smallest honest
+command for the question in front of you. The goal is not command memorization. The goal
+is choosing enough proof without jumping immediately to the broadest route.
 
-## Start with these commands first
+## The first decision to make
 
-- Start with `make manifest` when you need the safest observational route.
-- Start with `make trace` when you already know the question is about one concrete invocation.
-- Start with `make inspect` when you need a durable artifact for later reading.
+Before running anything, decide which kind of question you have:
 
-## Do not start with these by default
+- public shape question
+- one concrete runtime behavior question
+- saved review artifact question
+- strongest executable confidence question
 
-- Do not start with `make proof` on a first pass; it is broader than most first questions need.
-- Do not start with `make confirm` when the question is still about ownership or public shape.
-- Do not start with `make demo` when you actually need configuration, history, or preserved metadata.
+If you skip that decision, every command feels equally plausible, and the capstone starts
+to feel harder than it is.
+
+## Start by question size
+
+| If the question is about... | Start with | Escalate only if needed |
+| --- | --- | --- |
+| what the runtime exposes without invoking plugin behavior | `make manifest`, `make plugin`, `make field`, `make action`, `make registry`, or `make signatures` | `make inspect` |
+| one realistic invocation path | `make demo` or `make trace` | `tests/test_runtime.py` or `make tour` |
+| a durable artifact another reviewer can inspect later | `make inspect`, `make tour`, or `make verify-report` | `make proof` |
+| the strongest local confidence route | `make confirm` | `make proof` |
+
+## Recommended first commands
+
+- Choose `make manifest` when you need the safest observational route.
+- Choose `make registry` when the real question is "which plugins exist and in what order?"
+- Choose `make field` or `make action` when one small contract is the pressure point.
+- Choose `make trace` when configuration, invocation history, and result probably all matter.
+- Choose `make inspect` when you need a saved route but do not yet need the strongest bundle.
+
+## Routes to avoid by default
+
+| Do not start with... | Because... | Better first move |
+| --- | --- | --- |
+| `make proof` | it is broader than most first questions need | choose one public, runtime, or saved-artifact route first |
+| `make confirm` | it tells you whether the suite passes before it teaches what the suite is protecting | choose `make manifest`, `make registry`, or `make trace` first |
+| `make demo` | it can hide the role of metadata and history when the question really needs trace output | choose `make trace` if wrapper visibility matters |
+| `make inspect` | it may create a bundle before you know which one you actually need | choose a smaller command if the question is still narrow |
 
 ## Stable local commands
 
@@ -62,103 +88,87 @@ the question you are trying to answer.
 ## Public runtime surfaces
 
 Use these when the question is not yet about execution, only about what the runtime
-publishes honestly from the public surface:
+publishes honestly from the public surface.
 
 | Surface | What it settles | Best command |
 | --- | --- | --- |
 | manifest export | which field schema and action metadata the runtime exposes without invocation | `make manifest` or `make plugin` |
 | registry export | which concrete plugins exist and in what deterministic order | `make registry` |
 | generated signatures | which constructor and action call shapes the runtime exposes | `make signatures` |
-| top-level package surface | which names another module should import from `incident_plugins` | `make manifest`, `make registry`, or `make inspect` |
+| one field contract | how one descriptor-backed public contract appears from outside | `make field` |
+| one action contract | how one decorator-backed callable surface appears from outside | `make action` |
 
-## Supported top-level imports
+## One concrete behavior routes
 
-| Need | Start here |
-| --- | --- |
-| framework review | `PluginBase`, `PluginMeta`, `build_manifest`, `create_plugin`, `invoke` |
-| descriptor review | `Field`, `FieldSpec`, `StringField`, `IntegerField`, `BooleanField`, `ChoiceField` |
-| decorator review | `action`, `ActionSpec` |
-| concrete plugin review | `ConsoleNotifier`, `WebhookNotifier`, `PagerNotifier`, `DeliveryPlugin` |
+Use these when the question is about runtime behavior rather than published shape.
 
-## Start by proof size
+| If you need to see... | Choose | Why |
+| --- | --- | --- |
+| one result only | `make demo` | smallest realistic invocation route |
+| result plus config plus action history | `make trace` | strongest single runtime story before tests |
 
-### Smallest observational routes
+## Saved bundle routes
 
-Use these when the question is about public runtime shape:
+| Bundle command | Best when you need... | Do not choose it when... |
+| --- | --- | --- |
+| `make inspect` | a saved public-shape review route | the question is already about one invocation story |
+| `make tour` | a saved guided story from manifest to trace | a smaller inspect bundle is enough |
+| `make verify-report` | executable proof and public evidence in one durable package | you only need a quick local answer |
 
-- `make manifest`
-- `make plugin`
-- `make field`
-- `make action`
-- `make registry`
-- `make signatures`
-
-### One concrete behavior
-
-Use these when the question is about one realistic invocation:
-
-- `make demo`
-- `make trace`
-
-### Saved review surfaces
-
-Use these when you need artifacts you can inspect later:
-
-- `make inspect`
-- `make tour`
-- `make verify-report`
-
-### Strongest confirmation
-
-Use these when you need the broadest local confidence:
-
-- `make confirm`
-- `make proof`
+Each bundle also includes `bundle-manifest.json`, which records stable file paths, file
+sizes, and SHA-256 hashes for the saved route.
 
 ## Command to ownership map
 
 | Command | Kind of fact | Main output | First owning file | Best next proof surface |
 | --- | --- | --- | --- | --- |
-| `make manifest` | inspection-time fact | group-level field and action metadata | `src/incident_plugins/framework.py` | `tests/test_registry.py` or `PROOF_GUIDE.md` |
+| `make manifest` | inspection-time fact | group-level field and action metadata | `src/incident_plugins/framework.py` | `tests/test_registry.py` or [PROOF_GUIDE.md](proof-guide.md) |
 | `make plugin` | inspection-time fact | one concrete plugin contract | `src/incident_plugins/plugins.py` | `tests/test_runtime.py` |
 | `make field` | inspection-time fact | one descriptor-backed field contract | `src/incident_plugins/fields.py` | `tests/test_fields.py` |
 | `make action` | inspection-time fact | one decorator-backed action contract | `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
 | `make registry` | class-definition fact made observable later | registered plugin names and order | `src/incident_plugins/framework.py` | `tests/test_registry.py` |
 | `make signatures` | class-definition fact made observable later | generated constructor and action signatures | `src/incident_plugins/framework.py` and `src/incident_plugins/actions.py` | `tests/test_runtime.py` |
-| `make demo` | call-time fact | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | `TEST_GUIDE.md` |
+| `make demo` | call-time fact | one concrete invocation result | `src/incident_plugins/plugins.py` and `src/incident_plugins/actions.py` | [TEST_GUIDE.md](test-guide.md) |
 | `make trace` | call-time fact with visible metadata | invocation history with config and action metadata | `src/incident_plugins/actions.py` and `src/incident_plugins/plugins.py` | `tests/test_runtime.py` or `tests/test_cli.py` |
 
 ## The confusing pairs
 
-- `manifest` versus `registry`
-  `manifest` explains schema and action metadata; `registry` explains which plugins are currently registered.
-- `manifest` versus `plugin`
-  `manifest` shows the whole exported group; `plugin` lets you inspect one concrete plugin contract in isolation.
-- `plugin` versus `field`
-  `plugin` keeps fields and actions together; `field` isolates one descriptor-backed public contract.
-- `field` versus `action`
-  `field` isolates descriptor-backed configuration; `action` isolates decorator-backed callable metadata.
-- `registry` versus `signatures`
-  `registry` proves which plugins exist; `signatures` proves which generated call shapes they expose.
-- `demo` versus `trace`
-  `demo` shows one result; `trace` shows result, configuration, and recorded action history together.
-- `confirm` versus `proof`
-  `confirm` is the strongest local confirmation route; `proof` publishes the full guided review route.
+### `manifest` versus `registry`
+
+`manifest` explains schema and action metadata. `registry` explains which plugins exist.
+
+### `manifest` versus `plugin`
+
+`manifest` shows the whole exported group. `plugin` isolates one concrete plugin contract.
+
+### `field` versus `action`
+
+`field` isolates descriptor-backed configuration. `action` isolates decorator-backed callable
+metadata.
+
+### `demo` versus `trace`
+
+`demo` shows one result. `trace` shows result, configuration, and recorded history together.
+
+### `confirm` versus `proof`
+
+`confirm` is the strongest local confirmation route. `proof` publishes the full guided review route.
 
 ## Default choices when unsure
 
-- Choose `manifest` before `registry`.
-- Choose `field` or `action` before `plugin` when one contract is the real pressure.
+- Choose `manifest` before `registry` unless plugin order is the actual question.
+- Choose `field` or `action` before `plugin` when one small contract is the real pressure.
 - Choose `trace` before `demo` when metadata or history might matter.
 - Choose `inspect` before `tour` when the question is still mainly about ownership.
 - Choose `confirm` before `proof` when a human-facing published bundle is not required.
 
-## Default escalation
+## Honest escalation ladder
 
 1. Start with one observational command.
 2. Move to one behavior command only if the observational route is not enough.
 3. Move to a saved bundle only when you need a durable review surface.
-4. Move to `confirm` or `proof` only when the claim truly needs the strongest route.
+4. Move to `confirm` only when the claim needs executable confidence.
+5. Move to `proof` only when the full published route is worth building.
 
 ## Artifact locations
 
@@ -166,9 +176,11 @@ Use these when you need the broadest local confidence:
 - `make tour` writes to `../../../../artifacts/tour/python-programming/python-meta-programming`
 - `make verify-report` writes to `../../../../artifacts/review/python-programming/python-meta-programming`
 
-## Best companion guides
+## Good stopping point
 
-- `INDEX.md`
-- `ARCHITECTURE.md`
-- `PROOF_GUIDE.md`
-- `TEST_GUIDE.md`
+Stop when you can explain:
+
+- which command you would run first for one public-shape question
+- which command you would run first for one runtime-behavior question
+- which bundle you would choose for another reviewer
+- why `make confirm` is not automatically the right first move
