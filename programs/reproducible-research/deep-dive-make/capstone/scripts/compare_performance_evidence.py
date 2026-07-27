@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Compare compatible performance evidence without weakening semantic checks."""
 
 from __future__ import annotations
@@ -9,7 +8,6 @@ import sys
 from pathlib import Path
 
 from collect_performance_evidence import SCHEMA
-
 
 COMPARISON_SCHEMA = "deep-dive-make-performance-comparison-v1"
 

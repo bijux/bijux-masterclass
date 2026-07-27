@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Collect repeatable timing evidence for governed Make scenarios."""
 
 from __future__ import annotations
@@ -14,7 +13,6 @@ import time
 from pathlib import Path
 
 from performance_policy import PerformanceScenario, read_performance_policy
-
 
 SCHEMA = "deep-dive-make-performance-evidence-v1"
 TRUSTED_OUTPUTS = (
@@ -54,7 +52,9 @@ def checked_command(command: list[str], *, cwd: Path, purpose: str) -> None:
     result, _ = run_command(command, cwd=cwd)
     if result.returncode != 0:
         detail = result.stderr.strip() or result.stdout.strip()
-        raise RuntimeError(f"{purpose} failed with status {result.returncode}: {detail}")
+        raise RuntimeError(
+            f"{purpose} failed with status {result.returncode}: {detail}"
+        )
 
 
 def scenario_command(make_command: str, scenario: PerformanceScenario) -> list[str]:
@@ -65,7 +65,9 @@ def scenario_command(make_command: str, scenario: PerformanceScenario) -> list[s
     return command
 
 
-def establish_state(make_command: str, scenario: PerformanceScenario, cwd: Path) -> None:
+def establish_state(
+    make_command: str, scenario: PerformanceScenario, cwd: Path
+) -> None:
     if scenario.state == "clean":
         checked_command(
             [make_command, "--no-print-directory", "clean"],
@@ -103,7 +105,12 @@ def trusted_output_inventory(cwd: Path) -> list[dict[str, object]]:
 
 
 def summarize(samples: list[dict[str, object]]) -> dict[str, float]:
-    elapsed = [float(sample["elapsed_seconds"]) for sample in samples]
+    elapsed: list[float] = []
+    for sample in samples:
+        value = sample["elapsed_seconds"]
+        if not isinstance(value, (int, float)):
+            raise TypeError("elapsed_seconds must be numeric")
+        elapsed.append(float(value))
     minimum = min(elapsed)
     maximum = max(elapsed)
     return {
@@ -176,8 +183,10 @@ def write_summary(evidence: dict[str, object], output: Path) -> None:
     scenarios = evidence["scenarios"]
     assert isinstance(scenarios, dict)
     lines = [
-        "scenario\tstate\tjobs\tsamples\tminimum_seconds\tmedian_seconds"
-        "\tmaximum_seconds\tspread_seconds\tconvergence"
+        (
+            "scenario\tstate\tjobs\tsamples\tminimum_seconds\tmedian_seconds"
+            "\tmaximum_seconds\tspread_seconds\tconvergence"
+        )
     ]
     for name, raw_scenario in scenarios.items():
         assert isinstance(raw_scenario, dict)

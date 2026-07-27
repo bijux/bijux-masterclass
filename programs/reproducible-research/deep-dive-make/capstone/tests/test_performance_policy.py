@@ -5,11 +5,10 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-
 CAPSTONE_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(CAPSTONE_ROOT / "scripts"))
 
-from performance_policy import read_performance_policy  # noqa: E402
+from performance_policy import read_performance_policy
 
 
 class PerformancePolicyTests(unittest.TestCase):
@@ -35,8 +34,7 @@ class PerformancePolicyTests(unittest.TestCase):
 
     def test_rejects_duplicate_scenario_names(self) -> None:
         self.write_policy(
-            "clean-build\tclean\t4\tall\n"
-            "clean-build\tconverged\t1\tall\n"
+            "clean-build\tclean\t4\tall\nclean-build\tconverged\t1\tall\n"
         )
 
         with self.assertRaisesRegex(ValueError, "duplicate scenario"):

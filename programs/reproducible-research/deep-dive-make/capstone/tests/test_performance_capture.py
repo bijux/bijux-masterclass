@@ -8,7 +8,6 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-
 CAPSTONE_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = CAPSTONE_ROOT / "scripts" / "collect_performance_evidence.py"
 

@@ -5,7 +5,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-
 SUPPORTED_STATES = frozenset({"clean", "converged"})
 SUPPORTED_ROUTES = frozenset({"all", "dry-run-all"})
 
@@ -39,7 +38,10 @@ def read_performance_policy(policy_path: Path) -> list[PerformanceScenario]:
         if (
             not name
             or not name[0].islower()
-            or any(character not in "abcdefghijklmnopqrstuvwxyz0123456789-" for character in name)
+            or any(
+                character not in "abcdefghijklmnopqrstuvwxyz0123456789-"
+                for character in name
+            )
         ):
             raise ValueError(f"line {line_number}: invalid scenario name: {name!r}")
         if name in names:

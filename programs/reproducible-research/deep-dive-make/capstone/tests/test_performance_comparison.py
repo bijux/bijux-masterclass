@@ -8,12 +8,11 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-
 CAPSTONE_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = CAPSTONE_ROOT / "scripts" / "compare_performance_evidence.py"
 sys.path.insert(0, str(CAPSTONE_ROOT / "scripts"))
 
-from collect_performance_evidence import SCHEMA  # noqa: E402
+from collect_performance_evidence import SCHEMA
 
 
 def passing_evidence() -> dict[str, object]:
@@ -25,9 +24,7 @@ def passing_evidence() -> dict[str, object]:
         "scenarios": {
             "converged-noop": {
                 "convergence": "PASS",
-                "inventory": [
-                    {"path": "app", "sha256": "artifact-digest", "size": 3}
-                ],
+                "inventory": [{"path": "app", "sha256": "artifact-digest", "size": 3}],
                 "jobs": 1,
                 "route": "all",
                 "samples": [
@@ -92,9 +89,7 @@ class PerformanceComparisonTests(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(report["semantic_equivalence"], "PASS")
-        self.assertEqual(
-            report["scenarios"]["converged-noop"]["delta_seconds"], -0.2
-        )
+        self.assertEqual(report["scenarios"]["converged-noop"]["delta_seconds"], -0.2)
 
     def test_rejects_policy_drift(self) -> None:
         baseline = passing_evidence()
