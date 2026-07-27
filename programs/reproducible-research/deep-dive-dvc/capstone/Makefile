@@ -21,6 +21,7 @@ RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
 STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
 DATA_IDENTITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/data-identity
+RUNTIME_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/runtime-contracts
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-dvc
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-dvc-capstone-source.tar.gz
 
@@ -348,6 +349,37 @@ data-identity-audit: install ## Audit pointer, cache, workspace, and remote iden
 .PHONY: data-identity-selftest
 data-identity-selftest: install ## Enforce data identity and recovery evidence
 	@$(PYTEST) tests/test_data_identity_audit.py
+
+.PHONY: runtime-contract-audit
+runtime-contract-audit: install ## Audit declared and hidden runtime influences
+	@rm -rf $(RUNTIME_CONTRACT_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_runtime_contracts.py \
+		--specimen repro/runtime-contracts \
+		--workspace $(RUNTIME_CONTRACT_AUDIT_DIR)/workspace \
+		--output $(RUNTIME_CONTRACT_AUDIT_DIR)/report.json \
+		--python $(VENV_PY)
+	@mkdir -p $(RUNTIME_CONTRACT_AUDIT_DIR)/scripts $(RUNTIME_CONTRACT_AUDIT_DIR)/tests
+	@cp docs/runtime-contract-audit-guide.md $(RUNTIME_CONTRACT_AUDIT_DIR)/RUNTIME_CONTRACT_AUDIT_GUIDE.md
+	@cp scripts/audit_runtime_contracts.py $(RUNTIME_CONTRACT_AUDIT_DIR)/scripts/audit_runtime_contracts.py
+	@cp tests/test_runtime_contract_audit.py $(RUNTIME_CONTRACT_AUDIT_DIR)/tests/test_runtime_contract_audit.py
+	@printf '%s\n' \
+		'Runtime contract audit route:' \
+		'  1. Read RUNTIME_CONTRACT_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and separate accepted behavior from reproduced hidden-runtime defects.' \
+		'  3. Compare declared_runtime and hidden_runtime in workspace/baseline/dvc.yaml.' \
+		'  4. Compare baseline-fingerprint.json with drift-fingerprint.json.' \
+		'  5. Read declared-change-status.stdout.txt and the rebuilt declared result.' \
+		'  6. Read hidden-change-status.stdout.txt and hidden-change-ordinary-repro.stdout.txt before inspecting stale output.' \
+		'  7. Compare hidden output and dvc.lock before and after the forced run in report.json.' \
+		'  8. Read the audit script and tests when reviewing enforcement.' > $(RUNTIME_CONTRACT_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(RUNTIME_CONTRACT_AUDIT_DIR) \
+		--output $(RUNTIME_CONTRACT_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote runtime contract audit to $(RUNTIME_CONTRACT_AUDIT_DIR)"
+
+.PHONY: runtime-contract-selftest
+runtime-contract-selftest: install ## Enforce declared and hidden runtime evidence
+	@$(PYTEST) tests/test_runtime_contract_audit.py
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
