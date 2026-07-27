@@ -51,6 +51,10 @@ Keep a second question beside it:
 
 > if the decorator vanished tomorrow, what explicit helper or owner would still need to exist for the behavior to make sense?
 
+That second question matters because decorator syntax is compact enough to hide weak
+ownership. If the only story you can tell is "the decorator makes it happen," the page has
+not yet done its teaching job.
+
 ## Class decorators run after the class exists
 
 At the simplest level:
@@ -135,6 +139,16 @@ This is a good early example because it stays honest:
 It also shows a useful review habit: ask whether the behavior is truly clearer as a
 decorator or whether an explicit helper call would explain the transformation more plainly.
 
+Use this comparison when you are unsure:
+
+| Form | What it makes obvious | What it can hide |
+| --- | --- | --- |
+| explicit helper call after class definition | the transformation is post-construction and opt-in | a repeated pattern that wants a named abstraction |
+| class decorator | the class advertises the transformation at definition time | the amount of policy or side effect carried by the decorator |
+
+If the helper form makes the ownership story clearer, the decorator has to earn its
+compactness rather than receiving it for free.
+
 ## Registration is another honest post-construction use
 
 ```python
@@ -163,6 +177,14 @@ being explicit.
 Reviewers should also ask who owns cleanup. Registration that can only grow and never be
 reset may be operationally convenient in a toy example and operationally confusing in real
 tests or repeated imports.
+
+Use this quick review card for registry decorators:
+
+| Review question | Why it matters |
+| --- | --- |
+| can the registry be inspected after import? | a hidden registration surface is hard to debug |
+| can tests reset the registry cheaply? | repeated imports and order-sensitive tests otherwise become brittle |
+| is the registration policy still smaller than the decorator syntax? | large policy hidden behind `@register` stops being honest |
 
 ## Returning a non-class is legal but usually costly
 
@@ -215,6 +237,18 @@ original class.
 Order therefore becomes part of meaning. If one decorator registers classes and another
 replaces them, the stack may stay legal while becoming much harder to review.
 
+## A stack-order review trace
+
+Use this trace whenever two or more decorators appear:
+
+1. write the helper expansion by hand
+2. name which decorator sees the raw class and which sees an already transformed value
+3. identify whether registration, replacement, or mutation happens first
+4. ask whether a later decorator is now relying on an earlier one silently
+
+If step 3 or 4 takes more than a short paragraph to explain, the stack may be carrying
+too much policy for this surface.
+
 ## What class decorators cannot do well
 
 Because they run after class creation, class decorators are not the right tool when the
@@ -227,6 +261,15 @@ requirement depends on:
 
 That is exactly why this module comes before the metaclass module. This boundary should
 feel obvious, not mysterious.
+
+Use this boundary table to keep late versus early power visible:
+
+| Requirement | Honest fit | Why |
+| --- | --- | --- |
+| add one method to an already defined class | class decorator | post-construction mutation is enough |
+| register finished classes in a manifest | class decorator | the class only needs opt-in side effects after creation |
+| guarantee declaration order during class body execution | not a class decorator | the requirement exists before the class object is finished |
+| resolve metaclass conflicts or customize namespace preparation | not a class decorator | those are class-creation-time concerns |
 
 ## Common overclaims to reject
 
@@ -250,6 +293,12 @@ These are the main ways the design can weaken without looking obviously broken:
 | replacing the class binding with a surprising proxy | introspection and type expectations become less trustworthy | return a class unless replacement has a concrete review case |
 | stacking decorators with silent order dependence | meaning spreads across layers | reduce the stack or document the order as part of the contract |
 
+One more failure mode is worth naming directly:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| using decorator syntax to avoid naming a real helper component | the compact surface hides a larger policy owner | extract the helper openly and let the decorator become a thin adapter only if still useful |
+
 ## Review rules for class decorators
 
 When reviewing a class decorator, keep these questions close:
@@ -260,6 +309,16 @@ When reviewing a class decorator, keep these questions close:
 - is the decorator trying to solve a class-creation problem too late?
 - would an explicit helper call be clearer than hiding the change in decorator syntax?
 - can another reviewer describe the post-construction effect in one sentence?
+
+## Evidence packet for decorator reviews
+
+Leave this page with a small proof packet:
+
+- one helper-form expansion for a decorator you read or wrote
+- one sentence naming the post-construction effect
+- one reset, inspection, or reversal note if the decorator has side effects
+- one rejected stronger claim explaining why this is not metaclass territory
+- one stack-order note if more than one decorator appears
 
 ## Exit check for this page
 
@@ -277,6 +336,12 @@ Try these before moving on:
 1. Implement a class decorator that injects one method and explain why the method still binds normally.
 2. Implement a resettable registration decorator and explain why reset behavior matters.
 3. Write down one class requirement that class decorators can solve honestly and one that already sounds like metaclass territory.
+
+If those feel ordinary, pressure-test yourself with one more question:
+
+> If I rewrote this decorator as an explicit helper call, would any claimed power disappear?
+
+If the answer is no, you are probably reviewing the timing honestly.
 
 If those feel ordinary, the next step is dataclasses, where method generation and field
 discovery automate class code without turning into metaclass control.
