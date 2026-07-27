@@ -47,6 +47,7 @@ INCREMENTAL_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep
 SEMANTIC_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/semantic-faults
 ENVIRONMENT_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/environment-contracts
 ARCHITECTURE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/architecture-contracts
+ABSTRACTION_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/abstraction-contracts
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 PERFORMANCE_DIR ?= $(ARTIFACTS_DIR)/performance/reproducible-research/deep-dive-make/current
 PERFORMANCE_POLICY := performance/scenarios.tsv
@@ -86,7 +87,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit environment-contract-selftest architecture-contract-audit architecture-contract-selftest clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit environment-contract-selftest architecture-contract-audit architecture-contract-selftest abstraction-contract-audit abstraction-contract-selftest clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -189,6 +190,8 @@ help:
 >     '  environment-contract-selftest reject dishonest environment evidence' \
 >     '  architecture-contract-audit prove API, layer, and output ownership' \
 >     '  architecture-contract-selftest reject dishonest architecture evidence' \
+>     '  abstraction-contract-audit prove explicit and generated rule contracts' \
+>     '  abstraction-contract-selftest reject dishonest abstraction evidence' \
 >     '  profile-audit     build the execution-profile review bundle' \
 >     '  confirm           alias for hardened with shared catalog naming' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
@@ -492,6 +495,32 @@ architecture-contract-audit:
 
 architecture-contract-selftest:
 >     $(PYTHON) -m unittest $(TST_DIR)/test_architecture_contract_audit.py
+
+abstraction-contract-audit:
+>     rm -rf "$(ABSTRACTION_CONTRACT_AUDIT_DIR)"
+>     mkdir -p "$(ABSTRACTION_CONTRACT_AUDIT_DIR)"
+>     cp -R "$(REP_DIR)/abstraction-contracts" "$(ABSTRACTION_CONTRACT_AUDIT_DIR)/specimens"
+>     $(PYTHON) scripts/audit_abstraction_contracts.py \
+>       --specimens "$(REP_DIR)/abstraction-contracts" \
+>       --workspace "$(ABSTRACTION_CONTRACT_AUDIT_DIR)/workspace" \
+>       --output "$(ABSTRACTION_CONTRACT_AUDIT_DIR)/report.json" \
+>       --make "$(MAKE)"
+>     printf '%s\n' \
+>       'Abstraction contract audit route:' \
+>       '  1. Read ABSTRACTION_CONTRACT_AUDIT_GUIDE.md for PASS semantics.' \
+>       '  2. Read summary.tsv across the explicit, bounded, and opaque models.' \
+>       '  3. Read report.json for rule, target, policy, and artifact observations.' \
+>       '  4. Read contract and database traces before the complete build trace.' \
+>       '  5. Compare specimens/ with workspace/ before accepting a macro.' > "$(ABSTRACTION_CONTRACT_AUDIT_DIR)/route.txt"
+>     cp "$(DOCS_DIR)/abstraction-contract-audit-guide.md" "$(ABSTRACTION_CONTRACT_AUDIT_DIR)/ABSTRACTION_CONTRACT_AUDIT_GUIDE.md"
+>     cp "$(DOCS_DIR)/proof-guide.md" "$(ABSTRACTION_CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     $(PYTHON) scripts/write_bundle_manifest.py \
+>       --bundle-dir "$(ABSTRACTION_CONTRACT_AUDIT_DIR)" \
+>       --output "$(ABSTRACTION_CONTRACT_AUDIT_DIR)/manifest.json"
+>     @echo "PASS: wrote abstraction contract audit to $(ABSTRACTION_CONTRACT_AUDIT_DIR)"
+
+abstraction-contract-selftest:
+>     $(PYTHON) -m unittest $(TST_DIR)/test_abstraction_contract_audit.py
 
 profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
