@@ -52,7 +52,7 @@ The harness must identify that path as changed and fail before later checks run.
 4. `schedule-comparison.json` to read the schedule-equivalence decision and diagnostics.
 5. `serial-inventory.json` and `parallel-inventory.json` to inspect declared paths,
    byte counts, and digests.
-6. `convergence.txt`, `trace-count.txt`, and `hidden-input.txt` for the other completed
+6. `convergence.txt`, `trace-evidence.json`, and `hidden-input.txt` for the other completed
    checks.
 7. `workspace/` only when the summary and logs do not answer the question.
 8. `PROOF_GUIDE.md` to decide whether a wider proof route is necessary.
@@ -68,8 +68,8 @@ The harness must identify that path as changed and fail before later checks run.
 - `schedule-comparison.json` separates missing, unexpected, and changed artifacts.
 - `serial-inventory.json` and `parallel-inventory.json` define the compared artifact set
   instead of inheriting a platform checksum format.
-- `trace-count.txt` shows whether the build has started doing too much work before the
-  real execution phase.
+- `trace-evidence.json` records the clean-plan state, focus target, planned targets, rule
+  locations, line count, and separate usability checks.
 - `hidden-input.txt` proves the harness still catches a graph that lies about its inputs.
 - `workspace/` preserves the sandbox at the stopping boundary. It is evidence, not a
   source tree to repair in place.
@@ -105,7 +105,7 @@ not prove:
 - determinism across compilers or platforms not exercised
 - absence of every possible race
 - product behavior beyond the separate `test` target
-- that a higher trace threshold would be harmless
+- that a higher trace-volume boundary would remain usable
 
 ## Review questions
 
