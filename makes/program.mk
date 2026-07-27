@@ -162,6 +162,14 @@ capstone-data-identity-audit: ## Classify selected program data identity evidenc
 capstone-data-identity-selftest: ## Enforce selected program data identity evidence
 	@$(RUN_PROGRAM) capstone-data-identity-selftest
 
+.PHONY: capstone-runtime-contract-audit
+capstone-runtime-contract-audit: ## Classify selected program runtime contract evidence
+	@$(RUN_PROGRAM) capstone-runtime-contract-audit
+
+.PHONY: capstone-runtime-contract-selftest
+capstone-runtime-contract-selftest: ## Enforce selected program runtime contract evidence
+	@$(RUN_PROGRAM) capstone-runtime-contract-selftest
+
 .PHONY: capstone-discovery-audit
 capstone-discovery-audit: ## Build the selected program's capstone discovery audit bundle
 	@$(RUN_PROGRAM) capstone-discovery-audit

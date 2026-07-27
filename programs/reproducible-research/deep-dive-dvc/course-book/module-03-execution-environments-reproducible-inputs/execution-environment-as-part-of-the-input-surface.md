@@ -118,7 +118,7 @@ That is why this module names the issue directly before later modules rely on it
 Run the isolated runtime audit:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone runtime-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
 ```
 
 The specimen holds constant:

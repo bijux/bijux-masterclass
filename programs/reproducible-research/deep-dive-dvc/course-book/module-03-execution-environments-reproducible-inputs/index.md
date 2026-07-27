@@ -40,10 +40,11 @@ This module is about making that invisible boundary visible:
   management by itself
 - lockfiles, containers, and CI all solve different parts of the problem
 
-The capstone corroboration surface for this module is the set of files and commands that
-make the runtime boundary legible: `make platform-report`, `params.yaml`,
-`capstone/docs/experiment-guide.md`, `capstone/docs/architecture.md`, and the install/runtime surface
-in the capstone Makefile.
+The capstone corroboration surface for this module is the paired runtime specimen,
+its audit guide, generated fingerprints, planner receipts, semantic results, and the
+root-level `capstone-runtime-contract-audit` route. Together they show what changes when
+runtime policy is declared and what DVC cannot see when the same policy arrives through
+hidden process state.
 
 ## Why this module exists
 
@@ -96,7 +97,7 @@ If the problem is already partly clear, use this shortcut:
 | [Lockfiles, Containers, and CI as Environment Strategies](lockfiles-containers-and-ci-as-environment-strategies.md) | teaches the main environment-control approaches and their tradeoffs |
 | [Reviewing Environment Drift and Runtime Evidence](reviewing-environment-drift-and-runtime-evidence.md) | teaches how to inspect and diagnose runtime differences without guesswork |
 | [Worked Example: Explaining a Local versus CI Drift](worked-example-explaining-a-local-versus-ci-drift.md) | walks through one realistic environment drift story |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten cumulative exercises |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -115,13 +116,12 @@ By the end of this module, you should be able to explain:
 These commands form the evidence loop for Module 03:
 
 ```bash
-make -C capstone platform-report
-make -C capstone verify
-make -C capstone walkthrough
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-selftest
 ```
 
-The point is not to collect more output. The point is to tie environment discussion to
-concrete evidence instead of vague intuition.
+The audit is the learning route. The self-test is the stronger enforcement route after
+you can explain every accepted and rejected finding.
 
 ## Capstone route
 
@@ -129,19 +129,19 @@ Use the capstone only after the runtime boundary already feels concrete.
 
 Best corroboration surfaces for this module:
 
-- `capstone/Makefile`
-- `capstone/params.yaml`
-- `capstone/docs/experiment-guide.md`
-- `capstone/docs/architecture.md`
-- `make -C capstone platform-report`
+- `capstone/repro/runtime-contracts/dvc.yaml`
+- `capstone/repro/runtime-contracts/environment/runtime.env`
+- `capstone/scripts/audit_runtime_contracts.py`
+- `capstone/docs/runtime-contract-audit-guide.md`
+- generated `fingerprints/`, `receipts/`, `results/`, and `summary.tsv`
 
 Useful proof route:
 
 ```bash
-make -C capstone platform-report
-make -C capstone walkthrough
-make -C capstone verify
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
 ```
 
-The point of that route is to make the capstone's declared runtime surface inspectable,
-not to pretend the capstone eliminates every environment question by itself.
+The route proves that a declared policy change makes one stage stale and rebuilds to the
+new meaning, while the equivalent hidden process change remains invisible and preserves
+stale meaning under ordinary reproduction. Forced execution exposes the defect; it does
+not repair the missing declaration.

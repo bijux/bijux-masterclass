@@ -35,7 +35,7 @@ the local run and the CI run are both honest, but the result is not exactly the 
 Run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone runtime-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
 ```
 
 The specimen substitutes `REPORT_STYLE` for a larger local-versus-CI runtime difference.

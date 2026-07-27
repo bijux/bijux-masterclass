@@ -96,6 +96,14 @@ capstone-data-identity-audit: ## Audit pointer, cache, workspace, and remote ide
 capstone-data-identity-selftest: ## Enforce data identity and recovery evidence
 	@$(RUN_CAPSTONE) data-identity-selftest
 
+.PHONY: capstone-runtime-contract-audit
+capstone-runtime-contract-audit: ## Audit declared and hidden runtime influences
+	@$(RUN_CAPSTONE) runtime-contract-audit
+
+.PHONY: capstone-runtime-contract-selftest
+capstone-runtime-contract-selftest: ## Enforce declared and hidden runtime evidence
+	@$(RUN_CAPSTONE) runtime-contract-selftest
+
 .PHONY: capstone-source-bundle
 capstone-source-bundle: ## Build the capstone tracked-source release bundle
 	@$(RUN_CAPSTONE) source-bundle

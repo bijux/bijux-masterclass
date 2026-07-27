@@ -46,6 +46,11 @@ boundaries distinct, drift becomes reviewable instead of spooky.
 | CI authority | The practice of treating one automated execution environment as the shared proof route for the team. |
 | DVC environment boundary | The line between what DVC helps make diagnosable and what still belongs to lockfiles, containers, CI, or policy. |
 | acceptable drift | A declared level of result variation that the workflow or team considers consistent with its current runtime strategy. |
+| runtime contract | The declared or externally enforced set of runtime facts that must hold for an execution result to carry its claimed meaning. |
+| hidden runtime influence | Process or machine state that changes execution semantics without appearing in the workflow's declared dependency surface. |
+| semantic staleness | An output whose recorded bytes still exist but whose meaning no longer matches the runtime context in which it is being reused. |
+| fresh-execution proof | Evidence from executions that actually ran under each compared runtime condition, rather than from cached or skipped work. |
+| diagnostic force | A forced execution used to test whether hidden state changes an output; it exposes a missing contract but does not repair one. |
 
 ## How to use these terms
 

@@ -232,7 +232,7 @@ Inspect `capstone/repro/runtime-contracts/dvc.yaml` without running the audit. P
 Then run:
 
 ```bash
-make -C programs/reproducible-research/deep-dive-dvc/capstone runtime-contract-audit
+make PROGRAM=reproducible-research/deep-dive-dvc capstone-runtime-contract-audit
 ```
 
 What to hand in:
