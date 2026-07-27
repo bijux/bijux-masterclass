@@ -1,0 +1,49 @@
+from __future__ import annotations
+
+import json
+import shutil
+import subprocess
+import sys
+import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+CAPSTONE = Path(__file__).resolve().parents[1]
+SCRIPT = CAPSTONE / "scripts" / "capture_incremental_work.py"
+
+
+class IncrementalWorkTests(unittest.TestCase):
+    def run_case(self, policy: Path, output: Path) -> subprocess.CompletedProcess[str]:
+        make = shutil.which("gmake") or shutil.which("make")
+        assert make
+        return subprocess.run(
+            [sys.executable, str(SCRIPT), "--policy", str(policy), "--output", str(output), "--make", make],
+            cwd=CAPSTONE,
+            text=True,
+            capture_output=True,
+        )
+
+    def test_captures_expected_scope_and_restores_source(self) -> None:
+        source = CAPSTONE / "src" / "util.c"
+        before = source.stat().st_mtime_ns
+        with TemporaryDirectory() as directory:
+            output = Path(directory) / "evidence.json"
+            result = self.run_case(CAPSTONE / "performance" / "incremental-policy.tsv", output)
+            report = json.loads(output.read_text())
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(report["result"], "PASS")
+        self.assertEqual(source.stat().st_mtime_ns, before)
+
+    def test_rejects_missing_requested_work(self) -> None:
+        with TemporaryDirectory() as directory:
+            policy = Path(directory) / "policy.tsv"
+            policy.write_text("src/util.c\tbuild/util.o,build/bin/dyn1\tapp,all\n")
+            output = Path(directory) / "evidence.json"
+            result = self.run_case(policy, output)
+            report = json.loads(output.read_text())
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("build/bin/dyn1", report["missing_rebuild"])
+
+
+if __name__ == "__main__":
+    unittest.main()
