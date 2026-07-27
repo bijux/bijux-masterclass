@@ -18,10 +18,10 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  caller["name the caller"] --> promise["state one promise"]
+  promise --> outputs["declare outputs and side effects"]
+  outputs --> failure["define failure and retry behavior"]
+  failure --> evidence["name acceptance evidence"]
 ```
 <!-- page-maps:end -->
 
@@ -50,8 +50,8 @@ This page is about replacing that ritual with targets that say what they mean.
 
 When you define a release-oriented target, ask:
 
-> what exact promise does this name make to the caller, and what does it deliberately not
-> promise?
+> What may the caller trust after this target succeeds, and what responsibility remains
+> outside the target?
 
 That question keeps target meaning stable.
 
@@ -83,8 +83,10 @@ A strong release target can be explained in one sentence.
 Examples:
 
 - `dist`: produce the publishable distribution bundle under `dist/`
-- `install`: lay out the artifact tree under the requested destination
-- `release-check`: run the validations required before publication
+- `verify-dist`: inspect and verify one already produced candidate
+- `install`: lay out declared files under the requested destination root
+- `release-check`: compose local validation required before publication
+- `publish`: hand an accepted candidate to a separately owned remote boundary
 
 That is much better than targets that quietly do five unrelated jobs.
 
@@ -98,6 +100,25 @@ For example, a target named `dist` should not unpredictably:
 If those jobs are needed, they should usually have their own clearly named targets or be
 composed intentionally by a higher-level target.
 
+## Write a target contract before its recipe
+
+Use a table like this:
+
+| Field | `dist` example |
+| --- | --- |
+| callers | maintainers and CI |
+| success promise | one complete local release candidate exists |
+| declared outputs | archive, checksum sidecar, contents listing |
+| semantic inputs | built payloads, license, package policy, archive producer |
+| excluded side effects | host install, remote upload, credential use, unrelated cleanup |
+| retry behavior | same inputs reproduce the same candidate identity |
+| failure behavior | last accepted candidate remains intact; incomplete candidate is rejected |
+| acceptance evidence | listing, checksum verification, repeatability comparison |
+
+This table is reviewable before anyone debates shell syntax. It also exposes hidden
+questions: does `dist` include verification, or does `verify-dist` own it? Does success
+mean "bytes were written" or "candidate passed local acceptance"?
+
 ## Boring release targets are a good sign
 
 This is one of the few places in the course where "boring" is praise.
@@ -108,10 +129,12 @@ A healthy release target:
 - publishes to a declared location
 - can be rerun without smearing old outputs into new outputs
 - does not rely on the caller's current directory luck or shell history
+- does not use credentials or mutate remote state unless its name and owner say so
+- leaves the previous accepted candidate intact when production fails
 
 The target should feel almost disappointingly clear. That is what makes it safe to trust.
 
-## A small `dist` contract
+## Model the artifact as a real target
 
 Suppose the project ships:
 
@@ -122,20 +145,28 @@ Suppose the project ships:
 A healthy target might look like:
 
 ```make
+DIST_ARCHIVE := artifacts/module08-release/candidate/app.tar.gz
+
 .PHONY: dist
+dist: $(DIST_ARCHIVE)
 
-dist: dist/app.tar.gz
-
-dist/app.tar.gz: app LICENSE dist/manifest.txt | dist/
-	tar -czf $@ app LICENSE dist/manifest.txt
+$(DIST_ARCHIVE): app LICENSE packaging/manifest.txt scripts/package.py
+	@python3 scripts/package.py --output "$@.candidate" \
+	  app LICENSE packaging/manifest.txt
+	@mv "$@.candidate" "$@"
 ```
 
-The important part is not the exact packaging command. The important part is that the
-target name maps to one obvious publication outcome.
+`dist` is a phony public alias. The archive is a real target with declared inputs. A
+successful producer writes a distinct candidate path and renames it into place only after
+completion.
+
+The snippet is a contract sketch, not a complete failure-safe recipe: a production rule
+also removes abandoned candidate files on failure and ensures concurrent invocations
+cannot publish through the same candidate path.
 
 The caller can now say:
 
-> `make dist` means "create the distribution archive."
+> `make dist` means "make the declared local candidate current."
 
 That is a contract.
 
@@ -150,14 +181,47 @@ A release contract should answer:
 - which metadata is part of the bundle
 - which directory is the publication root
 
-For example, `dist/app.tar.gz` may depend on:
+For example, the archive may depend on:
 
 - `app`
 - `LICENSE`
-- `dist/manifest.txt`
+- `packaging/manifest.txt`
+- the archive producer itself
 
-Those are explicit release inputs. Without that clarity, packaging becomes harder to audit
-and much easier to accidentally change.
+The producer script and package policy are semantic inputs because changing either can
+change archive bytes or layout. "Collect whatever the build made" hides both.
+
+## Separate production from acceptance
+
+Candidate production and candidate acceptance answer different questions:
+
+```mermaid
+flowchart LR
+  inputs["declared release inputs"] --> dist["dist: produce candidate"]
+  dist --> verify["verify-dist: inspect candidate"]
+  verify --> accepted["accepted local candidate"]
+  accepted --> external["external publication owner"]
+```
+
+A local target surface can make that split visible:
+
+```make
+.PHONY: dist verify-dist release-check
+
+dist: $(DIST_ARCHIVE) $(DIST_ARCHIVE).sha256
+
+verify-dist: dist
+	@python3 scripts/verify_release.py \
+	  --archive "$(DIST_ARCHIVE)" \
+	  --checksum "$(DIST_ARCHIVE).sha256"
+
+release-check: test selftest verify-dist
+```
+
+Whether `verify-dist` depends on `dist` is a repository policy choice. A consumer-only
+verification route may instead require an existing candidate and never rebuild it. Name
+the chosen behavior because rebuilding during verification can erase the evidence of a bad
+candidate.
 
 ## Higher-level orchestration should stay visible
 
@@ -172,7 +236,7 @@ That is fine. The important architectural move is to keep the composition visibl
 ```make
 .PHONY: release-check
 
-release-check: test selftest dist
+release-check: test selftest verify-dist
 ```
 
 This is healthy because:
@@ -195,6 +259,8 @@ It is not casual.
 - what tree is being installed
 - where it is being laid out
 - what overwrite or idempotence behavior is expected
+- whether it installs from build outputs or from the accepted candidate
+- what stale-file and removal policy applies
 
 That means `install` deserves the same contract discipline as `dist`, not less.
 
@@ -208,6 +274,33 @@ Be suspicious when a release target:
 - mixes validation, packaging, install, and deploy in one recipe
 - depends on the operator's shell state or random environment files
 - leaves different outputs behind depending on what happened in previous runs
+- verifies by rebuilding the candidate it was asked to inspect
+- uploads or signs with credentials under a name that sounds local
+- reports success while stale files from an older candidate remain in the release root
+
+## Treat remote publication as a handoff
+
+Make can own local file production well. Remote publication often includes:
+
+- credentials
+- retries and rate limits
+- approvals
+- mutable remote state
+- rollback or revocation
+
+Those responsibilities may belong in a release service or workflow system. If Make keeps
+a convenience `publish` target, define the handoff object and owner:
+
+| Handoff field | Example |
+| --- | --- |
+| candidate | exact archive path and checksum |
+| precondition | local acceptance gate passed |
+| sender responsibility | immutable bytes and evidence are complete |
+| receiver responsibility | authenticate, upload, confirm remote identity |
+| returned evidence | remote object identifier or receipt |
+
+The target must not rebuild the candidate after approval. Publication should consume the
+accepted identity, not silently create a new one.
 
 Those are not only implementation issues. They are contract failures.
 
@@ -220,6 +313,9 @@ Before you add or keep a release target, ask:
 3. could another human call it without reading shell scripts first
 4. if CI called it, would that be a stable decision
 5. does it publish to one declared location or boundary
+6. does failure preserve the previous accepted candidate
+7. can verification inspect existing bytes without replacing them
+8. does any remote side effect have an explicit handoff and owner
 
 If the answers are weak, the target meaning is weak too.
 
@@ -255,11 +351,13 @@ That means the target is not publishing through a stable boundary.
 
 Take one release-oriented target and ask:
 
-1. what exact artifact or side effect it promises
-2. where that result appears
-3. what declared inputs it depends on
-4. whether its name matches its meaning
-5. whether it can be safely consumed by humans and CI as a stable interface
+1. who calls it
+2. what exact artifact or side effect success promises
+3. where the result appears and which inputs determine it
+4. what it deliberately excludes
+5. how retries and failures affect the previous accepted candidate
+6. which evidence makes the result acceptable
+7. whether local and remote responsibilities are separated
 
 If those answers are weak, the target needs redesign before the bundle details even matter.
 
@@ -267,11 +365,12 @@ If those answers are weak, the target needs redesign before the bundle details e
 
 Choose one repository and write down:
 
-1. the release-oriented target names
+1. the release-oriented target names and callers
 2. one sentence of contract meaning for each
-3. one target whose meaning is too broad or vague
-4. one improvement to make the surface more stable
-5. one reason that would make later release debugging easier
+3. declared outputs, semantic inputs, and excluded side effects
+4. one target whose meaning is too broad or vague
+5. failure and retry behavior
+6. the local-to-remote handoff, if one exists
 
 If you can do that cleanly, you are treating release targets as interfaces rather than
 convenient shell entrypoints.
@@ -283,5 +382,8 @@ Before leaving this lesson, make sure you can explain:
 - why release targets are contracts rather than rituals
 - why narrow target meaning is easier to trust
 - why declared inputs matter for release surfaces too
+- why a phony alias should lead to real artifact targets
+- why candidate production and acceptance should remain distinguishable
 - how composed targets can stay clear without hiding their sub-steps
+- why remote publication needs a handoff contract
 - how to recognize a release target whose meaning has become too broad
