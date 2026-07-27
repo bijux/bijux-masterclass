@@ -33,7 +33,8 @@ They protect decisions that must remain separate.
 
 | Term | Meaning in this module |
 | --- | --- |
-| baseline | A recorded set of comparable measurements with target, build state, versions, conditions, and raw samples. A baseline describes current or prior behavior; it does not by itself prove a regression. |
+| attributable baseline | A recorded measurement set whose clean revision, runner, tools, target, build state, conditions, raw samples, and semantic work are bound together. It describes behavior at one identified source state; it does not by itself prove a regression. |
+| baseline | A recorded set of comparable measurements with target, build state, versions, conditions, and raw samples. In this module, a baseline intended for comparison must also be attributable. |
 | build state | The relevant state before a route runs: clean, incremental, confirmed no-op, or preserved incident state. Timings from different states answer different questions. |
 | clean build | A route executed after the repository's documented generated-state reset. It measures full production from that declared starting point, not an abstract machine-independent cost. |
 | confounder | A condition that can change a measurement without being the change under review, such as cache warmth, background load, job count, network access, or tool version. |
@@ -58,6 +59,7 @@ They protect decisions that must remain separate.
 | evidence packet | A bounded collection of commands, context, raw observations, focused excerpts, interpretations, and decisions that lets another maintainer reconstruct an investigation. |
 | evidence surface | A route or artifact that answers an operational question, such as non-executing trace, focused database inspection, target-attributed output, a manifest, or an audit target. |
 | evidence-surface cost | Runtime, storage, search, attribution, or human interpretation cost created by evidence. Low line count does not automatically mean low responder cost. |
+| execution-context compatibility | Agreement on the runner, platform, GNU Make, compiler, Python, and experiment settings needed to attribute a timing delta to the source change. Clean revisions may differ because that difference is the subject of the experiment. |
 | focused excerpt | The smallest retained part of a large dump or trace that changed a decision, stored with the command needed to reproduce it. |
 | observability target | A named, non-semantic route that answers one recurring question and has an expected output shape, side-effect contract, and owner. |
 | output attribution | The ability to associate a log line or result with the target or recipe that produced it. GNU Make output synchronization can improve attribution without repairing graph defects. |
@@ -89,6 +91,7 @@ They protect decisions that must remain separate.
 | freshness contract | The declared conditions under which cached or generated state must refresh. Adding a cache creates this new correctness obligation. |
 | rejection condition | A result that causes a proposed optimization to be reverted or abandoned, such as stale discovery, failed convergence, changed artifact meaning, or a timing effect within noise. |
 | requested-work proof | Evidence that the same meaningful input change still triggers the necessary consumers after a tuning change. |
+| requested-work equivalence | Agreement between baseline and candidate on the declared input, expected rebuild set, observed rebuild set, and absence of missing or unexpected work. It complements final-output comparison because equal final bytes do not reveal overbroad or omitted incremental work. |
 | semantic equivalence | Equality under the artifact's declared meaning rather than necessarily identical bytes. The comparison method must be defined before the experiment. |
 | truth-preserving optimization | A change that removes measured waste while preserving requested work, convergence, artifact meaning, evidence access, failure safety, and applicable pressure behavior. |
 
@@ -97,12 +100,14 @@ They protect decisions that must remain separate.
 | Do not collapse... | Why the distinction matters |
 | --- | --- |
 | current baseline and regression | A baseline needs a comparable past value or objective before it proves deterioration. |
+| revision change and environment drift | Different clean revisions are the intended variable in a candidate comparison; changed tools, runner, or dirty source prevent attribution. |
 | trace causality and semantic correctness | Trace can explain Make's decision while the graph still models the wrong contract. |
 | command success and truthful output ownership | Two recipes can return zero while mutating one undeclared shared file. |
 | clean build and incident reproduction | Cleaning is a measurement precondition in one case and destructive evidence loss in the other. |
 | serial comparison and serial repair | `-j1` can localize a schedule-dependent defect without repairing its missing edge or shared writer. |
 | containment, mitigation, recovery, and repair | Each action makes a different promise about harm, service, verification, and root cause. |
 | artifact equality and semantic equivalence | Some contracts require identical bytes; others require a domain comparison. Neither should be assumed. |
+| final-output equality and requested-work equivalence | Equal outputs can hide stale or collateral incremental behavior; a tuning claim needs both the output contract and selected-work contract. |
 | evidence volume and evidence usefulness | A short log can be opaque, while a larger attributed trace can be decisive. |
 | selftest proof and performance proof | Build invariants can pass without establishing that a route became faster. |
 
@@ -130,10 +135,12 @@ The shorter sentence hides state, evidence, ownership, and proof.
 Before closing Module 09, explain these pairs without looking them up:
 
 - baseline versus regression
+- revision change versus environment drift
 - causal evidence versus semantic correctness
 - containment versus recovery
 - mitigation versus repair
 - artifact equality versus semantic equivalence
+- final-output equality versus requested-work equivalence
 - selftest proof versus performance proof
 
 If the distinction does not change a decision in your explanation, revisit the matching
