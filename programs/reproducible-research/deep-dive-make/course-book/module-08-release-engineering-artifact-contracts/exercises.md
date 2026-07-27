@@ -1,300 +1,285 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-show off packaging commands. The goal is to make your release-boundary reasoning visible
-through contracts, bundle trees, and verification evidence.
+These ten exercises are one cumulative release-acceptance lab. Use the Make capstone as the
+producer and keep one packet under `artifacts/module08-release-lab/`. Each exercise creates
+evidence required by the next one.
 
-## How to work through this set
+Do not substitute prose for a command result. A release claim is complete only when another
+reader can identify the candidate, declared policy, observed evidence, and rejection
+condition.
 
-Treat the ten exercises as one full lab day on release rehearsal.
+## Lab contract
 
-Before each answer:
+Run from the `bijux-masterclass` repository root with GNU Make 4.3 or newer:
 
-1. name the release promise or truth boundary you are testing
-2. choose the inspection path that would prove the promise
-3. state what belongs inside the artifact and what must stay outside it
-
-If you skip the boundary question, release work turns into command sequences with no clear
-publication contract.
-
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 define `dist`, bundle layout, and the difference between artifact identity
-  and adjacent evidence
-- Exercises 4-6 make installation and archive boundaries explicit
-- Exercises 7-9 prove repeatability, verification, and destination safety
-- Exercise 10 combines the whole route into one bounded release rehearsal
-
-Submit a consumer evidence packet for Exercises 6-10:
-
-| Artifact | Sorted contents | Identity check | Empty-destination result | Repeatability result |
-| --- | --- | --- | --- | --- |
-
-The packet must be understandable without the command history that produced the release.
-
-Keep one release packet as you go. By the end of the day it should contain:
-
-- one narrow `dist` contract
-- one deliberate bundle tree
-- one identity or evidence separation decision
-- one safe install route under a declared destination root
-- one reproducible archive proof
-- one full release rehearsal with both success and failure boundaries
-
-If those six artifacts are missing, you are probably packaging files without defining the
-release contract they are meant to serve.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module08-lab/
-├── Makefile
-├── build/
-├── dist/
-├── release/
-├── notes/
-└── artifacts/
+```sh
+CAPSTONE=programs/reproducible-research/deep-dive-make/capstone
+PACKET=artifacts/module08-release-lab
 ```
 
-Keep one bundle table while you work:
+Start only if the packet path is absent:
 
-| Bundle path | Why it belongs inside | Consumer that needs it | Evidence that it is correct |
-| --- | --- | --- | --- |
+```sh
+test ! -e "$PACKET" || {
+  printf '%s\n' "Refusing to replace existing evidence: $PACKET" >&2
+  exit 2
+}
+mkdir -p \
+  "$PACKET/candidate" \
+  "$PACKET/evidence" \
+  "$PACKET/consumer" \
+  "$PACKET/failures"
+```
 
-Also keep one adjacent-evidence table:
-
-| File or sidecar | Inside artifact or beside it | Why |
-| --- | --- | --- |
-
-That second table matters because Module 08 is where learners often start stuffing
-diagnostics and provenance into the artifact itself even when that destabilizes identity.
+Do not write to `/usr/local`, a home-directory bin path, or another live install
+destination. Do not publish remotely. Deliberate failures belong below
+`"$PACKET/failures"`.
 
 ```mermaid
 flowchart LR
-  contract["define the release contract"]
-  stage["stage only declared contents"]
-  inspect["inspect archive or install tree"]
-  verify["verify identity and checksums"]
-  repeat["repeat from clean state"]
-  publish["state what makes the artifact trustworthy"]
-
-  contract --> stage --> inspect --> verify --> repeat --> publish
+  contract["target and member policy"] --> produce["candidate production"]
+  produce --> identity["identity and repeatability"]
+  identity --> contents["member comparison"]
+  contents --> safety["extraction safety"]
+  safety --> install["contained install rerun"]
+  install --> failures["controlled rejection"]
+  failures --> handoff["digest-bound acceptance"]
 ```
 
-Use that route on purpose. It keeps the day centered on consumer trust rather than on
-packaging motion alone.
+## Exercise 1: Define the candidate and target contracts
 
-## Exercise 1: Write a clear `dist` contract
+Write `"$PACKET/evidence/contracts.md"` before building anything.
 
-Choose one repository and define what `dist` should promise in one sentence.
+It must define:
 
-What to hand in:
+- `dist`: producer responsibility and output
+- `verify-dist`: consumer responsibility and existing-byte input
+- `release-check`: local composition and required gates
+- `install-rehearsal`: accepted payload, logical prefix, and repository-owned root
+- `publish`: deliberately unimplemented remote action
 
-- the target meaning
-- the declared inputs to that target
-- one thing the target should deliberately not do
-- one sentence explaining why narrow targets are easier to trust
+For every target, name callers, outputs, excluded side effects, retry behavior, and failure
+evidence.
 
-Study note:
-The best `dist` target says exactly what publishable artifact surface it creates and what
-it refuses to do.
+Then state the candidate scope in one sentence. Choose either an internal transfer bundle
+or a public end-user package and keep later policy consistent with that choice.
 
-## Exercise 2: Design a publishable bundle tree
+**Acceptance test:** another reader can tell which targets may create candidate bytes and
+which targets must only inspect existing bytes.
 
-A project needs to ship:
+## Exercise 2: Declare the package member contract
 
-- one binary
-- one license
-- one README
-- one bundle manifest
+Create `"$PACKET/evidence/package-policy.tsv"` independently of the archive. Give each
+member five fields:
 
-Design the release tree and explain why each file belongs inside it.
+```text
+path    type    mode-policy    link-policy    consumer-purpose
+```
 
-What to hand in:
+For the current internal-transfer candidate, include:
 
-- the intended bundle layout
-- one file that should stay outside the bundle
-- the publication step after which the artifact becomes trustworthy
-- one sentence explaining why bundle layout is part of the contract
+- `app`
+- `build/bin/dyn1`
+- `build/bin/dyn2`
+- `build/include/dynamic.h`
 
-Study note:
-Bundle trees are not just copies of whatever happened to be nearby in the workspace.
+Also create `"$PACKET/evidence/package-members.txt"` containing only the sorted paths.
 
-## Exercise 3: Separate identity from evidence
+Explain in `contracts.md` why dependency files from `build/bin` are excluded even though
+the capstone's broad `dist` target currently archives them.
 
-A teammate wants to package host information and build timestamps directly into the
-release bundle because "more provenance is better."
+**Acceptance test:** the policy is readable before any candidate exists and every member
+has a consumer purpose.
 
-Explain how you would separate artifact identity from supporting evidence.
+## Exercise 3: Produce and identify one candidate
 
-What to hand in:
+Build the capstone payloads, then invoke `scripts/mkdist.py` with only the four declared
+inputs. Publish to:
 
-- one file that should count as artifact identity
-- one file that should live beside the artifact instead
-- one sentence explaining why mixing them would destabilize releases
-- one sentence explaining what a consumer needs to verify first
+```text
+artifacts/module08-release-lab/candidate/capstone.tar.gz
+```
 
-Study note:
-If unstable host or time details enter the archive itself, artifact identity changes even
-when release meaning did not.
+Record:
 
-## Exercise 4: Make `install` safe to rerun
+- the SHA-256 digest in `evidence/capstone.sha256`
+- the first line of `gmake --version`
+- the Python version
+- the source revision from `git rev-parse HEAD`
+- the exact producer command
 
-You inherit an `install` target that writes straight into a real destination and behaves
-unpredictably on rerun.
+Do not put wall-clock time, host name, or the evidence files inside the candidate.
 
-Describe how you would redesign it to make the destination contract explicit and safer to
-test.
+**Acceptance test:** the digest sidecar names the existing candidate, and rerunning
+verification would not invoke `gmake` or `mkdist.py`.
 
-What to hand in:
+## Exercise 4: Prove repeat production through one publication path
 
-- the destination-root variable or staging approach
-- one idempotence expectation
-- one command you would run to inspect the installed tree safely
-- one sentence explaining what should never happen outside the declared root
+Preserve the current candidate as `evidence/capstone-first.tar.gz`. Rebuild the payloads
+from a clean capstone state, produce again through the same candidate pathname, and
+preserve that observation as `evidence/capstone-second.tar.gz`.
 
-Study note:
-Installation should be inspectable as a tree, not treated as an irreversible side effect.
+Compare the two byte for byte and write the command plus status to
+`evidence/repeat-production.txt`.
 
-## Exercise 5: Diagnose one release failure
+Then perform one controlled contrast: produce equivalent payloads under a different output
+basename and compare that archive with the candidate. Explain the result by inspecting
+`mkdist.py` and the gzip header contract. Keep the contrast archive under `failures/`.
 
-Pick one of these symptoms:
+**Acceptance test:** the two same-path candidates are identical; the explanation does not
+claim that reproducibility is independent of output basename.
 
-- wrong bundle contents
-- checksum mismatch
-- unstable release identity
-- unsafe install behavior
-- drift in release-target meaning
+## Exercise 5: Compare declared and observed archive members
 
-Write the debugging path you would use to identify the failed truth boundary and repair
-it.
+Inspect the candidate without extracting it.
 
-What to hand in:
+Create:
 
-- the likely failed boundary
-- the first evidence command
-- the likely contract or publication repair
-- one sentence explaining why that evidence comes before rerunning everything
+- `evidence/archive-listing.txt`: verbose member listing
+- `evidence/archive-members.txt`: sorted regular-file paths
+- `evidence/member-comparison.txt`: comparison command and status
 
-Study note:
-This is a boundary-diagnosis exercise, not a reflexive rebuild exercise.
+Compare the observed paths with `package-members.txt`. Also inspect member types and modes
+against `package-policy.tsv`; a path-only comparison is not sufficient.
 
-## Midday self-check
+**Acceptance test:** expected policy and observed archive data come from independent
+origins, and all four declared members match by path, type, mode policy, and link policy.
 
-Before you move into archive repeatability, checksum evidence, and install auditing, make
-sure your packet can already answer these questions cleanly:
+## Exercise 6: Reject unsafe extraction before unpacking
 
-- what `dist` promises and what it refuses to do
-- which files belong inside the bundle and which belong beside it
-- what point in your route marks the start of release trust
-- which destination root contract makes installation safe to inspect
+Write or reuse a verifier that rejects:
 
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
+- absolute member paths
+- `..` path components
+- symbolic and hard links
+- device nodes, FIFOs, and other unsupported types
 
-## Exercise 6: Inspect an archive as a contract
+Run it against the candidate and store the result in
+`evidence/extraction-safety.txt`.
 
-Build a small archive, list its entries, and compare the listing with a declared package
-tree. Add one stray file to the staging parent and prove it does not enter the archive.
+Create a deliberate archive with `../escape.txt` below `failures/`. Run the same verifier
+against it and store the nonzero result in `failures/unsafe-extraction.txt`. Do not extract
+the unsafe archive.
 
-What to hand in:
+**Acceptance test:** the valid candidate passes, the unsafe candidate fails, and no
+`escape.txt` appears outside the packet.
 
-- the declared tree
-- the sorted archive listing
-- the staging rule that excludes unrelated files
-- one sentence explaining why the archive root matters
+## Exercise 7: Extract and verify the consumer view
 
-Study note:
-Archive contents should follow the declared package tree, not whatever files happened to
-share a parent directory.
+After Exercise 6 passes, extract the candidate below:
 
-## Exercise 7: Reproduce an archive byte for byte
+```text
+artifacts/module08-release-lab/consumer/extracted/
+```
 
-Build the same archive twice from clean staging directories. Normalize entry order,
-timestamps, ownership, and gzip metadata using a declared release toolchain.
+Create:
 
-What to hand in:
+- `evidence/extracted-members.txt`
+- `evidence/extracted-checksums.txt`
+- `evidence/extraction-comparison.txt`
 
-- the archive rule and tool versions
-- both checksums
-- one experiment showing that removing a normalization control can cause drift
-- one sentence explaining why stable content alone is not enough
+Compare the extracted regular-file paths with package policy. Explain why post-extraction
+comparison complements but does not replace pre-extraction inspection.
 
-Study note:
-Release repeatability is where many learners first notice that semantic equality and byte
-equality are related but different goals.
+**Acceptance test:** every extracted file is below the consumer root and the extracted
+paths match the declared member contract exactly.
 
-## Exercise 8: Verify checksum evidence
+## Exercise 8: Prove install containment and convergence
 
-Create a checksum sidecar, verify it successfully, alter one byte of the archive, and
-verify that the check fails.
+Define this narrow consumer mapping:
 
-What to hand in:
+```text
+app -> /usr/local/bin/make-capstone, mode 0755
+```
 
-- checksum generation and verification commands
-- successful and failing exit statuses
-- an explanation of why the checksum is evidence about the archive, not a replacement for
-  its package contract
-- one sentence explaining what the checksum cannot tell you
+Apply it below:
 
-Study note:
-Checksums prove byte identity. They do not prove that you packed the right files.
+```text
+artifacts/module08-release-lab/consumer/install-root/
+```
 
-## Exercise 9: Prove installation stays inside its destination
+Before writing, check composed destination paths and ancestor types. Then install twice
+into the same root.
 
-Install under a fresh `DESTDIR`, run the installation again, and compare sorted file
-manifests and checksums. Audit the recipe for any absolute write that escapes the root.
+Record first-run and rerun:
 
-What to hand in:
+- relative file paths
+- file checksums
+- file modes
+- repository status
 
-- the install rule
-- both destination manifests
-- the escape-audit command and result
-- one explicit policy for overwrite or removal behavior
+Create a conflicting directory or symbolic-link ancestor in a separate root below
+`failures/` and prove preflight rejects it before copying.
 
-Study note:
-Release installation should be safe to rehearse repeatedly without touching the real
-system root.
+**Acceptance test:** first-run and rerun evidence match, no source or tracked file changes,
+and the conflict case fails before destination mutation.
 
-## Exercise 10: Rehearse a complete release
+## Exercise 9: Preserve and classify two failed candidates
 
-Create a release route that builds, tests, stages, archives, checksums, verifies, and
-installs into a temporary root. Inject one packaging failure and one verification failure.
+Create two failures without modifying the accepted candidate:
 
-What to hand in:
+1. append bytes to a copy after recording the accepted digest
+2. create an archive with one undeclared regular-file member
 
-- the public release-target contracts
-- the package tree and adjacent evidence files
-- a transcript of the successful rehearsal
-- both failure transcripts and the boundary each one protects
-- a statement of what remains deliberately outside Make
+For each failure, create a directory named by its computed digest below `failures/` and
+retain:
 
-Study note:
-The goal is not to make release engineering magical. The goal is to make every trust
-boundary explicit enough that another maintainer can rerun the route with confidence.
+- failed candidate
+- computed digest
+- failed command and exit status
+- declared policy
+- observed evidence
+- first failed boundary
+- blocked action
 
-## Before you read the answers
+Do not repair either candidate in place. State whether the first failed boundary is
+identity, assembly, extraction, installation, or handoff.
 
-Do not open `exercise-answers.md` until you can already point to:
+**Acceptance test:** both failures remain reviewable after the lab, and neither receives an
+acceptance record.
 
-- one release target with a clear contract
-- one bundle boundary you can defend
-- one checksum or manifest that supports, but does not redefine, artifact identity
-- one installation route that stays inside its declared destination
-- one failure transcript whose boundary you can explain precisely
+## Exercise 10: Write a bounded acceptance handoff
 
-If you do not yet have those five things, the answer page will sound stronger than it can
-teach.
+Review all prior evidence and create `evidence/acceptance.txt` containing:
 
-## Mastery standard for this exercise set
+- candidate filename
+- candidate SHA-256 digest
+- package scope
+- result for repeat production
+- result for member policy
+- result for extraction safety
+- result for contained extraction
+- result for install convergence
+- result for controlled failure rejection
+- `publication=NOT_ATTEMPTED`
 
-Across all ten answers, the module wants the same habits:
+Create `evidence/consumer-route.md` with the minimum commands a new consumer needs to:
 
-- you name the release promise or truth boundary being tested
-- you choose inspection and evidence before proposing the fix
-- you explain the fix in terms of contract, package boundary, evidence policy, or publish
-  safety
+1. verify candidate identity
+2. inspect members and types
+3. run extraction-safety policy
+4. extract below a new root
+5. confirm acceptance refers to the same digest
 
-If an answer says only "release engineering is important," keep going.
+End with two explicit lists:
+
+- claims this packet supports
+- claims this packet does not support
+
+**Acceptance test:** a reader can audit the candidate without rebuilding it, and no wording
+suggests that the internal-transfer packet is a signed public release.
+
+## Before reading the answers
+
+Your packet should now contain one connected proof route, not ten unrelated notes. Check:
+
+- one candidate identity appears consistently in sidecar and acceptance record
+- package policy existed independently of the observed archive listing
+- same-path repeat production was tested
+- unsafe archives were rejected before extraction
+- install evidence compares first run with rerun
+- failed candidates remain preserved under their own identities
+- remote publication was never attempted
+
+If any item is missing, return to the first exercise that should have produced it. Later
+success cannot compensate for an earlier unproven gate.
