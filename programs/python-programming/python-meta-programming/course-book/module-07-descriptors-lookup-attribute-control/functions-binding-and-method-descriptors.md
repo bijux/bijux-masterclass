@@ -45,6 +45,9 @@ Keep a second sentence beside it:
 
 > class access and instance access produce different results because the descriptor sees different inputs, not because methods are a special magical category.
 
+That sentence matters because method folklore survives easily. The goal here is to replace
+folklore with objects and lookup steps you can inspect directly.
+
 ## What a bound method really contains
 
 A bound method is not mysterious. It is a small object that carries:
@@ -59,6 +62,15 @@ bound.__func__(bound.__self__, *args, **kwargs)
 ```
 
 Once that is visible, method objects become much easier to inspect and debug.
+
+Use this split whenever method language stays fuzzy:
+
+| Surface | What it actually is |
+| --- | --- |
+| `Class.method` | the underlying function object on the class |
+| `obj.method` | the bound result produced by descriptor behavior |
+| `bound.__func__` | the original callable that still expects `self` explicitly |
+| `bound.__self__` | the instance attached during binding |
 
 ## Evidence route for method-binding reviews
 
@@ -96,6 +108,16 @@ The key move is not special method syntax. It is descriptor binding on attribute
 
 That is the sentence to keep returning to when learners over-focus on `def` syntax. The
 syntax defines the function; descriptor lookup explains the binding.
+
+## A proof route for method binding
+
+Use this route whenever instance methods still feel like special syntax:
+
+1. inspect the class attribute directly
+2. inspect the instance attribute directly
+3. compare `__func__` and `__self__` on the bound result
+4. explain why class access stays unbound while instance access binds
+5. name the non-data-descriptor rule that still allows shadowing
 
 ## Why functions are non-data descriptors
 
@@ -142,6 +164,14 @@ the class attribute is.
 This is the same pattern you saw in the first core when a descriptor returns itself on
 class access.
 
+Use this access table as a debugging card:
+
+| Question | What to inspect first |
+| --- | --- |
+| why is this call missing `self`? | whether you are holding `Class.method` instead of `obj.method` |
+| why did method behavior disappear on one instance? | whether the instance dictionary now shadows the non-data descriptor |
+| why is a decorator making the method harder to inspect? | whether the wrapper still behaves like an ordinary function descriptor |
+
 Use this comparison table to keep the two access paths distinct:
 
 | Access form | Typical result |
@@ -164,6 +194,14 @@ that you and your tools expect to find.
 
 The deeper rule is not about decoration style. It is about preserving an owner shape that
 still behaves like a function descriptor under ordinary lookup.
+
+## A wrapper review test
+
+Before accepting a method wrapper, ask:
+
+- does instance access still produce an understandable binding result?
+- can another reviewer still inspect the equivalent of `__func__` and `__self__` if needed?
+- did the wrapper preserve function-like behavior, or did it silently replace the owner with something stranger?
 
 ## `classmethod` and `staticmethod` are descriptor variants
 
@@ -218,6 +256,15 @@ plain function on a class
 ```
 
 That is enough to explain most method-binding questions you will see in practice.
+
+## Evidence packet for method-descriptor reviews
+
+Leave this page with a small packet:
+
+- one inspected pair of `Class.method` and `obj.method`
+- one bound-method note naming `__func__` and `__self__`
+- one shadowing example showing why plain methods are still non-data descriptors
+- one sentence rejecting magical wording in favor of descriptor-language explanation
 
 ## Review rules for method descriptors
 
