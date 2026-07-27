@@ -155,6 +155,55 @@ This is Core 1 in action:
 - the object file depends on what it actually reads
 - producer internals and consumer content are separated again
 
+## Reproduce the first graph lie before repairing it
+
+The inherited sketch hides two ideas inside one suspicious line:
+
+```make
+main.o: src/main.c scripts/gen_api.py
+```
+
+The direct script prerequisite may cause some recompilation, but it still does not state
+that `main.o` consumes `build/include/api.h`. A future schema change could regenerate the
+header without changing the script, leaving `main.o` stale.
+
+Use the capstone's controlled laboratory to observe the same edge class without modifying
+this larger example:
+
+```sh
+cd programs/reproducible-research/deep-dive-make/capstone
+gmake incremental-fault-audit
+```
+
+Read the `authored-header` rows in `summary.tsv` first:
+
+| Model | Input changed | Changed outputs | Binary output | Meaning |
+| --- | --- | --- | --- | --- |
+| missing edge | `config.h` | none | `before` | the consumer does not name the content it reads |
+| declared edge | `config.h` | `app` | `after` | the header-to-consumer path is complete |
+
+The missing-edge trace reports no selected work. That successful Make invocation is the
+failure: the graph claims the old binary is current even though its semantic input changed.
+The declared-edge trace names the header as the cause.
+
+Map the specimen back to the inherited build:
+
+| Laboratory role | Inherited pipeline role |
+| --- | --- |
+| `config.h` | `build/include/api.h` |
+| `app` | `main.o` |
+| missing `app: config.h` | missing `main.o: build/include/api.h` |
+
+Do not copy the specimen's direct header list into a large C project and call the problem
+finished. Use compiler-generated dependency files for discovered includes. The durable
+claim is that `main.o` has an edge to every header it consumed, whether that edge was
+written by hand or loaded from dependency data.
+
+The generated-producer rows answer a separate question. They prove that changing
+`scripts/gen_api.py` must first refresh the generated outputs and only then refresh
+consumers. The inherited generator rule already names the script, so those rows are a
+control for the producer boundary, not evidence that the consumer line is correct.
+
 ## Explain the duplicate execution
 
 The multi-output rule is:
@@ -308,6 +357,38 @@ all: build/include/api.h build/api.json build/api.manifest main.o
 
 This is not fancy. It is simply much more truthful.
 
+## Verify the repaired graph with input-specific predictions
+
+Do not accept the repaired sketch merely because a clean build succeeds. Converge it, then
+change one input at a time and predict the path before running Make:
+
+| Changed input | Generated outputs that should rebuild | Downstream work | Work that should remain unchanged |
+| --- | --- | --- | --- |
+| `schema/api.yml` | header, JSON, manifest | `main.o` through the header | unrelated objects |
+| `scripts/gen_api.py` | header and JSON | `main.o` through the header | manifest if it records no generator identity |
+| `MODE` through the manifest boundary | manifest, header, JSON | `main.o` through the header | unrelated objects |
+| `src/main.c` | none | `main.o` | manifest and generated outputs |
+
+For each row:
+
+1. establish a converged build
+2. record governed output hashes or modification times
+3. change exactly one input
+4. run `make --trace all`
+5. compare selected work with the predicted path
+6. run the product-facing behavior check
+7. restore the input and reconverge before the next row
+
+The schema row is especially important. It distinguishes the truthful header consumer edge
+from the inherited direct script dependency: the script did not change, but `main.o` must.
+The generator row distinguishes the producer boundary: the script changed, so both
+generated outputs must refresh before the consumer.
+
+If a row selects no work while behavior remains old, you reproduced a missing edge. If it
+selects unrelated work, you found an overbroad edge. If selected work matches but behavior
+is still wrong, move the investigation into the recipe or publication boundary rather than
+adding more prerequisites blindly.
+
 ## What each core contributed
 
 ```mermaid
@@ -344,7 +425,8 @@ Take one real generator incident and retell it in the same order:
 3. name the publication unit
 4. decide whether any stamp or manifest is justified
 5. state where trust begins
-6. rerun convergence and a parallel check
+6. execute the input-specific rebuild table
+7. rerun convergence and a parallel check
 
 If you can do that cleanly, Module 06 has started to change how you think about generation.
 
