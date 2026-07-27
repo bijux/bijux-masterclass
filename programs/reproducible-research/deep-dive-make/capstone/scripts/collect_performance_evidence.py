@@ -5,16 +5,16 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import platform
 import statistics
 import subprocess
 import sys
 import time
 from pathlib import Path
 
+from execution_context import capture_execution_context
 from performance_policy import PerformanceScenario, read_performance_policy
 
-SCHEMA = "deep-dive-make-performance-evidence-v1"
+SCHEMA = "deep-dive-make-performance-evidence-v2"
 TRUSTED_OUTPUTS = (
     Path("all"),
     Path("app"),
@@ -30,6 +30,8 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--samples", type=int, default=5)
     parser.add_argument("--make", dest="make_command", required=True)
+    parser.add_argument("--compiler", default="cc")
+    parser.add_argument("--runner-label", default="local")
     parser.add_argument("--workspace", type=Path)
     return parser.parse_args()
 
@@ -225,22 +227,21 @@ def main() -> int:
     policy = arguments.policy.resolve()
     output = arguments.output.resolve()
     logs_directory = output.parent / "logs"
+    scenarios = read_performance_policy(policy)
+    try:
+        context = capture_execution_context(
+            workspace=capstone,
+            make_command=arguments.make_command,
+            compiler_command=arguments.compiler,
+            runner_label=arguments.runner_label,
+        )
+    except ValueError as error:
+        raise SystemExit(f"cannot capture execution context: {error}") from error
     output.parent.mkdir(parents=True, exist_ok=True)
     logs_directory.mkdir(parents=True, exist_ok=True)
-    scenarios = read_performance_policy(policy)
 
-    make_version = subprocess.run(
-        [arguments.make_command, "--version"],
-        text=True,
-        capture_output=True,
-        check=True,
-    ).stdout.splitlines()[0]
     evidence: dict[str, object] = {
-        "context": {
-            "make": make_version,
-            "platform": platform.platform(),
-            "python": platform.python_version(),
-        },
+        "context": context,
         "policy_sha256": hashlib.sha256(policy.read_bytes()).hexdigest(),
         "result": "PASS",
         "sample_count": arguments.samples,

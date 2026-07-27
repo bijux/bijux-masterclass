@@ -104,6 +104,10 @@ class PerformanceCaptureTests(unittest.TestCase):
         evidence = json.loads(self.output.read_text(encoding="utf-8"))
         scenario = evidence["scenarios"]["clean-build"]
         self.assertEqual(evidence["result"], "PASS")
+        self.assertEqual(evidence["context"]["make"]["version"], "GNU Make 4.4 (performance test double)")
+        self.assertEqual(evidence["context"]["repository"]["status"], "unavailable")
+        self.assertEqual(evidence["context"]["runner"], "local")
+        self.assertIn("version", evidence["context"]["compiler"])
         self.assertEqual(len(scenario["samples"]), 3)
         self.assertEqual(scenario["convergence"], "PASS")
         self.assertEqual(len(scenario["inventory"]), 5)
