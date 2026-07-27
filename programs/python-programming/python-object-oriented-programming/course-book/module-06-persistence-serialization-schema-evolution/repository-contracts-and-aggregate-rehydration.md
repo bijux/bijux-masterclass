@@ -17,171 +17,195 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  boundary["state the aggregate contract"] --> load["load stored representation"]
+  load --> rebuild["rehydrate through an honest boundary"]
+  rebuild --> reject["reject or repair invalid history"]
+  reject --> protect["keep callers away from storage trivia"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+Read the first diagram as a placement map: this page establishes the foundation for the
+rest of Module 06. Read the second diagram as the reasoning route: name the aggregate
+contract first, then decide how stored representation becomes that aggregate again
+without letting storage history leak into caller expectations.
 
 ## Why this lesson matters
 
-Repositories are often taught too loosely. Students hear "a repository loads and saves
-things" and end up building generic data-access helpers that leak rows, records, and ORM
-objects back into the application layer.
+Repositories are often taught too loosely. Learners hear "a repository loads and saves
+things" and then build generic data-access helpers that hand rows, ORM objects, or
+partial fragments back to the application layer.
 
-That is not a small style issue. It blurs the line between:
+That is not a harmless style preference. It changes who appears to own the system:
 
-- authoritative domain objects
-- storage representations
-- workflow logic
+- the aggregate stops looking authoritative
+- storage shape becomes part of application vocabulary
+- invariant enforcement becomes optional during load
 
-Once that line blurs, invariants become easier to bypass and persistence starts
-rewriting the shape of the model.
+This lesson tightens the boundary before the rest of the persistence module builds on
+it.
 
 ## A repository is a domain-facing contract
 
-A repository should speak in the language of the aggregate it owns.
+The first question is not "which database are we using?" It is:
 
-Good repository methods look like:
+> What should a caller be able to ask for without learning storage structure?
 
-- load a policy by policy identifier
-- save a modified policy aggregate
-- check existence of an authoritative aggregate
+Strong repository methods sound like:
 
-Weak repository methods look like:
+- load a workshop enrollment by workshop identifier
+- save one modified enrollment aggregate
+- confirm whether an authoritative aggregate exists
 
-- fetch rows by table detail
-- expose partial storage fragments that the caller must assemble
-- provide generic CRUD surfaces with no aggregate meaning
+Weak repository methods sound like:
 
-The more the repository sounds like table maintenance, the less it is protecting the
-object model.
+- fetch workshop rows
+- read attendee join entries
+- update waitlist relation table
+- expose generic CRUD over persistence objects
 
-## Rehydration is part of the repository job
+The difference is not cosmetic. A strong repository preserves the aggregate as the unit
+of meaning. A weak repository teaches callers to assemble meaning themselves.
 
-Loading persisted state is not just retrieval. It is rehydration: reconstructing a valid
-aggregate from stored representation.
+## What the repository owns
+
+At minimum, a repository owns two responsibilities:
+
+1. loading one authoritative aggregate honestly
+2. saving one authoritative aggregate honestly
+
+It does not automatically own:
+
+- query-model reporting
+- projection reads
+- cross-aggregate commit coordination
+- outbound publication delivery
+
+Those may live nearby, but they are not the same contract.
+
+This matters because repository surfaces become vague buckets very quickly when every
+data-related concern is pushed through one abstraction.
+
+## Rehydration is part of the contract, not an implementation footnote
+
+Loading persisted state is not just retrieval. It is re-entry into the domain.
 
 That means the repository must answer:
 
-- how does stored data become domain values again?
-- how are invariants respected during reconstruction?
-- what happens when persisted data is malformed or out of contract?
+- how stored representation becomes domain values again
+- where invariant-enforcing construction happens
+- what counts as malformed or unsupported history
+- how callers are protected from storage-specific repair steps
 
-If callers must manually reconstruct aggregates from records, the repository boundary is
-already too weak.
+If the repository returns raw pieces and expects callers to reassemble the aggregate, it
+has already failed at the most important part of the job.
 
-## Storage is not permission to create impossible objects
+## Worked contrast: weak load path versus strong load path
 
-One of the most important lessons in this module is this:
+Weak path:
 
-stored data does not outrank domain rules.
+1. fetch rows
+2. hand them to service code
+3. set fields manually on an object
+4. hope the data still makes sense
 
-If the repository finds persisted state that cannot be turned back into a valid
-aggregate, that should not be normalized away quietly. It should usually:
+Strong path:
+
+1. fetch the stored representation
+2. decode it through one mapper or codec
+3. call an invariant-preserving constructor or factory
+4. return only a valid aggregate or fail honestly
+
+The strong path is not stricter because it is fancier. It is stricter because it keeps
+the repository from becoming a corruption tunnel.
+
+## Stored data does not outrank domain rules
+
+This is the sentence to remember from the page:
+
+stored data is evidence of what happened, not automatic permission to create any object.
+
+If the repository finds data that cannot be turned back into a valid aggregate, the
+system should usually:
 
 - fail loudly
-- route through a deliberate repair or migration path
-- or reject the representation as unsupported
+- route through deliberate repair or migration
+- or reject that representation as unsupported
 
-Otherwise the repository becomes a corruption tunnel that can create states the domain
-itself would never accept.
+What it should not do is quietly normalize the problem away inside load logic and return
+something that only resembles the real aggregate.
 
-## Keep repository responsibility narrow
+That pattern is how corruption becomes durable truth.
 
-A repository answers:
+## Keep authoritative loads separate from read models
 
-- how do I load this authoritative aggregate?
-- how do I save it back through the persistence boundary?
-
-It does not automatically answer:
-
-- how multiple aggregates commit together
-- how messages are published after save
-- how dashboards or projections are queried
-
-Those belong to other boundaries such as:
-
-- the unit of work
-- outbox or publication coordination
-- read-model or query services
-
-When repositories absorb those responsibilities, they become vague buckets rather than
-durable contracts.
-
-## Read models are not aggregate repositories
-
-Students often widen repositories because they need:
+Students often widen repositories because they also need:
 
 - search screens
-- summaries
 - dashboards
+- reporting summaries
 - audit tables
 
-Those can be valid needs without belonging to the aggregate repository.
+Those needs are real, but they are usually not aggregate loads.
 
-If a query returns something other than the authoritative aggregate shape, that is
-usually a sign you are in read-model or query-service territory instead.
+One good test is:
 
-Keeping that distinction clear prevents one repository from turning into a catch-all data
-surface.
+> If the returned shape is not the authoritative aggregate, why is this method still on
+> the aggregate repository?
 
-## Repository design should preserve aggregate authority
+If the answer is only convenience, the boundary is likely too wide. Separate read-model
+or query services protect the repository from becoming a catch-all surface.
 
-The repository should make it easier, not harder, to preserve the aggregate as the
-authoritative unit.
+## Design repository methods to preserve aggregate authority
 
-That usually means:
+In practice, strong repository design often means:
 
-- load and save whole authoritative units
-- keep mutation logic outside raw storage shapes
-- do not encourage partial updates that bypass aggregate rules
+- load whole authoritative units
+- save whole authoritative units
+- keep mutation rules outside raw storage shapes
+- avoid partial update APIs that bypass aggregate logic
 
-The goal is not dogma about "always load everything." The goal is to avoid teaching a
-shape where persistence mechanics redefine the domain boundary.
+This is not dogma about always loading every possible relation. It is about refusing to
+let persistence mechanics redefine where the important invariants live.
+
+## Review drill: ask four questions about every repository
+
+For any repository surface, ask:
+
+1. does the method speak in aggregate language or storage language?
+2. who reconstructs the aggregate from stored representation?
+3. what happens if historical data is malformed or unsupported?
+4. what read concern is being smuggled in that belongs elsewhere?
+
+If you cannot answer one of those quickly, the boundary is probably still too weak.
 
 ## Common mistakes
 
-- returning raw rows or ORM entities to the application layer
+- returning raw rows or ORM entities to application code
 - forcing callers to reassemble aggregates manually
-- hiding migration or corruption issues through silent coercion
-- mixing commit coordination into repository save methods
-- widening repositories with reporting queries that are not aggregate loads
+- hiding corruption through silent coercion
+- mixing query-model reads into the aggregate repository
+- using "generic repository" as a reason to avoid naming the real contract
 
-These mistakes all weaken the same thing: the repository's role as a domain-facing
-contract.
-
-## Review checklist
-
-| Question | Good sign |
-| --- | --- |
-| does the repository speak in aggregate language rather than table language? | yes |
-| does it own rehydration instead of pushing reconstruction onto callers? | yes |
-| can invalid stored data fail loudly or route to repair? | yes |
-| are read-model queries kept separate from authoritative aggregate loading? | yes |
+All of these mistakes blur the same line: who actually owns the meaning of the loaded
+object.
 
 ## Capstone connection
 
 Use the capstone repository surface to ask:
 
-- what exactly is authoritative here?
+- what exactly counts as the authoritative aggregate here?
 - which storage details are still hidden from the caller?
-- if the stored shape became corrupted, where would that be detected?
+- where would malformed history be detected today?
+- what method should move out because it is really a query or report surface?
 
-Those questions make the repository a learning boundary instead of just a persistence
-utility.
+Those questions turn the repository into a reviewable design boundary instead of a
+persistence utility.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
 - explain why a repository is a domain-facing contract rather than generic data access
-- describe what rehydration must protect when loading persisted state
-- identify one query that belongs outside an aggregate repository because it is really a read-model concern
+- describe the honest rehydration route for one aggregate
+- identify one query that belongs outside the aggregate repository because it is really a
+  read-model concern
