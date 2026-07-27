@@ -17,152 +17,206 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  marker["identify the stored version"] --> classify["decide old versus broken"]
+  classify --> translate["upcast only supported history"]
+  translate --> reject["reject unsupported or ambiguous shapes honestly"]
+  reject --> prove["test that meaning survived the upgrade path"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+Read the first diagram as a placement map: this page explains how durable data keeps
+pressure on the rest of Module 06 long after one release ships. Read the second diagram
+as the lesson route: identify the version, separate old from broken, translate only
+supported history, then prove that the upgraded representation still means the right
+thing.
 
 ## Why this lesson matters
 
-Stored data has a longer memory than the code that wrote it.
+Stored data remembers longer than the code that wrote it.
 
-If a system survives even a few revisions, new code will eventually read old shapes.
-That is why schema evolution is not an edge case. It is the default future of any
-durable system.
+If a system survives even a few revisions, newer code will eventually read older shapes.
+That means schema evolution is not a rare migration concern. It is the normal future of
+any durable system.
 
-Students need a clearer mental model than "add a field and hope it still loads." They
+Learners need a mental model stronger than "add a field and hope it still loads." They
 need to know:
 
-- how representations declare their version
-- where older shapes are upgraded
+- how a representation says which version it is
+- where older shapes get translated
 - when old data should be rejected rather than guessed at
 
-## Versioning is a contract acknowledgement
+## Start with one uncomfortable question
 
-Adding a schema version marker is not bureaucracy. It is the system admitting that
-representations change over time.
+Ask this directly:
 
-Without that admission, new readers are forced to infer:
+> If code released on July 27, 2026 reads a record written months earlier, how will it
+> know whether the shape is old, missing, or broken?
 
-- which shape they received
-- which fields are missing because they are old
-- which fields are missing because the payload is broken
+That question forces the system to admit that history exists.
 
-That ambiguity makes compatibility work harder and corruption easier to hide.
+Without an explicit answer, the reader is left guessing:
 
-## What an upcaster does
+- which fields are absent because this is version one
+- which fields are absent because the payload is damaged
+- which default is safe and which one invents meaning
 
-An upcaster transforms an older representation into a newer supported shape before the
-rest of the system continues reading it.
+That is why versioning is not bureaucratic overhead. It is contract honesty.
 
-Its purpose is not to create permanent complexity everywhere. Its purpose is to
+## Version markers are acknowledgements, not ornament
+
+A schema version marker says:
+
+- this representation has history
+- the reader must not infer shape purely from field accidents
+
+Without that marker, compatibility logic becomes speculative. Readers are forced to
+reverse-engineer history from missing fields and field combinations, which is exactly how
+broken payloads get mistaken for merely old ones.
+
+Versioning is the system admitting that representation change is expected and must be
+owned.
+
+## Separate three cases: current, old, and broken
+
+Many weak loaders collapse these very different cases:
+
+- current supported shape
+- older supported shape
+- malformed or unsupported shape
+
+That collapse leads to permissive guessing.
+
+A stronger loader keeps them separate:
+
+| Case | Meaning | Typical action |
+| --- | --- | --- |
+| current | already matches a supported contract | decode normally |
+| old but supported | historical shape the system still knows how to upgrade | upcast or migrate deliberately |
+| broken or unsupported | ambiguous, corrupt, or beyond support policy | reject or route to repair |
+
+This table matters because "old" and "broken" are not the same operational story.
+
+## What an upcaster should really do
+
+An upcaster transforms an older supported representation into a newer supported one
+before the rest of the system continues.
+
+Its job is not to keep historical complexity alive everywhere forever. Its job is to
 concentrate compatibility logic in one owned place.
 
-That means:
-
-- old version comes in
-- upcaster translates to a newer representation
-- the codec or loader continues with the supported contract
-
-The domain object should not need to understand every historical shape directly.
-
-## Upcasting is translation, not repair theater
-
-An upcaster should perform deliberate, explainable translation.
-
-Good examples:
+Healthy upcasting usually looks like:
 
 - rename a field while preserving meaning
-- introduce a new optional field with a safe default
-- normalize a formerly loose representation into a stricter current form
+- add a new optional field with a deliberate default
+- normalize a formerly loose representation into the stricter current form
 
-Weak examples:
+Weak upcasting looks like:
 
-- guess at missing semantics with no clear rule
-- silently discard incompatible meaning
-- pretend broken or ambiguous old data is just another old version
+- guessing missing semantics with no rule
+- dropping incompatible meaning silently
+- pretending damaged payloads are simply older versions
 
-If a representation is truly unsupported or corrupted, rejecting it may be more honest
-than inventing meaning.
+Upcasting is translation, not repair theater.
 
-## Keep version logic near the representation boundary
+## Keep schema history near the representation boundary
 
-Version awareness should usually live near:
+Version awareness usually belongs near:
 
 - codecs
-- loaders
-- migration layers
+- persistence loaders
+- migration or compatibility layers
 
-It should not be scattered across:
+It usually does not belong inside:
 
 - domain constructors
 - workflow services
-- unrelated application handlers
+- application handlers that only care about current meaning
 
-Once version branching spreads too widely, the code stops having one owned compatibility
-boundary and starts teaching every layer about old storage trivia.
+Once version branching spreads too far, every layer starts carrying old storage trivia.
+That is exactly what the Module 06 boundary is supposed to prevent.
 
-## Evolution needs tests that match reality
+## Rejection is often more honest than automatic accommodation
 
-Good schema-evolution tests answer questions like:
+Not every shape deserves indefinite runtime compatibility.
 
-- can current code read a version-one payload on July 27, 2026?
-- does unsupported version handling fail clearly?
-- does upcasting preserve the meaning that the domain expects now?
-
-That last point matters. Passing the parser is not enough if the translated state no
-longer means the same thing after loading.
-
-## When not to upcast
-
-Not every change deserves indefinite compatibility.
-
-Sometimes the honest answer is:
+Sometimes the strongest answer is:
 
 - this version is too old to support automatically
-- this representation is corrupt
-- this migration must happen offline before runtime use
+- this record is corrupt
+- this migration must happen offline before normal runtime use
 
-Students should learn that explicit unsupported-version failure is often healthier than
-indefinite silent accommodation.
+Students should hear this plainly: explicit unsupported-version failure is often
+healthier than endless silent accommodation.
+
+Compatibility is a policy choice, not an obligation to guess forever.
+
+## Test for preserved meaning, not only successful parsing
+
+A schema-evolution test is weak if it stops at "the reader did not crash."
+
+The stronger question is:
+
+> After translation, does the loaded state still mean what the current domain expects it
+> to mean?
+
+Good tests therefore prove:
+
+- an old shape can still load on July 27, 2026
+- unsupported versions fail clearly
+- the upcast state preserves the same current invariant or behavior expectations
+
+Passing the parser is not enough if the resulting aggregate now tells a different story.
+
+## Worked pressure example
+
+Suppose a historical `WorkshopEnrollment` record stored:
+
+- `confirmed_attendees_csv`
+- no explicit waitlist order
+- no version field in the earliest release
+
+A stronger current design would:
+
+- assign or infer version only through a documented compatibility rule
+- decode the CSV at the boundary
+- rebuild waitlist order according to a known migration or upcast policy
+- reject records whose meaning cannot be recovered honestly
+
+What it should not do is let the aggregate itself parse CSV forever just because history
+once used it.
+
+## Review drill
+
+For any durable stored shape, ask:
+
+1. how does the reader know which version it received?
+2. what supported old version can be translated automatically?
+3. what malformed or unsupported shape must be rejected?
+4. what test proves current meaning survived the upgrade path?
+
+If those answers are unclear, the compatibility boundary is still too weak.
 
 ## Common mistakes
 
 - storing long-lived data with no version marker at all
 - scattering historical branching through many layers
 - treating corrupted payloads as if they were merely old versions
-- upcasting with undocumented guesswork
-- assuming a successful parse proves semantic compatibility
+- upcasting through undocumented guesswork
+- assuming successful parse proves semantic compatibility
 
-These mistakes cause the compatibility surface to expand without clear ownership.
-
-## Review checklist
-
-| Question | Good sign |
-| --- | --- |
-| can the reader identify which version it received? | yes |
-| is historical translation concentrated in one boundary? | yes |
-| are unsupported or corrupted shapes rejected honestly? | yes |
-| does upcasting preserve current domain meaning, not just structure? | yes |
+All of these mistakes expand the compatibility surface without clear ownership.
 
 ## Capstone connection
 
-Imagine the capstone persisted policy state on April 12, 2026 and the code on July 27,
-2026 needed to read it.
+Imagine the capstone persisted state on April 12, 2026 and the code on July 27, 2026
+needed to read it.
 
 Ask:
 
 - where would version markers live?
-- where would an old field rename be handled?
-- which change should be upcast at runtime, and which should require a more explicit migration path?
+- where would a field rename be handled?
+- which change should be upcast at runtime?
+- which one should require an explicit migration or repair step first?
 
 That exact date gap is the pressure this lesson is about.
 
