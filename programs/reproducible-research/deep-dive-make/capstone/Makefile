@@ -561,6 +561,7 @@ performance-evidence:
 >     rm -rf "$(PERFORMANCE_DIR)"
 >     mkdir -p "$(PERFORMANCE_DIR)"
 >     cp "$(PERFORMANCE_POLICY)" "$(PERFORMANCE_DIR)/scenarios.tsv"
+>     cp "$(INCREMENTAL_POLICY)" "$(PERFORMANCE_DIR)/incremental-policy.tsv"
 >     cp "$(DOCS_DIR)/performance-evidence-guide.md" "$(PERFORMANCE_DIR)/PERFORMANCE_EVIDENCE_GUIDE.md"
 >     printf '%s\n' \
 >       'Performance evidence route:' \
@@ -574,6 +575,7 @@ performance-evidence:
 >       --output "$(abspath $(PERFORMANCE_EVIDENCE))" \
 >       --samples "$(PERFORMANCE_SAMPLES)" \
 >       --make "$(MAKE)"
+>     $(MAKE) --no-print-directory performance-incremental
 >     $(PYTHON) scripts/write_bundle_manifest.py \
 >       --bundle-dir "$(PERFORMANCE_DIR)" \
 >       --output "$(PERFORMANCE_DIR)/manifest.json"
