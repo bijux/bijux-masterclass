@@ -24,25 +24,45 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This glossary belongs to **Module 02: Design Roles, Interfaces, and Layering** in **Python Object-Oriented Programming**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+This glossary belongs to **Module 02: Design Roles, Interfaces, and Layering** in
+**Python Object-Oriented Programming**. Use it to keep the course language sharp while
+you decide what kind of object you are looking at, why it exists, and where it should
+live.
 
 ## How to use this glossary
 
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
+Return here when an object feels busy, a hierarchy feels suspicious, or a module seems
+to be mixing unrelated concerns. The point is not to memorize jargon. The point is to
+recover good design questions.
 
-## Terms in this directory
+## Terms that matter in this module
 
-| Term | Meaning in this directory |
-| --- | --- |
-| Avoiding Primitive Obsession: Semantic Types, Not Raw Str/Int | the module's treatment of avoiding primitive obsession: semantic types, not raw str/int, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Composition over Inheritance as Default | the module's treatment of composition over inheritance as default, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Cooperative Inheritance, MRO, and Mixins | the module's treatment of cooperative inheritance, mro, and mixins, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Factories, Dependency Injection, and Composition Roots | the module's treatment of factories, dependency injection, and composition roots, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Inheritance: Legit Use Cases and the Fragile Base Class Problem | the module's treatment of inheritance: legit use cases and the fragile base class problem, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Interfaces in Python: Duck Typing, ABCs, Protocols (Prescriptive Choices) | the module's treatment of interfaces in python: duck typing, abcs, protocols (prescriptive choices), used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Layering: Domain, Application, Infrastructure in a Python Codebase | the module's treatment of layering: domain, application, infrastructure in a python codebase, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Refactor 1: Thin Layered Architecture with Explicit Roles, Small Hierarchies, and Interfaces | the module's treatment of refactor 1: thin layered architecture with explicit roles, small hierarchies, and interfaces, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Responsibilities, Cohesion, and Object Smells | the module's treatment of responsibilities, cohesion, and object smells, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Service Objects and Operations vs Stateful Entities | the module's treatment of service objects and operations vs stateful entities, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Template Method and Tiny Hierarchies without a Framework Zoo | the module's treatment of template method and tiny hierarchies without a framework zoo, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Value Objects vs Entities: Identity and Basic Lifecycle Setup | the module's treatment of value objects vs entities: identity and basic lifecycle setup, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
+| Term | Meaning in this module | Review question |
+| --- | --- | --- |
+| Responsibility | The reason an object exists and the decision it is allowed to own. | Can you describe the object's job in one sentence without listing three unrelated verbs? |
+| Cohesion | The degree to which an object's methods and state support the same purpose. | If you remove one method, does the rest of the object still feel like the same thing? |
+| Value object | An object defined by its meaning rather than by long-lived identity. | Would replacing this instance with an equal one change the business meaning? |
+| Entity | An object whose identity matters across time, even when attributes change. | Do callers care which specific instance this is, or only what data it holds today? |
+| Semantic type | A small, named type that carries domain meaning better than a raw `str`, `int`, or `dict`. | Does this value deserve a domain name because mistakes around it are expensive? |
+| Service object | An object that coordinates work or policy without pretending to be an entity with a lifecycle. | Is this object mostly organizing an operation rather than modeling domain identity? |
+| Interface | The behavior other code is allowed to rely on, whether expressed informally or with `Protocol` or `ABC`. | What can callers count on here without knowing the implementation class? |
+| Protocol | A structural contract in Python that says "anything with these methods fits". | Would structural compatibility help here more than forcing one inheritance tree? |
+| Composition root | The boundary where concrete implementations are wired together. | Have you kept construction decisions near the edge instead of leaking them everywhere? |
+| Layer | A boundary that protects one kind of concern from another, such as domain, application, and infrastructure. | Is this code crossing a boundary because it must, or because responsibilities were never separated? |
+| Mixin | A small reusable behavior unit that assumes a narrow contract and avoids owning the full object story. | Is this reuse focused and cooperative, or is it hiding a second class hierarchy? |
+| Template method | A base-class algorithm skeleton with a few controlled variation points. | Is the shared workflow truly stable, or are subclasses patching different business rules into it? |
+
+## Fast distinctions
+
+- Prefer **composition** when the variation owns state, policy, or external dependencies.
+- Prefer **inheritance** only when subclasses are honest specializations of one stable idea.
+- Prefer **semantic types** when raw primitives let invalid or confusing values flow too far.
+- Prefer **protocols** when behavior matters more than ancestry.
+
+## Exit check
+
+Leave this glossary only when you can do all of these:
+
+- explain the difference between a value object and an entity without talking about Python syntax
+- identify one sign that a service object is a better fit than a stateful entity
+- explain why a mixin should stay small and why a composition root belongs near the edge
