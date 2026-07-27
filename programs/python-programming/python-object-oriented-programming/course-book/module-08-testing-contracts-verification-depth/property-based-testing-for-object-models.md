@@ -24,176 +24,194 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about proving claims that are too wide for a few narrated examples.
 
-## Why this lesson matters
+Property-based testing is useful when the real promise sounds like:
 
-Some design claims are too wide for a few hand-written examples.
+- this should hold across many valid shapes
+- this should survive many legal histories
+- this representation should round-trip without losing meaning
 
-If you want to prove that:
+It is not "stronger testing because randomness feels advanced."
+It is breadth-oriented proof for design claims that are too broad for a few examples.
 
-- equality behaves consistently
-- serialization round-trips preserve meaning
-- a lifecycle never leaves an impossible state behind
-- a set of ordering rules always holds
+## Keep one broad claim visible
 
-then three or four carefully chosen examples may still miss the one input shape or
-history that breaks the claim.
+Use a capstone-style claim such as:
 
-Property-based testing helps when the real promise is "this should hold across many
-valid cases," not just "this worked for these examples."
+- a schedule window or reporting value object round-trips without losing meaning
+- generated lifecycle sequences never leave an impossible state behind
+- normalized output preserves a stable ordering or equality rule
+
+Now compare that with a narrow claim like:
+
+- a retired object rejects one specific command
+
+The broad claim is where properties usually earn their cost.
+The narrow claim is often better taught by one direct example.
 
 ## A property is an always-true design claim
 
-The heart of property-based testing is not random data. It is a clearly stated
-invariant.
+The heart of property-based testing is not the generator.
+It is the claim.
 
-Good property questions sound like:
+Strong property statements sound like:
 
-- if I serialize then deserialize this value object, is the meaning preserved?
-- if two objects are equal, do they remain interchangeable where equality matters?
-- after any valid transition sequence, do lifecycle invariants still hold?
-- does sorting according to this comparison rule behave consistently?
+- serialize then deserialize preserves semantic equality
+- after any valid generated transition sequence, invariants still hold
+- normalized representations compare equal when their meaning is equal
+- derived duration never becomes negative for any valid generated window
 
-These are design truths. The generator exists to pressure-test them.
+These are design truths.
+The generator exists to pressure-test them, not replace them.
 
-## Do not use properties when one example says everything
+## Use properties when breadth matters more than narration
 
-Property-based testing is not automatically stronger than example-based testing.
+Example-based tests remain better when the main job is teaching one concrete rule.
 
-If one business rule is:
+For example:
 
-- a retired incident cannot be acknowledged
+- a closed incident cannot be acknowledged
+- a full workshop cannot confirm another seat
 
-then one explicit behavior-first test may teach that rule better than a generator.
+Those rules are usually clearer with direct behavior tests.
 
-Use properties when the burden is breadth:
+Use property-based testing when the hard part is not one rule explanation but one of
+these:
 
-- many legal inputs
-- many combinations
-- many sequences
+- many legal input combinations
+- many boundary sizes and lengths
+- many histories
 - algebraic or structural laws
 
-Use examples when the burden is explanation of one specific rule.
+This is the difference between explicit examples and breadth pressure.
 
-## Strategy design is part of the model
+## Strategy design is part of the domain work
 
-Weak property tests often fail because the input generation is careless.
+Weak property tests often fail because the generation strategy is careless.
 
-If your strategy produces mostly meaningless junk, you learn very little about the real
+If the strategy produces mostly meaningless primitive noise, you learn little about the
 object model.
 
-A good strategy should reflect:
+A strong strategy should reflect:
 
 - valid domain shapes
-- intentionally invalid edge cases when those matter
-- boundary sizes and lengths
-- meaningful combinations of states and values
+- boundary sizes and counts
+- meaningful combinations of values
+- intentionally invalid or edge inputs only when those are part of the claim
 
-In other words, generator design is not test plumbing. It is a second place where you
-must understand the domain.
+In other words, strategy design is not plumbing.
+It is a second place where you must understand the domain clearly.
 
-## Round-trips are often the easiest honest starting point
+## Round-trip properties are often the best starting point
 
-Many students first succeed with properties by starting from round-trip claims:
+Many learners succeed first with properties that defend round-trip meaning:
 
 - value object to wire form and back
-- aggregate snapshot to storage form and back
-- command representation to parsed form and back
+- snapshot to storage form and back
+- parsed command to normalized representation and back
 
-These properties are useful because they defend:
+These properties are useful because they catch:
 
 - loss of meaning
 - accidental normalization drift
 - missing fields
-- surprising representation asymmetry
+- silent asymmetry between write and read forms
 
-They also teach the difference between representation equality and semantic equality.
+They also teach the difference between exact representation equality and semantic
+equality.
 
-## Shrinking turns a wide failure into a teachable example
+## Shrinking turns breadth into a teachable counterexample
 
 One reason property-based testing is worth the effort is shrinking.
 
-When a property fails, the tool tries to reduce the failing input or sequence to a
-smaller example.
+When the property fails, the tool tries to reduce the failing case or sequence to the
+smallest understandable counterexample.
 
-That matters because the real output of a good property failure is not:
+That matters because the real output of a good property failure is:
 
-- "the generator found something weird"
+- not "something random broke"
+- but "here is the smallest case that contradicts your design claim"
 
-It is:
+That is exactly the kind of artifact a learner or reviewer can reason from.
 
-- "here is the smallest understandable counterexample to your design claim"
+## Stateful properties are natural for lifecycle-heavy objects
 
-That is exactly the kind of artifact a learner can reason from.
+When histories matter, generated sequences can be more valuable than generated single
+inputs.
 
-## Stateful properties are a natural partner for lifecycles
+Useful examples:
 
-For objects with histories, generated sequences can be more valuable than generated
-single inputs.
+- generate legal and illegal command sequences for one stateful object
+- generate repeated save/load cycles for a repository-backed value
+- generate combinations of retries and repeated attempts around one idempotency rule
 
-Examples:
+This is especially valuable when hand-written paths are becoming repetitive and you no
+longer trust yourself to enumerate the important histories manually.
 
-- generating command sequences for a state machine
-- generating repeated save and load cycles
-- generating combinations of valid and invalid transition attempts
+## Worked capstone example
 
-This is especially useful when handwritten transition tests are becoming repetitive and
-you no longer trust yourself to enumerate the important histories manually.
+Suppose a schedule window or reporting value object claims:
 
-## A worked example
+- normalization preserves represented meaning
+- serialization round-trips preserve semantic equality
+- derived duration is never negative for valid shapes
 
-Suppose a schedule window value object claims:
+Useful properties might check:
 
-- normalization preserves the represented interval
-- serialization round-trips retain meaning
-- equality ignores irrelevant representation detail
+1. serialize then deserialize yields an equivalent value
+2. normalized values compare equal to equivalent source inputs
+3. derived duration remains valid for all generated valid windows
 
-You might build properties that check:
+Those are not "more random tests."
+They are executable versions of the type's semantic laws.
 
-1. serializing then deserializing yields an equal window
-2. normalized windows still compare equal to equivalent source inputs
-3. derived duration remains non-negative for all valid generated windows
+## Build a property packet before you generate data
 
-Those are not "more random tests." They are executable statements of the semantic rules
-the type is supposed to keep forever.
+Before writing a property, keep a small packet:
 
-## Common mistakes
+- claim stated in plain design language
+- why hand-written examples are not enough
+- what counts as a meaningful generated input
+- what a shrunk failure should ideally teach
 
-- treating random input generation as the goal instead of the property
-- generating mostly invalid data that never reaches meaningful behavior
-- writing properties so broad that failures are hard to interpret
-- replacing clear example tests with properties when the rule is better taught explicitly
+If that packet is weak, the property is likely to become noise instead of evidence.
+
+## Common failure modes
+
+- treating random generation as the goal instead of the property
+- generating mostly invalid or meaningless inputs
+- writing properties so broad that failures become hard to interpret
+- replacing clear example tests with properties when one narrated example teaches the
+  rule better
 - ignoring shrunk counterexamples instead of reading them as design feedback
 
-## Review checklist
+## Property review card
 
-| Question | Good sign |
+Use this short card when reviewing a property:
+
+| Question | What you want to see |
 | --- | --- |
 | is the property a real design claim rather than a generic computation check? | yes |
 | do generators reflect meaningful domain structure? | yes |
-| would a failing shrunk example teach something concrete? | yes |
+| would a shrunk failure teach something concrete? | yes |
 | is the property used where breadth matters more than one narrated example? | yes |
 
 ## Capstone connection
 
-Use the capstone to ask:
+Use this page to ask:
 
-- which value objects or snapshots have round-trip promises worth proving broadly?
-- which lifecycle or policy invariants now span too many cases for example tests alone?
-- where would a generated counterexample teach more than adding five more hand-written cases?
+- which value objects or snapshots have round-trip promises worth proving broadly
+- which lifecycle or policy invariants now span too many cases for example tests alone
+- where a generated counterexample would teach more than five more hand-written cases
 
-This is the point where generated testing becomes design instrumentation instead of
-testing fashion.
+That is where property-based testing becomes design instrumentation instead of testing
+fashion.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
 - explain when a property is a better proof route than a hand-written example
-- design one generator that reflects domain meaning instead of primitive noise
+- design one generator that reflects domain meaning rather than primitive noise
 - state one capstone invariant as an always-true property
