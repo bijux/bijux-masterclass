@@ -46,6 +46,12 @@ That is why it exists.
 If you cannot name the fact that vanishes after the class body runs, you probably do not
 need `__prepare__`.
 
+For self-study, turn that into a direct proof test:
+
+- what exact assignment-time fact am I trying to keep?
+- where would that fact disappear if I waited for `__new__`?
+- what narrower hook or owner would be enough if the fact survived?
+
 ## Evidence route for `__prepare__` reviews
 
 Work through the hook in this order:
@@ -96,6 +102,17 @@ This is the real reason `__prepare__` matters.
 | "We need declaration order plus extra write metadata." | Yes, sometimes | Final namespace order alone may be too weak |
 | "We want to validate final required methods." | Usually no | `__new__` can inspect the finished namespace clearly |
 | "We want a registry of finished classes." | No | That is post-creation bookkeeping, not assignment-time control |
+
+## Declaration-time proof card
+
+Use this card before approving a `__prepare__` design:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what event matters during assignment? | duplicate write, order capture, or another named class-body fact |
+| what later view is too weak? | final namespace lacks the intermediate event |
+| what behavior does the mapping add? | one narrow rule with readable failure behavior |
+| what does the mapping refuse to do? | it does not become a general framework or hidden policy engine |
 
 ## A duplicate-assignment example
 
@@ -167,6 +184,15 @@ Watch for these review failures:
 | Recording everything "just in case" | The mapping becomes a meta framework instead of a narrow teaching surface |
 | Failing to explain what later hooks would miss | The hook choice becomes ornamental rather than necessary |
 
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "we need `__prepare__` because it is the earliest hook" | earliest is not the same as necessary |
+| "the custom dict gives us more control" | more control does not name the vanished fact |
+| "we might want declaration metadata later" | later is not a present justification |
+| "the mapping can enforce lots of rules at once" | lots of rules usually means the surface is getting too broad to review cleanly |
+
 ## Why this hook should still stay narrow
 
 `__prepare__` is powerful, but it is also easy to overuse.
@@ -180,6 +206,11 @@ The honest use case is:
 - and it cannot be reconstructed cleanly later
 
 That keeps the hook justified.
+
+Before you leave this page, write one sentence beginning:
+
+- "this fact would be lost later because..."
+- "a later hook would still be enough if..."
 
 ## A declaration-order sketch
 
