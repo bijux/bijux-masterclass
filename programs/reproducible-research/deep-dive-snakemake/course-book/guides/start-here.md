@@ -7,6 +7,18 @@ common mistake: widening the surface before the first workflow is actually clear
 Deep Dive Snakemake does not begin with clusters, profiles, or a large repository. It
 begins with one honest rule, one target, one dry-run, and one explanation you can defend.
 
+## If you are learning this without the live class
+
+Read this page in four passes:
+
+1. confirm you are still at first contact rather than already in capstone pressure
+2. complete the first-hour route once without widening the surface
+3. write down what the first workflow proved and what it did not prove
+4. move into Module 00 and Module 01 only after the local model is stable
+
+If you start opening later shelves before step 2 is honest, the course will feel larger
+and weaker at the same time.
+
 ## What you need from day one
 
 On your first pass, you do not need:
@@ -25,6 +37,19 @@ You do need:
 - one rerun you can explain
 
 That is enough to start building the right model.
+
+## The first packet you should keep beside you
+
+Before you widen into the modules, keep one tiny starter packet:
+
+- one command confirming Snakemake is installed
+- one small workflow you can run locally
+- one dry-run capture
+- one explanation of why the second run does no work
+- one explanation of why changing one input changes the plan
+
+If that packet feels too small, that is a sign you are still reaching for scale instead
+of clarity.
 
 ## The first-hour route
 
@@ -47,6 +72,21 @@ When the course feels bigger than you want, return to this sentence:
 
 That is not a low standard. That is the core model that everything else in the course
 keeps extending.
+
+## A first-contact card you should be able to fill quickly
+
+Use a table like this before you keep reading:
+
+| Question | Short honest answer |
+| --- | --- |
+| what target did I ask for | one file Snakemake owes me |
+| what rule can build it | one visible file contract |
+| what did the dry-run prove | what work is planned before any command runs |
+| what did the second run prove | the workflow can converge instead of repeating work forever |
+| what did changing one input prove | dependency edges, not vibes, drive rebuilds |
+
+If any row still feels vague, stay here longer. That is not falling behind. It is
+protecting the model the whole course depends on.
 
 ## Read this page in order
 
@@ -86,6 +126,19 @@ If one small workflow is still fuzzy, then:
 - more proof routes create more ceremony
 - more advanced pages create more vocabulary without more understanding
 
+## What goes wrong when the surface widens too early
+
+Use this card when you feel the urge to jump ahead:
+
+| If you are tempted to... | The likely hidden problem is... | Smaller move instead |
+| --- | --- | --- |
+| open the capstone first | the local model is still fuzzy | rerun one tiny workflow and explain the plan |
+| browse many guide pages at once | sequence anxiety is replacing learning | stay with Start Here, Module 00, and Module 01 |
+| choose the strongest proof route immediately | evidence appetite is outrunning the question | keep one dry-run and one rerun explanation |
+| jump to late governance or incident pages | advanced vocabulary feels safer than first principles | return to one requested target and one file contract |
+
+If the smaller move feels too humble, that usually means it is the right one.
+
 ## The best first pass
 
 Use this route and stop there:
@@ -119,6 +172,18 @@ Keep closed for now:
 - the larger capstone surfaces
 - late-module incident and governance pages
 - reference pages you are not yet using to solve a real learning problem
+
+## A five-line beginner note you should be able to write from memory
+
+If this page has done its job, you should be able to write:
+
+1. which target your first workflow requested
+2. which rule produced it
+3. what the dry-run told you before execution
+4. why the second run did no work
+5. why the capstone is not your first lesson
+
+If you cannot do that, stay in the starter route a little longer.
 
 ## Success signal
 

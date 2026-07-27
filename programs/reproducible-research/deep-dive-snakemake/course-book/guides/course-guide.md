@@ -5,6 +5,17 @@ Deep Dive Snakemake has several shelves and routes, but they do not serve the sa
 the same time. This guide exists to help you choose the smallest useful surface and stop
 there.
 
+## If you are learning this without the live class
+
+Read this guide in four passes:
+
+1. identify which job you are actually trying to do
+2. choose the smallest course surface that serves that job
+3. reject the heavier surface that only feels more complete
+4. write down your next route before you open another shelf
+
+If you skip step 2, the course can feel richer and more confusing at the same time.
+
 ## The rule that keeps the course coherent
 
 Keep this rule in view:
@@ -48,6 +59,19 @@ readiness.
 The modules are the course. The other shelves help you enter, corroborate, or inspect
 them.
 
+## A route-selection card you should be able to fill before browsing
+
+Use a table like this:
+
+| My current job is... | Smallest honest surface | Heavier surface to delay |
+| --- | --- | --- |
+| first contact | Start Here plus Module 00 | capstone repository |
+| learning one day-sized concept | the current module | broad guide or reference browsing |
+| corroborating a concept in a real repo | capstone map plus one bounded walkthrough | raw repository exploration |
+| diagnosing or reviewing | reference shelf plus the specific module boundary | course-home prose |
+
+If the heavier surface still feels more attractive, ask whether it is actually answering your current question.
+
 ## The recommended reading order
 
 ```mermaid
@@ -89,6 +113,19 @@ Ask what job you are doing before you choose the next page.
 | production and boundary control | Modules 03-05 | you can separate policy from meaning and software from orchestration |
 | publication and repository design | Modules 06-08 | you can define what is public, what is internal, and what changes safely across contexts |
 | incident and stewardship judgment | Modules 09-10 | you can investigate surprises and plan change without losing trust |
+
+## What goes wrong when the wrong shelf answers the question
+
+Use this card before you keep reading:
+
+| If you are about to... | The likely hidden problem is... | Smaller route |
+| --- | --- | --- |
+| open the capstone before the module concept is stable | corroboration is replacing learning | stay in the current module example |
+| browse reference to understand a lesson for the first time | diagnosis language is replacing the teaching arc | return to the module or Start Here |
+| skim many module indexes to regain control | overview hunger is replacing sequence | use Module Promise Map or Course Map |
+| choose the strongest proof surface immediately | evidence appetite is outrunning the question | use Proof Ladder and keep the smallest useful command |
+
+If the smaller route feels too simple, that usually means it is the right route.
 
 ## What each surface should and should not do
 
@@ -136,6 +173,18 @@ If a later module is pulling you forward, ask which earlier skill it assumes:
 - migration work assumes all of the above
 
 Skipping is only safe when the earlier skill is already genuinely stable.
+
+## A five-line route note you should be able to write from memory
+
+If this guide has done its job, you should be able to write:
+
+1. what job you are trying to do right now
+2. which course surface is the smallest honest fit
+3. which heavier surface you are intentionally delaying
+4. why that heavier surface would be premature
+5. what page you should open next
+
+If you cannot do that, do not browse wider. Pick the smaller route again.
 
 ## Good stopping point
 
