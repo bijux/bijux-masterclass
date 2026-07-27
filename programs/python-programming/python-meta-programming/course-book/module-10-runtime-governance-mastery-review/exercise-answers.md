@@ -29,6 +29,22 @@ Use this page after attempting the exercises yourself. The point is not to match
 phrase perfectly. The point is to compare your reasoning against answers that keep trust
 boundaries, interface claims, operational control, and escalation policy honest.
 
+Treat these answers as reasoning checkpoints, not as one-line solutions. The strongest
+answers always show where the claim stops, what lower-power owner was considered first, and
+what observation or reset surface keeps the design governable.
+
+## How to review your own answers against this page
+
+For each exercise, check whether your answer includes:
+
+| Checkpoint | What a strong answer shows |
+| --- | --- |
+| Named boundary | Trust, interface, or operational boundary is stated explicitly |
+| Named lower-power comparison | A smaller owner was considered before escalation |
+| Named review surface | Observation, reset, disable, or audit surface is visible |
+| Named overclaim | One sentence that would mislead reviewers is rejected |
+| Named operational cost | Blast radius, overhead, or process-wide effect is not hidden |
+
 ## Answer 1: Reject one unsafe dynamic execution idea
 
 Example answer:
@@ -41,6 +57,10 @@ Good conclusion:
 
 Restricted globals do not solve the real problem. The trust boundary requires a stronger
 design boundary than a namespace dictionary.
+
+Reasoning checkpoint:
+
+- if your answer does not name the false safety claim directly, the rejection is still too soft
 
 ## Answer 2: Compare one ABC and one protocol honestly
 
@@ -55,6 +75,10 @@ Good conclusion:
 Neither surface proves full behavior. The review story should say exactly whether the
 contract is nominal, structural, static, or shallow runtime-only.
 
+Reasoning checkpoint:
+
+- your answer should still name one behavioral guarantee that lives outside the interface declaration
+
 ## Answer 3: Add a reversal path to one dynamic mechanism
 
 Example answer:
@@ -66,6 +90,10 @@ Example answer:
 Good conclusion:
 
 Reversibility is part of the mechanism's design, not an optional improvement for later.
+
+Reasoning checkpoint:
+
+- the best answers also say why the patch or registry blast radius is now acceptable
 
 ## Answer 4: Review one import hook or AST transform proposal
 
@@ -80,6 +108,10 @@ Good conclusion:
 The strongest import-hook approvals solve global instrumentation problems, not local
 application architecture convenience.
 
+Reasoning checkpoint:
+
+- a strong answer also explains what "no-hook mode" means and why the system should remain understandable there
+
 ## Answer 5: Defend or reject one escalation
 
 Example answer:
@@ -93,6 +125,10 @@ Good conclusion:
 Escalation is justified by ownership and timing, not by the desire to reduce visible
 boilerplate.
 
+Reasoning checkpoint:
+
+- if your answer cannot be restated as a real approval or rejection note, the decision is still too vague
+
 ## Answer 6: Review the capstone runtime as Module 10 evidence
 
 Example answer:
@@ -105,6 +141,10 @@ Good conclusion:
 
 The capstone is defensible because it keeps runtime facts inspectable and rejects extra
 power it does not need.
+
+Reasoning checkpoint:
+
+- your answer should also explain why observational commands deserve to come before invocation surfaces
 
 ## Answer 7: Design one audit trail for a dynamic mechanism
 
@@ -122,6 +162,10 @@ An audit trail answers questions such as "what was active at failure time?" and 
 test or import path leave hidden global state behind?" Reviewable runtime systems make
 those questions cheap to answer.
 
+Reasoning checkpoint:
+
+- the audit surface should stay separate from business behavior instead of silently triggering it
+
 ## Answer 8: Write one explicit rejection rule
 
 Example answer:
@@ -138,6 +182,10 @@ Good conclusion:
 
 The rejection is triggered by missing ownership and missing operational proof, not by a
 general dislike of powerful mechanisms.
+
+Reasoning checkpoint:
+
+- strong answers also name the smaller design that should replace the rejected one
 
 ## Answer 9: Compare honest runtime claims with overstated claims
 
@@ -157,6 +205,10 @@ The second version is misleading because words such as "safely" and "automatical
 suggest broader lifecycle, trust, and recovery guarantees than the mechanism actually
 proves.
 
+Reasoning checkpoint:
+
+- the honest version should be specific enough that another engineer could review scope without guessing
+
 ## Answer 10: Produce a runtime-governance packet
 
 The packet is strong when another learner can answer:
@@ -165,6 +217,10 @@ The packet is strong when another learner can answer:
 - which trust boundary constrains it
 - which audit, reset, or disable surfaces keep it governable
 - which explicit rule would cause the design to be rejected
+
+Repair move if your packet is weak:
+
+- rewrite each item so it begins with the boundary, lower-power comparison, or review surface instead of with the mechanism name
 
 ## What strong Module 10 answers have in common
 
@@ -180,6 +236,15 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds impressed by the mechanism itself, revise it until the judgment
 sounds operational instead.
+
+## Exit check for the answer key
+
+Before leaving this page, make sure your answers now do all of the following:
+
+- stop every claim at the real enforceable boundary
+- reject at least one overclaim explicitly
+- name at least one observation or reset surface where relevant
+- leave another reviewer enough evidence to disagree with your judgment for concrete reasons
 
 ## Continue through Module 10
 
