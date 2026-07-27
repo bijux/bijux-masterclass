@@ -117,7 +117,7 @@ def classify(
             {
                 "adapter_rejected": missing["status"] == "rejected",
                 "nonzero_exit": missing["return_code"] == 2,
-                "reason_names_memory": "mem_mb" in missing["reason"],
+                "reason_names_memory": "mem_mb" in missing.get("reason", ""),
             },
         ),
         finding(
@@ -126,7 +126,8 @@ def classify(
             {
                 "adapter_rejected": under["status"] == "rejected",
                 "nonzero_exit": under["return_code"] == 2,
-                "reason_names_underprovisioning": "under-provisions" in under["reason"],
+                "reason_names_underprovisioning": "under-provisions"
+                in under.get("reason", ""),
             },
         ),
         finding(
@@ -135,7 +136,8 @@ def classify(
             {
                 "adapter_rejected": semantic["status"] == "rejected",
                 "nonzero_exit": semantic["return_code"] == 2,
-                "reason_names_semantics": "semantics" in semantic["reason"],
+                "reason_names_semantics": "semantics"
+                in semantic.get("reason", ""),
             },
         ),
     ]
