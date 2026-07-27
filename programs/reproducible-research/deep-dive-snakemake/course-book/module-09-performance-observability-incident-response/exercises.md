@@ -57,6 +57,21 @@ module09-lab/
 That structure makes it easier to compare baselines, incident packets, and runbook
 revisions without losing which evidence belongs to which question.
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable packet instead of ten disconnected slowdown stories:
+
+- one bounded symptom and cost-class note
+- one evidence-order note showing why you inspected one surface before another
+- one measured baseline with raw records
+- one incident packet separating known facts from unknowns
+- one single-boundary tuning note with before-and-after proof
+- one revised runbook that another maintainer can execute safely
+
+If you cannot point to those artifacts, the exercise day is still too dependent on tacit
+classroom guidance.
+
 Build one small incident-review packet as you go:
 
 - one cost-class note for the first suspected slowdown or flaky symptom
@@ -239,6 +254,19 @@ What to hand in:
 Study note:
 The experiment should shrink uncertainty. It should not just "try a bigger setting and
 see what happens."
+
+## When you get stuck, diagnose the missing boundary first
+
+Use this table before you start making the workflow "faster":
+
+| If you are stuck on... | Check whether you are missing... | Typical repair |
+| --- | --- | --- |
+| Exercise 1 or 2 | one named cost class and one evidence-order choice | rewrite the symptom and pick the first artifact deliberately |
+| Exercise 3 or 7 | one bounded incident packet | separate observed facts from hypotheses before editing |
+| Exercise 4, 8, or 9 | one single changed boundary and an unchanged semantic target | reduce the tuning scope before measuring |
+| Exercise 5 or 10 | one runbook route that another maintainer can follow | make the next command and expected observation explicit |
+
+Most weak Module 09 answers are not short on measurements. They are short on named boundaries.
 
 ## Exercise 10: Rehearse and revise a runbook
 
