@@ -60,7 +60,7 @@ flowchart LR
   protect --> argue["write bounded acceptance argument"]
 ```
 
-The route produces six findings. Some intentionally unsafe findings are `PASS / REJECT`.
+The route produces seven findings. Some intentionally unsafe findings are `PASS / REJECT`.
 That means the audit successfully reproduced behavior a real workflow should reject. It
 does not mean the unsafe rule passed review.
 

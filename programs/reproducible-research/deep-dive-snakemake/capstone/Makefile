@@ -385,7 +385,7 @@ file-contract-audit: ## Classify convergence, hidden inputs, and publication saf
 		'  1. Read FILE_CONTRACT_AUDIT_GUIDE.md for the claim boundary.' \
 		'  2. Read summary.tsv and separate accepted behavior from rejected examples.' \
 		'  3. Compare the declared and hidden rule contracts in specimen/Snakefile.' \
-		'  4. Inspect the four dry-run receipts under evidence/.' \
+		'  4. Inspect the three dry-run receipts and declared rebuild receipt under evidence/.' \
 		'  5. Compare in-place-failure with atomic-failure filesystem evidence.' \
 		'  6. Use report.json to connect each decision to explicit checks.' > "$(FILE_CONTRACT_AUDIT_DIR_ABS)/route.txt"
 	@$(PYTHON) scripts/write_bundle_manifest.py \

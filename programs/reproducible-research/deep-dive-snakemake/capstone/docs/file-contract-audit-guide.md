@@ -80,6 +80,7 @@ The expected decisions are:
 | --- | --- | --- |
 | `BASELINE_CONVERGES` | `ACCEPT` | an immediate dry-run after successful construction plans no work |
 | `DECLARED_POLICY_CHANGE_PLANS_RERUN` | `ACCEPT` | a declared influence reaches the planner |
+| `DECLARED_POLICY_CHANGE_REBUILDS_CURRENT_VALUE` | `ACCEPT` | the planned rebuild executes and records the new policy value |
 | `HIDDEN_POLICY_CHANGE_MISSES_RERUN` | `REJECT` | reading a file is not the same as declaring it |
 | `IN_PLACE_FAILURE_POISONS_FINAL` | `REJECT` | a process can replace trusted contents before failing |
 | `ATOMIC_FAILURE_PRESERVES_FINAL` | `ACCEPT` | failure before rename leaves the prior final intact |

@@ -91,6 +91,7 @@ def test_audit_classifies_convergence_hidden_inputs_and_publication(
     assert [item["decision"] for item in report["findings"]] == [
         "ACCEPT",
         "ACCEPT",
+        "ACCEPT",
         "REJECT",
         "REJECT",
         "ACCEPT",
@@ -125,6 +126,22 @@ def test_declared_policy_must_be_an_input(tmp_path: Path) -> None:
     assert completed.returncode != 0
     checks = finding(report, "DECLARED_POLICY_CHANGE_PLANS_RERUN")["checks"]
     assert checks["declared_rule_planned"] is False
+
+
+def test_declared_rebuild_must_adopt_the_current_policy(tmp_path: Path) -> None:
+    specimen = specimen_copy(tmp_path)
+    renderer = specimen / "scripts" / "render_report.py"
+    replace(
+        renderer,
+        'threshold = args.policy.read_text(encoding="utf-8").strip()',
+        'threshold = "10"',
+    )
+
+    completed, report = run_audit(tmp_path, specimen, check=False)
+
+    assert completed.returncode != 0
+    checks = finding(report, "DECLARED_POLICY_CHANGE_REBUILDS_CURRENT_VALUE")["checks"]
+    assert checks["declared_output_records_current_value"] is False
 
 
 def test_hidden_policy_case_must_miss_the_rerun(tmp_path: Path) -> None:
@@ -180,7 +197,7 @@ def test_atomic_failure_must_preserve_the_final_path(tmp_path: Path) -> None:
         atomic,
         'if args.fail_before_rename:\n        print("Crashing before rename.", file=sys.stderr)',
         (
-            'if args.fail_before_rename:\n'
+            "if args.fail_before_rename:\n"
             '        final_output.write_text("PARTIAL\\n", encoding="utf-8")\n'
             '        print("Crashing before rename.", file=sys.stderr)'
         ),

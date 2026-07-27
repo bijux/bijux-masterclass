@@ -26,16 +26,10 @@ def run(
         text=True,
         capture_output=True,
     )
-    (evidence_dir / f"{name}.stdout.txt").write_text(
-        completed.stdout, encoding="utf-8"
-    )
-    (evidence_dir / f"{name}.stderr.txt").write_text(
-        completed.stderr, encoding="utf-8"
-    )
+    (evidence_dir / f"{name}.stdout.txt").write_text(completed.stdout, encoding="utf-8")
+    (evidence_dir / f"{name}.stderr.txt").write_text(completed.stderr, encoding="utf-8")
     if completed.returncode not in expected_codes:
-        raise RuntimeError(
-            f"{name} returned {completed.returncode}; inspect {evidence_dir}"
-        )
+        raise RuntimeError(f"{name} returned {completed.returncode}; inspect {evidence_dir}")
     return completed
 
 
@@ -79,10 +73,7 @@ def report_threshold(path: Path) -> str:
 
 def write_summary(path: Path, findings: list[dict[str, Any]]) -> None:
     rows = ["finding\tresult\tdecision"]
-    rows.extend(
-        f"{item['finding']}\t{item['result']}\t{item['decision']}"
-        for item in findings
-    )
+    rows.extend(f"{item['finding']}\t{item['result']}\t{item['decision']}" for item in findings)
     path.write_text("\n".join(rows) + "\n", encoding="utf-8")
 
 
@@ -156,6 +147,15 @@ def main() -> int:
         name="hidden-policy-change-dry-run",
         expected_codes={0},
     )
+    declared_threshold_before_rebuild = report_threshold(declared_report)
+    declared_rebuild = run(
+        snakemake_command(snakemake, declared_target),
+        cwd=workspace,
+        evidence_dir=evidence_dir,
+        name="declared-policy-change-rebuild",
+        expected_codes={0},
+    )
+    declared_threshold_after_rebuild = report_threshold(declared_report)
 
     publication_dir = workspace / "publication"
     publication_dir.mkdir()
@@ -212,22 +212,33 @@ def main() -> int:
             {
                 "policy_changed": policy_path.read_text(encoding="utf-8") == "20\n",
                 "declared_rule_planned": "declared_report" in declared_plan.stdout,
-                "declared_output_still_records_prior_value": report_threshold(
-                    declared_report
-                )
+                "declared_output_still_records_prior_value": declared_threshold_before_rebuild
                 == "10",
             },
             {
                 "policy_value": "20",
-                "stored_report_value": report_threshold(declared_report),
+                "stored_report_value": declared_threshold_before_rebuild,
+            },
+        ),
+        finding(
+            "DECLARED_POLICY_CHANGE_REBUILDS_CURRENT_VALUE",
+            "ACCEPT",
+            {
+                "declared_rebuild_succeeded": declared_rebuild.returncode == 0,
+                "declared_output_records_current_value": declared_threshold_after_rebuild == "20",
+                "hidden_output_remains_prior_value": report_threshold(hidden_report) == "10",
+            },
+            {
+                "policy_value": "20",
+                "declared_report_value": declared_threshold_after_rebuild,
+                "hidden_report_value": report_threshold(hidden_report),
             },
         ),
         finding(
             "HIDDEN_POLICY_CHANGE_MISSES_RERUN",
             "REJECT",
             {
-                "hidden_dry_run_has_no_jobs": "Nothing to be done"
-                in hidden_plan.stdout,
+                "hidden_dry_run_has_no_jobs": "Nothing to be done" in hidden_plan.stdout,
                 "hidden_rule_not_planned": "hidden_report" not in hidden_plan.stdout,
                 "hidden_output_is_stale": report_threshold(hidden_report) == "10",
                 "policy_and_output_disagree": report_threshold(hidden_report) != "20",
@@ -265,8 +276,7 @@ def main() -> int:
             "ACCEPT",
             {
                 "writer_succeeded": atomic_success.returncode == 0,
-                "final_is_complete": atomic_final.read_text(encoding="utf-8")
-                == "complete\n",
+                "final_is_complete": atomic_final.read_text(encoding="utf-8") == "complete\n",
                 "scratch_was_promoted": not atomic_temp.exists(),
             },
             {"final_contents": atomic_final.read_text(encoding="utf-8").strip()},
