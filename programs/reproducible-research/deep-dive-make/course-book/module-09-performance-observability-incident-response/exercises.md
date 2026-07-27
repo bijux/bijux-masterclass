@@ -1,294 +1,388 @@
 # Exercises
 
-Use these after reading the five core lessons and the worked example. The goal is not to
-produce more diagnostics for their own sake. The goal is to make your measurement,
-observability, and incident-response reasoning visible.
+These ten exercises form one incident-response lab. Use the course capstone so the
+commands, failure specimens, and proof surfaces are available to a learner working alone.
+If you substitute another repository, map every named capstone target to an equivalent
+public contract before starting.
 
-## How to work through this set
+The lab does not ask you to make the capstone faster. It asks you to determine what the
+evidence justifies, reject unsafe shortcuts, and leave a packet another maintainer can
+review.
 
-Treat the ten exercises as one full lab day on operational investigation.
+## Lab boundary
 
-Before each answer:
+Run from the repository root. These instructions use `gmake` for GNU Make 4.3+ on macOS.
+On Linux, use `make` only after confirming the required version.
 
-1. rewrite the complaint as a measurable claim
-2. decide which layer you are investigating first
-3. keep the smallest evidence packet that would let another maintainer reuse your work
+```sh
+CAPSTONE=programs/reproducible-research/deep-dive-make/capstone
+PACKET=artifacts/module09-lab
+mkdir -p "$PACKET"
+```
 
-If you skip the measurement question, "slow," "flaky," and "noisy" stay vague and every
-response becomes guesswork.
-
-Do the exercises in order. The day is one progression:
-
-- Exercises 1-3 split symptoms into layers, create bounded observability, and define
-  triage ladders
-- Exercises 4-6 build truthful optimization habits and repeatable baselines
-- Exercises 7-9 explain rebuilds, parse-time shell cost, and useful parallelism with
-  measured context
-- Exercise 10 preserves a complete incident record another maintainer could actually reuse
-
-Every timing answer must retain the semantic guardrail:
-
-| Baseline command and samples | Proposed change | After samples | Convergence check | Artifact-equivalence check |
-| --- | --- | --- | --- | --- |
-
-If the last two columns are absent, you have measured speed but not a safe optimization.
-
-Keep one incident packet as you go. By the end of the day it should contain:
-
-- one complaint rewritten as a measurable claim
-- one bounded observability route
-- one triage ladder
-- one truth-preserving optimization or justified rejection
-- one repeated timing baseline
-- one compact evidence directory and runbook entry
-
-If those six artifacts are missing, you are probably collecting commands rather than
-learning how to respond to build incidents professionally.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
+Your packet should end with:
 
 ```text
-module09-lab/
-├── Makefile
-├── build/
-├── logs/
-├── reports/
-├── notes/
-└── artifacts/
+artifacts/module09-lab/
+├── incident.md
+├── context/
+├── measurements/
+├── observability/
+├── parallel-incident/
+├── tuning-decision.md
+├── verification.md
+├── runbook.md
+└── handoff.md
 ```
 
-Keep one investigation table while you work:
+Do not use generated evidence from another learner. The point is to preserve and explain
+your own run.
 
-| Symptom | Layer under test | First probe | Evidence captured | Next decision |
-| --- | --- | --- | --- | --- |
+## Evidence rules for the whole lab
 
-Also keep one response table:
+Apply these rules to every exercise:
 
-| Proposed change | Cost reduced | Truth preserved by | How verified |
-| --- | --- | --- | --- |
+1. record the exact command before interpreting its output
+2. distinguish observed fact, inference, and decision
+3. keep all timing samples, not only the fastest
+4. do not clean an incident state unless the question explicitly requires clean state
+5. state what each evidence surface cannot prove
+6. do not call serial mode a repair for a parallel-only defect
+7. keep credentials and other sensitive environment values out of submissions
 
-That second table matters because Module 09 is not about tuning for its own sake. It is
-about proving that tuning did not damage graph truth.
+Use this notation in your notes:
 
-```mermaid
-flowchart LR
-  claim["rewrite the complaint as a claim"]
-  layer["pick the first layer to test"]
-  measure["collect bounded evidence"]
-  classify["classify the source of cost or flake"]
-  respond["choose the smallest truthful response"]
-  record["leave a reusable incident packet"]
-
-  claim --> layer --> measure --> classify --> respond --> record
+```text
+Observed:
+Inferred:
+Still unknown:
+Decision:
 ```
 
-Use that route on purpose. It keeps the day centered on operational truth instead of on
-random command accumulation.
+That structure makes unsupported jumps visible.
 
-## Exercise 1: Split one "slow build" complaint into layers
+## Exercise 1: Open the incident without accepting its diagnosis
 
-Take one build route and describe how you would tell whether the cost is mainly parse-time,
-recipe-time, or evidence-surface overhead.
+Use this report:
 
-What to hand in:
+> The capstone is slow and noisy. Parallel Make may be the cause. Remove some diagnostics
+> and force serial execution.
 
-- the commands you would run
-- the three measurements or observations you would compare
-- one sentence explaining how different results would change the diagnosis
-- one sentence explaining why "felt slow" is not operational evidence
+Create `incident.md`. Rewrite the report into separate measurable claims for:
 
-Study note:
-The point is not to collect every timing number possible. The point is to identify which
-layer deserves attention first.
+- clean-build cost
+- no-op cost
+- dry-run cost
+- trace usability
+- parallel correctness
 
-## Exercise 2: Add one bounded observability surface
+For each claim, name:
 
-Your repository has many ad hoc debug prints inside recipes, but no named diagnostic
-route.
-
-Design one observability surface that would help incidents without mutating semantic
-outputs.
+- the requested target and build state
+- the expected behavior and its source
+- the first evidence surface
+- one shortcut that must not be taken before evidence is preserved
 
 What to hand in:
 
-- the question the surface should answer
-- the target name or command route you would add
-- one current debug habit that should be removed instead
-- one sentence explaining why this surface is bounded enough to keep
+- `incident.md`
+- one paragraph explaining why the proposed diagnosis and remedies are premature
+- one risk that would require immediate containment rather than ordinary measurement
 
-Study note:
-Observability becomes technical debt when it is scattered, noisy, and semantically
-entangled with normal build outputs.
+Checkpoint:
+Your incident statement must make it possible for two learners to run comparable routes.
 
-## Exercise 3: Write a triage ladder for one flaky symptom
+## Exercise 2: Capture a reproducibility context
 
-Choose one flaky symptom such as:
+Populate `context/` with:
 
-- "rebuild happens for no obvious reason"
-- "`-j` occasionally fails"
-- "CI and local behave differently"
+- repository revision
+- worktree status
+- GNU Make version
+- compiler and Python versions used by the capstone
+- relevant target help
+- job count chosen for pressure runs
 
-Write the first five steps of the evidence ladder you would follow.
-
-What to hand in:
-
-- the measurable symptom
-- the ordered triage steps
-- one sentence explaining why editing the Makefile should not be the first move
-- one sentence explaining how the ladder narrows scope instead of widening it
-
-Study note:
-The right ladder moves from smallest-disruption evidence to heavier inspection only when
-the earlier step leaves real uncertainty.
-
-## Exercise 4: Propose one truth-preserving optimization
-
-You identify repeated parse-time shell work as a likely cost. Explain one optimization
-that reduces that waste without hiding real inputs or dropping rebuilds.
+Use `gmake -C "$CAPSTONE" portability-audit` where it provides governed evidence. Review
+any environment output before retaining or sharing it.
 
 What to hand in:
 
-- the expensive habit
-- the truthful replacement boundary
-- one command you would use afterward to prove the build is still honest
-- one sentence explaining what shortcut you rejected and why
+- the context files
+- a table separating repository-controlled conditions from machine-controlled conditions
+- one condition you could not control and how it limits the claim
 
-Study note:
-This module does not treat every speedup as a win. If the speedup hides input changes or
-turns evidence stale, it is the wrong optimization.
+Checkpoint:
+Another learner should know whether your result can reasonably be compared with theirs.
 
-## Exercise 5: Write a small operational runbook entry
+## Exercise 3: Establish controlled cost baselines
 
-Take one build route and write a short runbook entry another engineer could use under
-pressure.
+Collect five samples for each route:
 
-What to hand in:
+1. clean `gmake -j4 all`
+2. confirmed no-op `gmake all`
+3. converged dry-run `gmake -n all`
 
-- one convergence or sanity check
-- one serial/parallel comparison or resolved-state inspection
-- one escalation trigger
-- one thing the responder should avoid doing too early
-
-Study note:
-Good runbooks reduce panic by making the first few safe steps obvious.
-
-## Midday self-check
-
-Before you move into repeated baselines, rebuild diagnosis, and parallel measurements,
-make sure your packet can already answer these questions cleanly:
-
-- which layer you would test first for one chosen complaint
-- which observability surface is worth keeping and which ad hoc print should disappear
-- which shortcut would make a speedup look good while damaging truth
-- which first responder mistake your runbook explicitly prevents
-
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Build a repeatable timing baseline
-
-Measure dry-run, clean-build, and no-op-build cost at least three times each. Keep target,
-parallelism, environment, and machine conditions recorded.
+Save the exact command, every sample, median, minimum, and maximum under `measurements/`.
+Before no-op timing, prove `gmake -q all` succeeds. Keep clean and no-op results in separate
+tables.
 
 What to hand in:
 
-- the exact commands and conditions
-- all measurements plus a representative value
-- one source of noise and how you limited it
-- one sentence explaining why a single fastest run is weak evidence
+- raw timing files
+- a summary table with state and parallelism
+- one leading and one competing explanation for the observed differences
+- one sentence stating whether a performance regression was proven
 
-Study note:
-This is where you learn to write numbers another maintainer can actually reuse instead of
-numbers that only made sense in one unrecorded shell session.
+Checkpoint:
+Without a controlled historical baseline, the correct conclusion is usually "current
+baseline established," not "regression confirmed."
 
-## Exercise 7: Explain an unexpected rebuild
+## Exercise 4: Choose observability by question
 
-Choose a target that rebuilds when you expect a no-op. Use trace output and timestamps to
-identify the prerequisite edge that caused the decision.
+Run and retain:
 
-What to hand in:
+```sh
+gmake -C "$CAPSTONE" trace-count
+gmake -C "$CAPSTONE" --trace -n all
+gmake -C "$CAPSTONE" -np all
+```
 
-- the target and expected behavior
-- the smallest useful trace excerpt
-- prerequisite timestamps or content evidence
-- the graph repair, or an explanation that the rebuild is correct
+Do not submit the entire database dump as your explanation. Extract one rule or variable
+that answers a question you state first.
 
-Study note:
-A correct rebuild is a successful diagnosis. Module 09 is about understanding behavior,
-not assuming every surprise is a defect.
+Evaluate the trace on:
 
-## Exercise 8: Audit parse-time shell work
-
-Find every `$(shell ...)` in a Make build. Measure dry-run cost, classify each shell call,
-and replace one avoidable call without caching away real discovery.
-
-What to hand in:
-
-- the search result and baseline
-- the selected shell call and its semantic purpose
-- the replacement
-- post-change timing, discovery, and convergence evidence
-
-Study note:
-The hard part here is not deleting shell calls. The hard part is keeping the discovery and
-graph semantics truthful after you reduce them.
-
-## Exercise 9: Measure useful parallelism
-
-Compare `-j1`, `-j2`, and a higher job count for one clean route. Inspect the graph before
-interpreting the timings.
+- searchability
+- target and rule attribution
+- causal usefulness
+- semantic side effects
 
 What to hand in:
 
-- repeated measurements
-- the independent work visible in the graph
-- the job count after which speedup becomes small or negative
-- one reason the result must not be generalized to every machine
+- one question answered by trace
+- one different question answered by focused database inspection
+- the smallest excerpts that support both answers
+- one conclusion neither surface can establish alone
+- a keep, narrow, or retire decision for `trace-count`
 
-Study note:
-Parallel speedup is a graph fact plus a machine fact. Either one alone gives an incomplete
-story.
+Checkpoint:
+The exercise is incomplete if your only observability judgment is a line count.
 
-## Exercise 10: Respond to a complete build incident
+## Exercise 5: Generate and preserve a parallel incident
 
-Investigate a slow, noisy, flaky, or unexpectedly rebuilding route without cleaning or
-editing first. Preserve commands, environment, timing, trace, resolved state, and the
-final classification.
+Create a capstone incident bundle:
+
+```sh
+gmake -C "$CAPSTONE" incident-audit \
+  REPRO_CASE=repro/shared-log-interleaving.mk
+```
+
+Copy or reference the generated bundle from `parallel-incident/` and read:
+
+1. the recorded command
+2. executed output
+3. exit status
+4. copied repro Makefile
+5. incident review guide
 
 What to hand in:
 
-- the incident statement and reproduction route
-- a compact evidence directory
-- the diagnosis and smallest truth-preserving repair
-- before-and-after verification
-- a runbook entry for the next responder
+- the observed command and exit status
+- the two targets and the path they both mutate
+- one sentence explaining why exit status `0` does not prove graph truth
+- one piece of evidence to preserve before any rerun or cleanup
 
-Study note:
-The goal is not to create an enormous postmortem. The goal is to leave behind the
-smallest packet that makes the next response calmer and faster.
+Checkpoint:
+You must describe the incident from the executed bundle before reading the repair guidance.
+
+## Exercise 6: Classify ownership and reject false repairs
+
+Build a competing-explanations table for the shared-log incident:
+
+| Explanation | Evidence expected if true | Evidence that weakens it |
+| --- | --- | --- |
+| missing ownership or publication model | | |
+| parallel scheduler defect | | |
+| external filesystem failure | | |
+
+Then classify the boundary and evaluate these proposals:
+
+- force `-j1`
+- add more `echo` lines
+- declare one target that owns the shared file
+- give each worker a private output and merge them through one target
+
+What to hand in:
+
+- the completed explanation table
+- the boundary owner
+- mitigation, repair, and rejected-action labels for the proposals
+- one graph sketch of the preferred repair direction
+- the proof required before closing the incident
+
+Checkpoint:
+The preferred repair must make output ownership visible in the graph.
+
+## Mid-lab review
+
+Stop before tuning. Your packet should now answer:
+
+- which cost claims have actually been established
+- which trace or database evidence changed a decision
+- why the controlled incident is a graph/publication defect
+- why serial execution is at most temporary mitigation
+
+If any answer relies on "Make is slow" or "parallelism is unreliable," return to the
+evidence.
+
+## Exercise 7: Write a falsifiable tuning proposal
+
+Choose one real cost candidate from the capstone or explicitly reject tuning because the
+measurements do not justify it.
+
+If you propose a change, create `tuning-decision.md` with:
+
+- measured cost and localized boundary
+- critical-path relevance
+- proposed change
+- truth invariant most at risk
+- controlled before-and-after comparison
+- requested-work test
+- convergence test
+- artifact comparison
+- serial/parallel pressure test
+- rejection condition
+
+If no change is justified, write the evidence threshold that would cause you to reopen the
+decision.
+
+What to hand in:
+
+- the complete experiment contract or justified rejection
+- one unsafe optimization you rejected
+- one sentence explaining what new freshness contract a cache would introduce
+
+Checkpoint:
+"Expected to be faster" is not a measured cost, and "tests pass" is not a complete semantic
+proof.
+
+## Exercise 8: Audit the capstone proof route
+
+Run:
+
+```sh
+gmake -C "$CAPSTONE" selftest-report
+```
+
+Inspect the generated selftest bundle. Map its files to these claims:
+
+- build convergence
+- serial/parallel artifact equivalence
+- hidden-input detection
+- runtime and guardrail settings
+
+Write `verification.md` explaining which proof dimension each file covers and which
+performance claim the bundle does not cover.
+
+What to hand in:
+
+- a claim-to-file table
+- the serial/parallel comparison result
+- the convergence result
+- one limitation of the selftest as performance evidence
+- one additional proof your tuning proposal would require
+
+Checkpoint:
+The selftest proves build invariants. It does not prove a speedup.
+
+## Exercise 9: Write an executable runbook
+
+Create `runbook.md` for:
+
+> a public build route differs or fails only under parallel execution
+
+Include:
+
+- entry and non-entry conditions
+- trusted outputs at risk
+- first preservation and containment actions
+- two evidence branches with different next actions
+- a serial route labeled correctly as mitigation if used
+- recovery and convergence checks
+- escalation triggers and owner
+- closure criteria
+- the date or event that should trigger the next runbook exercise
+
+Every command must have an expected observation and a branch.
+
+What to hand in:
+
+- the runbook
+- one command you deliberately excluded because it mutates state too early
+- one peer-review question that tests whether the runbook needs private context
+
+Checkpoint:
+A learner unfamiliar with the capstone should know when to stop, escalate, and close.
+
+## Exercise 10: Hand off the incident
+
+Write `handoff.md` as if the investigation is moving to the build owner.
+
+Include:
+
+- symptom and impact
+- state and context preserved
+- measurements collected
+- explanations strengthened and weakened
+- current boundary classification
+- active containment or mitigation
+- tuning decision
+- verification completed
+- one exact unresolved question for the next owner
+- packet reading order
+
+Then audit the complete packet for:
+
+- commands without results
+- results without interpretation
+- decisions without competing explanations
+- timing claims without build state
+- raw environment values that should not be shared
+- temporary mitigation presented as repair
+
+What to hand in:
+
+- `handoff.md`
+- the final packet tree
+- a short removal or redaction list
+- one paragraph explaining how the packet would shorten the next response
+
+Checkpoint:
+The next owner should not need a meeting to understand what has been observed, decided,
+and left unresolved.
 
 ## Before you read the answers
 
-Do not open `exercise-answers.md` until you can already point to:
+Do not open `exercise-answers.md` until your packet contains:
 
-- one symptom rewritten as a measurable claim
-- one baseline with repeated samples
-- one incident you investigated without editing first
-- one optimization you rejected because it would have hidden truth
-- one evidence packet another maintainer could reuse
+- one controlled baseline rather than one timing
+- one observability conclusion based on usability as well as volume
+- one executed incident classification
+- one rejected false repair
+- one experiment contract or justified no-change decision
+- one claim-to-proof map
+- one branched runbook
+- one bounded handoff question
 
-If you do not yet have those five things, the answer page will sound stronger than it can
-teach.
+## Mastery standard
 
-## Mastery standard for this exercise set
+A strong submission does not necessarily change code. It shows disciplined operational
+judgment:
 
-Across all ten answers, the module wants the same habits:
-
-- you name the cost or incident boundary being tested
-- you choose evidence before choosing edits
-- you explain the response in terms of measurement, observability quality, or
-  truth-preserving tuning
-
-If an answer says only "the build should be easier to debug," keep going.
+- state is preserved before mutation
+- claims are narrower than complaints
+- evidence is chosen to distinguish explanations
+- performance and correctness remain separate proof obligations
+- mitigations are not renamed as repairs
+- another maintainer can reuse the packet without private context
