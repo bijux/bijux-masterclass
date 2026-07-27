@@ -39,6 +39,11 @@ The remaining question is the important one:
 
 when is this still a descriptor system, and when has it become framework architecture?
 
+This page matters because Module 08 stops being about "can descriptors do this?" and
+becomes about "should descriptors own this at all?" A learner studying alone needs a
+decision ladder for choosing the smallest honest owner and for rejecting both weaker
+shortcuts and overpowered architecture when they are not justified.
+
 ## The sentence to keep
 
 Descriptor systems stay honest when they still own one attribute contract at a time; once
@@ -46,6 +51,10 @@ they start coordinating identity, transactions, query planning, object graphs, o
 lifecycle behavior, the design has crossed into framework architecture.
 
 That is the boundary the module keeps visible.
+
+Keep one more sentence beside it:
+
+> the right question is not whether a descriptor can hide the mechanism, but whether the mechanism still belongs to one attribute contract.
 
 ## Why this boundary matters
 
@@ -66,6 +75,16 @@ But that surface can hide a lot:
 If those concerns pile up without a broader design boundary, the descriptor starts looking
 more powerful than it really is.
 
+Use this decision table before trusting a field-shaped design:
+
+| Pressure | Smallest honest owner to test first | Stronger owner to escalate to when needed |
+| --- | --- | --- |
+| normalize or validate one attribute | one descriptor | no stronger owner unless multiple fields must coordinate |
+| cache one derived attribute | one descriptor with explicit invalidation | service or model infrastructure if coherence widens |
+| read one value from backend storage | backend-backed descriptor | repository, session, or model infrastructure if lifecycle widens |
+| coordinate identity or transactions | not a descriptor | explicit service, session, or framework layer |
+| generate class-wide model behavior | not a single field | class-level or metaclass orchestration |
+
 ## The framework pressure ladder
 
 A useful review ladder for this module is:
@@ -80,6 +99,18 @@ single field descriptor
 
 This is not a “more advanced is better” ladder. It is a blast-radius ladder.
 
+## Evidence route for boundary reviews
+
+Use this route whenever a design feels clever enough to hide ownership:
+
+| Evidence step | What it proves |
+| --- | --- |
+| state the contract in one sentence | tells you whether the design still sounds like one attribute |
+| list all moving parts touched by one read or write | tells you whether the blast radius already exceeds a field |
+| name the smallest honest owner | tells you whether a descriptor still fits |
+| name one refused lower-power owner | tells you what would be too weak to carry the contract |
+| name one refused stronger owner | tells you whether wider architecture would currently be overkill |
+
 ## What still belongs to one attribute
 
 Strong descriptor cases in this module still sound like:
@@ -90,6 +121,12 @@ Strong descriptor cases in this module still sound like:
 - attach one validator layer around one inner field
 
 Those are all still field-level ownership stories.
+
+Strong answers here sound precise:
+
+- this one field normalizes and stores one value
+- this one field caches one derivation and names its invalidation owner
+- this one field maps one backend slot without claiming transactions or identity
 
 ## What starts to exceed one attribute
 
@@ -103,6 +140,16 @@ The design is moving beyond one descriptor when it needs:
 
 At that point, the descriptor is no longer the whole story. It is one component inside a
 larger framework.
+
+Use this escalation table when the boundary feels ambiguous:
+
+| Responsibility | Why one field is too small | Better owner |
+| --- | --- | --- |
+| identity map | many records must share one lifecycle view | session or model infrastructure |
+| transaction coordination | multiple writes must succeed or fail together | unit-of-work or persistence service |
+| relationship loading policy across collections | many records and access paths must coordinate | repository or ORM-like model layer |
+| schema evolution | version drift exceeds one attribute contract | migration and storage architecture |
+| lifecycle-wide hooks | behavior spans class, record, and persistence phases | framework or class-creation owner |
 
 ## Why hidden architecture is risky
 
@@ -118,6 +165,17 @@ That can make code look elegant while making it harder to answer basic questions
 
 If the answer is “the field sort of handles it,” the design boundary is already blurry.
 
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "the descriptor handles persistence" | "the descriptor participates in one field-shaped persistence path" |
+| "the field keeps records synchronized" | "cross-record synchronization needs a wider owner" |
+| "the model layer is just smart descriptors" | "descriptors may be one layer inside a wider model architecture" |
+| "we do not need services because the field already knows enough" | "services become necessary when coordination exceeds one attribute" |
+
 ## Descriptors versus explicit services
 
 A strong rule of thumb is:
@@ -130,6 +188,9 @@ overall system to grow.
 
 This is why real frameworks do not stop at descriptors. They build surrounding
 architecture.
+
+That surrounding architecture is not a failure of descriptors. It is the consequence of
+honest blast-radius control.
 
 ## Descriptors versus metaclasses
 
@@ -149,6 +210,18 @@ That is the bridge into Module 09.
 Descriptors can participate in those systems, but they do not replace the need for
 class-level orchestration.
 
+## Failure modes for framework-boundary decisions
+
+These are the mistakes this page is trying to prevent:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| choosing descriptors because the syntax looks elegant | ownership becomes hidden behind pretty access | restate the contract and reselect the smallest honest owner |
+| keeping cross-record coordination in one field | blast radius exceeds field semantics | move coordination to explicit framework services |
+| escalating too early to broad architecture | the system becomes heavier than the contract requires | re-test whether one field or one service is enough |
+| failing to name rejected alternatives | review cannot see why one owner was chosen over another | record one refused weaker owner and one refused stronger owner |
+| treating metaprogramming power as a goal in itself | the lesson becomes mechanism-first instead of ownership-first | keep design choices anchored to reviewable responsibilities |
+
 ## What strong Module 08 design notes sound like
 
 Good review notes in this module usually sound like:
@@ -160,6 +233,10 @@ Good review notes in this module usually sound like:
 
 That tone is what keeps powerful descriptor systems from sounding magical.
 
+Add this sentence to your own review notes when needed:
+
+"the mechanism is interesting, but the owner choice is the real design decision."
+
 ## Review rules for framework boundaries
 
 When reviewing a framework-shaped descriptor design, keep these questions close:
@@ -169,6 +246,17 @@ When reviewing a framework-shaped descriptor design, keep these questions close:
 - is the descriptor hiding architecture that deserves an explicit owner?
 - is class-level orchestration starting to appear?
 - would explicit framework services make the system more honest than increasingly smart fields?
+- what weaker owner did you reject, and what stronger owner did you reject, before choosing this one?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- classify one design as field-level, coordinated field system, or broader framework architecture
+- name the smallest honest owner for one behavior
+- name one refused weaker owner and one refused stronger owner
+- explain why blast radius, not cleverness, controls the decision
+- say when class-level orchestration begins to matter
 
 ## What to practice from this page
 
