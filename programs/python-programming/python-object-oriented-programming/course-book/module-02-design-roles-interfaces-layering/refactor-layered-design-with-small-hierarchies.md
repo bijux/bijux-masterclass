@@ -17,135 +17,207 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  smell["spot mixed responsibility"] --> roles["name the real roles"]
+  roles --> shape["prefer composition and narrow hierarchy"]
+  shape --> layers["separate domain, application, and infrastructure"]
+  layers --> edge["move construction to the edge"]
+  edge --> review["review whether each boundary now teaches the truth"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This refactor matters because Module 02 can still remain theoretical after a learner
+finishes the lessons. They may know the words:
 
-## Why this refactor matters
+- entity
+- service
+- policy
+- composition root
+- protocol
+- layer
 
-This module has introduced several design tools:
+and still be unable to improve a messy design. This page exists to turn those ideas into
+one safe refactor route.
 
-- role ownership
-- composition
-- value objects and entities
-- semantic types
-- services
-- layers
-- careful use of interfaces
-- narrow justification for inheritance
-- composition-root thinking
+## The weak starting shape
 
-If those ideas stay separate in the learner's head, the module still feels like a pile of
-topics. This refactor page exists to show how they combine into one readable design
-direction.
+A weak Module 02 design often looks like this:
 
-## The starting problem
-
-A weak Module 02 design usually looks like this:
-
-- one large coordinator knows every detail
-- domain objects are either too weak or too overloaded
-- raw primitives leak everywhere
+- one broad coordinator knows too much
+- entities are either too thin or too overloaded
+- raw primitives leak through every boundary
 - infrastructure choices appear in inner code
 - abstractions exist, but nobody can explain why they are there
 
-The goal of the refactor is not maximum abstraction. The goal is a design where
-responsibility is visible and reviewable.
+This design may work on the happy path. It usually fails under review because a new
+maintainer cannot tell where the next behavior belongs.
 
-## The target shape
+## The stronger target shape
 
-The target shape for this module is simple:
+The target is not "more abstractions." The target is readable ownership:
 
 - domain objects own meaning and invariants
-- services coordinate outer work that does not belong on one entity
-- application flows sequence the use case
-- infrastructure adapts to outside systems
-- semantic types appear where raw primitives create confusion
-- inheritance, if present at all, stays small and justified
-- construction logic gathers at the edge
+- application services sequence use cases
+- infrastructure adapts to outer systems
+- semantic types reduce ambiguity where raw primitives blur meaning
+- inheritance stays small, justified, and optional
+- construction gathers at a visible composition edge
 
-This is not a pattern museum. It is a readable ownership map.
+The final question is simple:
 
-## A practical refactor order
+> Can another maintainer look at the new shape and predict where the next change belongs?
 
-When improving an existing design, use this order:
+## Use this refactor order
 
-1. clarify the domain nouns and their responsibilities
+Follow this order on purpose:
+
+1. identify the domain nouns and the decisions attached to them
 2. separate values from entities
-3. remove raw-primitive confusion where it blocks understanding
+3. replace raw-primitive confusion where it blocks understanding
 4. move orchestration out of overloaded entities
 5. separate application sequencing from infrastructure mechanics
-6. gather construction logic at the composition edge
+6. gather construction at the composition edge
 7. only then decide whether any interface or hierarchy is still justified
 
 This order matters because abstraction added too early usually hides the real mess
 instead of cleaning it.
 
-## How to judge whether the refactor helped
+## Step 1: name the roles before moving code
 
-Ask whether the new shape makes these questions easier:
+Start with a table.
 
-- where does this rule live?
+| Current object or module | What it is doing now | What role it should really play |
+| --- | --- | --- |
+| broad coordinator | sequencing, validation, I/O, and state mutation | probably several roles mixed together |
+| domain type | holding data plus orchestration plus formatting | meaning owner, not every other role |
+| utility module | policy and conversion logic with no owner | likely value, policy, adapter, or helper split |
+
+If you move code before naming the roles, the refactor becomes a file shuffle.
+
+## Step 2: separate values from entities
+
+This is usually the first clarity gain.
+
+Ask:
+
+- which objects compare by content?
+- which objects carry lifecycle or continuity?
+- which raw values deserve semantic type names?
+
+Good result:
+
+- entities become easier to read because they stop carrying primitive confusion
+- values become safer to pass around because their meaning is sharper
+
+## Step 3: move orchestration outward
+
+A common smell is an entity that:
+
+- decides domain rules
+- loads collaborators
+- calls infrastructure
+- logs or publishes side effects
+
+The refactor should split that pressure:
+
+- domain object keeps local meaning and invariants
+- application boundary sequences the use case
+- infrastructure adapter owns external translation
+
+This is often where a design first stops feeling like a disguised script.
+
+## Step 4: keep inheritance narrow and earned
+
+If inheritance still remains after the role split, it should answer one honest question:
+
+> Does this hierarchy express real specialization, or is it just sharing code under pressure?
+
+Good signs:
+
+- the call chain is understandable
+- the base contract is narrow
+- composition would be more awkward than illuminating
+
+Bad signs:
+
+- the hierarchy grew because a helper method already existed in a base class
+- subclasses depend on hidden sequencing
+- mixins are being used to avoid deciding a clearer owner
+
+## Step 5: redraw the layers
+
+Once roles are clearer, redraw the layers around ownership:
+
+| Layer | Should own | Must not own |
+| --- | --- | --- |
+| domain | meaning and invariants | transport, persistence mechanics, assembly |
+| application | use-case sequencing | raw infrastructure protocol details |
+| infrastructure | external systems and translation | domain truth |
+| composition root | object graph assembly | day-to-day business decisions |
+
+If a directory name claims a layer but the ownership table contradicts it, trust the
+ownership table.
+
+## Step 6: move construction to the edge
+
+Construction becomes a teaching surface in this refactor.
+
+Questions to ask:
+
+- where are collaborators assembled today?
+- which inner objects are constructing dependencies they should only receive?
+- what configuration should stay visible at the edge?
+
+The goal is one visible assembly boundary, not construction scattered across the model.
+
+## A worked refactor route
+
+Imagine a system with:
+
+- one `Processor` class loading config
+- validating requests
+- choosing strategies
+- calling a repository
+- logging failures
+- formatting output
+
+A safer Module 02 refactor route is:
+
+1. split semantic types out of raw config and request values
+2. identify the domain object or policy that really owns the rule decision
+3. move request sequencing into an application service
+4. move repository and logging details behind infrastructure adapters
+5. build the object graph in one composition root
+6. keep any remaining hierarchy tiny and justified
+
+The success signal is not "more files." It is "less confusion about who owns what."
+
+## How to review the result
+
+After refactoring, ask:
+
+- where does this rule live now?
 - who is allowed to change this state?
 - where does this dependency come from?
-- what can be swapped for testing?
-- what should stay stable if the outer adapter changes?
+- what can be swapped for testing or integration change?
+- what would break first if the outer adapter changed?
 
-If the refactor added indirection but did not improve those answers, it probably did not
-help enough.
+If those answers are still vague, the refactor is not finished.
 
-## What not to preserve
+## Capstone transfer
 
-Do not preserve weak structure merely because it already exists.
+Use the capstone as the immediate pressure test:
 
-Refactoring this module sometimes means:
+- where is the domain owner?
+- where is the application sequencing?
+- where do policy objects vary behavior without stealing authority?
+- where does runtime or persistence stop being allowed to redefine meaning?
 
-- removing unnecessary inheritance
-- collapsing fake service layers
-- renaming abstractions that only describe implementation history
-- moving construction code outward
-- merging or simplifying role boundaries that were split for no educational reason
-
-The lesson is not "respect existing files at all costs." The lesson is "respect clarity,
-teaching value, and durable ownership."
-
-## A refactor review checklist
-
-| Question | Better answer after refactor |
-| --- | --- |
-| can I tell domain code from application and infrastructure code? | yes |
-| do entities and services have distinct jobs? | yes |
-| are semantic types used where they reduce confusion? | yes |
-| is inheritance narrow and justified, not decorative? | yes |
-| does object construction have a clear edge? | yes |
-
-## Capstone connection
-
-This page is the bridge between the module and the capstone.
-
-Use it as a checklist when the capstone starts to sprawl:
-
-- identify blurred responsibilities
-- redraw the inner and outer boundaries
-- remove accidental construction logic from inner code
-- justify every abstraction by what it teaches or protects
-
-If a capstone design cannot survive this review, Module 02 was not absorbed deeply
-enough yet.
+This page should make the capstone easier to read, not just more abstract to talk about.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
 - describe the target Module 02 design shape in your own words
-- explain an order for refactoring a mixed design into clearer layers and roles
-- identify one capstone surface that still needs this refactor thinking
+- explain an order for refactoring a mixed design into clearer roles and layers
+- identify one capstone boundary that would become clearer if you applied this route
