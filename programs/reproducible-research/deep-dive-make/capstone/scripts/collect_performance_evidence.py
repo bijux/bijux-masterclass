@@ -32,6 +32,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--samples", type=int, default=5)
     parser.add_argument("--make", dest="make_command", required=True)
+    parser.add_argument("--workspace", type=Path)
     return parser.parse_args()
 
 
@@ -207,7 +208,11 @@ def main() -> int:
     if arguments.samples < 3:
         raise SystemExit("--samples must be at least 3")
 
-    capstone = Path(__file__).resolve().parents[1]
+    capstone = (
+        arguments.workspace.resolve()
+        if arguments.workspace
+        else Path(__file__).resolve().parents[1]
+    )
     policy = arguments.policy.resolve()
     output = arguments.output.resolve()
     logs_directory = output.parent / "logs"
