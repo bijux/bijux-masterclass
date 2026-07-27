@@ -46,6 +46,17 @@ surface tied together.
 - revisit earlier modules when a later topic feels arbitrary
 - use the capstone as a design proof, not only as an implementation example
 
+## Your side of the contract in plain terms
+
+This course works best when you agree to four habits:
+
+1. Name the current design question before reading.
+2. Keep one capstone surface open whenever the prose makes a concrete claim.
+3. Use proof routes to clarify a question, not to escape one.
+4. Go backward without pride when a later module depends on vocabulary you do not truly own yet.
+
+If you do those four things, the course can stay dense without becoming slippery.
+
 ## Reading modes
 
 Use one of these modes deliberately instead of blending them together:
@@ -71,6 +82,17 @@ Progress in this course is not "I have seen this pattern before." Progress is:
 - treating diagrams as decoration instead of decision maps
 - treating the capstone as a sample app instead of a design proof
 - reading advanced modules as isolated techniques without the earlier ownership model
+
+## What to do when you disagree with the material
+
+Disagreement is useful here, but only if it is precise. Do not stop at "I would design
+it differently." Instead:
+
+1. name the specific owner you would change
+2. name the neighboring owner you would shrink or expand
+3. name the first proof route that should reveal whether your alternative is better
+
+That keeps disagreement educational instead of impressionistic.
 
 ## How to recover when a module feels dense
 
@@ -103,3 +125,10 @@ If time is tight, do this instead of random skipping:
 3. Inspect one matching capstone file.
 4. Run one matching proof command.
 5. Write one sentence beginning with: `This object owns...`
+
+## Exit check
+
+Leave this guide only when you can say:
+
+> I am reading in `foundation` / `diagnosis` / `review` mode, my current question is `____`,
+> and the first capstone surface I need is `____`.
