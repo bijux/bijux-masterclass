@@ -1,6 +1,5 @@
 # Input Hardening and Secure Defaults
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,48 +24,85 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Make boundary objects and APIs reject dangerous or ambiguous input by default instead of
-assuming every caller is well behaved.
+Permissive boundaries make systems harder to reason about and easier to misuse.
 
-## 1. Boundaries Need a Defensive Posture
+Weak inputs create pressure such as:
 
-Input hardening includes:
+- ambiguous modes
+- oversized payloads
+- partial unsupported combinations
+- late failures after side effects already began
 
-- strict schema validation
-- bounded sizes and counts
-- explicit enum or mode handling
-- refusal of unknown dangerous combinations
+Hardening matters because boundary ambiguity is both a correctness problem and a
+security problem.
 
-This protects both correctness and security.
+## Secure defaults reduce future damage
 
-## 2. Defaults Should Reduce Risk
+If a caller omits an option, the default behavior should normally favor:
 
-If an option can be omitted, the default should favor the safer behavior, not the most
-permissive one. Convenience defaults often become long-term liabilities.
+- narrower exposure
+- less privilege
+- clearer rejection
+- smaller blast radius
 
-## 3. Validate Before Work Starts
+Convenient permissive defaults often survive for years and become part of the public
+contract, which makes later hardening harder.
 
-Rejecting malformed or unsupported input early prevents partial side effects and makes
-failure easier to diagnose.
+## Validate before expensive or dangerous work begins
 
-## 4. Security and Domain Integrity Reinforce Each Other
+Boundary checks should usually happen before:
 
-Strong validation, semantic types, and explicit transitions reduce both accidental bugs
-and several classes of exploit-friendly ambiguity.
+- writes
+- network calls
+- plugin activation
+- expensive background work
 
-## Practical Guidelines
+Early rejection is easier to diagnose and less likely to leave partial state behind.
 
-- Harden boundary parsing with strict schemas and bounded input.
-- Choose defaults that reduce exposure and ambiguity.
-- Reject unsupported combinations before side effects begin.
-- Review validation rules for both domain correctness and security value.
+## Bounds are part of the contract
 
-## Exercises for Mastery
+Hardening is not only about field presence. It also includes:
 
-1. Identify one permissive default in your system and propose a safer alternative.
-2. Add one size, count, or mode bound to a boundary parser.
-3. Review one validation rule and explain its security benefit.
+- size limits
+- count limits
+- timeout ceilings
+- allowed mode combinations
+
+These boundaries make the operational envelope explicit instead of leaving it to chance.
+
+## Strong validation supports the object model
+
+Secure parsing and domain integrity often reinforce one another.
+
+Clear semantic types, strict enums, and explicit transitions reduce:
+
+- accidental invalid states
+- surprising coercions
+- exploit-friendly ambiguity
+
+This is why hardening belongs in an OOP course: it protects the same design boundaries
+the model depends on.
+
+## Capstone connection
+
+Use the capstone to ask:
+
+- which input surface is still too permissive by default?
+- where should invalid mode combinations be rejected before runtime work begins?
+- which size or count bound would make one external boundary safer and more predictable?
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain one way a permissive default can become long-term public debt
+- identify one capstone boundary that needs stricter limits or earlier rejection
+- explain why input hardening improves both security and domain integrity
