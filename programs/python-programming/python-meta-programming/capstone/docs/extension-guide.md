@@ -27,8 +27,18 @@ flowchart LR
 <!-- page-maps:end -->
 
 Use this guide when you want to extend the capstone without making the metaprogramming
-story clumsy. The rule is simple: use the lowest-power mechanism that keeps the runtime
-observable and the ownership boundary explicit.
+story clumsy. The rule is simple: choose the lowest-power mechanism that keeps the runtime
+observable, the ownership boundary explicit, and the proof route teachable.
+
+## The first extension question
+
+Ask this before you touch any file:
+
+> Is the new pressure really about one concrete plugin, one field contract, one wrapper
+> contract, one class-definition rule, or one public review surface?
+
+If you cannot answer that question yet, read [DESIGN_BOUNDARIES.md](design-boundaries.md)
+again before editing.
 
 ## Safe extension categories
 
@@ -38,12 +48,34 @@ observable and the ownership boundary explicit.
 - Change `framework.py` only when plugin registration, construction, or manifest export genuinely needs a new framework contract.
 - Change `cli.py` only when the public inspection or invocation surface needs a new stable command.
 
+## Lowest-power change table
+
+| If the change is about... | Start here | Do not jump to... |
+| --- | --- | --- |
+| one new delivery behavior | `plugins.py` | `framework.py` |
+| one new field constraint or coercion rule | `fields.py` | `actions.py` or `cli.py` |
+| one new action-history or wrapper concern | `actions.py` | `framework.py` |
+| generated constructor or registration policy | `framework.py` | plugin-specific patches across many adapters |
+| a new public review or invocation route | `cli.py` | private helper behavior hidden from the CLI |
+
 ## Unsafe extension patterns
 
 - editing the metaclass before proving a concrete plugin or plain helper is insufficient
 - making manifest generation execute plugin actions or instantiate plugins unnecessarily
 - hiding descriptor storage or action history behind framework-level side effects
 - adding a new CLI route without deciding what it proves that existing routes do not
+- moving plugin-specific behavior upward just because it appears twice before proving the shared rule
+
+## Questions that must be answered in the patch itself
+
+Every extension should answer:
+
+- why this file owns the change
+- why a lower-power hook was not enough
+- which proof keeps the new behavior visible instead of magical
+- which learner question becomes easier to answer after the change
+
+If the patch cannot answer those four questions, the change is probably landing in the wrong layer.
 
 ## Best proof route after a change
 
@@ -54,18 +86,28 @@ observable and the ownership boundary explicit.
 
 ## Review rule
 
-Every extension should answer:
+Do not judge an extension only by whether it passes tests. Also ask:
 
-- why this file owns the change
-- why a lower-power hook was not enough
-- which proof keeps the new behavior visible instead of magical
+- Did the public surface stay observable?
+- Did the concrete plugins remain concrete?
+- Did the patch make the next learner question easier or harder?
+- Did we strengthen the teaching path or hide more of it behind infrastructure?
 
 ## Shipped review scenarios
 
 | If the question is about... | Start with | Then |
 | --- | --- | --- |
-| what exists publicly before invocation | `make manifest`, `make registry`, `make plugin` | `ARCHITECTURE.md` and `PROOF_GUIDE.md` |
-| what generated call shapes look like | `make signatures` | `DESIGN_BOUNDARIES.md` and `tests/test_registry.py` |
-| what one concrete action does | `make demo` or `make trace` | `PACKAGE_GUIDE.md` and `tests/test_runtime.py` |
-| what can be reviewed later without rerunning commands | `make inspect`, `make tour`, or `make verify-report` | `PROOF_GUIDE.md` and `WALKTHROUGH_GUIDE.md` |
-| what the strongest local bar is | `make confirm` | `TEST_GUIDE.md` |
+| what exists publicly before invocation | `make manifest`, `make registry`, `make plugin` | [ARCHITECTURE.md](architecture.md) and [PROOF_GUIDE.md](proof-guide.md) |
+| what generated call shapes look like | `make signatures` | [DESIGN_BOUNDARIES.md](design-boundaries.md) and `tests/test_registry.py` |
+| what one concrete action does | `make demo` or `make trace` | [PACKAGE_GUIDE.md](package-guide.md) and `tests/test_runtime.py` |
+| what can be reviewed later without rerunning commands | `make inspect`, `make tour`, or `make verify-report` | [PROOF_GUIDE.md](proof-guide.md) and [WALKTHROUGH_GUIDE.md](walkthrough-guide.md) |
+| what the strongest local bar is | `make confirm` | [TEST_GUIDE.md](test-guide.md) |
+
+## Good stopping point
+
+Stop when you can justify:
+
+- why the change belongs in the file you chose
+- why a lower-power mechanism was insufficient
+- which proof route should defend the change first
+- what new learner confusion the change avoids
