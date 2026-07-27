@@ -1,5 +1,4 @@
-# Refactor 4: Introduce New Feature, Preserve Old Behaviour, Document Smell Fixes
-
+# Refactor a New Feature without Breaking Behavior
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Resources Failures Safe Evolution"]
-  page["Refactor 4: Introduce New Feature, Preserve Old Behaviour, Document Smell Fixes"]
+  page["Refactor a New Feature without Breaking Behavior"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,100 +24,152 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Goal
+## Why this lesson matters
 
-Capstone refactor: add a non-trivial feature to the monitoring system **without breaking** existing behavior or stored data.
+This is the page where Module 05 becomes practical.
 
-Example feature options:
-- a new rule kind (e.g., rate-of-change),
-- a new alert dimension (severity),
-- a new suppression policy (dedupe window),
-- or a new metric source.
+The course has already taught:
 
-The key constraints:
-- preserve compatibility (M05C49),
-- keep domain integrity (Modules 3–4),
-- keep resources and failures disciplined (Module 5).
+- ownership boundaries
+- cleanup discipline
+- failure contracts
+- retry safety
+- public versus internal surfaces
+- compatibility-aware evolution
 
-## Where This Fits
+The real test is whether you can now add something new without silently damaging what
+already works.
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+That is the standard self-learners need most. Real maintenance work is rarely "start
+fresh." It is usually "extend the system without betraying its existing promises."
 
-## 1. Choose the Feature and Name the Contracts
+## Start by naming the promise you must keep
 
-Before coding, write down:
+Before writing the new feature, list what must remain stable.
 
-- what public API must remain stable,
-- what serialized formats must remain readable,
-- what behaviors must not change (golden tests),
-- what new behavior is being added.
+That usually includes:
 
-This is your learning contract for the refactor.
+- public imports or entrypoints
+- existing domain behavior
+- stored data or configuration formats
+- operational guarantees such as cleanup and retry discipline
 
-## 2. Plan the Change as Thin Slices
+If you skip this step, the refactor becomes guesswork. You may improve one surface while
+breaking another because the preserved contract was never named.
 
-A safe plan:
+## Choose one feature and locate its real boundary
 
-1. Add new domain types/strategies *alongside* old behavior.
-2. Add tests for the new feature.
-3. Wire the feature behind a flag or a new strategy registration.
-4. Preserve old strategy behavior and tests.
-5. If data formats change, add schema version + migration (M05C49).
-6. Update public facade exports if needed (M05C46).
-7. Remove dead code only after tests prove equivalence for existing paths.
+A safe feature addition starts by asking:
 
-## 3. Concrete Deliverables (What Your PR Should Contain)
+- is this a new policy variation?
+- a new boundary field?
+- a new persistence concern?
+- a new outward behavior?
 
-Minimum deliverables:
+The answer tells you where the feature belongs.
 
-- **Domain**: new strategy/policy object (M04C37) + invariants.
-- **Application wiring**: register the new strategy (composition root).
-- **DTO updates**: boundary validation for new config fields (M03C26).
-- **Compatibility**: schema versioning/migration if storage changes (M05C49).
-- **Resources**: ensure any new adapters are context-managed (M05C41).
-- **Tests**:
-  - golden tests for old behavior,
-  - unit tests for new strategy,
-  - integration test for new feature path,
-  - migration tests if applicable.
+For example:
 
-## 4. Document the Smell Fixes
+- a new rule evaluation mode may belong in a strategy or policy object
+- a new config field may belong at the translation boundary first
+- a new output path may belong behind an adapter or publication boundary
 
-In your PR or module notes, explicitly state:
+This keeps the new feature from being bolted into the most convenient file.
 
-- smell(s) removed (M05C47),
-- refactor moves used,
-- and why the new design is safer.
+## Add capability before deleting old structure
 
-Example:
-- “Removed `if/elif` ladder by introducing `RuleStrategy`.”
-- “Eliminated `Optional activated_at` by typestate split.”
-- “Protected public imports with facade to enable safe refactors.”
+One reliable sequence is:
 
-## 5. Pedagogical Closure: What You Now Know
+1. identify the stable behavior that must remain
+2. add tests or proofs for that behavior
+3. introduce the new capability alongside the old path
+4. route new behavior through the right boundary
+5. remove old duplication only after the preserved behavior is still proven
 
-At this point, you can:
+This sequence matters because eager deletion often hides whether the feature addition was
+an extension or an accidental rewrite.
 
-- design objects with explicit identity/equality semantics (Module 1),
-- structure code with clean boundaries and ports/adapters (Module 2),
-- build domain models with invariants, typestate, and boundary validation (Module 3),
-- enforce cross-object invariants with aggregates and decouple with events/strategies (Module 4),
-- manage resources, failure semantics, retries, and evolution safely (Module 5).
+## Keep compatibility visible while you extend
 
-A course-book should end with capability, not just content. This is the capability.
+As you add the new feature, keep checking:
 
-## Practical Guidelines
+- does old input still load?
+- do existing imports still work?
+- does previous behavior still pass the same proof route?
+- did any internal refactor accidentally become a public break?
 
-- Write the compatibility contract first; then code.
-- Add new behavior without breaking old behavior: tests first, thin slices, delete later.
-- Use strategies for new variation points; keep orchestrators stable.
-- If persistence formats change, version and migrate with tests.
-- Close the loop: document smells fixed and the refactor moves used.
+The point is to evolve with awareness, not to hope the test suite happened to cover the
+right surface.
 
-## Exercises for Mastery
+## Use the module tools together
 
-1. Implement a new rule strategy (e.g., rate-of-change). Add unit tests and integrate it without modifying the evaluation loop.
-2. Add a new config field for the feature, validate it at the boundary, and translate into domain types.
-3. If you change persisted data, write a migration and tests, then prove old data still loads and behaves as before.
+This final page is not about one pattern. It is about combining the module's ideas:
+
+- resource owners still need deterministic cleanup
+- unit-of-work boundaries still decide what becomes authoritative
+- failures still need named recovery meaning
+- retries still need explicit safety
+- public modules still need surface discipline
+- compatibility contracts still need evidence
+
+If the new feature forces you to violate one of those to "just get it working," the
+structure is still too weak.
+
+## A practical change route
+
+Use this route when the system feels risky to change:
+
+1. state the old promise
+2. identify the new capability
+3. choose the correct boundary for the new behavior
+4. add proof for the preserved behavior
+5. extend through the boundary rather than bypassing it
+6. remove the obsolete path only after the old and new contracts are both clear
+
+That route is intentionally boring. Boring is good when compatibility pressure is real.
+
+## Common mistakes
+
+- starting with internal rearrangement before naming the behavior that must survive
+- stuffing a new feature into an old conditional ladder because it seemed faster
+- changing public surfaces while claiming the refactor was internal
+- weakening failure, cleanup, or retry discipline to make the feature fit
+- deleting old code before proving the replacement preserves the important promise
+
+These mistakes create exactly the kind of regressions this module is supposed to prevent.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is the preserved contract named before the refactor starts? | yes |
+| does the new feature enter through the right boundary? | yes |
+| are compatibility and operational guarantees still visible during the change? | yes |
+| is old structure removed only after preserved behavior is proven? | yes |
+
+## Capstone connection
+
+Use the capstone as the pressure test for this full module.
+
+Pick one plausible feature extension and walk it through these questions:
+
+- what old promise must remain true?
+- where does the new behavior belong?
+- which proof route demonstrates you preserved the old behavior?
+- what cleanup, failure, retry, or compatibility rule could this extension accidentally weaken?
+
+If you can answer those clearly, Module 05 has become actionable rather than decorative.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- describe a safe order for adding a feature under compatibility pressure
+- identify which Module 05 contracts must be protected during the change
+- point to one capstone feature extension and explain how you would add it without breaking old behavior
