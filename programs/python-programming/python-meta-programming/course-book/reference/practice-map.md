@@ -25,8 +25,17 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this page when you want to know what kind of local exercise and proof fits each
-module before you widen into the capstone.
+Use this page when you want to know what kind of exercise, proof loop, and capstone follow-up
+fits each module. The goal is to keep practice cumulative instead of random.
+
+## How to use this map
+
+- Start from the module you just finished.
+- Choose one primary practice surface.
+- Choose one proof loop.
+- Choose one capstone follow-up only after the module-level loop is clear.
+
+That order prevents the capstone from replacing the learning path too early.
 
 ## Module practice surfaces
 
@@ -48,3 +57,23 @@ module before you widen into the capstone.
 - observation loop: inspect shape first, then explain what changed, then decide whether transformation was necessary
 - escalation loop: name the lowest honest tool, the invariant it could not own, and the new risk introduced by a stronger one
 - governance loop: explain what a reviewer should still be able to understand one file at a time
+
+## If you are stuck
+
+| If you are stuck on... | Return to... | Before moving on, be able to... |
+| --- | --- | --- |
+| observation versus execution | Modules 01 and 02 | say what can be inspected without triggering behavior |
+| wrapper honesty | Modules 03 through 05 | name which callable facts survived the wrapper |
+| attribute ownership | Modules 06 through 08 | say why the rule belongs on attribute access |
+| class-creation escalation | Modules 06 and 09 | name the lower-power tool that almost worked |
+| runtime governance | Module 10 and the capstone | defend one mechanism choice with a proof route |
+
+## Good stopping point
+
+Stop when you can choose:
+
+- one module-level practice task
+- one proof loop
+- one capstone follow-up
+
+without defaulting to "just read more" or "just run the whole capstone."
