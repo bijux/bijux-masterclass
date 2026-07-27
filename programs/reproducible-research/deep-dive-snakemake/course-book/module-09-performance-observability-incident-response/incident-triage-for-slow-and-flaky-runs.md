@@ -1,228 +1,287 @@
 # Incident Triage for Slow and Flaky Runs
 
-An incident is the worst time to invent a process.
+Incident triage is the work of reducing uncertainty while protecting trusted
+outputs. It is not a race to make the first edit. A fast but poorly classified
+change can erase the evidence, widen the impact, or make a semantic failure look
+like a recovered run.
 
-This lesson gives you one on purpose.
+This lesson gives you a repeatable route for slow, flaky, and suspiciously cheap
+runs. You will practice on evidence the repository can regenerate.
 
-## How to use this page
+## Reproduce two incident shapes
 
-Use this page as a rehearsal guide before you need it under pressure.
+Build the performance diagnostics bundle:
 
-Work through it in this order:
+```bash
+gmake capstone-performance-diagnostics-audit
+```
 
-1. learn the incident ladder
-2. practice writing a precise symptom statement
-3. practice narrowing scope before touching logs
-4. practice ending with an incident class and next action
+The generated report contains two cases worth treating as incidents:
 
-If you only read incident material after a run has already gone bad, you will tend to
-skip straight to repository edits.
+- `validation-bypass`: output bytes match, runtime work falls, and required
+  validation disappears;
+- `repeated-scan`: output and validation match, but the program scans records
+  three times instead of once.
 
-## Start with planned work before runtime noise
+Neither case is a crash. Both require investigation. Production incidents
+include silent loss of guarantees and unexplained cost, not only red terminal
+output.
 
-When the workflow is slow, flaky, or unexpectedly noisy, the fastest honest response is a
-fixed ladder that narrows the question before anyone edits the repository.
+## Stabilize before diagnosing
 
-The key beginner lesson here is that most incidents look larger than they are. The moment
-you replace a vague complaint with a precise symptom and scope, the search space shrinks.
+First protect the evidence and limit damage.
 
-## The incident ladder
+| Immediate question | Safe action |
+| --- | --- |
+| Could untrusted output be published or consumed? | Stop promotion; preserve candidate output separately |
+| Is the failing run overwriting useful logs? | Stop automatic retries or redirect attempt-specific evidence |
+| Could rerunning destroy the original state? | Copy the run record into the repository artifact area |
+| Is shared infrastructure under pressure? | Reduce new submissions without changing workflow meaning |
+| Is this only a local training specimen? | Preserve generated evidence and work in an isolated copy |
+
+Containment is not diagnosis. Pausing publication does not prove that output is
+wrong. Stopping retries does not prove that retry policy caused the incident.
+Containment creates room to investigate without increasing the blast radius.
+
+## Write a verifiable symptom
+
+A useful symptom statement names:
+
+- affected target or artifact;
+- observed behavior;
+- comparison point;
+- operating context;
+- first timestamp or run identity.
+
+Weak:
+
+> The workflow is flaky and slow.
+
+Reviewable:
+
+> In the `repeated-scan` audit run, `results/normalized.tsv` matches the accepted
+> tuning, but `metrics.json` reports 18 record scans instead of 6. The local
+> Snakemake benchmark records the same rule boundary in both isolated runs.
+
+The second statement does not claim a cause. It creates facts that another
+reader can verify.
+
+## Establish severity from trust and impact
+
+Use severity to decide response speed and containment, not to dramatize the
+incident.
+
+| Severity | Trust or operational condition | Example response |
+| --- | --- | --- |
+| critical | wrong or unvalidated artifacts may already be consumed | stop publication, identify consumers, preserve evidence |
+| high | trusted production target cannot complete or cost is unbounded | stop repeated submissions, assign owner, begin focused triage |
+| moderate | degradation is bounded and outputs remain trustworthy | collect evidence, schedule repair, monitor |
+| low | local or training-only issue with no trusted output impact | reproduce and document without escalation |
+
+The validation bypass represents a high-trust concern even though it finishes
+quickly. The repeated scan may be moderate in the specimen but high at a scale
+where repeated reads overload shared storage.
+
+## Define scope before opening broad logs
+
+Answer:
+
+- Which targets, rules, samples, and output contracts are affected?
+- Which run or time window shows the symptom?
+- Which profile, executor, storage system, and software identity apply?
+- Does the symptom reproduce locally, remotely, or in both?
+- Are previously published artifacts implicated, or only candidates?
+
+Scope narrows the evidence route. One sample failing validation points toward
+input or tool behavior. Every target unexpectedly rebuilding points toward
+planning, configuration, or provenance. One operating context failing points
+toward policy, executor, or storage assumptions.
+
+## Keep competing hypotheses alive
+
+Do not let the first plausible explanation become the incident story. Write two
+or three hypotheses that predict different evidence.
+
+For an unexpectedly fast run:
+
+| Hypothesis | Predicted evidence | Discriminating check |
+| --- | --- | --- |
+| batching removed repeated setup | fewer setup cycles; validation and outputs unchanged | compare metrics and result hash |
+| validation was skipped | validation count falls; valid fixture output may still match | compare validation counter and config |
+| fewer records were processed | input or output count falls; artifact content changes | compare record counts and result |
+
+For a slow run:
+
+| Hypothesis | Predicted evidence | Discriminating check |
+| --- | --- | --- |
+| planning expanded | dry-run job or target count rises | compare plans before execution |
+| storage slowed | transfer or visibility timing rises; tool work stable | compare storage and tool surfaces |
+| repeated application work | scan or invocation counters rise | compare deterministic counters |
+| host contention | counters stay stable; repeated timings vary with context | run controlled repeated trials |
+
+Choose the next command because it separates hypotheses, not because it is a
+familiar command.
 
 ```mermaid
 flowchart TD
-  symptom["name the symptom"] --> scope["define the affected target set"]
-  scope --> dryrun["inspect dry-run and planned work"]
-  dryrun --> state["inspect summary and change cause"]
-  state --> local["open the narrowest matching logs and benchmarks"]
-  local --> boundary["decide: workflow semantics, operating context, storage, or tool behavior"]
-  boundary --> action["choose repair or escalation"]
+    Symptom[Verifiable symptom] --> Protect[Contain trust and preserve evidence]
+    Protect --> Scope[Define target, run, and context scope]
+    Scope --> Hypotheses[Write competing hypotheses]
+    Hypotheses --> Test[Choose one discriminating check]
+    Test --> Evidence{Does evidence separate them?}
+    Evidence -- No --> Narrow[Reduce scope or collect a narrower surface]
+    Narrow --> Test
+    Evidence -- Yes --> Classify[Classify cause and impact]
+    Classify --> Repair[Repair one owned boundary]
+    Repair --> Prove[Re-run acceptance and regression proof]
 ```
 
-Do not skip steps because the workflow "probably" has the same issue as last time.
+## Inspect planned work before runtime detail
 
-## Name the symptom precisely
-
-Bad incident opening:
-
-> The pipeline is broken.
-
-Good incident opening:
-
-> `summary.tsv` rebuilt for 40 samples even though only config changed, and the run took
-> 25 minutes longer than the previous CI run.
-
-That sentence gives you three anchors:
-
-- which surface changed
-- which scope changed
-- which comparison made the symptom visible
-
-Good incident work starts with language that another maintainer can verify.
-
-## Define the affected scope
-
-Before opening logs, answer:
-
-- which targets or samples are affected
-- whether this is one rule family or many
-- whether the issue appears locally, in CI, on the scheduler, or across contexts
-
-Wide-scoped incidents often turn out to be planning, config, or storage questions. Narrow
-ones often turn out to be rule-local tool or script questions.
-
-## Inspect planned work first
-
-Use dry-run before real execution when you can:
+When the workflow is available, start with:
 
 ```bash
-snakemake -n -p
+snakemake --dry-run --printshellcmds
 snakemake --summary
-snakemake --list-changes input code params
 ```
 
-Those commands answer three early questions:
+Use supported change-report commands when the question is why work became
+stale. Record the exact command because interfaces vary by Snakemake version.
 
-- what Snakemake thinks it needs to do
-- which outputs it considers current or stale
-- what class of change triggered reruns
+Planning evidence can rule out entire branches:
 
-This often resolves the incident before you touch runtime logs.
+- if expected jobs are absent, runtime logs cannot explain their absence;
+- if job count doubled, normal per-rule benchmarks do not make the run normal;
+- if the plan is unchanged, investigate execution and evidence surfaces next.
 
-## Read the narrowest matching evidence
+For the generated performance specimen, every configuration plans the same
+single rule and output paths. The differences happen inside the application
+boundary. That fact directs triage toward metrics, not scheduler tuning.
 
-Once scope is clear, inspect only the artifacts that match it:
+## Read the narrowest execution evidence
 
-- the log for the affected rule and sample
-- the benchmark for that rule family
-- the relevant provenance or profile evidence if the context differs
+Use:
 
-This is where many teams lose time. They open every log in the repository instead of the
-one log that matches the claim.
+- one matching rule log for failure text;
+- one matching benchmark for process observation;
+- application metrics for known work;
+- executor records for submission and queue behavior;
+- staging evidence for data movement and visibility;
+- provenance for run identity;
+- manifest or semantic comparison for trusted output.
 
-## Classify the incident
+Do not search all logs for a phrase and treat the first match as causation. Join
+the evidence to the affected rule job and execution.
 
-By this point, push the problem into one primary class:
+## Classify without collapsing boundaries
 
-| Incident class | What it usually means |
-| --- | --- |
-| workflow semantics | hidden dependencies, changed targets, widened discovery, wrong file contracts |
-| operating context | profile drift, queue behavior, staging assumptions, latency differences |
-| storage and visibility | files arrive late, land in the wrong place, or are inspected before promotion |
-| tool behavior | the script or external tool is slower, noisier, or failing deterministically |
+| Incident class | Ownership question | Typical repair owner |
+| --- | --- | --- |
+| workflow plan | Why did target or dependency meaning change? | workflow author |
+| execution policy | Why did scheduling, resources, or retries behave differently? | profile or platform owner |
+| storage | Why did movement, visibility, or promotion fail? | storage and workflow owners |
+| tool behavior | Why did one program consume, emit, or fail differently? | tool or rule owner |
+| evidence integrity | Why can the run no longer prove a required guarantee? | workflow and governance owners |
+| publish contract | Why could untrusted or changed artifacts cross the boundary? | publishing owner |
 
-The point is not perfect taxonomy. The point is to stop treating all failures as one blur.
+The validation bypass is primarily evidence-integrity drift. The repeated scan
+is tool behavior unless config or a wrapper introduced it. If repeated scans
+overload remote storage, storage becomes part of impact, not necessarily root
+cause.
 
-## One concrete triage scenario
+## Repair one boundary at a time
 
-Suppose CI suddenly takes 18 extra minutes and rebuilds summary outputs for every sample,
-but local rule benchmarks still look normal.
+A repair should name:
 
-A disciplined triage path is:
+- the hypothesis it addresses;
+- the source boundary it changes;
+- the evidence expected to move;
+- the evidence required to stay constant;
+- the rollback trigger.
 
-1. confirm the rebuild with `snakemake --summary`
-2. classify the trigger with `snakemake --list-changes input code params`
-3. inspect only the affected publish-oriented rule surfaces
-4. check provenance if context drift is still plausible
-5. write the incident class before changing any thread or retry setting
+For the repeated-scan case:
 
-That sequence keeps you from confusing a workflow-semantics issue with a runtime-tuning
-issue.
+> Change `scan_passes` from three to one. Expect `records_scanned` to fall from
+> 18 to 6 and deterministic cost from 22 to 14. Require six validation checks
+> and the same normalized result hash. Roll back if output or validation differs.
 
-## Decide repair versus escalation
+This is stronger than "reduce scans and rerun." It predicts both movement and
+invariants.
 
-Once the class is named, decide whether the next move is:
+## Prove recovery rather than observing success
 
-- a local repair
-- a workflow review
-- a profile or storage review
-- a publish-boundary review
-- a clean-room confirmation
+A green rerun is not enough. Recovery proof should include:
 
-Use the capstone route when you need stronger corroboration:
+1. the original symptom no longer reproduces;
+2. the required artifact and evidence contracts pass;
+3. the discriminating metric moves as predicted;
+4. nearby accepted behavior remains unchanged;
+5. adversarial or regression tests still detect the original failure shape.
 
-- `make -C capstone wf-dryrun`
-- `make -C capstone evidence-summary`
-- `make -C capstone tour`
-- `make -C capstone verify-report`
-- `make -C capstone profile-audit`
+The performance audit's accepted, rejected, and regression cases serve this
+purpose. The audit is stronger because the bad cases remain reproducible and
+must still be classified correctly.
 
-## Common incident shapes
+```mermaid
+flowchart LR
+    Repair[Candidate repair] --> Symptom[Original symptom absent]
+    Symptom --> Contract[Artifact contract preserved]
+    Contract --> Evidence[Required evidence preserved]
+    Evidence --> Metric[Predicted cost metric changed]
+    Metric --> Adversary[Bad specimens still rejected]
+    Adversary --> Recover[Declare recovery]
+```
 
-### Surprise reruns after a small edit
+## Know when to stop and escalate
 
-First suspects:
+Escalate when:
 
-- code or parameter drift
-- widened target lists
-- helper changes that altered discovery or publication
+- trusted artifacts may have reached consumers;
+- you cannot preserve the original evidence;
+- the suspected owner crosses workflow, executor, and storage boundaries;
+- retries or reruns could amplify cost or corruption;
+- credentials, security, privacy, or regulated data may be involved;
+- the incident exceeds the proof available locally.
 
-### Slow run with normal benchmark timings
+Do not keep experimenting on the production run to avoid escalation. State what
+is known, unknown, contained, and needed from the next owner.
 
-First suspects:
+## Use a concise incident record
 
-- too many short jobs
-- planner expansion
-- executor or storage overhead
+```text
+Symptom:
+First observed:
+Affected scope:
+Trust impact:
+Containment:
+Competing hypotheses:
+Evidence inspected:
+Current classification:
+Repair or escalation:
+Recovery proof:
+Remaining uncertainty:
+```
 
-### Flaky run that only appears in one context
+For the validation bypass:
 
-First suspects:
+> Symptom: the bypass produces the baseline result hash with zero validation
+> checks. Scope: the six-record local specimen and its result contract. Trust
+> impact: the output cannot support a validated-record claim. Containment: audit
+> classifies the case `REJECT`; it is not promoted. Hypotheses: chunking removed
+> setup versus validation was removed. Evidence: config, metrics, result hash,
+> benchmark. Classification: evidence-integrity drift. Repair: restore validation
+> while retaining chunk size three. Recovery proof: six checks, two setup
+> cycles, matching result, and passing adversarial self-test.
 
-- profile drift
-- filesystem latency
-- staging or scratch assumptions
+## Completion check
 
-### Clean local run but suspicious published output
+Before changing a workflow during an incident, you should be able to state:
 
-First suspects:
+- what has been contained;
+- which exact run and targets are affected;
+- which competing hypotheses remain;
+- which next check separates them;
+- what evidence must remain unchanged after repair;
+- what condition requires escalation.
 
-- publish-boundary drift
-- missing provenance or verification evidence
-- internal results being trusted as if they were public artifacts
-
-## The beginner mistake to catch early
-
-Beginners often treat the first suspicious clue as the whole diagnosis.
-
-For example, they see one noisy rule log and immediately assume tool behavior is the root
-cause. That is a weak move if dry-run, summary, or change classification already point
-somewhere else.
-
-The discipline this course expects is:
-
-1. describe the symptom
-2. describe the scope
-3. inspect planned work
-4. inspect narrow matching evidence
-5. only then decide the incident class
-
-## A simple incident note template
-
-Write notes in this order:
-
-1. symptom
-2. affected scope
-3. first confirming command
-4. evidence consulted
-5. current incident class
-6. next action
-
-Example:
-
-> Symptom: CI rebuilt the summary for all samples and took 18 minutes longer than the last
-> successful run. Scope: publish-oriented rules only. First confirming command:
-> `snakemake --list-changes input code params`. Evidence consulted: dry-run, summary,
-> `summarize` benchmark, `publish/v1/provenance.json`. Current class: workflow semantics
-> with possible config drift. Next action: review the config change and repeat dry-run
-> locally before touching thread or retry settings.
-
-## Keep this standard
-
-The first repository edit should happen only after the incident note names:
-
-- the symptom
-- the scope
-- the evidence used
-- the current incident class
-
-If those are missing, the workflow is being debugged by momentum instead of by evidence.
+If you cannot, preserve the evidence and narrow the question before editing.
