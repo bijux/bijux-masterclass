@@ -1,6 +1,5 @@
 # Aggregate Lifecycle and Failure Semantics
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,87 +24,110 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Define how aggregates behave under failure: conflicts, partial updates, and “what does it mean to be correct after an error?”
+Once an aggregate owns important invariants, failure handling becomes part of the design,
+not an afterthought.
 
-This core gives you a vocabulary for designing *atomic-looking* domain operations in a non-atomic language/runtime.
+You have to answer:
 
-## Where This Fits
+- what counts as a successful aggregate change?
+- what must remain atomic together?
+- what happens if later side work fails?
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+If those answers stay vague, the system will look correct only on happy paths.
 
-## 1. Domain Operations Should Be Atomic in Meaning
+## The core idea
 
-An operation like “retire a rule” should either:
-- succeed completely, or
-- fail without changing the aggregate.
+An aggregate change should leave the aggregate in one clear outcome:
 
-Even in Python (without transactions), you can design for atomic meaning by:
-- computing changes first,
-- then applying them in a small, non-failing block,
-- or using immutable replacements (common with frozen dataclasses).
+- accepted and internally consistent
+- or rejected without a half-applied invariant break
 
-## 2. Versioning and Optimistic Concurrency (Conceptual)
+That is the first failure boundary.
 
-If aggregates are persisted, two writers can race.
+After that boundary, further reactions may still fail, but they should not rewrite the
+meaning of whether the aggregate itself accepted the change.
 
-A common pattern:
-- aggregates have a `version` number,
-- repository save checks the expected version,
-- if mismatch, raise `ConcurrencyConflict`.
+## Why lifecycle matters here
 
-Even if you don’t implement it now, naming it helps you reason about correctness under concurrency.
+Aggregates often have their own lifecycle:
 
-## 3. Failure Taxonomy: Domain vs Infrastructure
+- created
+- active
+- retired
+- cancelled
 
-Classify failures:
+Failure handling must respect that lifecycle. Some failures mean "stay in the old state."
+Others mean "the aggregate state changed, but later notifications or projections still need
+repair."
 
-- **Domain failures**: invariant violation, not found, illegal transition.
-  - These should be deterministic and testable.
-- **Infrastructure failures**: I/O errors, timeouts, storage unavailable.
-  - These are environmental and must be handled at the application boundary.
+Those are different stories and should not be mixed together.
 
-Your domain objects should not swallow infrastructure failures; they should not depend on I/O.
+## Two kinds of failure you should separate
 
-## 4. Designing “No Partial Update” in Mutable Aggregates
+### Boundary failure
 
-If your aggregate is mutable, you can still avoid partial updates:
+The requested change cannot be accepted because it would violate the aggregate’s own
+rules.
 
-Pattern:
-1. Find the target objects and validate preconditions.
-2. Build the next-state objects.
-3. Apply mutations.
+Result:
 
-Example for retire:
-- locate active rule,
-- create `RetiredRule`,
-- remove active rule,
-- append retired rule,
-- update indexes.
+- reject the change
+- keep the aggregate in its prior valid state
 
-Ensure mutations in step 3 cannot raise (e.g., avoid code that can fail there).
+### After-effect failure
 
-## 5. Tests: Failures Must Leave State Unchanged
+The aggregate accepted the change, but later reactions fail.
 
-Write tests that prove failure does not partially mutate the aggregate:
+Result:
 
-- retiring a missing rule raises `RuleNotFound` and leaves collections unchanged.
-- adding a duplicate raises `DuplicateRuleId` and leaves collections unchanged.
+- the aggregate’s accepted state should stay meaningful
+- recovery, retries, or compensating actions move to later coordination layers
 
-These tests are “behavioral transactions” even without a database transaction.
+This separation is one of the main reasons Module 04 exists.
 
-## Practical Guidelines
+## Common mistakes
 
-- Treat domain operations as atomic in meaning: succeed completely or not at all.
-- Separate domain errors from infrastructure errors; handle infrastructure at the edge.
-- Consider aggregate versioning for persistence and concurrency; even if later, design for it now.
-- Write tests ensuring failed operations do not partially mutate aggregate state.
+- treating all failures as one undifferentiated error path
+- letting notification or projection failure roll back the meaning of a successful aggregate decision
+- updating aggregate members gradually without one clear success point
+- making callers guess whether the aggregate changed or not
 
-## Exercises for Mastery
+If the caller cannot tell whether the aggregate accepted the change, the failure semantics
+are too muddy.
 
-1. Add a `version` field to your aggregate and sketch an optimistic concurrency check in the repository.
-2. Write a test that proves `retire_rule` leaves state unchanged when it fails.
-3. Classify your existing exceptions into domain vs infrastructure. Refactor one misclassified case.
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| can you tell whether the aggregate accepted the change? | yes |
+| are invariant-breaking failures separated from later reaction failures? | yes |
+| does lifecycle meaning stay clear across failure paths? | yes |
+| is there one clear success boundary for the aggregate change? | yes |
+
+## Capstone connection
+
+In the capstone, use this lesson anywhere an aggregate change can trigger later work:
+
+- persistence follow-up
+- event publication
+- projection updates
+- notifications
+
+The capstone should clearly say whether the core aggregate decision succeeded even when
+some later step did not.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain the difference between an aggregate rejection and an after-effect failure
+- explain why the caller should know whether the aggregate changed
+- identify one capstone flow where failure semantics still need sharpening
