@@ -20,6 +20,18 @@ For each repair step:
 If you skip the artifact question, the example becomes a checkpoint demo instead of a
 lesson about reviewable workflow truth.
 
+## If you are learning this without the live class
+
+Use the example in four passes instead of trying to absorb everything at once:
+
+1. read only the weak draft and name what it hides
+2. stop after the declared candidate set repair and run `snakemake -n`
+3. add the checkpoint only after you can explain why static planning is no longer enough
+4. finish by checking whether the publish boundary preserves the discovered set
+
+If you cannot explain the workflow after pass 2, do not move to pass 3. The checkpoint
+is a later repair, not the foundation of the lesson.
+
 ## The one-day teaching goal
 
 By the end of this example, a learner should be able to rebuild a tiny dynamic workflow
@@ -52,6 +64,19 @@ Keep these four surfaces visible while you move through the example:
 - the eventual publish tree
 
 Those four views are enough to explain whether the design is honest.
+
+## The evidence packet you should build as you go
+
+By the end of the example, keep one small packet that contains:
+
+- the candidate source of truth such as `config/samples.tsv`
+- one dry-run capture showing the current target set
+- the accepted-sample registry written by the checkpoint
+- one note naming why the checkpoint is justified here
+- one publish tree snapshot showing which discovery artifacts cross the public boundary
+
+If one of those pieces is missing, the design may still run, but it is not yet a strong
+self-study answer.
 
 ## The scenario
 
@@ -93,6 +118,20 @@ This draft is small, but it already teaches four bad lessons:
 - the publish boundary has not been separated from internal execution state
 
 The code works only if you avoid asking serious questions.
+
+## What goes wrong when a learner trusts the weak draft
+
+Use this as a diagnostic card before you repair anything:
+
+| If you notice... | The weak draft is hiding... | Smallest proof command |
+| --- | --- | --- |
+| the job set changes after files are renamed or reordered | discovery is tied to ambient directory state instead of a declared contract | `snakemake -n` before and after the rename |
+| you cannot explain why one sample has output and another does not | there is no durable discovered-set artifact | `find results -maxdepth 2 -type f | sort` |
+| you are tempted to add more wildcard JSON outputs beside `results/{sample}.json` | the artifact family is too broad to grow safely | `snakemake --summary` |
+| a reviewer must rescan `data/raw/` to understand the run | the workflow never published its discovery decision | `tree publish` after a publish step exists |
+
+If you can match the symptom to the hidden defect, the repair usually becomes easier to
+defend.
 
 ## Prefer a declared candidate set
 
@@ -218,6 +257,19 @@ a domain validator and record rejection reasons as well as accepted samples.
 The important part is not the keyword `checkpoint`. The important part is that the
 discovered set is written once and reused.
 
+## The checkpoint audit before you celebrate
+
+Before you call the checkpoint version correct, inspect it against this audit:
+
+| Question | Healthy answer |
+| --- | --- |
+| What exact runtime fact was learned? | which declared candidates were usable after validation |
+| Where was the answer written? | one owned registry such as `results/discovery/samples.json` |
+| What reads the answer later? | one downstream function that rereads the registry |
+| What does not happen anymore? | no downstream rescan of `data/raw/` |
+
+If you cannot fill in all four cells from the files in front of you, keep repairing.
+
 ## A short checkpoint before you continue
 
 Pause here and say the justification in one sentence.
@@ -305,6 +357,18 @@ By the end of the repairs, the workflow can be described cleanly:
 
 That is what Module 02 means by a dynamic DAG you can trust.
 
+```mermaid
+flowchart LR
+  raw["declared candidate source"] --> validate["validation step"]
+  validate --> registry["accepted registry"]
+  registry --> fanout["per-sample fanout"]
+  fanout --> publish["publish bundle"]
+  publish --> review["reviewer can explain the run"]
+```
+
+Read that diagram literally. If your workflow skips the registry or publish step, the
+review surface is still incomplete.
+
 ## Review questions for the repaired design
 
 When you inspect a workflow shaped like this, ask:
@@ -316,3 +380,15 @@ When you inspect a workflow shaped like this, ask:
 5. what environment or job-shape choices keep the workflow practical to run
 
 If those answers are visible, the workflow is no longer relying on magic.
+
+## If your result still feels mysterious
+
+Do this recovery loop in order:
+
+1. print the candidate set you think the workflow starts from
+2. print the accepted registry the checkpoint actually wrote
+3. compare the downstream targets against that registry
+4. inspect the publish tree and ask whether another person could explain the run from it
+
+Most Module 02 confusion is not about Snakemake syntax. It is about losing track of which
+artifact currently owns the truth.

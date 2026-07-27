@@ -76,6 +76,21 @@ flowchart LR
 Use that route on purpose. It keeps the day centered on artifacts that carry truth rather
 than on checkpoint mystique.
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable packet instead of ten disconnected answers:
+
+- one declared candidate surface such as a sample sheet or normalized scan output
+- one target-list artifact that proves the fanout you intended
+- one example of accidental fanout and its repaired design
+- one justified-checkpoint note naming the runtime fact being learned
+- one accepted registry and one rejection record
+- one publish tree with public discovery artifacts separated from internal state
+- one checksum or manifest command showing how a consumer can verify the published bundle
+
+If you cannot point to those artifacts, the exercise day is still too abstract.
+
 ## Exercise 1: Compare two discovery surfaces
 
 Model the same three-sample workflow in two ways:
@@ -236,6 +251,19 @@ make the packet more explicit before moving on.
 Study note:
 If the workflow could have learned the same set from declared config before execution,
 this is the wrong place to use a checkpoint.
+
+## When you get stuck, diagnose the missing artifact first
+
+Use this table before you start rewriting rules at random:
+
+| If you are stuck on... | Check whether you are missing... | Typical repair |
+| --- | --- | --- |
+| Exercise 2 or 6 | one declared candidate surface | replace ambient discovery with a versioned manifest or one normalized scan |
+| Exercise 3 | one record structure that owns the fanout | stop expanding independent lists and build targets from validated records |
+| Exercise 7 or 8 | one sentence naming the runtime fact | write the justification before you touch `checkpoint` code |
+| Exercise 9 or 10 | one durable registry or publish artifact | keep the accepted, rejected, and published sets visible instead of inferred |
+
+Most failed answers are not short on syntax. They are short on owned artifacts.
 
 ## Exercise 9: Test discovery integrity under change
 
