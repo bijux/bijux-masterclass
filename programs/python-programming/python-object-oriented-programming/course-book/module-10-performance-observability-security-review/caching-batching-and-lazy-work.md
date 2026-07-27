@@ -24,148 +24,179 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about refusing to call a performance tradeoff "just an implementation
+detail."
 
-## Why this lesson matters
+Caching, batching, and lazy work often arrive as easy wins.
+They are not free.
 
-Caching, batching, and lazy work often arrive as "easy performance wins."
-
-They are not free wins. Each one changes the operational story:
+Each one changes a public or operator-facing story:
 
 - caches change freshness
 - batching changes timing and failure grouping
-- laziness changes when cost and errors are paid
+- laziness changes when cost and failure are paid
 
-That means these techniques belong in design review, not only in tuning discussions.
+That means these techniques belong in architectural review, not only in tuning
+discussions.
 
-## Every speedup technique creates a semantic contract
+## Keep one pressure route visible
 
-When you add a cache, you are making a promise about:
+Use one capstone path:
 
-- how stale data may become
+1. a caller asks for derived seat, incident, or report information
+2. the system crosses one or more repository or adapter boundaries
+3. a costly repeated operation tempts you to cache, batch, or defer work
+
+Now ask:
+
+What meaning changes if this optimization is added carelessly?
+
+That question keeps the lesson about contract design rather than about generic speed
+tricks.
+
+## Every speedup creates a semantic contract
+
+Adding a cache makes promises about:
+
+- how stale the data may become
 - who owns invalidation
-- what happens on cache miss or failure
+- what happens on cache miss or disagreement with authority
 
-When you batch work, you are changing:
+Adding batching changes:
 
-- when requests are grouped
+- when separate requests are grouped
 - how partial failure is reported
-- what ordering or latency tradeoff is acceptable
+- what latency or ordering tradeoff callers now experience
 
-When you defer work lazily, you change:
+Adding lazy work changes:
 
 - which call pays the cost
 - which caller now sees the failure
-- whether expensive work is visible or hidden
+- whether expensive work is obvious or hidden
 
-These are public or operator-facing consequences even when they start as implementation
-changes.
+If those promises are not explicit, the optimization remains hard to reason about.
 
-## Cache only when you can explain freshness honestly
+## Cache only when freshness can be explained honestly
 
-A weak cache design usually starts with:
+A weak cache story starts with:
 
-- "this value probably doesn’t change much"
+- "this probably does not change often"
 
-A stronger design starts with:
+A stronger cache story starts with:
 
-- what is the source of truth?
-- how stale may this value be before the result becomes misleading?
-- who can invalidate or refresh it?
-- what happens when the cache and reality disagree?
+- what is the source of truth
+- how stale may the answer become before it misleads a caller or operator
+- who refreshes or invalidates it
+- what happens when the cache and reality disagree
 
-If you cannot answer those questions clearly, the cache is likely to blur authority more
-than it improves performance.
+If you cannot answer those questions, the cache is likely to blur authority more than it
+improves speed.
 
-## Batch at real boundaries, not at arbitrary convenience points
+## Batch at the real repeated crossing
 
-Batching is most useful when overhead comes from repeated crossings such as:
+Batching is most useful when cost comes from repeated crossings such as:
 
 - repository loads
-- network calls
-- codec or transport work
+- transport round trips
 - repeated metric fetches
+- repeated artifact or codec work
 
-The batch boundary should match the place where work is truly repeated. Otherwise you
-may add complexity without reducing the meaningful cost.
+The batch boundary should match the real repeated cost.
 
-Batching also needs error semantics:
+Otherwise you risk adding complexity while optimizing the wrong layer.
 
-- does one failure poison the batch?
-- can some items succeed while others fail?
-- how are ordering and retries handled?
+Batching also needs explicit error semantics:
 
-Those are part of the contract, not postscript details.
+- does one bad item poison the whole batch
+- can some items succeed while others fail
+- what ordering promise remains
+- how are retries handled
 
-## Lazy work should stay visible when the cost matters
+Those are contract questions, not cleanup questions.
 
-Deferred work can improve startup, memory, or median latency.
+## Lazy work should stay honest about where failure moves
 
-It becomes risky when a caller cannot tell that:
+Deferred work can be useful, but it changes who experiences:
 
-- the first access triggers expensive computation
-- the first access might fail because remote or serialized data is still needed
-- the object is not fully realized yet
+- the first expensive computation
+- the first remote call
+- the first delayed failure
 
-If the laziness changes when cost or errors appear, the API should usually make that
-fact visible through naming, documentation, or usage shape.
+If a property or lightweight-looking call suddenly triggers expensive remote or
+serialization work, the API becomes less honest.
 
-## Narrow changes are better than general performance frameworks
+That does not mean laziness is wrong.
+It means the cost and failure shift should be visible through naming, documentation, or
+call shape.
 
-Students often try to solve performance pressure with broad generic machinery:
+## Prefer narrow optimizations over universal machinery
 
-- one universal cache layer
-- one generic lazy wrapper
-- one batching framework for every boundary
+Students often reach for:
 
-That usually obscures ownership and makes debugging harder.
+- one global cache layer
+- one generic batching framework
+- one universal lazy wrapper
 
-A narrower approach is often stronger:
+Those tools often spread ownership confusion faster than they spread performance gains.
+
+A narrower move is usually stronger:
 
 - one cache with one explicit owner
-- one batch path around one repeated boundary cost
-- one lazily computed surface that is documented and measured
+- one batch path around one repeated crossing
+- one lazily computed surface with a documented cost story
 
-This keeps the speedup tied to the real pressure instead of spreading new complexity
-everywhere.
+This keeps the performance change tied to the real pressure instead of turning into a
+new abstraction habit.
 
-## A worked example
+## A worked capstone review
 
 Suppose the capstone repeatedly:
 
 - loads incident summaries
 - fetches related metric views
-- builds an operator report
+- builds operator-facing reports
 
-Possible changes might include:
+Possible honest changes:
 
-- batching repeated metric fetches at the adapter boundary
-- caching one derived summary for a short, explicitly documented freshness window
-- delaying one expensive formatting step until the report is actually requested
+- batch repeated metric fetches at the adapter boundary
+- cache one derived summary with an explicitly bounded freshness window
+- defer one expensive formatting step until the report is actually requested
 
-Each change would still need a clear answer to:
+For each change, ask:
 
-- what freshness changed?
-- what failure now moves to a later point?
-- which boundary owns invalidation or retry?
+- what freshness changed
+- what failure moved later
+- which boundary now owns invalidation, grouping, or deferred recovery
 
-That is what makes the optimization honest.
+The right answer is not "yes to all three."
+The right answer is whichever tradeoff preserves meaning most honestly.
 
-## Common mistakes
+## Build a performance-tradeoff packet
+
+For each candidate optimization, keep a short packet with:
+
+- optimization type: cache, batch, or lazy work
+- boundary it touches
+- semantic contract at risk
+- owner of invalidation, grouping, or deferred failure
+- first proof or signal that should reveal drift
+
+This packet makes performance choices reviewable instead of intuitive folklore.
+
+## Common failure modes
 
 - adding caches without a freshness story
-- batching work where the real cost is not actually at the crossing being grouped
-- hiding expensive lazy work behind harmless-looking property access
-- generalizing performance helpers before one narrow case is even measured
-- treating semantic changes as mere implementation detail because the output still "usually works"
+- batching at a convenient layer instead of the real repeated crossing
+- hiding expensive lazy work behind harmless-looking access
+- generalizing helpers before one narrow case is even measured
+- treating semantic drift as mere implementation detail because output still "usually
+  works"
 
-## Review checklist
+## Performance review card
 
-| Question | Good sign |
+Use this short card when reviewing a speedup:
+
+| Question | What you want to see |
 | --- | --- |
 | is the semantic tradeoff of the cache, batch, or laziness stated clearly? | yes |
 | does the optimization target a measured real cost? | yes |
@@ -174,13 +205,14 @@ That is what makes the optimization honest.
 
 ## Capstone connection
 
-Use the capstone to ask:
+Use this page to ask:
 
-- which repeated boundary crossing is the strongest candidate for batching?
-- where would a cache most endanger freshness or authority if added carelessly?
-- which deferred computation should be visible because the first access is costly or failure-prone?
+- which repeated boundary crossing is the strongest batching candidate
+- where a cache would most endanger freshness or authority if added carelessly
+- which deferred computation should remain visible because the first access is costly or
+  failure-prone
 
-This is where performance technique turns into contract design.
+That is where performance technique becomes contract design.
 
 ## Exit check
 
