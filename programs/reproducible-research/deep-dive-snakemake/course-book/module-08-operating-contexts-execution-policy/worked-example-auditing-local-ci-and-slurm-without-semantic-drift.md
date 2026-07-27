@@ -7,6 +7,29 @@ This file ties the whole module together around one realistic problem:
 The question is not "do these profiles all run?" The question is whether they preserve one
 semantic workflow while changing context honestly.
 
+## How to use this worked example
+
+Work through this page with the five core lessons nearby.
+
+Do not treat it as a summary after the fact. Treat it as a guided context audit:
+
+- what to inspect first
+- what should stay invariant
+- where to classify retries and storage assumptions
+- how to catch one real policy leak
+
+## The one-day teaching goal
+
+By the end of this example, you should be able to explain one three-context repository
+without falling back on "each environment just needs different settings."
+
+You should be able to say:
+
+- which settings are policy only
+- which outputs and paths must stay invariant
+- which failure policies are justified by named failure classes
+- where temporary bytes stop and trusted outputs begin
+
 ## The lab route
 
 Work through the example in this order:
@@ -27,6 +50,15 @@ Assume you inherit a workflow with three operating contexts:
 
 The repository claims these contexts change execution policy, not workflow meaning. That
 claim is only trustworthy if the review route can prove it.
+
+## What the learner should notice first
+
+The repository may already run in all three contexts.
+
+That is not yet enough.
+
+The weakness is subtler: the team is trusting an unproven claim that the contexts mean the
+same workflow. This example is about making that claim auditable.
 
 ## Read the profile surfaces directly
 
@@ -59,12 +91,22 @@ snakemake --profile profiles/slurm --dry-run
 ```
 
 This matters because dry-runs reveal whether policy differences preserve the same
-workflow story. The right question is not only “did the profile file change?” It is:
+workflow story. The right question is not only "did the profile file change?" It is:
 
 > does the planned workflow still mean the same thing?
 
 Normalize only volatile executor noise. Keep target names, rule names, wildcard bindings,
 and declared inputs and outputs. Those are the semantic facts the audit exists to defend.
+
+## A short checkpoint before you continue
+
+Pause here and ask:
+
+- do the same targets still exist in every context?
+- are the declared trusted outputs and paths unchanged?
+- have you proven invariants yet, or only listed different flags?
+
+If the answer to the third question is yes, the audit is still too shallow.
 
 ## Judge retries and latency honestly
 
@@ -92,6 +134,17 @@ must still be able to say:
 
 If a reviewer starts treating scratch output as equivalent to published output, the
 repository has lost one of its most important operating boundaries.
+
+## What the learner should notice now
+
+At this point the review is doing more than comparing profiles.
+
+It is defending two different truths at once:
+
+- the workflow means the same thing
+- the operating context still matters operationally
+
+That is the core educational move in Module 08.
 
 ## Inject and catch one semantic leak
 
@@ -132,4 +185,4 @@ When you inspect a repository shaped like this, ask:
 4. where bytes exist before trust begins
 5. which audit surface would fail first if a profile started changing semantics
 
-If those answers are visible, the module’s context story has landed.
+If those answers are visible, the module's context story has landed.

@@ -1,32 +1,19 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This glossary keeps the language of Module 08 stable. The goal is practical clarity:
 operating-context review gets much easier when the same words keep the same meaning.
+
+## When to stop and check the glossary
+
+Use this page when an operating-context discussion starts to blur these boundaries:
+
+- policy versus semantics
+- transient failure versus deterministic failure
+- scratch presence versus trusted output
+- context difference versus policy leak
+
+If the discussion feels vague, one of those terms is probably carrying too much meaning at
+once.
 
 ## Terms
 
@@ -50,10 +37,23 @@ operating-context review gets much easier when the same words keep the same mean
 
 ## How to use these terms
 
-If an operating-context discussion starts to feel vague, ask which term has become unclear:
+If an operating-context discussion starts to feel vague, ask which term has become
+unclear:
 
 - is this a policy difference or a semantic leak?
 - is this output on scratch or on a trusted contract path?
 - is this retry change explaining failures or postponing diagnosis?
 
 That question usually exposes the real operating-boundary issue quickly.
+
+## Terms you should be able to use by the end of the day
+
+By the end of Module 08, you should be comfortable using these in a full sentence:
+
+- execution policy
+- semantic drift
+- policy leak
+- context-invariant meaning
+- failure discipline
+- scratch space
+- profile audit

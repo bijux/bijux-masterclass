@@ -1,33 +1,23 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Operating Contexts Execution Policy"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning keeps policy and workflow meaning separate.
+
+## How to use the answer page well
+
+Do not read a model answer before you have classified the context change or traced the
+storage boundary yourself.
+
+A stronger rhythm is:
+
+1. inspect the profiles, plans, or storage route on your own
+2. write one plain-language explanation of what stayed invariant
+3. compare that explanation with the model answer
+4. revise where the model answer reveals a hidden semantic leak, weak failure model, or
+   premature trust boundary you missed
+
+The target is not identical wording. The target is clearer context judgment.
 
 ## Exercise 1: Decide whether a profile change is safe
 
@@ -69,32 +59,33 @@ The main lesson is that retries are not a substitute for diagnosis.
 
 What trust problem this creates:
 
-- reviewers are inspecting a temporary execution surface as if it were the contract surface
+- reviewers are inspecting a temporary execution surface as if it were the contract
+  surface
 
 When a file should count as trusted:
 
-- once it has been materialized onto the declared workflow or publish path that the contract
-  says reviewers and downstream users may trust
+- once it has been materialized onto the declared workflow or publish path that the
+  contract says reviewers and downstream users may trust
 
 What needs clarification:
 
 - the boundary between scratch or staging locations and trusted output locations
 - the visibility and promotion model for outputs
 
-## Exercise 4: Compare contexts
+## Exercise 4: Compare three contexts
 
 A strong argument would say:
 
-> Side-by-side dry-run comparison matters because all three contexts can “work” while still
-> carrying different workflow meaning. Dry-runs help reveal whether profiles changed only
-> execution policy or whether one context now plans a different semantic story.
+> Side-by-side dry-run comparison matters because all three contexts can "work" while
+> still carrying different workflow meaning. Dry-runs help reveal whether profiles changed
+> only execution policy or whether one context now plans a different semantic story.
 
 Why:
 
 - successful execution is not enough evidence against semantic drift
 - comparison makes hidden context-specific behavior much easier to spot
 
-## Exercise 5: Escalate a suspicious policy change
+## Exercise 5: Escalate a semantic profile leak
 
 Why this is not just a profile difference:
 
@@ -110,7 +101,7 @@ What should happen before approval:
 - review the effect on contracts and outputs
 - compare contexts again after the change is made honest
 
-## Exercise 6: Build a three-context policy matrix
+## Exercise 6: Build a governed policy matrix
 
 Every key belongs to one named policy class. Cores and concurrency are capacity;
 printed commands and failed logs are observability; bounded retries are recovery;
@@ -119,21 +110,14 @@ Sample sets, algorithm parameters, and publish paths are semantic leaks. Repeate
 may remain explicit when readability matters, but their ownership and consistency should
 be auditable.
 
-## Exercise 7: Normalize and compare plans
-
-Capture all plans for one explicit target. Remove timestamps, job identifiers, and
-executor presentation only. Rule names, wildcard values, dependency edges, input paths,
-and output paths must agree. A different core limit is harmless; a missing sample job or
-different publish path is semantic drift and must fail the comparison.
-
-## Exercise 8: Map resources to two executors
+## Exercise 7: Map resources to two executors
 
 The rule declares portable needs with documented units. Local policy caps concurrency and
 respects available memory; scheduler policy translates the same values into submission
 resources. Queue names and submission syntax never enter the rule. Output paths and
 algorithm parameters remain identical when mappings change.
 
-## Exercise 9: Verify scratch promotion
+## Exercise 8: Verify scratch promotion
 
 Scratch holds private execution state. After computation, the job validates content,
 copies or renames through a temporary destination at the trusted location, and atomically
@@ -141,13 +125,21 @@ publishes the final path. Interruption leaves no final output and retains enough
 staged evidence for diagnosis. Reviewers never inspect scratch as a substitute for the
 declared contract.
 
-## Exercise 10: Write an operating-context drift gate
+## Exercise 9: Write an operating-context drift gate
 
 The gate allowlists context-owned differences and compares semantic invariants. It fails
 with the profile, key or target, expected value, and observed value. A changed
 `publish_dir` or filtering parameter is rejected; cores, executor name, and account may
 differ under documented policy. This targeted gate complements execution tests rather
 than replacing them.
+
+## Exercise 10: Review a policy change like a maintainer
+
+A strong review orders findings by semantic risk: changed trusted path, leaked semantic
+config, unclassified retry increase, or unexplained storage assumption. One accepted
+policy difference should stay clearly inside observability, capacity, or executor mapping.
+Each decision should name the narrowest verification route that supports it, such as a
+dry-run comparison, governed key audit, or storage-lifecycle check.
 
 ## Self-check
 
