@@ -17,141 +17,157 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  trust["Decide what must be trusted first"] --> build["Build the supported environment"]
+  build --> prove["Run one small supported route"]
+  prove --> inspect["Inspect the resulting artifact"]
+  inspect --> continue["Return to the course only after the route is trustworthy"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a timing map: this page exists for setup pressure, not for
-general course reading. Read the second diagram as the setup loop: check the owning
-surface, run one route, then stop once the environment contract is visible.
+Use this page only when the real blocker is environment trust. Do not come here because a
+lesson feels difficult. Come here when you need to answer a narrower question:
 
-Python Object-Oriented Programming uses a monitoring-system capstone as executable design
-proof. The environment needs to be stable enough that ownership and invariant questions
-stay about the design, not about shell drift.
+> Can I trust the documented commands enough that any remaining confusion is about
+> object-oriented design rather than about shell drift, interpreter drift, or missing
+> dependencies?
 
-## Minimum tooling
+This course uses the monitoring-system capstone as its executable proof surface. The
+environment is therefore not a side concern. If the supported commands are unstable, the
+rest of the course becomes noisy and misleading.
+
+## Setup is finished only when the commands are trustworthy
+
+Setup is not finished when a virtual environment merely exists. Setup is finished when
+all four of these are true:
+
+1. you can build the supported environment from the documented Make target
+2. you can run the raw executable checks inside that environment
+3. you can run at least one saved learner-facing route and inspect its output
+4. you can tell which commands are supported and which commands would be improvisation
+
+If only the first item is true, you have an environment. You do not yet have a course
+platform you should trust.
+
+## Minimum local requirements
 
 You need:
 
 - Python 3.10 or newer
 - Git on the command line
-- a writable local filesystem for `artifacts/`
-- the capstone-managed virtual environment created through `make install`
+- a writable filesystem for repository `artifacts/`
+- the willingness to use the documented Make targets instead of ad hoc command variants
 
-## What "setup complete" actually means
+The course does not promise support for arbitrary global package layouts. The supported
+contract is the repository-managed route.
 
-Setup is complete only when all of these are true:
+## Authoritative setup surfaces
 
-1. the documented virtual environment can be built from the supported Make target
-2. the test suite runs inside that environment
-3. the saved inspection and proof routes run from the documented locations
-4. you can tell which commands are authoritative and which are improvisation
+Treat these as the sources of truth:
 
-If only item 1 is true, the environment exists but is not yet trustworthy.
-
-## Supported toolchain contract
-
-Use these as the authoritative setup surfaces:
-
-| Surface | What it tells you |
+| Surface | Why it matters |
 | --- | --- |
-| `capstone/pyproject.toml` | supported Python floor |
-| `capstone/Makefile` `install` target | how the supported environment is built |
-| `capstone/Makefile` `inspect`, `verify-report`, and `proof` targets | which saved proof routes the environment must support |
-| [Command Guide](../capstone/command-guide.md) | how to choose the right executable route once setup is stable |
+| `capstone/pyproject.toml` | it tells you the supported Python floor and packaging contract |
+| `capstone/Makefile` `install` target | it defines the supported environment build |
+| `capstone/Makefile` `test`, `inspect`, `verify-report`, and `tour` targets | they define the supported executable proof routes |
+| [Command Guide](../capstone/command-guide.md) | it explains when to use each route once setup is stable |
 
-The support promise is tied to the capstone-managed virtual environment, not to a
-global Python that happens to have `pytest` already.
+If your local habit conflicts with those surfaces, your habit loses.
 
-## Repository-root setup
+## First-day setup route
+
+Use this order the first time through.
 
 From the repository root:
 
 ```bash
-make PROGRAM=python-programming/python-object-oriented-programming docs-build
 make PROGRAM=python-programming/python-object-oriented-programming test
-make PROGRAM=python-programming/python-object-oriented-programming capstone-walkthrough
+make PROGRAM=python-programming/python-object-oriented-programming inspect
 ```
 
-Use `test` to build the supported environment and run the raw suite. Use
-`capstone-walkthrough` only after setup is stable and you are ready for the saved review
-route.
-
-## Capstone setup
-
-From `capstone/`:
+Or, if you are working directly inside `capstone/`:
 
 ```bash
 make install
 make test
 make inspect
-make verify-report
 ```
 
-That sequence creates the virtual environment, installs the editable package plus pytest,
-checks the suite, and then verifies that the saved inspection and review
-bundles can be built.
+Why this order:
 
-## Verification order
+- `test` proves the environment can build and run the raw executable suite
+- `inspect` proves the saved learner-facing inspection route can also run
 
-Use this order and do not skip ahead:
+Do not begin with `proof`. That route is stronger, slower, and less helpful if the
+problem is still environment trust.
 
-1. `make install` completes and creates the virtual environment under `artifacts/venv/...`.
-2. `make test` passes before you trust saved bundles.
-3. `make inspect` produces the saved state bundle.
-4. `make verify-report` succeeds before you escalate to `make proof`.
+## What each first-day command proves
 
-If step 2 fails, the right next move is environment repair, not architecture review.
-If step 3 or 4 fails, the environment may be partially correct but still unable to
-support the course's saved review routes.
-
-## Common setup failures
-
-| Symptom | Likely cause | Fix |
+| Command | What it proves | What it does not prove |
 | --- | --- | --- |
-| `venv` creation fails | unsupported Python on the path | install Python 3.10+ and rerun `make install` |
-| `service_monitoring` import errors during tests | editable install missing from the virtual environment | rerun `make install` inside `capstone/` |
-| inspection commands work differently across shells | global Python and capstone virtual environment are mixed | use the documented Make targets instead of ad hoc shell commands |
-| saved bundles are missing under `artifacts/` | route run from the wrong directory or stale environment | rerun the documented route from the repository root or `capstone/` exactly |
+| `make install` | the supported environment can be built | the suite, walkthrough, and saved bundles all work |
+| `make test` | the executable checks run inside the supported environment | the learner-facing inspection and review bundles are healthy |
+| `make inspect` | the saved inspection route can be generated and reviewed | the full walkthrough or strongest proof route is healthy |
+| `make verify-report` | tests and saved review state agree in the supported report route | every possible local command variant is supported |
 
-## Good setup habits
+## What "healthy setup" looks like
 
-- use the documented Make targets instead of hand-built shell sequences
-- rebuild the virtual environment after Python upgrades or dependency-floor changes
-- treat `artifacts/` outputs as evidence surfaces, not as random scratch files
-- verify one saved route before moving on to deeper lessons
+After a healthy setup pass, you should be able to say all of this concretely:
 
-## Bad setup habits
+- "The supported environment is built by `make install`."
+- "The raw suite is confirmed by `make test`."
+- "The first saved bundle I trust is produced by `make inspect`."
+- "The outputs live under repository `artifacts/`, not in random local folders."
 
-- trusting a global interpreter because imports happen to work once
-- mixing commands from the repository root and `capstone/` without noticing
-- using a passing test run as proof that inspection and report routes will also work
-- debugging architecture questions while the environment contract is still unstable
+If you cannot say those sentences without hedging, keep working on setup.
 
-## Drift signals
+## Common failure shapes
 
-Treat these as reasons to re-check the setup contract:
+| Symptom | Likely cause | Best next move |
+| --- | --- | --- |
+| virtual environment build fails | unsupported Python on the path | install Python 3.10+ and rerun the supported route |
+| tests fail with import or package errors | environment build incomplete or stale | rerun `make install`, then rerun `make test` |
+| saved inspection route fails after tests pass | the environment is only partially healthy or the route was run from the wrong place | rerun `make inspect` from the documented location |
+| commands behave differently across terminals | global Python or shell aliases are interfering | return to the documented Make targets and stop improvising |
+| artifacts show up outside repository `artifacts/` | an unsupported local command path was used | discard the ad hoc route and rerun the supported one |
 
-- Python changed locally and the capstone virtual environment was not recreated
-- tests pass, but `inspect` or `verify-report` fail from the documented routes
-- the command list in [Command Guide](../capstone/command-guide.md) no longer matches the Makefile
-- a global package upgrade changes behavior that the capstone environment did not request
+## Setup drift signals
 
-## What this page does not promise
+Re-check the setup contract when any of these happen:
 
-- It does not promise support for arbitrary global installs outside the capstone
-  environment.
-- It does not treat “the command exists” as enough; the saved proof routes still decide
-  whether the environment is trustworthy.
-- It does not replace [Proof Ladder](proof-ladder.md) when the real question is evidence
-  depth rather than setup readiness.
+- Python was upgraded locally
+- the capstone environment was deleted or partially recreated
+- tests pass, but `inspect` or `verify-report` now fail
+- command names in the docs and the Makefile no longer match what you are running
+- a global tool update changed behavior you did not intentionally request
+
+## Strong habits
+
+- trust Make targets before trusting memory
+- prove one small route before escalating to stronger proof
+- inspect the saved artifact, not just the shell exit code
+- repair setup before diagnosing architecture or ownership questions
+
+## Weak habits
+
+- treating one passing import as proof that the environment is correct
+- treating one passing test run as proof that every saved learner route works
+- mixing repository-root and `capstone/` commands without noticing
+- debugging domain design while command trust is still unresolved
+
+## When this page is the wrong page
+
+Leave this page if:
+
+- the commands work, but you still do not understand which object owns the rule
+- the environment is stable, but you do not know which proof route matches the claim
+- the real question is conceptual progression, not command trust
+
+In those cases, use [Proof Matrix](proof-matrix.md), [Course Guide](course-guide.md),
+or the relevant capstone page instead.
 
 ## Exit check
 
 Leave this page only when you can say:
 
-> I built the supported environment with `____`, verified it with `____`, and my next
-> route is `____` because the setup contract is now stable enough to trust.
+> I trust `____` as the supported environment build, `____` as the first executable
+> proof, and `____` as the first saved artifact that confirms the route is stable.
