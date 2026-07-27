@@ -157,14 +157,16 @@ Describe the minimum artifact set that would let a downstream reviewer answer:
 
 What to hand in:
 
-- one discovery artifact path
+- one accepted-registry path
+- one rejection-record path
 - one provenance artifact path
 - one manifest or inventory artifact path
 - one short explanation of what each artifact proves
 
 Study note:
 Treat this as a trust design exercise. A directory tree without explained artifact roles
-is not enough.
+is not enough, and a dynamic run that publishes only accepted outputs is still hiding part
+of its decision trail.
 
 ## Exercise 5: Improve performance without weakening truth
 
@@ -226,13 +228,15 @@ The important contrast is not "advanced" versus "simple." It is "runtime fact" v
 ## Exercise 8: Implement a justified checkpoint
 
 Start from a declared candidate set, then make a validation checkpoint publish a registry
-containing only usable candidates. Fan out one downstream job per accepted identifier.
+containing usable candidates and a rejection record for excluded ones. Fan out one
+downstream job per accepted identifier.
 
 What to hand in:
 
 - the checkpoint output contract
 - the input function that reads it through `checkpoints.<name>.get()`
 - evidence from before and after checkpoint completion
+- the rejection record and what made one candidate fail
 - an explanation of the runtime fact that could not be known during initial planning
 
 ## Midday self-check
@@ -241,6 +245,7 @@ Before you move into testing discovery changes and publishing the result, make s
 packet can already answer all of these:
 
 - which artifact is the actual source of truth for the discovered set
+- where rejected candidates stay visible instead of disappearing from the story
 - whether your target fanout comes from validated records instead of accidental cross-products
 - why a checkpoint is justified or unjustified in this exact case
 - which discovery artifacts a downstream reviewer will need to see later

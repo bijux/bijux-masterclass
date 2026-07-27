@@ -60,20 +60,20 @@ A strong answer sounds like this:
 
 > The weak version scanned `data/raw/` at parse time and expanded targets immediately, so
 > the workflow had no durable record of what it discovered. The repair gives discovery one
-> owned output such as `results/discovered_samples.json`, and downstream rules fan out from
-> that artifact. Another reviewer can now inspect the exact discovered set instead of
-> trusting a transient directory scan.
+> owned output such as `results/discovery/accepted_samples.json`, and when rejection is
+> possible it keeps `results/discovery/rejected_samples.json` beside it. Downstream rules
+> fan out from the accepted registry instead of trusting a transient directory scan.
 
 Why this is strong:
 
 - it names the old weakness clearly
-- it adds one owned artifact instead of vague "better organization"
+- it adds owned discovery artifacts instead of vague "better organization"
 - it explains why review got easier
 
 The missing but important sentence is usually this one:
 
-> Another reviewer can now inspect the declared discovered set directly instead of
-> reverse-engineering a transient directory scan.
+> Another reviewer can now inspect the recorded accepted and rejected sets directly instead
+> of reverse-engineering a transient directory scan.
 
 ## Exercise 3: Prevent one accidental fanout explosion
 
@@ -100,9 +100,12 @@ Why this is strong:
 
 A strong answer gives three explicit paths and one explicit role for each:
 
-- discovery artifact:
-  - `results/discovered_samples.json`
-  - proves which sample set drove the run
+- accepted registry:
+  - `results/discovery/accepted_samples.json`
+  - proves which validated candidates drove downstream work
+- rejection record:
+  - `results/discovery/rejected_samples.json`
+  - proves which candidates were excluded and why
 - provenance artifact:
   - `publish/v1/provenance.json`
   - proves the resolved run identity and materialized config
@@ -110,8 +113,10 @@ A strong answer gives three explicit paths and one explicit role for each:
   - `publish/v1/manifest.json`
   - proves which files belong to the public boundary
 
-The strongest answers also mention a published copy of the discovery artifact, such as
-`publish/v1/discovered_samples.json`, because downstream review often needs the same fact.
+The strongest answers also mention published copies of the accepted and rejected discovery
+artifacts, such as `publish/v1/accepted_samples.json` and
+`publish/v1/rejected_samples.json`, because downstream review often needs the full
+decision trail instead of only the final surviving set.
 
 ## Exercise 5: Improve performance without weakening truth
 
@@ -154,8 +159,9 @@ Example:
 - justified checkpoint:
   - the workflow cannot know which declared candidates are usable until a validator reads
     their contents
-  - the checkpoint writes `results/discovery/accepted_samples.json`
-  - downstream targets read that registry
+  - the checkpoint writes `results/discovery/accepted_samples.json` and
+    `results/discovery/rejected_samples.json`
+  - downstream targets read the accepted registry
 - unjustified checkpoint:
   - the sample list already lives in config or a validated manifest
   - using a checkpoint would only hide a target list that was already known
@@ -177,6 +183,11 @@ Snakemake reevaluates the input function and extends the graph.
 The justification is not that files exist in a directory. It is that executing a
 validator determines which candidates satisfy a semantic condition that planning could
 not evaluate safely.
+
+The strongest answer also says what the rejection record proves:
+
+> It keeps excluded candidates visible, so the workflow explains both membership and
+> non-membership instead of silently dropping bad inputs from the story.
 
 ## Exercise 9: Test discovery integrity under change
 
@@ -211,7 +222,7 @@ The best Module 02 answers usually:
 
 1. explain dynamic behavior without mystical language
 2. identify one artifact or boundary that carries the truth
-3. point to a concrete proof route such as `snakemake -n`, a discovered-set file, or a publish manifest
+3. point to a concrete proof route such as `snakemake -n`, accepted and rejected discovery records, or a publish manifest
 4. describe repairs as stronger contracts, not just shorter code
 
 If your answers do those four things, you are learning the module in the right direction.
