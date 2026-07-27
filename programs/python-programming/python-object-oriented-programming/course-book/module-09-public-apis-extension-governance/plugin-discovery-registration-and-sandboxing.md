@@ -1,6 +1,5 @@
 # Plugin Discovery, Registration, and Sandboxing
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,60 +24,164 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Support plugins only when the system can discover, validate, and constrain them with
-clear lifecycle and safety rules.
+Plugin support is one of the easiest ways to make a system feel advanced while quietly
+raising its governance cost.
 
-## 1. Plugins Add Governance Cost
-
-Plugin support is not "more extensible for free." It adds questions about:
+The moment you allow outside code to participate, you inherit questions about:
 
 - discovery
-- registration order
-- version compatibility
+- registration
+- capability validation
+- compatibility
 - failure isolation
-- security and trust
+- trust and security
 
-If those questions are not worth answering, do not add plugins yet.
+If those questions are not answered, the "plugin system" is usually just dynamic import
+with extra optimism.
 
-## 2. Registration Should Validate Capability and Metadata
+## Do not add plugins before naming the real customization need
 
-A plugin loader should check:
+Many systems do not need plugins at all.
 
-- required interface or protocol support
-- version compatibility
-- unique names or identifiers
-- declared configuration needs
+Sometimes they only need:
 
-Loose registration invites runtime surprises.
+- one replaceable adapter
+- one configuration-driven strategy choice
+- one documented capability protocol
 
-## 3. Discovery Mechanisms Need Intent
+That is much cheaper to govern than a general plugin model.
 
-Possible approaches:
+Add plugins only when the customization pressure is real enough to justify the ongoing
+cost of operating an extension ecosystem.
+
+## Discovery should be deliberate, not magical
+
+A plugin host needs a clear answer to:
+
+- how does code become eligible for loading?
+
+Common options include:
 
 - explicit configuration
-- package entry points
-- module scanning inside a trusted namespace
+- a trusted package namespace
+- declared entry points
 
-Choose the simplest mechanism that matches the deployment model.
+The best choice is usually the simplest one that matches deployment reality.
 
-## 4. Sandboxing Is Usually a Process Boundary Problem
+Unbounded module scanning often looks flexible but creates unclear loading rules and weak
+reviewability.
 
-In-process plugins share memory and failure modes with the host. If untrusted code is
-involved, real isolation usually requires a stronger boundary than a Python interface.
+## Registration is where the host proves the seam is real
 
-## Practical Guidelines
+Discovery only finds candidates. Registration decides whether they are acceptable.
 
-- Add plugin support only when you can justify its governance cost.
-- Validate plugin metadata and capability before registration.
-- Prefer explicit discovery over magical scanning when clarity matters.
-- Do not confuse in-process plugins with real sandboxing.
+A useful registration step should validate:
 
-## Exercises for Mastery
+- required capability support
+- stable plugin identity
+- compatibility version or contract declaration
+- required configuration shape
+- duplicate-name or duplicate-role conflicts
 
-1. Decide whether one customization need in your system truly requires plugins.
-2. Define the metadata a plugin should declare before registration.
-3. Document which plugins are trusted in-process and which would require stronger isolation.
+If registration is too permissive, the system learns incompatibility only after the
+plugin is already entangled with live behavior.
+
+## Lifecycle matters as much as interface shape
+
+Plugins often need rules for:
+
+- startup
+- shutdown
+- error handling
+- retry or disable behavior
+- configuration reload
+
+The extension point is incomplete if the host knows how to call a plugin but not how to
+own it over time.
+
+This is especially important in long-running systems where plugin failures can leave
+partial state, hanging resources, or confusing runtime drift.
+
+## Sandboxing is rarely solved by an interface alone
+
+One of the most common misunderstandings is:
+
+- "we defined a plugin protocol, so plugins are sandboxed"
+
+They are not.
+
+In-process plugins still share:
+
+- memory
+- crash surface
+- dependency space
+- trust assumptions
+
+If the plugin is not trusted, real isolation usually requires a stronger boundary such
+as a process, service, or other operating-system-level containment strategy.
+
+A Python interface can constrain how cooperative code is called. It cannot make hostile
+or broken code safe by itself.
+
+## A worked example
+
+Suppose the capstone wants to let outside developers provide alternate incident sinks.
+
+An honest plugin design might require:
+
+- a narrow sink capability protocol
+- explicit registration through configuration or entry points
+- validation of supported protocol version
+- unique plugin name and configuration schema
+- a host-owned policy for sink startup failure and disablement
+
+What it should not assume is:
+
+- importing the module is enough
+- any object with the right method name is safe to load
+- in-process loading counts as sandboxing
+
+This keeps plugin support tied to host governance rather than import luck.
+
+## Common mistakes
+
+- introducing plugins when a simpler replaceable seam would do
+- discovering code through unclear or overly broad scanning rules
+- registering plugins without validating capability, identity, and compatibility
+- ignoring lifecycle management after successful load
+- calling in-process trust "sandboxing" without a real isolation boundary
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is plugin support justified by a real customization need? | yes |
+| are discovery and registration rules explicit and reviewable? | yes |
+| are capability, identity, and compatibility checked before activation? | yes |
+| is trust separated from interface shape when discussing sandboxing? | yes |
+
+## Capstone connection
+
+Use the capstone to ask:
+
+- which customization requests truly need a plugin model instead of one replaceable capability?
+- where should registration reject incompatible or duplicate extensions before runtime work begins?
+- which proposed plugins would be trusted in-process, and which would require a stronger boundary to be safe?
+
+This is where extension enthusiasm meets operational honesty.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why plugin support carries governance cost beyond interface design
+- name one explicit registration check a capstone plugin system would need
+- explain why in-process loading is not real sandboxing
