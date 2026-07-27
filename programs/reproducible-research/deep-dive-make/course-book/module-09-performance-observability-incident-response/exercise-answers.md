@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -18,258 +17,432 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  claim["check the claim"] --> evidence["check evidence provenance"]
+  evidence --> inference["check the inference"]
+  inference --> decision["check the decision"]
+  decision --> limits["name what remains unknown"]
 ```
 <!-- page-maps:end -->
 
-Use this after you have written your own answers. The point is comparison, not copying.
+Use these answers after completing your own packet. They model reasoning shape, not
+machine-independent numeric results. Your timing values, trace count, and tool versions
+will differ.
 
-## How to use the answer page well
+For each exercise, compare four things:
 
-Do not read a model answer first and then retrofit your incident packet to sound similar.
+1. Is the observed fact reproducible from the packet?
+2. Does the inference stay within what the evidence can establish?
+3. Does the decision follow from that inference?
+4. Is the remaining uncertainty named?
 
-A better rhythm is:
+An answer can be technically accurate and still be operationally weak if another
+maintainer cannot reconstruct those links.
 
-1. finish the exercise with your own measurements, traces, and notes
-2. write one plain-language statement of the operational question
-3. compare that statement with the model answer
-4. revise where the model answer exposes a weaker layer distinction, an unbounded
-   observability surface, or a faster-but-less-truthful tuning idea
+## Exercise 1: Open the incident without accepting its diagnosis
 
-Strong Module 09 answers do not just list commands. They usually do four things:
+A strong `incident.md` separates the report:
 
-- they explain what operational question is being asked
-- they choose an evidence surface that matches that question
-- they describe the response as truth-preserving
-- they leave a packet another maintainer could reuse
+| Claim | Route and state | Expectation source | First evidence |
+| --- | --- | --- | --- |
+| clean build is slow | `gmake -j4 all` from documented clean state | controlled prior baseline, if one exists | five clean samples |
+| no-op route is slow | `gmake all` after `gmake -q all` succeeds | convergence contract | five no-op samples |
+| pre-recipe work is slow | `gmake -n all` from converged state | current or prior dry-run baseline | five dry-run samples |
+| trace is noisy | `gmake --trace -n all` | responder usability requirement and trace guardrail | line count plus inspection |
+| parallel route is wrong | governed pressure route or repro | serial/parallel equivalence contract | artifact comparison or incident bundle |
 
-The strongest self-study packets also leave behind six concrete artifacts:
-
-- one layered complaint analysis
-- one bounded observability route
-- one triage ladder
-- one rejected unsafe optimization
-- one repeated timing baseline
-- one compact incident directory and runbook note
-
-If your answers rely only on "the build should be easier to debug," the reasoning is still
-too weak.
-
-## Exercise 1: Split one "slow build" complaint into layers
-
-A strong answer compares at least:
-
-- a dry-run timing signal such as:
-  - `/usr/bin/time -p make -n all`
-- a full-build timing signal such as:
-  - `/usr/bin/time -p make all`
-- a trace or evidence-size signal such as:
-  - `make --trace all > build/trace.log && wc -l build/trace.log`
-
-The key reasoning is:
-
-- expensive dry-run:
-  - suggests parse or evaluation cost
-- cheap dry-run plus expensive full build:
-  - suggests recipe cost
-- huge trace output:
-  - suggests observability overhead as an operational problem
-
-The answer is strongest when it says how the next decision would differ depending on which
-layer dominates.
-
-## Exercise 2: Add one bounded observability surface
-
-A strong answer names one explicit question, such as:
-
-> How many lines of trace output does a normal route emit?
-
-and then proposes a bounded route such as:
-
-```make
-.PHONY: trace-count
-
-trace-count:
-	@make --trace -n all 2>&1 | wc -l
-```
-
-The important move is architectural:
-
-- the evidence surface is named
-- it answers one question
-- it does not mutate normal outputs
-
-A good answer usually removes some ad hoc recipe prints in exchange.
-
-The surface is bounded because it serves one operational question instead of becoming a
-catch-all debug mode.
-
-## Exercise 3: Write a triage ladder for one flaky symptom
-
-A strong answer usually includes:
-
-1. confirm the exact symptom
-2. reproduce the same target and assumptions
-3. preview with `-n` if intent is the question
-4. use `--trace` if causality is the question
-5. use `-p` if resolved state is the question
-
-The strongest answers explicitly say why editing the Makefile is not the first move:
-
-> Editing too early changes the conditions before the failure boundary is understood.
-
-The ladder is strong when each step narrows scope instead of broadening panic.
-
-## Exercise 4: Propose one truth-preserving optimization
-
-A good answer might identify repeated parse-time discovery shell-outs and replace them with
-built-in discovery over declared roots.
-
-For example:
-
-```make
-APP_SRCS := $(sort $(wildcard src/app/*.c))
-LIB_SRCS := $(sort $(wildcard src/lib/*.c))
-SRCS := $(APP_SRCS) $(LIB_SRCS)
-```
-
-This is strong because the optimization removes repeated work while preserving:
-
-- explicit discovery roots
-- observation of additions on the next Make invocation
-- inspectable resolved lists
-
-The post-change proof should usually include both a timing comparison and a truth check
-such as `make -q all` or a discovery audit.
-
-The shortcut to reject is anything that caches away real discovery without a trustworthy
-update contract.
-
-## Exercise 5: Write a small operational runbook entry
-
-A strong runbook entry includes:
-
-- one sanity or convergence check
-- one command for resolved-state or serial/parallel comparison
-- one escalation trigger
-- one warning against destructive first moves
-
-For example:
-
-> Run `make all` and `make -q all`. If flakiness is reported, compare serial and `-j`
-> behavior before editing the build. Escalate if the symptom cannot be reproduced with a
-> stable route. Avoid cleaning first unless the runbook explicitly says the question is
-> about clean-state behavior.
-
-That is a real operational note, not just a command list.
-
-## Exercise 6: Build a repeatable timing baseline
-
-A defensible baseline records commands and context:
-
-```sh
-for run in 1 2 3; do /usr/bin/time -p make -n all >/dev/null; done
-for run in 1 2 3; do make clean >/dev/null; /usr/bin/time -p make -j2 all >/dev/null; done
-make all >/dev/null
-for run in 1 2 3; do /usr/bin/time -p make all >/dev/null; done
-```
-
-The loop variable labels repetitions even if the shell does not print it. A strong
-submission records OS, Make version, job count, and relevant tool versions. Background
-load, filesystem cache state, thermal throttling, and network access can all add noise.
-Use a median or another stated representative value rather than selecting the fastest run.
-
-The key explanation is:
-
-> A single fastest run is weak evidence because it may describe luck more than the route’s
-> typical cost.
-
-## Exercise 7: Explain an unexpected rebuild
-
-Start narrowly:
-
-```sh
-make --trace path/to/target
-stat path/to/target path/to/suspected/prerequisite
-```
-
-The answer should quote only the trace line that names the rebuild cause, then compare the
-relevant timestamps or generated content. Common repairs include restoring a missing edge,
-stopping a prerequisite from rewriting identical content, or changing an order-sensitive
-directory edge to an order-only prerequisite.
-
-If the prerequisite is genuinely newer, "the rebuild is correct" is a valid diagnosis.
-
-## Exercise 8: Audit parse-time shell work
-
-Find calls with:
-
-```sh
-rg -n '\$\(shell[[:space:]]' Makefile mk
-```
-
-Classify tool lookup, source discovery, version queries, and generated configuration
-separately. For known shallow roots, `$(sort $(wildcard ...))` can replace a `find`
-subprocess. A checked-in source manifest can be appropriate when repository policy updates
-and verifies it. An untriggered generated cache is not acceptable: it can miss a new
-source file and appear fast only because its truth went stale.
-
-The key explanation is:
-
-> Reducing shell work is worthwhile only when the replacement preserves the same discovery
-> or configuration truth.
-
-## Exercise 9: Measure useful parallelism
-
-A useful comparison repeats the same clean route:
-
-```sh
-make clean && /usr/bin/time -p make -j1 all
-make clean && /usr/bin/time -p make -j2 all
-make clean && /usr/bin/time -p make -j4 all
-```
-
-Repeat each configuration and inspect the graph for independent prerequisites. If a long
-serial generator feeds every other target, increasing `-j` cannot parallelize that
-critical path. CPU count, memory, storage, network, compiler behavior, and neighboring
-workloads make the saturation point machine-specific.
-
-The important explanation is:
-
-> Parallel speedup is a graph fact plus a machine fact; either one alone gives an
-> incomplete story.
-
-## Exercise 10: Respond to a complete build incident
-
-A strong evidence directory contains small, named artifacts:
+Model reasoning:
 
 ```text
-environment.txt
-timings.tsv
-dry-run.txt
-trace.log
-make-database.txt
-diagnosis.md
+Observed:
+The report contains broad claims but no route, state, samples, or comparison baseline.
+
+Inferred:
+Neither regression nor parallel root cause has been established.
+
+Still unknown:
+Which cost layer dominates, whether trace is unusable, and whether a real capstone output
+differs by schedule.
+
+Decision:
+Preserve context and establish separate baselines before changing diagnostics or
+parallelism.
 ```
 
-The responder records evidence before cleaning or editing, identifies whether cost or
-failure lives in parsing, graph decisions, recipes, environment, or diagnostics, and
-makes the smallest repair consistent with that classification. Verification repeats the
-original route and one adjacent invariant such as no-op convergence or parallel safety.
-The runbook captures the shortest reliable route, expected evidence range, and escalation
-condition.
+Immediate containment would be justified if a trusted artifact were corrupted or at risk
+of publication. In that case, stop publication and preserve the outputs before ordinary
+measurement.
 
-## What mastery-level answers sound like
+The proposed remedies are premature because they alter evidence and scheduling before the
+claims are classified.
 
-A mastery-level answer set in this module does three things well:
+## Exercise 2: Capture a reproducibility context
 
-- it separates cost and incident layers instead of using vague words like "slow" or
-  "flaky"
-- it treats observability as a designed surface rather than as scattered prints
-- it treats performance tuning as valid only when truth and evidence quality survive the
-  change
+A useful context packet might contain:
 
-That is the standard Module 09 is trying to build.
+```text
+context/
+├── revision.txt
+├── worktree.txt
+├── make-version.txt
+├── portability.txt
+├── compiler-version.txt
+├── python-version.txt
+├── help.txt
+└── conditions.md
+```
+
+The conditions table should distinguish ownership:
+
+| Condition | Controlled by repository? | Effect on interpretation |
+| --- | ---: | --- |
+| requested target | yes | defines the contract under test |
+| checkout revision | yes | anchors source and Makefile state |
+| `-j4` | yes | fixes requested scheduling pressure |
+| GNU Make version | partly | must satisfy the course boundary |
+| compiler version | partly | may change clean recipe cost |
+| background load | no | may widen timing variation |
+| filesystem cache | not fully | can make clean samples non-identical |
+
+A strong limitation statement is:
+
+> Background load and cache state were not fully controlled, so these measurements can
+> localize large cost differences and establish a local baseline, but they do not support
+> fine-grained cross-machine comparisons.
+
+Do not retain a raw environment dump without reviewing it for secrets.
+
+## Exercise 3: Establish controlled cost baselines
+
+The answer key cannot supply your values. It can show a defensible summary:
+
+| Route | State | Job count | Samples | Median | Range |
+| --- | --- | ---: | ---: | ---: | ---: |
+| `all` | clean | 4 | 5 | your value | min-max |
+| `all` | confirmed no-op | inherited/default | 5 | your value | min-max |
+| `-n all` | confirmed converged | inherited/default | 5 | your value | min-max |
+
+Keep the raw `real`, `user`, and `sys` lines. State which value you compare; wall-clock
+`real` is normally the first local feedback metric, while user and system time can help
+explain CPU or kernel work.
+
+Example reasoning:
+
+```text
+Observed:
+Clean samples are substantially larger than both no-op and dry-run samples. No-op and
+dry-run samples overlap within the observed range.
+
+Inferred:
+Most clean-build cost appears during recipes. No-op overhead appears mostly before ordinary
+recipe execution.
+
+Still unknown:
+Which clean-build recipe lies on the critical path and whether current values regress from
+an earlier controlled baseline.
+
+Decision:
+Record the current baseline. Do not claim a regression. Profile a recipe only if an
+operational objective makes clean-build cost worth reducing.
+```
+
+A weak answer subtracts one dry-run value from one clean value and calls the result recipe
+time. The states and samples are not precise internal instrumentation.
+
+## Exercise 4: Choose observability by question
+
+Good questions are narrower than "what is Make doing?"
+
+Trace question:
+
+> Why does Make consider `all` complete or in need of work from this state?
+
+Retain the smallest lines naming `all`, its relevant prerequisites, and the rule location.
+Trace can establish Make's causal decision. It cannot establish whether the modeled edge
+matches artifact meaning.
+
+Database question:
+
+> Which final rule owns `all`, or which origin and value does one chosen variable have?
+
+Use a focused search over the `-np` output. Retain the command and excerpt, not only the
+excerpt, so another maintainer can reproduce it.
+
+Trace usability review:
+
+| Property | Model judgment |
+| --- | --- |
+| searchability | target names can be found directly |
+| attribution | trace names Makefile locations and targets |
+| causal usefulness | selected prerequisites are visible |
+| side effects | `-n` avoids ordinary recipes, subject to recursive-Make caveat |
+
+A defensible `trace-count` decision is "keep as a heuristic guardrail" when:
+
+- the target has a documented question
+- it remains non-semantic
+- selftest uses the threshold as a review signal rather than universal performance truth
+
+Line count alone cannot show whether evidence is understandable.
+
+## Exercise 5: Generate and preserve a parallel incident
+
+The current shared-log incident bundle records a command equivalent to:
+
+```sh
+make -f repro/shared-log-interleaving.mk -j2 all
+```
+
+An observed run can report:
+
+```text
+exit_status=0
+```
+
+The copied Makefile shows:
+
+```make
+all: log1 log2
+
+log1:
+	printf 'A\n' >> shared.log
+
+log2:
+	printf 'B\n' >> shared.log
+```
+
+The two targets are `log1` and `log2`; both mutate `shared.log`.
+
+Model reasoning:
+
+```text
+Observed:
+Two independently schedulable targets append to one undeclared shared path, and the command
+can exit successfully.
+
+Inferred:
+Process success does not prove unique output ownership or deterministic publication.
+
+Still unknown:
+Which repaired ownership model best matches the intended log contract.
+
+Decision:
+Preserve the copied repro, command, output, status, and any shared-file content before
+cleanup. Classify ownership before proposing scheduler changes.
+```
+
+Exit status proves only that the shell commands returned success in that run.
+
+## Exercise 6: Classify ownership and reject false repairs
+
+A completed explanation table might be:
+
+| Explanation | Evidence expected if true | Evidence that weakens it |
+| --- | --- | --- |
+| missing ownership/publication model | multiple independent recipes write `shared.log`; no target owns it | one declared writer or isolated worker files plus one merge |
+| parallel scheduler defect | incorrect scheduling despite complete edges and unique writers | defect disappears after ownership repair without changing scheduler |
+| external filesystem failure | write errors or corruption outside the graph pattern | same logical defect is visible directly in the Makefile on ordinary storage |
+
+Classify this as graph truth plus publication ownership.
+
+Proposal labels:
+
+| Proposal | Label | Reason |
+| --- | --- | --- |
+| force `-j1` | temporary mitigation | reduces schedule exposure but preserves multiple writers |
+| add more `echo` lines | rejected action | adds noise without repairing ownership |
+| one target owns the shared file | plausible repair | ownership becomes explicit |
+| private worker outputs plus declared merge | plausible repair | workers own isolated state; merge owns publication |
+
+One repaired graph shape is:
+
+```mermaid
+flowchart LR
+  log1["log1 owns build/log1.txt"] --> merge["shared.log merge target"]
+  log2["log2 owns build/log2.txt"] --> merge
+```
+
+Closure proof should include repeated pressure runs, stable content under the intended
+ordering contract, unique writers, failure cleanup, and convergence. If line order matters,
+the merge recipe must define it.
+
+## Exercise 7: Write a falsifiable tuning proposal
+
+The best answer may reject change:
+
+```text
+Measured cost:
+Current clean, no-op, and dry-run baselines have been established.
+
+Decision:
+No performance edit is justified because no historical regression or violated feedback
+objective has been demonstrated.
+
+Reopen when:
+No-op median exceeds the agreed objective on the same runner class for three consecutive
+baseline collections, or trace guardrail and usability review both show responder cost.
+```
+
+This is stronger than inventing a speedup to satisfy the exercise.
+
+If your measurements reveal a real candidate, the proposal must include:
+
+| Proof obligation | Example |
+| --- | --- |
+| cost | same state and five before/after samples |
+| critical path | graph shows the changed work delays requested completion |
+| requested work | change a declared input and inspect selected work |
+| convergence | successful run followed by successful `make -q` |
+| artifact meaning | domain comparison or stable hash where byte equality is expected |
+| pressure behavior | serial/parallel comparison |
+| rejection | revert if discovery becomes stale or effect is within noise |
+
+An unsafe optimization is removing a prerequisite to suppress rebuilds. A cache introduces
+a new question: which declared inputs refresh the cached value, including additions,
+removals, policy changes, and producer changes?
+
+## Exercise 8: Audit the capstone proof route
+
+Map the selftest bundle:
+
+| Claim | Evidence file |
+| --- | --- |
+| top-level test verdict | `summary.txt` |
+| runtime boundary and guardrails | `settings.env` |
+| serial artifact inventory | `serial.sum` |
+| parallel artifact inventory | `parallel.sum` |
+| dishonest hidden input is detected | `hidden-input.txt` |
+
+The serial and parallel inventories should satisfy the capstone's schedule-equivalence
+contract. The summary should report convergence and the negative hidden-input check.
+
+Important limitation:
+
+> This bundle proves selected build-system invariants. It does not establish a performance
+> regression or prove that a proposed edit improved timing.
+
+A tuning proposal still needs controlled before/after measurements and any
+change-specific requested-work test.
+
+## Exercise 9: Write an executable runbook
+
+A model runbook is:
+
+```text
+Title:
+Parallel build route differs or fails
+
+Use when:
+A public target fails only under `-jN`, or trusted artifacts differ from the serial route.
+
+Do not use when:
+The failure is remote upload, authentication, or another external-service boundary.
+
+Trusted outputs:
+Name the repository-specific artifacts before using this runbook.
+
+Preserve:
+- revision, worktree state, GNU Make and tool versions
+- target, job count, full target-attributed output
+- suspect artifacts and prerequisite metadata
+- do not clean or rerun the first useful state
+
+Contain:
+- stop publication of suspect artifacts
+- a documented serial route may restore feedback temporarily
+- label serial mode as mitigation and retain the pressure reproducer
+
+Branch A: multiple targets write one path
+- classify graph/publication ownership
+- repair to one writer or isolated outputs plus one merge
+
+Branch B: one consumer starts before its producer completes
+- inspect non-executing trace
+- repair the missing semantic edge
+
+Branch C: artifacts match and only logs interleave
+- classify evidence attribution
+- test `--output-sync=target` without changing semantic outputs
+
+Escalate:
+- trusted release or research output may be corrupt
+- evidence points outside repository ownership
+- logs may expose sensitive data
+- repeated branches no longer narrow the cause
+
+Close:
+- original pressure route passes the stated repetition count
+- serial and parallel artifacts satisfy the contract
+- successful route converges
+- incident packet and follow-up owner are recorded
+```
+
+A command deliberately excluded from the first response is `rm -rf build`: it destroys
+incremental evidence before classification.
+
+A useful peer-review question is:
+
+> Can you choose the next branch from the stated observations without asking the original
+> author what they meant?
+
+## Exercise 10: Hand off the incident
+
+A concise handoff begins with the decision, not the diary:
+
+```text
+Summary:
+The broad complaint was split into cost, evidence, and pressure claims. Current baselines
+were established, but no historical performance regression was proven. The controlled
+parallel incident demonstrates two undeclared writers to one shared path despite exit
+status 0.
+
+Impact:
+The repro demonstrates a graph/publication failure class. No evidence currently shows the
+real capstone artifact is corrupt.
+
+Preserved:
+Revision, worktree state, versions, raw timing samples, trace and database excerpts,
+incident bundle, and selftest report.
+
+Current classification:
+Controlled incident: graph truth and publication ownership.
+Performance claim: baseline only; regression unproven.
+Evidence claim: trace retained as a bounded heuristic plus usability surface.
+
+Mitigation:
+Serial execution may be used only as a labeled temporary route for an equivalent real
+incident. It is not the repair.
+
+Verification:
+Capstone selftest report covers convergence, serial/parallel inventories, and hidden-input
+detection. It does not prove a speedup.
+
+Unresolved question:
+Which production output, if any, currently has more than one writer or lacks an honest
+publication owner?
+
+Reading order:
+incident.md, context summary, measurement summary, observability decision, parallel
+incident, tuning decision, verification map, runbook.
+```
+
+The packet audit should remove or redact secrets, redundant full dumps, generated outputs
+that do not affect a decision, and repeated copies already addressed by a manifest.
+
+The packet shortens the next response because it transfers observations, rejected
+explanations, current classification, and one bounded question instead of requiring the
+next owner to reconstruct the investigation from shell history.
+
+## Mastery review
+
+A mastery-level packet has these properties:
+
+- numeric claims retain commands, state, samples, and limitations
+- trace and database evidence answer different questions
+- successful exit is not confused with truthful output ownership
+- no-change is accepted when tuning evidence is insufficient
+- proof surfaces are mapped to claims they actually establish
+- the runbook changes action based on observations
+- the handoff says exactly what remains unknown
+
+If your packet sounds more certain than its evidence, revise the claim rather than adding
+more confident language.
