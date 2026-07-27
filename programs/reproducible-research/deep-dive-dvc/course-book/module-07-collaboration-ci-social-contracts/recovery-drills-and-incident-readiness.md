@@ -55,9 +55,10 @@ Examples:
 
 ```bash
 git clone <repo-url>
+dvc remote list
 dvc pull
-make -C capstone confirm
-make -C capstone recovery-review
+dvc status --json
+dvc repro
 ```
 
 The exact commands vary. The important constraint is that the person running the drill
@@ -72,6 +73,71 @@ flowchart LR
 ```
 
 The drill is successful only if it teaches the team what works and what needs repair.
+
+## Observe before repairing
+
+A recovery command can change the workspace. That is useful during an incident, but it
+can erase evidence during a handoff audit.
+
+Use two checkpoints:
+
+| Checkpoint | Question | Commands |
+| --- | --- | --- |
+| submitted-state observation | was the handed-off state already coherent? | remote discovery, pull, status, result inspection |
+| recovery or reproduction | can the clean maintainer rebuild what is missing or stale? | repro, governed verification, recovery review |
+
+The first checkpoint judges the handoff. The second judges recoverability.
+
+Run the controlled audit:
+
+```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+```
+
+The stale-execution case demonstrates why both checkpoints matter:
+
+```text
+pull_succeeded: true
+recorded_state_clean_before_repro: false
+repro_succeeded: true
+result_matches_claim: false
+```
+
+The repository is recoverable, but the submitted handoff is not acceptable. A reviewer
+can rebuild the result, yet the author still owes a coherent commit with matching
+execution evidence.
+
+## Classify the clean-state failure
+
+Do not use one generic recovery playbook for every failure:
+
+| Observation | Capability lost | First repair |
+| --- | --- | --- |
+| remote list empty | discovery | restore tracked remote route or documented environment mapping |
+| pull reports missing object | remote availability | recover or republish the named object |
+| pull passes, dependency absent | Git completeness | recover the tracked source or replace the hidden dependency |
+| status stale, repro succeeds | submitted-state coherence | reproduce and record matching lock/output evidence |
+| result exists, claim absent | interpretability | restore the result contract and decision context |
+
+This classification tells the incident lead whether to involve the storage steward,
+repository maintainer, change author, or domain owner. It also prevents a new remote
+credential from being presented as a repair for a missing Git dependency.
+
+## Turn a handoff audit into a drill record
+
+A useful drill record names:
+
+- starting Git revision
+- whether the executor had a warm cache
+- remote identity and access mode
+- pre-repair command receipts
+- any repair commands that changed local state
+- the restored result and its claim
+- owner and due date for every discovered contract gap
+
+Record the boundary honestly. If a reviewer used an author-provided private file, the run
+was assisted recovery, not a clean handoff. If the reviewer needed remote write access,
+the route did not prove ordinary read-only review.
 
 ## Incidents reveal unclear ownership
 
@@ -104,6 +170,11 @@ A drill that finds a gap should produce a concrete repair:
 Do not let drill notes become another archive of ignored warnings. The value is in turning
 surprises into contracts.
 
+Prioritize repairs that remove oral dependencies. A one-time instruction in a chat can
+unblock the current drill while leaving the next maintainer exposed. Prefer a tracked
+route, a failing check, or a named ownership record that the next clean executor can
+discover.
+
 ## Recovery is not only disaster response
 
 Recovery drills also help onboarding and review.
@@ -122,6 +193,10 @@ You understand this core when you can:
 
 - explain why recovery claims need rehearsal
 - design a clean-state recovery route
+- separate submitted-state observation from repair-oriented reproduction
+- classify discovery, availability, Git completeness, coherence, and interpretation
+  failures
+- record when a drill used assistance or elevated authority
 - identify ownership questions before an incident
 - turn drill findings into repository or process fixes
 - connect recovery readiness to collaboration and onboarding
