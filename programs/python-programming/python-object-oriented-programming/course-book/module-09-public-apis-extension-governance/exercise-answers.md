@@ -1,6 +1,5 @@
 # Exercise Answers
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,179 +24,219 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These answers are model explanations, not the only acceptable wording.
+These are model answers for the `service_monitoring` governance scenario from the
+exercise page. They are meant to show what a useful public-surface packet looks like when
+the code is technically importable in many places but only a small part should be
+defended as supported.
 
-## How to use the answer page well
+## Running scenario recap
 
-Do not read the model answers first and then reduce Module 09 to "use a facade and be
-careful with plugins."
+Assume the capstone package has:
 
-A better rhythm is:
+- internal application and runtime layers
+- adapter modules
+- a package-level user story for running monitoring workflows
+- one likely extension need for alternate incident sinks
 
-1. finish the exercise with your own governance packet
-2. name the supported consumer need, the public seam, and the private boundary behind it
-3. compare your reasoning with the model answer
-4. revise anywhere your answer still confuses convenience with durable support
+The design question is not "what can outsiders import?" The design question is "what are
+we willing to document, version, prove, and support on purpose?"
 
-What matters is whether the reasoning makes publication, extension, and change control
-explicit and reviewable.
+## Answer 1: One true public surface
 
-Strong Module 09 answers usually do five things:
+A strong answer starts with one consumer need:
 
-- they define public surfaces by supported consumer need, not file accessibility
-- they keep extension seams narrow enough to preserve ownership
-- they treat plugins as governance obligations rather than as generic flexibility
-- they make deprecation, compatibility, and examples part of the same promise
-- they protect internal layout from becoming accidental public API
+- "run the monitoring workflow and collect results"
 
-The strongest self-study packets also leave behind six concrete artifacts:
+Public surface:
 
-- one public-surface inventory
-- one private-versus-public boundary note
-- one extension-seam justification
-- one deprecation and compatibility rule
-- one executable-example review
-- one change-control recommendation
+- one package-level facade such as `service_monitoring.run(...)`
 
-If your answers rely mostly on "this seems reusable," the reasoning is still too thin.
+Private deeper path:
 
-## Answer 1: Name one true public surface
+- direct imports into runtime workers, repositories, or internal orchestration modules
 
-A strong answer identifies:
+Why keep the deeper path private:
 
-- the real consumer need
-- the narrow public entrypoint that satisfies it
-- the deeper internal path that should stay unsupported
-- the ownership rule preserved by the public surface
+- it preserves refactor freedom around internal ownership boundaries
+- it avoids teaching consumers to couple to the current layout
 
-The main lesson is:
+The public surface should be as narrow as the supported use case allows.
 
-- publication should follow stable intent, not current layout convenience
+## Answer 2: Public versus private seam
 
-## Answer 2: Compare public and private seams
+Good split:
 
-The important pieces are:
+- public: a facade plus one documented result type
+- private: runtime coordination objects, internal policies, adapter wiring
 
-- what remains private
-- what becomes public
-- what user behavior each choice encourages
-- what evidence would reveal misuse or drift
+Why:
 
-The weakness to avoid is:
+- consumers need outcomes and stable entry behavior
+- they do not need construction trivia or internal wiring seams
 
-- publishing internals simply because current consumers happen to want them
+If you publish the deeper path, every internal refactor starts looking like a breaking
+change. That is avoidable only if private remains meaningfully private.
 
-## Answer 3: Design one capability boundary
+## Answer 3: Capability boundary
 
-A strong answer explains:
+Extension need:
 
-- why the chosen seam is a facade, protocol, callback, or capability object
-- what actions it allows
-- what internals stay protected
-- what bug or governance problem appears if the seam widens
+- alternate incident sink
 
-Capability design is strongest when:
+Better seam:
 
-- outside code gains exactly enough ability without gaining hidden authority
+- a narrow protocol or capability object that receives already-shaped incident data
 
-## Answer 4: Review one plugin or registration story
+What it may do:
 
-Good answers usually show:
+- accept published incident events
+- return success, retryable failure, or bounded result semantics
 
-- whether plugin machinery is justified at all
-- how discovery or registration stays reviewable
-- what constraints keep plugins from reaching past the intended boundary
-- what support burden the team accepts by publishing the seam
+What it must not do:
 
-The main lesson is that:
+- mutate aggregate state directly
+- reach into repositories or runtime internals
+- control orchestration timing by private access
 
-- a plugin system creates supported outsiders and therefore needs explicit governance
+If the seam widens that far, the extension stops being a capability and becomes a second
+owner of the system.
 
-## Answer 5: Write one deprecation rule honestly
+## Answer 4: Plugin or registration story
 
-A strong answer names:
+Plugin machinery is justified only if:
 
-- what behavior is changing
-- how consumers are informed
-- what overlap or transition window exists
-- what compatibility proof route guards the promise
+- there are several real outsider implementations to support
+- registration needs durable compatibility rules
+- the team is willing to own the review burden
 
-Deprecation is weak when:
+If justified, registration should:
 
-- behavior disappears through informal cleanup without a defendable policy
+- happen at one explicit boundary
+- validate plugin shape and configuration early
+- refuse unsupported or malformed plugins clearly
 
-## Answer 6: Review one executable documentation promise
+If not justified, a simpler constructor or dependency-injection seam is better.
 
-A strong answer explains:
+The key question is not "can we load plugins?" It is "do we want the support cost of
+public outsiders?"
 
-- what public behavior the example teaches
-- how to keep it executable or continuously reviewed
-- what drift would matter most
-- what route should fail first if the example stops telling the truth
+## Answer 5: Deprecation rule
 
-The key review question is:
+Suppose the facade currently exposes `run_monitoring()` and later wants `run()`.
 
-- what wrong mental model would a stale example teach a new consumer
+Honest rule:
 
-## Answer 7: Enforce one import boundary
+- document the old name as deprecated
+- keep both paths during a defined transition window
+- add compatibility checks for both during that window
+- remove the old name only after the published migration period ends
 
-A strong answer distinguishes:
+Weak rule:
 
-- supported imports
-- unsupported deep imports
-- the review or automation rule enforcing the boundary
-- the refactor freedom preserved by that discipline
+- rename it in docs and hope consumers notice
 
-Import discipline is strongest when:
+Deprecation is a public promise about change, not cleanup by convenience.
 
-- internal reorganization remains possible without breaking supported consumers
+## Answer 6: Executable documentation promise
 
-## Answer 8: Review one third-party integration contract
+Suppose the quickstart teaches:
 
-The important pieces are:
+- import facade
+- configure one sink
+- run one workflow
 
-- the stable contract given to the integrator
-- the compatibility check protecting it
-- the implementation details that remain replaceable
-- the gap that unit mocks alone would miss
+Strong rule:
 
-The main lesson is that:
+- example should execute in tests or in a review route close enough to fail on drift
 
-- integration promises need proof that survives backend and layout change
+Why this matters:
 
-## Answer 9: Build one extension-safety review packet
+- the first example teaches consumers which path is public
+- a stale example teaches deep-import or unsupported behavior by accident
 
-A strong review names:
+The example is part of the API contract, not a marketing paragraph.
 
-- the public entrypoint
-- the protected internal boundary
-- the change-control rule
-- the documentation promise
-- the compatibility proof route
-- the remaining governance risk
+## Answer 7: Import boundary
 
-The strongest final note points to one support cost that still needs explicit stewardship.
+Supported imports:
 
-## Answer 10: Produce a governance decision packet
+- package facade
+- documented protocols or extension types
 
-The packet is strong when another maintainer can answer:
+Unsupported imports:
+
+- deep runtime worker modules
+- internal adapter helpers
+- private package paths used only for wiring
+
+Enforcement:
+
+- review rule
+- lint or import-boundary check where practical
+- docs that consistently teach only the supported path
+
+If deep imports spread, internal layout becomes a hidden public API.
+
+## Answer 8: Third-party integration contract
+
+For one outsider integration:
+
+- stable promise: accepted incident payload shape and callback/result contract
+- proof route: compatibility suite shared across supported implementations
+
+What must stay outside:
+
+- private runtime scheduling
+- adapter internals
+- repository layout
+
+What mock-only validation misses:
+
+- whether a real substitute still behaves correctly under the same compatibility suite
+
+That is why third-party contracts need proof beyond internal call choreography.
+
+## Answer 9: Extension-safety review packet
+
+A strong short review might say:
+
+> `service_monitoring.run(...)` is the supported facade. Alternate incident sinks may
+> participate only through a narrow published capability protocol. Runtime orchestration,
+> repositories, and adapter wiring remain private. Quickstart examples must execute
+> against the supported facade. Breaking changes to the facade or sink protocol require a
+> deprecation path and compatibility suite. The main remaining governance risk is that
+> deep-import examples or internal helper exposure could widen the public surface by
+> accident.
+
+That note is strong because it tells the next maintainer:
 
 - what is public
-- what is deliberately private
-- how one extension is allowed to participate
-- how consumers are protected through change
-- what proof route shows the surface is intentionally supported
+- what is not
+- what proof keeps that promise honest
 
-If different readers infer different promises, the packet is still too ambiguous.
+## Answer 10: Governance packet
+
+A useful packet includes:
+
+- one surface table naming the facade and protected internals
+- one compatibility table naming allowed and forbidden change
+- one extension review paragraph
+- one deprecation rule
+- one import-boundary enforcement note
+
+Another maintainer should be able to answer all of these:
+
+- what is public and why
+- what stays private and why
+- what one extension is allowed to do
+- how the next change avoids breaking supported consumers casually
 
 ## Self-check
 
-If your answers consistently explain:
+You are using Module 09 correctly when another maintainer can answer these from your
+packet without extra oral context:
 
-- why one surface deserves publication
-- how one seam stays narrow enough for safe extension
-- what one deprecation or compatibility rule really protects
-- how one example remains executable instead of aspirational
-- where one import boundary keeps internal structure free to change
-
-then you are using Module 09 correctly.
+- why the facade is public instead of the deeper import
+- how the extension seam avoids private-state intimacy
+- what documentation and compatibility proof support the public promise
+- what change must go through deprecation instead of silent renaming
