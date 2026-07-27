@@ -487,15 +487,17 @@ selftest-report:
 >       '  2. Read SELFTEST_GUIDE.md for file meanings and review questions.' \
 >       '  3. Read PROOF_GUIDE.md for the wider claim-to-evidence route.' \
 >       '  4. Read settings.env for the runtime boundary.' \
->       '  5. Compare serial.sum and parallel.sum for schedule equivalence.' \
->       '  6. Read hidden-input.txt for the negative-proof result.' > "$(SELFTEST_REPORT_DIR_ABS)/route.txt"
+>       '  5. Read schedule-comparison.json for the schedule-equivalence decision.' \
+>       '  6. Compare serial-inventory.json and parallel-inventory.json when it fails.' \
+>       '  7. Read hidden-input.txt for the negative-proof result.' > "$(SELFTEST_REPORT_DIR_ABS)/route.txt"
 >     printf '%s\n' \
 >       'Bundle surfaces:' \
 >       '  SELFTEST_GUIDE.md  reading order and file meanings' \
 >       '  summary.txt        top-level verdict surface' \
 >       '  settings.env       runtime boundary and guardrail values' \
->       '  serial.sum         serial artifact inventory' \
->       '  parallel.sum       parallel artifact inventory' \
+>       '  schedule-comparison.json semantic schedule-equivalence result' \
+>       '  serial-inventory.json declared serial artifact inventory' \
+>       '  parallel-inventory.json declared parallel artifact inventory' \
 >       '  hidden-input.txt   dishonest-input detection result' > "$(SELFTEST_REPORT_DIR_ABS)/bundle-guide.txt"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(SELFTEST_REPORT_DIR_ABS)" --output "$(SELFTEST_REPORT_DIR_ABS)/manifest.json"
 >     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR_ABS)"

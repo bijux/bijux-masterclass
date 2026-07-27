@@ -80,16 +80,6 @@ workspace=${SELFTEST_WORK_DIR}"
 trap finish EXIT
 trap 'FAILURE_REASON="selftest interrupted"; exit 130' INT TERM
 
-hash_cmd() {
-  if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
-    shasum -a 256 "$@"
-  elif command -v sha256sum >/dev/null 2>&1; then
-    sha256sum "$@"
-  else
-    cksum "$@" | awk '{print $1 "  " $3}'
-  fi
-}
-
 write_inventory() {
   output=$1
   run_logged "${output%.json}" "$PYTHON_BIN" scripts/write_build_inventory.py \
@@ -148,20 +138,6 @@ step "serial-parallel equivalence"
 run_logged serial-clean "$MAKE_BIN" clean
 run_logged serial-build "$MAKE_BIN" -j1 all
 write_inventory serial-inventory.json
-echo "selftest: INFO: computing serial artifact hash"
-# Hash all artifacts (intermediates + executables for full equivalence)
-echo "selftest: INFO: listing serial artifacts"
-find build -type f \( -name '*.o' -o -name '*.d' -o -name 'flags.stamp' \) -print | sort > filelist.tmp
-echo "selftest: INFO: hashing serial artifacts"
-while IFS= read -r f; do hash_cmd "$f"; done < filelist.tmp > serial_hash.tmp
-rm -f filelist.tmp
-# Note: some compilers introduce nondeterminism (debug info paths, timestamps).
-# The capstone uses -frandom-seed and fixed flags to minimize this.
-hash_cmd app build/include/dynamic.h build/bin/dyn1 build/bin/dyn2 >> serial_hash.tmp
-echo "selftest: INFO: sorting serial hashes"
-LC_ALL=C sort serial_hash.tmp > serial.sum
-rm -f serial_hash.tmp
-echo "selftest: INFO: serial hash complete"
 
 run_logged parallel-clean "$MAKE_BIN" clean
 echo "selftest: INFO: running bounded parallel build"
@@ -173,24 +149,14 @@ else
   run_logged parallel-build "$MAKE_BIN" -j2 all
 fi
 write_inventory parallel-inventory.json
-echo "selftest: INFO: computing parallel artifact hash"
-# Mirror serial hashing for symmetry
-echo "selftest: INFO: listing parallel artifacts"
-find build -type f \( -name '*.o' -o -name '*.d' -o -name 'flags.stamp' \) -print | sort > filelist.tmp
-echo "selftest: INFO: hashing parallel artifacts"
-while IFS= read -r f; do hash_cmd "$f"; done < filelist.tmp > parallel_hash.tmp
-rm -f filelist.tmp
-hash_cmd app build/include/dynamic.h build/bin/dyn1 build/bin/dyn2 >> parallel_hash.tmp
-echo "selftest: INFO: sorting parallel hashes"
-LC_ALL=C sort parallel_hash.tmp > parallel.sum
-rm -f parallel_hash.tmp
-echo "selftest: INFO: parallel hash complete"
-
-diff -u serial.sum parallel.sum >/dev/null || fail "serial/parallel: artifact mismatch"
-record serial.sum "$(cat serial.sum)"
-record parallel.sum "$(cat parallel.sum)"
 record serial-inventory.json "$(cat serial-inventory.json)"
 record parallel-inventory.json "$(cat parallel-inventory.json)"
+run_logged schedule-comparison "$PYTHON_BIN" scripts/compare_build_inventories.py \
+  --baseline serial-inventory.json \
+  --candidate parallel-inventory.json \
+  --output schedule-comparison.json ||
+  fail "serial/parallel artifact contract differs; inspect schedule-comparison.json"
+record schedule-comparison.json "$(cat schedule-comparison.json)"
 SERIAL_PARALLEL_EQUIVALENCE="PASS"
 pass "serial-parallel equivalence"
 
