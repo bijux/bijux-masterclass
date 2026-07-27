@@ -37,6 +37,10 @@ Each exercise asks for three things:
 
 Treat the ten exercises as one full lab day on class customization before metaclasses.
 
+This is not a "use ten advanced class features" worksheet. It is a boundary-review lab. A
+weak answer can compile, look tidy, and still miss the learning goal if it hides the real
+owner or overstates what the chosen tool actually guarantees.
+
 Do them in order:
 
 - Exercises 1-3 establish class decorators, dataclass limits, and single-attribute boundaries
@@ -49,6 +53,11 @@ Keep one class-boundary table while you work:
 | Invariant or class rule | Smallest honest owner | What it controls directly | What it does not control | Review judgment |
 | --- | --- | --- | --- | --- |
 
+Keep one second table beside it:
+
+| Exercise | Evidence the reviewer can inspect | Stronger tool rejected | Missing condition that would justify escalation |
+| --- | --- | --- | --- |
+
 ## Exercise 1: Use one class decorator for an opt-in class rule
 
 Write or inspect a class decorator that adds one visible post-construction behavior.
@@ -58,6 +67,7 @@ What to hand in:
 - the behavior it adds
 - one sentence explaining why the class decorator can install it after class creation
 - one sentence explaining why this does not need a metaclass
+- one sentence naming the first requirement that would make the decorator too weak
 
 ## Exercise 2: Separate dataclass generation from validation
 
@@ -68,6 +78,7 @@ What to hand in:
 - the generated behavior you are relying on
 - one invariant that the dataclass still does not enforce for you
 - one sentence describing where that missing rule should live instead
+- one sentence naming the overclaim you are deliberately refusing
 
 ## Exercise 3: Control one attribute boundary with a property
 
@@ -78,6 +89,7 @@ What to hand in:
 - the attribute rule it enforces
 - one setter or getter behavior that makes the boundary visible
 - one explanation of why a property is clearer here than a class-wide hook
+- one sentence explaining what would change if the same rule appeared on many fields
 
 ## Exercise 4: Promote one repeated property rule into a descriptor
 
@@ -88,6 +100,7 @@ What to hand in:
 - the repeated rule
 - one reason the rule is now better owned by a descriptor than by copied properties
 - one sentence explaining why this is still different from metaclass control
+- one sentence naming the exact reuse pressure that caused the escalation
 
 ## Exercise 5: Place one design on the lower-power ladder
 
@@ -104,6 +117,7 @@ What to hand in:
 - the requirement
 - the level you chose
 - one sentence rejecting at least one stronger option as unnecessary
+- one sentence naming the missing condition that stronger option would actually need
 
 ## Exercise 6: Review the limits of a frozen surface
 
@@ -114,6 +128,7 @@ What to hand in:
 - the exact mutation boundary the decorator controls
 - one kind of mutation it still allows
 - one explanation of why that remaining mutability does not make the example dishonest
+- one sentence naming the first change that would force a stronger owner than the minimal decorator
 
 ## Midday self-check
 
@@ -128,6 +143,10 @@ questions clearly:
 If you cannot answer those four questions in plain language, return to Exercises 1-6 and
 make the owner, boundary, and rejected stronger option more explicit before continuing.
 
+If your answers still rely on phrases like "the magic handles it" or "the class feature
+makes it safe," revise them before moving on. Those phrases hide exactly the owner story
+this module is trying to teach.
+
 ## Exercise 7: Separate repeated field policy from class-wide policy
 
 Choose one rule that repeats across attributes or classes and decide whether it belongs in
@@ -138,6 +157,7 @@ What to hand in:
 - the repeated rule
 - the owner you chose
 - one explanation of why at least one alternative owner would be less clear
+- one sentence naming who would debug the rule if it started failing in production
 
 ## Exercise 8: Reject one unnecessary escalation to metaclass power
 
@@ -149,6 +169,7 @@ What to hand in:
 - the original requirement
 - the lower-power owner you would choose instead
 - one sentence explaining what true class-creation-time need is still missing
+- one sentence describing what evidence would finally justify metaclass escalation
 
 ## Exercise 9: Compare honest class claims with overstated class claims
 
@@ -160,6 +181,7 @@ What to hand in:
 - the honest description
 - the overstated description
 - one explanation of which words make the overstated version misleading
+- one replacement sentence that stays useful without inflating the guarantee
 
 ## Exercise 10: Produce a class-boundary packet
 
@@ -176,6 +198,21 @@ The packet is strong when another learner can use it to answer:
 - what that owner controls directly
 - why a stronger mechanism was rejected as unnecessary
 
+Make the packet easy to scan. Another learner should be able to review it without knowing
+your original code in detail.
+
+## Repair prompts for weak exercise drafts
+
+Use these prompts when an answer feels vague, overpowered, or suspiciously confident:
+
+| If your answer says... | Ask yourself instead... |
+| --- | --- |
+| "the dataclass enforces it" | where is the explicit rule owner actually located? |
+| "the property keeps it simple" | simple because it is one attribute boundary, or just because the syntax looks friendly? |
+| "a descriptor is more advanced" | what repeated field pressure makes reuse necessary here? |
+| "a metaclass could handle it" | what class-creation-time requirement is missing right now? |
+| "the object is frozen" | which mutations are still allowed? |
+
 ## Mastery standard for this exercise set
 
 Across all six answers, the module wants the same habits:
@@ -191,6 +228,16 @@ Across all ten answers, add two more habits:
 - you leave behind a class-boundary packet another learner could review without guessing
 
 If an answer still sounds like "the class magic handles it," keep going.
+
+## Exit check for the exercise set
+
+Before you leave Module 06 practice, make sure your packet lets another learner answer
+all of these:
+
+- which class rules stayed post-construction and which ones crossed to attribute-boundary ownership
+- which stronger tools you rejected and why
+- which remaining gaps or allowed mutations stayed explicit
+- which requirement would finally justify metaclass escalation
 
 ## Continue through Module 06
 
