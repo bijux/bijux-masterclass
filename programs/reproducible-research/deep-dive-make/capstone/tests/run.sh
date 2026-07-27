@@ -2,6 +2,7 @@
 set -eu
 
 MAKE_BIN="${MAKE:-make}"
+PYTHON_BIN="${PYTHON:-python3}"
 SELFTEST_REPORT_DIR="${SELFTEST_REPORT_DIR:-}"
 SELFTEST_WORK_DIR="${SELFTEST_WORK_DIR:-../../../../artifacts/proof/reproducible-research/deep-dive-make/selftest/workspace}"
 
@@ -89,6 +90,20 @@ hash_cmd() {
   fi
 }
 
+write_inventory() {
+  output=$1
+  run_logged "${output%.json}" "$PYTHON_BIN" scripts/write_build_inventory.py \
+    --root . \
+    --output "$output" \
+    --path app \
+    --path build/include/dynamic.h \
+    --path build/bin/dyn1 \
+    --path build/bin/dyn2 \
+    --path build/flags.stamp \
+    --pattern 'build/**/*.o' \
+    --pattern 'build/**/*.d'
+}
+
 case "$SELFTEST_WORK_DIR" in
   ""|"/") fail "unsafe SELFTEST_WORK_DIR: ${SELFTEST_WORK_DIR}" ;;
 esac
@@ -112,6 +127,7 @@ export DEBUG=0
 # Override in CI via TRACE_MAX=<n> or disable by setting TRACE_MAX=0.
 TRACE_MAX="${TRACE_MAX:-500}"
 record settings.env "MAKE_BIN=${MAKE_BIN}
+PYTHON_BIN=${PYTHON_BIN}
 TRACE_MAX=${TRACE_MAX}
 SELFTEST_WORK_DIR=${SELFTEST_WORK_DIR}"
 
@@ -131,6 +147,7 @@ CURRENT_CHECK="serial_parallel_equivalence"
 step "serial-parallel equivalence"
 run_logged serial-clean "$MAKE_BIN" clean
 run_logged serial-build "$MAKE_BIN" -j1 all
+write_inventory serial-inventory.json
 echo "selftest: INFO: computing serial artifact hash"
 # Hash all artifacts (intermediates + executables for full equivalence)
 echo "selftest: INFO: listing serial artifacts"
@@ -155,6 +172,7 @@ if command -v timeout >/dev/null 2>&1; then
 else
   run_logged parallel-build "$MAKE_BIN" -j2 all
 fi
+write_inventory parallel-inventory.json
 echo "selftest: INFO: computing parallel artifact hash"
 # Mirror serial hashing for symmetry
 echo "selftest: INFO: listing parallel artifacts"
@@ -171,6 +189,8 @@ echo "selftest: INFO: parallel hash complete"
 diff -u serial.sum parallel.sum >/dev/null || fail "serial/parallel: artifact mismatch"
 record serial.sum "$(cat serial.sum)"
 record parallel.sum "$(cat parallel.sum)"
+record serial-inventory.json "$(cat serial-inventory.json)"
+record parallel-inventory.json "$(cat parallel-inventory.json)"
 SERIAL_PARALLEL_EQUIVALENCE="PASS"
 pass "serial-parallel equivalence"
 

@@ -466,6 +466,7 @@ selftest:
 >     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
 >     MAKE="$(MAKE)" \
+>       PYTHON="$(PYTHON)" \
 >       SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" \
 >       SELFTEST_WORK_DIR="$(SELFTEST_WORK_DIR_ABS)" \
 >       $(TST_DIR)/run.sh
@@ -474,6 +475,7 @@ selftest-report:
 >     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
 >     MAKE="$(MAKE)" \
+>       PYTHON="$(PYTHON)" \
 >       SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" \
 >       SELFTEST_WORK_DIR="$(SELFTEST_WORK_DIR_ABS)" \
 >       $(TST_DIR)/run.sh
