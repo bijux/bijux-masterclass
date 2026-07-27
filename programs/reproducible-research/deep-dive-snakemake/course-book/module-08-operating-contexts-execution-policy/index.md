@@ -1,166 +1,228 @@
 # Module 08: Operating Contexts and Execution Policy
 
-A workflow that only works under one command on one machine is not yet operationally
-serious.
+A workflow that runs locally, in CI, and under scheduler-oriented policy can still be three
+different workflows hidden behind one repository.
 
-But a workflow that changes meaning every time the operating context changes is not
-reproducible either.
+Module 08 teaches you to prove the narrower and more useful claim:
 
-This module is about keeping those two truths separate.
+> Execution contexts may change capacity, observability, recovery, and site mapping while
+> sample scope, planned jobs, trusted paths, and artifact meaning remain invariant.
 
-## What this day must accomplish
+## Begin with executable evidence
 
-By the end of Module 08, you should be able to do five things without confusing policy
-for workflow meaning:
+From the course directory:
 
-- classify which settings belong in profiles and which do not
-- compare local, CI, and scheduler contexts without semantic drift
-- explain retries and latency waits through a failure model rather than habit
-- mark where scratch, staging, and shared storage become trusted outputs
-- review operating-context changes as policy diffs instead of local folklore
+```bash
+make capstone-context-invariance-audit
+```
 
-## The context ladder for the whole module
+Read:
 
-Keep this order in front of you all day:
+```text
+artifacts/audit/reproducible-research/deep-dive-snakemake/context-invariance/
+├── route.txt
+├── CONTEXT_INVARIANCE_AUDIT_GUIDE.md
+├── summary.tsv
+├── specimen/
+├── report.json
+└── workspace/
+```
+
+The expected summary is:
+
+```text
+CONTEXT_POLICY_PRESERVED        PASS
+TRUSTED_PATH_LEAK_REPRODUCED   PASS
+SAMPLE_SCOPE_LEAK_REPRODUCED   PASS
+```
+
+The final two rows are successful defect reproductions. Do not describe all three PASS
+results as profile approval.
+
+## The module's evidence spine
+
+```mermaid
+flowchart LR
+  source["Classify profile source"]
+  plan["Compare jobs, edges, and paths"]
+  artifact["Compare manifests and result bytes"]
+  failure["Justify retry and latency policy"]
+  storage["Name storage trust transition"]
+  reject["Reject semantic mutations"]
+
+  source --> plan --> artifact --> failure --> storage --> reject
+```
+
+Every lesson attaches to this route. The audit establishes context invariance for a bounded
+local specimen. The failure and storage lessons explain claims that require additional
+operating evidence.
+
+## What this session must accomplish
+
+By the end of Module 08, you should be able to:
+
+- classify profile keys by effect rather than file location
+- prove that preserving profiles retain one semantic plan and artifact set
+- diagnose trusted-path and sample-scope leaks separately
+- separate rule resource requests, profile capacity, and site mapping
+- justify retries and latency waits from named failure evidence
+- design a cross-filesystem trust transition
+- explain acceptance, rejection, and isolation behavior in a context gate
+
+“The profiles look similar” does not satisfy any of these outcomes.
+
+## Prerequisites
+
+Before this module, you should be able to:
+
+- read a Snakemake rule's input and output contract
+- inspect a dry-run
+- distinguish internal results from trusted publish paths
+- run the capstone's supported Make targets
+
+If those are not yet comfortable, revisit Modules 01, 03, and 06 before diagnosing
+execution-context drift.
+
+## Read the module in this order
 
 ```mermaid
 flowchart TD
-  profiles["profiles own policy"] --> plans["dry-runs confirm semantic stability"]
-  plans --> failure["retries and latency require a failure model"]
-  failure --> storage["storage and promotion boundaries stay explicit"]
-  storage --> review["drift review protects context invariants"]
+  audit["Run context invariance audit"]
+  profiles["Profiles as Policy and Semantic Boundaries"]
+  executors["Executors, Resources, and Context-Invariant Meaning"]
+  failure["Retries, Latency, and Failure Discipline"]
+  storage["Staging, Storage, and Filesystem Trust"]
+  review["Reviewing Context Drift and Policy Leaks"]
+  example["Worked Example"]
+  exercises["Exercises and Answers"]
+
+  audit --> profiles --> executors --> failure --> storage --> review
+  review --> example --> exercises
 ```
 
-If a profile changes published meaning, sample membership, or public paths, it has crossed
-the boundary. If a retry hides an unexplained defect, the policy is lying.
+The order matters:
 
-## The running lab for the whole day
+- classify ownership before discussing executors
+- prove semantic plans before debating performance
+- classify failures before changing retries
+- define path roles before trusting scratch
+- understand findings before writing a review
 
-Use one repository story all day instead of several unrelated profile examples:
-
-- one repository has `local`, `ci`, and `slurm` operating contexts
-- one shared final target must plan the same semantic work in all three
-- one deliberate profile leak must be detected and rejected
-- one scratch or staging route must show when trust begins
-- one policy audit must tell the next maintainer what changed and why
-
-Every page should help you answer one concrete review question about operating context.
-
-## Plan for the day
-
-| Session | What you do | Evidence you keep |
-| --- | --- | --- |
-| context inventory | read local, CI, and scheduler profiles line by line | classified policy matrix |
-| plan comparison | request the same targets in each context | normalized dry-run comparison |
-| failure discipline | decide whether retries and latency changes are justified | failure-policy note |
-| storage boundary | trace scratch, staging, and publication through one rule family | promotion diagram |
-| drift review | inject one semantic profile leak and catch it | failing audit evidence |
-| independent practice | complete all ten exercises | operating-context review packet |
-
-The day is successful when different contexts change how the workflow runs and is observed,
-but not what counts as a correct and trusted outcome.
-
-## Study route
-
-```mermaid
-flowchart TD
-  start["Overview"] --> core1["Profiles as Policy and Semantic Boundaries"]
-  core1 --> core2["Executors, Queues, and Context-Invariant Workflow Meaning"]
-  core2 --> core3["Retries, Latency, and Failure Discipline"]
-  core3 --> core4["Staging, Storage, and Filesystem Assumptions"]
-  core4 --> core5["Reviewing Operating-Context Drift and Policy Leaks"]
-  core5 --> example["Worked Example: Auditing Local, CI, and Slurm Without Semantic Drift"]
-  example --> practice["Exercises"]
-  practice --> answers["Exercise Answers"]
-  answers --> glossary["Glossary"]
-```
-
-Read the module in that order the first time.
-
-The route matters:
-
-- start with profile boundaries before you debate executors
-- compare semantic plans before you change retries
-- define trusted storage boundaries before you call scratch output “done”
-
-## The ten files in this module
+## The ten module files
 
 1. Overview (`index.md`)
 2. [Profiles as Policy and Semantic Boundaries](profiles-as-policy-and-semantic-boundaries.md)
-3. [Executors, Queues, and Context-Invariant Workflow Meaning](executors-queues-and-context-invariant-workflow-meaning.md)
+3. [Executors, Resources, and Context-Invariant Workflow Meaning](executors-queues-and-context-invariant-workflow-meaning.md)
 4. [Retries, Latency, and Failure Discipline](retries-latency-and-failure-discipline.md)
-5. [Staging, Storage, and Filesystem Assumptions](staging-storage-and-filesystem-assumptions.md)
+5. [Staging, Storage, and Filesystem Trust](staging-storage-and-filesystem-assumptions.md)
 6. [Reviewing Operating-Context Drift and Policy Leaks](reviewing-operating-context-drift-and-policy-leaks.md)
-7. [Worked Example: Auditing Local, CI, and Slurm Without Semantic Drift](worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md)
+7. [Worked Example: Proving Context Invariance and Catching Policy Leaks](worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md)
 8. [Exercises](exercises.md)
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
 
-## How to use the file set
+## Use each lesson for one question
 
-| If you need to... | Start here |
+| Question | Teaching surface |
 | --- | --- |
-| decide what profiles may and may not own | [Profiles as Policy and Semantic Boundaries](profiles-as-policy-and-semantic-boundaries.md) |
-| compare executor differences without changing workflow meaning | [Executors, Queues, and Context-Invariant Workflow Meaning](executors-queues-and-context-invariant-workflow-meaning.md) |
-| justify retries and latency changes honestly | [Retries, Latency, and Failure Discipline](retries-latency-and-failure-discipline.md) |
-| review scratch, staging, and trusted output boundaries | [Staging, Storage, and Filesystem Assumptions](staging-storage-and-filesystem-assumptions.md) |
-| audit policy drift across contexts | [Reviewing Operating-Context Drift and Policy Leaks](reviewing-operating-context-drift-and-policy-leaks.md) |
-| see the whole module as one context audit | [Worked Example: Auditing Local, CI, and Slurm Without Semantic Drift](worked-example-auditing-local-ci-and-slurm-without-semantic-drift.md) |
-| test your own understanding | [Exercises](exercises.md) |
-| compare your reasoning against a reference answer | [Exercise Answers](exercise-answers.md) |
-| stabilize the module vocabulary | [Glossary](glossary.md) |
+| What may a profile own? | profiles lesson |
+| Where do resource requests, capacity, and site mapping belong? | executor lesson |
+| When are retries or waits justified? | failure lesson |
+| When does staged data become trusted? | storage lesson |
+| How should a maintainer order findings and judge a gate? | drift-review lesson |
+| How do all surfaces connect in one reproducible route? | worked example |
+| Can I produce the evidence without prompts? | exercises |
 
-## The running question
+Avoid reading all five core lessons as repeated warnings about policy. Each one resolves a
+different review problem.
 
-Carry this question through every page:
+## The running specimen
 
-> if this workflow runs in a different context tomorrow, which exact boundary proves the meaning stayed the same?
+The specimen contains:
 
-Good Module 08 answers usually mention one or more of these:
+- one workflow
+- one semantic base config
+- two sample inputs
+- three preserving profiles
+- one trusted-path leak
+- one sample-scope leak
 
-- a profile setting that is clearly policy rather than semantics
-- a dry-run or comparison route that protects target meaning
-- a retry or latency change justified by a named failure class
-- a storage boundary showing when an output becomes trusted
-- a drift gate that fails when policy leaks into semantics
+The preserving profiles vary:
 
-## What the module should change in your head
+- cores
+- latency tolerance
+- shell-command visibility
 
-If the day is working, you should feel these transitions:
+They must preserve:
 
-- profile files stop looking harmless by default
-- “it works in CI” stops sounding like enough evidence on its own
-- retries stop sounding helpful when the failure class is still unknown
-- scratch stops sounding like publication just because bytes exist there
-- context review becomes a first-class part of reproducibility rather than an operations afterthought
+- `alpha` and `beta`
+- both normalize jobs
+- dependency edges
+- `publish/stable/manifest.tsv`
+- manifest membership
+- result bytes
 
 ## Commands to keep close
 
-These commands form the evidence loop for Module 08:
+| Question | Command |
+| --- | --- |
+| Build the evidence packet | `make capstone-context-invariance-audit` |
+| Prove the gate rejects mutations | `make capstone-context-invariance-selftest` |
+| Compare the capstone's real profile files | `make capstone-profile-audit` |
+| Run the full learner proof route | `make proof` |
+| Run clean-room capstone confirmation | `make capstone-confirm` |
 
-```bash
-snakemake --profile profiles/local -n
-snakemake --profile profiles/ci -n
-snakemake --profile profiles/slurm -n
-make profile-audit
-```
+The context-invariance audit uses a bounded specimen because it needs known preserving and
+leaking cases. The profile audit packages the capstone's real profiles. Use both when
+reviewing the production capstone.
 
-They answer different questions:
+## A serious-session schedule
 
-- what the workflow plans under one local policy surface
-- whether CI changes semantics or only operating policy
-- how a scheduler context maps the same workflow meaning
-- whether the repository already packages its context review honestly
+| Work block | Activity | Evidence retained |
+| --- | --- | --- |
+| ownership | classify five profile files | profile matrix |
+| planning | compare D3 DAGs and output summaries | normalized plan table |
+| execution | compare manifests and results | artifact table |
+| failure | classify three incident cards | retry and latency record |
+| storage | design destination-side publication | path-role contract |
+| rejection | trace one mutation test | rejected finding |
+| review | write findings in risk order | maintainer review |
+
+The session is complete when the evidence packet can be reviewed without your narration.
+
+## Know the proof boundary
+
+The audit proves:
+
+- profile key classification for the specimen
+- plan and artifact invariance under three local executions
+- detection of two semantic leak classes
+- rejection and isolation behavior
+
+It does not prove:
+
+- real scheduler submission
+- correct account or partition
+- performance equivalence
+- shared-filesystem latency bounds
+- justified retries
+- cross-filesystem scratch promotion
+
+The lessons show how to collect those additional forms of evidence without mislabeling the
+local audit.
 
 ## Exit standard
 
-Do not move on until all of these are true:
+Do not leave Module 08 until you can:
 
-- you can name one setting that belongs in a profile and one that does not
-- you can show one semantic comparison across local, CI, and scheduler contexts
-- you can explain one retry or latency change through an explicit failure model
-- you can say where scratch ends and trusted output begins
-- you can describe one drift check that catches a semantic profile leak
-- you have completed all ten exercises and caught at least one deliberate context leak
+- quote all three findings with their correct meanings
+- explain why a DAG-only gate misses path drift
+- explain why a path-only gate misses sample drift
+- place threads, cores, and account mapping in the correct ownership layers
+- classify deterministic, transient, resource, visibility, and publication failures
+- draw scratch, destination candidate, and final output as distinct states
+- trace one rejected mutation from source to failed finding
+- state at least one explicit limit in your review conclusion
 
-When those become ordinary, Module 08 has done its job.
+Then complete all ten exercises. If the answer packet depends on an instructor explaining
+what each artifact means, the module is not yet complete.
