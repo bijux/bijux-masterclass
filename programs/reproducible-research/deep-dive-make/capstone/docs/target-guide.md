@@ -43,9 +43,9 @@ question honestly.
 | does one candidate satisfy archive and install policy | `make release-check` | `make confirm` |
 | do existing candidate bytes pass without a rebuild | `make verify-dist` | `make install-rehearsal` |
 | do malformed candidates and destinations fail correctly | `make release-selftest` | `make release-check` |
-| what do the governed build states cost here | `make perf` | inspect the performance evidence bundle |
+| what do the governed build states cost in this attributable context | `make perf` | inspect provenance and requested work before timings |
 | does one source change select exactly the necessary work | `make performance-incremental` | inspect policy and incremental report |
-| did cost change under the same semantic contract | `make performance-compare` | inspect both bundles and the comparison report |
+| did cost change under compatible context and equivalent work | `make performance-compare` | inspect both bundles and the comparison report |
 | do performance evidence gates reject dishonest inputs | `make performance-selftest` | inspect the rejection tests |
 | is the clean planning trace bounded and attributable | `make trace-report` | inspect trace evidence and raw trace |
 | do I need the proof saved as a review bundle | `make verify-report` | `make proof` |
@@ -72,10 +72,10 @@ question honestly.
 | `accept-release` | one final record bound to candidate and install reports | you need a bounded local decision |
 | `release-selftest` | ten acceptance and rejection tests | you need executable release guardrails |
 | `release-check` | complete local candidate production and acceptance | you need the full local release claim |
-| `perf` | repeated timings, convergence, trusted-output inventories, and context | you need a reviewable local baseline |
+| `perf` | provenance, requested work, repeated timings, convergence, and inventories | you need an attributable local baseline |
 | `performance-incremental` | missing and unexpected rebuild classifications | you need requested-work proof |
-| `performance-compare` | compatible timing deltas guarded by semantic equivalence | you have a prior evidence bundle |
-| `performance-selftest` | capture and comparison acceptance/rejection tests | you need to review the evidence gate |
+| `performance-compare` | timing deltas guarded by context and semantic equivalence | you have a compatible prior evidence bundle |
+| `performance-selftest` | context, rebuild, capture, and comparison gate tests | you need to review the evidence gate |
 | `trace-report` | clean-plan trace, semantic checks, and bundle manifest | you need causality evidence without execution |
 | `walkthrough` | the bounded first-pass bundle | you need an ordered entry route |
 | `tour` | the shortest printed walkthrough plus supporting bundle | you need quick orientation |
@@ -99,7 +99,7 @@ question honestly.
 - `install-rehearsal` proves a destination mapping; `accept-release` records the bounded decision
 - `release-selftest` proves gate behavior; `release-check` applies those gates to the capstone candidate
 - `perf` establishes one baseline; `performance-compare` can support a change claim
-- `performance-compare` rejects semantic drift before reporting timing deltas
+- `performance-compare` rejects provenance, environment, requested-work, and artifact drift before reporting timing deltas
 - `walkthrough` writes a first-pass bundle; `tour` prints the shortest route and focused follow-ups
 - `contract-audit` and `inspect` are the same route with different naming context
 - `selftest-report` and `verify-report` are the same saved evidence bundle, including on failure

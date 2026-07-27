@@ -46,10 +46,10 @@ start narrower.
 | install remains contained and converges on rerun | `make install-rehearsal` | install policy, install acceptance report |
 | malformed release inputs fail at the expected boundary | `make release-selftest` | release tests and rejection output |
 | the full local release claim holds | `make release-check` | release acceptance record and `RELEASE_GUIDE.md` |
-| governed local build-cost evidence is reviewable | `make perf` | `PERFORMANCE_EVIDENCE_GUIDE.md`, `summary.tsv`, `evidence.json` |
+| governed local build-cost evidence is attributable and reviewable | `make perf` | `PERFORMANCE_EVIDENCE_GUIDE.md`, `evidence.json`, incremental report, then `summary.tsv` |
 | a declared input selects the required rebuild scope | `make performance-incremental` | incremental policy and requested-work report |
-| two build-cost bundles are semantically comparable | `make performance-compare` | comparison report and both evidence bundles |
-| performance gates reject dishonest evidence | `make performance-selftest` | capture and comparison rejection tests |
+| two build-cost bundles have compatible context and equivalent work | `make performance-compare` | execution context, incremental work, inventories, then scenario deltas |
+| performance gates reject dishonest evidence | `make performance-selftest` | context, incremental, capture, and comparison rejection tests |
 | clean planning evidence retains causal attribution | `make trace-report` | trace report, raw trace, and manifest |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
 | generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/generated-header-edge.mk` |
@@ -86,8 +86,8 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `release-selftest` for acceptance and rejection behavior
 - choose `release-check` for the complete local release claim
 - choose `perf` to establish a local baseline without claiming a regression
-- choose `performance-compare` only when an earlier compatible bundle exists
-- choose `performance-selftest` when the question is whether the evidence gate closes
+- choose `performance-compare` only when an earlier clean bundle from the same toolchain and runner exists
+- choose `performance-selftest` when the question is whether provenance, requested-work, capture, and comparison gates close
 - choose `verify-report` when the proof needs to be saved
 - choose `incident-audit` for one failure class with captured evidence
 - choose `profile-audit` for portability, policy, and precedence questions

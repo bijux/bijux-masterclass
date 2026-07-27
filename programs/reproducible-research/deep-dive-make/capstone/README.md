@@ -56,7 +56,7 @@ first-contact playground for Make syntax.
 | does the selftest reject a known schedule defect | `make selftest-harness-tests` | inspect the rejected test bundle |
 | does one candidate satisfy the local release contract | `make release-check` | `make confirm` |
 | what do the governed build routes cost here | `make perf` | preserve the bundle before comparing another revision |
-| did cost change without changing trusted outputs | `make performance-compare` | inspect both evidence bundles |
+| did cost change under compatible context and equivalent work | `make performance-compare` | inspect context, requested work, trusted outputs, then deltas |
 | which failure class does this repro teach | `make incident-audit` | `make proof` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
 
@@ -93,8 +93,8 @@ bounded review route without turning the capstone into a browsing exercise.
 | `selftest-harness-tests` | truthful schedules pass and controlled artifact drift fails | the proof harness is tested, not merely trusted |
 | `verify-report` | passing or failing selftest evidence is completed as a review bundle | proof can be inspected without rerunning |
 | `release-check` | one candidate passes archive and contained-install acceptance | release claims bind to exact bytes |
-| `perf` | governed scenarios produce repeated samples plus semantic evidence | a local baseline is reviewable |
-| `performance-selftest` | malformed and truth-losing evidence is rejected | performance claims are gated, not trusted |
+| `perf` | governed scenarios bind provenance, requested work, samples, and outputs | a local baseline is attributable and reviewable |
+| `performance-selftest` | context, rebuild, capture, and comparison dishonesty is rejected | performance claims are gated, not trusted |
 | `proof` | the sanctioned review bundle set exists and agrees with the contract | stewardship has a durable route |
 | `confirm` | the strongest built-in confirmation path still passes | final review is stronger than first-pass learning |
 
