@@ -24,192 +24,224 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This lesson is about treating every representation as a boundary decision.
+This lesson is about treating representation as a governance choice, not as a formatting
+detail.
 
-The moment state is:
+The moment information is:
 
 - serialized
 - logged
 - queued
-- stored
-- echoed back to a caller
+- persisted
+- echoed back in a response
+- turned into artifact metadata
 
-it stops being an internal implementation detail and becomes a trust-boundary artifact.
+it becomes a trust-boundary artifact.
 
-That changes the review questions.
-The new question is not "can this be encoded?"
-It is:
+At that point, the question is no longer:
 
-- what is leaving the trusted boundary
-- what could be replayed or reconstructed unsafely
-- what sensitive information is now easier to expose
-- what representation is broader than the consumer truly needs
+- can we encode this object?
 
-## Keep one capstone route visible
+The real questions become:
 
-Use one whole-system path:
+- who is allowed to read this representation?
+- how long might it survive?
+- what could be reconstructed, replayed, or leaked from it?
+- what information does the consumer actually need?
 
-1. external input enters a workflow
-2. the workflow normalizes it into domain meaning
+That is why serialization belongs in an OOP course about design boundaries. It decides
+how much of your object model escapes the place where it was safe.
+
+## Keep one end-to-end route visible
+
+Use one capstone route while reading:
+
+1. external input enters the workflow
+2. the workflow normalizes that input into domain meaning
 3. authoritative state is persisted
-4. derived events, logs, or artifacts are emitted
-5. later consumers inspect or replay some representation of that work
+4. derived events, logs, notifications, or artifacts are emitted
+5. another boundary later reads, replays, or diagnoses one of those representations
 
 Now ask:
 
-Which of those representations truly need to exist outside the process, and how narrow
-can each one become while still serving its consumer?
+- which of these outward forms truly need to exist?
+- how narrow can each one become without starving the next consumer?
 
-That is the heart of the trust-boundary review.
+Those two questions keep trust-boundary review grounded in purpose instead of fear.
 
-## Trust boundaries should be named explicitly
+## Name the boundary before reviewing the format
 
-Useful examples in this course include:
+Do not start with JSON, YAML, rows, or log lines.
 
-- request payload to decoded command object
-- domain object to durable snapshot or row data
-- workflow state to log entry
-- artifact metadata to outward response
-- internal event to queue or sink payload
+Start by naming the crossing:
 
-If a team cannot name the boundary, it usually cannot explain what the representation is
-allowed to contain.
+- callback payload -> normalized command
+- domain object -> durable progress row
+- workflow state -> operator-visible log event
+- issuance state -> artifact metadata
+- internal event -> sink payload
 
-Explicit boundary names make exposure decisions reviewable instead of accidental.
+Once the boundary is named, the review becomes clearer:
 
-## Explicit codecs are safer than magical reconstruction
+- who is the consumer?
+- what authority does the consumer have?
+- what fields are necessary?
+- what fields would over-share internal truth or sensitive detail?
 
-Safer serialization usually means:
+If you cannot name the boundary, you probably cannot narrow the representation well.
 
-- deliberate fields
+## Explicit codecs make trust decisions visible
+
+Safer representation usually means:
+
+- explicit fields
 - explicit encode and decode steps
-- narrow accepted formats
-- no hidden object resurrection
+- narrow accepted shapes
+- deliberate rejection of extra or ambiguous data
 
-The more a format tries to recreate live objects automatically, the more likely it is to
-invite:
+This is usually safer than magical reconstruction that tries to "bring the object back"
+automatically.
 
-- unsafe code execution paths
-- privilege confusion
-- surprise state shape
-- representations that outlive the assumptions they were built under
+Why?
 
-Explicit codecs are more work up front, but they make trust decisions visible.
+- object resurrection may trust data too broadly
+- hidden reconstruction rules age badly when the model changes
+- broad payloads tend to carry more than the next consumer actually needs
+- replay and debugging risks grow when internal structure escapes intact
+
+Explicit codecs are not just safer for security. They are easier to review because the
+boundary decision is visible in one place.
 
 ## Least exposure is part of the contract
 
-A strong representation includes only what the next boundary really needs.
+A strong outward representation includes only what the next consumer needs.
 
-Ask:
+Ask for every field:
 
-- does the consumer need the full object or only a stable summary
-- does this payload reveal internal structure that should stay private
-- could this format be replayed or forged more easily than intended
-- does the representation mix trusted truth with untrusted source detail
+- does the next boundary need this to perform its job?
+- is this field merely convenient for today's debugging?
+- would the field reveal private structure, personal data, or replayable state?
+- could the same diagnosis be supported with a stable identifier instead?
 
-Working output is not enough.
-Useful output can still be over-broad and risky.
+This is where many systems go wrong. They produce a useful representation, then stop
+reviewing because the format "works." But a working payload can still be too broad.
 
-## Secrets should be hard to leak by default
+## Logging and serialization are the same design problem
+
+Teams often separate them:
+
+- serialization is treated as application behavior
+- logging is treated as operations behavior
+
+That split is misleading. The core review questions are the same:
+
+- who can read it?
+- how long will it live?
+- what would leakage reveal?
+- what replay or search behavior becomes possible?
+- what narrower representation would still do the job?
+
+A value can be safe inside process memory and unsafe in logs, traces, or stored payloads.
+That difference must be designed deliberately, not discovered during an incident.
+
+## Secrets should be difficult to leak by default
 
 Sensitive values should not appear automatically in:
 
 - `repr`
 - debug dumps
-- logs
+- default JSON encoders
+- trace attributes
 - snapshot fixtures
-- convenience JSON output
+- diagnostic logs
 
 Safer defaults usually mean:
 
 - omit the field
 - redact the field
-- replace it with a token or correlation-safe id
+- replace it with a stable but bounded identifier
 
-This should be a designed default, not a habit every caller must remember under pressure.
+The right question is not "can callers remember not to log this?" The right question is:
 
-## Logging and serialization are the same governance problem
+- why would the unsafe version be the default in the first place?
 
-Teams often treat them separately.
-They should not.
+If secrecy relies on perfect discipline from every caller, the boundary has not really
+been hardened.
 
-The trust questions overlap:
+## Worked capstone boundary review
 
-- who can read this representation
-- how long will it live
-- what will it reveal later
-- what redaction rule applies
-- what damage appears if it is copied or replayed
+Suppose the capstone emits all of these:
 
-If a value is safe in process memory but unsafe in logs, that difference must be shaped
-deliberately.
+- callback intake payloads
+- durable issuance progress rows
+- certificate artifact metadata
+- structured log events for notification or completion
 
-## A worked capstone review
+A strong review might conclude:
 
-Suppose the capstone emits:
+- callback payloads should be normalized before domain entry and then discarded or
+  narrowed
+- durable progress should store only the fields required to resume or explain the
+  workflow
+- artifact metadata should avoid personal or replayable storage details unless a trusted
+  consumer truly needs them
+- logs should use stable ids and bounded outcome categories rather than raw payload dumps
 
-- callback or command intake payloads
-- repository-backed progress state
-- certificate or notification metadata
-- debug or audit logs for outward workflow boundaries
-
-An honest trust-boundary review might conclude:
-
-- callback payloads should be normalized before domain entry
-- persisted workflow state should store only the fields needed for durable progress
-- outward artifact metadata should avoid personal or replayable storage details
-- logs should use stable ids and bounded error categories rather than dumping payload
-  contents
-
-That review is strong because it narrows each representation by purpose.
+This is stronger than saying "be careful with secrets." It attaches narrowing rules to
+named boundaries and consumers.
 
 ## Build a representation packet
 
-For each boundary, keep a short packet with:
+For each boundary, keep a short review packet with:
 
 - boundary name
-- representation consumer
-- fields or categories that must be present
-- fields that must be redacted or omitted
-- risk if the representation is replayed, leaked, or misread
+- consumer
+- representation purpose
+- fields that must exist
+- fields that must be omitted or redacted
+- whether an explicit codec exists
+- damage if the representation leaks or is replayed
 
-This packet makes serialization and redaction review teachable to another maintainer.
+That packet gives another maintainer something concrete to review. It also helps you see
+when two boundaries are being treated as if they had the same trust level when they do
+not.
 
 ## Common failure modes
 
-- treating serialization as a pure format choice instead of a trust choice
-- logging entire objects because it is convenient for debugging
-- using magical codecs that recreate more state than the boundary should trust
-- allowing secrets or sensitive identifiers to appear by default in outward
-  representations
-- publishing representations broader than the consumer actually needs
+- reviewing the format without naming the boundary first
+- logging whole objects because it is convenient during debugging
+- using broad or magical codecs that recreate more than the consumer should trust
+- keeping secrets out of documentation but allowing them in default runtime output
+- persisting or publishing fields that exist only because "they might help later"
 
 ## Trust-boundary review card
 
-Use this short card when reviewing a representation:
+Use this card for every outward representation:
 
-| Question | What you want to see |
+| Question | What a strong answer sounds like |
 | --- | --- |
-| is the trust boundary named explicitly? | yes |
-| does the representation contain only what the next consumer needs? | yes |
-| are secrets and sensitive fields omitted or redacted by default? | yes |
-| would replay or leakage cause bounded rather than surprising damage? | yes |
+| what boundary is being crossed? | "issuance state to operator-visible completion log" |
+| who consumes this representation? | "operators and support tooling, not arbitrary external callers" |
+| what fields are truly necessary? | "issuance id, workshop id, bounded outcome category" |
+| what must be omitted or redacted? | "raw payloads, storage keys, personal details" |
+| what damage would leakage or replay cause? | "searchable private locations or repeatable outward effects" |
 
 ## Capstone connection
 
-Use this page to ask:
+Use this page to decide:
 
-- which capstone representation most needs narrowing or redaction
-- where an explicit codec should replace a broader or more magical dump
-- which log, payload, or artifact currently reveals more than its consumer truly needs
+- which capstone representation most needs narrowing right now
+- where an explicit codec should replace a broader convenience dump
+- which diagnostic output is currently carrying more detail than the consumer needs
+- where stable ids could replace dangerous payload detail
 
-That is where trust-boundary review becomes part of the architecture instead of a final
-security pass.
+That is where serialization becomes part of the architecture instead of a late security
+cleanup task.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain why serialization is a trust-boundary concern, not just a format concern
-- identify one capstone representation that needs narrowing or redaction
-- explain why explicit codecs are usually safer than magical object reconstruction
+- explain why serialization is a trust-boundary decision rather than a mere format choice
+- name one capstone boundary that needs a narrower outward representation
+- explain how explicit codecs help make trust decisions visible and reviewable
