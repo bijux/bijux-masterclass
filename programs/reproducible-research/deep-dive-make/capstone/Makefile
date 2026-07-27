@@ -44,6 +44,8 @@ INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-mak
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-make
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-make-capstone-source.tar.gz
+RELEASE_POLICY := release/package-policy.tsv
+RELEASE_INPUTS = app $(DYN_BINS) $(DYN_HDR)
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
 REPRO_CASE ?= $(REP_DIR)/directory-creation-race.mk
 
@@ -351,8 +353,10 @@ test: app dyn
 >     $(call assert_stdout_eq,$(BLD_DIR)/bin/dyn1,Hello from generated header)
 >     $(call assert_stdout_eq,$(BLD_DIR)/bin/dyn2,42)
 
-dist: all
->     $(PYTHON) scripts/mkdist.py dist.tar.gz app $(BLD_DIR)/bin $(DYN_HDR)
+dist: dist.tar.gz
+
+dist.tar.gz: $(RELEASE_INPUTS) $(RELEASE_POLICY) scripts/mkdist.py scripts/release_policy.py
+>     $(PYTHON) scripts/mkdist.py --policy "$(RELEASE_POLICY)" --output "$@"
 
 repro:
 >     @printf '%s\n' \
