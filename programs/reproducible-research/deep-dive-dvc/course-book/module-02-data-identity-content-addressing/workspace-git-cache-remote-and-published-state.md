@@ -154,6 +154,88 @@ The answer depends on the layer question:
 
 One visible file can participate in several different stories.
 
+## Separate authority from availability
+
+Two questions must be answered independently:
+
+1. Which content should exist?
+2. Which layer can supply its bytes now?
+
+The pointer is authoritative for the first question. Cache or remote storage answers the
+second. The workspace is only the current projection.
+
+The data identity audit demonstrates three useful combinations:
+
+| Pointer | Cache | Remote | Workspace | Honest conclusion |
+| --- | --- | --- | --- | --- |
+| present | present | untested | missing | identity is recorded and locally recoverable |
+| present | deleted | present | missing | identity is recorded and remotely recoverable |
+| present | deleted | absent | missing | identity is recorded but unavailable |
+
+Notice what does not change across the rows: the pointer can remain valid. Availability
+changes because storage layers change.
+
+## Read a loss event by layer
+
+Use this sequence instead of starting with whichever command you remember:
+
+```mermaid
+flowchart TD
+  question["What content should exist?"] --> pointer["Inspect pointer identity"]
+  pointer --> workspace{"Workspace bytes present?"}
+  workspace -->|yes| compare["Compare bytes with identity"]
+  workspace -->|no| cache{"Cache object present?"}
+  cache -->|yes| checkout["Checkout can project locally"]
+  cache -->|no| remote{"Remote object accessible?"}
+  remote -->|yes| pull["Pull can repopulate local state"]
+  remote -->|no| unavailable["Identity known; content unavailable"]
+```
+
+The final state is not “DVC forgot the data.” It is more precise: metadata still identifies
+the expected content, but the configured storage boundary cannot provide it.
+
+## Match claims to evidence
+
+| Claim | Minimum evidence | Common false evidence |
+| --- | --- | --- |
+| file exists locally | workspace inspection | pointer exists |
+| workspace matches recorded identity | pointer plus byte comparison | path name matches |
+| content is locally recoverable | cache-backed checkout after workspace deletion | cache directory merely exists |
+| content survives local cache loss | pull after workspace and cache deletion | push exited zero |
+| artifact is approved downstream | published contract and review evidence | remote contains an object |
+
+This table prevents a common escalation error. A remote can satisfy recovery without
+making an artifact part of the publish contract. A publish bundle can satisfy a consumer
+without retaining every internal cache object.
+
+## Inspect the generated cases
+
+After running the audit, compare:
+
+- `workspace/cache-recovery/`
+- `workspace/remote-recovery/`
+- `workspace/pointer-only/`
+
+Do not inspect only their final files. Read the matching receipts under `evidence/`:
+
+- cache checkout succeeds without proving anything about a remote
+- remote pull succeeds only after the local cache has been removed
+- pointer-only checkout fails while the `.dvc` file remains readable
+
+That three-way contrast identifies which layer supplied the bytes.
+
+## State-layer review record
+
+For a real incident, write one row per claim:
+
+| Question | Authority inspected | Availability inspected | Evidence | Conclusion |
+| --- | --- | --- | --- | --- |
+| which bytes belong at the path? | `.dvc` pointer | not yet tested | content ID and size | identity recorded |
+| can this machine restore them? | same pointer | local cache | successful clean checkout | locally recoverable |
+| can a clean machine restore them? | same pointer revision | configured remote | empty-cache pull and digest | remotely recoverable |
+
+The table forces “we have the data” into claims that another reviewer can challenge.
+
 ## A good discipline question
 
 Whenever you inspect a DVC repo, ask:
