@@ -154,6 +154,18 @@ Another weak answer submits only `summary.tsv`. Without policy, raw samples, com
 convergence, and output inventories, a reviewer cannot tell whether the route asked the
 same question or became faster by doing less necessary work.
 
+The incremental prediction should be:
+
+| Classification | Outputs | Reason |
+| --- | --- | --- |
+| must rebuild | `build/util.o`, `app`, `all` | the source owns one object, the app links it, and the sentinel follows the app |
+| must remain | other objects, dynamic binaries, generated header | no dependency path starts at `src/util.c` |
+
+An empty `missing_rebuild` and `unexpected_rebuild` pair proves the observed scope matches
+that contract. Restoring the source timestamp prevents the experiment from leaving a
+tracked input artificially newer. Generated outputs remain as evidence of the executed
+route and should be cleaned only after their report has been reviewed.
+
 ## Exercise 4: Choose observability by question
 
 Good questions are narrower than "what is Make doing?"
