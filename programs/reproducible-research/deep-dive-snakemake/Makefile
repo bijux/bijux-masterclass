@@ -56,6 +56,12 @@ capstone-module-interface-audit: ## Compare explicit and hidden module interface
 capstone-module-interface-selftest: ## Reject dishonest module interface evidence
 	$(MAKE) -C capstone module-interface-selftest
 
+capstone-context-invariance-audit: ## Compare policy-preserving contexts with semantic leaks
+	$(MAKE) -C capstone context-invariance-audit
+
+capstone-context-invariance-selftest: ## Reject dishonest context invariance evidence
+	$(MAKE) -C capstone context-invariance-selftest
+
 check: capstone-check ## Run capstone fast checks
 
 test: check ## Run the course's default verification target
