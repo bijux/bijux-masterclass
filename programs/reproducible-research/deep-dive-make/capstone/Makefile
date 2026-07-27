@@ -446,11 +446,12 @@ environment-contract-audit:
 >       --python "$(PYTHON)"
 >     printf '%s\n' \
 >       'Environment contract audit route:' \
->       '  1. Read summary.tsv across all seven broken and control models.' \
->       '  2. Read report.json for exact state, recursion, and tool observations.' \
->       '  3. Read traces/ to connect each observation to Make execution.' \
->       '  4. Compare specimens/ with workspace/ to inspect the declared contracts.' \
->       '  5. Use REPRO_GUIDE.md and PROOF_GUIDE.md to connect the models to the capstone.' > "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/route.txt"
+>       '  1. Read ENVIRONMENT_CONTRACT_AUDIT_GUIDE.md for PASS semantics and comparison order.' \
+>       '  2. Read summary.tsv across all seven broken and control models.' \
+>       '  3. Read report.json for exact state, recursion, and tool observations.' \
+>       '  4. Read traces/ to connect each observation to Make execution.' \
+>       '  5. Compare specimens/ with workspace/, then use the repro and proof guides.' > "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/route.txt"
+>     cp "$(DOCS_DIR)/environment-contract-audit-guide.md" "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/ENVIRONMENT_CONTRACT_AUDIT_GUIDE.md"
 >     cp "$(DOCS_DIR)/repro-guide.md" "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/REPRO_GUIDE.md"
 >     cp "$(DOCS_DIR)/proof-guide.md" "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
 >     $(PYTHON) scripts/write_bundle_manifest.py \
