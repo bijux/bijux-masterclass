@@ -61,6 +61,11 @@ Keep one more sentence beside it:
 
 > this example is a review packet for field ownership, not a disguised production framework.
 
+If you are studying alone, keep one more rule beside the code:
+
+- every time the example feels impressive, stop and ask what exact responsibility produced that impression
+- then decide whether that responsibility is still field-sized or already model- or framework-sized
+
 ## The first design rule: keep the “ORM” claim narrow
 
 This worked example is intentionally limited.
@@ -113,6 +118,19 @@ Use this route before you inspect the implementation details:
 | what belongs to relationship loading? | `OneToMany` and reconstruction path |
 | what already looks framework-shaped? | `MODEL_REGISTRY`, `ModelMeta`, and reconstruction logic |
 | what is explicitly refused? | the non-goal list and final boundary notes |
+
+## Worked-example reading order
+
+Do not read the code top to bottom only once. Use this order instead:
+
+1. trace one scalar `BaseField` write from `__set__` to `DB[...]`
+2. trace one `BaseField` read on cache miss or external lookup
+3. trace one wrapper-field validation path
+4. trace one relationship load through `OneToMany`
+5. inspect `ModelMeta` only after the field and relationship responsibilities are clear
+
+That order keeps the field contract visible before the class-level machinery starts
+looking more important than it really is.
 
 ## Step 2: keep external persistence field-shaped
 
@@ -350,6 +368,13 @@ Do not read the code as a magic demonstration. Extract this packet:
 | one relationship load path | shows where framework pressure begins |
 | one metaclass responsibility | shows why class-level orchestration enters the design |
 
+Add two more packet lines while you review:
+
+| Evidence item | What it proves |
+| --- | --- |
+| one refused production claim | shows the example knows its own boundary |
+| one owner that would have to widen next | shows where the current design would escalate first |
+
 ## Why this is useful for review
 
 This example keeps every major responsibility visible:
@@ -361,6 +386,17 @@ This example keeps every major responsibility visible:
 
 That makes the example usable as a boundary exercise rather than as a fake production
 recipe.
+
+## Weak readings to reject early
+
+These are the fast wrong turns a missed-class learner is likely to take:
+
+| Weak reading | Why it fails |
+| --- | --- |
+| "the descriptors built an ORM" | the example omits transactions, identity maps, and query planning |
+| "the relationship field solves coordination" | it demonstrates loading pressure, not complete relationship architecture |
+| "the metaclass finishes the framework" | registration is one class-creation service, not full model lifecycle design |
+| "external fields now own persistence" | they participate in one field-shaped path while the broader persistence story stays missing |
 
 ## What to reject while reviewing this example
 
@@ -409,6 +445,12 @@ This worked example ties the module together:
 That is the durable takeaway. The point is not to produce an ORM. The point is to see
 where a descriptor system stops being just a set of fields and starts becoming framework
 design.
+
+Before leaving the page, write one sentence in each of these forms:
+
+- "this field-level mechanism proves..."
+- "this model-level mechanism begins here..."
+- "this production-grade responsibility is still missing..."
 
 ## Exit check for this page
 
