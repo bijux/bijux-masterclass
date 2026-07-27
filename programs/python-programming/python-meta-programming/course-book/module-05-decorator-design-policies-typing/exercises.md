@@ -35,6 +35,20 @@ Each exercise asks for three things:
 - the wrapper or explicit boundary you chose
 - the reason that choice is honest enough for the problem
 
+Treat the ten exercises as one full lab day on decorator policy and typing boundaries.
+
+Do them in order:
+
+- Exercises 1-3 establish factory capture, resilience policy, and narrow runtime validation
+- Exercises 4-6 separate cache policy, overloaded decorators, and partial validator limits
+- Exercises 7-8 extend that discipline into escalation boundaries and explicit policy owners
+- Exercises 9-10 package the whole module into a reviewable decorator-governance packet
+
+Keep one policy-boundary table while you work:
+
+| Policy or contract | Wrapper or owner | What it really controls | What it refuses to claim | Review judgment |
+| --- | --- | --- | --- | --- |
+
 ## Exercise 1: Build one decorator factory with real configuration
 
 Write a parameterized decorator and apply it twice with different configuration.
@@ -95,6 +109,67 @@ What to hand in:
 - one unsupported typing feature it must reject or ignore
 - one explanation of why warning mode is not the same as safety
 
+## Midday self-check
+
+Before moving into the final four exercises, make sure you can already answer these
+questions clearly:
+
+- when decorator capture stays narrow and when it turns into hidden policy
+- why resilience wrappers and caches need operational review instead of only syntax review
+- what a partial runtime validator is allowed to claim without overstating typing support
+- when a decorator should give up ownership to an explicit object or service
+
+If you cannot answer those four questions in plain language, return to Exercises 1-6 and
+make the policy owner, runtime boundary, and unsupported claim more explicit before
+continuing.
+
+## Exercise 7: Separate local convenience from durable policy
+
+Choose one decorator idea that feels convenient in a single file but risky as a long-term
+course pattern.
+
+What to hand in:
+
+- the convenient decorator idea
+- the exact policy it would silently own over time
+- one explanation of why an explicit owner would teach the boundary more honestly
+
+## Exercise 8: Design one explicit policy owner
+
+Take one broad decorator idea and redesign it as an explicit object, helper, or service.
+
+What to hand in:
+
+- the original decorator shape
+- the new owner you would introduce
+- one review advantage and one learning advantage the explicit owner creates
+
+## Exercise 9: Compare safe claims with overstated claims
+
+Choose one typing-aware or policy-heavy decorator and write both an honest description and
+an overstated description.
+
+What to hand in:
+
+- the honest description
+- the overstated description
+- one explanation of which words make the second version misleading
+
+## Exercise 10: Produce a decorator-governance packet
+
+Assemble:
+
+- one policy-boundary table
+- one resilience or cache example with an explicit control surface
+- one partial typing example with a named unsupported feature
+- one redesign rule for moving overloaded decorator policy into an explicit owner
+
+The packet is strong when another learner can use it to answer:
+
+- what policy the decorator actually owns
+- what typing or runtime claim it can support honestly
+- when the wrapper boundary should be replaced by a clearer owner
+
 ## Mastery standard for this exercise set
 
 Across all six answers, the module wants the same habits:
@@ -103,6 +178,11 @@ Across all six answers, the module wants the same habits:
 - you keep runtime typing claims partial and explicit
 - you prefer explicit objects or services when decorator policy grows too broad
 - you preserve transparency even when wrappers become more powerful
+
+Across all ten answers, add two more habits:
+
+- you distinguish convenient local wrappers from durable course-worthy policy boundaries
+- you leave behind a decorator-governance packet another learner could review without guessing
 
 If an answer still sounds like "the decorator just handles it," keep going.
 

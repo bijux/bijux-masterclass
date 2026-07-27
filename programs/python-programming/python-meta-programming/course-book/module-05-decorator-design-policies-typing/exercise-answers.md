@@ -162,6 +162,79 @@ Good conclusion:
 Warning mode is not safety mode because the wrapped function may still fail internally even
 after the validator chooses not to raise.
 
+## Answer 7: Separate local convenience from durable policy
+
+Example answer:
+
+Suppose a project starts with a decorator that:
+
+- retries failures
+- emits logs
+- converts exceptions into sentinel values
+- caches successful results
+
+Strong assessment:
+
+- the decorator may feel convenient in one notebook or one service file
+- over time it silently becomes the owner of execution policy, observability policy, and cache policy
+- learners can no longer tell which behavior belongs to the business function and which belongs to the wrapper
+
+Good conclusion:
+
+This is the kind of convenience that ages badly. A clearer owner teaches better because it
+forces each policy to become visible instead of bundling them under one callable boundary.
+
+## Answer 8: Design one explicit policy owner
+
+Example answer:
+
+Suppose a broad `@validated_retrying_cached` decorator is replaced with:
+
+- a validator component
+- a retry policy object
+- a cache object or `lru_cache` boundary
+- a small orchestration helper that wires them together
+
+Strong review advantage:
+
+- each policy surface can now be tested and reviewed independently
+
+Strong learning advantage:
+
+- learners can see which owner validates input, which one retries, and which one caches
+
+Good conclusion:
+
+An explicit owner is better when the main teaching goal is boundary clarity rather than
+surface-level compactness.
+
+## Answer 9: Compare safe claims with overstated claims
+
+Example answer:
+
+Honest description:
+
+- "This decorator validates a small supported subset of hints at call time and rejects unsupported typing features."
+
+Overstated description:
+
+- "This decorator makes the function type-safe."
+
+Good conclusion:
+
+The second version is misleading because words such as "makes" and "type-safe" imply a
+much stronger guarantee than partial runtime checking can provide. Honest language keeps
+the supported surface and the unsolved space visible.
+
+## Answer 10: Produce a decorator-governance packet
+
+The packet is strong when another learner can answer:
+
+- what policy the decorator owns directly
+- what explicit control or reset surface exists for stateful behavior
+- which runtime typing claims are supported and which are intentionally refused
+- when the wrapper should be replaced by a clearer service or object boundary
+
 ## What strong Module 05 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -170,6 +243,8 @@ Across the whole set, strong answers share the same habits:
 - they keep runtime typing claims narrow and explicit
 - they expose reset, inspection, or control hooks when stateful policy exists
 - they move overloaded decorator behavior into explicit owners when the wrapper boundary is no longer the clearest fit
+- they distinguish local convenience from durable policy design
+- they leave behind a packet another learner can review without guessing
 
 If an answer still sounds like "the decorator can just handle it," revise it until you can
 say what policy it owns, what it refuses to own, and why that boundary is honest.
