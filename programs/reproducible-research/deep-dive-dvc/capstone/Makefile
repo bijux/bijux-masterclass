@@ -19,6 +19,7 @@ RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
+EXPERIMENT_COMPARABILITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/experiment-comparability
 STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
 DATA_IDENTITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/data-identity
 RUNTIME_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/runtime-contracts
@@ -289,6 +290,37 @@ experiment-review: verify ## Build a focused experiment comparison bundle
 		'  Which candidate still needs release-boundary evidence before downstream trust?' > $(EXPERIMENT_REVIEW_DIR)/review-questions.txt
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(EXPERIMENT_REVIEW_DIR) --output $(EXPERIMENT_REVIEW_DIR)/manifest.json
 	@echo "✔ wrote experiment review bundle to $(EXPERIMENT_REVIEW_DIR)"
+
+.PHONY: experiment-comparability-audit
+experiment-comparability-audit: install ## Audit experiment comparison and promotion boundaries
+	@rm -rf $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_experiment_comparability.py \
+		--specimen repro/experiment-comparability \
+		--workspace $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/workspace \
+		--output $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/report.json \
+		--dvc $(VENV_BIN)/dvc \
+		--check
+	@mkdir -p $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/scripts $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/tests
+	@cp docs/experiment-comparability-audit-guide.md $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/EXPERIMENT_COMPARABILITY_AUDIT_GUIDE.md
+	@cp scripts/audit_experiment_comparability.py $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/scripts/audit_experiment_comparability.py
+	@cp tests/test_experiment_comparability_audit.py $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/tests/test_experiment_comparability_audit.py
+	@printf '%s\n' \
+		'Experiment comparability audit route:' \
+		'  1. Read EXPERIMENT_COMPARABILITY_AUDIT_GUIDE.md for the decision boundary.' \
+		'  2. Read summary.tsv before inspecting any candidate metric.' \
+		'  3. Compare controlled-threshold against one rejected case at a time.' \
+		'  4. Read baseline-metrics.json, candidate-metrics.json, and candidate-params.json together.' \
+		'  5. Read receipts.json for the real dvc exp run, show, and diff commands.' \
+		'  6. Inspect unsafe-promotion-request last to separate comparison from promotion.' \
+		'  7. Read the audit script and adversarial test when reviewing enforcement.' > $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(EXPERIMENT_COMPARABILITY_AUDIT_DIR) \
+		--output $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote experiment comparability audit to $(EXPERIMENT_COMPARABILITY_AUDIT_DIR)"
+
+.PHONY: experiment-comparability-selftest
+experiment-comparability-selftest: install ## Enforce experiment comparison and promotion evidence
+	@$(PYTEST) tests/test_experiment_comparability_audit.py
 
 .PHONY: stage-contract-audit
 stage-contract-audit: install ## Audit declared and hidden stage influences
