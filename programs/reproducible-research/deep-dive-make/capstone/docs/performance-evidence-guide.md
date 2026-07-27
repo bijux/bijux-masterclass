@@ -49,9 +49,11 @@ Read:
 1. `route.txt` for the question and limits
 2. `scenarios.tsv` for the exact state, job count, and route contract
 3. `summary.tsv` for min, median, max, spread, and convergence
-4. `evidence.json` for context, every sample, and trusted-output inventories
-5. `logs/` for command output and exit status from each sample
-6. `manifest.json` for the bundle member inventory
+4. `incremental-policy.tsv` for the declared input and expected rebuild scope
+5. `incremental-work.json` for missing and unexpected rebuilds
+6. `evidence.json` for context, every sample, and trusted-output inventories
+7. `logs/` for command output and exit status from each sample
+8. `manifest.json` for the bundle member inventory
 
 The summary is an entry surface, not a substitute for raw samples.
 
@@ -78,6 +80,18 @@ After every scenario, the collector requires `make -q all` to pass and inventori
 
 A candidate that omits work may be faster. It is not comparable if those trusted outputs
 change unexpectedly or the route stops converging.
+
+Final bytes are not enough. The incremental route advances `src/util.c` without changing
+its contents, runs the real build, then restores the source timestamp. The policy requires
+`build/util.o`, `app`, and `all` to rebuild while unrelated objects, dynamic binaries, and
+the generated header remain untouched. Missing work exposes stale-output risk; unexpected
+work exposes an overbroad graph.
+
+Run that proof alone with:
+
+```sh
+gmake performance-incremental
+```
 
 ## Compare two compatible bundles
 
