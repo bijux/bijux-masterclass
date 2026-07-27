@@ -8,6 +8,20 @@ Deep Dive Snakemake has three command layers: repository root, program directory
 capstone directory. The layers exist so you do not have to guess where a command
 belongs.
 
+## How to use this page
+
+Use this guide only after you know what job you are trying to do.
+
+Read it in this order:
+
+1. name the job
+2. choose the smallest command layer that still answers it
+3. run one command
+4. inspect the matching evidence before escalating
+
+If you are still choosing commands by which one sounds strongest, this page should slow
+you down.
+
 ## Choose the layer before the command
 
 ```mermaid
@@ -20,6 +34,18 @@ flowchart TD
   escalate -- yes --> stronger["Escalate one step"]
   stronger --> command
 ```
+
+## Start by treating command layers as teaching boundaries
+
+The three command layers are not just convenience aliases.
+
+They exist so learners can stay on the smallest honest surface:
+
+- repository root when you need stable cross-program entry
+- program directory when you need one-course focus
+- capstone directory when you are already reading the workflow as a raw repository
+
+Dropping to the capstone too early often makes the learning route larger than necessary.
 
 ## Choose the command layer
 
@@ -39,6 +65,18 @@ Prefer the highest layer that still answers the current question honestly:
 
 Do not drop to the raw capstone just because it feels more "real." Smaller command
 surfaces are often better for learning and review.
+
+## One honest command decision
+
+Suppose your real job is:
+
+> I need one executed workflow story with saved evidence.
+
+The honest command is `capstone-tour` from the highest layer that still feels natural for
+your context.
+
+It is not `proof`, because that command answers a broader stewardship question than the
+job you just named.
 
 ## Start by job, not by directory
 

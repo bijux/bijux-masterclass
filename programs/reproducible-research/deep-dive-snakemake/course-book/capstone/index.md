@@ -8,6 +8,21 @@ rather than as terminal folklore.
 Use this guide once the local module idea is already clear. The capstone should
 corroborate one workflow claim at a time, not become the first explanation of Snakemake.
 
+## How to use this guide
+
+Read this page before you enter the capstone, not after you are already wandering around
+the repository.
+
+Use it in this order:
+
+1. decide whether the module idea is already clear locally
+2. choose the smallest capstone route that matches that idea
+3. inspect only the repository surfaces that answer the current question
+4. stop with one review judgment before opening a stronger route
+
+If the capstone starts feeling larger than the concept, the route is too broad or the
+module idea is not clear enough yet.
+
 ## What this capstone must do for the learner
 
 By the time you use the capstone well, it should help you do five things:
@@ -17,6 +32,21 @@ By the time you use the capstone well, it should help you do five things:
 - compare public contracts against internal workflow state
 - inspect operating, publish, and stewardship boundaries in one executable system
 - leave the repository with one clearer review judgment, not with more browsing
+
+## Start by deciding whether you need corroboration or first explanation
+
+The capstone is not where a beginner should first meet checkpoints, profiles, publish
+contracts, or stewardship review.
+
+It is where a smaller module idea must survive contact with a real repository.
+
+That difference matters because learners often mistake:
+
+- more files for deeper education
+- more commands for better proof
+- a larger repository for a stronger explanation
+
+This guide is here to stop that mistake early.
 
 ## The capstone ladder
 
@@ -61,6 +91,22 @@ boundary you meant to inspect.
 | executed workflow review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-tour` | `make tour` |
 | publish-trust review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `make verify-report` |
 | operating-context review | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-profile-audit` | `make profile-audit` |
+
+## One honest first capstone decision
+
+Suppose you have just finished Module 06 and your real question is:
+
+> what is actually safe for downstream users to trust?
+
+The honest capstone move is not to run the strongest stewardship route. It is to enter
+through the publish-facing routes:
+
+1. [Capstone Review Worksheet](capstone-review-worksheet.md)
+2. [Capstone File Guide](capstone-file-guide.md)
+3. `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`
+
+That keeps the route proportionate to the claim instead of turning a publish question into
+a whole-repository audit.
 
 ## Guide set
 

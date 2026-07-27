@@ -6,6 +6,20 @@ Use it when you need one bounded workflow story from file contract to repository
 Choose one walkthrough depth, follow only the matching surfaces, and stop when one honest
 workflow story is visible.
 
+## How to use this walkthrough
+
+Use this page when you want a capstone story, not when you want the strongest proof.
+
+Read it in this order:
+
+1. choose the depth that matches your question
+2. follow the route exactly once without widening it
+3. write down what became clearer before you open a second route
+4. escalate only if the question truly changed
+
+That discipline matters because the capstone can quickly become too large for the concept
+you are trying to test.
+
 ## What this walkthrough must help you do
 
 By the end of a good capstone walkthrough, you should be able to:
@@ -14,6 +28,19 @@ By the end of a good capstone walkthrough, you should be able to:
 - choose between a bounded first pass and a deeper executed pass
 - inspect public contracts before drowning in internal detail
 - record what became clearer and what still needs stronger proof
+
+## Start by choosing the smallest walkthrough depth honestly
+
+The first pass, executed pass, and stewardship pass are not just longer and shorter
+versions of the same activity.
+
+They answer different kinds of questions:
+
+- first pass: what does this repository claim to do
+- executed pass: how does one workflow story become saved evidence
+- stewardship pass: what ownership or drift judgment would a maintainer make
+
+Choosing the wrong depth usually makes the repository feel noisy rather than enlightening.
 
 ## First pass versus deeper pass
 
@@ -32,6 +59,16 @@ Goal:
 leave with a clear picture of what the workflow claims to build, where dynamic discovery
 is declared, which files are public contracts, and which question would justify a deeper
 route.
+
+## One honest walkthrough decision
+
+Suppose you are finishing Module 01 and only need to know whether the capstone still
+behaves like a file-contract system rather than like command folklore.
+
+The right walkthrough is the 30-minute first pass.
+
+The executed pass would already be broader than the question, and the stewardship pass
+would be much broader.
 
 ## Executed workflow pass
 

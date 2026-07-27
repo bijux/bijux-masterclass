@@ -4,6 +4,19 @@ Use this page when you know the repository is the right surface but do not yet k
 file owns the answer. The goal is to shorten the path from question to owning file so
 that repository reading becomes deliberate instead of exploratory wandering.
 
+## How to use this page
+
+Use this guide after you can state the repository question in one sentence.
+
+Read it in this order:
+
+1. name the question
+2. open the first owning file
+3. open one supporting file only if needed
+4. stop once the boundary can be stated in plain language
+
+This page is here to stop directory wandering, not to replace repository reading entirely.
+
 ## File-reading route
 
 ```mermaid
@@ -13,6 +26,18 @@ flowchart TD
   second --> note["Write the boundary in plain language"]
   note --> stop["Stop before the repository becomes larger than the question"]
 ```
+
+## Start by looking for ownership, not just relevance
+
+Beginners often open files that are related to the question but do not actually own it.
+
+For example:
+
+- opening profiles before the workflow contract is clear
+- opening helper code before the visible rule contract is legible
+- opening `publish/v1/` before knowing how files are promoted into it
+
+This guide is stricter. It tries to send you to the file that owns the boundary first.
 
 ## Start with the file that owns the question
 
@@ -33,6 +58,18 @@ flowchart TD
 - The first file should answer the ownership question.
 - The second file should clarify the contract, not widen the whole repository.
 - If two files still do not settle the question, switch to [Capstone Review Worksheet](capstone-review-worksheet.md) or [Capstone Architecture Guide](capstone-architecture-guide.md) instead of opening directories at random.
+
+## One honest file-reading decision
+
+Suppose your question is:
+
+> what downstream users are actually allowed to trust?
+
+The honest first file is `capstone/workflow/contracts/FILE_API.md`, not `publish/v1/`
+itself.
+
+The reason is educational: the file API owns the contract language, while the publish
+directory only contains the promoted artifacts that must match that contract.
 
 ## Directory responsibilities
 

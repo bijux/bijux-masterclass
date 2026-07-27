@@ -4,6 +4,19 @@ Use this page when the module idea is already clear and you want to see it survi
 real repository shape. The capstone is not a beginner tutorial. It is the place where a
 small concept has to remain honest inside a larger workflow system.
 
+## How to use this page
+
+Use this map when you know the module question but not yet the right capstone route.
+
+Read it in this order:
+
+1. state the module question in one sentence
+2. choose the smallest route family that owns it
+3. inspect one repository surface and one command only
+4. stop when the claim is settled
+
+This page is a routing aid, not permission to browse the whole capstone.
+
 ## Enter the capstone at the right time
 
 Enter only when the module idea is already legible in the local exercise.
@@ -13,6 +26,20 @@ Return to the module first if:
 - you cannot yet explain the concept on a smaller workflow
 - you do not know which command should prove the behavior
 - the repository feels larger than the concept you are studying
+
+## Start by keeping the repository smaller than the lesson
+
+The capstone helps only when the repository stays smaller than the question.
+
+That means:
+
+- one module question
+- one route family
+- one main repository surface
+- one first command
+
+If you cannot keep the route that small, step back to the module or guide before you
+continue.
 
 ## Start with the smallest useful route
 
@@ -41,6 +68,21 @@ The route should stay smaller than the concept you are checking.
 - Start with a page when you still need orientation.
 - Start with a command when the question is already concrete.
 - Escalate only when the current route leaves part of the claim genuinely unanswered.
+
+## One honest route choice
+
+Suppose your Module 02 question is:
+
+> where does discovery become explicit instead of magical?
+
+The honest capstone move is:
+
+1. enter through the Module 02 row
+2. inspect the checkpoint rule files and discovery artifacts
+3. start with the first command listed there
+
+It is not to start with governance review or the strongest confirmation command. The
+question is about discovery evidence, so the route should stay discovery-sized.
 
 ## Choose the route by module arc
 
