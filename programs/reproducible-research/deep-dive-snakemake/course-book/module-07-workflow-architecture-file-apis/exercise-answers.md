@@ -20,6 +20,18 @@ A stronger rhythm is:
 
 The target is not identical wording. The target is clearer architectural judgment.
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one reading-order note
+- one responsibility table
+- one public-artifact trace
+- one file-API note
+- one failing architecture check
+- one bounded review note
+
+If your answers rely only on tree shape and naming taste, the architectural reasoning is
+still too implicit.
+
 ## Exercise 1: Read the repository in the right order
 
 A strong answer starts at the top-level `Snakefile`, identifies the visible assembly and
@@ -54,6 +66,11 @@ onboarding.
 
 Weak answers praise a shorter `Snakefile` even when the new split hides ownership rather
 than clarifying it.
+
+The missing but important sentence is usually this one:
+
+> After the repair, the entrypoint still teaches configuration, assembly, and final
+> targets before the reader needs any deeper file.
 
 ## Exercise 3: Write a repository responsibility table
 
@@ -104,6 +121,11 @@ The key problem is not the number of files. It is the lack of an ownership signa
 Weak answers rename `misc` to another vague bucket without making the workflow concern any
 clearer.
 
+A useful contrast sentence is:
+
+> I rejected the extra abstraction because it would have moved the ambiguity into a deeper
+> directory instead of naming a clearer owned concern.
+
 ## Exercise 5: Trace one public artifact end to end
 
 A strong trace begins with the documented public path and finds the publication rule, its
@@ -149,6 +171,9 @@ The goal is to make path promises reviewable instead of implied.
 Weak answers document every internal path equally and therefore blur workflow-facing
 coordination with consumer-facing stability.
 
+The strongest answers also say explicitly which path must stay outside the contract and
+why, so the file API does not quietly expand into a dump of every useful directory.
+
 ## Exercise 7: Diagnose hidden coupling
 
 A strong review comment would say:
@@ -178,6 +203,11 @@ Example good failure message:
 > `publish/v1/summary.tsv` is produced by the workflow but has no file-API entry. Document
 > the path as public or remove it from the publish boundary.
 
+The key explanatory sentence is:
+
+> This is an architecture check, not generic lint, because it protects the truthfulness
+> of one repository boundary that a maintainer depends on.
+
 ## Exercise 9: Compare two refactor designs
 
 The ownership-based split is usually safer first because it improves navigation without
@@ -199,6 +229,13 @@ on unrelated full-suite execution.
 Weak reviews spend most of their time on style and naming while leaving undeclared public
 paths or hidden semantic dependencies unranked.
 
+A useful review order often looks like this:
+
+1. inspect the entrypoint and documented public paths first
+2. trace one affected artifact through its declared owners
+3. check helpers or packages only where the trace reveals hidden coupling
+4. choose the narrowest verification route that proves each major finding
+
 ## Self-check
 
 If your answers consistently explain:
@@ -209,3 +246,10 @@ If your answers consistently explain:
 - what makes a refactor honest rather than cosmetic
 
 then you are using the module correctly.
+
+Weak answer pattern:
+
+- "the repository is cleaner now because the folders look more organized"
+
+That sentence skips visible assembly, file APIs, and ownership boundaries all at once. If
+your answers still sound like that, keep revising.

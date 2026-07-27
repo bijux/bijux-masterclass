@@ -69,6 +69,33 @@ module07-lab/
 That structure helps separate repository reading order, ownership claims, public path
 contracts, and automated drift checks without mixing them into one vague review note.
 
+Build one small architecture review packet as you go:
+
+- one repository reading-order note that starts from the entrypoint and a public artifact
+- one responsibility table for the main repository layers
+- one artifact-trace diagram from public path back through its owners
+- one file-API note distinguishing public paths from internal workflow state
+- one architecture check with a deliberate failing example
+- one maintainer-style review note ordered by reproducibility risk
+
+If those six artifacts are missing, the day usually turns into "the folders feel messy"
+instead of "the repository boundary is reviewable."
+
+```mermaid
+flowchart LR
+  reading["read the repository in the right order"]
+  entry["repair visible assembly"]
+  ownership["name durable responsibilities"]
+  trace["trace one public artifact end to end"]
+  drift["detect hidden coupling or file-API drift"]
+  review["review architecture in bounded steps"]
+
+  reading --> entry --> ownership --> trace --> drift --> review
+```
+
+Use that route on purpose. It keeps the day anchored in repository legibility instead of
+file-count aesthetics.
+
 ## Exercise 1: Read the repository in the right order
 
 Choose a Snakemake repository you did not design recently. Record the order in which you
@@ -96,6 +123,7 @@ What to hand in:
 - the behavior that moved elsewhere
 - the repository layer that now owns it
 - one reason the new entrypoint is easier to review
+- one sentence explaining what the entrypoint still teaches immediately after the repair
 
 Study note:
 The goal is not only brevity. The goal is honest visible assembly.
@@ -127,6 +155,7 @@ What to hand in:
 - the stronger tree
 - the ownership sentence for each new boundary
 - one abstraction you rejected because it was premature
+- one sentence explaining why the rejected abstraction would have hidden ownership instead of clarifying it
 
 Study note:
 More files are not the win. Clearer ownership is the win.
@@ -162,6 +191,19 @@ What to hand in:
 Study note:
 This is where path stability stops being folklore and becomes architecture.
 
+## Midday self-check
+
+Before you move into hidden coupling, automation, and full review, make sure your packet
+can already answer all of these:
+
+- why the entrypoint belongs first in the reading order
+- which repository layers own visible assembly, step logic, reusable code, and path contracts
+- which public path is stable because the repository says it is stable
+- which internal path must remain outside the contract even if it looks useful
+
+If you cannot answer those four questions cleanly, return to the earlier exercises and
+make the architecture packet more explicit before moving on.
+
 ## Exercise 7: Diagnose hidden coupling
 
 Find one helper, script, or package module that reads undeclared files, depends on
@@ -192,6 +234,7 @@ What to hand in:
 - one passing state
 - one deliberately failing edit
 - the failure message a maintainer receives
+- one sentence explaining why this check is architectural rather than generic lint
 
 Study note:
 A vague failure message teaches almost nothing. Make the broken boundary obvious.
@@ -226,6 +269,16 @@ What to hand in:
 
 Study note:
 This is a maintainer review, not a style preference exercise.
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- start in helper code before the entrypoint or public artifact path
+- split files without naming what durable responsibility each one owns
+- document every path equally and blur public contracts with internal workflow state
+- add an architecture check without saying which boundary it protects
+- prefer the more abstract design only because it looks more advanced
 
 ## Mastery standard for this exercise set
 
