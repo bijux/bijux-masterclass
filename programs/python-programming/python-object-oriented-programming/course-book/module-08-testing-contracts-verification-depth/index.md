@@ -1,6 +1,5 @@
 # Module 08: Testing, Contracts, and Verification Depth
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,57 +24,75 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page sits between the course promise, the lesson pages listed below, and the capstone surfaces that pressure-test the module. Read the second diagram as the study route for this page, so the diagrams point you toward the `Lesson map`, `Exercises`, and `Closing criteria` instead of acting like decoration.
+This module turns testing into design evidence. The question is no longer "how many
+tests do we have?" It is:
 
-Strong object models still need executable proof. This module turns testing from a
-generic quality ritual into a design tool for verifying state transitions, repository
-contracts, adapter behavior, and long-term confidence in an object-oriented Python system.
+> Which proof should fail first if one important design claim stops being true?
 
-Keep one question in view while reading:
+That question forces verification to follow architecture instead of habit.
 
-> Which test would fail first if this ownership boundary or lifecycle rule stopped being true?
+## What this module is really about
 
-That question turns verification into design evidence instead of test-count theater.
+This module is not a catalog of testing styles.
+
+It is about keeping these distinctions honest:
+
+- behavior proof versus contract proof
+- lifecycle proof versus single-call proof
+- fake versus mock versus compatibility suite
+- approval artifact versus noisy snapshot
+- stronger proof versus heavier theater
+
+If those distinctions blur, the suite may stay green while confidence stays thin.
+
+## Running capstone claims
+
+Keep two claims in view while you read:
+
+1. `WorkshopEnrollment` must never confirm more attendees than the seat limit
+2. `CertificateIssuanceService` must not duplicate visible issuance when retried
+
+The first is aggregate-owned and lifecycle-heavy.
+The second spans workflow, durability, and external side effects.
+
+Together they force you to choose different proof routes on purpose.
 
 ## Preflight
 
-- You should already be able to name the ownership and lifecycle rules that deserve proof.
-- If tests still feel like a separate discipline from design, read this module with one capstone invariant in mind.
-- Keep asking which test surface would fail first if a boundary, transition, or repository contract drifted.
+Before going further, you should already be able to:
 
-## Learning outcomes
+- name one important invariant without talking about tests yet
+- explain which boundary owns one workflow promise
+- distinguish domain truth from downstream convenience
 
-- design verification layers that match domain, boundary, and operational risk instead of defaulting to one style
-- choose between behavioral, property-based, contract, and integration tests with explicit justification
-- expose lifecycle, repository, and adapter failures that shallow happy-path tests would miss
-- use runtime checks and approval boundaries to support executable design claims
+If the design claim itself is still fuzzy, better tests will not fix that.
 
-## Why this module matters
+## What you should be able to do by the end
 
-Object-heavy systems often fail in ways that shallow unit tests miss:
+By the end of this module, you should be able to:
 
-- invalid transitions only appear after several state changes
-- repositories round-trip happy paths but corrupt edge cases
-- mocks hide interface drift instead of exposing it
-- snapshots freeze accidental representation details
+- choose the first-failing suite for a meaningful claim
+- decide when a sequence needs lifecycle proof rather than isolated examples
+- protect repositories and adapters with shared contracts instead of optimistic mocks
+- keep fixtures, builders, and snapshots honest enough to teach rather than hide
+- build a confidence ladder that matches risk instead of defaulting to one style
 
-This module teaches how to verify object contracts honestly, not just how to increase
-test count.
+## Read this module as one proof-design day
 
-## Main questions
+Use the pages in this order:
 
-- Which tests should target domain behavior, and which should target boundaries?
-- How do you cover stateful lifecycles and cross-object invariants?
-- When do contract tests, property-based tests, and integration suites pay off?
-- How do assertion boundaries and runtime checks support design clarity?
-- What creates justified confidence instead of decorative green builds?
+1. behavior-first domain tests
+2. stateful and transition coverage
+3. repository and adapter contracts
+4. property-based proof where breadth matters
+5. fixtures, builders, and doubles
+6. runtime checks and approval boundaries
+7. integration suites and confidence ladders
+8. the refactor page
+9. the exercises and answer packet
 
-## Reading path
-
-1. Start with behavior-first tests, stateful coverage, and repository contracts.
-2. Then study property-based testing, test data ownership, and doubles.
-3. Finish with runtime checks, approval boundaries, and confidence ladders.
-4. Use the refactor chapter to reshape the capstone test suite around contracts instead of convenience.
+That order matters because the later choices only make sense if the earlier proof target
+is already clear.
 
 ## Lesson map
 
@@ -89,68 +106,60 @@ test count.
 - [Golden Files, Snapshots, and Approval Boundaries](golden-files-snapshots-and-approval-boundaries.md)
 - [Integration Suites and Confidence Ladders](integration-suites-and-confidence-ladders.md)
 - [Refactor: Tests toward Contract-Driven Confidence](refactor-tests-toward-contract-driven-confidence.md)
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
 - [Glossary](glossary.md)
 
 ## Keep these support surfaces open
 
-- `../guides/proof-matrix.md` when you want each verification claim tied to one evidence route.
-- `../guides/proof-ladder.md` when you need to size proof honestly instead of defaulting to the strongest route.
-- `../reference/self-review-prompts.md` when you want to test whether a proof claim now sounds like a design judgment instead of a testing slogan.
+- `../guides/proof-matrix.md` when you want one claim tied to one proof route
+- `../guides/proof-ladder.md` when you need to size proof honestly instead of reaching
+  for the heaviest suite first
+- `../reference/self-review-prompts.md` when you want to test whether your testing
+  language still sounds like design rather than ritual
 
-## Verification route by claim
+## Study route through the capstone
 
-| If the claim is about... | Start with | Then compare |
-| --- | --- | --- |
-| lifecycle and invariant authority | [Capstone Proof Guide](../capstone/capstone-proof-guide.md) and lifecycle tests | [Capstone Review Worksheet](../capstone/capstone-review-worksheet.md) |
-| replaceable policy behavior | evaluation tests | `policies.py` and [Capstone File Guide](../capstone/capstone-file-guide.md) |
-| public-facing use cases | application or demo tests | [Capstone Walkthrough](../capstone/capstone-walkthrough.md) and [Command Guide](../capstone/command-guide.md) |
-| runtime or repository boundaries | runtime or unit-of-work tests | [Capstone Architecture Guide](../capstone/capstone-architecture-guide.md) and [Capstone File Guide](../capstone/capstone-file-guide.md) |
+If this module still feels abstract, take this route:
 
-## If verification still feels abstract
+1. choose one capstone claim
+2. ask which suite should fail first
+3. ask what a weaker proof would miss
+4. ask what a heavier proof would add later, not immediately
+5. compare that answer with the exercise packet
 
-- name the design claim before choosing the test family
-- ask which suite should fail first, not which suite is most impressive to run
-- compare one saved review bundle with one targeted suite so story and contract stay connected
+That route turns the module into a proof-design review instead of a style debate.
+
+## Questions to keep explicit
+
+- Which claim belongs to a local behavior test and which belongs to a workflow or
+  contract test?
+- Which fixture helps the invariant stay visible, and which one hides it?
+- Which boundary needs substitute compatibility rather than just a convenient mock?
+- Which snapshot is protecting a real public representation instead of frozen noise?
 
 ## Common failure modes
 
-- testing internal method calls instead of externally visible behavior
-- using brittle mocks where a fake or contract test would be clearer
-- reusing fixtures that hide the real setup needed for an invariant
-- snapshotting unstable representations and calling it regression protection
-- assuming a passing unit test layer means production workflows are covered
-
-## Exercises
-
-Use the full exercise day rather than treating these as quick prompts:
-
-- [Exercises](exercises.md)
-- [Exercise Answers](exercise-answers.md)
-
-The exercise day turns the module into one complete verification review route:
-first-failing-suite selection, lifecycle proof, contract testing, honest fixtures and
-doubles, and right-sized confidence ladders.
-
-## Capstone connection
-
-The monitoring capstone already includes unit and application tests. This module shows
-how to extend that suite toward stateful lifecycle coverage, repository contracts,
-property checks, and confidence layers that match real design risk.
+- testing helper choreography instead of visible behavior
+- proving lifecycle rules one call at a time
+- trusting substitute boundaries without a shared contract suite
+- hiding important state in magical builders or fixtures
+- adding more tests without clarifying what the current tests are proving
 
 ## Honest completion signal
 
-You are ready to move on when you can take one design claim from the capstone and answer:
+You are ready to move on when you can take one capstone claim and explain:
 
 - which suite should fail first
-- which saved route best explains the same claim to a human reviewer
-- which proof route would be unnecessarily heavy for that question
+- why that suite is not too weak
+- why a stronger suite can wait until the risk justifies it
 
 ## Closing criteria
 
-You should finish this module able to construct a verification strategy that matches the
-semantic and operational risk of an object-oriented Python codebase rather than relying
-on one default style of test everywhere.
+You should finish this module able to build a verification strategy that matches design
+and operational risk instead of defaulting to one testing habit everywhere.
 
 ## Directory glossary
 
-Use [Glossary](glossary.md) when you want the recurring language in this module kept stable while you move between lessons, exercises, and capstone checkpoints.
+Use [Glossary](glossary.md) when you want the recurring proof language kept stable while
+you move between lessons, labs, and capstone review.
