@@ -131,18 +131,33 @@ habit of calling another Makefile.
 A binary changes behavior when `MODE=debug` and when a different compiler is selected, but
 neither fact appears anywhere in the graph.
 
-Choose one of those non-file inputs and design a convergent stamp or manifest for it.
+First run the capstone `semantic-fault-audit`. Explain why the clock-derived model produces
+different hashes from equal tracked inputs while the declared-state control does not.
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  semantic-fault-audit
+```
+
+Then choose `MODE` or compiler identity and build a manifest that:
+
+1. re-evaluates the non-file fact on every Make invocation
+2. preserves the existing manifest when candidate content is equal
+3. republishes the manifest when the semantic fact changes
+4. invalidates one downstream artifact when publication occurs
 
 What to hand in:
 
-- the non-file input you chose
-- the file that will represent it
-- one sentence explaining why the file converges instead of changing every run
-- one sentence naming which downstream target should depend on that representation
+- the two clock-state findings and their `hashes_equal` values
+- the complete manifest and downstream artifact rules
+- evidence that two equal invocations preserve the manifest mtime and hash
+- evidence that one changed semantic value changes the manifest and downstream artifact
+- one sentence separating evaluation from publication
 
 Study note:
-If the modeled file changes every run, it is not a trustworthy representation. It is just
-a moving timestamp with a nicer name.
+`cmp` cannot detect a changed environment fact if Make never runs the recipe. A complete
+design must explain both why the candidate is evaluated and why equal content is not
+republished.
 
 ## Exercise 4: Separate performance layers
 
@@ -259,19 +274,22 @@ child build receives the parent build's declared execution contract.
 
 ## Exercise 9: Prove an environment manifest converges
 
-Represent `MODE`, compiler identity, and locale in one manifest. Run the build twice
-without changing those facts, then change only `MODE`.
+Represent `MODE`, compiler identity, and locale in one manifest. Build it once in each of
+two clean workspaces with the same declared values and compare hashes. In one workspace,
+run again without changing those facts, then change only `MODE`.
 
 What to hand in:
 
 - the manifest rule
-- file timestamps or checksums from all three runs
-- an explanation of why the second run is a no-op and the third is not
+- equal first-build hashes from the two clean workspaces
+- an unchanged mtime and hash from the repeated equal-state invocation
+- a changed hash and content after changing `MODE`
+- the trace line showing the downstream artifact rebuild after manifest publication
 - one sentence explaining why locale belongs in the manifest only when it affects meaning
 
 Study note:
-Do not stuff every environment fact into a manifest automatically. Model only the facts
-that actually change build meaning.
+This exercise combines two different claims: clean-room reproducibility and incremental
+convergence. One cannot substitute for the other.
 
 ## Exercise 10: Harden an inherited build
 

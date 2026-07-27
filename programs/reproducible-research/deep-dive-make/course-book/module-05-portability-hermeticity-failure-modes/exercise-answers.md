@@ -109,30 +109,60 @@ declared boundary with a budget and a depth, not just a habit.
 
 ## Exercise 3: Model one non-file input honestly
 
-A strong answer chooses one real semantic input, such as `MODE` or compiler identity, and
-represents it with a convergent file.
+The clock comparison should report:
 
-For example:
+| Model | Finding | `hashes_equal` |
+| --- | --- | --- |
+| clock-derived | `CLOCK_STATE_DRIFT_REPRODUCED` | false |
+| declared-state | `DECLARED_STATE_STABLE` | true |
+
+Those rows establish that a stamp filename does not make state reproducible. Its content
+must be derivable from declared inputs.
+
+A complete `MODE` model needs an evaluation trigger and change-only publication:
 
 ```make
+MODE ?= release
 MODE_MANIFEST := build/mode.manifest
 
-$(MODE_MANIFEST): | build/
+.PHONY: FORCE
+FORCE:
+
+$(MODE_MANIFEST): FORCE | build/
 	@printf 'MODE=%s\n' '$(MODE)' > $@.tmp
 	@cmp -s $@.tmp $@ 2>/dev/null || mv $@.tmp $@
 	@rm -f $@.tmp
+
+build/application.txt: source.txt $(MODE_MANIFEST) | build/
+	@printf 'mode=%s\n' '$(MODE)' > $@
+	@cat source.txt >> $@
 ```
 
 This is strong because:
 
-- the file stands for one real build fact
-- the file changes only when the fact changes
-- downstream targets now have an honest edge to that fact
+- `FORCE` makes the manifest recipe inspect `MODE` on every invocation
+- `cmp` leaves the existing file and mtime alone when `MODE` is unchanged
+- changing `MODE` replaces the manifest
+- the newer manifest then invalidates `build/application.txt`
 
-The missing but important sentence is:
+The evidence should distinguish these events:
 
-> A convergent representation is useful only when repeated runs with unchanged meaning do
-> not keep rewriting it.
+| Invocation | Candidate evaluated? | Manifest published? | Application rebuilt? |
+| --- | --- | --- | --- |
+| first `MODE=release` | yes | yes | yes |
+| second `MODE=release` | yes | no | no |
+| `MODE=debug` | yes | yes | yes |
+
+The required distinction is:
+
+> `FORCE` controls evaluation of the non-file fact; content comparison controls whether
+> that fact is published as changed state.
+
+Weak answer pattern:
+
+- "Use `cmp` so the manifest notices when `MODE` changes"
+
+Without an evaluation trigger, Make may never run `cmp` after the manifest first exists.
 
 ## Exercise 4: Separate performance layers
 
@@ -269,7 +299,10 @@ One valid rule is:
 MODE ?= release
 ENV_MANIFEST := build/environment.txt
 
-$(ENV_MANIFEST): | build/
+.PHONY: FORCE
+FORCE:
+
+$(ENV_MANIFEST): FORCE | build/
 	@{ \
 	  printf 'MODE=%s\n' '$(MODE)'; \
 	  printf 'CC=%s\n' "$$($(CC) --version | sed -n '1p')"; \
@@ -277,11 +310,19 @@ $(ENV_MANIFEST): | build/
 	} > $@.candidate
 	@cmp -s $@.candidate $@ 2>/dev/null || mv $@.candidate $@
 	@rm -f $@.candidate
+
+build/application.txt: source.txt $(ENV_MANIFEST) | build/
+	@printf 'environment=%s\n' "$$(sha256sum $(ENV_MANIFEST) | cut -d' ' -f1)" > $@
 ```
 
-The first run creates the manifest. The second produces identical candidate content, so
-`cmp` prevents a timestamp change. `make MODE=debug` changes semantic content and
-therefore replaces the file.
+The two clean workspaces should produce equal manifest hashes when `MODE`, compiler
+identity, and locale are equal. That proves the initial state is derived rather than
+invented. In one workspace, the next equal-state invocation runs the candidate recipe but
+`cmp` prevents a timestamp change. `make MODE=debug` changes semantic content, replaces
+the file, and makes the downstream artifact out of date.
+
+If `sha256sum` is unavailable on the supported platform, use the repository's declared
+checksum tool or Python's `hashlib`; do not silently weaken the proof to visual inspection.
 
 The key explanation is:
 
