@@ -124,9 +124,14 @@ are bypassed.
 
 ## Exercises
 
-- Map one aggregate to a storage representation and name which fields are domain meaning versus storage convenience.
-- Review one serialization change and explain how you would preserve compatibility for older persisted data.
-- Describe one repository API and justify why it is narrow enough to prevent storage assumptions from leaking inward.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete persistence review route:
+repository contracts, rehydration discipline, codec boundaries, compatibility planning,
+conflict handling, and migration-safe evolution.
 
 ## Capstone connection
 
