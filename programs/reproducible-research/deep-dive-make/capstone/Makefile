@@ -45,6 +45,7 @@ CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-mak
 INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
 INCREMENTAL_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incremental-faults
 SEMANTIC_FAULT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/semantic-faults
+ENVIRONMENT_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/environment-contracts
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
 PERFORMANCE_DIR ?= $(ARTIFACTS_DIR)/performance/reproducible-research/deep-dive-make/current
 PERFORMANCE_POLICY := performance/scenarios.tsv
@@ -84,7 +85,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit incremental-fault-audit semantic-fault-audit semantic-fault-selftest environment-contract-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -183,6 +184,7 @@ help:
 >     '  incremental-fault-audit prove stale missing-edge behavior and repaired rebuilds' \
 >     '  semantic-fault-audit prove state, edge, and rule-selection semantics' \
 >     '  semantic-fault-selftest reject dishonest semantic-audit evidence' \
+>     '  environment-contract-audit prove non-file, recursion, and tool contracts' \
 >     '  profile-audit     build the execution-profile review bundle' \
 >     '  confirm           alias for hardened with shared catalog naming' \
 >     '  discovery-audit   assert deterministic discovery (sorted lists)' \
@@ -432,6 +434,30 @@ semantic-fault-audit:
 semantic-fault-selftest:
 >     $(PYTHON) -m unittest $(TST_DIR)/test_semantic_fault_audit.py
 
+environment-contract-audit:
+>     rm -rf "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)"
+>     mkdir -p "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)"
+>     cp -R "$(REP_DIR)/environment-contracts" "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/specimens"
+>     $(PYTHON) scripts/audit_environment_contracts.py \
+>       --specimens "$(REP_DIR)/environment-contracts" \
+>       --workspace "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/workspace" \
+>       --output "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/report.json" \
+>       --make "$(MAKE)" \
+>       --python "$(PYTHON)"
+>     printf '%s\n' \
+>       'Environment contract audit route:' \
+>       '  1. Read summary.tsv across all seven broken and control models.' \
+>       '  2. Read report.json for exact state, recursion, and tool observations.' \
+>       '  3. Read traces/ to connect each observation to Make execution.' \
+>       '  4. Compare specimens/ with workspace/ to inspect the declared contracts.' \
+>       '  5. Use REPRO_GUIDE.md and PROOF_GUIDE.md to connect the models to the capstone.' > "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/route.txt"
+>     cp "$(DOCS_DIR)/repro-guide.md" "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/REPRO_GUIDE.md"
+>     cp "$(DOCS_DIR)/proof-guide.md" "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/PROOF_GUIDE.md"
+>     $(PYTHON) scripts/write_bundle_manifest.py \
+>       --bundle-dir "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)" \
+>       --output "$(ENVIRONMENT_CONTRACT_AUDIT_DIR)/manifest.json"
+>     @echo "PASS: wrote environment contract audit to $(ENVIRONMENT_CONTRACT_AUDIT_DIR)"
+
 profile-audit:
 >     rm -rf "$(PROFILE_AUDIT_DIR)"
 >     mkdir -p "$(PROFILE_AUDIT_DIR)/mk"
@@ -519,6 +545,7 @@ repro:
 >     '  make -f repro/directory-creation-race.mk -j2 all       directory creation race' \
 >     '  make incremental-fault-audit                             missing-edge versus declared-edge proof' \
 >     '  make semantic-fault-audit                                state, order-only, and pattern-selection proof' \
+>     '  make environment-contract-audit                           non-file, recursion, and required-tool proof' \
 >     '' \
 >     'Suggested first route:' \
 >     '  1. repro/shared-log-interleaving.mk' \

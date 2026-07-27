@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -180,6 +181,10 @@ def audit_recursive_boundary(
     make_command: str,
 ) -> list[dict[str, object]]:
     results: list[dict[str, object]] = []
+    try:
+        expected_makelevel = str(int(os.environ.get("MAKELEVEL", "0")) + 1)
+    except ValueError as error:
+        raise RuntimeError("recursive-boundary: MAKELEVEL must be an integer") from error
     models = (
         (
             "literal-recursion",
@@ -219,7 +224,7 @@ def audit_recursive_boundary(
             if (
                 child_plan_visible == expected_plan_visible
                 and not dry_run_published_output
-                and makelevel == "1"
+                and makelevel == expected_makelevel
                 and (model == "literal-recursion" or budget_visible)
             )
             else "FAIL"
@@ -233,6 +238,7 @@ def audit_recursive_boundary(
                     "child_plan_visible_in_dry_run": child_plan_visible,
                     "dry_run_published_output": dry_run_published_output,
                     "expected_child_plan_visible": expected_plan_visible,
+                    "expected_makelevel": expected_makelevel,
                     "makeflags": makeflags,
                     "makelevel": makelevel,
                 },
