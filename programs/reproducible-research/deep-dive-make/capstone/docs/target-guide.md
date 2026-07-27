@@ -39,6 +39,9 @@ question honestly.
 | what are the stable public targets | `make help` | `make inspect` |
 | does the ordinary build succeed | `make all` | `make test` |
 | does the build graph still tell the truth | `make selftest` | `make verify-report` |
+| does one candidate satisfy archive and install policy | `make release-check` | `make confirm` |
+| do existing candidate bytes pass without a rebuild | `make verify-dist` | `make install-rehearsal` |
+| do malformed candidates and destinations fail correctly | `make release-selftest` | `make release-check` |
 | do I need the proof saved as a review bundle | `make verify-report` | `make proof` |
 | what is the shortest human-first route into the capstone | `make walkthrough` | `make tour` |
 | which failure class does the repro pack teach | `make incident-audit` | `make repro` |
@@ -56,6 +59,12 @@ question honestly.
 | `all` | the ordinary build outputs and convergence sentinel | you need the baseline build result |
 | `test` | runtime behavior checks | you need product-facing validation |
 | `selftest` | convergence, schedule equivalence, and hidden-input checks | you need build-system proof |
+| `dist` | one governed candidate and SHA-256 sidecar | you need producer output |
+| `verify-dist` | existing-byte identity, member, type, mode, and metadata evidence | you need consumer verification without rebuilding |
+| `install-rehearsal` | contained installed tree and rerun comparison | you need destination evidence |
+| `accept-release` | one final record bound to candidate and install reports | you need a bounded local decision |
+| `release-selftest` | ten acceptance and rejection tests | you need executable release guardrails |
+| `release-check` | complete local candidate production and acceptance | you need the full local release claim |
 | `walkthrough` | the bounded first-pass bundle | you need an ordered entry route |
 | `tour` | the shortest printed walkthrough plus supporting bundle | you need quick orientation |
 | `contract-audit` | the public-contract review bundle | you are reviewing promises and boundaries |
@@ -73,6 +82,9 @@ question honestly.
 ## Distinctions that matter
 
 - `all` builds outputs once; `selftest` proves the build contract
+- `dist` produces candidate bytes; `verify-dist` observes existing bytes
+- `install-rehearsal` proves a destination mapping; `accept-release` records the bounded decision
+- `release-selftest` proves gate behavior; `release-check` applies those gates to the capstone candidate
 - `walkthrough` writes a first-pass bundle; `tour` prints the shortest route and focused follow-ups
 - `contract-audit` and `inspect` are the same route with different naming context
 - `selftest-report` and `verify-report` are the same saved evidence bundle
@@ -118,6 +130,7 @@ What belongs in the source bundle:
 
 ## Useful companions
 
+- [RELEASE_GUIDE.md](release-guide.md)
 - [PROOF_GUIDE.md](proof-guide.md)
 - [WALKTHROUGH_GUIDE.md](walkthrough-guide.md)
 - [SELFTEST_GUIDE.md](selftest-guide.md)

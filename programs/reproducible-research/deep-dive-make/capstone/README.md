@@ -53,6 +53,7 @@ first-contact playground for Make syntax.
 | what does this repository promise | `make walkthrough` | `make inspect` |
 | which targets are public and what they mean | `make inspect` | `make contract-audit` |
 | does the build prove convergence and parallel safety | `make selftest` | `make verify-report` |
+| does one candidate satisfy the local release contract | `make release-check` | `make confirm` |
 | which failure class does this repro teach | `make incident-audit` | `make proof` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
 
@@ -87,6 +88,7 @@ bounded review route without turning the capstone into a browsing exercise.
 | `inspect` | the public build contract is visible without the full proof route | review starts from stable surfaces |
 | `selftest` | convergence, serial/parallel equivalence, and negative hidden-input detection | the build system is tested as a system |
 | `verify-report` | the selftest evidence is saved as a review bundle | proof can be inspected later |
+| `release-check` | one candidate passes archive and contained-install acceptance | release claims bind to exact bytes |
 | `proof` | the sanctioned review bundle set exists and agrees with the contract | stewardship has a durable route |
 | `confirm` | the strongest built-in confirmation path still passes | final review is stronger than first-pass learning |
 
@@ -124,6 +126,7 @@ All capstone documentation lives under `docs/`:
 - [INDEX.md](docs/index.md)
 - [PROFILE_AUDIT_GUIDE.md](docs/profile-audit-guide.md)
 - [PROOF_GUIDE.md](docs/proof-guide.md)
+- [RELEASE_GUIDE.md](docs/release-guide.md)
 - [REPRO_GUIDE.md](docs/repro-guide.md)
 - [SELFTEST_GUIDE.md](docs/selftest-guide.md)
 - [TARGET_GUIDE.md](docs/target-guide.md)

@@ -186,6 +186,7 @@ tour:
 >     cp $(DOCS_DIR)/architecture.md "$(TOUR_DIR)/ARCHITECTURE.md"
 >     cp $(DOCS_DIR)/index.md "$(TOUR_DIR)/INDEX.md"
 >     cp $(DOCS_DIR)/proof-guide.md "$(TOUR_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/release-guide.md "$(TOUR_DIR)/RELEASE_GUIDE.md"
 >     cp $(DOCS_DIR)/target-guide.md "$(TOUR_DIR)/TARGET_GUIDE.md"
 >     cp $(DOCS_DIR)/walkthrough-guide.md "$(TOUR_DIR)/WALKTHROUGH_GUIDE.md"
 >     cp $(DOCS_DIR)/repro-guide.md "$(TOUR_DIR)/REPRO_GUIDE.md"
@@ -205,8 +206,9 @@ tour:
 >       '  3. Read TARGET_GUIDE.md for the stable public interface.' \
 >       '  4. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
 >       '  5. Read ARCHITECTURE.md and WALKTHROUGH_GUIDE.md for ownership and first-pass order.' \
->       '  6. Read tests/run.sh and trace-count.txt for proof and observability evidence.' \
->       '  7. Inspect REPRO_GUIDE.md and repro/shared-log-interleaving.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
+>       '  6. Read RELEASE_GUIDE.md when the question is candidate acceptance.' \
+>       '  7. Read tests/run.sh and trace-count.txt for proof and observability evidence.' \
+>       '  8. Inspect REPRO_GUIDE.md and repro/shared-log-interleaving.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Focused routes:' \
 >       '  generators   -> make --trace dyn' \
@@ -237,6 +239,7 @@ walkthrough:
 >     cp $(DOCS_DIR)/architecture.md "$(WALKTHROUGH_DIR)/ARCHITECTURE.md"
 >     cp $(DOCS_DIR)/index.md "$(WALKTHROUGH_DIR)/INDEX.md"
 >     cp $(DOCS_DIR)/proof-guide.md "$(WALKTHROUGH_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/release-guide.md "$(WALKTHROUGH_DIR)/RELEASE_GUIDE.md"
 >     cp $(DOCS_DIR)/target-guide.md "$(WALKTHROUGH_DIR)/TARGET_GUIDE.md"
 >     cp $(DOCS_DIR)/walkthrough-guide.md "$(WALKTHROUGH_DIR)/WALKTHROUGH_GUIDE.md"
 >     cp Makefile "$(WALKTHROUGH_DIR)/Makefile"
@@ -251,11 +254,12 @@ walkthrough:
 >       '2. Read WALKTHROUGH_GUIDE.md to understand the recommended first pass.' \
 >       '3. Read README.md and TARGET_GUIDE.md to understand the capstone contract and public targets.' \
 >       '4. Read PROOF_GUIDE.md and tests/run.sh to see what selftest is proving.' \
->       '5. Read ARCHITECTURE.md and mk/contract.mk for ownership and boundary design.' \
->       '6. Read mk/objects.mk and mk/stamps.mk for graph truth and modeled hidden inputs.' \
->       '7. Run make help in the capstone directory.' \
->       '8. Run make selftest when you want executed proof.' \
->       '9. Inspect repro/shared-log-interleaving.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
+>       '5. Read RELEASE_GUIDE.md when you need the candidate acceptance route.' \
+>       '6. Read ARCHITECTURE.md and mk/contract.mk for ownership and boundary design.' \
+>       '7. Read mk/objects.mk and mk/stamps.mk for graph truth and modeled hidden inputs.' \
+>       '8. Run make help in the capstone directory.' \
+>       '9. Run make selftest when you want executed proof.' \
+>       '10. Inspect repro/shared-log-interleaving.mk as the first failure class.' > "$(WALKTHROUGH_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Public entry commands:' \
 >       '  make help' \
@@ -268,6 +272,7 @@ walkthrough:
 >       '  INDEX.md             stable local route into the capstone docs' \
 >       '  TARGET_GUIDE.md      stable public target surface' \
 >       '  PROOF_GUIDE.md       claim-to-evidence routing' \
+>       '  RELEASE_GUIDE.md     candidate acceptance and rejection route' \
 >       '  WALKTHROUGH_GUIDE.md bounded first-pass reading order' \
 >       '  ARCHITECTURE.md      layer ownership and system map' \
 >       '  Makefile             stable public target surface' \

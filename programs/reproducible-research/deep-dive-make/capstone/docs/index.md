@@ -34,6 +34,7 @@ Use this page as the stable entry route for the Make capstone docs.
 | what this repository promises | `WALKTHROUGH_GUIDE.md` | `TARGET_GUIDE.md` and `make walkthrough` |
 | which public targets are stable | `TARGET_GUIDE.md` | `CONTRACT_AUDIT_GUIDE.md` and `make inspect` |
 | how the build proves convergence and parallel safety | `SELFTEST_GUIDE.md` | `PROOF_GUIDE.md` and `make selftest` |
+| how one release candidate is accepted locally | `RELEASE_GUIDE.md` | `TARGET_GUIDE.md` and `make release-check` |
 | which failure class the capstone teaches | `REPRO_GUIDE.md` | `INCIDENT_REVIEW_GUIDE.md` and `make incident-audit` |
 | how the system is layered | `ARCHITECTURE.md` | `PROFILE_AUDIT_GUIDE.md` and `make proof` |
 
@@ -44,6 +45,7 @@ Use this page as the stable entry route for the Make capstone docs.
 - [Incident Review Guide](incident-review-guide.md)
 - [Profile Audit Guide](profile-audit-guide.md)
 - [Proof Guide](proof-guide.md)
+- [Release Acceptance Guide](release-guide.md)
 - [Repro Guide](repro-guide.md)
 - [Selftest Guide](selftest-guide.md)
 - [Target Guide](target-guide.md)

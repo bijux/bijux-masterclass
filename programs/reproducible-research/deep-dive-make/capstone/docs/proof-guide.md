@@ -41,6 +41,10 @@ start narrower.
 | what is publicly promised here | `make inspect` | `CONTRACT_AUDIT_GUIDE.md`, `TARGET_GUIDE.md`, `help.txt` |
 | the build converges after success | `make selftest` | `tests/run.sh`, `mk/stamps.mk` |
 | serial and parallel schedules produce the same result | `make selftest` | `serial.sum`, `parallel.sum`, `tests/run.sh` |
+| one candidate matches exact package and identity policy | `make verify-dist` | `RELEASE_GUIDE.md`, package policy, candidate acceptance report |
+| install remains contained and converges on rerun | `make install-rehearsal` | install policy, install acceptance report |
+| malformed release inputs fail at the expected boundary | `make release-selftest` | release tests and rejection output |
+| the full local release claim holds | `make release-check` | release acceptance record and `RELEASE_GUIDE.md` |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `settings.env` |
 | generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/generated-header-edge.mk` |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
@@ -71,6 +75,9 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `walkthrough` for first contact
 - choose `inspect` for contract review
 - choose `selftest` for build-truth proof
+- choose `verify-dist` for one existing candidate
+- choose `release-selftest` for acceptance and rejection behavior
+- choose `release-check` for the complete local release claim
 - choose `verify-report` when the proof needs to be saved
 - choose `incident-audit` for one failure class with captured evidence
 - choose `profile-audit` for portability, policy, and precedence questions
@@ -85,6 +92,7 @@ Read these with this guide:
 
 - `README.md`
 - [TARGET_GUIDE.md](target-guide.md)
+- [RELEASE_GUIDE.md](release-guide.md)
 - [WALKTHROUGH_GUIDE.md](walkthrough-guide.md)
 - [CONTRACT_AUDIT_GUIDE.md](contract-audit-guide.md)
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
