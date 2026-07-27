@@ -20,6 +20,20 @@ For each repair step:
 If you skip the boundary question, the example turns into command accumulation instead of
 production discipline.
 
+## If you are learning this without the live class
+
+Use the example in five passes instead of trying to absorb production policy in one read:
+
+1. name the private shell rituals before you change any files
+2. stop after the profile repair and compare the same target in two contexts
+3. classify one controlled failure before you add or discuss retries
+4. sketch scratch and trusted-output boundaries before you talk about cluster behavior
+5. finish by matching one claim to one proof route
+
+If you cannot explain the profile boundary after pass 2, do not move to retries yet. Most
+Module 03 confusion starts when learners skip the policy boundary and jump straight to
+"production flags."
+
 ## The one-day teaching goal
 
 By the end of this example, a learner should be able to rebuild a small repository so
@@ -50,6 +64,9 @@ Keep a small production packet as you go:
 - one short ladder showing which proof route answers which question
 - one final summary in language the next maintainer could repeat without you
 
+That packet is not extra paperwork. It is the thing that turns "I can run this" into
+"another maintainer can review this."
+
 ## What to keep beside you while you work
 
 Keep these four surfaces visible while you move through the example:
@@ -61,6 +78,19 @@ Keep these four surfaces visible while you move through the example:
 
 Those four surfaces are enough to explain whether the repository is becoming more
 reviewable or just noisier.
+
+## The evidence packet you should keep visible
+
+By the end of the example, keep one small packet that contains:
+
+- one local-versus-CI profile comparison for the same semantic target
+- one failure note naming the class before the response
+- one log or interrupted-output artifact from a controlled failure
+- one scratch-versus-final-boundary sketch
+- one proof ladder showing why you chose one route instead of a stronger ritual route
+
+If one of those pieces is missing, the repository may look more operational, but the
+learner still cannot defend the design.
 
 ## The starting situation
 
@@ -80,6 +110,19 @@ The maintainers currently do this:
 - no one can explain which settings are policy and which would change workflow meaning
 
 That is a good Module 03 starting point because it is common and fixable.
+
+## What goes wrong when a learner trusts the starting situation
+
+Use this card before you repair anything:
+
+| If you notice... | The repository is hiding... | Smallest proof route |
+| --- | --- | --- |
+| each maintainer uses a different favorite command | unnamed operating contexts | compare two current command lines against one declared target |
+| retries are discussed before anyone names the failure class | policy is reacting to stress instead of evidence | inspect one log and classify the failure first |
+| scratch paths feel more important than final output paths | temporary execution context is being confused with trusted contract space | draw the storage route and mark where trust begins |
+| `make confirm` is used for every tiny question | proof routes are not being matched to claims proportionately | list the smaller route that would answer the bounded question |
+
+If you can name the hidden defect first, the repair stops feeling like folklore.
 
 ```mermaid
 flowchart LR
@@ -174,6 +217,19 @@ Use a quick audit table while you compare:
 
 The point is not to make the profiles identical. The point is to make their
 differences obviously operational instead of semantically dangerous.
+
+## The profile audit before you celebrate
+
+Before you call the profile repair complete, make sure you can answer all four of these:
+
+| Question | Healthy answer |
+| --- | --- |
+| What stayed identical? | requested targets, workflow meaning, and publish contract |
+| What changed safely? | cores, latency patience, logging visibility, or other operating context details |
+| What would have crossed the boundary? | algorithm choice, sample membership, or publish semantics |
+| What evidence proves the difference is operational only? | paired dry-runs or another bounded comparison for the same target |
+
+If any row stays vague, keep auditing. The profile may still be carrying semantic drift.
 
 ## Give failures a small honest policy
 
@@ -313,6 +369,19 @@ Write the ladder down in reviewable form:
 | `make verify` | does the workflow execute correctly with evidence worth inspecting |
 | `make confirm` | can a fresh maintainer rebuild trust from a clean starting point |
 
+## The proof-route audit before you move on
+
+Do not just memorize the ladder. Test whether you can justify route choice:
+
+| Claim | Smallest honest route |
+| --- | --- |
+| the target graph stays stable across two profiles | paired dry-runs or `make profile-audit` |
+| a recent policy edit did not hide execution failure evidence | one executed verification route with logs |
+| the repository still rebuilds trust from scratch | `make confirm` |
+
+If you always reach for the strongest route first, the learner never practices bounded
+operational judgment.
+
 ## What to check before moving on
 
 After the production version works, confirm all of these:
@@ -360,6 +429,17 @@ By the end of these repairs, the workflow can be described cleanly:
 That is what it means to harden a workflow for production use without turning it into a
 different workflow.
 
+```mermaid
+flowchart LR
+  context["named operating context"] --> failure["classified failure response"]
+  failure --> storage["trusted output boundary"]
+  storage --> proof["matched proof route"]
+  proof --> review["repeatable maintainer review"]
+```
+
+Read that diagram literally. If one step is missing, the repository may still run, but
+the production story is not yet teachable.
+
 ## Review questions for the repaired design
 
 When you inspect a repository shaped like this, ask:
@@ -371,6 +451,19 @@ When you inspect a repository shaped like this, ask:
 5. how would the next maintainer review a profile diff without guesswork
 
 If those answers are visible, the module’s production story has landed.
+
+## If the module still feels abstract
+
+Do this recovery loop in order:
+
+1. print the two profile surfaces you think should differ safely
+2. point to one failure log and classify it before naming a response
+3. mark the exact path where downstream trust begins
+4. choose the smallest proof route that answers one concrete question
+5. restate the review order as if you were handing the repository to a new maintainer
+
+Most Module 03 confusion is not about infrastructure. It is about losing track of which
+boundary owns which decision.
 
 Before leaving the module, make sure you can say all five of these out loud:
 

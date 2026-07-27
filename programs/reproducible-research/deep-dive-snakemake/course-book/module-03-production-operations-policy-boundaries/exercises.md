@@ -76,6 +76,21 @@ flowchart LR
 Use that sequence on purpose. It keeps the day anchored in boundary judgment instead of
 letting isolated commands impersonate understanding.
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable packet instead of ten disconnected command traces:
+
+- one profile comparison for the same semantic target
+- one invariant sentence naming what must not change across contexts
+- one failure table mapping evidence to retry, fail-fast, or rerun-incomplete decisions
+- one storage sketch marking where trust begins
+- one proof ladder that matches claims to routes proportionately
+- one maintainer-style review note for a production policy diff
+
+If you cannot point to those artifacts, the exercise day is still too dependent on tacit
+classroom guidance.
+
 ## Exercise 1: Separate policy from workflow meaning
 
 Take a small workflow and propose four settings:
@@ -191,6 +206,20 @@ already answer all of these:
 
 If you cannot answer those four questions cleanly, do not rush into later exercises.
 Return to the earlier comparisons and make the packet more explicit.
+
+## When you get stuck, diagnose the missing boundary first
+
+Use this table before you start adding more commands:
+
+| If you are stuck on... | Check whether you are missing... | Typical repair |
+| --- | --- | --- |
+| Exercise 1 or 2 | one clear distinction between policy and meaning | rewrite the invariant sentence before editing the profile |
+| Exercise 3 or 6 | one claim matched to one proportionate proof route | choose the bounded question first, then the route |
+| Exercise 4 or 7 | one named failure class with evidence | inspect the log or partial state before deciding on retries |
+| Exercise 8, 9, or 10 | one trusted-output boundary | mark scratch, final outputs, and review surfaces separately |
+
+Most weak Module 03 answers are not short on commands. They are short on named
+boundaries.
 
 ## Exercise 7: Inject and classify failures
 
