@@ -1,30 +1,5 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this glossary to keep the language of Module 01 stable while you move between the core
 lessons, worked example, and exercises.
 
@@ -36,6 +11,15 @@ facts keep the same names whenever you explain them.
 If a Snakemake explanation starts drifting into phrases like "it just runs that step" or
 "the wildcard is weird," stop and look up the precise term that should replace that vague
 phrase. Module 01 becomes much clearer when the nouns are stable.
+
+## When to stop and check the glossary
+
+Pause and check a term when:
+
+- your explanation depends on "some file" instead of a named output contract
+- you are using "job" and "rule" as if they mean the same thing
+- you are treating a rerun cause and a failure symptom as the same thing
+- you can tell a path design feels wrong but cannot yet name the ownership problem
 
 ## Terms in this module
 
@@ -71,3 +55,18 @@ When you explain a Module 01 situation, aim to say things like:
 - "the final path is a poison artifact because it was published before success"
 
 Those sentences are much more useful than saying only "Snakemake is confusing."
+
+## Terms you should be able to use by the end of the day
+
+If Module 01 is landing properly, these terms should feel ordinary by the end:
+
+- file contract
+- requested target
+- convergence
+- wildcard binding
+- output ownership
+- workflow meaning
+- atomic publication
+
+If those terms still feel decorative rather than useful, revisit the worked example and
+the first five exercises before moving on.

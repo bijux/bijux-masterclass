@@ -2,6 +2,19 @@
 Use these after reading the five core lessons and the worked example. The goal is to make
 your file-contract reasoning visible through runnable work, not through vague summaries.
 
+## How to work through this set
+
+Treat the ten exercises as one long lab, not ten disconnected prompts.
+
+Before each answer:
+
+1. write down your prediction
+2. run the smallest command that can confirm or falsify it
+3. keep the evidence next to the explanation
+
+That pattern matters more than speed. The exercises are trying to build reasoning habits,
+not collect polished prose.
+
 Do them in order. The set is designed as one day-long progression:
 
 - Exercises 1-3 establish the basic graph and prediction habit.
@@ -14,6 +27,24 @@ For every answer, keep three things:
 - the workflow files or commands you actually ran
 - the evidence artifact that proves your explanation
 - one short sentence in plain language about why the behavior happened
+
+## Recommended working folder
+
+If you want a clean setup, build the exercise set inside one tiny project tree and keep
+adding to it:
+
+```text
+module01-lab/
+├── Snakefile
+├── config/
+├── profiles/
+├── data/
+├── results/
+├── logs/
+└── artifacts/
+```
+
+That layout makes it easier to compare exercises instead of starting from zero every time.
 
 ## Exercise 1: Explain why one rule does not run
 
@@ -44,6 +75,10 @@ What to hand in:
 - the second dry-run that shows no work
 - one sentence explaining why the workflow settled down
 
+Study note:
+If your dry-run still plans work, do not move on until you can name the specific rerun
+cause.
+
 ## Exercise 3: Trigger one selective rebuild
 
 Create a two-sample workflow from Exercise 2 by introducing a wildcard rule and two input
@@ -58,6 +93,10 @@ What to hand in:
 - the output that stayed untouched
 - one explanation based on dependency edges rather than rule order
 
+Study note:
+If you find yourself saying "it reran because that rule comes next," stop and redraw the
+dependency chain instead.
+
 ## Exercise 4: Break convergence and repair it
 
 Take a working workflow and introduce one unstable influence, such as a time-based
@@ -71,6 +110,10 @@ What to hand in:
 - the dry-run evidence that shows why it would rerun again
 - the repaired version
 - one sentence explaining what made the rule meaning unstable
+
+Study note:
+This is one of the most important exercises in the module. Many later Snakemake problems
+are just harder versions of unstable workflow meaning.
 
 ## Exercise 5: Diagnose one wildcard ownership problem
 
@@ -88,6 +131,10 @@ What to hand in:
 - the redesigned output pattern
 - one command, such as `snakemake -n` or `--rulegraph`, that supports the diagnosis
 
+Study note:
+Do not solve this by inventing a verbal excuse for the ambiguity. Solve it by making file
+ownership clearer.
+
 ## Exercise 6: Repair a poison output
 
 Write a rule that fails after writing to its final output path. Then repair it so the final
@@ -99,6 +146,10 @@ What to hand in:
 - the repaired atomic-publication shape
 - the log path or evidence route you would keep for diagnosis
 - one sentence explaining why the repaired version is safer for downstream rules
+
+Study note:
+If a downstream rule could accidentally consume the broken file, the repair is not strong
+enough yet.
 
 ## Exercise 7: Separate workflow meaning from execution policy
 
@@ -112,6 +163,9 @@ What to hand in:
 - one example of a failure that early config validation would catch
 - one sentence explaining why the split makes the workflow easier to review
 
+Study note:
+The sentence should explain reviewability, not just personal preference.
+
 ## Exercise 8: Compare a plan with execution
 
 Delete one output from a working two-sample workflow. Capture the dry-run, then run the
@@ -124,6 +178,10 @@ What to hand in:
 - the summary status after execution
 - one distinction between planning evidence and completed-run evidence
 
+Study note:
+This is where many learners start seeing the difference between "what would run" and
+"what is now true on disk."
+
 ## Exercise 9: Investigate a missing input
 
 Request a valid-looking target whose required source file does not exist. Read the full
@@ -135,6 +193,10 @@ What to hand in:
 - the missing input Snakemake reports
 - whether the defect belongs in the workflow, configuration, or source data
 - the smallest honest repair
+
+Study note:
+Do not create dummy files just to make the error disappear. The point is to locate the
+real contract failure.
 
 ## Exercise 10: Complete a trustworthy tiny project
 
@@ -155,6 +217,17 @@ What to hand in:
 - a DAG or rule graph written under `artifacts/`
 - one injected failure and evidence that no partial summary remained
 - a short review of which settings are workflow meaning and which are execution policy
+
+## Exit standard for the exercise day
+
+Do not count the day complete unless you can do all of this without the answer page
+telling you what to type:
+
+- predict the job plan before a dry-run
+- explain one rerun from tracked evidence
+- repair one wildcard ownership defect
+- justify one config-versus-profile split
+- show that one final output is trustworthy to consume
 
 ## Mastery standard for this exercise set
 

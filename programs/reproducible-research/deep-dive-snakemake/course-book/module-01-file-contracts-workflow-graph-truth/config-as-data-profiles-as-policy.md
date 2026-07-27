@@ -1,32 +1,30 @@
 # Config as Data, Profiles as Policy
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["File Contracts Workflow Graph Truth"]
-  page["Config as Data, Profiles as Policy"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This page separates two ideas people often mix together: workflow meaning and execution
 policy.
+
+## How to study this page
+
+Read this page with one question in mind:
+
+> if I change this setting, did I change the result I am trying to compute, or only the
+> conditions under which Snakemake runs?
+
+If you keep that question visible, config and profiles stop feeling like arbitrary
+containers and start feeling like different responsibilities.
+
+## Why this lesson belongs in Module 01
+
+Beginners often postpone this boundary because it sounds advanced. That is a mistake.
+
+If the boundary is blurry on day one, the workflow becomes harder to explain on day two:
+
+- target sets start depending on machine-local files
+- semantic choices hide inside executor bundles
+- debugging turns into guesswork because meaning and operating context are mixed together
+
+This is still a first-principles lesson. It protects the file-contract model from becoming
+dishonest too early.
 
 ## The sentence to keep
 
@@ -47,6 +45,17 @@ Config changes meaning.
 Profiles change operating conditions.
 
 This is not bureaucratic tidiness. It is how you keep workflows explainable.
+
+## A quick self-check before you keep reading
+
+Take one setting you already know from another tool.
+
+- If it chooses which data, threshold, or reference the workflow uses, expect it to land
+  in config.
+- If it changes concurrency, logging, retries, or executor behavior, expect it to land in
+  a profile.
+
+That small prediction habit matters more than memorizing a definition.
 
 ## What belongs in config
 
@@ -90,6 +99,14 @@ or just alter scheduling and execution policy.
 | should this vary by machine or execution environment without changing the science or logic | profile |
 
 This is not mathematically perfect, but it is a strong beginner rule.
+
+## The beginner trap to avoid
+
+People often treat profiles as a convenient place for "whatever I do not want in the
+Snakefile." That turns profiles into hidden workflow meaning.
+
+Once that happens, two people can run the "same" workflow and silently compute different
+things.
 
 ## Why this split matters
 
@@ -196,6 +213,19 @@ With validation, the workflow fails immediately and says the config shape is wro
 
 That is much more humane.
 
+## A useful diagram
+
+```mermaid
+flowchart LR
+  meaning["Workflow meaning"] --> config["config/config.yaml"]
+  policy["Execution policy"] --> profile["profiles/default/config.yaml"]
+  config --> outputs["Which outputs should exist"]
+  profile --> runtime["How Snakemake runs to produce them"]
+```
+
+The diagram is simple on purpose. Module 01 does not need every Snakemake settings
+surface. It needs one clean mental split.
+
 ## Profiles should not smuggle in workflow meaning
 
 A profile can absolutely influence the run experience.
@@ -241,6 +271,17 @@ When looking at a setting, try this short review:
 4. if it is in config, is its shape validated before any jobs start
 
 Those questions keep the boundary stable.
+
+## What a good Module 01 answer sounds like
+
+Strong:
+
+> Changing `samples` belongs in config because it changes the target surface. Changing
+> `cores` belongs in the profile because it changes scheduling only.
+
+Weak:
+
+> I put it in the profile because that file already existed.
 
 ## A small example of the right explanation
 

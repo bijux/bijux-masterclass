@@ -5,6 +5,31 @@ it as you go and predict each change before you run it.
 The goal is to take one small workflow from misleading first draft to a version that tells
 the truth about files, reruns, wildcard ownership, and published outputs.
 
+## How to use this worked example
+
+Treat this page like a bench exercise, not like a story you admire from a distance.
+
+For each repair step:
+
+1. predict what Snakemake should do next
+2. run the smallest command that tests that prediction
+3. write one sentence about what changed in the workflow truth
+
+If you skip the prediction step, the example becomes reading practice instead of workflow
+reasoning practice.
+
+## The one-day teaching goal
+
+By the end of this example, a missed class session should still feel recoverable. The
+reader should be able to rebuild a tiny workflow from scratch and explain:
+
+- why one rule is irrelevant to the requested target
+- why one unstable value prevents convergence
+- why one output pattern teaches ownership badly
+- why one final output is unsafe to publish directly
+
+That is the real point of the example. The code is only the vehicle.
+
 ## Build an honest baseline first
 
 Before repairing a larger workflow, make the smallest multi-job graph concrete. Continue
@@ -45,6 +70,17 @@ One rule definition becomes two jobs because the concrete targets bind `{sample}
 `A` and `B`. Execute with `snakemake --cores 1`, then edit only `data/A.txt` and dry-run
 again. Predict that only the `A` job will run. This small observation is the foundation
 for the repair below.
+
+## What to keep beside you while you work
+
+Keep four evidence routes open all the way through the page:
+
+- `snakemake -n`
+- `snakemake --summary`
+- the current `Snakefile`
+- the actual output paths on disk
+
+Those four surfaces are enough to teach the lesson if you read them carefully.
 
 ## The lab route
 
@@ -148,6 +184,18 @@ order:
 That order keeps the lesson tied to workflow truth instead of drifting straight into
 implementation details.
 
+## Why this order matters educationally
+
+Beginners often grab the shell block first because it looks concrete. That produces a bad
+habit: polishing commands before deciding whether the workflow graph says anything true.
+
+This repair order forces a stronger instinct:
+
+- first make the target story honest
+- then make reruns explainable
+- then tighten path ownership
+- only then improve publication safety and diagnostics
+
 ## Review the target story
 
 The first question is not "how do I fix the shell?"
@@ -195,6 +243,19 @@ This is Core 2.
 The repair is to remove the unstable time value from the rule's meaning. If you
 actually need a run identifier, it should be an explicit stable config value or sidecar
 audit artifact, not part of the summary's semantic content.
+
+## A short checkpoint before moving on
+
+Pause here and verify that you can say the problem in one sentence without mentioning
+"Snakemake weirdness."
+
+Strong sentence:
+
+> The summary rule reruns because its tracked meaning changes every parse.
+
+Weak sentence:
+
+> It keeps running again for some reason.
 
 ## Make the wildcard output teach the reader
 
@@ -264,6 +325,9 @@ This is Core 4. You now have a clean story:
 
 - config changes workflow meaning
 - profile changes execution behavior
+
+If this still feels abstract, change `samples` and `cores` one at a time and predict which
+change should alter the target surface. That comparison usually makes the boundary click.
 
 ## Repair publication and failure evidence
 
@@ -407,6 +471,20 @@ You should now see:
 - one `all` target
 
 That is a workflow you can explain, not just run.
+
+## What the learner should notice now
+
+The repaired workflow is still tiny. That is a feature.
+
+At this size, every improvement is visible:
+
+- the target story is short enough to redraw
+- the rerun logic is small enough to test deliberately
+- the naming is specific enough to explain aloud
+- the publication boundary is explicit enough to inspect after a forced failure
+
+If a learner cannot explain the repaired version at this size, moving to a larger project
+will only hide the confusion.
 
 ## What changed conceptually
 
