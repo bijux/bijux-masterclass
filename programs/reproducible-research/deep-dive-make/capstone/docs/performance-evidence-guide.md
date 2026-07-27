@@ -9,7 +9,8 @@ define a universal speed threshold.
 `make perf` answers:
 
 > What do the governed clean, converged no-op, and converged dry-run routes cost in this
-> environment, and did each route preserve the capstone's trusted outputs and convergence?
+> named environment and revision, and did each route preserve convergence, trusted outputs,
+> and the declared incremental rebuild scope?
 
 It does not answer:
 
@@ -33,6 +34,16 @@ count:
 gmake perf PERFORMANCE_SAMPLES=7
 ```
 
+Name a stable execution environment when evidence may be compared later:
+
+```sh
+gmake perf PERFORMANCE_RUNNER=local-macos-arm64
+```
+
+The label is not decoration. It distinguishes environments that a platform string may not,
+such as a laptop run and a CI runner with the same operating system. Keep one label for one
+stable environment; do not rename a changed machine to make evidence compare.
+
 The minimum is three. Five is the default because one timing is not a baseline and a very
 large local sample count would imply precision this teaching route does not provide.
 
@@ -48,14 +59,39 @@ Read:
 
 1. `route.txt` for the question and limits
 2. `scenarios.tsv` for the exact state, job count, and route contract
-3. `summary.tsv` for min, median, max, spread, and convergence
-4. `incremental-policy.tsv` for the declared input and expected rebuild scope
-5. `incremental-work.json` for missing and unexpected rebuilds
-6. `evidence.json` for context, every sample, and trusted-output inventories
-7. `logs/` for command output and exit status from each sample
+3. `incremental-policy.tsv` for the declared input and expected rebuild scope
+4. `incremental-work.json` for observed, missing, and unexpected rebuilds
+5. `evidence.json` for provenance, the bound incremental result, every timing sample, and
+   trusted-output inventories
+6. `summary.tsv` for min, median, max, spread, and convergence
+7. `logs/` for command output and exit status from each timing sample
 8. `manifest.json` for the bundle member inventory
 
-The summary is an entry surface, not a substitute for raw samples.
+This order is deliberate. A median is interpretable only after you know what ran, where it
+ran, and whether it did the same work.
+
+## Read execution context as evidence
+
+The `context` object in `evidence.json` records:
+
+| Field | Why it belongs in the claim |
+| --- | --- |
+| repository revision | identifies the source and Make graph measured |
+| repository status and status digest | exposes uncommitted source state |
+| resolved GNU Make command and version | identifies the evaluator and scheduler |
+| resolved compiler command and version | identifies the main clean-build recipe tool |
+| Python version | identifies the evidence collector runtime |
+| platform | provides the operating-system and machine boundary |
+| runner label | names the stable execution environment chosen by the operator |
+
+Collection records a dirty worktree rather than hiding it. Comparison rejects dirty or
+unavailable repository provenance because two timings cannot establish a revision-to-revision
+change when either side includes unidentified source edits.
+
+Different revisions are expected in a useful comparison. The report names both revisions;
+it does not require them to match. The compiler, GNU Make, Python, platform, runner label,
+scenario policy, and sample count do have to match. If one changes, recollect or describe a
+cross-environment observation without calling it a controlled performance comparison.
 
 ## Understand the scenarios
 
@@ -87,6 +123,11 @@ its contents, runs the real build, then restores the source timestamp. The polic
 the generated header remain untouched. Missing work exposes stale-output risk; unexpected
 work exposes an overbroad graph.
 
+The collector copies the passing semantic fields into `evidence.json`. This binding matters:
+the comparator does not look for a conveniently named sibling file and hope it belongs to the
+timings. It compares the policy digest, input, expected rebuild set, and observed rebuild set
+carried by each evidence document.
+
 Run that proof alone with:
 
 ```sh
@@ -107,14 +148,19 @@ The comparison rejects:
 
 - different scenario-policy digests
 - different sample counts
+- different GNU Make, compiler, Python, platform, or runner identities
+- dirty or unavailable repository provenance
 - different scenario sets, states, routes, or job counts
 - failed evidence
 - failed convergence
 - changed trusted-output inventories
+- different incremental policy, input, expected work, or observed work
+- missing or unexpected incremental rebuilds
 
-Only after those checks pass does it report median deltas. The report deliberately does not
-label a negative delta a “win.” Compare the delta with both observed spread and a stated
-operational objective.
+It deliberately permits different clean revision identifiers and records both in
+`execution_context`. Only after all compatibility and semantic checks pass does it report
+median deltas. The report does not label a negative delta a “win.” Compare the delta with
+both observed spread and a stated operational objective.
 
 ## Review the gate itself
 
@@ -126,11 +172,14 @@ gmake performance-selftest
 
 The tests prove that:
 
+- resolved tool and repository identity are captured
+- clean, dirty, and unavailable repository states remain distinguishable
+- incremental policy and observed rebuild scope are enforced
 - a complete governed capture passes
 - fewer than three samples are rejected
 - a failed command produces failed evidence
 - compatible bundles can be compared
-- policy, sample-count, result, and artifact drift are rejected
+- context, policy, sample-count, result, artifact, and requested-work drift are rejected
 
 This matters because a gate that has only seen passing input is not yet trustworthy.
 
@@ -143,6 +192,9 @@ Use one of these outcomes:
 | one bundle, no prior compatible evidence | baseline established; regression unproven |
 | compatible bundles, delta inside observed spread | no material change established |
 | compatible bundles, objective exceeded, semantics match | investigate or accept the measured change |
+| comparison rejected for toolchain or runner drift | evidence describes different environments |
+| comparison rejected for dirty provenance | commit or restore the intended source state, then recollect |
+| comparison rejected for requested-work drift | timing claim blocked until the graph change is explained |
 | comparison rejected for artifact drift | performance claim blocked by semantic change |
 | comparison rejected for contract drift | recollect under one experiment contract |
 
