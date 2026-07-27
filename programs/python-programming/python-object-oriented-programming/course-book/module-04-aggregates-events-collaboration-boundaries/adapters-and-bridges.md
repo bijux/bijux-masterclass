@@ -1,5 +1,4 @@
-# Adapter and Bridge: Wrapping External Systems and Storage
-
+# Adapters and Bridges
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Aggregates Events Collaboration Boundaries"]
-  page["Adapter and Bridge: Wrapping External Systems and Storage"]
+  page["Adapters and Bridges"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,80 +24,184 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Wrap external systems (APIs, databases, queues) behind stable interfaces so your domain stays clean.
+Your object model should not learn the dialect of every database, queue, web API, or
+framework it touches.
 
-This core reinforces:
-- ports/adapters (Module 2),
-- and adds two classic structural patterns:
-  - **Adapter**: make one interface look like another,
-  - **Bridge**: separate abstraction from implementation so they can vary independently.
+When that dialect leaks inward, you get a design that is hard to test, hard to reason
+about, and hard to change. Domain rules start depending on transport details. Error
+handling becomes inconsistent. Every replacement of an outer system turns into a
+rewrite of inner logic.
 
-## Where This Fits
+Adapters and bridges solve that by keeping translation at the edge.
 
-Running example: a monitoring service that fetches metrics, evaluates rules, and emits alerts. In earlier modules we refactored toward a layered design (domain/application/infrastructure) with explicit roles. From M03 onward, we tighten *data integrity* and *lifecycle semantics* so the system stays correct under change.
+## The problem they solve
 
-## 1. Adapter: Translate an External Interface Into Your Port
+The inner model wants clear concepts such as:
 
-Suppose your domain wants:
+- a rule was activated
+- a policy was saved
+- an alert was delivered
+- a report was loaded
+
+Outer systems usually speak in a different language:
+
+- HTTP responses
+- SQL rows
+- SDK exceptions
+- framework callbacks
+- serialized payloads
+
+If you let those outer shapes spread through the core model, the core stops being a
+core. It becomes a meeting point for unrelated dependencies.
+
+## What an adapter is
+
+An adapter converts one interface into another interface your code actually wants.
+
+In this course, the usual pattern is:
+
+- the application or domain defines the needed port
+- infrastructure implements that port with an adapter
+- the adapter translates inputs, outputs, and failures
+
+That translation can include:
+
+- converting framework or SDK data into domain values
+- mapping storage rows into object state
+- turning external exceptions into stable local failure meanings
+- normalizing inconsistent outer naming into domain language
+
+The key point is simple: the adapter absorbs mismatch so the rest of the system does
+not have to.
+
+## What a bridge means here
+
+In Python teaching material, "bridge" is often less about ceremony and more about
+separation of responsibility.
+
+The core idea is:
+
+- one side owns the abstraction
+- another side provides interchangeable implementations
+
+For this module, that usually means:
+
+- the application layer depends on a protocol or port
+- infrastructure provides one or more concrete implementations
+- the object model keeps its reasoning unchanged while the outer mechanism changes
+
+You can think of it this way:
+
+- the adapter handles translation
+- the bridge keeps the inner abstraction from collapsing onto one outer implementation
+
+They often appear together.
+
+## A concrete monitoring example
+
+Suppose a monitoring policy needs recent metric values. The application layer may want
+something like:
 
 ```python
-class MetricFetcherPort(Protocol):
-    def fetch(self, name: MetricName) -> float: ...
+class MetricHistoryPort(Protocol):
+    def recent_samples(self, metric_name: str, limit: int) -> list[float]: ...
 ```
 
-But the external API provides `get_metric(str) -> dict`.
+The external client may instead provide:
 
-The adapter translates:
+- `fetch_timeseries(name: str, count: int) -> dict`
+- timestamps you do not need for this decision
+- failure types that mention HTTP, auth, or quota details
 
-- input type (`MetricName` → `str`)
-- output shape (`dict` → `float`)
-- error mapping (timeout → `MetricFetchError`)
+An adapter should:
 
-## 2. Bridge: Swap Implementations Without Changing the Abstraction
+- call the client
+- extract the values needed for policy decisions
+- raise a local, meaningful failure when the source is unavailable
 
-A bridge is useful when you have multiple implementations:
+The aggregate or strategy should not need to know whether the data came from HTTP,
+SQLite, a file, or a fake used in tests.
 
-- `HttpMetricFetcher`
-- `FileMetricFetcher`
-- `FakeMetricFetcher` (tests)
+## Error translation is part of the boundary
 
-The abstraction stays stable (`MetricFetcherPort`), and implementations vary.
+Students often understand data translation first and forget failure translation. That is
+where a lot of design damage happens.
 
-In Python, “bridge” often just means “depend on a protocol and inject the implementation” — exactly what Module 2 taught.
+If inner layers must handle:
 
-## 3. Error Mapping Is Part of the Adapter
+- `Timeout`
+- `ClientError`
+- `OperationalError`
+- `ConnectionResetError`
 
-External exceptions should not leak into the domain.
+then the outer system has already leaked inward.
 
-- requests raises `Timeout`
-- database raises `OperationalError`
+Usually the inner system needs a smaller set of meanings, such as:
 
-Adapters should catch and raise your own stable errors:
-- `MetricFetchUnavailable`
-- `StorageUnavailable`
+- source unavailable
+- storage unavailable
+- malformed external record
+- unsupported response version
 
-This keeps error handling teachable and consistent (M05C45).
+The adapter owns the work of turning outer failures into those stable local meanings.
 
-## 4. Testing: Fakes First, Adapters Second
+## What should never cross inward
 
-- Domain/application tests use fakes implementing the port.
-- Adapter tests verify translation and error mapping.
+The following should normally stop at the adapter boundary:
 
-Do not test your whole system by hitting the real external service. That is an integration test, not your default unit test.
+- framework request and response objects
+- ORM entities used only for persistence mechanics
+- transport-specific status codes
+- vendor exception trees
+- serialization details that matter only at the edge
 
-## Practical Guidelines
+Once those shapes spread inward, every lesson about aggregates, policies, invariants,
+and event reasoning gets harder to preserve.
 
-- Define ports (protocols) in the application/domain; implement adapters in infrastructure.
-- Adapters translate types, shapes, and errors. Don’t leak external exceptions inward.
-- Use injection to swap implementations (bridge-style).
-- Test with fakes for domain/application; test adapters separately with small contract tests.
+## Common mistakes
 
-## Exercises for Mastery
+- letting the aggregate call SDK clients directly
+- returning raw database rows to the application layer
+- handling transport-specific errors inside domain objects
+- mixing translation with business decision logic in the same method
+- treating one concrete infrastructure implementation as if it were the abstraction
 
-1. Write a `MetricFetcherPort` and a fake implementation used in unit tests.
-2. Implement an adapter around an external client and test its error mapping.
-3. Add a second implementation (e.g., cache-backed) without changing callers.
+These mistakes usually start as convenience and end as dependency sprawl.
+
+## Review checklist
+
+| Question | Good sign |
+| --- | --- |
+| is the inner model speaking domain language rather than client or framework language? | yes |
+| are outer data shapes translated before they reach core decisions? | yes |
+| are vendor and transport errors mapped to local meanings? | yes |
+| can a fake or second implementation replace the first without changing the inner model? | yes |
+
+## Capstone connection
+
+In the capstone, this lesson matters anywhere the system touches:
+
+- persistence
+- network clients
+- message delivery
+- CLI or HTTP entrypoints
+- reporting or export surfaces
+
+If the capstone core layer already knows too much about one framework or storage shape,
+the next improvement is not a naming cleanup. It is a boundary cleanup.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why translation belongs at the edge rather than in aggregates
+- identify one place where error mapping is as important as data mapping
+- describe one capstone dependency that should remain behind a port and adapter
