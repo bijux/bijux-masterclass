@@ -90,6 +90,45 @@ Assume a workflow that should:
 That sounds ordinary. It still creates most of the mistakes people make with dynamic
 Snakemake workflows.
 
+Use one tiny lab tree so every repair is visible in the same place:
+
+```text
+module02-lab/
+├── Snakefile
+├── config/
+│   └── samples.tsv
+├── data/
+│   └── raw/
+├── results/
+│   ├── discovery/
+│   └── samples/
+├── publish/
+└── artifacts/
+```
+
+The point of the tree is not aesthetics. Each directory owns one kind of truth:
+
+- `config/` declares candidate intent
+- `data/raw/` holds the evidence files the intent points to
+- `results/discovery/` records what runtime validation learned
+- `results/samples/` holds per-sample work products
+- `publish/` exposes only the public review contract
+
+## The repair loop for the whole example
+
+Keep this table beside the code while you work:
+
+| Repair step | Hidden question | Owned artifact | Small proof command |
+| --- | --- | --- | --- |
+| weak draft | who decided the sample set | none | `snakemake -n` |
+| declared candidates | which candidates are even in scope | `config/samples.tsv` | `snakemake -n` |
+| narrow output family | where one sample's artifacts belong | `results/samples/{sample}/qc.json` | `snakemake --summary` |
+| runtime validation | which declared candidates were actually usable | `results/discovery/accepted_samples.json` and `results/discovery/rejected_samples.json` | `find results/discovery -maxdepth 1 -type f | sort` |
+| publish boundary | what a downstream reviewer can verify without engine state | `publish/<release>/manifest.json` plus copied discovery registries | `tree publish` |
+
+If you cannot point to the owned artifact in the current row, stop there before adding
+more workflow machinery.
+
 ## The weak first draft
 
 ```python
@@ -164,11 +203,20 @@ Now the workflow can answer:
 - which samples were candidates
 - which path belongs to each sample
 - which version-controlled record defines the target set
+- which raw files are evidence for those candidate claims
 
 If that is all the workflow needs, stop here. Adding a checkpoint would make a known
 target set harder to reason about.
 
 That pause matters. More dynamic is not automatically more advanced.
+
+Use this sentence precisely:
+
+> `config/samples.tsv` is the declared candidate surface, and `data/raw/` contains the
+> evidence files those candidate claims refer to.
+
+That distinction matters because many weak Module 02 answers call the raw directory the
+source of truth even after the workflow has already moved to a declared manifest.
 
 ## Why this pause matters educationally
 
@@ -224,13 +272,28 @@ checkpoint validate_candidates:
 
         outdir = Path(output[0])
         outdir.mkdir(parents=True, exist_ok=True)
-        samples = sorted(
-            sample
-            for sample, source in SOURCE_BY_SAMPLE.items()
-            if Path(source).stat().st_size > 0
+        accepted = []
+        rejected = []
+
+        for sample, source in sorted(SOURCE_BY_SAMPLE.items()):
+            size = Path(source).stat().st_size
+            if size > 0:
+                accepted.append({"sample": sample, "path": source})
+            else:
+                rejected.append(
+                    {
+                        "sample": sample,
+                        "path": source,
+                        "reason": "empty input file",
+                    }
+                )
+
+        (outdir / "accepted_samples.json").write_text(
+            json.dumps({"samples": accepted}, indent=2) + "\n",
+            encoding="utf-8",
         )
-        (outdir / "samples.json").write_text(
-            json.dumps({"samples": samples}, indent=2) + "\n",
+        (outdir / "rejected_samples.json").write_text(
+            json.dumps({"samples": rejected}, indent=2) + "\n",
             encoding="utf-8",
         )
 
@@ -240,8 +303,8 @@ def qc_targets(_wildcards):
     from pathlib import Path
 
     checkpoint_job = checkpoints.validate_candidates.get()
-    registry = Path(checkpoint_job.output[0]) / "samples.json"
-    samples = json.loads(registry.read_text(encoding="utf-8"))["samples"]
+    registry = Path(checkpoint_job.output[0]) / "accepted_samples.json"
+    samples = [row["sample"] for row in json.loads(registry.read_text(encoding="utf-8"))["samples"]]
     return expand("results/{sample}/qc.json", sample=samples)
 
 
@@ -252,10 +315,40 @@ rule all:
 
 The checkpoint is justified here because the downstream target set genuinely depends on
 the validation result. In a real workflow, replace the non-empty-file demonstration with
-a domain validator and record rejection reasons as well as accepted samples.
+a domain validator and keep the same ownership shape: one accepted registry and one
+rejection record.
 
 The important part is not the keyword `checkpoint`. The important part is that the
 discovered set is written once and reused.
+
+The example is stronger now because it can answer both sides of the question:
+
+- which candidates advanced
+- which candidates were rejected and why
+
+Without the rejection record, a learner often mistakes "not present downstream" for
+"never existed," which weakens both debugging and publication.
+
+## The proof loop after the checkpoint lands
+
+Run these in order and read them literally:
+
+```bash
+snakemake -n
+snakemake results/discovery/accepted_samples.json
+cat results/discovery/accepted_samples.json
+cat results/discovery/rejected_samples.json
+snakemake -n
+```
+
+What you should be able to explain after that sequence:
+
+- the first dry-run stops at validation because the accepted set is not yet known
+- the checkpoint materializes accepted and rejected discovery evidence
+- the second dry-run shows downstream QC targets derived from the accepted registry
+
+If the second dry-run still behaves like a raw-directory scan, the checkpoint contract is
+not yet owning the truth.
 
 ## The checkpoint audit before you celebrate
 
@@ -264,7 +357,7 @@ Before you call the checkpoint version correct, inspect it against this audit:
 | Question | Healthy answer |
 | --- | --- |
 | What exact runtime fact was learned? | which declared candidates were usable after validation |
-| Where was the answer written? | one owned registry such as `results/discovery/samples.json` |
+| Where was the answer written? | one accepted registry and one rejection record under `results/discovery/` |
 | What reads the answer later? | one downstream function that rereads the registry |
 | What does not happen anymore? | no downstream rescan of `data/raw/` |
 
@@ -311,7 +404,8 @@ Stronger shape:
 
 ```text
 publish/v1/
-  discovered_samples.json
+  accepted_samples.json
+  rejected_samples.json
   summary.json
   provenance.json
   manifest.json
@@ -349,24 +443,28 @@ truth.
 
 By the end of the repairs, the workflow can be described cleanly:
 
-1. raw files in `data/raw/` are the declared discovery surface
-2. discovery writes one durable registry
-3. downstream fanout reads that registry
-4. per-sample outputs live under narrow, predictable paths
-5. the publish boundary carries forward the discovery and provenance needed for review
+1. `config/samples.tsv` declares which candidates are in scope
+2. `data/raw/` provides the evidence files those candidates point to
+3. runtime validation writes accepted and rejected discovery records
+4. downstream fanout reads the accepted registry instead of rescanning raw inputs
+5. per-sample outputs live under narrow, predictable paths
+6. the publish boundary carries forward discovery and provenance needed for review
 
 That is what Module 02 means by a dynamic DAG you can trust.
 
 ```mermaid
 flowchart LR
-  raw["declared candidate source"] --> validate["validation step"]
-  validate --> registry["accepted registry"]
-  registry --> fanout["per-sample fanout"]
+  manifest["declared candidate manifest"] --> raw["raw evidence files"]
+  raw --> validate["validation step"]
+  validate --> accepted["accepted registry"]
+  validate --> rejected["rejection record"]
+  accepted --> fanout["per-sample fanout"]
   fanout --> publish["publish bundle"]
+  rejected --> publish
   publish --> review["reviewer can explain the run"]
 ```
 
-Read that diagram literally. If your workflow skips the registry or publish step, the
+Read that diagram literally. If your workflow skips the registries or publish step, the
 review surface is still incomplete.
 
 ## Review questions for the repaired design
