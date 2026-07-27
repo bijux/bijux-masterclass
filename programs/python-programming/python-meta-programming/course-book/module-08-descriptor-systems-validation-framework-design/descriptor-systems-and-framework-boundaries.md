@@ -56,6 +56,11 @@ Keep one more sentence beside it:
 
 > the right question is not whether a descriptor can hide the mechanism, but whether the mechanism still belongs to one attribute contract.
 
+For self-study, rewrite that sentence as a forced decision:
+
+- if I describe this behavior without mentioning the rest of the model, does the explanation still make sense?
+- if not, which broader owner is already being pulled in silently?
+
 ## Why this boundary matters
 
 Descriptor systems are seductive because they can make rich behavior appear simple:
@@ -99,6 +104,11 @@ single field descriptor
 
 This is not a “more advanced is better” ladder. It is a blast-radius ladder.
 
+Use one more translation:
+
+- field-level power asks "what does this one attribute mean?"
+- framework-level power asks "how do multiple objects, writes, or lifecycle phases stay coordinated?"
+
 ## Evidence route for boundary reviews
 
 Use this route whenever a design feels clever enough to hide ownership:
@@ -110,6 +120,16 @@ Use this route whenever a design feels clever enough to hide ownership:
 | name the smallest honest owner | tells you whether a descriptor still fits |
 | name one refused lower-power owner | tells you what would be too weak to carry the contract |
 | name one refused stronger owner | tells you whether wider architecture would currently be overkill |
+
+## Boundary diagnosis worksheet
+
+Fill this out before accepting a design as "still just descriptors":
+
+| Behavior under review | Smallest owner that might fit | Why that owner may be enough | First sign it no longer is enough | Better escalated owner |
+| --- | --- | --- | --- | --- |
+| cache one derived field | descriptor | one attribute owns the dependency and invalidation story | cross-instance coherence or shared invalidation appears | service or model infrastructure |
+| load one backend-backed field | descriptor | one field maps one durable slot | transactions, record identity, or relationship policy appear | repository, session, or model layer |
+| your own case | fill this in | fill this in | fill this in | fill this in |
 
 ## What still belongs to one attribute
 
@@ -176,6 +196,15 @@ Reject these descriptions when they appear in review:
 | "the model layer is just smart descriptors" | "descriptors may be one layer inside a wider model architecture" |
 | "we do not need services because the field already knows enough" | "services become necessary when coordination exceeds one attribute" |
 
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "descriptors are powerful enough" | power does not answer ownership |
+| "the framework part is small" | small architecture is still architecture |
+| "we can keep it in the field for convenience" | convenience does not justify hidden blast radius |
+| "services would be overengineering" | that may be true, but only after the rejected stronger owner is named concretely |
+
 ## Descriptors versus explicit services
 
 A strong rule of thumb is:
@@ -232,6 +261,10 @@ Good review notes in this module usually sound like:
 - "this is no longer only a field abstraction; it wants explicit session or model infrastructure"
 
 That tone is what keeps powerful descriptor systems from sounding magical.
+
+Add one more quality test:
+
+- a strong note names both the present owner and the first condition that would force escalation
 
 Add this sentence to your own review notes when needed:
 
