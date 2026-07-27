@@ -24,58 +24,68 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about choosing the weakest double that still proves the claim honestly.
 
-## Why this lesson matters
+Test doubles are useful because real boundaries can be:
 
-Test doubles are useful because real boundaries are sometimes too slow, too expensive,
-too noisy, or too hard to control in a focused test.
+- slow
+- expensive
+- hard to control
+- noisy in a focused proof
 
-They become dangerous when they stop standing in for a boundary and start dictating how
+They become harmful when they stop standing in for the boundary and start dictating how
 the implementation is allowed to think.
 
-That is why the main question is not:
+That is why the first question is not:
 
 - which double type exists?
 
 It is:
 
-- what question is this test trying to answer?
+- what truth is this test trying to preserve?
 
-Different doubles are good at answering different questions. When the tool and the
-question do not match, the test can pass while the design drifts.
+## Keep one workflow visible
 
-## The double types matter because their risks differ
+Use one capstone path:
 
-Use the classic names only as a starting point:
+- load confirmed enrollment or issuance state
+- perform one workflow step
+- save progress
+- publish one visible outcome
 
-- **stub**: gives predetermined answers so the test can reach a code path
-- **fake**: behaves like a lightweight working implementation with real state transitions
-- **spy**: records what happened so the test can inspect it afterward
-- **mock**: encodes expected interactions up front and often fails if the choreography changes
+Now ask:
 
-These are not status levels. They are tradeoffs.
+Which boundary needs believable state, and which boundary only needs one returned answer
+or one post-behavior observation?
 
-## Prefer the weakest double that answers the real question
+That question usually tells you which double is honest enough.
+
+## The classic names matter because their risks differ
+
+Use the names only as a starting vocabulary:
+
+- `stub`: supplies predetermined answers so the path can run
+- `fake`: behaves like a lightweight working implementation with meaningful state
+- `spy`: records what happened so the test can inspect it afterward
+- `mock`: prescribes interactions up front and often fails if choreography changes
+
+These are not status levels.
+They are tradeoffs between realism, control, and brittleness.
+
+## Prefer the weakest double that answers the proof question
 
 If the test only needs one returned value, a stub may be enough.
 
-If the test needs to exercise meaningful state change across a boundary, a fake is often
-better.
+If the test needs meaningful state across time, a fake is often better.
 
-If the test needs to inspect what was published or recorded after the behavior happened,
-a spy may fit well.
+If the test needs to inspect what was published after behavior happened, a spy may fit.
 
 If the interaction itself is the contract, then a mock may be justified.
 
-The goal is not to avoid mocks at all costs. The goal is to avoid choosing a stronger
-and more brittle tool than the proof requires.
+The goal is not to avoid mocks completely.
+The goal is to avoid using a stronger and more brittle tool than the claim requires.
 
-## Fakes often reveal boundary truth better than mocks
+## Fakes often reveal more truth than mocks
 
 Repositories, sinks, caches, and unit-of-work boundaries frequently behave more honestly
 under a fake than under a stack of mocks.
@@ -84,106 +94,128 @@ Why:
 
 - real control flow still happens
 - state accumulates and can be inspected
-- the test sees semantic effects instead of only call counts
 - interface drift is harder to hide
+- the test sees semantic effects rather than only call counts
 
-This is especially valuable in object-oriented systems where much of the meaning lives in
-state changes over time.
+This matters especially in object-oriented systems where meaning lives in state change
+over time.
 
 ## Interaction testing is justified only when the interaction is the contract
 
-A common mistake is to assert every internal call because it feels precise.
-
-But many interactions are not promises. They are one current implementation route.
+Many internal interactions are not promises.
+They are one current implementation route.
 
 An interaction assertion is justified when the boundary itself promises something like:
 
 - one notification must be published
 - one adapter must be invoked exactly once
+- one retry policy stops after a fixed number of attempts
 - one transaction boundary must surround the operation
-- one ordering of effects is externally significant
 
-If the interaction is not itself part of the caller-facing contract, pinning it can make
-refactors noisy without increasing confidence.
+If the interaction is not part of the caller-facing contract, pinning it often creates
+refactor noise without adding real confidence.
 
 ## Mocks hurt when they freeze choreography instead of meaning
 
 Mock-heavy tests often fail for the wrong reasons:
 
-- an internal helper was reordered
-- an object was split into two collaborators
-- a boundary call was combined or renamed without changing behavior
+- an internal helper moved
+- one collaborator became two
+- a boundary call was renamed or regrouped
 
-Meanwhile the real semantic bug may remain invisible because the mock accepted overly
-generous arguments or never exercised a realistic stateful path.
+Meanwhile the real semantic bug may stay invisible because the mock:
 
-That is why mocks can create an illusion of precision while actually weakening the proof.
+- accepted overly generous arguments
+- never exercised stateful behavior
+- never modeled durable progress across retries
 
-## A worked example
+This is why mocks can create an illusion of precision while weakening the proof.
 
-Suppose an application service should:
+## Worked capstone example
 
-- load an incident
-- apply a domain transition
+Suppose a workflow should:
+
+- load one enrollment or issuance record
+- apply a transition
 - save it
-- publish one event
+- publish one visible outcome
 
-A mock-heavy test might assert a detailed sequence of repository and publisher calls.
+A brittle test might mock the repository, publisher, clock, and helper objects and then
+assert a long call script.
 
 A stronger test might use:
 
-- a fake repository, so the aggregate is loaded and saved through a believable boundary
-- a spy publisher, so the emitted event can be inspected afterward
+- a fake repository, so state is actually loaded and saved
+- a spy publisher, so the visible published outcome can be inspected afterward
 
-Then the proof focuses on:
+Then the proof can focus on:
 
 - did the transition happen?
-- was the aggregate persisted?
-- was the right event published?
+- did progress persist?
+- was the right visible effect emitted?
 
-That usually says more about the real contract than a long interaction script.
+That is closer to the caller's truth than a choreography script.
 
 ## When a mock is the right tool
 
-There are still honest uses for mocks.
+Mocks still have honest uses.
 
 Examples:
 
-- proving a retry policy stops after a fixed number of attempts against one boundary
-- proving a coordinator calls a cancellation hook when a contract requires it
-- proving an integration wrapper sends one command through a narrow transport interface
+- proving a retry coordinator stops after a fixed number of attempts
+- proving a narrow transport wrapper sends one required command
+- proving a cancellation hook is invoked because the contract says it must be
 
-In these cases, the interaction itself is the observable meaning.
+In those cases, the interaction itself is the meaning.
 
-Use mocks there deliberately, and keep the contract explicit in the test name and
-assertions.
+Use mocks deliberately there, and make the contract visible in the test name.
 
-## Common mistakes
+## Build a doubles packet
+
+Before choosing a double, write a short packet:
+
+- boundary under test
+- truth the test must preserve
+- what state, if any, needs to accumulate
+- whether the interaction itself is part of the contract
+
+That packet usually reveals whether you need:
+
+- a stub
+- a fake
+- a spy
+- a mock
+- or a shared contract suite instead of a double
+
+## Common failure modes
 
 - using mocks by default before deciding what the test is proving
-- replacing a stateful fake with a pile of call expectations
+- replacing a useful fake with a pile of call expectations
 - asserting internal choreography that is not part of the contract
 - using permissive mocks that hide argument-shape drift
-- forgetting that spies inspect after behavior, while mocks prescribe before behavior
+- forgetting that spies inspect after behavior while mocks prescribe before behavior
 
-## Review checklist
+## Doubles review card
 
-| Question | Good sign |
+Use this short card when reviewing a double choice:
+
+| Question | What you want to see |
 | --- | --- |
 | does the chosen double match the real proof question? | yes |
 | are stateful boundaries exercised with fakes when that reveals more truth? | yes |
-| are interaction assertions limited to actual contract-level interactions? | yes |
+| are interaction assertions limited to contract-level interactions? | yes |
 | would an internal refactor keep most of these tests meaningful? | yes |
 
 ## Capstone connection
 
-Use the capstone test suite to ask:
+Use this page to ask:
 
-- which mock-heavy tests are really trying to prove stateful repository behavior?
-- where would a fake plus spy reveal more than a detailed interaction script?
-- which interaction assertions defend a real boundary promise and which only defend current choreography?
+- which mock-heavy capstone tests are really trying to prove stateful repository truth
+- where a fake plus spy would reveal more than a detailed interaction script
+- which interaction assertions defend a real boundary promise and which only defend
+  current choreography
 
-This is the point where doubles stop being a library feature and become a design choice.
+That is where doubles become a design choice instead of a library habit.
 
 ## Exit check
 
