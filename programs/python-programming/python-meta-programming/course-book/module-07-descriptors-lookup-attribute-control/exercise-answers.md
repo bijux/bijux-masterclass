@@ -29,6 +29,11 @@ Use this page after attempting the exercises yourself. The point is not to match
 example literally. The point is to compare your reasoning against answers that keep
 descriptor mechanics, storage, and ownership boundaries honest.
 
+Treat each answer as a review calibration, not as a final form to imitate blindly. A
+strong answer names the winning lookup step, the storage owner, and the rejected
+alternatives in plain language. A weak answer may look technically competent while still
+hiding where the real rule lives.
+
 ## Answer 1: Build one minimal descriptor on purpose
 
 Example answer:
@@ -46,6 +51,11 @@ Good conclusion:
 This is still a descriptor because `__get__` alone is enough. It does not need `__set__`
 or `__delete__` if the design only cares about reads, and class access returns the
 descriptor itself for inspection.
+
+Reasoning checkpoint:
+
+- can you name the exact read boundary this hook owns?
+- can you say which extra hook would be the first honest expansion only if the requirement changed?
 
 ## Answer 2: Show precedence with two concrete cases
 
@@ -65,6 +75,11 @@ Good conclusion:
 The outcomes differ because data descriptors beat the instance dictionary, while non-data
 descriptors yield to it.
 
+Reasoning checkpoint:
+
+- can you point to the exact public name being resolved?
+- can you name the evidence that proves which side won in each case?
+
 ## Answer 3: Explain ordinary method binding
 
 Example answer:
@@ -77,6 +92,11 @@ Good conclusion:
 
 Method binding is descriptor behavior, not special syntax magic. Functions on classes are
 non-data descriptors whose `__get__` logic produces bound methods on instance access.
+
+Reasoning checkpoint:
+
+- can you explain why `Class.method` does not bind?
+- can you say what `__func__` and `__self__` prove about the result?
 
 ## Answer 4: Build one reusable validating field
 
@@ -105,6 +125,11 @@ Good conclusion:
 `__set_name__` removes hard-coded field names, and the stored values live on the instance,
 not on the descriptor object.
 
+Reasoning checkpoint:
+
+- can you identify the configuration that stays on the descriptor object?
+- can you explain what would leak if the value moved there too?
+
 ## Answer 5: Reject one bad storage design
 
 Example answer:
@@ -131,6 +156,11 @@ Good conclusion:
 The descriptor object is shared at the class level, so descriptor-held field values are
 usually shared-state bugs waiting to happen.
 
+Reasoning checkpoint:
+
+- can you name one concrete cross-instance leak scenario?
+- can you explain why `id(obj)` storage is still a weak repair even if it appears to separate instances?
+
 ## Answer 6: Place one field rule on the ownership ladder
 
 Example answer:
@@ -156,6 +186,11 @@ Good conclusion:
 Strong answers justify the chosen owner by naming both the repeated field semantics and
 the clearer alternatives that were rejected.
 
+Reasoning checkpoint:
+
+- can you name one rejected stronger option and one rejected weaker option?
+- can you say what real reuse pressure made the descriptor worth keeping?
+
 ## Answer 7: Trace one attribute lookup from class to instance
 
 Example answer:
@@ -176,6 +211,11 @@ Good conclusion:
 
 The lookup result is determined by precedence rules, not by mystery. The key review
 question is always which object owns the name and which rule wins first.
+
+Reasoning checkpoint:
+
+- can you narrate the lookup order step by step?
+- can you identify where instance storage participates and where it does not?
 
 ## Answer 8: Replace one unnecessary descriptor with a lower-power owner
 
@@ -200,6 +240,11 @@ Good conclusion:
 Descriptors earn their keep when attribute behavior repeats or must be shared. Without
 that reuse pressure, a property keeps the boundary easier to read and teach.
 
+Reasoning checkpoint:
+
+- can you name the one-attribute owner that would be clearer here?
+- can you say what descriptor power would add without adding clarity?
+
 ## Answer 9: Compare honest descriptor claims with overstated claims
 
 Example answer:
@@ -217,6 +262,11 @@ Good conclusion:
 The second version is misleading because "guarantees" and "everywhere" imply broader
 system-wide control than an attribute assignment boundary can actually provide.
 
+Reasoning checkpoint:
+
+- can you point to the inflated words in the bad claim?
+- can you replace them with a narrower useful sentence?
+
 ## Answer 10: Produce a descriptor-boundary packet
 
 The packet is strong when another learner can answer:
@@ -225,6 +275,22 @@ The packet is strong when another learner can answer:
 - which lookup precedence rule explains the result
 - where per-instance state lives
 - when a simpler owner would have been clearer
+
+Add one more packet test:
+
+- could a reviewer identify both the winning lookup step and the storage owner without reading the implementation twice?
+
+## Repair moves for weak answer keys
+
+If your answer key still feels shallow, use these repair moves:
+
+| Weak answer habit | Repair move |
+| --- | --- |
+| saying only "the descriptor wins" | name the precedence rule and the evidence step |
+| describing storage vaguely | point to `obj.__dict__`, weak-key storage, or the broken shared object directly |
+| using "magic" to explain binding | point to `__get__`, `__func__`, and `__self__` |
+| choosing descriptors because they are advanced | name the actual reuse pressure and the rejected lower-power owner |
+| describing every field rule as descriptor-worthy | explain when one property would stay clearer |
 
 ## What strong Module 07 answers have in common
 
@@ -239,6 +305,15 @@ Across the whole set, strong answers share the same habits:
 
 If an answer still sounds like "descriptors are advanced so they fit here," revise it
 until you can say exactly what attribute rule they own and why.
+
+## Exit check for the answer key
+
+Before leaving this page, make sure you can do all of these:
+
+- identify the winning lookup step in every precedence-focused answer
+- identify the storage owner in every reusable-field answer
+- name one rejected lower-power alternative in every ownership-focused answer
+- explain one case where descriptor power is justified and one where it is not
 
 ## Continue through Module 07
 
