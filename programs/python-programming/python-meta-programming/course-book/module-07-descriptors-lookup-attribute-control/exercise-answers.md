@@ -156,6 +156,76 @@ Good conclusion:
 Strong answers justify the chosen owner by naming both the repeated field semantics and
 the clearer alternatives that were rejected.
 
+## Answer 7: Trace one attribute lookup from class to instance
+
+Example answer:
+
+Suppose:
+
+- `Account.balance` is a descriptor
+- `acct.__dict__` may also contain a stored backing name such as `"_balance"`
+
+Strong explanation:
+
+- Python starts with the attribute name on the class
+- if the class attribute is a data descriptor, it wins before direct instance-dictionary lookup
+- if it is only a non-data descriptor, a same-named instance entry can shadow it
+- the descriptor may then choose to read or write the backing value stored on the instance
+
+Good conclusion:
+
+The lookup result is determined by precedence rules, not by mystery. The key review
+question is always which object owns the name and which rule wins first.
+
+## Answer 8: Replace one unnecessary descriptor with a lower-power owner
+
+Example answer:
+
+Requirement:
+
+- one `price` field in one class should reject negative values
+
+Better owner:
+
+- a property
+
+Strong explanation:
+
+- the rule applies to one field in one class
+- reuse pressure is low
+- a descriptor would introduce an extra abstraction layer without making ownership clearer
+
+Good conclusion:
+
+Descriptors earn their keep when attribute behavior repeats or must be shared. Without
+that reuse pressure, a property keeps the boundary easier to read and teach.
+
+## Answer 9: Compare honest descriptor claims with overstated claims
+
+Example answer:
+
+Honest description:
+
+- "This descriptor enforces a non-empty string rule whenever the attribute is assigned."
+
+Overstated description:
+
+- "This descriptor guarantees clean user data everywhere."
+
+Good conclusion:
+
+The second version is misleading because "guarantees" and "everywhere" imply broader
+system-wide control than an attribute assignment boundary can actually provide.
+
+## Answer 10: Produce a descriptor-boundary packet
+
+The packet is strong when another learner can answer:
+
+- which attribute rule the descriptor owns
+- which lookup precedence rule explains the result
+- where per-instance state lives
+- when a simpler owner would have been clearer
+
 ## What strong Module 07 answers have in common
 
 Across the whole set, strong answers share the same habits:
@@ -164,6 +234,8 @@ Across the whole set, strong answers share the same habits:
 - they distinguish data descriptors from non-data descriptors precisely
 - they keep state ownership explicit
 - they choose descriptor power only when a field-level boundary truly needs it
+- they can narrate lookup order without magical phrasing
+- they leave behind a packet another learner can review without guessing
 
 If an answer still sounds like "descriptors are advanced so they fit here," revise it
 until you can say exactly what attribute rule they own and why.

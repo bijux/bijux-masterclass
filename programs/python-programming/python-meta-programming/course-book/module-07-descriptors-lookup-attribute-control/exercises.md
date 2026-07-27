@@ -35,6 +35,20 @@ Each exercise asks for three things:
 - the descriptor or lower-power tool you chose
 - the reason that choice is the clearest owner
 
+Treat the ten exercises as one full lab day on descriptors, lookup, and attribute control.
+
+Do them in order:
+
+- Exercises 1-3 establish minimal descriptors, precedence, and method binding as ordinary descriptor behavior
+- Exercises 4-6 move into reusable fields, storage safety, and ownership selection
+- Exercises 7-8 extend that discipline into lookup tracing and lower-power alternatives
+- Exercises 9-10 package the whole module into a reviewable descriptor-boundary packet
+
+Keep one descriptor-boundary table while you work:
+
+| Attribute rule or lookup question | Owner you chose | What lookup or storage rule matters | What stronger power was rejected | Review judgment |
+| --- | --- | --- | --- | --- |
+
 ## Exercise 1: Build one minimal descriptor on purpose
 
 Write a descriptor that implements one narrow behavior using the smallest useful set of
@@ -103,6 +117,67 @@ What to hand in:
 - the owner you chose
 - one sentence rejecting at least one stronger option as unnecessary
 
+## Midday self-check
+
+Before moving into the final four exercises, make sure you can already answer these
+questions clearly:
+
+- when `__get__` alone is enough and when a descriptor becomes a data descriptor
+- why data descriptors and non-data descriptors interact differently with `obj.__dict__`
+- where per-instance field state belongs and why descriptor-held state usually leaks
+- when a property or plain method is clearer than a reusable descriptor
+
+If you cannot answer those four questions in plain language, return to Exercises 1-6 and
+make the lookup rule, storage owner, and rejected alternative more explicit before
+continuing.
+
+## Exercise 7: Trace one attribute lookup from class to instance
+
+Choose one object with a descriptor-backed attribute and narrate the full lookup path.
+
+What to hand in:
+
+- the class attribute involved
+- the instance storage involved, if any
+- one explanation of which object wins the lookup and why
+
+## Exercise 8: Replace one unnecessary descriptor with a lower-power owner
+
+Choose one rule that someone might implement with a descriptor even though a simpler owner
+would be clearer.
+
+What to hand in:
+
+- the rule
+- the lower-power owner you would choose instead
+- one explanation of what the descriptor would add without adding clarity
+
+## Exercise 9: Compare honest descriptor claims with overstated claims
+
+Choose one descriptor design and write both an honest description and an overstated
+description of what it guarantees.
+
+What to hand in:
+
+- the honest description
+- the overstated description
+- one explanation of which words make the overstated version misleading
+
+## Exercise 10: Produce a descriptor-boundary packet
+
+Assemble:
+
+- one descriptor-boundary table
+- one precedence example comparing data and non-data behavior
+- one storage-safety rule that keeps per-instance data off the shared descriptor object
+- one rule for choosing a lower-power owner when descriptor reuse is unnecessary
+
+The packet is strong when another learner can use it to answer:
+
+- what the descriptor or lower-power owner actually controls
+- why lookup resolves the way it does
+- where state lives and why that storage choice is safe
+
 ## Mastery standard for this exercise set
 
 Across all six answers, the module wants the same habits:
@@ -111,6 +186,11 @@ Across all six answers, the module wants the same habits:
 - you use precedence rules precisely
 - you keep per-instance state separate from descriptor state
 - you choose descriptor power only when attribute-level ownership really justifies it
+
+Across all ten answers, add two more habits:
+
+- you can narrate lookup resolution without relying on "magic" language
+- you leave behind a descriptor-boundary packet another learner could review without guessing
 
 If an answer still sounds like "Python just does magic here," keep going.
 
