@@ -1,33 +1,21 @@
 # Exercise Answers
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Exercise Answers"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 These answers are model explanations, not the only acceptable wording.
 
 What matters is whether the reasoning protects trust while change is being planned.
+
+## How to use these answers
+
+Read this file only after attempting the exercises yourself.
+
+Use the answer key for three checks:
+
+1. did you name the right boundary
+2. did you preserve the right proof route
+3. did you explain trust preservation instead of only architectural taste
+
+Different wording can still be strong if the reasoning stays specific, evidence-first,
+and stewardship-focused.
 
 ## Exercise 1: Review the current repository honestly
 
@@ -134,6 +122,12 @@ Undocumented reads from `results/` and semantic profile keys rank above cosmetic
 structure. Preserve current public schema, representative semantics, and consumer routes
 before changing implementation, even when the current shape is inconvenient.
 
+What a strong answer makes visible:
+
+- what is already trusted
+- what is only convenient internally
+- what mismatch creates the largest migration risk
+
 ## Exercise 7: Write characterization checks
 
 Characterization checks encode relied-upon behavior without declaring every incidental
@@ -141,6 +135,9 @@ byte permanent. Assert expected target membership, required schema, identifiers,
 ordering only when contractual, and representative calculations. A candidate that drops
 a required field fails. Temporary paths, log wording, and internal rule names remain free
 to change unless they are documented public promises.
+
+The main lesson is that characterization protects relied-upon behavior without freezing
+every accidental implementation detail.
 
 ## Exercise 8: Migrate one ownership boundary
 
@@ -150,6 +147,9 @@ comparison is better when timestamps or harmless ordering differ. Keep current p
 green, add focused evidence for the new owner, and revert if public meaning, failure
 visibility, or rebuild behavior cannot be explained.
 
+A strong answer also states when the old path can be retired and when rollback is still
+the honest option.
+
 ## Exercise 9: Enforce a governance rule
 
 The automated check should express one durable boundary and report the exact violating
@@ -157,6 +157,9 @@ file or key. For example, compare publish outputs with file-API entries and fail
 is absent. A failing fixture proves enforcement. The message should direct maintainers to
 document, verify, version, or remove the public artifact rather than merely saying policy
 failed.
+
+The main lesson is that governance becomes durable only when it becomes reviewable and
+repairable.
 
 ## Exercise 10: Design and review a tool handoff
 
@@ -166,6 +169,9 @@ redefines scientific targets. Snakemake owns declared file execution and the ver
 publish bundle. The handoff records request identity, workflow revision, semantic config,
 operating context, and result manifest so failures and retries cannot create ambiguous
 ownership.
+
+The main lesson is that a tool handoff is only trustworthy when responsibility and
+verification remain separable instead of being absorbed into one vague platform story.
 
 ## Self-check
 

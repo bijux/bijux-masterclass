@@ -4,7 +4,11 @@ Use these after reading the five core lessons and the worked example. The goal i
 stewardship judgment visible through inventories, migration sequences, governance rules,
 and ownership contracts, not through vague redesign language.
 
-Do them in order. The set is one day-long progression:
+## How to use this exercise set
+
+Do the ten exercises in order.
+
+The set is a one-day progression:
 
 - Exercises 1-3 establish current truth and governance language.
 - Exercises 4-6 classify anti-patterns and build a current-truth inventory.
@@ -16,6 +20,9 @@ For every answer, keep three things:
 - the boundary you are naming
 - the evidence route you actually used
 - one short sentence explaining why the change preserves trust instead of only improving taste
+
+If you want the full value of the set, write every answer as if another maintainer must
+review it without oral context from you.
 
 ## Exercise 1: Review the current repository honestly
 

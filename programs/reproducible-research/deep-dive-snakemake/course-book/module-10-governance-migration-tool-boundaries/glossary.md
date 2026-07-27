@@ -1,34 +1,17 @@
 # Glossary
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Glossary"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 This glossary keeps the language of Module 10 stable.
 
 The goal is practical stewardship clarity: when migration, governance, and tool-boundary
 terms keep the same meaning, review gets calmer and more precise.
+
+## How to use this glossary
+
+Come back to this page whenever a migration or governance discussion starts drifting into
+generic words like "modernize," "platform," "cleanup," or "ownership."
+
+The glossary is not here to sound formal. It is here to keep stewardship discussion sharp
+enough that two maintainers can mean the same thing.
 
 ## Terms
 

@@ -8,6 +8,18 @@ The question is not "how do we modernize the repository?" The question is how to
 current truth, move one boundary, preserve proof, and stop before a fashionable rewrite
 erases evidence.
 
+## How to use this worked example
+
+Treat this page like a guided stewardship rehearsal.
+
+Read it in order and pause after each step to answer:
+
+1. what the team now knows with evidence
+2. what the team still does not know safely enough to move yet
+
+That habit matters because workflow migration goes wrong when teams confuse pressure,
+preference, and proof.
+
 ## The lab route
 
 Work through the example in this order:
@@ -32,7 +44,7 @@ Assume a team inherits a Snakemake repository with these characteristics:
 That last sentence creates risk immediately because it is larger than the review has
 earned.
 
-## Review current truth before proposing change
+## Step 1: review current truth before proposing change
 
 The first task is not migration. It is review.
 
@@ -51,7 +63,7 @@ That note already names three different problems:
 
 Without that review, every later migration sentence stays vague.
 
-## Decide what must not move first
+## Step 2: decide what must not move first
 
 Before discussing platform migration, the team writes down what must remain stable:
 
@@ -63,7 +75,7 @@ Before discussing platform migration, the team writes down what must remain stab
 This is the crucial shift. The migration is no longer “move onto the platform.” It is now
 “keep trusted outputs and proof routes stable while improving weak boundaries.”
 
-## Sequence the boundary moves
+## Step 3: sequence the boundary moves
 
 A reckless plan would do all of this at once:
 
@@ -81,7 +93,7 @@ Instead, the team chooses this order:
 
 That order matters because it repairs truth problems before adding architectural motion.
 
-## Repair contract drift first
+## Step 4: repair contract drift first
 
 The team updates the file API and downstream review so notebooks stop reading `results/`
 directly.
@@ -95,7 +107,7 @@ Proof route used:
 This is not glamorous work, but it removes one of the biggest migration traps: hidden
 consumers of internal state.
 
-## Move semantic settings out of profiles
+## Step 5: move semantic settings out of profiles
 
 Next, the suspicious sample filter moves into visible workflow or config surfaces, and
 the profile is reduced back to operating policy.
@@ -108,7 +120,7 @@ Proof route used:
 At this point the repository becomes easier to reason about even before any external
 handoff discussion.
 
-## Migrate implementation without changing outputs
+## Step 6: migrate implementation without changing outputs
 
 Now the team moves report-generation logic from a large helper script into package code.
 
@@ -121,7 +133,7 @@ The important restraint is that they do not change:
 They compare old and new report outputs and keep the same public boundary. This is a real
 migration step because ownership moved, but proof stayed visible.
 
-## Revisit the platform request honestly
+## Step 7: revisit the platform request honestly
 
 Only now does the team ask:
 
@@ -136,7 +148,7 @@ This is a hybrid answer, and it is the correct one. The repository still explain
 workflow truth better than the platform would. The platform explains service behavior
 better than the repository would.
 
-## Write governance rules so the problem does not return
+## Step 8: write governance rules so the problem does not return
 
 The team records three rules:
 
@@ -145,6 +157,18 @@ The team records three rules:
 3. migrations must preserve a comparison route until the new boundary earns trust
 
 That is the part many teams skip. Without it, the same drift returns later.
+
+## The teaching point of the whole example
+
+This worked example is not mainly about report helpers or platform handoff.
+
+It is about sequence discipline:
+
+1. describe current truth
+2. protect what is already trusted
+3. move one boundary
+4. compare calmly
+5. record the rule that prevents repeat drift
 
 ## The repaired stewardship story
 
