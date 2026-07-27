@@ -10,6 +10,7 @@ from pathlib import Path
 from collect_performance_evidence import SCHEMA
 
 COMPARISON_SCHEMA = "deep-dive-make-performance-comparison-v1"
+MATCHING_CONTEXT_KEYS = ("compiler", "make", "platform", "python", "runner")
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -39,6 +40,36 @@ def require_equal(
 ) -> None:
     if baseline.get(key) != candidate.get(key):
         raise ValueError(f"{key} mismatch")
+
+
+def compare_context(
+    baseline: dict[str, object], candidate: dict[str, object]
+) -> dict[str, object]:
+    for key in MATCHING_CONTEXT_KEYS:
+        require_equal(baseline, candidate, key)
+    baseline_repository = baseline.get("repository")
+    candidate_repository = candidate.get("repository")
+    if not isinstance(baseline_repository, dict) or not isinstance(
+        candidate_repository, dict
+    ):
+        raise TypeError("repository context is missing")
+    for label, repository in (
+        ("baseline", baseline_repository),
+        ("candidate", candidate_repository),
+    ):
+        if repository.get("revision") in (None, "unavailable"):
+            raise ValueError(f"{label} revision is unavailable")
+        if repository.get("status") != "clean":
+            raise ValueError(f"{label} worktree is not clean")
+    return {
+        "baseline_revision": baseline_repository["revision"],
+        "candidate_revision": candidate_repository["revision"],
+        "compiler": baseline["compiler"],
+        "make": baseline["make"],
+        "platform": baseline["platform"],
+        "python": baseline["python"],
+        "runner": baseline["runner"],
+    }
 
 
 def compare_scenario(
@@ -77,6 +108,13 @@ def compare(
 ) -> dict[str, object]:
     require_equal(baseline, candidate, "policy_sha256")
     require_equal(baseline, candidate, "sample_count")
+    baseline_context = baseline.get("context")
+    candidate_context = candidate.get("context")
+    if not isinstance(baseline_context, dict) or not isinstance(
+        candidate_context, dict
+    ):
+        raise TypeError("execution context is missing")
+    context = compare_context(baseline_context, candidate_context)
     baseline_scenarios = baseline["scenarios"]
     candidate_scenarios = candidate["scenarios"]
     assert isinstance(baseline_scenarios, dict)
@@ -99,6 +137,7 @@ def compare(
             "Comparable timing deltas recorded. Interpret them against observed spread "
             "and an explicit operational objective before claiming an improvement."
         ),
+        "execution_context": context,
         "result": "PASS",
         "scenarios": comparisons,
         "schema": COMPARISON_SCHEMA,

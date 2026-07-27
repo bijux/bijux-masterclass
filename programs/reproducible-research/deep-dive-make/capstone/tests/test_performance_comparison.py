@@ -7,6 +7,7 @@ import sys
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Any
 
 CAPSTONE_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = CAPSTONE_ROOT / "scripts" / "compare_performance_evidence.py"
@@ -15,9 +16,28 @@ sys.path.insert(0, str(CAPSTONE_ROOT / "scripts"))
 from collect_performance_evidence import SCHEMA
 
 
-def passing_evidence() -> dict[str, object]:
+def passing_evidence() -> dict[str, Any]:
     return {
-        "context": {"make": "GNU Make 4.4"},
+        "context": {
+            "compiler": {
+                "command": "cc",
+                "executable": "/usr/bin/cc",
+                "version": "Example Compiler 1.0",
+            },
+            "make": {
+                "command": "gmake",
+                "executable": "/usr/bin/gmake",
+                "version": "GNU Make 4.4",
+            },
+            "platform": "example-platform",
+            "python": "3.14.0",
+            "repository": {
+                "revision": "a" * 40,
+                "status": "clean",
+                "status_sha256": "clean-digest",
+            },
+            "runner": "local-test",
+        },
         "policy_sha256": "policy-digest",
         "result": "PASS",
         "sample_count": 3,
@@ -58,9 +78,9 @@ class PerformanceComparisonTests(unittest.TestCase):
 
     def compare(
         self,
-        baseline: dict[str, object],
-        candidate: dict[str, object],
-    ) -> tuple[subprocess.CompletedProcess[str], dict[str, object]]:
+        baseline: dict[str, Any],
+        candidate: dict[str, Any],
+    ) -> tuple[subprocess.CompletedProcess[str], dict[str, Any]]:
         self.baseline.write_text(json.dumps(baseline), encoding="utf-8")
         self.candidate.write_text(json.dumps(candidate), encoding="utf-8")
         result = subprocess.run(
@@ -84,12 +104,35 @@ class PerformanceComparisonTests(unittest.TestCase):
         baseline = passing_evidence()
         candidate = copy.deepcopy(baseline)
         candidate["scenarios"]["converged-noop"]["summary"]["median_seconds"] = 0.9
+        candidate["context"]["repository"]["revision"] = "b" * 40
 
         result, report = self.compare(baseline, candidate)
 
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(report["semantic_equivalence"], "PASS")
+        self.assertEqual(report["execution_context"]["baseline_revision"], "a" * 40)
+        self.assertEqual(report["execution_context"]["candidate_revision"], "b" * 40)
         self.assertEqual(report["scenarios"]["converged-noop"]["delta_seconds"], -0.2)
+
+    def test_rejects_compiler_drift(self) -> None:
+        baseline = passing_evidence()
+        candidate = copy.deepcopy(baseline)
+        candidate["context"]["compiler"]["version"] = "Example Compiler 2.0"
+
+        result, report = self.compare(baseline, candidate)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("compiler mismatch", report["failure"])
+
+    def test_rejects_dirty_candidate_worktree(self) -> None:
+        baseline = passing_evidence()
+        candidate = copy.deepcopy(baseline)
+        candidate["context"]["repository"]["status"] = "dirty"
+
+        result, report = self.compare(baseline, candidate)
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("candidate worktree is not clean", report["failure"])
 
     def test_rejects_policy_drift(self) -> None:
         baseline = passing_evidence()
