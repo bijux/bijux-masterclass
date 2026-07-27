@@ -25,267 +25,263 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Once a Make build has a few repeated rule shapes, the pressure to introduce macros becomes
-strong:
+A shorter Makefile is not automatically a simpler build. `define`, `call`, and `eval` can
+remove repeated text while silently adding targets, changing global policy, or making the
+generated domain impossible to review.
 
-- several compile rules look almost the same
-- several packaging rules differ only by a name
-- several publication steps use the same safety pattern
+This lesson uses three executable models:
 
-That pressure is legitimate. Duplication can hide invariants too.
+- explicit rules that establish the contract
+- a bounded macro that preserves it
+- an opaque macro that changes more architecture than its call site reveals
 
-The problem is that macro reuse can go bad in two opposite ways:
+The question is not “should Make use macros?” It is:
 
-- the build stays copy-pasted and drifts inconsistently
-- or the build compresses so aggressively that nobody can read the graph anymore
+> Which graph and artifact contract must remain true after rule generation?
 
-This page is about the middle path: reuse that keeps the graph inspectable.
+## Run the abstraction audit
 
-## The sentence to keep
+From `programs/reproducible-research/deep-dive-make/capstone/`:
 
-Before adding a macro, ask:
-
-> is this abstraction making one invariant easier to enforce, or is it mainly hiding the
-> graph behind another layer of indirection?
-
-That one question catches a lot of bad macro design.
-
-## Reuse is justified when it protects truth
-
-The strongest reason to use a macro is not "these lines look similar."
-
-The strongest reason is:
-
-> the same correctness rule should be applied the same way every time.
-
-Examples:
-
-- every generated file should publish through a temporary path and final move
-- every compile rule should use the same warning flags and include roots
-- every bundle rule should produce a manifest alongside the artifact
-
-In those cases, the macro is helping preserve an invariant, not merely reducing typing.
-
-## Reuse is dangerous when it hides the graph
-
-Macros become unhealthy when a reader can no longer answer:
-
-- what target is being defined
-- what prerequisites it has
-- what recipe it runs
-
-For example:
-
-```make
-$(eval $(call define-everything,$(COMPONENTS),$(FLAGS),$(EXTRA)))
+```sh
+gmake abstraction-contract-audit
 ```
 
-That may be technically correct, but if the build can only be understood by mentally
-executing a meta-language, the architecture is already drifting away from clarity.
+Open the generated `summary.tsv`:
 
-This does not mean `call` or `eval` are forbidden. It means the burden of explanation is
-higher once you use them.
+```text
+explicit-rules  PASS  EXPLICIT_RULE_CONTRACT_CAPTURED
+bounded-macro   PASS  BOUNDED_MACRO_CONTRACT_PRESERVED
+opaque-macro    PASS  OPAQUE_MACRO_SIDE_EFFECTS_REPRODUCED
+```
 
-## A small, healthy macro example
+The third row is a successful defect reproduction. It is not approval of the opaque
+design.
 
-Suppose several generated files should publish atomically.
+## Establish the contract before abstracting
+
+The explicit model contains two publication rules:
 
 ```make
-define publish_file
-$1: $2 | $$(@D)/
-	@$3 > $$@.tmp
-	@mv $$@.tmp $$@
+build/alpha.txt: data/alpha.txt | build/
+	{ printf 'mode=%s\nsource=%s\n' '$(MODE)' '$<'; cat '$<'; } > '$@.tmp'
+	mv '$@.tmp' '$@'
+
+build/beta.txt: data/beta.txt | build/
+	{ printf 'mode=%s\nsource=%s\n' '$(MODE)' '$<'; cat '$<'; } > '$@.tmp'
+	mv '$@.tmp' '$@'
+```
+
+Before discussing duplication, write down what these rules promise:
+
+| Contract field | Alpha | Beta |
+| --- | --- | --- |
+| target | `build/alpha.txt` | `build/beta.txt` |
+| source prerequisite | `data/alpha.txt` | `data/beta.txt` |
+| policy | `ordinary` | `ordinary` |
+| publication | write temporary file, then rename | write temporary file, then rename |
+| owner evidence | `owner=alpha` | `owner=beta` |
+
+This table is the baseline. An abstraction must preserve it unless the change deliberately
+proposes a new contract.
+
+## A bounded macro protects one invariant
+
+The control macro owns one repeated publication shape:
+
+```make
+define publish_owned_file
+build/$1.txt: data/$1.txt | build/
+	{ printf 'mode=%s\nsource=%s\n' '$$(MODE)' '$$<'; cat '$$<'; } > '$$@.tmp'
+	mv '$$@.tmp' '$$@'
 endef
 ```
 
-Used like:
+Its generated domain remains visible:
 
 ```make
-$(eval $(call publish_file,build/version.txt,data/version.txt,cat data/version.txt))
+OWNERS := alpha beta
+$(foreach owner,$(OWNERS),$(eval $(call publish_owned_file,$(owner))))
 ```
 
-This can be healthy because the macro enforces one repeated safety rule:
+The macro does not decide which mode to use, publish new top-level actions, or discover
+owners elsewhere. It maps each explicit owner argument to one target/source pair.
 
-- write temporary content first
-- then publish the final file
+```mermaid
+flowchart LR
+  owners["OWNERS := alpha beta"] --> calls["two visible call arguments"]
+  calls --> macro["publish_owned_file"]
+  macro --> alpha["build/alpha.txt<br/>data/alpha.txt"]
+  macro --> beta["build/beta.txt<br/>data/beta.txt"]
+```
 
-The macro is short, the arguments are explicit, and the resulting target is still easy to
-find in `make -p`.
+The audit requires the evaluated prerequisite map and artifact contents to equal the
+explicit baseline. Reduced duplication is only a secondary benefit.
 
-## A copy-paste example where a macro helps
+## Why the doubled dollar signs matter
 
-Without reuse:
+`eval` expands its argument, then Make parses the expanded result. Text in the macro may
+therefore pass through more than one expansion.
+
+In the macro:
 
 ```make
-build/main.o: src/main.c include/app.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
-
-build/util.o: src/util.c include/app.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+'$$(MODE)' '$$<' '$$@'
 ```
 
-With a bounded macro:
+The doubled dollar sign preserves the reference for the generated rule. After `eval`
+expands the macro, the parsed recipe still contains:
 
 ```make
-define compile_object
-$1: $2 include/app.h | $$(@D)/
-	$$(CC) $$(CPPFLAGS) $$(CFLAGS) -c $$< -o $$@
-endef
-
-$(eval $(call compile_object,build/main.o,src/main.c))
-$(eval $(call compile_object,build/util.o,src/util.c))
+'$(MODE)' '$<' '$@'
 ```
 
-This may be acceptable because:
+The automatic variables then receive values when the generated recipe runs.
 
-- the rule shape is simple
-- the expansion is obvious
-- the macro reinforces a compile invariant
+If you write `$@` directly inside the macro invocation context, it may expand before a
+recipe has a target and become empty. This is not a reason to avoid `eval`; it is a reason
+to inspect the generated rule instead of trusting the source template.
 
-The important question is not whether the macro is shorter. The important question is
-whether the resulting graph is still legible.
+## The opaque macro crosses responsibility boundaries
 
-## `call` is easier to defend than sprawling ad hoc indirection
+The defect model uses a broad name, `define_component`, and appears to generate one
+component rule. Its body also contains:
 
-If you need reuse in Make, `call` with explicit arguments is often a reasonable tool
-because it keeps the interface visible:
+```make
+MODE := release
 
-- what the macro takes
-- what each call site provides
-- where the generated rules come from
+.PHONY: publish-$1
+publish-$1: build/$1.txt
+	@printf 'published=%s\n' '$1'
+```
 
-That is still not automatically good. It is simply easier to review than reuse that hides
-its parameters in global mutable variables.
+Each call now performs three unrelated jobs:
 
-Explicit arguments are one of the strongest habits for keeping Make reuse sane.
+1. generate an artifact rule
+2. mutate global policy
+3. generate another callable target
 
-## `eval` needs an extra explanation burden
+The ordinary `all` route exits zero. Both artifacts contain `mode=release`, and
+`publish-alpha` plus `publish-beta` appear in the evaluated database while remaining
+absent from help.
 
-`eval` is powerful because it generates Make syntax during evaluation. That also makes it
-easy to overuse.
+```mermaid
+flowchart TD
+  call["define_component(alpha)"]
+  call --> rule["artifact rule"]
+  call --> mutation["MODE := release"]
+  call --> target["publish-alpha"]
+  target -.not declared in.-> help["help"]
+```
 
-`eval` is most defensible when:
+The problem is not hidden implementation alone. Public targets routinely depend on private
+rules. The problem is that the macro’s apparent interface does not reveal the policy and
+target-surface decisions it owns.
 
-- the repeated structure is real
-- the expanded rules remain inspectable with `make -p`
-- the number of generated rule shapes is bounded
-- the call sites are easy to locate
+## Inspect evaluated rules without reading everything
 
-`eval` is much less defensible when it becomes the build's real programming language and
-the normal files only host a macro engine.
+The audit runs:
 
-That is when the build starts turning into a framework instead of a system another engineer
-can review.
+```sh
+gmake -npRr all
+```
 
-## Macros should not invent a second naming system
+- `-n` avoids executing recipes.
+- `-p` prints the evaluated database.
+- `-Rr` removes built-in variables and rules from the view.
 
-One architecture smell is a macro layer that introduces names and conventions unrelated to
-the target graph the rest of the repository uses.
+Search the saved database trace for:
 
-For example:
+```text
+build/alpha.txt:
+build/beta.txt:
+publish-alpha:
+publish-beta:
+```
 
-- internal macro names do not resemble published targets
-- generated variable names become the only way to trace ownership
-- newcomers need to learn the macro dialect before they can understand one target
+The explicit and bounded models must contain:
 
-That is a warning sign. The abstraction is becoming a private language.
+```text
+build/alpha.txt: data/alpha.txt | build/
+build/beta.txt: data/beta.txt | build/
+```
 
-## A useful macro review checklist
+Only the opaque model should contain the two `publish-*` targets.
 
-When you see a macro, ask:
+`make -p` is not the first explanation of ordinary intent. The macro name, owner list, and
+call site should supply that. The database is the confirmation route that catches an
+incorrect or incomplete explanation.
 
-1. what invariant is it enforcing
-2. what targets or rules does it generate
-3. where are the call sites
-4. can the final rules be inspected clearly with `make -p`
-5. would two straightforward explicit rules be easier to maintain
+## Compare all relevant views
 
-If the fifth answer is yes, the macro may not be worth it.
+No single view proves the whole abstraction contract:
 
-## A healthy boundary for reuse
+| View | Proves | Does not prove |
+| --- | --- | --- |
+| explicit rules | intended baseline shape | generated equivalence |
+| macro and calls | apparent template and domain | final parsed graph |
+| evaluated database | targets and prerequisites | artifact bytes |
+| build trace | selected recipes | undispatched hidden targets |
+| artifacts | source, owner, and policy received | full target surface |
+| help | declared public promises | every reachable target |
 
-Macros are most helpful when they stay at one of these levels:
+A defensible review chooses the views that could falsify the claim.
 
-- one repeated rule body
-- one repeated publication pattern
-- one repeated object or bundle mapping pattern
+## Test the evidence gate
 
-Macros become much riskier when they try to own:
+Run:
 
-- whole subsystems
-- policy selection
-- include layering
-- top-level API decisions
+```sh
+gmake abstraction-contract-selftest
+```
 
-Those are usually architecture concerns that deserve clearer, more explicit structure.
+The seven tests include five controlled mutations. They reject a bounded macro that:
 
-## Why `make -p` remains the audit escape hatch
+- gains a hidden publication target
+- changes ordinary policy to release
+- stops exposing its call domain
 
-The course does not require every reader to mentally expand macros by hand. It does require
-the build to remain inspectable.
+They also reject an opaque specimen that no longer reproduces either promised side effect.
+An audit must fail when control evidence becomes dishonest and when a defect model stops
+exhibiting its documented defect.
 
-That is why `make -p` matters here:
+## Decide whether the macro earns its place
 
-- it shows the final rules after expansion
-- it reveals whether the macro generated what the author claims
-- it helps verify that reuse did not smuggle in hidden mutation
+Use this decision table:
 
-If the build only makes sense before expansion or only in the macro author's head, the
-architecture is already too opaque.
+| Evidence | Decision |
+| --- | --- |
+| repeated rules do not yet share a clear contract | keep them explicit |
+| one invariant repeats and call arguments expose the domain | test a bounded macro |
+| evaluated prerequisites differ from the baseline | reject or redesign |
+| artifact bytes match but hidden targets appear | split target generation from publication |
+| macro mutates global policy | move policy to its owning layer or target scope |
+| only two short rules repeat | explicit rules may still be cheaper |
+| rejection tests cover likely side effects | macro has a maintainable proof route |
 
-## Failure signatures worth recognizing
+The correct answer can be “do not abstract.” This lesson rewards an inspectable contract,
+not macro usage.
 
-### "The Makefile is shorter, but nobody can explain one target"
+## Practice: add a third owner
 
-That often means reuse crossed into opacity.
+Work in a disposable copy of the abstraction specimens.
 
-### "Every bug fix requires editing a macro no one wants to touch"
+1. Add `data/gamma.txt` with `owner=gamma`.
+2. Add an explicit `build/gamma.txt` rule and record the expanded contract table.
+3. Extend the bounded owner list and confirm one new target/source pair appears.
+4. Extend the opaque owner list and identify every additional side effect.
+5. Compare the three database traces and artifact modes.
+6. Add a rejection test that catches one dishonest gamma mapping.
 
-That usually means too much behavior was centralized in one abstraction.
-
-### "The macro arguments are less clear than the duplicated rules"
-
-That is a strong sign the abstraction is not paying for itself.
-
-### "We need `make -p` just to understand ordinary intent"
-
-It is fine to confirm with `make -p`. It is not fine if it is the only path to basic
-understanding.
-
-## A review question that improves reuse decisions
-
-Take one candidate macro and ask:
-
-1. what invariant it is protecting
-2. what explicit rules it would replace
-3. whether the resulting call sites are easier to read than the original rules
-4. whether the expanded graph remains obvious
-5. whether the abstraction could be smaller and still useful
-
-If those answers are weak, the macro should probably stay explicit or be redesigned.
-
-## What to practice from this page
-
-Choose one repeated rule family in a Make repository and write two versions:
-
-1. the explicit repeated rules
-2. a bounded macro version
-
-Then explain:
-
-- what invariant the macro protects
-- what readability cost it introduces
-- whether the final design should stay explicit or use the macro
-
-If you can defend that choice in plain language, you understand reuse much better than a
-team that automatically abstracts or automatically copy-pastes.
+A complete answer contains the call domain, evaluated prerequisite map, artifacts, and
+test result. A line-count comparison is not enough.
 
 ## End-of-page checkpoint
 
-Before leaving this lesson, make sure you can explain:
+You are ready to continue when you can explain:
 
-- when a macro improves correctness rather than merely reducing typing
-- why explicit arguments matter
-- when `eval` is defensible and when it becomes too opaque
-- how to tell whether reuse has created a private language
-- why `make -p` is the audit backstop for macro-heavy designs
+- why explicit rules establish a baseline without being automatically preferable
+- which evidence makes the bounded macro contract-equivalent
+- why `$$@` and `$$<` survive generation differently from `$@` and `$<`
+- how the opaque macro changes policy and callable target surface
+- why database, help, trace, and artifact evidence answer different review questions
