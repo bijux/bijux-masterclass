@@ -79,6 +79,7 @@ Build one small downstream-contract review packet as you go:
 - one consumer test transcript that uses only the bundle
 - one compatibility note for an additive or breaking change
 - one maintainer-style review note ordered by downstream trust impact
+- one note explaining when accepted and rejected discovery records belong in the public bundle
 
 If those six artifacts are missing, the day usually turns into "files moved into
 `publish/`" instead of "a contract became reviewable."
@@ -145,6 +146,7 @@ What to hand in:
 - one sentence for each included file explaining its job
 - one sentence for each excluded file explaining why it stays internal
 - one short sentence saying which downstream user the bundle is actually for
+- one sentence saying whether reviewed discovery evidence belongs in this public contract and why
 
 Study note:
 The goal is not to publish many files. The goal is to publish the smallest honest
@@ -178,6 +180,7 @@ What to hand in:
 - one successful verification transcript
 - one reason absolute paths do not belong in the contract
 - one sentence explaining why the manifest proves identity but not scientific meaning
+- one sentence explaining which membership question still needs accepted and rejected discovery records instead of the manifest
 
 Study note:
 If your manifest cannot travel with the bundle to another machine, it is not yet a good
@@ -211,6 +214,7 @@ What to hand in:
 - a successful run against the bundle
 - one producer detail the consumer intentionally does not know
 - one sentence explaining why reading `results/` would weaken the contract
+- one sentence explaining which structured publish artifact the consumer treats as authoritative
 
 Study note:
 This is the first exercise where the public contract has to prove it is real from the
@@ -225,6 +229,7 @@ already answer all of these:
 - which machine-facing artifact is authoritative for consumers
 - which human-facing artifact is for inspection rather than programmatic use
 - which artifact proves inventory and identity without pretending to prove semantic meaning
+- which artifact explains bundle membership when acceptance and rejection matter downstream
 
 If you cannot answer those four questions cleanly, return to the earlier exercises and
 make the contract packet more explicit before moving on.
