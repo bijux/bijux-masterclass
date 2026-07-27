@@ -31,6 +31,10 @@ attribute access is a protocol surface, not just a dictionary lookup.
 
 Descriptors are a big part of that protocol.
 
+This page is strongest when read as a protocol review, not as a novelty page. The point
+is not that descriptors are exotic. The point is that normal attribute access already
+depends on a small set of hooks that you can inspect, name, and review.
+
 ## The sentence to keep
 
 A descriptor is any object stored on a class that defines `__get__`, `__set__`, or
@@ -38,6 +42,10 @@ A descriptor is any object stored on a class that defines `__get__`, `__set__`, 
 returning the raw class attribute.
 
 That is the foundation the rest of the module depends on.
+
+Keep a second sentence beside it:
+
+> `__set_name__` helps a descriptor configure itself, but it does not make the object a descriptor by itself.
 
 ## The four hooks in one place
 
@@ -56,6 +64,17 @@ Only the first three participate in making an object a descriptor.
 - the public attribute name
 - the private storage name they should use internally
 
+## Which hook answers which question
+
+Use this table when a descriptor starts sounding fuzzier than it should:
+
+| Hook | Review question it answers |
+| --- | --- |
+| `__get__` | what should reads through this attribute return? |
+| `__set__` | what rule governs assignment to this attribute? |
+| `__delete__` | what does deletion mean or refuse to mean here? |
+| `__set_name__` | how does the descriptor learn where it was installed? |
+
 ## What each hook is really for
 
 Keep the jobs separate:
@@ -67,6 +86,10 @@ Keep the jobs separate:
 
 That separation matters because many production descriptors use only two or three of these
 hooks, not all four.
+
+Readers need this separation early because weak explanations often collapse all descriptor
+behavior into one vague phrase like "it intercepts the attribute." Strong explanations
+name the exact hook and the exact boundary.
 
 ## A small but important clarification
 
@@ -84,6 +107,9 @@ is name-aware, but it is not a descriptor until it also defines `__get__`, `__se
 `__delete__`.
 
 That distinction prevents a lot of fuzzy explanations later.
+
+It also prevents a common teaching error: treating `__set_name__` as if it were a hidden
+activation switch. It is a configuration hook, not proof of descriptor status.
 
 ## The default pipeline still begins with `__getattribute__`
 
@@ -106,6 +132,17 @@ attribute access
 
 Later modules may discuss overrides of `__getattribute__`, but here the goal is to master
 the default behavior first.
+
+## Evidence route for protocol reviews
+
+Use this route whenever attribute access starts sounding mystical:
+
+| Evidence step | What it proves |
+| --- | --- |
+| the object is stored on the class | descriptor protocol can participate |
+| one of `__get__`, `__set__`, `__delete__` exists | the object is actually a descriptor |
+| `object.__getattribute__` drives default lookup | descriptor behavior is part of normal attribute access |
+| `obj is None` on class access | the descriptor can choose a class-level review surface |
 
 ## A compact descriptor example
 
@@ -142,6 +179,13 @@ This example is small, but it already shows the module's main mechanics:
 - per-instance storage in `obj.__dict__`
 - validation at the attribute boundary
 
+It also gives the reader a real owner story:
+
+- the class owns installation
+- `__set_name__` owns field naming
+- `__set__` owns validation
+- the instance dictionary owns the stored value
+
 ## Why class access usually returns the descriptor itself
 
 A common convention is:
@@ -158,6 +202,10 @@ review, debugging, and introspection can still see the configured field owner.
 
 It is not the only possible design, but it is the standard one and the clearest default.
 
+Returning `self` on class access matters because it leaves a review surface behind. A
+descriptor that hides itself on class access is often harder to inspect, debug, or explain
+to a learner reading the class definition.
+
 ## Which hooks matter most in practice
 
 The hooks are not equally common:
@@ -169,6 +217,8 @@ The hooks are not equally common:
 
 That matters because beginners sometimes assume a descriptor is incomplete unless it
 implements every hook. It is not.
+
+Descriptors should be judged by honest ownership, not by hook count.
 
 ## What not to do with descriptor state
 
@@ -193,6 +243,28 @@ Module 07 will come back to storage patterns in detail, but the rule starts here
 store per-instance state on the instance or in safe external storage, not on the
 descriptor itself.
 
+## Common overclaims to reject
+
+Reject these descriptions when they appear in review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "`__set_name__` makes this object a descriptor" | "`__set_name__` configures a descriptor or name-aware helper after class creation" |
+| "the descriptor handles the attribute" | "the descriptor handles reads, writes, deletes, or naming through specific hooks" |
+| "class access just gives the field" | "class access usually exposes the descriptor object for review or alternate behavior" |
+| "descriptors need all four hooks" | "descriptors need only the hooks required by the owned boundary" |
+
+## Failure modes for protocol explanations
+
+These are the mistakes this page is trying to prevent:
+
+| Failure mode | Why it weakens the design | Repair move |
+| --- | --- | --- |
+| treating `__set_name__` as sufficient for descriptor status | readers lose the real protocol boundary | name the actual read/write/delete hooks |
+| storing instance values on the descriptor object | state leaks across instances | move state to the instance or safe external storage |
+| hiding class-access behavior | debugging and inspection become weaker | explain or preserve the `obj is None` branch |
+| using generic "intercepts the attribute" language | the owner story becomes vague | say which hook owns which boundary |
+
 ## Review rules for the protocol
 
 When reviewing descriptor code, keep these questions close:
@@ -202,6 +274,16 @@ When reviewing descriptor code, keep these questions close:
 - where does per-instance state live?
 - what happens on class access when `obj is None`?
 - is this really attribute-boundary behavior, or is a simpler method or property enough?
+- can another reviewer point to the exact hook that owns the behavior in question?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- explain why `__set_name__` is helpful but not sufficient
+- name the exact hook used for one read boundary and one write boundary
+- explain what class access usually returns and why that matters for review
+- say where per-instance state should live in a well-behaved field descriptor
 
 ## What to practice from this page
 
