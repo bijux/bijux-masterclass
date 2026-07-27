@@ -94,22 +94,33 @@ Your incident statement must make it possible for two learners to run comparable
 
 ## Exercise 2: Capture a reproducibility context
 
-Populate `context/` with:
+Run:
+
+```sh
+gmake -C "$CAPSTONE" perf PERFORMANCE_RUNNER=module09-local
+```
+
+Audit the `context` object in the generated `evidence.json`. Cross-check it against:
 
 - repository revision
 - worktree status
 - GNU Make version
 - compiler and Python versions used by the capstone
+- platform and the stable runner label you chose
 - relevant target help
 - job count chosen for pressure runs
 
 Use `gmake -C "$CAPSTONE" portability-audit` where it provides governed evidence. Review
-any environment output before retaining or sharing it.
+any environment output before retaining or sharing it. Do not copy these values into a
+separate packet and discard their binding to the timings.
 
 What to hand in:
 
-- the context files
+- the context object and the revision it names
 - a table separating repository-controlled conditions from machine-controlled conditions
+- one explanation of why comparison permits different revisions but rejects a changed
+  compiler or runner
+- the action you would take if repository status were `dirty`
 - one condition you could not control and how it limits the claim
 
 Checkpoint:
@@ -117,14 +128,10 @@ Another learner should know whether your result can reasonably be compared with 
 
 ## Exercise 3: Establish controlled cost baselines
 
-Run the governed route:
+Use the governed route from Exercise 2. Read `route.txt`, `scenarios.tsv`,
+`incremental-policy.tsv`, and the context in `evidence.json` before `summary.tsv`.
 
-```sh
-gmake -C "$CAPSTONE" perf
-```
-
-Read `route.txt` and `scenarios.tsv` before `summary.tsv`. For each scenario, trace one row
-in the summary back to:
+For each scenario, trace one row in the summary back to:
 
 - all raw elapsed samples in `evidence.json`
 - its command transcript in `logs/`
@@ -141,6 +148,7 @@ What to hand in:
 - the convergence and trusted-output result for each scenario
 - the declared incremental input and your predicted rebuild set before reading the report
 - the observed missing and unexpected rebuild sets
+- proof that the incremental result is bound inside `evidence.json`
 - one leading and one competing explanation for the observed differences
 - one sentence stating whether a performance regression was proven
 - one machine condition that the bundle cannot fully control
@@ -265,6 +273,19 @@ gmake -C "$CAPSTONE" performance-selftest
 Name two rejected cases and explain why accepting either would make a speedup claim
 dishonest.
 
+Before choosing a tuning candidate, classify these bundle pairs:
+
+| Pair | Baseline | Candidate |
+| --- | --- | --- |
+| A | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | clean revision `b`, runner `lab`, compiler `cc 1`, expected work observed |
+| B | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | dirty revision `b`, runner `lab`, compiler `cc 1`, expected work observed |
+| C | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | clean revision `b`, runner `lab`, compiler `cc 2`, expected work observed |
+| D | clean revision `a`, runner `lab`, compiler `cc 1`, expected work observed | clean revision `b`, runner `lab`, compiler `cc 1`, one extra object rebuilt |
+
+For each pair, predict `compare` or `reject`, name the field that decides it, and state what
+work would make a rejected pair reviewable. Pair D may represent an intentional graph
+repair; explain why that still blocks the original timing comparison.
+
 Choose one real cost candidate from the capstone or explicitly reject tuning because the
 measurements do not justify it.
 
@@ -276,6 +297,7 @@ If you propose a change, create `tuning-decision.md` with:
 - truth invariant most at risk
 - controlled before-and-after comparison
 - compatible scenario policy and sample count
+- matching execution context except for the named clean revisions
 - requested-work test
 - explicit expected-work and expected-non-work sets
 - convergence test
@@ -289,6 +311,7 @@ decision.
 What to hand in:
 
 - the performance-selftest result and two rejection explanations
+- the four-pair compatibility table
 - the complete experiment contract or justified rejection
 - one unsafe optimization you rejected
 - one sentence explaining what new freshness contract a cache would introduce
