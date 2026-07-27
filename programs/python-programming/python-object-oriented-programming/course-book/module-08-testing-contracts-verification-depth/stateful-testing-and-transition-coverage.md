@@ -24,58 +24,65 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about proving that correctness survives history, not just one call.
 
-## Why this lesson matters
+Many object-model failures do not appear after one method invocation.
+They appear after:
 
-Many design bugs do not appear after one call. They appear after a history.
-
-An object can look correct when tested in isolation and still fail when:
-
-- one valid transition is repeated
+- a valid transition is repeated
 - two valid transitions happen in the wrong order
-- one derived value is recalculated after several mutations
-- one event stream accumulates across state changes
+- one command is replayed after interruption
+- one derived value drifts across several mutations
 
-Stateful testing exists because object models often carry memory. If your tests ignore
-that memory, they miss the exact class of failures that makes aggregates and lifecycles
-hard to trust.
+If your tests ignore history, they ignore the exact class of bugs that makes lifecycle
+objects hard to trust.
 
-## Think in paths, not just methods
+## Keep one lifecycle visible
 
-When a type has lifecycle meaning, the first testing question should not be:
+Use one capstone path:
+
+- `WorkshopEnrollment` confirms attendees until capacity is reached
+- a later confirmation must be rejected or waitlisted
+- repeated or out-of-order commands must not corrupt the state
+
+That is not a one-call rule.
+It is a path rule.
+
+This is why sequence coverage is different from method coverage.
+
+## Think in paths, not API lists
+
+For a lifecycle-heavy object, the first question should not be:
 
 - which methods exist?
 
 It should be:
 
-- which paths through the state space are allowed?
-- which paths are forbidden?
-- which invariants must survive every valid path?
+- which states can the object inhabit?
+- which commands are legal from each state?
+- which commands must fail?
+- which invariants must survive every legal path?
 
-This shift matters because lifecycle bugs are usually path bugs, not API-list bugs.
+That shift matters because lifecycle bugs are path bugs, not method-list bugs.
 
-## Build a transition map before writing the suite
+## Write a transition map before the suite
 
-For a lifecycle-heavy object, write down:
+Before you write many tests, create a small transition map:
 
 - starting states
-- valid commands from each state
-- invalid commands from each state
-- required postconditions
-- emitted events or side effects per transition
+- legal commands from each state
+- illegal commands from each state
+- postconditions after each legal transition
+- events or counters that should change along the way
 
-That transition map becomes both a design artifact and a testing plan.
+If the map is hard to write, the lifecycle is probably still underspecified.
 
-If you cannot write the map clearly, the object may still be underspecified.
+The transition map is not extra paperwork.
+It is the design artifact your tests are meant to execute.
 
-## Cover legal and illegal history
+## Cover both legal and illegal histories
 
-Students often cover only the happy path:
+Students often stop after the happy path:
 
 1. create
 2. activate
@@ -83,99 +90,124 @@ Students often cover only the happy path:
 
 That is not enough.
 
-You also need the uncomfortable paths:
+You also need histories such as:
 
-- activate twice
-- retire before activation
+- confirm twice after the last seat
+- retry a command after the state already advanced
 - evaluate after closure
-- replay a command after the object already emitted the relevant event
+- repeat a lifecycle command that should be idempotent or rejected
 
-Illegal-path tests are often the place where ownership and typestate rules become truly
-visible.
+Illegal histories are often where ownership rules become visible.
 
-## Assert after each meaningful step
+## Assert after meaningful steps, not only at the end
 
-One common mistake is to run a full sequence and only inspect the final state.
+One common weakness in stateful tests is:
 
-That can hide the moment things went wrong.
+- run a long sequence
+- inspect only the final state
 
-A stronger sequence test usually checks:
+That hides the moment things went wrong.
 
-- state after each transition
+A stronger stateful test usually checks:
+
+- state after each important transition
 - preserved invariants after each step
 - emitted events or counters at the point they should change
 - absence of unintended drift after repeated operations
 
-This makes stateful tests more diagnostic. When they fail, they tell you where the
-lifecycle stopped being honest.
+That makes failures more diagnostic.
 
-## A worked example
+## Worked capstone path
 
-Imagine a rule aggregate with the lifecycle:
+Suppose `WorkshopEnrollment` claims:
 
-- draft
-- active
-- retired
+- confirmation succeeds until capacity is full
+- later confirmation attempts do not silently overbook
+- releasing or cancelling a seat reopens capacity honestly
 
-Suppose the design claims:
+A useful stateful proof sequence could:
 
-- only drafts may be activated
-- active rules may evaluate metrics
-- retired rules reject future evaluation
-- retirement emits one event and prevents future mutation
+1. create an enrollment with a visible seat limit
+2. confirm attendees up to the final available seat
+3. attempt one more confirmation and assert rejection or waitlisting
+4. release capacity through the allowed path
+5. confirm that a later legitimate transition now succeeds again
+6. assert no duplicate lifecycle event or corrupted count drift appeared
 
-An honest stateful test suite would not stop at one `activate` test and one `retire`
-test.
+This is much stronger than a few isolated command tests because it proves the history.
 
-It would also verify:
+## Repeated commands are not edge cases
 
-- `activate` from `active` fails
-- `retire` from `draft` fails if the model forbids it
-- `evaluate` after retirement is blocked
-- repeated retirement does not emit duplicate lifecycle events
+In real systems, retries and repeated commands happen:
 
-These are not edge-case decorations. They are proof that the lifecycle boundary is real.
+- users click again
+- jobs replay
+- queues redeliver
+- operators rerun a command path
+
+That means repeated-command coverage is not optional polish.
+It is core lifecycle proof, especially for objects that emit events or guard capacity.
+
+If a command should be idempotent, prove it.
+If it should be rejected, prove that too.
 
 ## When hand-written paths stop scaling
 
-Some lifecycles remain small enough for explicit path tests. Others grow too wide.
+Some lifecycles are small enough for explicit sequences.
+Others become too wide.
 
-When the number of histories becomes hard to reason about by hand, that is a sign to
-consider:
+When paths multiply, consider:
 
 - table-driven transition cases
+- generated sequences
 - state-machine style tests
-- property-based sequence generation
 
-The goal is not novelty. The goal is coverage that still answers design questions
-honestly after the path count grows.
+The goal is not to sound advanced.
+The goal is to keep coverage honest after the history space outgrows your ability to
+enumerate it comfortably by hand.
 
-## Common mistakes
+## Build one lifecycle packet
+
+For each lifecycle-heavy object, keep a short packet with:
+
+- state names
+- legal commands
+- illegal commands
+- invariants that must survive every path
+- repeated-command behavior
+
+That packet helps another maintainer understand what the stateful tests are actually
+proving.
+
+## Common failure modes
 
 - testing commands independently even though correctness depends on history
-- covering only valid paths and ignoring invalid ordering
-- asserting only the final state instead of checking meaningful intermediate points
-- letting event duplication or derived-state drift go untested
-- stopping at one hand-written path after the lifecycle is already too wide for it
+- covering only valid paths and ignoring illegal ordering
+- asserting only the final state instead of meaningful intermediate points
+- leaving repeated commands, duplicate events, or derived-state drift under-proved
+- continuing with hand-written paths after the lifecycle has already outgrown them
 
-## Review checklist
+## Transition review card
 
-| Question | Good sign |
+Use this short card when reviewing one lifecycle suite:
+
+| Question | What you want to see |
 | --- | --- |
 | is there an explicit transition map behind the tests? | yes |
-| do tests cover both legal and forbidden histories? | yes |
+| do tests cover both legal and illegal histories? | yes |
 | are invariants checked across the sequence, not only at the end? | yes |
 | would a repeated or out-of-order command fail visibly? | yes |
 
 ## Capstone connection
 
-Use the capstone lifecycles to ask:
+Use this page to ask:
 
-- which aggregates depend most on history rather than one-call behavior?
-- where could duplicate commands or replayed runtime work create invalid transitions?
-- which event-emitting paths need explicit proof that they do not drift across repeated state changes?
+- which capstone objects depend most on history rather than one-call behavior
+- where duplicate commands or replayed work could create invalid transitions
+- which event-emitting paths need proof that they do not drift across repeated state
+  changes
 
-This is where Module 03 typestate work and Module 05 retry work become executable proof.
+That is where lifecycle design becomes executable evidence.
 
 ## Exit check
 
