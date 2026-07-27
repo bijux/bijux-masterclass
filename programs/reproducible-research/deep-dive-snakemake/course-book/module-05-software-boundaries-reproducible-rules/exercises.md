@@ -52,6 +52,34 @@ That layout makes it easier to compare rule contracts, workflow-adjacent scripts
 reusable package code, and runtime evidence without rebuilding the project for every
 prompt.
 
+Build one small software-boundary review packet as you go:
+
+- one ownership map that labels rule contract, step-local implementation, reusable logic,
+  and runtime assumptions
+- one before-and-after rule view showing what still stays visible at the boundary
+- one script-versus-package decision note for shared code
+- one runtime contract note distinguishing rule, repository, and machine-level surfaces
+- one rebuild note connecting code or runtime drift to output trust
+- one maintainer-style review note for a mixed software-boundary change
+
+If those six artifacts are missing, the day usually turns into code motion instead of
+trustworthy software-boundary judgment.
+
+```mermaid
+flowchart LR
+  contract["keep the file contract visible"]
+  script["move step-local code honestly"]
+  reuse["promote only real reusable logic"]
+  runtime["name the runtime contract"]
+  rebuild["explain rebuild trust"]
+  review["review software changes in trust order"]
+
+  contract --> script --> reuse --> runtime --> rebuild --> review
+```
+
+Use that order deliberately. It prevents the day from collapsing into "make the code look
+cleaner" instead of "make the workflow boundary more truthful."
+
 ## Exercise 1: Map one long rule by ownership
 
 Take a rule with a long `run:` block or shell pipeline and label each part as one of
@@ -83,6 +111,7 @@ What to hand in:
 - the script file
 - one focused successful run
 - one check showing no hidden input was introduced
+- one short sentence explaining which facts still belong at the rule boundary after the move
 
 Study note:
 If the rule gets shorter by hiding a meaningful input, the extraction failed.
@@ -114,6 +143,7 @@ What to hand in:
 - the code that remains workflow-specific
 - the code that becomes package-owned
 - one reason you did not move even more code into `src/`
+- one sentence saying what would become harder to review if too much code moved at once
 
 Study note:
 Do not move code into `src/` just because package code sounds more prestigious.
@@ -129,10 +159,25 @@ What to hand in:
 - the repository-level environment or toolchain surface
 - one sentence explaining how a container would change the portability boundary
 - one ambient host dependency the rule no longer relies on
+- one short classification of which layer owns step execution, contributor setup, and
+  machine portability
 
 Study note:
 This exercise is about making runtime meaning explicit, not about using the most elaborate
  packaging surface available.
+
+## Midday self-check
+
+Before you move into rebuilds and full-boundary review, make sure your packet can already
+answer all of these:
+
+- which facts must remain visible in the rule even after extraction
+- which code is still workflow-adjacent and which code is genuinely reusable
+- which runtime layer owns step execution and which layer owns broader portability
+- which hidden dependency would still make a rebuilt output untrustworthy
+
+If you cannot answer those four questions cleanly, return to the earlier exercises and
+make the ownership packet more explicit before moving on.
 
 ## Exercise 6: Test reusable code directly
 
@@ -160,6 +205,7 @@ What to hand in:
 - your prediction about which outputs should rebuild
 - post-rebuild confirmation
 - a provenance note connecting the rebuilt output to both changes
+- one sentence explaining why unchanged data does not cancel software drift
 
 Study note:
 This is where rebuild trust becomes real. The point is not only that something reran. The
@@ -206,6 +252,20 @@ What to hand in:
 - one corrected ownership diagram
 - the narrow verification route for each correction
 - one boundary that should be simplified, postponed, or split further
+
+Study note:
+Review this like a maintainer handoff, not like a style critique. The question is which
+boundary became harder or easier to trust, not which file became shorter.
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- treat a shorter rule as automatically better without checking what disappeared
+- move code into `src/` because it feels more serious, not because reuse is real
+- talk about environments and containers without naming which scope each one governs
+- rebuild outputs after software drift without explaining why the earlier outputs became stale
+- review a mixed software change without ordering findings by trust impact
 
 ## Exit standard for the exercise day
 

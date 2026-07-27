@@ -15,6 +15,18 @@ A better rhythm is:
 
 The standard to aim for is clear ownership reasoning.
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- one ownership map
+- one before-and-after rule view
+- one script-versus-package decision note
+- one runtime-layer note
+- one rebuild explanation tied to code or runtime drift
+- one maintainer-style review note
+
+If your answers contain only code movement and verdicts, the reasoning is still too
+implicit.
+
 ## Exercise 1: Map one long rule by ownership
 
 A strong answer separates the visible contract from the software hiding behind it.
@@ -39,6 +51,11 @@ and log path. The script may transform those declared values but must not discov
 files behind the rule. A focused run proves integration, while reviewing file access or
 testing with an absent undeclared file helps establish that extraction did not hide a
 dependency.
+
+The missing but important sentence is usually this one:
+
+> After extraction, the rule still teaches the step contract at a glance, while the
+> script owns only how the declared work is carried out.
 
 ## Exercise 3: Diagnose a hidden dependency
 
@@ -76,6 +93,11 @@ Why this is strong:
 - it separates workflow-adjacent and reusable responsibilities cleanly
 - it resists moving too much into package code
 
+A useful warning sentence is:
+
+> If moving the code into `src/` makes it harder to see which path assumptions or publish
+> choices still belong to the workflow, the promotion happened too early.
+
 ## Exercise 5: Write a runtime contract
 
 Rule-scoped environment:
@@ -99,6 +121,14 @@ They all describe software, but they protect different scopes. A repository envi
 too broad to explain every step. A rule-scoped environment is too narrow to replace a full
 machine boundary. A container solves portability problems an environment file alone cannot.
 
+A compact layer note might look like this:
+
+| Layer | What it owns |
+| --- | --- |
+| rule-scoped environment | software needed for one step to execute honestly |
+| repository-level environment | contributor tooling and whole-repository working setup |
+| container boundary | stronger machine portability when host differences matter |
+
 ## Exercise 6: Test reusable code directly
 
 The package API should accept ordinary values or paths and return ordinary values rather
@@ -114,6 +144,11 @@ rebuilding while unrelated branches remain current. Runtime declaration changes 
 same trust review even when source data is unchanged. After rebuilding, a dry-run
 converges and provenance records the repository revision, resolved environment, semantic
 configuration, and execution identity.
+
+The key explanatory sentence is:
+
+> Unchanged input data does not preserve trust when the code or runtime that interprets
+> that data has changed.
 
 ## Exercise 8: Review one wrapper or abstraction adoption
 
@@ -161,6 +196,13 @@ compiled-runtime portability is part of the claim; if a rule-scoped environment 
 satisfies the supported contexts, another image may add maintenance without additional
 trust.
 
+A strong review usually orders itself like this:
+
+1. check whether the visible rule contract still tells the truth
+2. inspect whether scripts or package code introduced hidden dependencies
+3. review whether runtime drift is recorded at the right layer
+4. choose the narrowest verification route that proves each corrected boundary
+
 ## Self-check
 
 If your answers consistently explain:
@@ -171,3 +213,10 @@ If your answers consistently explain:
 - what evidence supports rebuilt trust
 
 then you are using the module correctly.
+
+Weak answer pattern:
+
+- "the code is more organized now, so the workflow must be more reproducible"
+
+That sentence skips the visible contract, the runtime contract, and the rebuild story all
+at once. If your answers still sound like that, keep revising.
