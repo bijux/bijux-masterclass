@@ -53,6 +53,22 @@ Add a sixth:
 
 - how to reject a metaclass design that sounds elegant but still belongs to a lower-power owner
 
+## One-day study route for a missed-class learner
+
+Treat this module like one long ownership clinic, not a survey of powerful hooks.
+
+| Study block | What to produce before moving on |
+| --- | --- |
+| overview plus `type(...)` page | one class-creation pipeline sketch and one sentence explaining why `type(...)` is still lower-power than a metaclass |
+| resolution plus hook-split pages | one note naming the effective metaclass, one import-time cost, and one `__new__` versus `__init__` split |
+| `__prepare__` plus boundaries pages | one declaration-time fact that would be lost later and one refused lower-power owner |
+| worked example | one owner ladder naming the metaclass invariant, the import-time blast radius, and the reset discipline |
+| exercises plus answers | one metaclass-boundary packet another learner could review without verbal context |
+
+If you cannot produce the artifact for a block, do not move on because the prose sounded
+familiar. Module 09 gets weak when metaclass vocabulary feels impressive before ownership
+proof becomes concrete.
+
 ## Keep these pages open
 
 - [Mastery Map](../module-00-orientation/mastery-map.md)
@@ -96,6 +112,10 @@ Carry this question through every page:
 Carry a second question beside it:
 
 > What import-time or hierarchy-wide cost did this design accept, and what weaker or stronger owner did it reject first?
+
+Add a third question for the whole day:
+
+> if I removed the metaclass name from the code, would I still be able to explain what fact must exist before the class is bound and why a lower-power owner would lose it?
 
 Strong Module 09 answers usually mention one or more of these:
 
@@ -144,6 +164,19 @@ Replace them with answers that name:
 - the exact lower-power owner that was tested and rejected
 - the exact import-time or hierarchy-wide consequence accepted
 
+## Fast diagnostic for metaclass overreach
+
+Use this table before you accept a design as class-creation ownership instead of ordinary
+automation.
+
+| If you notice... | Pause and ask... | Likely outcome |
+| --- | --- | --- |
+| the argument for the metaclass is mostly "automatic" | what exact class-creation fact disappears if the work happens later? | the current justification is probably weak |
+| the code mostly records or appends finished classes | does a decorator or explicit helper already keep the design honest? | post-creation owners may still be clearer |
+| the proposal mutates global state during import | what reset, ordering, or reload rule keeps the system deterministic? | import-time blast radius needs explicit support |
+| multiple bases bring different metaclass ideas | are these really compatible authorities or just two convenient automations? | conflict is likely a design warning, not a repair task |
+| the design cannot name a refused lower-power tool | is metaclass escalation happening before the smaller owner was tested honestly? | the owner choice is still under-argued |
+
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -162,6 +195,10 @@ Keep these items in your notes as you move through the module:
 - one example of an import-time side effect the design accepts
 - one example of a metaclass conflict explained as ownership collision
 - one reset or reversibility rule for global metaclass state
+
+Use one more quality bar on the packet:
+
+- another learner should be able to point to one refused lower-power owner, one accepted import-time cost, and one remaining uncertainty without needing your verbal explanation
 
 When those feel ordinary, Module 09 has done its job and Module 10 can become a mastery
 and review surface instead of another power escalation.
