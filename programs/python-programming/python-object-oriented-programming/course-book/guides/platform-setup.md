@@ -41,6 +41,17 @@ You need:
 - a writable local filesystem for `artifacts/`
 - the capstone-managed virtual environment created through `make install`
 
+## What "setup complete" actually means
+
+Setup is complete only when all of these are true:
+
+1. the documented virtual environment can be built from the supported Make target
+2. the test suite runs inside that environment
+3. the saved inspection and proof routes run from the documented locations
+4. you can tell which commands are authoritative and which are improvisation
+
+If only item 1 is true, the environment exists but is not yet trustworthy.
+
 ## Supported toolchain contract
 
 Use these as the authoritative setup surfaces:
@@ -52,8 +63,8 @@ Use these as the authoritative setup surfaces:
 | `capstone/Makefile` `inspect`, `verify-report`, and `proof` targets | which saved proof routes the environment must support |
 | [Command Guide](../capstone/command-guide.md) | how to choose the right executable route once setup is stable |
 
-The support promise is tied to the capstone-managed virtual environment, not to a global
-Python that happens to have pytest already.
+The support promise is tied to the capstone-managed virtual environment, not to a
+global Python that happens to have `pytest` already.
 
 ## Repository-root setup
 
@@ -84,9 +95,9 @@ That sequence creates the virtual environment, installs the editable package plu
 checks the suite, and then verifies that the saved inspection and review
 bundles can be built.
 
-## What to verify before deeper proof
+## Verification order
 
-Check these in order:
+Use this order and do not skip ahead:
 
 1. `make install` completes and creates the virtual environment under `artifacts/venv/...`.
 2. `make test` passes before you trust saved bundles.
@@ -94,6 +105,8 @@ Check these in order:
 4. `make verify-report` succeeds before you escalate to `make proof`.
 
 If step 2 fails, the right next move is environment repair, not architecture review.
+If step 3 or 4 fails, the environment may be partially correct but still unable to
+support the course's saved review routes.
 
 ## Common setup failures
 
@@ -103,6 +116,20 @@ If step 2 fails, the right next move is environment repair, not architecture rev
 | `service_monitoring` import errors during tests | editable install missing from the virtual environment | rerun `make install` inside `capstone/` |
 | inspection commands work differently across shells | global Python and capstone virtual environment are mixed | use the documented Make targets instead of ad hoc shell commands |
 | saved bundles are missing under `artifacts/` | route run from the wrong directory or stale environment | rerun the documented route from the repository root or `capstone/` exactly |
+
+## Good setup habits
+
+- use the documented Make targets instead of hand-built shell sequences
+- rebuild the virtual environment after Python upgrades or dependency-floor changes
+- treat `artifacts/` outputs as evidence surfaces, not as random scratch files
+- verify one saved route before moving on to deeper lessons
+
+## Bad setup habits
+
+- trusting a global interpreter because imports happen to work once
+- mixing commands from the repository root and `capstone/` without noticing
+- using a passing test run as proof that inspection and report routes will also work
+- debugging architecture questions while the environment contract is still unstable
 
 ## Drift signals
 
@@ -121,3 +148,10 @@ Treat these as reasons to re-check the setup contract:
   whether the environment is trustworthy.
 - It does not replace [Proof Ladder](proof-ladder.md) when the real question is evidence
   depth rather than setup readiness.
+
+## Exit check
+
+Leave this page only when you can say:
+
+> I built the supported environment with `____`, verified it with `____`, and my next
+> route is `____` because the setup contract is now stable enough to trust.
