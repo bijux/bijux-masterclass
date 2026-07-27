@@ -24,155 +24,185 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about making extension safe enough to support.
 
-## Why this lesson matters
+A stable extension point should let outside code do one bounded job without learning or
+owning the host's internals.
 
-An extension point becomes unstable the moment it requires consumers to know too much
-about the host's internals.
+That is what a capability protocol is for.
+It answers:
 
-Students often create "extensible" seams that really mean:
+- what work may the extension perform?
+- what input will the host provide?
+- what meaning must stay stable for outside implementers?
 
-- import this internal class
-- subclass this concrete type
-- reach into this stateful object
-- mutate this hidden registry
+If the seam instead requires privileged intimacy, it is not yet stable enough to
+publish.
 
-That is not stable extension. It is privileged intimacy disguised as flexibility.
+## Keep one extension need visible
 
-Capability protocols exist so the host can say:
+Use one capstone need:
 
-- here is the exact behavior we need from an extension
-- here is the narrow information we will provide
-- here is what must stay stable for outside implementers
+- publish an incident through an alternate `IncidentSink`
 
-## A capability protocol should describe work, not structure
+The extension should be able to do one thing:
 
-A strong extension seam is defined by what the extension can do.
+- accept already-shaped incident information and report a bounded outcome
 
-Examples:
+It should not need to:
 
-- evaluate a candidate rule
-- provide metric samples
-- publish a normalized incident record
-- transform a stable result object
+- inspect aggregate internals
+- mutate repository state
+- wire itself into runtime control flow
 
-These are capability questions.
+That contrast is the whole lesson.
 
-A weak seam is defined by what internal structure the extension is allowed to touch.
+## Capability protocols describe work, not host structure
+
+A good extension seam is written around a role.
 
 Examples:
 
-- subclass this aggregate directly
-- edit these internal collections
-- reach into this repository cache
+- publish this normalized incident
+- transform this stable result shape
+- provide these metric samples
 
-Those are ownership leaks, not durable contracts.
+A weak extension seam is written around internal ownership leaks:
 
-## Narrow seams are easier to version
+- subclass this concrete coordinator
+- override these helper methods
+- mutate this internal cache
+- access this hidden registry
 
-Once a protocol is public, every new required method, argument contract, or result
-meaning becomes part of compatibility management.
+The first set describes capability.
+The second set describes privileged access.
 
-That is why extension seams should be:
+## Stable seams are usually narrow seams
 
-- as small as they can honestly be
+Every public method, argument meaning, and result guarantee becomes governance work.
+
+That is why a good capability protocol should be:
+
+- small enough to explain in one sitting
 - explicit about input and output meaning
 - decoupled from internal object wiring
+- narrow enough that host internals can still move
 
-The smaller the seam, the easier it is to evolve the host without destabilizing
-extensions.
+Small seams are easier to document, version, test, and deprecate honestly.
 
-## Capability beats inheritance most of the time
+## Capability usually beats inheritance for outsiders
 
-Students often reach for inheritance because it feels object-oriented.
+Inheritance feels natural in object-oriented code, but it is often the wrong default for
+external extension.
 
-But for external extension, inheritance creates several risks:
+Inheritance tends to leak:
 
-- protected internals become accidental public dependencies
-- lifecycle assumptions leak into third-party code
-- refactoring base classes becomes breaking change territory
+- lifecycle assumptions
+- protected internals
+- constructor details
+- method-overriding requirements that were never meant to be public
 
-A capability protocol or abstract interface is usually safer because it asks for one
-replaceable role without exposing how the host composes the rest of the system.
+A capability protocol is usually safer because it asks for one replaceable role without
+publishing the host's composition.
 
-## Composition roots should own the wiring
+That keeps the public promise focused on work, not on internal hierarchy.
 
-An extension author should implement a capability.
+## The composition root should own the wiring
 
-The host's composition root should decide:
+An extension author should implement the capability.
+The host should decide:
 
-- when that capability is instantiated
-- how it is configured
-- which other services surround it
-- what fallback or failure policy applies
+- when the capability is instantiated
+- how configuration is validated
+- what fallback or disablement policy applies
+- what surrounding services and retries are used
 
 If the extension has to wire itself deep into the object graph, the seam is too intimate
-to govern cleanly.
+to govern well.
 
-## A worked example
+The host owns orchestration.
+The extension owns the bounded role.
 
-Suppose the capstone wants to let users provide alternate metric sources.
+## Example: `IncidentSink` as a stable seam
 
-A weak extension design might tell them to subclass an internal runtime coordinator and
-override several helper methods.
+An honest `IncidentSink` seam could promise:
 
-A stronger design would define a narrow protocol such as:
+- the host will provide a normalized incident payload
+- the sink may return a bounded success or failure meaning
+- the host remains responsible for retry, disablement, and workflow truth
 
-- request samples for a stable target description
-- return normalized sample data or a documented failure
+What stays outside the seam:
 
-Now the extension knows the capability it must supply, but it does not need access to:
+- aggregate mutation
+- repository access
+- private scheduler control
+- host-owned policy decisions
 
-- incident aggregates
-- scheduling internals
-- repository lifecycles
+This is exactly what makes the seam stable:
 
-That keeps ownership where it belongs.
+- the extension gets useful work
+- the host keeps authority
 
 ## Stable extension points still need policy
 
-Even a good protocol needs governance around:
+The protocol shape is only one part of the story.
 
-- versioning
-- documented guarantees
-- compatibility testing
-- deprecation policy
+A real stable extension point also needs:
 
-The protocol is only the shape of the seam. Governance is what keeps the seam usable
-over time.
+- documentation that teaches the intended role
+- compatibility proof or review routes
+- version and deprecation expectations
+- registration or construction rules if several implementations will be supported
 
-## Common mistakes
+Without these, the seam may be elegant but still operationally weak.
 
-- calling a seam "extensible" when it really requires deep internal imports
-- exposing large interfaces because "future plugins might need them"
-- using inheritance where a narrow capability contract would be clearer
+## Honest capability gaps should change the design
+
+If one proposed extension needs:
+
+- repository access
+- scheduling control
+- deep lifecycle awareness
+
+then one of two things is probably true:
+
+- the seam is still too small for the real use case
+- the use case should not be externalized yet
+
+The wrong move is to keep widening a public protocol until it leaks half the host.
+
+Stable extension points are strong because they resist that pressure.
+
+## Common failure modes
+
+- calling a seam stable even though it requires deep internal imports
+- exposing large interfaces because future plugins "might need them"
+- using inheritance where a narrow role contract would be clearer
 - letting extensions mutate host state directly
 - changing public capability requirements as though they were local refactors
 
-## Review checklist
+## Capability review card
 
-| Question | Good sign |
+Use this card when reviewing an extension seam:
+
+| Question | What you want to see |
 | --- | --- |
-| does the seam describe a small external capability rather than internal structure? | yes |
+| does the seam describe a bounded external role? | yes |
 | can the host evolve internally without forcing extension rewrites? | yes |
 | does the extension avoid direct mutation of host internals? | yes |
-| is the wiring owned by the composition root rather than the extension itself? | yes |
+| is the wiring owned by the composition root rather than the extension? | yes |
 
 ## Capstone connection
 
-Use the capstone to ask:
+Use this page to ask:
 
-- which customization needs can be expressed as narrow roles instead of deep subclassing?
-- where are current extension ideas reaching past the intended ownership boundary?
-- which stable inputs and outputs would make one capstone seam externally implementable without leaking internals?
+- which customization need is best expressed as one narrow capability
+- where a current extension idea is still reaching past the ownership boundary
+- which stable inputs and outcomes would make `IncidentSink` externally implementable
+  without leaking internals
 
-This is the point where "extensibility" becomes a designed contract instead of wishful
-public exposure.
+That is where extensibility becomes a governed contract instead of wishful public
+exposure.
 
 ## Exit check
 
@@ -180,4 +210,5 @@ Leave this lesson only when you can do all of these:
 
 - explain why a capability protocol is safer than privileged internal access
 - identify one capstone customization point that should become a narrow protocol
-- identify one inheritance-based extension idea that should be replaced by a smaller capability seam
+- identify one inheritance-based idea that should be replaced by a smaller capability
+  seam
