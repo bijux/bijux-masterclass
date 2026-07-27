@@ -24,24 +24,45 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This glossary belongs to **Module 05: Resources, Failures, and Safe Evolution** in **Python Object-Oriented Programming**. It keeps the language of this directory stable so the same ideas keep the same names across reading, practice, review, and capstone proof.
+This glossary belongs to **Module 05: Resources, Failures, and Safe Evolution** in
+**Python Object-Oriented Programming**. Use it when an object owns something costly,
+fallible, or long-lived and you need a design that cleans up safely and evolves without
+surprising callers.
 
 ## How to use this glossary
 
-Read the directory index first, then return here whenever a page, command, or review discussion starts to feel more vague than the course intends. The goal is stable language, not extra theory.
+Return here when a design has to answer hard questions about retries, cleanup,
+compatibility, or failure reporting. This module is where "works on the happy path"
+stops being enough.
 
-## Terms in this directory
+## Terms that matter in this module
 
-| Term | Meaning in this directory |
-| --- | --- |
-| Copying and Versioning of Objects and Aggregates Over Time | the module's treatment of copying and versioning of objects and aggregates over time, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Design Smells and Refactoring Patterns in OOP Python | the module's treatment of design smells and refactoring patterns in oop python, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Deterministic Cleanup and Leak Prevention in Pure Python | the module's treatment of deterministic cleanup and leak prevention in pure python, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Domain Errors, Recovery Contracts, and Compensating Actions | the module's treatment of domain errors, recovery contracts, and compensating actions, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Evolution Basics and Compatibility Contracts | the module's treatment of evolution basics and compatibility contracts, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Idempotent Operations and Safe Retries (Sync-Only Context) | the module's treatment of idempotent operations and safe retries (sync-only context), used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Logging and Error Propagation as Part of Object Contracts | the module's treatment of logging and error propagation as part of object contracts, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Public vs Internal Modules and Facades for OOP Codebases | the module's treatment of public vs internal modules and facades for oop codebases, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Refactor 4: Introduce New Feature, Preserve Old Behaviour, Document Smell Fixes | the module's treatment of refactor 4: introduce new feature, preserve old behaviour, document smell fixes, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Resources and Context Managers: Objects That Own Things | the module's treatment of resources and context managers: objects that own things, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
-| Unit-of-Work: Grouping Changes and Handling Failures | the module's treatment of unit-of-work: grouping changes and handling failures, used to make the module's main design claim concrete in design work, refactoring, and capstone evidence. |
+| Term | Meaning in this module | Review question |
+| --- | --- | --- |
+| Resource owner | An object responsible for acquiring, releasing, or guarding access to something finite or external. | Can you name exactly who owns cleanup, or are several layers assuming someone else will do it? |
+| Context manager | A Python protocol for deterministic setup and teardown around a block of work. | Would `with` make lifecycle boundaries clearer here than manual cleanup calls? |
+| Deterministic cleanup | Releasing resources at a known point rather than hoping garbage collection eventually helps. | What happens if this code exits early because of an exception? |
+| Domain error | A failure expressed in business terms that callers can reason about and handle intentionally. | Does the error explain what rule failed, not just which library exploded? |
+| Recovery contract | The documented promise about what a caller may retry, compensate, or report after failure. | After this exception, what is still safe to do next? |
+| Compensating action | A follow-up action that repairs or offsets previously completed work. | If part of the workflow already succeeded, how will you restore a coherent state? |
+| Idempotent operation | An operation that can be repeated without causing additional unintended effects. | If a caller retries after uncertainty, will the system stay correct? |
+| Unit of work | A boundary that groups related changes and coordinates commit or rollback behavior. | Which state changes must succeed or fail together? |
+| Compatibility contract | The promise that existing callers or stored data can continue working across change. | What exactly are you preserving when the design evolves? |
+| Facade | A stable, simpler public surface that hides more volatile internal structure. | Are you giving callers one durable entry point instead of making them depend on internals? |
+| Design smell | A recurring sign that the structure is making correctness harder, such as feature envy or shotgun surgery. | Which maintenance pain is this code already predicting? |
+| Versioned object | An object or snapshot whose meaning changes across revisions and must be interpreted carefully. | Are you copying data safely, or creating several live meanings with no migration story? |
+
+## Fast distinctions
+
+- A **domain error** is for callers; a raw traceback is for debugging.
+- A **context manager** defines lifecycle ownership, not just syntax convenience.
+- **Idempotent** means safe under repetition, not merely "probably okay twice."
+- A **facade** protects callers from churn in internal modules.
+
+## Exit check
+
+Leave this glossary only when you can do all of these:
+
+- explain why cleanup belongs to a clearly named owner
+- identify one operation that must be idempotent and why
+- explain the difference between internal refactoring freedom and an external compatibility contract
