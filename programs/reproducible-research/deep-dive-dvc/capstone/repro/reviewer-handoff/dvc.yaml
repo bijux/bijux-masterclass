@@ -10,5 +10,4 @@ stages:
       - policy/severity-policy.json
       - scripts/summarize_incidents.py
     outs:
-      - reports/summary.json:
-          cache: false
+      - reports/summary.json

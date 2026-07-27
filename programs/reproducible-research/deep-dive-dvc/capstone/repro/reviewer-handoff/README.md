@@ -9,8 +9,9 @@ The governed claim is:
 > weekend handoffs.
 
 The `summarize_incidents` stage computes that claim from `data/incidents.csv`. The data
-file is DVC-tracked during the audit, while the pipeline declaration, implementation, and
-handoff contract remain Git-tracked.
+file and generated result are stored through DVC during the audit, while the pipeline
+declaration, implementation, and handoff contract remain Git-tracked. This lets a clean
+reviewer inspect the exact recorded result before deciding whether regeneration is needed.
 
 ## Handoff boundary
 
