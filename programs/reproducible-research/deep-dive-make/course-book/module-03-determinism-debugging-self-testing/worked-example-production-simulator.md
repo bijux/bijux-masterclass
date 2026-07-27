@@ -162,11 +162,21 @@ Pick one target and write down the exact reason Make rebuilt it.
 Run:
 
 ```sh
-make selftest
+gmake selftest-report
 ```
 
-This should prove convergence, serial/parallel equivalence, runtime correctness, and one
-meaningful negative case.
+This should prove convergence, serial/parallel equivalence over 13 declared artifacts,
+the trace guardrail, hidden-input detection, and the quarantined `eval` check. It does
+not prove runtime correctness; `gmake test` owns that separate claim.
+
+Open the report under:
+
+```text
+artifacts/proof/reproducible-research/deep-dive-make/selftest/
+```
+
+Read `summary.txt` before `commands.txt`, logs, inventories, or the workspace. The summary
+tells you which deeper evidence is relevant.
 
 ### Demonstration 5: Check that optional eval stays optional
 
@@ -186,33 +196,42 @@ Open `tests/run.sh` and find the hidden-input check. Before running it, explain 
 the test introduces and what observation should make the test pass. A negative test is
 useful only when you understand why failure is expected.
 
-## Make the proof fail on purpose
+## Prove that the proof rejects dishonesty
 
-A selftest you have only seen pass is difficult to trust. Choose one reversible defect:
+Run:
 
-- remove one generated-header prerequisite
-- replace a sorted discovery list with unsorted shell discovery
-- make two parallel recipes share a temporary path
-- change a modeled flag without updating its evidence
-
-Before editing, write the selftest section you expect to fail and why. Introduce only
-that defect, run the narrow section, and save the failure. Restore the correct rule and
-rerun the same section.
-
-Your record should contain:
-
-```text
-Claim:
-Defect introduced:
-Expected failing check:
-Observed failure:
-Repair:
-Observed pass:
+```sh
+gmake selftest-harness-tests
 ```
 
-This is mutation testing at a human scale. It proves that the check is connected to the
-contract it claims to protect. If the selftest still passes, do not congratulate the
-build; strengthen the test or correct your understanding of its scope.
+The test suite runs one truthful case and one controlled schedule-drift case. It does not
+ask you to edit the live Makefile or remember to restore a defect. Inspect:
+
+```text
+artifacts/tests/reproducible-research/deep-dive-make/selftest-harness/
+└── parallel-artifact-drift/
+```
+
+Start with `summary.txt`. It should name schedule equivalence as the stopping boundary.
+Then read `schedule-comparison.json`; the changed path should be
+`build/include/dynamic.h`. Confirm that trace, hidden-input, and eval checks are
+`NOT_RUN`, not `FAIL`.
+
+Finally, compare the two inventory entries for that path and inspect the preserved
+parallel file under `workspace/`. This is mutation testing at a human scale: the test
+proves that the schedule-equivalence gate is connected to the artifact contract it
+claims to protect.
+
+If you later design another controlled defect, require the same evidence shape:
+
+```text
+Claim violated:
+Expected stopping boundary:
+Expected diagnostic category:
+Observed report:
+Later checks not reached:
+Preserved evidence:
+```
 
 ## Build a causality note from one trace
 
@@ -237,3 +256,4 @@ By the time you finish this file, you should be able to point at the simulator a
 - where selftest proves the build
 - where abstraction is kept under control instead of controlling the build
 - which claim is proved by each selftest section
+- how a rejected selftest remains reviewable without rerunning it

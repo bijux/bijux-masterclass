@@ -145,7 +145,8 @@ small builds with:
 - dynamic source discovery under `src/dynamic/`
 - generated headers
 - modeled hidden inputs
-- a selftest harness that checks convergence and serial/parallel equivalence
+- a selftest harness that checks convergence, compares declared serial/parallel
+  inventories, and preserves reviewable failures
 - an optional `eval` surface that stays quarantined from the core build
 
 That gives you one build that is intentionally close to production pressure while still
@@ -201,6 +202,7 @@ By the end of this module, you should be able to:
 - explain rebuilds with `--trace`, `-n`, and `-p` instead of guesswork
 - define a stable CI-facing target surface and protect it from semantic drift
 - design selftests that prove convergence and serial/parallel equivalence
+- distinguish failed, passed, and not-run selftest boundaries from saved evidence
 - use Make macros and optional `eval` without making the graph opaque
 
 ## Exit standard
