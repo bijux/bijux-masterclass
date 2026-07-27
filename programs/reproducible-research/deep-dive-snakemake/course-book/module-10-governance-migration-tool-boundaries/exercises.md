@@ -8,14 +8,16 @@ and ownership contracts, not through vague redesign language.
 
 Do the ten exercises in order.
 
-The set is a one-day progression:
+This is a full-day stewardship lab, not a quiz bank.
+
+The progression is deliberate:
 
 - Exercises 1-3 establish current truth and governance language.
-- Exercises 4-6 classify anti-patterns and build a current-truth inventory.
+- Exercises 4-6 classify anti-patterns, tool boundaries, and trust inventories.
 - Exercises 7-8 preserve proof through one ownership move.
 - Exercises 9-10 enforce governance and design an honest handoff.
 
-For every answer, keep three things:
+For every answer, keep three things visible:
 
 - the boundary you are naming
 - the evidence route you actually used
@@ -54,6 +56,21 @@ module10-lab/
 That layout makes it easier to separate current-truth evidence, characterization checks,
 governance automation, and tool-handoff design without mixing their proof routes.
 
+## What a strong day packet looks like
+
+By the time you finish all ten exercises, your work should leave behind one small,
+reviewable stewardship packet instead of ten disconnected redesign notes:
+
+- one current-truth review note describing what the repository already promises today
+- one migration sequence showing which proof must survive each step
+- one short governance ruleset tied to explicit repository surfaces
+- one characterization packet for a relied-on awkward behavior
+- one policy-check failure with a repair-oriented message
+- one tool-handoff note showing where workflow truth stays independently verifiable
+
+If you cannot point to those six artifacts, the day is still too dependent on tacit
+classroom explanation.
+
 Build one small stewardship packet as you go:
 
 - one current-truth review note describing what the repository already promises today
@@ -91,6 +108,7 @@ What to hand in:
 - which risk you would address first
 - the existing evidence route you inspect before proposing migration
 - one awkward behavior you must describe honestly before changing it
+- one sentence explaining why your first review note is not yet a migration plan
 
 Study note:
 Do not turn this into a redesign pitch. The first job is to describe the current trust
@@ -124,6 +142,7 @@ What to hand in:
 - the repository surface each rule protects
 - one example of a change each rule would reject
 - one reason the wording is short enough to survive real review
+- one note about how a maintainer would know each rule was violated
 
 Study note:
 Long policy text is usually failed stewardship hiding as completeness.
@@ -139,6 +158,7 @@ What to hand in:
 - which change is most dangerous and why
 - the recovery step you would require first
 - the proof route you would consult before approving anything else
+- one sentence explaining why calling everything "technical debt" is too weak
 
 Study note:
 Naming the anti-pattern matters because the repair route depends on what kind of trust
@@ -155,6 +175,7 @@ What to hand in:
 - what another system should own
 - the handoff artifact or schema that makes the split trustworthy
 - one ownership line you refuse to blur
+- one sentence explaining how workflow truth stays independently verifiable after the handoff
 
 Study note:
 If the answer says only "use platform X for everything," the ownership boundary is still
@@ -171,6 +192,7 @@ What to hand in:
 - mismatches between documentation and behavior
 - risks ordered by trust impact
 - facts that must be preserved before any migration
+- one sentence explaining why the inventory is evidence rather than busywork
 
 Study note:
 The inventory is not busywork. It is the map that stops migration from erasing relied-on
@@ -200,6 +222,7 @@ What to hand in:
 - checks that pass against the current implementation
 - a deliberately incompatible candidate that fails
 - an explanation of what the checks intentionally do not freeze
+- one sentence explaining why byte-for-byte comparison would be too strong or too weak here
 
 Study note:
 Freezing every byte is usually laziness. Freezing nothing is usually denial.
@@ -215,6 +238,7 @@ What to hand in:
 - byte-level or semantic comparison appropriate to each output
 - focused proof before and after the move
 - rollback criteria
+- one sentence explaining why unchanged public meaning matters more than nicer internal structure
 
 Study note:
 If you cannot say what would trigger rollback, you are not ready to move the boundary.
@@ -250,10 +274,26 @@ What to hand in:
 - ownership and failure table
 - idempotency and provenance strategy
 - an end-to-end proof that the returned publish bundle remains independently verifiable
+- one sentence explaining what would make the handoff dishonest even if it looked operationally convenient
 
 Study note:
 If the bundle can only be trusted through the external service and not on its own, the
 handoff is not yet honest.
+
+## When you get stuck, diagnose the missing stewardship surface first
+
+Use this table before you keep redesigning:
+
+| If you are stuck on... | The likely missing surface is... | Smallest next artifact |
+| --- | --- | --- |
+| "I know the repository is messy, but I cannot say why" | current truth was never written down | one contract review note |
+| "Every migration order feels risky" | the proof route was never separated from the move | one migration table with surviving checks |
+| "The governance rules sound vague" | you have not tied them to one repository decision | one rule-to-surface map |
+| "I cannot tell what to freeze in characterization" | consumer reliance is still unclear | one consumer list plus one relied-on behavior note |
+| "The platform handoff still sounds fashionable but blurry" | ownership boundaries are not yet explicit | one concern ownership table |
+
+If the smallest next artifact is unclear, you are still trying to solve taste before
+evidence.
 
 ## What weak completion looks like
 

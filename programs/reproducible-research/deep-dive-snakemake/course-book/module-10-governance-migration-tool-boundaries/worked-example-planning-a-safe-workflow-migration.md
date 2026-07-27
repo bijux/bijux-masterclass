@@ -1,24 +1,41 @@
 # Worked Example: Planning a Safe Workflow Migration
 
-This file ties the whole module together around one realistic problem:
+This worked example ties the whole module together around one realistic problem:
 
-> a team wants change for real reasons, but could easily destroy trust by moving too many weak boundaries at once.
+> a team wants real change, but could easily destroy trust by moving too many weak
+> boundaries at once.
 
 The question is not "how do we modernize the repository?" The question is how to review
 current truth, move one boundary, preserve proof, and stop before a fashionable rewrite
 erases evidence.
 
+## If you are learning this without the live class
+
+Use the example in six passes instead of trying to absorb the whole stewardship route in
+one read:
+
+1. rewrite the migration pressure in contract language before proposing any redesign
+2. stop after the first current-truth review and ask what is still too weak to move
+3. write down the surfaces that must not change before any ownership move
+4. sequence one migration step and name the proof that must survive it
+5. narrow the external handoff request until it describes a real ownership split
+6. finish by writing governance rules that stop the repaired boundaries from drifting again
+
+If you cannot say what is already trusted after pass 2, do not keep redesigning. Most
+Module 10 confusion starts when learners jump from dissatisfaction to migration before
+they have named the repository's current contract honestly.
+
 ## How to use this worked example
 
-Treat this page like a guided stewardship rehearsal.
+Treat this page like a guided stewardship lab.
 
-Read it in order and pause after each step to answer:
+Read it in order and pause after each step long enough to answer two questions:
 
 1. what the team now knows with evidence
 2. what the team still does not know safely enough to move yet
 
-That habit matters because workflow migration goes wrong when teams confuse pressure,
-preference, and proof.
+That habit matters because workflow migration goes wrong when teams collapse pressure,
+preference, and proof into one blurred story.
 
 ## The lab route
 
@@ -32,27 +49,30 @@ Work through the example in this order:
 
 Keep one small stewardship packet beside you while you read:
 
-- a current-truth note
+- a current-truth note written in contract language
 - one list of trusted outputs and proof routes
 - one migration sequence with rollback points
 - one ownership split for the external handoff
 - one governance note that survives after the migration
 
+That packet is not paperwork. It is the thing that turns "we should move this onto the
+platform" into "another maintainer can review why this migration is safe."
+
 ## The starting situation
 
 Assume a team inherits a Snakemake repository with these characteristics:
 
-- the workflow itself still runs reliably
+- the workflow still runs reliably
 - downstream notebooks read some files from `results/`
 - `publish/v1/summary.json` is trusted, but the file API is incomplete
 - one profile includes a sample filter that does not belong to operating policy
 - report generation is hard to test and lives in a large helper script
-- leadership wants the system “moved onto the platform”
+- leadership wants the system "moved onto the platform"
 
 That last sentence creates risk immediately because it is larger than the review has
 earned.
 
-Before any redesign talk, sketch the problem as three separate stewardship surfaces:
+Before any redesign talk, sketch the problem as four separate stewardship surfaces:
 
 ```mermaid
 flowchart LR
@@ -67,13 +87,28 @@ flowchart LR
 That sequence is the worked example in one line. If the team jumps straight to `move`,
 the migration outruns the proof.
 
+## What goes wrong when a learner trusts the migration request
+
+Use this card before you repair anything:
+
+| If you notice... | The stewardship route is hiding... | Smallest review surface |
+| --- | --- | --- |
+| "move it onto the platform" is the only plan anyone can state | the current contract was never written down | one current-truth review note |
+| a redesign starts before trusted outputs are named | the migration will not know what must stay stable | one immovable-surfaces list |
+| several weak boundaries are scheduled for the same change set | the comparison route will disappear during the move | one one-boundary migration table |
+| the handoff is described only by destination tool names | nobody has owned the responsibility split yet | one ownership table with proof routes |
+| governance is postponed until after the migration | the same drift will return under the next deadline | one short enforceable ruleset |
+
+If you can name the hidden defect first, the migration stops feeling like a taste debate
+and starts feeling like maintainership.
+
 ## Step 1: review current truth before proposing change
 
 The first task is not migration. It is review.
 
 A strong review note might say:
 
-> The repository’s strongest stable surface is the versioned publish bundle, but the
+> The repository's strongest stable surface is the versioned publish bundle, but the
 > contract is weakened because some downstream consumers still read `results/`. The
 > profile boundary is also weak because one profile changes sample-selection semantics.
 > Report generation has a clear output surface but unclear implementation ownership.
@@ -89,6 +124,19 @@ Without that review, every later migration sentence stays vague.
 This is the point where many teams fail. They write a future-state plan without ever
 stating what is already relied on today.
 
+## The current-truth audit before you keep planning
+
+Before you call the review healthy, make sure you can answer all four of these:
+
+| Question | Healthy answer |
+| --- | --- |
+| What is already trusted? | named publish outputs, known consumers, and one visible proof route |
+| What is awkward but relied on? | downstream reads, semantic profile behavior, or opaque helpers that still affect public meaning |
+| What is still unknown? | which boundary can move first without breaking trusted consumers |
+| What artifact proves the review happened? | one current-truth note grounded in commands, files, and consumer paths |
+
+If any row stays vague, the migration plan is still running ahead of the evidence.
+
 ## Step 2: decide what must not move first
 
 Before discussing platform migration, the team writes down what must remain stable:
@@ -98,8 +146,8 @@ Before discussing platform migration, the team writes down what must remain stab
 - the publish verification route
 - the ability to compare profiles honestly
 
-This is the crucial shift. The migration is no longer “move onto the platform.” It is now
-“keep trusted outputs and proof routes stable while improving weak boundaries.”
+This is the crucial shift. The migration is no longer "move onto the platform." It is now
+"keep trusted outputs and proof routes stable while improving weak boundaries."
 
 Write those immovable surfaces down somewhere durable before continuing:
 
@@ -107,6 +155,19 @@ Write those immovable surfaces down somewhere durable before continuing:
 - the proof route that verifies them
 - the context-audit route that still compares profiles honestly
 - any consumer behavior that must remain valid until a versioned replacement exists
+
+## The immovable-surfaces check
+
+If you want a five-minute self-test, try to complete this table before moving on:
+
+| Surface | Why it must stay stable now | How the team would notice breakage |
+| --- | --- | --- |
+| publish bundle | downstream trust already depends on it | publish verification and consumer comparison fail |
+| proof route | the migration needs a calm comparison path | verification becomes impossible or unreviewable |
+| profile comparison | semantic changes must stay visible | context audits stop telling the truth |
+| consumer route | notebooks or reports still depend on it | hidden breakage appears after the move |
+
+If you cannot fill the right column honestly, you are not yet protecting the boundary.
 
 ## Step 3: sequence the boundary moves
 
@@ -134,6 +195,19 @@ The order can be summarized in one review table:
 | repair policy leak | now | dry-run and profile comparison |
 | move report implementation owner | after truth repairs | same published outputs and comparison route |
 | narrow platform handoff | later | everything above still visible |
+
+## The sequence-discipline audit
+
+Do not just copy the order. Test whether you understand why it is safe:
+
+| If you changed... | What comparison route would you lose? |
+| --- | --- |
+| contract drift and platform handoff together | the team could no longer tell whether breakage came from output meaning or service ownership |
+| policy leakage and report ownership together | semantic differences would blur with implementation differences |
+| consumer routes and publish schema together | downstream trust would fail without a stable before-and-after check |
+
+If you cannot explain the lost comparison route, you do not yet understand why the order
+matters.
 
 ## Step 4: repair contract drift first
 
@@ -168,6 +242,18 @@ handoff discussion.
 This is an important teaching pause: the migration is already succeeding before any new
 tool enters the picture, because the repository is telling the truth more clearly.
 
+## The repair packet before you call the repository healthier
+
+Do not keep going until you can show one small repair packet:
+
+- one before-and-after note for the publish contract boundary
+- one consumer comparison proving the public route still works
+- one profile audit showing semantic keys left the operating surface
+- one sentence explaining why these repairs lower migration risk even if no platform work happens
+
+If that packet is missing, the team is still describing cleanup instead of proving
+stewardship.
+
 ## Step 6: migrate implementation without changing outputs
 
 Now the team moves report-generation logic from a large helper script into package code.
@@ -187,6 +273,19 @@ That distinction is the heart of the example:
 - proof cannot disappear during the move
 
 If proof disappears first, the migration is no longer a reviewable boundary change.
+
+## The rollback card for the ownership move
+
+Write rollback criteria before you celebrate the new structure:
+
+| If this happens... | The honest response is... |
+| --- | --- |
+| public schema changes unexpectedly | stop and restore the last trusted owner |
+| verification no longer explains failures clearly | stop and rebuild the proof route before continuing |
+| consumers need undocumented adaptation | stop and version the boundary instead of forcing migration by surprise |
+| reviewers cannot explain the new owner faster than the old one | stop and simplify the ownership boundary before adding more motion |
+
+If rollback criteria are missing, the migration still depends on confidence instead of proof.
 
 ## Step 7: revisit the platform request honestly
 
@@ -213,6 +312,18 @@ Write the split in concrete terms before you accept it:
 | identity and access control | no | yes |
 | tenancy-aware scheduling policy | no | yes |
 
+## The handoff-honesty check
+
+Use these questions before approving the ownership split:
+
+1. can a maintainer still verify the publish bundle without trusting the service UI
+2. can the service fail while the workflow contract still remains legible
+3. is request intake separate from workflow truth, or are they still blurred together
+4. can you state one responsibility Snakemake explicitly no longer owns
+5. can you state one responsibility the service must never silently redefine
+
+If those answers are not visible, the handoff is still a slogan rather than a contract.
+
 ## Step 8: write governance rules so the problem does not return
 
 The team records three rules:
@@ -225,6 +336,20 @@ That is the part many teams skip. Without it, the same drift returns later.
 
 This is also where the migration stops being a heroic one-time cleanup and becomes normal
 maintainership.
+
+## A small governance packet you should be able to leave behind
+
+By the end of the example, you should be able to produce one reviewable packet with:
+
+- one current-truth note
+- one immovable-surfaces list
+- one one-boundary migration sequence
+- one rollback card
+- one handoff ownership table
+- one short governance ruleset
+
+If those six artifacts do not exist, the migration story is probably still depending on
+oral explanation.
 
 ## The teaching point of the whole example
 
@@ -260,7 +385,7 @@ When you inspect a stewardship plan shaped like this, ask:
 4. what Snakemake still owns after the external handoff
 5. which governance rule prevents the same drift from reappearing
 
-If those answers are visible, the module’s stewardship story has landed.
+If those answers are visible, the module's stewardship story has landed.
 
 If you want one final classroom-style check, explain the migration in five lines:
 
