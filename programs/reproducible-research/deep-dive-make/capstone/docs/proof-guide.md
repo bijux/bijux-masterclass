@@ -40,12 +40,13 @@ start narrower.
 | --- | --- | --- |
 | what is publicly promised here | `make inspect` | `CONTRACT_AUDIT_GUIDE.md`, `TARGET_GUIDE.md`, `help.txt` |
 | the build converges after success | `make selftest` | `tests/run.sh`, `mk/stamps.mk` |
-| serial and parallel schedules produce the same result | `make selftest` | `serial.sum`, `parallel.sum`, `tests/run.sh` |
+| serial and parallel schedules produce the same result | `make selftest` | `schedule-comparison.json`, both inventory files, `tests/run.sh` |
+| the selftest rejects a known schedule defect | `make selftest-harness-tests` | rejected comparison report, failure summary, preserved workspace |
 | one candidate matches exact package and identity policy | `make verify-dist` | `RELEASE_GUIDE.md`, package policy, candidate acceptance report |
 | install remains contained and converges on rerun | `make install-rehearsal` | install policy, install acceptance report |
 | malformed release inputs fail at the expected boundary | `make release-selftest` | release tests and rejection output |
 | the full local release claim holds | `make release-check` | release acceptance record and `RELEASE_GUIDE.md` |
-| proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `settings.env` |
+| proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
 | generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/generated-header-edge.mk` |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
 | variable and execution-policy assumptions are reviewable | `make profile-audit` | `PROFILE_AUDIT_GUIDE.md`, `mk/contract.mk`, `origins.txt` |
@@ -75,6 +76,7 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `walkthrough` for first contact
 - choose `inspect` for contract review
 - choose `selftest` for build-truth proof
+- choose `selftest-harness-tests` when the open question is whether the proof gate rejects dishonesty
 - choose `verify-dist` for one existing candidate
 - choose `release-selftest` for acceptance and rejection behavior
 - choose `release-check` for the complete local release claim

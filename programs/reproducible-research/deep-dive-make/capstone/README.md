@@ -52,7 +52,8 @@ first-contact playground for Make syntax.
 | --- | --- | --- |
 | what does this repository promise | `make walkthrough` | `make inspect` |
 | which targets are public and what they mean | `make inspect` | `make contract-audit` |
-| does the build prove convergence and parallel safety | `make selftest` | `make verify-report` |
+| does the build prove convergence and parallel safety | `make selftest` | inspect `summary.txt`, then `make verify-report` |
+| does the selftest reject a known schedule defect | `make selftest-harness-tests` | inspect the rejected test bundle |
 | does one candidate satisfy the local release contract | `make release-check` | `make confirm` |
 | which failure class does this repro teach | `make incident-audit` | `make proof` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
@@ -86,8 +87,9 @@ bounded review route without turning the capstone into a browsing exercise.
 | --- | --- | --- |
 | `walkthrough` | the learner-facing reading order is bounded and explicit | first capstone contact stays humane |
 | `inspect` | the public build contract is visible without the full proof route | review starts from stable surfaces |
-| `selftest` | convergence, serial/parallel equivalence, and negative hidden-input detection | the build system is tested as a system |
-| `verify-report` | the selftest evidence is saved as a review bundle | proof can be inspected later |
+| `selftest` | convergence, serial/parallel equivalence, negative hidden-input detection, and raw evidence | the build system is tested as a system |
+| `selftest-harness-tests` | truthful schedules pass and controlled artifact drift fails | the proof harness is tested, not merely trusted |
+| `verify-report` | passing or failing selftest evidence is completed as a review bundle | proof can be inspected without rerunning |
 | `release-check` | one candidate passes archive and contained-install acceptance | release claims bind to exact bytes |
 | `proof` | the sanctioned review bundle set exists and agrees with the contract | stewardship has a durable route |
 | `confirm` | the strongest built-in confirmation path still passes | final review is stronger than first-pass learning |

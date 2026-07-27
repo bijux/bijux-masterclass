@@ -39,6 +39,7 @@ question honestly.
 | what are the stable public targets | `make help` | `make inspect` |
 | does the ordinary build succeed | `make all` | `make test` |
 | does the build graph still tell the truth | `make selftest` | `make verify-report` |
+| does the selftest close its own rejection gate | `make selftest-harness-tests` | inspect the controlled drift report |
 | does one candidate satisfy archive and install policy | `make release-check` | `make confirm` |
 | do existing candidate bytes pass without a rebuild | `make verify-dist` | `make install-rehearsal` |
 | do malformed candidates and destinations fail correctly | `make release-selftest` | `make release-check` |
@@ -58,7 +59,8 @@ question honestly.
 | `help` | the published target list and key variables | you need the supported surface |
 | `all` | the ordinary build outputs and convergence sentinel | you need the baseline build result |
 | `test` | runtime behavior checks | you need product-facing validation |
-| `selftest` | convergence, schedule equivalence, and hidden-input checks | you need build-system proof |
+| `selftest` | convergence, schedule equivalence, hidden-input checks, and raw evidence | you need build-system proof |
+| `selftest-harness-tests` | acceptance of truthful schedules and rejection of injected drift | you need proof that the harness itself discriminates |
 | `dist` | one governed candidate and SHA-256 sidecar | you need producer output |
 | `verify-dist` | existing-byte identity, member, type, mode, and metadata evidence | you need consumer verification without rebuilding |
 | `install-rehearsal` | contained installed tree and rerun comparison | you need destination evidence |
@@ -71,7 +73,7 @@ question honestly.
 | `inspect` | the same contract route under review naming | you want the smallest honest review route |
 | `incident-audit` | one executed incident bundle | you want one failure class with evidence |
 | `profile-audit` | the execution-profile review bundle | you are reviewing portability and precedence |
-| `selftest-report` | the saved selftest evidence bundle | you need durable proof output |
+| `selftest-report` | a complete passing or failing selftest evidence bundle | you need durable proof output |
 | `verify-report` | the same selftest bundle under shared catalog naming | you need the catalog label used elsewhere |
 | `proof` | the sanctioned multi-bundle review set | one question now spans multiple routes |
 | `hardened` | selftest, audits, attestation, and runtime checks | you want the strongest built-in validation body |
@@ -82,12 +84,13 @@ question honestly.
 ## Distinctions that matter
 
 - `all` builds outputs once; `selftest` proves the build contract
+- `selftest` tests the build; `selftest-harness-tests` tests whether that proof gate closes
 - `dist` produces candidate bytes; `verify-dist` observes existing bytes
 - `install-rehearsal` proves a destination mapping; `accept-release` records the bounded decision
 - `release-selftest` proves gate behavior; `release-check` applies those gates to the capstone candidate
 - `walkthrough` writes a first-pass bundle; `tour` prints the shortest route and focused follow-ups
 - `contract-audit` and `inspect` are the same route with different naming context
-- `selftest-report` and `verify-report` are the same saved evidence bundle
+- `selftest-report` and `verify-report` are the same saved evidence bundle, including on failure
 - `profile-audit` is about declared execution boundary and variable sources, not raw performance benchmarking
 - `proof` is not "better selftest"; it is the point where one review question has become several
 - `hardened` and `confirm` are the strongest built-in routes, not the default starting point

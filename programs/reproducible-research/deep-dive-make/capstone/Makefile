@@ -181,6 +181,7 @@ help:
 >     '  DEBUG=1           enable debug symbols (-g)' \
 >     '  J=4               parallelism used by some commands' \
 >     '  TRACE_MAX=500     selftest trace-line heuristic threshold' \
+>     '  SELFTEST_FAULT=none controlled harness-test seam; not for ordinary proof' \
 >     ''
 
 tour:
@@ -190,6 +191,7 @@ tour:
 >     cp $(DOCS_DIR)/architecture.md "$(TOUR_DIR)/ARCHITECTURE.md"
 >     cp $(DOCS_DIR)/index.md "$(TOUR_DIR)/INDEX.md"
 >     cp $(DOCS_DIR)/proof-guide.md "$(TOUR_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/selftest-guide.md "$(TOUR_DIR)/SELFTEST_GUIDE.md"
 >     cp $(DOCS_DIR)/release-guide.md "$(TOUR_DIR)/RELEASE_GUIDE.md"
 >     cp $(DOCS_DIR)/target-guide.md "$(TOUR_DIR)/TARGET_GUIDE.md"
 >     cp $(DOCS_DIR)/walkthrough-guide.md "$(TOUR_DIR)/WALKTHROUGH_GUIDE.md"
@@ -211,8 +213,9 @@ tour:
 >       '  4. Read PROOF_GUIDE.md for claim-to-evidence routing.' \
 >       '  5. Read ARCHITECTURE.md and WALKTHROUGH_GUIDE.md for ownership and first-pass order.' \
 >       '  6. Read RELEASE_GUIDE.md when the question is candidate acceptance.' \
->       '  7. Read tests/run.sh and trace-count.txt for proof and observability evidence.' \
->       '  8. Inspect REPRO_GUIDE.md and repro/shared-log-interleaving.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
+>       '  7. Read SELFTEST_GUIDE.md and tests/run.sh for the reviewable proof route.' \
+>       '  8. Read trace-count.txt for the observability guardrail.' \
+>       '  9. Inspect REPRO_GUIDE.md and repro/shared-log-interleaving.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Focused routes:' \
 >       '  generators   -> make --trace dyn' \
@@ -243,6 +246,7 @@ walkthrough:
 >     cp $(DOCS_DIR)/architecture.md "$(WALKTHROUGH_DIR)/ARCHITECTURE.md"
 >     cp $(DOCS_DIR)/index.md "$(WALKTHROUGH_DIR)/INDEX.md"
 >     cp $(DOCS_DIR)/proof-guide.md "$(WALKTHROUGH_DIR)/PROOF_GUIDE.md"
+>     cp $(DOCS_DIR)/selftest-guide.md "$(WALKTHROUGH_DIR)/SELFTEST_GUIDE.md"
 >     cp $(DOCS_DIR)/release-guide.md "$(WALKTHROUGH_DIR)/RELEASE_GUIDE.md"
 >     cp $(DOCS_DIR)/target-guide.md "$(WALKTHROUGH_DIR)/TARGET_GUIDE.md"
 >     cp $(DOCS_DIR)/walkthrough-guide.md "$(WALKTHROUGH_DIR)/WALKTHROUGH_GUIDE.md"
@@ -257,7 +261,7 @@ walkthrough:
 >       '1. Read INDEX.md to choose the smallest honest entry route.' \
 >       '2. Read WALKTHROUGH_GUIDE.md to understand the recommended first pass.' \
 >       '3. Read README.md and TARGET_GUIDE.md to understand the capstone contract and public targets.' \
->       '4. Read PROOF_GUIDE.md and tests/run.sh to see what selftest is proving.' \
+>       '4. Read PROOF_GUIDE.md, SELFTEST_GUIDE.md, and tests/run.sh to see what selftest is proving.' \
 >       '5. Read RELEASE_GUIDE.md when you need the candidate acceptance route.' \
 >       '6. Read ARCHITECTURE.md and mk/contract.mk for ownership and boundary design.' \
 >       '7. Read mk/objects.mk and mk/stamps.mk for graph truth and modeled hidden inputs.' \
@@ -276,6 +280,7 @@ walkthrough:
 >       '  INDEX.md             stable local route into the capstone docs' \
 >       '  TARGET_GUIDE.md      stable public target surface' \
 >       '  PROOF_GUIDE.md       claim-to-evidence routing' \
+>       '  SELFTEST_GUIDE.md    passing and failing selftest evidence route' \
 >       '  RELEASE_GUIDE.md     candidate acceptance and rejection route' \
 >       '  WALKTHROUGH_GUIDE.md bounded first-pass reading order' \
 >       '  ARCHITECTURE.md      layer ownership and system map' \
