@@ -17,116 +17,125 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  question["Ask beginner questions honestly"] --> module["Study modules 1 to 3 as one arc"]
+  module --> capstone["Check one matching capstone surface"]
+  capstone --> exercise["Finish with exercises and one ownership sentence"]
+  exercise --> advance["Advance only when the foundations stop wobbling"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Use this map when you are entering the course for the first time or when you realize the
+foundations still feel shaky. This opening stretch is not "basic OOP" in the thin sense.
+It is where the course teaches the judgment that later modules assume:
 
-Use this map when you are new to the course, returning after a break, or unsure
-whether you should begin with syntax review or with design review. This part of the
-course is where you build the vocabulary that later modules assume without re-teaching.
+- what an object means
+- where behavior belongs
+- how legal state stays legal over time
 
-## What this opening stretch is for
+If those three answers are still unstable, later modules will feel advanced for the
+wrong reason.
 
-Modules 1 through 3 answer three beginner-to-intermediate questions that many OOP
-courses leave blurry:
+## What this stretch must settle
+
+By the end of modules 1 to 3, you should be able to answer three questions without
+guessing:
 
 1. What kind of thing is this object really?
 2. Which object should own this rule?
-3. How do I stop illegal states from leaking into everything else?
+3. Which states are legal, and where are illegal ones blocked?
 
-If those questions still feel unstable, do not jump ahead to aggregates, persistence,
-or extension points. Later modules become much easier once these three answers feel
-natural.
+Everything else in the course builds on those answers.
 
-## Read these modules as one progression
+## Read modules 1 to 3 as one teaching sequence
 
-| Module | The pressure it resolves | The mistake it prevents | The sign you are ready to move on |
+| Module | Core question | Design mistake it prevents | What you should be able to say afterward |
 | --- | --- | --- | --- |
-| Module 1: object semantics and the data model | understanding what Python objects mean at runtime | inventing classes without understanding identity, equality, aliasing, or representation | you can explain why an object is compared by identity, value, or not at all |
-| Module 2: roles, interfaces, and layering | deciding where behavior belongs | stuffing logic into whichever class is closest, or reaching for inheritance too early | you can defend one owner and reject a nearby non-owner |
-| Module 3: state, validation, and typestate | keeping rules true over time | tolerating half-built objects, nullable drift, and silent illegal transitions | you can name legal transitions and the first place invalid ones are blocked |
+| Module 1: object semantics and the data model | what does this object mean in Python and in the domain | confusing syntax familiarity with semantic clarity | "I know what equality, identity, representation, and aliasing mean for this object." |
+| Module 2: roles, interfaces, and layering | who should own the behavior | smearing logic across nearby classes or reaching for inheritance too early | "I can defend the owner and reject the tempting non-owner." |
+| Module 3: state, validation, and typestate | how legal state is preserved through time | tolerating half-built objects and vague transition rules | "I can name legal transitions and where illegal ones are stopped." |
 
-## Module 1: learn Python object meaning before architecture
+## What to focus on in Module 1
 
-Read Module 1 if you still hear yourself saying things like "it is just a class" or
-"I guess this object stores some state." The module exists to make object meaning
-concrete.
+Module 1 is about object meaning, not class syntax. Stay here until you can reason about:
 
-Focus questions:
+- identity versus value
+- representation versus domain meaning
+- aliasing and copying consequences
+- which data-model hooks become public contract
 
-- What makes two instances the same, different, or dangerously confusing?
-- Which parts of state are real domain meaning, and which are only representation?
-- Which data-model hooks change the public contract with containers, iteration, or copying?
+The right beginner question is not "can I write `__eq__`?" It is "what promise would
+`__eq__` make if I wrote it here?"
 
-Read in this order:
+## What to focus on in Module 2
 
-1. object identity, state, and behavior
-2. attribute layout and lookup
-3. construction and invariants
-4. representation, equality, hashing, aliasing, and copying
-5. the data model as a contract surface
-6. the refactor chapter
+Module 2 turns isolated objects into a design. The important move is ownership
+comparison.
 
-Do not leave Module 1 merely because the code examples look familiar. Leave only when
-you can explain the consequences of one design choice, not just recognize the syntax.
+When behavior placement feels fuzzy:
 
-## Module 2: turn objects into roles with clear authority
+1. name the chosen owner
+2. name the closest rejected owner
+3. explain why the rejected owner would make the design harder to reason about
 
-Read Module 2 when single objects make sense in isolation but whole designs still feel
-like crowded rooms. The goal is not to add patterns. The goal is to make each role
-less surprising.
+If you skip step 3, you probably do not understand the boundary yet.
 
-Focus questions:
+## What to focus on in Module 3
 
-- Is this object a value, entity, service, adapter, policy, or something else?
-- Why is composition better here than inheritance?
-- Which layer should know about this decision, and which layer should stay ignorant?
+Module 3 makes state a first-class design surface. The question is no longer "which
+fields does this class have?" but:
 
-The most important recovery move in Module 2 is comparison. When a boundary feels
-arbitrary, compare the chosen owner with the closest rejected owner and write down why
-the rejected one would make the design harder to reason about.
+- which states are legal
+- which transitions are legal
+- which transitions are impossible by construction
+- which optional values are actually missing lifecycle design
 
-## Module 3: make state transitions explicit instead of hopeful
+This is where many object models stop being hopeful and start becoming trustworthy.
 
-Read Module 3 when object responsibilities are clearer but object lifecycles still feel
-fragile. This module turns state from "fields on a class" into an explicit design
-surface.
+## A strong first-pass route for independent learners
 
-Focus questions:
+1. Read the module overview for Module 1.
+2. Complete the first three core lessons before touching advanced-looking side topics.
+3. Open one capstone surface that shows the same pressure in real code.
+4. Finish the module exercises and answers.
+5. Write one sentence beginning with `This object means...`.
+6. Repeat the same rhythm for Modules 2 and 3, changing the sentence stem to match the
+   module.
 
-- Which states are legal, illegal, draft-only, active-only, or retired?
-- Which validation belongs at construction, and which belongs at transition time?
-- Which optional value is actually a missing state model?
+Recommended sentence stems:
 
-The refactor in this module matters because it forces you to redesign APIs around state
-transitions rather than adding another validation helper.
+- Module 1: `This object means...`
+- Module 2: `The authoritative owner is...`
+- Module 3: `The legal transition is...`
 
-## A good first-pass study route
+## Best capstone checks for this stage
 
-If you are studying alone, use this route instead of sampling pages randomly:
+| Module | Best first capstone surface | Why |
+| --- | --- | --- |
+| Module 1 | `capstone/src/service_monitoring/model.py` | it exposes object meaning, identity, and representation choices directly |
+| Module 2 | `model.py` and `application.py` together | they show the line between public entry and authoritative domain owner |
+| Module 3 | lifecycle-focused tests plus `rules.txt` from the inspection bundle | they make legal and illegal transitions visible |
 
-1. Read the index page for Module 1, then the first three core lessons.
-2. Inspect one capstone file or test that makes identity or representation decisions visible.
-3. Finish Module 1 with the refactor and exercises.
-4. Repeat the same rhythm for Modules 2 and 3.
-5. After each module, write one sentence beginning with `The authoritative owner is...`.
+Do not start with `runtime.py` in this stage. Runtime coordination is not the first
+question yet.
 
-## Warning signs that you are moving too fast
+## Signs you are moving too fast
 
-- You are talking about patterns before you can explain equality or aliasing.
-- You are adding services because ownership feels unclear.
-- You are calling something "optional" when the real problem is a missing lifecycle step.
-- You are reading Module 4 because it sounds advanced, not because Modules 1 to 3 feel stable.
+- you are talking about patterns before you can explain equality or aliasing
+- you are adding helper services because ownership feels uncomfortable
+- you are calling something "optional" when the real issue is a missing state model
+- you want Module 4 because it sounds more advanced, not because Modules 1 to 3 feel settled
 
-## Exit check
+## Signs you are ready for the middle stretch
 
-You are ready for the middle stretch of the course when you can do all three of these:
+You are ready for Modules 4 to 7 when you can do all of these without hand-waving:
 
 - classify an object by meaning instead of by syntax
 - defend where a rule belongs and where it does not belong
 - describe one legal lifecycle and one illegal lifecycle for a core object
+
+## Exit check
+
+Leave this map only when you can say:
+
+> My first-pass route is `____`, the question I am currently settling is `____`, and I
+> will know I can advance when `____`.
