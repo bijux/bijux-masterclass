@@ -99,6 +99,78 @@ That is much stronger than:
 
 > CI is flaky again.
 
+## Use a causal evidence table
+
+The runtime audit gives a small model:
+
+| Evidence | Declared case | Hidden case |
+| --- | --- | --- |
+| runtime fingerprint | policy changes to comma | process variable changes to comma |
+| DVC status | `declared_runtime` is stale | empty |
+| ordinary repro | stage runs | stage skips |
+| semantic result | `8,00` | stale `8.00` |
+| forced repro | unnecessary | changes result to `8,00` |
+| durable repair | already declared | add a contract edge or external gate |
+
+This table keeps four questions separate:
+
+1. Did runtime context change?
+2. Could DVC see the change?
+3. Did the stage execute?
+4. Does output reflect current context?
+
+“Same DVC status” answers only question 2.
+
+## Read empty status conditionally
+
+An empty status receipt means:
+
+> no declared stage influence differs from recorded state.
+
+It does not mean:
+
+> every real influence matches the context that produced the output.
+
+When fingerprints differ but status is empty, inspect whether the changed field has a
+declared path into the graph. If it does not, ordinary repro can preserve stale meaning.
+
+## Classify before repairing
+
+| Classification | Evidence pattern | Repair direction |
+| --- | --- | --- |
+| declared runtime drift | fingerprint differs, status stale | rebuild and review output |
+| hidden runtime drift | fingerprint differs, status empty, force changes output | declare influence or enforce externally |
+| expected conditional variation | both runs executed under governed contexts, bounded delta | apply declared tolerance |
+| unrelated workflow defect | runtime contrast does not explain result | return to data, params, code, or stage contract |
+
+Do not use force as the final repair for hidden runtime drift. Its diagnostic value is that
+it tests causality under current context.
+
+## Build the review packet
+
+For a local-versus-CI disagreement, collect:
+
+- both environment fingerprints
+- governed-field comparison
+- data, parameter, and declaration identities
+- DVC status before rerun
+- proof that each compared result was freshly executed
+- semantic output comparison
+- tolerance policy, if applicable
+
+Without fresh-execution proof, a small delta may be stale reuse rather than conditional
+variation.
+
+## Escalation decision
+
+Escalate contract repair when:
+
+- a changed runtime field can alter output
+- the field is neither declared nor externally enforced
+- ordinary repro can skip under the changed context
+
+Escalate tolerance design only after both contexts are governed and freshly executed.
+
 ## Why tolerances need honesty
 
 Not every difference deserves panic.
