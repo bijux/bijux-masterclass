@@ -48,6 +48,10 @@ Keep one more sentence beside it:
 
 > if the rule stops sounding like "behavior of this attribute," a descriptor is probably no longer the honest owner.
 
+That sentence is the page's safeguard against overreach. The moment the rule starts
+sounding object-wide, lifecycle-wide, or registration-wide, attribute ownership is
+probably no longer the right story.
+
 ## The lower-power ladder
 
 A useful review ladder for this module is:
@@ -60,6 +64,12 @@ plain attribute or method
 ```
 
 This is not a prestige ladder. It is an ownership ladder.
+
+Read it one more way:
+
+- every upward move increases reusable or hidden power
+- every upward move also increases review burden
+- if the burden rises faster than the clarity gained, the move was a mistake
 
 ## How to read the ladder honestly
 
@@ -97,6 +107,16 @@ If those conditions are missing, a property may still be the simpler and more ho
 design.
 
 Reuse pressure is the justification, not the fact that descriptors are more general.
+
+## A scenario clinic for owner choice
+
+| Scenario | Smallest honest owner | Why |
+| --- | --- | --- |
+| one field in one class must reject blanks | property | one local boundary is enough |
+| the same validated string rule repeats across many classes | reusable descriptor | repeated field semantics now matter |
+| one hook should log every method call | wrapper | the boundary is call entry, not attribute access |
+| many fields must coordinate before an object becomes valid | wider explicit validator | the invariant is broader than one attribute |
+| class body contents must be inspected before the class is finalized | not a descriptor | class-creation timing has become part of the need |
 
 ## Descriptors versus `__setattr__`
 
@@ -139,6 +159,15 @@ then a wrapper is probably the clearer owner.
 
 That boundary matters because "intercepting something" is not specific enough. The real
 question is whether the interception belongs to attribute access or call entry.
+
+## A downgrade worksheet
+
+Before accepting a descriptor, answer these:
+
+- what would the rule look like as one property?
+- what would the rule look like as a plain method or explicit validator?
+- what clarity is actually lost if I stay lower-power?
+- what exact reuse pressure or attribute-semantics pressure forces me upward?
 
 ## Descriptors versus metaclasses
 
@@ -188,6 +217,15 @@ then the ownership may already be elsewhere.
 That test is useful precisely because it forces plainer language. If you cannot describe
 the rule as behavior of a specific attribute, the descriptor explanation is probably being
 stretched too far.
+
+## Evidence packet for ownership decisions
+
+Leave this page with a small packet:
+
+- one requirement placed honestly on the property/descriptor/wider-owner ladder
+- one rejected lower-power owner and one rejected stronger owner
+- one sentence describing the real reuse pressure, if any
+- one sentence explaining why the rule still belongs to attribute access instead of call entry, object-wide validation, or class creation
 
 ## Why the module centers the attribute engine
 
