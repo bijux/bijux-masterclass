@@ -48,11 +48,18 @@ RELEASE_DIR ?= $(ARTIFACTS_DIR)/release/reproducible-research/deep-dive-make
 RELEASE_CANDIDATE ?= $(RELEASE_DIR)/candidate/deep-dive-make-capstone.tar.gz
 RELEASE_CHECKSUM ?= $(RELEASE_CANDIDATE).sha256
 RELEASE_REPORT ?= $(RELEASE_DIR)/evidence/candidate-acceptance.json
+RELEASE_INSTALL_ROOT ?= $(RELEASE_DIR)/install-root
+RELEASE_INSTALL_REPORT ?= $(RELEASE_DIR)/evidence/install-acceptance.json
+RELEASE_ACCEPTANCE ?= $(RELEASE_DIR)/evidence/release-acceptance.json
 RELEASE_POLICY := release/package-policy.tsv
+RELEASE_INSTALL_POLICY := release/install-policy.tsv
 RELEASE_INPUTS = app $(DYN_BINS) $(DYN_HDR)
 RELEASE_CANDIDATE_ABS := $(abspath $(RELEASE_CANDIDATE))
 RELEASE_CHECKSUM_ABS := $(abspath $(RELEASE_CHECKSUM))
 RELEASE_REPORT_ABS := $(abspath $(RELEASE_REPORT))
+RELEASE_INSTALL_ROOT_ABS := $(abspath $(RELEASE_INSTALL_ROOT))
+RELEASE_INSTALL_REPORT_ABS := $(abspath $(RELEASE_INSTALL_REPORT))
+RELEASE_ACCEPTANCE_ABS := $(abspath $(RELEASE_ACCEPTANCE))
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
 REPRO_CASE ?= $(REP_DIR)/directory-creation-race.mk
 
@@ -60,7 +67,7 @@ DEPFLAGS := -MMD -MP
 
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
-.PHONY: dyn lint test dist verify-dist release-check repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
+.PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
         contract-audit inspect incident-audit clean submake-demo perf trace-count hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
@@ -142,6 +149,8 @@ help:
 >     '  source-bundle     write a tracked-source archive for learner or review distribution' \
 >     '  dist              write candidate and checksum under artifacts/' \
 >     '  verify-dist       verify existing candidate bytes without rebuilding' \
+>     '  install-rehearsal prove contained installation and rerun convergence' \
+>     '  accept-release    bind candidate and install evidence to one digest' \
 >     '  release-check     build, test, and verify one local candidate' \
 >     '  test              run runtime assertions' \
 >     '  selftest          convergence + serial/parallel equivalence + negative test' \
@@ -381,8 +390,25 @@ verify-dist:
 >       --policy "$(RELEASE_POLICY)" \
 >       --report "$(RELEASE_REPORT_ABS)"
 
+install-rehearsal:
+>     $(PYTHON) scripts/rehearse_release_install.py \
+>       --candidate "$(RELEASE_CANDIDATE_ABS)" \
+>       --acceptance "$(RELEASE_REPORT_ABS)" \
+>       --package-policy "$(RELEASE_POLICY)" \
+>       --install-policy "$(RELEASE_INSTALL_POLICY)" \
+>       --root "$(RELEASE_INSTALL_ROOT_ABS)" \
+>       --report "$(RELEASE_INSTALL_REPORT_ABS)"
+
+accept-release:
+>     $(PYTHON) scripts/write_release_acceptance.py \
+>       --candidate-report "$(RELEASE_REPORT_ABS)" \
+>       --install-report "$(RELEASE_INSTALL_REPORT_ABS)" \
+>       --output "$(RELEASE_ACCEPTANCE_ABS)"
+
 release-check: test selftest dist
 >     @$(MAKE) --no-print-directory verify-dist
+>     @$(MAKE) --no-print-directory install-rehearsal
+>     @$(MAKE) --no-print-directory accept-release
 >     @echo "PASS: local release candidate accepted"
 
 repro:
@@ -500,7 +526,7 @@ trace-count:
 >     @$(MAKE) --trace -n all 2>&1 | wc -l | awk '{print "trace-lines=" $$1}'
 
 # ---- hardened build verification ----
-hardened: selftest discovery-audit attest test
+hardened: selftest discovery-audit attest test release-check
 >     @$(MAKE) -q all || { echo "FAIL: non-convergent" >&2; exit 1; }
 >     @echo "PASS: hardened invariants"
 
