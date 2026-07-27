@@ -21,6 +21,20 @@ You should be able to point at each file or directory and say one of these out l
 
 If you cannot sort the tree that way, your publish boundary is not ready yet.
 
+## If you are learning this without the live class
+
+Run this page as a sorting lab, not as a reading-only lesson.
+
+Use it in four passes:
+
+1. print the current `results/` and `publish/` trees without changing anything
+2. classify every visible file before you move even one path into `publish/v1/`
+3. stop and defend one exclusion decision before you defend one inclusion decision
+4. finish by naming which downstream user the public bundle is actually for
+
+If you cannot say who the consumer is, you are still arranging files for producer
+convenience rather than designing a public contract.
+
 ## A workflow usually produces more files than it should publish
 
 A healthy workflow often creates many useful files:
@@ -73,9 +87,13 @@ Files such as:
 - `report/index.html`
 - `manifest.json`
 - `provenance.json`
-- `discovered_samples.json`
+- `accepted_samples.json`
+- `rejected_samples.json`
 
 are not just another directory. They are the deliberate public boundary.
+
+The reviewed discovery records matter here because a downstream consumer often needs to
+know not only what survived into the bundle, but also why other candidates did not.
 
 ## A practical sorting rule
 
@@ -108,6 +126,21 @@ treated as if they made the same promise.
 
 They do not.
 
+## The first sorting card to keep beside you
+
+Use this table before you promote or demote any file:
+
+| File or directory | Primary audience | Why it exists | Public or internal |
+| --- | --- | --- | --- |
+| `results/sample-a/qc.json` | workflow and maintainers | supports execution and detailed inspection | internal |
+| `results/logs/aggregate.log` | maintainers | failure diagnosis and debugging | internal |
+| `publish/v1/summary.json` | machines | stable downstream data contract | public |
+| `publish/v1/report/index.html` | humans | readable interpretation of the run | public |
+| `publish/v1/accepted_samples.json` | humans and machines | explains which validated candidates became public results | public |
+| `publish/v1/rejected_samples.json` | humans and machines | explains which candidates were excluded and why | public when discovery review matters downstream |
+
+If you cannot fill the last column honestly, you are not ready to change the boundary yet.
+
 ## A concrete audit you should be able to perform
 
 Imagine a repository with these artifacts after a run:
@@ -128,6 +161,16 @@ A strong learner should be able to say:
   contract
 
 That is the beginning of publication discipline.
+
+## One boundary question that catches many weak designs
+
+Ask this whenever a file feels "important" but you still do not know if it is public:
+
+> would a downstream user be justified in depending on this exact path next week without
+> learning the workflow's internal execution tree?
+
+If the answer is no, the file may still be valuable, but it does not yet belong in the
+public contract.
 
 ## A weak boundary
 
@@ -150,6 +193,7 @@ Stronger shape:
 - keep workflow-operational state under internal directories such as `results/`
 - promote only the intended downstream artifacts into a versioned publish boundary
 - treat every file inside that publish boundary as something a reviewer must be able to defend
+- publish reviewed discovery evidence when downstream users need to understand result membership, not only final result bytes
 
 That design gives both maintainers and consumers a clear answer to the same question:
 
@@ -208,7 +252,8 @@ Strong explanation:
 
 > these per-sample files remain under `results/` because they support workflow execution
 > and detailed review, while `publish/v1/` contains the smaller bundle downstream users
-> are allowed to trust as the stable contract.
+> are allowed to trust as the stable contract; the reviewed discovery records are public
+> because they explain why the bundle has exactly its observed membership.
 
 Weak explanation:
 
