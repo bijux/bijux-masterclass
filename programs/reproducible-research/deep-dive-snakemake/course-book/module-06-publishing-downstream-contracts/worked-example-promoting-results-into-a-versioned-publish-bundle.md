@@ -41,6 +41,14 @@ Work through the example in this order:
 4. verify the bundle through manifest and consumer checks
 5. finish by classifying one compatible change and one breaking change
 
+Keep one small review packet beside you while you read:
+
+- a public tree sketch for `publish/v1/`
+- one artifact-role table
+- one manifest verification transcript
+- one consumer test transcript
+- one compatibility note for a simulated change
+
 ## The starting situation
 
 Assume the workflow already produces rich internal outputs under `results/`, such as:
@@ -53,6 +61,19 @@ Assume the workflow already produces rich internal outputs under `results/`, suc
 Those files are useful, but they are not yet a downstream contract. If another notebook
 or pipeline must browse `results/{sample}/` to discover what is safe to read, the publish
 story is still weak.
+
+The weakness becomes easier to see if you sketch the current situation:
+
+```mermaid
+flowchart LR
+  internal["results/sample-a/*.json\nresults/sample-b/*.json\nlogs/..."]
+  consumer["downstream notebook or script"]
+
+  internal --> consumer
+```
+
+This shape is convenient for the producer and hostile to the consumer, because the
+consumer has to guess which files are stable enough to trust.
 
 ## What the learner should notice first
 
@@ -96,6 +117,21 @@ rule report:
 This matters because the report now depends on a machine-readable contract file rather
 than inventing a separate truth.
 
+The repaired shape should look more like this:
+
+```mermaid
+flowchart LR
+  internal["internal workflow state\nresults/ and logs/"]
+  bundle["publish/v1/\nsummary.json\nsummary.tsv\nreport/index.html\nmanifest.json\nprovenance.json\ndiscovered_samples.json"]
+  consumer["downstream script or notebook"]
+
+  internal --> bundle --> consumer
+```
+
+This is the central transition of the module: the consumer no longer reads the producer's
+working tree directly. The consumer reads a smaller public bundle with named artifact
+roles.
+
 ## A short checkpoint before you continue
 
 Pause here and ask:
@@ -122,6 +158,23 @@ Once those roles are clear, a downstream maintainer can ask better questions:
 - which file should a human inspect
 - which file tells me whether the bundle is damaged
 - which file tells me what software context produced the bundle
+
+At this stage, sketch the bundle itself and refuse to continue until every file has one
+role you can say aloud:
+
+```text
+publish/v1/
+├── summary.json
+├── summary.tsv
+├── report/
+│   └── index.html
+├── manifest.json
+├── provenance.json
+└── discovered_samples.json
+```
+
+If two files still sound interchangeable in your explanation, the bundle is not ready for
+review yet.
 
 ## Why this role separation matters educationally
 
@@ -165,6 +218,16 @@ Use stable relative paths and checksums, for example:
 Do not write absolute machine-specific paths into the manifest. The contract must travel
 with the bundle.
 
+That portability question is not cosmetic. A downstream user should be able to untar the
+bundle somewhere else and still run the verifier successfully:
+
+```sh
+python scripts/verify_publish.py --publish publish/v1
+```
+
+If verification only works from one original repository location, the publish contract is
+still entangled with producer-only assumptions.
+
 ## Verify the bundle from the consumer side
 
 Now make the bundle prove itself through two routes:
@@ -179,6 +242,15 @@ consumer can use the documented machine-facing surface without any secret knowle
 repository.
 
 That second test is often where weak publish boundaries become obvious.
+
+Pause here and imagine the consumer's starting point:
+
+1. they have the bundle path
+2. they do not know your internal `results/` layout
+3. they should still be able to validate and use one documented machine-facing file
+
+That is why the consumer command is educationally important. It proves the contract from
+the outside rather than from producer memory.
 
 ## What the learner should notice now
 
@@ -204,6 +276,14 @@ These changes do not mean the same thing:
 
 That is exactly the judgment this module is trying to teach.
 
+The compatibility review can be summarized in one simple matrix:
+
+| Change | Consumer impact | Likely classification |
+| --- | --- | --- |
+| add optional field to `summary.json` | old consumers may still work | potentially compatible |
+| rename `report/index.html` | documented public path changes | likely version discussion |
+| read `results/` because bundle is missing something | consumer bypasses contract | bundle-design problem |
+
 ## The repaired publish story
 
 By the end of the repair, the workflow can be described cleanly:
@@ -227,3 +307,12 @@ When you inspect a repository shaped like this, ask:
 5. how the bundle would behave for a consumer that knows nothing about `results/`
 
 If those answers are visible, the module's publish story has landed.
+
+If you want one final classroom-style check, try to explain the bundle in four sentences:
+
+1. which file a downstream program should read first
+2. which file a human should inspect first
+3. which file proves inventory and identity
+4. which file explains software context without replacing the contract
+
+If that explanation is clear, the worked example has done its job.

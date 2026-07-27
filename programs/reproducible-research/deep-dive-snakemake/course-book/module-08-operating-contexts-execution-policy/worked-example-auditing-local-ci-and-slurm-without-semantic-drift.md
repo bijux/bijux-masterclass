@@ -40,6 +40,14 @@ Work through the example in this order:
 4. confirm where scratch ends and trusted output begins
 5. finish by injecting one semantic leak and catching it
 
+Keep one small audit packet beside you while you read:
+
+- a profile comparison sheet
+- one normalized dry-run comparison
+- one failure-class note
+- one storage lifecycle diagram
+- one drift finding with its exact proof route
+
 ## The starting situation
 
 Assume you inherit a workflow with three operating contexts:
@@ -50,6 +58,15 @@ Assume you inherit a workflow with three operating contexts:
 
 The repository claims these contexts change execution policy, not workflow meaning. That
 claim is only trustworthy if the review route can prove it.
+
+Before you read any deeper, write down the invariants the repository is claiming:
+
+- the same trusted targets should exist in every context
+- the same publish paths should remain authoritative
+- the same semantic config should mean the same work everywhere
+
+If those invariants are not explicit, every later profile comparison will feel more
+confusing than it needs to.
 
 ## What the learner should notice first
 
@@ -80,6 +97,15 @@ they mostly differ in:
 That already tells you something useful: the profiles are adjusting context rather than
 trying to smuggle the whole workflow through flags.
 
+The first profile pass is easier if you sketch it as a table:
+
+| Surface | Local | CI | Slurm | Should remain semantic invariant? |
+| --- | --- | --- | --- | --- |
+| trusted targets | same | same | same | yes |
+| publish paths | same | same | same | yes |
+| retries or latency | may differ | may differ | may differ | no |
+| executor mapping | none | CI runner | scheduler queue/account | no |
+
 ## Compare the plans, not only the flags
 
 Now request the same final target through all three contexts:
@@ -97,6 +123,9 @@ workflow story. The right question is not only "did the profile file change?" It
 
 Normalize only volatile executor noise. Keep target names, rule names, wildcard bindings,
 and declared inputs and outputs. Those are the semantic facts the audit exists to defend.
+
+That is why dry-run comparison is stronger than "the profiles look similar." It tests the
+workflow story the profiles actually produce.
 
 ## A short checkpoint before you continue
 
@@ -121,6 +150,10 @@ model:
 
 This is where operating policy becomes honest review rather than cargo-culted resilience.
 
+At this stage, force yourself to write the failure class before you touch any retry or
+latency setting. That one sentence is often the difference between a real policy repair
+and a superstition.
+
 ## Mark where trust begins in storage
 
 Now inspect staging and storage assumptions.
@@ -134,6 +167,21 @@ must still be able to say:
 
 If a reviewer starts treating scratch output as equivalent to published output, the
 repository has lost one of its most important operating boundaries.
+
+Make the storage story visible:
+
+```mermaid
+flowchart LR
+  scratch["scratch or executor-local write"]
+  validate["content validation"]
+  staging["temporary destination at trusted boundary"]
+  publish["final trusted output path"]
+
+  scratch --> validate --> staging --> publish
+```
+
+This diagram matters because it shows exactly where bytes exist before trust begins and
+where promotion turns temporary work into contract work.
 
 ## What the learner should notice now
 
@@ -163,6 +211,9 @@ These do not mean the same thing:
 The review route should catch the second case through dry-run or governed-profile audit
 evidence instead of through memory.
 
+That is the teaching moment to pause on: a profile change can be small in YAML and still
+large in semantic risk.
+
 ## The repaired operating-context story
 
 By the end of the audit, the repository can be described cleanly:
@@ -186,3 +237,10 @@ When you inspect a repository shaped like this, ask:
 5. which audit surface would fail first if a profile started changing semantics
 
 If those answers are visible, the module's context story has landed.
+
+If you want one final classroom-style check, explain the repository in four sentences:
+
+1. which differences across contexts are clearly policy
+2. which target or path must stay invariant everywhere
+3. which retry or latency setting is justified by a named failure class
+4. where scratch ends and trusted output begins

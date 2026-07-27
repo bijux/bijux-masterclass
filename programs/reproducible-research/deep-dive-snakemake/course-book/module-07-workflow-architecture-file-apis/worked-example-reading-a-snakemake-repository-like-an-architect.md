@@ -41,6 +41,14 @@ Work through the example in this order:
 4. confirm the public file contract and path promises
 5. finish by deciding which architectural drift matters now
 
+Keep one small architecture packet beside you as you read:
+
+- a reading-order note
+- an ownership table
+- one artifact trace
+- one file-API note
+- one drift finding with a focused proof route
+
 ## The starting situation
 
 Assume you inherit the capstone and need to answer three questions quickly:
@@ -51,6 +59,23 @@ Assume you inherit the capstone and need to answer three questions quickly:
 
 If you cannot answer those questions in a stable order, the repository architecture is
 already too opaque.
+
+The whole walkthrough becomes easier if you visualize the reading order before opening
+deep implementation code:
+
+```mermaid
+flowchart TD
+  entry["Snakefile"]
+  families["named rule families"]
+  modules["workflow modules if present"]
+  contracts["file APIs and contract docs"]
+  helpers["scripts and package code only where the trace leads"]
+
+  entry --> families --> modules --> contracts --> helpers
+```
+
+That sequence is not arbitrary. It protects the visible workflow story from being buried
+under implementation detail too early.
 
 ## What the learner should notice first
 
@@ -75,6 +100,9 @@ The entrypoint should tell a reviewer, early, which visible workflow story they 
 to inspect. That is why the first architectural read should begin there rather than in
 `src/` or a helper directory.
 
+If the repository does not reward that reading order, the architectural problem is real,
+not just personal preference.
+
 ## Read rule families before helpers
 
 Once the entrypoint is clear, inspect the named rule families.
@@ -88,6 +116,15 @@ This gives a workflow story such as:
 That sequence teaches repository architecture and workflow meaning at the same time. If
 you jump into helper code first, you lose the visible graph and start from implementation
 detail instead of ownership.
+
+At this stage, write one sentence per layer before you continue:
+
+- what the entrypoint owns
+- what one rule-family file owns
+- what a helper or package layer should only support
+
+If the same sentence still fits two layers, the repository boundary is not named clearly
+enough yet.
 
 ## A short checkpoint before you continue
 
@@ -112,6 +149,13 @@ That distinction matters:
 Seeing both in the same pass helps a reviewer ask a better question: is this file here
 because the repository needs local readability, or because the workflow boundary is
 genuinely reusable?
+
+This distinction becomes much easier to defend when you put it on paper:
+
+| Surface | Why it exists | What it should not hide |
+| --- | --- | --- |
+| local rule family | readable ownership inside one repository | the visible graph |
+| reusable workflow module | stronger caller boundary or reuse surface | ambiguous local overflow |
 
 ## Why this reading order matters educationally
 
@@ -139,6 +183,10 @@ Those docs answer questions the tree alone cannot:
 
 This is where architecture stops being intuitive and becomes reviewable.
 
+The file API is what prevents maintainers from treating every path rename as a harmless
+cleanup. Once path promises are documented, repository structure and public contracts stop
+blurring together.
+
 ## Trace one artifact through its owners
 
 Take one concrete public output such as `publish/v1/summary.json` and record the route:
@@ -156,6 +204,12 @@ flowchart LR
 
 Not every artifact passes through every layer. That is useful information. A missing layer
 is not a defect. An unexplained jump across layers often is.
+
+After drawing the trace, ask three review questions immediately:
+
+1. could a new maintainer explain this path from the entrypoint backward?
+2. did any hidden scan, side effect, or undocumented path appear in the middle?
+3. does the trace end in an explicit public contract statement or only in producer memory?
 
 ## What the learner should notice now
 
@@ -180,6 +234,9 @@ Typical drift signals include:
 At this stage, the review should not ask only "does it run?" It should ask "does the
 repository still teach its own shape?"
 
+That question is the real threshold between a merely functioning repository and one that
+is sustainable to maintain.
+
 ## The repaired architecture story
 
 By the end of the walkthrough, the repository can be described cleanly:
@@ -203,3 +260,11 @@ When you inspect a repository shaped like this, ask:
 5. which drift signal would justify the next structural refactor
 
 If those answers are visible, the module's architecture story has landed.
+
+If you want one final classroom-style check, summarize the repository in five lines:
+
+1. where a new maintainer starts reading
+2. which named rule family owns the public artifact you traced
+3. where the path promise becomes explicit
+4. which helper boundary is supporting the workflow rather than swallowing it
+5. which drift signal would justify the next refactor now, not later
