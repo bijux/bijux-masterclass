@@ -1,32 +1,19 @@
 # Boundary Review Prompts
 
+Use this page when a review feels blurry and you need sharper keep, change, or reject
+questions tied to workflow boundaries. These prompts are meant to turn unease into a
+specific boundary judgment.
 
-<!-- page-maps:start -->
-## Page Maps
+## How to use the prompts
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Boundary Review Prompts"]
-  capstone["Capstone evidence"]
+Pick one section only. Answer the questions out loud or in writing. Then end with one
+sentence that starts with one of these:
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+- keep this boundary because...
+- change this boundary because...
+- reject this boundary because...
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use this page when a Snakemake review needs sharper keep, change, or reject questions
-tied to workflow boundaries.
+If you cannot finish that sentence, the claim is still too vague.
 
 ## Workflow versus policy
 
@@ -51,3 +38,12 @@ tied to workflow boundaries.
 - Which surface is actually allowed to settle this trust question?
 - Is this claim being supported by workflow contracts, durable artifacts, or only logs and memory?
 - Would the repository still be reviewable if runtime output disappeared?
+
+## Common strong conclusions
+
+| Situation | Likely conclusion |
+| --- | --- |
+| a profile change silently changes expected outputs or wildcard meaning | reject the boundary because policy is leaking into semantics |
+| a checkpoint decides sample identity but leaves no durable artifact | change the boundary because discovery is still folklore |
+| a publish directory contains internal scratch state and public outputs together | change the boundary because downstream trust is too blurry |
+| a claim can be settled from the `Snakefile`, manifests, and saved evidence | keep the boundary because the workflow remains reviewable |

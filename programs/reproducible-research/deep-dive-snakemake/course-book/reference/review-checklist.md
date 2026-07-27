@@ -1,32 +1,20 @@
 # Review Checklist
 
+Use this checklist when reviewing a Snakemake workflow, exercise answer, or capstone
+change and you do not want the review to collapse into taste. A strong review should end
+with a clear trust judgment, not with vague discomfort.
 
-<!-- page-maps:start -->
-## Page Maps
+## How to use this checklist
 
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Review Checklist"]
-  capstone["Capstone evidence"]
+Use it in this order:
 
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
+1. name the claim you are reviewing
+2. find the smallest section below that owns the claim
+3. answer those questions with evidence, not guesswork
+4. record the next keep, change, or reject decision
 
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Use this checklist when reviewing a Snakemake workflow, module exercise, or capstone
-change. The goal is to keep workflow trust tied to contracts and evidence.
+If you cannot answer a section without opening five other pages, the real gap is usually
+upstream in the module understanding or proof route.
 
 ## Workflow truth
 
@@ -57,3 +45,13 @@ change. The goal is to keep workflow trust tied to contracts and evidence.
 - Which command or saved bundle gives the narrowest honest answer for the current claim?
 - Which layer owns the next change: `Snakefile`, rules, modules, scripts, package code, or profiles?
 - Which ambiguity would you require the author to make explicit before accepting the workflow?
+
+## Good review outcomes
+
+The checklist is working when you can end the review with one of these:
+
+- keep the current design because the boundary is explicit and evidence is proportionate
+- change one named surface because the current owner is wrong or too blurry
+- reject the current claim because the workflow cannot yet prove it honestly
+
+If the result is only "this feels messy," the review still needs sharper evidence.

@@ -1,42 +1,10 @@
 # Topic Boundaries
 
+This page explains what the course is really trying to teach, what it treats as support,
+and what it deliberately keeps at the boundary. Use it when the course feels selective
+and you want that selectivity to be explicit instead of accidental.
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Reference"]
-  page["Topic Boundaries"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
-This page answers a question the course currently implies more than it states: which
-Snakemake topics are central to this program, which ones support the core, and which ones
-are deliberately treated as boundaries rather than as the center of the curriculum.
-
-Use it when the course feels selective and you want that selectivity to be explicit
-instead of accidental.
-
----
-
-## Core Topics This Course Must Teach Well
+## Core topics this course must teach well
 
 These are the non-negotiable topics. If these stay fuzzy, the course is not doing its
 job.
@@ -51,9 +19,7 @@ job.
 | publish and downstream contracts | downstream trust depends on a deliberate stable interface | 06 | publish review, manifest and report evidence |
 | incident response and stewardship judgment | a workflow must stay reviewable under pressure and change | 09, 10 | incident review, governance pass |
 
----
-
-## Supporting Topics That Matter, But Serve The Core
+## Supporting topics that matter, but serve the core
 
 These matter because they make the core topics legible and enforceable.
 
@@ -68,9 +34,7 @@ These matter because they make the core topics legible and enforceable.
 
 These are important, but they are always in service of a more trustworthy workflow.
 
----
-
-## Boundaries This Course Names Deliberately
+## Deliberate outer boundaries
 
 These topics are real, but they are not treated as the main point of Deep Dive
 Snakemake.
@@ -87,43 +51,43 @@ When you want more on one of these, the honest answer is not “the course cover
 everything.” The honest answer is “the course touches this where it affects workflow
 truth, then hands off.”
 
----
-
-## Topics People Often Overweight
+## Topics people often overweight
 
 These topics are easy to romanticize and easy to teach badly:
 
-* wrappers treated as a substitute for understanding rule contracts
-* checkpoints treated as cleverness instead of explicit staged discovery
-* executor flags treated as workflow semantics
-* results directories treated as published interfaces
-* modularization treated as virtue even when the repository contract gets blurrier
+- wrappers treated as a substitute for understanding rule contracts
+- checkpoints treated as cleverness instead of explicit staged discovery
+- executor flags treated as workflow semantics
+- results directories treated as published interfaces
+- modularization treated as virtue even when the repository contract gets blurrier
 
 The course mentions these only when they sharpen workflow judgment. It does not treat
 them as badges of Snakemake sophistication.
 
----
-
-## Blind Spots This Page Protects Against
+## Misreadings this page is meant to prevent
 
 Without an explicit boundary page, readers can leave with the wrong conclusions:
 
-* “The course forgot science-domain concerns.”
+- “The course forgot science-domain concerns.”
   It did not forget them. It scoped them outside the central workflow argument.
-* “The course should teach every Snakemake feature equally.”
+- “The course should teach every Snakemake feature equally.”
   It should not. Some features matter far more to correctness than others.
-* “If the workflow runs once locally, the advanced topics are optional.”
+- “If the workflow runs once locally, the advanced topics are optional.”
   They are not. Production truth appears later, under policy drift and review pressure.
-* “Snakemake should keep owning every orchestration concern forever.”
+- “Snakemake should keep owning every orchestration concern forever.”
   Module 10 exists precisely to prevent that mistake.
 
----
+## Use this page well
 
-## Best Companion Pages
+Use this page well by turning it into a routing decision:
 
-Use these with this page:
+- if the topic is core, go back to the owning module and learn it deeply
+- if the topic is supportive, study it as a way to strengthen a core judgment
+- if the topic is outside the course center, stop expecting the course to become a different course
 
-* [`glossary.md`](glossary.md) to revisit the shared vocabulary
-* [`module-dependency-map.md`](module-dependency-map.md) to see the safe learning order
-* [`capstone-map.md`](../capstone/capstone-map.md) to choose the smallest honest workflow proof route
-* [`completion-rubric.md`](completion-rubric.md) to review whether the course is actually keeping its promises
+## Best companion pages
+
+- [Glossary](glossary.md) to stabilize the shared vocabulary
+- [Module Dependency Map](module-dependency-map.md) to see the safe learning order
+- [Capstone Map](../capstone/capstone-map.md) to choose the smallest honest workflow proof route
+- [Completion Rubric](completion-rubric.md) to review whether the course is keeping its promises
