@@ -70,9 +70,7 @@ def run_command(
         stderr_file=stderr_path.name,
     )
     if completed.returncode != 0:
-        raise RuntimeError(
-            f"{label} failed with exit {completed.returncode}; read {stderr_path}"
-        )
+        raise RuntimeError(f"{label} failed with exit {completed.returncode}; read {stderr_path}")
     return evidence
 
 
@@ -133,12 +131,8 @@ def collect_variant(
         label="execution",
     )
 
-    normalized_text = (run_dir / "results" / "normalized.tsv").read_text(
-        encoding="utf-8"
-    )
-    metrics = json.loads(
-        (run_dir / "evidence" / "metrics.json").read_text(encoding="utf-8")
-    )
+    normalized_text = (run_dir / "results" / "normalized.tsv").read_text(encoding="utf-8")
+    metrics = json.loads((run_dir / "evidence" / "metrics.json").read_text(encoding="utf-8"))
     return {
         "config": load_mapping(config_path),
         "artifact": {
@@ -180,12 +174,9 @@ def baseline_finding(variants: dict[str, dict[str, Any]]) -> dict[str, Any]:
         "REFERENCE",
         {
             "mode_named": metrics["mode"] == "baseline",
-            "all_inputs_reach_output": metrics["input_records"]
-            == metrics["output_records"]
-            == 6,
+            "all_inputs_reach_output": metrics["input_records"] == metrics["output_records"] == 6,
             "all_records_validated": metrics["validation_checks"] == 6,
-            "one_scan_pass": metrics["scan_passes"] == 1
-            and metrics["records_scanned"] == 6,
+            "one_scan_pass": metrics["scan_passes"] == 1 and metrics["records_scanned"] == 6,
             "per_record_setup_visible": metrics["setup_cycles"] == 6,
             "cost_units_recorded": metrics["deterministic_cost_units"] == 34,
             "benchmark_recorded": baseline["benchmark"]["seconds"] > 0,
@@ -219,10 +210,8 @@ def honest_tuning_finding(variants: dict[str, dict[str, Any]]) -> dict[str, Any]
             ),
             "validation_preserved": tuned_metrics["validation_checks"]
             == base_metrics["validation_checks"],
-            "scan_contract_preserved": tuned_metrics["scan_passes"]
-            == base_metrics["scan_passes"],
-            "setup_work_reduced": tuned_metrics["setup_cycles"]
-            < base_metrics["setup_cycles"],
+            "scan_contract_preserved": tuned_metrics["scan_passes"] == base_metrics["scan_passes"],
+            "setup_work_reduced": tuned_metrics["setup_cycles"] < base_metrics["setup_cycles"],
             "deterministic_cost_reduced": tuned_metrics["deterministic_cost_units"]
             < base_metrics["deterministic_cost_units"],
             "benchmark_recorded": tuned["benchmark"]["seconds"] > 0,
@@ -245,8 +234,7 @@ def validation_bypass_finding(variants: dict[str, dict[str, Any]]) -> dict[str, 
         "REJECT",
         {
             "mode_named": metrics["mode"] == "validation-bypass",
-            "artifact_bytes_match": bypass["artifact"]["sha256"]
-            == baseline["artifact"]["sha256"],
+            "artifact_bytes_match": bypass["artifact"]["sha256"] == baseline["artifact"]["sha256"],
             "config_disables_validation": bypass["config"]["validate"] is False,
             "validation_evidence_missing": metrics["validation_checks"] == 0,
             "apparent_cost_reduction_visible": metrics["deterministic_cost_units"]
@@ -275,8 +263,7 @@ def repeated_scan_finding(variants: dict[str, dict[str, Any]]) -> dict[str, Any]
             == tuned["artifact"]["sha256"],
             "validation_preserved": metrics["validation_checks"]
             == tuned_metrics["validation_checks"],
-            "setup_work_unchanged": metrics["setup_cycles"]
-            == tuned_metrics["setup_cycles"],
+            "setup_work_unchanged": metrics["setup_cycles"] == tuned_metrics["setup_cycles"],
             "scan_work_increased": metrics["scan_passes"] > tuned_metrics["scan_passes"]
             and metrics["records_scanned"] > tuned_metrics["records_scanned"],
             "deterministic_cost_increased": metrics["deterministic_cost_units"]
@@ -294,10 +281,7 @@ def repeated_scan_finding(variants: dict[str, dict[str, Any]]) -> dict[str, Any]
 
 def write_summary(path: Path, findings: list[dict[str, Any]]) -> None:
     rows = ["finding\tresult\tdecision"]
-    rows.extend(
-        f"{item['finding']}\t{item['result']}\t{item['decision']}"
-        for item in findings
-    )
+    rows.extend(f"{item['finding']}\t{item['result']}\t{item['decision']}" for item in findings)
     path.write_text("\n".join(rows) + "\n", encoding="utf-8")
 
 
