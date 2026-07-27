@@ -55,6 +55,8 @@ first-contact playground for Make syntax.
 | does the build prove convergence and parallel safety | `make selftest` | inspect `summary.txt`, then `make verify-report` |
 | does the selftest reject a known schedule defect | `make selftest-harness-tests` | inspect the rejected test bundle |
 | does one candidate satisfy the local release contract | `make release-check` | `make confirm` |
+| what do the governed build routes cost here | `make perf` | preserve the bundle before comparing another revision |
+| did cost change without changing trusted outputs | `make performance-compare` | inspect both evidence bundles |
 | which failure class does this repro teach | `make incident-audit` | `make proof` |
 | should I trust this as a stewardship specimen | `make proof` | `make confirm` |
 
@@ -91,6 +93,8 @@ bounded review route without turning the capstone into a browsing exercise.
 | `selftest-harness-tests` | truthful schedules pass and controlled artifact drift fails | the proof harness is tested, not merely trusted |
 | `verify-report` | passing or failing selftest evidence is completed as a review bundle | proof can be inspected without rerunning |
 | `release-check` | one candidate passes archive and contained-install acceptance | release claims bind to exact bytes |
+| `perf` | governed scenarios produce repeated samples plus semantic evidence | a local baseline is reviewable |
+| `performance-selftest` | malformed and truth-losing evidence is rejected | performance claims are gated, not trusted |
 | `proof` | the sanctioned review bundle set exists and agrees with the contract | stewardship has a durable route |
 | `confirm` | the strongest built-in confirmation path still passes | final review is stronger than first-pass learning |
 
@@ -127,6 +131,7 @@ All capstone documentation lives under `docs/`:
 - [INCIDENT_REVIEW_GUIDE.md](docs/incident-review-guide.md)
 - [INDEX.md](docs/index.md)
 - [PROFILE_AUDIT_GUIDE.md](docs/profile-audit-guide.md)
+- [PERFORMANCE_EVIDENCE_GUIDE.md](docs/performance-evidence-guide.md)
 - [PROOF_GUIDE.md](docs/proof-guide.md)
 - [RELEASE_GUIDE.md](docs/release-guide.md)
 - [REPRO_GUIDE.md](docs/repro-guide.md)

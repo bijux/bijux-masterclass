@@ -558,6 +558,14 @@ performance-evidence:
 >     rm -rf "$(PERFORMANCE_DIR)"
 >     mkdir -p "$(PERFORMANCE_DIR)"
 >     cp "$(PERFORMANCE_POLICY)" "$(PERFORMANCE_DIR)/scenarios.tsv"
+>     cp "$(DOCS_DIR)/performance-evidence-guide.md" "$(PERFORMANCE_DIR)/PERFORMANCE_EVIDENCE_GUIDE.md"
+>     printf '%s\n' \
+>       'Performance evidence route:' \
+>       '  1. Read PERFORMANCE_EVIDENCE_GUIDE.md for the question, limits, and comparison rules.' \
+>       '  2. Read scenarios.tsv before interpreting any timing.' \
+>       '  3. Read summary.tsv for the distribution and convergence result.' \
+>       '  4. Read evidence.json and logs/ for raw samples, context, and trusted outputs.' \
+>       '  5. Read manifest.json to review the complete bundle.' > "$(PERFORMANCE_DIR)/route.txt"
 >     $(PYTHON) scripts/collect_performance_evidence.py \
 >       --policy "$(PERFORMANCE_POLICY)" \
 >       --output "$(abspath $(PERFORMANCE_EVIDENCE))" \

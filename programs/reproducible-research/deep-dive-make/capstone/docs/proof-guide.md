@@ -46,6 +46,9 @@ start narrower.
 | install remains contained and converges on rerun | `make install-rehearsal` | install policy, install acceptance report |
 | malformed release inputs fail at the expected boundary | `make release-selftest` | release tests and rejection output |
 | the full local release claim holds | `make release-check` | release acceptance record and `RELEASE_GUIDE.md` |
+| governed local build-cost evidence is reviewable | `make perf` | `PERFORMANCE_EVIDENCE_GUIDE.md`, `summary.tsv`, `evidence.json` |
+| two build-cost bundles are semantically comparable | `make performance-compare` | comparison report and both evidence bundles |
+| performance gates reject dishonest evidence | `make performance-selftest` | capture and comparison rejection tests |
 | proof can be reviewed later without rerunning commands | `make verify-report` | `SELFTEST_GUIDE.md`, `summary.txt`, `commands.txt`, `logs/` |
 | generated files are modeled as real graph edges | `make proof` | `Makefile`, `scripts/gen_dynamic_h.py`, `repro/generated-header-edge.mk` |
 | the public contract is explicit enough for another engineer | `make contract-audit` | `README.md`, `TARGET_GUIDE.md`, `portability.txt`, `discovery.txt` |
@@ -80,6 +83,9 @@ That keeps claim, route, and evidence ahead of implementation detail.
 - choose `verify-dist` for one existing candidate
 - choose `release-selftest` for acceptance and rejection behavior
 - choose `release-check` for the complete local release claim
+- choose `perf` to establish a local baseline without claiming a regression
+- choose `performance-compare` only when an earlier compatible bundle exists
+- choose `performance-selftest` when the question is whether the evidence gate closes
 - choose `verify-report` when the proof needs to be saved
 - choose `incident-audit` for one failure class with captured evidence
 - choose `profile-audit` for portability, policy, and precedence questions
@@ -98,5 +104,6 @@ Read these with this guide:
 - [WALKTHROUGH_GUIDE.md](walkthrough-guide.md)
 - [CONTRACT_AUDIT_GUIDE.md](contract-audit-guide.md)
 - [INCIDENT_REVIEW_GUIDE.md](incident-review-guide.md)
+- [PERFORMANCE_EVIDENCE_GUIDE.md](performance-evidence-guide.md)
 - [PROFILE_AUDIT_GUIDE.md](profile-audit-guide.md)
 - [SELFTEST_GUIDE.md](selftest-guide.md)

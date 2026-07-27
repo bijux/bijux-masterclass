@@ -43,6 +43,9 @@ question honestly.
 | does one candidate satisfy archive and install policy | `make release-check` | `make confirm` |
 | do existing candidate bytes pass without a rebuild | `make verify-dist` | `make install-rehearsal` |
 | do malformed candidates and destinations fail correctly | `make release-selftest` | `make release-check` |
+| what do the governed build states cost here | `make perf` | inspect the performance evidence bundle |
+| did cost change under the same semantic contract | `make performance-compare` | inspect both bundles and the comparison report |
+| do performance evidence gates reject dishonest inputs | `make performance-selftest` | inspect the rejection tests |
 | do I need the proof saved as a review bundle | `make verify-report` | `make proof` |
 | what is the shortest human-first route into the capstone | `make walkthrough` | `make tour` |
 | which failure class does the repro pack teach | `make incident-audit` | `make repro` |
@@ -67,6 +70,9 @@ question honestly.
 | `accept-release` | one final record bound to candidate and install reports | you need a bounded local decision |
 | `release-selftest` | ten acceptance and rejection tests | you need executable release guardrails |
 | `release-check` | complete local candidate production and acceptance | you need the full local release claim |
+| `perf` | repeated timings, convergence, trusted-output inventories, and context | you need a reviewable local baseline |
+| `performance-compare` | compatible timing deltas guarded by semantic equivalence | you have a prior evidence bundle |
+| `performance-selftest` | capture and comparison acceptance/rejection tests | you need to review the evidence gate |
 | `walkthrough` | the bounded first-pass bundle | you need an ordered entry route |
 | `tour` | the shortest printed walkthrough plus supporting bundle | you need quick orientation |
 | `contract-audit` | the public-contract review bundle | you are reviewing promises and boundaries |
@@ -88,6 +94,8 @@ question honestly.
 - `dist` produces candidate bytes; `verify-dist` observes existing bytes
 - `install-rehearsal` proves a destination mapping; `accept-release` records the bounded decision
 - `release-selftest` proves gate behavior; `release-check` applies those gates to the capstone candidate
+- `perf` establishes one baseline; `performance-compare` can support a change claim
+- `performance-compare` rejects semantic drift before reporting timing deltas
 - `walkthrough` writes a first-pass bundle; `tour` prints the shortest route and focused follow-ups
 - `contract-audit` and `inspect` are the same route with different naming context
 - `selftest-report` and `verify-report` are the same saved evidence bundle, including on failure
