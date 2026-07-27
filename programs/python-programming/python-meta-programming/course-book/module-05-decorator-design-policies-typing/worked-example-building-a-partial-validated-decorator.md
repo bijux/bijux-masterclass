@@ -30,6 +30,10 @@ one wrapper that is useful, tempting, and easy to overclaim.
 
 A partial runtime validator is exactly that kind of wrapper.
 
+Treat this page as a review packet, not as a recipe to paste unchanged into production.
+Its teaching job is to show where a validator decorator stays honest, where it starts
+overpromising, and what evidence a reviewer should demand before accepting it.
+
 It combines:
 
 - factory configuration
@@ -38,6 +42,13 @@ It combines:
 - policy decisions about strictness and failure handling
 
 That makes it the right worked example for the module.
+
+## Review questions for the page
+
+Keep two questions active while reading:
+
+1. what exact runtime promise is this decorator allowed to make?
+2. what stronger typing or safety promise must it refuse?
 
 ## The incident
 
@@ -52,6 +63,9 @@ They want it to:
 
 Those are reasonable goals. The danger is pretending this now amounts to full typing or a
 general validation framework.
+
+That sentence is the real incident. The syntax is easy. The hard part is stopping the
+team from calling a bounded runtime checker "type safety" or "complete validation."
 
 ## The first design rule: keep it partial on purpose
 
@@ -70,6 +84,23 @@ Unsupported cases might include:
 - broader typing constructs that really belong to a separate validation framework
 
 That refusal is a design strength, not a lack of ambition.
+
+Add one more refusal boundary: this decorator does not try to infer business meaning from
+annotations. It checks a narrow runtime shape. It does not decide whether the overall API
+contract is sensible.
+
+## Non-goals to keep visible
+
+This worked example is intentionally not trying to deliver:
+
+- a full runtime type system
+- coercion or conversion rules
+- cross-parameter semantic validation
+- nested container validation
+- framework-grade error reporting
+
+If a review conversation expects those features, the design already wants a more explicit
+validation owner than this module's decorator boundary.
 
 ## Step 1: capture configuration and reusable evidence once
 
@@ -91,6 +122,10 @@ once at definition time, rather than rebuilding them on every call.
 That is a good example of factory configuration and evidence caching working together
 honestly.
 
+It is also the first place a review should look for hidden cost. If hint resolution is
+expensive, environment-sensitive, or brittle under forward references, the wrapper should
+say so plainly instead of pretending definition-time capture is always harmless.
+
 ## Step 2: bind the call before validating
 
 One of the most important design choices is to validate after `sig.bind(...)`, not by
@@ -104,6 +139,15 @@ That makes the validation path:
 
 This is stronger and easier to review than ad hoc argument parsing.
 
+It also gives the reviewer a clean proof route:
+
+| Evidence step | What it proves |
+| --- | --- |
+| `inspect.signature(func)` | the validator uses Python's call model as its starting point |
+| `sig.bind(*args, **kwargs)` | argument matching follows real parameter rules |
+| `bound.apply_defaults()` | omitted values still become visible to the validator |
+| iterating `bound.arguments.items()` | checks are attached to named parameters, not positional guessing |
+
 ## Step 3: keep the type checker small and explicit
 
 A compact helper such as `_is_instance` should stay honest about its scope:
@@ -113,6 +157,9 @@ A compact helper such as `_is_instance` should stay honest about its scope:
 - unsupported generic hints raise `NotImplementedError`
 
 That clarity keeps the wrapper from drifting into fake comprehensiveness.
+
+The helper should also make unsupported space noisy. Quietly skipping unsupported hint
+forms teaches the wrong lesson, because it makes the wrapper look broader than it is.
 
 ## A bounded implementation
 
@@ -173,6 +220,19 @@ def validated(raise_on_error: bool = True) -> Callable:
     return decorator
 ```
 
+## What this implementation proves and what it does not
+
+Use the code block as evidence, not as marketing:
+
+| Claim | Supported by this implementation? | Why |
+| --- | --- | --- |
+| it validates a narrow runtime hint subset | yes | `_is_instance` names and limits the supported cases |
+| it follows Python's own call binding rules | yes | `sig.bind(...)` does the call matching |
+| it can raise or warn on mismatches | yes | `raise_on_error` branches make the mode visible |
+| it enforces full static typing semantics | no | many typing surfaces are refused intentionally |
+| it makes warning mode safe | no | the wrapped function still runs after the warning |
+| it is already a full validation framework | no | there is no broader owner, registry, coercion model, or reporting layer |
+
 ## Why this version is useful for review
 
 This wrapper is useful because it keeps all the important choices visible:
@@ -185,6 +245,20 @@ This wrapper is useful because it keeps all the important choices visible:
 
 That is the kind of honesty a policy-heavy decorator needs.
 
+## Failure surfaces a reviewer should inspect
+
+Even this bounded version has pressure points:
+
+| Failure surface | Why it matters |
+| --- | --- |
+| `get_type_hints(func)` can fail or resolve differently than expected | definition-time evidence may not be as stable as the wrapper claims |
+| `NotImplementedError` on generic hints | refusal is honest, but reviewers must know whether callers will hit it |
+| warning mode lets execution continue | downstream failures may happen after the contract warning |
+| return validation happens after function execution | bad outputs are detected late, not prevented early |
+
+Those are not bugs in the teaching example. They are the boundaries the teaching example
+must keep visible.
+
 ## Warning mode is not safety mode
 
 One especially important design boundary is:
@@ -193,6 +267,13 @@ One especially important design boundary is:
 
 The wrapped function can still fail internally after the warning. That is exactly why the
 module frames this as a partial runtime contract rather than as a complete safety system.
+
+Use this boundary table when someone overstates the mode switch:
+
+| Mode | What it changes | What it does not change |
+| --- | --- | --- |
+| `raise_on_error=True` | mismatch becomes an immediate `TypeError` | the decorator still only understands a limited hint subset |
+| `raise_on_error=False` | mismatch becomes an observable warning | the underlying function may still break or produce a bad result |
 
 ## What this example makes clear about Module 05
 
@@ -207,6 +288,17 @@ This worked example ties the module together:
 That is the durable takeaway. The validator is not here as a universal recipe. It is here
 as a clear case study in policy ownership and boundary honesty.
 
+## Evidence packet to leave behind
+
+If you adapt this example, leave behind a packet another reviewer can inspect quickly:
+
+- the supported hint subset
+- the refused hint subset
+- the exact behavior of strict mode
+- the exact behavior of warning mode
+- one sentence explaining why the policy still belongs in a decorator
+- one sentence naming the next threshold that would justify an explicit validator object
+
 ## The review loop to keep
 
 When you inherit or design an annotation-aware decorator, run this loop:
@@ -216,8 +308,21 @@ When you inherit or design an annotation-aware decorator, run this loop:
 3. check whether strict and warning modes are explicit
 4. ask whether the policy still belongs in a decorator or should move to a more explicit validator component
 
+Add one last question:
+
+5. which unsupported feature would be the first sign that this wrapper has outgrown the decorator boundary?
+
 If you can do that here, Module 05 has done its job and the course can move into
 class-level customization with a stronger sense of wrapper limits.
+
+## Exit check for this page
+
+Before leaving the worked example, make sure you can do all of these:
+
+- explain why `sig.bind(...)` is a stronger review choice than raw `args` inspection
+- name two supported hint forms and two refused hint forms
+- explain why warning mode is still operationally risky
+- say when this decorator should be replaced by an explicit validation component
 
 ## Continue through Module 05
 
