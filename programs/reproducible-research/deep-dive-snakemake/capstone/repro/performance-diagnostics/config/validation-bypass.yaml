@@ -1,0 +1,4 @@
+mode: validation-bypass
+chunk_size: 3
+scan_passes: 1
+validate: false
