@@ -4,6 +4,16 @@ Use these after reading the five core lessons and the worked example. The goal i
 show off Make cleverness. The goal is to make your architecture reasoning visible through
 interfaces, ownership, and growth-safe structure.
 
+Generate the shared evidence before beginning:
+
+```sh
+cd programs/reproducible-research/deep-dive-make/capstone
+gmake architecture-contract-audit
+```
+
+Keep `summary.tsv`, `report.json`, the traces, and the workspaces open. Several exercises
+ask you to move from those controlled models to a repository of your own.
+
 ## How to work through this set
 
 Treat the ten exercises as one full lab day on build architecture review.
@@ -85,19 +95,21 @@ instead of on cosmetic reshuffling.
 
 ## Exercise 1: Define a public target surface
 
-Take a Make-based repository with several top-level targets and decide which ones should
-be public and which ones should stay internal.
+Start with the `public-api/private-caller` specimen. Compare its `help` output with
+`automation-private.sh`, then run that caller. Decide which target is a promise, which
+target is merely reachable, and which promised evidence the caller bypasses.
 
 What to hand in:
 
-- the public target list
-- one sentence of contract meaning for each public target
-- one target that should be demoted to internal and why
-- one sentence explaining who the main consumers of the public interface are
+- the exact help output and caller command
+- a table classifying `help`, `verify`, and `internal-build`
+- the caller's exit status and the two expected artifact-presence observations
+- the audit finding that justifies your classification
+- one repair that does not enlarge the public API
 
 Study note:
-Public means callers may rely on the name and meaning staying stable. Internal means the
-name can change as the architecture evolves.
+Reachability is a property of Make's graph. Public status is a compatibility promise.
+Successful use of a private target does not turn it into a sound interface.
 
 ## Exercise 2: Split one Makefile into layers
 
@@ -187,34 +199,43 @@ make the packet more explicit before continuing.
 
 ## Exercise 6: Publish a useful `help` target
 
-Create a `help` target for five public targets. The output must explain the contract of
-each target in language a new contributor can act on.
+Extend a disposable copy of the public-API control with public targets for building,
+testing, verifying build invariants, cleaning, and showing help. Keep `internal-build`
+reachable but private. Write one script that uses only the help output to select the
+verification route.
 
 What to hand in:
 
 - the explicit public-target list
 - the `help` recipe and output
-- one helper target intentionally excluded from the interface
-- one sentence explaining why `help` should describe contracts, not implementation steps
+- the script's selected target and exit status
+- the artifacts that prove the selected target fulfilled its contract
+- a negative check showing `internal-build` is absent from help
+- one compatibility consequence of renaming a listed target
 
 Study note:
-If the help output only repeats target names, it is not yet serving the interface.
+If help only repeats names, the caller still needs source knowledge. A useful description
+states the outcome or evidence the target promises.
 
 ## Exercise 7: Audit automation against the public API
 
-Search a repository's CI, release, and developer scripts for Make invocations. Compare
-every invoked target with the public target list.
+Audit two environments. First compare `automation-private.sh` and
+`automation-declared.sh` with their Makefile's help output and artifacts. Then search a
+repository's CI, release, and developer scripts for Make invocations and apply the same
+test.
 
 What to hand in:
 
 - the search command
 - a table of caller, target, and public or internal status
-- one repair for automation that calls an internal target
-- one sentence explaining why silent interface sprawl is risky
+- a promised-evidence column for every public invocation
+- the two specimen findings and the observation that distinguishes them
+- one repaired repository caller with before-and-after command lines
+- evidence that the repaired caller receives the full public contract
 
 Study note:
-Automation is often the strictest consumer of the interface because it turns undocumented
-helper targets into accidental contracts.
+Do not repair a private call by listing every helper in `help`. Either move the caller to
+an existing promise or deliberately design a new stable contract.
 
 ## Exercise 8: Make variable ownership inspectable
 

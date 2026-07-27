@@ -62,27 +62,23 @@ thin.
 
 ## Exercise 1: Define a public target surface
 
-A strong answer keeps the public surface small and stable. It often includes targets such
-as:
+The specimen's help output declares `help` and `verify`; it does not declare
+`internal-build`. A defensible classification is:
 
-- `all`
-- `test`
-- `selftest`
-- `clean`
-- `help`
+| Target | Status | Reason |
+| --- | --- | --- |
+| `help` | public | it is declared and explains the supported interface |
+| `verify` | public | it is declared and promises build plus verification |
+| `internal-build` | private but reachable | `verify` uses it, but callers are not promised its name or partial behavior |
 
-The strongest answers also explain what each name promises. For example:
+`automation-private.sh` exits zero and creates `build/application.txt`. It does not create
+`build/verification.txt`. Those observations support
+`PRIVATE_TARGET_DEPENDENCE_REPRODUCED`: the caller reached an implementation target but
+bypassed part of the declared contract.
 
-> `selftest` is for build-system invariants, not ordinary product tests.
-
-A good demotion candidate is often a helper such as `build-objects` or
-`verify-contract` when that target exists only to support internal orchestration rather
-than to serve users or CI directly.
-
-The key explanation is:
-
-> Public means callers may rely on the name and meaning staying stable; internal means the
-> implementation may reorganize it freely.
+The narrow repair is to change the caller from `gmake internal-build` to `gmake verify`.
+Adding `internal-build` to help would enlarge the compatibility surface while preserving
+the caller's incomplete behavior.
 
 ## Exercise 2: Split one Makefile into layers
 
@@ -168,7 +164,7 @@ reason about, not just when it praises the current build for working today.
 
 ## Exercise 6: Publish a useful `help` target
 
-An explicit implementation is easy to review:
+An explicit implementation remains easy to review:
 
 ```make
 PUBLIC_TARGETS := all test selftest clean help
@@ -183,13 +179,26 @@ help:
 	  'help'     'show this public interface'
 ```
 
-An internal target such as `build-objects` should not appear. Its name and behavior may
-change without breaking callers because automation and learners use the public contract.
+The answer is incomplete until an external caller can choose the intended target from
+those descriptions and prove its result. For example, a build-invariant caller should
+select `selftest`, exit zero, and leave the evidence that target documents. A check such
+as this protects the private boundary:
+
+```sh
+! gmake help | grep -q '^internal-build'
+```
+
+An internal target may remain reachable because public targets need implementation nodes.
+Its absence from help means callers are not promised its name or partial outcome.
 
 The key explanation is:
 
 > `help` should describe contracts, not implementation steps, because callers need to know
-> what a target promises rather than how it happens to work today.
+> what evidence a target promises rather than how it happens to work today.
+
+Renaming `selftest` after publication requires a compatibility decision for scripts and
+humans that rely on it. Renaming `internal-build` does not, provided declared targets keep
+their behavior.
 
 ## Exercise 7: Audit automation against the public API
 
@@ -199,15 +208,23 @@ A useful search begins broadly:
 rg -n '(g?make)([[:space:]]|$)' .github scripts Makefile mk
 ```
 
-The resulting table should identify each caller and target. If CI calls `build-objects`,
-either change it to a public target such as `all` or deliberately promote and document
-that contract. Merely adding the helper to `help` to silence the mismatch would enlarge
-the API without deciding ownership.
+The specimen establishes the comparison standard:
+
+| Caller | Invoked target | Declared? | Application | Verification | Finding |
+| --- | --- | --- | --- | --- | --- |
+| `automation-private.sh` | `internal-build` | no | present | absent | `PRIVATE_TARGET_DEPENDENCE_REPRODUCED` |
+| `automation-declared.sh` | `verify` | yes | present | present | `PUBLIC_TARGET_CONTRACT_HONORED` |
+
+The repository table should add the evidence each public target promises. If CI calls
+`build-objects`, change it to a suitable declared target and compare both the command and
+its artifacts. Promoting the helper solely to silence the mismatch would enlarge the API
+without deciding whether its partial behavior deserves compatibility guarantees.
 
 The important explanation is:
 
 > Silent interface sprawl is risky because automation can convert private helpers into
-> durable contracts before anyone notices.
+> durable contracts before anyone notices, while still bypassing evidence produced by the
+> supported route.
 
 ## Exercise 8: Make variable ownership inspectable
 
