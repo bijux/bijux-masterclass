@@ -25,11 +25,11 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use this page when a metaprogramming design feels impressive but the review question is
-really about blast radius, timing, and ownership.
+Use this page when a metaprogramming design feels impressive but the real review question is
+about blast radius, timing, and ownership.
 
-The ladder is not a prestige scale. It is a way to compare how far each mechanism reaches
-into runtime behavior and how much review evidence it should owe in return.
+The ladder is not a prestige scale. It is a review tool for comparing how far each mechanism
+reaches into runtime behavior and how much evidence it should owe in return.
 
 ## The ladder
 
@@ -74,8 +74,7 @@ Review pressure:
 
 ### 3. Descriptors and attribute-level control
 
-Use this when one attribute access path is the right owner for validation, coercion, or
-storage rules.
+Use this when one attribute access path is the right owner for validation, coercion, or storage rules.
 
 Typical honest cases:
 
@@ -136,9 +135,11 @@ If the answer is vague, ornamental, or mostly about elegance, stay lower.
 - Reject a metaclass when a decorator can register classes explicitly enough.
 - Reject import-hook discovery when explicit imports or entry points keep the runtime more visible.
 
-## Related reference pages
+## Good stopping point
 
-- [Review Checklist](review-checklist.md)
-- [Boundary Review Prompts](boundary-review-prompts.md)
-- [Topic Boundaries](topic-boundaries.md)
-- [Module Dependency Map](module-dependency-map.md)
+Stop when you can explain:
+
+- which rung the current design is on
+- what the rung below it almost solved
+- what new blast radius the current rung introduces
+- what proof route should pay for that extra power
