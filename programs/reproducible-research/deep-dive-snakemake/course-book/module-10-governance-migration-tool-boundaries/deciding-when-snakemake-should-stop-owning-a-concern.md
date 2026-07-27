@@ -10,20 +10,32 @@ Another mature answer is:
 
 Module 10 is about knowing the difference.
 
+## If you are learning this without the live class
+
+Read this lesson in five passes:
+
+1. name the exact concern under debate
+2. decide whether that concern is still best explained as file-based workflow truth
+3. decide what another system might own better
+4. write the handoff artifact that keeps responsibility reviewable
+5. explain why the final answer is about ownership, not novelty
+
+If you cannot name the concern precisely, you are not ready to debate tools yet.
+
 ## How to use this page
 
 Read this lesson when a team starts talking about platforms, services, web front ends, or
 standardizing on another system.
 
-Work through it in this order:
+Keep one ownership packet beside you as you read:
 
-1. identify the exact concern under debate
-2. decide whether that concern is still best explained as file-based workflow truth
-3. identify what another system might own better
-4. define the handoff artifact that keeps responsibility reviewable
+- one concern statement
+- one current owner and why it is strong or weak
+- one possible new owner and why it is stronger or weaker
+- one handoff artifact
+- one note on how publish truth stays independently verifiable
 
-This page is not trying to make Snakemake keep everything. It is trying to stop vague
-tool enthusiasm from outrunning ownership clarity.
+That packet is the difference between stewardship and technology preference.
 
 ## Start with ownership, not novelty
 
@@ -56,6 +68,21 @@ A better opening sounds like this:
 > separately from file-based orchestration and publish verification
 
 Once the concern is named precisely, the ownership discussion becomes much easier.
+
+## A concern card you should be able to fill before naming any destination tool
+
+Use a table like this:
+
+| Part | What to name |
+| --- | --- |
+| concern | the exact thing being debated |
+| current owner | which system owns it now |
+| current weakness | why that owner may be a poor fit |
+| stronger owner | which system may own it better |
+| handoff artifact | what keeps the split reviewable |
+| independent truth route | how the workflow stays verifiable after the split |
+
+If you cannot fill the first row without naming a destination tool, the conversation is still too vague.
 
 ## When Snakemake is still a strong owner
 
@@ -112,6 +139,19 @@ The important word is explicit.
 | can you describe a clean handoff artifact between systems | hybrid migration may be ready |
 
 This table is not a scoring system. It is a way to keep the discussion concrete.
+
+## What goes wrong when learners trust the destination tool too early
+
+Use this card before you praise the platform:
+
+| If you notice... | The ownership discussion is hiding... | Smallest repair |
+| --- | --- | --- |
+| the destination tool is named before the concern | a vague problem statement | one concern card |
+| the platform dashboard explains more than the repository can | drifting workflow truth | one independent publish verification route |
+| a handoff is described only as "integration" | blurred responsibility | one request-status-result contract |
+| publish trust depends on the service UI | lost independent verification | one repository-local verification bundle |
+
+If the smallest repair feels annoyingly specific, that usually means the conversation has finally become honest.
 
 ## A small example
 
@@ -190,6 +230,18 @@ The course standard is stricter:
 2. name why the current owner is weak for that concern
 3. name why the new owner is stronger
 4. name the artifact or route that keeps the handoff reviewable
+
+## A five-line ownership recommendation you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which exact concern is under debate
+2. why Snakemake is still strong or is now weak for that concern
+3. what another system might own better
+4. which artifact makes the handoff inspectable
+5. how workflow truth stays independently verifiable after the split
+
+If you cannot do that, the answer is still a preference, not a stewardship judgment.
 
 ## Keep this standard
 

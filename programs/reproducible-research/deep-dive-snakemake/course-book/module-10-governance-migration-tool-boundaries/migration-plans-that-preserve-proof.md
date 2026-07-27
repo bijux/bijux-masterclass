@@ -10,19 +10,33 @@ answer a simple question:
 
 > what still works, what changed on purpose, and how do we know?
 
+## If you are learning this without the live class
+
+Read this lesson in five passes:
+
+1. name the single boundary you want to move
+2. identify the proof route you refuse to lose
+3. design the smallest comparison that can expose drift
+4. write rollback criteria before you celebrate the new owner
+5. decide only at the end when the old route can honestly be retired
+
+If you cannot name those five things, you do not have a migration plan yet.
+
 ## How to use this page
 
 Read this page after you can already describe the current repository truth from the
 previous lesson.
 
-Work through it in this order:
+Keep one migration packet beside you as you read:
 
-1. identify the exact boundary you want to move
-2. identify the proof route you refuse to lose
-3. design the smallest comparison that can expose drift
-4. decide when the old route can honestly be retired
+- one statement of the current contract
+- one defect class
+- one single-boundary move
+- one preserved proof route
+- one comparison packet
+- one retirement condition
 
-If you cannot name those four things, you do not have a migration plan yet.
+That packet is what turns "cleanup" into something a reviewer can actually approve.
 
 ## The migration mistake that burns months
 
@@ -94,6 +108,21 @@ In Snakemake repositories, the boundaries that often move are:
 
 If a single change tries to move three of these at once, review gets vague very quickly.
 
+## A migration card you should be able to fill before editing anything
+
+Use a table like this:
+
+| Part | What to record |
+| --- | --- |
+| current contract | which files, rules, or review routes must stay trusted |
+| defect class | what is actually wrong: contract ambiguity, policy drift, hidden ownership, weak proof, or wrong tool boundary |
+| intended move | which single boundary changes next |
+| preserved proof | which command or artifact still lets you compare old and new |
+| rollback trigger | what would make the move dishonest |
+| retirement condition | what must be true before the old route disappears |
+
+If you cannot fill one cell, the step is probably too large.
+
 ## Start by strengthening proof, not by deleting the old path
 
 Suppose a team wants to redesign sample discovery and publish reporting.
@@ -127,6 +156,19 @@ Examples:
 
 These routes are not glamorous, but they stop migration review from becoming a debate
 about confidence and aesthetics.
+
+## What goes wrong when a learner trusts the rewrite story
+
+Use this card before you praise the new structure:
+
+| If you notice... | The migration is probably hiding... | Smallest repair |
+| --- | --- | --- |
+| the plan says "modernize" more often than it names boundaries | the move is still a mood, not a step | one one-boundary migration card |
+| the old proof route disappears before the new one is trusted | lost comparison | keep the old proof route alive |
+| several concerns change in one branch | blurred regression classes | split the move into separate boundaries |
+| rollback is not written down | confidence is replacing evidence | write one explicit rollback trigger |
+
+If the smallest repair feels annoying, that usually means it is exactly what the migration needs.
 
 ## A small example
 
@@ -192,17 +234,17 @@ Before approving one step, write down:
 
 If the third answer is vague, the step is probably too large.
 
-## A useful migration table
+## The rollback test
 
-| Part | What to record |
-| --- | --- |
-| current contract | which files, rules, or review routes must stay trusted |
-| defect class | what is actually wrong: contract ambiguity, policy drift, hidden ownership, weak proof, or wrong tool boundary |
-| intended move | which single boundary changes next |
-| preserved proof | which command or artifact still lets you compare old and new |
-| retirement condition | what must be true before the old route disappears |
+Before you commit a migration step, make sure you can answer:
 
-This keeps migration plans from becoming wish lists full of vague verbs.
+- what output difference would count as unacceptable
+- what consumer breakage would stop the move
+- what missing proof would block approval even if the code looks cleaner
+- what condition would let you retire the old owner honestly later
+
+If rollback still sounds embarrassing, the migration is not ready. Rollback is part of
+serious stewardship, not evidence of failure.
 
 ## The beginner mistake to catch early
 
@@ -218,6 +260,18 @@ The course standard is stricter:
 2. add the new route beside it
 3. compare calmly and repeatedly
 4. retire the old route only after the new one becomes boring to review
+
+## A five-line migration note you should be able to write from memory
+
+If this lesson has landed, you should be able to write:
+
+1. which exact boundary is moving
+2. what defect class justifies the move
+3. which proof route remains alive throughout the step
+4. what comparison artifact exposes drift
+5. what must be true before the old route disappears
+
+If you cannot write those five lines, the plan is still too abstract.
 
 ## Keep this standard
 
