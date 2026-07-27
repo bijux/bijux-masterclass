@@ -117,26 +117,36 @@ Another learner should know whether your result can reasonably be compared with 
 
 ## Exercise 3: Establish controlled cost baselines
 
-Collect five samples for each route:
+Run the governed route:
 
-1. clean `gmake -j4 all`
-2. confirmed no-op `gmake all`
-3. converged dry-run `gmake -n all`
+```sh
+gmake -C "$CAPSTONE" perf
+```
 
-Save the exact command, every sample, median, minimum, and maximum under `measurements/`.
-Before no-op timing, prove `gmake -q all` succeeds. Keep clean and no-op results in separate
-tables.
+Read `route.txt` and `scenarios.tsv` before `summary.tsv`. For each scenario, trace one row
+in the summary back to:
+
+- all raw elapsed samples in `evidence.json`
+- its command transcript in `logs/`
+- its convergence result
+- its trusted-output inventory
+
+Copy or preserve the complete bundle under `measurements/`; do not copy only the summary.
+Explain why the collector establishes clean or converged state separately for each sample.
 
 What to hand in:
 
-- raw timing files
-- a summary table with state and parallelism
+- the governed scenario table
+- one raw-sample-to-summary audit
+- the convergence and trusted-output result for each scenario
 - one leading and one competing explanation for the observed differences
 - one sentence stating whether a performance regression was proven
+- one machine condition that the bundle cannot fully control
 
 Checkpoint:
 Without a controlled historical baseline, the correct conclusion is usually "current
-baseline established," not "regression confirmed."
+baseline established," not "regression confirmed." A summary without its semantic evidence
+does not complete the exercise.
 
 ## Exercise 4: Choose observability by question
 
@@ -238,6 +248,15 @@ evidence.
 
 ## Exercise 7: Write a falsifiable tuning proposal
 
+First prove the evidence route discriminates:
+
+```sh
+gmake -C "$CAPSTONE" performance-selftest
+```
+
+Name two rejected cases and explain why accepting either would make a speedup claim
+dishonest.
+
 Choose one real cost candidate from the capstone or explicitly reject tuning because the
 measurements do not justify it.
 
@@ -248,6 +267,7 @@ If you propose a change, create `tuning-decision.md` with:
 - proposed change
 - truth invariant most at risk
 - controlled before-and-after comparison
+- compatible scenario policy and sample count
 - requested-work test
 - convergence test
 - artifact comparison
@@ -259,13 +279,15 @@ decision.
 
 What to hand in:
 
+- the performance-selftest result and two rejection explanations
 - the complete experiment contract or justified rejection
 - one unsafe optimization you rejected
 - one sentence explaining what new freshness contract a cache would introduce
 
 Checkpoint:
 "Expected to be faster" is not a measured cost, and "tests pass" is not a complete semantic
-proof.
+proof. A passing comparison reports compatible deltas; it does not decide materiality for
+you.
 
 ## Exercise 8: Audit the capstone proof route
 
