@@ -12,6 +12,10 @@ class IncrementalCase:
     must_rebuild: tuple[PurePosixPath, ...]
     must_remain: tuple[PurePosixPath, ...]
 
+    @property
+    def governed_outputs(self) -> frozenset[PurePosixPath]:
+        return frozenset((*self.must_rebuild, *self.must_remain))
+
 
 def _paths(raw: str, line: int) -> tuple[PurePosixPath, ...]:
     paths = tuple(PurePosixPath(value) for value in raw.split(",") if value)
@@ -38,8 +42,16 @@ def read_incremental_policy(path: Path) -> list[IncrementalCase]:
             raise ValueError(
                 f"line {line}: output cannot be both rebuilt and unchanged"
             )
+        if len(set(rebuild)) != len(rebuild) or len(set(remain)) != len(remain):
+            raise ValueError(f"line {line}: output names must not repeat")
         inputs.add(input_path)
         cases.append(IncrementalCase(input_path, rebuild, remain))
     if not cases:
         raise ValueError("incremental policy contains no cases")
+    governed_outputs = cases[0].governed_outputs
+    for case in cases[1:]:
+        if case.governed_outputs != governed_outputs:
+            raise ValueError(
+                f"input {case.input_path}: governed output set differs from the first case"
+            )
     return cases
