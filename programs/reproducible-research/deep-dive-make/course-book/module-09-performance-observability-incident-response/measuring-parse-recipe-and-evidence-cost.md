@@ -172,22 +172,35 @@ Do not read the median first. Open the bundle under
 | Surface | Question |
 | --- | --- |
 | `scenarios.tsv` | which state, job count, and route did the repository declare? |
+| `incremental-policy.tsv` | which input and rebuild scope define equivalent requested work? |
+| `incremental-work.json` | did the real build select exactly that work? |
+| `evidence.json` | which revision, worktree, runner, tools, samples, and outputs belong together? |
 | `summary.tsv` | what were min, median, max, spread, and convergence? |
-| `evidence.json` | were all samples retained, and which trusted outputs were observed? |
 | `logs/` | what command output and exit status belong to each sample? |
 | `manifest.json` | is the evidence packet complete? |
+
+The order prevents a common reasoning error: treating a number as comparable before
+checking what produced it. `evidence.json` records the clean or dirty repository state,
+revision, resolved GNU Make and compiler identities, Python, platform, and a runner label.
+Use a stable label when the same platform string can describe meaningfully different
+environments:
+
+```sh
+gmake perf PERFORMANCE_RUNNER=local-macos-arm64
+```
 
 The collector establishes clean or converged state before every sample. It requires at
 least three samples, uses five by default, and records every elapsed value. Five samples do
 not make a benchmark scientific; they make one lucky run less persuasive.
 
 After every scenario, the route proves `make -q all` and inventories the trusted outputs.
-That semantic evidence prevents a missing recipe or incomplete graph from masquerading as
-a speedup.
+It also advances one declared input and requires the expected dependent outputs, but no
+unrelated outputs, to rebuild. That semantic evidence prevents a missing recipe, incomplete
+graph, or overbroad dependency edge from masquerading as a speedup.
 
 The machine remains a confounder. Add any notable background load or runner condition to
-the review note before comparing results. The bundle records platform, Python, GNU Make,
-and the exact scenario-policy digest, but it cannot make two unlike machines equivalent.
+the review note before comparing results. The bundle can identify a runner and reject
+known context drift; it cannot make two unlike machines equivalent.
 
 ## Pair measurements that answer different questions
 
@@ -244,22 +257,23 @@ A build whose evidence is too large or too noisy can still be expensive in pract
 - maintainers avoid using the evidence surfaces
 - real signals get buried under routine noise
 
-That is why a simple metric like trace line count can still be useful:
+That is why bounded trace volume belongs in the evidence contract. In the capstone, run:
 
 ```sh
-make --trace -n all > build/trace.log 2>&1
-wc -l build/trace.log
+gmake trace-report
 ```
 
-Line count is only a proxy. A 2,000-line trace with stable target names and a clear failure
-point may be more useful than a 200-line stream of interleaved shell output. Also record:
+The analyzer requires a clean-plan state, the `all` route, the focus target, and rule
+locations before accepting the volume bound. This is stronger than counting arbitrary
+lines after convergence. A short trace from the wrong state proves very little. A longer
+trace with stable target names and a clear causal route may be useful. Also record:
 
 - whether target and prerequisite names are visible
 - whether parallel output stays attributable to one target
 - how long it takes a new responder to find the first causal line
 
-The goal is not "fewest lines wins." The goal is evidence that a responder can search,
-attribute, and interpret.
+The goal is not "fewest lines wins." The goal is evidence from a named state and route that
+a responder can search, attribute, and interpret.
 
 ## A small comparison example
 
@@ -300,10 +314,25 @@ gmake performance-compare \
   PERFORMANCE_BASELINE=/path/to/baseline/evidence.json
 ```
 
-The comparison rejects policy, sample-count, scenario, convergence, and trusted-output
-drift before reporting timing deltas. A rejected comparison is useful evidence: it says the
-two experiments do not answer the same question or do not preserve the same artifact
-contract.
+The revisions should differ when you are measuring a candidate change. Other differences
+need classification:
+
+| Difference | Comparator decision | Reason |
+| --- | --- | --- |
+| clean baseline revision versus clean candidate revision | allow and report both | this is the intended source change |
+| compiler, GNU Make, Python, platform, or runner label | reject | environment changed with the source |
+| dirty or unavailable repository provenance | reject | measured source cannot be reconstructed |
+| scenario policy or sample count | reject | experiment contract changed |
+| trusted output inventory | reject | final semantics changed |
+| expected or observed incremental work | reject | selected graph work changed |
+
+A requested-work rejection is not automatically a defect. A deliberate graph repair may
+need to rebuild more or less. It does mean the timing delta cannot stand alone: review the
+graph change, revise the incremental policy if the new scope is correct, and recollect both
+sides under one contract.
+
+A rejected comparison is useful evidence. It identifies which assumption of comparability
+failed instead of producing a precise-looking but dishonest delta.
 
 Even a passing comparison does not automatically mean “faster” or “slower” in an
 operationally important sense. Compare the median delta with both observed spread and a
