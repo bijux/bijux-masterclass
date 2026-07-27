@@ -32,6 +32,16 @@ This module now uses the same ten-file learning surface as the deep-dive series 
 overview, five cores, worked example, practice set, answers, and glossary each have one
 clear job.
 
+This module should feel like one long review day on runtime evidence quality. The central
+skill is not "knowing more `inspect` helpers." The central skill is learning to say:
+
+- this claim is supported by strong callable-contract evidence
+- this claim is supported only by best-effort provenance
+- this claim belongs to diagnostics and must not quietly become application logic
+
+If a learner finishes the module still saying "I inspected it and it looked right," the
+module has not done enough work yet.
+
 ## What this module is for
 
 By the end of Module 03, you should be able to explain five things clearly:
@@ -41,6 +51,13 @@ By the end of Module 03, you should be able to explain five things clearly:
 - why provenance helpers are useful but remain best-effort evidence
 - how dynamic member enumeration differs from static structural inspection
 - why frame and stack introspection belong to diagnostics rather than ordinary control flow
+
+You should also be able to review weak tooling code and say exactly where it overclaims:
+
+- pretending annotations prove call shape
+- pretending provenance helpers provide guaranteed ownership truth
+- pretending dynamic member enumeration is harmless structure inspection
+- pretending stack evidence is acceptable production control flow
 
 ## Keep these pages open
 
@@ -62,6 +79,20 @@ By the end of Module 03, you should be able to explain five things clearly:
 9. [Exercise Answers](exercise-answers.md)
 10. [Glossary](glossary.md)
 
+## How the day should feel
+
+Treat the module as one escalating review route:
+
+1. establish what a callable contract really proves
+2. turn that contract into interpreter-aligned binding evidence
+3. recover provenance without promoting convenience into correctness
+4. separate structural inspection from dynamic resolution
+5. quarantine frames and stacks inside diagnostic-only reasoning
+6. combine all of that in one helper review packet
+
+By the end, you should be able to audit a runtime-facing helper and sort its evidence
+surfaces by trust level without guessing.
+
 ## How to use the file set
 
 | If you need to... | Start here |
@@ -82,6 +113,11 @@ Carry this question through every page:
 
 > What runtime evidence is strong enough to trust, and what evidence stays best-effort or diagnostic-only?
 
+Carry two more review questions beside it:
+
+- what exact claim is the code making?
+- which evidence surface is the narrowest honest way to support that claim?
+
 Strong Module 03 answers usually mention one or more of these:
 
 - a `Signature` object describing callable structure
@@ -89,6 +125,15 @@ Strong Module 03 answers usually mention one or more of these:
 - best-effort provenance from source and file helpers
 - static versus dynamic member inspection
 - frames and stacks as diagnostic surfaces with cost and retention hazards
+
+Weak Module 03 answers usually sound like one of these:
+
+- "the annotations tell us how it can be called"
+- "the source file proves where it really came from"
+- "I can just enumerate members and inspect the results"
+- "the stack lets me infer who should be allowed to call this"
+
+This module is designed to make those sentences feel obviously unsafe.
 
 ## Learning outcomes
 
@@ -99,6 +144,29 @@ By the end of this module, you should be able to:
 - separate correctness-grade evidence from best-effort provenance and diagnostic tooling
 - explain why the capstone exposes callable facts without turning inspection into uncontrolled execution
 
+## Module 03 review packet
+
+Before you move on, you should be able to assemble one small packet that includes:
+
+- one callable with a signature you can read precisely
+- one bound-call example that demonstrates interpreter-grade argument matching
+- one provenance example with an honest limitation statement
+- one structural-inspection example that refuses to trigger behavior by accident
+- one diagnostic-only helper with a clear argument for why it stays out of normal logic
+
+That packet is the standalone-learning proof that you can use the module without an instructor in the room.
+
+## Mid-module pressure points
+
+Expect these to be the points where self-study learners slow down:
+
+| Pressure point | What usually goes wrong | What to do instead |
+| --- | --- | --- |
+| Signatures versus annotations | treating intent notes as if they were call-shape proof | ask which rules Python actually enforces through binding |
+| Provenance recovery | treating module, file, or source hints as guaranteed truth | name the failure conditions before trusting the result |
+| Dynamic member enumeration | forgetting that value resolution can execute behavior | ask whether you need raw structure or resolved values |
+| Frame inspection | using caller context as hidden application input | keep the same information explicit in parameters unless the tool is explicitly diagnostic |
+
 ## Exit standard
 
 Do not move on until all of these are true:
@@ -107,6 +175,7 @@ Do not move on until all of these are true:
 - you can use `bind()` or `bind_partial()` instead of reimplementing call matching
 - you can say why `getsource`, `getfile`, and `getmodule` are useful but not correctness foundations
 - you can distinguish structural inspection from dynamic member resolution and diagnostic stack inspection
+- you can name the exact point where a review crosses from strong evidence into convenience or diagnostics
 
 When those feel ordinary, Module 03 has done its job and the decorator modules can build
 on a stronger evidence discipline.
