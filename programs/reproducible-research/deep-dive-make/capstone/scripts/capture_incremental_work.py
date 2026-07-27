@@ -65,6 +65,25 @@ def capture_case(
     }
 
 
+def write_summary(cases: list[dict[str, object]], output: Path) -> None:
+    lines = [
+        "input\tresult\texpected_rebuild\tobserved_rebuild\tmissing\tunexpected"
+    ]
+    for case in cases:
+        fields = [str(case["input"]), str(case["result"])]
+        for key in (
+            "expected_rebuild",
+            "observed_rebuild",
+            "missing_rebuild",
+            "unexpected_rebuild",
+        ):
+            values = case[key]
+            assert isinstance(values, list)
+            fields.append(",".join(str(value) for value in values) or "-")
+        lines.append("\t".join(fields))
+    output.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--policy", type=Path, required=True)
@@ -86,6 +105,7 @@ def main() -> int:
     }
     arguments.output.parent.mkdir(parents=True, exist_ok=True)
     arguments.output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    write_summary(cases, arguments.output.with_name("incremental-summary.tsv"))
     if report["result"] != "PASS":
         failed = ", ".join(
             str(case["input"]) for case in cases if case["result"] != "PASS"

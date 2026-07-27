@@ -42,6 +42,7 @@ class IncrementalWorkTests(unittest.TestCase):
             output = Path(directory) / "evidence.json"
             result = self.run_case(POLICY, output)
             report = json.loads(output.read_text())
+            summary = (output.parent / "incremental-summary.tsv").read_text()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(report["result"], "PASS")
         self.assertEqual(report["schema"], "deep-dive-make-incremental-work-v2")
@@ -49,6 +50,8 @@ class IncrementalWorkTests(unittest.TestCase):
         self.assertEqual(
             report["policy_sha256"], hashlib.sha256(POLICY.read_bytes()).hexdigest()
         )
+        self.assertIn("input\tresult\texpected_rebuild", summary)
+        self.assertIn("src/util.c\tPASS", summary)
         self.assertEqual(source.stat().st_mtime_ns, before)
 
     def test_rejects_missing_requested_work(self) -> None:
