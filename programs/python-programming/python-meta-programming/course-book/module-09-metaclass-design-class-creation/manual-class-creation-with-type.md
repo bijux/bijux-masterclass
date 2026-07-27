@@ -47,6 +47,12 @@ Keep one more sentence beside it:
 
 > if one explicit `type(...)` call solves the problem clearly, a repeating metaclass owner is usually too strong.
 
+For self-study, turn that into a concrete test:
+
+- can I point to the one call site that owns this dynamic construction?
+- can I name what would have to repeat across future classes before a family-wide owner became justified?
+- can I explain the generated class without using mystical language such as "meta" or "magic"?
+
 ## What the three arguments mean
 
 The shape is:
@@ -176,6 +182,17 @@ It also teaches a larger lesson:
 dynamic construction is honest only when the factory supplies the metadata a human reader
 would expect from a normal class statement.
 
+## A factory audit card
+
+Use this card whenever a `type(...)` factory starts sounding more powerful than it is:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what data is truly dynamic here? | one changing name, base set, namespace rule, or metadata input |
+| what metadata must the factory supply manually? | `__module__`, docs, descriptors, or another named field |
+| what stays local to this one call site? | the entire class-construction decision |
+| what condition would force escalation later? | repeated family-wide construction policy or class-creation-time invariant |
+
 ## Why `type(...)` is still lower-power than a custom metaclass
 
 Manual `type(...)` creation is dynamic, but it is still explicit and local:
@@ -198,6 +215,15 @@ Reject these descriptions when they appear in review:
 | "the factory hides the same complexity as a metaclass" | "the factory keeps ownership local to one call site" |
 | "the namespace is just an implementation detail" | "the namespace is the class body made explicit" |
 
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "it is dynamic so a metaclass is nearby anyway" | dynamic construction alone does not create a hierarchy-wide owner |
+| "the factory is more advanced than a class statement" | advanced does not explain why the owner is still local |
+| "the namespace just contains the code" | that wording hides the explicit class-construction inputs the reader must inspect |
+| "this could scale to many classes later" | later is not a present justification for stronger ownership |
+
 ## Failure modes for manual class creation
 
 These are the mistakes this page is trying to prevent:
@@ -218,6 +244,10 @@ The boundary is:
 - class creation is a runtime event
 - class objects can be built explicitly
 - metaclasses only make sense as control over that event
+
+Before you leave this page, write one sentence beginning:
+
+- "a metaclass would only become necessary here if..."
 
 Once that is clear, the rest of Module 09 becomes much less mystical.
 
