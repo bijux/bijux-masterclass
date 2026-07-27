@@ -149,19 +149,68 @@ Why this is strong:
 
 ## Exercise 7: Inject and classify failures
 
-The transient simulation may be retried only if repetition can plausibly change the
-outcome, such as a temporary service or storage interruption. Invalid configuration fails
-before work and must not be retried. An interrupted write requires removal or replacement
-of incomplete state before rerun. Logs should capture the command, failure class, and
-relevant context; a retry count alone cannot explain correctness.
+The generated summary should read:
+
+```text
+SCHEDULER_MAPPING_RECORDED         PASS  ACCEPT
+MISSING_MEMORY_REJECTED            PASS  REJECT
+UNDERPROVISIONING_REJECTED         PASS  REJECT
+SEMANTIC_PROFILE_LEAK_REJECTED     PASS  REJECT
+```
+
+The correct reasoning is:
+
+| Profile | Invariant | Owner | Response |
+| --- | --- | --- | --- |
+| accepted | declared resources survive translation | profile maintainer | accept local translation |
+| missing memory | every required resource reaches request | rule/profile maintainer | restore `mem_mb` |
+| under-provisioned | request is not smaller than declaration | profile maintainer | remove `memory_scale: 0.5` |
+| semantic leak | profile changes operation, not meaning | workflow owner | move threshold to semantic config |
+
+None of the rejected requests is transient. Repetition does not add a missing
+field, increase memory, or move a threshold to its proper owner.
+
+The accepted receipt contains `"executed": false`. Therefore the supported
+conclusion is:
+
+> The adapter rendered an acceptable Slurm request from the declared resources.
+
+The unsupported conclusion is:
+
+> Slurm accepted and ran the job.
+
+PASS and ACCEPT answer different questions. PASS says the audit observed its
+expected condition. ACCEPT says the profile is suitable for the bounded local
+translation claim.
 
 ## Exercise 8: Design a staging route
 
-The route should copy or link a declared source into job-specific scratch, execute there,
-validate the result, and atomically publish to the declared final path. Failure cleanup
-must not delete unrelated jobs or present scratch files as final outputs. Scratch root,
-transfer mechanism, and latency assumptions belong to operating context. Input identity,
-result content, and final contract remain stable.
+A strong route has these transitions:
+
+1. submit the accepted resource request;
+2. capture the scheduler job ID;
+3. allocate job-specific scratch;
+4. prove `data/records.tsv` is readable from the worker;
+5. compute a temporary result in scratch;
+6. validate header, row membership, and threshold behavior;
+7. atomically publish to `results/summary.tsv`;
+8. verify the published result from the orchestrator;
+9. remove job-specific scratch.
+
+Evidence should include:
+
+| Transition | Evidence |
+| --- | --- |
+| request to allocation | submission receipt and job ID |
+| allocation to readable input | worker path probe or staging log |
+| execution | command log and exit status |
+| validation | semantic assertions |
+| publication | atomic rename record and checksum |
+| downstream trust | Snakemake sees the declared final path |
+
+On failure, preserve the worker log and scheduler state. Remove only the current
+job's temporary output. Never rename an unvalidated scratch artifact into the
+final path.
 
 The diagram is not complete unless it marks where trust starts. A reviewer should be able
 to point to one step and say, "before this, execution state is provisional; after this,
@@ -169,27 +218,70 @@ the declared output may be trusted."
 
 ## Exercise 9: Prove a clean-room run
 
-A strong clean-room route begins from documented inputs and a declared software
-environment, executes into an empty work area, and verifies an expected output inventory.
-Checksums or semantic assertions establish more than file existence. The exercise rules
-out ambient files, previously solved environments, undeclared variables, and stale outputs
-as hidden dependencies.
+Two representative mutation tests are:
+
+- `test_missing_memory_case_must_remove_memory` edits the profile so it no
+  longer removes `mem_mb`. The adapter accepts it, making
+  `adapter_rejected=false`; the audit exits nonzero because the promised
+  rejection is no longer demonstrated.
+- `test_semantic_leak_case_must_change_workflow_meaning` removes the semantic
+  override. Again, acceptance is correct, so the rejection finding must fail.
+
+The suite also creates:
+
+```text
+workspace/stale-receipt.json
+```
+
+and reruns the audit. The file must disappear because the audit removes its
+workspace before collecting new evidence. Otherwise an old rejection could be
+mistaken for the current run.
+
+Static fixture comparison would show only that checked-in files have expected
+text. Mutation proves that the decision changes when its cause changes.
 
 ## Exercise 10: Review a production policy change
 
-Higher resources are acceptable when they only alter scheduling capacity. Retries require
-a named transient failure class, a bounded count, and evidence that repeated execution is
-safe. A new staging root is acceptable only when scratch remains private and publication
-returns to the unchanged final boundary. Compare profile dry-runs and run the smallest
-executed selftest that traverses staging and recovery; do not invoke the strongest suite
-without a claim that needs it.
+One defensible review is:
+
+| Change | Decision | Reason and required proof |
+| --- | --- | --- |
+| threads 4 to 8 | needs evidence | update declaration and show adapter preserves 8 |
+| memory 8,000 to 6,000 in adapter | reject | request under-provisions declared need |
+| threshold 10 to 30 in profile | reject | semantic field belongs in workflow config |
+| latency 30 to 90 | needs evidence | show delayed visibility rather than another failure |
+| retries 0 to 3 globally | reject | no eligible transient class or stop condition |
+| shared to node-local scratch | needs evidence | prove staging, cleanup, and unchanged final path |
+
+The replacement retry policy might be:
+
+```text
+Eligible: transient object-store timeout only
+Attempts: two retries
+Backoff: 30 seconds, then 120 seconds
+Preserve: job ID, attempt log, exit status
+Stop: repeated identical exit status or any validation failure
+Publish: only after semantic validation
+```
+
+The final contract remains:
+
+```text
+results/summary.tsv
+```
+
+Local evidence can approve deterministic translation and reject boundary leaks.
+It cannot approve the node-local scratch change for a real site. That decision
+needs a scheduler job ID, worker path evidence, publication evidence, and output
+verification.
 
 A strong review also shows a stable order:
 
 1. inspect the changed profile keys
-2. classify whether each line is capacity, observability, recovery, or storage policy
+2. classify each line as capacity, visibility, recovery, storage, or semantics
 3. reject any semantic leak before debating convenience
-4. choose the narrowest route that proves the accepted changes remain honest
+4. run the scheduler-policy audit for local translation
+5. require site integration only for claims that cross the scheduler boundary
 
 ## What all ten answers should have in common
 
