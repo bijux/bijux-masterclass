@@ -24,164 +24,190 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about keeping the important values visible enough that the test still
+teaches the claim it is supposed to prove.
 
-## Why this lesson matters
-
-Bad test data design makes good tests unreadable.
-
-Students often blame a test for being hard to follow when the real problem is that the
-data setup:
+Bad test data design makes good assertions unreadable.
+The setup becomes the real problem when it:
 
 - hides which values matter
-- reuses giant fixtures with accidental defaults
-- spreads meaning across distant helper files
-- makes invalid combinations too easy or valid combinations too magical
+- smuggles in accidental defaults
+- spreads semantic meaning across distant helpers
+- makes legal and illegal states equally magical
 
-If the setup hides the point of the test, the proof becomes weaker even when the
-assertions are correct.
+If the setup hides the pressure of the test, the proof weakens even when the assertions
+are correct.
 
-## Test data should have a visible owner
+## Keep one proof visible
+
+Use one capstone-style claim:
+
+- seat confirmation depends on visible seat count and prior attendee state
+- retry safety depends on visible durable progress and prior visible outcome state
+
+Now ask:
+
+Could another maintainer see the values that matter for this claim without reading three
+helper modules first?
+
+If the answer is no, the data design is already weakening the proof.
+
+## Test data needs an owner
 
 The core question is:
 
-- who is responsible for making this test input understandable?
+- who is responsible for making this input understandable?
 
-Usually the answer should be:
+Usually the answer is:
 
 - the test itself, when only a few values matter
-- a small local builder, when construction is verbose but the relevant overrides should stay visible
-- a narrowly shared fixture, when many tests truly depend on the same stable setup
+- a small local builder, when construction is verbose but the critical overrides should
+  stay visible
+- a narrowly shared fixture, when many tests truly depend on the same stable baseline
 
-Ownership means the reader can tell where the important shape of the data came from.
+Ownership matters because it tells the reader where the meaningful shape came from.
 
 ## Shared fixtures solve one problem and create another
 
 Large shared fixtures make tests shorter.
-
-They also create a hidden cost:
+They also create hidden cost:
 
 - the reader no longer knows which fields are essential
-- the fixture may smuggle in accidental invariants
-- changing one default can break dozens of unrelated tests
+- one fixture can smuggle in accidental invariants
+- changing one default can break unrelated proofs
 
-That does not mean shared fixtures are always wrong. It means they should be treated as
-owned abstractions, not free convenience.
+That does not make shared fixtures always wrong.
+It means they should be treated as owned abstractions, not free convenience.
 
-## Builders are useful when construction is meaningful but repetitive
+## Builders are useful when construction is repetitive but meaningful
 
-Builders help when domain objects need many values before they become valid.
+Builders help when an object needs several values before it becomes valid.
 
 A good builder usually:
 
 - provides honest defaults
-- exposes only the variations tests commonly need
-- makes invalid combinations explicit when a test wants them
-- stays thin enough that readers can still imagine the resulting object
+- exposes the variations tests commonly need
+- keeps invalid combinations explicit when a test wants them
+- stays thin enough that the resulting object is still imaginable
 
 A bad builder becomes a second object model with:
 
-- inheritance layers
 - hidden mutation
 - surprising defaults
+- helper-specific jargon
 - special cases nobody can explain quickly
 
-The builder should reduce incidental setup cost, not add a new system to debug.
+The builder should reduce incidental setup cost, not create another system to debug.
 
-## Keep relevant values close to the assertion
+## Keep pressure values near the assertion
 
-One strong review rule is:
+One strong review rule is simple:
 
 - if a value matters to the claim, let the reader see it nearby
 
-For example, if a test is proving expiry behavior, the relevant timestamps should not be
-buried behind three fixture calls and two helper modules. The test should show the times
-or the named builder overrides clearly.
+If a test proves expiry behavior, the relevant timestamps should not be buried behind
+three fixture layers.
+If a test proves retry safety, the visible progress markers should not be hidden behind a
+generic "valid issuance" helper.
 
-This is not about avoiding helpers entirely. It is about keeping semantic pressure near
-the surface being proved.
+This is not an argument against helpers.
+It is an argument for semantic visibility.
 
-## Builders should preserve domain language
+## Builders should speak domain language
 
 If the model speaks in terms such as:
 
-- active incident
-- acknowledged rule
-- expired lease
-- repository conflict
+- confirmed attendee
+- waitlisted attendee
+- issued certificate
+- stale repository version
 
-then builders and fixtures should reflect that vocabulary.
+then builders and fixtures should reflect that same vocabulary.
 
-Helpers named after raw storage fields or legacy constructor noise make tests harder to
-review because they force the reader to translate setup back into domain meaning.
+Helpers named after raw storage fields or old constructor noise force readers to
+translate setup back into domain meaning before they can understand the proof.
 
-## A worked example
+That is wasted effort in a learning-oriented course.
 
-Suppose an incident aggregate requires:
+## Worked capstone example
 
-- identifier
-- severity
-- opened timestamp
-- current state
+Suppose an enrollment object needs:
+
+- workshop id
+- seat limit
+- attendee state
 - version
 
-A weak test helper might construct a giant default incident and let every test mutate it
-after creation.
+A weak helper might:
+
+- build one giant default enrollment
+- let every test mutate it afterward
 
 A stronger approach could be:
 
-- a small builder with honest defaults for a normal open incident
-- explicit methods or overrides such as `with_severity("critical")` or `closed_at(...)`
-- local values in the test for the fields that explain the proof
+- a small builder with honest defaults for a normal open enrollment
+- explicit overrides such as `with_seat_limit(1)` or `with_confirmed_attendee(...)`
+- local variables in the test for the few values that actually explain the proof
 
-Then a reader can see:
+That way the reader can see:
 
-- what kind of incident the test started from
+- what state the object started from
 - what was intentionally varied
 - why the assertion should hold
 
-## When local setup is better than reuse
+## Prefer local setup when the rule is subtle
 
 Not every repeated shape deserves a shared helper.
 
 Prefer local setup when:
 
 - the object is simple enough to read directly
-- the test is teaching a subtle rule and needs setup to stay explicit
+- the test is teaching a subtle timing or lifecycle rule
 - the values are unlikely to recur meaningfully elsewhere
 
-Excessive reuse can make the suite smaller while making each proof harder to audit.
+Over-reuse can make the suite smaller while making each individual proof harder to
+audit.
 
-## Common mistakes
+## Build a setup packet
 
-- building giant reusable fixtures that hide which inputs matter
-- creating builders with more complexity than the domain objects they build
+Before creating a shared helper or builder, write a short packet:
+
+- what recurring setup pain it removes
+- what important values must remain visible
+- which tests truly share the same baseline
+- what semantic jargon the helper should use
+
+If that packet is weak, the abstraction is probably premature.
+
+## Common failure modes
+
+- giant reusable fixtures that hide which inputs matter
+- builders with more complexity than the domain objects they build
 - mutating shared fixture state across tests
 - keeping important semantic values far from the assertion they explain
-- using setup helpers that speak storage language instead of domain language
+- using helpers that speak storage language instead of domain language
 
-## Review checklist
+## Setup review card
 
-| Question | Good sign |
+Use this short card when reviewing a fixture or builder:
+
+| Question | What you want to see |
 | --- | --- |
-| can the reader tell which test inputs matter without chasing many helpers? | yes |
+| can the reader tell which inputs matter without chasing many helpers? | yes |
 | do builders expose meaningful overrides instead of hidden magic? | yes |
 | are shared fixtures small and honestly scoped? | yes |
-| does test setup reinforce domain language? | yes |
+| does the setup reinforce domain language? | yes |
 
 ## Capstone connection
 
-Use the capstone suite to ask:
+Use this page to ask:
 
-- which fixtures currently hide lifecycle or timing details that matter to the proof?
-- where would a small builder improve readability more than another shared fixture?
-- which helpers should be narrowed because they are now carrying too many unrelated defaults?
+- which capstone fixtures currently hide lifecycle or timing details that matter to the
+  proof
+- where a small builder would improve readability more than another shared fixture
+- which helpers should be narrowed because they now carry too many unrelated defaults
 
-This is how test data setup becomes part of proof quality rather than invisible noise.
+That is how test data setup becomes part of proof quality rather than invisible noise.
 
 ## Exit check
 
