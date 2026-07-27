@@ -45,6 +45,12 @@ That is the governance center of gravity for this page.
 If the design claim could be rewritten as "we wanted it to be automatic," the mechanism is
 probably already too strong.
 
+For self-study, turn that sentence into a tooling-grade test:
+
+- what process-wide problem is being solved?
+- what explicit-import, registry, or build-time alternative was checked first?
+- how does the system behave with the hook or transform disabled entirely?
+
 ## Evidence route for hooks and transforms
 
 Use this route before approving an import hook or AST rewrite:
@@ -143,6 +149,15 @@ For any import hook, another engineer should be able to answer:
 - what happens if it is installed twice?
 - how does the system behave with no hook at all?
 
+Keep one no-hook worksheet beside every import-time mechanism:
+
+| Question | Strong answer shape |
+| --- | --- |
+| what still works with no hook? | core application logic or baseline program behavior |
+| what capability disappears? | tracing, instrumentation, rewrite, or discovery convenience |
+| what evidence stays available? | source locations, fallback startup path, or explicit import behavior |
+| what cleanup restores baseline? | finder removal, cache reset, or disabled pipeline path |
+
 ## AST transforms can preserve shape or quietly destroy evidence
 
 AST rewriting is another mechanism that looks delightful in demos and expensive in
@@ -229,6 +244,15 @@ If one of those keeps the behavior visible, it usually wins.
 That win matters even when the lower-power design is more repetitive. Repetition is often
 cheaper than invisible global semantics.
 
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "the hook makes startup seamless" | seamless hides global semantics and ordering cost |
+| "the transform only rewrites a tiny pattern" | tiny does not excuse lost locations or hidden import-time behavior |
+| "we can remove the hook later if needed" | later is not a present cleanup story |
+| "the app needs automatic discovery" | automatic discovery is not yet a tooling-grade justification |
+
 ## "No-hook mode" is a real design requirement
 
 One of the best governance tests is simple:
@@ -243,6 +267,11 @@ For many legitimate tooling cases, the answer should be yes:
 
 If the application cannot function without the import trick, the trick may be owning too
 much of the design.
+
+Before you leave this page, write one sentence beginning:
+
+- "this mechanism is tooling-grade because..."
+- "no-hook mode here means..."
 
 ## Failure modes to name explicitly
 
