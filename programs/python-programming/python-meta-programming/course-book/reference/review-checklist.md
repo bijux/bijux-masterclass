@@ -24,11 +24,9 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a lookup map: this page is part of the review shelf, not a first-read narrative. Read the second diagram as the reference rhythm: arrive with a concrete ambiguity, compare the current work against the boundary on the page, then turn that comparison into a decision.
-
 Use this checklist when reviewing decorators, descriptors, metaclasses, dynamic execution,
 or plugin registration code. The goal is not to punish dynamic design. The goal is to
-force it to justify itself.
+force it to justify itself with clear ownership, visible evidence, and a believable rollback story.
 
 ## Mechanism choice
 
@@ -67,3 +65,13 @@ Reject or rewrite if:
 - the mechanism is chosen because it feels advanced
 - the design hides work at import time without explicit contracts
 - the code becomes harder to debug than an ordinary explicit alternative
+- the proof route depends more on trust in the author than on inspectable evidence
+
+## Good stopping point
+
+Stop when you can turn the checklist into one explicit call:
+
+- keep as is
+- keep with tighter proof
+- move to a lower-power boundary
+- reject outright
