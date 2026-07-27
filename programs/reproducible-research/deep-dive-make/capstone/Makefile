@@ -40,6 +40,7 @@ WALKTHROUGH_DIR ?= $(ARTIFACTS_DIR)/walkthrough/reproducible-research/deep-dive-
 TOUR_DIR ?= $(ARTIFACTS_DIR)/tour/reproducible-research/deep-dive-make
 SELFTEST_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-make/selftest
 SELFTEST_WORK_DIR ?= $(SELFTEST_REPORT_DIR)/workspace
+SELFTEST_FAULT ?= none
 CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/contract
 INCIDENT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/incident
 PROFILE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-make/profile
@@ -468,6 +469,7 @@ selftest:
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
 >     MAKE="$(MAKE)" \
 >       PYTHON="$(PYTHON)" \
+>       SELFTEST_FAULT="$(SELFTEST_FAULT)" \
 >       SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" \
 >       SELFTEST_WORK_DIR="$(SELFTEST_WORK_DIR_ABS)" \
 >       $(TST_DIR)/run.sh
@@ -478,32 +480,21 @@ selftest-harness-tests:
 selftest-report:
 >     rm -rf "$(SELFTEST_REPORT_DIR_ABS)"
 >     mkdir -p "$(SELFTEST_REPORT_DIR_ABS)"
->     MAKE="$(MAKE)" \
+>     status=0; \
+>       MAKE="$(MAKE)" \
 >       PYTHON="$(PYTHON)" \
+>       SELFTEST_FAULT="$(SELFTEST_FAULT)" \
 >       SELFTEST_REPORT_DIR="$(SELFTEST_REPORT_DIR_ABS)" \
 >       SELFTEST_WORK_DIR="$(SELFTEST_WORK_DIR_ABS)" \
->       $(TST_DIR)/run.sh
->     cp $(DOCS_DIR)/selftest-guide.md "$(SELFTEST_REPORT_DIR_ABS)/SELFTEST_GUIDE.md"
->     cp $(DOCS_DIR)/proof-guide.md "$(SELFTEST_REPORT_DIR_ABS)/PROOF_GUIDE.md"
->     printf '%s\n' \
->       'Selftest review route:' \
->       '  1. Read summary.txt for the top-level verdict.' \
->       '  2. Read SELFTEST_GUIDE.md for file meanings and review questions.' \
->       '  3. Read PROOF_GUIDE.md for the wider claim-to-evidence route.' \
->       '  4. Read settings.env for the runtime boundary.' \
->       '  5. Read schedule-comparison.json for the schedule-equivalence decision.' \
->       '  6. Compare serial-inventory.json and parallel-inventory.json when it fails.' \
->       '  7. Read hidden-input.txt for the negative-proof result.' > "$(SELFTEST_REPORT_DIR_ABS)/route.txt"
->     printf '%s\n' \
->       'Bundle surfaces:' \
->       '  SELFTEST_GUIDE.md  reading order and file meanings' \
->       '  summary.txt        top-level verdict surface' \
->       '  settings.env       runtime boundary and guardrail values' \
->       '  schedule-comparison.json semantic schedule-equivalence result' \
->       '  serial-inventory.json declared serial artifact inventory' \
->       '  parallel-inventory.json declared parallel artifact inventory' \
->       '  hidden-input.txt   dishonest-input detection result' > "$(SELFTEST_REPORT_DIR_ABS)/bundle-guide.txt"
->     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(SELFTEST_REPORT_DIR_ABS)" --output "$(SELFTEST_REPORT_DIR_ABS)/manifest.json"
+>       $(TST_DIR)/run.sh || status=$$?; \
+>       $(PYTHON) scripts/write_selftest_bundle.py \
+>         --report-dir "$(SELFTEST_REPORT_DIR_ABS)" \
+>         --selftest-guide "$(DOCS_DIR)/selftest-guide.md" \
+>         --proof-guide "$(DOCS_DIR)/proof-guide.md"; \
+>       if [ "$$status" -ne 0 ]; then \
+>         echo "FAIL: preserved selftest report at $(SELFTEST_REPORT_DIR_ABS)" >&2; \
+>         exit "$$status"; \
+>       fi
 >     @echo "PASS: wrote selftest report to $(SELFTEST_REPORT_DIR_ABS)"
 
 verify-report: selftest-report
