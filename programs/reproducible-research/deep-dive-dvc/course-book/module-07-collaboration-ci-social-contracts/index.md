@@ -48,10 +48,11 @@ The central question is:
 If the answer is no, the repository still depends on social memory instead of a durable
 contract.
 
-The capstone corroboration surface for this module is the set of shared verification and
-remote-backed review routes: `capstone/Makefile`, `capstone/dvc.lock`,
-`capstone/docs/review-route-guide.md`, `capstone/docs/recovery-guide.md`,
-`capstone/docs/publish-contract.md`, and the `make -C capstone confirm` route.
+The capstone corroboration surface for this module is the controlled reviewer-handoff
+specimen in `capstone/repro/reviewer-handoff/`, its audit guide, seven isolated
+author/reviewer pairs, and saved discovery, pull, status, reproduction, and result
+receipts. That route tests this module's claim directly instead of asking generic
+capstone confirmation to stand in for independent review.
 
 ## Why this module exists
 
@@ -106,7 +107,7 @@ If the problem is already partly clear, use this shortcut:
 | [DVC Remotes and Shared Artifact Stewardship](dvc-remotes-and-shared-artifact-stewardship.md) | teaches remote-backed collaboration and artifact stewardship |
 | [Recovery Drills and Incident Readiness](recovery-drills-and-incident-readiness.md) | teaches recovery rehearsal and incident response as proof surfaces |
 | [Worked Example: Fixing a Missing Data Push Review](worked-example-fixing-a-missing-data-push-review.md) | walks through one realistic collaboration failure and repair |
-| [Exercises](exercises.md) | gives five mastery exercises |
+| [Exercises](exercises.md) | gives ten cumulative exercises ending in a no-oral-history handoff decision |
 | [Exercise Answers](exercise-answers.md) | explains model answers and review logic |
 | [Glossary](glossary.md) | keeps the module vocabulary stable |
 
@@ -116,8 +117,13 @@ By the end of this module, you should be able to explain:
 
 - why careful teams still need enforceable reproducibility contracts
 - what a DVC-aware CI route should verify
+- why discovery, object availability, repository completeness, and recorded execution are
+  separate contracts
+- why pre-reproduction status must be preserved
 - which merge events should block until data and lock evidence are complete
 - how DVC remotes support collaboration and recovery
+- why review should not require remote write authority
+- why executable output still needs a result contract
 - why recovery drills matter before an incident
 - how to write review expectations that another maintainer can follow without private context
 
@@ -126,17 +132,17 @@ By the end of this module, you should be able to explain:
 These commands form the evidence loop for Module 07:
 
 ```bash
-make -C capstone confirm
-make -C capstone recovery-review
-make -C capstone release-audit
+make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-selftest
+dvc remote list
 dvc pull
-dvc status
+dvc status --json
 dvc repro
 ```
 
-Use the `make` routes for the course-provided capstone review. Use the DVC commands inside
-a workspace when checking whether another maintainer can restore, inspect, and reproduce
-declared state.
+Use the audit to compare controlled handoff outcomes. Use the DVC commands inside a
+workspace when checking whether another maintainer can discover, restore, inspect, and
+reproduce declared state in claim order.
 
 ## Capstone route
 
@@ -144,20 +150,21 @@ Use the capstone after you can name the collaboration failure being prevented.
 
 Best corroboration surfaces for this module:
 
-- `capstone/Makefile`
-- `capstone/dvc.lock`
-- `capstone/docs/review-route-guide.md`
-- `capstone/docs/recovery-guide.md`
-- `capstone/docs/publish-contract.md`
-- `capstone/publish/v1/`
+- `capstone/repro/reviewer-handoff/README.md`
+- `capstone/repro/reviewer-handoff/handoff-contract.json`
+- `capstone/scripts/audit_reviewer_handoffs.py`
+- `capstone/tests/test_reviewer_handoff_audit.py`
+- `capstone/docs/reviewer-handoff-audit-guide.md`
+- generated `reviewer-handoff/summary.tsv`
+- generated per-case `finding.json` and `receipts.json`
 
 Useful proof route:
 
 ```bash
-make -C capstone confirm
-make -C capstone recovery-review
+make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
 ```
 
-The point of that route is not to prove that one author can run the project locally. It is
-to prove that the repository carries enough evidence for another maintainer to verify the
-same state story.
+The point is not to prove that one author can run the project locally. It is to prove that
+a cache-cold reviewer can discover the remote, restore the submitted state, observe it
+before repair, reproduce it without private files, and explain the bounded result without
+remote write authority.
