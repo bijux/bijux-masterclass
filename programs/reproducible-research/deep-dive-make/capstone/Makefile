@@ -76,7 +76,7 @@ RELEASE_INSTALL_REPORT_ABS := $(abspath $(RELEASE_INSTALL_REPORT))
 RELEASE_ACCEPTANCE_ABS := $(abspath $(RELEASE_ACCEPTANCE))
 SELFTEST_REPORT_DIR_ABS := $(abspath $(SELFTEST_REPORT_DIR))
 SELFTEST_WORK_DIR_ABS := $(abspath $(SELFTEST_WORK_DIR))
-REPRO_CASE ?= $(REP_DIR)/directory-creation-race.mk
+INCIDENT_CASE ?= all
 
 DEPFLAGS := -MMD -MP
 
@@ -178,7 +178,7 @@ help:
 >     '  walkthrough       build the learner-facing walkthrough bundle' \
 >     '  contract-audit    build the public-contract review bundle' \
 >     '  inspect           alias for contract-audit with learner review naming' \
->     '  incident-audit    build an executed failure review bundle (REPRO_CASE=...)' \
+>     '  incident-audit    verify concurrency failure signatures (INCIDENT_CASE=...)' \
 >     '  incremental-fault-audit prove stale missing-edge behavior and repaired rebuilds' \
 >     '  profile-audit     build the execution-profile review bundle' \
 >     '  confirm           alias for hardened with shared catalog naming' \
@@ -345,30 +345,35 @@ inspect: contract-audit
 
 incident-audit:
 >     rm -rf "$(INCIDENT_AUDIT_DIR)"
->     mkdir -p "$(INCIDENT_AUDIT_DIR)"
->     cp "$(REPRO_CASE)" "$(INCIDENT_AUDIT_DIR)/$(notdir $(REPRO_CASE))"
+>     mkdir -p "$(INCIDENT_AUDIT_DIR)/specimens"
+>     $(PYTHON) scripts/audit_incident_signatures.py \
+>       --repro-dir "$(REP_DIR)" \
+>       --workspace "$(INCIDENT_AUDIT_DIR)/workspace" \
+>       --output "$(INCIDENT_AUDIT_DIR)/report.json" \
+>       --make "$(MAKE)" \
+>       --case "$(INCIDENT_CASE)"
+>     cp "$(REP_DIR)/shared-log-interleaving.mk" "$(INCIDENT_AUDIT_DIR)/specimens/"
+>     cp "$(REP_DIR)/directory-creation-race.mk" "$(INCIDENT_AUDIT_DIR)/specimens/"
+>     cp "$(REP_DIR)/shared-staging-collision.mk" "$(INCIDENT_AUDIT_DIR)/specimens/"
 >     cp $(DOCS_DIR)/incident-review-guide.md "$(INCIDENT_AUDIT_DIR)/INCIDENT_REVIEW_GUIDE.md"
->     printf '%s\n' "make -f $(REPRO_CASE) -j2 all" > "$(INCIDENT_AUDIT_DIR)/command.txt"
->     if $(MAKE) -f "$(REPRO_CASE)" -j2 all > "$(INCIDENT_AUDIT_DIR)/run.txt" 2>&1; then status=0; else status=$$?; fi; \
->       printf 'exit_status=%s\n' "$$status" > "$(INCIDENT_AUDIT_DIR)/exit-status.txt"; \
->       $(MAKE) -f "$(REPRO_CASE)" clean >/dev/null 2>&1 || true
 >     printf '%s\n' \
 >       'Incident audit route:' \
 >       '  1. Read INCIDENT_REVIEW_GUIDE.md for the incident reading order.' \
->       '  2. Read command.txt, run.txt, and exit-status.txt for the observed incident evidence.' \
->       '  3. Read the copied repro makefile for the dishonest or unsafe pattern.' \
->       '  4. Read REPRO_GUIDE.md for the repair route back into the course.' \
->       '  5. Read PROOF_GUIDE.md if you need the matching production proof surface.' > "$(INCIDENT_AUDIT_DIR)/route.txt"
+>       '  2. Read summary.tsv before opening the complete report.json.' \
+>       '  3. Compare each raw run log with its preserved semantic evidence.' \
+>       '  4. Inspect workspace/ and specimens/ to connect behavior to graph ownership.' \
+>       '  5. Read REPRO_GUIDE.md for repairs and PROOF_GUIDE.md for production proof.' > "$(INCIDENT_AUDIT_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Repair surfaces:' \
->       '  REPRO_GUIDE.md   maps the failure class to the teaching repair pattern' \
->       '  PROOF_GUIDE.md   maps the repaired claim to the reference build surface' \
->       '  mk/objects.mk    shows rooted discovery and directory discipline in the real build' \
->       '  mk/stamps.mk     shows durable state tracking in the real build' > "$(INCIDENT_AUDIT_DIR)/repair-surfaces.txt"
+>       '  shared log       private worker records plus one deterministic merge owner' \
+>       '  directory race   one directory target used as an order-only prerequisite' \
+>       '  staging clash    private staging paths plus one publication owner' \
+>       '  REPRO_GUIDE.md   maps each failure class to its repair pattern' \
+>       '  PROOF_GUIDE.md   maps repaired claims to production proof surfaces' > "$(INCIDENT_AUDIT_DIR)/repair-surfaces.txt"
 >     cp $(DOCS_DIR)/repro-guide.md "$(INCIDENT_AUDIT_DIR)/REPRO_GUIDE.md"
 >     cp $(DOCS_DIR)/proof-guide.md "$(INCIDENT_AUDIT_DIR)/PROOF_GUIDE.md"
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(INCIDENT_AUDIT_DIR)" --output "$(INCIDENT_AUDIT_DIR)/manifest.json"
->     @echo "PASS: wrote incident audit to $(INCIDENT_AUDIT_DIR)"
+>     @echo "PASS: verified incident signatures in $(INCIDENT_AUDIT_DIR)"
 
 incremental-fault-audit:
 >     rm -rf "$(INCREMENTAL_FAULT_AUDIT_DIR)"
