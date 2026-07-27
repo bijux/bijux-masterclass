@@ -7,27 +7,58 @@ where a build becomes a release contract:
 - which evidence travels with it
 - and which publication steps other humans and systems are allowed to trust
 
-This module turns "the build finished" into "the release boundary is clear."
+This module turns "the build finished" into:
+
+> A consumer can identify, inspect, verify, extract, and rehearse installation of this
+> exact release candidate without access to the producer's shell history.
+
+That is a stronger claim than "an archive exists."
 
 ## Why this day matters
 
-Release work is where a build becomes public. A vague local artifact may still help the
-developer who created it, but it is not yet a trustworthy contract for another human,
-another machine, or a later audit.
+Release work is where a build crosses an ownership boundary. A vague local artifact may
+still help its producer, but it is not yet a trustworthy contract for another human,
+machine, packaging system, or later audit.
+
+Release mistakes are expensive because several truths can diverge:
+
+- the build produced the right executable
+- the archive contains the wrong files
+- the checksum correctly identifies the wrong archive
+- extraction writes outside the expected tree
+- installation escapes its rehearsal root
+- a retry combines residue from two candidates
+
+Each statement can be true while another fails. Module 08 teaches separate proof for each
+boundary.
+
+## Three states that must not share one name
+
+| State | Meaning | Who may trust it |
+| --- | --- | --- |
+| build output | a producer-owned file used as release input | build graph and local validation |
+| release candidate | an immutable artifact plus declared sidecar evidence awaiting acceptance | reviewers and release automation |
+| published release | an accepted candidate made available through a controlled publication system | consumers under the publication policy |
+
+`dist` should normally create a release candidate. It should not silently turn that
+candidate into a published release. Remote upload, approval, signing services, and
+credentialed publication often belong to another owner.
 
 ## Plan for the day
 
 | Time | Activity | Evidence you keep |
 | --- | --- | --- |
-| 45 minutes | Stage and inspect a tiny bundle | a sorted archive listing |
-| 75 minutes | Define target and package contracts | an included/excluded file table |
-| 75 minutes | Build the same archive twice | two checksums and the tool contract |
-| 60 minutes | Install twice under `DESTDIR` | identical destination manifests |
-| 75 minutes | Repair the worked release surface | identity, evidence, and publish boundaries |
-| 90 minutes | Complete the ten exercises | a release rehearsal record |
+| 40 minutes | Define candidate and publication target contracts | contract table |
+| 60 minutes | Inspect the capstone archive as a consumer | accepted/rejected layout review |
+| 75 minutes | Build twice from equivalent inputs | identity comparison and tool contract |
+| 60 minutes | Verify checksum and manifest agreement | candidate evidence record |
+| 60 minutes | Rehearse extraction and installation under repository-owned roots | containment proof |
+| 75 minutes | Inject package and verification failures | recovery evidence |
+| 90 minutes | Complete the ten exercises | release acceptance packet |
 
-Do not publish anything during this module. Every exercise uses `dist/` or a temporary
-installation root so you can inspect and destroy the result safely.
+Do not publish anything during this module. Every command writes generated evidence under
+the repository's `artifacts/` directory or the capstone's governed output paths. No
+exercise needs elevated privileges or a host installation path.
 
 ## What this module is for
 
@@ -39,19 +70,44 @@ By the end of Module 08, you should be able to explain five things clearly:
 - how to make install and publication steps safe and repeatable
 - how to diagnose whether a broken release came from build truth, package truth, or publish truth
 
-## The live demo for this module
+## Build one release acceptance packet
 
-Use one tiny bundle and one repeatable install rehearsal as the anchors for the day:
+Keep one packet through the module:
+
+```text
+artifacts/module08-release/
+├── contract.md
+├── producer/
+├── candidate/
+│   ├── dist.tar.gz
+│   ├── dist.tar.gz.sha256
+│   └── contents.txt
+├── consumer/
+│   ├── extracted/
+│   ├── extraction-manifest.txt
+│   └── acceptance.md
+├── install-root/
+├── install-manifest.txt
+├── failures/
+└── rehearsal.md
+```
+
+The packet separates producer evidence from what the consumer can independently inspect.
+Build it in this order:
 
 ```mermaid
 flowchart LR
-  stage["Stage a small bundle tree"] --> archive["Archive it with declared layout"]
-  archive --> verify["List contents and verify identity"]
-  verify --> install["Install into an empty destination root"]
-  install --> repeat["Repeat and compare manifests"]
+  contract["declare candidate contract"] --> build["produce candidate"]
+  build --> inspect["inspect without execution"]
+  inspect --> verify["verify identity and manifest"]
+  verify --> extract["extract under containment"]
+  extract --> install["rehearse destination layout"]
+  install --> fail["inject failures and verify recovery"]
+  fail --> accept["record accept or reject"]
 ```
 
-That sequence keeps the lesson focused on what the consumer can inspect and trust.
+The final result is not automatically "accepted." Rejection with precise evidence is a
+successful release rehearsal.
 
 ## Review the release as its consumer
 
@@ -69,13 +125,32 @@ flowchart LR
 For a candidate release, answer:
 
 1. Can I list its contents without executing it?
-2. Does the archive have one predictable top-level layout?
-3. Can I verify its identity before installation?
-4. Can I install under an empty `DESTDIR` without touching the host?
-5. Can I repeat construction and explain any byte difference?
+2. Does every member stay inside one declared package root?
+3. Are file types, paths, modes, and links acceptable?
+4. Can I verify exact bytes before extraction?
+5. Does the manifest describe the candidate I actually received?
+6. Can I extract and install under empty repository-owned roots?
+7. Can I repeat construction and explain any byte difference?
+8. Does failure leave the last accepted candidate intact?
 
 A green `make dist` answers none of these by itself. The module is successful when the
 artifact is understandable without access to the producer’s terminal history.
+
+## Use an acceptance gate
+
+Record each candidate against this gate:
+
+| Gate | Evidence | Result |
+| --- | --- | --- |
+| target contract | declared outputs and excluded side effects | |
+| archive layout | sorted member listing and file-type review | |
+| exact identity | checksum generated and independently verified | |
+| repeatability | two equivalent candidate hashes | |
+| extraction safety | all members remain under the consumer root | |
+| install containment | repeated destination manifests under one root | |
+| failure recovery | rejected candidate does not replace accepted bytes | |
+
+Checksums answer only the exact-identity row. A release candidate needs the whole gate.
 
 ## The question to keep asking
 
@@ -160,10 +235,10 @@ By the end of the day, you should have:
 These commands form the evidence loop for Module 08:
 
 ```sh
-make dist
-make install DESTDIR=/tmp/release-check
-make -q dist
-make --trace dist
+gmake -C programs/reproducible-research/deep-dive-make/capstone dist
+tar -tzf programs/reproducible-research/deep-dive-make/capstone/dist.tar.gz
+gmake -C programs/reproducible-research/deep-dive-make/capstone -q dist
+gmake -C programs/reproducible-research/deep-dive-make/capstone --trace -n dist
 ```
 
 The point is not to produce artifacts once. The point is to make publication behavior
@@ -186,8 +261,10 @@ Do not move on until all of these are true:
 - you can say what `dist` promises in one sentence
 - you can justify why each file belongs inside or outside a release bundle
 - you can explain which evidence is part of artifact identity and which is only adjacent proof
-- you can run an install route twice without changing the destination unexpectedly
+- you can reject unsafe archive paths before extraction
+- you can run an install rehearsal twice under a repository-owned root without unexpected drift
 - you can classify one broken release by the exact truth boundary that failed
-- you can complete all ten exercises and reproduce the same artifact from the same inputs
+- you can prove a failed candidate did not replace the last accepted bytes
+- you can complete all ten exercises and hand another learner a reviewable acceptance packet
 
 When those feel ordinary, Module 08 has done its job.
