@@ -49,6 +49,33 @@ module03-lab/
 That layout makes it easier to compare policy surfaces, failure evidence, and proof routes
 without rebuilding the project from scratch for every prompt.
 
+Build one small production review packet as you go:
+
+- one table comparing local, CI, and scheduler-facing profile intent
+- one paired dry-run comparison for the same semantic target
+- one failure-class note that distinguishes retry, fail-fast, and rerun-incomplete cases
+- one storage lifecycle sketch that marks where trust begins
+- one short proof ladder showing which route answers which operational question
+- one maintainer-style review note for a policy diff
+
+If those six artifacts are scattered or missing, the day usually turns into command
+memory instead of production reasoning.
+
+```mermaid
+flowchart LR
+  profiles["name the policy boundary"]
+  compare["compare the same semantic target"]
+  failures["classify failures before response"]
+  storage["mark where trust begins"]
+  proof["choose a proof route"]
+  review["review policy like a maintainer"]
+
+  profiles --> compare --> failures --> storage --> proof --> review
+```
+
+Use that sequence on purpose. It keeps the day anchored in boundary judgment instead of
+letting isolated commands impersonate understanding.
+
 ## Exercise 1: Separate policy from workflow meaning
 
 Take a small workflow and propose four settings:
@@ -76,6 +103,8 @@ What to hand in:
 - paired dry-runs against the same target
 - a table classifying every differing setting
 - evidence that the target graph is semantically unchanged
+- one plain-language invariant sentence such as "the requested target, sample set, and
+  publish meaning did not change"
 
 Study note:
 If the job graph changes for the same semantic inputs, treat that as a boundary defect
@@ -110,6 +139,8 @@ What to hand in:
 
 - the three situations
 - the response for each one
+- one small classification table with columns for failure class, evidence surface, and
+  justified response
 - one sentence explaining how logs help the reviewer tell them apart
 
 Study note:
@@ -148,6 +179,19 @@ Study note:
 Review order matters. Good maintainers do not start from intuition when a named boundary
 already exists.
 
+## Midday self-check
+
+Before you move into failure injection and clean-room proof, make sure your packet can
+already answer all of these:
+
+- which settings are operational policy and which are semantic leaks
+- which comparison route proves that local and CI still mean the same workflow
+- which proof route is smaller than `make confirm` but still honest for a bounded claim
+- which path or output is trusted and which path is only staging or scratch
+
+If you cannot answer those four questions cleanly, do not rush into later exercises.
+Return to the earlier comparisons and make the packet more explicit.
+
 ## Exercise 7: Inject and classify failures
 
 Cause three controlled failures: one transient simulation, one invalid configuration, and
@@ -175,6 +219,7 @@ What to hand in:
 - cleanup behavior after success and failure
 - the profile-owned settings or environment assumptions
 - the invariant that must remain identical across local and cluster contexts
+- a visible mark on the diagram showing the exact point where downstream trust begins
 
 Study note:
 If scratch placement changes what a downstream consumer trusts, the route is wrong.
@@ -206,6 +251,21 @@ What to hand in:
 - the failure class the retry policy is intended to cover
 - evidence that final outputs and publish boundaries remain stable
 - the narrowest verification route that supports your conclusion
+- the order in which you reviewed profile policy, failure policy, and storage assumptions
+
+Study note:
+Treat this like a maintainer handoff, not like a personal preference memo. If the review
+order is invisible, the next maintainer cannot repeat your reasoning under pressure.
+
+## What weak completion looks like
+
+Do not call the day complete if your answers do any of these:
+
+- treat "works locally" as proof that policy is honest
+- discuss retries without naming a failure class first
+- trust scratch or interrupted outputs because bytes were visible
+- jump straight to the strongest route when a smaller one would prove the claim more clearly
+- approve a production diff without showing a stable review order
 
 ## Exit standard for the exercise day
 

@@ -23,6 +23,18 @@ The strongest Module 03 answers usually do four things:
 - they choose one proportionate proof route
 - they describe the repair in terms of repository discipline, not heroics
 
+The strongest self-study packets also leave behind six concrete artifacts:
+
+- a profile comparison table
+- one paired dry-run comparison
+- one failure-class matrix
+- one storage lifecycle sketch
+- one proof ladder
+- one short maintainer review note
+
+If your packet contains only commands and verdicts, go back and make the reasoning more
+visible.
+
 ## Exercise 1: Separate policy from workflow meaning
 
 A strong answer sounds like this:
@@ -45,6 +57,15 @@ use more cores and shorter latency patience; CI may serialize work, show failed 
 wait longer for filesystem visibility. The paired dry-runs should resolve the same jobs
 and dependencies for the same requested target. A line-by-line table prevents a harmless
 operational difference from concealing semantic drift.
+
+A compact model table might look like this:
+
+| Surface | Local | CI | Safe difference? |
+| --- | --- | --- | --- |
+| target | `publish/v1/manifest.json` | `publish/v1/manifest.json` | must stay the same |
+| cores | 4 | 1 | yes |
+| latency wait | 5 | 20 | yes |
+| publish root | `publish/v1/` | `publish/v1/` | must stay the same |
 
 Why this is strong:
 
@@ -83,6 +104,14 @@ Example answer shape:
 - logs:
   - per-job logs help determine whether the failure was transient, semantic, or
     partial-publication related
+
+A compact model matrix might look like this:
+
+| Failure class | Evidence surface | Response |
+| --- | --- | --- |
+| transient infrastructure issue | failed log plus external service or storage symptom | bounded retry |
+| semantic defect | config value, rule contract, or deterministic traceback | fail fast |
+| interrupted output | incomplete file plus interrupted execution evidence | rerun incomplete state deliberately |
 
 Why this is strong:
 
@@ -134,6 +163,10 @@ must not delete unrelated jobs or present scratch files as final outputs. Scratc
 transfer mechanism, and latency assumptions belong to operating context. Input identity,
 result content, and final contract remain stable.
 
+The diagram is not complete unless it marks where trust starts. A reviewer should be able
+to point to one step and say, "before this, execution state is provisional; after this,
+the declared output may be trusted."
+
 ## Exercise 9: Prove a clean-room run
 
 A strong clean-room route begins from documented inputs and a declared software
@@ -151,6 +184,13 @@ returns to the unchanged final boundary. Compare profile dry-runs and run the sm
 executed selftest that traverses staging and recovery; do not invoke the strongest suite
 without a claim that needs it.
 
+A strong review also shows a stable order:
+
+1. inspect the changed profile keys
+2. classify whether each line is capacity, observability, recovery, or storage policy
+3. reject any semantic leak before debating convenience
+4. choose the narrowest route that proves the accepted changes remain honest
+
 ## What all ten answers should have in common
 
 The best Module 03 answers usually:
@@ -159,5 +199,12 @@ The best Module 03 answers usually:
 2. explain recovery as a contract rather than a habit
 3. treat proof routes as proportionate tools instead of ritual commands
 4. describe operational governance as something the repository should teach
+
+Weak answer pattern:
+
+- "production is complicated, so more retries and more confirmation should be fine"
+
+That sentence hides every boundary the module is trying to teach. If your answers still
+sound like that, keep revising.
 
 If your answers do those four things, the module is landing in the right way.
