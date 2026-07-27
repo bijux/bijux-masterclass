@@ -32,6 +32,12 @@ descriptor-system power, cache policy, backend ownership, and framework boundari
 This page matters because answer keys can accidentally train imitation instead of review.
 Use the answers here as reasoning checkpoints, not as short phrases to copy.
 
+Use this page actively:
+
+- compare your stated source of truth against the reference answer
+- compare your invalidation owner against the reference answer
+- check whether you named a refused weaker owner or stronger owner when the answer needed one
+
 ## Answer 1: Design one cached field honestly
 
 Example answer:
@@ -56,6 +62,14 @@ Repair move if your answer is weak:
 
 - add the exact cache slot
 - add the exact invalidation trigger
+
+Weak answer to reject:
+
+- "the cache works because the field stores the result for later"
+
+Why it fails:
+
+it names reuse but not staleness, dependency, or invalidation ownership.
 
 ## Answer 2: Review one external-storage field
 
@@ -84,6 +98,14 @@ Repair move if your answer is weak:
 
 - rewrite the answer until a reviewer can tell where truth lives and why the access is not purely local
 
+Weak answer to reject:
+
+- "the descriptor just proxies storage"
+
+Why it fails:
+
+proxy language hides the backend slot, serialization boundary, and hidden I/O cost.
+
 ## Answer 3: Compose one wrapper field
 
 Example answer:
@@ -104,6 +126,14 @@ Reasoning checkpoint:
 Repair move if your answer is weak:
 
 - remove one wrapper mentally and restate what behavior actually changes
+
+Weak answer to reject:
+
+- "the wrapper makes the field more flexible"
+
+Why it fails:
+
+flexible does not identify the inner contract or the one concern added by the wrapper.
 
 ## Answer 4: Validate one narrow hint subset
 
@@ -132,6 +162,14 @@ Reasoning checkpoint:
 Repair move if your answer is weak:
 
 - add one concrete refused hint form and one concrete coercion boundary
+
+Weak answer to reject:
+
+- "it supports annotations for runtime checking"
+
+Why it fails:
+
+annotations are too broad a surface unless the accepted subset and refusal surface are named.
 
 ## Answer 5: Reject one descriptor that became architecture
 
@@ -164,6 +202,14 @@ Repair move if your answer is weak:
 
 - replace generic words such as "system" or "framework stuff" with one concrete owner like session, repository, or unit of work
 
+Weak answer to reject:
+
+- "the descriptor got too complex"
+
+Why it fails:
+
+complexity alone is not the boundary; the missing point is which broader owner must take over.
+
 ## Answer 6: Review the educational mini relational model
 
 Example answer:
@@ -194,6 +240,14 @@ Repair move if your answer is weak:
 
 - add one sentence beginning with "this example does not prove..."
 
+Weak answer to reject:
+
+- "it is basically a tiny ORM"
+
+Why it fails:
+
+that sentence grants production responsibilities the worked example explicitly refuses.
+
 ## Answer 7: Make one backend access path observable
 
 Example answer:
@@ -219,6 +273,14 @@ Reasoning checkpoint:
 Repair move if your answer is weak:
 
 - add one counter, log, or helper that would make the access path visible
+
+Weak answer to reject:
+
+- "backend access can be logged if needed later"
+
+Why it fails:
+
+later is not an observation surface another reviewer can inspect now.
 
 ## Answer 8: Separate one field concern from one framework concern
 
@@ -249,6 +311,14 @@ Repair move if your answer is weak:
 
 - redraw the boundary as "stays in field" versus "moves out" and justify each line
 
+Weak answer to reject:
+
+- "the field handles the local part and the framework handles the rest"
+
+Why it fails:
+
+local and the rest are too vague to review or implement cleanly.
+
 ## Answer 9: Compare honest field claims with overstated framework claims
 
 Example answer:
@@ -276,6 +346,14 @@ Repair move if your answer is weak:
 
 - highlight the exaggerated words, then replace them with the smallest honest promise
 
+Weak answer to reject:
+
+- "it mostly keeps the model in sync"
+
+Why it fails:
+
+mostly and in sync overclaim coordination without naming what is actually guaranteed.
+
 ## Answer 10: Produce a descriptor-system packet
 
 The packet is strong when another learner can answer:
@@ -290,6 +368,10 @@ Add these final checks to your own packet:
 - one refused weaker owner
 - one refused stronger owner
 - one remaining uncertainty you would audit next
+
+Extra packet test:
+
+- could a missed-class learner reconstruct your owner ladder from the packet alone?
 
 ## What strong Module 08 answers have in common
 
@@ -306,6 +388,15 @@ Across the whole set, strong answers share the same habits:
 If an answer still sounds like "framework behavior can live in the descriptor somehow,"
 revise it until you can say exactly what the descriptor owns and what should move out of
 it.
+
+## Cross-answer habits to inspect
+
+| Habit to inspect | Strong answer behavior |
+| --- | --- |
+| naming truth | always points to one authoritative slot, object, or service |
+| naming invalidation | always identifies the actor or path that clears stale state |
+| naming refusal | always states what the field or model deliberately does not prove |
+| naming escalation | always identifies the first broader owner when the field boundary breaks |
 
 ## Exit check for this answer key
 
