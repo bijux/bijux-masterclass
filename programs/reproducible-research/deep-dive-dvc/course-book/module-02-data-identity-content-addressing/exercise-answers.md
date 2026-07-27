@@ -157,56 +157,126 @@ The main lesson is that recovery is strong evidence, but still a bounded kind of
 That bounded proof is still valuable because it answers one important recovery question
 cleanly without pretending to answer every other trust question too.
 
-## Answer 6: Inspect a pointer by hand
+## Answer 6: Predict the identity audit
 
-The `.dvc` file is small Git-tracked metadata. Its hash identifies content stored under
-the cache layout, while the size supports integrity checks. The workspace file is a
-materialized copy or link. None of these locations alone should be confused with the whole
-recovery contract.
+The expected decisions are:
 
-If only the pointer survived, what would still be missing is accessible content storage.
-Metadata can name the object honestly and still fail to provide the bytes.
+| Finding | Result | Decision | Reason |
+| --- | --- | --- | --- |
+| `POINTER_NAMES_CACHED_CONTENT` | `PASS` | `ACCEPT` | pointer ID, size, cache object, and independent digest agree |
+| `SAME_BYTES_SHARE_IDENTITY` | `PASS` | `ACCEPT` | relocated equal bytes receive the same DVC ID |
+| `CHANGED_BYTES_CHANGE_IDENTITY` | `PASS` | `ACCEPT` | appending a row changes the ID at the stable path |
+| `CACHE_RESTORES_WORKSPACE` | `PASS` | `ACCEPT` | checkout restores matching bytes from surviving cache |
+| `REMOTE_RESTORES_AFTER_CACHE_LOSS` | `PASS` | `ACCEPT` | pull repopulates cache and workspace after both were removed |
+| `REMOTE_RECOVERY_PRESERVES_IDENTITY` | `PASS` | `ACCEPT` | recovered pointer ID and digest match baseline |
+| `POINTER_ONLY_IS_NOT_RECOVERABLE` | `PASS` | `REJECT` | the audit successfully reproduces a recovery claim the course rejects |
 
-## Answer 7: Prove checkout changes workspace state
+`PASS / REJECT` is not contradictory. The checker passed because checkout failed for the
+intended reason and the workspace stayed absent. A production claim that pointer metadata
+alone guarantees recovery should be rejected.
 
-Git changes the pointer revision. `dvc checkout` then materializes the content named by
-that pointer from available cache state. The cache may retain both versions, while only
-one appears at the workspace path. This is why path equality is weaker than content
-identity.
+If a prediction expected pointer-only checkout to succeed, the missing concept is content
+availability. If it expected remote recovery to change the ID, the missing concept is
+identity preservation across storage moves.
 
-Workspace state and cache state are not interchangeable because the cache can preserve
-multiple tracked versions while the workspace exposes only the currently materialized one.
+## Answer 7: Disprove path-based identity
 
-## Answer 8: Test a remote from an empty cache
+A correct contrast looks like:
 
-Strong evidence begins from a genuinely empty local cache, runs `dvc pull`, and compares
-the recovered checksum or DVC status with the source revision. A successful recovery
-proves more than a push command that happened to exit zero.
+| Case | Path changed? | Bytes changed? | Pointer ID changed? | Conclusion |
+| --- | --- | --- | --- | --- |
+| same content | yes | no | no | location is not identity |
+| changed content | no | yes | yes | bytes determine identity |
 
-What this proves about the remote is that it held the required tracked object for the
-recovery route you tested. What it does not prove is that every published artifact or
-workflow interpretation boundary is now automatically correct.
+Use the actual generated IDs because they connect the argument to reviewable pointers.
 
-## Answer 9: Diagnose a missing-object failure
+The first row controls content while changing location. The second controls location while
+changing content. Together they support a causal argument: the DVC identity follows bytes,
+not the workspace path.
 
-The pointer can still name a valid object even when no accessible storage currently
-contains it. The failure is availability, not necessarily metadata corruption. Repair
-means restoring the object from a durable copy or revising an invalid recovery claim.
+Do not argue only that “hashes match.” Explain what variable changed and what remained
+fixed.
 
-The recovery claim that has now failed is the claim that the tracked object is actually
-recoverable from the currently available storage layers.
+## Answer 8: Trace cache and remote recovery
 
-## Answer 10: Draw a state-authority diagram
+The cache-recovery timeline is:
 
-A sound diagram distinguishes `dvc add`, `push`, `pull`, and `checkout`. Git governs
-pointer history; the cache accelerates local materialization; the remote supports shared
-recovery; published bundles serve consumers. Authority must be stated explicitly rather
-than inferred from whichever copy is nearby.
+1. `dvc add` creates pointer and cache object.
+2. The audit deletes only `data/observations.csv`.
+3. `dvc checkout` reads the surviving cache object.
+4. The workspace returns with the source SHA-256.
+5. No remote is configured or needed.
 
-Downstream trust usually begins at the published bundle or another declared consumer
-boundary, not merely at the existence of tracked content in cache. The node many teams
-overtrust is often the workspace, because it is the most visible layer even though it is
-only one local materialization.
+The remote-recovery timeline is:
+
+1. `dvc add` creates local pointer and cache object.
+2. `dvc push` copies the object to `.identity-remote`.
+3. The audit deletes the workspace and entire local cache.
+4. `dvc pull` retrieves the object from the remote.
+5. The local cache and workspace return.
+6. Checkout confirms the available cache can project the recorded state.
+
+Cache-only recovery cannot prove remote durability because the remote is outside its causal
+path. Remote recovery after cache deletion is stronger than push success because the
+consumer operation demonstrates that the pushed object can actually be retrieved and
+verified.
+
+The final workspace is insufficient evidence by itself. The deletion setup, receipts,
+repopulated cache, pointer ID, and digest close different parts of the argument.
+
+## Answer 9: Diagnose pointer-only failure
+
+This is an **availability failure**, not an identity disagreement:
+
+- the `.dvc` pointer still records a content ID
+- no conflicting workspace bytes exist
+- the cache object is absent
+- no remote is configured to supply it
+- checkout returns nonzero and reports that the cache-backed target is unavailable
+
+A repair that preserves identity is to restore the exact named object from a verified
+backup or remote and then run checkout.
+
+A concealing action is to create arbitrary replacement bytes at the path and run
+`dvc add`. That records a new identity instead of recovering the missing one. It may be a
+legitimate new revision after explicit review, but it is not recovery.
+
+The failed claim is narrow: the named content is not recoverable from the currently
+available storage layers. The pointer can still be valid metadata.
+
+## Answer 10: Defend a bounded recovery claim
+
+A minimal reviewer packet contains:
+
+1. `summary.tsv`
+2. the remote-recovery `.dvc` pointer
+3. push, pull, and checkout receipts
+4. the repopulated cache-object location
+5. report evidence for restored SHA-256
+6. pointer-only checkout stderr
+
+A sound authority diagram separates the directions:
+
+```mermaid
+flowchart LR
+  pointer["pointer: expected identity"] --> cache["cache: local availability"]
+  cache -->|push| remote["remote: off-machine availability"]
+  remote -->|pull| cache
+  cache -->|checkout| workspace["workspace: current projection"]
+  workspace -. "not publication by itself" .-> publish["published contract"]
+```
+
+A model conclusion is:
+
+> After loss of the workspace projection and local cache, the configured remote supplied
+> the pointer's original content ID. Pull and checkout receipts, a repopulated cache
+> object, and a matching SHA-256 confirm the restored bytes. The pointer-only control
+> rules out metadata as the byte source. This proves remote recoverability for the tested
+> object. It does not prove scientific meaning, environment equivalence, or downstream
+> publication approval.
+
+The follow-up proof before publication belongs to the publish-contract or release-review
+route, not to another cache inspection.
 
 ## Self-check
 
