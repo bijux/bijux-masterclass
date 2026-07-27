@@ -161,74 +161,185 @@ Responsible release sentence:
 > comparison and supports the fixed-threshold review, but it does not replace the scalar
 > metric and threshold-policy decision.
 
-## Answer 6: Design a stable metric schema
+## Answer 6: Predict the metric contract audit
 
-A stable schema makes meaning explicit rather than relying on field names alone. Strong
-records include:
+Expected classifications:
 
-- metric name
-- unit or scale
-- population definition
-- aggregation rule
-- direction of better
-- schema version
+| Case | Metric delta | Parameter diff | Semantic boundary | Decision |
+| --- | ---: | --- | --- | --- |
+| comparable candidate | `0.0458` | empty | none of the required fields change | `ACCEPT` |
+| additive metric | `0.0458` | empty | new metric key only | `ACCEPT` |
+| population drift | `0.0458` | empty | population identity changes | `REJECT` |
+| unit drift | `77.5241` | empty | fraction becomes percent | `REJECT` |
+| control drift | `0.0458` | threshold `0.65 -> 0.50` | evaluation rule changes | `REJECT` |
+| schema-version drift | `0.0458` | empty | version `1 -> 2` | `REJECT` |
+| missing population identity | `0.0458` | empty | required identity disappears | `ABSTAIN` |
 
-The incompatible record should fail because its unit, aggregation, population, or version
-changes comparison meaning. A reviewer should detect incompatibility quickly by checking
-version and semantic fields before reading the score.
+The audit summary represents abstention as `REJECT` because the comparison gate is
+closed. The review explanation should preserve the reason: incompatibility is observed in
+drift cases; compatibility is unknown when evidence is missing.
 
-## Answer 7: Separate tuning controls from run policy
+`PASS / REJECT` means the audit successfully reproduced a defect that a direct metric
+comparison must reject. `PASS` evaluates the audit observation. `REJECT` evaluates the
+candidate comparison.
 
-Values that alter learned behavior, data selection, or evaluation meaning belong in
-governed semantic inputs. Worker counts, cache locations, debug flags, and log verbosity
-usually belong to execution policy unless the repository has evidence that they change
-meaning.
+## Answer 7: Reconstruct and recompute the accepted claim
 
-The main lesson is that `params.yaml` should hold comparison-relevant controls, not every
-operational detail the run happened to use.
+Baseline confusion matrix:
 
-## Answer 8: Recompute a comparison manually
+```text
+TP = 42
+FP = 12
+FN = 18
+TN = 48
+```
 
-The manual calculation should:
+Baseline calculations:
 
-- confirm the direction and magnitude of the change
-- check whether the same denominator or population is being compared
-- confirm how rounding was applied
-- verify that missing values or renamed keys are not being silently ignored
+```text
+precision = 42 / (42 + 12) = 42 / 54 = 0.7778
+recall    = 42 / (42 + 18) = 42 / 60 = 0.7000
+F1        = 2 * 0.777777... * 0.7 / (0.777777... + 0.7)
+          = 0.7368
+```
 
-A strong final judgment says whether the numeric diff is both arithmetically correct and
-semantically comparable. The most common hidden mistake is comparing correct numbers from
-different populations or definitions.
+Candidate confusion matrix:
 
-## Answer 9: Set a decision threshold before seeing results
+```text
+TP = 45
+FP = 10
+FN = 15
+TN = 50
+```
 
-A defensible rule names:
+Candidate calculations:
 
-- the primary metric and its required improvement
-- tolerable regression on safeguards
-- the minimum evidence needed for acceptance
-- an abstain outcome when population, schema, or control continuity is unclear
+```text
+precision = 45 / (45 + 10) = 45 / 55 = 0.8182
+recall    = 45 / (45 + 15) = 45 / 60 = 0.7500
+F1        = 2 * 0.818181... * 0.75 / (0.818181... + 0.75)
+          = 0.7826
+```
 
-Why this matters:
+Using the rounded values recorded by the specimen:
 
-- precommitment prevents teams from rewriting the decision rule to fit a favored result
+```text
+delta = 0.7826 - 0.7368 = 0.0458
+```
 
-## Answer 10: Build a reviewable comparison packet
+Bounded claim:
 
-An independent reviewer should be able to:
+> On the same identified 120-row population, under schema version `1`, threshold `0.65`,
+> fraction units, and global positive-class binary F1, the candidate increased from
+> `0.7368` to `0.7826`.
 
-- identify both runs
-- confirm comparable data and environment surfaces
-- understand parameter differences
-- reproduce the metric interpretation
-- distinguish measured fact from your narrative
+This does not establish representativeness, fairness, calibration, operational cost, or a
+release decision. Those claims are outside the packet.
 
-What another learner should judge confidently:
+## Answer 8: Defeat two plausible shortcuts
 
-- whether the runs are comparable and what changed
+### Equal row counts
 
-Any remaining confusion should expose a missing artifact, unclear schema, or weak control
-explanation rather than requiring spoken history to fill the gap.
+Tempting evidence:
+
+- baseline and candidate both report `rows: 120`
+- DVC reports a `0.0458` increase
+
+Defeating evidence:
+
+- baseline population starts `sha256:8d4935...`
+- candidate population starts `sha256:ae27d8...`
+
+Safe note:
+
+> The metric increased mechanically, but equal population counts do not establish equal
+> population identity. Reject the same-population claim.
+
+Repair:
+
+- evaluate on the governed baseline population, or establish and document a new baseline
+  for the changed population
+
+### Stable metric key
+
+Tempting evidence:
+
+- both records use `positive_class_f1_at_fixed_threshold`
+- DVC reports a positive `77.5241` delta
+
+Defeating evidence:
+
+- baseline unit is `fraction`
+- candidate unit is `percent`
+
+Safe note:
+
+> The metric path is stable, but the values use incompatible scales. The reported
+> subtraction cannot support an improvement claim.
+
+Repair:
+
+- normalize both records to one declared unit and regenerate the comparison, or establish
+  a new baseline
+
+DVC reports both deltas because its job is to compare recorded numeric values. Population
+identity and unit compatibility belong to the semantic review.
+
+## Answer 9: Separate policy change, schema evolution, and missing evidence
+
+| Case | Classification | Reason | Next action |
+| --- | --- | --- | --- |
+| control drift | useful result answering a different policy question | threshold changes to `0.50` | review threshold-specific precision and recall, or rerun at `0.65` |
+| additive metric | compatible extension | primary contract remains stable; false-positive rate is added | compare prior F1 and begin new history for FPR |
+| schema-version drift | incompatible direct comparison | version changes without a compatibility mapping | provide a reviewed mapping or establish a new baseline |
+| missing population identity | abstention | continuity cannot be established from row count | restore governed population identity |
+
+The control-drift result can answer:
+
+> What classification tradeoff results from lowering the decision threshold from `0.65`
+> to `0.50`?
+
+It cannot answer:
+
+> Did the candidate improve under the threshold already in force?
+
+The additive rule is:
+
+> Existing metrics remain comparable only when their complete contracts remain unchanged;
+> each added metric begins its own history.
+
+## Answer 10: Produce an independent comparison review
+
+One specimen-level rule, written before selecting a case, could be:
+
+```text
+Accept a candidate for the exercise only when:
+1. F1 improves by at least 0.03.
+2. Precision does not decrease by more than 0.01.
+3. Recall does not decrease.
+4. Population identity, schema version, threshold, definition, unit, and aggregation match.
+5. Missing required evidence causes abstention.
+```
+
+The comparable candidate passes this exercise rule:
+
+- F1 delta is `+0.0458`
+- precision changes from `0.7778` to `0.8182`
+- recall changes from `0.7000` to `0.7500`
+- semantic contract checks pass
+
+The additive candidate also preserves the primary contract and values, so the same F1
+judgment applies while the new false-positive-rate metric begins separate history.
+
+The other cases cannot enter the rule as direct comparisons:
+
+- population, unit, control, and schema-version drift violate continuity
+- missing population identity forces abstention
+
+An independent reviewer should be able to decide those points from relative paths in the
+packet. The packet still cannot authorize a real release because its exercise rule does
+not include domain-specific fairness, calibration, latency, cost, or population
+representativeness evidence.
 
 ## Self-check
 
