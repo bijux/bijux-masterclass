@@ -1,5 +1,4 @@
-# Construction Discipline – `__init__`, Required State, and Half-Baked Objects
-
+# Construction Discipline: Required State, Invariants, and Half-Built Objects
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["Object Semantics Data Model"]
-  page["Construction Discipline – `__init__`, Required State, and Half-Baked Objects"]
+  page["Construction Discipline: Required State, Invariants, and Half-Built Objects"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,104 +24,185 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Introduction
+## Why this lesson matters
 
-This core examines the discipline required for object construction in Python, emphasizing the creation of valid instances from inception. Extending the state and attribute models from M01C01 and M01C02, we explore the lifecycle of instantiation—via `__new__` and `__init__`—and strategies to enforce invariants at construction time. The focus is on distinguishing required from optional state through signature design, ensuring no "half-baked" objects escape with invalid configurations, and eschewing post-initialization setters that erode encapsulation. We address critical hazards, including leakage paths and subclassing pitfalls, to produce types that resist misuse.
+Construction is where an object first makes its promises. If construction is vague, the
+rest of the object model becomes damage control:
 
-The layered structure persists: language-level semantics provide guarantees, CPython notes reveal optimizations, design semantics guide modeling choices, and practical guidelines offer actionable principles. This approach fosters robust types that resist misuse while aligning with Python's flexible object creation.
+- invalid objects are created and repaired later
+- optional fields hide missing lifecycle steps
+- callers must remember undocumented setup rules
+- methods spend their lives defending against states that should never have existed
 
-Cross-references link to foundations: state invariants from M01C01; attribute assignment in M01C02; validation extensions in M03C25. Proficiency here empowers the design of constructors that serve as single points of truth, minimizing runtime errors and enhancing maintainability.
+Good construction is not about clever `__init__` signatures. It is about making illegal
+states harder to create than legal ones.
 
-## 1. Language-Level Model
+## The main rule
 
-Python's object creation follows a two-phase protocol: allocation via `__new__` and initialization via `__init__`. This decouples identity establishment from state setup, allowing for immutable types or custom allocation. For normal instantiation via `MyClass(...)`, instances emerge fully formed or an exception is raised—though leakage risks exist in certain patterns.
+An object should leave construction already honest about what it is.
 
-### The Creation Protocol: `__new__` and `__init__`
+That means:
 
-**Guarantees**:
-- `__new__(cls, *args, **kwargs)` (static method on the class) allocates and typically returns an instance of `cls` or a subclass thereof. It receives constructor arguments; returning an unrelated type skips `__init__` and returns the object directly. Primary uses: custom allocation for immutables, singletons/flyweights, or subclassing built-ins like `tuple`.
-- If `__new__` returns an instance of `cls`, `__init__(self, *args, **kwargs)` initializes the instance's state. Failure in `__init__` leaves a "half-baked" object: allocated but uninitialized. There is no automatic rollback of side effects or external registrations, and the object may leak if references are established prematurely (e.g., via global registration or subclass chaining). `__del__`, if defined, may run on a partially initialized object; do not assume full invariants hold within it.
-- Default `__new__` (from `object`) uses `type.__call__` orchestration; overrides enable factories.
-- Constructors are not required: if neither the class nor its MRO bases define a meaningful `__init__`, you effectively get `object.__init__` (a no-op), so no additional per-instance state is set by Python itself.
-- Bypasses: Direct calls to `__new__`, unpickling (via `pickle`), and `copy`/`deepcopy` may invoke `__new__` without `__init__`, potentially yielding uninitialized instances.
+- required state should really be required
+- invalid combinations should fail immediately
+- objects should not escape while they are only partially initialized
 
-Example (portable, demonstrating phases and bypass):
+If you need a long setup dance after `__init__`, you may be modeling the lifecycle
+poorly.
+
+## What construction is responsible for
+
+Use the constructor to answer these questions:
+
+- What information must exist before this object can make any trustworthy claim?
+- Which inputs are optional because the domain truly allows them?
+- Which invariants should hold the moment construction finishes?
+
+That is the teaching target of this page. The mechanics of `__new__` matter, but the
+design question matters first.
+
+## Required state versus optional state
+
+A required parameter should mean:
+
+> without this, the object is not ready to exist.
+
+An optional parameter should mean:
+
+> the object still makes sense without this, and the absence is a real domain state.
+
+That distinction is more important than the syntax itself.
 
 ```python
-class ValidatedPoint:
-    def __new__(cls, x, y):  # Allocation only; no validation here
-        return super().__new__(cls)
-
-    def __init__(self, x, y):
-        if not (isinstance(x, (int, float)) and isinstance(y, (int, float))):
-            raise ValueError("Coordinates must be numeric")
-        self.x = x
-        self.y = y
-        if x < 0 or y < 0:
-            raise ValueError("Coordinates must be non-negative")
-
-p = ValidatedPoint(1, 2)  # Succeeds; fully valid
-# ValidatedPoint(-1, 2)  # Raises in __init__; half-baked object allocated but leaked if referenced early
-
-# Bypass example
-raw = ValidatedPoint.__new__(ValidatedPoint, 1, 2)  # Allocates; no __init__
-# raw.x is undefined; use cautiously
+class EndpointConfig:
+    def __init__(self, host: str, port: int = 443):
+        if not host:
+            raise ValueError("host must not be empty")
+        self.host = host
+        self.port = port
 ```
 
-Half-baked objects persist until garbage-collected; premature references (e.g., appending to a registry before validation) cause leaks, as exceptions do not retroactively deallocate.
+`host` is required because the object cannot mean anything without it.
 
-### Required vs Optional State and Invariants
+`port` is optional because a real default exists.
 
-**Guarantees**:
-- Signatures encode intent: lack of defaults signals required parameters; defaults enable optionality. Positional-only (`/`) and keyword-only (`*`) parameters guide call styles but do not inherently denote requiredness (e.g., `def __init__(self, /, *, required_no_default): ...` requires `required_no_default` via keyword).
-- Invariants (e.g., `self.x >= 0`) must hold post-`__init__`; violations raise exceptions, preventing invalid instances.
-- No automatic validation: `__init__` is user-defined, but the protocol ensures atomicity for normal instantiation—either full initialization or failure. Subclassing requires cooperative argument forwarding via `super()` to satisfy the MRO.
+## The most common construction mistake
 
-This model supports immutable designs: `__init__` sets final state, with no public mutation paths.
+This is the pattern to distrust:
 
-## 2. Implementation Notes (CPython, non-normative)
+```python
+class ReportJob:
+    def __init__(self, source=None, template=None, status=None):
+        self.source = source
+        self.template = template
+        self.status = status
+```
 
-CPython executes creation via `type.__call__`, which invokes `__new__` then `__init__` if the result is an instance of the class.
+The constructor looks flexible, but it is actually hiding uncertainty:
 
-- **Allocation Efficiency**: `__new__` leverages `PyObject_Malloc` for heap allocation; types with `__slots__` optimize with fixed layouts for memory efficiency.
-- **Exception Handling**: Raises in `__init__` trigger `Py_DECREF(obj)`; if the reference count reaches zero, deallocation—including `__del__` if defined—occurs immediately. GC handles cycles.
-- **Signature Inspection**: Argument parsing uses `PyArg_ParseTupleAndKeywords`.
-- **Bypass Realization**: Unpickling and `copy` may use `__getnewargs__` or similar hooks, skipping `__init__`.
-- **Performance Nuances**: Constructor calls incur overhead from protocol dispatch.
+- Which combinations are legal?
+- Is `None` a real domain value or only "not set yet"?
+- What methods are safe before more setup happens?
 
-These details aid low-level tuning but are irrelevant for most designs: focus on semantic guarantees.
+If you cannot answer those clearly, the constructor is probably tolerating half-built
+objects.
 
-## 3. Design Semantics
+## A better way to think about half-built objects
 
-In the value/entity framework (M01C01), constructors for value-like objects enforce strict, immutable state (e.g., all fields required, validated immediately); entity-like ones allow optional fields for lifecycle evolution, but still guard core invariants. After construction, mutations must not violate documented invariants.
+An object is half-built when:
 
-- **Invariant-Encoding Signatures**: Use lack of defaults for required parameters; positional-only (`/`) for call-style enforcement. Centralize validation in `__init__` to fail-fast—for plain mutable user-defined classes; for immutable or builtin-like types, validation may need to occur in `__new__` to ensure no invalid instance is ever exposed.
-- **No Half-Baked Objects**: Never mutate external state (e.g., registries) or pass `self` to callbacks before invariants hold. In subclassing, call `super().__init__(*args, **kwargs)` early to establish base invariants, then subclass ones; each `__init__` must accept `*args, **kwargs`, consume what it needs, and forward the rest to honor MRO contracts.
-- **Avoid Setters Post-Init**: Treat `__init__` as the sole mutation point; subsequent changes via methods that return new instances or raise if invalid. Never call overridable methods from `__init__` to avoid virtual dispatch on uninitialized state.
-- **Factory Alternatives**: For branching logic, prefer class methods (`@classmethod from_dict(cls, data)`) over complex `__init__`; they encapsulate without bloating the primary constructor.
+- callers can observe it before its invariants hold
+- the constructor stores raw inputs before deciding whether they are valid
+- later methods have to finish the real setup
 
-**Choosing Discipline**: For domain types, query: Does state evolve post-creation (entity: flexible init with guarded mutation) or is it fixed (value: exhaustive validation)? This aligns with attribute resolution (M01C02) by pre-populating `__dict__` safely.
+That is not only a cleanliness issue. It becomes a correctness issue as soon as the
+object is shared, logged, registered, or passed to another boundary.
 
-Interaction with Storage: Required state populates instance attributes atomically; optional defaults avoid mutable class state pitfalls.
+## `__new__` matters less often than learners fear
 
-## 4. Practical Guidelines
+For most ordinary application code, `__init__` is the important construction surface.
+You should know that Python allocates the object before initialization and that special
+cases such as immutable builtins may use `__new__`, but you do not need to start there.
 
-- **Fail-Fast Construction**: Validate all inputs in `__init__`; use `typing` annotations for static checks. Raise specific exceptions (e.g., `ValueError`) over generics.
-- **Signature Clarity**: Minimize `*args, **kwargs` to explicit parameters where possible, but include them for cooperative MI; document invariants and MRO compatibility in docstrings.
-- **Immutability Enforcement**: For value-like objects, disable post-init mutation via `__setattr__` override as a last resort—prefer frozen dataclasses (M03C23) to avoid descriptor and subclassing conflicts.
-- **Bypass Awareness**: Document handling for `__new__`-only paths (e.g., pickling via `__getnewargs__`); test unpickling preserves invariants.
-- **Testing Invariants**: Assert post-`__init__` state in unit tests; use property-based testing for edge cases (M03C30). Verify no overridable method calls or external `self` passes in constructors.
+The practical rule for this course is:
 
-**Impacts on Design and Reliability**:
-- **Design**: Strict constructors reduce API surface, preventing "zombie" objects; factories maintain flexibility without anemic models.
-- **Reliability**: Early validation catches errors at boundaries; cooperative subclassing ensures MRO safety, but premature mutations leak half-baked instances.
+- use `__init__` to establish ordinary object invariants
+- reach for `__new__` only when the type truly needs custom allocation semantics
 
-## Exercises for Mastery
+That keeps the lesson grounded in normal design work.
 
-1. Refactor a basic `Point` class to enforce non-negative coordinates via `__init__` validation; test invalid inputs raise `ValueError` and demonstrate half-baked leakage in a registry anti-pattern.
-2. Design a `Config` entity with required (`host: str`) and optional (`port: int = 80`) fields using explicit signatures; verify cooperative subclassing forwards arguments correctly.
-3. Implement a `@classmethod` factory for a `User` from dict, ensuring invariants without `__init__` bloat; contrast with an overridable method call in `__init__` and show the dispatch bug.
+## Constructor discipline checklist
 
-This core establishes construction as an invariant gatekeeper, essential for trustworthy objects. Next, M01C04 explores encapsulation and representations.
+Use this checklist when reviewing a constructor:
+
+| Question | Good sign | Warning sign |
+| --- | --- | --- |
+| Are required inputs actually required? | missing input raises early | many defaults stand in for unknown state |
+| Are invariants checked at creation time? | invalid combinations fail immediately | later methods must repair or re-check everything |
+| Can the object escape too early? | object stays local until valid | constructor registers, logs, or exposes `self` before finishing |
+| Is absence meaningful? | `None` or a default has domain meaning | `None` only means "we have not modeled lifecycle yet" |
+
+## Constructors versus factories
+
+Sometimes the real problem is that one constructor is being asked to explain too many
+creation stories.
+
+That is a good moment to prefer a classmethod or separate creation function:
+
+```python
+class ThresholdRule:
+    def __init__(self, metric_name, limit):
+        self.metric_name = metric_name
+        self.limit = limit
+
+    @classmethod
+    def from_text(cls, raw: str):
+        metric_name, limit_text = raw.split(":")
+        return cls(metric_name=metric_name, limit=int(limit_text))
+```
+
+The constructor protects the invariant.
+The factory explains one creation route.
+
+That split is often clearer than a bloated constructor with many branching code paths.
+
+## Design rules from this lesson
+
+- Prefer constructors that make one honest object, not many ambiguous ones.
+- Use defaults only when the default is a real domain choice.
+- Treat "optional for convenience" as suspicious.
+- Keep object escape until after invariants hold.
+- Prefer factories when creation has several input shapes but one stable object contract.
+
+## Common review findings
+
+| Smell | Better move |
+| --- | --- |
+| many raw primitives with unclear meaning | introduce small value objects or named parameters |
+| several nullable fields that must be filled later | model lifecycle explicitly instead of tolerating partial state |
+| constructor mutates external systems immediately | finish validation before registration or side effects |
+| initialization logic depends on override hooks | move behavior out of construction or tighten the hierarchy |
+
+## Capstone connection
+
+This lesson matters wherever the capstone creates value-like rule objects or
+configuration-bearing workflow objects. The important question is always the same:
+
+- what must be true before this object can participate in the system honestly?
+
+If the answer is delayed until "later setup," the object boundary is already weaker than
+it should be.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- identify one constructor that is enforcing a real invariant
+- identify one constructor shape that is only hiding partial state behind defaults
+- explain when a factory is clearer than a larger `__init__`
