@@ -1,30 +1,5 @@
 # Deciding When Snakemake Should Stop Owning a Concern
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Deciding When Snakemake Should Stop Owning a Concern"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 One of the most mature things a workflow team can say is:
 
 > Snakemake is still the right owner here.
@@ -34,6 +9,21 @@ Another mature answer is:
 > Snakemake should stop owning this part of the system.
 
 Module 10 is about knowing the difference.
+
+## How to use this page
+
+Read this lesson when a team starts talking about platforms, services, web front ends, or
+standardizing on another system.
+
+Work through it in this order:
+
+1. identify the exact concern under debate
+2. decide whether that concern is still best explained as file-based workflow truth
+3. identify what another system might own better
+4. define the handoff artifact that keeps responsibility reviewable
+
+This page is not trying to make Snakemake keep everything. It is trying to stop vague
+tool enthusiasm from outrunning ownership clarity.
 
 ## Start with ownership, not novelty
 
@@ -49,6 +39,23 @@ Those may be real pressures, but they do not answer the main question:
 > model reviewable?
 
 That is the only question that matters here.
+
+## Start by naming the concern precisely
+
+Beginners often debate tool boundaries with fuzzy phrases:
+
+- move to the platform
+- stop doing this in Snakemake
+- centralize the workflow
+
+Those phrases hide the real question.
+
+A better opening sounds like this:
+
+> user-triggered job requests, identity, and tenancy-aware scheduling should be reviewed
+> separately from file-based orchestration and publish verification
+
+Once the concern is named precisely, the ownership discussion becomes much easier.
 
 ## When Snakemake is still a strong owner
 
@@ -123,6 +130,23 @@ Stronger answer:
 
 That answer respects both systems.
 
+## One concrete ownership decision
+
+Suppose a team wants a portal where users submit analyses, monitor progress, and download
+results, while the underlying workflow remains batch-oriented and file-based.
+
+A weak recommendation says:
+
+> rebuild the whole workflow on the portal platform so everything lives in one stack.
+
+A stronger recommendation says:
+
+1. Snakemake keeps ownership of sample discovery, declared file execution, provenance, and versioned publish bundles
+2. the portal owns request intake, user identity, access control, cancellation, and tenant-aware scheduling
+3. the boundary is documented through explicit request metadata, run identity, status reporting, and independently verifiable published outputs
+
+That is not a compromise. It is an ownership model another maintainer can inspect and defend.
+
 ## Warning signs that ownership is drifting
 
 Watch for these signals:
@@ -152,6 +176,20 @@ Example:
 > profile review, and published output verification.
 
 That is a better recommendation than "move to platform X."
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is naming the destination tool without naming the concern,
+the reason, or the handoff proof.
+
+That is not a stewardship argument. It is a technology preference.
+
+The course standard is stricter:
+
+1. name the concern being moved
+2. name why the current owner is weak for that concern
+3. name why the new owner is stronger
+4. name the artifact or route that keeps the handoff reviewable
 
 ## Keep this standard
 

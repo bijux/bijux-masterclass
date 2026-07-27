@@ -1,35 +1,24 @@
 # Recurring Workflow Antipatterns and Recovery
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Recurring Workflow Antipatterns and Recovery"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 One sign that a workflow team is maturing is that it stops treating every painful problem
 as a one-off exception.
 
 Many of the same failures return again and again. Module 10 calls those what they are:
 recurring anti-patterns.
+
+## How to use this page
+
+Read this page when you feel tempted to describe a recurring workflow problem as bad luck
+or as a one-time awkward pull request.
+
+Work through it in this order:
+
+1. name the anti-pattern family
+2. describe the current repository symptom
+3. identify the technical repair
+4. identify the review habit that must change to stop recurrence
+
+This is how one repair becomes stewardship instead of temporary relief.
 
 ## Why anti-pattern language matters
 
@@ -43,6 +32,18 @@ Anti-pattern language helps you say:
 - recovery means changing the review habit, not only the implementation detail
 
 That is a governance skill, not only a debugging skill.
+
+## Start by naming the habit, not only the latest breakage
+
+Beginners often focus on the newest symptom:
+
+- a rerun happened unexpectedly
+- a profile behaved differently
+- a published file drifted
+- a helper became hard to review
+
+Those symptoms matter, but Module 10 wants the deeper diagnosis: what recurring habit made
+this kind of failure likely in the first place?
 
 ## Five anti-pattern families worth stopping early
 
@@ -160,6 +161,31 @@ evidence discipline.
 The right response is not one patch. It is a recovery plan that tackles the anti-pattern
 family by family.
 
+## One concrete recovery scenario
+
+Suppose a repository now has all of these at once:
+
+- notebooks read `results/` directly
+- one profile changes sample filtering
+- helper code owns most of discovery logic
+- verification only runs before releases
+
+The wrong response is to call that "a few cleanup items."
+
+The stronger response is to classify the pattern mix:
+
+1. contract drift
+2. policy leaks
+3. invisible complexity
+4. evidence suppression
+
+Once the families are named, recovery can be sequenced more honestly:
+
+- repair the public contract
+- move semantic choices out of profiles
+- expose discovery ownership
+- restore proof routes that reviewers can run under pressure
+
 ## Recovery should change the habit, not only the file
 
 For each anti-pattern, ask two questions:
@@ -168,6 +194,19 @@ For each anti-pattern, ask two questions:
 2. what review rule will stop this from quietly coming back
 
 That second question is what turns a fix into stewardship.
+
+## The beginner mistake to catch early
+
+The most common beginner mistake is solving the last incident in a way that leaves the
+habit untouched.
+
+For example:
+
+- declaring one missing input but leaving the hidden-input pattern alive elsewhere
+- fixing one profile leak while keeping semantic keys socially acceptable in profiles
+- restoring one benchmark file while still treating evidence as optional clutter
+
+A strong recovery asks, "what rule or review habit will stop this from happening again?"
 
 ## Keep this standard
 

@@ -1,30 +1,5 @@
 # Reviewing Workflow Contracts and Current Truth
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Governance Migration Tool Boundaries"]
-  page["Reviewing Workflow Contracts and Current Truth"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 The fastest way to waste time in a mature repository is to propose a redesign before you
 can describe what the current system is promising.
 
@@ -32,6 +7,21 @@ That is why Module 10 starts with review.
 
 Review here does not mean style cleanup. It means naming the boundaries another maintainer
 would need to trust before changing anything.
+
+## How to use this page
+
+Read this page before you write a migration plan, propose a refactor, or argue for a new
+tool boundary.
+
+Work through it in this order:
+
+1. identify what the repository is already promising
+2. separate public contract from internal convenience
+3. separate workflow meaning from operating policy
+4. identify the proof route and the socially trusted weak spots
+
+If you skip that order, you will redesign a repository you have not yet described
+honestly.
 
 ## What a real review should settle
 
@@ -74,6 +64,19 @@ In the capstone, this route is visible:
 
 That is a good pattern. It keeps public truth visible without forcing reviewers to infer it
 from the whole repository tree.
+
+## Start by describing what downstream users can trust today
+
+Beginners often say they want to review a repository, but what they really mean is that
+they want to improve it.
+
+Module 10 is stricter. Before you improve anything, you must be able to answer:
+
+- which files another team is safe to depend on
+- which outputs are merely useful during execution
+- which routes prove the published bundle is still trustworthy
+
+Those are not cleanup details. They are the current contract.
 
 ## Separate internal usefulness from public contract
 
@@ -152,6 +155,26 @@ That repository may look professional, but the review should still flag:
 
 This is why "looks organized" is not a sufficient review outcome.
 
+## One concrete review scenario
+
+Imagine a repository where:
+
+- the publish directory is versioned and widely trusted
+- several notebooks still read internal `results/` paths
+- one profile quietly changes sample filtering
+- one helper script expands discovery in ways few reviewers can explain
+
+A weak review says, "the repository needs modernization."
+
+A strong review says:
+
+1. the public contract is partially clear because the publish bundle is versioned
+2. downstream trust is still leaking onto internal paths
+3. policy and semantics are blurred because profile settings affect sample selection
+4. discovery ownership is too social and not yet reviewable enough for safe migration
+
+That kind of review gives you a real starting point for change.
+
 ## Write the review in boundary language
 
 A helpful review note sounds like this:
@@ -165,6 +188,22 @@ A helpful review note sounds like this:
 That is much stronger than:
 
 > The repository should be cleaned up and modernized.
+
+## The beginner mistake to catch early
+
+The most common beginner mistake in repository review is confusing visible mess with real
+risk.
+
+A repository can look messy and still have a trustworthy contract. A repository can also
+look clean while hiding downstream dependence, policy leaks, and socially trusted helpers.
+
+The repair standard for this course is simple:
+
+1. name the public contract
+2. name the policy boundary
+3. name the proof route
+4. name the most dangerous socially trusted area
+5. only then discuss migration or redesign
 
 ## Keep this standard
 
