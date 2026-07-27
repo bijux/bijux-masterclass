@@ -52,6 +52,8 @@ PERFORMANCE_EVIDENCE ?= $(PERFORMANCE_DIR)/evidence.json
 PERFORMANCE_COMPARISON ?= $(PERFORMANCE_DIR)/comparison.json
 PERFORMANCE_BASELINE ?=
 PERFORMANCE_SAMPLES ?= 5
+TRACE_EVIDENCE_DIR ?= $(ARTIFACTS_DIR)/observability/reproducible-research/deep-dive-make/trace
+TRACE_PLAN_MAX ?= 500
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-make
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-make-capstone-source.tar.gz
 RELEASE_DIR ?= $(ARTIFACTS_DIR)/release/reproducible-research/deep-dive-make
@@ -79,7 +81,7 @@ DEPFLAGS := -MMD -MP
 .DEFAULT_GOAL := all
 # IMPORTANT: do NOT mark `all` phony; it is a real sentinel file for convergence.
 .PHONY: dyn lint test dist verify-dist install-rehearsal accept-release release-check release-selftest selftest-harness-tests repro discovery-audit attest selftest selftest-report verify-report proof walkthrough \
-        contract-audit inspect incident-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-count hardened confirm show show-e show-origins FORCE \
+        contract-audit inspect incident-audit clean submake-demo perf performance-evidence performance-incremental performance-compare performance-selftest trace-report hardened confirm show show-e show-origins FORCE \
         portability-audit profile-audit eval-demo help tour
 
 # Optional local overrides (must not be required for CI/selftest)
@@ -185,14 +187,14 @@ help:
 >     '  performance-incremental prove requested work for one declared input' \
 >     '  performance-compare compare current evidence with PERFORMANCE_BASELINE' \
 >     '  performance-selftest prove capture and comparison rejection behavior' \
->     '  trace-count       count trace lines (heuristic)' \
+>     '  trace-report      write bounded, attributable clean-plan trace evidence' \
 >     '  portability-audit probe tool/feature availability' \
 >     '  eval-demo         optional quarantined eval demo (USE_EVAL=yes)' \
 >     '' \
 >     'Variables:' \
 >     '  DEBUG=1           enable debug symbols (-g)' \
 >     '  J=4               parallelism used by some commands' \
->     '  TRACE_MAX=500     selftest trace-line heuristic threshold' \
+>     '  TRACE_PLAN_MAX=500 maximum clean-plan trace volume' \
 >     '  PERFORMANCE_SAMPLES=5 repeated samples per governed scenario' \
 >     '  PERFORMANCE_BASELINE=path evidence JSON required by performance-compare' \
 >     '  SELFTEST_FAULT=none controlled harness-test seam; not for ordinary proof' \
@@ -218,7 +220,7 @@ tour:
 >     cp $(MK_DIR)/stamps.mk "$(TOUR_DIR)/mk/stamps.mk"
 >     cp $(REP_DIR)/shared-log-interleaving.mk "$(TOUR_DIR)/repro/shared-log-interleaving.mk"
 >     $(MAKE) help > "$(TOUR_DIR)/help.txt"
->     $(MAKE) trace-count > "$(TOUR_DIR)/trace-count.txt"
+>     $(MAKE) trace-report
 >     printf '%s\n' \
 >       'Tour route:' \
 >       '  1. Read INDEX.md for the smallest local route.' \
@@ -228,7 +230,7 @@ tour:
 >       '  5. Read ARCHITECTURE.md and WALKTHROUGH_GUIDE.md for ownership and first-pass order.' \
 >       '  6. Read RELEASE_GUIDE.md when the question is candidate acceptance.' \
 >       '  7. Read SELFTEST_GUIDE.md and tests/run.sh for the reviewable proof route.' \
->       '  8. Read trace-count.txt for the observability guardrail.' \
+>       '  8. Run trace-report for bounded, attributable planning evidence.' \
 >       '  9. Inspect REPRO_GUIDE.md and repro/shared-log-interleaving.mk for the first incident surface.' > "$(TOUR_DIR)/route.txt"
 >     printf '%s\n' \
 >       'Focused routes:' \
@@ -250,7 +252,7 @@ tour:
 >     'Focused routes:' \
 >     '  generators  -> make --trace dyn' \
 >     '  architecture -> make help && make -p > build/review.dump' \
->     '  incidents    -> make trace-count && make -f repro/shared-log-interleaving.mk -j2 all'
+>     '  incidents    -> make trace-report && make -f repro/shared-log-interleaving.mk -j2 all'
 >     $(PYTHON) scripts/write_bundle_manifest.py --bundle-dir "$(TOUR_DIR)" --output "$(TOUR_DIR)/manifest.json"
 
 walkthrough:
@@ -602,8 +604,19 @@ performance-compare:
 performance-selftest:
 >     $(PYTHON) -m unittest discover -s $(TST_DIR) -p 'test_performance_*.py'
 
-trace-count:
->     @$(MAKE) --trace -n all 2>&1 | wc -l | awk '{print "trace-lines=" $$1}'
+trace-report:
+>     rm -rf "$(TRACE_EVIDENCE_DIR)"
+>     mkdir -p "$(TRACE_EVIDENCE_DIR)"
+>     $(MAKE) --no-print-directory clean
+>     $(MAKE) --no-print-directory --trace -n all > "$(TRACE_EVIDENCE_DIR)/trace.log" 2>&1
+>     $(PYTHON) scripts/analyze_trace_evidence.py \
+>       --trace "$(TRACE_EVIDENCE_DIR)/trace.log" \
+>       --output "$(TRACE_EVIDENCE_DIR)/trace-evidence.json" \
+>       --route all --state clean-plan --focus all \
+>       --maximum-lines "$(TRACE_PLAN_MAX)"
+>     $(PYTHON) scripts/write_bundle_manifest.py \
+>       --bundle-dir "$(TRACE_EVIDENCE_DIR)" \
+>       --output "$(TRACE_EVIDENCE_DIR)/manifest.json"
 
 # ---- hardened build verification ----
 hardened: selftest selftest-harness-tests discovery-audit attest test release-check
