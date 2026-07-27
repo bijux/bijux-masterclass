@@ -44,6 +44,12 @@ Everything else on this page hangs from that sentence.
 If the sentence gets softened into "safe enough with careful restrictions," the review
 boundary has already been lost.
 
+For self-study, turn that sentence into a direct refusal test:
+
+- who actually controls the source text?
+- what boundary exists outside the current process?
+- what smaller owner would still solve the problem if programmability were narrowed?
+
 ## Evidence route for dynamic execution reviews
 
 Use this route before approving `compile`, `eval`, or `exec`:
@@ -134,6 +140,17 @@ configuration that the team owns.
 | "This removes accidental access to builtins for a trusted DSL." | "This sandboxes hostile code." |
 | "This syntax filter narrows what trusted authors may write." | "This AST filter makes code execution secure." |
 
+## Trust-boundary worksheet
+
+Fill this out before you approve any runtime-generated code path:
+
+| Question | Strong answer shape |
+| --- | --- |
+| who authored the source? | trusted internal team, partially trusted admins, or hostile users |
+| what does the current process still share? | memory, globals, files, network, or all of them |
+| what lower-power owner was checked first? | explicit dispatch, data format, tiny parser, or out-of-process worker |
+| what claim is explicitly refused? | no in-process sandboxing or hostile-input safety promise |
+
 ## Compiling statements is a different kind of power
 
 `exec` changes state rather than returning a single expression value.
@@ -204,6 +221,15 @@ Watch for these common failures:
 | Dynamic compilation repeated on hot paths | The mechanism becomes both risky and needlessly expensive |
 | Security language left vague | Reviewers cannot tell where trust actually stops |
 
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "the globals are locked down, so it should be fine" | name control is not a process boundary |
+| "the AST filter removes dangerous constructs" | removing syntax does not create hostile-input safety in process |
+| "the code is internal for now" | for now is not a trust classification |
+| "we can sandbox it better later" | later is not a present review boundary |
+
 ## Strong alternatives are usually less magical
 
 Before approving dynamic execution, compare it against lower-power options:
@@ -238,6 +264,11 @@ That is the first honest place where "sandboxing" language can start to mean som
 
 Even there, the review still owes timeouts, cleanup, logging, and failure collection. Real
 boundaries reduce risk; they do not remove operational work.
+
+Before you leave this page, write one sentence beginning:
+
+- "the strongest thing this design can honestly promise is..."
+- "the first lower-power replacement to compare is..."
 
 ## Review rules for dynamic execution
 
