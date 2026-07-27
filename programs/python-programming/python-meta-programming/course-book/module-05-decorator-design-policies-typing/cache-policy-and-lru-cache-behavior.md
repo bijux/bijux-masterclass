@@ -32,6 +32,10 @@ The wrapper no longer only changes what happens around a call. It changes whethe
 original function runs at all, how memory is used over time, and what operational hooks
 the system needs.
 
+That means cache decorators are a reliability and review topic before they are a speed
+topic. A cache can erase repeated work, but it can also erase the point at which a caller
+expected fresh execution.
+
 ## The sentence to keep
 
 When reviewing a cache decorator, ask:
@@ -40,6 +44,10 @@ When reviewing a cache decorator, ask:
 
 That question keeps caching tied to observable semantics instead of treating it like a
 performance flourish.
+
+Add one more question beside it:
+
+> what exact calls does this wrapper consider the same, and who can inspect or reset that decision later?
 
 ## Cache policy is about more than a dictionary
 
@@ -54,6 +62,9 @@ The important cache questions are not only implementation details:
 Those are policy decisions. A decorator that answers them is carrying real runtime
 ownership.
 
+Put differently: the cache is deciding when "same request" means "same stored answer."
+That is a correctness boundary, not only an optimization trick.
+
 ## `functools.lru_cache` is the reference point
 
 For this module, the standard-library cache matters for three main reasons:
@@ -65,6 +76,9 @@ For this module, the standard-library cache matters for three main reasons:
 That last point is especially important. A serious cache should not hide its own state
 completely from tuning, debugging, or tests.
 
+It also gives learners a better comparison standard. A custom cache decorator should be
+judged against this explicit hook surface, not only against whether it "seems to work."
+
 ## One picture of cache behavior
 
 ```text
@@ -73,6 +87,15 @@ call -> make key -> cache hit? -> return cached value
 ```
 
 That loop looks simple, but every box in it carries design choices.
+
+Use this review table when the loop starts feeling too casual:
+
+| Step in the loop | What can go wrong if the policy is weak |
+| --- | --- |
+| make key | distinct calls may collapse together or equivalent calls may fragment |
+| cache hit | callers may receive stale or history-dependent results unexpectedly |
+| store according to policy | memory and eviction behavior may stop matching the intended owner story |
+| reset or inspect | tests and operators may lose the ability to reason about state |
 
 ## Key construction is part of correctness
 
@@ -88,6 +111,16 @@ For `lru_cache`, the key path is carefully defined for hashable arguments, with 
 
 That is much stronger than an ad hoc stringification trick hidden in a custom decorator.
 
+Use `typed=True` as a teaching pressure point, not just a parameter name:
+
+| Setting | Review meaning |
+| --- | --- |
+| `typed=False` | some numerically similar values may share cached meaning |
+| `typed=True` | type distinctions become part of the cache key contract |
+
+If a learner cannot explain that distinction in plain language, they are still treating
+cache policy as background magic.
+
 ## Eviction policy should be explicit
 
 With `lru_cache`, capacity limits and least-recently-used eviction are part of the public
@@ -100,6 +133,10 @@ That matters because eviction changes semantics over time:
 - memory growth is bounded only when capacity policy exists
 
 So a cache wrapper is never only "speed." It is state plus history plus policy.
+
+It is also reuse plus forgetting. Eviction decides what past work still counts and what
+must be recomputed. That is why the policy deserves visible language instead of only a
+benchmark.
 
 ## Operational hooks make cache state reviewable
 
@@ -115,6 +152,11 @@ That is a great example of honest decorator design:
 
 That is exactly the opposite of hidden statefulness.
 
+These hooks also teach a durable rule for later modules:
+
+- if a wrapper owns meaningful state, it should expose a deliberate review or reset route
+- if it refuses to expose one, the design burden rises sharply
+
 ## The bounded comparison matters
 
 Module 04 used a bounded cache to make state visible. This module uses `lru_cache` as
@@ -128,6 +170,17 @@ That comparison makes two important habits explicit:
 
 That is another form of honesty: knowing when not to build your own abstraction.
 
+## Common cache overclaims to reject
+
+Reject these sentences when they appear in teaching or review:
+
+| Overclaim | Better replacement |
+| --- | --- |
+| "it only changes performance" | "it changes execution reuse, state history, and reset expectations" |
+| "the keying rule is an implementation detail" | "the keying rule is part of the wrapper's public meaning" |
+| "a tiny custom cache is close enough to `lru_cache`" | "bounded educational caches and production cache semantics are different commitments" |
+| "the hook surface is optional" | "stateful cache policy needs inspection and reset routes to stay reviewable" |
+
 ## Concurrency pushes cache policy further
 
 Even a well-designed cache becomes more expensive under concurrency:
@@ -139,6 +192,20 @@ Even a well-designed cache becomes more expensive under concurrency:
 The built-in `lru_cache` already handles more of this than the bounded examples earlier
 in the course. That is part of why it is the right reference point here.
 
+That is also why a hand-rolled cache decorator should stay visibly narrow unless there is
+a named requirement the standard tool cannot meet.
+
+## Failure modes for cache decorators
+
+These are the mistakes to catch before approving the design:
+
+| Failure mode | Why it weakens the wrapper | Repair move |
+| --- | --- | --- |
+| casual key construction | the cache may answer the wrong question consistently | state the key contract explicitly or use the standard tool |
+| no reset or inspection surface | operators and tests cannot steward state deliberately | expose hooks or move the owner elsewhere |
+| pretending eviction is invisible | history-dependent behavior becomes harder to explain | document the eviction rule as part of semantics |
+| rebuilding a weaker version of `lru_cache` without a concrete reason | the wrapper inherits production burden without production guarantees | prefer the standard tool unless a named requirement forces otherwise |
+
 ## Review rules for cache decorators
 
 When reviewing a cache wrapper, keep these questions close:
@@ -148,6 +215,16 @@ When reviewing a cache wrapper, keep these questions close:
 - what hooks exist to inspect and reset cache state?
 - is the wrapper reimplementing production cache behavior casually when `lru_cache` would be clearer?
 - has the cache policy become significant enough that the decorator needs explicit operational surfaces?
+- can another reviewer explain the key contract and eviction rule without guessing from the code?
+
+## Exit check for this page
+
+Before moving on, make sure you can do all of these:
+
+- explain why cache key construction is part of correctness
+- state what `typed=True` changes in review language, not only in API language
+- name one reason `cache_info()` and `cache_clear()` are teaching tools as well as operational hooks
+- reject one hand-rolled cache design that should have used `lru_cache` instead
 
 ## What to practice from this page
 
