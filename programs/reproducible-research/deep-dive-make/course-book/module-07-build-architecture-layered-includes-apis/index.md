@@ -15,31 +15,33 @@ The standard is not “the Makefiles are organized.” It is:
 > A maintainer can name each owner, follow each consumer, and inspect evidence that the
 > boundary holds.
 
-## Begin with the executable audit
+## Begin with the executable audits
 
 From the repository root:
 
 ```sh
 cd programs/reproducible-research/deep-dive-make/capstone
 gmake architecture-contract-audit
+gmake abstraction-contract-audit
 ```
 
-The bundle is written under the repository’s `artifacts/` directory:
+The bundles are written under the repository’s `artifacts/` directory:
 
 ```text
 artifacts/audit/reproducible-research/deep-dive-make/architecture-contracts/
+artifacts/audit/reproducible-research/deep-dive-make/abstraction-contracts/
 ```
 
-Read it in this order:
+Read each bundle in this order:
 
 1. `route.txt`
-2. `ARCHITECTURE_CONTRACT_AUDIT_GUIDE.md`
+2. its named audit guide
 3. `summary.tsv`
 4. one case in `report.json`
 5. that case’s trace
 6. its specimen and generated workspace
 
-The audit contains six cases:
+The architecture audit contains six cases:
 
 | Boundary | Defect model | Control model |
 | --- | --- | --- |
@@ -49,6 +51,19 @@ The audit contains six cases:
 
 An aggregate `PASS` includes three deliberately reproduced defects. Always quote the
 finding and observation, not only the result column.
+
+The abstraction audit then asks a narrower question: what changed when repeated explicit
+rules became a macro?
+
+| Model | Required observation |
+| --- | --- |
+| explicit rules | target, prerequisite, policy, and publication contracts are visible |
+| bounded macro | the same contract survives and the call domain remains explicit |
+| opaque macro | hidden targets and parse-time policy mutation are reproduced |
+
+This bundle has three `PASS` rows, including the opaque counterexample. A passing
+counterexample means the audit observed the promised defect; it does not approve that
+design.
 
 ```mermaid
 flowchart LR
@@ -72,19 +87,19 @@ Allow about six hours if you are studying independently.
 
 | Time | Work | Evidence to keep |
 | --- | --- | --- |
-| 35 minutes | run the audit and interpret all six rows | annotated `summary.tsv` |
+| 45 minutes | run both audits and interpret all nine rows | annotated summaries |
 | 50 minutes | trace private and declared callers | help, caller, and artifact comparison |
 | 60 minutes | compare global and target-scoped policy | four flag artifact values |
 | 55 minutes | derive both source-to-output mappings | source/output counts and owner files |
-| 45 minutes | inspect one bounded macro | expanded rules and keep/remove decision |
+| 55 minutes | compare explicit, bounded, and opaque generation | database map and side-effect table |
 | 65 minutes | execute the tangled-layout refactor | before/after contract table |
-| 70 minutes | complete the ten exercises | review packet with evidence paths |
-| 25 minutes | run self-tests and write the review | rejection results and remaining risk |
+| 70 minutes | complete the ten exercises | reproducible review packet |
+| 30 minutes | run both self-tests and write the review | rejection results and remaining risk |
 
 If you have only one hour, run the audit, read `summary.tsv`, and follow one family from
 specimen to trace to artifact. Do not skim every page and omit the evidence.
 
-## Follow three contracts through the build
+## Follow four contracts through the build
 
 ```mermaid
 flowchart TD
@@ -94,6 +109,8 @@ flowchart TD
   release["release specialization"] --> release_branch["release branch"]
   sources["rooted sources"] --> map["namespace-preserving map"]
   map --> graph
+  explicit["explicit rule contract"] --> bounded["bounded macro"]
+  bounded --> graph
   graph --> evidence["verification and owned artifacts"]
 ```
 
@@ -119,8 +136,9 @@ Read the pages in this order on the first pass:
 8. [Exercise Answers](exercise-answers.md)
 9. [Glossary](glossary.md)
 
-The first three pages share the audit bundle. The macro lesson asks whether abstraction
-preserves those observable contracts. The review lesson and worked example combine them.
+The first three pages share the architecture audit bundle. The macro lesson uses the
+abstraction audit to compare explicit, bounded, and opaque rule generation. The review
+lesson and worked example combine both evidence families into one acceptance decision.
 
 ## The ten files in this module
 
@@ -156,13 +174,15 @@ Run these from `capstone/` unless a lesson says otherwise:
 ```sh
 gmake architecture-contract-audit
 gmake architecture-contract-selftest
+gmake abstraction-contract-audit
+gmake abstraction-contract-selftest
 gmake --trace verify
 gmake -pRrq -f Makefile
 gmake -n all
 ```
 
-`architecture-contract-selftest` matters because it mutates disposable controls and
-requires the audit to reject dishonest evidence.
+The self-tests matter because they mutate disposable controls and require both audits to
+reject dishonest evidence.
 
 ## Learning outcomes
 
@@ -172,8 +192,9 @@ By the end of this module, you should be able to:
 - prove that external callers receive every artifact promised by their target
 - explain how include parsing and target-specific variables produce different policy scope
 - detect output collisions by mapping cardinality and artifact owner identity
-- keep macros only when their expanded rules preserve an inspectable invariant
-- write an architecture review that cites findings, traces, artifacts, and remaining risk
+- compare an explicit rule contract with bounded and opaque generation
+- keep macros only when expanded rules, policy, and public surfaces preserve that contract
+- write a reproducible architecture review that cites findings, mutations, limits, and risk
 
 ## Exit standard
 
@@ -183,7 +204,10 @@ Do not move on until all of these are true:
 - you can identify the artifact proving `CROSS_LAYER_POLICY_LEAK_REPRODUCED`
 - you can derive where the flat mapping loses one source owner
 - you can show equal source and unique-output counts in the namespaced control
-- you can defend one macro decision with expanded-rule evidence
+- you can prove that a bounded macro preserves the explicit prerequisite and policy contract
+- you can identify the hidden target and policy side effect in the opaque counterexample
 - you have completed all ten exercises without relying on an instructor
 - `gmake architecture-contract-selftest` passes
-- your review names at least one unresolved risk and the evidence route that would detect it
+- `gmake abstraction-contract-selftest` passes
+- your review packet names a claim, observation, conclusion, limit, controlled mutation,
+  and at least one unresolved risk
