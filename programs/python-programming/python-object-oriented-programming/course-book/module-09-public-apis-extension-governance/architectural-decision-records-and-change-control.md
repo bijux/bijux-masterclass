@@ -19,140 +19,178 @@ graph LR
 flowchart LR
   orient["Orient on the page map"] --> read["Read the main claim and examples"]
   read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
+  inspect --> verify["Run or review the path"]
   verify --> apply["Apply the idea back to the module and capstone"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about keeping governance memory alive after the current conversation is
+gone.
 
-## Why this lesson matters
+Public-surface and extension decisions age badly when their reasoning lives only in:
 
-Public API and extension decisions age badly when their reasoning lives only in memory.
+- one maintainer's memory
+- old chat logs
+- one merged commit nobody wants to reread
 
 Without durable records, teams later ask:
 
 - why is this facade public?
-- why is this plugin seam allowed but that one rejected?
-- why is this compatibility promise so narrow?
+- why is this seam narrow?
 - why does this import exception exist?
+- why is the compatibility promise smaller than expected?
 
-If the answers live only in old chat threads or the memory of one maintainer, governance
-becomes fragile. The next change is reviewed against guesswork instead of intent.
+If the answers are not durable, later review becomes guesswork instead of stewardship.
 
-## Decision records preserve the reasoning, not just the outcome
+## Keep one decision visible
 
-An architectural decision record is useful when it captures:
+Use one capstone decision:
+
+- the package exposes one public facade and one `IncidentSink` capability
+
+Now ask:
+
+If a maintainer reviews this package on Monday, July 27, 2026 or six months later, what
+would they need to know in order to judge whether a proposed widening is a real new need
+or just convenience?
+
+That is the purpose of an architectural decision record.
+
+## Good records preserve reasoning, not only outcomes
+
+A useful record captures:
 
 - what was decided
 - what alternatives were considered
 - why the chosen option won
-- what future conditions would reopen the decision
+- what future conditions would justify reopening the decision
 
-That is more valuable than a bare conclusion because future maintainers need the
-tradeoffs, not only the final label.
+That is more useful than a bare conclusion because future maintainers need the tradeoffs,
+not only the label.
 
-## API and extension seams deserve records when the governance cost is real
+Without tradeoffs, "public" and "private" quickly turn into folklore words.
 
-Not every small code decision needs a record.
+## Not every code choice needs a record
 
-But the threshold is lower when a change affects:
+The threshold is lower when the decision affects:
 
 - public surface area
 - compatibility commitments
 - extension mechanisms
 - import-boundary exceptions
-- deprecation and removal policy
+- deprecation or removal policy
 
-These are the decisions most likely to outlive the current file layout or the current
-team memory.
+These are the decisions most likely to outlive:
 
-## Change control should match the risk of the seam
+- the current file layout
+- the current team memory
+- the current implementation details
 
-One useful discipline is to match review ceremony to impact.
+That is why they deserve durable reasoning.
 
-Higher-impact surfaces often deserve:
+## Change control should match seam risk
 
-- a written decision record
+One useful discipline is to scale review ceremony with public risk.
+
+Higher-impact changes often deserve:
+
+- a short decision record
 - explicit compatibility review
-- linked tests or examples
-- a named migration or deprecation plan
+- linked tests or executable examples
+- a named deprecation or migration plan when relevant
 
-Lower-impact internal changes may only need ordinary code review.
+Lower-impact internal changes may need only ordinary code review.
 
-The point is not to make everything heavy. The point is to stop high-impact public
-changes from being treated like local cleanup.
+The point is not to make everything heavy.
+The point is to stop high-impact public changes from being treated like local cleanup.
 
-## Records should connect to code and evidence
+## Records should point to living evidence
 
-A decision record becomes much more useful when it points to:
+A decision record is strongest when it links to:
 
-- the relevant public module or facade
-- the supporting compatibility suite
-- the documentation or example that teaches the seam
-- the import-boundary or extension-safety rule it relies on
+- the facade or module it governs
+- the compatibility suite or proof route that defends it
+- the docs or examples that teach the supported path
+- the import or extension rule it relies on
 
-That way, a reviewer on July 27, 2026 or later can move from rationale to evidence
-without reconstructing the whole history from scratch.
+That way a reviewer can move from rationale to evidence without reconstructing the whole
+history from scratch.
 
-## A worked example
+The record explains why.
+The linked proof shows the seam still works.
 
-Suppose the capstone decides to expose one public facade and one plugin-facing sink
-capability.
+## Worked capstone record
 
-A useful decision record might say:
+A useful record for `service_monitoring` could say:
 
-- the public facade exists so consumers avoid deep imports into internal runtime modules
-- the sink capability is supported because customization pressure is real there
-- direct plugin access to aggregates was rejected because it would break ownership boundaries
-- the decision should be revisited only if a later use case cannot be served through the narrow capability seam
+- the facade exists so consumers do not depend on deep runtime imports
+- `IncidentSink` is public because alternate sinks are a real supported use case
+- direct plugin access to aggregates and repositories was rejected because it would steal
+  authority across the ownership boundary
+- the decision should be revisited only if a future use case cannot be served through
+  the narrow capability seam
 
-That record helps later reviewers judge whether a proposed expansion is a genuine new
-need or just a convenience shortcut.
+That record helps later maintainers judge whether a proposed expansion is:
 
-## Records are not a replacement for tests or docs
+- a genuine new need
+- or a shortcut that breaks the existing boundary story
 
-Decision records explain why a seam exists.
+## Records are not a substitute for docs or tests
 
-They do not by themselves prove:
+Decision records explain the rationale.
+They do not prove:
 
 - the seam still works
-- the docs still teach the right path
-- the compatibility promise is still honored
+- examples still teach the right path
+- compatibility promises are still honored
 
-That is why strong change control links records to living evidence rather than treating
-the record as the evidence.
+That is why strong change control links records to living evidence instead of treating
+the record itself as proof.
 
-## Common mistakes
+## Build a decision packet
 
-- relying on oral tradition for high-impact API and extension decisions
-- writing records that state conclusions but omit alternatives and tradeoffs
+For each high-impact public or extension decision, keep a short packet:
+
+- decision title
+- supported surface or seam
+- alternatives rejected
+- main reason the chosen option won
+- future condition that would reopen it
+- linked docs, examples, or proof routes
+
+That packet makes governance durable enough to survive team turnover and refactors.
+
+## Common failure modes
+
+- relying on oral tradition for high-impact public decisions
+- writing records that state the conclusion but omit the rejected alternatives
 - giving major public-surface changes the same review treatment as local refactors
-- storing records where maintainers will never see them during review
-- treating records as archival paperwork instead of live governance memory
+- storing records where maintainers never see them during seam changes
+- treating records as archive paperwork instead of live governance memory
 
-## Review checklist
+## Decision review card
 
-| Question | Good sign |
+Use this short card when reviewing a public or extension change:
+
+| Question | What you want to see |
 | --- | --- |
-| are high-impact public and extension decisions recorded with rationale? | yes |
+| is the decision important enough to outlive current memory? | yes |
 | can future reviewers see what alternatives were rejected and why? | yes |
-| does change control scale with the compatibility risk of the change? | yes |
-| are records linked to code, docs, or executable proof surfaces? | yes |
+| does change control scale with the compatibility risk of the seam? | yes |
+| are records linked to code, docs, and proof surfaces? | yes |
 
 ## Capstone connection
 
-Use the capstone to ask:
+Use this page to ask:
 
-- which current public or plugin-facing decision would be hardest to justify a year from now without a record?
-- which proposed change should require explicit compatibility review instead of ordinary local review?
-- where should decision records live so maintainers will actually use them during seam changes?
+- which current public or plugin-facing decision would be hardest to justify a year from
+  now without a record
+- which proposed change should require explicit compatibility review instead of ordinary
+  local review
+- where decision records should live so maintainers will actually use them during seam
+  changes
 
-This is how governance keeps its memory when people and code structure both change.
+That is how governance keeps its memory while the codebase keeps changing.
 
 ## Exit check
 
