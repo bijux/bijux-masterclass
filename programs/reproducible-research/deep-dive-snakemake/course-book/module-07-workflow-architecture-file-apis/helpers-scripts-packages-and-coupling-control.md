@@ -1,30 +1,5 @@
 # Helpers, Scripts, Packages, and Coupling Control
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Workflow Architecture File Apis"]
-  page["Helpers, Scripts, Packages, and Coupling Control"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Architecture gets weaker when implementation code becomes easier to find than the workflow
 itself.
 
@@ -38,6 +13,16 @@ At first, the repository looks more “organized.” Later, nobody can tell wher
 meaning ends and implementation begins.
 
 This page is about stopping that drift.
+
+## How to use this page
+
+Read this page while keeping one helper, one script, and one package module in mind.
+
+The question is not only where the code currently lives. The question is:
+
+> what hidden assumptions does this code rely on, and are those assumptions still visible from the rule layer?
+
+If the answer is no, coupling has already become an architectural problem.
 
 ## Different code homes should imply different ownership
 
@@ -71,6 +56,18 @@ Code in `src/capstone/` is a better fit when:
 That becomes dangerous only when package code starts mutating workflow meaning through
 undeclared assumptions.
 
+## Start by asking what the rule can still explain
+
+A repository stays healthy when the rule layer can still answer:
+
+- which files matter
+- which params matter
+- which runtime matters
+- which helper or package call is being used for declared reasons
+
+Once helper internals become necessary to answer those questions, the visible architecture
+has started to lie.
+
 ## Coupling becomes architectural when it is hidden
 
 Hidden coupling often looks like this:
@@ -96,6 +93,19 @@ flowchart LR
 The point is not to maximize the number of layers. The point is to keep the visible rule
 graph more informative than the hidden helper internals.
 
+## One concrete coupling audit
+
+Take one helper or package function and inspect how a rule reaches it.
+
+Ask:
+
+1. are all meaningful files declared before the helper runs?
+2. are all config assumptions validated or passed explicitly?
+3. could a reviewer explain the step without first reading the helper source?
+
+If the answer to the third question is no, the helper layer is now telling the story
+before the workflow layer does.
+
 ## A weak helper posture
 
 Weak shape:
@@ -117,6 +127,14 @@ Stronger shape:
 
 Now code reuse supports the workflow story instead of replacing it.
 
+## The beginner mistake to catch early
+
+Beginners often think moving code into helpers automatically improves structure.
+
+That only helps when the move preserves visible contracts and reduces hidden assumptions.
+Otherwise, the repository merely relocates complexity into places fewer reviewers will
+open.
+
 ## A practical test
 
 Ask these questions:
@@ -136,6 +154,17 @@ If the first answer is no, the repository may already be over-coupled.
 | step-local code promoted too early | reusable layer becomes ceremonial and noisy | keep code close to the step until reuse is real |
 | helper imports become the only way to understand behavior | workflow review starts below the rule layer | keep orchestration and declared inputs visible in rule files |
 | scripts and package code blur together | readers cannot tell what is local versus reusable | distinguish step-local implementation from reusable software clearly |
+
+## What a reviewer should hear
+
+A strong explanation sounds like this:
+
+> The rule still tells the file and parameter story, the step-local code stays near the
+> step, and the reusable code accepts explicit inputs instead of reaching into hidden
+> workflow state.
+
+That is stronger than "the complex code lives in helpers now," because it tells the
+reviewer where trust still enters the system.
 
 ## The explanation a reviewer trusts
 
@@ -159,3 +188,6 @@ Before leaving this page, you should be able to:
 - describe why hidden helper dependencies are architecture problems
 - explain why the rule layer should remain easier to inspect than helper internals
 - name one sign that a repository is becoming a private framework
+
+If you still describe helper placement mainly as cleanup, keep working. This page is
+really about preserving visible repository truth.
