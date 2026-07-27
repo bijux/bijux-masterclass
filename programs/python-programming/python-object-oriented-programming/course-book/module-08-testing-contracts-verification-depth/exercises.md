@@ -24,181 +24,240 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises as one full proof-design lab. The goal is not to collect test
-vocabulary. The goal is to prove that a learner studying alone can take one design claim
-from the capstone and choose the first failing suite, the right setup shape, the right
-double or contract check, and the right confidence ladder.
+Use this page as one full proof-design workshop, not as ten quick prompts.
 
-## Running lab scenario
+Your goal is to leave with a reviewable packet that proves you can do all of these for a
+real claim:
 
-Use two claims from earlier modules:
+- name the claim in design language
+- choose the first proof that should fail
+- keep setup honest and readable
+- choose doubles and contracts by semantic value
+- escalate to heavier proof only when risk justifies it
 
-- `WorkshopEnrollment` must never confirm more attendees than the seat limit
-- `CertificateIssuanceService` must not duplicate visible issuance when retried
+If the packet cannot teach another maintainer why one proof shape is right, the exercise
+day is not finished.
 
-Those claims are useful because they force different proof shapes:
+## Running workshop scenario
 
-- a lifecycle and invariant-heavy domain claim
-- a workflow and boundary-heavy retry claim
+Keep these two claims on the table all day:
 
-If you choose different claims, keep the same contrast: one stateful domain rule and one
-cross-boundary workflow rule.
+1. `WorkshopEnrollment` must never confirm more attendees than the seat limit
+2. `CertificateIssuanceService` must not create duplicate visible issuance when a retry
+   happens after interruption
 
-## What to keep open while you work
+These two claims are useful because they force different proof families:
 
-Build one proof packet as you go. By the end it should contain:
+- a stateful aggregate claim with lifecycle pressure
+- a workflow claim spanning persistence and side effects
 
-- one design-claim inventory
-- one first-failing-suite map
-- one fixture or builder review
-- one doubles decision note
-- one approval or assertion-boundary judgment
-- one confidence-ladder recommendation
+Do not replace both claims with easier versions. The contrast is part of the lesson.
 
-Useful tables:
+## What you are building by the end
 
-| Design claim | First failing suite or check | Why this surface fits | Stronger proof not yet needed | Weaker proof would miss |
+Create one proof packet with these sections:
+
+- claim inventory
+- first-failing proof map
+- sequence sketch for the lifecycle claim
+- workflow sketch for the retry claim
+- fixture and builder review
+- doubles and contract decision note
+- assertion and approval-boundary note
+- confidence ladder for one high-risk claim
+
+Keep the packet compact enough that another maintainer could read it in one sitting.
+
+## Packet tables to prepare first
+
+Use these tables as working documents while you solve the exercises.
+
+| Design claim | First proof that should fail | Why this proof is close enough | Weaker proof would miss | Stronger proof can wait because |
 | --- | --- | --- | --- | --- |
 
-| Invariant or contract | Setup artifact | Owner of that setup | Hidden risk if reused carelessly |
+| Boundary or invariant | Setup artifact | What must stay visible in the setup | Hidden risk if the helper gets too magical |
 | --- | --- | --- | --- |
 
-## Exercise 1: Choose the first failing suite
+| Collaborator or boundary | Best double or proof route | Why it preserves the right truth | Risk if replaced with a weaker option |
+| --- | --- | --- | --- |
 
-For each of the two running claims, decide:
+## Exercise 1: Write the claim inventory
 
-- which suite should fail first
-- why that suite is close enough to the claim
-- why a heavier suite is not the first answer
-- why a weaker suite would miss the real break
+Write each running claim in one sentence without mentioning tests yet.
 
-Do not answer with "unit tests first" by habit. Name the actual proof surface.
+Then add:
 
-## Exercise 2: Review one lifecycle proof path
+- which object or workflow owns the claim
+- which later consumer would notice the break first
+- which kind of wrong answer would still look green if you proved the claim badly
 
-Use the seat-limit claim and describe:
+If the claim sentence already sounds fuzzy, stop and repair it before moving on.
 
-- what sequence of operations the proof must perform
-- whether behavior-first tests, stateful tests, or property-based tests fit best
-- what false confidence appears if you only check the final count
-- what human review note should tell the same story
+## Exercise 2: Choose the first failing proof
 
-This exercise is about proving the rule through time, not just through a snapshot.
+For each claim, decide which proof should fail first.
 
-## Exercise 3: Review one workflow proof path
+You must choose a concrete surface, such as:
 
-Use the certificate retry claim and explain:
+- behavior-first aggregate tests
+- sequence or stateful tests
+- repository contract suite
+- workflow integration test with meaningful fakes
+- approval artifact review
 
-- which workflow path the test must model
-- which boundary result matters most
-- what a pure mock-heavy unit test would miss
-- what stronger route would prove duplicate-visible-work protection
+For each choice, write:
 
-The question here is not "can the function be called?" It is "what evidence proves the
-workflow contract under interruption?"
+- why it is the first failing proof
+- what weaker proof would miss
+- what stronger proof exists but does not belong first
 
-## Exercise 4: Draw one repository or adapter contract surface
+Habit answers such as "start with unit tests" are not enough.
+
+## Exercise 3: Sketch the seat-limit lifecycle proof
+
+Design the minimal but honest sequence for the `WorkshopEnrollment` claim.
+
+Your sketch must name:
+
+1. the starting state
+2. the confirm steps that reach the boundary
+3. the over-capacity attempt
+4. the visible result after rejection
+5. the one additional history step that proves the object did not enter a corrupted
+   intermediate state
+
+Then answer:
+
+- would simple examples be enough?
+- where would a stateful test add more confidence?
+- what property, if any, might be justified later?
+
+## Exercise 4: Sketch the retry workflow proof
+
+Design the proof route for duplicate-visible issuance prevention.
+
+Your sketch must name:
+
+1. the durable state before retry
+2. the exact interruption or repeat condition
+3. the visible side effect that must not duplicate
+4. the boundary that proves the workflow really resumed safely
+5. the operator-facing symptom that would appear if the proof were too weak
+
+Then explain why a mock-heavy unit test would not be enough.
+
+## Exercise 5: Draw one repository contract surface
 
 Pick one replaceable boundary, such as:
 
 - `WorkshopEnrollmentRepository`
-- object-storage adapter
-- reminder sender adapter
+- certificate artifact store
+- notification sender
 
-Then explain:
+Write down:
 
-- what callers are allowed to assume
-- what contract test should protect that promise
+- what callers are truly allowed to assume
+- what behavior a shared contract suite should defend
 - what backend detail must stay outside the contract
-- what drift a mock-only test strategy would miss
+- what bad substitute could still pass a naive mock-based test
 
-## Exercise 5: Audit one fixture or builder
+This exercise is about replaceability in semantic terms, not interface shape alone.
 
-Choose one setup helper and explain:
+## Exercise 6: Audit one fixture or builder
 
-- what important shape it hides
-- whether that hidden setup clarifies or obscures the invariant
-- who should own the helper
-- what misunderstanding appears if the helper becomes too magical
+Choose one helper you would expect to exist for this module.
 
-Good setup shortens noise. It must not hide the reason the proof matters.
+Explain:
 
-## Exercise 6: Compare doubles honestly
+- which values must stay visible near the test
+- which defaults are safe to hide
+- which defaults would make the proof suspicious
+- who should own the helper and why
 
-Pick one collaborator and choose between:
+Then rewrite one example setup in plain language so another maintainer could audit the
+important shape without opening helper internals.
 
-- fake
+## Exercise 7: Decide the right double
+
+Pick one collaborator in the retry workflow and compare at least four options:
+
 - stub
+- fake
 - spy
 - mock
 - shared contract suite
 
-Explain:
+For each option, say:
 
-- what each option would reveal or hide
-- which one best matches the design claim
-- what interface drift risk matters here
+- what it would preserve
+- what it would hide
+- whether it is good enough for this claim
 
-This is where many tests become easy to write and weak to trust.
+End by choosing one best option and one clearly wrong option.
 
-## Exercise 7: Place one runtime check or assertion boundary
+## Exercise 8: Place one defensive check or assertion boundary
 
-Pick one assumption and explain:
+Choose one assumption from the workflow and decide:
 
-- whether it deserves a runtime check
-- where that check belongs
-- what test proves the check matters
-- what confusion appears if the same check is duplicated everywhere
+- is this a caller-facing contract failure or an internal invariant break?
+- where should the check live?
+- what proof should demonstrate the check matters?
+- what duplication would turn the check into noise instead of a boundary signal?
 
-Assertions are not free decoration. They are part of the boundary story.
+The point is to keep runtime checks aligned with ownership rather than scattering them
+everywhere.
 
-## Exercise 8: Review one snapshot or approval boundary
+## Exercise 9: Review one approval boundary
 
-Choose one output or artifact and explain:
+Choose one output or artifact and decide whether it deserves approval-style review.
 
-- whether it deserves a golden file or approval boundary
-- what unstable detail must stay out of the artifact
-- what review practice keeps the artifact meaningful
-- what risk appears if the artifact becomes broad and noisy
+Write:
 
-This exercise is about protecting real external representation, not fossilizing every
-string.
+- what stable representation is being protected
+- which unstable details must stay out
+- what reviewer question the artifact should answer
+- what would make the artifact become maintenance tax instead of useful evidence
 
-## Exercise 9: Build one confidence ladder
+If you cannot name the contract the artifact protects, it should probably not exist.
 
-For one important claim, write:
+## Exercise 10: Build the confidence ladder
 
-- the smallest useful proof
-- the next stronger proof and what it adds
-- the heaviest proof route and when it becomes justified
-- how the ladder avoids both under-testing and theater
+Choose the higher-risk claim and write a three-level confidence ladder:
 
-The goal is to match cost to risk rather than treating every claim equally.
+1. the smallest useful proof
+2. the next stronger proof and exactly what new risk it covers
+3. the heaviest proof route and the operational trigger that would justify paying for it
 
-## Exercise 10: Produce the proof packet
+Then add one sentence explaining why using the heaviest proof first would be wasteful or
+misleading.
 
-Finish the lab by assembling:
+## Assemble the proof packet
 
-- one proof table
-- one test-data table
-- one doubles choice note
-- one assertion or approval-boundary review
-- one confidence-ladder recommendation
+Before opening the answer page, assemble your final packet with:
 
-The packet is done only when another maintainer can answer:
+- the three tables from the start
+- one lifecycle proof sketch
+- one retry workflow sketch
+- one setup audit
+- one doubles decision note
+- one approval-boundary note
+- one confidence ladder
 
-- which suite should fail first for one claim
-- what setup is honest and readable
-- how one replaceable boundary stays under contract
-- what proof is enough before escalating to heavier suites
+The packet should let another maintainer answer all of these without extra conversation:
 
-## Done means the evidence fits the claim
+- which claim belongs to which proof
+- what setup keeps the important shape visible
+- which boundaries require contract suites instead of hopeful mocks
+- when heavier proof should be added and why
 
-You are done with the exercise day when your packet can survive these review questions:
+## Done means the proof matches the claim
 
-- "Why should this suite fail first?"
-- "What important invariant is this fixture helping or hiding?"
-- "What stronger proof would you add only if the risk increased?"
+You are done only when your packet survives these review questions:
 
-If those answers are still fuzzy, keep tightening the evidence language before you open
-the answer page.
+- "Why should this proof fail before any stronger one?"
+- "What important truth is this builder keeping visible?"
+- "What exactly would a weaker proof miss here?"
+- "What operational risk would justify the next heavier layer?"
+
+If those answers still sound generic, tighten the packet before you move to the answer
+page.
