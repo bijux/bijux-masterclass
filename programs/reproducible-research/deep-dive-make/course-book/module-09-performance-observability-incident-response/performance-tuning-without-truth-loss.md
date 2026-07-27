@@ -210,6 +210,37 @@ Byte-identical output is not always required. Timestamps inside an intentionally
 non-reproducible report may differ, for example. In that case, define the semantic
 comparison before running the experiment. "Looks fine" is not a comparison method.
 
+## Make requested work executable
+
+The capstone no longer leaves “change one input” as an informal instruction. Run:
+
+```sh
+gmake -C "$CAPSTONE" performance-incremental
+```
+
+Read `performance/incremental-policy.tsv` before the report. It declares:
+
+| Mutation | Must rebuild | Must remain untouched |
+| --- | --- | --- |
+| advance `src/util.c` | `build/util.o`, `app`, `all` | unrelated objects, dynamic binaries, generated header |
+
+The collector first converges the build, records output timestamps, advances the declared
+source beyond every observed output, executes `--trace all`, and restores the source
+timestamp even when the build fails. Its report separates:
+
+- `missing_rebuild`: necessary work the graph failed to select
+- `unexpected_rebuild`: collateral work the graph selected without need
+- `observed_rebuild`: the actual affected scope
+
+This catches two different false optimizations. Removing the `util.c` edge can improve an
+incremental timing by leaving `app` stale. Broadening the edge can keep correctness while
+making every edit rebuild unrelated binaries. Final output inventory alone cannot explain
+either rebuild scope.
+
+After a tuning change, the same policy must pass before and after. If the intended product
+contract changes, review and change the policy explicitly rather than weakening the
+collector until the edit passes.
+
 ## Common anti-pattern: tuning by hiding prerequisites
 
 One of the most dangerous fake optimizations is simply hiding an input so fewer rebuilds
