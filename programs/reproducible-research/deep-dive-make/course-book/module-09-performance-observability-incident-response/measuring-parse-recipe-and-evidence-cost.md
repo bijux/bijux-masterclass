@@ -149,7 +149,7 @@ Use these states deliberately:
 | State | How to establish it | Question it answers |
 | --- | --- | --- |
 | clean | use the repository's documented clean/reset route | how expensive is full production? |
-| incremental | change one declared input | is the affected rebuild scope proportionate? |
+| incremental | change one declared input while holding the governed output universe fixed | is that input class's rebuild scope proportionate? |
 | no-op | complete the route, then confirm `make -q` succeeds | what does an up-to-date invocation cost? |
 | incident | preserve the state in which the symptom appeared | why did this particular behavior occur? |
 
@@ -172,8 +172,9 @@ Do not read the median first. Open the bundle under
 | Surface | Question |
 | --- | --- |
 | `scenarios.tsv` | which state, job count, and route did the repository declare? |
-| `incremental-policy.tsv` | which input and rebuild scope define equivalent requested work? |
-| `incremental-work.json` | did the real build select exactly that work? |
+| `incremental-policy.tsv` | which input classes share one governed output universe, and what should each change select? |
+| `incremental-summary.tsv` | did every declared input class pass, and where are missing or unexpected outputs reported? |
+| `incremental-work.json` | which trace and classification support each summary row? |
 | `evidence.json` | which revision, worktree, runner, tools, samples, and outputs belong together? |
 | `summary.tsv` | what were min, median, max, spread, and convergence? |
 | `logs/` | what command output and exit status belong to each sample? |
@@ -194,9 +195,23 @@ least three samples, uses five by default, and records every elapsed value. Five
 not make a benchmark scientific; they make one lucky run less persuasive.
 
 After every scenario, the route proves `make -q all` and inventories the trusted outputs.
-It also advances one declared input and requires the expected dependent outputs, but no
-unrelated outputs, to rebuild. That semantic evidence prevents a missing recipe, incomplete
-graph, or overbroad dependency edge from masquerading as a speedup.
+It then executes every row in the change-impact policy. For each row it converges the
+build, snapshots the same governed outputs, advances exactly one input, classifies the
+outputs that rebuilt, restores the input timestamp, and reconverges before the next row.
+This isolation matters: without it, the first mutation could make a later case appear to
+do no work.
+
+Read `incremental-summary.tsv` vertically before opening any trace. Every declared input
+must appear exactly once and pass. Then read it horizontally:
+
+- `missing` means a required consumer did not rebuild, so the graph may be stale
+- `unexpected` means collateral work rebuilt, so a timing improvement or regression may
+  be describing different work
+- `expected` and `observed` must match even when final output bytes happen to match
+
+Only then open the failing case in `incremental-work.json` and use its trace to explain the
+classification. This semantic evidence prevents a missing recipe, incomplete graph,
+overbroad dependency edge, or incomplete test matrix from masquerading as a speedup.
 
 The machine remains a confounder. Add any notable background load or runner condition to
 the review note before comparing results. The bundle can identify a runner and reject
@@ -324,12 +339,14 @@ need classification:
 | dirty or unavailable repository provenance | reject | measured source cannot be reconstructed |
 | scenario policy or sample count | reject | experiment contract changed |
 | trusted output inventory | reject | final semantics changed |
-| expected or observed incremental work | reject | selected graph work changed |
+| declared input-case set | reject | one side does not prove the same input classes |
+| expected or observed work for any case | reject | selected graph work changed |
 
 A requested-work rejection is not automatically a defect. A deliberate graph repair may
-need to rebuild more or less. It does mean the timing delta cannot stand alone: review the
-graph change, revise the incremental policy if the new scope is correct, and recollect both
-sides under one contract.
+need to rebuild more or less. A newly covered input class may also expose that the old
+bundle was incomplete rather than wrong. Either result means the timing delta cannot stand
+alone: review the graph change, revise the complete matrix if the new scope is correct, and
+recollect both sides under one contract.
 
 A rejected comparison is useful evidence. It identifies which assumption of comparability
 failed instead of producing a precise-looking but dishonest delta.
