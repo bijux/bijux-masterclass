@@ -192,6 +192,76 @@ Now the contract is:
 
 That is much easier to teach and audit.
 
+## A requirement checked inside publication is too late
+
+Consider this artifact rule:
+
+```make
+REQUIRED_TOOL ?= bijux-missing-tool
+RESULT := build/result.txt
+
+$(RESULT): | build/
+	$(REQUIRED_TOOL) --version > build/tool-version.txt
+	printf 'result=complete\n' > $@
+```
+
+The build fails because the tool does not exist, but failure is not the only observation.
+The shell opens `build/tool-version.txt` for redirection before it tries to execute the
+command. The workspace is left with a zero-byte file.
+
+That residue creates a second bug opportunity. A later script that asks only whether the
+path exists can mistake a failed probe for version evidence.
+
+Move the requirement ahead of publication:
+
+```make
+REQUIRED_TOOL ?= python3
+
+.PHONY: contract-check
+contract-check:
+	@command -v "$(REQUIRED_TOOL)" >/dev/null 2>&1 || { \
+	  printf 'contract: missing required tool %s\n' "$(REQUIRED_TOOL)" >&2; \
+	  exit 2; \
+	}
+
+.PHONY: all
+all: contract-check $(RESULT)
+```
+
+This gate has a deliberately narrow responsibility: reject an unavailable executable
+before any artifact recipe begins. Compatibility is a separate question; finding
+`python3` does not prove that every Python version is supported.
+
+## Prove both rejection and acceptance
+
+A missing-tool test alone can produce false confidence. A gate that rejects every value
+would pass it. Pair the negative case with an available-tool control.
+
+Run the course audit from the repository root:
+
+```sh
+gmake -C programs/reproducible-research/deep-dive-make \
+  capstone-environment-contract-audit
+```
+
+Read these rows in the generated `summary.tsv`:
+
+| Model | Exit and files | Finding |
+| --- | --- | --- |
+| late tool check | nonzero; empty version file; no result | `LATE_TOOL_FAILURE_LEFT_RESIDUE` |
+| missing contract gate | nonzero; deliberate message; no files | `REQUIRED_TOOL_REJECTED_EARLY` |
+| available contract gate | zero; version and result files | `REQUIRED_TOOL_ACCEPTED` |
+
+Then inspect:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-make/environment-contracts/
+```
+
+Use the traces to locate the failure boundary and the workspace files to judge the
+publication consequence. Exit status alone cannot distinguish a clean early rejection
+from a dirty late failure.
+
 ## Fallbacks must preserve correctness
 
 Not all fallbacks are healthy.
@@ -243,6 +313,16 @@ This is not the only good shape, but it demonstrates the habit:
 - make the shell contract explicit
 - keep the conditions visible near the top of the build
 
+The version filters are intentionally visible teaching examples, not a universal semantic
+version parser. If the supported range expands, test boundary versions explicitly:
+
+- newest rejected version
+- oldest accepted version
+- a later minor version such as `4.10`, which simplistic text filters often mishandle
+
+Version policy is code. It needs positive and negative cases just like the required-tool
+gate.
+
 ## Failure signatures worth recognizing
 
 ### "It works locally, but CI says the syntax is invalid"
@@ -256,6 +336,11 @@ That means the fallback was not actually safe. It preserved execution, not seman
 ### "Nobody knows which tool was used on that machine"
 
 That usually means tool discovery is happening implicitly or in too many places.
+
+### "The tool is missing, and an empty version file remains"
+
+The requirement was discovered after publication began. Move it to a contract gate and
+test that no evidence paths exist after rejection.
 
 ### "We support everything" but the build has machine-specific branches everywhere
 
@@ -283,7 +368,13 @@ language:
 4. which features are optional
 5. which fallback preserves correctness when the optional feature is missing
 
-If you can do that in one short section, the build has started to become explainable.
+Then use the environment contract audit to explain why these are different claims:
+
+- the missing tool is rejected before publication
+- an available tool passes the same gate
+- the tool's version is compatible with the artifact recipe
+
+The audit proves the first two. Your declared version policy must prove the third.
 
 ## End-of-page checkpoint
 
@@ -294,3 +385,5 @@ Before leaving this lesson, make sure you can explain:
 - why version gates should be tied to capabilities
 - why the shell belongs in the contract
 - why a fallback is only good if it preserves correctness rather than merely keeping the build alive
+- why required-tool tests need both a rejection case and an available control
+- why a nonzero exit does not prove that failure left the workspace clean
