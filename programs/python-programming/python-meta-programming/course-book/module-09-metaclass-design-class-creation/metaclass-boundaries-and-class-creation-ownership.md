@@ -53,6 +53,12 @@ That is the boundary the module keeps visible.
 If the sentence could be rewritten without the phrases "class creation itself" or "across a
 class hierarchy," the metaclass claim is probably overstated.
 
+For self-study, turn that into a direct boundary test:
+
+- what exact fact must exist before the class name is bound?
+- what exact family-wide rule would be lost if subclasses had to opt in later?
+- what lower-power owner would still be clearer if that fact or rule were smaller?
+
 ## Evidence route for class-creation ownership reviews
 
 Use this route whenever a design proposes a metaclass:
@@ -95,6 +101,13 @@ plain explicit code
 ```
 
 This is not a sophistication ladder. It is a cost ladder.
+
+Keep one owner worksheet beside every metaclass proposal:
+
+| Proposed rule | Smallest owner that might work | Why it may fail | Why the metaclass case might still be honest |
+| --- | --- | --- | --- |
+| require every concrete subclass to register | decorator or explicit helper | opt-in loses automatic subclass-time behavior | hierarchy-wide automatic registration is the real invariant |
+| your own case | fill this in | fill this in | fill this in |
 
 ## The ownership ladder in review form
 
@@ -145,6 +158,15 @@ Weak metaclass defenses often sound like this:
 - "it centralizes everything"
 
 Those phrases describe convenience, not ownership.
+
+## Weak answers to reject early
+
+| Weak answer | Why it fails |
+| --- | --- |
+| "it belongs in a metaclass because every subclass needs it" | every subclass needs it still does not prove the rule must fire at class creation |
+| "a decorator would be too manual" | manual is not a boundary argument unless opt-in truly loses the invariant |
+| "centralizing the rule is cleaner" | cleaner does not name the cost or the timing requirement |
+| "the metaclass keeps the family consistent" | consistent is too vague unless the invariant and lower-power failure are both explicit |
 
 ## Why registration alone is not always enough
 
@@ -239,6 +261,11 @@ A reviewer should be able to reject a weak metaclass with sentences such as:
 - "this is registry convenience, not a class-creation invariant"
 - "the import-time side effects are larger than the value of the automation"
 - "the hierarchy rule is real, but the bookkeeping can be separated from the metaclass"
+
+Before you leave this page, write one sentence beginning:
+
+- "a metaclass is still the smallest honest owner here because..."
+- "the next-lower tool fails here because..."
 
 ## Review rules for metaclass boundaries
 
