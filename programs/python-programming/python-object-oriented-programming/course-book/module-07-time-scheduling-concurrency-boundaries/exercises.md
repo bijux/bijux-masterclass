@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,205 +24,170 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to make time and concurrency pressure explicit instead of letting it
-spread through the model as invisible runtime folklore.
+Use these exercises as one full runtime-boundary lab. The goal is not to memorize
+`asyncio`, threads, or lock APIs. The goal is to prove that a learner studying alone can
+take one time-sensitive workflow and say who owns the clock, who owns mutation, where
+async style begins, and when cancellation is safe.
 
-The day is not about memorizing thread or asyncio APIs. It is about proving that clocks,
-deadlines, queues, locks, cancellation, and async bridges have named owners and do not
-quietly infect the whole design.
+## Running lab scenario
 
-## How to work through this set
+Use one workflow all day:
 
-Treat the ten exercises as one full lab day on temporal contracts and concurrency
-boundaries.
+`EnrollmentReminderCoordinator`
 
-Before each answer:
+The system:
 
-1. name the operation or state transition under review
-2. name the object or boundary that should own the time or concurrency pressure
-3. state which objects must stay unaware of that pressure
+- watches workshops that will start soon
+- schedules reminder sends before the start time
+- retries failed sends through a worker queue
+- updates reminder status so the same attendee is not reminded twice
+- exposes a synchronous admin surface but uses asynchronous delivery underneath
 
-Do the exercises in order. The day is one progression:
+Pressure points:
 
-- Exercises 1-3 define clocks, deadlines, and scheduling boundaries
-- Exercises 4-6 review shared mutation, work queues, caches, and ownership transfer
-- Exercises 7-8 place sync/async bridges and API surface decisions
-- Exercises 9-10 test cancellation, retries, and the full runtime boundary under failure
+- deadlines depend on correct time semantics
+- multiple workers may race to send the same reminder
+- queue delays may make old scheduled work stale
+- cancellation may happen after partial progress
 
-Keep one runtime-boundary packet as you go. By the end of the day it should contain:
+If you choose your own scenario, keep the same pressure: one deadline-driven workflow,
+one shared mutable status surface, one worker boundary, and one retry story.
+
+## What to keep open while you work
+
+Build one runtime packet as you go. By the end it should contain:
 
 - one clock-decision note
-- one deadline or timeout boundary review
+- one deadline-boundary note
 - one mutation-ownership map
-- one queue or lock justification
+- one queue-versus-lock decision
 - one sync/async bridge review
 - one cancellation and retry recommendation
 
-If those six artifacts are missing, you are probably still discussing mechanics instead
-of ownership.
-
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module07-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
-
-Keep one timing table while you work:
+Useful tables:
 
 | Operation | Time or concurrency concern | Owning boundary | Objects that must stay unaware | Failure if the boundary leaks |
 | --- | --- | --- | --- | --- |
 
-Keep one retry table:
-
-| Operation | Cancellation point | Retry safe | Required state guard | What side effect must not duplicate |
+| Operation | Cancellation point | Retry safe | Required state guard | Side effect that must not duplicate |
 | --- | --- | --- | --- | --- |
 
-```mermaid
-flowchart LR
-  claim["name the runtime claim"]
-  own["assign one owner"]
-  isolate["isolate shared mutation"]
-  bridge["bridge sync and async deliberately"]
-  cancel["place cancellation and retry"]
-  prove["name the proof route"]
+## Exercise 1: Choose the clock
 
-  claim --> own --> isolate --> bridge --> cancel --> prove
-```
+For reminder delivery, decide:
 
-Use that route on purpose. It keeps the day centered on owned runtime pressure instead of
-on incidental library details.
+- which part uses wall-clock time
+- which part uses monotonic time
+- where the clock should be injected or owned
+- what object must not call `datetime.now()` or event-loop time directly
 
-## Exercise 1: Choose the right clock
+Then name one bug that appears if wall-clock and elapsed-time concerns are mixed.
 
-Take one operation and explain:
+## Exercise 2: Draw the deadline boundary
 
-- whether it should depend on wall-clock time or monotonic time
-- where that clock should be injected or owned
-- what object must stay free of direct time lookup
-- what bug appears if the wrong clock is used
+Take the rule "send the reminder no later than thirty minutes before workshop start."
 
-Study note:
-The first time decision is not "what API is convenient" but "what notion of time the
-contract actually needs."
+Explain:
 
-## Exercise 2: Draw one deadline boundary
+- where the deadline is computed
+- where the deadline is enforced
+- what happens if work reaches the queue too late
+- why the domain object should not scatter deadline checks through its methods
 
-Pick one timeout, expiration, or deadline rule and explain:
-
-- where the deadline is calculated
-- where it is enforced
-- what state transition it may trigger
-- why that concern belongs at that boundary rather than deeper in the model
-
-Study note:
-Deadlines are design boundaries, not scattered `if now > cutoff` checks.
+This exercise is about boundary ownership, not arithmetic.
 
 ## Exercise 3: Review one scheduling concern
 
-Choose one scheduled or repeated activity and explain:
+Choose one repeated activity, such as scanning for upcoming workshops, and decide:
 
-- what object or runtime boundary should coordinate it
-- what work unit is being scheduled
-- what domain object must stay ignorant of the schedule
-- how you would test the schedule without sleeping in tests
+- which coordinator schedules it
+- what work unit gets enqueued
+- what domain objects stay ignorant of timers
+- how to test the schedule without sleeping in real time
 
-Study note:
-Scheduling should coordinate work; it should not redefine domain meaning.
+If the design requires the domain model to know about timer loops, the boundary is too
+wide.
 
 ## Exercise 4: Place shared mutation honestly
 
-Take one mutable state surface and explain:
+Take reminder status and decide:
 
-- whether shared mutation is acceptable at all
-- whether a lock, queue, single owner, or immutable handoff is cleaner
+- whether more than one worker may mutate it directly
+- whether single ownership, queue handoff, or explicit locking is cleaner
 - what race appears if the state is shared casually
-- what boundary should expose the rule to reviewers
+- what review artifact would make the ownership rule easy to see
 
-Study note:
-The cleanest concurrency story is often "share less," not "lock more."
+This is the point where "be careful with concurrency" must become a design rule.
 
 ## Exercise 5: Compare queueing and locking
 
-Pick one concurrency pressure point and explain:
+For duplicate reminder risk, compare:
 
-- what a lock-based design would look like
-- what a queue- or worker-based design would look like
-- which one keeps ownership clearer
-- what operational tradeoff you accept by choosing it
+- a lock around shared reminder state
+- a queue that gives one worker ownership of each reminder key
 
-Study note:
-The decision is about control over mutation and backpressure, not about fashion.
+Explain:
 
-## Exercise 6: Review one cache under concurrency pressure
+- what each design buys
+- what it complicates operationally
+- which one makes retry and deduplication easier to reason about
 
-Take one cache or memoized value and explain:
+End with one recommendation and one rejected design.
 
-- whether the cached value is immutable enough to share
-- what invalidation or freshness rule matters
-- what concurrency hazard appears if the cache is naïve
-- what proof surface should fail if the cache contract drifts
+## Exercise 6: Review one cache or memoized surface
 
-Study note:
-Caching is a time contract before it is a speed trick.
+Suppose the coordinator caches "next reminders due soon."
 
-## Midday self-check
+Explain:
 
-Before moving into sync/async boundaries and cancellation pressure, make sure your packet
-already answers these questions clearly:
+- whether the cached value is safe to share
+- what freshness rule matters
+- what stale or racing bug would make the cache misleading
+- what proof should fail first if the cache contract drifts
 
-- which clock one operation should use
-- where one deadline is owned
-- whether one shared state surface should lock, queue, or transfer ownership
-- how one concurrent cache stays valid
+Caching is a time contract before it is a performance choice.
 
-If you cannot answer those four questions in plain language, return to Exercises 1-6 and
-make the packet more explicit before continuing.
+## Exercise 7: Place the sync/async bridge
 
-## Exercise 7: Place one sync/async bridge
+The admin UI triggers reminder replay synchronously, but the delivery path is asynchronous.
 
-Choose one boundary between synchronous and asynchronous work and explain:
+Decide:
 
-- where the bridge should live
-- which API should stay synchronous
-- which API should become asynchronous
-- what design damage appears if every layer learns both styles
+- where the bridge lives
+- which API remains synchronous
+- which API remains asynchronous
+- what design damage appears if both styles spread through every layer
 
-Study note:
-Bridges are strongest at edges. They are weakest when they widen every interface.
+This is where many codebases become harder to read than they need to be.
 
-## Exercise 8: Review one thread-aware or async-aware API
+## Exercise 8: Review one concurrency-aware API
 
-Take one public API and explain:
+Choose one API surface and explain:
 
-- what concurrency guarantees it offers
-- what blocking behavior callers must know
-- what state assumptions must remain explicit
-- what documentation or test should make those guarantees reviewable
+- what blocking or awaiting behavior callers must know
+- what concurrency guarantee is actually being promised
+- what state assumptions remain explicit
+- what documentation or test should make the contract reviewable
 
-Study note:
-Concurrency-aware APIs are contracts, not implementation trivia.
+Do not answer with "thread-safe" alone. State what that means here.
 
 ## Exercise 9: Design one cancellation and retry path
 
-Take one meaningful workflow and explain:
+Take this case:
 
-- where cancellation may happen safely
-- what must be atomic before cancellation is allowed
-- whether retry is safe afterward
-- what side effect or state duplication would prove the design is wrong
+- reminder payload generated
+- worker is cancelled before status is marked sent
 
-Study note:
-Cancellable work is only safe when partial progress remains governable.
+Explain:
 
-## Exercise 10: Produce a runtime-boundary decision packet
+- whether retry is safe
+- what state transition must be atomic before cancellation becomes harmless
+- what duplicate side effect would reveal the design is wrong
+- where resumable progress should be recorded if needed
 
-Assemble:
+## Exercise 10: Produce the runtime packet
+
+Finish the lab by assembling:
 
 - one timing table
 - one retry table
@@ -231,21 +195,20 @@ Assemble:
 - one queue-versus-lock decision
 - one concurrency-safe cache note
 
-The packet is strong when another maintainer can answer:
+The packet is done only when another maintainer can answer:
 
 - which boundary owns time
 - which boundary owns shared mutation
-- where async style begins and ends
+- where async begins and ends
 - when cancellation is safe
-- what proof surface should fail first if runtime pressure leaks inward
 
-## Done means more than finishing the page
+## Done means the runtime pressure has an owner
 
-You are done with the exercise day when your packet can survive three kinds of review:
+You are done with the exercise day when your packet can survive these review questions:
 
-- a design review asking where time pressure belongs
-- an incident review asking where duplicate work or race conditions should have been
-  stopped
-- an API review asking whether sync and async boundaries are still readable
+- "Which clock is authoritative for this rule?"
+- "Who stops duplicate reminder sends under concurrency?"
+- "What happens if cancellation lands halfway through the path?"
 
-If the packet cannot survive those reviews, keep tightening the ownership language.
+If those answers are still fuzzy, keep tightening the ownership language before you open
+the answer page.
