@@ -29,11 +29,19 @@ Use these after reading the five core lessons and the worked example. The goal i
 memorize framework vocabulary. The goal is to make cache policy, backend ownership,
 composition, hint support, and architecture boundaries explicit.
 
+This page matters because weak exercises let learners imitate vocabulary without proving
+ownership. The point of this set is to leave behind reviewable evidence, not polished
+sounding answers.
+
 Each exercise asks for three things:
 
 - the field behavior or framework pressure you are analyzing
 - the descriptor or broader owner you chose
 - the reason that choice is the clearest one
+
+Add a fourth thing to every answer:
+
+- one rejected alternative owner and why you rejected it
 
 Treat the ten exercises as one full lab day on descriptor systems and framework boundaries.
 
@@ -49,6 +57,11 @@ Keep one descriptor-system table while you work:
 | Field behavior or framework pressure | Smallest honest owner | Source of truth | Invalidation or coordination rule | Review judgment |
 | --- | --- | --- | --- | --- |
 
+Keep a second evidence ledger beside it:
+
+| Exercise | Concrete evidence you inspected or built | Weak claim you refused | Remaining uncertainty |
+| --- | --- | --- | --- |
+
 ## Exercise 1: Design one cached field honestly
 
 Create or inspect one descriptor that caches a computed value.
@@ -58,6 +71,7 @@ What to hand in:
 - when the value is computed
 - where the cached value is stored
 - one explicit invalidation rule
+- one rejected weaker answer such as "the caller will remember to refresh it"
 
 ## Exercise 2: Review one external-storage field
 
@@ -68,6 +82,7 @@ What to hand in:
 - the backend key shape
 - one read-through or write-through behavior
 - one explanation of what cost or I/O the attribute access hides
+- one rejected description that pretends the field is still purely local
 
 ## Exercise 3: Compose one wrapper field
 
@@ -78,6 +93,7 @@ What to hand in:
 - the inner field's responsibility
 - the wrapper layer's added concern
 - one explanation of how `__set_name__` or delegation is preserved
+- one reason another wrapper layer would make the stack harder to review
 
 ## Exercise 4: Validate one narrow hint subset
 
@@ -88,6 +104,7 @@ What to hand in:
 - the exact hint forms it supports
 - one coercion it allows or refuses
 - one explanation of how `Annotated[...]` metadata is used, if present
+- one unsupported hint form that must fail clearly
 
 ## Exercise 5: Reject one descriptor that became architecture
 
@@ -98,6 +115,7 @@ What to hand in:
 - the extra responsibility it is trying to absorb
 - the explicit framework or service owner it should move to
 - one sentence explaining why the descriptor layer is no longer enough
+- one rejected lower-power owner that would still be too weak
 
 ## Exercise 6: Review the educational mini relational model
 
@@ -108,6 +126,7 @@ What to hand in:
 - one thing the field layer owns honestly
 - one thing the model layer or framework layer must own instead
 - one explanation of why this example is educational rather than production-grade
+- one production claim you explicitly refuse to make
 
 ## Midday self-check
 
@@ -123,6 +142,9 @@ If you cannot answer those four questions in plain language, return to Exercises
 make the source of truth, invalidation rule, and escalation boundary more explicit before
 continuing.
 
+If you can answer them only in abstract language, add one concrete code path or storage
+path before continuing.
+
 ## Exercise 7: Make one backend access path observable
 
 Choose one backend-backed descriptor and design a way for learners or reviewers to see when
@@ -133,6 +155,7 @@ What to hand in:
 - the backend-backed field
 - one observation surface such as logging, counters, tracing, or explicit read helpers
 - one explanation of why hidden I/O makes the field harder to reason about
+- one reason silent backend access would weaken review or debugging
 
 ## Exercise 8: Separate one field concern from one framework concern
 
@@ -145,6 +168,7 @@ What to hand in:
 - the field-level concern that should stay
 - the wider concern that should move out
 - one explanation of why the split makes the architecture easier to review
+- one stronger owner you considered but rejected as unnecessary at this stage
 
 ## Exercise 9: Compare honest field claims with overstated framework claims
 
@@ -156,6 +180,7 @@ What to hand in:
 - the honest description
 - the overstated description
 - one explanation of which words make the overstated version misleading
+- one sentence rewriting the overstated version into an honest boundary claim
 
 ## Exercise 10: Produce a descriptor-system packet
 
@@ -171,6 +196,12 @@ The packet is strong when another learner can use it to answer:
 - what the field layer owns directly
 - where data really lives
 - when the design has crossed into wider architecture
+
+Add these packet requirements:
+
+- one refused weaker owner
+- one refused stronger owner
+- one named uncertainty you would investigate next in a real code review
 
 ## Mastery standard for this exercise set
 
@@ -188,6 +219,16 @@ Across all ten answers, add two more habits:
 - you leave behind a descriptor-system packet another learner could review without guessing
 
 If an answer still sounds like "the smart descriptor handles it," keep going.
+
+## Exit check for this exercise set
+
+Before moving on to the answer key, make sure your packet lets another learner:
+
+- trace one cache invalidation owner
+- trace one backend source of truth
+- explain one wrapper boundary
+- name one refused hint surface
+- name one point where the design must escalate into broader architecture
 
 ## Continue through Module 08
 
