@@ -103,9 +103,14 @@ represented as a contract instead of a pile of tolerated exceptions.
 
 ## Exercises
 
-- Pick one object lifecycle and list the legal transitions, the illegal transitions, and the method boundary that should enforce them.
-- Review one property or constructor and explain whether it clarifies state or hides work that should stay explicit.
-- Replace one ambiguous `None` meaning with a sharper representation and explain what bug surface that removes.
+Use the full exercise day rather than treating these as quick prompts:
+
+- [Exercises](exercises.md)
+- [Exercise Answers](exercise-answers.md)
+
+The exercise day turns the module into one complete state-contract route: validation,
+properties, dataclasses, nullability, lifecycle transitions, and typestate-style API
+discipline.
 
 ## Capstone connection
 
