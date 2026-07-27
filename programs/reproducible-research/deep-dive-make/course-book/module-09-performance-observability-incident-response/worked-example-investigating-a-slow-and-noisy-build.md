@@ -350,12 +350,12 @@ merge this conclusion with timing: trace usability and route cost remain separat
 
 ## Generate a controlled incident
 
-The capstone includes a repro where two targets append to one shared file. Generate its
-incident bundle:
+The performance evidence answers cost questions. It does not show how to decide whether a
+parallel failure reproduction is valid. Generate the capstone's three-case incident
+matrix:
 
 ```sh
-gmake -C "$CAPSTONE" incident-audit \
-  REPRO_CASE=repro/shared-log-interleaving.mk
+gmake -C "$CAPSTONE" incident-audit
 ```
 
 The bundle appears under:
@@ -364,65 +364,108 @@ The bundle appears under:
 artifacts/audit/reproducible-research/deep-dive-make/incident/
 ```
 
-Read these files in order:
+Before opening a raw log, write this prediction table:
 
-1. `command.txt`
-2. `run.txt`
-3. `exit-status.txt`
-4. `shared-log-interleaving.mk`
-5. `INCIDENT_REVIEW_GUIDE.md`
+| Case | Expected process result | Evidence needed beyond exit status |
+| --- | --- | --- |
+| shared log | zero | writer records are semantically interleaved |
+| directory creation | nonzero | exactly one file claimant survives |
+| shared staging | nonzero | one output survives after consuming the shared staging path |
 
-An observed bundle contains:
+Now read:
+
+1. `summary.tsv`
+2. `report.json`
+3. the three files under `runs/`
+4. the three case directories under `evidence/`
+5. the preserved workspaces and copied specimens
+
+The summary should classify:
 
 ```text
-printf 'A\n' >> shared.log
-printf 'B\n' >> shared.log
+shared-log-interleaving    zero       SEMANTIC_CORRUPTION_REPRODUCED
+directory-creation-race    nonzero    DIRECTORY_RACE_REPRODUCED
+shared-staging-collision   nonzero    STAGING_COLLISION_REPRODUCED
 ```
 
-and:
+The exact nonzero status is Make implementation detail. The semantic signature is the
+teaching contract.
+
+## Prove the zero-exit incident from its artifact
+
+Open:
 
 ```text
-exit_status=0
+evidence/shared-log-interleaving/shared.log
 ```
 
-That is the important surprise. The route can exit successfully while the graph still
-models shared mutable output dishonestly.
+The two start records appear before the two end records:
+
+```text
+alpha:start
+beta:start
+alpha:end
+beta:end
+```
+
+The order within each pair can vary. What matters is that neither writer's logical record
+is contiguous. The append commands return success, but the shared artifact has no unique
+owner and no publication order.
+
+This is stronger than reading the Makefile and declaring it "risky." The audit preserved
+the artifact and checked the promised corruption.
+
+## Prove the nonzero incidents from surviving state
+
+For the directory case, open:
+
+```text
+evidence/directory-creation-race/surviving-files.txt
+```
+
+The file names can vary, but exactly one of `dir/file1` and `dir/file2` must survive. If
+the command merely returned nonzero before either recipe published anything, it would not
+prove the intended ownership collision.
+
+For the staging case, open:
+
+```text
+evidence/shared-staging-collision/publication-state.json
+```
+
+The required observation is:
+
+| Path | Exists after failure? |
+| --- | --- |
+| `shared.staging` | no |
+| `x.out` | no |
+| `y.out` | yes |
+
+One target consumed the shared staging path. The other target then failed to publish. A
+generic "recipe failed" label would lose the causal boundary.
 
 ## Classify from ownership, not from exit status
 
-The copied repro contains:
+Complete one claim row per case:
 
-```make
-all: log1 log2
+| Case | Process evidence | Semantic evidence | Boundary | Repair direction |
+| --- | --- | --- | --- | --- |
+| shared log | exit `0` | interleaved writer records | publication ownership | private records plus one merge target |
+| directory race | nonzero | one surviving claimant | graph ownership | one directory target with order-only consumer edges |
+| staging collision | nonzero | one missing output after shared staging consumption | publication ownership | private staging path per target |
 
-log1:
-	printf 'A\n' >> shared.log
+This table exposes why forcing `-j1` is not a completed repair. It changes the schedule
+while preserving multiple writers or repeated setup ownership.
 
-log2:
-	printf 'B\n' >> shared.log
+To study one case again without discarding its semantics:
+
+```sh
+gmake -C "$CAPSTONE" incident-audit \
+  INCIDENT_CASE=shared-staging-collision
 ```
 
-Ask the ownership question:
-
-> Which target owns `shared.log`?
-
-The honest answer is "neither owns it uniquely." Two independent targets mutate the same
-path, and `shared.log` is not even a declared target. Parallel scheduling exposes the
-problem, but parallelism did not create it.
-
-Classify the incident:
-
-| Field | Decision |
-| --- | --- |
-| boundary | graph truth and publication ownership |
-| immediate risk | nondeterministic shared output |
-| misleading signal | exit status `0` |
-| mitigation | serial mode may reduce exposure but does not repair ownership |
-| repair direction | one target owns the file, or each worker owns separate output followed by a declared merge |
-| proof after repair | repeated pressure runs, stable content, one writer, and convergence |
-
-Now the suggestion to force serial mode can be rejected as a completed fix. It changes the
-scheduler while leaving two undeclared writers.
+The audit accepts named contracts, not arbitrary Makefiles. Without a declared expected
+signature, it could only record output rather than verify an incident.
 
 ## Connect the repro back to the real build
 
@@ -488,7 +531,8 @@ The original complaint does not produce one verdict:
 - "slow" requires comparison with a controlled historical baseline; this exercise
   establishes the missing baseline
 - "noisy" must be evaluated by trace usability and responder value, not dislike of output
-- the parallel concern is real in the controlled repro, but serial mode is only mitigation
+- the parallel concerns are proven by case-specific signatures, but serial mode is only
+  mitigation
 - removing diagnostics would weaken the evidence needed to classify the ownership defect
 
 A strong incident summary is:
@@ -497,10 +541,10 @@ A strong incident summary is:
 > now has a governed clean, no-op, and dry-run baseline whose scenarios, samples,
 > provenance, requested work, convergence, and trusted outputs are reviewable. Its trace is
 > evaluated by state, attribution, searchability, and bounded plan volume. The executed
-> repro exits successfully but reveals
-> two undeclared writers to one shared file, so the defect is output ownership rather than
-> "too much parallelism." Serial execution is temporary mitigation; repair requires one
-> publication owner and schedule-equivalence proof.
+> incident matrix distinguishes successful semantic corruption from nonzero graph and
+> publication collisions. Each finding is backed by preserved artifact state, so the
+> defects are ownership failures rather than "too much parallelism." Serial execution is
+> temporary mitigation; repair requires unique owners and schedule-equivalence proof.
 
 ## Exit check
 
@@ -512,7 +556,7 @@ You have completed the example when you can point to:
 - the declared and observed incremental rebuild scope
 - one context rejection and one requested-work rejection you can explain
 - the trace state, focus target, semantic checks, and one raw causal line
-- the incident bundle's command, output, status, and copied makefile
-- a classification that does not rely on exit status alone
+- the incident summary, case report, raw logs, and three semantic evidence artifacts
+- three classifications that do not rely on exit status alone
 - the selftest report that represents the repaired proof shape
 - a runbook branch another learner could follow without you
