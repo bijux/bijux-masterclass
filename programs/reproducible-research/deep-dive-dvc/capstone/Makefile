@@ -19,6 +19,7 @@ RELEASE_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc
 VERIFY_REPORT_DIR ?= $(ARTIFACTS_DIR)/proof/reproducible-research/deep-dive-dvc/verify
 RECOVERY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/recovery
 EXPERIMENT_REVIEW_DIR ?= $(ARTIFACTS_DIR)/review/reproducible-research/deep-dive-dvc/experiments
+STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/stage-contracts
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-dvc
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-dvc-capstone-source.tar.gz
 
@@ -284,6 +285,37 @@ experiment-review: verify ## Build a focused experiment comparison bundle
 		'  Which candidate still needs release-boundary evidence before downstream trust?' > $(EXPERIMENT_REVIEW_DIR)/review-questions.txt
 	@$(VENV_PY) scripts/write_bundle_manifest.py --bundle-dir $(EXPERIMENT_REVIEW_DIR) --output $(EXPERIMENT_REVIEW_DIR)/manifest.json
 	@echo "✔ wrote experiment review bundle to $(EXPERIMENT_REVIEW_DIR)"
+
+.PHONY: stage-contract-audit
+stage-contract-audit: install ## Audit declared and hidden stage influences
+	@rm -rf $(STAGE_CONTRACT_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_stage_contracts.py \
+		--specimen repro/stage-contracts \
+		--workspace $(STAGE_CONTRACT_AUDIT_DIR)/workspace \
+		--output $(STAGE_CONTRACT_AUDIT_DIR)/report.json \
+		--python $(VENV_PY)
+	@mkdir -p $(STAGE_CONTRACT_AUDIT_DIR)/scripts $(STAGE_CONTRACT_AUDIT_DIR)/tests
+	@cp docs/stage-contract-audit-guide.md $(STAGE_CONTRACT_AUDIT_DIR)/STAGE_CONTRACT_AUDIT_GUIDE.md
+	@cp docs/stage-contract-guide.md $(STAGE_CONTRACT_AUDIT_DIR)/CAPSTONE_STAGE_CONTRACT_GUIDE.md
+	@cp scripts/audit_stage_contracts.py $(STAGE_CONTRACT_AUDIT_DIR)/scripts/audit_stage_contracts.py
+	@cp tests/test_stage_contract_audit.py $(STAGE_CONTRACT_AUDIT_DIR)/tests/test_stage_contract_audit.py
+	@printf '%s\n' \
+		'Stage contract audit route:' \
+		'  1. Read STAGE_CONTRACT_AUDIT_GUIDE.md for the claim boundary.' \
+		'  2. Read summary.tsv and separate accepted behavior from reproduced defects.' \
+		'  3. Compare the five stages in workspace/baseline/dvc.yaml.' \
+		'  4. Inspect the JSON status receipts under evidence/ before reading outputs.' \
+		'  5. Compare declared and hidden values in workspace/input-change and workspace/param-change.' \
+		'  6. Inspect workspace/output-loss to see why the missing receipt is invisible.' \
+		'  7. Read the audit script and adversarial test when reviewing enforcement.' > $(STAGE_CONTRACT_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(STAGE_CONTRACT_AUDIT_DIR) \
+		--output $(STAGE_CONTRACT_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote stage contract audit to $(STAGE_CONTRACT_AUDIT_DIR)"
+
+.PHONY: stage-contract-selftest
+stage-contract-selftest: install ## Reject dishonest stage contract evidence
+	@$(PYTEST) tests/test_stage_contract_audit.py
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
