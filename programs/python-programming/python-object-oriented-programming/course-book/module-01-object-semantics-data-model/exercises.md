@@ -17,47 +17,55 @@ graph LR
 
 ```mermaid
 flowchart LR
-  identity["name the semantic contract"] --> state["inspect state and mutation"]
-  state --> equality["review equality and hashing"]
-  equality --> copy["test aliasing and copying"]
-  copy --> choose["decide whether a class belongs at all"]
+  classify["classify the object honestly"] --> contract["name the contract"]
+  contract --> stress["stress equality, mutation, and sharing"]
+  stress --> redesign["repair the weak design"]
+  redesign --> review["write the review packet"]
 ```
 <!-- page-maps:end -->
 
-Use these exercises as one full lab day on object meaning. The goal is not to prove that
-you recognize Python syntax. The goal is to prove that you can inspect a type and say
-what it is promising.
+Use these exercises as one full lab day on object meaning. The aim is not to prove that
+you recognize Python syntax. The aim is to prove that you can inspect a type and explain
+what it promises, what could break that promise, and whether the class form is justified
+at all.
 
-## How to use this exercise day
+## Running lab rule
 
-Do the exercises in order. Each one builds a piece of the same review packet.
+Use one small cluster of examples throughout the day instead of resetting your brain on
+every exercise. Good candidates:
 
-Before answering any exercise, write these three lines:
+- one capstone type plus one helper type beside it
+- one object from your own codebase that already feels slightly suspicious
+- one tiny toy design that includes mutable state, equality pressure, and representation pressure
+
+If you switch objects every exercise, you will practice explanation fragments instead of
+building one coherent semantics packet.
+
+## What to keep in front of you
+
+Before answering any exercise, fill in this header:
 
 1. `This object is...`
-2. `The owner of this mutable state is...`
-3. `The first proof I would run is...`
+2. `The owner of mutable state is...`
+3. `The first thing another maintainer could misunderstand is...`
+4. `The first proof I would run is...`
 
-If you skip those lines, the answers often drift back into vague opinions.
+Keep one packet for the whole day. By the end it should contain:
 
-## What you should produce by the end
-
-By the end of the exercise day, you should have a packet containing:
-
-- one identity-versus-value judgment
-- one attribute-layout explanation
-- one constructor invariant review
-- one public-surface judgment
+- one object-classification judgment
+- one attribute-lookup explanation
+- one constructor-boundary repair
+- one public-surface note
 - one equality-and-hashing judgment
-- one aliasing or shared-state hazard note
+- one aliasing hazard analysis
 - one copying decision
 - one class-versus-function decision
-
-That packet is more important than any individual sentence.
+- one review memo
+- one capstone transfer note
 
 ## Exercise 1: Classify one object honestly
 
-Choose one type from the capstone or from your own work. Decide whether it is:
+Choose one type and decide whether it is:
 
 - value-like
 - entity-like
@@ -68,31 +76,40 @@ Write:
 - what gives it continuity, if anything
 - what would make two instances meaningfully the same
 - whether lifecycle matters
+- one sentence explaining why the wrong classification would hurt later modules
 
-## Exercise 2: Explain one attribute lookup surprise
+Good answer shape:
+`This type is value-like because...`
+
+## Exercise 2: Explain one attribute lookup path
 
 Create a tiny example with:
 
 - one class attribute
 - one instance attribute
 - one property
+- one attribute name that can be shadowed
 
 Then explain:
 
 - where each visible value comes from
 - which access is stored state
 - which access is computed
-- which name can be shadowed
+- which name a maintainer could misread
+
+Do not stop at "Python looks on the instance first." Say why that matters for object contracts.
 
 ## Exercise 3: Repair a weak constructor
 
-Take a constructor that accepts too many nullable or ambiguous inputs and redesign it.
+Take a constructor that accepts too many nullable, optional, or ambiguous inputs and
+redesign it.
 
-Explain:
+Produce:
 
-- which inputs are truly required
-- which defaults are real domain defaults
-- which invalid state should become impossible to construct
+- a new constructor contract
+- a short note separating true defaults from convenience defaults
+- one example of an invalid state that should become impossible at creation time
+- one case that should become a later transition instead of a constructor argument
 
 ## Exercise 4: Draw a public-surface boundary
 
@@ -100,22 +117,31 @@ Choose one object and decide:
 
 - which names are intentionally public
 - which names are internal support detail
-- what the `__repr__` should emphasize
+- what the representation should emphasize
 - what another module should never rely on
 
-## Exercise 5: Make an equality decision
+Then write a two-column note:
+
+| Safe to depend on | Unsafe to depend on |
+| --- | --- |
+
+The goal is to practice saying "no" to accidental public contracts.
+
+## Exercise 5: Make an equality and hashing decision
 
 Choose one type and decide whether equality should be:
 
 - identity-based
 - value-based
-- intentionally absent from normal comparison work
+- intentionally absent from ordinary comparison work
 
 Then explain:
 
 - whether hashing should exist
 - whether the object is safe in a set or as a dictionary key
-- what could go wrong if the equality story drifted
+- what bug would appear first if the equality story drifted
+
+Keep equality and hashing in the same answer. Separating them is how many weak designs begin.
 
 ## Exercise 6: Find one aliasing hazard
 
@@ -124,12 +150,13 @@ Show one example of accidental sharing through:
 - a mutable default
 - a mutable class attribute
 - direct storage of caller-owned mutable state
+- a shallow copy that keeps the dangerous part shared
 
 Then explain:
 
 - who incorrectly became a co-owner
-- how the hazard would appear in a real code review
-- what boundary repair would fix it
+- what symptom a maintainer would see first
+- whether the fix is copying, encapsulation, immutability, or redesign
 
 ## Exercise 7: Choose a copy strategy
 
@@ -138,9 +165,10 @@ Pick one mutable object graph and decide whether you need:
 - no copy
 - a shallow copy
 - a deep copy
-- a redesign that removes the copying need
+- a redesign that removes the need for copying
 
-Explain what should stay shared and what should become independent.
+Explain what should stay shared, what should become independent, and why the object's
+contract makes that choice honest.
 
 ## Exercise 8: Reject one unnecessary class
 
@@ -149,36 +177,48 @@ Find one design that is better as:
 - a plain function
 - a small value object
 - a module-level surface
+- plain structured data plus one validating boundary
 
-Then explain what the class was pretending to protect and why that protection was not
-real.
+Then explain:
 
-## Exercise 9: Mini review memo
+- what the class was pretending to protect
+- why that protection was not real
+- what got clearer after removing the class
 
-Write a short review memo for one type using this structure:
+## Exercise 9: Write a mini review memo
+
+Write a one-page review memo for one type using this structure:
 
 - object kind
-- state owner
+- continuity story
+- mutable-state owner
 - public surface
 - equality and hashing story
 - aliasing risk
 - copy decision
+- final recommendation
 
-Keep it to one focused page. The aim is clarity, not length.
+Write it as if another engineer will decide whether to trust the type based on your memo.
 
-## Exercise 10: Capstone transfer
+## Exercise 10: Transfer the lesson into the capstone
 
 Choose one capstone type and answer:
 
 - why it is a class, value object, or simpler surface
 - what invariant or meaning it protects
-- how a weak object-semantics decision here would damage later modules
+- how a weak object-semantics decision here would damage later layers
+- what proof route would expose that weakness first
 
-This exercise closes the loop between Module 01 and the rest of the course.
+This closes the loop between Module 01 and the rest of the course.
 
-## Exit check
+## Done means reviewable
 
-Leave the exercise day only when you can say:
+You are done with the exercise day only when another reader could open your packet and
+answer:
 
-> I can now inspect one object and explain its identity model, ownership boundary,
-> public surface, equality story, shared-state risk, and whether class form is justified.
+- what the object is
+- what it promises
+- what would break that promise
+- whether the class form is justified
+
+If those answers are still fuzzy, keep tightening the packet before you open the answer page.
