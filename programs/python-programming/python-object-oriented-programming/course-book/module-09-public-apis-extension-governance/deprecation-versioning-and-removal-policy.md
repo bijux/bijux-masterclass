@@ -24,166 +24,195 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about making public change predictable.
 
-## Why this lesson matters
-
-Once a surface is public, changing it stops being a local code decision.
-
+Once a surface is public, changing it stops being a local refactor decision.
 Consumers build habits around:
 
 - import paths
-- parameter shapes
-- return meaning
-- error behavior
+- parameter meanings
+- default behavior
 - ordering guarantees
+- failure shapes
 
-If you remove or redefine those things without a clear policy, users learn that "public"
-really means "supported until the next refactor." That destroys trust faster than a
-smaller API ever would.
+If those things can disappear or drift without a policy, "public" becomes another word
+for "until the next cleanup pass."
 
-Deprecation policy exists so public change becomes predictable instead of surprising.
+That destroys trust faster than a smaller API ever would.
 
-## Public APIs have lifecycles just like domain objects
+## Keep one public surface visible
 
-A public surface can move through a lifecycle such as:
+Use the capstone package facade and sink seam:
+
+- `service_monitoring.run_monitoring(...)`
+- `IncidentSink`
+
+Now ask:
+
+If one of these changed tomorrow, what would another maintainer or consumer need to know
+before they could adapt safely?
+
+The answer should not rely on reading commit history or guessing the maintainer's mood.
+
+## A warning is not a deprecation policy
+
+A warning is only one signal.
+
+The real policy must answer:
+
+- what changed
+- what replaces it
+- when the old path became deprecated
+- how long the supported overlap lasts
+- what behavior changed even if the name did not
+- when removal becomes honest
+
+Without those answers, deprecation is noise instead of guidance.
+
+## Public surfaces have lifecycles
+
+A public surface usually moves through:
 
 - introduced
 - supported
 - deprecated
 - removed
 
-That lifecycle should be explicit enough that another engineer can answer:
+That lifecycle should be explicit enough that another maintainer can answer:
 
-- what changed?
-- what replaces it?
-- when will the old surface stop working?
+- which state is this surface in right now?
+- what migration path exists?
+- what future date or version boundary makes removal acceptable?
 
-Without those answers, users are left to infer policy from commit history and breakage.
-
-## A deprecation warning is not the policy
-
-Warnings are only one delivery mechanism.
-
-The real policy must answer:
-
-- which version first marks the surface deprecated?
-- what migration path is supported?
-- after what removal window may the old surface disappear?
-- what counts as a breaking behavior change even if the signature stays the same?
-
-That is what makes deprecation teachable and governable instead of merely noisy.
+If those answers are vague, users are left to infer policy from breakage.
 
 ## Behavioral compatibility matters as much as signatures
 
-Students often think of breakage only in terms of renamed functions or missing
-parameters.
+Students often notice breakage only when a function disappears.
 
-But public behavior can also break when you change:
+But public behavior also breaks when you change:
 
-- ordering guarantees
 - default values
-- error types
-- side-effect timing
-- accepted input semantics
+- ordering guarantees
+- failure categories
+- retry timing
+- accepted input meaning
 
-These are contract changes even when the function name is unchanged.
+These are compatibility issues even when the function name stays the same.
 
-If the system treats them as "internal improvements," consumers experience them as
-unannounced breakage.
+If a maintainer calls such changes "internal improvement," users still experience them
+as breakage.
 
-## Migration guidance should be concrete
+## Migration guidance must be concrete
 
-A useful deprecation message or note should help the user move.
+A real migration note should tell the user:
 
-That means including:
+- what to call or import instead
+- what semantic difference to expect
+- what overlap window still exists
+- what proof or example confirms the new path
 
-- the replacement surface
-- the reason for the change when it affects usage
-- the approximate removal horizon
-- any changed semantics the consumer must account for
+"Use the new API instead" is not enough if the new surface behaves differently in ways
+the caller must understand.
 
-"Use the new API instead" is not real migration guidance if the new API behaves
-differently in ways the caller must understand.
+Migration guidance is part of the public contract, not release-note decoration.
 
-## Removal should be a coordinated event
+## Removal is not complete until the old promise disappears everywhere
 
-Before removing a deprecated surface, review all of the durable promises that mention it:
+Before removing a surface, review all durable places that still teach or defend it:
 
-- documentation
+- quickstarts
+- reference docs
 - executable examples
 - compatibility suites
 - approval artifacts
-- release or migration notes
+- migration notes
 
-Removal is not complete when the code disappears. It is complete when the old promise is
-no longer being taught, tested, or implied anywhere.
+Removal is not done when the code is deleted.
+It is done when the old promise is no longer being taught, tested, or implied.
 
-## A worked example
+## Worked capstone example
 
-Suppose the capstone exposes a public helper that returns incident summaries in one
-shape, and a better facade now exists.
+Suppose the package currently teaches:
 
-An honest deprecation plan would define:
+- `run_monitoring(...)`
 
-1. the currently supported replacement facade
-2. the release in which the old helper becomes deprecated
-3. the exact semantic differences the caller must adjust to
-4. the version or time window after which removal may occur
-5. the example and compatibility updates that must happen before removal
+and later wants to expose:
 
-What it should not do is:
+- `run(...)`
 
-- leave the old surface undocumented but still importable
+An honest deprecation plan would include:
+
+1. the replacement entrypoint
+2. the first release or change note that marks `run_monitoring(...)` deprecated
+3. the overlap window during which both are supported
+4. any semantic differences in result or failure behavior
+5. the quickstart, reference, and executable example updates required before removal
+
+What it should not do:
+
+- leave the old path working but undocumented and hope consumers move
 - emit a warning without a migration route
-- remove it later and call the resulting breakage "cleanup"
+- remove the old name later and call the resulting breakage "cleanup"
 
-## Versioning only helps when the meaning is real
+## Versioning is useful only when the meaning is real
 
-Version numbers are useful only if they map to a believable policy.
+Version labels matter only if they map to believable policy.
 
-For example, if you say a release is backward compatible, then public behavior should
-not break quietly inside it.
+If a release is called backward compatible, then:
 
-That means versioning discipline must be backed by:
+- public behavior should not drift quietly inside it
+- migration notes should exist for real supported change
+- examples and compatibility routes should still align with the promise
 
-- documented compatibility rules
-- review expectations
-- tests that protect important public behavior
+Without those things, the version number is ceremony rather than stewardship.
 
-Without that, the version label is only ceremony.
+## Build a simple deprecation packet
 
-## Common mistakes
+For each public change, keep a short packet with:
 
-- treating warnings as a substitute for an actual deprecation policy
-- ignoring behavioral breakage because the function name stayed the same
-- removing deprecated surfaces before docs and examples are updated
-- leaving removal timing vague enough that consumers cannot plan
-- claiming compatibility without executable checks on the public promise
+- old surface
+- replacement surface
+- semantic difference
+- first deprecated release or date
+- earliest honest removal point
+- doc and proof updates required
 
-## Review checklist
+That packet makes the policy understandable to both maintainers and consumers.
 
-| Question | Good sign |
+It is especially valuable on Monday, July 27, 2026, because it anchors the present
+state instead of leaving everyone to guess which promise is current.
+
+## Common failure modes
+
+- treating warnings as if they were the whole deprecation policy
+- ignoring behavioral breakage because the signature still exists
+- removing surfaces before docs and examples are updated
+- leaving removal timing too vague for consumers to plan around
+- claiming compatibility without a proof route for the public promise
+
+## Deprecation review card
+
+Use this short card when reviewing a public change:
+
+| Question | What you want to see |
 | --- | --- |
 | can a user tell what changed, what replaces it, and when removal may happen? | yes |
 | are behavioral changes reviewed as possible breaking changes? | yes |
-| do docs, examples, and tests align with the deprecation plan? | yes |
-| does versioning policy match actual compatibility behavior? | yes |
+| do docs, examples, and tests align with the migration story? | yes |
+| does versioning language match actual compatibility behavior? | yes |
 
 ## Capstone connection
 
-Use the capstone to ask:
+Use this page to ask:
 
-- which surface would be hardest to replace today because it lacks a real migration path?
-- where might behavior drift count as breakage even if imports remain stable?
-- which examples and tests would have to change before one public seam could honestly be removed?
+- which capstone surface would be hardest to retire today because it lacks a migration
+  story
+- where behavior drift would count as breakage even if imports remained stable
+- which examples and compatibility routes must change before one supported seam could be
+  honestly removed
 
-This is where API lifecycle management stops being release-note wording and becomes part
-of the design contract.
+That is where API lifecycle management becomes part of the design contract.
 
 ## Exit check
 
