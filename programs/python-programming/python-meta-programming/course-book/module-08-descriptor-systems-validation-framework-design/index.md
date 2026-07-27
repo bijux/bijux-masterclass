@@ -84,6 +84,22 @@ Read the module in this order if you are studying without an instructor present:
 | [Exercise Answers](exercise-answers.md) | is my reasoning explicit about field ownership versus framework ownership? |
 | [Glossary](glossary.md) | am I using framework-descriptor vocabulary consistently and precisely? |
 
+## One-day study route for a missed-class learner
+
+Treat this module like one long design clinic, not a quick reading pass.
+
+| Study block | What to produce before moving on |
+| --- | --- |
+| overview plus cached-descriptor core | one cache diagram naming dependency, cache slot, invalidation owner, and stale-read risk |
+| external-storage core | one source-of-truth note naming backend key shape, hidden I/O, and local cache policy |
+| composition plus hint-driven cores | one layer ledger and one supported-versus-refused hint table |
+| framework-boundary core plus worked example | one owner ladder showing what stays in the field and what moves into model or framework coordination |
+| exercises plus answer key | one descriptor-system packet another learner could review without guessing |
+
+If you cannot produce the artifact for a block, do not move on just because the prose felt
+familiar. Module 08 gets weak exactly when the ideas sound intuitive but the ownership
+proof is still missing.
+
 ## The ten files in this module
 
 1. Overview (`index.md`)
@@ -121,6 +137,10 @@ Keep a second question beside it:
 
 > what lower-power owner or stronger architectural owner am I refusing here, and what missing condition would have to appear before that choice changed?
 
+Add a third question for the whole day:
+
+> if I removed the pleasant attribute syntax, would I still be able to explain where truth lives, who invalidates state, and which owner coordinates the wider lifecycle?
+
 Strong Module 08 answers usually mention one or more of these:
 
 - cached values with real invalidation rules
@@ -136,6 +156,18 @@ Weak answers usually sound like one of these instead:
 - "the wrapper adds flexibility" without naming what the inner field still owns
 - "the annotations define the model" without naming the supported hint subset
 - "it is basically a tiny ORM" without naming which ORM responsibilities are still absent
+
+## Fast diagnostic for architecture hidden inside fields
+
+Use this table before you accept a design as "still just a descriptor system."
+
+| If you notice... | Pause and ask... | Likely outcome |
+| --- | --- | --- |
+| one field read now touches backend state, caches, and deserialization | is this still one field contract, or already a persistence path? | may still fit a field, but only with explicit source-of-truth and invalidation notes |
+| one field write changes related records or shared caches | who owns coordination across those records? | likely needs a service, session, or model-layer owner |
+| wrappers keep stacking to preserve elegance | can I still narrate one write in order without reading multiple helpers twice? | if not, wrapper layering has crossed its clarity limit |
+| type metadata now drives broad model behavior | is this still per-field validation, or already class-wide generation? | may be approaching Module 09 territory |
+| review notes keep saying "the field somehow handles it" | what exact owner is being hidden? | the owner story is currently weak |
 
 ## Learning outcomes
 
@@ -169,6 +201,10 @@ Leave yourself a review packet as you move through the module:
 
 If you can assemble those five artifacts, the module is becoming standalone instead of
 lecture-dependent.
+
+Use one more quality bar on the packet:
+
+- another learner should be able to point to one refused weaker owner, one refused stronger owner, and one remaining uncertainty without asking you for verbal context
 
 ## Exit standard
 
