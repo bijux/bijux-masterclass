@@ -23,6 +23,7 @@ STAGE_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-di
 DATA_IDENTITY_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/data-identity
 RUNTIME_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/runtime-contracts
 METRIC_CONTRACT_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/metric-contracts
+REVIEWER_HANDOFF_AUDIT_DIR ?= $(ARTIFACTS_DIR)/audit/reproducible-research/deep-dive-dvc/reviewer-handoff
 SOURCE_BUNDLE_DIR ?= $(ARTIFACTS_DIR)/dist/reproducible-research/deep-dive-dvc
 SOURCE_BUNDLE_PATH ?= $(SOURCE_BUNDLE_DIR)/deep-dive-dvc-capstone-source.tar.gz
 
@@ -414,6 +415,38 @@ metric-contract-audit: install ## Audit metric semantic comparability
 .PHONY: metric-contract-selftest
 metric-contract-selftest: install ## Enforce metric semantic comparability evidence
 	@$(PYTEST) tests/test_metric_contract_audit.py
+
+.PHONY: reviewer-handoff-audit
+reviewer-handoff-audit: install ## Audit clean reviewer handoff evidence
+	@rm -rf $(REVIEWER_HANDOFF_AUDIT_DIR)
+	@$(VENV_PY) scripts/audit_reviewer_handoffs.py \
+		--specimen repro/reviewer-handoff \
+		--workspace $(REVIEWER_HANDOFF_AUDIT_DIR)/workspace \
+		--output $(REVIEWER_HANDOFF_AUDIT_DIR)/report.json \
+		--dvc $(VENV_BIN)/dvc \
+		--check
+	@mkdir -p $(REVIEWER_HANDOFF_AUDIT_DIR)/scripts $(REVIEWER_HANDOFF_AUDIT_DIR)/tests
+	@cp docs/reviewer-handoff-audit-guide.md $(REVIEWER_HANDOFF_AUDIT_DIR)/REVIEWER_HANDOFF_AUDIT_GUIDE.md
+	@cp scripts/audit_reviewer_handoffs.py $(REVIEWER_HANDOFF_AUDIT_DIR)/scripts/audit_reviewer_handoffs.py
+	@cp tests/test_reviewer_handoff_audit.py $(REVIEWER_HANDOFF_AUDIT_DIR)/tests/test_reviewer_handoff_audit.py
+	@printf '%s\n' \
+		'Reviewer handoff audit route:' \
+		'  1. Read REVIEWER_HANDOFF_AUDIT_GUIDE.md for the decision boundary.' \
+		'  2. Read summary.tsv and separate audit result from handoff decision.' \
+		'  3. Inspect complete-handoff/evidence/finding.json before its receipts.' \
+		'  4. Compare missing-remote-object with undiscoverable-remote.' \
+		'  5. Read untracked-stage-dependency reviewer status and repro receipts.' \
+		'  6. Read stale-execution-record status before its successful repro receipt.' \
+		'  7. Compare mutating-review-route and missing-result-contract.' \
+		'  8. Read the audit script and adversarial test only when reviewing enforcement.' > $(REVIEWER_HANDOFF_AUDIT_DIR)/route.txt
+	@$(VENV_PY) scripts/write_bundle_manifest.py \
+		--bundle-dir $(REVIEWER_HANDOFF_AUDIT_DIR) \
+		--output $(REVIEWER_HANDOFF_AUDIT_DIR)/manifest.json
+	@echo "✔ wrote reviewer handoff audit to $(REVIEWER_HANDOFF_AUDIT_DIR)"
+
+.PHONY: reviewer-handoff-selftest
+reviewer-handoff-selftest: install ## Enforce clean reviewer handoff evidence
+	@$(PYTEST) tests/test_reviewer_handoff_audit.py
 
 .PHONY: walkthrough
 walkthrough: ## Build the learner-facing capstone walkthrough bundle
