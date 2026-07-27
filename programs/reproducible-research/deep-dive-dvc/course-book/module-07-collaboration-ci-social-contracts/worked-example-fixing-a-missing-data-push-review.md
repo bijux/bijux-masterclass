@@ -25,129 +25,213 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-This example shows how Module 07 fits together when a pull request looks complete in Git
-but cannot be restored by another maintainer.
+This investigation begins with generated evidence, not an invented CI transcript. You
+will diagnose a missing object, prove why the author workspace hid it, distinguish it
+from stale execution evidence, and write the exact unblock condition.
 
-The goal is not to scold the author. The goal is to repair the missing collaboration
-contract.
+The goal is not to scold the author. The goal is to identify which collaboration contract
+failed and who can repair it.
 
-## The situation
+## Run the controlled handoffs
 
-A pull request changes:
-
-- `data/raw/service_incidents.csv.dvc`
-- `dvc.lock`
-- `metrics/metrics.json`
-
-The author's local run passes. The metric movement looks reasonable. The reviewer starts
-from a clean checkout and runs:
+From the repository root:
 
 ```bash
+make -C programs/reproducible-research/deep-dive-dvc/capstone reviewer-handoff-audit
+```
+
+The audit creates seven isolated author and reviewer pairs. Start with:
+
+```text
+artifacts/audit/reproducible-research/deep-dive-dvc/reviewer-handoff/
+├── summary.tsv
+└── workspace/
+    ├── complete-handoff/
+    ├── missing-remote-object/
+    └── stale-execution-record/
+```
+
+Do not begin with `report.json`. The summary gives the decisions; each case's receipts
+show why.
+
+## Establish the accepted reference
+
+Open:
+
+```text
+workspace/complete-handoff/evidence/finding.json
+```
+
+Every check is `true`. The cache-cold reviewer:
+
+1. discovers the `shared` remote
+2. pulls the DVC-tracked input and recorded result
+3. observes clean status before reproduction
+4. reproduces without private files
+5. uses no remote mutation command
+6. finds an explicit result claim
+7. confirms the result matches that claim
+
+Now read:
+
+```text
+workspace/complete-handoff/reviewer/handoff-contract.json
+workspace/complete-handoff/reviewer/reports/summary.json
+```
+
+The contract expects:
+
+```json
+{
+  "record_count": 4,
+  "severity_total": 11,
+  "weekend_handoffs": 2
+}
+```
+
+The restored result matches. The handoff decision is `ACCEPT`, bounded to this result and
+these checks.
+
+## Diagnose the missing-object case
+
+Open:
+
+```text
+workspace/missing-remote-object/evidence/finding.json
+workspace/missing-remote-object/evidence/receipts.json
+```
+
+Read the reviewer receipts in this order:
+
+1. `remote_list`
+2. `pull`
+3. `status_before_repro`
+4. `repro`
+
+The remote list succeeds and names `shared`. Discovery is not the problem. The pull
+receipt fails because the referenced objects were never pushed. Without the data and
+recorded result:
+
+- pre-reproduction status cannot establish a clean state
+- reproduction cannot run
+- the generated claim cannot be checked
+
+The failed contract is **remote object availability**.
+
+Weak review comment:
+
+> DVC is broken. Please rerun CI.
+
+Evidence-complete comment:
+
+> **Failed contract:** the Git revision names DVC objects that are absent from the
+> configured shared remote. **Evidence:** the cache-cold clone discovers `shared`, but its
+> `dvc pull` receipt is nonzero and the required data and result are unavailable.
+> **Owner:** the change author or trusted publication job must push the objects.
+> **Unblock condition:** a new cache-cold clone must pull successfully, report clean
+> pre-reproduction status, and match the recorded result contract.
+
+This comment does not ask CI to repair publication. It assigns the missing push to an
+actor with write authority.
+
+## Explain why the author did not notice
+
+Inspect the generated directories:
+
+```text
+workspace/missing-remote-object/author/.dvc/cache/
+workspace/missing-remote-object/reviewer/.dvc/cache/
+```
+
+The author created the data and result locally, so the author's cache satisfies the
+pointer. The reviewer clone begins without that cache. Git carries the pointer and lock
+metadata, not the cached object bytes.
+
+The author's successful reproduction proves local execution. It does not prove shared
+availability.
+
+## Do not confuse missing bytes with stale evidence
+
+Now inspect:
+
+```text
+workspace/stale-execution-record/evidence/finding.json
+workspace/stale-execution-record/evidence/receipts.json
+```
+
+This case has a different signature:
+
+| Check | Missing object | Stale execution |
+| --- | --- | --- |
+| remote discovered | yes | yes |
+| pull succeeds | no | yes |
+| status clean before repro | no | no |
+| repro succeeds | no | yes |
+| restored result matches claim | no | no |
+
+The stale case has all required remote bytes. The author changed and pushed the tracked
+data pointer but did not record the dependent execution. Reproduction succeeds in the
+reviewer clone because it repairs the local state.
+
+That successful repair does not make the submitted commit acceptable. The change author
+must reproduce and commit matching lock/output evidence, then the audit must start from a
+new clone.
+
+## Verify the repaired boundary
+
+The complete case represents the evidence required after repair. A trustworthy rerun must
+not reuse the failed reviewer workspace because reproduction may have warmed its cache and
+changed outputs.
+
+The clean verification sequence is:
+
+```bash
+dvc remote list
 dvc pull
+dvc status --json
+dvc repro
 ```
 
-The pull fails because the DVC object referenced by the new metadata is not in the shared
-remote.
+Then inspect the expected claim and generated result together.
 
-This is the Module 07 failure:
+The sequence has two authority boundaries:
 
-> Git contains a state claim that the shared artifact store cannot satisfy.
+- the author or publication job performs `dvc push`
+- the reviewer performs remote reads and local reproduction
 
-## Step 1: Name the contract failure
+Do not give ordinary pull-request review remote write authority merely to make the route
+convenient.
 
-Weak review response:
+## Record the repair without overstating it
 
-> CI is broken.
+A final review note can say:
 
-Stronger review response:
+> The original handoff was blocked because the configured shared remote lacked the DVC
+> objects named by the submitted Git revision. The author published those objects using
+> trusted write authority. A new cache-cold reviewer clone then discovered the remote,
+> pulled the recorded input and result, observed clean status before reproduction,
+> reproduced without private files, and matched the result contract. This establishes
+> independent recoverability and reviewability for the bounded specimen; it does not by
+> itself approve the result for release.
 
-> The pull request changed DVC-tracked state, but the corresponding object is not
-> available in the shared remote. Another maintainer cannot restore the declared state
-> from a clean checkout, so this cannot merge yet.
+That note records:
 
-That response names the missing contract instead of blaming the person or the tool.
-
-## Step 2: Confirm the failure in CI
-
-The team checks whether CI runs a remote-backed route.
-
-If CI already runs:
-
-```bash
-dvc pull
-dvc status
-```
-
-then CI should fail for the same reason. That is good. The shared executor caught a real
-collaboration problem.
-
-If CI does not run a remote-backed check, the team has found a second issue: the review
-process relied on a human to notice missing shared data.
-
-## Step 3: Repair the pull request
-
-The author pushes the missing DVC object:
-
-```bash
-dvc push
-```
-
-Then the reviewer or CI retries from a clean state:
-
-```bash
-dvc pull
-dvc status
-make -C capstone confirm
-```
-
-The exact capstone route can vary, but the proof should be clean: another executor can
-restore and verify the declared state without private local files.
-
-## Step 4: Review the related evidence
-
-The reviewer does not stop at "pull works now."
-
-Because metrics changed, the reviewer also checks:
-
-- does `dvc.lock` match the declared pipeline state?
-- do metrics have matching parameter evidence?
-- is the metric movement explained?
-- does the release boundary need updates?
-- does CI prove the same route another maintainer needs?
-
-The original failure was missing data availability. The full review still needs the
-normal DVC evidence chain.
-
-## Step 5: Improve the contract
-
-If the project did not already have a remote-backed CI check, the team adds one.
-
-The new rule becomes:
-
-> Pull requests that change DVC state must pass a clean verification route that pulls
-> required objects from the shared remote.
-
-That rule is better than "remember to push data" because it can fail visibly.
-
-## The review note you would want
-
-> This pull request updated DVC-tracked state, but the referenced object was missing from
-> the shared remote, so a clean checkout could not restore the declared state. The author
-> pushed the missing object, and the remote-backed verification route now succeeds. The
-> review contract is that DVC state changes must be restorable by another maintainer or CI
-> before merge.
-
-That note is useful later because it records the failure mode and the repair.
+- original failure
+- responsible repair
+- fresh verification context
+- evidence sequence
+- bounded conclusion
 
 ## Why this is a mastery example
 
-This one story exercises the whole module:
+This investigation exercises the whole module:
 
-- Core 1: the issue was framed as a missing social contract
-- Core 2: CI became the shared executor for the check
-- Core 3: merge readiness depended on complete DVC evidence
-- Core 4: the remote was treated as shared artifact infrastructure
-- Core 5: clean-state restoration served as a small recovery rehearsal
+- Core 1: availability is separated from discovery, execution, and interpretation
+- Core 2: the clean executor preserves status before repair
+- Core 3: the blocking comment names evidence, owner, and unblock condition
+- Core 4: push and pull use different authorities
+- Core 5: the repaired proof starts from a new cache-cold clone
 
-The repository became stronger because the failure turned into an enforceable review
-expectation.
+If your diagnosis rests only on the final `dvc repro` exit code, return to the pull and
+pre-reproduction status receipts. The handoff decision concerns the submitted state, not
+only whether a reviewer can repair it.
