@@ -1,5 +1,4 @@
-# Dataclasses, the Ugly: Inheritance, Defaults, Slots, Frozen Pitfalls
-
+# Dataclass Pitfalls: Inheritance, Defaults, Slots, and Frozen Models
 
 <!-- page-maps:start -->
 ## Page Maps
@@ -9,7 +8,7 @@ graph LR
   family["Python Programming"]
   program["Python Object-Oriented Programming"]
   section["State Validation Typestate"]
-  page["Dataclasses, the Ugly: Inheritance, Defaults, Slots, Frozen Pitfalls"]
+  page["Dataclass Pitfalls: Inheritance, Defaults, Slots, and Frozen Models"]
   capstone["Capstone evidence"]
 
   family --> program --> section --> page
@@ -25,107 +24,118 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent module, not a detached essay, and the capstone is the pressure test for whether the idea holds. Read the second diagram as the working rhythm for the page: name the problem, study the example, identify the boundary, then carry one review question forward.
+Read the first diagram as a placement map: this page is one concept inside its parent
+module, not a detached essay, and the capstone is the pressure test for whether the
+idea holds. Read the second diagram as the working rhythm for the page: name the
+problem, study the example, identify the boundary, then carry one review question
+forward.
 
-## Purpose
+## Why this lesson matters
 
-Learn the common dataclass pitfalls that create *surprising runtime behavior* or silently weaken your model.
+Dataclasses are easy to like when examples stay small. The problems begin when learners
+assume every option and combination is automatically safe.
 
-The theme: dataclasses are great for *simple shapes*; they get tricky when you push them into deep inheritance or clever metaprogramming.
+The usual trouble points are:
 
-## 1. Inheritance Is the First Trap
+- inheritance that quietly complicates field order and meaning
+- mutable defaults that leak shared state
+- `slots` used without understanding the trade-off
+- `frozen` used as if it solved every integrity problem by itself
 
-Dataclass inheritance looks elegant until it isn’t.
+This lesson is about staying honest when dataclasses move beyond the simplest case.
 
-Problems you will hit:
-- field order constraints (non-default fields cannot follow default fields),
-- `__init__` signatures that become confusing,
-- base class invariants that are accidentally bypassed,
-- fragile “mixins” that rely on generated methods.
+## Mutable defaults are the first trap
 
-Rule: **prefer composition over dataclass inheritance**.
+The biggest beginner trap is still the easiest one:
 
-If you need polymorphism, consider:
-- small immutable value dataclasses, plus
-- a strategy/policy object (M04C37), or
-- explicit base classes without dataclass generation.
+- a list or dict is used as a default
+- every instance quietly shares it
 
-## 2. `frozen=True` Is Not Deep Immutability
+That is not a dataclass-specific curse, but dataclasses make it easy to write the mistake
+quickly. Shared mutable defaults corrupt the object model and confuse every later test.
 
-`frozen=True` prevents rebinding attributes, but it does **not** freeze nested mutable objects.
+## Inheritance raises the difficulty quickly
 
-```python
-from dataclasses import dataclass
+Dataclass inheritance can work, but it stops being "simple shape declaration" very fast.
 
-@dataclass(frozen=True)
-class Config:
-    tags: list[str]
+Why?
 
-c = Config(tags=["a"])
-c.tags.append("b")  # allowed! the list itself is still mutable
-```
+- field order matters
+- generated methods span parent and child fields
+- lifecycle or invariant meaning may become harder to read
 
-If you need deep immutability:
-- use immutable containers (tuple, frozenset),
-- or copy defensively on construction.
+If the hierarchy is already subtle, dataclass generation often amplifies the confusion
+instead of removing it.
 
-Teaching takeaway: “frozen” means *field rebinding is blocked*, not “the whole graph is immutable”.
+## `slots` is a trade-off, not a badge
 
-## 3. `slots=True` Changes Some Behaviors
+`slots` can be useful for:
 
-Slots remove `__dict__` by default, which affects:
-- dynamic attribute assignment (now disallowed),
-- some serialization patterns,
-- debugging that relies on `obj.__dict__`.
+- memory discipline
+- preventing accidental extra attributes
 
-This is usually good, but don’t surprise your tooling.
+But it also adds design pressure:
 
-Recommendation:
-- use `slots=True` for domain values/entities,
-- but be cautious for objects that must be dynamically extended (rare in disciplined designs).
+- some dynamic behavior becomes less convenient
+- debugging or extension expectations may change
 
-## 4. Defaults: The Subtle Case Beyond “Don’t Use []”
+Use it when the object model benefits, not because it sounds more advanced.
 
-Even with `default_factory`, defaults can encode the wrong meaning.
+## `frozen` helps, but only within limits
 
-Example: treating “not provided” as “empty” is not always correct.
+`frozen` is helpful when you want a value object to resist ordinary mutation.
 
-- `rules: list[Rule] = field(default_factory=list)` means “there are zero rules”.
-- If you need to represent “rules are not loaded”, that is a different state (M03C27).
+But it does not magically solve:
 
-**Design test**: can you distinguish “empty by truth” from “missing by truth”? If not, you may be baking a bug into the data model.
+- nested mutable contents
+- bad invariants
+- confused equality choices
+- lifecycle models that should not have been immutable in the first place
 
-## 5. Generated Ordering and Hashing Can Lie
+Freezing the wrong object only makes the wrong design harder to change.
 
-`order=True` generates ordering comparisons by field order. That is rarely what you want in a domain model.
+## A practical caution rule
 
-Similarly, hashing:
-- frozen dataclasses can generate `__hash__`,
-- but only if equality is by value and the fields are hashable.
+Start simple.
 
-If ordering has domain meaning, implement it explicitly or define a key function. Avoid “accidental ordering” as a design rule.
+Only add dataclass features when you can explain:
 
-## 6. `__post_init__` and Inheritance Can Double-Run or Not Run
+- what problem they solve here
+- what new constraint they introduce
+- why the trade-off improves this object specifically
 
-With inheritance, `__post_init__` requires explicit super-calls if multiple classes define it.
+If you cannot explain that clearly, the added feature is probably noise.
 
-This is fragile and easy to get wrong.
+## Common mistakes
 
-If you find yourself stacking `__post_init__` up a hierarchy, that’s a sign you should refactor toward:
-- factories,
-- composition,
-- or dedicated validation functions.
+- using inheritance when composition or separate objects would be clearer
+- assuming `frozen=True` means the whole structure is deeply immutable
+- adding `slots=True` without reviewing how the class is actually used
+- fixing one dataclass annoyance by stacking more options instead of rethinking the object
 
-## Practical Guidelines
+Complex option stacks are often a sign that the model itself wants simplification.
 
-- Keep dataclasses shallow: values + small entities, minimal inheritance.
-- Treat `frozen=True` as *shallow immutability*; use immutable field types for deep safety.
-- Use `slots=True` intentionally; document it if your tooling relies on `__dict__`.
-- Avoid `order=True` in domain models unless ordering is truly meaningful and stable.
-- If dataclass inheritance becomes necessary, add tests specifically for initialization and invariant enforcement.
+## Review checklist
 
-## Exercises for Mastery
+| Question | Good sign |
+| --- | --- |
+| are mutable defaults avoided? | yes |
+| is inheritance used sparingly and for a clear reason? | yes |
+| is `slots` solving a real problem instead of signaling cleverness? | yes |
+| is `frozen` aligned with the object’s actual semantics? | yes |
 
-1. Write a `frozen=True` dataclass that accidentally exposes a mutable list. Fix it by switching to `tuple[str, ...]`.
-2. Create a dataclass hierarchy with `__post_init__` in both base and child. Demonstrate the bug when `super().__post_init__()` is forgotten.
-3. Add `order=True` to a domain model and show a surprising ordering result. Replace it with an explicit comparison key.
+## Capstone connection
+
+In the capstone, review every advanced dataclass option and ask whether it protects a
+real design need or merely patches discomfort from an awkward model.
+
+If the capstone needs many option combinations just to stay understandable, the object
+boundaries probably need another pass.
+
+## Exit check
+
+Leave this lesson only when you can do all of these:
+
+- explain why mutable defaults are dangerous
+- explain one risk dataclass inheritance introduces
+- explain why `slots` and `frozen` are trade-offs, not automatic upgrades
