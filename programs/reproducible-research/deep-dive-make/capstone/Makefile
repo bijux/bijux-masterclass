@@ -415,11 +415,12 @@ semantic-fault-audit:
 >       --python "$(PYTHON)"
 >     printf '%s\n' \
 >       'Semantic fault audit route:' \
->       '  1. Read summary.tsv across all seven broken and control models.' \
->       '  2. Read report.json for exact stability, freshness, and selection observations.' \
->       '  3. Read traces/ to connect each observation to selected Make rules.' \
->       '  4. Compare specimens/ with the executed workspace/ copies.' \
->       '  5. Read REPRO_GUIDE.md and PROOF_GUIDE.md before proposing production repairs.' > "$(SEMANTIC_FAULT_AUDIT_DIR)/route.txt"
+>       '  1. Read SEMANTIC_FAULT_AUDIT_GUIDE.md for PASS semantics and comparison order.' \
+>       '  2. Read summary.tsv across all seven broken and control models.' \
+>       '  3. Read report.json for exact stability, freshness, and selection observations.' \
+>       '  4. Read traces/ to connect each observation to selected Make rules.' \
+>       '  5. Compare specimens/ with workspace/, then use the repro and proof guides.' > "$(SEMANTIC_FAULT_AUDIT_DIR)/route.txt"
+>     cp "$(DOCS_DIR)/semantic-fault-audit-guide.md" "$(SEMANTIC_FAULT_AUDIT_DIR)/SEMANTIC_FAULT_AUDIT_GUIDE.md"
 >     cp "$(DOCS_DIR)/repro-guide.md" "$(SEMANTIC_FAULT_AUDIT_DIR)/REPRO_GUIDE.md"
 >     cp "$(DOCS_DIR)/proof-guide.md" "$(SEMANTIC_FAULT_AUDIT_DIR)/PROOF_GUIDE.md"
 >     $(PYTHON) scripts/write_bundle_manifest.py \
