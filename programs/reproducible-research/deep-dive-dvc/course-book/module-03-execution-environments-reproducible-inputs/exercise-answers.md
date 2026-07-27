@@ -188,108 +188,100 @@ A disciplined PR sentence might say:
 > run fingerprints now to decide whether this is accepted numeric sensitivity or an
 > environment-governance defect.
 
-## Answer 6: Capture an environment fingerprint
+## Answer 6: Predict the runtime audit
 
-A useful fingerprint is compact but discriminating. It usually includes:
+Expected results:
 
-- exact interpreter or compiler identity
-- dependency lock hash or resolved environment export
-- operating-system or image identity
-- major tool versions
-- governed runtime flags and meaningful environment variables
-
-Values most likely to alter meaning include:
-
-- numerical library identity
-- package versions
-- image digest
-- locale, seed, or thread settings when relevant
-
-Values that may be context only:
-
-- hostname
-- transient CI job number
-- machine nickname
-
-A strong smallest-reviewable fingerprint is:
-
-> interpreter version, dependency identity, image or platform identity, and any governed
-> runtime flags that can plausibly move the result.
-
-## Answer 7: Break an environment deliberately
-
-A strong answer preserves all non-environment inputs, records one explicit dependency
-change, and compares outputs under the workflow's real acceptance rule.
-
-What matters in the judgment:
-
-- deterministic difference: the changed environment predictably produces a different but
-  explainable result
-- tolerated difference: the result moves within an agreed contract
-- release blocker: the difference is unexplained, semantically important, or outside the
-  accepted bound
-
-The main lesson is that environment governance becomes concrete only when teams practice
-failure classification instead of assuming every drift is either harmless or catastrophic.
-
-## Answer 8: Compare lockfile and container guarantees
-
-Strong comparison:
-
-| Surface | Lockfile constrains | Container digest constrains |
+| Finding | Decision | Reason |
 | --- | --- | --- |
-| language packages | yes | indirectly through the image filesystem |
-| operating-system libraries | usually no | often yes, within the image |
-| hardware | no | no |
-| environment variables | no | no, unless separately governed |
-| network access | no | no |
-| entry commands | no | only if the image and execution policy declare them |
+| `BASELINE_CONVERGES` | `ACCEPT` | both stages settle under dot context |
+| `DECLARED_RUNTIME_CHANGE_IS_STALE` | `ACCEPT` | contract file is a dependency |
+| `DECLARED_RUNTIME_REBUILD_ADOPTS_POLICY` | `ACCEPT` | rebuild produces comma meaning |
+| `HIDDEN_RUNTIME_CHANGE_IS_INVISIBLE` | `REJECT` | process variable has no graph edge |
+| `ORDINARY_REPRO_PRESERVES_STALE_RUNTIME_MEANING` | `REJECT` | skipped stage retains dot output |
+| `FORCED_RUN_CHANGES_OUTPUT_WITH_STABLE_DECLARATION` | `REJECT` | force proves cause but not governance |
+| `FINGERPRINT_EXPOSES_RUNTIME_MISMATCH` | `ACCEPT` | changed field is isolated |
 
-Why containers do not remove the need for dependency contracts:
+The three rejected rows are successful negative tests. Accepting them in a production
+contract would allow semantically stale output or recurring forced execution.
 
-- a container can package a runtime broadly, but teams still need reviewable dependency
-  intent and explicit upgrade history. Otherwise the image becomes a large opaque blob
-  with weak explanation of what actually changed.
+## Answer 7: Join fingerprints to planner evidence
 
-## Answer 9: Design an environment drift gate
+Python, implementation, platform, and machine remain fixed. `report_style` changes from
+`dot` to `comma`.
 
-A strong gate does four things:
+The declared status names `declared_runtime`; the hidden status is empty. After ordinary
+repro, declared output is `8,00`, while hidden output remains `8.00`.
 
-- checks governed environment identities such as lockfile hash or image digest
-- records the resolved runtime as an artifact
-- fails with the exact boundary that drifted
-- defines an intentional upgrade path with result comparison and review
+The fingerprint proves context differs. It does not make DVC stale because DVC compares
+declared graph state, not arbitrary audit JSON. To influence planning, the governed fact
+must enter a dependency, parameter, or enforced external contract.
 
-Example failure wording:
+## Answer 8: Distinguish stale reuse from tolerance
 
-> Environment drift detected: CI resolved dependencies no longer match the approved
-> lockfile hash for this result contract. Regenerate the governed environment, compare
-> outputs, and submit the upgrade for review.
+| Observation | Classification |
+| --- | --- |
+| hidden output remains `8.00` after skip | under-rebuild |
+| force changes hidden output to `8,00` | deterministic runtime influence |
+| declared rebuild produces `8,00` | truthful rebuild |
+| fresh governed runs differ within a bound | conditional determinism candidate |
 
-Reviewer expectation after a failure:
+Tolerance cannot approve the first row because no current-context result exists to
+compare. A stable old value is not evidence of low variation.
 
-- inspect the changed environment evidence
-- inspect the result comparison
-- decide whether this is an approved upgrade or a defect
+Conditional determinism requires fresh executions, governed context evidence, a comparison
+measure, and a predeclared acceptance boundary.
 
-## Answer 10: Reproduce across two contexts
+## Answer 9: Audit force as a diagnostic
 
-The comparison should include:
+The expected four-surface comparison is:
 
-- both environment fingerprints
-- the exact command and tracked inputs
-- the output comparison rule
-- the conclusion about whether current governance is adequate
+| Surface | Before force | After force |
+| --- | --- | --- |
+| hidden result | dot / `8.00` | comma / `8,00` |
+| runtime fingerprint | dot baseline | comma drift |
+| `dvc.yaml` hash | unchanged | unchanged |
+| `dvc.lock` hash | old output | new output |
 
-Matching digests are strong evidence when exact identity is expected. For numerically
-sensitive work, the honest contract may instead be bounded metric variation plus stable
-scientific interpretation.
+The process variable caused the semantic change. The lock recorded the new output after
+execution, while the declaration still omitted the cause.
 
-A strong final conclusion sounds like this:
+A durable repair is to materialize the runtime policy in a declared file or enforce an
+approved environment identity before execution. “Always use force” is not policy because
+it neither detects which context changed nor repairs future stale decisions.
 
-> Our current strategy is strong enough only if we treat CI as canonical and record the
-> runtime fingerprint automatically. Local runs are still useful, but they are not yet a
-> fully governed proof environment.
+## Answer 10: Design the runtime review contract
+
+A complete packet joins:
+
+1. paired stage declarations
+2. baseline and drift fingerprints
+3. declared and hidden status receipts
+4. ordinary repro receipt
+5. pre-force and post-force semantic outputs
+6. declaration and lock hashes
+
+For a locale-like runtime fact, a declared contract file is appropriate when repository
+execution should react directly. A canonical executor gate is appropriate when image or
+platform identity is governed outside DVC. The choice must identify who enforces the
+fact and which receipt joins it to the result.
+
+Example failure:
+
+> Runtime contract mismatch: `REPORT_STYLE=comma` differs from the declared dot context,
+> but the stage has no declared or externally approved runtime edge. Reject result reuse;
+> repair the contract and rebuild before comparison.
+
+A bounded conclusion is:
+
+> The isolated runtime field changed while code, data, Python, and platform stayed fixed.
+> Declared runtime state triggered rebuild and current output; hidden state produced empty
+> status and stale reuse until force. Force changed lock evidence without changing the
+> declaration. The runtime influence is causal and must be governed before tolerance or
+> release review.
+
+Only after fresh governed execution should reviewers ask whether a real numerical delta
+fits the workflow's declared tolerance.
 
 ## Self-check
 
