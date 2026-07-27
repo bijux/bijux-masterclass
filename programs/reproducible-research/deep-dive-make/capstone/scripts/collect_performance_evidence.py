@@ -134,18 +134,33 @@ def read_incremental_evidence(path: Path) -> dict[str, object]:
         raise ValueError("unsupported incremental evidence schema")
     if report.get("result") != "PASS":
         raise ValueError("incremental evidence did not pass")
-    semantic_keys = (
-        "expected_rebuild",
-        "input",
-        "missing_rebuild",
-        "observed_rebuild",
-        "policy_sha256",
-        "result",
-        "schema",
-        "unexpected_rebuild",
-    )
     try:
-        return {key: report[key] for key in semantic_keys}
+        raw_cases = report["cases"]
+        if not isinstance(raw_cases, list) or not raw_cases:
+            raise ValueError("incremental evidence cases must be a non-empty list")
+        semantic_cases = []
+        for raw_case in raw_cases:
+            if not isinstance(raw_case, dict):
+                raise TypeError("incremental evidence case must be an object")
+            semantic_cases.append(
+                {
+                    key: raw_case[key]
+                    for key in (
+                        "expected_rebuild",
+                        "input",
+                        "missing_rebuild",
+                        "observed_rebuild",
+                        "result",
+                        "unexpected_rebuild",
+                    )
+                }
+            )
+        return {
+            "cases": semantic_cases,
+            "policy_sha256": report["policy_sha256"],
+            "result": report["result"],
+            "schema": report["schema"],
+        }
     except KeyError as error:
         raise ValueError(f"incremental evidence is missing {error.args[0]}") from error
 

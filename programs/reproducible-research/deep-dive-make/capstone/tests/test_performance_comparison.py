@@ -39,14 +39,19 @@ def passing_evidence() -> dict[str, Any]:
             "runner": "local-test",
         },
         "incremental_work": {
-            "expected_rebuild": ["all", "app", "build/util.o"],
-            "input": "src/util.c",
-            "missing_rebuild": [],
-            "observed_rebuild": ["all", "app", "build/util.o"],
+            "cases": [
+                {
+                    "expected_rebuild": ["all", "app", "build/util.o"],
+                    "input": "src/util.c",
+                    "missing_rebuild": [],
+                    "observed_rebuild": ["all", "app", "build/util.o"],
+                    "result": "PASS",
+                    "unexpected_rebuild": [],
+                }
+            ],
             "policy_sha256": "incremental-policy-digest",
             "result": "PASS",
-            "schema": "deep-dive-make-incremental-work-v1",
-            "unexpected_rebuild": [],
+            "schema": "deep-dive-make-incremental-work-v2",
         },
         "policy_sha256": "policy-digest",
         "result": "PASS",
@@ -128,12 +133,14 @@ class PerformanceComparisonTests(unittest.TestCase):
     def test_rejects_requested_work_drift(self) -> None:
         baseline = passing_evidence()
         candidate = copy.deepcopy(baseline)
-        candidate["incremental_work"]["observed_rebuild"].append("build/main.o")
+        candidate["incremental_work"]["cases"][0]["observed_rebuild"].append(
+            "build/main.o"
+        )
 
         result, report = self.compare(baseline, candidate)
 
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("observed_rebuild mismatch", report["failure"])
+        self.assertIn("src/util.c observed_rebuild mismatch", report["failure"])
 
     def test_rejects_changed_incremental_policy(self) -> None:
         baseline = passing_evidence()

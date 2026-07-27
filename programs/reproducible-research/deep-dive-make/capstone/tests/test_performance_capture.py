@@ -66,15 +66,20 @@ class PerformanceCaptureTests(unittest.TestCase):
         self.incremental.write_text(
             json.dumps(
                 {
-                    "expected_rebuild": ["app"],
-                    "input": "src/util.c",
-                    "missing_rebuild": [],
-                    "observed_rebuild": ["app"],
+                    "cases": [
+                        {
+                            "expected_rebuild": ["app"],
+                            "input": "src/util.c",
+                            "missing_rebuild": [],
+                            "observed_rebuild": ["app"],
+                            "result": "PASS",
+                            "trace": "omitted from combined evidence",
+                            "unexpected_rebuild": [],
+                        }
+                    ],
                     "policy_sha256": "incremental-policy-digest",
                     "result": "PASS",
-                    "schema": "deep-dive-make-incremental-work-v1",
-                    "trace": "omitted from combined evidence",
-                    "unexpected_rebuild": [],
+                    "schema": "deep-dive-make-incremental-work-v2",
                 }
             ),
             encoding="utf-8",
@@ -128,7 +133,7 @@ class PerformanceCaptureTests(unittest.TestCase):
         self.assertEqual(evidence["context"]["runner"], "local")
         self.assertIn("version", evidence["context"]["compiler"])
         self.assertEqual(evidence["incremental_work"]["result"], "PASS")
-        self.assertNotIn("trace", evidence["incremental_work"])
+        self.assertNotIn("trace", evidence["incremental_work"]["cases"][0])
         self.assertEqual(len(scenario["samples"]), 3)
         self.assertEqual(scenario["convergence"], "PASS")
         self.assertEqual(len(scenario["inventory"]), 5)

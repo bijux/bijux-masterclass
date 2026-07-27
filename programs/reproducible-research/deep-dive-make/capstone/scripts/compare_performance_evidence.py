@@ -75,27 +75,61 @@ def compare_context(
 def compare_incremental_work(
     baseline: dict[str, object], candidate: dict[str, object]
 ) -> dict[str, object]:
-    for key in (
-        "schema",
-        "policy_sha256",
-        "input",
-        "expected_rebuild",
-        "observed_rebuild",
-        "missing_rebuild",
-        "unexpected_rebuild",
-        "result",
-    ):
+    for key in ("schema", "policy_sha256", "result"):
         require_equal(baseline, candidate, key)
     if baseline.get("result") != "PASS":
         raise ValueError("incremental work did not pass")
-    if baseline.get("missing_rebuild") or baseline.get("unexpected_rebuild"):
-        raise ValueError("incremental work contains rebuild drift")
+    baseline_cases = incremental_case_map(baseline.get("cases"))
+    candidate_cases = incremental_case_map(candidate.get("cases"))
+    if set(baseline_cases) != set(candidate_cases):
+        raise ValueError("incremental input set mismatch")
+    compared_cases: list[dict[str, object]] = []
+    for input_path in sorted(baseline_cases):
+        baseline_case = baseline_cases[input_path]
+        candidate_case = candidate_cases[input_path]
+        for key in (
+            "expected_rebuild",
+            "observed_rebuild",
+            "missing_rebuild",
+            "unexpected_rebuild",
+            "result",
+        ):
+            if baseline_case.get(key) != candidate_case.get(key):
+                raise ValueError(f"{input_path} {key} mismatch")
+        if baseline_case.get("result") != "PASS":
+            raise ValueError(f"{input_path} incremental work did not pass")
+        if baseline_case.get("missing_rebuild") or baseline_case.get(
+            "unexpected_rebuild"
+        ):
+            raise ValueError(f"{input_path} incremental work contains rebuild drift")
+        compared_cases.append(
+            {
+                "expected_rebuild": baseline_case["expected_rebuild"],
+                "input": input_path,
+                "observed_rebuild": baseline_case["observed_rebuild"],
+                "result": "PASS",
+            }
+        )
     return {
-        "expected_rebuild": baseline["expected_rebuild"],
-        "input": baseline["input"],
-        "observed_rebuild": baseline["observed_rebuild"],
+        "cases": compared_cases,
         "result": "PASS",
     }
+
+
+def incremental_case_map(raw_cases: object) -> dict[str, dict[str, object]]:
+    if not isinstance(raw_cases, list) or not raw_cases:
+        raise TypeError("incremental work cases must be a non-empty list")
+    mapped: dict[str, dict[str, object]] = {}
+    for raw_case in raw_cases:
+        if not isinstance(raw_case, dict):
+            raise TypeError("incremental work case must be an object")
+        input_path = raw_case.get("input")
+        if not isinstance(input_path, str):
+            raise TypeError("incremental work case input must be a string")
+        if input_path in mapped:
+            raise ValueError(f"duplicate incremental input: {input_path}")
+        mapped[input_path] = raw_case
+    return mapped
 
 
 def compare_scenario(

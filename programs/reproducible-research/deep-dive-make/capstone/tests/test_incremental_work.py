@@ -44,7 +44,8 @@ class IncrementalWorkTests(unittest.TestCase):
             report = json.loads(output.read_text())
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(report["result"], "PASS")
-        self.assertEqual(report["schema"], "deep-dive-make-incremental-work-v1")
+        self.assertEqual(report["schema"], "deep-dive-make-incremental-work-v2")
+        self.assertEqual(len(report["cases"]), 1)
         self.assertEqual(
             report["policy_sha256"], hashlib.sha256(POLICY.read_bytes()).hexdigest()
         )
@@ -58,7 +59,7 @@ class IncrementalWorkTests(unittest.TestCase):
             result = self.run_case(policy, output)
             report = json.loads(output.read_text())
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("build/bin/dyn1", report["missing_rebuild"])
+        self.assertIn("build/bin/dyn1", report["cases"][0]["missing_rebuild"])
 
 
 if __name__ == "__main__":
