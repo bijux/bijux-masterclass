@@ -24,170 +24,188 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This lesson is about one governance promise:
 
-## Why this lesson matters
+If another maintainer or consumer starts here, what exact surface are we prepared to
+support over time?
 
-In Python, almost any import path can become somebody's dependency.
+In Python, reachability is cheap.
+Support is expensive.
 
-That creates a dangerous illusion:
+That is why a facade and a deliberate entrypoint matter. They let the package say:
 
-- if users can reach it, it must be public
+- start here
+- depend on this
+- leave the rest free to move
 
-But reachability is not the same thing as support. A codebase becomes harder to evolve
-when consumers learn to depend on:
+## Keep one package visible
 
-- deep package paths
-- private helper types
-- current constructor details
-- accidental file layout
+Use the capstone package:
 
-Facades and deliberate entrypoints exist so the program can say, clearly, "this is the
-surface we are prepared to explain, support, version, and review."
+`service_monitoring`
 
-## Public surface is a governance promise
+Assume a newcomer wants to do one normal thing:
 
-The real question is not:
+- run the supported monitoring workflow and inspect the stable result
 
-- what can another module import today?
+The lesson question is:
+
+What is the narrowest public surface that lets them do that without teaching runtime,
+repository, or adapter internals as the public story?
+
+## Public surface is a support burden, not an export convenience
+
+A surface becomes public when maintainers are willing to:
+
+- document it
+- keep examples aligned with it
+- review compatibility around it
+- deprecate it honestly
+- prove it through executable or reviewable routes
+
+That means the real question is not:
+
+- what can be imported today?
 
 It is:
 
-- what surface are we willing to keep understandable and stable over time?
+- what are we willing to explain, defend, and keep coherent next month or next year?
 
-Once you call something public, you take on obligations around:
+This is why a small public surface is not minimalism for its own sake. It is stewardship.
 
-- documentation
-- examples
-- compatibility review
-- deprecation policy
-- test coverage for that surface
+## A facade should speak in user tasks, not file layout
 
-That is why a small public surface is not aesthetic minimalism. It is governance
-discipline.
+A strong facade is shaped by what users need to do.
 
-## A facade narrows the consumer's dependency
+For this capstone, that might mean:
 
-A facade gives consumers one clear place to enter the system.
+- one package-level workflow entrypoint
+- one stable result shape
+- one documented extension seam type
 
-It may expose:
+It should not mean:
 
-- supported commands
-- stable service objects
-- documented data shapes
-- sanctioned extension hooks
+- exporting every useful-looking internal class
+- forcing users to understand package layering before they can start
+- treating the current directory structure as the API design
 
-The facade should not simply re-export everything. Its job is to translate internal
-structure into a smaller consumer-facing promise.
+The consumer story should survive even if the internals are reorganized.
 
-That keeps internal refactoring freedom alive because the rest of the package no longer
-needs to be treated as public by default.
+## One start point is a teaching decision
 
-## Entrypoints should match real use cases
+If the first example a learner copies imports:
 
-A useful entrypoint is organized around what consumers actually need to do.
+- runtime workers
+- repository wiring
+- adapter helpers
 
-Examples:
+then those internals have already become the accidental API.
 
-- run a monitoring workflow
-- register a plugin capability
-- submit a public command
-- inspect stable output or result objects
+That is why entrypoints are not only code organization.
+They are also teaching surfaces.
 
-That is stronger than exporting classes merely because they exist. A class that makes
-sense inside the package may be the wrong public story for an external caller.
+The first copied import path should reinforce the intended contract, not the current
+layout accident.
 
-## Narrower is usually safer than cleverer
+## Facades are valuable because they protect refactor freedom
 
-Students sometimes try to design a highly flexible public surface too early.
+When consumers depend on a narrow facade:
 
-That usually leads to:
+- constructors can change internally
+- file layout can move
+- policies can be recomposed
+- helpers can disappear
 
-- too many public types
-- too many optional parameters
-- too much exposure of lifecycle detail
-- too much reliance on internal object wiring
+without every internal shift becoming a public event.
 
-A narrower facade with fewer supported paths is often the more durable design because it
-lets you change internal composition later without breaking consumers.
+When consumers depend on deep imports, each of those changes risks becoming visible
+breakage.
 
-## A worked example
+This is why facades are part of governance, not just packaging style.
 
-Suppose the capstone contains:
+## A worked capstone surface
 
-- domain aggregates
-- repository implementations
-- application services
-- CLI or runtime orchestration
+A strong public shape for this package might look like:
 
-A weak public surface might let users import deep modules directly:
+```python
+from service_monitoring import run_monitoring, IncidentSink
+```
 
-- one aggregate from one internal file
-- one repository from another
-- one utility from a third
+What that teaches:
 
-That makes the current directory structure part of the consumer contract.
+- `run_monitoring` is the supported consumer path
+- `IncidentSink` is the narrow extension seam
+- deeper layers are intentionally not the first story
 
-A stronger public surface might instead expose:
+What it avoids teaching:
 
-- one package-level service entrypoint
-- one stable command layer
-- one documented result shape
-- one small set of extension interfaces
+- repository implementations as public dependency points
+- runtime coordinators as extension entrypoints
+- file layout as architectural knowledge every caller must learn
 
-Now the package tells consumers how to use it without asking them to know how it is
-built internally.
+The exact names may vary. The design discipline should not.
 
-## Internal modules should stay internal on purpose
+## Not every useful internal object deserves a public route
 
-Not everything needs a public route.
+Keep a module private when it mainly exists for:
 
-Keep modules private when they exist mainly to support:
+- internal composition
+- translation between boundaries
+- helper logic
+- runtime orchestration
+- replaceable implementation structure
 
-- local composition
-- internal algorithms
-- intermediate translation
-- temporary or replaceable implementation structure
+If a real consumer use case still needs one of those surfaces, the answer is usually:
 
-If a consumer needs deep imports to do real work, that is often a sign the facade is
-missing a supported use case or the system is publishing too little at the wrong level.
+- add a better supported facade
 
-## Common mistakes
+not:
 
-- treating every importable path as a supported API
-- exporting internal classes because they are convenient to reach today
-- designing facades around file layout instead of consumer workflows
-- widening the public surface before documentation and compatibility rules exist
-- assuming a re-export list is enough without a clear public-use story
+- make the deep internal import public by default
 
-## Review checklist
+## A good facade comes with two companion rules
 
-| Question | Good sign |
+Once you pick a public entrypoint, add two companion rules immediately:
+
+1. examples and docs must teach that path first
+2. deep internal imports should be treated as unsupported unless explicitly promoted
+
+Without those rules, the package will slowly publish more than intended even if the code
+shape itself looks clean.
+
+## Common failure modes
+
+- treating every importable path as public because Python allows it
+- exporting internal classes because they are convenient today
+- designing the facade around file layout instead of a user task
+- widening the public surface before compatibility and docs work exists
+- calling a re-export list a facade without defining the supported use story
+
+## Facade review card
+
+Use this short card when reviewing a public-surface change:
+
+| Question | What you want to see |
 | --- | --- |
-| can consumers do the main supported work through a narrow entry surface? | yes |
-| are deep internal imports unnecessary for normal supported use? | yes |
-| does the public surface expose workflows and contracts rather than file layout? | yes |
+| can the main supported work happen through one narrow entrypoint? | yes |
+| are deep imports unnecessary for normal supported use? | yes |
+| does the surface teach a workflow rather than a directory layout? | yes |
 | would internal restructuring stay mostly invisible to consumers? | yes |
 
 ## Capstone connection
 
-Use the capstone package to ask:
+Use this page to ask:
 
-- which imports should remain private implementation details?
-- what is the narrowest package-level surface that would support real users or integrations?
-- where is the current file layout at risk of becoming the accidental API?
+- which import path should become the only beginner-facing start point
+- which deep path should remain private even if it is currently convenient
+- what stable result or command surface would let consumers ignore internal layering
 
-This is the first governance decision in the module: choose the surface you are willing
-to support, and let the rest stay movable.
+That is the first real governance choice in the module.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain why import reachability is not the same thing as public support
-- identify one capstone surface that should become a facade entrypoint
-- identify one deep import path that should stay private or be replaced by a supported entry surface
+- explain why import reachability is not the same as public support
+- identify one capstone surface that should become the facade entrypoint
+- identify one deep import that should stay private or be replaced by a supported path
