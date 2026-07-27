@@ -221,7 +221,19 @@ Why this is strong:
 - it names the broken path directly
 - it repairs ownership before discussing performance
 
-## Exercise 8: Use an order-only prerequisite correctly
+## Exercise 8: Separate setup order from semantic freshness
+
+The capstone comparison should produce:
+
+| Model | Final input | Final output | Finding |
+| --- | --- | --- | --- |
+| order-only | `after` | `before` | `ORDER_ONLY_STALENESS_REPRODUCED` |
+| semantic edge | `after` | `after` | `SEMANTIC_EDGE_REFRESHED` |
+
+The broken model is expected to exit successfully. Its defect is not a failed recipe; it
+is a graph that declares only ordering for a file whose content determines the output.
+
+The honest report rule is:
 
 ```make
 build/report.txt: source.txt | build/
@@ -231,12 +243,32 @@ build/:
 	mkdir -p $@
 ```
 
-Touching `build/` does not rebuild the report because the directory is to the right of
-`|`. Changing `source.txt` does rebuild it because that prerequisite determines content.
-If the directory were a normal prerequisite, incidental directory timestamp changes could
-cause noisy rebuilds unrelated to report meaning.
+The three observations should be:
 
-This is strong because it separates setup existence from semantic freshness.
+| Change | Does the recipe run? | Why? |
+| --- | --- | --- |
+| touch `build/` | no | order-only prerequisites do not participate in target freshness |
+| change `source.txt` | yes | a newer normal prerequisite invalidates the target |
+| change order-only `source.txt` | no | the broken graph promises order, not invalidation |
+
+The deliberate defect is:
+
+```make
+build/report.txt: | source.txt build/
+	cp source.txt $@
+```
+
+After rebuilding from `before`, changing `source.txt` to `after` leaves the report at
+`before`. A trace that says there is nothing to do confirms Make followed the declared
+graph. Comparing the final file contents proves that graph was semantically dishonest.
+
+The classification sentence should be precise:
+
+> `build/` is setup state because the recipe needs the path to exist, while `source.txt`
+> is semantic state because changing its content must change `build/report.txt`.
+
+Putting `build/` on the left of `|` would create timestamp noise. Putting `source.txt` on
+the right creates stale output. The two mistakes are not symmetric.
 
 ## Exercise 9: Expose a missing edge with delay
 

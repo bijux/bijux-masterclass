@@ -211,25 +211,38 @@ Study note:
 The important shift is not "two jobs became dangerous." The important shift is "one path
 lost single-writer ownership."
 
-## Exercise 8: Use an order-only prerequisite correctly
+## Exercise 8: Separate setup order from semantic freshness
 
-Write a rule that creates `build/report.txt` from `source.txt`. Model `build/` as an
-order-only prerequisite.
+Before writing a rule, run the capstone `semantic-fault-audit`. Predict whether
+`output.txt` will still contain `before` after `input.txt` changes to `after` in each
+order-only-edge model. Check your prediction against `summary.tsv` and the paired traces.
 
-After a successful build, touch the directory, run Make again, then change `source.txt`
-and run Make again.
+```sh
+gmake -C programs/reproducible-research/deep-dive-make/capstone \
+  semantic-fault-audit
+```
+
+Then write a rule that creates `build/report.txt` from `source.txt`. Make `source.txt` a
+normal prerequisite and `build/` an order-only prerequisite.
+
+After a successful build:
+
+1. touch `build/` and run Make with `--trace`
+2. change `source.txt` and run Make with `--trace`
+3. move `source.txt` to the right of `|`, rebuild from `before`, change it to `after`,
+   and prove that the successful output is stale
 
 What to hand in:
 
-- the complete rule
-- the trace for both changes
-- an explanation of why directory existence affects order but not content freshness
-- one sentence explaining what noisy rebuild would happen if the directory were a normal
-  prerequisite
+- your prediction and the two capstone findings
+- the honest and deliberately broken rules
+- traces for the directory change, semantic change, and stale-output reproduction
+- an observation table containing the final input and output values
+- one sentence classifying `build/` as setup state and `source.txt` as semantic state
 
 Study note:
-This is often the first place learners see that some dependencies are about setup rather
-than about semantic freshness.
+Do not judge the edge by whether the build exits zero. The broken model succeeds while
+preserving old content. The evidence must connect the declaration to freshness behavior.
 
 ## Exercise 9: Expose a missing edge with delay
 
