@@ -43,7 +43,8 @@ Removing any bold semantic boundary from that sentence weakens the comparison.
 
 ## Read mechanics before meaning
 
-Every case preserves a raw `dvc metrics diff --json` receipt. Read it first.
+Every case preserves raw `dvc metrics diff --json` and `dvc params diff --json` receipts.
+Read them first.
 
 For the comparable candidate, DVC correctly reports:
 
@@ -52,11 +53,13 @@ For the comparable candidate, DVC correctly reports:
 delta = 0.0458
 ```
 
-The audit then compares the semantic fields DVC does not judge. This order matters:
+The audit then compares the semantic fields DVC does not judge. The parameter receipt is
+empty for same-control candidates and names `decision.threshold` for control drift. This
+order matters:
 
 ```mermaid
 flowchart LR
-  revisions["baseline and workspace"] --> diff["DVC numeric diff"]
+  revisions["baseline and workspace"] --> diff["metric and parameter diffs"]
   diff --> contract["semantic contract check"]
   contract --> accept["bounded comparison"]
   contract --> reject["reject or abstain"]

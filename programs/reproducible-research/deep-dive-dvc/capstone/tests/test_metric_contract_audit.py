@@ -125,8 +125,31 @@ def test_parameter_control_drift_changes_the_metric_claim(
     record = finding(audit, "CONTROL_DRIFT")
 
     assert record["checks"]["decision_threshold_same"] is False
+    assert (
+        record["parameter_evidence"]["dvc_reports_threshold_change"] is True
+    )
+    assert record["parameter_evidence"]["dvc_params_diff"] == {
+        "params.yaml": {
+            "decision.threshold": {
+                "old": 0.65,
+                "new": 0.5,
+                "diff": pytest.approx(-0.15),
+            }
+        }
+    }
     assert record["values"]["delta"] == 0.0458
     assert record["decision"] == "REJECT"
+
+
+def test_same_control_cases_have_empty_parameter_diffs(
+    audit: dict[str, object],
+) -> None:
+    record = finding(audit, "COMPARABLE_CANDIDATE")
+
+    assert (
+        record["parameter_evidence"]["dvc_reports_threshold_change"] is False
+    )
+    assert record["parameter_evidence"]["dvc_params_diff"] == {}
 
 
 def test_dvc_reports_numeric_movement_for_every_rejected_case(

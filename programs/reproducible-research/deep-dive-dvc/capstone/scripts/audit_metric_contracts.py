@@ -150,6 +150,7 @@ def compare_contracts(
     baseline: dict[str, Any],
     candidate: dict[str, Any],
     dvc_diff: dict[str, Any],
+    params_diff: dict[str, Any],
 ) -> dict[str, object]:
     baseline_contract = nested(baseline, "comparison_contract")
     candidate_contract = nested(candidate, "comparison_contract")
@@ -282,6 +283,16 @@ def compare_contracts(
     return {
         "decision": "ACCEPT" if compatible else "REJECT",
         "checks": checks,
+        "parameter_evidence": {
+            "dvc_reports_threshold_change": nested(
+                params_diff,
+                "params.yaml",
+                "decision.threshold",
+                "diff",
+            )
+            is not None,
+            "dvc_params_diff": params_diff,
+        },
         "values": {
             "baseline": baseline_value,
             "candidate": candidate_value,
@@ -359,13 +370,22 @@ def run_case(
     diff_command = [str(dvc), "metrics", "diff", "--json"]
     diff = run(diff_command, cwd=workspace)
     dvc_diff = json.loads(diff.stdout)
+    params_diff_command = [str(dvc), "params", "diff", "--json"]
+    params_diff_receipt = run(params_diff_command, cwd=workspace)
+    params_diff = json.loads(params_diff_receipt.stdout)
     candidate = read_json(workspace / "metrics" / "metrics.json")
-    comparison = compare_contracts(baseline, candidate, dvc_diff)
+    comparison = compare_contracts(
+        baseline,
+        candidate,
+        dvc_diff,
+        params_diff,
+    )
 
     evidence_dir = workspace / "evidence"
     write_json(evidence_dir / "baseline-metrics.json", baseline)
     write_json(evidence_dir / "candidate-metrics.json", candidate)
     write_json(evidence_dir / "dvc-metrics-diff.json", dvc_diff)
+    write_json(evidence_dir / "dvc-params-diff.json", params_diff)
     write_json(evidence_dir / "comparison.json", comparison)
     (evidence_dir / "dvc-status.txt").write_text(
         status.stdout + status.stderr,
@@ -379,9 +399,14 @@ def run_case(
     actual_decision = comparison["decision"]
     checks = comparison["checks"]
     assert isinstance(checks, dict)
+    parameter_evidence = comparison["parameter_evidence"]
+    assert isinstance(parameter_evidence, dict)
+    threshold_change_expected = case.name == "control-drift"
     passed = (
         actual_decision == case.expected_decision
         and checks["dvc_reports_primary_value_change"] is True
+        and parameter_evidence["dvc_reports_threshold_change"]
+        is threshold_change_expected
         and "evaluate_metric_contract" in status.stdout
         and "evaluate_metric_contract" in repro.stdout
     )
@@ -391,6 +416,7 @@ def run_case(
         "decision": actual_decision,
         "expected_decision": case.expected_decision,
         "checks": checks,
+        "parameter_evidence": parameter_evidence,
         "values": comparison["values"],
         "metric_keys": comparison["metric_keys"],
         "evidence": {
@@ -400,6 +426,7 @@ def run_case(
             "dvc_status": str(evidence_dir / "dvc-status.txt"),
             "dvc_repro": str(evidence_dir / "dvc-repro.txt"),
             "dvc_metrics_diff": str(evidence_dir / "dvc-metrics-diff.json"),
+            "dvc_params_diff": str(evidence_dir / "dvc-params-diff.json"),
             "comparison": str(evidence_dir / "comparison.json"),
         },
     }
@@ -411,6 +438,10 @@ def run_case(
             "status": receipt(status, command=status_command),
             "repro": receipt(repro, command=repro_command),
             "metrics_diff": receipt(diff, command=diff_command),
+            "params_diff": receipt(
+                params_diff_receipt,
+                command=params_diff_command,
+            ),
         },
     }
 

@@ -400,11 +400,12 @@ metric-contract-audit: install ## Audit metric semantic comparability
 		'  2. Read summary.tsv and separate accepted comparisons from reproduced defects.' \
 		'  3. Compare comparable-candidate/evidence/baseline-metrics.json with candidate-metrics.json.' \
 		'  4. Read the matching dvc-metrics-diff.json before reading comparison.json.' \
-		'  5. Inspect population-drift and note why equal row counts do not preserve identity.' \
-		'  6. Inspect unit-drift and compare the familiar key with the changed unit.' \
-		'  7. Inspect control-drift and identify the threshold change that bounds the claim.' \
-		'  8. Compare additive-metric with schema-version-drift and missing-population-identity.' \
-		'  9. Read the audit script and tests when reviewing enforcement.' > $(METRIC_CONTRACT_AUDIT_DIR)/route.txt
+		'  5. Join each dvc-metrics-diff.json to its dvc-params-diff.json.' \
+		'  6. Inspect population-drift and note why equal row counts do not preserve identity.' \
+		'  7. Inspect unit-drift and compare the familiar key with the changed unit.' \
+		'  8. Inspect control-drift and identify the threshold change that bounds the claim.' \
+		'  9. Compare additive-metric with schema-version-drift and missing-population-identity.' \
+		' 10. Read the audit script and tests when reviewing enforcement.' > $(METRIC_CONTRACT_AUDIT_DIR)/route.txt
 	@$(VENV_PY) scripts/write_bundle_manifest.py \
 		--bundle-dir $(METRIC_CONTRACT_AUDIT_DIR) \
 		--output $(METRIC_CONTRACT_AUDIT_DIR)/manifest.json
