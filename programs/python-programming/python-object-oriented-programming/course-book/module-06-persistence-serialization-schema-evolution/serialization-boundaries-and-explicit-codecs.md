@@ -17,157 +17,210 @@ graph LR
 
 ```mermaid
 flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
+  contract["name the external format contract"] --> codec["choose one owned codec boundary"]
+  codec --> strict["decide what malformed or unknown input means"]
+  strict --> version["keep format history near the codec"]
+  version --> prove["test the payload as a durable contract"]
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+Read the first diagram as a placement map: this lesson explains what happens when state
+crosses the process boundary and becomes a format promise. Read the second diagram as
+the route through the page: name the contract, choose one codec boundary, decide how
+strictness works, then keep format history and proof close to that boundary.
 
 ## Why this lesson matters
 
-The moment state leaves your process, it becomes a format contract.
+The moment state leaves your process, it stops being "just data" and becomes a format
+contract.
 
-That may be:
+That contract may be:
 
 - JSON in a file
-- a message payload
 - a snapshot document
+- a message payload
 - a request or response body
 
-If the course teaches serialization as "just call `json.dumps` on a dict," it misses the
-most important part: another reader, another version, or another system may depend on
-that exact shape later.
+If the course teaches serialization as "turn the object into a dict and dump it," it
+misses the real problem: someone else, some later version, or some recovery path may
+depend on that exact shape.
 
-## Serialization is not a domain method by default
+Serialization is not just output. It is a long-lived promise about meaning.
 
-Students often add methods like `to_dict()` or `to_json()` directly to core domain
-objects because it feels convenient.
+## Start by naming the format consumer
+
+Before writing a codec, ask:
+
+> Who will read this representation later, and what must they be able to rely on?
+
+Possible answers:
+
+- the same program after restart
+- a newer version of the same program
+- a worker or downstream service
+- an operator replaying historical state
+
+That question changes the design. A casual debug dump and a durable snapshot may both be
+JSON, but they are not the same kind of contract.
+
+## Serialization should usually live at a boundary, not inside the model
+
+Students often add methods such as `to_dict()` or `to_json()` directly to domain objects
+because it feels convenient.
 
 That convenience has a cost:
 
 - transport shape leaks into the model
-- versioning decisions spread across many objects
-- strictness and compatibility policy become harder to centralize
+- versioning decisions spread across many types
+- malformed-input and unknown-field policy become harder to centralize
 
-Most of the time, serialization belongs at a boundary codec rather than inside every
-domain type.
+Most of the time, the stronger design is:
 
-## What a codec owns
+- domain object owns meaning
+- codec owns representation
 
-A codec is responsible for translating between:
+That leaves the model free to change internally without automatically changing every
+external format promise.
+
+## What an explicit codec owns
+
+A codec translates between:
 
 - domain state or domain values
-- an external serialized representation
+- one external serialized representation
 
 That includes decisions such as:
 
 - required versus optional fields
-- type encodings for timestamps, enums, and identifiers
-- version markers
+- identifier, enum, and timestamp encoding
+- field names
 - unknown-field handling
 - malformed-input failure behavior
+- version markers
 
-This is why codecs are such an important teaching surface: they make format policy
-explicit instead of incidental.
+This is why codecs are such an important teaching surface. They make format policy
+explicit instead of accidental.
 
-## Encode meaning, not accident
+## Worked contrast: ad hoc dump versus owned codec
 
-Weak serialization usually leaks the internal shape of today's implementation.
+Weak route:
 
-Strong serialization chooses a representation that reflects meaning clearly:
+1. build a dict near the call site
+2. dump whatever fields are convenient today
+3. parse loosely somewhere else later
 
-- identifiers are named clearly
-- timestamps are encoded with a deliberate convention
-- semantic values do not become anonymous positional blobs
-- fields are chosen because they belong to the contract, not because they happened to be nearby in memory
+Strong route:
 
-When readers can explain why a field exists in the payload, the codec is doing real
-boundary work.
+1. one codec defines the payload shape
+2. one decoder rebuilds meaningful state from that shape
+3. tests treat the payload as a durable contract
+
+The strong route does not exist to create ceremony. It exists so the system has one
+owned answer to "what does this format mean?"
+
+## Encode meaning, not implementation accident
+
+Weak serialization often leaks today's internal layout.
+
+Strong serialization chooses a payload because its fields help another reader understand
+the contract:
+
+- identifiers are named explicitly
+- timestamps use a deliberate convention
+- semantic values are not anonymous blobs
+- fields exist because the format needs them, not because the object happened to store
+  them nearby
+
+One good review question is:
+
+> If this payload were handed to someone who never saw the in-memory object, would they
+> still understand why each field exists?
+
+If not, the codec may still be leaking implementation accident.
 
 ## Strictness is part of the contract
 
-One of the biggest mistakes in data-bound systems is silent coercion.
+One of the most dangerous format habits is silent coercion.
 
-For example:
+Examples:
 
 - unknown fields are ignored automatically
-- malformed values are coerced into defaults
-- invalid enums are turned into "best guess" strings
+- malformed values become defaults
+- invalid enums become "best guess" strings
 
-That can feel forgiving, but it often hides broken producers and corrupts the meaning of
-the format.
+That can feel forgiving, but it often hides broken producers and corrupts meaning.
 
 A stronger default is:
 
 - reject malformed or incompatible data early
-- add compatibility shims deliberately when you truly need them
+- add compatibility shims deliberately when the system truly needs them
 
-This keeps format evolution intentional rather than accidental.
+This makes format evolution intentional rather than vague.
 
 ## Version pressure belongs near the codec
 
 The codec is often the first honest place to answer:
 
-- what version of this representation is this?
+- what version is this representation?
 - which earlier versions can still be read?
-- which differences require translation or upcasting?
+- which differences need translation or upcasting?
 
-If version handling is scattered through domain constructors and random callers, the
-system stops having one owned format boundary.
+If version handling is scattered through constructors, repositories, and random helpers,
+the system no longer has one owned format boundary.
 
 The domain should receive meaningful state, not every historical transport detail.
 
-## Codecs should stay close to the boundary
+## Keep raw dictionaries and payload fragments from spreading inward
 
-Good codec placement usually means:
+Another common failure mode is letting raw dicts travel through application logic long
+after decoding should have happened.
 
-- they live near persistence, transport, or message boundaries
-- they are tested as contract surfaces
-- they are reused consistently instead of bypassed by ad hoc `dumps` calls
+That blurs:
 
-The goal is not to create ceremony. The goal is to stop format choices from being
-reimplemented differently in five places.
+- what is still transport state
+- what is already validated domain meaning
+
+The codec boundary should be early and decisive. Once a payload is accepted, the rest of
+the system should mostly stop talking in terms of raw representation pieces.
+
+## Review drill
+
+For any serialized format, ask these questions:
+
+1. who reads this format later?
+2. where is the one codec that owns it?
+3. what malformed input should fail instead of being guessed at?
+4. where does version history get absorbed before domain code sees the result?
+
+If those answers are scattered, the boundary is still too weak.
 
 ## Common mistakes
 
 - putting transport-specific `to_json()` logic on every domain object
 - letting raw dictionaries spread through application logic
-- ignoring unknown or malformed data without a deliberate compatibility policy
+- ignoring malformed or unknown data without a deliberate compatibility policy
 - encoding semantic values ambiguously
-- versioning payloads in scattered helper code instead of one explicit boundary
+- scattering version behavior across helper code instead of one explicit codec boundary
 
-These mistakes make formats harder to evolve and harder to trust.
-
-## Review checklist
-
-| Question | Good sign |
-| --- | --- |
-| is there one owned serialization boundary for this format? | yes |
-| does the payload encode meaning clearly rather than leaking internal layout? | yes |
-| are malformed and incompatible inputs handled deliberately? | yes |
-| is version pressure centered in the codec instead of scattered? | yes |
+All of these mistakes make formats harder to evolve and harder to trust.
 
 ## Capstone connection
 
-Use the capstone persistence or snapshot path to ask:
+Use the capstone snapshot or message path to ask:
 
-- what exact external representation is being promised?
-- where is its strictness enforced?
-- where would an older format be translated if the shape changed later?
+- what exact representation is being promised?
+- where is strictness enforced?
+- what field exists only because the format needs it?
+- where would an older payload be translated if the shape changed later?
 
-Those questions turn serialization from a helper concern into an architectural contract.
+Those questions turn serialization from helper code into a durable architectural
+contract.
 
 ## Exit check
 
 Leave this lesson only when you can do all of these:
 
-- explain why serialization should usually live in explicit codecs rather than in core domain objects
-- identify one place where strict rejection is better than silent coercion
+- explain why serialization should usually live in explicit codecs rather than inside
+  core domain objects
+- identify one place where strict rejection is healthier than silent coercion
 - describe where format version pressure should live when a payload evolves
