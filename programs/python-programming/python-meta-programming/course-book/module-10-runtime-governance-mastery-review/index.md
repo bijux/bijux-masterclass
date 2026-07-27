@@ -47,6 +47,22 @@ By the end of Module 10, you should be able to explain five things clearly:
 - why import hooks and AST transforms usually belong to tooling-grade problems
 - how to choose the lowest-power mechanism and justify escalation only when ownership demands it
 
+## One-day study route for a missed-class learner
+
+Treat this module like a review practicum, not a final tour of runtime tricks.
+
+| Study block | What to produce before moving on |
+| --- | --- |
+| overview plus dynamic-execution page | one trust-boundary note naming who controls the input, what boundary really exists, and which lower-power owner was rejected first |
+| interface plus observability pages | one contract note and one rollback note showing what the mechanism proves and how baseline state returns |
+| import-hooks plus mechanism-selection pages | one escalation worksheet naming the first simpler owner and the first operational cost of going higher-power |
+| worked example | one runtime-governance packet naming chosen powers, refused stronger powers, observational surfaces, and reset surfaces |
+| exercises plus answers | one review packet another learner could use to approve, constrain, or reject a dynamic design without hearing you explain it live |
+
+If you cannot produce the artifact for a block, do not move on because the prose sounded
+reasonable. Module 10 gets weak when judgment language feels familiar before evidence
+becomes concrete.
+
 ## The review route through the module
 
 Use the module in this order when you are reviewing a dynamic design:
@@ -70,6 +86,18 @@ Do not let the module collapse into any of these:
 | "The protocol or ABC proves the contract." | Interface surfaces do not prove deep behavior by themselves. |
 | "The import hook is worth it because it feels seamless." | Seamlessness is often hidden blast radius in disguise. |
 | "The wrapper is tiny, so rollback does not matter." | Small dynamic surfaces still need visibility and cleanup. |
+
+## Fast diagnostic for runtime-governance overreach
+
+Use this table before you accept a design as "still worth the dynamic power."
+
+| If you notice... | Pause and ask... | Likely outcome |
+| --- | --- | --- |
+| safety language grows faster than the real boundary | what exact process or operational boundary exists outside the current interpreter? | the claim is probably overreaching |
+| interface language sounds stronger than tests | what behavior still lives outside the contract surface? | the interface claim is too large |
+| patches or registries change state silently | what reset or observation surface proves current runtime state? | the design is not reviewable enough yet |
+| import-time or process-wide behavior is justified with convenience | is this tooling-grade, or is ordinary application wiring being dressed up? | escalation is probably too strong |
+| no one can write a clean rejection sentence | what lower-power owner was actually compared first? | the selection process is still under-argued |
 
 ## Keep these pages open
 
@@ -117,6 +145,10 @@ Keep one packet beside the module as you work:
 | escalation notes | which lower-power owner was rejected first and why |
 | review notes | one explicit rejection rule and one explicit approval rule |
 
+Use one more quality bar on the packet:
+
+- another learner should be able to point to one stopped safety claim, one reset surface, and one rejected lower-power owner without needing your verbal context
+
 ## The running question
 
 Carry this question through every page:
@@ -134,6 +166,10 @@ Strong Module 10 answers usually mention one or more of these:
 Carry one more question through every page:
 
 > If this mechanism fails at runtime, what evidence would let another engineer explain the failure quickly and restore baseline behavior safely?
+
+Add one final course-closing question:
+
+> if I removed the mechanism name from the discussion, would I still be able to explain the trust boundary, the reset path, and the reason a lower-power owner was rejected?
 
 ## Learning outcomes
 
