@@ -24,9 +24,9 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-These are model answers for the `EnrollmentReminderCoordinator` scenario from the
-exercise page. They are meant to show what a useful runtime packet looks like when one
-workflow must survive time pressure, concurrent workers, and cancellation.
+These model answers show what a strong runtime review packet looks like for the
+`EnrollmentReminderCoordinator` scenario. Read them as one defended ownership model, not
+as ten disconnected correct replies.
 
 ## Running scenario recap
 
@@ -38,91 +38,95 @@ workflow must survive time pressure, concurrent workers, and cancellation.
 - marks reminder state to prevent duplicates
 - may be cancelled and retried by runtime supervisors
 
-The design question is not "which concurrency library should we use?" The design
-question is "which boundary owns time, mutation, and restart safety?"
+The key design question is not "which concurrency library should we use?" It is "which
+boundary owns time, mutation, and retry safety?"
 
 ## Answer 1: Choose the clock
 
 Use:
 
-- calendar time for workshop start timestamps and human schedule meaning
-- monotonic time for measuring waits, timeout budgets, and retry delays
+- calendar time for workshop start timestamps and reminder meaning
+- monotonic time for waits, timeout budgets, and retry delays
 
 Ownership rule:
 
 - the coordinator or runtime boundary owns clock access
-- domain objects such as `WorkshopEnrollment` should not call `datetime.now()` directly
+- domain objects such as `WorkshopEnrollment` should not call `datetime.now()` or
+  event-loop time directly
 
-Bug from mixing them:
+Why this matters:
 
-- a wall-clock jump can make timeout or delay logic fire too early or too late
+- a wall-clock jump can make wait logic fire too early or too late
+- a domain object that reads the clock directly becomes harder to test and harder to
+  reason about
 
-That is why "what time is it?" and "how long have we waited?" must not be treated as the
-same question.
+This is the first runtime distinction the packet should make visible: "what time is it?"
+and "how long have we waited?" are different questions.
 
 ## Answer 2: Deadline boundary
 
 For "send reminder no later than thirty minutes before workshop start":
 
-- compute deadline at the scheduling boundary
-- store or pass a concrete cutoff with the queued work
+- compute the deadline at the scheduling boundary
+- carry a concrete cutoff with the work item
 - enforce the cutoff before delivery begins
 
 If the worker sees the reminder after the cutoff:
 
-- mark the work stale or skipped
-- do not let the sender pretend it still met the original contract
+- mark it stale, skipped, or expired
+- do not let the sender pretend the original timing contract was met
 
-The domain object should not contain scattered `if now > cutoff` checks. That would make
-the time contract impossible to review.
+The lesson is that deadline ownership should be centralized. Scattered `if now >
+cutoff` checks across domain methods make the time rule impossible to review.
 
 ## Answer 3: Scheduling concern
 
-The repeated scan for upcoming workshops belongs to a coordinator or scheduler boundary,
+The repeated scan for upcoming workshops belongs to a scheduler or coordinator boundary,
 not to the workshop model itself.
 
-Good split:
+Strong split:
 
 - scheduler decides when to scan
-- coordinator produces reminder work units
-- worker executes reminder sends
+- coordinator creates reminder work units
+- worker performs reminder delivery
 
-Testing route:
+Strong test route:
 
 - inject a fake clock
-- call the scan method directly
+- call the scan boundary directly
 - assert which work items are enqueued
 
-No real sleeping is needed if the time boundary is explicit.
+No real sleeping is needed when the time boundary is explicit.
 
-## Answer 4: Shared mutation
+## Answer 4: Shared mutation ownership
 
-Reminder status should not be updated by several workers casually.
+Reminder status should not be mutated casually by several workers.
 
-Cleaner design:
+Cleaner ownership rule:
 
 - one worker owns one reminder key at a time through queue handoff
-- status transition is written through one clear boundary
+- state transitions happen through one persistence or workflow boundary
 
 Race if state is shared casually:
 
-- two workers both read "not sent"
-- both send the reminder
-- both mark success afterward
+1. two workers read "not sent"
+2. both send the reminder
+3. both mark success afterward
 
-That turns one logical notification into duplicate visible work.
+That creates duplicate visible work while every individual step still looks locally
+reasonable.
 
 ## Answer 5: Queueing versus locking
 
 Lock design:
 
-- shared status map protected by a lock
-- workers coordinate by entering critical sections
+- shared status surface protected by a lock
+- several callers still target the same mutable state directly
 
 Queue design:
 
-- work is partitioned so one worker owns one reminder attempt
-- deduplication key travels with the work item
+- one work item carries ownership of one reminder attempt
+- dedupe key travels with the work
 
 Better fit here:
 
@@ -130,33 +134,33 @@ Better fit here:
 
 Why:
 
-- it keeps mutation and retry reasoning closer together
-- it scales operationally better than many callers sharing one lock surface
+- retry reasoning stays close to mutation ownership
+- duplicate-send prevention is easier to review
+- workers can scale without every path depending on a broad shared lock surface
 
-Rejected option:
+Rejected design:
 
-- broad in-memory locking across several workers and retry paths
+- wide in-memory locking across workers and retries
 
-That design often solves one race by making ownership harder to see.
+That design may reduce one race while leaving ownership hard to see.
 
-## Answer 6: Cache under concurrency pressure
+## Answer 6: Cache under runtime pressure
 
 Suppose the coordinator caches "reminders due in the next five minutes."
 
-Safe only if:
+That cache is safe only if:
 
-- freshness window is explicit
-- cached values are derived, not authoritative
-- stale cache never decides whether a reminder is already sent
+- freshness rules are explicit
+- the cache is derived, not authoritative
+- stale cache does not decide whether a reminder was already sent
 
-Hazard:
+Dangerous bug:
 
-- cached due-soon set lags behind status updates and re-enqueues work already processed
+- stale due-soon cache causes the system to enqueue work that current reminder state
+  would reject
 
-Proof surface:
-
-- tests that change reminder status and assert the cache does not create duplicate
-  scheduling decisions
+The first proof should be a test that changes reminder status and verifies the cache does
+not create duplicate scheduling decisions.
 
 ## Answer 7: Sync/async bridge
 
@@ -169,25 +173,28 @@ Bridge location:
 
 - application or runtime adapter layer
 
-Why not everywhere?
+Why not widen everything?
 
-- if every layer becomes both sync-aware and async-aware, interfaces widen and reasoning
-  about blocking behavior becomes harder than the workflow itself
+- if every layer becomes both sync-aware and async-aware, interfaces broaden faster than
+  the actual business problem
+
+This is the runtime equivalent of letting storage details leak inward in Module 06.
 
 ## Answer 8: Concurrency-aware API
 
 Example API:
 
-- `replay_reminders(workshop_id)` is synchronous from the admin caller’s point of view
-- it submits replay work and returns a submission result
+- `replay_reminders(workshop_id)` stays synchronous for the admin caller
+- it submits or coordinates reminder work and returns a submission result
 
-Contract must say:
+The contract must state:
 
 - whether it blocks until delivery or only until work acceptance
 - whether repeated calls deduplicate
 - what state callers may assume after return
 
-"Thread-safe" alone is not enough. Callers need concrete meaning.
+"Thread-safe" is not enough. Callers need a reviewable statement of what actually
+happens under concurrent use.
 
 ## Answer 9: Cancellation and retry path
 
@@ -198,29 +205,29 @@ Case:
 
 Safe retry requires:
 
-- send attempt and status update to have a clear atomic or idempotent relationship
-- duplicate delivery to be prevented by a durable send marker or dedupe key
+- a durable dedupe marker
+- or an atomic relationship between external send and durable progress recording
 
 Unsafe design:
 
-- send happens
-- cancellation interrupts before any durable progress marker
-- retry sends again with no way to know the first send already escaped
+1. send escapes
+2. cancellation lands before durable sent-state
+3. retry sends again with no evidence that the first attempt already happened
 
-That is the exact shape of duplicate side effects the runtime packet should expose.
+That is exactly the kind of duplicate side effect the runtime packet is meant to expose.
 
-## Answer 10: Runtime packet
+## Answer 10: Final runtime review packet
 
-A compact final packet might read:
+A compact strong packet might read:
 
 > `EnrollmentReminderCoordinator` owns time and scheduling decisions. Calendar time is
 > used for workshop meaning; monotonic time is used for waits and retry delays. Reminder
 > work is handed off through queue ownership rather than casual shared mutation. The
-> sync-to-async bridge stays at the application edge. The main remaining risk is duplicate
-> outward sends if cancellation happens after delivery but before durable sent-state, so
-> retry safety must be tied to a durable dedupe marker.
+> sync-to-async bridge stays at the application edge. The remaining high-risk point is
+> cancellation after outward delivery but before durable sent-state, so retry safety
+> depends on a durable dedupe marker.
 
-That note is strong because another maintainer can answer:
+That packet is strong because another maintainer can answer:
 
 - who owns clocks
 - who owns mutation
@@ -229,10 +236,12 @@ That note is strong because another maintainer can answer:
 
 ## Self-check
 
-You are using Module 07 correctly when another maintainer can answer all of these from
-your packet:
+Your own runtime packet is ready when another reader can answer all of these from it:
 
-- which clock is authoritative for one runtime rule
+- which clock is authoritative for one rule
 - what prevents two workers from sending the same reminder
 - where a synchronous caller meets asynchronous execution
 - why cancellation is safe or unsafe at one specific point
+
+If any answer still depends on "you know what I meant," tighten the packet before moving
+on.
