@@ -1,6 +1,5 @@
 # Exercises
 
-
 <!-- page-maps:start -->
 ## Page Maps
 
@@ -25,234 +24,207 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Use these exercises to practice authority-boundary judgment, not only event vocabulary.
+Use these exercises as one full lab on aggregate authority. The goal is not to name a
+pattern and move on. The goal is to prove that a learner studying alone can look at a
+multi-object workflow and say exactly which boundary owns truth, which collaborators are
+derived, and which seams exist only for policy or integration.
 
-The goal of the day is to make multi-object authority explicit. By the end, you should be
-able to say which boundary owns truth, which artifacts are derived, which collaborators
-only coordinate, and how the design resists both object tangle and manager-object collapse.
+## Running lab scenario
 
-## How to work through this set
+Use one scenario throughout the day so the authority decisions compound:
 
-Treat the ten exercises as one full lab day on aggregates and collaboration authority.
+`WorkshopEnrollment`
 
-Before each answer:
+The system has:
 
-1. name the cross-object rule under review
-2. name the boundary that should own it
-3. say which artifact or collaborator must stay derived or subordinate
+- a workshop with a seat limit
+- attendees with registration state
+- a waitlist
+- payment confirmation arriving from outside the aggregate
+- email notifications and roster projections downstream
 
-Do the exercises in order. The day is one progression:
+Rules:
 
-- Exercises 1-3 define authority, aggregates, and cross-object invariants
-- Exercises 4-5 separate domain events, projections, and strategies from source-of-truth
-  boundaries
-- Exercises 6-8 review collaboration surfaces, adapters, and event-routing pressure
-- Exercises 9-10 package the full boundary as a reviewable authority design
+- no more than the seat limit may be confirmed
+- waitlisted attendees are not confirmed participants
+- roster projections may lag but must never invent authority
+- payment callbacks may inform enrollment, but they do not decide seat ownership by
+  themselves
 
-Keep one collaboration packet as you go. By the end of the day it should contain:
+If you prefer your own scenario, keep the same pressure: one scarce resource, multiple
+objects, external callbacks, and derived read models.
+
+## What to keep open while you work
+
+Build one authority packet as you go. By the end it should contain:
 
 - one authoritative-boundary statement
 - one cross-object invariant map
-- one derived-versus-authoritative artifact distinction
-- one event or projection review
-- one collaboration-surface repair
-- one full aggregate-boundary review note
+- one event-versus-truth table
+- one projection review
+- one collaboration-surface repair note
+- one full authority-path review
 
-If those six artifacts are missing, you are probably still naming patterns instead of
-governing authority.
+Use these tables directly:
 
-## Recommended working layout
-
-If you want one lab tree that can support the whole day, use something like:
-
-```text
-module04-lab/
-├── artifacts/
-├── notes/
-├── scratch/
-└── tests/
-```
-
-Keep one authority table while you work:
-
-| Rule or invariant | Authoritative boundary | Derived artifact or helper | Why the helper must not own truth |
+| Rule or behavior | Boundary that owns it | Helpful collaborator | Why the collaborator must stay subordinate |
 | --- | --- | --- | --- |
 
-Also keep one event table:
-
-| Event or projection | Source of truth it depends on | What it may do | What it must never do |
+| Event or projection | Authoritative source | What it may do | What it must never do |
 | --- | --- | --- | --- |
-
-```mermaid
-flowchart LR
-  find["find the cross-object rule"]
-  own["assign one authoritative boundary"]
-  derive["keep events and projections downstream"]
-  vary["use policy for variation, not authority"]
-  connect["collaborate without tangle"]
-  defend["defend the design under change pressure"]
-
-  find --> own --> derive --> vary --> connect --> defend
-```
-
-Use that route on purpose. It keeps the day centered on authority and invariants instead
-of on message-passing style.
 
 ## Exercise 1: Name the authoritative boundary
 
-Take one capstone behavior involving more than one object and explain:
+For `WorkshopEnrollment`, decide:
 
-- which aggregate or boundary is authoritative
-- which nearby object is tempting but should not own the rule
-- what could go wrong if authority is split
+- what aggregate or boundary owns seat allocation
+- what nearby object is tempting but should not own it
+- what contradiction appears if authority is split
 
-Study note:
-The first job in aggregate design is to decide who may reject a change, not who merely
-hears about it.
+End with one sentence that starts:
 
-## Exercise 2: Map one cross-object invariant
+> "The authoritative owner of seat assignment is ..."
 
-Choose one invariant spanning multiple objects and list:
+## Exercise 2: Map the main cross-object invariant
 
-- the objects involved
-- the boundary that should enforce the invariant
-- the method or workflow where the check belongs
-- one derived artifact that may observe the change but not decide it
+Write down the invariant:
 
-Study note:
-This is where collaboration stops being "objects talking to each other" and becomes a
-coherent rule boundary.
+> confirmed attendees must never exceed available seats
+
+Then explain:
+
+- which objects participate
+- where the invariant is enforced
+- which method or transaction path applies it
+- which other object may observe the outcome but not decide it
+
+If you cannot point to one enforcing home, the model is still too vague.
 
 ## Exercise 3: Compare aggregate and manager-object designs
 
-Take one design and compare:
+Compare:
 
-- an aggregate-centered version
-- a manager-object version
+- a `WorkshopEnrollment` aggregate-root design
+- a broad `EnrollmentManager` service that owns all state decisions
 
-Explain:
+For each design, answer:
 
-- which one keeps invariants easier to audit
-- which one makes neighboring roles blur
-- one reason the manager-object version feels tempting
+- what becomes easier to audit
+- what becomes blurrier
+- where hidden coupling will probably appear first
 
-Study note:
-The wrong centralization often looks attractive because it gathers everything in one
-place, even when it weakens the model.
+Do not answer with style preferences. Answer with reviewability and invariant control.
 
 ## Exercise 4: Review one domain event honestly
 
-Pick one event and explain:
+Pick one event such as:
 
-- what authoritative state change produced it
-- which boundary owns that state
-- what downstream consumers may infer from it
-- what they must never change in response
+- `attendee_confirmed`
+- `attendee_waitlisted`
+- `seat_released`
 
-Study note:
-Events are downstream evidence, not floating permissions.
+Explain:
 
-## Exercise 5: Distinguish projection from authority
+- what authoritative state change happened first
+- what consumers may infer from the event
+- what consumers must not change directly because of the event
 
-Take one projection, read model, or debug view and explain:
+If the event feels like the place where truth is decided, redesign the authority path.
+
+## Exercise 5: Distinguish projection from truth
+
+Take one read model, such as a roster summary or waitlist dashboard, and explain:
 
 - what source-of-truth boundary it depends on
-- what it is allowed to summarize
-- why it must not become a write model in disguise
-- one operational benefit it provides without gaining authority
+- what lag or simplification is acceptable
+- why it must never become the write path for enrollment decisions
+- one operator convenience it still provides
 
-Study note:
-Projections are useful precisely because they are cheaper than authority, not because they
-replace it.
+This exercise is about resisting the very common "the dashboard knows the real answer"
+trap.
 
-## Midday self-check
+## Exercise 6: Place policy objects carefully
 
-Before you move into collaboration surfaces, policies, and adapters, make sure your
-packet can already answer these questions clearly:
+Introduce one policy variation, such as:
 
-- which boundary is authoritative for one cross-object rule
-- why a nearby projection or event consumer must stay derived
-- how an aggregate differs from a manager object
-- where an invariant is actually enforced
+- VIP seat reservation
+- late cancellation handling
+- priority waitlist promotion
 
-If you cannot answer those four questions in plain language, return to Exercises 1-5 and
-make the packet more explicit before continuing.
-
-## Exercise 6: Place strategy and policy objects carefully
-
-Choose one variation point and explain whether it belongs in:
+Decide whether the rule belongs in:
 
 - the aggregate
-- a policy object
+- a policy object consulted by the aggregate
 - orchestration
-- or an adapter
+- or an adapter boundary
 
-Explain what becomes confusing if variation is mistaken for authority.
+Then explain why policy does not automatically become authority.
 
-Study note:
-Policies shape decisions, but they do not automatically become the source of truth.
+## Exercise 7: Review one collaboration surface
 
-## Exercise 7: Review a collaboration surface without tangle
+Draw a short interaction path involving:
 
-Take one subsystem and explain:
+- the aggregate
+- one policy or collaborator
+- one outbound adapter or event handler
 
-- which collaborators must know about each other
-- which relationship should be indirect through events, policies, or interfaces
-- what coupling smell would show the surface is tangling
+Name:
 
-Study note:
-The goal is explicit collaboration without turning every role into everyone else’s friend.
+- who calls whom directly
+- what should stay indirect
+- one coupling smell that would show the surface is tangling
 
-## Exercise 8: Place adapters and bridges
+The goal is explicit cooperation without letting every object know every other object.
 
-Take one external dependency and decide:
+## Exercise 8: Place one adapter boundary
+
+Use the payment callback in the scenario and explain:
 
 - what the adapter may translate
-- what the aggregate must stay ignorant of
-- where storage or transport assumptions must stop
+- what data the aggregate should receive after translation
+- what transport-specific detail must stop at the boundary
+- one domain bug that appears if the callback shape leaks inward
 
-Explain one bug that appears when the adapter boundary leaks inward.
-
-Study note:
-Adapters exist to protect the model from foreign concerns, not to smuggle them in.
+This is where many designs accidentally let external protocols redefine domain behavior.
 
 ## Exercise 9: Review one full authority path
 
-Take one meaningful workflow and write a short review that names:
+Write a short review of the path:
 
-- the authoritative boundary
-- the event path
-- the projections
-- the policy seams
-- the orchestration boundary
-- one place the design is still too fuzzy
+- registration request arrives
+- aggregate decides confirm versus waitlist
+- event is emitted
+- projection updates
+- notification is sent
 
-Study note:
-This review should sound like an architecture audit, not like a message-passing diagram.
+For each step, name:
 
-## Exercise 10: Produce an aggregate-boundary decision packet
+- where authority exists
+- where derivation begins
+- where failure should be visible first
 
-Assemble:
+## Exercise 10: Produce the authority packet
+
+Finish the lab by assembling:
 
 - one authority table
-- one event table
+- one event/projection table
 - one collaboration review paragraph
 - one recommendation for boundary repair
 
-Ask another learner which object they think owns the main rule. If they guess differently,
-repair the packet until the boundary is unmistakable.
+The packet is done only when another learner can answer:
 
-Study note:
-This final exercise matters because authority design is only durable when another
-maintainer can infer it from the evidence.
+- who owns the scarce resource
+- which events are downstream facts
+- which components are helpers rather than truth owners
 
-## Mastery check
+## Done means the boundary is unmistakable
 
-You have a strong grasp of this module if your answers consistently keep five ideas
-visible:
+You are done with the exercise day when your packet can survive three review questions:
 
-- cross-object rules need one authoritative boundary
-- aggregates differ from clusters and from manager objects
-- events and projections are downstream of truth
-- strategies and adapters shape variation without owning authority
-- collaboration should stay explicit without dissolving into tangle
+- "Who can reject the over-capacity enrollment?"
+- "Which event happened only after truth was already decided?"
+- "What collaborator helps without owning authority?"
+
+If those answers are still fuzzy, keep tightening the packet before you open the answer
+page.
