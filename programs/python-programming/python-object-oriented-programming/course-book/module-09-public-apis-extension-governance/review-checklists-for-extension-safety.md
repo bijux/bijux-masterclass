@@ -26,19 +26,19 @@ flowchart LR
 
 This lesson exists because extension review often fails in a predictable way:
 
-- one reviewer checks type shape
-- another checks version drift
+- one reviewer checks signature shape
+- another checks version language
 - another worries about startup failure
 - nobody can tell whether the seam was actually reviewed well
 
 Without a stable checklist, extension safety depends too much on memory and personality.
 
-The point of this page is not to replace judgment.
-It is to make the same hard questions appear every time a seam changes.
+The point of this page is not to replace judgment. It is to make the same hard questions
+appear every time a seam changes.
 
 ## Keep one seam visible
 
-Use one concrete seam while reading:
+Use one concrete seam:
 
 `IncidentSink`
 
@@ -47,9 +47,9 @@ That seam is narrow enough to be teachable and risky enough to make the checklis
 If your checklist cannot help you review a seam this small, it will not save you on a
 larger one.
 
-## What a useful checklist must cover
+## A useful checklist must go beyond type shape
 
-A weak checklist reviews only the signature:
+A weak checklist reviews only:
 
 - names
 - methods
@@ -64,11 +64,11 @@ An extension checklist must also cover:
 - what registration or construction checks exist
 - what runtime failure behavior is expected
 - what compatibility promise is created
-- what examples, docs, and proof routes defend the story
+- what docs, examples, and proof routes defend the story
 
-Those are the real support obligations created by a seam.
+Those are the real support obligations created by a public seam.
 
-## A seven-question checklist that is small enough to use
+## A seven-question extension-safety checklist
 
 For `IncidentSink`, a strong short checklist is:
 
@@ -86,13 +86,13 @@ For `IncidentSink`, a strong short checklist is:
 That checklist is short enough for repeated use and broad enough to catch the real
 governance risks.
 
-## What strong answers look like
+## Strong answers point to evidence
 
-Good answers point to evidence, not just reassurance.
+Good answers should point to evidence, not reassurance.
 
 Examples:
 
-- one compatibility suite for sink behavior
+- one compatibility packet for sink behavior
 - one executable or smoke-tested facade example
 - one import-discipline review rule
 - one registration-validation path
@@ -114,9 +114,9 @@ For the capstone seam, ask:
 
 These are extension-safety questions, not later operations work.
 
-## Build one reusable review packet
+## Build a reusable review packet
 
-A good checklist becomes stronger when paired with a tiny reusable packet:
+A good checklist becomes stronger when paired with a tiny review packet:
 
 - seam description
 - supported use case
@@ -151,7 +151,7 @@ That is a real governance result, not just a statement that the interface "looks
 
 Use this compact review card during real changes:
 
-| Question | What you want to see |
+| Question | What a strong answer sounds like |
 | --- | --- |
 | should this seam be public at all? | one concrete supported use case |
 | does it preserve authority boundaries? | capability without private-state intimacy |
@@ -163,13 +163,12 @@ Use this compact review card during real changes:
 
 ## Capstone connection
 
-Use this page against the capstone immediately.
-
-Ask:
+Use this page to ask:
 
 - which seam needs this checklist first
 - which risk question is currently living only in reviewer memory
 - which proof route is still missing for the seam to pass review honestly
+- which failure behavior is still undocumented even though it affects support
 
 That is how governance becomes repeatable instead of personality-driven.
 
