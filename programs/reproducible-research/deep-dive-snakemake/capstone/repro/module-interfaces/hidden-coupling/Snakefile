@@ -1,0 +1,16 @@
+configfile: "config.yaml"
+
+module normalize:
+    snakefile: "module/Snakefile"
+    config: config
+
+use rule normalize from normalize as normalize_sample with:
+    input:
+        source="data/sample.txt"
+    output:
+        artifact="build/sample.txt"
+
+rule all:
+    input:
+        rules.normalize_sample.output.artifact
+    default_target: True
