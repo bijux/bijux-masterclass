@@ -91,32 +91,83 @@ Why this is strong:
 
 ## Exercise 4: Decide whether a boundary is a module
 
-A strong answer asks interface questions first.
+The first caller remains:
 
-Example answer shape:
+```python
+use rule normalize from normalize as normalize_sample with:
+    input:
+        source="data/sample.txt"
+    output:
+        artifact="build/sample.txt"
+    params:
+        prefix=config["normalize"]["prefix"]
+```
 
-- candidate boundary:
-  - a reusable QC bundle
-- interface questions:
-  - what inputs does it consume
-  - what outputs does it promise
-  - can the top-level workflow still explain the graph after the split
-- decision:
-  - promote it to a module only if those answers are explicit
-- opposite sign:
-  - if the call site still depends on hidden globals or private path conventions, keep it
-    as an include for now
+Add the control policy to `config.yaml`:
 
-Why this is strong:
+```yaml
+normalize:
+  prefix: reviewed
+  control_prefix: control-reviewed
+```
 
-- it makes interface clarity the criterion
-- it avoids promoting a split just because the folder looks cleaner
+Then add the second caller:
 
-A useful contrast sentence is:
+```python
+use rule normalize from normalize as normalize_control with:
+    input:
+        source="data/control.txt"
+    output:
+        artifact="build/control.txt"
+    params:
+        prefix=config["normalize"]["control_prefix"]
+```
 
-> If the call site still depends on hidden globals, undeclared path conventions, or
-> private helper behavior, the boundary is not a module yet even if the directory name
-> says `modules/`.
+Add both outputs to `all`:
+
+```python
+rule all:
+    input:
+        rules.normalize_sample.output.artifact,
+        rules.normalize_control.output.artifact,
+    default_target: True
+```
+
+The important result is not merely that the syntax parses. The module implementation did
+not change. The new caller bound every consumer-visible surface.
+
+A useful override matrix is:
+
+| Surface | Module template | Sample caller | Control caller | Owner |
+| --- | --- | --- | --- | --- |
+| input | `unbound.txt` | `data/sample.txt` | `data/control.txt` | caller |
+| output | `unbound.txt` | `build/sample.txt` | `build/control.txt` | caller |
+| prefix | `UNBOUND` | `reviewed` | `control-reviewed` | caller |
+| shell | normalize and publish | unchanged | unchanged | module |
+| candidate rename | required | unchanged | unchanged | module |
+
+Expected rule-list evidence includes:
+
+```text
+all
+normalize_control
+normalize_sample
+```
+
+The dry-run should plan two normalization jobs. The artifacts should begin:
+
+```text
+build/sample.txt: reviewed
+build/control.txt: control-reviewed
+```
+
+Now remove the `params` block from `normalize_control`. A useful gate fails because the
+caller contract is incomplete, even if someone changes the module default to preserve the
+same bytes. Matching bytes do not prove matching ownership.
+
+The correct decision is to keep the module if both callers remain expressible without
+private module edits. A limit remains: this evidence does not prove compatibility across
+independently versioned remote module releases.
 
 ## Exercise 5: Write a public file contract
 
@@ -134,20 +185,66 @@ Why this is strong:
 
 ## Exercise 6: Review one abstraction you should reject
 
-A strong answer rejects abstraction by naming the ownership loss it would cause.
+Begin with the actual summary row:
 
-Example:
+```text
+hidden-coupling  PASS  HIDDEN_MODULE_COUPLING_REPRODUCED
+```
 
-> A catch-all `utils.smk` file is tempting because it feels tidy, but it would blur rule
-> logic, path helpers, and interface code into one bucket. That weakens ownership because
-> the next maintainer would still not know where a new publish concern should land. A
-> smaller include split by concern is stronger because it keeps the graph visible and the
-> boundaries explainable.
+The row is green because the promised defect was observed. It is not an approval.
 
-Why this is strong:
+The decisive observations in `report.json` are:
 
-- it explains why the abstraction is tempting
-- it rejects it for a structural reason, not taste
+```text
+broad_module_config: true
+caller_binds_policy: false
+module_reads_private_policy: true
+artifact_lines: ["inherited", "sample payload"]
+```
+
+The rule listing and dry-run are still useful:
+
+```text
+all
+normalize_sample
+```
+
+They prove that the imported rule is visible and planned. They cannot identify policy
+ownership because both explicit and hidden models have the same graph shape.
+
+A repair has three coordinated edits:
+
+1. Move the policy into an owned config subtree.
+2. Pass only that subtree to the module.
+3. Bind the policy at the caller's `use rule` site.
+
+```python
+module normalize:
+    snakefile: "module/Snakefile"
+    config: config["normalize"]
+
+use rule normalize from normalize as normalize_sample with:
+    input:
+        source="data/sample.txt"
+    output:
+        artifact="build/sample.txt"
+    params:
+        prefix=config["normalize"]["prefix"]
+```
+
+The module then uses a placeholder instead of reading caller-private policy:
+
+```python
+params:
+    prefix="UNBOUND"
+```
+
+After repair, the old hidden-coupling finding should fail. That failure is correct because
+the specimen no longer reproduces its named defect. Reclassify it as an explicit control
+only after its expected finding and tests change deliberately.
+
+The abstraction is rejected because it hides consumer-visible policy, not because modules
+are inherently risky.
 
 ## Exercise 7: Break and defend a schema boundary
 
@@ -173,20 +270,49 @@ rule body.
 
 ## Exercise 9: Review a full structural pull request
 
-A strong review checks ownership before accepting new files, explicit interfaces before
-accepting a module, and consumer semantics before accepting a schema change. It compares
-the rule graph and validates public fixtures. Redundant wrappers or modules with hidden
-globals should be removed. Future gates should separately defend syntax/lint, planned
-graph shape, and the public file contract rather than rerunning unrelated heavy suites.
+A strong review starts with findings ordered by trust impact.
 
-A compact claim table often helps:
+Example:
 
-| Gate | Claim defended |
-| --- | --- |
-| `snakemake --list-rules` or rulegraph review | the workflow remains legible after the split |
-| `snakemake -n` | the top-level target story did not drift accidentally |
-| schema or contract validation | public consumers still receive the promised shape |
-| focused lint or structure check | the refactor did not add hidden architectural debt |
+1. **High:** the proposed module receives the full workflow config and privately reads the
+   publish version. That value changes output meaning but is absent from the caller
+   binding. Narrow config and bind the value through `use rule` before approval.
+2. **High:** the public summary schema removed a required field without versioning.
+   Contract validation correctly rejects the changed fixture.
+3. **Medium:** the include split preserves all rules but makes the top-level target route
+   harder to locate. Restore one visible orchestration surface.
+4. **Low:** the new local imported rule name is ambiguous beside an existing rule. Rename
+   it at the caller boundary.
+
+The review packet should contain:
+
+- before-and-after rule lists or rulegraphs
+- dry-run paths for the final target
+- module-interface `summary.tsv`
+- the relevant source observations from `report.json`
+- one module mutation that the selftest rejects
+- valid and invalid public contract fixtures
+- the exact validator failure
+
+Use a claim table to prevent gate inflation:
+
+| Gate | Claim defended | Required failure example |
+| --- | --- | --- |
+| rule list or rulegraph | intended rule families remain visible | imported local rule disappears |
+| dry-run | final target still selects intended paths | caller output binding drifts |
+| module interface audit | config, path, and policy ownership match the model | broad config in explicit control |
+| module interface selftest | the gate discriminates | dishonest mutation exits nonzero |
+| schema validation | public consumers receive the promised shape | required field disappears |
+
+The acceptance conclusion should separate decisions:
+
+> Accept the ownership-based include split. Request repair of the broad module config and
+> incompatible schema change. Retain the narrow interface and schema gates. Do not add a
+> second end-to-end job because the unresolved claims already have focused rejection
+> routes.
+
+This answer is stronger than "CI passed" because every judgment cites evidence and every
+gate names the lie it should reject.
 
 ## Exercise 10: Rehearse the next month of growth
 
