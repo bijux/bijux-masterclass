@@ -1,94 +1,92 @@
 # Learning Contract
-Use this page when you need to reset how to study the program. Deep Dive Snakemake is not
-built for passive reading. It is built for readers who can explain one workflow
-boundary, name the failure it prevents, and point to the command or artifact that proves
-the claim.
 
-## How to use this page
+Use this page when your study habits are starting to blur. Deep Dive Snakemake is not a
+course you finish by skimming every page. It is a course you finish by being able to
+defend one workflow boundary, one failure mode, and one proof route at a time.
 
-Return to this page when your study habits start getting blurry.
+This page is the reset button for that discipline.
 
-That usually means one of these is happening:
+## The short contract
 
-- you are reading more pages but understanding less
-- you are choosing proof routes that are too big for the claim
-- you are browsing the capstone instead of learning from the module
-- you are recognizing terms without being able to defend them
-
-This page is a reset, not an introduction.
-
-## The short version
-
-The course asks you to do three honest things:
+For each important idea, the course asks you to do three honest things:
 
 1. predict before you run
-2. observe what Snakemake actually planned or did
-3. explain the result in workflow-contract language, not in vibes
+2. observe what Snakemake planned or did
+3. explain the result in workflow language, not in vague impressions
 
-If you skip prediction, you lose the chance to test your model. If you skip observation,
-you fall back to guessing. If you skip explanation, commands become rituals.
+If you skip prediction, you never test your mental model. If you skip observation, you
+fall back to guessing. If you skip explanation, commands become ritual.
 
-## Start by checking whether your study loop is still honest
+## When to return to this page
+
+Come back here when any of these start happening:
+
+- you are opening more pages but understanding less
+- you keep choosing proof routes that are larger than the claim
+- you are browsing the capstone instead of learning from the module
+- you can recognize terms but cannot defend them in your own words
+
+Those are study problems, not content-volume problems.
+
+## The three questions to ask before widening the surface
 
 Before opening more material, ask:
 
-1. did I make a prediction
-2. did I inspect the smallest surface that could falsify it
-3. can I explain the result without copying the page wording
+1. Did I make a prediction?
+2. Did I inspect the smallest surface that could falsify it?
+3. Can I explain the result without copying the page’s wording?
 
 If any answer is no, the right next step is usually smaller, not broader.
 
-## What the program is asking from you
+## What the course is asking from you
 
-For each module, you should be able to do four things before you call it done:
+Before you call a module done, you should be able to:
 
-1. explain the workflow or publish boundary in plain language
-2. name the failure that would appear if that boundary were false
+1. explain the contract or boundary in plain language
+2. name the failure that would appear if the contract were false
 3. choose one command, artifact, or file that tests the claim
-4. say why a heavier proof route would be unnecessary right now
+4. explain why a heavier proof route would be unnecessary right now
 
-If you can only recognize the vocabulary, the module is not done yet.
+If you can only recognize the vocabulary, you are not done.
 
-## What the program owes you
+## What the material owes you
 
-The material should present each important idea in an order that a human can actually use:
+The course pages should present each important idea in a usable order:
 
 1. the contract question
-2. the failure mode that makes the question matter
-3. the repair or design rule
+2. the failure mode that makes it matter
+3. the design or repair rule
 4. the proof route that can confirm the claim
 5. the capstone route only after the local idea is clear
 
-When a page jumps from slogan to command list, the page is making you reconstruct the
+When a page skips from slogan to commands, it is forcing the learner to reconstruct the
 lesson design alone.
 
-## How to work a module honestly
+## The honest module loop
 
-Use this loop:
+Use this loop whenever a module starts feeling diffuse:
 
-1. Read the module overview and the lesson that matches the current question.
-2. Write down one sentence that starts with "The contract here is..."
-3. Run the smallest proof route that could falsify your understanding.
-4. If the evidence surface feels bigger than the claim, step back to the module or guide.
-5. Move on only when you can explain the idea without borrowing the page's wording.
-
-The goal is not speed. The goal is leaving each module with something you can defend in
-review.
+1. read the overview and identify the current boundary question
+2. write one sentence that begins with `The contract here is...`
+3. write one sentence that begins with `If this were false, I would expect...`
+4. run the smallest proof route that could disprove your understanding
+5. explain the result in plain language
+6. move on only when the explanation sounds like yours, not like copied course prose
 
 ## What good progress looks like
 
-At the end of a strong study session, you should have:
+A strong study session usually leaves you with:
 
 - one workflow, dry-run, or review artifact you can explain without notes
-- one mistake you can now describe clearly
-- one smaller next step, not five open reading tabs
+- one mistake you can now name clearly
 - one believable reason the current proof route was enough
+- one small next step instead of a pile of open tabs
 
-That is stronger than finishing more pages without understanding them.
+That is better progress than reading more pages without ownership of the idea.
 
 ## The proof surfaces you should keep reaching for
 
-These surfaces recur because they answer different classes of question:
+These proof surfaces recur because they answer different classes of question:
 
 | Surface | Use it to answer |
 | --- | --- |
@@ -96,11 +94,11 @@ These surfaces recur because they answer different classes of question:
 | `--summary` | what outputs exist and how Snakemake currently sees them |
 | `--list-changes` | why code, params, or inputs now justify reruns |
 | `FILE_API.md` | what downstream users are allowed to trust |
-| publish bundle contents | what the repository promotes as a versioned contract |
-| verification and test targets | whether the repository can defend its claims after execution |
+| publish bundle contents | what the repository promotes as a stable contract |
+| verification and test targets | whether the workflow can defend its claims after execution |
 
-Good study means choosing the surface that matches the claim instead of jumping straight
-to the biggest route.
+Good study means choosing the surface that fits the claim instead of jumping to the
+largest available route.
 
 ## When the capstone is appropriate
 
@@ -109,35 +107,35 @@ real repository shape.
 
 Do not open the capstone yet when:
 
-- you still need a first explanation of the concept
+- you still need the first explanation of the concept
 - you cannot name the failure the module is trying to prevent
-- you do not know which command would count as proof
+- you do not know which command or artifact would count as proof
 - the repository still feels larger than the lesson itself
 
-Use [Capstone Map](../capstone/capstone-map.md) when the concept is clear but the right
-repository route is not.
+Use [Capstone Map](../capstone/capstone-map.md) when the concept is clear but the route
+through the repository is not.
 
 ## Signs you are fooling yourself
 
-Stop and reset if any of these are true:
+Pause and reset if:
 
 - you keep widening the reading surface because one page did not click
-- you can quote the term but cannot give a failure example
-- you chose `proof` or `capstone-confirm` because it felt safer than thinking
-- you can follow the capstone mechanically but cannot say which boundary owns the behavior
+- you can quote the term but cannot give a concrete failure example
+- you chose the strongest proof route because it felt safer than reasoning
+- you can follow the capstone mechanically but cannot say which boundary owns the
+  behavior
 
-Those are not minor study gaps. They usually mean the previous page needs a slower,
-smaller pass.
+Those usually mean you need one smaller question, not one bigger resource.
 
 ## The beginner mistake to catch early
 
-The most common beginner mistake is believing that confusion can be solved by widening the
-surface:
+The most common beginner mistake is believing that confusion can be solved by widening
+the surface:
 
 - more support pages
 - stronger proof routes
 - earlier capstone entry
 - later modules that sound more advanced
 
-Most of the time the fix is the opposite: shrink the question until one boundary and one
-proof route become defensible.
+Most of the time the durable fix is the opposite: shrink the question until one boundary,
+one failure mode, and one proof route become defensible.
