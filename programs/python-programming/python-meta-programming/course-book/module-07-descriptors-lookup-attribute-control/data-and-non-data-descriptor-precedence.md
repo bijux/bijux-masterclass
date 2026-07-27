@@ -46,6 +46,9 @@ Keep a second sentence beside it:
 
 > the difference is mechanical, not emotional; the methods present on the descriptor decide the category and therefore the lookup result.
 
+That sentence matters because many weak explanations smuggle intention into the rule.
+Lookup does not care what the author meant. It cares which hooks actually exist.
+
 ## The two categories
 
 The distinction is mechanical:
@@ -73,6 +76,16 @@ is:
 
 This is the lookup rule that turns many "Python did something weird" moments into a
 reviewable explanation.
+
+## A lookup worksheet to keep nearby
+
+When you need to explain one surprising result, fill these in:
+
+- class attribute found under the public name:
+- hooks present on that class attribute:
+- same-named instance entry present or absent:
+- winning lookup step:
+- rejected alternative explanation:
 
 ## Evidence route for precedence reviews
 
@@ -142,6 +155,16 @@ This time the instance dictionary wins because the descriptor defines only `__ge
 The important repair here is to name the exact public name that gets shadowed. A learner
 who says only "it was overridden somehow" is still missing the lookup rule.
 
+## A trace that stops the result feeling mystical
+
+Use this trace for both examples:
+
+1. identify the public attribute name Python is resolving
+2. inspect the class attribute under that name
+3. classify it as data descriptor or non-data descriptor from the hooks
+4. inspect `obj.__dict__` under the same public name
+5. narrate the winning step without skipping the instance-dictionary check
+
 ## Why `property` is important here
 
 Properties are a perfect bridge into the rule.
@@ -161,6 +184,14 @@ That detail connects Module 07 back to Module 06 in a concrete way.
 
 It also corrects a persistent beginner misconception: a read-only property is still a data
 descriptor and therefore still owns the attribute boundary during normal lookup.
+
+Use this property translation when the module starts splitting in a learner's head:
+
+| Property claim | Descriptor-precedence translation |
+| --- | --- |
+| read-only property still wins | it is still a data descriptor during normal lookup |
+| same-named `__dict__` entry does not bypass the property | the data descriptor wins before the instance dictionary |
+| property feels friendlier than a custom descriptor | friendly syntax does not change the precedence rule |
 
 ## Why methods are different
 
@@ -243,6 +274,15 @@ The rule is best used for:
 - choosing the smallest owner for a field invariant
 
 It is a poor substitute for clear design.
+
+## Evidence packet for precedence reviews
+
+Leave this page with a small packet:
+
+- one data-descriptor lookup trace
+- one non-data-descriptor shadowing trace
+- one property example rewritten in descriptor-precedence language
+- one sentence rejecting an API that relies on precedence to stay understandable
 
 ## Review rules for precedence
 
