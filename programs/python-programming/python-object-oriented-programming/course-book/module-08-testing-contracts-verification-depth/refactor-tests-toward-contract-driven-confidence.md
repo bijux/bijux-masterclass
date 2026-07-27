@@ -24,199 +24,207 @@ flowchart LR
 ```
 <!-- page-maps:end -->
 
-Read the first diagram as a placement map: this page is one concept inside its parent
-module, not a detached essay, and the capstone is the pressure test for whether the
-idea holds. Read the second diagram as the working rhythm for the page: name the
-problem, study the example, identify the boundary, then carry one review question
-forward.
+This page is about repairing a weak test suite in an order that preserves learning and
+real confidence.
 
-## Why this refactor matters
+The suite we are refactoring has a familiar smell:
 
-Many weak test suites are not missing effort. They are missing structure.
+- many green unit tests
+- heavy mocks
+- little lifecycle coverage
+- broad integration checks
+- no shared contract suites
 
-Typical symptoms:
+The goal is not "more tests." The goal is a suite where each layer proves one clear
+claim.
 
-- behavior tests pin helpers instead of domain promises
-- lifecycle objects are tested one method at a time instead of through histories
-- repositories have custom tests per backend but no shared contract
-- integration tests are either absent or bloated
-- snapshots freeze noise
+## The claim route for this refactor
 
-The result is familiar: many green checks, thin confidence.
+Use these two capstone promises as the forcing function:
 
-This refactor page shows how to reshape a suite so each layer proves a real design claim
-and the whole system gains explainable coverage instead of accumulated testing weight.
+1. `WorkshopEnrollment` never confirms more attendees than the seat limit
+2. `CertificateIssuanceService` never creates duplicate visible issuance when a workflow
+   is retried
 
-## Start by naming the promises worth defending
+The first promise is local and lifecycle-heavy.
+The second is cross-boundary and side-effect-heavy.
 
-Before moving tests around, identify the design truths that matter most.
+If one refactor route can make both claims easier to prove, the suite is improving for
+the right reason.
 
-For the monitoring capstone, examples might include:
+## The brittle starting point
 
-- an incident lifecycle cannot move through invalid transitions
-- repository substitutes preserve the same semantic behavior
-- runtime workflows save, publish, and expose public results consistently
-- operator-facing output stays reviewably stable
+Imagine the current suite looks like this:
 
-If the suite cannot be explained in terms of these promises, it is probably organized by
-convenience instead of proof value.
+- unit tests assert private helper choreography
+- enrollment history is tested one call at a time
+- in-memory and durable repositories each have separate ad hoc examples
+- retry behavior is "covered" only by one large end-to-end test
+- builders hide the important values that actually explain the invariant
 
-## Step 1: strip local tests back to behavior claims
+This kind of suite stays busy without telling you what failed first.
 
-Look for tests that mostly defend:
+## Refactor step 1: remove implementation surveillance
 
-- helper calls
-- private method choreography
-- temporary collaborator structure
-- mocks used as implementation surveillance
+Start with the tests that break every time internals move.
 
-Refactor those toward behavior-first tests that answer:
+Replace tests such as:
 
-- what command happened?
-- what visible outcome matters?
-- what invariant or error is being defended?
+- "helper method `calculate_remaining_seats` was called once"
+- "service called repository before formatter"
+- "mock sink received exactly these internal intermediate objects"
 
-This reduces noise and makes the local layer readable again.
+with behavior questions such as:
 
-## Step 2: add lifecycle proof where history matters
+- did enrollment confirm or waitlist correctly?
+- did the visible certificate workflow publish one stable outcome?
+- did the domain reject an invalid transition clearly?
 
-Once local behavior tests are cleaner, find the places where one-call coverage still
-misses the real risk.
+This step shrinks the surface of meaningless brittleness.
 
-Typical candidates:
+## Refactor step 2: prove histories, not only isolated calls
 
-- aggregates with typestate
-- repeated commands
-- event-emitting transitions
-- derived values that drift across several changes
+Once the local tests speak behavior, ask where one-call examples still miss the real
+risk.
 
-Add sequence-focused tests or state-machine style tests so the suite proves histories,
-not just isolated calls.
+For `WorkshopEnrollment`, isolated tests are not enough. The real claim sits in the
+history:
 
-## Step 3: extract shared contract suites for substitutes
+1. confirm attendees until the last seat is taken
+2. attempt one more enrollment
+3. confirm the new result is waitlisted rather than silently overbooked
+4. cancel or release a seat
+5. confirm the next transition follows the owned lifecycle rules
 
-If multiple repositories, adapters, or integration boundaries claim compatibility, stop
-testing them with separate hand-written suites only.
+This is the point where the suite stops pretending that aggregates live one method call
+at a time.
 
-Instead:
+## Refactor step 3: extract one shared repository contract
 
-1. define the semantic contract once
-2. run the same suite against every claimed substitute
-3. split the interface if honest capability differences appear
+Now look at substitutes.
 
-This step often reveals that a fake or in-memory substitute has been over-trusted for a
-long time.
+If both an in-memory repository and a durable repository claim to support enrollment or
+certificate workflows, write one contract suite and run it against both.
 
-## Step 4: improve test data ownership before adding more tests
+That shared suite should answer questions such as:
 
-Weak setup design will undermine every higher layer.
+- does save-and-load preserve the same visible state?
+- do missing records fail in the same semantic way?
+- does version or conflict behavior surface through the same contract?
 
-Before expanding the suite, tighten:
+If the substitutes cannot pass the same semantic suite, they are not honestly
+interchangeable.
 
-- oversized fixtures
-- hidden defaults
-- builders that conceal important values
-- helpers that speak implementation language instead of domain language
+## Refactor step 4: expose important setup values
 
-The point is simple: a reviewer should be able to see what matters in each proof route
-without tracing setup through half the repository.
+Before adding broader proof, repair the setup language.
 
-## Step 5: choose generated proof where breadth matters
+Weak builders often hide the thing the test is supposed to teach.
 
-Not every invariant deserves property-based testing, but some claims become clearer once
-you stop pretending a few examples are enough.
+Bad setup:
 
-Look for:
+- a magical `build_valid_workshop()` helper with invisible defaults
+- a fixture that silently creates five seats and three attendees
+- a certificate object whose retry token or issued state is hidden
 
-- round-trip guarantees
-- ordering laws
-- semantic equality rules
-- wide transition spaces
+Better setup:
 
-Add properties there, especially when shrunk counterexamples would teach something the
-team is currently missing.
+- explicit seat count
+- explicit attendee history
+- explicit retry token or issued marker
 
-## Step 6: place workflow proof at the right integration layer
+The rule is simple: if the reader cannot see the important pressure on the page, the
+test is teaching the wrong thing.
 
-After local, stateful, and contract proof is clearer, look at what still spans layers.
+## Refactor step 5: place workflow proof where composition risk begins
 
-Integration tests should prove things like:
+Only after local behavior, lifecycle proof, and repository contracts are clearer should
+you tighten the workflow tests.
 
-- load, mutate, save, and publish flows
-- repository plus aggregate round-trips
-- adapter translation under realistic boundary use
-- runtime coordination that lower layers cannot honestly see
+For `CertificateIssuanceService`, the integration proof should show:
 
-Do not use integration tests as a substitute for missing lower-layer clarity. Use them
-for composition risk only.
+1. confirmed state is loaded
+2. issuance is attempted
+3. persistence and side-effect boundaries cooperate correctly
+4. a retry does not create duplicate visible results
 
-## Step 7: review public-output approvals as contracts
+That is a composed workflow claim.
+It belongs above unit tests and below broad end-to-end theater.
 
-If the suite contains snapshots or golden files, inspect them with one question:
+## Refactor step 6: use broader generation only where breadth matters
 
-- is this artifact truly a public or reviewer-facing contract?
+Some claims deserve more than a few named examples.
 
-Keep and improve the ones that protect real representations.
-Delete or narrow the ones that only freeze internal noise.
+Good candidates include:
 
-That turns approval testing into a review tool instead of a maintenance tax.
+- ordering laws for exposed collections
+- round-trip guarantees for serialized public value objects
+- semantic equality rules that should hold across many inputs
 
-## A worked refactor route
+Do not reach for property-based testing just to look advanced.
+Use it when the claim truly spans a wide space and a shrunk counterexample would teach
+more than another hand-written example.
 
-Imagine the capstone currently has:
+## Refactor step 7: review snapshots and approvals as contracts
 
-- many unit tests with heavy mocks
-- a few broad end-to-end checks
-- no shared repository contracts
-- hidden fixture defaults
+If the suite includes snapshots, ask what public promise they protect.
 
-An ordered refactor route could be:
+Keep a snapshot only when it guards something like:
 
-1. rewrite the most brittle mock-driven tests into behavior-first domain tests
-2. add sequence tests for incident lifecycle paths
-3. extract one repository contract suite and run it against in-memory and durable implementations
-4. replace hidden fixture sprawl with a small set of readable builders
-5. add one property for a meaningful round-trip or equality guarantee
-6. narrow integration tests so each one proves a specific composed workflow
-7. review snapshot artifacts and keep only the ones guarding stable public output
+- a stable public representation
+- a documented report shape
+- a reviewer-facing artifact that another consumer depends on
 
-This route produces a suite with distinct evidence layers instead of a pile of
-historical habits.
+Delete or narrow snapshots that only freeze internal formatting noise.
 
-## Common mistakes
+The aim is approval evidence, not artifact hoarding.
 
-- adding more tests before fixing what the current tests are actually proving
-- keeping brittle mocks because changing them feels expensive
-- piling more integration tests on top of weak local proof
-- adding properties or snapshots as fashion rather than because the claim demands them
-- reorganizing tests by directory only, without changing the proof structure
+## One ordered repair plan
 
-## Review checklist
+For this capstone, an honest repair plan could be:
 
-| Question | Good sign |
-| --- | --- |
-| can each major design claim be paired with a first-failing suite? | yes |
-| has brittle implementation surveillance been replaced with behavior proof where possible? | yes |
-| are shared substitutes governed by shared contracts? | yes |
-| do higher layers prove composition and public-boundary risk rather than local detail? | yes |
+1. rewrite brittle mock-driven unit tests into behavior-first domain proofs
+2. add lifecycle tests for seat exhaustion and recovery paths
+3. extract one shared repository contract suite for in-memory and durable substitutes
+4. simplify builders so the pressure values remain visible
+5. add one composed retry workflow proof for certificate issuance
+6. add broad generated proof only where the input space really demands it
+7. keep only approval artifacts that defend a public promise
+
+This order matters because each later step depends on the earlier proof language being
+clean.
+
+## What this refactor should change in your review habit
+
+After reading this page, you should stop asking:
+
+- how many tests do we have?
+- why is the integration suite so large?
+- should we add property-based testing somewhere?
+
+and start asking:
+
+- which claim should fail first?
+- which proof layer is still missing?
+- which current tests are noisy enough that they hide the real gap?
+
+That is the shift from testing activity to testing judgment.
 
 ## Capstone connection
 
-Use this refactor route to review the capstone today.
+Use this page when the capstone suite feels noisy but unconvincing.
 
-Ask:
+Walk one claim through the repair route and decide:
 
-- which tests still mostly defend choreography?
-- which lifecycle rules need sequence proof?
-- which repositories or adapters need a shared contract suite next?
-- which public outputs deserve approval-style review and which do not?
-
-Those questions turn Module 08 into a concrete suite redesign plan.
+- which brittle tests should be rewritten first
+- which lifecycle history is still unproved
+- which repository substitutes need one shared contract next
+- which workflow deserves a composed retry proof before the suite grows wider
 
 ## Exit check
 
 Leave this refactor page only when you can do all of these:
 
-- describe an ordered path for turning a brittle suite into a contract-driven one
-- name one capstone layer that is over-tested and one that is under-proved
-- explain why adding more tests without restructuring proof routes can still leave confidence weak
+- describe an ordered path from brittle surveillance tests to contract-driven evidence
+- explain why lifecycle and workflow claims need different proof layers
+- identify one current test habit that creates noise without increasing confidence
