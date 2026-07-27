@@ -1,33 +1,5 @@
 # Capstone Proof Guide
 
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Capstone"]
-  page["Capstone Proof Guide"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
-Read the first diagram as a timing map: this guide is for one bounded proof route, not
-for whole-repository study. Read the second diagram as the rule: choose the narrowest
-honest command, inspect the matching evidence, then escalate only if the claim changes.
-
 Use this page when a module makes a Snakemake design claim and you want the shortest
 honest route to the capstone evidence that supports it.
 
@@ -38,6 +10,18 @@ Use this guide once the module idea is already legible in its local exercise.
 Before that point, prefer [Capstone Walkthrough](capstone-walkthrough.md) so the
 repository stays smaller than the concept you are learning.
 
+## Proof route shape
+
+```mermaid
+flowchart TD
+  claim["Name one design claim"] --> route["Choose the narrowest route"]
+  route --> inspect["Inspect the evidence surface"]
+  inspect --> enough{"Did it settle the claim?"}
+  enough -- yes --> stop["Stop and explain why"]
+  enough -- no --> stronger["Escalate one route stronger"]
+  stronger --> inspect
+```
+
 ## Start by proof need
 
 | If you need to prove... | Start here | Escalate only if needed |
@@ -47,6 +31,20 @@ repository stays smaller than the concept you are learning.
 | publish-boundary trust | `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report` | `capstone-confirm` |
 | execution-policy differences | [Capstone Architecture Guide](capstone-architecture-guide.md) | `proof` |
 | steward-level confidence | `make PROGRAM=reproducible-research/deep-dive-snakemake proof` | `capstone-confirm` |
+
+## Good proof habits
+
+- Start with the claim, not with the heaviest available command.
+- Check the evidence bundle the command was meant to produce.
+- Escalate only when the unanswered part of the claim is real, not when uncertainty feels uncomfortable.
+
+## Worked examples
+
+| Claim | Good first route | Why not stronger first |
+| --- | --- | --- |
+| "I need to see whether discovery is explicit." | `capstone-tour` | `capstone-confirm` adds weight before the discovery artifact question is even settled |
+| "I need to review what downstream users may trust." | `capstone-verify-report` | a broader proof pass is worse than a publish-specific route for contract questions |
+| "I need a maintainer-grade review route." | `proof` | `capstone-walkthrough` is too light once the question is explicitly stewardship-level |
 
 ## Bounded proof pass
 

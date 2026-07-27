@@ -1,30 +1,5 @@
 # Capstone Review Worksheet
 
-
-<!-- page-maps:start -->
-## Page Maps
-
-```mermaid
-graph LR
-  family["Reproducible Research"]
-  program["Deep Dive Snakemake"]
-  section["Capstone"]
-  page["Capstone Review Worksheet"]
-  capstone["Capstone evidence"]
-
-  family --> program --> section --> page
-  page -.applies in.-> capstone
-```
-
-```mermaid
-flowchart LR
-  orient["Orient on the page map"] --> read["Read the main claim and examples"]
-  read --> inspect["Inspect the related code, proof, or capstone surface"]
-  inspect --> verify["Run or review the verification path"]
-  verify --> apply["Apply the idea back to the module and capstone"]
-```
-<!-- page-maps:end -->
-
 Use this page when you want to review the capstone as an inherited workflow repository,
 not just read it as course material. The point is to leave with explicit judgments you
 could defend in code review, maintenance planning, or a handoff.
@@ -38,6 +13,18 @@ Work top to bottom. For each section:
 3. record one risk only if you can point to the owning boundary
 
 If you cannot name the evidence, the judgment is still too soft.
+
+## Review route
+
+```mermaid
+flowchart TD
+  claim["Name the review question"] --> section["Choose one worksheet section"]
+  section --> evidence["Inspect files or saved bundle"]
+  evidence --> judgment["Write one trust judgment"]
+  judgment --> next{"Need another boundary?"}
+  next -- no --> stop["Stop"]
+  next -- yes --> section
+```
 
 ## Repository contract
 
@@ -97,6 +84,14 @@ Best evidence:
 - `capstone/workflow/contracts/FILE_API.md`
 - verify-report bundle surfaces
 
+## A good publish review
+
+A good publish review should answer:
+
+- which promoted files belong to the public contract
+- which proofs are about publish trust rather than workflow execution generally
+- which future change would require a versioned publish boundary change
+
 ### Publish review route
 
 Use this route when the question is not merely "did the workflow run?" but "what is the
@@ -105,12 +100,6 @@ stable published contract and how is it defended?"
 1. Read [Capstone File Guide](capstone-file-guide.md).
 2. Run `make PROGRAM=reproducible-research/deep-dive-snakemake capstone-verify-report`.
 3. Compare the report bundle with this worksheet and [Proof Matrix](../guides/proof-matrix.md).
-
-A good publish review should answer:
-
-- which promoted files belong to the public contract
-- which proofs are about publish trust rather than workflow execution generally
-- which future change would require a versioned publish boundary change
 
 ## Architecture and ownership
 
@@ -127,6 +116,14 @@ Best evidence:
 - `capstone/workflow/modules/`
 - `capstone/workflow/scripts/`
 - `capstone/src/capstone/`
+
+## Strong review outcomes
+
+The worksheet is doing its job when you can end with one of these:
+
+- trust as-is because the repository contract and evidence are explicit
+- trust with one named follow-up boundary because the risk is real but contained
+- do not trust yet because one specific proof or ownership question is unresolved
 
 ## Incident review
 
@@ -147,11 +144,5 @@ A good incident review should answer:
 
 ## Record the result
 
-Finish with one of these judgments:
-
-- trust as-is
-- trust with one named follow-up boundary
-- do not trust yet because one specific proof or ownership question is unresolved
-
 If your conclusion is longer than a short paragraph, the review probably drifted away
-from one bounded question.
+from one bounded question. Reduce the claim before widening the route.
